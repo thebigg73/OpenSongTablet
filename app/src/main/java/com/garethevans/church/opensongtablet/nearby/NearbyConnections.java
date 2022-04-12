@@ -968,9 +968,22 @@ public class NearbyConnections implements NearbyInterface {
             }
             Uri newLocation = null;
             if (!isHost && hasValidConnections() && receiveHostFiles && keepHostFiles && filename!=null && !filename.isEmpty()) {
-                // The new file goes into our main Songs folder
+                // The new file goes into our main Songs folder if we don't already have it
                 newLocation = mainActivityInterface.getStorageAccess().getUriForItem("Songs", folder, filename);
-                mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, newLocation, null, "Songs", folder, filename);
+                if (!mainActivityInterface.getStorageAccess().uriExists(newLocation)) {
+                    Log.d(TAG,"Client doesn't have the song, so create it");
+                    mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, newLocation, null, "Songs", folder, filename);
+                } else {
+                    // Check it isn't a zero filesize/corrupt
+                    if (mainActivityInterface.getStorageAccess().getFileSizeFromUri(newLocation)==0) {
+                        Log.d(TAG,"0b file - bring in this one");
+                        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, newLocation, null, "Songs", folder, filename);
+                    } else {
+                        // Set to null as we don't need to create it as we already have this song
+                        Log.d(TAG, "Client already has the song.  Do nothing");
+                        newLocation = null;
+                    }
+                }
             } else if (!isHost && hasValidConnections() && receiveHostFiles && filename!=null && !filename.isEmpty()) {
                 // The new file goes into our Received folder
                 folder = "../Received";
@@ -993,7 +1006,7 @@ public class NearbyConnections implements NearbyInterface {
                         nearbyReturnActionsInterface.goToNextItem();
                     }
                 }
-            } else if (newLocation != null && payload != null && payload.asFile() != null) { // i.e. we have received the file by choice
+            } else if (newLocation != null && payload.asFile() != null) { // i.e. we have received the file by choice
                 InputStream inputStream = new FileInputStream(Objects.requireNonNull(payload.asFile()).asParcelFileDescriptor().getFileDescriptor());
                 Uri originalUri = Uri.parse(Objects.requireNonNull(payload.asFile()).asParcelFileDescriptor().getFileDescriptor().toString());
                 OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(newLocation);
@@ -1002,7 +1015,21 @@ public class NearbyConnections implements NearbyInterface {
                 if (mainActivityInterface.getStorageAccess().copyFile(inputStream, outputStream)) {
                     if (nearbyReturnActionsInterface != null) {
                         mainActivityInterface.getSong().setCurrentSection(pendingCurrentSection);
+                        // Make sure song is in the database (but not for received folder!
+                        if (!folder.startsWith("../") && !folder.startsWith("**") &&
+                                !mainActivityInterface.getSQLiteHelper().songExists(folder,filename)) {
+                            Log.d(TAG,"About to add to the database - folder: " + folder + "  filename:"+filename);
+                            mainActivityInterface.getSQLiteHelper().createSong(folder,filename);
+                            // Set the filetype
+                            mainActivityInterface.getStorageAccess().determineFileTypeByExtension(mainActivityInterface.getSong());
+                            mainActivityInterface.getSong().setTitle(filename);
+                            mainActivityInterface.getSQLiteHelper().updateSong(mainActivityInterface.getSong());
+                            // Refresh the song menu
+                            mainActivityInterface.updateSongList();
+                        }
+
                         nearbyReturnActionsInterface.loadSong();
+
                         // IV - End pending
                         pendingCurrentSection = 0;
                     }
@@ -1016,7 +1043,8 @@ public class NearbyConnections implements NearbyInterface {
                     Log.d(TAG, "Error trying to delete originalUri");
                 }
             } else {
-                if (nearbyReturnActionsInterface != null) {
+                if (nearbyReturnActionsInterface != null && filename!=null && !filename.isEmpty()) {
+                    Log.d(TAG,"No song copied as already have it");
                     mainActivityInterface.getSong().setCurrentSection(pendingCurrentSection);
                     nearbyReturnActionsInterface.loadSong();
                     // IV - End pending

@@ -270,7 +270,10 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         myView.actionFAB.setEnabled(enabled);
     }
 
-    private void prepareSearch() {
+    public void refreshSongList() {
+        prepareSearch();
+    }
+    public void prepareSearch() {
         getSearchVals();
         new Thread(() -> {
             requireActivity().runOnUiThread(() -> buttonsEnabled(false));
@@ -351,7 +354,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
 
     public void changeAlphabeticalLayout() {
         // We have asked for the visibility or the font size to change
-        updateSongList();
+        refreshSongList();
     }
     private void changeAlphabeticalVisibility(boolean isVisible) {
         if (isVisible) {

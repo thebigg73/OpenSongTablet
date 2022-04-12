@@ -1913,7 +1913,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     public void updateSongList() {
         if (songMenuFragment!=null) {
             try {
-                songMenuFragment.updateSongList();
+                songMenuFragment.refreshSongList();
             } catch (Exception e) {
                 e.printStackTrace();
             }
