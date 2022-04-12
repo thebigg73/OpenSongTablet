@@ -568,6 +568,7 @@ public class NearbyConnections implements NearbyInterface {
                                 if ((!mainActivityInterface.getMode().equals("Performance") ||
                                         mainActivityInterface.getSong().getFiletype().equals("PDF")) &&
                                         receiveHostSongSections) {
+                                    Log.d(TAG,"call payloadSection");
                                     payloadSection(incoming);
                                 }
                             } else if (incoming != null && incoming.contains(songTag)) {
@@ -826,7 +827,9 @@ public class NearbyConnections implements NearbyInterface {
             onSectionAlready = mainActivityInterface.getSong().getCurrentSection() == mysection;
             totalSections = mainActivityInterface.getSong().getSongSections().size();
         }
-        if (onSectionAlready && nearbyReturnActionsInterface != null && totalSections>mysection) {
+        Log.d(TAG,"doSectionChange().  onSectionAlready="+onSectionAlready);
+        Log.d(TAG,"totalSections="+totalSections+"  mysection="+mysection);
+        if (!onSectionAlready && nearbyReturnActionsInterface != null && totalSections>mysection) {
             if (mainActivityInterface.getSong().getFiletype().equals("PDF")) {
                 mainActivityInterface.getSong().setPdfPageCurrent(mysection);
             } else {
