@@ -137,7 +137,7 @@ public class SetActions {
             // Now we have the folder and filename, we can update default keys from the database
             // We only do this is the key isn't empty and it isn't a custom item (e.g. notes, slides)
             // Of course if the indexing isn't complete it will still be null - don't check the file yet
-            key = fixNull(getKeyFromDatabaseOrFile(false,key,folder,setItem));
+            key = fixNull(getKeyFromDatabaseOrFile(key,folder,setItem));
 
             // Build the set item.  Useful for shuffling and rebuilding and searching
 
@@ -148,7 +148,7 @@ public class SetActions {
             mainActivityInterface.getCurrentSet().addSetValues(folder, setItem, key);
         }
     }
-    private String getKeyFromDatabaseOrFile(boolean lastCheck, String key, String folder, String filename) {
+    private String getKeyFromDatabaseOrFile(String key, String folder, String filename) {
         // First off, check, the database.  If it isn't there, it might be coming soon
         // If we've finished indexing, the last chance is to try the file directly if it
         // still isn't in the database - could be a variation file created from the set.
@@ -161,7 +161,7 @@ public class SetActions {
             } else {
                 key = mainActivityInterface.getSQLiteHelper().getKey(folder,filename);
             }
-        } else if ((key==null || key.isEmpty()) && folder.contains(folderVariations) && lastCheck) {
+        } else if ((key==null || key.isEmpty()) && folder.contains(folderVariations)) {
             // This is a custom variation item so load the key from the file
             key = mainActivityInterface.getLoadSong().loadKeyOfSong(folder,filename);
         }
@@ -228,15 +228,17 @@ public class SetActions {
         if (position>-1) {
             // If a key was specified in the set and it matches this song, go to that position in the set
             return position;
-        } else if (positionNoKey>-1) {
-            // If a key wasn't specified in the set, but the song folder/filename matches, go to that position
-            return positionNoKey;
         } else {
+            // If a key wasn't specified in the set, but the song folder/filename matches, go to that position
+
             // If a key was specified in the set, but the song clicked on in the song menu is different,
             // stay out of the set view by returning -1 for the found position.
             // Or simply, the song just isn't in the set
-            return -1;
+
+            return Math.max(positionNoKey, -1);
         }
+
+
     }
 
     public void shuffleSet() {
@@ -1334,7 +1336,7 @@ public class SetActions {
         mainActivityInterface.getStorageAccess().wipeFolder(folder, "_cache");
 
         if (folder.equals(folderVariations)) {
-            // Also cleae the non-cache folder
+            // Also clear the non-cache folder
             ArrayList<String> filesInNonCacheFolder = mainActivityInterface.getStorageAccess().listFilesInFolder(folder, "");
             for (String filename:filesInFolder) {
                 mainActivityInterface.getSQLiteHelper().deleteSong(customLocStart+folder, filename);

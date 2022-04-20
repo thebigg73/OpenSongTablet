@@ -112,8 +112,8 @@ public class ChordFormatFragment extends Fragment {
             setChordPrefText(new String[] {"Ab", "G#", "B", "A#", "Db", "C#", "Eb", "D#", "Gb", "F#",
                     "ab", "g#", "b", "a#", "db", "c#", "eb", "d#", "gb", "f#"});
         } else if (formattouse==3) {
-            setChordPrefText(new String[]{"Aes", "Gis", "B", "Ais", "Des", "Cis", "Ees", "Dis", "Ges", "Fis",
-                    "aes", "gis", "b", "ais", "des", "cis", "ees", "dis", "ges", "fis"});
+            setChordPrefText(new String[]{"As", "Gis", "B", "Ais", "Des", "Cis", "Es", "Dis", "Ges", "Fis",
+                    "as", "gis", "b", "ais", "des", "cis", "es", "dis", "ges", "fis"});
         } else if (formattouse==4) {
             setChordPrefText(new String[] {"LAb","SOL#","SIb","LA#","REb", "DO#", "MIb", "RE#", "SOLb","FA#",
                     "LAbm","SOL#m","SIbm","LA#m","REbm","DO#m","MIbm","RE#m","SOLbm","FA#m"});

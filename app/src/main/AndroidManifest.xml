@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.garethevans.church.opensongtablet"
     android:installLocation="auto"
-    android:versionCode="300"
-    android:versionName="6.0.0_alpha01" >
+    android:versionCode="301"
+    android:versionName="6.0.0_alpha02" >
 
     <uses-feature
         android:name="android.hardware.touchscreen"

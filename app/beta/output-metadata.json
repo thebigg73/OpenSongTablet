@@ -11,8 +11,8 @@
       "type": "SINGLE",
       "filters": [],
       "attributes": [],
-      "versionCode": 300,
-      "versionName": "6.0.0_alpha01",
+      "versionCode": 301,
+      "versionName": "6.0.0_alpha02",
       "outputFile": "app-beta.apk"
     }
   ],

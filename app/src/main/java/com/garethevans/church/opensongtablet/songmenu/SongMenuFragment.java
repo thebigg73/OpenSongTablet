@@ -289,7 +289,6 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         }).start();
     }
 
-
     public void updateSongList() {
         myView.songListRecyclerView.removeAllViews();
         myView.songmenualpha.sideIndex.removeAllViews();
