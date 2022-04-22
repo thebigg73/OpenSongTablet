@@ -76,12 +76,16 @@
             android:layout_height="match_parent"
             android:layout_above="@+id/alertBar"
             android:layout_margin="0dp"
+            android:clipToPadding="false"
+            android:clipChildren="false"
             android:padding="0dp">
 
             <RelativeLayout
                 android:id="@+id/allContent"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:clipChildren="false"
                 android:visibility="visible"
                 tools:ignore="UselessParent">
 

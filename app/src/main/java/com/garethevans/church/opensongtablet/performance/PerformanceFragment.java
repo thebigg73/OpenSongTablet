@@ -511,7 +511,6 @@ public class PerformanceFragment extends Fragment {
                     } else {
                         waitingOnViewsToDraw = 0;
                     }
-
                 }
             });
             myView.testPane.addView(view);
