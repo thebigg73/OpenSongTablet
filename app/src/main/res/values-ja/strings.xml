@@ -534,4 +534,5 @@
     <string name="nearby_large_file">この大きな曲ファイルは共有されています</string>
     <string name="midi_delay">MIDIディレイバッファー</string>
     <string name="forum">ヘルプ (googlegroups)</string>
+    <string name="folder">フォルダ</string>
 </resources>

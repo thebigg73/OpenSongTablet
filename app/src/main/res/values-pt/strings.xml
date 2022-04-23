@@ -534,4 +534,5 @@
     <string name="nearby_large_file">Este grande arquivo de música está sendo compartilhado</string>
     <string name="midi_delay">Buffer de atraso MIDI</string>
     <string name="forum">Ajuda (googlegroups)</string>
+    <string name="folder">Pasta</string>
 </resources>

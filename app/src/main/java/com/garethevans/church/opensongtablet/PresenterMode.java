@@ -957,6 +957,10 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         protected String doInBackground(Object... o) {
             try {
                 width = preferences.getMyPreferenceInt(PresenterMode.this, "menuSize", 250);
+                // IV- Needs to be a minimum of 3 buttons wide
+                if (width <= 200) {
+                    width = 168;
+                }
                 float density = getResources().getDisplayMetrics().density;
                 width = Math.round((float) width * density);
             } catch (Exception e) {
@@ -1191,22 +1195,32 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         batteryholder = findViewById(R.id.batteryholder);
         ab_toolbar = findViewById(R.id.mytoolbar);
 
-        // The song menu
+        // Set up the navigation drawer
         songmenu = findViewById(R.id.songmenu);
-        menuFolder_TextView = findViewById(R.id.menuFolder_TextView);
-        menuCount_TextView = findViewById(R.id.menuCount_TextView);
+        optionmenu = findViewById(R.id.optionmenu);
         song_list_view = findViewById(R.id.song_list_view);
         FloatingActionButton closeSongsFAB = findViewById(R.id.closeSongsFAB);
-        closeSongsFAB.setOnClickListener(view -> closeMyDrawers("song"));
-
-
-        // The option menu
-        optionmenu = findViewById(R.id.optionmenu);
         menuFolder_TextView = findViewById(R.id.menuFolder_TextView);
         menuFolder_TextView.setText(getString(R.string.wait));
+        menuCount_TextView = findViewById(R.id.menuCount_TextView);
         LinearLayout changefolder_LinearLayout = findViewById(R.id.changefolder_LinearLayout);
+        FloatingActionButton fullSearchFAB = findViewById(R.id.fullSearchFAB);
+        FloatingActionButton editSetFAB = findViewById(R.id.editSetFAB);
+        closeSongsFAB.setOnClickListener(view -> closeMyDrawers("song"));
         changefolder_LinearLayout.setOnClickListener(view -> {
             FullscreenActivity.whattodo = "choosefolder";
+            openFragment();
+        });
+        fullSearchFAB.setOnClickListener(view -> {
+            closeMyDrawers("song");
+            // Full search window
+            FullscreenActivity.whattodo = "fullsearch";
+            openFragment();
+        });
+        editSetFAB.setOnClickListener(view -> {
+            closeMyDrawers("song");
+            // Full search window
+            FullscreenActivity.whattodo = "editset";
             openFragment();
         });
 

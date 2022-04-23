@@ -534,4 +534,5 @@
     <string name="nearby_large_file">Tento velký soubor písní je sdílen</string>
     <string name="midi_delay">MIDI delay buffer</string>
     <string name="forum">Help (googlegroups)</string>
+    <string name="folder">Složka</string>
 </resources>

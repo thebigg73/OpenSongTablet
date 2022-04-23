@@ -845,16 +845,30 @@ public class StageMode extends AppCompatActivity implements
         songmenu = findViewById(R.id.songmenu);
         optionmenu = findViewById(R.id.optionmenu);
         song_list_view = findViewById(R.id.song_list_view);
-        FloatingActionButton closeSongFAB = findViewById(R.id.closeSongsFAB);
+        FloatingActionButton closeSongsFAB = findViewById(R.id.closeSongsFAB);
         menuFolder_TextView = findViewById(R.id.menuFolder_TextView);
         menuFolder_TextView.setText(getString(R.string.wait));
         menuCount_TextView = findViewById(R.id.menuCount_TextView);
         LinearLayout changefolder_LinearLayout = findViewById(R.id.changefolder_LinearLayout);
+        FloatingActionButton fullSearchFAB = findViewById(R.id.fullSearchFAB);
+        FloatingActionButton editSetFAB = findViewById(R.id.editSetFAB);
+        closeSongsFAB.setOnClickListener(view -> closeMyDrawers("song"));
         changefolder_LinearLayout.setOnClickListener(view -> {
             FullscreenActivity.whattodo = "choosefolder";
             openFragment();
         });
-        closeSongFAB.setOnClickListener(view -> closeMyDrawers("song"));
+        fullSearchFAB.setOnClickListener(view -> {
+            closeMyDrawers("song");
+            // Full search window
+            FullscreenActivity.whattodo = "fullsearch";
+            openFragment();
+        });
+        editSetFAB.setOnClickListener(view -> {
+            closeMyDrawers("song");
+            // Full search window
+            FullscreenActivity.whattodo = "editset";
+            openFragment();
+        });
     }
 
     private void getBluetoothName() {
@@ -2988,7 +3002,11 @@ public class StageMode extends AppCompatActivity implements
         @Override
         protected String doInBackground(Object... o) {
             try {
-                width = preferences.getMyPreferenceInt(StageMode.this,"menuSize",250);
+                width = preferences.getMyPreferenceInt(StageMode.this, "menuSize", 250);
+                // IV- Needs to be a minimum of 3 buttons wide
+                if (width <= 200) {
+                    width = 168;
+                }
                 float density = getResources().getDisplayMetrics().density;
                 width = Math.round((float) width * density);
             } catch (Exception e) {
@@ -7433,8 +7451,7 @@ public class StageMode extends AppCompatActivity implements
                     if (menuFolder_TextView.getText() != null) {
                         if (menuFolder_TextView.getText().toString().equals(StaticVariables.whichSongFolder)) {
                             // Just move to the correct song
-                            indexOfSongInMenu();
-
+                            findSongInFolders();
                         } else {
                             prepareSongMenu();
                         }
@@ -8919,16 +8936,6 @@ public class StageMode extends AppCompatActivity implements
                             StaticVariables.myToastMessage = getResources().getString(R.string.not_allowed);
                             ShowToast.showToast(StageMode.this);
                         }
-                        return true;
-                    });
-                }
-                // IV - Support long press of search icon - actually the same action as short press!
-                final View view3 = findViewById(R.id.action_fullsearch);
-
-                if (view3 != null) {
-                    view3.setOnLongClickListener(v -> {
-                        FullscreenActivity.whattodo = "fullsearch";
-                        openFragment();
                         return true;
                     });
                 }
