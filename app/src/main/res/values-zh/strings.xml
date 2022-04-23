@@ -534,5 +534,5 @@
     <string name="nearby_large_file">" 正在共享此大歌曲文件"</string>
     <string name="midi_delay">MIDI 延迟缓冲器</string>
     <string name="forum">帮助 (googlegroups)</string>
-    <string name="folder">文件夹</string>
+    <string name="songs">歌曲</string>
 </resources>

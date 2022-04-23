@@ -25,6 +25,8 @@
             app:backgroundTint="@color/toolbar"
             app:borderWidth="0dp"
             app:elevation="0dp"
+            app:useCompatPadding="true"
+            app:fabSize="mini"
             android:src="@drawable/ic_arrow_left_white_36dp"
             android:contentDescription="@string/drawer_close" />
 
@@ -37,7 +39,7 @@
             android:gravity="center_vertical"
             android:ellipsize="end"
             android:singleLine="true"
-            android:text="@string/folder"
+            android:text="@string/songs"
             style="@style/MyDialogHeadingText" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -47,6 +49,8 @@
             app:backgroundTint="@color/toolbar"
             app:borderWidth="0dp"
             app:elevation="0dp"
+            app:fabSize="mini"
+            app:useCompatPadding="true"
             android:src="@drawable/ic_magnify_white_36dp"
             android:contentDescription="@string/search" />
 
@@ -58,6 +62,8 @@
             android:layout_marginEnd="8dp"
             app:borderWidth="0dp"
             app:elevation="0dp"
+            app:fabSize="mini"
+            app:useCompatPadding="true"
             android:src="@drawable/ic_format_list_numbers_white_36dp"
             android:contentDescription="@string/set" />
 
@@ -66,15 +72,15 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingStart="14dp"
+        android:paddingStart="10dp"
         android:paddingEnd="8dp"
+        android:layout_marginTop="-8dp"
         android:orientation="horizontal">
 
         <LinearLayout
             android:id="@+id/changefolder_LinearLayout"
             android:layout_height="wrap_content"
             android:layout_width="0dp"
-            android:paddingEnd="8dp"
             android:layout_weight="1"
             android:orientation="horizontal">
 
@@ -87,7 +93,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginStart="4dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="2dp"
                     android:contentDescription="@string/choosefolder"
@@ -113,7 +119,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:gravity="bottom"
-                android:paddingEnd="8dp"
                 android:paddingTop="10dp"
                 android:paddingBottom="6dp"
                 android:text="@string/songsinfolder"

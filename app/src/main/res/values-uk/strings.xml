@@ -534,5 +534,5 @@
     <string name="nearby_large_file">Цей великий файл пісні ділиться</string>
     <string name="midi_delay">Буфер затримки MIDI</string>
     <string name="forum">Допомога (googlegroups)</string>
-    <string name="folder">Папка</string>
+    <string name="songs">Пісні</string>
 </resources>
