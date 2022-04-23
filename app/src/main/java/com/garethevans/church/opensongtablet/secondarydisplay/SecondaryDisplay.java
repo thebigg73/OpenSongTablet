@@ -38,6 +38,7 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.GlideApp;
 import com.garethevans.church.opensongtablet.databinding.CastScreenBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.songprocessing.Song;
 
 import java.util.ArrayList;
 import java.util.Timer;
@@ -810,7 +811,10 @@ public class SecondaryDisplay extends Presentation {
     public void showSection(final int position) {
         // Decide which view to show.  Do nothing if it is already showing
         Log.d(TAG,"position="+position+"  getPresenterSettings().getCurrentSection()="+mainActivityInterface.getPresenterSettings().getCurrentSection());
-        if (position!=mainActivityInterface.getSong().getCurrentSection()) {
+        if (position!=mainActivityInterface.getSong().getCurrentSection() ||
+        position == mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().getSectionEdited()) {
+            // If we edited the section temporarily, remove this position flag
+            mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().setSectionEdited(-1);
             mainActivityInterface.getSong().setCurrentSection(position);
             if (position >= 0 && position < secondaryViews.size()) {
                 // Check the song info status first
@@ -963,7 +967,35 @@ public class SecondaryDisplay extends Presentation {
         Log.d(TAG,"translationX="+view.getTranslationX()+"  translationY="+view.getTranslationY());
 
     }
+    // If we edited a view from PresenterMode via the bottom sheet for a song section
+    public void editView() {
+        // The view has been created, so put it here
+        // Now update the create views for second screen presenting
+        // Create a blank song with just this section
+        Song tempSong = new Song();
+        tempSong.setLyrics(mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().getNewContent());
+        try {
+            View newView = mainActivityInterface.getProcessSong().setSongInLayout(tempSong, false, true).get(0);
+            // Replace the old view with this one once it has been measured etc.
+            newView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    newView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    // Get the sizes
+                    int position = mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().getSectionEdited();
+                    secondaryWidths.set(position,newView.getMeasuredWidth());
+                    secondaryHeights.set(position,newView.getMeasuredHeight());
+                    // Remove the view from the test layout and add it to the array list
+                    myView.testLayout.removeAllViews();
+                    secondaryViews.set(position,newView);
+                }
+            });
+            myView.testLayout.addView(newView);
 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     // The alert bar
     public void showAlert() {

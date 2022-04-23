@@ -122,7 +122,7 @@ public class SongSectionsFragment extends Fragment {
 
     // From edited content via TextInputBottomSheet
     public void updateValue(String content) {
-        mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().setSectionEdited(content);
+        mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().setSectionEditedContent(content);
     }
 
     public void doScrollTo(int thisPos) {

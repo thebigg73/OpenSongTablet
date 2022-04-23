@@ -2752,6 +2752,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                             case "showSection":
                                 secondaryDisplay.showSection(getPresenterSettings().getCurrentSection());
                                 break;
+                            case "editView":
+                                secondaryDisplay.editView();
+                                break;
 
                             // The alert bar
                             case "showAlert":

@@ -25,17 +25,21 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
     private final MainActivityInterface mainActivityInterface;
     private final DisplayInterface displayInterface;
     private ArrayList<SongSectionInfo> songSections;
-    private final PresenterFragment fragment;
+    private final PresenterFragment presenterFragment;
+    private final SongSectionsFragment songSectionsFragment;
     private final int onColor, offColor;
     private int sectionEdited = -1, currentPosition = -1;
     private final String colorChange = "color";
+    private String newContent;
 
-    SongSectionsAdapter(Context c, MainActivityInterface mainActivityInterface, PresenterFragment fragment,
+    SongSectionsAdapter(Context c, MainActivityInterface mainActivityInterface,
+                        PresenterFragment presenterFragment, SongSectionsFragment songSectionsFragment,
                         DisplayInterface displayInterface) {
         this.c = c;
         this.mainActivityInterface = mainActivityInterface;
         this.displayInterface = displayInterface;
-        this.fragment = fragment;
+        this.presenterFragment = presenterFragment;
+        this.songSectionsFragment = songSectionsFragment;
         onColor = ContextCompat.getColor(c, R.color.colorSecondary);
         offColor = ContextCompat.getColor(c, R.color.colorAltPrimary);
     }
@@ -195,7 +199,7 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
         sectionEdited = section;
 
         // Open up the text for this section in a bottom sheet for editing
-        TextInputBottomSheet textInputBottomSheet = new TextInputBottomSheet(fragment, "SongSectionsFragment",
+        TextInputBottomSheet textInputBottomSheet = new TextInputBottomSheet(songSectionsFragment, "SongSectionsFragment",
                 c.getString(R.string.edit_temporary), c.getString(R.string.content), null, null,
                 mainActivityInterface.getSong().getPresoOrderSongSections().get(section), false);
         textInputBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "textInputBottomSheet");
@@ -226,11 +230,11 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
         notifyItemChanged(thisPos,colorChange);
         mainActivityInterface.getPresenterSettings().setCurrentSection(thisPos);
         displayInterface.presenterShowSection(thisPos);
-        fragment.doScrollTo(thisPos);
+        presenterFragment.doScrollTo(thisPos);
         currentPosition = thisPos;
     }
 
-    public void setSectionEdited(String content) {
+    public void setSectionEditedContent(String content) {
         if (sectionEdited > -1) {
             try {
                 // Update the song sections
@@ -245,10 +249,14 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
                 songSectionInfo.position = sectionEdited;
                 songSections.set(sectionEdited, songSectionInfo);
                 notifyItemChanged(sectionEdited);
+
+                // Now update the create views for second screen presenting
+                newContent = content;
+                displayInterface.updateDisplay("editView");
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            sectionEdited = -1;
         }
     }
 
@@ -257,5 +265,15 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
     }
     public void setSelectedPosition(int selectedPosition) {
         mainActivityInterface.getPresenterSettings().setCurrentSection(selectedPosition);
+    }
+
+    public String getNewContent() {
+        return newContent;
+    }
+    public int getSectionEdited() {
+        return sectionEdited;
+    }
+    public void setSectionEdited(int sectionEdited) {
+        this.sectionEdited = sectionEdited;
     }
 }
