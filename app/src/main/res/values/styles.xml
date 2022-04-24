@@ -27,7 +27,7 @@
 
     <style name="MyMenuHeadingText" parent="MyTheme.Base">
         <item name="android:textColor">#ff0</item>
-        <item name="android:textSize">22sp</item>
+        <item name="android:textSize">17sp</item>
         <item name="android:textAllCaps">true</item>
     </style>
 

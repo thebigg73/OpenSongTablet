@@ -6,11 +6,10 @@
     android:layout_width="250dp"
     android:layout_height="match_parent"
     android:layout_gravity="start"
+    android:padding="4dp"
     android:background="@drawable/drawer_bg"
     android:clickable="true"
     android:orientation="vertical"
-    android:paddingBottom="4dp"
-    android:paddingTop="4dp"
     android:focusable="true">
 
     <LinearLayout
@@ -31,16 +30,17 @@
             android:contentDescription="@string/drawer_close" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/songsTitle"
+            android:layout_width="0dp"
             android:layout_weight="1"
-            android:padding="0dp"
-            android:layout_gravity="center_vertical"
-            android:gravity="center_vertical"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="4dp"
+            android:gravity="center"
             android:ellipsize="end"
             android:singleLine="true"
             android:text="@string/songs"
-            style="@style/MyDialogHeadingText" />
+            style="@style/MyMenuHeadingText" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fullSearchFAB"
