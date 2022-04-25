@@ -3277,9 +3277,11 @@ public class StageMode extends AppCompatActivity implements
                 if (sqLite!=null && sqLite.getSongid()!=null) {
                     sqLiteHelper.deleteSong(StageMode.this, sqLite.getSongid());
                 }
-                prepareSongMenu();
                 // IV - Load previous song to keep place in list
                 goToPreviousItem();
+
+                FullscreenActivity.needtorefreshsongmenu = true;
+
                 // IV - A backstop loadsong() to display song as deleted if there is no previous song (if previous is running loadsong() this second call is abandoned)
                 loadSong();
                 break;
@@ -3789,6 +3791,9 @@ public class StageMode extends AppCompatActivity implements
         @Override
         protected void onPostExecute(String s) {
             showToastMessage(getString(R.string.search_index_end));
+
+            FullscreenActivity.needtorefreshsongmenu = true;
+
             // Update the song menu
             prepareSongMenu();
         }
@@ -5252,14 +5257,22 @@ public class StageMode extends AppCompatActivity implements
     @Override
     public void prepareSongMenu() {
         doCancelAsyncTask(preparesongmenu_async);
-        if (song_list_view!=null) {
-            try {
-                song_list_view.setFastScrollEnabled(false);
-                song_list_view.setScrollingCacheEnabled(false);
-                preparesongmenu_async = new PrepareSongMenu();
-                preparesongmenu_async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-            } catch (Exception e) {
-                e.printStackTrace();
+        // If we have changed folders, redraw the song menu
+        if (menuFolder_TextView.getText() != null) {
+            if (!FullscreenActivity.needtorefreshsongmenu && menuFolder_TextView.getText().toString().equals(StaticVariables.whichSongFolder)) {
+                findSongInFolders();
+            } else {
+                if (song_list_view!=null) {
+                    try {
+                        song_list_view.setFastScrollEnabled(false);
+                        song_list_view.setScrollingCacheEnabled(false);
+                        preparesongmenu_async = new PrepareSongMenu();
+                        preparesongmenu_async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                        FullscreenActivity.needtorefreshsongmenu = false;
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         }
     }
@@ -7447,16 +7460,6 @@ public class StageMode extends AppCompatActivity implements
                         prepareView();
                     }
 
-                    // If we have changed folders, redraw the song menu
-                    if (menuFolder_TextView.getText() != null) {
-                        if (menuFolder_TextView.getText().toString().equals(StaticVariables.whichSongFolder)) {
-                            // Just move to the correct song
-                            findSongInFolders();
-                        } else {
-                            prepareSongMenu();
-                        }
-                    }
-
                     // If the user is shown the 'Welcome to OpenSongApp' file and their song lists are empty,
                     // open the find new songs menu
                     if (StaticVariables.mTitle.equals("Welcome to OpenSongApp") &&
@@ -7484,13 +7487,13 @@ public class StageMode extends AppCompatActivity implements
                         FullscreenActivity.needtorefreshsongmenu = true;
                         openFragment();
                     } else if (FullscreenActivity.needtorefreshsongmenu) {
-                        FullscreenActivity.needtorefreshsongmenu = false;
                         if (sqLite!=null && sqLite.getSongid()!=null) {
                             sqLite = sqLiteHelper.getSong(StageMode.this, sqLite.getSongid());
                             sqLiteHelper.updateSong(StageMode.this, sqLite);
                         }
-                        prepareSongMenu();
                     }
+
+                    prepareSongMenu();
 
                     delayactionBarHide.removeCallbacks(hideActionBarRunnable);
                     if (preferences.getMyPreferenceBoolean(StageMode.this,"hideActionBar",false)) {
@@ -7729,8 +7732,9 @@ public class StageMode extends AppCompatActivity implements
                     // Set the secondary alphabetical side bar
                     displayIndex(songmenulist, lva);
 
-                    // Flick the song drawer open once it is ready
                     findSongInFolders();
+
+                    // Flick the song drawer open once it is ready
                     if (firstrun_song) {
                         openMyDrawers("song");
                         closeMyDrawers("song_delayed");
