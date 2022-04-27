@@ -1225,7 +1225,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         });
         editSetFAB.setOnClickListener(view -> {
             closeMyDrawers("song");
-            // Full search window
+            // Edit current set
             FullscreenActivity.whattodo = "editset";
             openFragment();
         });

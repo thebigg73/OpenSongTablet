@@ -35,6 +35,7 @@ public class PopUpFullSearchFragment extends DialogFragment {
     private Preferences preferences;
     private SQLiteHelper sqLiteHelper;
     private final String searchPhrase = "";
+    boolean songSelected = false;
 
     // TODO allow user to set these (switch on/off)
     private boolean searchTitle, searchAuthor, searchCopyright, searchLyrics, searchTheme, searchKey,
@@ -51,6 +52,7 @@ public class PopUpFullSearchFragment extends DialogFragment {
     public interface MyInterface {
         void loadSong();
         void songLongClick();
+        void prepareSongMenu();
     }
 
     public static PopUpFullSearchFragment newInstance () {
@@ -387,6 +389,7 @@ public class PopUpFullSearchFragment extends DialogFragment {
                                 // Vibrate to indicate something has happened
                                 DoVibrate.vibrate(requireActivity(), 50);
                                 if (mListener != null) {
+                                    songSelected = true;
                                     mListener.songLongClick();
                                     mListener.loadSong();
                                 }
@@ -437,6 +440,7 @@ public class PopUpFullSearchFragment extends DialogFragment {
             }
 
             if (mListener!=null) {
+                songSelected = true;
                 mListener.loadSong();
             }
             dismiss();
@@ -476,6 +480,15 @@ public class PopUpFullSearchFragment extends DialogFragment {
                 mListener.songLongClick();
             }
             return true;
+        }
+    }
+
+    @Override
+    public void onDismiss(@NonNull final DialogInterface dialog) {
+        // IV - If no song selected, refresh the song menu using the folder of the current song
+        if (mListener!=null && !songSelected) {
+            StaticVariables.whichSongFolder = preferences.getMyPreferenceString(getContext(),"whichSongFolder", getString(R.string.mainfoldername));
+            mListener.prepareSongMenu();
         }
     }
 

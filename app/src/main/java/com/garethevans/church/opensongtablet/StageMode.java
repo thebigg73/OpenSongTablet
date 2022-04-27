@@ -865,7 +865,7 @@ public class StageMode extends AppCompatActivity implements
         });
         editSetFAB.setOnClickListener(view -> {
             closeMyDrawers("song");
-            // Full search window
+            // Edit current set
             FullscreenActivity.whattodo = "editset";
             openFragment();
         });
