@@ -5274,21 +5274,21 @@ public class StageMode extends AppCompatActivity implements
     public void prepareSongMenu() {
         doCancelAsyncTask(preparesongmenu_async);
         // If we have changed folders, redraw the song menu
-        if (menuFolder_TextView.getText() != null) {
-            if (!FullscreenActivity.needtorefreshsongmenu && menuFolder_TextView.getText().toString().equals(StaticVariables.whichSongFolder)) {
-                findSongInFolders();
-            } else {
-                if (song_list_view!=null) {
-                    try {
+        if (song_list_view != null) {
+            try {
+                if (menuFolder_TextView.getText() != null) {
+                    if (!FullscreenActivity.needtorefreshsongmenu && menuFolder_TextView.getText().toString().equals(StaticVariables.whichSongFolder)) {
+                        findSongInFolders();
+                    } else {
                         song_list_view.setFastScrollEnabled(false);
                         song_list_view.setScrollingCacheEnabled(false);
                         preparesongmenu_async = new PrepareSongMenu();
                         preparesongmenu_async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                         FullscreenActivity.needtorefreshsongmenu = false;
-                    } catch (Exception e) {
-                        e.printStackTrace();
                     }
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }
