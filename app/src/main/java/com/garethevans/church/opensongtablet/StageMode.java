@@ -850,24 +850,40 @@ public class StageMode extends AppCompatActivity implements
         menuFolder_TextView.setText(getString(R.string.wait));
         menuCount_TextView = findViewById(R.id.menuCount_TextView);
         LinearLayout changefolder_LinearLayout = findViewById(R.id.changefolder_LinearLayout);
+        RelativeLayout fullSearchFABLayout = findViewById(R.id.fullSearchFABLayout);
         FloatingActionButton fullSearchFAB = findViewById(R.id.fullSearchFAB);
+        RelativeLayout editSetFABLayout = findViewById(R.id.editSetFABLayout);
         FloatingActionButton editSetFAB = findViewById(R.id.editSetFAB);
         closeSongsFAB.setOnClickListener(view -> closeMyDrawers("song"));
         changefolder_LinearLayout.setOnClickListener(view -> {
             FullscreenActivity.whattodo = "choosefolder";
             openFragment();
         });
+        fullSearchFABLayout.setOnClickListener(view -> fullSearchFAB.performClick());
         fullSearchFAB.setOnClickListener(view -> {
             closeMyDrawers("song");
-            // Full search window
             FullscreenActivity.whattodo = "fullsearch";
             openFragment();
         });
+        fullSearchFABLayout.setOnLongClickListener(view -> fullSearchFAB.performLongClick());
+        fullSearchFAB.setOnLongClickListener(view -> {
+            closeMyDrawers("song");
+            FullscreenActivity.whattodo = "fullsearch";
+            openFragment();
+            return true;
+        });
+        editSetFABLayout.setOnClickListener(view -> editSetFAB.performClick());
         editSetFAB.setOnClickListener(view -> {
             closeMyDrawers("song");
-            // Edit current set
             FullscreenActivity.whattodo = "editset";
             openFragment();
+        });
+        editSetFABLayout.setOnLongClickListener(view -> editSetFAB.performLongClick());
+        editSetFAB.setOnLongClickListener(view -> {
+            closeMyDrawers("song");
+            FullscreenActivity.whattodo = "loadset";
+            openFragment();
+            return true;
         });
     }
 
