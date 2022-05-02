@@ -48,7 +48,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/display" />
-        <TableRow style="@style/DividerLine"/>
 
     </LinearLayout>
     </androidx.core.widget.NestedScrollView>
