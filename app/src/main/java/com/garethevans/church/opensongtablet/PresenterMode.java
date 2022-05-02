@@ -1966,8 +1966,12 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
         // Select it
         if (presenter_set_buttonsListView.getChildCount() > StaticVariables.indexSongInSet) {
-            Button which_song_to_click = (Button) presenter_set_buttonsListView.getChildAt(StaticVariables.indexSongInSet);
-            which_song_to_click.performClick();
+            try {
+                Button which_song_to_click = (Button) presenter_set_buttonsListView.getChildAt(StaticVariables.indexSongInSet);
+                which_song_to_click.performClick();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

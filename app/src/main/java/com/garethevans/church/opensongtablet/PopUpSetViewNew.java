@@ -269,13 +269,17 @@ public class PopUpSetViewNew extends DialogFragment {
         });
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setOnClickListener(view -> {
-            PopUpSetViewNew.this.doSave();
+            doSave();
             // IV - If we have a set and the current song is not in the set - Display the first song
             if (StaticVariables.mSetList!=null && StaticVariables.mSetList.length>0 && !setActions.isSongInSet(getContext(), preferences)) {
                 setActions.prepareFirstItem(getContext());
                 // IV - Avoid double refresh for Presentation mode, see OnDismiss()
-                if (!StaticVariables.whichMode.equals("Presentation")) {
-                    mListener.refreshAll();
+                if (mListener!=null && !StaticVariables.whichMode.equals("Presentation")) {
+                    try {
+                        mListener.refreshAll();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
             close();
