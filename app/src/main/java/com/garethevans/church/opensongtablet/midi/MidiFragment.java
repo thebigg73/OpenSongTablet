@@ -52,6 +52,7 @@ public class MidiFragment extends Fragment {
 
     private SettingsMidiBinding myView;
     private MainActivityInterface mainActivityInterface;
+    private final String TAG = "MidiFragment";
 
     private final Handler selected = new Handler();
     private final Runnable runnable = this::displayCurrentDevice;
@@ -315,6 +316,7 @@ public class MidiFragment extends Fragment {
 
     // Check permissions
     private boolean allowBluetoothSearch(boolean switchOn) {
+        // Same permissions as Google Nearby!
         return switchOn && mainActivityInterface.requestNearbyPermissions(false);
     }
 
@@ -383,7 +385,7 @@ public class MidiFragment extends Fragment {
         myView.devicesText.setVisibility(View.GONE);
         // Stops scanning after a pre-defined scan period.
         Handler mHandler = new Handler();
-        long SCAN_PERIOD = 16000;
+        long SCAN_PERIOD = 10000;
         mHandler.postDelayed(() -> {
             try {
                 bluetoothLeScanner.stopScan(scanCallback);
@@ -391,7 +393,7 @@ public class MidiFragment extends Fragment {
                 myView.searchDevices.setEnabled(true);
                 myView.foundDevicesLayout.setEnabled(true);
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.d(TAG,"Unable to stop the Bluetooth scan.  Likely closed the fragment!/n");
             }
         }, SCAN_PERIOD);
 
@@ -553,31 +555,40 @@ public class MidiFragment extends Fragment {
     private void sendTestNote() {
         try {
             String s1on = mainActivityInterface.getMidi().buildMidiString("NoteOn", 1, 60, 100); // C
-            String s2on = mainActivityInterface.getMidi().buildMidiString("NoteOn",10, 42, 100); // Hihat
-            String s3on = mainActivityInterface.getMidi().buildMidiString("PC",1,0,1); // Program change
-            Log.d("d","s1on="+s1on+"  s2on="+s2on+"  s3on="+s3on);
+            String s2on = mainActivityInterface.getMidi().buildMidiString("NoteOn", 2, 60, 100); // C
+            String s3on = mainActivityInterface.getMidi().buildMidiString("NoteOn",10, 42, 100); // Hihat
+            String s4on = mainActivityInterface.getMidi().buildMidiString("PC",1,0,1); // Program change
+            String s1off = mainActivityInterface.getMidi().buildMidiString("NoteOff", 1, 60, 0);
+            String s2off = mainActivityInterface.getMidi().buildMidiString("NoteOff", 2, 60, 0);
+            String s3off = mainActivityInterface.getMidi().buildMidiString("NoteOff", 10, 42, 0);
+            String s4off = mainActivityInterface.getMidi().buildMidiString("PC",1,0,0);
+
             byte[] buffer1on = mainActivityInterface.getMidi().returnBytesFromHexText(s1on);
             byte[] buffer2on = mainActivityInterface.getMidi().returnBytesFromHexText(s2on);
             byte[] buffer3on = mainActivityInterface.getMidi().returnBytesFromHexText(s3on);
-            boolean sent = mainActivityInterface.getMidi().sendMidi(buffer1on) &&
-                    mainActivityInterface.getMidi().sendMidi(buffer2on) &&
-                    mainActivityInterface.getMidi().sendMidi(buffer3on);
+            byte[] buffer4on = mainActivityInterface.getMidi().returnBytesFromHexText(s4on);
+            byte[] buffer1off = mainActivityInterface.getMidi().returnBytesFromHexText(s1off);
+            byte[] buffer2off = mainActivityInterface.getMidi().returnBytesFromHexText(s2off);
+            byte[] buffer3off = mainActivityInterface.getMidi().returnBytesFromHexText(s3off);
+            byte[] buffer4off = mainActivityInterface.getMidi().returnBytesFromHexText(s4off);
 
-            Handler h = new Handler();
-            h.postDelayed(() -> {
-                String s1off = mainActivityInterface.getMidi().buildMidiString("NoteOff", 1, 60, 0);
-                String s2off = mainActivityInterface.getMidi().buildMidiString("NoteOff", 10, 42, 0);
-                String s3off = mainActivityInterface.getMidi().buildMidiString("PC",1,0,0);
-                byte[] buffer1off = mainActivityInterface.getMidi().returnBytesFromHexText(s1off);
-                byte[] buffer2off = mainActivityInterface.getMidi().returnBytesFromHexText(s2off);
-                byte[] buffer3off = mainActivityInterface.getMidi().returnBytesFromHexText(s3off);
-                mainActivityInterface.getMidi().sendMidi(buffer1off);
-                mainActivityInterface.getMidi().sendMidi(buffer2off);
-                mainActivityInterface.getMidi().sendMidi(buffer3off);
-            }, 1000);
+            // On and off notes get sent with midiDelay
+            int midiDelay = mainActivityInterface.getMidi().getMidiDelay();
+            boolean sent = mainActivityInterface.getMidi().sendMidi(buffer1on);
+            new Handler().postDelayed(() -> mainActivityInterface.getMidi().sendMidi(buffer2on),midiDelay*2L);
+            new Handler().postDelayed(() -> mainActivityInterface.getMidi().sendMidi(buffer3on),midiDelay*3L);
+            new Handler().postDelayed(() -> mainActivityInterface.getMidi().sendMidi(buffer4on),midiDelay*4L);
+            new Handler().postDelayed(() -> mainActivityInterface.getMidi().sendMidi(buffer1off),500+(midiDelay*5L));
+            new Handler().postDelayed(() -> mainActivityInterface.getMidi().sendMidi(buffer2off),500+(midiDelay*6L));
+            new Handler().postDelayed(() -> mainActivityInterface.getMidi().sendMidi(buffer3off),500+(midiDelay*7L));
+            new Handler().postDelayed(() -> mainActivityInterface.getMidi().sendMidi(buffer4off),500+(midiDelay*8L));
+
             if (sent) {
                 mainActivityInterface.getShowToast().doIt(getString(R.string.okay));
+            } else {
+                mainActivityInterface.getShowToast().doIt(getString(R.string.error));
             }
+
         } catch (Exception e) {
             e.printStackTrace();
             mainActivityInterface.getShowToast().doIt(getString(R.string.error));
@@ -759,9 +770,21 @@ public class MidiFragment extends Fragment {
             e.printStackTrace();
         }
     }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
+        if (bluetoothLeScanner != null &&
+                ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.BLUETOOTH_SCAN)
+                        == PackageManager.PERMISSION_GRANTED &&
+                        Build.VERSION.SDK_INT>=Build.VERSION_CODES.M) {
+            try {
+                bluetoothLeScanner.stopScan(scanCallback);
+            } catch (Exception e) {
+                Log.d(TAG, "Scanner unable to be stopped (maybe already stopped!)");
+            }
+        }
+
         // Save the song
         mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong());
     }

@@ -901,6 +901,11 @@ public class ConvertChoPro {
                     newlyrics.append("{c:").append(lines[y].replaceFirst(";","")).append("}");
                     break;
 
+                case "tab":
+                case "guitar_tab":
+                    newlyrics.append("{sot}\n").append(thisLine.replaceFirst(";","")).append("\n{eot}");
+                    break;
+
                 case "heading":
                     Log.d(TAG,"heading: "+thisLine);
                     // If this is a chorus, deal with it appropriately
@@ -956,6 +961,11 @@ public class ConvertChoPro {
         //IV - Reset any chord repeat bar lines
         newlyrics = new StringBuilder(newlyrics.toString().replace("··>","||:").replace("<··", ":||"));
 
+        // If we have tab, get rid of end/start tags inbetween concurrent lines
+        if (newlyrics.toString().contains("\n{eot}\n{sot}")) {
+            newlyrics = new StringBuilder(newlyrics.toString().replace("\n{eot}\n{sot}",""));
+        }
+
         return newlyrics.toString();
     }
 
@@ -977,6 +987,30 @@ public class ConvertChoPro {
         // The app will convert it into OpenSong before saving.
         StringBuilder newlyrics = new StringBuilder();
 
+        // Extract tabs
+        if ((lyrics.contains("{sot") || lyrics.contains("{start_of_tab")) &&
+                (lyrics.contains("{eot") || lyrics.contains("{end_of_tab}"))) {
+            // Go through the lines and between these positions, add comments
+            String[] line = lyrics.split("\n");
+            boolean addComment = false;
+            StringBuilder tempLyrics = new StringBuilder();
+            for (String l:line) {
+                if (l.contains("{sot") || l.contains("{start_of_tab")) {
+                    addComment = true;
+                    l = null;
+                } else if (l.contains("{eot") || l.contains("{end_of_tab")) {
+                    addComment = false;
+                    l = null;
+                }
+                if (l!=null && addComment) {
+                    tempLyrics.append(";").append(l).append("\n");
+                } else if (l!=null) {
+                    tempLyrics.append(l).append("\n");
+                }
+            }
+            lyrics = tempLyrics.toString();
+        }
+
         // Split the lyrics into separate lines
         String[] line = lyrics.split("\n");
         int numlines = line.length;
@@ -995,6 +1029,7 @@ public class ConvertChoPro {
 
                 // IV - Treat start of chorus as a comment - allows song autofix to fix when it fixes comments
                 line[x] = line[x].replace("{start_of_chorus}", ";Chorus");
+                line[x] = line[x].replace("{soc}",";Chorus");
 
                 // IV - For unprocessed lines add a leading space - a fix for mis-aligned lyric only lines
                 if (line[x].length() > 0) {

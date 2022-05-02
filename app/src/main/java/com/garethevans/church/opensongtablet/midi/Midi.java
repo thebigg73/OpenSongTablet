@@ -29,6 +29,7 @@ public class Midi {
     public Midi(Context c) {
         this.c = c;
         mainActivityInterface = (MainActivityInterface) c;
+        midiDelay = mainActivityInterface.getPreferences().getMyPreferenceInt("midiDelay",100);
     }
 
     private ArrayList<String> songMidiMessages = new ArrayList<>();
@@ -37,6 +38,7 @@ public class Midi {
     private MidiInputPort midiInputPort;
     private MidiOutputPort midiOutputPort;
     private String midiDeviceName = "", midiDeviceAddress = "";
+    private int midiDelay = 100;
     private boolean includeBluetoothMidi;
     private final List<String> notes = Arrays.asList("C0","C#0","D0","D#0","E0","F0","F#0","G0","G#0","A0","A#0","B0",
             "C1","C#1","D1","D#1","E1","F1","F#1","G1","G#1","A1","A#1","B1",
@@ -72,6 +74,9 @@ public class Midi {
     public boolean getIncludeBluetoothMidi() {
         return includeBluetoothMidi;
     }
+    public int getMidiDelay() {
+        return midiDelay;
+    }
 
     public void setMidiDevice(MidiDevice midiDevice) {
         this.midiDevice = midiDevice;
@@ -93,6 +98,9 @@ public class Midi {
     }
     public void setIncludeBluetoothMidi(boolean includeBluetoothMidi) {
         this.includeBluetoothMidi = includeBluetoothMidi;
+    }
+    public void setMidiDelay(int midiDelay) {
+        this.midiDelay = midiDelay;
     }
 
     String getMidiCommand(int i) {
