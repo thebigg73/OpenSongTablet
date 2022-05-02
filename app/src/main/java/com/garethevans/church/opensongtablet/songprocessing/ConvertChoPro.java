@@ -944,7 +944,7 @@ public class ConvertChoPro {
 
         // Tidy up
         newlyrics = new StringBuilder(newlyrics.toString().replace("\n\n", "\n"));
-        // Remove one space from the start of chord/lyric lines
+        // Remove one space from the marked points of chord/lyric lines
         newlyrics = new StringBuilder(newlyrics.toString().replace("¬ ", "¬"));
         // Remove beginning of line marker, it has done the job
         newlyrics = new StringBuilder(newlyrics.toString().replace("¬", ""));
