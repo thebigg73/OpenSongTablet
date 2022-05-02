@@ -534,4 +534,5 @@
     <string name="nearby_large_file">" Hierdie groot liedlêer word gedeel"</string>
     <string name="midi_delay">MIDI vertraging buffer</string>
     <string name="forum">Help (googlegroups)</string>
+    <string name="songs">Liedjies</string>
 </resources>

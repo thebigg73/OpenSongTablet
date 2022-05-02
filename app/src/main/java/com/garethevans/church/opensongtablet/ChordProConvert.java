@@ -948,28 +948,24 @@ class ChordProConvert {
                         nextLine = processSong.fixLineLength(nextLine, thisLine.length());
                     }
                     positions_returned = processSong.getChordPositions(thisLine, nextLine);
-                    // Remove the . at the start of the line
+                    // Replace the . at the beginning of the line
                     if (thisLine.startsWith(".")) {
                         thisLine = thisLine.replaceFirst("."," ");
                     }
                     chords_returned = processSong.getSections(thisLine, positions_returned);
                     lyrics_returned = processSong.getSections(nextLine, positions_returned);
 
-                    // Mark the beginning of the line
-                    newlyrics.append("¬");
                     for (int w = 0; w < lyrics_returned.length; w++) {
                         String chord_to_add = "";
-                        if (w<chords_returned.length) {
-                            if (chords_returned[w] != null && !chords_returned[w].trim().equals("")) {
-                                // IV - Removed block on considering '|' as a chord - need to retain for fidelity of conversion during edit
-                                if (chords_returned[w].trim().startsWith(".") || chords_returned[w].trim().startsWith(":")) {
-                                    chord_to_add = chords_returned[w];
-                                } else {
-                                    chord_to_add = "[" + chords_returned[w].trim() + "]";
-                                }
-                            }
+                        if (w < chords_returned.length && chords_returned[w] != null && !chords_returned[w].trim().equals("")) {
+                                chord_to_add = "[" + chords_returned[w].trim() + "]";
                         }
-                        newlyrics.append(chord_to_add).append(lyrics_returned[w]);
+                        if (w == 0) {
+                            // Mark the beginning of the lines
+                            newlyrics.append("¬").append(chord_to_add).append("¬").append(lyrics_returned[w]);
+                        } else {
+                            newlyrics.append(chord_to_add).append(lyrics_returned[w]);
+                        }
                     }
                     break;
 
@@ -978,28 +974,24 @@ class ChordProConvert {
                     String tempString = processSong.fixLineLength("", thisLine.length());
                     // IV - Chord positioning now uses a lyric line - in this case just spaces!
                     positions_returned = processSong.getChordPositions(thisLine, tempString);
-                    // Remove the . at the start of the line
+                    // Replace the . at the beginning of the line
                     if (thisLine.startsWith(".")) {
                         thisLine = thisLine.replaceFirst("."," ");
                     }
                     chords_returned = processSong.getSections(thisLine, positions_returned);
                     lyrics_returned = processSong.getSections(tempString, positions_returned);
 
-                    // Mark the beginning of the line
-                    newlyrics.append("¬");
                     for (int w = 0; w < lyrics_returned.length; w++) {
                         String chord_to_add = "";
-                        if (w<chords_returned.length) {
-                            if (chords_returned[w] != null && !chords_returned[w].trim().equals("")) {
-                                // IV - Removed block on considering '|' as a chord - need to retain for fidelity of conversion during edit
-                                if (chords_returned[w].trim().startsWith(".") || chords_returned[w].trim().startsWith(":")) {
-                                    chord_to_add = chords_returned[w];
-                                } else {
-                                    chord_to_add = "[" + chords_returned[w].trim() + "]";
-                                }
-                            }
+                        if ((w < chords_returned.length) && chords_returned[w] != null && !chords_returned[w].trim().equals("")) {
+                            chord_to_add = "[" + chords_returned[w].trim() + "]";
                         }
-                        newlyrics.append(chord_to_add).append(lyrics_returned[w]);
+                        if (w == 0) {
+                            // Mark the beginning of the lines
+                            newlyrics.append("¬").append(chord_to_add).append("¬").append(lyrics_returned[w]);
+                        } else {
+                            newlyrics.append(chord_to_add).append(lyrics_returned[w]);
+                        }
                     }
                     break;
 
@@ -1061,7 +1053,7 @@ class ChordProConvert {
 
         // Tidy up
         newlyrics = new StringBuilder(newlyrics.toString().replace("\n\n", "\n"));
-        // Remove one space from the start of chord/lyric lines
+        // Remove one space from the marked points of chord/lyric lines
         newlyrics = new StringBuilder(newlyrics.toString().replace("¬ ", "¬"));
         // Remove beginning of line marker, it has done the job
         newlyrics = new StringBuilder(newlyrics.toString().replace("¬", ""));

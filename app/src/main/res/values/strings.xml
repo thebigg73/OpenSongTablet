@@ -766,4 +766,5 @@
     <string name="presoShowBackground">Background</string>
     <string name="nearby_large_file">This large song file is being shared</string>
     <string name="midi_delay">Midi delay buffer</string>
+    <string name="songs">Songs</string>
 </resources>

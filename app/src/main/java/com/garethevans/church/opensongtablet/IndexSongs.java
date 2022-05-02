@@ -150,29 +150,29 @@ class IndexSongs {
                         }
                         lyrics = sb.toString();*/
 
-                        String songid = folder.replaceAll("'", "''") + "/" + filename.replaceAll("'", "''");
                         // Now we have the song info, update the table row
-                        String updateQuery = "UPDATE " + SQLite.TABLE_NAME + " " + "SET " +
-                                SQLite.COLUMN_FOLDER + "='" + folder.replaceAll("'", "''") + "', " +
-                                SQLite.COLUMN_FILENAME + "='" + filename.replaceAll("'", "''") + "', " +
-                                SQLite.COLUMN_TITLE + "='" + title.replaceAll("'", "''") + "', " +
-                                SQLite.COLUMN_AUTHOR + "='" + author.replaceAll("'", "''") + "', " +
-                                SQLite.COLUMN_COPYRIGHT + "='" + copyright.replaceAll("'", "''") + "', " +
-                                SQLite.COLUMN_LYRICS + "='" + lyrics.replaceAll("'", "''") + "', " +
-                                SQLite.COLUMN_KEY + "='" + key.replaceAll("'", "''") + "', " +
-                                SQLite.COLUMN_THEME + "='" + theme.replaceAll("'", "''") + "', " +
-                                SQLite.COLUMN_ALTTHEME + "='" + alttheme.replaceAll("'", "''") + "', " +
-                                SQLite.COLUMN_AKA + "='" + aka.replaceAll("'", "''") + "', " +
-                                SQLite.COLUMN_USER1 + "='" + user1.replaceAll("'", "''") + "', " +
-                                SQLite.COLUMN_USER2 + "='" + user2.replaceAll("'", "''") + "', " +
-                                SQLite.COLUMN_USER3 + "='" + user3.replaceAll("'", "''") + "', " +
-                                SQLite.COLUMN_HYMNNUM + "='" + hymnnum.replaceAll("'", "''") + "', " +
-                                SQLite.COLUMN_CCLI + "='" + ccli.replaceAll("'", "''") + "', " +
-                                SQLite.COLUMN_TEMPO + "='" + tempo.replaceAll("'", "''") + "', " +
-                                SQLite.COLUMN_TIMESIG + "='" + timesig.replaceAll("'", "''") + "' " +
-                                "WHERE " + SQLite.COLUMN_SONGID + "='" + songid + "';";
                         try {
-                            db.execSQL(updateQuery);
+                            db.execSQL(("UPDATE " + SQLite.TABLE_NAME + " SET " +
+                                    SQLite.COLUMN_FOLDER + "=┼" + folder + "┼," +
+                                    SQLite.COLUMN_FILENAME + "=┼" + filename + "┼," +
+                                    SQLite.COLUMN_TITLE + "=┼" + title + "┼," +
+                                    SQLite.COLUMN_AUTHOR + "=┼" + author + "┼," +
+                                    SQLite.COLUMN_COPYRIGHT + "=┼" + copyright + "┼," +
+                                    SQLite.COLUMN_LYRICS + "=┼" + lyrics + "┼," +
+                                    SQLite.COLUMN_KEY + "=┼" + key + "┼," +
+                                    SQLite.COLUMN_THEME + "=┼" + theme + "┼," +
+                                    SQLite.COLUMN_ALTTHEME + "=┼" + alttheme + "┼," +
+                                    SQLite.COLUMN_AKA + "=┼" + aka + "┼," +
+                                    SQLite.COLUMN_USER1 + "=┼" + user1 + "┼," +
+                                    SQLite.COLUMN_USER2 + "=┼" + user2 + "┼," +
+                                    SQLite.COLUMN_USER3 + "=┼" + user3 + "┼," +
+                                    SQLite.COLUMN_HYMNNUM + "=┼" + hymnnum + "┼," +
+                                    SQLite.COLUMN_CCLI + "=┼" + ccli + "┼," +
+                                    SQLite.COLUMN_TEMPO + "=┼" + tempo + "┼," +
+                                    SQLite.COLUMN_TIMESIG + "=┼" + timesig + "┼ " +
+                                    "WHERE " + SQLite.COLUMN_SONGID + "=┼" + folder + "/" + filename + "┼;").
+                                    replace("'","''").
+                                    replace("┼","'"));
                         } catch (OutOfMemoryError | Exception e) {
                             e.printStackTrace();
                         }

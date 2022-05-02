@@ -534,4 +534,5 @@
     <string name="nearby_large_file">К этому большому файлу с песней открыт доступ</string>
     <string name="midi_delay">Буфер задержки MIDI</string>
     <string name="forum">Помощь (googlegroups)</string>
+    <string name="songs">Песни</string>
 </resources>

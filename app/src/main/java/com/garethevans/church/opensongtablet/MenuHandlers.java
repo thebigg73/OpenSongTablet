@@ -27,7 +27,6 @@ class MenuHandlers {
 
         final int search = R.id.action_search;
         final int settings = R.id.action_settings;
-        final int fullsearch = R.id.action_fullsearch;
         final int setadd = R.id.set_add;
 
         switch (menuitem) {
@@ -44,12 +43,6 @@ class MenuHandlers {
                 if (mListener !=null) {
                     mListener.openMyDrawers("option_toggle");
                 }
-                break;
-
-            case fullsearch:
-                // Full search window
-                FullscreenActivity.whattodo = "fullsearch";
-                mListener.openFragment();
                 break;
 
             case setadd:

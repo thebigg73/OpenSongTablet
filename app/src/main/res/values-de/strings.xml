@@ -534,4 +534,5 @@
     <string name="nearby_large_file">Diese große Songdatei wird geteilt</string>
     <string name="midi_delay">MIDI-Verzögerungspuffer</string>
     <string name="forum">Aide (googlegroups)</string>
+    <string name="songs">Songs</string>
 </resources>

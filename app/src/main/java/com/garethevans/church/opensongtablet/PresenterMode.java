@@ -770,19 +770,25 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     }
 
     @Override
-    // The navigation drawers
     public void prepareSongMenu() {
-        try {
-            if (song_list_view == null) {
-                song_list_view = findViewById(R.id.song_list_view);
+        doCancelAsyncTask(preparesongmenu_async);
+        // If we have changed folders, redraw the song menu
+        if (song_list_view != null) {
+            try {
+                if (menuFolder_TextView.getText() != null) {
+                    if (!FullscreenActivity.needtorefreshsongmenu && menuFolder_TextView.getText().toString().equals(StaticVariables.whichSongFolder)) {
+                        findSongInFolders();
+                    } else {
+                        song_list_view.setFastScrollEnabled(false);
+                        song_list_view.setScrollingCacheEnabled(false);
+                        preparesongmenu_async = new PresenterMode.PrepareSongMenu();
+                        preparesongmenu_async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                        FullscreenActivity.needtorefreshsongmenu = false;
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            doCancelAsyncTask(preparesongmenu_async);
-            song_list_view.setFastScrollEnabled(false);
-            song_list_view.setScrollingCacheEnabled(false);
-            preparesongmenu_async = new PrepareSongMenu();
-            preparesongmenu_async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
@@ -957,6 +963,10 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         protected String doInBackground(Object... o) {
             try {
                 width = preferences.getMyPreferenceInt(PresenterMode.this, "menuSize", 250);
+                // IV- Needs to be a minimum of 3 buttons wide
+                if (width <= 200) {
+                    width = 168;
+                }
                 float density = getResources().getDisplayMetrics().density;
                 width = Math.round((float) width * density);
             } catch (Exception e) {
@@ -1191,23 +1201,49 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         batteryholder = findViewById(R.id.batteryholder);
         ab_toolbar = findViewById(R.id.mytoolbar);
 
-        // The song menu
+        // Set up the navigation drawer
         songmenu = findViewById(R.id.songmenu);
-        menuFolder_TextView = findViewById(R.id.menuFolder_TextView);
-        menuCount_TextView = findViewById(R.id.menuCount_TextView);
+        optionmenu = findViewById(R.id.optionmenu);
         song_list_view = findViewById(R.id.song_list_view);
         FloatingActionButton closeSongsFAB = findViewById(R.id.closeSongsFAB);
-        closeSongsFAB.setOnClickListener(view -> closeMyDrawers("song"));
-
-
-        // The option menu
-        optionmenu = findViewById(R.id.optionmenu);
         menuFolder_TextView = findViewById(R.id.menuFolder_TextView);
         menuFolder_TextView.setText(getString(R.string.wait));
+        menuCount_TextView = findViewById(R.id.menuCount_TextView);
         LinearLayout changefolder_LinearLayout = findViewById(R.id.changefolder_LinearLayout);
+        RelativeLayout fullSearchFABLayout = findViewById(R.id.fullSearchFABLayout);
+        FloatingActionButton fullSearchFAB = findViewById(R.id.fullSearchFAB);
+        RelativeLayout editSetFABLayout = findViewById(R.id.editSetFABLayout);
+        FloatingActionButton editSetFAB = findViewById(R.id.editSetFAB);
+        closeSongsFAB.setOnClickListener(view -> closeMyDrawers("song"));
         changefolder_LinearLayout.setOnClickListener(view -> {
             FullscreenActivity.whattodo = "choosefolder";
             openFragment();
+        });
+        fullSearchFABLayout.setOnClickListener(view -> fullSearchFAB.performClick());
+        fullSearchFAB.setOnClickListener(view -> {
+            closeMyDrawers("song");
+            FullscreenActivity.whattodo = "fullsearch";
+            openFragment();
+        });
+        fullSearchFABLayout.setOnLongClickListener(view -> fullSearchFAB.performLongClick());
+        fullSearchFAB.setOnLongClickListener(view -> {
+            closeMyDrawers("song");
+            FullscreenActivity.whattodo = "fullsearch";
+            openFragment();
+            return true;
+        });
+        editSetFABLayout.setOnClickListener(view -> editSetFAB.performClick());
+        editSetFAB.setOnClickListener(view -> {
+            closeMyDrawers("song");
+            FullscreenActivity.whattodo = "editset";
+            openFragment();
+        });
+        editSetFABLayout.setOnLongClickListener(view -> editSetFAB.performLongClick());
+        editSetFAB.setOnLongClickListener(view -> {
+            closeMyDrawers("song");
+            FullscreenActivity.whattodo = "loadset";
+            openFragment();
+            return true;
         });
 
         // Make views focusable
@@ -1440,11 +1476,13 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
                 // Call the script to get the song location.
                 setActions.getSongFileAndFolder(PresenterMode.this);
-                findSongInFolders();
-                prepareSongMenu();
 
                 // Close the drawers in case they are open
                 closeMyDrawers("both");
+
+                FullscreenActivity.needtorefreshsongmenu = true;
+                // IV - we cannot determine the index so go to top
+                FullscreenActivity.currentSongIndex = 0;
 
                 // Load the song
                 loadSong();
@@ -1807,7 +1845,9 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                 if (sqLite != null && sqLite.getSongid() != null) {
                     sqLiteHelper.deleteSong(PresenterMode.this, sqLite.getSongid());
                 }
-                prepareSongMenu();
+
+                FullscreenActivity.needtorefreshsongmenu = true;
+
                 // IV - Load song to display as deleted
                 loadSong();
                 break;
@@ -2045,6 +2085,9 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         @Override
         protected void onPostExecute(String s) {
             showToastMessage(getString(R.string.search_index_end));
+
+            FullscreenActivity.needtorefreshsongmenu = true;
+
             // Update the song menu
             prepareSongMenu();
         }
@@ -3578,7 +3621,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                         LoadXML.getPDFPageCount(PresenterMode.this, preferences, storageAccess);
                     }
                     setupSongButtons();
-                    findSongInFolders();
+                    prepareSongMenu();
 
                     // Send the midi data if we can
                     if (!orientationChanged) {
@@ -3601,10 +3644,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                     if (FullscreenActivity.needtoeditsong) {
                         FullscreenActivity.whattodo = "editsong";
                         FullscreenActivity.alreadyloading = false;
-                        FullscreenActivity.needtorefreshsongmenu = true;
-                    } else if (FullscreenActivity.needtorefreshsongmenu) {
-                        FullscreenActivity.needtorefreshsongmenu = false;
-                        prepareSongMenu();
                     }
 
                     // Get the SQLite stuff if the song exists.  Otherwise throws an exception (which is ok)
@@ -3644,6 +3683,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     private class PrepareSongMenu extends AsyncTask<Object, Void, String> {
 
         ArrayList<SQLite> songsInFolder;
+        ArrayList<SQLite> childFolders;
 
         @Override
         protected void onPreExecute() {
@@ -3658,9 +3698,10 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         @Override
         protected String doInBackground(Object... params) {
             try {
-                // Get a list of the songs in the current folder
-                // TODO
                 songsInFolder = sqLiteHelper.getSongsInFolder(PresenterMode.this, StaticVariables.whichSongFolder);
+                // Get a list of the child folders
+                childFolders = sqLiteHelper.getChildFolders(PresenterMode.this, StaticVariables.whichSongFolder);
+                songsInFolder.addAll(0,childFolders);
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -3686,6 +3727,8 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                     // Go through the found songs in folder and prepare the menu
                     ArrayList<SongMenuViewItems> songmenulist = new ArrayList<>();
 
+                    String setcurrent = preferences.getMyPreferenceString(PresenterMode.this,"setCurrent","");
+
                     for (int i=0; i<songsInFolder.size(); i++) {
                         String foundsongfilename = songsInFolder.get(i).getFilename();
                         String foundsongauthor = songsInFolder.get(i).getAuthor();
@@ -3707,7 +3750,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                         // Fix for variations, etc
                         whattolookfor = setActions.fixIsInSetSearch(whattolookfor);
 
-                        boolean isinset = preferences.getMyPreferenceString(PresenterMode.this,"setCurrent","").contains(whattolookfor);
+                        boolean isinset = setcurrent.contains(whattolookfor);
 
                         SongMenuViewItems song = new SongMenuViewItems(foundsongfilename,
                                 foundsongfilename, foundsongauthor, foundsongkey, isinset);
@@ -3723,8 +3766,9 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                     // Set the secondary alphabetical side bar
                     displayIndex(songmenulist, lva);
 
-                    // Flick the song drawer open once it is ready
                     findSongInFolders();
+
+                    // Flick the song drawer open once it is ready
                     if (firstrun_song) {
                         openMyDrawers("song");
                         closeMyDrawers("song_delayed");
@@ -3742,6 +3786,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             }
         }
     }
+
 
     @SuppressLint("StaticFieldLeak")
     @SuppressWarnings("deprecation")

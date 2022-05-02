@@ -3,14 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/songmenu"
-    android:layout_width="220dp"
+    android:layout_width="250dp"
     android:layout_height="match_parent"
     android:layout_gravity="start"
+    android:padding="4dp"
     android:background="@drawable/drawer_bg"
     android:clickable="true"
     android:orientation="vertical"
-    android:paddingBottom="4dp"
-    android:paddingTop="4dp"
     android:focusable="true">
 
     <LinearLayout
@@ -22,13 +21,77 @@
             android:id="@+id/closeSongsFAB"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
             app:backgroundTint="@color/toolbar"
-            app:fabSize="mini"
             app:borderWidth="0dp"
             app:elevation="0dp"
+            app:useCompatPadding="true"
+            app:fabSize="mini"
             android:src="@drawable/ic_arrow_left_white_36dp"
             android:contentDescription="@string/drawer_close" />
+
+        <TextView
+            android:id="@+id/songsTitle"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="4dp"
+            android:gravity="center"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="@string/songs"
+            style="@style/MyMenuHeadingText" />
+
+        <RelativeLayout
+            android:id="@+id/fullSearchFABLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fullSearchFAB"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/search"
+                android:src="@drawable/ic_magnify_white_36dp"
+                app:backgroundTint="@color/toolbar"
+                app:borderWidth="0dp"
+                app:elevation="0dp"
+                app:fabSize="mini"
+                app:useCompatPadding="true" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/editSetFABLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/editSetFAB"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:contentDescription="@string/set"
+                android:src="@drawable/ic_format_list_numbers_white_36dp"
+                app:backgroundTint="@color/toolbar"
+                app:borderWidth="0dp"
+                app:elevation="0dp"
+                app:fabSize="mini"
+                app:useCompatPadding="true" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="10dp"
+        android:paddingEnd="8dp"
+        android:layout_marginTop="-8dp"
+        android:orientation="horizontal">
 
         <LinearLayout
             android:id="@+id/changefolder_LinearLayout"
@@ -40,18 +103,15 @@
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp">
+                android:layout_gravity="center_vertical" >
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginStart="4dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="2dp"
                     android:contentDescription="@string/choosefolder"
                     android:scaleType="centerInside"
                     android:src="@drawable/ic_folder_upload_white_36dp" />
@@ -73,13 +133,17 @@
                 style="@style/MyHeadingText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:gravity="center_vertical"
-                android:textColor="@color/white"
-                android:layout_margin="8dp" />
+                android:layout_gravity="bottom"
+                android:gravity="bottom"
+                android:paddingTop="10dp"
+                android:paddingBottom="6dp"
+                android:text="@string/songsinfolder"
+                android:textColor="@color/white" />
 
         </LinearLayout>
+
     </LinearLayout>
+
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -116,4 +180,5 @@
             android:fastScrollEnabled="true" />
 
     </LinearLayout>
+
 </LinearLayout>

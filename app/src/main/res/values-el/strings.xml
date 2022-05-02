@@ -534,4 +534,5 @@
     <string name="nearby_large_file">Αυτό το μεγάλο αρχείο τραγουδιού κοινοποιείται</string>
     <string name="midi_delay">Ενδιάμεση μνήμη καθυστέρησης MIDI</string>
     <string name="forum">Βοήθεια (googlegroups)</string>
+    <string name="songs">Τραγούδια</string>
 </resources>
