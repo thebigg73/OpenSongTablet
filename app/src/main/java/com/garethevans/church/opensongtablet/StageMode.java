@@ -1,8 +1,5 @@
 package com.garethevans.church.opensongtablet;
 
-import static com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_INDEFINITE;
-import static com.google.android.material.snackbar.Snackbar.make;
-
 import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
@@ -300,6 +297,9 @@ public class StageMode extends AppCompatActivity implements
     private ScaleGestureDetector scaleGestureDetector;
     private GestureDetector gestureDetector;
 
+    // Nearby
+    private String[] nearbyPermissionsString;
+
     // ASyncTask stuff
     private AsyncTask<Object, Void, String> loadsong_async;
     private AsyncTask<Object, Void, String> preparesongview_async;
@@ -575,6 +575,7 @@ public class StageMode extends AppCompatActivity implements
             });
 
             // Set up the Nearby connection service
+            defineNearbyPermissions();
             getBluetoothName();
             nearbyConnections.getUserNickname();
 
@@ -888,28 +889,30 @@ public class StageMode extends AppCompatActivity implements
     }
 
     private void getBluetoothName() {
-        try {
-            if (FullscreenActivity.mBluetoothAdapter == null) {
-                FullscreenActivity.mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-            }
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.BLUETOOTH_CONNECT}, 488);
-                    return;
+        // Only do this if we have the correct permissions
+        if (hasNearbyPermissions()) {
+            try {
+                if (FullscreenActivity.mBluetoothAdapter == null) {
+                    FullscreenActivity.mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+                }
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
+                        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.BLUETOOTH_CONNECT}, 488);
+                        return;
+                    } else {
+                        FullscreenActivity.mBluetoothName = FullscreenActivity.mBluetoothAdapter.getName();
+                    }
                 } else {
                     FullscreenActivity.mBluetoothName = FullscreenActivity.mBluetoothAdapter.getName();
                 }
-            } else {
-                FullscreenActivity.mBluetoothName = FullscreenActivity.mBluetoothAdapter.getName();
-            }
-            if (FullscreenActivity.mBluetoothName == null){
+                if (FullscreenActivity.mBluetoothName == null) {
+                    FullscreenActivity.mBluetoothName = "Unknown";
+                }
+            } catch (Exception e) {
                 FullscreenActivity.mBluetoothName = "Unknown";
             }
-        } catch (Exception e) {
-            FullscreenActivity.mBluetoothName = "Unknown";
         }
     }
-
 
     // Window decoration
     @Override
@@ -1245,6 +1248,11 @@ public class StageMode extends AppCompatActivity implements
     @Override
     public void doSendPayloadBytes(String infoPayload) {
         nearbyConnections.doSendPayloadBytes(infoPayload);
+    }
+
+    @Override
+    public String getUserNickname() {
+        return nearbyConnections.getUserNickname();
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -5742,38 +5750,43 @@ public class StageMode extends AppCompatActivity implements
         }
     }
 
-    @Override
-    public boolean requestNearbyPermissions() {
-        boolean access_fine_location = checkThisPermission(Manifest.permission.ACCESS_FINE_LOCATION, getString(R.string.location_rationale), 404);
-        boolean bluetooth_scan = true;
-        boolean bluetooth_advertise = true;
-        boolean bluetooth_connect = true;
+    private void defineNearbyPermissions() {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
-            bluetooth_scan = checkThisPermission(Manifest.permission.BLUETOOTH_SCAN, getString(R.string.location_rationale),404);
-            bluetooth_advertise = checkThisPermission(Manifest.permission.BLUETOOTH_ADVERTISE, getString(R.string.location_rationale),404);
-            bluetooth_connect = checkThisPermission(Manifest.permission.BLUETOOTH_CONNECT, getString(R.string.location_rationale),404);
+            nearbyPermissionsString = new String[]{Manifest.permission.BLUETOOTH_SCAN,
+                    Manifest.permission.BLUETOOTH_CONNECT, Manifest.permission.BLUETOOTH_ADVERTISE};
+        } else if (Build.VERSION.SDK_INT<Build.VERSION_CODES.Q){
+            nearbyPermissionsString = new String[]{Manifest.permission.ACCESS_COARSE_LOCATION};
+        } else {
+            nearbyPermissionsString = new String[]{Manifest.permission.ACCESS_FINE_LOCATION};
         }
-        return access_fine_location && bluetooth_scan && bluetooth_advertise && bluetooth_connect;
     }
 
-    private boolean checkThisPermission(String permission, String rationale, int requestCode) {
-        if (ActivityCompat.checkSelfPermission(this, permission)==PackageManager.PERMISSION_GRANTED) {
-            return true;
-        } else if (ActivityCompat.shouldShowRequestPermissionRationale(this, permission)){
-            try {
-                make(findViewById(R.id.mypage), rationale,
-                        LENGTH_INDEFINITE).setAction(R.string.ok, view -> ActivityCompat.requestPermissions(this,
-                        new String[]{permission}, requestCode)).show();
-                return false;
-            } catch (Exception e) {
-                e.printStackTrace();
-                return false;
+    private boolean hasNearbyPermissions() {
+        boolean granted = true;
+        for (String permission:nearbyPermissionsString) {
+            if (ActivityCompat.checkSelfPermission(this,
+                    permission) != PackageManager.PERMISSION_GRANTED) {
+                granted = false;
+                Log.d("StageMode",permission+" not allowed");
+            } else {
+                Log.d("StageMode",permission+" is allowed");
             }
-        } else {
-            ActivityCompat.requestPermissions(this,new String[] {permission},requestCode);
-            return false;
         }
+        return granted;
     }
+
+    @Override
+    public boolean requestNearbyPermissions() {
+        // Determine if there is an issue with any of the preferences
+        boolean granted = hasNearbyPermissions();
+
+        // If permission isn't granted - ask
+        if (!granted) {
+            ActivityCompat.requestPermissions(this,nearbyPermissionsString,404);
+        }
+        return granted;
+    }
+
     @SuppressLint("StaticFieldLeak")
     @SuppressWarnings("deprecation")
     private class ShareSet extends AsyncTask<Object, Void, String> {

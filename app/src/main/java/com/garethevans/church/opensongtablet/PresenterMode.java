@@ -1,8 +1,5 @@
 package com.garethevans.church.opensongtablet;
 
-import static com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_INDEFINITE;
-import static com.google.android.material.snackbar.Snackbar.make;
-
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -157,6 +154,9 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     private MediaRouteSelector mMediaRouteSelector;
     private final MyMediaRouterCallback mMediaRouterCallback = new MyMediaRouterCallback();
     private CastDevice mSelectedDevice;
+
+    // Nearby
+    private String[] nearbyPermissionsString;
 
     // The toolbar and menu
     private Toolbar ab_toolbar;
@@ -411,7 +411,8 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
             // IV - refreshAll call later will perform setupButtons, prepareOptionsMenu and setupSongButtons
 
-            // Set up the Wifi service
+            // Set up the Nearby connection service
+            defineNearbyPermissions();
             getBluetoothName();
             nearbyConnections.getUserNickname();
 
@@ -2421,6 +2422,43 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
     // Nearby
     // These are dealt with in NearbyConnections.  Pulled in from interface to listen from optionmenulistener
+    private void defineNearbyPermissions() {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+            nearbyPermissionsString = new String[]{Manifest.permission.BLUETOOTH_SCAN,
+                    Manifest.permission.BLUETOOTH_CONNECT, Manifest.permission.BLUETOOTH_ADVERTISE};
+        } else if (Build.VERSION.SDK_INT<Build.VERSION_CODES.Q){
+            nearbyPermissionsString = new String[]{Manifest.permission.ACCESS_COARSE_LOCATION};
+        } else {
+            nearbyPermissionsString = new String[]{Manifest.permission.ACCESS_FINE_LOCATION};
+        }
+    }
+
+    private boolean hasNearbyPermissions() {
+        boolean granted = true;
+        for (String permission:nearbyPermissionsString) {
+            if (ActivityCompat.checkSelfPermission(this,
+                    permission) != PackageManager.PERMISSION_GRANTED) {
+                granted = false;
+                Log.d("StageMode",permission+" not allowed");
+            } else {
+                Log.d("StageMode",permission+" is allowed");
+            }
+        }
+        return granted;
+    }
+
+    @Override
+    public boolean requestNearbyPermissions() {
+        // Determine if there is an issue with any of the preferences
+        boolean granted = hasNearbyPermissions();
+
+        // If permission isn't granted - ask
+        if (!granted) {
+            ActivityCompat.requestPermissions(this,nearbyPermissionsString,404);
+        }
+        return granted;
+    }
+
     @Override
     public void startDiscovery() {
         nearbyConnections.startDiscovery();
@@ -2444,6 +2482,11 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     @Override
     public void doSendPayloadBytes(String infoPayload) {
         nearbyConnections.doSendPayloadBytes(infoPayload);
+    }
+
+    @Override
+    public String getUserNickname() {
+        return nearbyConnections.getUserNickname();
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -3439,28 +3482,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         projectButton_isSelected = false;
         logoButton_isSelected = false;
         blankButton_isSelected = false;
-    }
-
-    // Google Nearby
-    @Override
-    public boolean requestNearbyPermissions() {
-        Log.d(TAG, "Requesting nearby permissions");
-        if (ActivityCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION)==PackageManager.PERMISSION_GRANTED) {
-            return true;
-        } else if (ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.ACCESS_FINE_LOCATION)){
-            try {
-                make(findViewById(R.id.mypage), R.string.location_rationale,
-                        LENGTH_INDEFINITE).setAction(R.string.ok, view -> ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 404)).show();
-                return false;
-            } catch (Exception e) {
-                e.printStackTrace();
-                return false;
-            }
-        } else {
-            ActivityCompat.requestPermissions(this,new String[] {Manifest.permission.ACCESS_FINE_LOCATION},404);
-            return false;
-        }
     }
 
     @Override

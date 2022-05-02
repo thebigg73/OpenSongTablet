@@ -1747,6 +1747,8 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
         LinearLayout hostOptions = v.findViewById(R.id.hostOptions);
         LinearLayout clientOptions = v.findViewById(R.id.clientOptions);
 
+        nearbyInterface.getUserNickname();
+
         deviceName.setText(StaticVariables.deviceName);
         if (StaticVariables.connectionLog==null || StaticVariables.connectionLog.isEmpty()) {
             StaticVariables.connectionLog = c.getResources().getString(R.string.connections_log) + "\n\n";
@@ -1915,6 +1917,7 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
         });
 
         if (!mListener.requestNearbyPermissions()) {
+            Log.d("OptionMenuListener","request Nearby permission");
             StaticVariables.whichOptionMenu = "MAIN";
             mListener.closeMyDrawers("option");
         }

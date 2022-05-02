@@ -12,4 +12,6 @@ interface NearbyInterface {
     void turnOffNearby();
 
     void doSendPayloadBytes(String infoPayload);
+
+    String getUserNickname();
 }
