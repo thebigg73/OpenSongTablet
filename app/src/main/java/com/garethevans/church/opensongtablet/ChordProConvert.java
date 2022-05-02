@@ -73,8 +73,6 @@ class ChordProConvert {
         // Get a unique uri for the new song
         Uri newUri = getNewSongUri(c, storageAccess, preferences, songSubFolder, newSongFileName);
 
-        Log.d("ChordProConvert","newUri="+newUri);
-
         // Now write the modified song
         writeTheImprovedSong(c, storageAccess, preferences, oldSongFileName, newSongFileName,
                 songSubFolder, newUri, uri);
@@ -1013,6 +1011,11 @@ class ChordProConvert {
                     newlyrics.append("{c:").append(thisLine.replaceFirst(";","")).append("}");
                     break;
 
+                case "tab":
+                case "guitar_tab":
+                    newlyrics.append("{sot}\n").append(thisLine.replaceFirst(";","")).append("\n{eot}");
+                    break;
+
                 case "heading":
                     // If this is a chorus, deal with it appropriately
                     // Add the heading as a comment with hash
@@ -1045,6 +1048,7 @@ class ChordProConvert {
             }
             newlyrics.append("\n");
         }
+
         // We end any active chorus processing at the end of the song
         if (dealingwithchorus) {
             newlyrics.append("{eoc}");
@@ -1064,6 +1068,11 @@ class ChordProConvert {
 
         //IV - Reset any chord repeat bar lines
         newlyrics = new StringBuilder(newlyrics.toString().replace("··>","||:").replace("<··", ":||"));
+
+        // If we have tab, get rid of end/start tags inbetween concurrent lines
+        if (newlyrics.toString().contains("\n{eot}\n{sot}")) {
+            newlyrics = new StringBuilder(newlyrics.toString().replace("\n{eot}\n{sot}",""));
+        }
 
         return newlyrics.toString();
     }
@@ -1086,6 +1095,30 @@ class ChordProConvert {
         // The app will convert it into OpenSong before saving.
         StringBuilder newlyrics = new StringBuilder();
 
+        // Extract tabs
+        if ((lyrics.contains("{sot") || lyrics.contains("{start_of_tab")) &&
+                (lyrics.contains("{eot") || lyrics.contains("{end_of_tab}"))) {
+            // Go through the lines and between these positions, add comments
+            String[] line = lyrics.split("\n");
+            boolean addComment = false;
+            StringBuilder tempLyrics = new StringBuilder();
+            for (String l:line) {
+                if (l.contains("{sot") || l.contains("{start_of_tab")) {
+                    addComment = true;
+                    l = null;
+                } else if (l.contains("{eot") || l.contains("{end_of_tab")) {
+                    addComment = false;
+                    l = null;
+                }
+                if (l!=null && addComment) {
+                    tempLyrics.append(";").append(l).append("\n");
+                } else if (l!=null) {
+                    tempLyrics.append(l).append("\n");
+                }
+            }
+            lyrics = tempLyrics.toString();
+        }
+
         // Split the lyrics into separate lines
         String[] line = lyrics.split("\n");
         int numlines = line.length;
@@ -1104,6 +1137,7 @@ class ChordProConvert {
 
                 // IV - Treat start of chorus as a comment - allows song autofix to fix when it fixes comments
                 line[x] = line[x].replace("{start_of_chorus}", ";Chorus");
+                line[x] = line[x].replace("{soc}",";Chorus");
 
                 // IV - For unprocessed lines add a leading space - a fix for mis-aligned lyric only lines
                 if (line[x].length() > 0) {
