@@ -372,11 +372,6 @@ public class SetStorageLocationFragment extends Fragment {
             // Permission has been granted, so set the storage location
             showStorageLocation();
 
-        } else if (shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-            // Permission hasn't been allowed and we are due to explain why
-            showStorageRationale();
-            requestStorage();
-
         } else {
             // Storage permission has not been granted.  Launch the request to allow it
             requestStorage();
@@ -385,15 +380,6 @@ public class SetStorageLocationFragment extends Fragment {
     private boolean isStorageGranted() {
         return ContextCompat.checkSelfPermission(requireActivity(),
                 Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
-    }
-    private void showStorageRationale() {
-        try {
-            Snackbar.make(myView.mainpage, R.string.storage_rationale,
-                    LENGTH_INDEFINITE).setAction(android.R.string.ok, view -> storagePermission.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)).show();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     // Checks for the storage being okay to proceed
