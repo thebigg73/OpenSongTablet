@@ -1663,7 +1663,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void loadSongFromSet(int position) {
-        if (position>=currentSet.getIndexSongInSet()) {
+        if (position >= currentSet.getIndexSongInSet()) {
             displayPrevNext.setSwipeDirection("R2L");
         } else {
             displayPrevNext.setSwipeDirection("L2R");
@@ -1673,79 +1673,86 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         String setFolder = currentSet.getFolder(position);
         String setFilename = currentSet.getFilename(position);
         String songKey;
+
+        Log.d(TAG,"position="+position+"  setFolder="+setFolder+"  setFilename="+setFilename+"  setKey="+setKey);
+
         // Update the index in the set
         currentSet.setIndexSongInSet(position);
 
         // Get the song key (from the database)
-        if (storageAccess.isSpecificFileExtension("imageorpdf",currentSet.getFilename(position))) {
-            songKey = nonOpenSongSQLiteHelper.getKey(setFolder,setFilename);
+        if (storageAccess.isSpecificFileExtension("imageorpdf", currentSet.getFilename(position))) {
+            songKey = nonOpenSongSQLiteHelper.getKey(setFolder, setFilename);
         } else {
             if (setFolder.contains("**") || setFolder.contains("../")) {
                 Song quickSong = new Song();
                 quickSong.setFolder(setFolder);
                 quickSong.setFilename(setFilename);
-                quickSong = loadSong.doLoadSongFile(quickSong,false);
+                quickSong = loadSong.doLoadSongFile(quickSong, false);
                 songKey = quickSong.getKey();
             } else {
                 songKey = sqLiteHelper.getKey(setFolder, setFilename);
             }
         }
-        if (setKey != null && songKey != null && !setKey.isEmpty() && !songKey.isEmpty() && !songKey.equals(setKey)) {
-            // The set has specified a key that is different from our song.
+        if (setKey != null && songKey != null &&
+                !setKey.isEmpty() && !songKey.isEmpty() && !setKey.equals(songKey)) {
+            // The set has specified a key that is different from our song
             // We will use a variation of the current song
-            String newFolder = "**"+getString(R.string.variation);
+            String newFolder;
             String newFilename;
-            if (setFolder.contains("**")) {
-                // If we were already in a variation
-                newFilename = setFilename+"_"+setKey;
-            } else {
+            if (!setFolder.contains("**")) {
+                // Not a variation already, so we'll make it one with the set key
+                newFolder = "**" + getString(R.string.variation);
                 newFilename = setFolder + "_" + setFilename + "_" + setKey;
+            } else {
+                // Already a variation, don't change the file name
+                newFolder = setFolder;
+                newFilename = setFilename;
             }
 
-            Uri variationUri = storageAccess.getUriForItem("Variations","",newFilename);
+            Uri variationUri = storageAccess.getUriForItem("Variations", "", newFilename);
 
+            // Get a tempSong we can write
+            Song copySong = new Song();
+            if (setFolder.contains("**") || setFolder.contains("../")) {
+                // Already a variation (or other), so don't use the database
+                copySong.setFilename(setFilename);
+                copySong.setFolder(setFolder);
+                copySong = loadSong.doLoadSongFile(copySong, false);
+            } else {
+                // Just a song, so use the database
+                copySong = sqLiteHelper.getSpecificSong(setFolder, setFilename);
+            }
+            copySong.setFolder(newFolder);
+            copySong.setFilename(newFilename);
+
+            // Transpose the lyrics
+            // Get the number of transpose times
+            int transposeTimes = transpose.getTransposeTimes(songKey, setKey);
+            copySong.setKey(songKey); // This will be transposed in the following...
+            copySong.setLyrics(transpose.doTranspose(copySong,
+                    "+1", transposeTimes, copySong.getDetectedChordFormat(),
+                    copySong.getDesiredChordFormat()).getLyrics());
+            // Get the song XML
+            String songXML = processSong.getXML(copySong);
             // If the file already exists, remove it as we might have edited the original
+            storageAccess.lollipopCreateFileForOutputStream(true,
+                    variationUri, null, "Variations", "", newFilename);
 
-                // Make this temp variation file
-                storageAccess.lollipopCreateFileForOutputStream(true,
-                        variationUri,null,"Variations","",newFilename);
-                // Get a tempSong we can write
-                Song copySong = new Song();
-                if (setFolder.contains("**") || setFolder.contains("../")) {
-                    // Already a variation (or other), so don't use the database
-                    copySong.setFilename(setFilename);
-                    copySong.setFolder(setFolder);
-                    copySong = loadSong.doLoadSongFile(copySong,false);
-                } else {
-                    // Just a song, so use the database
-                    copySong = sqLiteHelper.getSpecificSong(setFolder, setFilename);
-                }
-                copySong.setFolder(newFolder);
-                copySong.setFilename(newFilename);
-                // Transpose the lyrics
-                // Get the number of transpose times
-                int transposeTimes = transpose.getTransposeTimes(songKey,setKey);
-                copySong.setKey(songKey); // This will be transposed in the following...
-                copySong.setLyrics(transpose.doTranspose(copySong,
-                        "+1",transposeTimes,copySong.getDetectedChordFormat(),
-                        copySong.getDesiredChordFormat()).getLyrics());
-                // Get the song XML
-                String songXML = processSong.getXML(copySong);
-                // Save the song
-                storageAccess.doStringWriteToFile("Variations","",newFilename,songXML);
+            // Save the song
+            storageAccess.doStringWriteToFile("Variations", "", newFilename, songXML);
 
             setFolder = newFolder;
             setFilename = newFilename;
         }
         // If the set menu is open/exists, try to scroll to this item
-        if (setMenuFragment!=null) {
+        if (setMenuFragment != null) {
             try {
                 setMenuFragment.scrollToItem();
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        doSongLoad(setFolder,setFilename,true);
+        doSongLoad(setFolder, setFilename, true);
     }
 
     @Override

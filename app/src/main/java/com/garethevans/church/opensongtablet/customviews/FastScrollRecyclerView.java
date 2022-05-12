@@ -13,6 +13,7 @@ import com.garethevans.church.opensongtablet.R;
 public class FastScrollRecyclerView extends RecyclerView {
 
     private FastScroller fastScroller;
+    private final String TAG = "FastScrollRecyclerView";
 
     public FastScrollRecyclerView(@NonNull Context context) {
         super(context);
@@ -106,4 +107,6 @@ public class FastScrollRecyclerView extends RecyclerView {
         fastScroller = new FastScroller(context, attrs);
         fastScroller.setId(R.id.fast_scroller);
     }
+
+
 }

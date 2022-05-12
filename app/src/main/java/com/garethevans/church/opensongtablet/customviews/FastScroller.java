@@ -106,7 +106,6 @@ public class FastScroller extends LinearLayout {
         @Override
         public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
             super.onScrollStateChanged(recyclerView, newState);
-
             if (isEnabled()) {
                 switch (newState) {
                     case RecyclerView.SCROLL_STATE_DRAGGING:
@@ -196,10 +195,8 @@ public class FastScroller extends LinearLayout {
                 if (fastScrollListener != null) {
                     fastScrollListener.onFastScrollStop(this);
                 }
-
                 return true;
         }
-
         return super.onTouchEvent(event);
     }
 

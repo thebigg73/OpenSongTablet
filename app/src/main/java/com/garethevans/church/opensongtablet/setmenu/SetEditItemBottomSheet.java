@@ -207,6 +207,10 @@ public class SetEditItemBottomSheet extends BottomSheetDialogFragment {
             if (newFolder.startsWith("**")) {
                 newFolder = getString(R.string.mainfoldername);
             }
+            // Fix the item in the set
+            String filename = mainActivityInterface.getCurrentSet().getFilename(setPosition);
+            String key = mainActivityInterface.getCurrentSet().getKey(setPosition);
+            mainActivityInterface.getSetActions().adjustItemInSet(setPosition,newFolder,filename,key);
         }
 
         // Change the dropdown to match.  This also triggers a change in the card here
@@ -265,6 +269,12 @@ public class SetEditItemBottomSheet extends BottomSheetDialogFragment {
 
                 // Update the cardview in the setList behind.  Pass position as string in array
                 updateCurrentSetView();
+
+                // Fix the item in the set
+                String folder = mainActivityInterface.getCurrentSet().getFolder(setPosition);
+                String filename = mainActivityInterface.getCurrentSet().getFilename(setPosition);
+                String key = mainActivityInterface.getCurrentSet().getKey(setPosition);
+                mainActivityInterface.getSetActions().adjustItemInSet(setPosition,folder,filename,key);
             }
         }
     }

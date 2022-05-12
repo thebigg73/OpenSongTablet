@@ -3,7 +3,6 @@ package com.garethevans.church.opensongtablet;
 public class __TODO__ {
 
     // BUGS FROM LIVE TEST
-    // Last item in set list (or song list) doesn't swipe backwards to previous
     // Variations in sets not working properly
     // I think that ' are stripped from the variation filename
     // Updating variation to song with preferred key didn't seem to update the set list (saved)
@@ -12,6 +11,9 @@ public class __TODO__ {
     // Not checked how variations work when using Nearby on receiving device
 
     // Still to implement pedal previous next confirm
+
+    // Crash when fast scrolling to bottom of song list sometimes indexexception (I think when it gets updated after indexing)
+
 
     // Presenter mode - almost everything!!
 

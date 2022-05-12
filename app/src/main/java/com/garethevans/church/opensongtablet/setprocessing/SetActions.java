@@ -210,9 +210,13 @@ public class SetActions {
         noKeySong.setFilename(thisSong.getFilename());
         noKeySong.setKey("");
         String searchTextNoKeySpecified = getSongForSetWork(noKeySong);
-
+        Log.d(TAG,"Trying to search set for: "+searchText+ " or "+searchTextNoKeySpecified);
         int position = mainActivityInterface.getCurrentSet().getSetItems().lastIndexOf(searchText);
         int positionNoKey = mainActivityInterface.getCurrentSet().getSetItems().lastIndexOf(searchTextNoKeySpecified);
+        for (String setitem:mainActivityInterface.getCurrentSet().getSetItems()) {
+            Log.d(TAG,"set item: "+setitem);
+        }
+        Log.d(TAG,"found position: "+position+ " positionNoKey: "+positionNoKey);
 
         // If we have a current set index position and it matches this song, use the existing position
         int currentSetPosition = mainActivityInterface.getCurrentSet().getIndexSongInSet();
@@ -447,11 +451,7 @@ public class SetActions {
         String variationFolder = niceCustomLocationFromFolder(folderVariations);
 
         // Fix the item in the set
-        mainActivityInterface.getCurrentSet().setItem(position,
-                getSongForSetWork(variationFolder, filename, key));
-        mainActivityInterface.getCurrentSet().setFolder(position, variationFolder);
-        mainActivityInterface.getCurrentSet().setFilename(position, filename);
-        mainActivityInterface.getCurrentSet().setCurrentSetString(getSetAsPreferenceString());
+        adjustItemInSet(position,variationFolder,filename,key);
 
         // Get the uri of the original file (if it exists)
         // We receive a song object as it isn't necessarily the one loaded to MainActivity
@@ -467,14 +467,24 @@ public class SetActions {
 
         Uri uriVariation = mainActivityInterface.getStorageAccess().getUriForItem(folderVariations, "", filename);
 
-        // Make sure there is a file to write the output to (remove any existing first)
-        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, uriVariation, null, folderVariations, "", filename);
+        // As long as the original and target uris are different, do the copy
+        if (!uriOriginal.equals(uriVariation)) {
+            // Make sure there is a file to write the output to (remove any existing first)
+            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, uriVariation, null, folderVariations, "", filename);
 
-        // Get an input/output stream reference and copy (streams are closed in copyFile())
-        InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(uriOriginal);
-        OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(uriVariation);
-        boolean success = mainActivityInterface.getStorageAccess().copyFile(inputStream, outputStream);
-        Log.d(TAG,"file copied from "+uriOriginal+" to "+uriVariation);
+            // Get an input/output stream reference and copy (streams are closed in copyFile())
+            InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(uriOriginal);
+            OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(uriVariation);
+            boolean success = mainActivityInterface.getStorageAccess().copyFile(inputStream, outputStream);
+            Log.d(TAG, "file copied from " + uriOriginal + " to " + uriVariation);
+        }
+    }
+
+    public void adjustItemInSet(int position, String folder, String filename, String key) {
+        mainActivityInterface.getCurrentSet().setItem(position, getSongForSetWork(folder,filename,key));
+        mainActivityInterface.getCurrentSet().setFolder(position, folder);
+        mainActivityInterface.getCurrentSet().setFilename(position, filename);
+        mainActivityInterface.getCurrentSet().setCurrentSetString(mainActivityInterface.getSetActions().getSetAsPreferenceString());
     }
 
     public int getItemIcon(String valueToDecideFrom) {
