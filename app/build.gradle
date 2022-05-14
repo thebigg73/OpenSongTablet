@@ -59,6 +59,7 @@ android {
             }
         }
     }
+    namespace 'com.garethevans.church.opensongtablet'
 }
 
 dependencies {
