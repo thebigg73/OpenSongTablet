@@ -2626,9 +2626,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         super.onDestroy();
         // Turn off nearby
         nearbyConnections.turnOffNearby();
-        if (appActionBar!=null) {
-            appActionBar.stopTimers();
-        }
         // Stop battery service and timers
         if (batteryStatus!=null) {
             batteryStatus.stopTimers();

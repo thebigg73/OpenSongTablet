@@ -6,6 +6,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextClock;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -17,8 +18,11 @@ public class SongProjectionInfo extends LinearLayout {
 
     private final LinearLayout castSongInfo;
     private final TextView songTitle, songAuthor, songCopyright, songCCLI;
+    private final TextClock textClock;
     private final ImageView miniLogo;
     private int viewHeight = 0;
+    private boolean smallText;
+    private float clockTextSize;
 
     public SongProjectionInfo(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -31,6 +35,7 @@ public class SongProjectionInfo extends LinearLayout {
         songCopyright = findViewById(R.id.songCopyright);
         songCCLI = findViewById(R.id.songCCLI);
         miniLogo = findViewById(R.id.miniLogo);
+        textClock = findViewById(R.id.textClock);
 
         castSongInfo.setId(View.generateViewId());
         contentLayout.setId(View.generateViewId());
@@ -39,6 +44,7 @@ public class SongProjectionInfo extends LinearLayout {
         songCopyright.setId(View.generateViewId());
         songCCLI.setId(View.generateViewId());
         miniLogo.setId(View.generateViewId());
+        textClock.setId(View.generateViewId());
     }
 
     // Adjust the layout depending on what is needed
@@ -87,7 +93,6 @@ public class SongProjectionInfo extends LinearLayout {
         textView.setText(text);
     }
 
-
     private void showMiniLogo(boolean show) {
         if (show) {
             miniLogo.setVisibility(View.VISIBLE);
@@ -100,11 +105,13 @@ public class SongProjectionInfo extends LinearLayout {
         songAuthor.setTypeface(mainActivityInterface.getMyFonts().getPresoInfoFont());
         songCopyright.setTypeface(mainActivityInterface.getMyFonts().getPresoInfoFont());
         songCCLI.setTypeface(mainActivityInterface.getMyFonts().getPresoInfoFont());
+        textClock.setTypeface(mainActivityInterface.getMyFonts().getPresoInfoFont());
 
         songTitle.setTextColor(mainActivityInterface.getMyThemeColors().getPresoInfoFontColor());
         songAuthor.setTextColor(mainActivityInterface.getMyThemeColors().getPresoInfoFontColor());
         songCopyright.setTextColor(mainActivityInterface.getMyThemeColors().getPresoInfoFontColor());
         songCCLI.setTextColor(mainActivityInterface.getMyThemeColors().getPresoInfoFontColor());
+        textClock.setTextColor(mainActivityInterface.getMyThemeColors().getPresoInfoFontColor());
     }
 
     public String getSongTitle() {
@@ -120,6 +127,7 @@ public class SongProjectionInfo extends LinearLayout {
         songAuthor.setGravity(align);
         songCopyright.setGravity(align);
         songCCLI.setGravity(align);
+        textClock.setGravity(align);
     }
 
     @Override
@@ -142,16 +150,30 @@ public class SongProjectionInfo extends LinearLayout {
     }
 
     private void smallText(MainActivityInterface mainActivityInterface, boolean smallText) {
+        this.smallText = smallText;
+
         if (smallText) {
             songTitle.setTextSize(14f);
             songAuthor.setTextSize(12f);
             songCopyright.setTextSize(12f);
             songCCLI.setTextSize(12f);
+            clockTextSize = 12f;
         } else {
             songTitle.setTextSize(mainActivityInterface.getPresenterSettings().getPresoTitleTextSize());
             songAuthor.setTextSize(mainActivityInterface.getPresenterSettings().getPresoAuthorTextSize());
             songCopyright.setTextSize(mainActivityInterface.getPresenterSettings().getPresoCopyrightTextSize());
             songCCLI.setTextSize(mainActivityInterface.getPresenterSettings().getPresoCopyrightTextSize());
+            clockTextSize = mainActivityInterface.getPresenterSettings().getPresoClockSize();
         }
+
+        // Now update the clock settings
+        updateClockSettings(mainActivityInterface);
+    }
+
+    public void updateClockSettings(MainActivityInterface mainActivityInterface) {
+        mainActivityInterface.getTimeTools().setFormat(textClock,clockTextSize,
+                mainActivityInterface.getPresenterSettings().getPresoShowClock(),
+                mainActivityInterface.getPresenterSettings().getPresoClock24h(),
+                mainActivityInterface.getPresenterSettings().getPresoClockSeconds());
     }
 }

@@ -40,7 +40,7 @@
                 android:valueFrom="6"
                 android:valueTo="22"
                 app:stepSize="1"
-                android:padding="8dp"/>
+                android:padding="0dp"/>
 
             <com.garethevans.church.opensongtablet.customviews.MaterialSlider
                 android:id="@+id/authorTextSize"
@@ -50,7 +50,7 @@
                 android:valueFrom="6"
                 android:valueTo="22"
                 app:stepSize="1"
-                android:padding="8dp"/>
+                android:padding="0dp"/>
 
             <TableRow style="@style/DividerLine"/>
         </LinearLayout>
@@ -74,7 +74,7 @@
                 android:id="@+id/batteryDialOnOff"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
+                android:layout_margin="0dp"
                 android:text="@string/image" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialSlider
@@ -85,13 +85,13 @@
                 android:valueFrom="1"
                 android:valueTo="8"
                 app:stepSize="1"
-                android:padding="8dp"/>
+                android:padding="0dp"/>
 
             <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/batteryTextOnOff"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
+                android:layout_margin="0dp"
                 android:text="@string/text" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialSlider
@@ -102,7 +102,7 @@
                 android:valueFrom="6"
                 android:valueTo="16"
                 app:stepSize="1"
-                android:padding="8dp"/>
+                android:padding="0dp"/>
 
             <TableRow style="@style/DividerLine"/>
         </LinearLayout>
@@ -125,7 +125,7 @@
                 android:id="@+id/clockTextOnOff"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
+                android:layout_margin="0dp"
                 android:text="@string/text" />
 
             <LinearLayout
@@ -138,18 +138,25 @@
                     android:id="@+id/clock24hrOnOff"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
+                    android:layout_margin="0dp"
                     android:text="@string/time_format" />
 
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/clockSeconds"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="0dp"
+                    android:text="@string/time_seconds" />
+
                 <com.garethevans.church.opensongtablet.customviews.MaterialSlider
-                    android:id="@+id/timeTextSize"
+                    android:id="@+id/clockTextSize"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/size"
                     android:valueFrom="6"
                     android:valueTo="16"
                     app:stepSize="1"
-                    android:padding="8dp"/>
+                    android:padding="0dp"/>
 
             </LinearLayout>
         </LinearLayout>

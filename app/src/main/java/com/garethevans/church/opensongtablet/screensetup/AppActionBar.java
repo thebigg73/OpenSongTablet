@@ -6,6 +6,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextClock;
 import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBar;
@@ -14,11 +15,6 @@ import androidx.appcompat.widget.Toolbar;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.SongDetailsBottomSheet;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class AppActionBar {
 
@@ -33,21 +29,19 @@ public class AppActionBar {
     private final TextView author;
     private final TextView key;
     private final TextView capo;
-    private final TextView clock;
+    private final TextClock clock;
     private final ImageView setIcon;
     private final ImageView webHelp;
     private final Handler delayactionBarHide;
     private final Runnable hideActionBarRunnable;
     private final int autoHideTime = 1200;
     private float clockTextSize;
-    private boolean clock24hFormat, clockOn, hideActionBar;
-    private Timer clockTimer;
-    private TimerTask clockTimerTask;
+    private boolean clock24hFormat, clockOn, hideActionBar, clockSeconds;
 
     private boolean performanceMode;
 
     public AppActionBar(Activity activity, Context c, ActionBar actionBar, Toolbar toolbar, ImageView setIcon, TextView title, TextView author,
-                        TextView key, TextView capo, TextView clock, ImageView webHelp) {
+                        TextView key, TextView capo, TextClock clock, ImageView webHelp) {
         this.activity = activity;
         this.c = c;
         mainActivityInterface = (MainActivityInterface) c;
@@ -68,22 +62,15 @@ public class AppActionBar {
         };
 
         updateActionBarPrefs();
-
-        clockTimerTask = new TimerTask() {
-            @Override
-            public void run() {
-                updateClock();
-            }
-        };
-        clockTimer = new Timer();
-        clockTimer.scheduleAtFixedRate(clockTimerTask,0,10000);
     }
 
     private void updateActionBarPrefs() {
         clockTextSize = mainActivityInterface.getPreferences().getMyPreferenceFloat("clockTextSize",9.0f);
         clock24hFormat = mainActivityInterface.getPreferences().getMyPreferenceBoolean("clock24hFormat",true);
         clockOn = mainActivityInterface.getPreferences().getMyPreferenceBoolean("clockOn",true);
+        clockSeconds = mainActivityInterface.getPreferences().getMyPreferenceBoolean("clockSeconds",false);
         hideActionBar = mainActivityInterface.getPreferences().getMyPreferenceBoolean("hideActionBar",false);
+        updateClock();
     }
 
     public void translateAwayActionBar(boolean moveAway) {
@@ -227,6 +214,11 @@ public class AppActionBar {
                 hideView(clock,!isvisible);
                 break;
             case "clock24hFormat":
+                clock24hFormat = isvisible;
+                updateClock();
+                break;
+            case "clockSeconds":
+                clockSeconds = isvisible;
                 updateClock();
                 break;
             case "clockTextSize":
@@ -338,35 +330,7 @@ public class AppActionBar {
     }
 
     public void updateClock() {
-        Calendar cal = Calendar.getInstance();
-        SimpleDateFormat df;
-        if (clock24hFormat) {
-            df = new SimpleDateFormat("HH:mm", mainActivityInterface.getLocale());
-        } else {
-            df = new SimpleDateFormat("h:mm", mainActivityInterface.getLocale());
-        }
-        String formattedTime = df.format(cal.getTime());
-
-        clock.post(() -> {
-            if (clockOn) {
-                clock.setVisibility(View.VISIBLE);
-            } else {
-                clock.setVisibility(View.GONE);
-            }
-            clock.setTextSize(clockTextSize);
-            clock.setText(formattedTime);
-        });
-    }
-
-    public void stopTimers() {
-        if (clockTimer!=null) {
-            clockTimer.cancel();
-            clockTimer.purge();
-        }
-        clockTimer = null;
-        if (clockTimerTask!=null) {
-            clockTimerTask.cancel();
-        }
-        clockTimerTask = null;
+        mainActivityInterface.getTimeTools().setFormat(clock,clockTextSize,
+                clockOn, clock24hFormat, clockSeconds);
     }
 }

@@ -154,6 +154,7 @@ public class Preferences extends Activity {
     chosenstorage                   String      The uri of the document tree (Storage Access Framework) (def:null)
     clock24hFormat                  boolean     Should the clock be shown in 24hr format (def:true)
     clockOn                         boolean     Should the clock be shown in the action bar (def:true)
+    clockSeconds                    boolean     Should the actionbar clock include seconds (def:false)
     clockTextSize                   float       The size of the clock font (def:9.0f)
     custom1_lyricsBackgroundColor   int         The color for the lyrics background in the custom1 theme
     custom1_lyricsBridgeColor       int         The color for the background for the bridge in the custom1 theme
@@ -401,12 +402,16 @@ public class Preferences extends Activity {
     presoAutoScale                  boolean     Should the presenter window use autoscale for text (def:true)
     presoAutoUpdateProjector        boolean     Should the projector be updated automatically in PresenterMode when something changes (def:true)
     presoBackgroundAlpha            float       The alpha value for the presentation background (def:1.0f)
+    presoClock24h                   boolean     Should the presentation clock be in 24hr format (def:true)
+    presoClockSeconds               boolean     Should the presentation clock include seconds (def:true)
+    presoClockSize                  float       The size of the clock on the presentation window (def:12.0f);
     presoCopyrightTextSize          float       The size of the copyright text in Presentation mode (def:12.0f)
     presoInfoAlign                  int         The align gravity of the info in presentation mode (Gravity.END)
     presoLyricsAlign                int         The align gravity of the lyrics in presentation mode (Gravity.HORIZONTAL_CENTER)
     presoLyricsVAlign               int         The vertical align gravity of the lyrics in presentation mode (Gravity.TOP)
     presoLyricsBold                 boolean     Should the presentation lyrics be displayed in bold (def:false)
     presoShowChords                 boolean     Should chords be shown in the presentation window (def:false)
+    presoShowClock                  boolean     Should a clock be shown on the presentation window (def:false)
     presoTitleTextSize              float       The size of the title text in Presentation mode (def:14.0f)
     presoTransitionTime             int         The time for transitions between items in presenter mode (ms) (def:800)
     presoXMargin                    int         The margin for the X axis on the presentation window (def:0)

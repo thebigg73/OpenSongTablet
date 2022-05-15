@@ -126,14 +126,21 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
         switch (mainActivityInterface.getMode()) {
             case "Performance":
                 myView.backgroundLayout.setVisibility(View.GONE);
+                myView.presoBackgroundAlpha.setVisibility(View.GONE);
+                myView.presoBackgroundDivider.setVisibility(View.GONE);
                 myView.logoLayout.setVisibility(View.GONE);
+                myView.logoSize.setVisibility(View.GONE);
+                myView.logoDivider.setVisibility(View.GONE);
                 myView.contentHorizontalAlign.setVisibility(View.GONE);
                 myView.contentVerticalAlign.setVisibility(View.GONE);
+                myView.infoSizes.setVisibility(View.GONE);
                 myView.blockShadow.setVisibility(View.GONE);
                 myView.blockShadowAlpha.setVisibility(View.GONE);
                 break;
             case "Stage":
                 myView.logoLayout.setVisibility(View.GONE);
+                myView.logoSize.setVisibility(View.GONE);
+                myView.logoDivider.setVisibility(View.GONE);
                 break;
         }
 
@@ -162,6 +169,16 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
 
         myView.infoAlign.setSliderPos(gravityToSliderPosition(mainActivityInterface.getPresenterSettings().getPresoInfoAlign()));
         myView.hideInfoBar.setChecked(mainActivityInterface.getPresenterSettings().getHideInfoBar());
+
+        myView.titleTextSize.setValue(mainActivityInterface.getPresenterSettings().getPresoTitleTextSize());
+        myView.authorTextSize.setValue(mainActivityInterface.getPresenterSettings().getPresoAuthorTextSize());
+        myView.copyrightTextSize.setValue(mainActivityInterface.getPresenterSettings().getPresoCopyrightTextSize());
+
+        myView.clockOn.setChecked(mainActivityInterface.getPresenterSettings().getPresoShowClock());
+        myView.clock24hr.setChecked(mainActivityInterface.getPresenterSettings().getPresoClock24h());
+        myView.clockSeconds.setChecked(mainActivityInterface.getPresenterSettings().getPresoClockSeconds());
+        myView.clockTextSize.setValue(mainActivityInterface.getPresenterSettings().getPresoClockSize());
+        updateClockSettings();
 
         myView.maxFontSize.setValue(mainActivityInterface.getPresenterSettings().getFontSizePresoMax());
         myView.maxFontSize.setHint(((int)mainActivityInterface.getPresenterSettings().getFontSizePresoMax())+"sp");
@@ -214,6 +231,29 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
             displayInterface.updateDisplay("checkSongInfoShowHide");
         });
 
+        myView.titleTextSize.addOnChangeListener(new SliderChangeListener("presoTitleTextSize"));
+        myView.titleTextSize.addOnSliderTouchListener(new SliderTouchListener("presoTitleTextSize"));
+        myView.authorTextSize.addOnChangeListener(new SliderChangeListener("presoAuthorTextSize"));
+        myView.authorTextSize.addOnSliderTouchListener(new SliderTouchListener("presoAuthorTextSize"));
+        myView.copyrightTextSize.addOnChangeListener(new SliderChangeListener("presoCopyrightTextSize"));
+        myView.copyrightTextSize.addOnSliderTouchListener(new SliderTouchListener("presoCopyrightTextSize"));
+
+        myView.clockOn.setOnCheckedChangeListener((compoundButton, b) -> {
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean("presoShowClock",b);
+            mainActivityInterface.getPresenterSettings().setPresoShowClock(b);
+            updateClockSettings();
+        });
+        myView.clock24hr.setOnCheckedChangeListener((compoundButton, b) -> {
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean("presoClock24h",b);
+            mainActivityInterface.getPresenterSettings().setPresoClock24h(b);
+        });
+        myView.clockSeconds.setOnCheckedChangeListener((compoundButton, b) -> {
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean("presoClockSeconds",b);
+            mainActivityInterface.getPresenterSettings().setPresoClockSeconds(b);
+        });
+        myView.clockTextSize.addOnSliderTouchListener(new SliderTouchListener("presoClockSize"));
+        myView.clockTextSize.addOnChangeListener(new SliderChangeListener("presoClockSize"));
+
         myView.maxFontSize.addOnSliderTouchListener(new SliderTouchListener("fontSizePresoMax"));
         myView.maxFontSize.addOnChangeListener(new SliderChangeListener("fontSizePresoMax"));
 
@@ -239,6 +279,15 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
         myView.blockShadowAlpha.addOnChangeListener(new SliderChangeListener("blockShadowAlpha"));
     }
 
+    private void updateClockSettings() {
+        int visibility = View.GONE;
+        if (mainActivityInterface.getPresenterSettings().getPresoShowClock()) {
+            visibility = View.VISIBLE;
+        }
+        myView.clock24hr.setVisibility(visibility);
+        myView.clockSeconds.setVisibility(visibility);
+        myView.clockTextSize.setVisibility(visibility);
+    }
     private float floatToDecPlaces(float floatNum) {
         floatNum = floatNum * (float)Math.pow(10, 2);
         floatNum = Math.round(floatNum);
@@ -348,22 +397,51 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
                 case "presoBackgroundAlpha":
                     // The slider goes from 0 to 100
                     mainActivityInterface.getPreferences().setMyPreferenceFloat(
-                            "presoBackgroundAlpha", slider.getValue()/100f);
+                            prefName, slider.getValue()/100f);
                     mainActivityInterface.getPresenterSettings().setPresoBackgroundAlpha(slider.getValue()/100f);
                     displayInterface.updateDisplay("changeBackground");
                     break;
                 case "fontSizePresoMax":
                     // The slider goes from 10 to 100
                     mainActivityInterface.getPreferences().setMyPreferenceFloat(
-                            "fontSizePresoMax", slider.getValue());
+                            prefName, slider.getValue());
                     mainActivityInterface.getPresenterSettings().setFontSizePresoMax(slider.getValue());
                     displayInterface.updateDisplay("setSongContent");
                     break;
                 case "blockShadowAlpha":
                     // The slider goes from 0 to 100
                     mainActivityInterface.getPreferences().setMyPreferenceFloat(
-                            "blockShadowAlpha", slider.getValue()/100f);
+                            prefName, slider.getValue()/100f);
                     mainActivityInterface.getProcessSong().updateProcessingPreferences();
+                    displayInterface.updateDisplay("setSongContent");
+                    break;
+                case "presoClockSize":
+                    // The slider goes from 6 to 22
+                    mainActivityInterface.getPreferences().setMyPreferenceFloat(
+                            prefName, slider.getValue());
+                    mainActivityInterface.getPresenterSettings().setPresoClockSize(slider.getValue());
+                    displayInterface.updateDisplay("setSongInfo");
+                    break;
+                case "presoTitleTextSize":
+                    // The slider goes from 6 to 22
+                    mainActivityInterface.getPreferences().setMyPreferenceFloat(
+                            prefName,slider.getValue());
+                    mainActivityInterface.getPresenterSettings().setPresoTitleTextSize(slider.getValue());
+                    displayInterface.updateDisplay("setSongInfo");
+                    break;
+                case "presoAuthorTextSize":
+                    // The slider goes from 6 to 22
+                    mainActivityInterface.getPreferences().setMyPreferenceFloat(
+                            prefName,slider.getValue());
+                    mainActivityInterface.getPresenterSettings().setPresoAuthorTextSize(slider.getValue());
+                    displayInterface.updateDisplay("setSongInfo");
+                    break;
+                case "presoCopyrightTextSize":
+                    // The slider goes from 6 to 22
+                    mainActivityInterface.getPreferences().setMyPreferenceFloat(
+                            prefName,slider.getValue());
+                    mainActivityInterface.getPresenterSettings().setPresoCopyrightTextSize(slider.getValue());
+                    displayInterface.updateDisplay("setSongInfo");
                     break;
             }
         }
@@ -436,6 +514,22 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
                 case "blockShadowAlpha":
                     // The slider goes from 0 to 100
                     myView.blockShadowAlpha.setHint(((int)slider.getValue())+"%");
+                    break;
+                case "presoClockSize":
+                    // The slider goes from 6 to 22
+                    myView.clockTextSize.setHint(((int)slider.getValue())+"sp");
+                    break;
+                case "presoTitleTextSize":
+                    // The slider goes from 6 to 22
+                    myView.titleTextSize.setHint(((int)slider.getValue())+"sp");
+                    break;
+                case "presoAuthorTextSize":
+                    // The slider goes from 6 to 22
+                    myView.authorTextSize.setHint(((int)slider.getValue())+"sp");
+                    break;
+                case "presoCopyrightTextSize":
+                    // The slider goes from 6 to 22
+                    myView.copyrightTextSize.setHint(((int)slider.getValue())+"sp");
                     break;
             }
         }

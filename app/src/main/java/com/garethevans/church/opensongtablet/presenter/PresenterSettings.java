@@ -17,13 +17,14 @@ public class PresenterSettings {
     private final Context c;
     private final MainActivityInterface mainActivityInterface;
     private boolean alertOn, logoOn=true, blackscreenOn, blankscreenOn, hideInfoBar, presoShowChords,
-            usePresentationOrder;
+            usePresentationOrder, presoShowClock, presoClock24h, presoClockSeconds;
     private Uri logo, backgroundImage1, backgroundImage2, backgroundVideo1, backgroundVideo2;
     private int backgroundColor, presoTransitionTime, presoXMargin, presoYMargin, presoInfoAlign,
         presoLyricsAlign, presoLyricsVAlign, currentSection=-1;
     private String backgroundToUse, presoAlertText, ccliLicence;
     private float logoSize, castRotation, presoInfoBarAlpha, fontSizePresoMax, presoAlertTextSize,
-            presoBackgroundAlpha, presoTitleTextSize, presoAuthorTextSize, presoCopyrightTextSize;
+            presoBackgroundAlpha, presoTitleTextSize, presoAuthorTextSize, presoCopyrightTextSize,
+            presoClockSize;
     private SongSectionsAdapter songSectionsAdapter;
 
 
@@ -133,6 +134,18 @@ public class PresenterSettings {
     }
     public void setCcliLicence(String ccliLicence) {
         this.ccliLicence = ccliLicence;
+    }
+    public void setPresoShowClock(boolean presoShowClock) {
+        this.presoShowClock = presoShowClock;
+    }
+    public void setPresoClockSize(float presoClockSize) {
+        this.presoClockSize = presoClockSize;
+    }
+    public void setPresoClock24h(boolean presoClock24h) {
+        this.presoClock24h = presoClock24h;
+    }
+    public void setPresoClockSeconds(boolean presoClockSeconds) {
+        this.presoClockSeconds = presoClockSeconds;
     }
 
     // The getters
@@ -250,6 +263,18 @@ public class PresenterSettings {
     public String getCcliLicence () {
         return ccliLicence;
     }
+    public boolean getPresoShowClock() {
+        return presoShowClock;
+    }
+    public float getPresoClockSize() {
+        return presoClockSize;
+    }
+    public boolean getPresoClock24h() {
+        return presoClock24h;
+    }
+    public boolean getPresoClockSeconds() {
+        return presoClockSeconds;
+    }
 
 
     // The helpers for this class
@@ -304,6 +329,10 @@ public class PresenterSettings {
         setPresoAuthorTextSize(mainActivityInterface.getPreferences().getMyPreferenceFloat("presoAuthorTextSize",12f));
         setPresoCopyrightTextSize(mainActivityInterface.getPreferences().getMyPreferenceFloat("presoCopyrightTextSize",12f));
         setCcliLicence(mainActivityInterface.getPreferences().getMyPreferenceString("ccliLicence",""));
+        setPresoShowClock(mainActivityInterface.getPreferences().getMyPreferenceBoolean("presoShowClock",false));
+        setPresoClockSize(mainActivityInterface.getPreferences().getMyPreferenceFloat("presoClockSize",12f));
+        setPresoClock24h(mainActivityInterface.getPreferences().getMyPreferenceBoolean("presoClock24h",true));
+        setPresoClockSeconds(mainActivityInterface.getPreferences().getMyPreferenceBoolean("presoClockSeconds",true));
     }
     public void getAlertPreferences() {
         setPresoAlertText(mainActivityInterface.getPreferences().getMyPreferenceString("presoAlertText",""));
