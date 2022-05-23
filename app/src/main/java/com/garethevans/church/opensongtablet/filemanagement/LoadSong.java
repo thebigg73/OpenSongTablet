@@ -463,6 +463,7 @@ public class LoadSong {
     public void fixSongs() {
         if (songsToFix!=null && songsToFix.size()>0) {
             for (Song thisSong:songsToFix) {
+                Log.d(TAG,"Trying to fix: "+thisSong.getFolder()+"/"+thisSong.getFilename());
                 Uri thisSongUri = mainActivityInterface.getStorageAccess().getUriForItem("Songs",thisSong.getFolder(),thisSong.getFilename());
                 InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(thisSongUri);
                 String content = mainActivityInterface.getStorageAccess().readTextFileToString(inputStream);
