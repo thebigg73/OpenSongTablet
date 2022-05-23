@@ -47,6 +47,7 @@ android {
         maven { url 'https://jitpack.io' }
         jcenter() // This will be removed in MaterialApp as deprecated - deleted in May 2022
     }
+    namespace 'com.garethevans.church.opensongtablet'
 }
 
 dependencies {
@@ -58,7 +59,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.4.1'
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
     implementation 'androidx.cardview:cardview:1.0.0'
-    implementation 'com.google.android.material:material:1.5.0'
+    implementation 'com.google.android.material:material:1.6.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'org.apache.commons:commons-compress:1.21'
