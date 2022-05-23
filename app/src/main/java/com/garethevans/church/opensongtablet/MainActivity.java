@@ -770,6 +770,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         } else {
             navigateToFragment("opensongapp://performance",0);
         }
+        settingsOpen = false;
     }
     @Override
     public boolean onSupportNavigateUp() {
@@ -1007,7 +1008,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         // Otherwise a new title is passed as a string (in a settings menu)
         windowFlags.setWindowFlags();
         appActionBar.setActionBar(what);
-        menuIconVisibility(what == null || getMode().equals("Presenter"));
+        Log.d(TAG,"what="+what+"  settingsOpen="+settingsOpen);
+        menuIconVisibility(what == null || (getMode().equals("Presenter") && !settingsOpen));
         myView.fragmentView.setTop(appActionBar.getActionBarHeight());
     }
     @Override
@@ -1174,9 +1176,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         showHideActionBar();
         if ("Settings".equals(item.toString())) {
             if (settingsOpen) {
+                settingsOpen = false;
                 navHome();
             } else {
                 navigateToFragment("opensongapp://preferences", 0);
+                settingsOpen = true;
             }
         }
         return super.onOptionsItemSelected(item);
@@ -1237,7 +1241,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             menuOpen = true;
         }
     }
-
 
 
     // The song and set menu
