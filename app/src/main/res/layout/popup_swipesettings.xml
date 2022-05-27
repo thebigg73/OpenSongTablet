@@ -30,6 +30,7 @@
 
             <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/gesturesMenuSwipeButton"
+                style="@style/MyTextSwitch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
@@ -38,7 +39,6 @@
                 android:textColor="#ff0"
                 android:textOff="@string/off"
                 android:textOn="@string/on"
-                style="@style/MyTextSwitch"
                 app:showText="true"
                 app:switchTextAppearance="@style/MyInfoText"
                 app:thumbTextPadding="4dp"
@@ -46,16 +46,16 @@
 
             <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/gesturesSongSwipeButton"
+                style="@style/MyTextSwitch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
                 android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
                 android:layout_marginBottom="16dp"
                 android:text="@string/song_swipe_toggle"
                 android:textColor="#ff0"
                 android:textOff="@string/off"
                 android:textOn="@string/on"
-                style="@style/MyTextSwitch"
                 app:showText="true"
                 app:switchTextAppearance="@style/MyInfoText"
                 app:thumbTextPadding="4dp"
@@ -69,66 +69,68 @@
                 android:layout_marginRight="16dp"
                 android:orientation="vertical">
 
-            <TextView
-                style="@style/MyHeadingText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/swipe_distance" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <SeekBar
-                    android:id="@+id/swipedistance_SeekBar"
-                    android:layout_width="0dp"
+                <TextView
+                    style="@style/MyHeadingText"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/apptheme_scrubber_primary_holo"
-                    android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
-                    android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
+                    android:text="@string/swipe_distance" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <SeekBar
+                        android:id="@+id/swipedistance_SeekBar"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/apptheme_scrubber_primary_holo"
+                        android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
+                        android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
+
+                    <TextView
+                        android:id="@+id/swipedistance_TextView"
+                        style="@style/MyInfoText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp" />
+                </LinearLayout>
 
                 <TextView
-                    android:id="@+id/swipedistance_TextView"
-                    style="@style/MyInfoText"
-                    android:layout_width="wrap_content"
+                    style="@style/MyHeadingText"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp" />
-            </LinearLayout>
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="0dp"
+                    android:text="@string/speed" />
 
-            <TextView
-                style="@style/MyHeadingText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="0dp"
-                android:text="@string/speed" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <SeekBar
-                    android:id="@+id/swipespeed_SeekBar"
-                    android:layout_width="0dp"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/apptheme_scrubber_primary_holo"
-                    android:max="8"
-                    android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
-                    android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/swipespeed_TextView"
-                    style="@style/MyInfoText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp" />
-            </LinearLayout>
+                    <SeekBar
+                        android:id="@+id/swipespeed_SeekBar"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/apptheme_scrubber_primary_holo"
+                        android:max="8"
+                        android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
+                        android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
+
+                    <TextView
+                        android:id="@+id/swipespeed_TextView"
+                        style="@style/MyInfoText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp" />
+                </LinearLayout>
 
 
                 <TextView
@@ -140,37 +142,38 @@
                     android:text="@string/swipe_allowance" />
 
                 <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <SeekBar
-                    android:id="@+id/swipeerror_SeekBar"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/apptheme_scrubber_primary_holo"
-                    android:max="8"
-                    android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
-                    android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/swipeerror_TextView"
-                    style="@style/MyInfoText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp" />
-            </LinearLayout>
+                    <SeekBar
+                        android:id="@+id/swipeerror_SeekBar"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/apptheme_scrubber_primary_holo"
+                        android:max="8"
+                        android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
+                        android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
 
-            <ImageView
-                android:id="@+id/swipesimulateion_ImageView"
-                android:layout_gravity="center_horizontal"
-                android:layout_width="250dp"
-                android:layout_height="200dp"
-                android:layout_margin="16dp"
-                android:background="@drawable/rectangle"
-                android:contentDescription="@string/swipe"/>
+                    <TextView
+                        android:id="@+id/swipeerror_TextView"
+                        style="@style/MyInfoText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/swipesimulateion_ImageView"
+                    android:layout_width="250dp"
+                    android:layout_height="200dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="16dp"
+                    android:background="@drawable/rectangle"
+                    android:contentDescription="@string/swipe" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

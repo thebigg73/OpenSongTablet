@@ -495,6 +495,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         super.onResume();
         StaticVariables.activity = PresenterMode.this;
         FullscreenActivity.appRunning = true;
+        FullscreenActivity.needtorefreshsongmenu = true;
         resizeDrawers();
         // Fix the page flags
         windowFlags();
@@ -784,7 +785,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                         song_list_view.setScrollingCacheEnabled(false);
                         preparesongmenu_async = new PresenterMode.PrepareSongMenu();
                         preparesongmenu_async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-                        FullscreenActivity.needtorefreshsongmenu = false;
                     }
                 }
             } catch (Exception e) {
@@ -896,7 +896,12 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
     @Override
     public void songLongClick() {
+        closeMyDrawers("song");
+        // IV - prepareOptionMenu also prepares the set list
         prepareOptionMenu();
+        // IV - Force update the song menu
+        FullscreenActivity.needtorefreshsongmenu = true;
+        prepareSongMenu();
         fixSet();
     }
 
@@ -2993,6 +2998,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         presenter_set_buttonsListView.removeAllViews();
         presenter_song_buttonsListView.removeAllViews();
         presenter_lyrics.setText("");
+        FullscreenActivity.needtorefreshsongmenu = true;
         prepareSongMenu();
         setupPageButtons();
         prepareOptionMenu();
@@ -3579,7 +3585,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                 }
 
                 if (FullscreenActivity.isSong) {
-                    // Detemine formats to be used for capo / transpose
+                    // Determine formats to be used for capo / transpose
                     // Note: If chordformat = 0 (detect) then chordFormatUsePreferred is false
                     try {
                         if (preferences.getMyPreferenceBoolean(PresenterMode.this, "chordFormatUsePreferred", true)) {
@@ -3716,6 +3722,8 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             menuCount_TextView.setVisibility(View.GONE);
             menuFolder_TextView.setText(getString(R.string.wait));
             song_list_view.setAdapter(null);
+            // IV - This is set false when the refresh suceeeds
+            FullscreenActivity.needtorefreshsongmenu = true;
             LinearLayout indexLayout = findViewById(R.id.side_index);
             indexLayout.removeAllViews();
         }
@@ -3805,6 +3813,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                         menuCount_TextView.setText(menusize);
                         menuCount_TextView.setVisibility(View.VISIBLE);
                     }
+                    FullscreenActivity.needtorefreshsongmenu = false;
                 }
             } catch (Exception e) {
                 e.printStackTrace();

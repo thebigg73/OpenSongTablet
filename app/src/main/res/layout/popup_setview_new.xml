@@ -8,19 +8,33 @@
     android:background="@drawable/popup_bg"
     android:padding="8dp">
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/setOptions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:contentDescription="@string/action_settings"
+        android:src="@drawable/ic_menu_white_36dp"
+        app:backgroundTint="@color/toolbar"
+        app:borderWidth="0dp"
+        app:elevation="0dp"
+        app:fabSize="mini" />
+
     <FrameLayout
         android:id="@+id/myTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true">
-    <include layout="@layout/popup_dialogtitletick"/>
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@id/setOptions">
+
+        <include layout="@layout/popup_dialogtitletick" />
     </FrameLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/my_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="2dp"
+        android:padding="4dp"
         android:scrollbars="vertical"
         android:layout_above="@+id/helptext"
         android:layout_below="@+id/myTitle"/>

@@ -97,7 +97,7 @@ public class PopUpMenuSettingsFragment extends DialogFragment {
         showSetTickBoxInSongMenu.setChecked(preferences.getMyPreferenceBoolean(getContext(),"songMenuSetTicksShow",true));
         showAlphabetInSongMenu.setChecked(preferences.getMyPreferenceBoolean(getContext(),"songMenuAlphaIndexShow",true));
         alphabeticalSize_SeekBar.setProgress(textSizeFloatToInt(preferences.getMyPreferenceFloat(getContext(),"songMenuAlphaIndexSize",14.0f)));
-        String s = ((int) preferences.getMyPreferenceFloat(getContext(),"songMenuAlphaIndexSize",14.0f)) + "sp";
+        String s = ((int) preferences.getMyPreferenceFloat(getContext(),"songMenuAlphaIndexSize",14.0f)) + " sp";
         alphabeticalSize_TextView.setText(s);
 
         // Set up the listeners
@@ -105,7 +105,7 @@ public class PopUpMenuSettingsFragment extends DialogFragment {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 i = (i*50) + 150;
-                scale = i + "px";
+                scale = i + " px";
                 scalemenu_TextView.setText(scale);
             }
 
@@ -146,7 +146,7 @@ public class PopUpMenuSettingsFragment extends DialogFragment {
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 // Text size is a float that adds 8 on to this
                 i = i + 8;
-                String s = i + "sp";
+                String s = i + " sp";
                 alphabeticalSize_TextView.setText(s);
             }
 

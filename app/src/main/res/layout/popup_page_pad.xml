@@ -45,8 +45,9 @@
 
             <Spinner
                 android:id="@+id/popupPad_key"
+                style="@style/MySpinner"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1" />
 
             <TextView
@@ -58,8 +59,10 @@
 
             <Spinner
                 android:id="@+id/popupPad_file"
+                style="@style/MySpinner"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
 
             <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/popupPad_loopaudio"

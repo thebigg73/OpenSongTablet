@@ -364,6 +364,10 @@ public class PopUpListSetsFragment extends DialogFragment {
                 overWrite_CheckBox.setVisibility(View.VISIBLE);
                 break;
         }
+        // IV - Reveal 'bits' after having set visibility of individual elements
+        V.findViewById(R.id.topbit).setVisibility(View.VISIBLE);
+        V.findViewById(R.id.middlebit).setVisibility(View.VISIBLE);
+        V.findViewById(R.id.bottombit).setVisibility(View.VISIBLE);
     }
 
     private void hideKeyboard(View v) {
@@ -728,11 +732,6 @@ public class PopUpListSetsFragment extends DialogFragment {
             StaticVariables.mSet = null;
 
             // Now users can load multiple sets and merge them, we need to load each one it turn
-            // We then add the items to a temp string 'allsongsinset'
-            // Once we have loaded them all, we replace the mySet field.
-
-            StringBuilder allsongsinset = new StringBuilder();
-
             // Split the string by "%_%" - last item will be empty as each set added ends with this
             String[] tempsets = StaticVariables.setnamechosen.split("%_%");
 
@@ -744,12 +743,13 @@ public class PopUpListSetsFragment extends DialogFragment {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    allsongsinset.append(preferences.getMyPreferenceString(getContext(), "setCurrent", ""));
                 }
             }
 
-            // Add all the songs of combined sets back to the mySet
-            preferences.setMyPreferenceString(getContext(), "setCurrent", allsongsinset.toString());
+            // IV - If we have combined sets then clear the last set name
+            if (StaticVariables.setnamechosen.contains("%_%")) {
+                preferences.setMyPreferenceString(getContext(), "setCurrentLastName", "");
+            }
 
             // Prepare the set
             setActions.prepareSetList(getContext(), preferences);

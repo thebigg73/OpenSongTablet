@@ -194,8 +194,9 @@ public class PopUpLongSongPressFragment extends DialogFragment {
     }
     @Override
     public void onDismiss(@NonNull final DialogInterface dialog) {
-        // IV - Update the song menu
         if (mListener!=null) {
+            // IV - Force an update of the song menu
+            FullscreenActivity.needtorefreshsongmenu = true;
             mListener.prepareSongMenu();
         }
     }

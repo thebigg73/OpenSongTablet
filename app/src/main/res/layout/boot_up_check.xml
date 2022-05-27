@@ -97,33 +97,6 @@
                     android:text="@string/storage_help"/>
 
                 <LinearLayout
-                    android:id="@+id/MyQuicktip"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:visibility="gone"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:background="#110022">
-
-                <TextView
-                    style="@style/MyInfoText"
-                    android:textColor="@color/yellow"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/storage_quicktip"
-                    android:visibility="visible" />
-
-                    <Button
-                        android:id="@+id/moreinfo"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/help"
-                        android:layout_gravity="center_horizontal"/>
-
-                </LinearLayout>
-
-                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
@@ -163,6 +136,47 @@
                     android:text="@string/storage_warning"
                     android:textColor="#f88"
                     android:visibility="gone"/>
+
+                <LinearLayout
+                    android:id="@+id/MyQuicktip"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="#110022"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <TextView
+                        style="@style/MyInfoText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:text="@string/storage_quicktip"
+                        android:textColor="@color/yellow"
+                        android:visibility="visible" />
+
+                    <Button
+                        android:id="@+id/helponline"
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+                        android:layout_gravity="center_horizontal"
+                        android:drawableStart="@drawable/ic_help_outline_white_36dp"
+                        android:drawablePadding="4dp"
+                        android:text="@string/help"
+                        android:textSize="12sp" />
+
+                    <Button
+                        android:id="@+id/helpforum"
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+                        android:layout_gravity="center_horizontal"
+                        android:drawableStart="@drawable/ic_forum_white_36dp"
+                        android:drawablePadding="4dp"
+                        android:text="@string/forum"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"

@@ -64,7 +64,8 @@ public class BootUpCheck extends AppCompatActivity {
     private Button userGuideButton;
     private Button previousStorageButton;
     private Button resetCacheButton;
-    private Button moreinfo;
+    private Button helpOnline;
+    private Button helpForum;
     private FloatingActionButton quicktip;
     private LinearLayout storageLinearLayout;
     private LinearLayout readUpdate;
@@ -161,7 +162,8 @@ public class BootUpCheck extends AppCompatActivity {
         warningText = findViewById(R.id.warningText);
         progressText = findViewById(R.id.progressText);
         MyQuicktip = findViewById(R.id.MyQuicktip);
-        moreinfo = findViewById(R.id.moreinfo);
+        helpOnline = findViewById(R.id.helponline);
+        helpForum = findViewById(R.id.helpforum);
         goToSongsButton = findViewById(R.id.goToSongsButton);
         chooseStorageButton = findViewById(R.id.chooseStorageButton);
         storageLinearLayout = findViewById(R.id.storageLinearLayout);
@@ -249,8 +251,18 @@ public class BootUpCheck extends AppCompatActivity {
                 MyQuicktip.setVisibility(View.GONE);
             }
         });
-        moreinfo.setOnClickListener(v -> {
+        helpOnline.setOnClickListener(v -> {
             String url = "https://www.opensongapp.com/user-guide/setting-up-and-using-opensongapp/setting-up-opensong-tablet";
+            Intent i = new Intent(Intent.ACTION_VIEW);
+            i.setData(Uri.parse(url));
+            try {
+                startActivity(i);
+            } catch (Exception e) {
+                Log.d("BootUpCheck", "Error showing activity");
+            }
+        });
+        helpForum.setOnClickListener(v -> {
+            String url = "https://groups.google.com/g/opensongapp";
             Intent i = new Intent(Intent.ACTION_VIEW);
             i.setData(Uri.parse(url));
             try {

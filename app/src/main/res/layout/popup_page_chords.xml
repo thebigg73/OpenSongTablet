@@ -50,6 +50,7 @@
                 android:id="@+id/popupchord_instrument"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
+                style="@style/MySpinner"
                 android:layout_weight="1" />
 
             <TableLayout

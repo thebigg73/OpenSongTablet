@@ -663,12 +663,15 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
         });
 
         setSaveButton.setOnClickListener(view -> {
+            // IV - Always close the drawer
+            if (mListener != null) {
+                mListener.closeMyDrawers("option");
+            }
             String lastSetName = preferences.getMyPreferenceString(c,"setCurrentLastName","");
             Uri settosave = storageAccess.getUriForItem(c, preferences, "Sets", "", lastSetName);
             if (lastSetName==null || lastSetName.equals("")) {
                 FullscreenActivity.whattodo = "saveset";
                 if (mListener != null) {
-                    mListener.closeMyDrawers("option");
                     mListener.openFragment();
                 }
             } else if (storageAccess.uriExists(c, settosave)) {
