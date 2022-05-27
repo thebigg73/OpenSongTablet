@@ -3756,11 +3756,15 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
                     for (int i=0; i<songsInFolder.size(); i++) {
                         String foundsongfilename = songsInFolder.get(i).getFilename();
+                        String foundsongtitle = songsInFolder.get(i).getTitle();
                         String foundsongauthor = songsInFolder.get(i).getAuthor();
                         String foundsongkey = songsInFolder.get(i).getKey();
 
                         if (foundsongfilename == null) {
                             foundsongfilename = getString(R.string.error);
+                        }
+                        if (foundsongtitle == null) {
+                            foundsongtitle = foundsongfilename;
                         }
                         if (foundsongauthor == null) {
                             foundsongauthor = "";
@@ -3778,7 +3782,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                         boolean isinset = setcurrent.contains(whattolookfor);
 
                         SongMenuViewItems song = new SongMenuViewItems(foundsongfilename,
-                                foundsongfilename, foundsongauthor, foundsongkey, isinset);
+                                foundsongtitle, foundsongauthor, foundsongkey, isinset);
                         songmenulist.add(song);
                     }
 
