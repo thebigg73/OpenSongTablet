@@ -36,14 +36,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/hide_actionbar"
-                android:layout_margin="15dp" />
+                android:layout_margin="8dp" />
 
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:background="@drawable/section_box">
+                android:layout_margin="8dp">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -127,8 +126,7 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:background="@drawable/section_box">
+                android:layout_margin="8dp">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -221,8 +219,7 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:background="@drawable/section_box">
+                android:layout_margin="8dp">
 
                 <TextView
                     android:layout_width="match_parent"

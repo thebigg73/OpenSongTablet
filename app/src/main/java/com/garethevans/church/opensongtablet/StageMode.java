@@ -606,9 +606,6 @@ public class StageMode extends AppCompatActivity implements
         // Establish a known state for Nearby
         nearbyConnections.turnOffNearby();
 
-        // Add action bar menu long press actions
-        menuButtonLongPressActions();
-
         // IV -  One time actions will have been completed
         FullscreenActivity.doonetimeactions = false;
     }
@@ -1397,6 +1394,19 @@ public class StageMode extends AppCompatActivity implements
         // Fix the page flags
         setWindowFlags();
         setWindowFlagsAdvanced();
+        FullscreenActivity.needtorefreshsongmenu = true;
+        // Add action bar menu long press actions
+        // menuButtonLongPressActions is too quick when resuming
+        // We are not sure when it becomes stable - so keep trying
+        new Handler().postDelayed(() -> {
+            menuButtonLongPressActions();
+        }, 200);
+        new Handler().postDelayed(() -> {
+            menuButtonLongPressActions();
+        }, 400);
+        new Handler().postDelayed(() -> {
+            menuButtonLongPressActions();
+        }, 600);
     }
 
     @Override
@@ -1588,6 +1598,7 @@ public class StageMode extends AppCompatActivity implements
                 presohandler, presoinfohandler, customhandler);
 
         prepareOptionMenu();
+        FullscreenActivity.needtorefreshsongmenu = true;
         prepareSongMenu();
         setupPageButtons();
 
@@ -3815,10 +3826,8 @@ public class StageMode extends AppCompatActivity implements
         @Override
         protected void onPostExecute(String s) {
             showToastMessage(getString(R.string.search_index_end));
-
-            FullscreenActivity.needtorefreshsongmenu = true;
-
             // Update the song menu
+            FullscreenActivity.needtorefreshsongmenu = true;
             prepareSongMenu();
         }
     }
@@ -5292,7 +5301,6 @@ public class StageMode extends AppCompatActivity implements
                         song_list_view.setScrollingCacheEnabled(false);
                         preparesongmenu_async = new PrepareSongMenu();
                         preparesongmenu_async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-                        FullscreenActivity.needtorefreshsongmenu = false;
                     }
                 }
             } catch (Exception e) {
@@ -5427,10 +5435,11 @@ public class StageMode extends AppCompatActivity implements
 
     @Override
     public void songLongClick() {
+        closeMyDrawers("song");
         // IV - prepareOptionMenu also prepares the set list
         prepareOptionMenu();
+        FullscreenActivity.needtorefreshsongmenu = true;
         prepareSongMenu();
-        closeMyDrawers("song");
     }
 
     @Override
@@ -7374,7 +7383,7 @@ public class StageMode extends AppCompatActivity implements
                 FullscreenActivity.foundSongSections_heading = new ArrayList<>();
 
                 if (FullscreenActivity.isSong) {
-                    // Detemine formats to be used for capo / transpose
+                    // Determine formats to be used for capo / transpose
                     // Note: If chordformat = 0 (detect) then chordFormatUsePreferred is false
                     try {
                         if (preferences.getMyPreferenceBoolean(StageMode.this,"chordFormatUsePreferred",true)) {
@@ -7463,7 +7472,7 @@ public class StageMode extends AppCompatActivity implements
                     // Get the current orientation
                     FullscreenActivity.mScreenOrientation = getResources().getConfiguration().orientation;
 
-                    //Determine file type
+                    // Determine file type
                     storageAccess.determineFileTypeByExtension();
 
                     // IV - File does not exist - the loadXML 'not found' song needs to be revealed
@@ -7672,6 +7681,8 @@ public class StageMode extends AppCompatActivity implements
             // IV - Recently fixed to work but disabled as it is too slow!
             //menuFolder_TextView.setText(getString(R.string.wait));
             song_list_view.setAdapter(null);
+            // IV - This is set false when the refresh suceeeds
+            FullscreenActivity.needtorefreshsongmenu = true;
             LinearLayout indexLayout = findViewById(R.id.side_index);
             indexLayout.removeAllViews();
         }
@@ -7780,6 +7791,7 @@ public class StageMode extends AppCompatActivity implements
                         menuCount_TextView.setText(menusize);
                         menuCount_TextView.setVisibility(View.VISIBLE);
                     }
+                    FullscreenActivity.needtorefreshsongmenu = false;
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -8591,7 +8603,7 @@ public class StageMode extends AppCompatActivity implements
 
         @Override
         public void onRouteSelected(@NonNull MediaRouter router, @NonNull MediaRouter.RouteInfo info, int reason) {
-            menuButtonLongPressActions ();
+            menuButtonLongPressActions();
             super.onRouteSelected(router,info,reason);
             mSelectedDevice = CastDevice.getFromBundle(info.getExtras());
             try {
@@ -8603,7 +8615,7 @@ public class StageMode extends AppCompatActivity implements
 
         @Override
         public void onRouteUnselected(MediaRouter router, MediaRouter.RouteInfo info, int reason) {
-            menuButtonLongPressActions ();
+            menuButtonLongPressActions();
             super.onRouteUnselected(router,info,reason);
             teardown();
             mSelectedDevice = null;
@@ -8612,7 +8624,7 @@ public class StageMode extends AppCompatActivity implements
         }
 
         void teardown() {
-            menuButtonLongPressActions ();
+            menuButtonLongPressActions();
             try {
                 CastRemoteDisplayLocalService.stopService();
             } catch (Exception e) {
@@ -8631,22 +8643,22 @@ public class StageMode extends AppCompatActivity implements
 
         @Override
         public void onRouteAdded(MediaRouter mediaRouter, MediaRouter.RouteInfo routeInfo) {
-            menuButtonLongPressActions ();
+            menuButtonLongPressActions();
         }
 
         @Override
         public void onRouteRemoved(MediaRouter mediaRouter, MediaRouter.RouteInfo routeInfo) {
-            menuButtonLongPressActions ();
+            menuButtonLongPressActions();
         }
 
         @Override
         public void onRouteChanged(MediaRouter mediaRouter, MediaRouter.RouteInfo routeInfo) {
-            menuButtonLongPressActions ();
+            menuButtonLongPressActions();
         }
 
         @Override
         public void onRouteVolumeChanged(MediaRouter mediaRouter, MediaRouter.RouteInfo routeInfo) {
-            menuButtonLongPressActions ();
+            menuButtonLongPressActions();
         }
     }
 
@@ -8936,7 +8948,7 @@ public class StageMode extends AppCompatActivity implements
     }
 
     private void menuButtonLongPressActions () {
-        // IV - Also called on Cast state change events as the dynamic icon causes a redraw of the menu without trigger of normal menu change calls!
+        // IV - Called on resume and on Cast state change events as the dynamic icon causes a redraw of the menu without trigger of normal menu change calls!
         new Handler().postDelayed(() -> {
             // IV - Support long press of song icon to enter Transpose
             final View view = findViewById(R.id.action_search);

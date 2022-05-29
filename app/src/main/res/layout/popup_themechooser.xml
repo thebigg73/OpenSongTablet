@@ -34,6 +34,7 @@
                 android:id="@+id/tableRow"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
                 android:layout_weight="1.0"
                 android:gravity="center_vertical"
                 tools:ignore="UselessParent">
@@ -118,6 +119,7 @@
                     android:id="@+id/tableRow14"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
                     android:layout_weight="1.0"
                     android:gravity="center_vertical"
                     android:minHeight="48dp">
@@ -172,6 +174,7 @@
                     android:id="@+id/tableRow15"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
                     android:layout_weight="1.0"
                     android:gravity="center_vertical"
                     android:minHeight="48dp">
@@ -230,6 +233,7 @@
                     android:id="@+id/tableRow16"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
                     android:layout_weight="1.0"
                     android:gravity="center_vertical"
                     android:minHeight="48dp">
@@ -287,6 +291,7 @@
                     android:id="@+id/tableRow17"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
                     android:layout_weight="1.0"
                     android:gravity="center_vertical"
                     android:minHeight="48dp">
@@ -341,6 +346,7 @@
                     android:id="@+id/tableRow18"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
                     android:layout_weight="1.0"
                     android:gravity="center_vertical"
                     android:minHeight="48dp">
@@ -395,6 +401,7 @@
                     android:id="@+id/tableRow19"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
                     android:layout_weight="1.0"
                     android:gravity="center_vertical"
                     android:minHeight="48dp">
@@ -449,6 +456,7 @@
                     android:id="@+id/tableRow20"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
                     android:layout_weight="1.0"
                     android:gravity="center_vertical"
                     android:minHeight="48dp">
@@ -503,6 +511,7 @@
                     android:id="@+id/tableRow21"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
                     android:layout_weight="1.0"
                     android:gravity="center_vertical"
                     android:minHeight="48dp">
@@ -557,6 +566,7 @@
                     android:id="@+id/tableRow22"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
                     android:layout_weight="1.0"
                     android:gravity="center_vertical"
                     android:minHeight="48dp">
@@ -611,6 +621,7 @@
                     android:id="@+id/tableRow23"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
                     android:layout_weight="1.0"
                     android:gravity="center_vertical"
                     android:minHeight="48dp">
@@ -665,6 +676,7 @@
                     android:id="@+id/tableRow24"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
                     android:layout_weight="1.0"
                     android:gravity="center_vertical"
                     android:minHeight="48dp">
@@ -720,6 +732,7 @@
                     android:id="@+id/tableRow24b"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
                     android:layout_weight="1.0"
                     android:gravity="center_vertical"
                     android:minHeight="48dp">
@@ -774,6 +787,7 @@
                     android:id="@+id/tableRow24c"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
                     android:layout_weight="1.0"
                     android:gravity="center_vertical"
                     android:minHeight="48dp">
@@ -827,6 +841,7 @@
                     android:id="@+id/tableRow24d"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
                     android:layout_weight="1.0"
                     android:gravity="center_vertical"
                     android:minHeight="48dp">
@@ -880,6 +895,7 @@
                     android:id="@+id/tableRow24e"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
                     android:layout_weight="1.0"
                     android:gravity="center_vertical"
                     android:minHeight="48dp">
@@ -933,6 +949,7 @@
                     android:id="@+id/tableRow25"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
                     android:layout_weight="1.0"
                     android:gravity="center_vertical"
                     android:minHeight="48dp">
@@ -970,7 +987,7 @@
                         android:layout_width="0dp"
                         android:layout_height="32dp"
                         android:layout_margin="4dp"
-                        android:layout_weight="0.18"
+                        android:layout_weight="0.17"
                         android:background="#444"
                         android:contentDescription="@string/colorchooser" />
 
@@ -988,6 +1005,7 @@
                     android:id="@+id/tableRow26"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
                     android:layout_weight="1.0"
                     android:gravity="center_vertical"
                     android:minHeight="48dp">
@@ -1043,6 +1061,7 @@
                     android:id="@+id/tableRow27"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
                     android:layout_weight="1.0"
                     android:gravity="center_vertical"
                     android:minHeight="48dp">
@@ -1098,6 +1117,7 @@
                     android:id="@+id/tableRow28"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
                     android:layout_weight="1.0"
                     android:gravity="center_vertical"
                     android:minHeight="48dp">
@@ -1153,6 +1173,7 @@
                     android:id="@+id/tableRow29"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
                     android:layout_weight="1.0"
                     android:gravity="center_vertical"
                     android:minHeight="48dp">
@@ -1208,6 +1229,7 @@
                     android:id="@+id/tableRow30"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
                     android:layout_weight="1.0"
                     android:gravity="center_vertical"
                     android:minHeight="48dp">

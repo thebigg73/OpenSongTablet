@@ -28,33 +28,34 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:background="@drawable/section_box"
-            android:color="@android:color/transparent"
-            android:orientation="vertical"
-            android:padding="8dp">
-
-            <androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/stickyBlockInfo"
-                style="@style/MyTextSwitch"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
                 android:layout_margin="8dp"
-                android:checked="false"
-                android:text="@string/songsheet"
-                android:textColor="#ff0"
-                android:textOff="@string/off"
-                android:textOn="@string/on"
-                app:showText="true"
-                app:switchTextAppearance="@style/MyInfoText"
-                app:thumbTextPadding="4dp"
-                app:thumbTint="#444488" />
+                android:background="@drawable/section_box"
+                android:color="@android:color/transparent"
+                android:orientation="vertical"
+                android:padding="8dp">
 
-        </LinearLayout>
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/stickyBlockInfo"
+                    style="@style/MyTextSwitch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="8dp"
+                    android:checked="false"
+                    android:text="@string/songsheet"
+                    android:textColor="#ff0"
+                    android:textOff="@string/off"
+                    android:textOn="@string/on"
+                    app:showText="true"
+                    app:switchTextAppearance="@style/MyInfoText"
+                    app:thumbTextPadding="4dp"
+                    app:thumbTint="#444488" />
+
+            </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -151,25 +152,25 @@
                     android:text="@string/time" />
 
                 <SeekBar
+                    android:id="@+id/stickyNotesTime_SeekBar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/stickyNotesTime_SeekBar"
-                    android:background="@drawable/apptheme_scrubber_primary_holo"
-                    android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
-                    android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright"
                     android:layout_marginLeft="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginRight="8dp"
                     android:layout_marginBottom="16dp"
-                    android:max="20"/>
+                    android:background="@drawable/apptheme_scrubber_primary_holo"
+                    android:max="20"
+                    android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
+                    android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
 
                 <TextView
+                    android:id="@+id/stickyNotesTime_TextView"
+                    style="@style/MyInfoText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/stickyNotesTime_TextView"
                     android:layout_margin="8dp"
-                    android:gravity="center_horizontal"
-                    style="@style/MyInfoText" />
+                    android:gravity="center_horizontal" />
 
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/stickyNotesTopBottom_Switch"
@@ -190,83 +191,86 @@
 
             </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:background="@drawable/section_box"
-            android:color="@android:color/transparent"
-            android:orientation="vertical"
-            android:padding="8dp">
-
-            <androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/filteringSwitch"
-                style="@style/MyTextSwitch"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="8dp"
-                android:checked="false"
-                android:text="@string/filter_section"
-                android:textColor="#ff0"
-                android:textOff="@string/off"
-                android:textOn="@string/on"
-                app:showText="true"
-                app:switchTextAppearance="@style/MyInfoText"
-                app:thumbTextPadding="4dp"
-                app:thumbTint="#444488" />
-
             <LinearLayout
-                android:id="@+id/filteringView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:text="@string/filter_info" />
+                android:layout_margin="8dp"
+                android:background="@drawable/section_box"
+                android:color="@android:color/transparent"
+                android:orientation="vertical"
+                android:padding="8dp">
 
                 <androidx.appcompat.widget.SwitchCompat
-                    android:id="@+id/filterOnlyShow"
+                    android:id="@+id/filteringSwitch"
                     style="@style/MyTextSwitch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_margin="8dp"
                     android:checked="false"
-                    android:text="@string/filter_label"
+                    android:text="@string/filter_section"
                     android:textColor="#ff0"
-                    android:textOff="@string/hide"
-                    android:textOn="@string/show"
+                    android:textOff="@string/off"
+                    android:textOn="@string/on"
                     app:showText="true"
                     app:switchTextAppearance="@style/MyInfoText"
                     app:thumbTextPadding="4dp"
                     app:thumbTint="#444488" />
 
-                <TextView
-                    android:layout_margin="8dp"
+                <LinearLayout
+                    android:id="@+id/filteringView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:labelFor="@+id/filteringEditText"
-                    android:text="@string/filter_entry"
-                    style="@style/MyHeadingText"/>
+                    android:orientation="vertical">
 
-                <EditText
-                    android:id="@+id/filteringEditText"
-                    android:layout_margin="8dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textMultiLine"
-                    android:autofillHints="@string/filter_entry" />
-                <Button
-                    android:id="@+id/filteringSave"
-                    android:layout_margin="8dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/save"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:text="@string/filter_info" />
+
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/filterOnlyShow"
+                        style="@style/MyTextSwitch"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="8dp"
+                        android:checked="false"
+                        android:text="@string/filter_label"
+                        android:textColor="#ff0"
+                        android:textOff="@string/hide"
+                        android:textOn="@string/show"
+                        app:showText="true"
+                        app:switchTextAppearance="@style/MyInfoText"
+                        app:thumbTextPadding="4dp"
+                        app:thumbTint="#444488" />
+
+                    <TextView
+                        style="@style/MyHeadingText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:labelFor="@+id/filteringEditText"
+                        android:text="@string/filter_entry" />
+
+                    <EditText
+                        android:id="@+id/filteringEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:autofillHints="@string/filter_entry"
+                        android:inputType="textMultiLine" />
+
+                    <Button
+                        android:id="@+id/filteringSave"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:text="@string/save" />
+                </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -302,25 +306,25 @@
                     android:text="@string/time" />
 
                 <SeekBar
+                    android:id="@+id/highlightTime_SeekBar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/highlightTime_SeekBar"
-                    android:background="@drawable/apptheme_scrubber_primary_holo"
-                    android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
-                    android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright"
                     android:layout_marginLeft="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginRight="8dp"
                     android:layout_marginBottom="16dp"
-                    android:max="20"/>
+                    android:background="@drawable/apptheme_scrubber_primary_holo"
+                    android:max="20"
+                    android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
+                    android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
 
                 <TextView
+                    android:id="@+id/highlightTime_TextView"
+                    style="@style/MyInfoText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/highlightTime_TextView"
                     android:layout_margin="8dp"
-                    android:gravity="center_horizontal"
-                    style="@style/MyInfoText" />
+                    android:gravity="center_horizontal" />
 
             </LinearLayout>
 

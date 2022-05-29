@@ -109,28 +109,28 @@
             android:textSize="12sp" />
 
         <Button
-            android:id="@+id/storageImportOSBButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="2dp"
-            android:background="@drawable/menu_button"
-            android:drawableStart="@drawable/ic_unarchive_white_36dp"
-            android:drawablePadding="4dp"
-            android:gravity="center_vertical"
-            android:text="@string/backup_import"
-            android:textColor="#fff"
-            android:textSize="12sp" />
-
-        <Button
             android:id="@+id/storageExportOSBButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="2dp"
             android:background="@drawable/menu_button"
-            android:drawableStart="@drawable/ic_archive_white_36dp"
+            android:drawableStart="@drawable/ic_share_variant_white_36dp"
             android:drawablePadding="4dp"
             android:gravity="center_vertical"
             android:text="@string/backup_export"
+            android:textColor="#fff"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/storageImportOSBButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:background="@drawable/menu_button"
+            android:drawableStart="@drawable/ic_download_white_36dp"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:text="@string/backup_import"
             android:textColor="#fff"
             android:textSize="12sp" />
 
@@ -140,7 +140,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="2dp"
             android:background="@drawable/menu_button"
-            android:drawableStart="@drawable/ic_unarchive_white_36dp"
+            android:drawableStart="@drawable/ic_download_white_36dp"
             android:drawablePadding="4dp"
             android:gravity="center_vertical"
             android:text="@string/import_onsong_choose"

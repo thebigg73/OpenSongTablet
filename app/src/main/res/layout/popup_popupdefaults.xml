@@ -27,13 +27,15 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
             android:orientation="vertical">
 
             <TextView
                 style="@style/MyHeadingText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
                 android:layout_marginBottom="12dp"
                 android:text="@string/transparency" />
 
@@ -60,10 +62,7 @@
                 android:id="@+id/popupScale_seekBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="0dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginRight="0dp"
-                android:layout_marginBottom="12dp"
+                android:layout_margin="12dp"
                 android:background="@drawable/apptheme_scrubber_primary_holo"
                 android:max="7"
                 android:progress="5"

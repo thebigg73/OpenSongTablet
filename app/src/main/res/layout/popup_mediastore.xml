@@ -5,87 +5,100 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/popup_bg">
 
-    <FrameLayout
-        android:id="@+id/myTitle"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true">
-        <include layout="@layout/popup_dialogtitle"/>
-    </FrameLayout>
+        android:layout_margin="8dp">
 
-    <androidx.appcompat.widget.SwitchCompat
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/storage_ext"
-        android:id="@+id/externalSwitch"
-        android:checked="false"
-        android:padding="8dp"
-        android:theme="@style/MySwitch"
-        style="@style/MyHeadingText"
-        android:layout_margin="8dp"
-        android:layout_below="@+id/myTitle"/>
+        <FrameLayout
+            android:id="@+id/myTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <include layout="@layout/popup_dialogtitle"/>
+        </FrameLayout>
 
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/mediaStore_ListView"
-        android:layout_alignParentStart="true"
-        android:layout_above="@+id/linearLayout"
-        android:layout_below="@+id/externalSwitch" />
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/startPlay"
-        android:layout_alignParentStart="true"
-        android:id="@+id/linearLayout">
-
-        <TextView
+        <androidx.appcompat.widget.SwitchCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/media_selected"
-            android:id="@+id/textView28"
+            android:text="@string/storage_ext"
+            android:id="@+id/externalSwitch"
+            android:checked="false"
+            android:padding="8dp"
+            android:theme="@style/MySwitch"
             style="@style/MyHeadingText"
-            android:layout_marginTop="12dp"
-            android:layout_marginBottom="8dp" />
+            android:layout_margin="8dp"
+            android:layout_below="@+id/myTitle"/>
 
-        <TextView
+            <ListView
+                android:id="@+id/mediaStore_ListView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/linearLayout"
+                android:layout_below="@+id/externalSwitch"
+                android:layout_alignParentStart="true" />
+
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/MyWhiteHeadingText"
-            android:id="@+id/mediaSelected" />
-    </LinearLayout>
+            android:layout_above="@+id/startPlay"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_alignParentStart="true"
+            android:id="@+id/linearLayout">
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:fabSize="mini"
-        app:backgroundTint="@color/purple"
-        android:id="@+id/startPlay"
-        app:borderWidth="0dp"
-        app:elevation="0dp"
-        android:src="@drawable/ic_play_white_36dp"
-        android:layout_above="@+id/scrubbar_SeekBar"
-        android:layout_centerHorizontal="true"
-        android:contentDescription="@string/media_play" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/media_selected"
+                android:id="@+id/textView28"
+                style="@style/MyHeadingText"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="8dp" />
 
-    <SeekBar
-        android:id="@+id/scrubbar_SeekBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/scrubbar_TextView"
-        android:layout_centerHorizontal="true"
-        android:background="@drawable/apptheme_scrubber_primary_holo"
-        android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
-        android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                style="@style/MyWhiteHeadingText"
+                android:id="@+id/mediaSelected" />
+        </LinearLayout>
 
-    <TextView
-        android:id="@+id/scrubbar_TextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:gravity="center_horizontal"
-        style="@style/MyInfoText"/>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/startPlay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/scrubbar_SeekBar"
+            android:layout_centerHorizontal="true"
+            android:contentDescription="@string/media_play"
+            android:src="@drawable/ic_play_white_36dp"
+            app:backgroundTint="@color/purple"
+            app:borderWidth="0dp"
+            app:elevation="0dp"
+            app:fabSize="mini" />
+
+        <SeekBar
+            android:id="@+id/scrubbar_SeekBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/scrubbar_TextView"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/apptheme_scrubber_primary_holo"
+            android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
+            android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
+
+        <TextView
+            android:id="@+id/scrubbar_TextView"
+            style="@style/MyInfoText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_alignParentBottom="true"
+            android:gravity="center_horizontal" />
+
+    </RelativeLayout>
 
 </RelativeLayout>

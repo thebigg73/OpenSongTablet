@@ -546,7 +546,7 @@
     <string name="storage_check">Checking storage</string>
     <string name="storage_choose">Manage storage</string>
     <string name="storage_ext">External storage</string>
-    <string name="storage_notwritable">This location cannot be reliably used.  Click the (?) button for advice.\nIf the folder exists and has content, use a file manager app to move it to a suitable location.</string>
+    <string name="storage_notwritable">"Android does not allow use of an OpenSong folder in this location - choose a different location.  Click the (?) button for advice.</string>
     <string name="storage_rationale">Access to your storage is required to read and write songs and sets.</string>
     <string name="subscription">(Subscription required)</string>
     <string name="success">Success</string>
@@ -755,7 +755,7 @@
     <string name="filter_entry">Add each filter on a new line below.</string>
     <string name="filter_structure">[*filter:V] = filtered verse section</string>
     <string name="storage_help">Please select your \'OpenSong\' folder.  This is where songs, sets and more are stored.  If you need a new folder simply select a location for one to be added.  You can change the selected folder at any time from the Options menu.  Internal storage is recommended.\n\nFor an update or re-install:\nYou can use the yellow button below to find any previous OpenSong folder.</string>
-    <string name="storage_quicktip">When selecting an OpenSong folder location:\nSELECT ONLY INTERNAL OR SD CARD storage.\nInternal storage is recommended.  This may list as device storage or with your device\'s name.\nWhen selecting you may need to change settings to show all storage.\nOn Android 10+ you should not select the Downloads or Root folder.  If in doubt, choose the \'Documents\' folder.</string>
+    <string name="storage_quicktip">Please use \'Help (online)\' for more information on how to select your \'OpenSong\' folder.  You can also ask for help in our Google Groups forum.</string>
     <string name="information">Information</string>
     <string name="nearby_host_menu_only">Only listen for new clients when this page is visible</string>
     <string name="host">Host</string>

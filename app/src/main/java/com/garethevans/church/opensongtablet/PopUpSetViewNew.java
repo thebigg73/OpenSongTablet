@@ -261,6 +261,19 @@ public class PopUpSetViewNew extends DialogFragment {
         TextView title = V.findViewById(R.id.dialogtitle);
         String titletext = getString(R.string.set) + displaySetName();
         title.setText(titletext);
+        final FloatingActionButton setOptions = V.findViewById(R.id.setOptions);
+        setOptions.setOnClickListener(view -> {
+            // Save any changes to current set first
+            doSave();
+
+            // Open the Set menu
+            StaticVariables.whichOptionMenu = "SET";
+            if (mListener!=null) {
+                mListener.prepareOptionMenu();
+                mListener.openMyDrawers("option");
+                dismiss();
+            }
+        });
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(view -> {
             CustomAnimations.animateFAB(closeMe, PopUpSetViewNew.this.getContext());
@@ -394,13 +407,14 @@ public class PopUpSetViewNew extends DialogFragment {
                 StaticVariables.myToastMessage = message;
                 DialogFragment newFragment = PopUpAreYouSureFragment.newInstance(message);
                 newFragment.show(requireActivity().getSupportFragmentManager(), "dialog");
-                dismiss();
             } else {
                 FullscreenActivity.whattodo = "saveset";
                 if (mListener != null) {
                     mListener.openFragment();
                 }
             }
+            // IV - Always dismiss the dialog
+            dismiss();
         });
 
         if (FullscreenActivity.whattodo.equals("setitemvariation")) {
@@ -482,6 +496,8 @@ public class PopUpSetViewNew extends DialogFragment {
         void windowFlags();
 
         void openFragment();
+
+        void openMyDrawers(String which);
     }
 
     private void doExportSetTweet() {
