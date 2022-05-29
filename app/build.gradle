@@ -76,7 +76,7 @@ dependencies {
     implementation 'androidx.gridlayout:gridlayout:1.0.0'                               // GridLayout (obviously)
     implementation 'androidx.appcompat:appcompat:1.4.1'                                 // Allows access to app: features for older devices
     implementation 'androidx.cardview:cardview:1.0.0'                                   // Cardview for recycler list items
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'                   // Constraint layouts with FAB
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'                   // Constraint layouts with FAB
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'                      // Lifecycle for fragment control
     implementation 'androidx.navigation:navigation-fragment:2.4.2'                      // The navigation fragment control
     implementation 'androidx.navigation:navigation-ui:2.4.2'                            // The navigation fragment control

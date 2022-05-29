@@ -307,6 +307,7 @@ public class SetActions {
         mainActivityInterface.getCurrentSet().setInitialSetString(setString);
         mainActivityInterface.updateSetList();
         mainActivityInterface.updateSongList();
+        // TODO Check references for set name that gets saved.  Especially if we have merged sets.
     }
 
     public String currentSetNameForMenu() {

@@ -8,6 +8,7 @@ import androidx.annotation.RequiresApi;
 
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 @RequiresApi(api = Build.VERSION_CODES.M)
@@ -21,6 +22,7 @@ public class PedalMidiReceiver extends MidiReceiver {
     private final String TAG = "PedalMidiReceiver";
     private String actionDown;
     private long actionDownTime;
+    private ArrayList<Byte> receivedMessage;
 
     PedalMidiReceiver (Midi midi, MainActivityInterface mainActivityInterface) {
         this.midi = midi;
@@ -31,6 +33,10 @@ public class PedalMidiReceiver extends MidiReceiver {
     public void onSend(byte[] msg, int offset, int count, long timestamp) {
         Log.d(TAG,"msg="+ Arrays.toString(msg));
         Log.d(TAG,"msg.length="+ msg.length);
+
+        // Keep a reference of the midi message (so we can record incoming messages)
+        addReceivedMessage(msg);
+
         if (msg.length>=4) {
             int byte1 = msg[1] & 0xFF;  // This determines action and channel
             int byte2 = msg[2] & 0xFF;  // This is the note
@@ -83,6 +89,24 @@ public class PedalMidiReceiver extends MidiReceiver {
             Log.d(TAG, "note="+note);
 
             mainActivityInterface.registerMidiAction(actionDown,actionUp,actionLong,note);
+        }
+    }
+
+    public void resetReceivedMessage() {
+        receivedMessage = new ArrayList<>();
+    }
+
+    public ArrayList<Byte> getReceivedMessage() {
+        return receivedMessage;
+    }
+
+    private void addReceivedMessage(byte[] bytes) {
+        if (receivedMessage==null) {
+            resetReceivedMessage();
+        }
+        for (byte thisByte:bytes) {
+            Log.d(TAG,"Adding byte:"+thisByte);
+            receivedMessage.add(thisByte);
         }
     }
 }
