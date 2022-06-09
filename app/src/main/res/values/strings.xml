@@ -546,7 +546,7 @@
     <string name="storage_check">Checking storage</string>
     <string name="storage_choose">Manage storage</string>
     <string name="storage_ext">External storage</string>
-    <string name="storage_notwritable">"Android does not allow use of an OpenSong folder in this location - choose a different location.  Click the (?) button for advice.</string>
+    <string name="storage_notwritable">Android does not allow use of an OpenSong folder in this location - choose a different location.  Click the (?) button for advice.</string>
     <string name="storage_rationale">Access to your storage is required to read and write songs and sets.</string>
     <string name="subscription">(Subscription required)</string>
     <string name="success">Success</string>

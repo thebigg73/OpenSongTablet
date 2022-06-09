@@ -995,6 +995,8 @@ class SetActions {
             getSongFileAndFolder(c);
 
             StaticVariables.setMoveDirection = "";
+
+            FullscreenActivity.needtorefreshsongmenu = false;
             mListener.loadSong();
         }
 

@@ -210,9 +210,6 @@ public class PopUpSongFolderRenameFragment extends DialogFragment {
 
                 progressBar.setVisibility(View.GONE);
 
-                // Let the app know we need to rebuild the database
-                FullscreenActivity.needtorefreshsongmenu = true;
-
                 if (mListener != null) {
                     mListener.loadSong();
                 }

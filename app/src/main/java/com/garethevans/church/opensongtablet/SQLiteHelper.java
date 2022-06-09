@@ -317,6 +317,7 @@ class SQLiteHelper extends SQLiteOpenHelper {
 
         // Select matching folder Query
         String selectQuery = "SELECT "+SQLite.COLUMN_FILENAME + ", " +
+                SQLite.COLUMN_TITLE + ", " +
                 SQLite.COLUMN_AUTHOR + ", " +
                 SQLite.COLUMN_KEY + " " +
                 "FROM " + SQLite.TABLE_NAME +
@@ -331,6 +332,7 @@ class SQLiteHelper extends SQLiteOpenHelper {
                 do {
                     SQLite sqLite = new SQLite();
                     sqLite.setFilename(unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_FILENAME))));
+                    sqLite.setTitle(unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_TITLE))));
                     sqLite.setAuthor(unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_AUTHOR))));
                     sqLite.setKey(unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_KEY))));
                     if (!sqLite.getFilename().equals("") && !files.contains("$__" + sqLite.getFolder() + "/" + sqLite.getFilename() + "__$")) {

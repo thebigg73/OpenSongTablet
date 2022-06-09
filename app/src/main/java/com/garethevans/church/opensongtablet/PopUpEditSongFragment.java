@@ -249,7 +249,6 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
             // Now tell the main page to refresh itself with this new song
             // Don't need to reload the XML as we already have all its values
             mListener.loadSong();
-            mListener.prepareSongMenu();
 
             // Now dismiss this popup
             forceHideKeyboard();

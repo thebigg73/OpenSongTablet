@@ -566,7 +566,6 @@ public class NearbyConnections implements NearbyInterface {
                     // Write the file to the desired output stream and load
                     if (nearbyReturnActionsInterface != null) {
                         storageAccess.writeFileFromString(receivedBits.get(3), outputStream);
-                        nearbyReturnActionsInterface.prepareSongMenu();
                         StaticVariables.currentSection = pendingCurrentSection;
                         nearbyReturnActionsInterface.loadSong();
                     }

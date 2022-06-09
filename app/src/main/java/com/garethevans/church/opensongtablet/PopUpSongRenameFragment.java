@@ -112,10 +112,8 @@ public class PopUpSongRenameFragment extends DialogFragment {
                     sqLiteHelper.updateSong(getContext(), sqLite);
                 }
 
-                FullscreenActivity.needtorefreshsongmenu = true;
                 if (mListener!=null) {
                     mListener.loadSong();
-                    mListener.prepareSongMenu();
                 }
             } catch (Exception e) {
                 Log.d("d", "Error renaming");

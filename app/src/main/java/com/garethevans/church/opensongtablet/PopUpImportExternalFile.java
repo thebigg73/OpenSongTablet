@@ -531,10 +531,6 @@ public class PopUpImportExternalFile extends DialogFragment {
             filename = filename.replace(".ost","");
         }
 
-
-        // Set the variable to initialise the search index
-        FullscreenActivity.needtorefreshsongmenu = true;
-
         // Copy the file
         copyFile("Songs", chosenfolder, filename);
 

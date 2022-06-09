@@ -778,6 +778,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         if (song_list_view != null) {
             try {
                 if (menuFolder_TextView.getText() != null) {
+                    // IV - FullscreenActivity.needtorefreshsongmenu can be set false before a call to try to use the existing song menu
                     if (!FullscreenActivity.needtorefreshsongmenu && menuFolder_TextView.getText().toString().equals(StaticVariables.whichSongFolder)) {
                         findSongInFolders();
                     } else {
@@ -791,6 +792,8 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                 e.printStackTrace();
             }
         }
+        // IV - Reset to ensure the default behaviour is true
+        FullscreenActivity.needtorefreshsongmenu = true;
     }
 
     private void checkBackupState() {
@@ -857,16 +860,20 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         // Save our preferences
         saveFileLocation(clickedfile, clickedfolder);
 
-        // Load the song
-        loadSong();
+        // Allow drawer close animation time to cleanly complete
+        Handler delayloadsong = new Handler();
+        delayloadsong.postDelayed(() -> {
+            FullscreenActivity.needtorefreshsongmenu = false;
+            loadSong();
 
-        FullscreenActivity.currentSongIndex = i;
+            FullscreenActivity.currentSongIndex = i;
 
-        // Scroll to this song in the song menu
-        song_list_view.smoothScrollToPosition(i);
+            // Scroll to this song in the song menu
+            song_list_view.smoothScrollToPosition(i);
 
-        // Initialise the previous and next songs
-        findSongInFolders();
+            // Initialise the previous and next songs
+            findSongInFolders();
+        }, 300);
     }
 
     @Override
@@ -899,8 +906,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         closeMyDrawers("song");
         // IV - prepareOptionMenu also prepares the set list
         prepareOptionMenu();
-        // IV - Force update the song menu
-        FullscreenActivity.needtorefreshsongmenu = true;
         prepareSongMenu();
         fixSet();
     }
@@ -1486,7 +1491,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                 // Close the drawers in case they are open
                 closeMyDrawers("both");
 
-                FullscreenActivity.needtorefreshsongmenu = true;
                 // IV - we cannot determine the index so go to top
                 FullscreenActivity.currentSongIndex = 0;
 
@@ -1852,8 +1856,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                     sqLiteHelper.deleteSong(PresenterMode.this, sqLite.getSongid());
                 }
 
-                FullscreenActivity.needtorefreshsongmenu = true;
-
                 // IV - Load song to display as deleted
                 loadSong();
                 break;
@@ -1960,6 +1962,8 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     // Loading the song
     @Override
     public void loadSongFromSet() {
+        FullscreenActivity.needtorefreshsongmenu = false;
+
         // Redraw the set buttons as the user may have changed the order
         refreshAll();
 
@@ -2095,10 +2099,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         @Override
         protected void onPostExecute(String s) {
             showToastMessage(getString(R.string.search_index_end));
-
-            FullscreenActivity.needtorefreshsongmenu = true;
-
-            // Update the song menu
             prepareSongMenu();
         }
     }
@@ -2998,8 +2998,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         presenter_set_buttonsListView.removeAllViews();
         presenter_song_buttonsListView.removeAllViews();
         presenter_lyrics.setText("");
-        FullscreenActivity.needtorefreshsongmenu = true;
-        prepareSongMenu();
         setupPageButtons();
         prepareOptionMenu();
         fixSet();
@@ -3573,6 +3571,10 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                         StaticVariables.currentSection = -(1 + StaticVariables.currentSection);
                     }
                     FullscreenActivity.pdfPageCurrent = StaticVariables.currentSection;
+                } else {
+                    // IV - For a reload, load the stored whichSongFolder in case we were browsing elsewhere
+                    StaticVariables.whichSongFolder = preferences.getMyPreferenceString(PresenterMode.this,"whichSongFolder", getString(R.string.mainfoldername));
+                    FullscreenActivity.needtorefreshsongmenu = false;
                 }
 
                 // Clear the old headings (presention order looks for these)
@@ -3722,8 +3724,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             menuCount_TextView.setVisibility(View.GONE);
             menuFolder_TextView.setText(getString(R.string.wait));
             song_list_view.setAdapter(null);
-            // IV - This is set false when the refresh suceeeds
-            FullscreenActivity.needtorefreshsongmenu = true;
             LinearLayout indexLayout = findViewById(R.id.side_index);
             indexLayout.removeAllViews();
         }
@@ -3764,11 +3764,15 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
                     for (int i=0; i<songsInFolder.size(); i++) {
                         String foundsongfilename = songsInFolder.get(i).getFilename();
+                        String foundsongtitle = songsInFolder.get(i).getTitle();
                         String foundsongauthor = songsInFolder.get(i).getAuthor();
                         String foundsongkey = songsInFolder.get(i).getKey();
 
                         if (foundsongfilename == null) {
                             foundsongfilename = getString(R.string.error);
+                        }
+                        if (foundsongtitle == null || foundsongtitle.equals("")) {
+                            foundsongtitle = foundsongfilename;
                         }
                         if (foundsongauthor == null) {
                             foundsongauthor = "";
@@ -3813,7 +3817,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                         menuCount_TextView.setText(menusize);
                         menuCount_TextView.setVisibility(View.VISIBLE);
                     }
-                    FullscreenActivity.needtorefreshsongmenu = false;
                 }
             } catch (Exception e) {
                 e.printStackTrace();

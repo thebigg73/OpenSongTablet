@@ -62,9 +62,6 @@ class UsrConvert {
         chordProConvert.writeTheImprovedSong(c, storageAccess, preferences, oldSongFileName, newSongFileName,
                 songSubFolder, newUri, uri);
 
-        // Indicate after loading song (which renames it), we need to build the database and song index
-        FullscreenActivity.needtorefreshsongmenu = true;
-
         return chordProConvert.bitsForIndexing(newSongFileName, title, author, copyright, key, time_sig, ccli, lyrics);
 
     }
