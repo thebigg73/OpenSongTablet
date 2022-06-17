@@ -15,6 +15,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -419,7 +420,8 @@ public class BootUpCheck extends AppCompatActivity {
 
         if (progressText!=null) {
             // IV - If we have a path try to give extra info of a 'songs' count
-            if (text.startsWith("/") && (text.endsWith("/OpenSong"))) {
+            // IV - Do a song count for pre R only as R and above do not list songs as they are not media files
+            if (checkStorageIsValid() & Build.VERSION.SDK_INT < Build.VERSION_CODES.R && text.startsWith("/") && text.endsWith("/OpenSong")) {
                 ArrayList<String> songIds;
                 try {
                     storageAccess = new StorageAccess();
@@ -907,11 +909,13 @@ public class BootUpCheck extends AppCompatActivity {
                 for (File f : list) {
                     if (f.isDirectory()) {
                         String where = f.getAbsolutePath();
-                        String extra;
                         displayWhere(where);
                         if (!where.contains(".estrongs") && !where.contains("com.ttxapps") && where.endsWith("/OpenSong/Songs")) {
-                            int count = storageAccess.songCountAtLocation(f);
-                            extra = count + " Songs";
+                            String extra = "";
+                            // IV - Do a song count for pre R only as R and above do not list songs as they are not media files
+                            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
+                                extra = storageAccess.songCountAtLocation(f) + " Songs";
+                            }
                             // Found one and it isn't in eStrongs recycle folder or the dropsync temp files!
                             // IV - Add  a leading ¬ and remove trailing /Songs
                             where = "¬" + where.substring(0, where.length() - 6);
@@ -924,10 +928,15 @@ public class BootUpCheck extends AppCompatActivity {
                             if (where.startsWith("¬")) {
                                 // IV - Handle other paths as 'External'
                                 where = where.substring(10);
-                                extra = extra + ", " + this.getResources().getString(R.string.storage_ext) + " " + where.substring(0, where.indexOf("/"));
+                                if (!extra.equals("")) {
+                                    extra = extra + ", ";
+                                }
+                                extra = extra + this.getResources().getString(R.string.storage_ext) + " " + where.substring(0, where.indexOf("/"));
                                 where = where.substring(where.indexOf("/"));
                             }
-                            where = "(" + extra + "): " + where;
+                            if (!extra.equals("")) {
+                                where = "(" + extra + "): " + where;
+                            }
                             locations.add(where);
                         }
                         folder = f;

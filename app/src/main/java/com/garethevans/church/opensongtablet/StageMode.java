@@ -7759,6 +7759,8 @@ public class StageMode extends AppCompatActivity implements
                         boolean isinset = setcurrent.contains(whattolookfor);
 
                         SongMenuViewItems song = new SongMenuViewItems(foundsongfilename,
+                                //TODO GE commit changes to display of title  however SQL does not yet order by title. Both filename and title order, user choice, are needed.
+                                //foundsongtitle, foundsongauthor, foundsongkey, isinset);
                                 foundsongfilename, foundsongauthor, foundsongkey, isinset);
                         songmenulist.add(song);
                         filenamesSongsInFolder.add(foundsongfilename);

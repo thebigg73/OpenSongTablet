@@ -154,7 +154,7 @@
     <string name="current_category">Current category</string>
     <string name="currentkeycode">Current keycode</string>
     <string name="currentset">Current set</string>
-    <string name="currentstorage">Selected location</string>
+    <string name="currentstorage">Location</string>
     <string name="custom">Custom</string>
     <string name="custom1_theme">Custom 1</string>
     <string name="custom2_theme">Custom 2</string>
@@ -546,7 +546,7 @@
     <string name="storage_check">Checking storage</string>
     <string name="storage_choose">Manage storage</string>
     <string name="storage_ext">External storage</string>
-    <string name="storage_notwritable">Android does not allow use of an OpenSong folder in this location - choose a different location.  Click the (?) button for advice.</string>
+    <string name="storage_notwritable">Android requires you to select the location to allow it to be used by OpenSongApp.\nClick the (?) button for further advice.</string>
     <string name="storage_rationale">Access to your storage is required to read and write songs and sets.</string>
     <string name="subscription">(Subscription required)</string>
     <string name="success">Success</string>
