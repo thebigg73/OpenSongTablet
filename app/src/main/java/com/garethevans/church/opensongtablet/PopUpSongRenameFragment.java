@@ -109,8 +109,8 @@ public class PopUpSongRenameFragment extends DialogFragment {
                     sqLite.setSongid(songId);
                     sqLite.setFolder(StaticVariables.whichSongFolder);
                     sqLite.setFilename(StaticVariables.songfilename);
-                    sqLiteHelper.updateSong(getContext(), sqLite);
                 }
+                sqLiteHelper.updateSong(getContext(), sqLite);
 
                 if (mListener!=null) {
                     mListener.loadSong();
