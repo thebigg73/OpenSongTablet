@@ -3311,6 +3311,10 @@ public class StageMode extends AppCompatActivity implements
                 if (sqLite!=null && sqLite.getSongid()!=null) {
                     sqLiteHelper.deleteSong(StageMode.this, sqLite.getSongid());
                 }
+
+                // IV - Force a song menu refresh as we have deleted a song
+                prepareSongMenu();
+
                 // IV - Load previous song to keep place in list
                 goToPreviousItem();
 
@@ -7530,8 +7534,6 @@ public class StageMode extends AppCompatActivity implements
                         }
                     }
 
-                    prepareSongMenu();
-
                     delayactionBarHide.removeCallbacks(hideActionBarRunnable);
                     if (preferences.getMyPreferenceBoolean(StageMode.this,"hideActionBar",false)) {
                         delayactionBarHide.postDelayed(hideActionBarRunnable, 1000);
@@ -7555,6 +7557,10 @@ public class StageMode extends AppCompatActivity implements
                             sqLiteHelper.updateSong(StageMode.this,sqLite);
                         }
                     }
+
+                    // IV - After any sqLite update has occurred
+                    prepareSongMenu();
+
                     // Make sure all dynamic (scroll and set) buttons display
                     onScrollAction();
                 }

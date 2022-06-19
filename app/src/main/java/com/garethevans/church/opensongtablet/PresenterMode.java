@@ -1856,6 +1856,9 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                     sqLiteHelper.deleteSong(PresenterMode.this, sqLite.getSongid());
                 }
 
+                // IV - Force a song menu refresh as we have deleted a song
+                prepareSongMenu();
+
                 // IV - Load song to display as deleted
                 loadSong();
                 break;
@@ -3654,7 +3657,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                         LoadXML.getPDFPageCount(PresenterMode.this, preferences, storageAccess);
                     }
                     setupSongButtons();
-                    prepareSongMenu();
 
                     // Send the midi data if we can
                     if (!orientationChanged) {
@@ -3698,6 +3700,9 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                         sqLite.setSongid("");
                         sqLite.setId(0);
                     }
+
+                    // IV - After any sqLite update has occurred
+                    prepareSongMenu();
                 }
             } catch (Exception e) {
                 e.printStackTrace();
