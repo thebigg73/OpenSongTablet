@@ -3782,7 +3782,8 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                         if (foundsongfilename == null) {
                             foundsongfilename = getString(R.string.error);
                         }
-                        if (foundsongtitle == null || foundsongtitle.equals("")) {
+                        
+                        if (foundsongtitle == null) {
                             foundsongtitle = foundsongfilename;
                         }
                         if (foundsongauthor == null) {
@@ -3801,9 +3802,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                         boolean isinset = setcurrent.contains(whattolookfor);
 
                         SongMenuViewItems song = new SongMenuViewItems(foundsongfilename,
-                                //TODO GE commit changes to display of title  however SQL does not yet order by title. Both filename and title order, user choice, are needed.
-                                //foundsongtitle, foundsongauthor, foundsongkey, isinset);
-                                foundsongfilename, foundsongauthor, foundsongkey, isinset);
+                                foundsongtitle, foundsongauthor, foundsongkey, isinset);
                         songmenulist.add(song);
                     }
 
