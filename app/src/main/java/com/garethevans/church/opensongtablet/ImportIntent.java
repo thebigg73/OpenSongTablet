@@ -229,7 +229,6 @@ public class ImportIntent extends AppCompatActivity implements PopUpImportExport
     private void rebuildSearchIndex() {
         Log.d("d", "rebuildSearchIndex called");
         FullscreenActivity.whattodo = "";
-        FullscreenActivity.needtorefreshsongmenu = false;
         // If the app is already running, send the call to run BootUpCheck
         if (FullscreenActivity.appRunning) {
             // Close this intent and send the listener to rebuild inded

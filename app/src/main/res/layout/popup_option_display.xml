@@ -129,32 +129,6 @@
             android:textColor="#fff"
             android:textSize="12sp" />
 
-        <Button
-            android:id="@+id/gesturesMenuOptions"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="2dp"
-            android:background="@drawable/menu_button"
-            android:drawableStart="@drawable/ic_menuswipe_white_36dp"
-            android:drawablePadding="4dp"
-            android:gravity="center_vertical"
-            android:text="@string/menu_settings"
-            android:textColor="#fff"
-            android:textSize="12sp" />
-
-        <Button
-            android:id="@+id/gesturesSongSwipeButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="2dp"
-            android:background="@drawable/menu_button"
-            android:drawableStart="@drawable/ic_swipe_white_36dp"
-            android:drawablePadding="4dp"
-            android:gravity="center_vertical"
-            android:text="@string/swipe"
-            android:textColor="#fff"
-            android:textSize="12sp" />
-
         <TextView
             android:id="@+id/button_separator_textview"
             android:layout_width="match_parent"
@@ -202,6 +176,19 @@
             android:textSize="12sp" />
 
         <Button
+            android:id="@+id/gesturesMenuOptions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:background="@drawable/menu_button"
+            android:drawableStart="@drawable/ic_menuswipe_white_36dp"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:text="@string/menu_settings"
+            android:textColor="#fff"
+            android:textSize="12sp" />
+
+        <Button
             android:id="@+id/displayPopUpsButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -211,6 +198,19 @@
             android:drawablePadding="4dp"
             android:gravity="center_vertical"
             android:text="@string/display_popups"
+            android:textColor="#fff"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/gesturesSongSwipeButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:background="@drawable/menu_button"
+            android:drawableStart="@drawable/ic_swipe_white_36dp"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:text="@string/swipe"
             android:textColor="#fff"
             android:textSize="12sp" />
 

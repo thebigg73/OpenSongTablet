@@ -171,8 +171,6 @@ public class PopUpSongCreateFragment extends DialogFragment {
 
         @Override
         protected void onPreExecute() {
-            // Prepare the app to rebuild the search index after loading the song
-            FullscreenActivity.needtorefreshsongmenu = true;
             tempNewSong = newSongNameEditText.getText().toString().trim();
             tempNewSong = storageAccess.safeFilename(tempNewSong);
             newSongNameEditText.setText(tempNewSong);
@@ -234,7 +232,6 @@ public class PopUpSongCreateFragment extends DialogFragment {
 
                     try {
                         if (mListener != null) {
-                            mListener.prepareSongMenu();
                             Log.d("PopUpCreate", "setting songfilename=" + tempNewSong);
                             StaticVariables.songfilename = tempNewSong;
                             Log.d("PopUpCreate", "setting whichSongFolder=" + FullscreenActivity.newFolder);
@@ -311,15 +308,18 @@ public class PopUpSongCreateFragment extends DialogFragment {
 
         protected void onPostExecute(String s) {
             try {
+                // IV - Store song details
+                preferences.setMyPreferenceString(getContext(), "songfilename",StaticVariables.songfilename);
+                preferences.setMyPreferenceString(getContext(),"whichSongFolder",StaticVariables.whichSongFolder);
+
                 if (!StaticVariables.myToastMessage.equals(getString(R.string.error)) &&
                         !StaticVariables.myToastMessage.equals(getString(R.string.notset)) &&
                         !StaticVariables.myToastMessage.equals(getString(R.string.songnamealreadytaken))) {
 
                     if (mListener != null) {
-                        mListener.prepareSongMenu();
                         if (!FullscreenActivity.whattodo.equals("savecameraimage")) {
                             // Prepare the app to open the edit page after loading
-                            FullscreenActivity.needtorefreshsongmenu = false;  // This will happen after editing
+                            FullscreenActivity.needtorefreshsongmenu = false;  // Used to avoid two full song menu builds, one will happen after editing
                             FullscreenActivity.needtoeditsong = true;
                         }
                         mListener.loadSong();

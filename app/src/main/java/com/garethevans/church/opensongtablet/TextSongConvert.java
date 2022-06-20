@@ -42,9 +42,6 @@ class TextSongConvert {
         // Remove any blank headings if they are redundant
         compiledtext = fixBlankHeadings(c, compiledtext);
 
-        // Indicate after loading song (which renames it), we need to build the database and song index
-        FullscreenActivity.needtorefreshsongmenu = true;
-
         return compiledtext;
     }
 

@@ -109,13 +109,11 @@ public class PopUpSongRenameFragment extends DialogFragment {
                     sqLite.setSongid(songId);
                     sqLite.setFolder(StaticVariables.whichSongFolder);
                     sqLite.setFilename(StaticVariables.songfilename);
-                    sqLiteHelper.updateSong(getContext(), sqLite);
                 }
+                sqLiteHelper.updateSong(getContext(), sqLite);
 
-                FullscreenActivity.needtorefreshsongmenu = true;
                 if (mListener!=null) {
                     mListener.loadSong();
-                    mListener.prepareSongMenu();
                 }
             } catch (Exception e) {
                 Log.d("d", "Error renaming");

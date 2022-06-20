@@ -1598,8 +1598,6 @@ public class StageMode extends AppCompatActivity implements
                 presohandler, presoinfohandler, customhandler);
 
         prepareOptionMenu();
-        FullscreenActivity.needtorefreshsongmenu = true;
-        prepareSongMenu();
         setupPageButtons();
 
         // IV - Update second screen theme
@@ -1713,6 +1711,7 @@ public class StageMode extends AppCompatActivity implements
 
     @Override
     public void loadSongFromSet() {
+        FullscreenActivity.needtorefreshsongmenu = false;
         loadSong();
     }
 
@@ -3312,10 +3311,12 @@ public class StageMode extends AppCompatActivity implements
                 if (sqLite!=null && sqLite.getSongid()!=null) {
                     sqLiteHelper.deleteSong(StageMode.this, sqLite.getSongid());
                 }
+
+                // IV - Force a song menu refresh as we have deleted a song
+                prepareSongMenu();
+
                 // IV - Load previous song to keep place in list
                 goToPreviousItem();
-
-                FullscreenActivity.needtorefreshsongmenu = true;
 
                 // IV - A backstop loadsong() to display song as deleted if there is no previous song (if previous is running loadsong() this second call is abandoned)
                 loadSong();
@@ -3652,6 +3653,7 @@ public class StageMode extends AppCompatActivity implements
                             !isfolder) {
                         FullscreenActivity.tempswipeSet = "disable";
                         StaticVariables.songfilename = filenamesSongsInFolder.get(FullscreenActivity.nextSongIndex);
+                        FullscreenActivity.needtorefreshsongmenu = false;
                         loadSong();
 
                         // Set a runnable to reset swipe back to original value after 1 second
@@ -3826,8 +3828,6 @@ public class StageMode extends AppCompatActivity implements
         @Override
         protected void onPostExecute(String s) {
             showToastMessage(getString(R.string.search_index_end));
-            // Update the song menu
-            FullscreenActivity.needtorefreshsongmenu = true;
             prepareSongMenu();
         }
     }
@@ -4241,6 +4241,7 @@ public class StageMode extends AppCompatActivity implements
                         FullscreenActivity.tempswipeSet = "disable";
 
                         StaticVariables.songfilename = filenamesSongsInFolder.get(FullscreenActivity.previousSongIndex);
+                        FullscreenActivity.needtorefreshsongmenu = false;
                         loadSong();
 
                         // Set a runnable to reset swipe back to original value after 1 second
@@ -5294,12 +5295,13 @@ public class StageMode extends AppCompatActivity implements
         if (song_list_view != null) {
             try {
                 if (menuFolder_TextView.getText() != null) {
+                    // IV - FullscreenActivity.needtorefreshsongmenu can be set false before a call to try to use the existing song menu
                     if (!FullscreenActivity.needtorefreshsongmenu && menuFolder_TextView.getText().toString().equals(StaticVariables.whichSongFolder)) {
                         findSongInFolders();
                     } else {
                         song_list_view.setFastScrollEnabled(false);
                         song_list_view.setScrollingCacheEnabled(false);
-                        preparesongmenu_async = new PrepareSongMenu();
+                        preparesongmenu_async = new StageMode.PrepareSongMenu();
                         preparesongmenu_async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                     }
                 }
@@ -5307,6 +5309,8 @@ public class StageMode extends AppCompatActivity implements
                 e.printStackTrace();
             }
         }
+        // IV - Reset to ensure the default behaviour is true
+        FullscreenActivity.needtorefreshsongmenu = true;
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -5438,7 +5442,6 @@ public class StageMode extends AppCompatActivity implements
         closeMyDrawers("song");
         // IV - prepareOptionMenu also prepares the set list
         prepareOptionMenu();
-        FullscreenActivity.needtorefreshsongmenu = true;
         prepareSongMenu();
     }
 
@@ -5458,7 +5461,7 @@ public class StageMode extends AppCompatActivity implements
         // Allow drawer close animation time to cleanly complete
         Handler delayloadsong = new Handler();
         delayloadsong.postDelayed(() -> {
-            // Load the song
+            FullscreenActivity.needtorefreshsongmenu = false;
             loadSong();
 
             FullscreenActivity.currentSongIndex = i;
@@ -7229,6 +7232,7 @@ public class StageMode extends AppCompatActivity implements
                 } else {
                     // IV - For a reload, load the stored whichSongFolder in case we were browsing elsewhere
                     StaticVariables.whichSongFolder = preferences.getMyPreferenceString(StageMode.this,"whichSongFolder", getString(R.string.mainfoldername));
+                    FullscreenActivity.needtorefreshsongmenu = false;
                 }
 
                 FullscreenActivity.pdfPageCurrent = StaticVariables.currentSection;
@@ -7522,7 +7526,6 @@ public class StageMode extends AppCompatActivity implements
 
                         FullscreenActivity.whattodo = "editsong";
                         FullscreenActivity.alreadyloading = false;
-                        FullscreenActivity.needtorefreshsongmenu = true;
                         openFragment();
                     } else if (FullscreenActivity.needtorefreshsongmenu) {
                         if (sqLite!=null && sqLite.getSongid()!=null) {
@@ -7530,8 +7533,6 @@ public class StageMode extends AppCompatActivity implements
                             sqLiteHelper.updateSong(StageMode.this, sqLite);
                         }
                     }
-
-                    prepareSongMenu();
 
                     delayactionBarHide.removeCallbacks(hideActionBarRunnable);
                     if (preferences.getMyPreferenceBoolean(StageMode.this,"hideActionBar",false)) {
@@ -7545,17 +7546,32 @@ public class StageMode extends AppCompatActivity implements
                     // Get the SQLite stuff
                     if (!StaticVariables.whichSongFolder.startsWith("..")) {
                         String songId = StaticVariables.whichSongFolder + "/" + StaticVariables.songfilename;
+
                         if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
                             nonOpenSongSQLite = nonOpenSongSQLiteHelper.getSong(StageMode.this, storageAccess, preferences, songId);
                         }
                         sqLite = sqLiteHelper.getSong(StageMode.this, songId);
+
+                        // IV - Backstop, if the song is not found add a basic song entry. Handles Nearby 'imported' songs
+                        if (sqLite==null) {
+                            sqLiteHelper.createImportedSong(StageMode.this, StaticVariables.whichSongFolder, StaticVariables.songfilename, StaticVariables.songfilename, "", "", "", "", "", "");
+                            sqLite = sqLiteHelper.getSong(StageMode.this, songId);
+                        }
 
                         // If this song isn't indexed, set its details
                         if (sqLite!=null && (sqLite.getLyrics()==null || sqLite.getLyrics().equals(""))) {
                             sqLite = sqLiteHelper.setSong(sqLite);
                             sqLiteHelper.updateSong(StageMode.this,sqLite);
                         }
+                    } else {
+                        // Not a song in the database (likley a variation, slide, etc.)
+                        sqLite.setSongid("");
+                        sqLite.setId(0);
                     }
+
+                    // IV - After any sqLite update has occurred
+                    prepareSongMenu();
+
                     // Make sure all dynamic (scroll and set) buttons display
                     onScrollAction();
                 }
@@ -7681,8 +7697,6 @@ public class StageMode extends AppCompatActivity implements
             // IV - Recently fixed to work but disabled as it is too slow!
             //menuFolder_TextView.setText(getString(R.string.wait));
             song_list_view.setAdapter(null);
-            // IV - This is set false when the refresh suceeeds
-            FullscreenActivity.needtorefreshsongmenu = true;
             LinearLayout indexLayout = findViewById(R.id.side_index);
             indexLayout.removeAllViews();
         }
@@ -7763,7 +7777,7 @@ public class StageMode extends AppCompatActivity implements
 
                         Log.d("StageMode","filename:"+foundsongfilename+" title:"+foundsongtitle);
                         SongMenuViewItems song = new SongMenuViewItems(foundsongfilename,
-                                foundsongtitle, foundsongauthor, foundsongkey, isinset);
+                            foundsongtitle, foundsongauthor, foundsongkey, isinset);
                         songmenulist.add(song);
                         filenamesSongsInFolder.add(foundsongfilename);
                     }
@@ -7791,7 +7805,6 @@ public class StageMode extends AppCompatActivity implements
                         menuCount_TextView.setText(menusize);
                         menuCount_TextView.setVisibility(View.VISIBLE);
                     }
-                    FullscreenActivity.needtorefreshsongmenu = false;
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -8979,7 +8992,6 @@ public class StageMode extends AppCompatActivity implements
                             setActions.prepareSetList(StageMode.this, preferences);
                             StaticVariables.indexSongInSet = StaticVariables.mSetList.length - 1;
                             PopUpSetViewNew.makeVariation(StageMode.this, preferences);
-                            prepareSongMenu();
                             loadSong();
                         } else {
                             // Not a song

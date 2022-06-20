@@ -1528,9 +1528,6 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
             StaticVariables.songfilename = nameofpdffile;
         }
 
-        // Indicate after loading song (which renames it), we need to build the database and song index
-        FullscreenActivity.needtorefreshsongmenu = true;
-
         if (mListener != null) {
             mListener.loadSong();
             // IV - Moved after load to better report details of the song
