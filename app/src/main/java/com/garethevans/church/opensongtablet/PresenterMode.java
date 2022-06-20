@@ -3681,19 +3681,25 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                         FullscreenActivity.alreadyloading = false;
                     }
 
-                    // Get the SQLite stuff if the song exists.  Otherwise throws an exception (which is ok)
+                    // Get the SQLite stuff
                     if (!StaticVariables.whichSongFolder.startsWith("..")) {
                         String songId = StaticVariables.whichSongFolder + "/" + StaticVariables.songfilename;
 
                         if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
                             nonOpenSongSQLite = nonOpenSongSQLiteHelper.getSong(PresenterMode.this,storageAccess,preferences,songId);
-                        } else {
-                            // If this song isn't indexed, set its details
+                        }
+                        sqLite = sqLiteHelper.getSong(PresenterMode.this, songId);
+
+                        // IV - Backstop, if the song is not found add a basic song entry. Handles Nearby 'imported' songs
+                        if (sqLite == null) {
+                            sqLiteHelper.createImportedSong(PresenterMode.this, StaticVariables.whichSongFolder, StaticVariables.songfilename, StaticVariables.songfilename, "", "", "", "", "", "");
                             sqLite = sqLiteHelper.getSong(PresenterMode.this, songId);
-                            if (sqLite.getLyrics()==null || sqLite.getLyrics().equals("")) {
-                                sqLite = sqLiteHelper.setSong(sqLite);
-                                sqLiteHelper.updateSong(PresenterMode.this,sqLite);
-                            }
+                        }
+
+                        // If this song isn't indexed, set its details
+                        if (sqLite.getLyrics()==null || sqLite.getLyrics().equals("")) {
+                            sqLite = sqLiteHelper.setSong(sqLite);
+                            sqLiteHelper.updateSong(PresenterMode.this,sqLite);
                         }
                     } else {
                         // Not a song in the database (likley a variation, slide, etc.)

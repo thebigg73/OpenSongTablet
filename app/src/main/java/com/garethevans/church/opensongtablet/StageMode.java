@@ -7546,16 +7546,27 @@ public class StageMode extends AppCompatActivity implements
                     // Get the SQLite stuff
                     if (!StaticVariables.whichSongFolder.startsWith("..")) {
                         String songId = StaticVariables.whichSongFolder + "/" + StaticVariables.songfilename;
+
                         if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
                             nonOpenSongSQLite = nonOpenSongSQLiteHelper.getSong(StageMode.this, storageAccess, preferences, songId);
                         }
                         sqLite = sqLiteHelper.getSong(StageMode.this, songId);
+
+                        // IV - Backstop, if the song is not found add a basic song entry. Handles Nearby 'imported' songs
+                        if (sqLite==null) {
+                            sqLiteHelper.createImportedSong(StageMode.this, StaticVariables.whichSongFolder, StaticVariables.songfilename, StaticVariables.songfilename, "", "", "", "", "", "");
+                            sqLite = sqLiteHelper.getSong(StageMode.this, songId);
+                        }
 
                         // If this song isn't indexed, set its details
                         if (sqLite!=null && (sqLite.getLyrics()==null || sqLite.getLyrics().equals(""))) {
                             sqLite = sqLiteHelper.setSong(sqLite);
                             sqLiteHelper.updateSong(StageMode.this,sqLite);
                         }
+                    } else {
+                        // Not a song in the database (likley a variation, slide, etc.)
+                        sqLite.setSongid("");
+                        sqLite.setId(0);
                     }
 
                     // IV - After any sqLite update has occurred
