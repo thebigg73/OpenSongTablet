@@ -24,7 +24,7 @@ public class SaveSong {
         // Because we haven't written the changes, we receive the 'newSong' object to compare with the current song
 
         // Only if we aren't messing with the welcome song!
-        if (checkNotWelcomeSong(mainActivityInterface.getSong())) {
+        if (checkNotWelcomeSong(newSong)) {
             // Check for folders
             String oldFolder = mainActivityInterface.getSong().getFolder();
             String oldFilename = mainActivityInterface.getSong().getFilename();

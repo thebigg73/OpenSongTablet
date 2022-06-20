@@ -101,8 +101,7 @@ public class BootUpFragment extends Fragment {
                 == PackageManager.PERMISSION_GRANTED);
     }
     private boolean storageLocationSet() {
-        uriTreeString = mainActivityInterface.getPreferences().
-                    getMyPreferenceString("uriTree", "");
+        uriTreeString = mainActivityInterface.getPreferences().getMyPreferenceString("uriTree", "");
         return !uriTreeString.isEmpty();
     }
     private boolean storageLocationValid() {
@@ -185,7 +184,7 @@ public class BootUpFragment extends Fragment {
     // If the fragment is still attached, display the update message
     private void updateMessage() {
         if (getActivity()!=null && getContext()!=null) {
-            requireActivity().runOnUiThread(() -> myView.currentAction.setText(message));
+            myView.currentAction.post(() -> myView.currentAction.setText(message));
         }
     }
 

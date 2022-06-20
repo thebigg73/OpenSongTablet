@@ -239,6 +239,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private NearbyConnectionsFragment nearbyConnectionsFragment;
     private SwipeFragment swipeFragment;
     private Fragment registeredFragment;
+    private PedalsFragment pedalsFragment;
     private ViewPager2 viewPager;
     private ActionBar actionBar;
     private AppBarConfiguration appBarConfiguration;
@@ -580,19 +581,23 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent keyEvent) {
         // If pedalsFragment is open, send the keyCode and event there
-        if (isCurrentFragment(R.id.pedalsFragment) && ((PedalsFragment)getFragmentFromId(R.id.pedalsFragment)).isListening()) {
-            ((PedalsFragment)getCurrentFragment()).keyDownListener(keyCode);
-            return false;
+        if (pedalsFragment!=null && pedalsFragment.isListening()) {
+            pedalsFragment.keyDownListener(keyCode);
+            return true;
         } else {
             pedalActions.commonEventDown(keyCode, null);
+            if (pedalActions.getButtonNumber(keyCode,null)>0) {
+                return true;
+            } else {
+                return super.onKeyDown(keyCode, keyEvent);
+            }
         }
-        return super.onKeyDown(keyCode, keyEvent);
     }
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent keyEvent) {
         // If pedalsFragment is open, send the keyCode and event there
-        if (isCurrentFragment(R.id.pedalsFragment) && ((PedalsFragment)getFragmentFromId(R.id.pedalsFragment)).isListening()) {
-            ((PedalsFragment)getCurrentFragment()).commonEventUp();
+        if (pedalsFragment!=null && pedalsFragment.isListening()) {
+            pedalsFragment.commonEventUp();
         } else if (!settingsOpen) {
             pedalActions.commonEventUp(keyCode,null);
         }
@@ -602,8 +607,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public boolean onKeyLongPress(int keyCode, KeyEvent keyEvent) {
         // If pedalsFragment is open, send the keyCode and event there
-        if (isCurrentFragment(R.id.pedalsFragment) && ((PedalsFragment)getCurrentFragment()).isListening()) {
-            ((PedalsFragment)getCurrentFragment()).commonEventLong();
+        if (pedalsFragment!=null && pedalsFragment.isListening()) {
+            pedalsFragment.commonEventLong();
             return true;
         } else if (!settingsOpen) {
             pedalActions.commonEventLong(keyCode,null);
@@ -1787,6 +1792,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 break;
             case "BootUpFragment":
                 bootUpFragment = (BootUpFragment) frag;
+                break;
+            case "PedalsFragment":
+                pedalsFragment = (PedalsFragment) frag;
                 break;
         }
         registeredFragment = frag;

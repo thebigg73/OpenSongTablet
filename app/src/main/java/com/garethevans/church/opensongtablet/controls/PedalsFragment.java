@@ -64,6 +64,9 @@ public class PedalsFragment extends Fragment {
         mainActivityInterface.updateToolbar(getString(R.string.pedal));
         mainActivityInterface.updateToolbarHelp(getString(R.string.website_foot_pedal));
 
+        // Register this fragment
+        mainActivityInterface.registerFragment(this,"PedalsFragment");
+
         // Grab views
         grabViews();
 
@@ -92,6 +95,13 @@ public class PedalsFragment extends Fragment {
         airTurnModeActions();
 
         return myView.getRoot();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        // Unregister this fragment
+        mainActivityInterface.registerFragment(null,"PedalsFragment");
     }
 
     private void midiPedalAllowed() {

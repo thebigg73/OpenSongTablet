@@ -36,13 +36,22 @@ public class UltimateGuitar {
         newSong.setCapo(getCapo(s));
 
         // Trim out everything around the lyrics/content
-        String contentStart = "<div class=\"ugm-b-tab--content js-tab-content\">";
-        int start = s.indexOf(contentStart);
-        String contentEnd = "</pre>";
-        int end = s.indexOf(contentEnd,start);
+        String contentStart1 = "<div class=\"ugm-b-tab--content js-tab-content\">";
+        int start = s.indexOf(contentStart1);
+        String contentEnd1 = "</pre>";
+        int end = s.indexOf(contentEnd1,start);
         if (start>=0 && end>start) {
-            s = s.substring(start+ contentStart.length(),end);
+            s = s.substring(start + contentStart1.length(), end);
         }
+
+        String contentStart2 = "<div class=\"js-page js-global-wrapper\">";
+        start = s.indexOf(contentStart2);
+        String contentEnd2 = "<div class=\"VvVqJ\">";
+        end = s.indexOf(contentEnd2,start);
+        if (start>0 && end>start) {
+            s = s.substring(start + contentStart2.length(), end);
+        }
+
         // Trim the lyrics start right up to the <pre tag
         start = s.indexOf("<pre");
         end = s.indexOf(">",start);
@@ -50,15 +59,24 @@ public class UltimateGuitar {
             s = s.substring(end+1);
         }
 
+        // Get rid of extra line breaks
+        s = s.replace("\n\n</span>","\n</span>");
+
+        // Get rid of extra [[ and ]]
+        s = s.replace("[[","[");
+        s = s.replace("]]","]");
+
         // Split the content into lines
         String[] lines = s.split("\n");
         StringBuilder lyrics = new StringBuilder();
         for (String line:lines) {
-            String chordIdentfier = "<span class=\"text-chord js-tab-ch js-tapped\">";
-            if (line.contains(chordIdentfier)) {
+            String chordIdentifier1 = "<span class=\"text-chord js-tab-ch js-tapped\">";
+            String chordIdentifier2 = "<span class=\"_2jIGi\">";
+            if (line.contains(chordIdentifier1) || line.contains(chordIdentifier2)) {
                 // Make it a chord line
                 line = "." + line;
-                line = line.replaceAll(chordIdentfier, "");
+                line = line.replaceAll(chordIdentifier1, "");
+                line = line.replaceAll(chordIdentifier2, "");
                 line = line.trim();
             } else if (mainActivityInterface.getProcessSong().looksLikeGuitarTab(line)) {
                 // Looks like a tab line
@@ -78,7 +96,7 @@ public class UltimateGuitar {
         }
         newSong.setLyrics(lyrics.toString());
 
-        // If we hae a capo (which means the key and the chords won't match in UG)
+        // If we have a capo (which means the key and the chords won't match in UG)
         // We will need to transpose the lyrics to match
         newSong = fixChordsForCapo(newSong);
         return newSong;

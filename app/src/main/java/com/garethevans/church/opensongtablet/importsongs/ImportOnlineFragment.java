@@ -312,9 +312,17 @@ public class ImportOnlineFragment extends Fragment {
         if (webString==null) {
             webString = "";
         }
+
+        String[] lines = webString.split("\n");
+        for (String line:lines) {
+            Log.d(TAG,"line: "+line);
+        }
+
         switch (source) {
             case "UltimateGuitar":
-                if (webString.contains("<div class=\"ugm-b-tab--content js-tab-content\">")) {
+                if (webString.contains("<div class=\"ugm-b-tab--content js-tab-content\">") ||
+                        (webString.contains("<div class=\"js-page js-global-wrapper\">") &&
+                                webString.contains("<span class=\"_3rlxz\">"))) {
                     show = true;
                 }
                 break;
@@ -357,17 +365,15 @@ public class ImportOnlineFragment extends Fragment {
     }
 
     private void processContent() {
-        Log.d(TAG,"getting here");
         showDownloadProgress(true);
         newSong = new Song();
 
+        Log.d(TAG,"source:"+source);
         switch (source) {
             case "UltimateGuitar":
-                Log.d(TAG,"getting here");
                 newSong = ultimateGuitar.processContent(newSong,webString);
                 break;
             case "Chordie":
-                Log.d(TAG,"getting here");
                 newSong = chordie.processContent(mainActivityInterface,newSong,webString);
                 break;
             case "SongSelect":
@@ -386,7 +392,7 @@ public class ImportOnlineFragment extends Fragment {
         showDownloadProgress(false);
 
         // Set up the save layout
-        //setupSaveLayout();
+        setupSaveLayout();
     }
 
     public void finishedDownloadPDF(Uri uri) {
@@ -422,6 +428,7 @@ public class ImportOnlineFragment extends Fragment {
         exposedDropDownArrayAdapter.keepSelectionPosition(myView.folderChoice,availableFolders);
         changeLayouts(false,false,true);
         myView.saveSong.setOnClickListener(v -> saveTheSong());
+        Log.d(TAG,"lyrics:"+newSong.getLyrics());
         showDownloadProgress(false);
     }
 

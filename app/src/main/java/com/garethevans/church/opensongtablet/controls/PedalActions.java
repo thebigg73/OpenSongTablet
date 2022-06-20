@@ -273,7 +273,7 @@ public class PedalActions {
         }
     }
 
-    private int getButtonNumber(int keyCode, String keyMidi) {
+    public int getButtonNumber(int keyCode, String keyMidi) {
         int pedal = 0;
         if (keyMidi != null) {
             for (int w = 1; w <= 8; w++) {
