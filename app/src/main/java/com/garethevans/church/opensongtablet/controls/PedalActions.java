@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet.controls;
 
 import android.content.Context;
 import android.util.Log;
+import android.view.ViewConfiguration;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
@@ -27,7 +28,7 @@ public class PedalActions {
     public final String[] defPedalMidis = new String[]{"","C3","D3","E3","F3","G3","A3","B3","C4"};
     public final String[] defShortActions = new String[]{"","prev","next","up","down","","","",""};
     public final String[] defLongActions  = new String[] {"", "songmenu", "set", "", "", "", "", "", ""};
-    private boolean longpress;
+    private boolean longpress, keyUpHappened;
     private int repeatsRecorded;
     private int keyRepeatCount;
     private int keyRepeatTime;
@@ -127,18 +128,28 @@ public class PedalActions {
                     public void run() {
                         airTurnPaused = false;
                     }
-                },1500);
+                },ViewConfiguration.getLongPressTimeout());
                 commonEventLong(keyCode,keyMidi);
             }
         } else {
             repeatsRecorded = 0;
             airTurnPaused = false;
         }
+        keyUpHappened = false;
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                if (!keyUpHappened) {
+                    keyUpHappened = true;
+                    commonEventLong(keyCode,keyMidi);
+                }
+            }
+        }, ViewConfiguration.getLongPressTimeout());
     }
 
     public void commonEventUp(int keyCode, String keyMidi) {
         Log.d(TAG,"commonEventUp() longress"+longpress);
-
+        keyUpHappened = true;
         if (!longpress) {
             whichEventTriggered(true,keyCode,keyMidi);
         }

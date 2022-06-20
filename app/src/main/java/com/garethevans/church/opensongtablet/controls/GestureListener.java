@@ -1,5 +1,6 @@
 package com.garethevans.church.opensongtablet.controls;
 
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 
@@ -12,6 +13,7 @@ public class GestureListener extends GestureDetector.SimpleOnGestureListener {
     private final MainActivityInterface mainActivityInterface;
     private final PerformanceGestures performanceGestures;
     private boolean doubleTapping;
+    private final String TAG = "GestureListener";
 
     public GestureListener(MainActivityInterface mainActivityInterface, PerformanceGestures performanceGestures,
                     int swipeMinimumDistance, int swipeMaxDistanceYError, int swipeMinimumVelocity) {
@@ -30,6 +32,7 @@ public class GestureListener extends GestureDetector.SimpleOnGestureListener {
 
     @Override
     public void onLongPress(MotionEvent e) {
+        Log.d(TAG,"onLongPress");
         super.onLongPress(e);
         if (doubleTapping) {
             doubleTapping = false;

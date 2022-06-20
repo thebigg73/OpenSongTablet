@@ -585,6 +585,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             pedalsFragment.keyDownListener(keyCode);
             return true;
         } else {
+            Log.d(TAG,"onKeyDown("+keyCode+","+keyEvent.toString());
             pedalActions.commonEventDown(keyCode, null);
             if (pedalActions.getButtonNumber(keyCode,null)>0) {
                 return true;
