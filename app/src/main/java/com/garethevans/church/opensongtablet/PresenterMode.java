@@ -3701,10 +3701,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                             sqLite = sqLiteHelper.setSong(sqLite);
                             sqLiteHelper.updateSong(PresenterMode.this,sqLite);
                         }
-                    } else {
-                        // Not a song in the database (likley a variation, slide, etc.)
-                        sqLite.setSongid("");
-                        sqLite.setId(0);
                     }
 
                     // IV - After any sqLite update has occurred

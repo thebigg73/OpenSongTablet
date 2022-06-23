@@ -7563,10 +7563,6 @@ public class StageMode extends AppCompatActivity implements
                             sqLite = sqLiteHelper.setSong(sqLite);
                             sqLiteHelper.updateSong(StageMode.this,sqLite);
                         }
-                    } else {
-                        // Not a song in the database (likley a variation, slide, etc.)
-                        sqLite.setSongid("");
-                        sqLite.setId(0);
                     }
 
                     // IV - After any sqLite update has occurred
