@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -149,6 +150,7 @@ class SongMenuAdapter extends BaseAdapter implements SectionIndexer {
                 String item_author = song.getAuthor();
                 String item_key = song.getKey();
                 String temp_title;
+                Log.d("SongMenu","filename="+song.getFilename()+"  title="+song.getTitle());
                 if (item_filename.startsWith("/") && item_filename.endsWith("/")) {
                     // This is a directory
                     temp_title = item_filename.replace("/", "");
