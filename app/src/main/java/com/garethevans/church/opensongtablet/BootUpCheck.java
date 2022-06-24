@@ -719,8 +719,10 @@ public class BootUpCheck extends AppCompatActivity {
             goToSongsLinearLayout.setVisibility(View.GONE);
             // Show the storage as a pulsing button
             pulseStorageButton();
-            // IV - Inform the user the folder is not usable
-            progressText.setText(String.format("%s\n%s", text, getString(R.string.storage_notwritable)));
+            if (progressText!=null && !((String) progressText.getText()).contains(getString(R.string.pleaseselect))) {
+                // IV - Inform the user the folder is not usable
+                progressText.setText(String.format("%s\n%s", text, getString(R.string.storage_notwritable)));
+            }
         }
     }
 

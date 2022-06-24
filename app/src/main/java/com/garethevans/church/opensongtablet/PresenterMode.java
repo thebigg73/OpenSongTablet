@@ -3690,16 +3690,18 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                         }
                         sqLite = sqLiteHelper.getSong(PresenterMode.this, songId);
 
-                        // IV - Backstop, if the song is not found add a basic song entry. Handles Nearby 'imported' songs
-                        if (sqLite == null) {
-                            sqLiteHelper.createImportedSong(PresenterMode.this, StaticVariables.whichSongFolder, StaticVariables.songfilename, StaticVariables.songfilename, "", "", "", "", "", "");
-                            sqLite = sqLiteHelper.getSong(PresenterMode.this, songId);
-                        }
+                        if (!StaticVariables.mTitle.equals("Welcome to OpenSongApp")) {
+                            // IV - Backstop, if the song is not found add a basic song entry. Handles Nearby 'imported' songs
+                            if (sqLite == null) {
+                                sqLiteHelper.createImportedSong(PresenterMode.this, StaticVariables.whichSongFolder, StaticVariables.songfilename, StaticVariables.songfilename, "", "", "", "", "", "");
+                                sqLite = sqLiteHelper.getSong(PresenterMode.this, songId);
+                            }
 
-                        // If this song isn't indexed, set its details
-                        if (sqLite.getLyrics()==null || sqLite.getLyrics().equals("")) {
-                            sqLite = sqLiteHelper.setSong(sqLite);
-                            sqLiteHelper.updateSong(PresenterMode.this,sqLite);
+                            // If this song isn't indexed, set its details
+                            if (!StaticVariables.mTitle.equals("Welcome to OpenSongApp") && (sqLite.getLyrics() == null || sqLite.getLyrics().equals(""))) {
+                                sqLite = sqLiteHelper.setSong(sqLite);
+                                sqLiteHelper.updateSong(PresenterMode.this, sqLite);
+                            }
                         }
                     }
 
