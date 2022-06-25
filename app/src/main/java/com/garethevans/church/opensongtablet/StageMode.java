@@ -608,6 +608,8 @@ public class StageMode extends AppCompatActivity implements
 
         // IV -  One time actions will have been completed
         FullscreenActivity.doonetimeactions = false;
+
+        prepareSongMenu();
     }
 
 
@@ -7755,7 +7757,7 @@ public class StageMode extends AppCompatActivity implements
                         if (foundsongfilename == null) {
                             foundsongfilename = getString(R.string.error);
                         }
-                        if (foundsongtitle == null) {
+                        if (foundsongtitle == null || foundsongtitle.equals("")) {
                             foundsongtitle = foundsongfilename;
                         }
                         if (foundsongauthor == null) {
@@ -7773,9 +7775,10 @@ public class StageMode extends AppCompatActivity implements
 
                         boolean isinset = setcurrent.contains(whattolookfor);
 
-                        Log.d("StageMode","filename:"+foundsongfilename+" title:"+foundsongtitle);
                         SongMenuViewItems song = new SongMenuViewItems(foundsongfilename,
-                            foundsongtitle, foundsongauthor, foundsongkey, isinset);
+                                //TODO GE commit changes to display of title  however SQL does not yet order by title. Both filename and title order, user choice, are needed.
+                                //foundsongtitle, foundsongauthor, foundsongkey, isinset);
+                                foundsongfilename, foundsongauthor, foundsongkey, isinset);
                         songmenulist.add(song);
                         filenamesSongsInFolder.add(foundsongfilename);
                     }
