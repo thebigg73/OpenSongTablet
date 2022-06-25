@@ -1005,7 +1005,9 @@ public class ProcessSong extends Activity {
             capobit.setTypeface(typefaceChords);
 
             if (displayBoldChordsHeadings) {
+                // IV - Fake bold will be applied if the font does not support bold
                 capobit.setPaintFlags(capobit.getPaintFlags() | Paint.FAKE_BOLD_TEXT_FLAG);
+                capobit.setTypeface(capobit.getTypeface(), Typeface.BOLD);
             }
 
             if (trimLines) {
@@ -1052,7 +1054,9 @@ public class ProcessSong extends Activity {
             chordbit.setTypeface(typefaceChords);
 
             if (displayBoldChordsHeadings) {
+                // IV - Fake bold will be applied if the font does not support bold
                 chordbit.setPaintFlags(chordbit.getPaintFlags() | Paint.FAKE_BOLD_TEXT_FLAG);
+                chordbit.setTypeface(chordbit.getTypeface(), Typeface.BOLD);
             }
 
             if (StaticVariables.whichMode.equals("Presentation")) {
@@ -1240,7 +1244,9 @@ public class ProcessSong extends Activity {
 
                 // IV - Support bold lyrics when presentation
                 if (fakeBold) {
+                    // IV - Fake bold will be applied if the font does not support bold
                     lyricbit.setPaintFlags(lyricbit.getPaintFlags() | Paint.FAKE_BOLD_TEXT_FLAG);
+                    lyricbit.setTypeface(lyricbit.getTypeface(), Typeface.BOLD);
                 }
 
                 // IV - Only use if the bit is not 'empty'.  This results in the chord line spacing being used
@@ -1307,7 +1313,9 @@ public class ProcessSong extends Activity {
                 lyricbit.setTextColor(presoFontColor);
                 lyricbit.setTypeface(typefacePreso);
                 if (presoLyricsBold) {
+                    // IV - Fake bold will be applied if the font does not support bold
                     lyricbit.setPaintFlags(lyricbit.getPaintFlags() | Paint.FAKE_BOLD_TEXT_FLAG);
+                    lyricbit.setTypeface(lyricbit.getTypeface(), Typeface.BOLD);
                 }
 
             } else {
@@ -1339,7 +1347,9 @@ public class ProcessSong extends Activity {
         titleview.setTypeface(typefaceLyrics);
         titleview.setTextSize(fontsize * preferences.getMyPreferenceFloat(c, "scaleHeadings", 0.6f));
         if (displayBoldChordsHeadings) {
+            // IV - Fake bold will be applied if the font does not support bold
             titleview.setPaintFlags(titleview.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG | Paint.FAKE_BOLD_TEXT_FLAG);
+            titleview.setTypeface(titleview.getTypeface(), Typeface.BOLD);
         } else {
             titleview.setPaintFlags(titleview.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         }
