@@ -1745,6 +1745,7 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
         SwitchCompat keepHostFiles = v.findViewById(R.id.keepHostFiles);
         SwitchCompat receiveHostSongSections = v.findViewById(R.id.receiveHostSongSections);
         SwitchCompat receiveHostAutoscroll = v.findViewById(R.id.receiveHostAutoscroll);
+        TextView option_separator_textview0 = v.findViewById(R.id.option_separator_textview0);
         connectionLog = v.findViewById(R.id.options_connections_log);
         connectionSearch = v.findViewById(R.id.searchForHosts);
 
@@ -1769,7 +1770,7 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
         setTextSwitch(receiveHostSongSections,c.getResources().getString(R.string.song_sections));
         setTextSwitch(receiveHostAutoscroll,c.getResources().getString(R.string.autoscroll));
         setTextButtons(connectionSearch,c.getString(R.string.connections_discover));
-        //setTextTextView(menuUp,c.getResources().getString(R.string.connections_connect));
+        setTextTextView(option_separator_textview0,c.getResources().getString(R.string.connections_connect));
         FloatingActionButton closeOptionsFAB = v.findViewById(R.id.closeOptionsFAB);
 
         // Set the default values
