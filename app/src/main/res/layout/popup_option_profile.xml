@@ -10,7 +10,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginStart="4dp">
 
         <TextView
             android:id="@+id/optionProfileTitle"
@@ -54,13 +55,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_marginStart="-32dp" >
 
             <TextView
                 style="@style/MyInfoText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="40dp"
                 android:layout_marginTop="2dp"
                 android:text="@string/profile_description" />
 
@@ -68,10 +70,12 @@
                 android:id="@+id/profileLoadButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="2dp"
                 android:background="@drawable/menu_button"
                 android:drawableStart="@drawable/ic_file_xml_white_36dp"
-                android:drawablePadding="4dp"
+                android:scaleX="0.8"
+                android:scaleY="0.8"
+                android:layout_marginEnd="-32dp"
+                android:drawablePadding="12dp"
                 android:gravity="center_vertical"
                 android:text="@string/load"
                 android:textColor="#fff"
@@ -81,10 +85,12 @@
                 android:id="@+id/profileSaveButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="2dp"
                 android:background="@drawable/menu_button"
                 android:drawableStart="@drawable/ic_content_save_white_36dp"
-                android:drawablePadding="4dp"
+                android:scaleX="0.8"
+                android:scaleY="0.8"
+                android:layout_marginEnd="-32dp"
+                android:drawablePadding="12dp"
                 android:gravity="center_vertical"
                 android:text="@string/save"
                 android:textColor="#fff"
