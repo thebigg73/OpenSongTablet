@@ -44,7 +44,7 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
     public void updateConnectionsLog() {
         if (StaticVariables.whichOptionMenu.equals("CONNECT") && connectionLog != null) {
             try {
-                setTextTextView(connectionLog,StaticVariables.connectionLog);
+                connectionLog.setText(StaticVariables.connectionLog);
             } catch (Exception e) {
                 Log.d("d", "Connections menu closed");
             }
@@ -435,28 +435,32 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
     }
 
     // IV - The set utilites always apply the user preference of text size
-    // For uppercase menu items use the 'uppercase the text based on locale' line OR
-    // for lowercase menu items then use 'All Caps is set false' line
+    // For uppercase menu items use the 'set text to uppercase text based on locale' line OR
+    // for lowercase menu items then use set text and 'All Caps is set false' lines
 
     private static void setTextButtons(Button b, String text) {
         b.setTextSize(textSize);
         b.setText(text.toUpperCase(StaticVariables.locale));
+        //b.setText(text);
         //b.setAllCaps(false);
     }
     private static void setTextTextView(TextView t, String text) {
         t.setTextSize(textSize);
         t.setText(text.toUpperCase(StaticVariables.locale));
+        //t.setText(text);
         //t.setAllCaps(false);
     }
     private static void setRadioButton(RadioButton b, String text) {
         b.setTextSize(textSize);
         b.setText(text.toUpperCase(StaticVariables.locale));
+        //b.setText(text);
         //b.setAllCaps(false);
     }
 
     private static void setTextSwitch(SwitchCompat t, String text) {
         t.setTextSize(textSize);
         t.setText(text.toUpperCase(StaticVariables.locale));
+        //t.setText(text);
         //t.setAllCaps(false);
     }
 
@@ -1767,7 +1771,8 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
             StaticVariables.connectionLog = c.getResources().getString(R.string.connections_log) + "\n\n";
         }
 
-        setTextTextView(connectionLog,StaticVariables.connectionLog);
+        connectionLog.setText(StaticVariables.connectionLog);
+        connectionLog.setTextSize(preferences.getMyPreferenceFloat(c,"songMenuAlphaIndexSize",14.0f));
         setTextTextView(deviceName,StaticVariables.deviceName);
         setRadioButton(connectionsOff,c.getString(R.string.off));
         setRadioButton(connectionsClient,c.getString(R.string.connections_actasclient));
@@ -1927,7 +1932,7 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
         });
         connectionLog.setOnClickListener(view -> {
             StaticVariables.connectionLog = c.getResources().getString(R.string.connections_log) + "\n\n";
-            setTextTextView(connectionLog,StaticVariables.connectionLog);
+            connectionLog.setText(StaticVariables.connectionLog);
         });
 
         if (!mListener.requestNearbyPermissions()) {

@@ -51,41 +51,41 @@
         android:layout_weight="1"
         android:layout_height="0dp">
 
-    <LinearLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="-32dp"
             android:layout_marginEnd="-32dp"
             android:orientation="vertical" >
 
-        <Button
-            android:id="@+id/deviceName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/menu_button"
-            android:drawableStart="@drawable/ic_account_white_36dp"
-            android:scaleX="0.8"
-            android:scaleY="0.8"
-            android:drawablePadding="12dp"
-            android:gravity="center_vertical"
-            android:textColor="#fff"
-            android:text="@string/app_name" />
+            <Button
+                android:id="@+id/deviceName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/menu_button"
+                android:drawableStart="@drawable/ic_account_white_36dp"
+                android:scaleX="0.8"
+                android:scaleY="0.8"
+                android:drawablePadding="12dp"
+                android:gravity="center_vertical"
+                android:textColor="#fff"
+                android:text="@string/app_name" />
 
-        <TextView
-            android:id="@+id/option_separator_textview0"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/menu_button"
-            app:drawableStartCompat="@drawable/ic_access_point_white_36dp"
-            android:scaleX="0.8"
-            android:scaleY="0.8"
-            android:drawablePadding="12dp"
-            android:gravity="center_vertical"
-            android:textColor="#fff"
-            android:textSize="16sp"
-            android:text="@string/connections_connect"
-            android:layout_marginTop="2dp"
-            android:layout_marginLeft="2dp" />
+            <TextView
+                android:id="@+id/option_separator_textview0"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/menu_button"
+                app:drawableStartCompat="@drawable/ic_access_point_white_36dp"
+                android:scaleX="0.8"
+                android:scaleY="0.8"
+                android:drawablePadding="12dp"
+                android:gravity="center_vertical"
+                android:textColor="#fff"
+                android:textSize="16sp"
+                android:text="@string/connections_connect"
+                android:layout_marginTop="2dp"
+                android:layout_marginLeft="2dp" />
 
             <RadioGroup
                 android:id="@+id/connectionsMethod"
@@ -233,11 +233,13 @@
             style="@style/MyInfoText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:scaleX="0.8"
-            android:scaleY="0.8"
-            android:layout_margin="4dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="12dp"
+            android:padding="8dp"
             android:text="@string/connections_log" />
 
         </LinearLayout>
+
     </ScrollView>
+
 </LinearLayout>
