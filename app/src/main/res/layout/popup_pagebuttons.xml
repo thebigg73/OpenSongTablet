@@ -12,7 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true">
-
         <include layout="@layout/popup_dialogtitle" />
     </FrameLayout>
 
@@ -83,7 +82,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_margin="24dp"
+                    android:layout_margin="20dp"
                     android:layout_weight="1"
                     android:background="@drawable/apptheme_scrubber_primary_holo"
                     android:max="100"
@@ -105,7 +104,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
-                android:orientation="vertical">
+                android:layout_marginEnd="-32dp"
+                android:layout_marginStart="-32dp"
+                android:orientation="vertical" >
 
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/pageButtonGroup_Switch"
@@ -113,11 +114,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_margin="8dp"
                     android:text="@string/pagebutton_group"
-                    android:textAllCaps="true"
                     android:drawableStart="@drawable/ic_bullseye_white_36dp"
-                    android:drawablePadding="8dp"
+                    android:scaleX="0.8"
+                    android:scaleY="0.8"
+                    android:layout_marginTop="8dp"
+                    android:textSize="20sp"
+                    android:drawablePadding="12dp"
                     android:textColor="#ff0"
                     android:theme="@style/SwitchStyle" />
 
@@ -127,11 +130,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_margin="8dp"
                     android:text="@string/pagebutton_extrainfo_group"
-                    android:textAllCaps="true"
                     android:drawableStart="@drawable/ic_information_white_36dp"
-                    android:drawablePadding="8dp"
+                    android:scaleX="0.8"
+                    android:scaleY="0.8"
+                    android:layout_marginTop="8dp"
+                    android:textSize="20sp"
+                    android:drawablePadding="12dp"
                     android:textColor="#ff0"
                     android:theme="@style/SwitchStyle" />
 
@@ -141,30 +146,34 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_margin="8dp"
                     android:text="@string/pagebutton_custom_group"
-                    android:textAllCaps="true"
                     android:drawableStart="@drawable/ic_bullseye_white_36dp"
-                    android:drawablePadding="8dp"
+                    android:scaleX="0.8"
+                    android:scaleY="0.8"
+                    android:layout_marginTop="8dp"
+                    android:textSize="20sp"
+                    android:drawablePadding="12dp"
                     android:textColor="#ff0"
                     android:theme="@style/SwitchStyle" />
 
             </LinearLayout>
 
+            <TextView
+                style="@style/MyHeadingText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="24dp"
+                android:text="@string/pagebutton_visibility" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    style="@style/MyHeadingText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginTop="24dp"
-                    android:text="@string/pagebutton_visibility" />
+                android:layout_marginEnd="-32dp"
+                android:layout_marginStart="-32dp"
+                android:orientation="vertical" >
 
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/setVisible_Switch"
@@ -172,11 +181,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_margin="8dp"
-                    android:text="@string/currentset"
-                    android:textAllCaps="true"
                     android:drawableStart="@drawable/ic_format_list_numbers_white_36dp"
-                    android:drawablePadding="8dp"
+                    android:drawablePadding="12dp"
+                    android:scaleX="0.8"
+                    android:scaleY="0.8"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/currentset"
+                    android:textSize="20sp"
                     android:theme="@style/SwitchStyle" />
 
                 <androidx.appcompat.widget.SwitchCompat
@@ -185,11 +196,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_margin="8dp"
                     android:text="@string/pageturn_next"
-                    android:textAllCaps="true"
                     android:drawableStart="@drawable/ic_arrow_right_white_36dp"
-                    android:drawablePadding="8dp"
+                    android:scaleX="0.8"
+                    android:scaleY="0.8"
+                    android:layout_marginTop="8dp"
+                    android:textSize="20sp"
+                    android:drawablePadding="12dp"
                     android:theme="@style/SwitchStyle" />
 
                 <androidx.appcompat.widget.SwitchCompat
@@ -198,11 +211,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_margin="8dp"
                     android:text="@string/scrollbuttons_toggle"
-                    android:textAllCaps="true"
                     android:drawableStart="@drawable/ic_arrow_down_white_36dp"
-                    android:drawablePadding="8dp"
+                    android:scaleX="0.8"
+                    android:scaleY="0.8"
+                    android:layout_marginTop="8dp"
+                    android:textSize="20sp"
+                    android:drawablePadding="12dp"
                     android:theme="@style/SwitchStyle" />
 
                 <androidx.appcompat.widget.SwitchCompat
@@ -211,11 +226,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_margin="8dp"
                     android:text="@string/pad"
-                    android:textAllCaps="true"
                     android:drawableStart="@drawable/ic_amplifier_white_36dp"
-                    android:drawablePadding="8dp"
+                    android:scaleX="0.8"
+                    android:scaleY="0.8"
+                    android:layout_marginTop="8dp"
+                    android:textSize="20sp"
+                    android:drawablePadding="12dp"
                     android:theme="@style/SwitchStyle" />
 
                 <androidx.appcompat.widget.SwitchCompat
@@ -224,11 +241,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_margin="8dp"
                     android:text="@string/metronome"
-                    android:textAllCaps="true"
                     android:drawableStart="@drawable/ic_pulse_white_36dp"
-                    android:drawablePadding="8dp"
+                    android:scaleX="0.8"
+                    android:scaleY="0.8"
+                    android:layout_marginTop="8dp"
+                    android:textSize="20sp"
+                    android:drawablePadding="12dp"
                     android:theme="@style/SwitchStyle" />
 
                 <androidx.appcompat.widget.SwitchCompat
@@ -237,11 +256,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_margin="8dp"
                     android:text="@string/autoscroll"
-                    android:textAllCaps="true"
                     android:drawableStart="@drawable/ic_rotate_right_white_36dp"
-                    android:drawablePadding="8dp"
+                    android:scaleX="0.8"
+                    android:scaleY="0.8"
+                    android:layout_marginTop="8dp"
+                    android:textSize="20sp"
+                    android:drawablePadding="12dp"
                     android:theme="@style/SwitchStyle" />
 
                 <androidx.appcompat.widget.SwitchCompat
@@ -250,11 +271,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_margin="8dp"
                     android:text="@string/chords"
-                    android:textAllCaps="true"
                     android:drawableStart="@drawable/ic_guitar_electric_white_36dp"
-                    android:drawablePadding="8dp"
+                    android:scaleX="0.8"
+                    android:scaleY="0.8"
+                    android:layout_marginTop="8dp"
+                    android:textSize="20sp"
+                    android:drawablePadding="12dp"
                     android:theme="@style/SwitchStyle" />
 
                 <androidx.appcompat.widget.SwitchCompat
@@ -263,11 +286,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_margin="8dp"
                     android:text="@string/link"
-                    android:textAllCaps="true"
                     android:drawableStart="@drawable/ic_link_white_36dp"
-                    android:drawablePadding="8dp"
+                    android:scaleX="0.8"
+                    android:scaleY="0.8"
+                    android:layout_marginTop="8dp"
+                    android:textSize="20sp"
+                    android:drawablePadding="12dp"
                     android:theme="@style/SwitchStyle" />
 
                 <androidx.appcompat.widget.SwitchCompat
@@ -276,11 +301,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_margin="8dp"
                     android:text="@string/stickynotes"
-                    android:textAllCaps="true"
                     android:drawableStart="@drawable/ic_comment_text_white_36dp"
-                    android:drawablePadding="8dp"
+                    android:scaleX="0.8"
+                    android:scaleY="0.8"
+                    android:layout_marginTop="8dp"
+                    android:textSize="20sp"
+                    android:drawablePadding="12dp"
                     android:theme="@style/SwitchStyle" />
 
                 <androidx.appcompat.widget.SwitchCompat
@@ -289,11 +316,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_margin="8dp"
                     android:text="@string/music_score"
-                    android:textAllCaps="true"
                     android:drawableStart="@drawable/ic_clef_white_36dp"
-                    android:drawablePadding="8dp"
+                    android:scaleX="0.8"
+                    android:scaleY="0.8"
+                    android:layout_marginTop="8dp"
+                    android:textSize="20sp"
+                    android:drawablePadding="12dp"
                     android:theme="@style/SwitchStyle" />
 
                 <androidx.appcompat.widget.SwitchCompat
@@ -302,11 +331,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_margin="8dp"
                     android:text="@string/highlight"
-                    android:textAllCaps="true"
                     android:drawableStart="@drawable/ic_highlighter_white_36dp"
-                    android:drawablePadding="8dp"
+                    android:scaleX="0.8"
+                    android:scaleY="0.8"
+                    android:layout_marginTop="8dp"
+                    android:textSize="20sp"
+                    android:drawablePadding="12dp"
                     android:theme="@style/SwitchStyle" />
 
                 <androidx.appcompat.widget.SwitchCompat
@@ -315,11 +346,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_margin="8dp"
                     android:text="@string/pdf_selectpage"
-                    android:textAllCaps="true"
                     android:drawableStart="@drawable/ic_book_white_36dp"
-                    android:drawablePadding="8dp"
+                    android:scaleX="0.8"
+                    android:scaleY="0.8"
+                    android:layout_marginTop="8dp"
+                    android:textSize="20sp"
+                    android:drawablePadding="12dp"
                     android:theme="@style/SwitchStyle" />
 
                 <androidx.appcompat.widget.SwitchCompat
@@ -328,11 +361,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_margin="8dp"
                     android:text="@string/custom"
-                    android:textAllCaps="true"
                     android:drawableStart="@drawable/ic_bullseye_white_36dp"
-                    android:drawablePadding="8dp"
+                    android:scaleX="0.8"
+                    android:scaleY="0.8"
+                    android:layout_marginTop="8dp"
+                    android:textSize="20sp"
+                    android:drawablePadding="12dp"
                     android:theme="@style/SwitchStyle" />
 
                 <androidx.appcompat.widget.SwitchCompat
@@ -341,11 +376,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_margin="8dp"
                     android:text="@string/custom"
-                    android:textAllCaps="true"
                     android:drawableStart="@drawable/ic_bullseye_white_36dp"
-                    android:drawablePadding="8dp"
+                    android:scaleX="0.8"
+                    android:scaleY="0.8"
+                    android:layout_marginTop="8dp"
+                    android:textSize="20sp"
+                    android:drawablePadding="12dp"
                     android:theme="@style/SwitchStyle" />
 
                 <androidx.appcompat.widget.SwitchCompat
@@ -354,11 +391,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_margin="8dp"
                     android:text="@string/custom"
-                    android:textAllCaps="true"
                     android:drawableStart="@drawable/ic_bullseye_white_36dp"
-                    android:drawablePadding="8dp"
+                    android:scaleX="0.8"
+                    android:scaleY="0.8"
+                    android:layout_marginTop="8dp"
+                    android:textSize="20sp"
+                    android:drawablePadding="12dp"
                     android:theme="@style/SwitchStyle" />
 
                 <androidx.appcompat.widget.SwitchCompat
@@ -367,11 +406,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_margin="8dp"
                     android:text="@string/custom"
-                    android:textAllCaps="true"
                     android:drawableStart="@drawable/ic_bullseye_white_36dp"
-                    android:drawablePadding="8dp"
+                    android:scaleX="0.8"
+                    android:scaleY="0.8"
+                    android:layout_marginTop="8dp"
+                    android:textSize="20sp"
+                    android:drawablePadding="12dp"
                     android:theme="@style/SwitchStyle" />
 
             </LinearLayout>

@@ -434,22 +434,30 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
         }
     }
 
+    // IV - The set utilites always apply the user preference of text size
+    // For uppercase menu items use the 'uppercase the text based on locale' line OR
+    // for lowercase menu items then use 'All Caps is set false' line
+
     private static void setTextButtons(Button b, String text) {
         b.setTextSize(textSize);
         b.setText(text.toUpperCase(StaticVariables.locale));
+        //b.setAllCaps(false);
     }
     private static void setTextTextView(TextView t, String text) {
         t.setTextSize(textSize);
         t.setText(text.toUpperCase(StaticVariables.locale));
+        //t.setAllCaps(false);
     }
     private static void setRadioButton(RadioButton b, String text) {
         b.setTextSize(textSize);
         b.setText(text.toUpperCase(StaticVariables.locale));
+        //b.setAllCaps(false);
     }
 
     private static void setTextSwitch(SwitchCompat t, String text) {
         t.setTextSize(textSize);
         t.setText(text.toUpperCase(StaticVariables.locale));
+        //t.setAllCaps(false);
     }
 
     private static void mainOptionListener(View v, final Context c) {

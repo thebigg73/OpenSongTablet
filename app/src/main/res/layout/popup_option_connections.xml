@@ -54,8 +54,9 @@
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginStart="-32dp" >
+            android:layout_marginStart="-32dp"
+            android:layout_marginEnd="-32dp"
+            android:orientation="vertical" >
 
         <Button
             android:id="@+id/deviceName"
@@ -65,7 +66,6 @@
             android:drawableStart="@drawable/ic_account_white_36dp"
             android:scaleX="0.8"
             android:scaleY="0.8"
-            android:layout_marginEnd="-32dp"
             android:drawablePadding="12dp"
             android:gravity="center_vertical"
             android:textColor="#fff"
@@ -79,7 +79,6 @@
             app:drawableStartCompat="@drawable/ic_access_point_white_36dp"
             android:scaleX="0.8"
             android:scaleY="0.8"
-            android:layout_marginEnd="-32dp"
             android:drawablePadding="12dp"
             android:gravity="center_vertical"
             android:textColor="#fff"
@@ -100,7 +99,6 @@
                     android:layout_height="wrap_content"
                     android:scaleX="0.8"
                     android:scaleY="0.8"
-                    android:layout_marginEnd="-32dp"
                     android:layout_marginStart="38dp"
                     android:text="@string/off" />
 
@@ -110,7 +108,6 @@
                     android:layout_height="wrap_content"
                     android:scaleX="0.8"
                     android:scaleY="0.8"
-                    android:layout_marginEnd="-32dp"
                     android:layout_marginStart="38dp"
                     android:text="@string/connections_actashost" />
 
@@ -118,10 +115,9 @@
                     android:id="@+id/connectionsClient"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="38dp"
                     android:scaleX="0.8"
                     android:scaleY="0.8"
-                    android:layout_marginEnd="-32dp"
+                    android:layout_marginStart="38dp"
                     android:text="@string/connections_actasclient" />
 
             </RadioGroup>
@@ -148,7 +144,6 @@
                     android:drawableStart="@drawable/ic_menu_white_36dp"
                     android:scaleX="0.8"
                     android:scaleY="0.8"
-                    android:layout_marginEnd="-32dp"
                     android:drawablePadding="12dp"
                     android:gravity="center_vertical"
                     android:text="@string/nearby_host_menu_only"
@@ -174,12 +169,10 @@
                     android:id="@+id/receiveHostSongSections"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-
                     android:background="@drawable/menu_button"
                     android:drawableStart="@drawable/ic_code_brackets_white_36dp"
                     android:scaleX="0.8"
                     android:scaleY="0.8"
-                    android:layout_marginEnd="-32dp"
                     android:drawablePadding="12dp"
                     android:gravity="center_vertical"
                     android:text="@string/song_sections"
@@ -193,7 +186,6 @@
                     android:drawableStart="@drawable/ic_rotate_right_white_36dp"
                     android:scaleX="0.8"
                     android:scaleY="0.8"
-                    android:layout_marginEnd="-32dp"
                     android:drawablePadding="12dp"
                     android:gravity="center_vertical"
                     android:text="@string/autoscroll"
@@ -207,7 +199,6 @@
                     android:drawableStart="@drawable/ic_download_white_36dp"
                     android:scaleX="0.8"
                     android:scaleY="0.8"
-                    android:layout_marginEnd="-32dp"
                     android:drawablePadding="12dp"
                     android:gravity="center_vertical"
                     android:text="@string/connections_receive_host"
@@ -221,7 +212,6 @@
                     android:drawableStart="@drawable/ic_content_save_white_36dp"
                     android:scaleX="0.8"
                     android:scaleY="0.8"
-                    android:layout_marginEnd="-32dp"
                     android:drawablePadding="12dp"
                     android:gravity="center_vertical"
                     android:text="@string/connections_keephostsongs"
@@ -233,7 +223,6 @@
                     android:layout_height="wrap_content"
                     android:scaleX="0.8"
                     android:scaleY="0.8"
-                    android:layout_marginEnd="-32dp"
                     android:padding="4dp"
                     android:text="@string/connections_discover" />
 
@@ -246,7 +235,6 @@
             android:layout_height="wrap_content"
             android:scaleX="0.8"
             android:scaleY="0.8"
-            android:layout_marginEnd="-32dp"
             android:layout_margin="4dp"
             android:text="@string/connections_log" />
 

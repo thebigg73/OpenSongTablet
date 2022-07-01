@@ -56,8 +56,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginStart="-32dp" >
+            android:layout_marginStart="-32dp"
+            android:layout_marginEnd="-32dp"
+            android:orientation="vertical" >
 
             <TextView
                 android:id="@+id/song_separator_textview"
@@ -76,7 +77,6 @@
                 android:drawableLeft="@drawable/ic_amplifier_white_36dp"
                 android:scaleX="0.8"
                 android:scaleY="0.8"
-                android:layout_marginEnd="-32dp"
                 android:drawablePadding="12dp"
                 android:gravity="center_vertical"
                 android:text="@string/pad"
@@ -93,7 +93,6 @@
                 android:drawableLeft="@drawable/ic_check_white_36dp"
                 android:scaleX="0.8"
                 android:scaleY="0.8"
-                android:layout_marginEnd="-32dp"
                 android:drawablePadding="12dp"
                 android:text="@string/activated"
                 android:textColor="#fff"
@@ -119,7 +118,6 @@
                 android:drawableLeft="@drawable/ic_shuffle_white_36dp"
                 android:scaleX="0.8"
                 android:scaleY="0.8"
-                android:layout_marginEnd="-32dp"
                 android:drawablePadding="12dp"
                 android:gravity="center_vertical"
                 android:text="@string/crossfade_time"
@@ -136,7 +134,6 @@
                 android:drawableLeft="@drawable/ic_play_white_36dp"
                 android:scaleX="0.8"
                 android:scaleY="0.8"
-                android:layout_marginEnd="-32dp"
                 android:drawablePadding="12dp"
                 android:text="@string/autostartpad"
                 android:textColor="#fff"
@@ -154,7 +151,6 @@
                 android:drawableLeft="@drawable/ic_content_save_white_36dp"
                 android:scaleX="0.8"
                 android:scaleY="0.8"
-                android:layout_marginEnd="-32dp"
                 android:drawablePadding="12dp"
                 android:gravity="center_vertical"
                 android:text="@string/custom"
@@ -171,7 +167,6 @@
                 android:drawableLeft="@drawable/ic_format_text_white_36dp"
                 android:scaleX="0.8"
                 android:scaleY="0.8"
-                android:layout_marginEnd="-32dp"
                 android:drawablePadding="12dp"
                 android:gravity="center_vertical"
                 android:text="@string/timer_size"

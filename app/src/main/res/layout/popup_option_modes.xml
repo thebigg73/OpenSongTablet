@@ -55,8 +55,9 @@
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginStart="-32dp" >
+            android:layout_marginStart="-32dp"
+            android:layout_marginEnd="-32dp"
+            android:orientation="vertical" >
 
         <Button
             android:id="@+id/modePerformanceButton"
@@ -66,7 +67,6 @@
             android:drawableStart="@drawable/ic_microphone_variant_white_36dp"
             android:scaleX="0.8"
             android:scaleY="0.8"
-            android:layout_marginEnd="-32dp"
             android:drawablePadding="12dp"
             android:gravity="center_vertical"
             android:text="@string/performancemode"
@@ -81,7 +81,6 @@
             android:drawableStart="@drawable/ic_lan_connect_white_36dp"
             android:scaleX="0.8"
             android:scaleY="0.8"
-            android:layout_marginEnd="-32dp"
             android:drawablePadding="12dp"
             android:gravity="center_vertical"
             android:text="@string/stagemode"
@@ -96,7 +95,6 @@
             android:drawableStart="@drawable/ic_projector_white_36dp"
             android:scaleX="0.8"
             android:scaleY="0.8"
-            android:layout_marginEnd="-32dp"
             android:drawablePadding="12dp"
             android:gravity="center_vertical"
             android:text="@string/presentermode"
