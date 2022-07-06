@@ -285,6 +285,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            Log.d(TAG,"songsFound: "+songsFound.size());
             requireActivity().runOnUiThread(this::updateSongList);
         }).start();
     }

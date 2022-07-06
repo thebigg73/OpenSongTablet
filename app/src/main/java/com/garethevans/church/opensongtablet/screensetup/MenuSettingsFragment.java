@@ -48,12 +48,18 @@ public class MenuSettingsFragment extends Fragment {
                 getMyPreferenceFloat("songMenuAlphaIndexSize",12.0f);
         boolean showTickBoxes = mainActivityInterface.getPreferences().
                 getMyPreferenceBoolean("songMenuSetTicksShow",true);
+        boolean sortByTitles = mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuSortTitles",true);
 
         myView.songAlphabeticalShow.setChecked(showAlphabetical);
         myView.songAlphabeticalSize.setValue(fontSize);
         myView.songAlphabeticalSize.setHint(fontSize+"sp");
         myView.songAlphabeticalSize.setLabelFormatter(value -> ((int)value)+"sp");
         myView.songMenuCheckboxes.setChecked(showTickBoxes);
+        if (sortByTitles) {
+            myView.songMenuOrder.setSliderPos(1);
+        } else {
+            myView.songMenuOrder.setSliderPos(0);
+        }
 
         showHideSize(showAlphabetical);
     }
@@ -83,6 +89,7 @@ public class MenuSettingsFragment extends Fragment {
             }
         });
         myView.songAlphabeticalSize.addOnChangeListener((slider, value, fromUser) -> myView.songAlphabeticalSize.setHint(value+"sp"));
+        myView.songMenuOrder.addOnChangeListener((slider, value, fromUser) -> mainActivityInterface.getPreferences().setMyPreferenceBoolean("songMenuSortTitles",value==1));
     }
 
     private void showHideSize(boolean show) {

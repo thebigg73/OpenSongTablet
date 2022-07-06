@@ -194,7 +194,6 @@ public class NearbyConnections implements NearbyInterface {
         } else {
             updateConnectionLog(c.getString(R.string.connections_mode)+ ": " + c.getString(R.string.connections_mode_single));
         }
-        Log.d(TAG,"Strategy set to: "+nearbyStrategy);
     }
     public String getNearbyStrategyType() {
         if (nearbyStrategy==Strategy.P2P_STAR) {

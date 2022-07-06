@@ -160,6 +160,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
            return mainActivityInterface.getCommonSQL().getSongsByFilters(db, searchByFolder, searchByArtist, searchByKey, searchByTag, searchByFilter,
                     folderVal, artistVal, keyVal, tagVal, filterVal);
         } catch (OutOfMemoryError | Exception e) {
+            e.printStackTrace();
             return new ArrayList<>();
         }
     }

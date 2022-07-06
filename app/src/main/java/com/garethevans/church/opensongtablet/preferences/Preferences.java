@@ -459,6 +459,7 @@ public class Preferences extends Activity {
     songMenuSetTicksShow            boolean     Should we show the ticks identifying song is in the set in the song menu (def:true)
     songSheet                       boolean     Should the extra song info be shown at the top like a printed songsheet? (def:false)
     songTitleSize                   float       The size of the song title text in the action bar (def:13.0f)
+    songMenuSortTitles              boolean     If the song menu should sort (and display) by title rather than filename (def:true)
     soundMeterRange                 int         The volume range of the sound meter (def:400)
     stageModeScale                  float       The max height of each stage mode section (to allow next section to peek at bottom) (def:0.80f)
     stickyAuto                      boolean     Should sticky notes be shown automatically (def:true)

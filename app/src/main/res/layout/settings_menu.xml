@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/DefaultView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -22,6 +23,15 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:text="@string/song_menu_checkboxes" />
+            <TableRow style="@style/DividerLine" />
+
+            <com.garethevans.church.opensongtablet.customviews.TextSlider
+                android:id="@+id/songMenuOrder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:heading="@string/menu_song_order"
+                app:textLeft="@string/filename"
+                app:textRight="@string/title"/>
 
             <TableRow style="@style/DividerLine" />
 
@@ -29,7 +39,7 @@
                 android:id="@+id/songAlphabeticalShow"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="0dp"
                 android:layout_marginBottom="8dp"
                 android:text="@string/alphabetical" />
 

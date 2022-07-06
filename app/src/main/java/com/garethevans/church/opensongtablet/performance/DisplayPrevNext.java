@@ -3,7 +3,6 @@ package com.garethevans.church.opensongtablet.performance;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.net.Uri;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -107,7 +106,6 @@ public class DisplayPrevNext {
         int setPosition = mainActivityInterface.getCurrentSet().getIndexSongInSet();
         int songPosition = mainActivityInterface.getPositionOfSongInMenu();
 
-        Log.d(TAG,"songPosition="+songPosition+"  setPosition="+setPosition);
         // Set the local variables for prevIndex, nextIndex and if we are using the set or song menu
         setIndexes(setPosition, songPosition);
     }
@@ -148,18 +146,15 @@ public class DisplayPrevNext {
                 moveNextInMenu = false;
             }
         }
-        Log.d(TAG,"songPosition="+songPosition+"  movePrevInMenu="+movePrevInMenu+"  prevIndex="+prevIndex+"  moveNextInMenu="+moveNextInMenu+"  nextIndex="+nextIndex);
     }
 
     private String getTextForButton(int position) {
-        Log.d(TAG,"getTextForButton("+position+")");
         String text = "";
         if (position>-1) {
             if (isSetMove(position)) {
                 if (position < mainActivityInterface.getCurrentSet().getSetItems().size()) {
                     text = mainActivityInterface.getCurrentSet().getFilename(position);
 
-                    Log.d(TAG,"next song in set="+mainActivityInterface.getCurrentSet().getFolder(position)+"/"+text);
                     // Look for the key in the set (it might be specified)
                     String key = mainActivityInterface.getCurrentSet().getKey(position);
                     // If it isn't there, for the song key from the user database instead
@@ -204,15 +199,9 @@ public class DisplayPrevNext {
     }
 
     private void doMove(int position) {
-        Log.d(TAG,"position="+position);
-        Log.d(TAG,"isSetMove="+isSetMove(position));
-        Log.d(TAG,"isMenuMove="+isMenuMove(position));
-
         if (isSetMove(position)) {
             mainActivityInterface.loadSongFromSet(position);
         } else if (isMenuMove(position)){
-            Log.d(TAG,"folder/filename"+mainActivityInterface.getSongInMenu(position).getFolder()+"/"+
-                    mainActivityInterface.getSongInMenu(position).getFilename());
             mainActivityInterface.doSongLoad(mainActivityInterface.getSongInMenu(position).getFolder(),
                     mainActivityInterface.getSongInMenu(position).getFilename(),true);
         }
@@ -223,7 +212,6 @@ public class DisplayPrevNext {
     }
 
     private boolean isMenuMove(int position) {
-        Log.d(TAG,"isMenuMove(): position="+position+"  prevIndex="+ prevIndex+ "  movePrevInMenu="+movePrevInMenu+"  nextIndex="+nextIndex+"  moveNextInMenu="+moveNextInMenu);
         return (movePrevInMenu && position==prevIndex) || (moveNextInMenu && position==nextIndex);
     }
 

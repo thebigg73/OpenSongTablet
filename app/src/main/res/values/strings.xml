@@ -1157,6 +1157,7 @@ Check out the categories in the right hand options menu.
     <string name="look_for">Look for</string>
     <string name="lyrics_settings">Lyrics settings</string>
     <string name="time_seconds">Show seconds</string>
+    <string name="menu_song_order">How should songs be listed in the menu?</string>
 
 
 </resources>

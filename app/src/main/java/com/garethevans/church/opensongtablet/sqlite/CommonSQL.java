@@ -211,7 +211,7 @@ public class CommonSQL {
     }
 
     // Search for values in the table
-    ArrayList<Song> getSongsByFilters(SQLiteDatabase db, boolean searchByFolder,
+    public ArrayList<Song> getSongsByFilters(SQLiteDatabase db, boolean searchByFolder,
                                       boolean searchByArtist, boolean searchByKey, boolean searchByTag,
                                       boolean searchByFilter, String folderVal, String artistVal,
                                       String keyVal, String tagVal, String filterVal) {
@@ -273,20 +273,27 @@ public class CommonSQL {
 
         // Select matching folder Query
         // Common strings for searching.  Don't need to grab everything here - we can get the rest later
-        String getOrderBySQL = " ORDER BY listname COLLATE NOCASE ASC";
+        String listname = SQLite.COLUMN_FILENAME;
+        if (mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuTitle",true)) {
+            listname = SQLite.COLUMN_TITLE;
+        }
+
+        String getOrderBySQL = " ORDER BY " + listname + " COLLATE NOCASE ASC";
         String getBasicSQLQueryStart = "SELECT " + SQLite.COLUMN_FILENAME + ", " + SQLite.COLUMN_AUTHOR +
-                ", IFNULL(NULLIF(" +  SQLite.COLUMN_TITLE  + ",'')," +  SQLite.COLUMN_FILENAME + ") as listname, " +
+                ", IFNULL(NULLIF(" +  SQLite.COLUMN_TITLE+ ",'')," +  SQLite.COLUMN_FILENAME + ") AS " + SQLite.COLUMN_TITLE + ", " +
                 SQLite.COLUMN_KEY + ", " + SQLite.COLUMN_FOLDER + ", " + SQLite.COLUMN_THEME + ", " +
                 SQLite.COLUMN_ALTTHEME + ", " + SQLite.COLUMN_USER1 + ", " + SQLite.COLUMN_USER2 + ", " +
                 SQLite.COLUMN_USER3 + ", " + SQLite.COLUMN_LYRICS + ", " + SQLite.COLUMN_HYMNNUM +
                 " FROM " + SQLite.TABLE_NAME + " ";
         String selectQuery = getBasicSQLQueryStart + sqlMatch + " " + getOrderBySQL;
+        Log.d(TAG,"selectQuery: "+selectQuery);
 
         String[] selectionArgs = new String[args.size()];
         selectionArgs = args.toArray(selectionArgs);
 
         Cursor cursor = db.rawQuery(selectQuery, selectionArgs);
 
+        Log.d(TAG,"matching song: "+cursor.getCount());
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
@@ -294,7 +301,7 @@ public class CommonSQL {
                 String fo = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_FOLDER));
                 String au = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_AUTHOR));
                 String ke = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_KEY));
-                String ti = cursor.getString(cursor.getColumnIndexOrThrow("listname"));
+                String ti = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_TITLE));
 
                 Song song = new Song();
                 song.setFilename(fi);

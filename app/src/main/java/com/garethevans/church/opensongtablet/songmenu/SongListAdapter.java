@@ -45,9 +45,13 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
 
     @Override
     public CharSequence getSectionText(int position) {
-        String item = songList.get(position).getTitle();
-        if (item.length() > 0) {
-            return item.substring(0, 1);
+        if (songList!=null && songList.size()>position) {
+            String item = songList.get(position).getTitle();
+            if (item.length() > 0) {
+                return item.substring(0, 1);
+            } else {
+                return "" + position;
+            }
         } else {
             return "" + position;
         }
@@ -90,7 +94,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
             Song song = songList.get(i);
             String filename = song.getFilename();
             String displayname;
-            if (!song.getTitle().isEmpty()) {
+            if (!song.getTitle().isEmpty() && mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuSortTitles",true)) {
                 displayname = song.getTitle();
             } else {
                 displayname = song.getFilename();
