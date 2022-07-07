@@ -71,7 +71,8 @@
         android:layout_gravity="start"
         android:background="@color/colorAltPrimary"
         android:clickable="true"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:focusable="true">
 
         <include
             android:id="@+id/menu_top"

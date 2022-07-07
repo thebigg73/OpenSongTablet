@@ -5,11 +5,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.EditSongBinding;
@@ -26,6 +25,8 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
 
     private EditSongBinding myView;
     private MainActivityInterface mainActivityInterface;
+    private ViewPager2.OnPageChangeCallback callback;
+    private final String TAG = "EditSongFragment";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -43,10 +44,6 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Window w = requireActivity().getWindow();
-        if (w!=null) {
-            w.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-        }
     }
 
     @Override
@@ -74,8 +71,18 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
         EditSongViewPagerAdapter adapter = new EditSongViewPagerAdapter(requireActivity().getSupportFragmentManager(),
                 requireActivity().getLifecycle());
         adapter.createFragment(0);
+
         myView.viewpager.setAdapter(adapter);
         myView.viewpager.setOffscreenPageLimit(1);
+        callback = new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                mainActivityInterface.getSoftKeyboard().hideKeyboard(requireActivity());
+                mainActivityInterface.getSoftKeyboard().hideSoftKeyboard(requireContext(),myView.parent);
+            }
+        };
+        myView.viewpager.registerOnPageChangeCallback(callback);
         new TabLayoutMediator(myView.tabButtons, myView.viewpager, (tab, position) -> {
             switch (position) {
                 case 0:
@@ -122,6 +129,7 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        myView.viewpager.unregisterOnPageChangeCallback(callback);
         myView = null;
     }
 

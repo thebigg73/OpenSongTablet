@@ -148,6 +148,8 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
             // Update the title
             mainActivityInterface.updateSetTitle();
 
+            mainActivityInterface.updateSongList();
+
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -297,6 +297,22 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         preferences = new Preferences(this);
         softKeyboard = new SoftKeyboard();
 
+        SoftKeyboard.SoftKeyBoardStatusListener listener = new SoftKeyboard.SoftKeyBoardStatusListener() {
+            @Override
+            public void onKeyBoardShow(View rootView, int totalScreenHeight) {
+            }
+
+            @Override
+            public void onKeyBoardHide(View rootView, int totalScreenHeight) {
+
+                /*if (USE_IMMERSIVE_MODE){
+                    returnToImmersiveMode();
+                }*/
+            }
+        };
+        softKeyboard.assistActivity(this, listener);
+
+
         // The song stuff
         songListBuildIndex = new SongListBuildIndex(this);
 
@@ -1246,8 +1262,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             myView.drawerLayout.openDrawer(GravityCompat.START);
             menuOpen = true;
         }
+        // Force any soft keyboard to close
+        softKeyboard.hideKeyboard(this);
     }
-
 
     // The song and set menu
     private void setUpSongMenuTabs() {
@@ -1869,6 +1886,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     currentSet.initialiseTheSet();
                     preferences.setMyPreferenceString("setCurrent", "");
                     preferences.setMyPreferenceString("setCurrentLastName", "");
+                    // Untick song menu items
+                    updateSongList();
                     updateFragment("set_updateView",null,null);
                     result = true;
                     break;

@@ -15,8 +15,7 @@
     <com.garethevans.church.opensongtablet.customviews.NestedScrollWithFAB
         android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_height="match_parent">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -36,50 +35,52 @@
         <com.garethevans.church.opensongtablet.customviews.MaterialEditText
             android:id="@+id/lyrics"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/ocr"
+            android:layout_marginBottom="80dp"
             android:hint="@string/lyrics"
-            android:inputType="text|textMultiLine"
             android:imeOptions="actionNone"
+            android:inputType="text|textMultiLine"
             android:minLines="25"
             app:autoSizeMaxTextSize="18sp"
             app:autoSizeMinTextSize="8sp"
             app:autoSizeStepGranularity="2sp"
             app:autoSizeTextType="uniform"
-            android:layout_below="@+id/ocr"
-            app:useMonospace="true"
-            android:layout_marginBottom="80dp"/>
-
+            app:useMonospace="true" />
     </RelativeLayout>
     </com.garethevans.church.opensongtablet.customviews.NestedScrollWithFAB>
 
-        <LinearLayout
-            android:id="@+id/undoRedo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:baselineAligned="true"
-            android:gravity="bottom|start">
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/undoButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:contentDescription="@string/back"
-                android:layout_margin="8dp"
-                android:src="@drawable/ic_undo_white_36dp"/>
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/redoButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:contentDescription="@string/next"
-                android:layout_margin="8dp"
-                android:src="@drawable/ic_redo_white_36dp"/>
-        </LinearLayout>
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/undoRedo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="start|bottom"
+        android:gravity="bottom|start">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/undoButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:contentDescription="@string/back"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/ic_undo_white_36dp"/>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/redoButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:contentDescription="@string/next"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/ic_redo_white_36dp"/>
+    </LinearLayout>
 
     <FrameLayout
         android:id="@+id/dimBackground"

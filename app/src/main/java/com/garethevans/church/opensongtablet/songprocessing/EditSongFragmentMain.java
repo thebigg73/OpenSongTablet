@@ -8,11 +8,8 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
@@ -40,20 +37,6 @@ public class EditSongFragmentMain extends Fragment  {
         super.onAttach(context);
         mainActivityInterface = (MainActivityInterface) context;
         editSongFragmentInterface = (EditSongFragmentInterface) context;
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Window w = requireActivity().getWindow();
-        if (w!=null) {
-            w.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,

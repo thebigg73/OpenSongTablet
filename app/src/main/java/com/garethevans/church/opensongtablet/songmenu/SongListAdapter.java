@@ -265,4 +265,5 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
         }
         return linkedHashMap;
     }
+
 }

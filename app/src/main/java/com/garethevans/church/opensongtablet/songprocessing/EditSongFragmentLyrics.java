@@ -11,8 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.view.Window;
-import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -42,15 +40,22 @@ public class EditSongFragmentLyrics extends Fragment {
         super.onAttach(context);
         mainActivityInterface = (MainActivityInterface) context;
         editSongFragmentInterface = (EditSongFragmentInterface) context;
+        // Hide the keyboard
+        mainActivityInterface.getSoftKeyboard().hideKeyboard(requireActivity());
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Window w = requireActivity().getWindow();
-        if (w!=null) {
-            w.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-        }
+        // Hide the keyboard
+        mainActivityInterface.getSoftKeyboard().hideKeyboard(requireActivity());
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Hide the keyboard
+        mainActivityInterface.getSoftKeyboard().hideKeyboard(requireActivity());
     }
 
     @Nullable
@@ -63,6 +68,9 @@ public class EditSongFragmentLyrics extends Fragment {
 
         // Add listeners
         setupListeners();
+
+        // Hide the keyboard
+        mainActivityInterface.getSoftKeyboard().hideKeyboard(requireActivity());
 
         return myView.getRoot();
     }

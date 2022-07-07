@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -56,7 +55,6 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requireActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
     }
 
     @Override
@@ -87,6 +85,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         myView.songListRecyclerView.setAdapter(songListAdapter);
         }
 
+
     private void setValues(Song song) {
         songListSearchByFolder = mainActivityInterface.getPreferences().getMyPreferenceBoolean("songListSearchByFolder", false);
         if (songListSearchByFolder && folderSearchVal.isEmpty()) {
@@ -103,6 +102,11 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         showHideRows(myView.filters.keySearch, songListSearchByKey);
         showHideRows(myView.filters.tagSearch, songListSearchByTag);
         showHideRows(myView.filters.filterSearch, songListSearchByFilter);
+    }
+
+    public void refreshTickedSongs() {
+        songListAdapter.initialiseCheckedArray(mainActivityInterface.getCurrentSet());
+        songListAdapter.notifyDataSetChanged();
     }
 
     private void setUpExposedDropDowns() {

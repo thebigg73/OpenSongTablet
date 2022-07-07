@@ -26,8 +26,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -72,25 +70,11 @@ public class MidiFragment extends Fragment {
         mainActivityInterface = (MainActivityInterface) context;
     }
 
-    @Override
-    public void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Window w = requireActivity().getWindow();
-        if (w != null) {
-            w.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-        }
-    }
-
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsMidiBinding.inflate(inflater, container, false);
-
-        // Set pan for keyboard
-        if (requireActivity().getWindow() != null) {
-            requireActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-        }
 
         mainActivityInterface.updateToolbar(getString(R.string.midi));
         mainActivityInterface.updateToolbarHelp(getString(R.string.website_midi_connections));
@@ -734,7 +718,7 @@ public class MidiFragment extends Fragment {
 
         String[] bits = mainActivityInterface.getSong().getMidi().trim().split("\n");
         for (String command : bits) {
-            if (command!=null && !command.equals("") && !command.isEmpty() && getActivity()!=null) {
+            if (command != null && !command.isEmpty() && getActivity() != null) {
                 // Get a human readable version of the midi code
                 String readable = mainActivityInterface.getMidi().getReadableStringFromHex(command);
                 MidiInfo midiInfo = new MidiInfo();
