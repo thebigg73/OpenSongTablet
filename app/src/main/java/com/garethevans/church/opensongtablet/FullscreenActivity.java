@@ -102,7 +102,7 @@ public class FullscreenActivity extends AppCompatActivity {
 
 
     // TODO move to StaticVariables if still needed
-    public static boolean needtorefreshsongmenu = false, needtoeditsong = false;
+    public static boolean needtorefreshsongmenu = true, needtoeditsong = false;
     public static final String indexlog = "";
     public static String currentFolder = "";
     public static String newFolder = "";

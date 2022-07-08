@@ -608,6 +608,8 @@ public class StageMode extends AppCompatActivity implements
 
         // IV -  One time actions will have been completed
         FullscreenActivity.doonetimeactions = false;
+
+        prepareSongMenu();
     }
 
 
@@ -7552,21 +7554,19 @@ public class StageMode extends AppCompatActivity implements
                         }
                         sqLite = sqLiteHelper.getSong(StageMode.this, songId);
 
-                        // IV - Backstop, if the song is not found add a basic song entry. Handles Nearby 'imported' songs
-                        if (sqLite==null) {
-                            sqLiteHelper.createImportedSong(StageMode.this, StaticVariables.whichSongFolder, StaticVariables.songfilename, StaticVariables.songfilename, "", "", "", "", "", "");
-                            sqLite = sqLiteHelper.getSong(StageMode.this, songId);
-                        }
+                        if (!StaticVariables.mTitle.equals("Welcome to OpenSongApp")) {                        // IV - Backstop, if the song is not found add a basic song entry. Handles Nearby 'imported' songs
+                            // IV - Backstop, if the song is not found add a basic song entry. Handles Nearby 'imported' songs
+                            if (sqLite==null) {
+                                sqLiteHelper.createImportedSong(StageMode.this, StaticVariables.whichSongFolder, StaticVariables.songfilename, StaticVariables.songfilename, "", "", "", "", "", "");
+                                sqLite = sqLiteHelper.getSong(StageMode.this, songId);
+                            }
 
-                        // If this song isn't indexed, set its details
-                        if (sqLite!=null && (sqLite.getLyrics()==null || sqLite.getLyrics().equals(""))) {
-                            sqLite = sqLiteHelper.setSong(sqLite);
-                            sqLiteHelper.updateSong(StageMode.this,sqLite);
+                            // If this song isn't indexed, set its details
+                            if (sqLite!=null && (sqLite.getLyrics()==null || sqLite.getLyrics().equals(""))) {
+                                sqLite = sqLiteHelper.setSong(sqLite);
+                                sqLiteHelper.updateSong(StageMode.this,sqLite);
+                            }
                         }
-                    } else {
-                        // Not a song in the database (likley a variation, slide, etc.)
-                        sqLite.setSongid("");
-                        sqLite.setId(0);
                     }
 
                     // IV - After any sqLite update has occurred
@@ -7757,7 +7757,7 @@ public class StageMode extends AppCompatActivity implements
                         if (foundsongfilename == null) {
                             foundsongfilename = getString(R.string.error);
                         }
-                        if (foundsongtitle == null) {
+                        if (foundsongtitle == null || foundsongtitle.equals("")) {
                             foundsongtitle = foundsongfilename;
                         }
                         if (foundsongauthor == null) {
@@ -7775,9 +7775,10 @@ public class StageMode extends AppCompatActivity implements
 
                         boolean isinset = setcurrent.contains(whattolookfor);
 
-                        Log.d("StageMode","filename:"+foundsongfilename+" title:"+foundsongtitle);
                         SongMenuViewItems song = new SongMenuViewItems(foundsongfilename,
-                            foundsongtitle, foundsongauthor, foundsongkey, isinset);
+                                //TODO GE commit changes to display of title  however SQL does not yet order by title. Both filename and title order, user choice, are needed.
+                                //foundsongtitle, foundsongauthor, foundsongkey, isinset);
+                                foundsongfilename, foundsongauthor, foundsongkey, isinset);
                         songmenulist.add(song);
                         filenamesSongsInFolder.add(foundsongfilename);
                     }

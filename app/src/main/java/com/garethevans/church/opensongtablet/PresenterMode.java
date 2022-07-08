@@ -3690,21 +3690,19 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                         }
                         sqLite = sqLiteHelper.getSong(PresenterMode.this, songId);
 
-                        // IV - Backstop, if the song is not found add a basic song entry. Handles Nearby 'imported' songs
-                        if (sqLite == null) {
-                            sqLiteHelper.createImportedSong(PresenterMode.this, StaticVariables.whichSongFolder, StaticVariables.songfilename, StaticVariables.songfilename, "", "", "", "", "", "");
-                            sqLite = sqLiteHelper.getSong(PresenterMode.this, songId);
-                        }
+                        if (!StaticVariables.mTitle.equals("Welcome to OpenSongApp")) {
+                            // IV - Backstop, if the song is not found add a basic song entry. Handles Nearby 'imported' songs
+                            if (sqLite == null) {
+                                sqLiteHelper.createImportedSong(PresenterMode.this, StaticVariables.whichSongFolder, StaticVariables.songfilename, StaticVariables.songfilename, "", "", "", "", "", "");
+                                sqLite = sqLiteHelper.getSong(PresenterMode.this, songId);
+                            }
 
-                        // If this song isn't indexed, set its details
-                        if (sqLite.getLyrics()==null || sqLite.getLyrics().equals("")) {
-                            sqLite = sqLiteHelper.setSong(sqLite);
-                            sqLiteHelper.updateSong(PresenterMode.this,sqLite);
+                            // If this song isn't indexed, set its details
+                            if (!StaticVariables.mTitle.equals("Welcome to OpenSongApp") && (sqLite.getLyrics() == null || sqLite.getLyrics().equals(""))) {
+                                sqLite = sqLiteHelper.setSong(sqLite);
+                                sqLiteHelper.updateSong(PresenterMode.this, sqLite);
+                            }
                         }
-                    } else {
-                        // Not a song in the database (likley a variation, slide, etc.)
-                        sqLite.setSongid("");
-                        sqLite.setId(0);
                     }
 
                     // IV - After any sqLite update has occurred
@@ -3782,8 +3780,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                         if (foundsongfilename == null) {
                             foundsongfilename = getString(R.string.error);
                         }
-                        
-                        if (foundsongtitle == null) {
+                        if (foundsongtitle == null || foundsongtitle.equals("")) {
                             foundsongtitle = foundsongfilename;
                         }
                         if (foundsongauthor == null) {
@@ -3802,7 +3799,9 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                         boolean isinset = setcurrent.contains(whattolookfor);
 
                         SongMenuViewItems song = new SongMenuViewItems(foundsongfilename,
-                                foundsongtitle, foundsongauthor, foundsongkey, isinset);
+                                //TODO GE commit changes to display of title  however SQL does not yet order by title. Both filename and title order, user choice, are needed.
+                                //foundsongtitle, foundsongauthor, foundsongkey, isinset);
+                                foundsongfilename, foundsongauthor, foundsongkey, isinset);
                         songmenulist.add(song);
                     }
 

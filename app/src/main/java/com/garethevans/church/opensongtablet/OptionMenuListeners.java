@@ -44,7 +44,7 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
     public void updateConnectionsLog() {
         if (StaticVariables.whichOptionMenu.equals("CONNECT") && connectionLog != null) {
             try {
-                setTextTextView(connectionLog,StaticVariables.connectionLog);
+                connectionLog.setText(StaticVariables.connectionLog);
             } catch (Exception e) {
                 Log.d("d", "Connections menu closed");
             }
@@ -362,7 +362,8 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
 
     static void optionListeners(View v, Context c, Preferences preferences, StorageAccess storageAccess) {
 
-        textSize = preferences.getMyPreferenceFloat(c,"songMenuAlphaIndexSize",14.0f);
+        // IV - Option menu lines are scaled by 0.8, multiple by 1.25f to scale text font
+        textSize = 1.25f * preferences.getMyPreferenceFloat(c,"songMenuAlphaIndexSize",14.0f);
 
         // Decide which listeners we need based on the menu
         switch (StaticVariables.whichOptionMenu) {
@@ -433,22 +434,34 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
         }
     }
 
+    // IV - The set utilites always apply the user preference of text size
+    // For uppercase menu items use the 'set text to uppercase text based on locale' line OR
+    // for lowercase menu items then use set text and 'All Caps is set false' lines
+
     private static void setTextButtons(Button b, String text) {
         b.setTextSize(textSize);
         b.setText(text.toUpperCase(StaticVariables.locale));
+        //b.setText(text);
+        //b.setAllCaps(false);
     }
     private static void setTextTextView(TextView t, String text) {
         t.setTextSize(textSize);
         t.setText(text.toUpperCase(StaticVariables.locale));
+        //t.setText(text);
+        //t.setAllCaps(false);
     }
     private static void setRadioButton(RadioButton b, String text) {
         b.setTextSize(textSize);
         b.setText(text.toUpperCase(StaticVariables.locale));
+        //b.setText(text);
+        //b.setAllCaps(false);
     }
 
     private static void setTextSwitch(SwitchCompat t, String text) {
         t.setTextSize(textSize);
         t.setText(text.toUpperCase(StaticVariables.locale));
+        //t.setText(text);
+        //t.setAllCaps(false);
     }
 
     private static void mainOptionListener(View v, final Context c) {
@@ -1744,6 +1757,7 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
         SwitchCompat keepHostFiles = v.findViewById(R.id.keepHostFiles);
         SwitchCompat receiveHostSongSections = v.findViewById(R.id.receiveHostSongSections);
         SwitchCompat receiveHostAutoscroll = v.findViewById(R.id.receiveHostAutoscroll);
+        TextView option_separator_textview0 = v.findViewById(R.id.option_separator_textview0);
         connectionLog = v.findViewById(R.id.options_connections_log);
         connectionSearch = v.findViewById(R.id.searchForHosts);
 
@@ -1757,7 +1771,8 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
             StaticVariables.connectionLog = c.getResources().getString(R.string.connections_log) + "\n\n";
         }
 
-        setTextTextView(connectionLog,StaticVariables.connectionLog);
+        connectionLog.setText(StaticVariables.connectionLog);
+        connectionLog.setTextSize(preferences.getMyPreferenceFloat(c,"songMenuAlphaIndexSize",14.0f));
         setTextTextView(deviceName,StaticVariables.deviceName);
         setRadioButton(connectionsOff,c.getString(R.string.off));
         setRadioButton(connectionsClient,c.getString(R.string.connections_actasclient));
@@ -1767,7 +1782,8 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
         setTextSwitch(keepHostFiles,c.getResources().getString(R.string.connections_keephostsongs));
         setTextSwitch(receiveHostSongSections,c.getResources().getString(R.string.song_sections));
         setTextSwitch(receiveHostAutoscroll,c.getResources().getString(R.string.autoscroll));
-        //setTextTextView(menuUp,c.getResources().getString(R.string.connections_connect));
+        setTextButtons(connectionSearch,c.getString(R.string.connections_discover));
+        setTextTextView(option_separator_textview0,c.getResources().getString(R.string.connections_connect));
         FloatingActionButton closeOptionsFAB = v.findViewById(R.id.closeOptionsFAB);
 
         // Set the default values
@@ -1916,7 +1932,7 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
         });
         connectionLog.setOnClickListener(view -> {
             StaticVariables.connectionLog = c.getResources().getString(R.string.connections_log) + "\n\n";
-            setTextTextView(connectionLog,StaticVariables.connectionLog);
+            connectionLog.setText(StaticVariables.connectionLog);
         });
 
         if (!mListener.requestNearbyPermissions()) {
