@@ -121,6 +121,8 @@ public class EditSongFragmentLyrics extends Fragment {
         });
         //bottomSheetBehavior.setGestureInsetBottomIgnored(true);
         myView.bottomSheetLayout.bottomSheetTab.setOnClickListener(v -> {
+            mainActivityInterface.getSoftKeyboard().hideKeyboard(requireActivity());
+            mainActivityInterface.getSoftKeyboard().hideSoftKeyboard(requireContext(),myView.parentView);
             if (bottomSheetBehavior.getState()==BottomSheetBehavior.STATE_COLLAPSED) {
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                 myView.lyrics.setEnabled(false);

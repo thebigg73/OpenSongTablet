@@ -210,7 +210,7 @@ public class SetActions {
         noKeySong.setFilename(thisSong.getFilename());
         noKeySong.setKey("");
         String searchTextNoKeySpecified = getSongForSetWork(noKeySong);
-        Log.d(TAG,"Trying to search set for: "+searchText+ " or "+searchTextNoKeySpecified);
+        //Log.d(TAG,"Trying to search set for: "+searchText+ " or "+searchTextNoKeySpecified);
         int position = mainActivityInterface.getCurrentSet().getSetItems().lastIndexOf(searchText);
         int positionNoKey = mainActivityInterface.getCurrentSet().getSetItems().lastIndexOf(searchTextNoKeySpecified);
         int positionVariation = -1;
@@ -220,7 +220,7 @@ public class SetActions {
             // Strip out the key
             String varFilename = thisSong.getFilename().replace("_"+thisSong.getKey(),"");
             String varFolder = thisSong.getFolder();
-            Log.d(TAG,"varFolder: "+varFolder+"  varFilename:"+varFilename);
+            //Log.d(TAG,"varFolder: "+varFolder+"  varFilename:"+varFilename);
             if (varFolder.equals("**Variation")) {
                 varFolder = "";
                 // Now decide if we can extract a folder from the remaining filename
@@ -240,10 +240,10 @@ public class SetActions {
             }
             String searchTextAsVariation = getSongForSetWork("**Variation",varFilename,"").replace("******__**$","");
             String searchTextAsKeyChangeVar = getSongForSetWork(varFolder,varFilename,"").replace("******__**$","");
-            Log.d(TAG,"Finally trying to search set for: "+searchTextAsVariation);
+            //Log.d(TAG,"Finally trying to search set for: "+searchTextAsVariation);
 
             for (int v = 0; v < mainActivityInterface.getCurrentSet().getSetItems().size(); v++) {
-                Log.d(TAG, "item:" + mainActivityInterface.getCurrentSet().getSetItems().get(v));
+                //Log.d(TAG, "item:" + mainActivityInterface.getCurrentSet().getSetItems().get(v));
                 if (mainActivityInterface.getCurrentSet().getSetItems().get(v).contains(searchTextAsKeyChangeVar) ||
                         mainActivityInterface.getCurrentSet().getSetItems().get(v).contains(searchTextAsVariation)) {
                     positionVariation = v;
@@ -251,14 +251,14 @@ public class SetActions {
             }
         }
 
-        for (String setItem:mainActivityInterface.getCurrentSet().getSetItems()) {
+        /*for (String setItem:mainActivityInterface.getCurrentSet().getSetItems()) {
             Log.d(TAG,"setItem: "+setItem);
         }
         for (String setFilename:mainActivityInterface.getCurrentSet().getSetFilenames()) {
             Log.d(TAG,"setFilename: "+setFilename);
-        }
+        }*/
 
-        Log.d(TAG,"found position: "+position+ " positionNoKey: "+positionNoKey+"  positionVariation: "+positionVariation);
+        //Log.d(TAG,"found position: "+position+ " positionNoKey: "+positionNoKey+"  positionVariation: "+positionVariation);
 
         // If we have a current set index position and it matches this song, use the existing position
         int currentSetPosition = mainActivityInterface.getCurrentSet().getIndexSongInSet();
@@ -503,7 +503,7 @@ public class SetActions {
         // We receive a song object as it isn't necessarily the one loaded to MainActivity
         Uri uriOriginal = mainActivityInterface.getStorageAccess().getUriForItem("Songs", folder, filename);
 
-        Log.d(TAG,"uriOriginal="+uriOriginal);
+        //Log.d(TAG,"uriOriginal="+uriOriginal);
         // Get the uri of the new variation file (Variations/filename)
 
         // IV - When a received song - use the stored received song filename

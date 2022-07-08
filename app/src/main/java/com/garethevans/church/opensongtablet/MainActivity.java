@@ -72,6 +72,7 @@ import com.garethevans.church.opensongtablet.controls.PedalsFragment;
 import com.garethevans.church.opensongtablet.controls.SwipeFragment;
 import com.garethevans.church.opensongtablet.controls.Swipes;
 import com.garethevans.church.opensongtablet.customslides.CustomSlide;
+import com.garethevans.church.opensongtablet.customslides.CustomSlideFragment;
 import com.garethevans.church.opensongtablet.customviews.DrawNotes;
 import com.garethevans.church.opensongtablet.customviews.GlideApp;
 import com.garethevans.church.opensongtablet.databinding.ActivityBinding;
@@ -2578,6 +2579,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     case "songActionsMenuFragment":
                         ((SongActionsMenuFragment) fragment).doDuplicate(value);
                         break;
+                    case "CustomSlideFragment":
+                        ((CustomSlideFragment) fragment).getReusable(value);
                 }
             } catch (Exception e) {
                 e.printStackTrace();

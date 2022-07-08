@@ -1761,9 +1761,9 @@ public class ProcessSong {
         // There's a few things to consider here.  Firstly, if scaling is off, best is 1 column.
         // If we are overriding full scale to width only, or 1 col to off, best is 1 column.
 
-        Log.d(TAG,"need23Columns="+need23ColumnCheck+"  authoScale="+autoScale);
+        //Log.d(TAG,"need23Columns="+need23ColumnCheck+"  authoScale="+autoScale);
         if (!need23ColumnCheck && (autoScale.equals("N") || autoScale.equals("W"))) {
-            Log.d(TAG,"Defaulting to 1 column");
+            //Log.d(TAG,"Defaulting to 1 column");
             howManyColumns = 1;
         }
 
@@ -1781,16 +1781,16 @@ public class ProcessSong {
                 best = 3;
             }
         }
-        Log.d(TAG,"col1="+col1+"  col2best="+col2best+"  col3best="+col3best+"  best="+best);
+        //Log.d(TAG,"col1="+col1+"  col2best="+col2best+"  col3best="+col3best+"  best="+best);
         // Default font size is 14sp when drawing. If scaling takes this below the min font Size, override back to 1 column
         if (best == 2) {
-            Log.d(TAG,"col2[2]="+col2[2]);
+            //Log.d(TAG,"col2[2]="+col2[2]);
             if (col2[2] == 0) {
                 return 1;
             }
             float newFontSize2Col = defFontSize * col2best;
 
-            Log.d(TAG,"newFontSize2Col="+newFontSize2Col+"  fontSizeMin="+fontSizeMin);
+            //Log.d(TAG,"newFontSize2Col="+newFontSize2Col+"  fontSizeMin="+fontSizeMin);
             if (!need23ColumnCheck && songAutoScaleOverrideFull && newFontSize2Col < fontSizeMin) {
                 thisAutoScale = "W";
                 return 1;
@@ -1846,7 +1846,7 @@ public class ProcessSong {
         int currentWidth = getMaxValue(sectionWidths, 0, sectionWidths.size());
         int currentHeight = getTotal(sectionHeights, 0, sectionHeights.size());
 
-        Log.d(TAG,"currentWidth="+currentWidth+"   currentHeight="+currentHeight+"  sections="+sectionViews.size());
+        //Log.d(TAG,"currentWidth="+currentWidth+"   currentHeight="+currentHeight+"  sections="+sectionViews.size());
 
         // Include the songSheetView if it isn't empty
         int songSheetTitleHeight = mainActivityInterface.getSongSheetTitleLayout().getHeight();
@@ -1871,14 +1871,14 @@ public class ProcessSong {
         // Set the scaleSize_1col
         col1Scale(screenWidth, screenHeight, currentWidth, currentHeight);
 
-        Log.d(TAG,"scaleSize_1col="+scaleSize_1col);
-        Log.d(TAG,"scaleSize_2cols[0]="+scaleSize_2cols[0]+"  scaleSize_2cols[1]="+scaleSize_2cols[1]+"  scaleSize_2cols[2]="+scaleSize_2cols[2]);
-        Log.d(TAG,"scaleSize_3cols[0]="+scaleSize_3cols[0]+"  scaleSize_3cols[1]="+scaleSize_3cols[1]+"  scaleSize_3cols[2]="+scaleSize_3cols[2]+"  scaleSize_3cols[3]="+scaleSize_3cols[3]);
+        //Log.d(TAG,"scaleSize_1col="+scaleSize_1col);
+        //Log.d(TAG,"scaleSize_2cols[0]="+scaleSize_2cols[0]+"  scaleSize_2cols[1]="+scaleSize_2cols[1]+"  scaleSize_2cols[2]="+scaleSize_2cols[2]);
+        //Log.d(TAG,"scaleSize_3cols[0]="+scaleSize_3cols[0]+"  scaleSize_3cols[1]="+scaleSize_3cols[1]+"  scaleSize_3cols[2]="+scaleSize_3cols[2]+"  scaleSize_3cols[3]="+scaleSize_3cols[3]);
 
         // Now decide if 1,2 or 3 columns is best
         howManyColumns = howManyColumnsAreBest(scaleSize_1col, scaleSize_2cols, scaleSize_3cols, songAutoScale, fontSizeMin, songAutoScaleOverrideFull,need23ColumnCheck);
 
-        Log.d(TAG,"howManyColumns="+howManyColumns);
+        //Log.d(TAG,"howManyColumns="+howManyColumns);
 
         // If we need to move column1 down/up due to potential songSheet and it's scaling, do it
         if (songSheetView!=null) {
@@ -2053,7 +2053,7 @@ public class ProcessSong {
             }
             frameLayout.addView(sectionViews.get(i));
             innerCol1.addView(frameLayout);
-            Log.d(TAG,"view["+i+"].getScale()="+sectionViews.get(i).getScaleX());
+            //Log.d(TAG,"view["+i+"].getScale()="+sectionViews.get(i).getScaleX());
         }
         for (int i = (int) scaleSize[2]; i < sectionViews.size(); i++) {
             color = Color.TRANSPARENT;
@@ -2067,7 +2067,7 @@ public class ProcessSong {
             }
             frameLayout.addView(sectionViews.get(i));
             innerCol2.addView(frameLayout);
-            Log.d(TAG,"view["+i+"].getScale()="+sectionViews.get(i).getScaleX());
+            //Log.d(TAG,"view["+i+"].getScale()="+sectionViews.get(i).getScaleX());
         }
         columnVisibility(column1, column2, column3, true, true, false);
         column1.addView(innerCol1);

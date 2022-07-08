@@ -33,11 +33,13 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.SettingsCustomSlideBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.preferences.TextInputBottomSheet;
+import com.garethevans.church.opensongtablet.songprocessing.Song;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class CustomSlideFragment extends Fragment {
 
@@ -56,6 +58,7 @@ public class CustomSlideFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsCustomSlideBinding.inflate(inflater, container, false);
         mainActivityInterface.updateToolbar(getString(R.string.custom_slide));
+        myView.nestedScrollView.setExtendedFabToAnimate(myView.addToSet);
 
         // Set up listeners
         setupListeners();
@@ -298,8 +301,7 @@ public class CustomSlideFragment extends Fragment {
         }
     }
 
-    private void loadReusable() {
-        // List the files in the current folder
+    private String getFolderFromType() {
         String folder = "";
         switch (mainActivityInterface.getCustomSlide().getCreateType()) {
             case "note":
@@ -312,11 +314,37 @@ public class CustomSlideFragment extends Fragment {
                 folder = "Images";
                 break;
         }
+        return folder;
+    }
+    private void loadReusable() {
+        // List the files in the current folder
+        String folder = getFolderFromType();
         ArrayList<String> filesFound = mainActivityInterface.getStorageAccess().listFilesInFolder(folder,"");
+        Collections.sort(filesFound);
         TextInputBottomSheet textInputBottomSheet = new TextInputBottomSheet(this,"CustomSlideFragment",getString(R.string.load_reusable),getString(R.string.file_chooser),null,null,"",filesFound);
         textInputBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"textInputBottomSheet");
     }
 
+    public void getReusable(String reusable) {
+        Song reusableSlide = new Song();
+        reusableSlide.setFolder(getFolderFromType());
+        reusableSlide.setFilename(reusable);
+        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(reusableSlide.getFolder(),"",reusable);
+        reusableSlide = mainActivityInterface.getLoadSong().readFileAsXML(reusableSlide,null,uri,"UTF8");
+
+        mainActivityInterface.getCustomSlide().setCreateTitle(reusableSlide.getTitle());
+        mainActivityInterface.getCustomSlide().setCreateContent(reusableSlide.getLyrics());
+
+        if (!reusableSlide.getFolder().equals("Notes")) {
+            mainActivityInterface.getCustomSlide().setCreateTime(reusableSlide.getUser1());
+            mainActivityInterface.getCustomSlide().setCreateLoop(reusableSlide.getUser2().equals("true"));
+            mainActivityInterface.getCustomSlide().setCreateImages(reusableSlide.getUser3());
+        }
+        setupViews();
+        if (reusableSlide.getFolder().equals("Images")) {
+            buildImageRows();
+        }
+    }
     private int dpToPx(int dp) {
         final float scale = getResources().getDisplayMetrics().density;
         return (int) Math.ceil(dp * scale);
