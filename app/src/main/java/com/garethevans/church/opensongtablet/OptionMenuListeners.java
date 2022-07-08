@@ -440,15 +440,15 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
 
     private static void setTextButtons(Button b, String text) {
         b.setTextSize(textSize);
-        b.setText(text.toUpperCase(StaticVariables.locale));
-        //b.setText(text);
-        //b.setAllCaps(false);
+        //b.setText(text.toUpperCase(StaticVariables.locale));
+        b.setText(text);
+        b.setAllCaps(false);
     }
     private static void setTextTextView(TextView t, String text) {
         t.setTextSize(textSize);
-        t.setText(text.toUpperCase(StaticVariables.locale));
-        //t.setText(text);
-        //t.setAllCaps(false);
+        //t.setText(text.toUpperCase(StaticVariables.locale));
+        t.setText(text);
+        t.setAllCaps(false);
     }
     private static void setRadioButton(RadioButton b, String text) {
         b.setTextSize(textSize);
@@ -459,9 +459,9 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
 
     private static void setTextSwitch(SwitchCompat t, String text) {
         t.setTextSize(textSize);
-        t.setText(text.toUpperCase(StaticVariables.locale));
-        //t.setText(text);
-        //t.setAllCaps(false);
+        //t.setText(text.toUpperCase(StaticVariables.locale));
+        t.setText(text);
+        t.setAllCaps(false);
     }
 
     private static void mainOptionListener(View v, final Context c) {
