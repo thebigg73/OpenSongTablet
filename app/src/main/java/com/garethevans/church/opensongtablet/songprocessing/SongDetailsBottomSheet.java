@@ -75,6 +75,7 @@ public class SongDetailsBottomSheet extends BottomSheetDialogFragment {
         myView.presentationOrder.setHint(mainActivityInterface.getSong().getPresentationorder());
         myView.hymnnum.setHint(mainActivityInterface.getSong().getHymnnum());
         myView.notes.setHint(mainActivityInterface.getSong().getNotes());
+        myView.lyrics.setHintMonospace();
         myView.lyrics.setHint(mainActivityInterface.getSong().getLyrics());
     }
 

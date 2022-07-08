@@ -5,6 +5,7 @@ import android.content.res.TypedArray;
 import android.graphics.ColorFilter;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.View;
@@ -75,6 +76,13 @@ public class MaterialTextView extends LinearLayout {
                 hintView.setVisibility(View.VISIBLE);
             }
             hintView.setText(hintText);
+        });
+    }
+
+    public void setHintMonospace() {
+        hintView.post(() -> {
+            hintView.setTypeface(Typeface.MONOSPACE);
+            hintView.setTextSize(14f);
         });
     }
 

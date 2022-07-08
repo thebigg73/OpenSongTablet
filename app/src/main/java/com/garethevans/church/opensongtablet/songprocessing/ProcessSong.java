@@ -1671,13 +1671,17 @@ public class ProcessSong {
         textView.setIncludeFontPadding(false);
         if (linetype.equals("heading")) {
             if (displayBoldChordsHeadings) {
+                // IV - Fake bold will be applied if the font does not support bold
                 textView.setPaintFlags(textView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG | Paint.FAKE_BOLD_TEXT_FLAG);
+                textView.setTypeface(textView.getTypeface(), Typeface.BOLD);
             } else {
                 textView.setPaintFlags(textView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
             }
         }
         if ((linetype.equals("chord") || linetype.equals("capoline")) && displayBoldChordsHeadings) {
+            // IV - Fake bold will be applied if the font does not support bold
             textView.setPaintFlags(textView.getPaintFlags() | Paint.FAKE_BOLD_TEXT_FLAG);
+            textView.setTypeface(textView.getTypeface(), Typeface.BOLD);
         }
         return textView;
     }
