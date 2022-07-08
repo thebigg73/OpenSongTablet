@@ -18,7 +18,6 @@ import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -57,7 +56,6 @@ public class CustomSlideFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsCustomSlideBinding.inflate(inflater, container, false);
         mainActivityInterface.updateToolbar(getString(R.string.custom_slide));
-        requireActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
         // Set up listeners
         setupListeners();

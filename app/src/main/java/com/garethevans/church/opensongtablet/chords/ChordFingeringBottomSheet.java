@@ -141,6 +141,9 @@ public class ChordFingeringBottomSheet extends BottomSheetDialogFragment {
         // This could be because it isn't defined or it's a non chord bit of text
 
         int chordFormat = mainActivityInterface.getPreferences().getMyPreferenceInt("chordFormat", 1);
+        if (!mainActivityInterface.getPreferences().getMyPreferenceBoolean("chordFormatUsePreferred",true)) {
+            chordFormat = mainActivityInterface.getSong().getDetectedChordFormat();
+        }
         mainActivityInterface.getChordDisplayProcessing().setFingerings(mainActivityInterface.getChordDirectory(), myView.instrument.getText().toString(), mainActivityInterface.getChordDisplayProcessing().getInstruments(), chordFormat);
 
         //  Now we build the chord images and show them

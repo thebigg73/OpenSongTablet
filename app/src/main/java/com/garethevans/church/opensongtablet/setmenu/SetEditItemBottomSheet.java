@@ -118,7 +118,6 @@ public class SetEditItemBottomSheet extends BottomSheetDialogFragment {
         });
     }
 
-
     private void updateFilesInFolder(String folder) {
         // Do this check as we might be using Notes, Variations, etc.
         String[] foldersFromNice = mainActivityInterface.getStorageAccess().getActualFoldersFromNice(folder);

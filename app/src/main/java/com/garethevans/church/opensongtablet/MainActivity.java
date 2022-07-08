@@ -1719,6 +1719,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 songKey = sqLiteHelper.getKey(setFolder, setFilename);
             }
         }
+
         if (setKey != null && songKey != null &&
                 !setKey.isEmpty() && !songKey.isEmpty() && !setKey.equals(songKey)) {
             // The set has specified a key that is different from our song
@@ -1770,6 +1771,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             setFolder = newFolder;
             setFilename = newFilename;
         }
+
         // If the set menu is open/exists, try to scroll to this item
         if (setMenuFragment != null) {
             try {

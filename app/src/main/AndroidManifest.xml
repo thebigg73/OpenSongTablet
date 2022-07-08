@@ -106,7 +106,7 @@
             android:name=".MainActivity"
             android:exported="true"
             android:configChanges="orientation|screenSize|keyboard|keyboardHidden|navigation"
-            android:windowSoftInputMode="adjustResize|stateVisible"
+            android:windowSoftInputMode="adjustResize|stateHidden"
             android:launchMode="singleInstance"
             android:theme="@style/AppTheme">
 

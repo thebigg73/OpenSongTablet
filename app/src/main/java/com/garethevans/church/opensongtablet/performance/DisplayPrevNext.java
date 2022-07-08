@@ -3,6 +3,7 @@ package com.garethevans.church.opensongtablet.performance;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.net.Uri;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -103,7 +104,8 @@ public class DisplayPrevNext {
     }
 
     private void getPositions() {
-        int setPosition = mainActivityInterface.getCurrentSet().getIndexSongInSet();
+        int setPosition = mainActivityInterface.getSetActions().indexSongInSet(mainActivityInterface.getSong());
+        mainActivityInterface.getCurrentSet().setIndexSongInSet(setPosition);
         int songPosition = mainActivityInterface.getPositionOfSongInMenu();
 
         // Set the local variables for prevIndex, nextIndex and if we are using the set or song menu
@@ -111,6 +113,7 @@ public class DisplayPrevNext {
     }
 
     private void setIndexes(int setPosition, int songPosition) {
+        Log.d(TAG,"setPosition: "+setPosition+"  songPosition: "+songPosition);
         if (setPosition>=0) {
             moveNextInMenu = false;
             movePrevInMenu = false;

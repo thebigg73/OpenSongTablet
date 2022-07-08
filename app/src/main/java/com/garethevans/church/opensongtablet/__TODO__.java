@@ -3,17 +3,11 @@ package com.garethevans.church.opensongtablet;
 public class __TODO__ {
 
     // BUGS FROM LIVE TEST
-    // Variations in sets not working properly
-    // I think that ' are stripped from the variation filename
-    // Updating variation to song with preferred key didn't seem to update the set list (saved)
-    // When going to save set it sometimes came up with a suggested filename of the old loaded set, or the first set item name
-    // Set 1 (note) showing as Set%201 (html/url encoded)
     // Not checked how variations work when using Nearby on receiving device
 
     // Still to implement pedal previous next confirm
 
     // Crash when fast scrolling to bottom of song list sometimes indexexception (I think when it gets updated after indexing)
-
 
     // Presenter mode - almost everything!!
 
@@ -35,7 +29,6 @@ public class __TODO__ {
 
     Display - song display / advanced - needs ProcessSong brought fully online
 
-    Song actions - Chords, do I need chord for H?
     Song actions - ABC notation
     Song actions - MIDI
     Song actions - Import songs - online - some working, some not

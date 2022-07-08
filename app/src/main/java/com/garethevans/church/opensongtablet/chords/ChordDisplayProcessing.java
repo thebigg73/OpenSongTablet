@@ -221,6 +221,7 @@ public class ChordDisplayProcessing {
         for (String chord : chordsInSong) {
             if (instrument.equals(instruments.get(0))) {
                 // Guitar chords
+                Log.d(TAG,"chordFormat: "+chordFormat+"   chord: "+chord);
                 addFingeringOrNull(chordDirectory.guitarChords(chordFormat, chord));
             } else if (instrument.equals(instruments.get(1))) {
                 // Ukelele chords

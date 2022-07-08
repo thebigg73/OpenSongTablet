@@ -25,10 +25,13 @@ public class WindowFlags {
                 View.SYSTEM_UI_FLAG_IMMERSIVE |
                 View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
         w.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        w.addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+        w.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        w.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE |
+                WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
         v.setSystemUiVisibility(uiOptions);
 
-        w.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         w.getDecorView().setOnSystemUiVisibilityChangeListener(visibility -> {
             w.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             v.setSystemUiVisibility(uiOptions);

@@ -39,7 +39,6 @@ public class SoftKeyboard {
         void onKeyBoardHide(View rootView, int totalScreenHeight);
     }
 
-    private Activity activity;
     private View mChildOfContent;
     private int usableHeightPrevious;
     private int totalScreenHeight;
@@ -52,7 +51,6 @@ public class SoftKeyboard {
     }
 
     private SoftKeyboard(Activity activity, final SoftKeyBoardStatusListener listener) {
-        this.activity = activity;
         try {
             FrameLayout content = activity.findViewById(android.R.id.content);
             mChildOfContent = content.getChildAt(0);

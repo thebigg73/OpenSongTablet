@@ -213,10 +213,52 @@ public class SetActions {
         Log.d(TAG,"Trying to search set for: "+searchText+ " or "+searchTextNoKeySpecified);
         int position = mainActivityInterface.getCurrentSet().getSetItems().lastIndexOf(searchText);
         int positionNoKey = mainActivityInterface.getCurrentSet().getSetItems().lastIndexOf(searchTextNoKeySpecified);
-        for (String setitem:mainActivityInterface.getCurrentSet().getSetItems()) {
-            Log.d(TAG,"set item: "+setitem);
+        int positionVariation = -1;
+        if (positionNoKey==-1 && position==-1) {
+            // One last chance to find the song in the set (key changed variation)
+            // Because transposed set items are variations, we need to check for those
+            // Strip out the key
+            String varFilename = thisSong.getFilename().replace("_"+thisSong.getKey(),"");
+            String varFolder = thisSong.getFolder();
+            Log.d(TAG,"varFolder: "+varFolder+"  varFilename:"+varFilename);
+            if (varFolder.equals("**Variation")) {
+                varFolder = "";
+                // Now decide if we can extract a folder from the remaining filename
+                if (varFilename.contains("_")) {
+                    String[] bits = varFilename.split("_");
+                    StringBuilder newFilename = new StringBuilder();
+                    for (int i=0; i<bits.length; i++) {
+                        if (i==0) {
+                            varFolder = bits[0];
+                        } else {
+                            newFilename.append(bits[i]).append("/");
+                        }
+                    }
+                    // Replace the last "/"
+                    varFilename = newFilename.substring(0,newFilename.lastIndexOf("/"));
+                }
+            }
+            String searchTextAsVariation = getSongForSetWork("**Variation",varFilename,"").replace("******__**$","");
+            String searchTextAsKeyChangeVar = getSongForSetWork(varFolder,varFilename,"").replace("******__**$","");
+            Log.d(TAG,"Finally trying to search set for: "+searchTextAsVariation);
+
+            for (int v = 0; v < mainActivityInterface.getCurrentSet().getSetItems().size(); v++) {
+                Log.d(TAG, "item:" + mainActivityInterface.getCurrentSet().getSetItems().get(v));
+                if (mainActivityInterface.getCurrentSet().getSetItems().get(v).contains(searchTextAsKeyChangeVar) ||
+                        mainActivityInterface.getCurrentSet().getSetItems().get(v).contains(searchTextAsVariation)) {
+                    positionVariation = v;
+                }
+            }
         }
-        Log.d(TAG,"found position: "+position+ " positionNoKey: "+positionNoKey);
+
+        for (String setItem:mainActivityInterface.getCurrentSet().getSetItems()) {
+            Log.d(TAG,"setItem: "+setItem);
+        }
+        for (String setFilename:mainActivityInterface.getCurrentSet().getSetFilenames()) {
+            Log.d(TAG,"setFilename: "+setFilename);
+        }
+
+        Log.d(TAG,"found position: "+position+ " positionNoKey: "+positionNoKey+"  positionVariation: "+positionVariation);
 
         // If we have a current set index position and it matches this song, use the existing position
         int currentSetPosition = mainActivityInterface.getCurrentSet().getIndexSongInSet();
@@ -227,6 +269,9 @@ public class SetActions {
             } else if (currSetItem.equals(searchTextNoKeySpecified)) {
                 positionNoKey = currentSetPosition;
             }
+        }
+        if (position<0 && positionVariation>=0) {
+            position = positionVariation;
         }
 
         if (position>-1) {
@@ -239,7 +284,7 @@ public class SetActions {
             // stay out of the set view by returning -1 for the found position.
             // Or simply, the song just isn't in the set
 
-            return Math.max(positionNoKey, -1);
+            return positionNoKey;
         }
 
 
@@ -477,7 +522,7 @@ public class SetActions {
             InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(uriOriginal);
             OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(uriVariation);
             boolean success = mainActivityInterface.getStorageAccess().copyFile(inputStream, outputStream);
-            Log.d(TAG, "file copied from " + uriOriginal + " to " + uriVariation);
+            Log.d(TAG, "file copied from " + uriOriginal + " to " + uriVariation + ": " + success);
         }
     }
 
@@ -1161,10 +1206,11 @@ public class SetActions {
             custom_notes = custom_notes.replaceFirst("\n---\n","");
         }
 
+
         // Get a new tempSong ready for the info
         // Make sure to safe encode the filename as it might have unsafe characters
         Song tempSong = mainActivityInterface.getProcessSong().initialiseSong(
-                customLocStart+folderSlides, Uri.encode(custom_title));
+                customLocStart+folderSlides, mainActivityInterface.getStorageAccess().safeFilename(custom_title));
 
         if (custom_name.contains("# " + c.getResources().getString(R.string.note) + " # - ")) {
             // Prepare for a note
@@ -1183,7 +1229,7 @@ public class SetActions {
         }
 
         // Make sure to safe encode the filename as it might have unsafe characters
-        tempSong.setFilename(Uri.encode(custom_name));
+        tempSong.setFilename(mainActivityInterface.getStorageAccess().safeFilename(custom_name));
         tempSong.setTitle(custom_name);
         tempSong.setLyrics(custom_text.toString());
         tempSong.setUser1(custom_seconds);
@@ -1243,7 +1289,7 @@ public class SetActions {
                         break;
                     case "filename":
                         image_filename = mainActivityInterface.getProcessSong().parseHTML(safeNextText(xpp));
-                        if (!image_filename.equals("") && !image_filename.isEmpty()) {
+                        if (!image_filename.isEmpty()) {
                             slide_images.append(image_filename).append("\n");
                             slide_image_titles.append("[").append(c.getResources().getString(R.string.image))
                                     .append("_").append(imagenums + 1).append("]\n").append(image_filename)
@@ -1349,7 +1395,7 @@ public class SetActions {
         if (folder.equals(folderVariations)) {
             // Also clear the non-cache folder
             ArrayList<String> filesInNonCacheFolder = mainActivityInterface.getStorageAccess().listFilesInFolder(folder, "");
-            for (String filename:filesInFolder) {
+            for (String filename:filesInNonCacheFolder) {
                 mainActivityInterface.getSQLiteHelper().deleteSong(customLocStart+folder, filename);
             }
 
