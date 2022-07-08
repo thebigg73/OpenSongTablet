@@ -112,7 +112,7 @@
     <string name="youtube">"Pretražiti YouTube za trenutnu pesmu"</string>
     <string name="pdf_functionnotavailable">"Ova funkcija nije dostupna za PDF dokumenta"</string>
     <string name="pdf_selectpage">"Odabrati stranu"</string>
-    <string name="set">"SET LISTA"</string>
+    <string name="set">"Set lista"</string>
     <string name="load">"Učitati"</string>
     <string name="set_name">"Novo ime set liste"</string>
     <string name="set_new">"Očistiti"</string>
@@ -191,8 +191,8 @@
     <string name="drawer_close">"Zatvoriti"</string>
     <string name="back">"Nazad"</string>
     <string name="exit">"Da li ste sigurni da želite da izađete iz programa?"</string>
-    <string name="on">"UKLJ"</string>
-    <string name="off">"ISKLJ"</string>
+    <string name="on">"Uklj"</string>
+    <string name="off">"Isklj"</string>
     <string name="fontsize">"Trebalo bi da isključite automatsko skaliranje pesama."</string>"
     <string name="toggleScrollBeforeSwipe">"Uklj/Isklj skrolovanje pre sledeće/prethodne pesme"</string>
     <string name="exportcurrentsong">"Podeliti trenutnu pesmu"</string>
@@ -417,7 +417,7 @@
     <string name="random_song">"Pronađite slučajnu pjesmu"</string>
     <string name="tag_ending">"završni"</string>
     <string name="tag_instrumental">"instrumental"</string>
-    <string name="tag_interlude">"međuigra"</string>
+    <string name="tag_interlude">Međuigra</string>
     <string name="tag_intro">"Uvod"</string>
     <string name="tag_refrain">"Refren"</string>
     <string name="tag_reprise">"Repriza"</string>
@@ -531,7 +531,7 @@
     <string name="information_bar_opacity">Neprozirnost informativne trake</string>
     <string name="autorepeat_time">Vreme automatskog ponavljanja (iz podešavanja pedale)</string>
     <string name="presoShowBackground">Pozadina</string>
-    <string name="nearby_large_file">" Ова велика датотека песме се дели"</string>
+    <string name="nearby_large_file">Ова велика датотека песме се дели</string>
     <string name="midi_delay">MIDI bafer kašnjenja</string>
     <string name="forum">Pomoć (googlegroups)</string>
     <string name="songs">Песме</string>

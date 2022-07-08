@@ -411,10 +411,10 @@
     <string name="notsaved">not saved</string>
     <string name="notset">Not set</string>
     <string name="nowifidirect">Sorry, this device does not support WiFi direct</string>
-    <string name="off">OFF</string>
+    <string name="off">Off</string>
     <string name="ok">OK</string>
     <string name="oldchordformat">Detected current chord format</string>
-    <string name="on">ON</string>
+    <string name="on">On</string>
     <string name="options">Options</string>
     <string name="options_clearthisset">CLEAR THE CURRENT SET AND CREATE A NEW ONE</string>
     <string name="other">Other</string>

@@ -521,8 +521,8 @@
     <string name="filter_entry">在下面的新行中添加每个过滤器。</string>
     <string name="filter_structure">[*filter:V] =过滤后的经节</string>
     <string name="nofound">找不到先前的资料夹。 使用红色按钮选择位置。</string>
-    <string name="storage_quicktip">" 选择位置时：\n 使用菜单列出存储（您可能需要更改设置以显示所有存储）。\n 仅选择内部或SD卡存储。\n 建议使用内部存储。 这可能会列为设备存储或您设备的名称。\n 在Android 10+上，您不应选择“下载”或“根”文件夹。如有疑问，请选择“文档”文件夹。"</string>
-    <string name="storage_help">" 请选择“ OpenSong”文件夹的位置。这是OpenSong文件的默认存储位置。您可以随时从“选项”菜单更改此设置。建议使用内部存储。\n \n 要进行更新或重新安装：\n 您可以使用下面的黄色按钮找到以前的“ OpenSong”文件夹。"</string>
+    <string name="storage_quicktip">"选择位置时：\n 使用菜单列出存储（您可能需要更改设置以显示所有存储）。\n 仅选择内部或SD卡存储。\n 建议使用内部存储。 这可能会列为设备存储或您设备的名称。\n 在Android 10+上，您不应选择“下载”或“根”文件夹。如有疑问，请选择“文档”文件夹。"</string>
+    <string name="storage_help">"请选择“ OpenSong”文件夹的位置。这是OpenSong文件的默认存储位置。您可以随时从“选项”菜单更改此设置。建议使用内部存储。\n \n 要进行更新或重新安装：\n 您可以使用下面的黄色按钮找到以前的“ OpenSong”文件夹。"</string>
     <string name="information">信息</string>
     <string name="nearby_host_menu_only">仅在此页面可见时侦听新客户端</string>
     <string name="host">主持人</string>
@@ -531,7 +531,7 @@
     <string name="information_bar_opacity">信息栏的不透明度</string>
     <string name="autorepeat_time">自动重复时间（根据踏板设置）</string>
     <string name="presoShowBackground">背景</string>
-    <string name="nearby_large_file">" 正在共享此大歌曲文件"</string>
+    <string name="nearby_large_file">"正在共享此大歌曲文件"</string>
     <string name="midi_delay">MIDI 延迟缓冲器</string>
     <string name="forum">帮助 (googlegroups)</string>
     <string name="songs">歌曲</string>

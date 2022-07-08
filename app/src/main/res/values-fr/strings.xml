@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <resources>
-    <string name="action">"action"</string>
+    <string name="action">Action</string>
     <string name="action_search">"Recherche chansons"</string>
     <string name="action_settings">"Paramètres OpenSong"</string>
     <string name="actionbar">"Info menu bar"</string>
@@ -30,10 +30,10 @@
     <string name="back">"Precedent"</string>
     <string name="backing_track">"Choisissez la musique"</string>
     <string name="backup_error">"Aucun fichier de sauvegarde OpenSongApp trouvé dans le dossier OpenSong"</string>
-    <string name="backup_export">"sauvegarde Export OpenSongApp"</string>
-    <string name="backup_import">"sauvegarde Importation OpenSongApp"</string>
-    <string name="backup_info">"fichier OpenSongApp de sauvegarde"</string>
-    <string name="backup_success">"sauvegarde OpenSongApp créé"</string>
+    <string name="backup_export">Sauvegarde Export OpenSongApp</string>
+    <string name="backup_import">Sauvegarde Importation OpenSongApp</string>
+    <string name="backup_info">Fichier OpenSongApp de sauvegarde</string>
+    <string name="backup_success">Sauvegarde OpenSongApp créé</string>
     <string name="backupnow">"Créer une sauvegarde maintenant"</string>
     <string name="bad_time">"Le temps de defilement de diapositives n\'a pas été réglé correctement"</string>
     <string name="banjo4">"Banjo (4)"</string>
@@ -42,9 +42,9 @@
     <string name="bibleXML">"OpenSong XML Bible"</string>
     <string name="bible_search">"Phrase ou verset à rechercher"</string>
     <string name="bible_translation">"Code de la version de la bible\n(exemple:BDS,LSG,…)"</string>
-    <string name="black_screen">"écran noir"</string>
+    <string name="black_screen">Écran noir</string>
     <string name="book">"Livre"</string>
-    <string name="bottom">bas</string>
+    <string name="bottom">Bas</string>
     <string name="bridge_background">"Fond des ponts"</string>
     <string name="camera">"Caméra"</string>
     <string name="cancel">"Annuler"</string>
@@ -195,7 +195,7 @@
     <string name="file_chooser">Explorateur de fichier</string>
     <string name="file_exists">"Le fichier existe déjà. Merci de le renommer."</string>
     <string name="file_type">"Type de fichier"</string>
-    <string name="file_type_unknown">"inconnu"</string>
+    <string name="file_type_unknown">Inconnu</string>
     <string name="findnewsongs">"Trouver de nouvelles chansons"</string>
     <string name="firstsong">"Première chanson de la liste affichée"</string>
     <string name="fix">"Correction automatique"</string>
@@ -221,8 +221,8 @@
     <string name="hidelyricsbox">"Masquer la boîte de paroles"</string>
     <string name="highlight">"Surligneur"</string>
     <string name="highlight_notallowed">"Autoscale doit être complété pour cette fonctionnalité"</string>
-    <string name="image">"image"</string>
-    <string name="image_slide">"image diaporama"</string>
+    <string name="image">Image</string>
+    <string name="image_slide">Image diaporama</string>
     <string name="import_onsong_choose">"Importer depuis un fichier Onsong"</string>
     <string name="import_onsong_error">"Aucun fichier de sauvegarde Onsong trouvé dans /documents/OpenSong/"</string>
     <string name="importnewset">"Importer une liste"</string>
@@ -241,16 +241,16 @@
     <string name="link">"Lien"</string>
     <string name="link_audio">"Lien du fichier audio"</string>
     <string name="link_choose">"Choisissez un fichier à lier avec cette chanson"</string>
-    <string name="link_file">"autre fichier"</string>
-    <string name="link_web">"lien en ligne"</string>
-    <string name="link_youtube">"lien YouTube"</string>
+    <string name="link_file">Autre fichier</string>
+    <string name="link_web">Lien en ligne</string>
+    <string name="link_youtube">Lien YouTube</string>
     <string name="load">"Chargez"</string>
     <string name="load_preferences">"Chargement des préférences"</string>
     <string name="load_reusable">"Charger une diapositive réutilisables"</string>
     <string name="logo">"Logo"</string>
     <string name="longPress">"Sélectionnez l\'action de l\'appui long"</string>
     <string name="longpress">"Appuyez longuement / maintenez"</string>
-    <string name="loop">"boucle"</string>
+    <string name="loop">Boucle</string>
     <string name="loop_slide_pages">"Pages de boucle de diaporamas personnalisés"</string>
     <string name="lyrics_color">"Police des paroles "</string>
     <string name="mainfoldername">"MAIN"</string>
@@ -304,13 +304,13 @@
     <string name="notsaved">Non enregistré</string>
     <string name="notset">"A définir"</string>
     <string name="nowifidirect">"Désolé, ce périphérique ne supporte pas WiFi Direct"</string>
-    <string name="off">"NON"</string>
+    <string name="off">"Non"</string>
     <string name="ok">"Valider"</string>
     <string name="oldchordformat">"Format d\'accords actuel détecté"</string>
     <string name="on">"OUI"</string>
     <string name="options">"Options"</string>
     <string name="options_clearthisset">"VIDER CETTE SET"</string>
-    <string name="other">"autre"</string>
+    <string name="other">"Autre"</string>
     <string name="override_fullautoscale">"Remplacer l\'échelle automatique complet largeur seulement"</string>
     <string name="override_scale_explanation">"Si la taille de la police de autoscale est inférieure à la taille minimale souhaitée, voulez-vous l\'application pour passer outre à une méthode de mise à l\'échelle différente? L\'utilisation de ces options peuvent vous forcer à faire défiler horizontalement et verticalement dans une chanson."</string>
     <string name="override_widthautoscale">"Largeur remplacer seulement mise à l\'échelle ne autoscale"</string>
@@ -389,7 +389,7 @@
     <string name="section_space">"Ajouter un espace de section"</string>
     <string name="select_item_variation">"Sélectionnez la chanson pour créer une variation de jeu"</string>
     <string name="sendtoprojector">"Projeter"</string>
-    <string name="set">"LISTE DE LECTURE"</string>
+    <string name="set">"Liste de lecture"</string>
     <string name="set_help">"Deplacez les chansons dans l\'ordre choisis"</string>
     <string name="set_manage_click">"Cliquez sur un élément dans la liste pour le voir"</string>
     <string name="set_manage_swipe">"Glissez pour supprimer un élément de votre liste"</string>
@@ -428,14 +428,14 @@
     <string name="stickynotes">"Notes de la chanson"</string>
     <string name="stickynotes_edit">"Modifier les notes de la chanson"</string>
     <string name="stop">"Arrêter"</string>
-    <string name="storage">"stockage"</string>
+    <string name="storage">"Stockage"</string>
     <string name="storage_check">"Vérification du stockage"</string>
     <string name="storage_choose">"Gérer le stockage"</string>
     <string name="storage_ext">"Stockage externe"</string>
     <string name="storage_notwritable">"Impossible d'utiliser"</string>
     <string name="storage_rationale">"Un accès à votre espace de stockage est nécessaire pour lire et écrire des chansons et des listes."</string>
     <string name="subscription">"(Souscription requise)"</string>
-    <string name="success">"le succès"</string>
+    <string name="success">Le succès</string>
     <string name="swipe">"Paramètres de balayage"</string>
     <string name="swipe_allowance">"Mouvement vertical autorisé"</string>
     <string name="swipe_distance">"Distance de balayage"</string>
@@ -461,7 +461,7 @@
     <string name="timeformat">"24h"</string>
     <string name="timer_learn">"Apprendre le temps de l'autodéfilement"</string>
     <string name="timer_size">"Taille de la minuterie"</string>
-    <string name="title">"titre"</string>
+    <string name="title">Titre</string>
     <string name="toggleScrollBeforeSwipe">"Défilement entre la chanson précédente/suivante par balayage"</string>
     <string name="toggle_autoscroll_pause">"Activer la permutation automatique"</string>
     <string name="toggle_autoshow_stickynotes">"Afficher/masquer les notes du show automatique"</string>
