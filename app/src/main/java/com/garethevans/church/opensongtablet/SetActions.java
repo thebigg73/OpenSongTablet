@@ -158,7 +158,7 @@ class SetActions {
             // Remove any blank set entries that shouldn't be there
             String setparse = preferences.getMyPreferenceString(c,"setCurrent","");
 
-            Log.d(TAG,"setparse="+setparse);
+            //Log.d(TAG,"setparse="+setparse);
 
             setparse =  setparse.replace("$**__**$", "");
 
@@ -194,7 +194,7 @@ class SetActions {
             }
 
             // TODO remove
-            if (StaticVariables.mTempSetList!=null) {
+            /*if (StaticVariables.mTempSetList!=null) {
                 for (String s : StaticVariables.mTempSetList) {
                     Log.d(TAG, "mTempSetList: " + s);
                 }
@@ -210,7 +210,7 @@ class SetActions {
                 for (String s : StaticVariables.mSet) {
                     Log.d(TAG, "mSet: " + s);
                 }
-            }
+            }*/
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -290,7 +290,7 @@ class SetActions {
         StaticVariables.myToastMessage = "";
         StringBuilder message = new StringBuilder();
         for (String tempfile:tempsets) {
-            if (tempfile!=null && !tempfile.equals("") && !tempfile.isEmpty()) {
+            if (tempfile != null && !tempfile.isEmpty()) {
                 Uri uri = storageAccess.getUriForItem(c, preferences, "Sets", "", tempfile);
                 if (storageAccess.deleteFile(c,uri)) {
                     message.append(tempfile).append(", ");
@@ -755,7 +755,7 @@ class SetActions {
                             break;
                         case "filename":
                             image_filename = LoadXML.parseFromHTMLEntities(xpp.nextText());
-                            if (!image_filename.equals("") && !image_filename.isEmpty()) {
+                            if (!image_filename.isEmpty()) {
                                 slide_images.append(image_filename).append("\n");
                                 slide_image_titles.append("[").append(c.getResources().getString(R.string.image))
                                         .append("_").append(imagenums + 1).append("]\n").append(image_filename)
