@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -325,17 +324,17 @@ public class PopUpFullSearchFragment extends DialogFragment {
         new Thread(() -> {
             try {
                 searchlist = sqLiteHelper.getAllSongs(getContext());
-                Log.d("FullSearchFragment","size of searchlist="+searchlist.size());
+                //Log.d("FullSearchFragment","size of searchlist="+searchlist.size());
                 // Add the relevant stuff
                 // IV - Folders are no longer returned by getAllSongs
                 for (int i=0;i<searchlist.size();i++) {
                     String searchableContent = "";
-                    Log.d("FullSearchFragment", "getTitle()="+searchlist.get(i).getTitle());
+                    //Log.d("FullSearchFragment", "getTitle()="+searchlist.get(i).getTitle());
                     if (searchlist.get(i).getTitle()==null || searchlist.get(i).getTitle().isEmpty()) {
                         searchlist.get(i).setTitle(searchlist.get(i).getFilename());
                     }
                     if (!searchlist.get(i).getFilename().equals("(invalid)")) {
-                        Log.d("FullSearchFragment", "getFilename()=" + searchlist.get(i).getFilename());
+                        //Log.d("FullSearchFragment", "getFilename()=" + searchlist.get(i).getFilename());
                         searchableContent = searchableContent + searchlist.get(i).getFilename();
                         searchableContent = searchableContent + addIfWanted(searchFolder, searchlist.get(i).getFilename());
                         searchableContent = searchableContent + addIfWanted(searchAka, searchlist.get(i).getAka());
