@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 
+import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+
 public class SoftKeyboard {
 
     private final String TAG = "SoftKeyboard";
@@ -44,9 +46,11 @@ public class SoftKeyboard {
     private int totalScreenHeight;
     private FrameLayout.LayoutParams frameLayoutParams;
     private int currentlyScrolled = 0;
+    private MainActivityInterface mainActivityInterface;
 
     public SoftKeyboard() {}
     public SoftKeyboard assistActivity (Activity activity, SoftKeyBoardStatusListener listener) {
+        mainActivityInterface = (MainActivityInterface) activity;
         return new SoftKeyboard(activity, listener);
     }
 
@@ -54,14 +58,14 @@ public class SoftKeyboard {
         try {
             FrameLayout content = activity.findViewById(android.R.id.content);
             mChildOfContent = content.getChildAt(0);
-            mChildOfContent.getViewTreeObserver().addOnGlobalLayoutListener(() -> possiblyResizeChildOfContent(listener));
+            mChildOfContent.getViewTreeObserver().addOnGlobalLayoutListener(() -> possiblyResizeChildOfContent((MainActivityInterface) activity,listener));
             frameLayoutParams = (FrameLayout.LayoutParams) mChildOfContent.getLayoutParams();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private void possiblyResizeChildOfContent(SoftKeyBoardStatusListener listener) {
+    private void possiblyResizeChildOfContent(MainActivityInterface mainActivityInterface, SoftKeyBoardStatusListener listener) {
         int usableHeightNow = computeUsableHeight();
 
         if (usableHeightNow != usableHeightPrevious) {
@@ -74,13 +78,15 @@ public class SoftKeyboard {
                 Log.d(TAG,"Keyboard visible");
                 frameLayoutParams.height = totalScreenHeight - heightDifference;
                 listener.onKeyBoardShow(mChildOfContent, totalScreenHeight);
-                //mChildOfContent.requestLayout();  // DO NOT request layout after scroll up to avoid white blank space between keyboard and content
+                mainActivityInterface.setWindowFlags(false);
+                mChildOfContent.requestLayout();  // DO NOT request layout after scroll up to avoid white blank space between keyboard and content
 
             } else if (heightDifference < (totalScreenHeight/4) * -1) {
                 // keyboard probably just became hidden
                 Log.d(TAG,"Keyboard hidden");
                 handleShiftDown();
                 frameLayoutParams.height = totalScreenHeight;
+                mainActivityInterface.setWindowFlags(true);
                 mChildOfContent.requestLayout();
                 listener.onKeyBoardHide(mChildOfContent, totalScreenHeight);
             }

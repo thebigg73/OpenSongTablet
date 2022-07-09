@@ -979,7 +979,8 @@ Check out the categories in the right hand options menu.
     <string name="website_song_onsong" translatable="false">https://www.opensongapp.com/user-manual/songs/add-songs/ios-onsong</string>
     <string name="website_song_sample" translatable="false">https://www.opensongapp.com/user-manual/songs/add-songs/sample-songs</string>
     <string name="website_sound_level_meter" translatable="false">https://www.opensongapp.com/user-manual/sound-level-meter</string>
-    <string name="website_storage_settings" translatable="false">https://www.opensongapp.com/user-manual/storage/storage-settings</string>
+    <string name="website_storage_overview" translatable="false">https://www.opensongapp.com/user-manual/storage/storage-overview</string>
+    <string name="website_storage_set" translatable="false">https://www.opensongapp.com/user-manual/storage/set-storage-location</string>
     <string name="website_swipe_settings" translatable="false">https://www.opensongapp.com/user-manual/controls/swipe-settings</string>
     <string name="website_themes" translatable="false">https://www.opensongapp.com/user-manual/display/themes</string>
     <string name="website_user_guide" translatable="false">https://www.opensongapp.com/user-guide</string>

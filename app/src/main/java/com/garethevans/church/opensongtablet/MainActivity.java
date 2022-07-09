@@ -529,7 +529,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             public void onDrawerOpened(@NonNull View drawerView) {
                 menuOpen = true;
                 hideActionButton(true);
-                setWindowFlags();
+                setWindowFlags(true);
                 if (setSongMenuFragment()) {
                     showTutorial("songsetMenu",null);
                 }
@@ -562,18 +562,17 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         }
     }
     @Override
-    public void setWindowFlags() {
+    public void setWindowFlags(boolean immersiveOn) {
         // Fix the page flags
         if (windowFlags==null) {
             windowFlags = new WindowFlags(this.getWindow());
         }
         try {
-            windowFlags.setWindowFlags();
+            windowFlags.setWindowFlags(immersiveOn);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
 /*
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -635,13 +634,20 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
     @Override
     public void onBackPressed() {
-        if (navController!=null && navController.getCurrentDestination()!=null &&
-                (navController.getCurrentDestination().getId()==R.id.performanceFragment ||
-                        navController.getCurrentDestination().getId()==R.id.presenterFragment ||
-                        navController.getCurrentDestination().getId()==R.id.storageManagementFragment)) {
-            displayAreYouSure("exit", getString(R.string.exit_confirm), null,
-                    navController.getCurrentDestination().getNavigatorName(),
-                    navHostFragment, null);
+        if (navController!=null && navController.getCurrentDestination()!=null) {
+            try {
+                int id = Objects.requireNonNull(navController.getCurrentDestination()).getId();
+                if (id == R.id.performanceFragment || id == R.id.presenterFragment || id == R.id.setStorageLocationFragment) {
+                    displayAreYouSure("exit", getString(R.string.exit_confirm), null,
+                            navController.getCurrentDestination().getNavigatorName(),
+                            navHostFragment, null);
+                } else {
+                    super.onBackPressed();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                super.onBackPressed();
+            }
         } else {
             super.onBackPressed();
         }
@@ -1029,7 +1035,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     public void updateToolbar(String what) {
         // Null titles are for the default song, author, etc.
         // Otherwise a new title is passed as a string (in a settings menu)
-        windowFlags.setWindowFlags();
+        windowFlags.setWindowFlags(true);
         appActionBar.setActionBar(what);
         Log.d(TAG,"what="+what+"  settingsOpen="+settingsOpen);
         menuIconVisibility(what == null || (getMode().equals("Presenter") && !settingsOpen));
@@ -2654,7 +2660,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         super.onResume();
 
         // Fix the page flags
-        setWindowFlags();
+        setWindowFlags(true);
     }
 
     @Override
@@ -2692,9 +2698,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
         // Set the fullscreen window flags]
-        setWindowFlags();
+        setWindowFlags(true);
         if (hasFocus) {
-            setWindowFlags();
             appActionBar.showActionBar(settingsOpen);
         }
     }

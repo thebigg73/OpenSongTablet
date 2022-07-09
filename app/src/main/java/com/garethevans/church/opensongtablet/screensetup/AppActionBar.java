@@ -76,8 +76,12 @@ public class AppActionBar {
     public void translateAwayActionBar(boolean moveAway) {
         if (moveAway) {
             toolbar.setTranslationY(-200);
+            toolbar.setVisibility(View.GONE);
+            justShowOrHide(false);
         } else {
             toolbar.setTranslationY(0);
+            toolbar.setVisibility(View.VISIBLE);
+            justShowOrHide(true);
         }
     }
     public void setHideActionBar(boolean hideActionBar) {

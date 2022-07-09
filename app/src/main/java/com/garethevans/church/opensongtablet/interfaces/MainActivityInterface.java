@@ -75,7 +75,7 @@ public interface MainActivityInterface {
     void initialiseActivity();
     void updateSizes(int width, int height);
     int[] getDisplayMetrics();
-    void setWindowFlags();
+    void setWindowFlags(boolean immersiveOn);
     Locale getLocale();
     VersionNumber getVersionNumber();
     String getMode();

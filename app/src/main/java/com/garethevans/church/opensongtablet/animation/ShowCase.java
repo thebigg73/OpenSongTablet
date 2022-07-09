@@ -18,6 +18,12 @@ public class ShowCase {
         singleShowCaseBuilder(c,target,dismiss,info,rect,id).build().show(c);
     }
 
+    public MaterialShowcaseView.Builder getSingleShowCaseBuilderForListener(Activity c, View target,
+                                                                            String dismiss, String info,
+                                                                            boolean rect, String id) {
+        return singleShowCaseBuilder(c,target,dismiss,info,rect,id);
+    }
+
     public MaterialShowcaseView.Builder singleShowCaseBuilder(Activity c, View target,
                                                               String dismisstext_ornull,
                                                               String information,
@@ -43,13 +49,20 @@ public class ShowCase {
         return mscb;
     }
 
-    public void sequenceShowCase (Activity c, ArrayList<View> targets, ArrayList<String> dismisstexts_ornulls,
+    public MaterialShowcaseSequence sequenceShowCase (Activity c, ArrayList<View> targets, ArrayList<String> dismisstexts_ornulls,
                            ArrayList<String> information, ArrayList<Boolean> rects, String showcaseid) {
         ShowcaseConfig config = new ShowcaseConfig();
         config.setDelay(500); // half second between each showcase view
         config.setRenderOverNavigationBar(true);
         MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(c, showcaseid);
         sequence.setConfig(config);
+
+        if (dismisstexts_ornulls==null) {
+            dismisstexts_ornulls = new ArrayList<>();
+            for (int z=0; z<targets.size(); z++) {
+                dismisstexts_ornulls.add(null);
+            }
+        }
 
         for (int i=0; i<targets.size(); i++) {
             if (dismisstexts_ornulls.get(i)==null) {
@@ -62,8 +75,10 @@ public class ShowCase {
         }
         try {
             sequence.start();
+            return sequence;
         } catch (Exception e) {
             Log.d("ShowCase","Error:"+e);
+            return null;
         }
     }
 }

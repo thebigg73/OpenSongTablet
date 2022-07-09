@@ -36,6 +36,9 @@ import com.google.android.material.snackbar.Snackbar;
 import java.io.File;
 import java.util.ArrayList;
 
+import uk.co.deanwild.materialshowcaseview.IShowcaseListener;
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
+
 /*
 This fragment is used to set the storage location for the app.  It deals with the permissions for
 using the external storage and allows the user to use the built in picker to choose the location
@@ -98,7 +101,48 @@ public class SetStorageLocationFragment extends Fragment {
 
         mainActivityInterface.getAppActionBar().translateAwayActionBar(true);
 
+        // Showcase
+        storageShowcase();
+
         return myView.getRoot();
+    }
+
+    private void storageShowcase() {
+        MaterialShowcaseView.Builder builder = mainActivityInterface.getShowCase().
+                getSingleShowCaseBuilderForListener(requireActivity(),myView.setStorage,
+                        null,getString(R.string.storage_reset),true,"storageReset");
+        builder.setListener(new IShowcaseListener() {
+            @Override
+            public void onShowcaseDisplayed(MaterialShowcaseView showcaseView) {}
+
+            @Override
+            public void onShowcaseDismissed(MaterialShowcaseView showcaseView) {
+                webHelpShowcase();
+            }
+        });
+        builder.build().show(requireActivity());
+    }
+    private void startShowcase() {
+        if (myView.startApp.getVisibility()==View.VISIBLE) {
+            mainActivityInterface.getShowCase().singleShowCase(requireActivity(), myView.startApp,
+                    null, getString(R.string.start), true, "startApp");
+        }
+    }
+
+    private void webHelpShowcase() {
+        MaterialShowcaseView.Builder builder = mainActivityInterface.getShowCase().
+                getSingleShowCaseBuilderForListener(requireActivity(),myView.webHelp,
+                        null,getString(R.string.help),false,"webHelp");
+        builder.setListener(new IShowcaseListener() {
+            @Override
+            public void onShowcaseDisplayed(MaterialShowcaseView showcaseView) {}
+
+            @Override
+            public void onShowcaseDismissed(MaterialShowcaseView showcaseView) {
+                startShowcase();
+            }
+        });
+        builder.build().show(requireActivity());
     }
 
     @Override
@@ -119,6 +163,7 @@ public class SetStorageLocationFragment extends Fragment {
         myView.progressText.setOnClickListener(t -> myView.setStorage.performClick());
 
         // Set the listeners for the buttons
+        myView.webHelp.setOnClickListener(v -> mainActivityInterface.openDocument(getString(R.string.website_storage_set)));
         myView.infoButton.setOnClickListener(v -> {
             BottomSheetDialogFragment dialog = new SetStorageBottomSheet();
             dialog.show(requireActivity().getSupportFragmentManager(),"SetStorageBottomSheet");
@@ -328,6 +373,7 @@ public class SetStorageLocationFragment extends Fragment {
             myView.firstRun.setVisibility(View.GONE);
             myView.startApp.setVisibility(View.VISIBLE);
             pulseButton(myView.startApp);
+            startShowcase();
             myView.setStorage.clearAnimation();
             // After an attempt to change storage, set to show Welcome song
             mainActivityInterface.getSong().setFolder(getString(R.string.mainfoldername));

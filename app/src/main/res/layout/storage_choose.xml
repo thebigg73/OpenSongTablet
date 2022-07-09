@@ -6,19 +6,35 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimary">
 
-    <com.google.android.material.textview.MaterialTextView
+    <LinearLayout
         android:id="@+id/headerText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_margin="0dp"
+
         android:background="@color/colorAltPrimary"
-        android:drawablePadding="12dp"
-        android:gravity="center_vertical"
-        android:padding="16dp"
-        android:text="@string/storage_choose"
-        android:textSize="22sp"
-        app:drawableStartCompat="@mipmap/ic_round_launcher" />
+        android:orientation="horizontal">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="0dp"
+            android:layout_weight="1"
+            android:drawablePadding="8dp"
+            android:gravity="center_vertical"
+            android:padding="8dp"
+            android:text="@string/storage_choose"
+            android:textSize="22sp"
+            app:drawableStartCompat="@mipmap/ic_round_launcher" />
+
+        <ImageView
+            android:id="@+id/webHelp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:padding="16dp"
+            android:src="@drawable/ic_web_white_36dp" />
+    </LinearLayout>
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/scrollView"
@@ -51,7 +67,7 @@
                 android:paddingBottom="4dp"
                 android:text="@string/current_location" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/setStorage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -61,7 +77,7 @@
                 android:text="@string/storage_change"
                 app:backgroundTint="@color/red" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/findStorage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -100,7 +116,7 @@
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/startApp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
