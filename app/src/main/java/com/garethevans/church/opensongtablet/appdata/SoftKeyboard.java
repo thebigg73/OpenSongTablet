@@ -46,11 +46,9 @@ public class SoftKeyboard {
     private int totalScreenHeight;
     private FrameLayout.LayoutParams frameLayoutParams;
     private int currentlyScrolled = 0;
-    private MainActivityInterface mainActivityInterface;
 
     public SoftKeyboard() {}
     public SoftKeyboard assistActivity (Activity activity, SoftKeyBoardStatusListener listener) {
-        mainActivityInterface = (MainActivityInterface) activity;
         return new SoftKeyboard(activity, listener);
     }
 
@@ -79,7 +77,7 @@ public class SoftKeyboard {
                 frameLayoutParams.height = totalScreenHeight - heightDifference;
                 listener.onKeyBoardShow(mChildOfContent, totalScreenHeight);
                 mainActivityInterface.setWindowFlags(false);
-                mChildOfContent.requestLayout();  // DO NOT request layout after scroll up to avoid white blank space between keyboard and content
+                mChildOfContent.requestLayout();
 
             } else if (heightDifference < (totalScreenHeight/4) * -1) {
                 // keyboard probably just became hidden
