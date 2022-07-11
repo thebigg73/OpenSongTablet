@@ -119,6 +119,8 @@ public class LinksBottomSheet extends BottomSheetDialogFragment {
                 myView.searchLink.setHint(getString(R.string.link_search_youtube));
                 myView.searchLink.setOnClickListener(view -> openBrowser("https://www.youtube.com/results?search_query="));
                 break;
+
+            //music.youtube.com/watch?v=
             case "linkAudio":
                 myView.dialogHeading.setText(getString(R.string.link_audio));
                 myView.linkLocation.setText(mainActivityInterface.getSong().getLinkaudio());

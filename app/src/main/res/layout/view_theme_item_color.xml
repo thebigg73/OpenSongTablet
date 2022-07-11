@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <FrameLayout
+        android:id="@+id/colorLayout"
+        android:layout_width="64dp"
+        android:layout_height="match_parent"
+        android:layout_margin="0dp"
+        android:padding="4dp"
+        android:layout_gravity="center_vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:background="@drawable/alpha"
+            android:layout_margin="4dp"/>
+
+        <View
+            android:id="@+id/colorSwatch"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:background="#fff"
+            android:layout_margin="4dp"/>
+
+        <View
+            android:id="@+id/colorBoxOutline"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:background="@drawable/overlay_rounded_box"
+            android:layout_margin="0dp"/>
+
+    </FrameLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/labelText"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:text="@string/text"/>
+</LinearLayout>

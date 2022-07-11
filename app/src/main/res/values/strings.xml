@@ -108,7 +108,6 @@
         <item>11</item>
     </string-array>
     <string name="capo_chords">Capo chords</string>
-    <string name="capo_color">Capo font</string>
     <string name="capo_fret">Capo fret</string>
     <string name="capo_hide">Autohide capo</string>
     <string name="capo_style">Capo fret as numeral</string>

@@ -44,13 +44,23 @@
                     android:id="@+id/colorBackground"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="4dp"
-                    android:layout_marginStart="16dp">
-                <ImageView
-                    android:id="@+id/singleColor"
-                    android:layout_width="128dp"
-                    android:layout_height="72dp"
-                    android:contentDescription="@string/simple_color"/>
+                    android:layout_marginStart="16dp"
+                    android:padding="4dp">
+
+
+                    <ImageView
+                        android:id="@+id/singleColor"
+                        android:layout_width="128dp"
+                        android:layout_height="72dp"
+                        android:layout_margin="4dp"
+                        android:contentDescription="@string/simple_color" />
+
+                    <View
+                        android:layout_width="128dp"
+                        android:layout_height="72dp"
+                        android:layout_gravity="center"
+                        android:layout_margin="0dp"
+                        android:background="@drawable/overlay_rounded_box" />
                 </FrameLayout>
             </LinearLayout>
 
@@ -70,13 +80,21 @@
                         android:layout_weight="0.5"
                         android:padding="4dp">
 
-                    <ImageView
-                        android:id="@+id/image1"
-                        android:layout_width="128dp"
-                        android:layout_height="72dp"
-                        android:contentDescription="@string/choose_image2"
-                        android:src="@drawable/image"
-                        android:layout_gravity="center"/>
+                        <ImageView
+                            android:id="@+id/image1"
+                            android:layout_width="128dp"
+                            android:layout_height="72dp"
+                            android:layout_gravity="center"
+                            android:layout_margin="4dp"
+                            android:contentDescription="@string/choose_image2"
+                            android:src="@drawable/image" />
+
+                        <View
+                            android:layout_width="128dp"
+                            android:layout_height="72dp"
+                            android:layout_gravity="center"
+                            android:layout_margin="0dp"
+                            android:background="@drawable/overlay_rounded_box" />
                     </FrameLayout>
 
                     <FrameLayout
@@ -85,13 +103,22 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="0.5"
                         android:padding="4dp">
-                    <ImageView
-                        android:id="@+id/image2"
-                        android:layout_width="128dp"
-                        android:layout_height="72dp"
-                        android:contentDescription="@string/choose_image2"
-                        android:src="@drawable/image"
-                        android:layout_gravity="center"/>
+
+                        <ImageView
+                            android:id="@+id/image2"
+                            android:layout_width="128dp"
+                            android:layout_height="72dp"
+                            android:layout_gravity="center"
+                            android:layout_margin="4dp"
+                            android:contentDescription="@string/choose_image2"
+                            android:src="@drawable/image" />
+
+                        <View
+                            android:layout_width="128dp"
+                            android:layout_height="72dp"
+                            android:layout_gravity="center"
+                            android:layout_margin="0dp"
+                            android:background="@drawable/overlay_rounded_box" />
                     </FrameLayout>
                 </TableRow>
 
@@ -102,16 +129,16 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="0.5"
                         android:gravity="center_horizontal"
-                        android:text="@string/choose_image1"
-                        android:labelFor="@id/image2"/>
+                        android:labelFor="@id/image2"
+                        android:text="@string/choose_image1" />
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.5"
                         android:gravity="center_horizontal"
-                        android:text="@string/choose_image2"
-                        android:labelFor="@id/image1"/>
+                        android:labelFor="@id/image1"
+                        android:text="@string/choose_image2" />
                 </TableRow>
 
                 <TableRow>
@@ -127,9 +154,17 @@
                             android:id="@+id/video1"
                             android:layout_width="128dp"
                             android:layout_height="72dp"
-                            android:src="@drawable/image"
                             android:layout_gravity="center"
-                            android:contentDescription="@string/choose_video1" />
+                            android:layout_margin="4dp"
+                            android:contentDescription="@string/choose_video1"
+                            android:src="@drawable/image" />
+
+                        <View
+                            android:layout_width="128dp"
+                            android:layout_height="72dp"
+                            android:layout_gravity="center"
+                            android:layout_margin="0dp"
+                            android:background="@drawable/overlay_rounded_box" />
                     </FrameLayout>
 
 
@@ -144,9 +179,18 @@
                             android:id="@+id/video2"
                             android:layout_width="128dp"
                             android:layout_height="72dp"
-                            android:src="@drawable/image"
                             android:layout_gravity="center"
-                            android:contentDescription="@string/choose_video2" />
+                            android:layout_margin="4dp"
+                            android:contentDescription="@string/choose_video2"
+                            android:src="@drawable/image" />
+
+                        <View
+                            android:layout_width="128dp"
+                            android:layout_height="72dp"
+                            android:layout_gravity="center"
+                            android:layout_margin="0dp"
+                            android:background="@drawable/overlay_rounded_box" />
+
                     </FrameLayout>
                 </TableRow>
 
@@ -157,16 +201,16 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="0.5"
                         android:gravity="center_horizontal"
-                        android:text="@string/choose_video1"
-                        android:labelFor="@id/video1"/>
+                        android:labelFor="@id/video1"
+                        android:text="@string/choose_video1" />
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.5"
                         android:gravity="center_horizontal"
-                        android:text="@string/choose_video2"
-                        android:labelFor="@id/video2"/>
+                        android:labelFor="@id/video2"
+                        android:text="@string/choose_video2" />
 
                 </TableRow>
             </TableLayout>

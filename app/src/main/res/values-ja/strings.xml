@@ -46,7 +46,6 @@
     <string name="bottom">ボトム</string>
     <string name="bridge_background">"ブリッジの背景"</string>
     <string name="camera">"カメラ"</string>
-    <string name="capo_color">"カポフォント"</string>
     <string name="capo_style">"カポは数字でフレットする"</string>
     <string name="capo_toggle_bothcapo">"カポとネイティブコード利用可能な場合の両方を表示"</string>
     <string name="category">"カテゴリー"</string>

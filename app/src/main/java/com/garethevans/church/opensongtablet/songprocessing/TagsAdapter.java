@@ -20,7 +20,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class ThemesAdapter extends RecyclerView.Adapter<ThemesAdapter.ViewHolder> {
+public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.ViewHolder> {
 
     private final MainActivityInterface mainActivityInterface;
     private final ArrayList<String> tags, songsWithTags;
@@ -30,9 +30,9 @@ public class ThemesAdapter extends RecyclerView.Adapter<ThemesAdapter.ViewHolder
     private final Context c;
     private final FragmentManager fragmentManager;
 
-    public ThemesAdapter(Context c, MainActivityInterface mainActivityInterface,
-                         FragmentManager fragmentManager,
-                         Fragment callingFragment, String fragName) {
+    public TagsAdapter(Context c, MainActivityInterface mainActivityInterface,
+                       FragmentManager fragmentManager,
+                       Fragment callingFragment, String fragName) {
         this.mainActivityInterface = mainActivityInterface;
         this.callingFragment = callingFragment;
         this.fragName = fragName;
@@ -76,12 +76,12 @@ public class ThemesAdapter extends RecyclerView.Adapter<ThemesAdapter.ViewHolder
 
     @NonNull
     @Override
-    public ThemesAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public TagsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
 
         // Inflate the custom layout
-        View cardView = inflater.inflate(R.layout.view_theme_item, parent, false);
+        View cardView = inflater.inflate(R.layout.view_tag_item, parent, false);
 
         // Return a new holder instance
         return new ViewHolder(cardView);

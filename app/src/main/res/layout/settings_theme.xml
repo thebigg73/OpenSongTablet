@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/DefaultView"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -51,47 +50,29 @@
                     android:paddingEnd="16dp"
                     android:text="@string/main_song_display" />
 
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/alpha">
-
-                <com.google.android.material.button.MaterialButton
+                <com.garethevans.church.opensongtablet.customviews.ThemeItemColor
                     android:id="@+id/lyricsButton"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="@string/lyrics"
-                    app:icon="@drawable/rectangle"
-                    app:iconGravity="start"
-                    app:iconSize="32dp" />
-                </FrameLayout>
+                    android:layout_height="wrap_content"
+                    android:text="@string/lyrics"/>
 
-                <com.google.android.material.button.MaterialButton
+                <com.garethevans.church.opensongtablet.customviews.ThemeItemColor
                     android:id="@+id/chordsButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/chords"
-                    app:icon="@drawable/rectangle"
-                    app:iconGravity="start"
-                    app:iconSize="32dp" />
+                    android:text="@string/chords"/>
 
-                <com.google.android.material.button.MaterialButton
+                <com.garethevans.church.opensongtablet.customviews.ThemeItemColor
                     android:id="@+id/capoButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/capo_chords"
-                    app:icon="@drawable/rectangle"
-                    app:iconGravity="start"
-                    app:iconSize="32dp" />
+                    android:text="@string/capo_chords"/>
 
-                <com.google.android.material.button.MaterialButton
+                <com.garethevans.church.opensongtablet.customviews.ThemeItemColor
                     android:id="@+id/pageButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/background"
-                    app:icon="@drawable/rectangle"
-                    app:iconGravity="start"
-                    app:iconSize="32dp" />
+                    android:text="@string/background"/>
 
             </LinearLayout>
 
@@ -111,86 +92,59 @@
                     android:paddingEnd="16dp"
                     android:text="@string/section_highlighting" />
 
-                <com.google.android.material.button.MaterialButton
+                <com.garethevans.church.opensongtablet.customviews.ThemeItemColor
                     android:id="@+id/verseButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/verse"
-                    app:icon="@drawable/rectangle"
-                    app:iconGravity="start"
-                    app:iconSize="32dp" />
+                    android:text="@string/verse"/>
 
-                <com.google.android.material.button.MaterialButton
+                <com.garethevans.church.opensongtablet.customviews.ThemeItemColor
                     android:id="@+id/chorusButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/chorus"
-                    app:icon="@drawable/rectangle"
-                    app:iconGravity="start"
-                    app:iconSize="32dp" />
+                    android:text="@string/chorus"/>
 
-                <com.google.android.material.button.MaterialButton
+                <com.garethevans.church.opensongtablet.customviews.ThemeItemColor
                     android:id="@+id/prechorusButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/prechorus"
-                    app:icon="@drawable/rectangle"
-                    app:iconGravity="start"
-                    app:iconSize="32dp" />
+                    android:text="@string/prechorus"/>
 
-                <com.google.android.material.button.MaterialButton
+                <com.garethevans.church.opensongtablet.customviews.ThemeItemColor
                     android:id="@+id/bridgeButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/bridge"
-                    app:icon="@drawable/rectangle"
-                    app:iconGravity="start"
-                    app:iconSize="32dp" />
+                    android:text="@string/bridge"/>
 
-                <com.google.android.material.button.MaterialButton
+                <com.garethevans.church.opensongtablet.customviews.ThemeItemColor
                     android:id="@+id/tagButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/tag"
-                    app:icon="@drawable/rectangle"
-                    app:iconGravity="start"
-                    app:iconSize="32dp" />
+                    android:text="@string/tag"/>
 
-                <com.google.android.material.button.MaterialButton
+                <com.garethevans.church.opensongtablet.customviews.ThemeItemColor
                     android:id="@+id/commentButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/comment"
-                    app:icon="@drawable/rectangle"
-                    app:iconGravity="start"
-                    app:iconSize="32dp" />
+                    android:text="@string/comment"/>
 
-                <com.google.android.material.button.MaterialButton
+                <com.garethevans.church.opensongtablet.customviews.ThemeItemColor
                     android:id="@+id/customButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/custom"
-                    app:icon="@drawable/rectangle"
-                    app:iconGravity="start"
-                    app:iconSize="32dp" />
+                    android:text="@string/custom"/>
 
-                <com.google.android.material.button.MaterialButton
+                <com.garethevans.church.opensongtablet.customviews.ThemeItemColor
                     android:id="@+id/titleHighlighting"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/title"
-                    app:icon="@drawable/rectangle"
-                    app:iconGravity="start"
-                    app:iconSize="32dp" />
+                    android:text="@string/title"/>
 
-                <com.google.android.material.button.MaterialButton
+                <com.garethevans.church.opensongtablet.customviews.ThemeItemColor
                     android:id="@+id/chordHighlighting"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/chords"
-                    app:icon="@drawable/rectangle"
-                    app:iconGravity="start"
-                    app:iconSize="32dp" />
+                    android:text="@string/chords"/>
 
             </LinearLayout>
 
@@ -210,41 +164,29 @@
                     android:paddingEnd="16dp"
                     android:text="@string/presenter_mode" />
 
-                <com.google.android.material.button.MaterialButton
+                <com.garethevans.church.opensongtablet.customviews.ThemeItemColor
                     android:id="@+id/presoButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/text"
-                    app:icon="@drawable/rectangle"
-                    app:iconGravity="start"
-                    app:iconSize="32dp" />
+                    android:text="@string/text"/>
 
-                <com.google.android.material.button.MaterialButton
+                <com.garethevans.church.opensongtablet.customviews.ThemeItemColor
                     android:id="@+id/presoInfoButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/info_text"
-                    app:icon="@drawable/rectangle"
-                    app:iconGravity="start"
-                    app:iconSize="32dp" />
+                    android:text="@string/info_text"/>
 
-                <com.google.android.material.button.MaterialButton
+                <com.garethevans.church.opensongtablet.customviews.ThemeItemColor
                     android:id="@+id/presoAlertButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/alert"
-                    app:icon="@drawable/rectangle"
-                    app:iconGravity="start"
-                    app:iconSize="32dp" />
+                    android:text="@string/alert"/>
 
-                <com.google.android.material.button.MaterialButton
+                <com.garethevans.church.opensongtablet.customviews.ThemeItemColor
                     android:id="@+id/presoShadowButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/block_text_shadow"
-                    app:icon="@drawable/rectangle"
-                    app:iconGravity="start"
-                    app:iconSize="32dp" />
+                    android:text="@string/block_text_shadow"/>
 
             </LinearLayout>
 
@@ -264,23 +206,17 @@
                     android:paddingEnd="16dp"
                     android:text="@string/song_features" />
 
-                <com.google.android.material.button.MaterialButton
+                <com.garethevans.church.opensongtablet.customviews.ThemeItemColor
                     android:id="@+id/metronomeButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/metronome"
-                    app:icon="@drawable/rectangle"
-                    app:iconGravity="start"
-                    app:iconSize="32dp" />
+                    android:text="@string/metronome"/>
 
-                <com.google.android.material.button.MaterialButton
+                <com.garethevans.church.opensongtablet.customviews.ThemeItemColor
                     android:id="@+id/pagebuttonButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/page_buttons"
-                    app:icon="@drawable/rectangle"
-                    app:iconGravity="start"
-                    app:iconSize="32dp" />
+                    android:text="@string/page_buttons"/>
 
             </LinearLayout>
 
@@ -300,23 +236,17 @@
                     android:paddingEnd="16dp"
                     android:text="@string/song_notes" />
 
-                <com.google.android.material.button.MaterialButton
+                <com.garethevans.church.opensongtablet.customviews.ThemeItemColor
                     android:id="@+id/stickytextButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/text"
-                    app:icon="@drawable/rectangle"
-                    app:iconGravity="start"
-                    app:iconSize="32dp" />
+                    android:text="@string/text"/>
 
-                <com.google.android.material.button.MaterialButton
+                <com.garethevans.church.opensongtablet.customviews.ThemeItemColor
                     android:id="@+id/stickybackgroundButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/background"
-                    app:icon="@drawable/rectangle"
-                    app:iconGravity="start"
-                    app:iconSize="32dp" />
+                    android:text="@string/background"/>
 
             </LinearLayout>
 
@@ -336,23 +266,17 @@
                     android:paddingEnd="16dp"
                     android:text="@string/extra" />
 
-                <com.google.android.material.button.MaterialButton
+                <com.garethevans.church.opensongtablet.customviews.ThemeItemColor
                     android:id="@+id/extratextButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/text"
-                    app:icon="@drawable/rectangle"
-                    app:iconGravity="start"
-                    app:iconSize="32dp" />
+                    android:text="@string/text"/>
 
-                <com.google.android.material.button.MaterialButton
+                <com.garethevans.church.opensongtablet.customviews.ThemeItemColor
                     android:id="@+id/extrabackgroundButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/background"
-                    app:icon="@drawable/rectangle"
-                    app:iconGravity="start"
-                    app:iconSize="32dp" />
+                    android:text="@string/background"/>
 
             </LinearLayout>
         </LinearLayout>

@@ -46,7 +46,6 @@
     <string name="bottom">fondo</string>
     <string name="bridge_background">"Fondo Puente"</string>
     <string name="camera">"Cámara"</string>
-    <string name="capo_color">"Fuente Capo"</string>
     <string name="capo_style">"Capo traste como numeral"</string>
     <string name="capo_toggle_bothcapo">"Mostrar los dos a capo y acordes nativos si están disponibles"</string>
     <string name="category">"Categoría"</string>

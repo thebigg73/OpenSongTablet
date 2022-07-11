@@ -45,7 +45,6 @@
     <string name="bottom">bas</string>
     <string name="bridge_background">"Fond des ponts"</string>
     <string name="camera">"Caméra"</string>
-    <string name="capo_color">"Police des accords Capo"</string>
     <string name="capo_style">"Capo fret en chiffres"</string>
     <string name="capo_toggle_bothcapo">"Montrer à la fois les accords capo et natif si disponible"</string>
     <string name="category">"Catégorie"</string>

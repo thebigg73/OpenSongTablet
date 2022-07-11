@@ -46,7 +46,6 @@
     <string name="bottom">"Τέλος"</string>
     <string name="bridge_background">"Φόντο γέφυρας"</string>
     <string name="camera">"ΦΩΤΟΓΡΑΦΙΚΗ ΜΗΧΑΝΗ"</string>
-    <string name="capo_color">"Φόντο καποτάστου"</string>
     <string name="capo_style">"Capo fret ως αριθμητικό"</string>
     <string name="capo_toggle_bothcapo">"Show both capo and native chords if available"</string>
     <string name="category">"Κατηγορία"</string>

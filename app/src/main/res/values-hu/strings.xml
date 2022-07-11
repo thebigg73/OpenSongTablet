@@ -46,7 +46,6 @@
     <string name="bottom">alsó</string>
     <string name="bridge_background">"Bridge háttér"</string>
     <string name="camera">"Kamera"</string>
-    <string name="capo_color">"Capo font"</string>
     <string name="capo_style">"Capo megdöbbenés számmal"</string>
     <string name="capo_toggle_bothcapo">"Mutasd mind capo és a natív akkordok, ha rendelkezésre áll"</string>
     <string name="category">"Kategória"</string>

@@ -19,15 +19,15 @@ import com.garethevans.church.opensongtablet.databinding.BottomSheetEditSongThem
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
-public class ThemesBottomSheet extends BottomSheetDialogFragment {
+public class TagsBottomSheet extends BottomSheetDialogFragment {
 
     private BottomSheetEditSongThemeBinding myView;
     private final Fragment callingFragment;
     private final String fragName;
     private MainActivityInterface mainActivityInterface;
-    private ThemesAdapter themesAdapter;
+    private TagsAdapter tagsAdapter;
 
-    ThemesBottomSheet(Fragment callingFragment, String fragName) {
+    TagsBottomSheet(Fragment callingFragment, String fragName) {
         this.callingFragment = callingFragment;
         this.fragName = fragName;
     }
@@ -65,12 +65,12 @@ public class ThemesBottomSheet extends BottomSheetDialogFragment {
 
     private void setCurrentTags() {
         // Update the recycler view
-        themesAdapter = new ThemesAdapter(requireContext(), mainActivityInterface,
+        tagsAdapter = new TagsAdapter(requireContext(), mainActivityInterface,
                 requireActivity().getSupportFragmentManager(), callingFragment, fragName);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireContext());
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
         myView.currentTags.setLayoutManager(linearLayoutManager);
-        myView.currentTags.setAdapter(themesAdapter);
+        myView.currentTags.setAdapter(tagsAdapter);
     }
 
     public void insertTag() {
@@ -81,7 +81,7 @@ public class ThemesBottomSheet extends BottomSheetDialogFragment {
             themeString = themeString + "; " + newThemeString;
             themeString = mainActivityInterface.getProcessSong().tidyThemeString(themeString);
             mainActivityInterface.getTempSong().setTheme(themeString);
-            themesAdapter.insertThemeTag(newThemeString);
+            tagsAdapter.insertThemeTag(newThemeString);
             myView.currentTags.smoothScrollToPosition(0);
         } else {
             mainActivityInterface.getShowToast().doIt(getString(R.string.theme_exists));
@@ -89,7 +89,7 @@ public class ThemesBottomSheet extends BottomSheetDialogFragment {
     }
     public void deleteTags(int position) {
         // The tags have been deleted, so update the recycler view
-        themesAdapter.confirmedRemoveThemeTag(position);
+        tagsAdapter.confirmedRemoveThemeTag(position);
     }
 
 

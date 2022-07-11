@@ -249,7 +249,6 @@
     <string name="page_background">"Pozadina stranice"</string>
     <string name="lyrics_color">"Font teksta pesme"</string>
     <string name="chord_color">"Font akroda"</string>
-    <string name="capo_color">"Font kapodastera"</string>
     <string name="verse_background">"Pozadina strofe"</string>
     <string name="chorus_background">"Pozadina refrena"</string>
     <string name="prechorus_background">"Pozadina predrefrena"</string>

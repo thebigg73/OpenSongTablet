@@ -334,7 +334,7 @@ public class ChooseColorBottomSheet extends BottomSheetDialogFragment {
                 title = getString(R.string.chord_color);
                 break;
             case "lyricsCapoColor":
-                title = getString(R.string.capo_color);
+                title = getString(R.string.capo_chords);
                 break;
             case "lyricsBackgroundColor":
             case "stickyBackgroundColor":

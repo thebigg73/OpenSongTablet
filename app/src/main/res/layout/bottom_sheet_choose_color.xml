@@ -31,14 +31,28 @@
                 <FrameLayout
                     android:layout_width="0dp"
                     android:layout_height="72dp"
-                    android:layout_weight="0.4"
-                    android:background="@drawable/alpha_wide">
-                <View
-                    android:id="@+id/oldColor"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="#fff"
-                    android:padding="16dp" />
+                    android:layout_weight="0.4">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_margin="4dp"
+                        android:background="@drawable/alpha_wide" />
+
+                    <View
+                        android:id="@+id/oldColor"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="4dp"
+                        android:background="#fff" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_margin="0dp"
+                        android:background="@drawable/overlay_rounded_box" />
                 </FrameLayout>
 
                 <ImageView
@@ -52,14 +66,28 @@
                 <FrameLayout
                     android:layout_width="0dp"
                     android:layout_height="72dp"
-                    android:layout_weight="0.4"
-                    android:background="@drawable/alpha_wide">
-                <View
-                    android:id="@+id/newColor"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="#fff"
-                    android:padding="16dp" />
+                    android:layout_weight="0.4">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_margin="4dp"
+                        android:background="@drawable/alpha_wide" />
+
+                    <View
+                        android:id="@+id/newColor"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="4dp"
+                        android:background="#fff" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_margin="0dp"
+                        android:background="@drawable/overlay_rounded_box" />
                 </FrameLayout>
 
             </LinearLayout>
@@ -75,8 +103,8 @@
                 android:id="@+id/alphaSlider"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/alpha"
                 android:layout_marginTop="16dp"
+                android:text="@string/alpha"
                 android:valueFrom="0"
                 android:valueTo="255" />
 
@@ -84,29 +112,29 @@
                 android:id="@+id/redSlider"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/red"
                 android:layout_marginTop="16dp"
+                android:text="@string/red"
                 android:valueFrom="0"
-                android:valueTo="255"/>
+                android:valueTo="255" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialSlider
                 android:id="@+id/greenSlider"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/green"
                 android:layout_marginTop="16dp"
+                android:text="@string/green"
                 android:valueFrom="0"
-                android:valueTo="255"/>
+                android:valueTo="255" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialSlider
                 android:id="@+id/blueSlider"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/blue"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
+                android:text="@string/blue"
                 android:valueFrom="0"
-                android:valueTo="255"/>
+                android:valueTo="255" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/saveColor"

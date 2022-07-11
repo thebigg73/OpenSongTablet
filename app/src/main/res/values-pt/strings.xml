@@ -46,7 +46,6 @@
     <string name="bottom">fundo</string>
     <string name="bridge_background">"Fundo Ponte"</string>
     <string name="camera">"Câmera"</string>
-    <string name="capo_color">"Fonte Capo"</string>
     <string name="capo_style">"Capo fret como numeral"</string>
     <string name="capo_toggle_bothcapo">"Mostrar tanto capo e acordes nativos se disponível"</string>
     <string name="category">"Categoria"</string>

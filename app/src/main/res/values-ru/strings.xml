@@ -46,7 +46,6 @@
     <string name="bottom">низ</string>
     <string name="bridge_background">"Фон моста"</string>
     <string name="camera">"камера"</string>
-    <string name="capo_color">"Каподастр"</string>
     <string name="capo_style">"Лад каподастра указан цифрой"</string>
     <string name="capo_toggle_bothcapo">"Показ обычных аккордов и с каподастром если возможно"</string>
     <string name="category">"категория"</string>

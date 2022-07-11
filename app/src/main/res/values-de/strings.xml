@@ -46,7 +46,6 @@
     <string name="bottom">Ende</string>
     <string name="bridge_background">"Hintergrund Bridge"</string>
     <string name="camera">"Kamera"</string>
-    <string name="capo_color">"Schrift Capo"</string>
     <string name="capo_style">"Capo Büste als Ziffer"</string>
     <string name="capo_toggle_bothcapo">"Zeige sowohl Capo- als auch ursprüngliche Akkorde (wenn verfügbar)"</string>
     <string name="category">"Kategorie"</string>

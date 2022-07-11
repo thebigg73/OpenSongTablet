@@ -46,7 +46,6 @@
     <string name="bottom">"Botten"</string>
     <string name="bridge_background">"Bro bakgrund"</string>
     <string name="camera">"Kamera"</string>
-    <string name="capo_color">"Capo typsnitt"</string>
     <string name="capo_style">"Capo fret som tal"</string>
     <string name="capo_toggle_bothcapo">"Visa både capo och native ackord om det är tillgängligt"</string>
     <string name="category">"Kategori"</string>

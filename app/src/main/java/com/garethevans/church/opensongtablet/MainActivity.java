@@ -5,7 +5,6 @@ import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
@@ -241,6 +240,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private AppBarConfiguration appBarConfiguration;
     private SecondaryDisplay[] secondaryDisplays;
     private Display[] connectedDisplays;
+    private int prevNumConnectedDisplays = 0;
     private ImageView screenMirror;
 
     // Variables used
@@ -378,11 +378,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         //mediaRouterCallback = new MediaRouterCallback(this);
     }
 
-    private void setupBatteryStatus() {
-        // Battery monitor
-        IntentFilter filter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
-        this.registerReceiver(batteryStatus, filter);
-    }
     @Override
     public BatteryStatus getBatteryStatus() {
         return batteryStatus;
@@ -444,7 +439,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         initialiseStartVariables();
 
         // Set up battery status
-        setupBatteryStatus();
+        setUpBatteryMonitor();
 
         // Set up the page buttons
         updatePageButtonLayout();
@@ -1158,14 +1153,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         getMenuInflater().inflate(R.menu.mainactivitymenu, menu);
 
         screenMirror = (ImageView) menu.findItem(R.id.mirror_menu_item).getActionView();
-        GlideApp.with(this).load(ContextCompat.getDrawable(this,R.drawable.ic_mr_button_connected_00_dark)).into(screenMirror);
+        GlideApp.with(this).load(ContextCompat.getDrawable(this,R.drawable.cast)).into(screenMirror);
         screenMirror.setOnClickListener(view -> startActivity(new Intent("android.settings.CAST_SETTINGS")));
         myView.toolBar.batteryholder.setOnClickListener(view -> navigateToFragment("opensongapp://settings/display/actionbar",0));
 
-        // Set up battery monitor
-        batteryStatus = new BatteryStatus(this,myView.toolBar.batteryimage,
-                myView.toolBar.batterycharge, actionBar);
-        batteryStatus.setUpBatteryMonitor();
         return true;
     }
 
@@ -2580,15 +2571,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         super.onDestroy();
         // Turn off nearby
         nearbyConnections.turnOffNearby();
-        // Stop battery service and timers
-        if (batteryStatus!=null) {
-            batteryStatus.stopTimers();
-            try {
-                this.unregisterReceiver(batteryStatus);
-            } catch (Exception e) {
-                Log.d(TAG, "Battery receiver not registered, so no need to unregister");
-            }
-        }
         // Stop pad timers
         if (pad!=null) {
             pad.stopTimers(1);
@@ -2618,7 +2600,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void setUpBatteryMonitor() {
-
+        if (actionBar!=null && batteryStatus==null) {
+            batteryStatus = new BatteryStatus(this,myView.toolBar.batteryimage,
+                    myView.toolBar.batterycharge, actionBar);
+        }
+        if (batteryStatus!=null) {
+            batteryStatus.setUpBatteryMonitor();
+        }
     }
 
     @Override
@@ -2646,12 +2634,16 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             connectedDisplays = displayManager.getDisplays(DisplayManager.DISPLAY_CATEGORY_PRESENTATION);
             if (screenMirror!=null) {
                 if (connectedDisplays.length > 0) {
-                    screenMirror.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.ic_mr_button_connected_30_dark));
+                    screenMirror.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.cast_connected));
                 } else {
-                    screenMirror.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.ic_mr_button_connected_00_dark));
+                    screenMirror.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.cast));
                 }
             }
-            setupDisplays();
+            // If we have changed the number of connected displays, set them up
+            if (connectedDisplays.length > prevNumConnectedDisplays) {
+                prevNumConnectedDisplays = connectedDisplays.length;
+                setupDisplays();
+            }
         }
     }
     private void setupDisplays() {

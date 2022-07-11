@@ -116,7 +116,7 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
         if (drawable!=null) {
             GradientDrawable gradientDrawable = (GradientDrawable) drawable.mutate();
             gradientDrawable.setColor(mainActivityInterface.getMyThemeColors().getPresoShadowColor());
-            GlideApp.with(requireContext()).load(gradientDrawable).apply(options).into(myView.currentInfoBackground);
+            GlideApp.with(requireContext()).load(gradientDrawable).apply(options).into(myView.infoBackgroundColor);
         }
     }
 
@@ -200,7 +200,7 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
             ImageChooserBottomSheet imageChooserBottomSheet = new ImageChooserBottomSheet(this,"presenterFragmentSettings");
             imageChooserBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"ImageChooserBottomSheet");
         });
-        myView.currentInfoBackground.setOnClickListener(view -> {
+        myView.infoBackgroundColor.setOnClickListener(view -> {
             ChooseColorBottomSheet chooseColorBottomSheet = new ChooseColorBottomSheet(this, "presenterFragmentSettings", "presoShadowColor");
             chooseColorBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"ChooseColorBottomSheet");
         });

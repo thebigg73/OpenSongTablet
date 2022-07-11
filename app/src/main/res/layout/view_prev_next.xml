@@ -25,7 +25,7 @@
             android:textAlignment="textStart"
             android:textSize="13sp"
             android:text="@string/previous"
-            app:icon="@drawable/ic_arrow_left_white_36dp"
+            app:icon="@drawable/arrow_left"
             app:iconGravity="start"
             app:iconPadding="0dp"
             android:inputType="text"
@@ -60,7 +60,7 @@
             android:layout_marginBottom="8dp"
             android:layout_marginTop="8dp"
             android:inputType="text"
-            app:icon="@drawable/ic_arrow_right_white_36dp"
+            app:icon="@drawable/arrow_right"
             app:iconGravity="end"
             android:visibility="gone"/>
 

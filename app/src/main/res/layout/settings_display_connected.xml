@@ -32,27 +32,28 @@
                     android:hint="@string/image_change"
                     android:text="@string/background" />
 
-                <RelativeLayout
-                    android:layout_width="136dp"
-                    android:layout_height="80dp"
-                    android:padding="4dp"
-                    android:layout_marginStart="16dp"
-                    android:background="@color/colorAltSecondary">
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@color/colorPrimary">
-                <ImageView
-                    android:id="@+id/currentBackground"
+                <FrameLayout
                     android:layout_width="128dp"
                     android:layout_height="72dp"
-                    android:contentDescription="@string/background" />
+                    android:layout_marginStart="16dp">
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:background="@drawable/alpha_wide"
+                            android:layout_margin="4dp"/>
+                        <ImageView
+                    android:id="@+id/currentBackground"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="@string/background"
+                            android:layout_margin="4dp"/>
                     <com.google.android.material.floatingactionbutton.FloatingActionButton
                         android:id="@+id/videoBackgroundIcon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
-                        android:layout_alignParentEnd="true"
+                        android:layout_gravity="bottom|end"
                         android:src="@drawable/play"
                         app:backgroundTint="@color/colorAltPrimary"
                         android:tint="@color/colorAltSecondary"
@@ -61,8 +62,15 @@
                         android:enabled="false"
                         android:padding="0dp"
                         android:contentDescription="@string/media" />
-                </RelativeLayout>
-                </RelativeLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:background="@drawable/overlay_rounded_box"
+                            android:layout_margin="0dp"/>
+
+                </FrameLayout>
             </LinearLayout>
 
             <com.garethevans.church.opensongtablet.customviews.MaterialSlider
@@ -92,12 +100,23 @@
                     android:hint="@string/image_change"
                     android:text="@string/logo" />
 
-                <ImageView
-                    android:id="@+id/currentLogo"
+                <FrameLayout
                     android:layout_width="128dp"
                     android:layout_height="72dp"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="16dp">
+                <ImageView
+                    android:id="@+id/currentLogo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="4dp"
                     android:contentDescription="@string/logo" />
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:background="@drawable/overlay_rounded_box"
+                        android:layout_margin="0dp"/>
+                </FrameLayout>
             </LinearLayout>
 
             <com.garethevans.church.opensongtablet.customviews.MaterialSlider
@@ -169,27 +188,33 @@
                     android:hint="@string/image_change"
                     android:text="@string/info_text_background" />
 
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="4dp"
-                    android:background="@color/colorAltSecondary">
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@color/colorPrimary">
-                    <ImageView
-                        android:id="@+id/infoBackgroundColor"
-                        android:layout_width="128dp"
-                        android:layout_height="72dp"
-                        android:contentDescription="@string/info_text_background" />
-                <ImageView
-                    android:id="@+id/currentInfoBackground"
+                <FrameLayout
                     android:layout_width="128dp"
                     android:layout_height="72dp"
-                    android:contentDescription="@string/background" />
-                </RelativeLayout>
-                </RelativeLayout>
+                    android:layout_marginStart="16dp">
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:background="@drawable/alpha_wide"
+                            android:layout_margin="4dp"/>
+
+                    <ImageView
+                        android:id="@+id/infoBackgroundColor"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="4dp"
+                        android:contentDescription="@string/info_text_background" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:background="@drawable/overlay_rounded_box"
+                        android:layout_margin="0dp"/>
+
+                </FrameLayout>
             </LinearLayout>
 
             <com.garethevans.church.opensongtablet.customviews.TextThreeSlider

@@ -46,7 +46,6 @@
     <string name="bottom">fondo</string>
     <string name="bridge_background">"Ponte di sfondo"</string>
     <string name="camera">"macchina fotografica"</string>
-    <string name="capo_color">"Carattere Capo"</string>
     <string name="capo_style">"Capo fret come numero"</string>
     <string name="capo_toggle_bothcapo">"Mostra sia capo e accordi nativi se disponibili"</string>
     <string name="category">"Categoria"</string>

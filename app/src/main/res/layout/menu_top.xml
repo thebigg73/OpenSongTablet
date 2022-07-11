@@ -14,7 +14,7 @@
         android:paddingEnd="12dp"
         android:paddingTop="12dp"
         android:background="@color/colorAltPrimary"
-        custom:mydrawable="@drawable/ic_arrow_left_white_36dp" />
+        custom:mydrawable="@drawable/arrow_left" />
 
 <com.google.android.material.tabs.TabLayout
     android:id="@+id/tabs"

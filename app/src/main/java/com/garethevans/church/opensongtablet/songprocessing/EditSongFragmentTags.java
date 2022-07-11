@@ -23,7 +23,7 @@ public class EditSongFragmentTags extends Fragment {
     private MainActivityInterface mainActivityInterface;
     private EditSongFragmentInterface editSongFragmentInterface;
     private EditSongTagsBinding myView;
-    private ThemesBottomSheet themesBottomSheet;
+    private TagsBottomSheet tagsBottomSheet;
     private PresentationOrderBottomSheet presentationOrderBottomSheet;
 
     @Override
@@ -48,7 +48,7 @@ public class EditSongFragmentTags extends Fragment {
     }
 
     private void setupValues() {
-        themesBottomSheet = new ThemesBottomSheet(this,"EditSongFragmentTags");
+        tagsBottomSheet = new TagsBottomSheet(this,"EditSongFragmentTags");
         presentationOrderBottomSheet = new PresentationOrderBottomSheet(this, "EditSongFragmentTags");
         myView.tags.setFocusable(false);
         mainActivityInterface.getProcessSong().editBoxToMultiline(myView.tags);
@@ -68,8 +68,8 @@ public class EditSongFragmentTags extends Fragment {
         myView.tags.setOnClickListener(v -> {
             // Only allow if indexing is complete
             if (mainActivityInterface.getSongListBuildIndex().getIndexComplete()) {
-                if (!themesBottomSheet.isAdded()) {
-                    themesBottomSheet.show(requireActivity().getSupportFragmentManager(), "ThemesBottomSheet");
+                if (!tagsBottomSheet.isAdded()) {
+                    tagsBottomSheet.show(requireActivity().getSupportFragmentManager(), "ThemesBottomSheet");
                 }
             } else {
                 mainActivityInterface.getShowToast().doIt(getString(R.string.search_index_wait));
@@ -199,7 +199,7 @@ public class EditSongFragmentTags extends Fragment {
                 }
             }
             // Update the array adapter in the bottom sheet fragment
-            themesBottomSheet.deleteTags(position);
+            tagsBottomSheet.deleteTags(position);
         }
 
         mainActivityInterface.getTempSong().
