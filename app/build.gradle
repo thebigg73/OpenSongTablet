@@ -27,6 +27,7 @@ android {
         minSdkVersion 19
         targetSdkVersion 32
         multiDexEnabled true
+        vectorDrawables.useSupportLibrary = true
     }
 
     buildscript {

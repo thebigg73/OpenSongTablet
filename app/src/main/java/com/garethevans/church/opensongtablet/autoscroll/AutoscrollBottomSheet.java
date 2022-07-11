@@ -104,10 +104,10 @@ public class AutoscrollBottomSheet extends BottomSheetDialogFragment {
 
     private void setStartStop() {
         if (mainActivityInterface.getAutoscroll().getIsAutoscrolling()) {
-            myView.startStopAutoscroll.setIcon(ContextCompat.getDrawable(requireContext(), R.drawable.ic_stop_white_36dp));
+            myView.startStopAutoscroll.setIcon(ContextCompat.getDrawable(requireContext(), R.drawable.stop));
             myView.startStopAutoscroll.setText(getString(R.string.stop));
         } else {
-            myView.startStopAutoscroll.setIcon(ContextCompat.getDrawable(requireContext(), R.drawable.ic_play_white_36dp));
+            myView.startStopAutoscroll.setIcon(ContextCompat.getDrawable(requireContext(), R.drawable.play));
             myView.startStopAutoscroll.setText(getString(R.string.start));
         }
     }

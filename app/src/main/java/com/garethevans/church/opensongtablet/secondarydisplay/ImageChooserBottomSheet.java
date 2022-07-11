@@ -110,7 +110,7 @@ public class ImageChooserBottomSheet extends BottomSheetDialogFragment {
             }
         } else {
             if (uri==null) {
-                GlideApp.with(requireContext()).load(ContextCompat.getDrawable(requireContext(),R.drawable.ic_image_white_36dp)).apply(options).into(view);
+                GlideApp.with(requireContext()).load(ContextCompat.getDrawable(requireContext(),R.drawable.image)).apply(options).into(view);
             } else {
                 GlideApp.with(requireContext()).load(uri).apply(options).into(view);
             }

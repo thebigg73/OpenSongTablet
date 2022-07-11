@@ -80,7 +80,7 @@
                 android:layout_margin="8dp"
                 android:soundEffectsEnabled="false"
                 android:text="@string/panic"
-                app:icon="@drawable/ic_projector_white_36dp"
+                app:icon="@drawable/projector"
                 app:iconGravity="top" />
 
         </FrameLayout>
@@ -140,7 +140,7 @@
             android:layout_margin="8dp"
             android:soundEffectsEnabled="false"
             android:text="@string/panic"
-            app:icon="@drawable/ic_projector_white_36dp"
+            app:icon="@drawable/projector"
             app:iconGravity="top" />
     </LinearLayout>
 </LinearLayout>

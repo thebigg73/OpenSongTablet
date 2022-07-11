@@ -185,7 +185,6 @@ public interface MainActivityInterface {
     StorageAccess getStorageAccess();
     void doSongLoad(String folder, String filename, boolean closeDrawer);
     void loadSongFromSet(int position);
-    void doExport(String what);
     ExportActions getExportActions();
     Uri getImportUri();
     void setImportFilename(String importFilename);

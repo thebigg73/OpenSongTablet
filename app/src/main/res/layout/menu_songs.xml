@@ -32,7 +32,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    app:icon="@drawable/ic_magnify_white_36dp"
+                    app:icon="@drawable/search"
                     app:iconSize="24dp" />
 
                 <com.google.android.material.button.MaterialButton
@@ -41,7 +41,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    app:icon="@drawable/ic_music_clef_treble_white_36dp"
+                    app:icon="@drawable/clef"
                     app:iconSize="24dp" />
 
                 <com.google.android.material.button.MaterialButton
@@ -50,7 +50,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    app:icon="@drawable/ic_account_music_white_36dp"
+                    app:icon="@drawable/artist"
                     app:iconSize="24dp" />
 
                 <com.google.android.material.button.MaterialButton
@@ -59,7 +59,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    app:icon="@drawable/ic_folder_search_white_36dp"
+                    app:icon="@drawable/folder_search"
                     app:iconSize="24dp" />
 
                 <com.google.android.material.button.MaterialButton
@@ -68,7 +68,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    app:icon="@drawable/ic_tag_white_36dp"
+                    app:icon="@drawable/tag"
                     app:iconSize="24dp" />
 
             </com.google.android.material.button.MaterialButtonToggleGroup>
@@ -131,7 +131,7 @@
             android:layout_alignParentBottom="true"
             android:layout_margin="8dp"
             android:contentDescription="@string/action"
-            android:src="@drawable/ic_plus_white_36dp"
+            android:src="@drawable/plus"
             app:useCompatPadding="true" />
 
     </RelativeLayout>

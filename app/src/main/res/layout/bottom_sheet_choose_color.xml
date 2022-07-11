@@ -28,13 +28,18 @@
                 android:layout_marginBottom="16dp"
                 android:orientation="horizontal">
 
-                <View
-                    android:id="@+id/oldColor"
+                <FrameLayout
                     android:layout_width="0dp"
                     android:layout_height="72dp"
                     android:layout_weight="0.4"
+                    android:background="@drawable/alpha_wide">
+                <View
+                    android:id="@+id/oldColor"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:background="#fff"
                     android:padding="16dp" />
+                </FrameLayout>
 
                 <ImageView
                     android:layout_width="0dp"
@@ -42,15 +47,20 @@
                     android:layout_gravity="center_vertical"
                     android:layout_weight="0.2"
                     android:contentDescription="@string/color_choose"
-                    android:src="@drawable/ic_arrow_right_white_36dp" />
+                    android:src="@drawable/arrow_right" />
 
-                <View
-                    android:id="@+id/newColor"
+                <FrameLayout
                     android:layout_width="0dp"
                     android:layout_height="72dp"
                     android:layout_weight="0.4"
+                    android:background="@drawable/alpha_wide">
+                <View
+                    android:id="@+id/newColor"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:background="#fff"
                     android:padding="16dp" />
+                </FrameLayout>
 
             </LinearLayout>
 

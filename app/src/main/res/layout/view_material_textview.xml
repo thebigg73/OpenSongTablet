@@ -50,7 +50,7 @@
         android:contentDescription="@string/set"
         android:paddingStart="16dp"
         android:paddingEnd="0dp"
-        android:src="@drawable/ic_check_white_36dp"
+        android:src="@drawable/check"
         android:visibility="gone" />
 
     <FrameLayout

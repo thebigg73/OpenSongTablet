@@ -2,7 +2,6 @@ package com.garethevans.church.opensongtablet.pads;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,9 +60,9 @@ public class PadSettingsFragment extends Fragment {
 
     private void changePlayIcon() {
         if (padPlaying) {
-            myView.startStopButton.setImageDrawable(ResourcesCompat.getDrawable(requireContext().getResources(),R.drawable.ic_stop_white_36dp,null));
+            myView.startStopButton.setImageDrawable(ResourcesCompat.getDrawable(requireContext().getResources(),R.drawable.stop,null));
         } else {
-            myView.startStopButton.setImageDrawable(ResourcesCompat.getDrawable(requireContext().getResources(),R.drawable.ic_play_white_36dp,null));
+            myView.startStopButton.setImageDrawable(ResourcesCompat.getDrawable(requireContext().getResources(),R.drawable.play,null));
         }
     }
 }

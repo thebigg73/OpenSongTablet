@@ -61,7 +61,7 @@
                     android:layout_gravity="top|start"
                     android:layout_margin="8dp"
                     android:contentDescription="@string/close"
-                    android:src="@drawable/ic_arrow_left_white_36dp"
+                    android:src="@drawable/arrow_left"
                     app:useCompatPadding="false" />
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -71,7 +71,7 @@
                     android:layout_gravity="top|end"
                     android:layout_margin="8dp"
                     android:contentDescription="@string/close"
-                    android:src="@drawable/ic_close_white_36dp"
+                    android:src="@drawable/close"
                     app:useCompatPadding="false" />
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -81,7 +81,7 @@
                     android:layout_gravity="top|center_horizontal"
                     android:layout_margin="8dp"
                     android:contentDescription="@string/save"
-                    android:src="@drawable/ic_download_white_36dp"
+                    android:src="@drawable/download"
                     android:visibility="gone"
                     app:useCompatPadding="false" />
 

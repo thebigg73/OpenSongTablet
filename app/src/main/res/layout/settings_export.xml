@@ -174,7 +174,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:contentDescription="@string/export"
-        android:src="@drawable/ic_share_variant_white_36dp"
+        android:src="@drawable/share"
         app:useCompatPadding="true" />
 
 </RelativeLayout>

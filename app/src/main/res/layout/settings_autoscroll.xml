@@ -152,7 +152,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:src="@drawable/ic_play_white_36dp"
+        android:src="@drawable/play"
         android:contentDescription="@string/start_stop_autoscroll" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

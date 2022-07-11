@@ -51,14 +51,20 @@
                     android:paddingEnd="16dp"
                     android:text="@string/main_song_display" />
 
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/alpha">
+
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/lyricsButton"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:text="@string/lyrics"
                     app:icon="@drawable/rectangle"
                     app:iconGravity="start"
                     app:iconSize="32dp" />
+                </FrameLayout>
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/chordsButton"

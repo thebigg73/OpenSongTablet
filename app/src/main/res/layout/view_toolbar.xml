@@ -37,7 +37,7 @@
                 android:layout_margin="0dp"
                 android:contentDescription="@string/set"
                 android:padding="0dp"
-                android:src="@drawable/ic_check_white_36dp"
+                android:src="@drawable/check"
                 android:visibility="gone" />
 
             <LinearLayout
@@ -178,7 +178,7 @@
             android:id="@+id/webHelp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_web_white_36dp"
+            android:src="@drawable/web"
             android:layout_gravity="center_horizontal"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"

@@ -149,6 +149,6 @@
         android:layout_alignParentBottom="true"
         android:padding="16dp"
         android:text="@string/set_add"
-        app:icon="@drawable/ic_plus_white_36dp" />
+        app:icon="@drawable/plus" />
 
 </RelativeLayout>

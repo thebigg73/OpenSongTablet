@@ -1,6 +1,8 @@
 package com.garethevans.church.opensongtablet.ccli;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -74,7 +76,7 @@ public class SettingsCCLI extends Fragment {
         myView.ccliAutomatic.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getPreferences().setMyPreferenceBoolean(
                 "ccliAutomaticLogging", isChecked));
         myView.ccliView.setOnClickListener(v -> showDialog());
-        myView.ccliExport.setOnClickListener(view -> mainActivityInterface.doExport("ccliLog"));
+        myView.ccliExport.setOnClickListener(view -> exportLog());
         myView.ccliDelete.setOnClickListener(v -> mainActivityInterface.displayAreYouSure("ccliDelete",
                 getString(R.string.ccli_reset),null,"SettingsCCLI", this, null));
     }
@@ -85,6 +87,19 @@ public class SettingsCCLI extends Fragment {
 
     private void showDialog() {
         mainActivityInterface.navigateToFragment(null,R.id.settingsCCLILog);
+    }
+
+    private void exportLog() {
+        String message = getString(R.string.app_name) + ": " + getString(R.string.ccli) + "\n";
+        message += getString(R.string.ccli_church) + ": " +
+                mainActivityInterface.getPreferences().getMyPreferenceString("ccliChurchName","") + "\n";
+        message += getString(R.string.ccli_licence) + ": " +
+                mainActivityInterface.getPreferences().getMyPreferenceString("ccliLicence","")+ "\n\n";
+        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Settings","","ActivityLog.xml");
+        Intent intent = mainActivityInterface.getExportActions().setShareIntent(message,"text/xml",uri,null);
+        intent.putExtra(Intent.EXTRA_SUBJECT, "ActivityLog.xml");
+        intent.putExtra(Intent.EXTRA_TITLE, "ActivityLog.xml");
+        startActivity(Intent.createChooser(intent, "ActivityLog.xml"));
     }
 
     // Called from MainActivity after TextInputDialogFragment save

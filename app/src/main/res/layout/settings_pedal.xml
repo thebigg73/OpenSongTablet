@@ -126,7 +126,7 @@
                     android:layout_toEndOf="@+id/button1"
                     android:gravity="center_vertical"
                     android:text="@string/is_not_set"
-                    app:drawableStartCompat="@drawable/ic_pedal_white_36dp" />
+                    app:drawableStartCompat="@drawable/pedal" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/button1Midi"
@@ -136,7 +136,7 @@
                     android:layout_toEndOf="@+id/button1"
                     android:gravity="center_vertical"
                     android:text="@string/is_not_set"
-                    app:drawableStartCompat="@drawable/ic_midi_white_36dp" />
+                    app:drawableStartCompat="@drawable/midi" />
 
             </RelativeLayout>
 
@@ -183,7 +183,7 @@
                     android:layout_toEndOf="@+id/button2"
                     android:gravity="center_vertical"
                     android:text="@string/is_not_set"
-                    app:drawableStartCompat="@drawable/ic_pedal_white_36dp" />
+                    app:drawableStartCompat="@drawable/pedal" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/button2Midi"
@@ -193,7 +193,7 @@
                     android:layout_toEndOf="@+id/button2"
                     android:gravity="center_vertical"
                     android:text="@string/is_not_set"
-                    app:drawableStartCompat="@drawable/ic_midi_white_36dp" />
+                    app:drawableStartCompat="@drawable/midi" />
 
             </RelativeLayout>
 
@@ -242,7 +242,7 @@
                     android:layout_toEndOf="@+id/button3"
                     android:gravity="center_vertical"
                     android:text="@string/is_not_set"
-                    app:drawableStartCompat="@drawable/ic_pedal_white_36dp" />
+                    app:drawableStartCompat="@drawable/pedal" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/button3Midi"
@@ -252,7 +252,7 @@
                     android:layout_toEndOf="@+id/button3"
                     android:gravity="center_vertical"
                     android:text="@string/is_not_set"
-                    app:drawableStartCompat="@drawable/ic_midi_white_36dp" />
+                    app:drawableStartCompat="@drawable/midi" />
 
             </RelativeLayout>
 
@@ -300,7 +300,7 @@
                     android:layout_toEndOf="@+id/button4"
                     android:gravity="center_vertical"
                     android:text="@string/is_not_set"
-                    app:drawableStartCompat="@drawable/ic_pedal_white_36dp" />
+                    app:drawableStartCompat="@drawable/pedal" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/button4Midi"
@@ -310,7 +310,7 @@
                     android:layout_toEndOf="@+id/button4"
                     android:gravity="center_vertical"
                     android:text="@string/is_not_set"
-                    app:drawableStartCompat="@drawable/ic_midi_white_36dp" />
+                    app:drawableStartCompat="@drawable/midi" />
 
             </RelativeLayout>
 
@@ -359,7 +359,7 @@
                     android:layout_toEndOf="@+id/button5"
                     android:gravity="center_vertical"
                     android:text="@string/is_not_set"
-                    app:drawableStartCompat="@drawable/ic_pedal_white_36dp" />
+                    app:drawableStartCompat="@drawable/pedal" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/button5Midi"
@@ -369,7 +369,7 @@
                     android:layout_toEndOf="@+id/button5"
                     android:gravity="center_vertical"
                     android:text="@string/is_not_set"
-                    app:drawableStartCompat="@drawable/ic_midi_white_36dp" />
+                    app:drawableStartCompat="@drawable/midi" />
 
             </RelativeLayout>
 
@@ -417,7 +417,7 @@
                     android:layout_toEndOf="@+id/button6"
                     android:gravity="center_vertical"
                     android:text="@string/is_not_set"
-                    app:drawableStartCompat="@drawable/ic_pedal_white_36dp" />
+                    app:drawableStartCompat="@drawable/pedal" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/button6Midi"
@@ -427,7 +427,7 @@
                     android:layout_toEndOf="@+id/button6"
                     android:gravity="center_vertical"
                     android:text="@string/is_not_set"
-                    app:drawableStartCompat="@drawable/ic_midi_white_36dp" />
+                    app:drawableStartCompat="@drawable/midi" />
 
             </RelativeLayout>
 
@@ -475,7 +475,7 @@
                     android:layout_toEndOf="@+id/button7"
                     android:gravity="center_vertical"
                     android:text="@string/is_not_set"
-                    app:drawableStartCompat="@drawable/ic_pedal_white_36dp" />
+                    app:drawableStartCompat="@drawable/pedal" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/button7Midi"
@@ -485,7 +485,7 @@
                     android:layout_toEndOf="@+id/button7"
                     android:gravity="center_vertical"
                     android:text="@string/is_not_set"
-                    app:drawableStartCompat="@drawable/ic_midi_white_36dp" />
+                    app:drawableStartCompat="@drawable/midi" />
 
             </RelativeLayout>
 
@@ -533,7 +533,7 @@
                     android:layout_toEndOf="@+id/button8"
                     android:gravity="center_vertical"
                     android:text="@string/is_not_set"
-                    app:drawableStartCompat="@drawable/ic_pedal_white_36dp" />
+                    app:drawableStartCompat="@drawable/pedal" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/button8Midi"
@@ -543,7 +543,7 @@
                     android:layout_toEndOf="@+id/button8"
                     android:gravity="center_vertical"
                     android:text="@string/is_not_set"
-                    app:drawableStartCompat="@drawable/ic_midi_white_36dp" />
+                    app:drawableStartCompat="@drawable/midi" />
 
             </RelativeLayout>
 

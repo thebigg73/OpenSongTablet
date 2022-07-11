@@ -51,8 +51,8 @@ public class MaterialMediaControl extends LinearLayout {
         playbackSlider = findViewById(R.id.playbackSlider);
         playbackStartStop = findViewById(R.id.playbackStartStop);
         playbackStartStop.setOnClickListener(view -> startStop());
-        startDrawable = ResourcesCompat.getDrawable(c.getResources(),R.drawable.ic_play_white_36dp,null);
-        stopDrawable = ResourcesCompat.getDrawable(c.getResources(),R.drawable.ic_stop_white_36dp,null);
+        startDrawable = ResourcesCompat.getDrawable(c.getResources(),R.drawable.play,null);
+        stopDrawable = ResourcesCompat.getDrawable(c.getResources(),R.drawable.stop,null);
         checkEnabled();
     }
 

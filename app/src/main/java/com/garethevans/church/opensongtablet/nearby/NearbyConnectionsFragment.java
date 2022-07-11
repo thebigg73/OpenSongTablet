@@ -32,7 +32,6 @@ public class NearbyConnectionsFragment extends Fragment {
     private BottomSheetBehavior<View> bottomSheetBehavior;
     private boolean advancedShown;
 
-
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -133,12 +132,6 @@ public class NearbyConnectionsFragment extends Fragment {
         targets.add(myView.host);
         targets.add(myView.client);
         targets.add(myView.bottomSheet.bottomSheetTab);
-        ArrayList<String> dismisses = new ArrayList<>();
-        dismisses.add(null);
-        dismisses.add(null);
-        dismisses.add(null);
-        dismisses.add(null);
-        dismisses.add(null);
         ArrayList<String> infos = new ArrayList<>();
         infos.add(getString(R.string.connections_device_name)+"\n"+getString(R.string.click_to_change));
         infos.add(getString(R.string.connections_off));
@@ -152,17 +145,13 @@ public class NearbyConnectionsFragment extends Fragment {
         rects.add(true);
         rects.add(true);
         mainActivityInterface.getShowCase().sequenceShowCase(requireActivity(),
-                targets,dismisses,infos,rects,"connectionsShowCase");
+                targets,null,infos,rects,"connectionsShowCase");
     }
     private void showcase2() {
         ArrayList<View> targets = new ArrayList<>();
         targets.add(myView.connectedTo);
         targets.add(myView.advertiseButton);
         targets.add(myView.discoverButton);
-        ArrayList<String> dismisses = new ArrayList<>();
-        dismisses.add(null);
-        dismisses.add(null);
-        dismisses.add(null);
         ArrayList<String> infos = new ArrayList<>();
         infos.add(getString(R.string.connections_connected_devices_info));
         infos.add(getString(R.string.connections_advertise_info));
@@ -172,7 +161,7 @@ public class NearbyConnectionsFragment extends Fragment {
         rects.add(true);
         rects.add(true);
         mainActivityInterface.getShowCase().sequenceShowCase(requireActivity(),
-                targets,dismisses,infos,rects,"connectionsShowCase2");
+                targets,null,infos,rects,"connectionsShowCase2");
     }
 
     private void bottomSheetBar() {

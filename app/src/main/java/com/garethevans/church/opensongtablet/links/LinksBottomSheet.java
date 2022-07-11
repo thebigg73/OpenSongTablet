@@ -114,7 +114,7 @@ public class LinksBottomSheet extends BottomSheetDialogFragment {
             default:
                 myView.dialogHeading.setText(getString(R.string.link_youtube));
                 myView.linkLocation.setText(mainActivityInterface.getSong().getLinkyoutube());
-                myView.openLink.setImageDrawable(AppCompatResources.getDrawable(requireContext(),R.drawable.ic_youtube_play_white_36dp));
+                myView.openLink.setImageDrawable(AppCompatResources.getDrawable(requireContext(),R.drawable.youtube));
                 myView.openLink.setOnClickListener(view -> openDocument());
                 myView.searchLink.setHint(getString(R.string.link_search_youtube));
                 myView.searchLink.setOnClickListener(view -> openBrowser("https://www.youtube.com/results?search_query="));
@@ -122,7 +122,7 @@ public class LinksBottomSheet extends BottomSheetDialogFragment {
             case "linkAudio":
                 myView.dialogHeading.setText(getString(R.string.link_audio));
                 myView.linkLocation.setText(mainActivityInterface.getSong().getLinkaudio());
-                myView.openLink.setImageDrawable(AppCompatResources.getDrawable(requireContext(),R.drawable.ic_play_white_36dp));
+                myView.openLink.setImageDrawable(AppCompatResources.getDrawable(requireContext(),R.drawable.play));
                 myView.padLink.setVisibility(View.VISIBLE);
                 myView.padLink.setOnClickListener(view -> setLinkAsPad());
                 myView.padLink.setVisibility(View.VISIBLE);
@@ -133,7 +133,7 @@ public class LinksBottomSheet extends BottomSheetDialogFragment {
             case "linkOnline":
                 myView.dialogHeading.setText(getString(R.string.link_web));
                 myView.linkLocation.setText(mainActivityInterface.getSong().getLinkweb());
-                myView.openLink.setImageDrawable(AppCompatResources.getDrawable(requireContext(),R.drawable.ic_web_white_36dp));
+                myView.openLink.setImageDrawable(AppCompatResources.getDrawable(requireContext(),R.drawable.web));
                 myView.openLink.setOnClickListener(view -> openDocument());
                 myView.searchLink.setHint(getString(R.string.link_search_web));
                 myView.searchLink.setOnClickListener(view -> openBrowser("https://www.google.com/search?q="));
@@ -141,7 +141,7 @@ public class LinksBottomSheet extends BottomSheetDialogFragment {
             case "linkOther":
                 myView.dialogHeading.setText(getString(R.string.link_file));
                 myView.linkLocation.setText(mainActivityInterface.getSong().getLinkother());
-                myView.openLink.setImageDrawable(AppCompatResources.getDrawable(requireContext(),R.drawable.ic_file_xml_white_36dp));
+                myView.openLink.setImageDrawable(AppCompatResources.getDrawable(requireContext(),R.drawable.xml));
                 myView.openLink.setOnClickListener(view -> openDocument());
                 myView.searchLink.setHint(getString(R.string.link_search_document));
                 myView.searchLink.setOnClickListener(view -> searchFile("*/*"));
@@ -249,7 +249,7 @@ public class LinksBottomSheet extends BottomSheetDialogFragment {
         if (doPlay) {
             try {
                 mediaPlayer.start();
-                myView.openLink.setImageDrawable(AppCompatResources.getDrawable(requireContext(),R.drawable.ic_stop_white_36dp));
+                myView.openLink.setImageDrawable(AppCompatResources.getDrawable(requireContext(),R.drawable.stop));
             } catch (Exception e) {
                 e.printStackTrace();
                 badLink();
@@ -257,7 +257,7 @@ public class LinksBottomSheet extends BottomSheetDialogFragment {
             myView.openLink.setOnClickListener(view -> {
                 try {
                     mediaPlayer.stop();
-                    myView.openLink.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_play_white_36dp));
+                    myView.openLink.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.play));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

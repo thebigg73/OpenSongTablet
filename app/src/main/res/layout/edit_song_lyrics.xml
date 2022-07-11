@@ -25,7 +25,7 @@
             android:id="@+id/ocr"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:icon="@drawable/ic_ocr_white_36dp"
+            app:icon="@drawable/ocr"
             app:iconTint="@color/white"
             android:layout_centerHorizontal="true"
             android:layout_alignParentTop="true"
@@ -69,7 +69,7 @@
             android:contentDescription="@string/back"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            android:src="@drawable/ic_undo_white_36dp"/>
+            android:src="@drawable/undo"/>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/redoButton"
@@ -79,7 +79,7 @@
             android:contentDescription="@string/next"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            android:src="@drawable/ic_redo_white_36dp"/>
+            android:src="@drawable/redo"/>
     </LinearLayout>
 
     <FrameLayout

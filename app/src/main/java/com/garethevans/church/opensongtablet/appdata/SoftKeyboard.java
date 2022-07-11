@@ -8,8 +8,6 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 
-import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-
 public class SoftKeyboard {
 
     private final String TAG = "SoftKeyboard";
@@ -56,14 +54,14 @@ public class SoftKeyboard {
         try {
             FrameLayout content = activity.findViewById(android.R.id.content);
             mChildOfContent = content.getChildAt(0);
-            mChildOfContent.getViewTreeObserver().addOnGlobalLayoutListener(() -> possiblyResizeChildOfContent((MainActivityInterface) activity,listener));
+            mChildOfContent.getViewTreeObserver().addOnGlobalLayoutListener(() -> possiblyResizeChildOfContent(listener));
             frameLayoutParams = (FrameLayout.LayoutParams) mChildOfContent.getLayoutParams();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private void possiblyResizeChildOfContent(MainActivityInterface mainActivityInterface, SoftKeyBoardStatusListener listener) {
+    private void possiblyResizeChildOfContent(SoftKeyBoardStatusListener listener) {
         int usableHeightNow = computeUsableHeight();
 
         if (usableHeightNow != usableHeightPrevious) {
@@ -76,7 +74,6 @@ public class SoftKeyboard {
                 Log.d(TAG,"Keyboard visible");
                 frameLayoutParams.height = totalScreenHeight - heightDifference;
                 listener.onKeyBoardShow(mChildOfContent, totalScreenHeight);
-                mainActivityInterface.setWindowFlags(false);
                 mChildOfContent.requestLayout();
 
             } else if (heightDifference < (totalScreenHeight/4) * -1) {
@@ -84,7 +81,6 @@ public class SoftKeyboard {
                 Log.d(TAG,"Keyboard hidden");
                 handleShiftDown();
                 frameLayoutParams.height = totalScreenHeight;
-                mainActivityInterface.setWindowFlags(true);
                 mChildOfContent.requestLayout();
                 listener.onKeyBoardHide(mChildOfContent, totalScreenHeight);
             }

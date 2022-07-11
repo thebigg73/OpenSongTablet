@@ -79,9 +79,13 @@ public class SongMenuBottomSheet extends BottomSheetDialogFragment {
     }
 
     private void setListeners() {
-
-
         // Listener for buttons
+        myView.songLoad.setOnClickListener(v -> {
+            mainActivityInterface.doSongLoad(mainActivityInterface.getSong().getFolder(),
+                    mainActivityInterface.getSong().getFilename(),true);
+            dismiss();
+        });
+        myView.songShare.setOnClickListener(v -> navigateTo("opensongapp://settings/actions/export"));
         myView.songEdit.setOnClickListener(v -> navigateTo("opensongapp://settings/edit"));
         myView.songActions.setOnClickListener(v -> navigateTo("opensongapp://settings/actions"));
         myView.newSongs.setOnClickListener(v -> navigateTo("opensongapp://settings/import"));

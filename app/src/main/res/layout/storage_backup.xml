@@ -117,7 +117,7 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="24dp"
         android:contentDescription="@string/save"
-        app:icon="@drawable/ic_content_save_white_36dp"
+        app:icon="@drawable/save"
         android:text="@string/import_basic"
         app:useCompatPadding="true" />
 

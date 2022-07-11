@@ -95,7 +95,7 @@ public class StickyPopUp {
         closeButton.setLayoutParams(buttonParams);
         closeButton.setSize(FloatingActionButton.SIZE_MINI);
         closeButton.setImageDrawable(ResourcesCompat.getDrawable(c.getResources(),
-                R.drawable.ic_close_white_36dp,null));
+                R.drawable.close,null));
         floatWindow.addView(closeButton);
 
         // Now the TextView for the sticky notes

@@ -60,7 +60,7 @@ public class ShowCase {
         if (dismisstexts_ornulls==null) {
             dismisstexts_ornulls = new ArrayList<>();
             for (int z=0; z<targets.size(); z++) {
-                dismisstexts_ornulls.add(null);
+                dismisstexts_ornulls.add(c.getResources().getString(android.R.string.ok));
             }
         }
 

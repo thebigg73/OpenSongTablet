@@ -75,7 +75,7 @@
                         android:layout_width="128dp"
                         android:layout_height="72dp"
                         android:contentDescription="@string/choose_image2"
-                        android:src="@drawable/ic_image_white_36dp"
+                        android:src="@drawable/image"
                         android:layout_gravity="center"/>
                     </FrameLayout>
 
@@ -90,7 +90,7 @@
                         android:layout_width="128dp"
                         android:layout_height="72dp"
                         android:contentDescription="@string/choose_image2"
-                        android:src="@drawable/ic_image_white_36dp"
+                        android:src="@drawable/image"
                         android:layout_gravity="center"/>
                     </FrameLayout>
                 </TableRow>
@@ -127,7 +127,7 @@
                             android:id="@+id/video1"
                             android:layout_width="128dp"
                             android:layout_height="72dp"
-                            android:src="@drawable/ic_image_white_36dp"
+                            android:src="@drawable/image"
                             android:layout_gravity="center"
                             android:contentDescription="@string/choose_video1" />
                     </FrameLayout>
@@ -144,7 +144,7 @@
                             android:id="@+id/video2"
                             android:layout_width="128dp"
                             android:layout_height="72dp"
-                            android:src="@drawable/ic_image_white_36dp"
+                            android:src="@drawable/image"
                             android:layout_gravity="center"
                             android:contentDescription="@string/choose_video2" />
                     </FrameLayout>

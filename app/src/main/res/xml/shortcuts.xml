@@ -3,7 +3,7 @@
     <shortcut
         android:shortcutId="Performance"
         android:enabled="true"
-        android:icon="@drawable/ic_microphone_variant_white_36dp"
+        android:icon="@drawable/microphone"
         android:shortcutShortLabel="@string/performance_mode"
         android:shortcutLongLabel="@string/performance_mode"
         android:shortcutDisabledMessage="@string/performance_mode"
@@ -11,13 +11,13 @@
         <intent
             android:action="android.intent.action.VIEW"
             android:targetPackage="com.garethevans.church.opensongtablet"
-            android:targetClass="com.garethevans.church.opensongtablet.SettingsActivity" />
+            android:targetClass="com.garethevans.church.opensongtablet.MainActivity" />
         <extra android:name="whichMode" android:value="Performance" />
     </shortcut>
     <shortcut
         android:shortcutId="Stage"
         android:enabled="true"
-        android:icon="@drawable/ic_lan_connect_white_36dp"
+        android:icon="@drawable/connect"
         android:shortcutShortLabel="@string/stage_mode"
         android:shortcutLongLabel="@string/stage_mode"
         android:shortcutDisabledMessage="@string/stage_mode"
@@ -25,13 +25,13 @@
         <intent
             android:action="android.intent.action.VIEW"
             android:targetPackage="com.garethevans.church.opensongtablet"
-            android:targetClass="com.garethevans.church.opensongtablet.SettingsActivity" />
+            android:targetClass="com.garethevans.church.opensongtablet.MainActivity" />
         <extra android:name="whichMode" android:value="Stage" />
     </shortcut>
     <shortcut
         android:shortcutId="Presentation"
         android:enabled="true"
-        android:icon="@drawable/ic_projector_white_36dp"
+        android:icon="@drawable/projector"
         android:shortcutShortLabel="@string/presenter_mode"
         android:shortcutLongLabel="@string/presenter_mode"
         android:shortcutDisabledMessage="@string/presenter_mode"
@@ -39,7 +39,7 @@
         <intent
             android:action="android.intent.action.VIEW"
             android:targetPackage="com.garethevans.church.opensongtablet"
-            android:targetClass="com.garethevans.church.opensongtablet.SettingsActivity" />
+            android:targetClass="com.garethevans.church.opensongtablet.MainActivity" />
         <extra android:name="whichMode" android:value="Presentation" />
     </shortcut>
 

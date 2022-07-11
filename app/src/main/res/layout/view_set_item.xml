@@ -21,7 +21,7 @@
             android:drawablePadding="16dp"
             android:padding="4dp"
             android:text="@string/title"
-            app:drawableStartCompat="@drawable/ic_amplifier_white_36dp" />
+            app:drawableStartCompat="@drawable/amplifier" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/cardview_songtitle"

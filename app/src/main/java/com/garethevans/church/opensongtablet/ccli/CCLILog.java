@@ -95,9 +95,6 @@ public class CCLILog {
         String blankXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                 "<log>\n</log>\n";
 
-        // Delete the old file
-        mainActivityInterface.getStorageAccess().deleteFile(uri);
-
         // Write the new file
         return mainActivityInterface.getStorageAccess().doStringWriteToFile("Settings","","ActivityLog.xml",blankXML);
     }

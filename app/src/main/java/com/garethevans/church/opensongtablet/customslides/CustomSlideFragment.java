@@ -271,7 +271,7 @@ public class CustomSlideFragment extends Fragment {
                     uri = mainActivityInterface.getStorageAccess().fixLocalisedUri(uri.getPath());
                 }
                 if (!mainActivityInterface.getStorageAccess().uriExists(uri)) {
-                    Drawable notfound = ContextCompat.getDrawable(requireContext(),R.drawable.notfound);
+                    Drawable notfound = ContextCompat.getDrawable(requireContext(),R.drawable.warning);
                     thumbnail.setImageDrawable(notfound);
                 } else {
                     InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(uri);

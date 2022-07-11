@@ -53,7 +53,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
                         android:layout_alignParentEnd="true"
-                        android:src="@drawable/ic_play_white_36dp"
+                        android:src="@drawable/play"
                         app:backgroundTint="@color/colorAltPrimary"
                         android:tint="@color/colorAltSecondary"
                         app:fabCustomSize="16dp"
@@ -194,9 +194,9 @@
 
             <com.garethevans.church.opensongtablet.customviews.TextThreeSlider
                 android:id="@+id/infoAlign"
-                app:drawableL="@drawable/ic_format_align_left_white_36dp"
-                app:drawableR="@drawable/ic_format_align_right_white_36dp"
-                app:drawableC="@drawable/ic_format_align_center_white_36dp"
+                app:drawableL="@drawable/align_left"
+                app:drawableR="@drawable/align_right"
+                app:drawableC="@drawable/align_center"
                 app:label="@string/song_alignment_information"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
@@ -302,18 +302,18 @@
 
             <com.garethevans.church.opensongtablet.customviews.TextThreeSlider
                 android:id="@+id/contentHorizontalAlign"
-                app:drawableL="@drawable/ic_format_align_left_white_36dp"
-                app:drawableR="@drawable/ic_format_align_right_white_36dp"
-                app:drawableC="@drawable/ic_format_align_center_white_36dp"
+                app:drawableL="@drawable/align_left"
+                app:drawableR="@drawable/align_right"
+                app:drawableC="@drawable/align_center"
                 app:label="@string/song_alignment_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
             <com.garethevans.church.opensongtablet.customviews.TextThreeSlider
                 android:id="@+id/contentVerticalAlign"
-                app:drawableL="@drawable/ic_format_vertical_align_top_white_36dp"
-                app:drawableC="@drawable/ic_format_vertical_align_center_white_36dp"
-                app:drawableR="@drawable/ic_format_vertical_align_bottom_white_36dp"
+                app:drawableL="@drawable/align_top"
+                app:drawableC="@drawable/align_middle"
+                app:drawableR="@drawable/align_bottom"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 

@@ -58,7 +58,7 @@
         android:layout_gravity="bottom|end"
         android:layout_marginStart="16dp"
         android:contentDescription="@string/start_stop_pad"
-        android:src="@drawable/ic_play_white_36dp"
+        android:src="@drawable/play"
         app:useCompatPadding="false" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -117,7 +117,7 @@ public class SetManageFragment extends Fragment {
                 myView.newCategory.setVisibility(View.VISIBLE);
                 myView.setCategory.setText(category);
                 myView.loadorsaveButton.setText(getString(R.string.save));
-                myView.loadorsaveButton.setIcon(ContextCompat.getDrawable(requireContext(), R.drawable.ic_content_save_white_36dp));
+                myView.loadorsaveButton.setIcon(ContextCompat.getDrawable(requireContext(), R.drawable.save));
                 myView.loadorsaveButton.setOnClickListener(v -> saveSet());
                 break;
 
@@ -131,7 +131,7 @@ public class SetManageFragment extends Fragment {
                 myView.newCategory.setVisibility(View.VISIBLE);
                 myView.setCategory.setText(category);
                 myView.loadorsaveButton.setText(getString(R.string.rename));
-                myView.loadorsaveButton.setIcon(ContextCompat.getDrawable(requireContext(), R.drawable.ic_content_save_white_36dp));
+                myView.loadorsaveButton.setIcon(ContextCompat.getDrawable(requireContext(), R.drawable.save));
                 myView.loadorsaveButton.setOnClickListener(v -> renameSet());
                 break;
 
@@ -144,7 +144,7 @@ public class SetManageFragment extends Fragment {
                 myView.newCategory.setVisibility(View.GONE);
                 myView.setCategory.setVisibility(View.VISIBLE);
                 myView.loadorsaveButton.setText(getString(R.string.delete));
-                myView.loadorsaveButton.setIcon(ContextCompat.getDrawable(requireContext(), R.drawable.ic_delete_white_36dp));
+                myView.loadorsaveButton.setIcon(ContextCompat.getDrawable(requireContext(), R.drawable.delete));
                 myView.loadorsaveButton.setOnClickListener(v -> deleteSet());
                 break;
 
@@ -157,7 +157,7 @@ public class SetManageFragment extends Fragment {
                 myView.setLoadInfo2.setVisibility(View.VISIBLE);
                 myView.setLoadInfo2.setText(getString(R.string.set_saved_not_current));
                 myView.loadorsaveButton.setText(getString(R.string.export));
-                myView.loadorsaveButton.setIcon(ContextCompat.getDrawable(requireContext(), R.drawable.ic_share_variant_white_36dp));
+                myView.loadorsaveButton.setIcon(ContextCompat.getDrawable(requireContext(), R.drawable.share));
                 myView.loadorsaveButton.setOnClickListener(v -> exportSet());
                 break;
 
@@ -170,7 +170,7 @@ public class SetManageFragment extends Fragment {
                 myView.setLoadInfo1.setVisibility(View.VISIBLE);
                 myView.setLoadInfo2.setVisibility(View.VISIBLE);
                 myView.loadorsaveButton.setText(getString(R.string.load));
-                myView.loadorsaveButton.setIcon(ContextCompat.getDrawable(requireContext(), R.drawable.ic_content_save_white_36dp));
+                myView.loadorsaveButton.setIcon(ContextCompat.getDrawable(requireContext(), R.drawable.save));
                 myView.loadorsaveButton.setOnClickListener(v -> loadSet());
                 break;
         }

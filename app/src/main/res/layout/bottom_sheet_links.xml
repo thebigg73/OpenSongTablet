@@ -39,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/search"
                 android:padding="16dp"
-                app:mydrawable="@drawable/ic_magnify_white_36dp" />
+                app:mydrawable="@drawable/search" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialTextView
                 android:id="@+id/saveLink"
@@ -48,7 +48,7 @@
                 android:hint="@string/save_changes"
                 android:text="@string/save"
                 android:padding="16dp"
-                app:mydrawable="@drawable/ic_content_save_white_36dp" />
+                app:mydrawable="@drawable/save" />
 
 
                 <com.garethevans.church.opensongtablet.customviews.MaterialTextView
@@ -58,7 +58,7 @@
                     android:hint="@string/link_audio_pad"
                     android:text="@string/pad"
                     android:padding="16dp"
-                    app:mydrawable="@drawable/ic_amplifier_white_36dp"
+                    app:mydrawable="@drawable/amplifier"
                     android:visibility="gone"/>
 
 
@@ -69,7 +69,7 @@
                 android:hint="@string/link_reset"
                 android:text="@string/delete"
                 android:padding="16dp"
-                app:mydrawable="@drawable/ic_delete_white_36dp" />
+                app:mydrawable="@drawable/delete" />
 
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -78,7 +78,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:contentDescription="@string/open"
-                android:src="@drawable/ic_web_white_36dp"
+                android:src="@drawable/web"
                 app:useCompatPadding="true" />
 
         </LinearLayout>

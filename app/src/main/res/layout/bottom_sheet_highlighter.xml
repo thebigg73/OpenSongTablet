@@ -50,7 +50,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_margin="0dp"
                 android:contentDescription="@string/highlight"
-                android:src="@drawable/ic_pencil_white_36dp"
+                android:src="@drawable/pencil"
                 app:fabSize="mini"
                 app:useCompatPadding="true" />
 
@@ -61,7 +61,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_margin="0dp"
                 android:contentDescription="@string/highlight"
-                android:src="@drawable/ic_highlighter_white_36dp"
+                android:src="@drawable/highlighter"
                 app:fabSize="mini"
                 app:useCompatPadding="true" />
 
@@ -72,7 +72,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_margin="0dp"
                 android:contentDescription="@string/highlight"
-                android:src="@drawable/ic_eraser_white_36dp"
+                android:src="@drawable/eraser"
                 app:fabSize="mini"
                 app:useCompatPadding="true" />
 
@@ -83,7 +83,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_margin="0dp"
                 android:contentDescription="@string/highlight"
-                android:src="@drawable/ic_undo_white_36dp"
+                android:src="@drawable/undo"
                 app:fabSize="mini"
                 app:useCompatPadding="true" />
 
@@ -94,7 +94,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_margin="0dp"
                 android:contentDescription="@string/highlight"
-                android:src="@drawable/ic_redo_white_36dp"
+                android:src="@drawable/redo"
                 app:fabSize="mini"
                 app:useCompatPadding="true" />
 
@@ -105,7 +105,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_margin="0dp"
                 android:contentDescription="@string/highlight"
-                android:src="@drawable/ic_delete_white_36dp"
+                android:src="@drawable/delete"
                 app:fabSize="mini"
                 app:useCompatPadding="true" />
 

@@ -25,7 +25,6 @@ public class StorageManagementFragment extends Fragment {
 
     private MainActivityInterface mainActivityInterface;
     private ArrayList<String> infos;
-    private ArrayList<String> dismisses;
     private ArrayList<View> views = new ArrayList<>();
     private ArrayList<Boolean> rects = new ArrayList<>();
 
@@ -71,7 +70,7 @@ public class StorageManagementFragment extends Fragment {
             initialiseShowcaseArrays();
             requireActivity().runOnUiThread(() -> {
                 prepareShowcaseViews();
-                mainActivityInterface.getShowCase().sequenceShowCase(requireActivity(),views,dismisses,infos,rects,"storageManagement");
+                mainActivityInterface.getShowCase().sequenceShowCase(requireActivity(),views,null,infos,rects,"storageManagement");
             });
         }).start();
     }
@@ -106,13 +105,10 @@ public class StorageManagementFragment extends Fragment {
     private void initialiseShowcaseArrays() {
         views = new ArrayList<>();
         infos = new ArrayList<>();
-        dismisses = new ArrayList<>();
         rects = new ArrayList<>();
         infos.add(getString(R.string.storage_reset));
-        dismisses.add(null);
         rects.add(true);
         infos.add(getString(R.string.storage_main));
-        dismisses.add(null);
         rects.add(true);
     }
 

@@ -176,11 +176,11 @@ public class AutoscrollSettingsFragment extends Fragment {
         if (mainActivityInterface.getAutoscroll().getIsAutoscrolling()) {
             mainActivityInterface.getAutoscroll().stopAutoscroll();
             myView.startStopAutoscroll.setImageDrawable(ContextCompat.getDrawable(requireContext(),
-                    R.drawable.ic_play_white_36dp));
+                    R.drawable.play));
         } else {
             mainActivityInterface.getAutoscroll().startAutoscroll();
             myView.startStopAutoscroll.setImageDrawable(ContextCompat.getDrawable(requireContext(),
-                    R.drawable.ic_stop_white_36dp));
+                    R.drawable.stop));
         }
     }
 

@@ -41,14 +41,38 @@
 
                 <TableRow>
                     <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/songEdit"
+                        android:id="@+id/songLoad"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:padding="16dp"
+                        android:drawablePadding="8dp"
+                        android:drawableStart="@drawable/save"
+                        android:text="@string/load"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/songShare"
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:layout_margin="8dp"
-                        android:padding="8dp"
-                        android:drawableStart="@drawable/ic_pencil_white_36dp"
+                        android:gravity="center_vertical"
+                        android:padding="16dp"
+                        android:drawablePadding="8dp"
+                        android:drawableStart="@drawable/share"
+                        android:text="@string/share"/>
+                </TableRow>
+
+                <TableRow>
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/songEdit"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:padding="16dp"
+                        android:drawablePadding="8dp"
+                        android:drawableStart="@drawable/pencil"
                         android:text="@string/edit_song"/>
 
                     <com.google.android.material.textview.MaterialTextView
@@ -56,10 +80,10 @@
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:padding="8dp"
-                        android:layout_margin="8dp"
-                        android:drawableStart="@drawable/ic_bullseye_white_36dp"
+                        android:gravity="center_vertical"
+                        android:padding="16dp"
+                        android:drawablePadding="8dp"
+                        android:drawableStart="@drawable/bullseye"
                         android:text="@string/actions"/>
                 </TableRow>
                 <TableRow>
@@ -68,20 +92,20 @@
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:padding="8dp"
-                        android:layout_margin="8dp"
-                        android:drawableStart="@drawable/ic_plus_white_36dp"
+                        android:gravity="center_vertical"
+                        android:padding="16dp"
+                        android:drawablePadding="8dp"
+                        android:drawableStart="@drawable/plus"
                         android:text="@string/add_song_to_set"/>
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/addVariationToSet"
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:padding="8dp"
-                        android:layout_margin="8dp"
-                        android:drawableStart="@drawable/ic_table_edit_white_36dp"
+                        android:gravity="center_vertical"
+                        android:padding="16dp"
+                        android:drawablePadding="8dp"
+                        android:drawableStart="@drawable/set_edit"
                         android:text="@string/variation_make"/>
                 </TableRow>
             </TableLayout>
@@ -103,7 +127,7 @@
                 android:hint="@string/random_song_info"
                 android:padding="16dp"
                 android:text="@string/random_song"
-                app:mydrawable="@drawable/ic_folder_search_white_36dp" />
+                app:mydrawable="@drawable/folder_search" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialTextView
                 android:id="@+id/newSongs"
@@ -112,7 +136,7 @@
                 android:hint="@string/import_main"
                 android:padding="16dp"
                 android:text="@string/add_songs"
-                app:mydrawable="@drawable/ic_database_import_white_36dp" />
+                app:mydrawable="@drawable/database_import" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialTextView
                 android:id="@+id/rebuildIndex"
@@ -121,7 +145,7 @@
                 android:hint="@string/search_rebuild"
                 android:padding="16dp"
                 android:text="@string/search_rebuild"
-                app:mydrawable="@drawable/ic_menu_white_36dp" />
+                app:mydrawable="@drawable/menu" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

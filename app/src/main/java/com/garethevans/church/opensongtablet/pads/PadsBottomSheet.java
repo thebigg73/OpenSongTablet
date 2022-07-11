@@ -146,7 +146,7 @@ public class PadsBottomSheet extends BottomSheetDialogFragment {
             if (padPlaying) {
                 // The action is to stop
                 Log.d(TAG, "Set stop icon");
-                myView.startStopPad.setIcon(ResourcesCompat.getDrawable(requireContext().getResources(), R.drawable.ic_stop_white_36dp, requireContext().getTheme()));
+                myView.startStopPad.setIcon(ResourcesCompat.getDrawable(requireContext().getResources(), R.drawable.stop, requireContext().getTheme()));
                 myView.startStopPad.setText(getString(R.string.stop));
                 myView.startStopPad.setOnClickListener(v -> {
                     padPlaying = false;
@@ -162,7 +162,7 @@ public class PadsBottomSheet extends BottomSheetDialogFragment {
             } else {
                 // The action is to play
                 Log.d(TAG, "Set start icon");
-                myView.startStopPad.setIcon(ResourcesCompat.getDrawable(requireContext().getResources(), R.drawable.ic_play_white_36dp, requireContext().getTheme()));
+                myView.startStopPad.setIcon(ResourcesCompat.getDrawable(requireContext().getResources(), R.drawable.play, requireContext().getTheme()));
                 myView.startStopPad.setText(getString(R.string.start));
                 myView.startStopPad.setOnClickListener(v -> {
                     padPlaying = true;

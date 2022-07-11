@@ -42,7 +42,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:contentDescription="@string/scroll_down"
-                    android:src="@drawable/ic_arrow_down_white_36dp" />
+                    android:src="@drawable/arrow_down" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/mainFolder"
@@ -60,7 +60,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:contentDescription="@string/scroll_down"
-                    android:src="@drawable/ic_arrow_down_white_36dp"
+                    android:src="@drawable/arrow_down"
                     android:visibility="gone" />
 
                 <LinearLayout

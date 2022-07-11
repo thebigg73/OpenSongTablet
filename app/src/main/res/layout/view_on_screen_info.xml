@@ -21,7 +21,7 @@
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:clickable="true"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/autoscrollTime"
@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:gravity="center_vertical"
-            app:drawableStartCompat="@drawable/ic_rotate_right_white_36dp"
+            app:drawableStartCompat="@drawable/autoscroll"
             android:clickable="false"/>
 
         <com.google.android.material.textview.MaterialTextView
@@ -61,7 +61,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:gravity="center_vertical"
-            app:drawableStartCompat="@drawable/ic_amplifier_white_36dp"
+            app:drawableStartCompat="@drawable/amplifier"
             android:clickable="false"/>
 
         <com.google.android.material.textview.MaterialTextView
@@ -82,5 +82,5 @@
         android:gravity="center"
         android:padding="4dp"
         android:visibility="gone"
-        app:drawableStartCompat="@drawable/ic_capo_white_36dp" />
+        app:drawableStartCompat="@drawable/capo" />
 </LinearLayout>

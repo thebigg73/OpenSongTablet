@@ -541,26 +541,26 @@ public class SetActions {
 
         switch (valueToDecideFrom) {
             case "Slides":
-                icon = R.drawable.ic_projector_screen_white_36dp;
+                icon = R.drawable.projector_screen;
                 break;
             case "Notes":
-                icon = R.drawable.ic_note_text_white_36dp;
+                icon = R.drawable.note_text;
                 break;
             case "Scripture":
-                icon = R.drawable.ic_book_white_36dp;
+                icon = R.drawable.bible;
                 break;
             case "Images":
-                icon = R.drawable.ic_image_white_36dp;
+                icon = R.drawable.image;
                 break;
             case "Variations":
             case "Variation":
-                icon = R.drawable.ic_file_xml_white_36dp;
+                icon = R.drawable.xml;
                 break;
             case "PDF":
-                icon = R.drawable.ic_file_pdf_white_36dp;
+                icon = R.drawable.pdf;
                 break;
             default:
-                icon = R.drawable.ic_music_note_white_36dp;
+                icon = R.drawable.music_note;
                 break;
         }
         return icon;

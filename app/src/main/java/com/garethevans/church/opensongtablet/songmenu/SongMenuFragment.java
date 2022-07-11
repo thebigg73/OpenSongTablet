@@ -389,17 +389,14 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                                     boolean rect1, boolean rect2, String id) {
         ArrayList<View> targets = new ArrayList<>();
         ArrayList<String> infos = new ArrayList<>();
-        ArrayList<String> dismisses = new ArrayList<>();
         ArrayList<Boolean> rects = new ArrayList<>();
         targets.add(view1);
         targets.add(view2);
         infos.add(info1);
         infos.add(info2);
-        dismisses.add(null);
-        dismisses.add(null);
         rects.add(rect1);
         rects.add(rect2);
-        mainActivityInterface.getShowCase().sequenceShowCase(requireActivity(), targets, dismisses, infos, rects, id);
+        mainActivityInterface.getShowCase().sequenceShowCase(requireActivity(), targets, null, infos, rects, id);
     }
 
     public void updateSongMenu(Song song) {

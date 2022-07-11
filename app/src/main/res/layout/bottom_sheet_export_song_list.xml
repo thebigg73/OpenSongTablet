@@ -50,7 +50,7 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
         android:contentDescription="@string/export"
-        android:src="@drawable/ic_share_variant_white_36dp"
+        android:src="@drawable/share"
         app:useCompatPadding="true" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

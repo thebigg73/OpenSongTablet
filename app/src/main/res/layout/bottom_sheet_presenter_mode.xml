@@ -17,7 +17,7 @@
             android:layout_gravity="center_horizontal"
             android:contentDescription="@string/tool"
             android:padding="4dp"
-            android:src="@drawable/ic_menu_white_36dp" />
+            android:src="@drawable/menu" />
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -40,28 +40,28 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:contentDescription="@string/cast_skip_prev"
-                        android:src="@drawable/ic_skip_backward_white_36dp"
+                        android:src="@drawable/skip_backward"
                         custom:useCompatPadding="true" />
 
                     <com.google.android.material.floatingactionbutton.FloatingActionButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:contentDescription="@string/back"
-                        android:src="@drawable/ic_skip_previous_white_36dp"
+                        android:src="@drawable/skip_previous"
                         custom:useCompatPadding="true" />
 
                     <com.google.android.material.floatingactionbutton.FloatingActionButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:contentDescription="@string/next"
-                        android:src="@drawable/ic_skip_next_white_36dp"
+                        android:src="@drawable/skip_next"
                         custom:useCompatPadding="true" />
 
                     <com.google.android.material.floatingactionbutton.FloatingActionButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:contentDescription="@string/cast_skip_next"
-                        android:src="@drawable/ic_skip_forward_white_36dp"
+                        android:src="@drawable/skip_forward"
                         custom:useCompatPadding="true" />
 
                 </androidx.gridlayout.widget.GridLayout>
@@ -74,7 +74,7 @@
                     android:hint="@string/display_settings"
                     android:padding="16dp"
                     android:text="@string/connected_display"
-                    custom:mydrawable="@drawable/ic_monitor_white_36dp" />
+                    custom:mydrawable="@drawable/monitor" />
 
                 <com.garethevans.church.opensongtablet.customviews.MaterialTextView
                     android:layout_width="match_parent"
@@ -82,7 +82,7 @@
                     android:hint="@string/bible_verse"
                     android:padding="16dp"
                     android:text="@string/scripture"
-                    custom:mydrawable="@drawable/ic_bible_white_36dp" />
+                    custom:mydrawable="@drawable/bible" />
 
                 <com.garethevans.church.opensongtablet.customviews.MaterialTextView
                     android:layout_width="match_parent"
@@ -90,7 +90,7 @@
                     android:hint="@string/add_custom_slide"
                     android:padding="16dp"
                     android:text="@string/custom_slide"
-                    custom:mydrawable="@drawable/ic_projector_screen_white_36dp" />
+                    custom:mydrawable="@drawable/projector_screen" />
 
                 <com.garethevans.church.opensongtablet.customviews.MaterialTextView
                     android:layout_width="match_parent"
@@ -98,7 +98,7 @@
                     android:hint="@string/file_chooser"
                     android:padding="16dp"
                     android:text="@string/audio"
-                    custom:mydrawable="@drawable/ic_music_note_white_36dp" />
+                    custom:mydrawable="@drawable/music_note" />
 
                 <com.garethevans.church.opensongtablet.customviews.MaterialTextView
                     android:layout_width="match_parent"
@@ -106,7 +106,7 @@
                     android:hint="@string/file_chooser"
                     android:padding="16dp"
                     android:text="@string/video"
-                    custom:mydrawable="@drawable/ic_slow_motion_video_white_36dp" />
+                    custom:mydrawable="@drawable/video" />
 
                 <com.garethevans.church.opensongtablet.customviews.MaterialTextView
                     android:layout_width="match_parent"
@@ -114,7 +114,7 @@
                     android:hint="@string/alert_text"
                     android:padding="16dp"
                     android:text="@string/alert"
-                    custom:mydrawable="@drawable/ic_message_alert_white_36dp"
+                    custom:mydrawable="@drawable/alert"
                     custom:showCheckBox="true" />
 
             </LinearLayout>

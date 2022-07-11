@@ -41,7 +41,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/new_category"
-                    android:src="@drawable/ic_plus_white_36dp"
+                    android:src="@drawable/plus"
                     app:useCompatPadding="true" />
 
             </LinearLayout>
@@ -103,6 +103,6 @@
         android:layout_alignParentBottom="true"
         android:padding="16dp"
         android:text="@string/load"
-        app:icon="@drawable/ic_content_save_white_36dp" />
+        app:icon="@drawable/save" />
 
 </RelativeLayout>

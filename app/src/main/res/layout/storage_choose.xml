@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:padding="16dp"
-            android:src="@drawable/ic_web_white_36dp" />
+            android:src="@drawable/web" />
     </LinearLayout>
 
     <androidx.core.widget.NestedScrollView
@@ -136,7 +136,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:contentDescription="@string/information"
-        android:src="@drawable/ic_information_white_36dp"
+        android:src="@drawable/information"
         app:useCompatPadding="true" />
 
 </RelativeLayout>

@@ -30,7 +30,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/set_new_info"
-                    custom:mydrawable="@drawable/ic_table_edit_white_36dp"
+                    custom:mydrawable="@drawable/set_edit"
                     android:padding="16dp"
                     android:text="@string/set_new" />
 
@@ -39,7 +39,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/set_manage_info"
-                    custom:mydrawable="@drawable/ic_database_white_36dp"
+                    custom:mydrawable="@drawable/database"
                     android:padding="16dp"
                     android:text="@string/set_manage" />
 
@@ -48,7 +48,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/edit_set_item_info"
-                    custom:mydrawable="@drawable/ic_pencil_white_36dp"
+                    custom:mydrawable="@drawable/pencil"
                     android:padding="16dp"
                     android:text="@string/edit_set_item" />
 
@@ -57,7 +57,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/bible_verse"
-                    custom:mydrawable="@drawable/ic_bible_white_36dp"
+                    custom:mydrawable="@drawable/bible"
                     android:padding="16dp"
                     android:text="@string/scripture" />
 
@@ -66,7 +66,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/add_custom_slide"
-                    custom:mydrawable="@drawable/ic_format_list_bulleted_white_36dp"
+                    custom:mydrawable="@drawable/list_bullet"
                     android:padding="16dp"
                     android:text="@string/custom_slide" />
 
@@ -77,14 +77,14 @@
                     android:hint="@string/random_song_info"
                     android:padding="16dp"
                     android:text="@string/random_song"
-                    custom:mydrawable="@drawable/ic_folder_search_white_36dp" />
+                    custom:mydrawable="@drawable/folder_search" />
 
                 <com.garethevans.church.opensongtablet.customviews.MaterialTextView
                     android:id="@+id/shuffleSet"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/set_shuffle_info"
-                    custom:mydrawable="@drawable/ic_shuffle_white_36dp"
+                    custom:mydrawable="@drawable/shuffle"
                     android:padding="16dp"
                     android:text="@string/set_shuffle" />
 

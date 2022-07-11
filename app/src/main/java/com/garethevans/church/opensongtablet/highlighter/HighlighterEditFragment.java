@@ -87,11 +87,11 @@ public class HighlighterEditFragment extends Fragment {
     private void setupViews() {
         buttonActive = ContextCompat.getColor(requireContext(), R.color.colorSecondary);
         buttonInactive = ContextCompat.getColor(requireContext(), R.color.colorAltPrimary);
-        whiteCheck = ContextCompat.getDrawable(requireContext(), R.drawable.ic_check_white_36dp);
+        whiteCheck = ContextCompat.getDrawable(requireContext(), R.drawable.check);
         if (whiteCheck != null) {
             whiteCheck.mutate();
         }
-        blackCheck = ContextCompat.getDrawable(requireContext(), R.drawable.ic_check_white_36dp);
+        blackCheck = ContextCompat.getDrawable(requireContext(), R.drawable.check);
         if (blackCheck != null) {
             blackCheck.setColorFilter(Color.BLACK, PorterDuff.Mode.SRC_IN);
         }
