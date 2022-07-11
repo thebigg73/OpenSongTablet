@@ -994,11 +994,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             if (isVisible) {
                 screenMirror.setVisibility(View.VISIBLE);
                 myView.toolBar.batteryholder.setVisibility(View.VISIBLE);
-                //alertButton.setVisibility(View.VISIBLE);
             } else {
                 screenMirror.setVisibility(View.GONE);
                 myView.toolBar.batteryholder.setVisibility(View.GONE);
-                //alertButton.setVisibility(View.GONE);
             }
         } catch (Exception e) {
             e.printStackTrace();
