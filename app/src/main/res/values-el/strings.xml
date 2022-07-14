@@ -13,7 +13,6 @@
     <string name="alert">"Προειδοποίηση"</string>
     <string name="alert_text">"Εισαγωγή κείμενο μηνύματος"</string>
     <string name="alphabetical">Αλφαβητικό ευρετήριο τραγουδιών</string>
-    <string name="app_name">"OpenSongApp"</string>
     <string name="are_you_sure">"Είσαι σίγουρος;"</string>
     <string name="ask">"Ερώτηση κάθε φορά"</string>
     <string name="autoscale">"Αυτόματη κλίμακα"</string>
@@ -149,7 +148,6 @@
     <string name="edit_song_books">"Books song belongs to"</string>
     <string name="capo_fret">"Capo fret"</string>
     <string name="edit_song_capo_print">"Print capo chords"</string>
-    <string name="ccli">"CCLI"</string>
     <string name="copyright">"Copyright info"</string>
     <string name="song_duration">"Song duration (seconds)"</string>
     <string name="hymn_number">"Hymn number"</string>
@@ -266,7 +264,6 @@
     <string name="metronome">"Metronome"</string>
     <string name="start_stop_metronome">"Start/stop metronome"</string>
     <string name="microphone_rationale">"Για πρόσβαση στον έλεγχο έντασης ήχου απαιτείται Μικρόφωνο / εγγραφή ήχου."</string>
-    <string name="midi">"MIDI"</string>
     <string name="midi_add">"Προσθήκη εντολής"</string>
     <string name="midi_auto">"Αυτόματη αποστολή MIDI"</string>
     <string name="midi_bluetooth">"Συνδέστε τη συσκευή Bluetooth"</string>
@@ -302,9 +299,9 @@
     <string name="not_saved">Δεν έχει αποθηκευτεί</string>
     <string name="is_not_set">"Not set"</string>
     <string name="nowifidirect">"Λυπούμαστε, αυτή η συσκευή δεν υποστηρίζει απευθείας WiFi"</string>
-    <string name="off">"OFF"</string>
+    <string name="off">Off</string>
     <string name="chordformat_detected">"Detected current chord format"</string>
-    <string name="on">"ON"</string>
+    <string name="on">On</string>
     <string name="options">"ΕΠΙΛΟΓΕΣ"</string>
     <string name="set_reset">"Διαγραφή της σειράς και δημιουργία νέας"</string>
     <string name="other">"Άλλα"</string>
@@ -345,7 +342,7 @@
     <string name="prechorus_background">"Φόντο προ ρεφρέν"</string>
     <string name="pref_key_text">"Choose your preferred key settings"</string>
     <string name="presenter_mode">"Λειτουργία προβολής"</string>
-    <string name="background">"Φόντο"</string>
+    <string name="background">Φόντου</string>
     <string name="font_presentation">"Παρουσίαση γραμματοσειράς"</string>
     <string name="presoFontShadow">"Σκιά γραμματοσειράς παρουσίασης"</string>
     <string name="font_presentation_info">"Γραμματοσειρά πληροφοριών παρουσίασης"</string>
@@ -385,7 +382,7 @@
     <string name="section_space">"Προσθήκη χώρου ενότητας"</string>
     <string name="select_item_variation">"Select the song to create a set variation"</string>
     <string name="project">"Έργο"</string>
-    <string name="set">"ΣΕΙΡΑ"</string>
+    <string name="set">Σeipa</string>
     <string name="set_help">"Drag songs around to change the order of your set"</string>
     <string name="set_manage_click">"Πάτα σε ένα αντικείμενο της σειράς για προβολή"</string>
     <string name="set_manage_swipe">"Σύρε για την διαγραφή αντικειμένου από την λίστα"</string>
@@ -536,7 +533,7 @@
     <string name="filter_structure">[*filter:V] = φιλτραρισμένη ενότητα στίχων</string>
     <string name="storage_quicktip">Κατά την επιλογή μιας τοποθεσίας:\nΛίστα αποθηκευτικού χώρου χρησιμοποιώντας το μενού (ίσως χρειαστεί να αλλάξετε τις ρυθμίσεις για να εμφανιστεί όλο το χώρο αποθήκευσης).\nΕΠΙΛΕΞΤΕ ΜΟΝΟ εσωτερικό χώρο αποθήκευσης ή κάρτας SD.\nΣυνιστάται εσωτερική αποθήκευση. Αυτό μπορεί να αναφέρεται ως χώρος αποθήκευσης συσκευής ή με το όνομα της συσκευής σας.\nΣε Android 10+ δεν θα πρέπει να επιλέξετε το φάκελο Λήψεις ή Root. Εάν έχετε αμφιβολίες, επιλέξτε το φάκελο «Έγγραφα».</string>
     <string name="storage_help">Επιλέξτε την τοποθεσία για το φάκελο \"OpenSong\". Αυτή είναι η προεπιλεγμένη θέση αποθήκευσης για αρχεία OpenSong. Μπορείτε να το αλλάξετε ανά πάσα στιγμή από το μενού Επιλογές. Συνιστάται εσωτερική αποθήκευση.\n\nΓια ενημέρωση ή επανεγκατάσταση:\nΜπορείτε να χρησιμοποιήσετε το κίτρινο κουμπί παρακάτω για να βρείτε οποιονδήποτε προηγούμενο φάκελο \"OpenSong\".</string>
-    <string name="information">" Πληροφορίες"</string>
+    <string name="information">Πληροφορίες</string>
     <string name="nearby_host_menu_only">Ακούστε νέους πελάτες μόνο όταν αυτή η σελίδα είναι ορατή</string>
     <string name="client">Πελάτης</string>
     <string name="host">Πλήθος</string>

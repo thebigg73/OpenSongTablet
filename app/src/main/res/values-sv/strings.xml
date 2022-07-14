@@ -13,7 +13,6 @@
     <string name="alert">"Varna"</string>
     <string name="alert_text">"Ange meddelandetext"</string>
     <string name="alphabetical">Alfabetiskt låtindex</string>
-    <string name="app_name">"OpenSongApp"</string>
     <string name="are_you_sure">"Är du säker?"</string>
     <string name="ask">"Fråga varje gång"</string>
     <string name="autoscale">"Autoscale"</string>
@@ -42,14 +41,14 @@
     <string name="bible_search">"Fras eller vers att söka"</string>
     <string name="bible_translation">"Bibelversionskod (t.ex. NIV, MSG)"</string>
     <string name="black_screen">"Svart skärm"</string>
-    <string name="book">"bok"</string>
+    <string name="book">Bok</string>
     <string name="bottom">"Botten"</string>
     <string name="bridge_background">"Bro bakgrund"</string>
     <string name="camera">"Kamera"</string>
     <string name="capo_style">"Capo fret som tal"</string>
     <string name="capo_toggle_bothcapo">"Visa både capo och native ackord om det är tillgängligt"</string>
     <string name="category">"Kategori"</string>
-    <string name="cavaquinho">"cavaquinho"</string>
+    <string name="cavaquinho">Cavaquinho</string>
     <string name="ccli_automatic">"Spela in användningsstatistik automatiskt"</string>
     <string name="ccli_church">"Kyrkans namn"</string>
     <string name="ccli_licence">"Licensnummer"</string>
@@ -149,7 +148,6 @@
     <string name="edit_song_books">"Böcker sång tillhör"</string>
     <string name="capo_fret">"Capo Fret"</string>
     <string name="edit_song_capo_print">"Skriv ut kapokord"</string>
-    <string name="ccli">"CCLI"</string>
     <string name="copyright">"Upphovsrättsinformation"</string>
     <string name="song_duration">"Song duration (sekunder)"</string>
     <string name="hymn_number">"Sångnummer"</string>
@@ -266,11 +264,10 @@
     <string name="metronome">"Metronom"</string>
     <string name="start_stop_metronome">"Starta / stoppa metronomen"</string>
     <string name="microphone_rationale">"Mikrofon / ljudinspelning krävs för att komma åt ljudnivåmätaren."</string>
-    <string name="midi">"MIDI"</string>
     <string name="midi_add">"Lägg till kommando"</string>
     <string name="midi_auto">"Auto skicka MIDI"</string>
     <string name="midi_bluetooth">"Anslut Bluetooth-enhet"</string>
-    <string name="midi_channel">"kanalisera"</string>
+    <string name="midi_channel">Kanalisera</string>
     <string name="midi_commands">"Redigera låtkommandon"</string>
     <string name="midi_controller">"Controller förändring"</string>
     <string name="midi_error">"Kontrollera MIDI-anslutningen"</string>
@@ -302,9 +299,9 @@
     <string name="not_saved">Ej sparat</string>
     <string name="is_not_set">"Inte inställd"</string>
     <string name="nowifidirect">"Tyvärr, den här enheten stöder inte WiFi direkt"</string>
-    <string name="off">"AV"</string>
+    <string name="off">Av</string>
     <string name="chordformat_detected">"Upptäckt nuvarande ackordformat"</string>
-    <string name="on">"PÅ"</string>
+    <string name="on">På</string>
     <string name="options">"ALTERNATIV"</string>
     <string name="set_reset">"Rensa den nuvarande inställningen och skapa en ny en"</string>
     <string name="other">"Andra"</string>
@@ -372,7 +369,7 @@
     <string name="reset_text">Om du har problem med appen kan du försöka återställa inställningarna med knappen nedan. Detta kommer att rensa dina inställningar, men kommer inte att ta bort dina låtar.</string>
     <string name="save">"Spara"</string>
     <string name="scale_style">"Skala stil"</string>
-    <string name="scripture">"skriften"</string>
+    <string name="scripture">Skriften</string>
     <string name="scroll_amount">"Rulla beloppet"</string>
     <string name="scrollbuttons_toggle">"Växla bläddringsknapparna"</string>
     <string name="search">"Sök"</string>
@@ -385,7 +382,7 @@
     <string name="section_space">"Lägg till sektionsutrymme"</string>
     <string name="select_item_variation">"Välj sången för att skapa en bestämd variation"</string>
     <string name="project">"Projekt"</string>
-    <string name="set">"UPPSÄTTNING"</string>
+    <string name="set">Uppsättning</string>
     <string name="set_help">"Dra sånger runt för att ändra ordning på din uppsättning"</string>
     <string name="set_manage_click">"Klicka på ett objekt i uppsättningen för att visa den"</string>
     <string name="set_manage_swipe">"Dra för att ta bort ett objekt från din uppsättningslista"</string>
@@ -464,9 +461,9 @@
     <string name="toobig">"Vänligen byt autoskala på för png / pdf-export"</string>
     <string name="top">"Topp"</string>
     <string name="transparency">"Genomskinlighet"</string>
-    <string name="transpose">"införliva"</string>
+    <string name="transpose">Införliva</string>
     <string name="trim_sections">"Trim sektioner"</string>
-    <string name="ukulele">"ukulele"</string>
+    <string name="ukulele">Ukulele</string>
     <string name="ultimateguitarsearch">"Online sökning på Ultimate-Guitar.com"</string>
     <string name="update_projector">"Update \ nprojector"</string>
     <string name="use_default">"Använd standard"</string>

@@ -13,7 +13,6 @@
     <string name="alert">アラート</string>
     <string name="alert_text">メッセージテキストを入力してください</string>
     <string name="alphabetical">アルファベット順の曲インデックス</string>
-    <string name="app_name">"OpenSongApp"</string>
     <string name="are_you_sure">"確かですか？"</string>
     <string name="ask">"毎回確認して下さい"</string>
     <string name="autoscale">"オートスケール"</string>
@@ -149,7 +148,6 @@
     <string name="edit_song_books">"洋書の歌が属する"</string>
     <string name="capo_fret">"カポフレット"</string>
     <string name="edit_song_capo_print">"印刷カポの和音"</string>
-    <string name="ccli">"CCLI"</string>
     <string name="copyright">"著作権情報"</string>
     <string name="song_duration">"曲の時間（秒）"</string>
     <string name="hymn_number">"賛美歌番号"</string>
@@ -266,7 +264,6 @@
     <string name="metronome">"メトロノーム"</string>
     <string name="start_stop_metronome">"/ストップメトロノームを開始"</string>
     <string name="microphone_rationale">"マイク/オーディオ録音はサウンドレベルメーターにアクセスする必要があります。"</string>
-    <string name="midi">"MIDI"</string>
     <string name="midi_add">"コマンドを追加"</string>
     <string name="midi_auto">"自動送信MIDI"</string>
     <string name="midi_bluetooth">"Bluetoothデバイスを接続する"</string>
@@ -537,7 +534,7 @@
     <string name="filter_structure">[*filter:V] =フィルターされた詩のセクション</string>
     <string name="storage_quicktip">場所を選択する場合：\nメニューを使用してストレージを一覧表示します（すべてのストレージを表示するには、設定を変更する必要がある場合があります）。\n内部またはSDカードストレージのみを選択してください。\n内部ストレージをお勧めします。これは、デバイスストレージとして、またはデバイスの名前とともに表示される場合があります。\nAndroid 10以降では、ダウンロードまたはルートフォルダーを選択しないでください。疑わしい場合は、「ドキュメント」フォルダを選択してください。</string>
     <string name="storage_help">" 'OpenSong'フォルダの場所を選択してください。これは、OpenSongファイルのデフォルトの保存場所です。これは、[オプション]メニューからいつでも変更できます。内部ストレージをお勧めします。\n \n 更新または再インストールの場合：\n 下の黄色のボタンを使用して、以前の「OpenSong」フォルダーを見つけることができます。"</string>
-    <string name="information">" 情報"</string>
+    <string name="information">情報</string>
     <string name="nearby_host_menu_only">このページが表示されている場合にのみ、新しいクライアントをリッスンします</string>
     <string name="host">ホスト</string>
     <string name="client">クライアント</string>

@@ -13,8 +13,7 @@
     <string name="alert">Komunikat</string>
     <string name="alert_text">Wprowadź tekst wiadomości</string>
     <string name="alphabetical">Alfabetyczny indeks utworu</string>
-    <string name="app_name">"OpenSongApp"</string>
-    <string name="are_you_sure">" Jesteś pewien?"</string>
+    <string name="are_you_sure">Jesteś pewien?</string>
     <string name="ask">"Zapytaj każdym razem"</string>
     <string name="autoscale">"Autoscale"</string>
     <string name="autoscale_toggle">"Przełącz piosenka skala auto włącz / wyłącz"</string>
@@ -29,10 +28,10 @@
     <string name="back">"Wstecz"</string>
     <string name="backing_track">"Wybierz podkład"</string>
     <string name="backup_error">"Nie OpenSongApp plik kopii zapasowej znajduje się w folderze OpenSong"</string>
-    <string name="backup_export">"backup Export OpenSongApp"</string>
-    <string name="backup_import">"backup import OpenSongApp"</string>
+    <string name="backup_export">Backup Export OpenSongApp</string>
+    <string name="backup_import">Backup import OpenSongApp</string>
     <string name="backup_info">"OpenSongApp pliku kopii zapasowej"</string>
-    <string name="backup_success">"backup OpenSongApp utworzona"</string>
+    <string name="backup_success">Backup OpenSongApp utworzona</string>
     <string name="backup_now">"Utwórz teraz kopię zapasową"</string>
     <string name="bad_time">"Czas slajdów nie został prawidłowo ustawiony"</string>
     <string name="banjo4">"Banjo (4)"</string>
@@ -43,7 +42,7 @@
     <string name="bible_translation">"Kod wersji Biblii\n(np NP, UBG)"</string>
     <string name="black_screen">"Czarny ekran"</string>
     <string name="book">"Książka"</string>
-    <string name="bottom">dolny</string>
+    <string name="bottom">Dolny</string>
     <string name="bridge_background">"Most w tle"</string>
     <string name="camera">"Aparat fotograficzny"</string>
     <string name="capo_style">"Capo progu jako numer"</string>
@@ -134,7 +133,7 @@
     <string name="delete">"Usunąć"</string>
     <string name="midi_devices">"Dostępne urządzenia"</string>
     <string name="dim">"Tło zaciemnia"</string>
-    <string name="display">"wystawa"</string>
+    <string name="display">Wystawa</string>
     <string name="display_popups">"Dostosuj okna wyskakujące"</string>
     <string name="double_tap">"Wybierz podwójne działanie kranu"</string>
     <string name="download_new">"Kliknij tutaj, aby pobrać nową Biblię"</string>
@@ -149,7 +148,6 @@
     <string name="edit_song_books">"Utwór należy do książek"</string>
     <string name="capo_fret">"Capo próg"</string>
     <string name="edit_song_capo_print">"Akordy Drukuj capo"</string>
-    <string name="ccli">"CCLI"</string>
     <string name="copyright">"Copyright informacji"</string>
     <string name="song_duration">"Czas trwania utworu (s)"</string>
     <string name="hymn_number">"Numer hymn"</string>
@@ -186,13 +184,13 @@
     <string name="exportsavedset">"Poleć zapisany zestaw"</string>
     <string name="export_song_directory">"Eksportuj listę utworów"</string>
     <string name="extra">"Dodatkowe informacje"</string>
-    <string name="extract">"tekst Extract"</string>
+    <string name="extract">Tekst extract</string>
     <string name="extracting">"Ekstrahujący"</string>
     <string name="extradisplay">"Wykryto Drugi wyświetlacz . Piosenki będą wyświetlane na ekranie pomocniczym."</string>
     <string name="file_chooser">Wyboru pliku</string>
     <string name="file_exists">"Plik już istnieje. Proszę zmienić jego nazwę."</string>
     <string name="file_type">"Typ pliku"</string>
-    <string name="unknown">"nieznany"</string>
+    <string name="unknown">Nieznany</string>
     <string name="findnewsongs">"Znajdź nowe utwory"</string>
     <string name="first_song">"Wyświetlanie pierwszy utwór"</string>
     <string name="fix">"Samonaprawa"</string>
@@ -218,8 +216,8 @@
     <string name="hidelyricsbox">"Ukryj pole tekstowe"</string>
     <string name="highlight">"Zakreślacz"</string>
     <string name="highlight_notallowed">"Autoskaleria musi być ustawiona na pełną dla tej funkcji"</string>
-    <string name="image">"obraz"</string>
-    <string name="image_slide">"pokaz obrazu"</string>
+    <string name="image">Obraz</string>
+    <string name="image_slide">Pokaz obrazu</string>
     <string name="onsong_import">"Importować OnSong plik kopii zapasowej"</string>
     <string name="import_onsong_error">"Nie OnSong plik kopii zapasowej znajduje się w .. /documents/OpenSong/"</string>
     <string name="importnewset">"Zaimportować zestaw"</string>
@@ -247,7 +245,7 @@
     <string name="logo">"Logo"</string>
     <string name="long_press_action">"Wybierz długie naciśnij działania"</string>
     <string name="long_press">"Długie naciśnięcie / przytrzymanie"</string>
-    <string name="loop">"zrobić pętlę"</string>
+    <string name="loop">Zrobić pętlę</string>
     <string name="loop_slide_pages">"Strony pętli w niestandardowym slajdu"</string>
     <string name="lyrics_color">"Piosenkę czcionki"</string>
     <string name="mainfoldername">"GŁÓWNA"</string>
@@ -259,14 +257,13 @@
     <string name="audio">Audio</string>
     <string name="media_chooser">Selektor mediów</string>
     <string name="media_play">Grać</string>
-    <string name="media_selected">załadowane nośniki</string>
+    <string name="media_selected">Załadowane nośniki</string>
     <string name="menu_settings">"Ustawienia menu"</string>
     <string name="menu_swipe_toggle">"Przełącz listy utworów i opcji menu przesuń włącz / wyłącz"</string>
     <string name="menu_width">Szerokość menu</string>
     <string name="metronome">"Metronom"</string>
     <string name="start_stop_metronome">"Rozpocząć / Zatrzymać metronom"</string>
     <string name="microphone_rationale">"Mikrofon / nagrywanie dźwięku jest niezbędny do korzystania z miernika poziomu dźwięku."</string>
-    <string name="midi">"MIDI"</string>
     <string name="midi_add">"Dodaj polecenie"</string>
     <string name="midi_auto">"Automatycznie wysyłaj MIDI"</string>
     <string name="midi_bluetooth">"Podłącz urządzenie Bluetooth"</string>
@@ -305,9 +302,9 @@
     <string name="off">"Wył."</string>
     <string name="chordformat_detected">"Wykryto Format akord prądu"</string>
     <string name="on">"Wł."</string>
-    <string name="options">"OPCJE"</string>
+    <string name="options">Opcje</string>
     <string name="set_reset">"JASNE, TEGO SET"</string>
-    <string name="other">"inny"</string>
+    <string name="other">Inny</string>
     <string name="override_fullautoscale">"Przestawianie Full Auto skalę tylko do szerokości"</string>
     <string name="override_scale_explanation">"Jeśli rozmiar czcionki autoscale jest mniejsza niż pożądanego rozmiaru czcionki minimum, chcesz aplikacja przesłonić do innej metody skalowania? Korzystając z tych opcji może zmusić cię do przewijania w pionie i poziomie w piosence."</string>
     <string name="override_widthautoscale">"Szerokość Zastąp skalowania tylko bez automatycznego skalowania"</string>
@@ -385,7 +382,7 @@
     <string name="section_space">"Dodaj przestrzeń sekcji"</string>
     <string name="select_item_variation">"Wybierz utwór do stworzenia zestawu zmienności"</string>
     <string name="project">"Zaprojektować"</string>
-    <string name="set">"ZESTAW"</string>
+    <string name="set">Zestaw</string>
     <string name="set_help">"Przeciągnij piosenki wokół, aby zmienić kolejność zestawu"</string>
     <string name="set_manage_click">"Kliknij na element w zestawie, by go zobaczyć"</string>
     <string name="set_manage_swipe">"Przesuń palec, aby usunąć element z listy ustalonej"</string>
@@ -396,7 +393,7 @@
     <string name="set_x_margin">"Wielkość marginesu poziomego"</string>
     <string name="set_y_margin">"Pionowy rozmiar margines"</string>
     <string name="show_general_advanced">"Przełącz pola ogólne / zaawansowany"</string>
-    <string name="show_capo">"akordy Pokaż capo"</string>
+    <string name="show_capo">Akordy pokaż capo</string>
     <string name="show_chords">"Pokaż akordy"</string>
     <string name="show_lyrics">"Pokaż teksty"</string>
     <string name="show_next_in_set">Pokaż następny utwór w zestawie</string>
@@ -451,13 +448,13 @@
     <string name="tap">"Krótkie naciśnięcie / dotknięcie"</string>
     <string name="tap_tempo">"Dotknij, aby ustawić tempo"</string>
     <string name="text">"Tekst"</string>
-    <string name="time">"czas"</string>
+    <string name="time">Czas</string>
     <string name="time_slide_pages">"Czas dla każdego slajdu (s)"</string>
     <string name="time_slide_pages_help">"Pozostaw puste do ręcznego pokazu slajdów"</string>
     <string name="time_format">"24 godziny"</string>
     <string name="timer_learn">"Dowiedz się czas automatycznego przewijania"</string>
     <string name="timer_size">"Rozmiar licznika"</string>
-    <string name="title">"tytuł"</string>
+    <string name="title">Tytuł</string>
     <string name="pedal_scroll_before_move">"Przełącznik przewijania zanim następnego / poprzedniego utworu"</string>
     <string name="autoscroll_pause">"Przełącz autoprzewijanie Wstrzymaj"</string>
     <string name="autoshow_stickynotes">"Przełącz Autoshow karteczki"</string>
@@ -537,7 +534,7 @@
     <string name="filter_structure">[*filter:V] = przefiltrowana sekcja wersetów</string>
     <string name="storage_quicktip">W przypadku wyboru lokalizacji:\nLista pamięci za pomocą menu (może być konieczna zmiana ustawień, aby wyświetlić całą pamięć).\nWYBIERZ TYLKO pamięć WEWNĘTRZNĄ LUB KARTĘ SD.\nZalecana jest pamięć wewnętrzna. Może to być wymienione jako pamięć urządzenia lub z nazwą twojego urządzenia.\nW systemie Android 10+ nie należy wybierać folderu Pobrane ani Root. W razie wątpliwości wybierz folder „Dokumenty”.</string>
     <string name="storage_help">Wybierz lokalizację folderu „OpenSong”. To jest domyślna lokalizacja przechowywania plików OpenSong. Możesz to zmienić w dowolnym momencie w menu Opcje. Zalecana jest pamięć wewnętrzna.\n\nAby zaktualizować lub ponownie zainstalować:\nmożesz użyć żółtego przycisku poniżej, aby znaleźć poprzedni folder „OpenSong”.</string>
-    <string name="information">" Informacja"</string>
+    <string name="information">Informacja</string>
     <string name="nearby_host_menu_only">Nasłuchuj nowych klientów tylko wtedy, gdy ta strona jest widoczna</string>
     <string name="client">Klient</string>
     <string name="host">Gospodarz</string>

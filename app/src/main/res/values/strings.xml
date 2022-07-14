@@ -1065,7 +1065,7 @@ Check out the categories in the right hand options menu.
     <string name="pleaseselect">Please select</string>
     <string name="position">Position</string>
     <string name="profile_description">Backup and restore your settings</string>
-    <string name="options">OPTIONS</string>
+    <string name="options">Options</string>
     <string name="backup_error">"No OpenSongApp backup file found in OpenSong folder"</string>
     <string name="backup_export">Export OpenSongApp backup</string>
     <string name="capo_toggle_bothcapo">Show both capo and native chords if available</string>

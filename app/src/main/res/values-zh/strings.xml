@@ -12,7 +12,6 @@
     <string name="alert">长按主按钮可让您更改每个按钮的设置。</string>
     <string name="alert_text">长按某些页面按钮可执行快速操作，例如开始/停止/编辑</string>
     <string name="alphabetical">按字母排序的歌曲索引</string>
-    <string name="app_name">"OpenSongApp"</string>
     <string name="are_you_sure">"是否确定?"</string>
     <string name="ask">"要求每个时间"</string>
     <string name="autoscale">"自动定标"</string>
@@ -265,7 +264,6 @@
     <string name="metronome">"节拍器"</string>
     <string name="start_stop_metronome">"启动/停止节拍器"</string>
     <string name="microphone_rationale">"麦克风/音频记录才能访问声级计。"</string>
-    <string name="midi">"MIDI"</string>
     <string name="midi_add">"添加命令"</string>
     <string name="midi_auto">"自动发送MIDI"</string>
     <string name="midi_bluetooth">"连接蓝牙设备"</string>
@@ -552,8 +550,8 @@
     <string name="filter_section">段过滤</string>
     <string name="filter_entry">在下面的新行中添加每个过滤器。</string>
     <string name="filter_structure">[*filter:V] =过滤后的经节</string>
-    <string name="storage_quicktip">" 选择位置时：\n 使用菜单列出存储（您可能需要更改设置以显示所有存储）。\n 仅选择内部或SD卡存储。\n 建议使用内部存储。 这可能会列为设备存储或您设备的名称。\n 在Android 10+上，您不应选择“下载”或“根”文件夹。如有疑问，请选择“文档”文件夹。"</string>
-    <string name="storage_help">" 请选择“ OpenSong”文件夹的位置。这是OpenSong文件的默认存储位置。您可以随时从“选项”菜单更改此设置。建议使用内部存储。\n \n 要进行更新或重新安装：\n 您可以使用下面的黄色按钮找到以前的“ OpenSong”文件夹。"</string>
+    <string name="storage_quicktip">"选择位置时：\n 使用菜单列出存储（您可能需要更改设置以显示所有存储）。\n 仅选择内部或SD卡存储。\n 建议使用内部存储。 这可能会列为设备存储或您设备的名称。\n 在Android 10+上，您不应选择“下载”或“根”文件夹。如有疑问，请选择“文档”文件夹。"</string>
+    <string name="storage_help">请选择 “OpenSong”文件夹的位置。这是OpenSong文件的默认存储位置。您可以随时从“选项”菜单更改此设置。建议使用内部存储。    要进行更新或重新安装：  您可以使用下面的黄色按钮找到以前的“ OpenSong”文件夹。</string>
     <string name="information">信息</string>
     <string name="nearby_host_menu_only">仅在此页面可见时侦听新客户端</string>
     <string name="host">主持人</string>
