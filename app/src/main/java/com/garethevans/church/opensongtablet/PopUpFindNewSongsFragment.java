@@ -453,7 +453,6 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
 
     private void fixWTContent(String resultposted) {
         // From Worship Together
-
         grabSongData_ProgressBar.setVisibility(View.INVISIBLE);
 
         // Try to find the title
@@ -543,7 +542,6 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         Log.d("WT","ccli="+ccli);
 
         String[] lines = resultposted.split("\n");
-
         // Now try to get the chordpro file contents
         startpos = resultposted.indexOf("<div class='chord-pro-line'>");
         endpos = resultposted.indexOf("<div class=\"song_taxonomy\">",startpos);
@@ -613,7 +611,12 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         filecontents += "{ccli:"+ccli+"}\n";
         filecontents += "{key:"+key+"}\n";
         filecontents += "{tempo:"+bpm+"}\n\n";
-        filecontents += lyrics.toString().trim();
+
+        String lyricBits = lyrics.toString().trim();
+        lyricBits = lyricBits.replace("<text>&nbsp;</text>","");
+        lyricBits = lyricBits.replace("<text>","");
+        lyricBits = lyricBits.replace("</text>","");
+        filecontents += lyricBits;
 
         newtext = filecontents;
 
@@ -631,6 +634,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         s = s.replace("<a>","");
         s = s.replace("<span>","");
         s = s.replace("</span>","");
+        s = s.replace("<text>&nbsp;</text>","");
         while (s.contains("<a href")) {
             // Remove the hypertext references
             int startpos = s.indexOf("<a href");
