@@ -41,8 +41,6 @@
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowTranslucentNavigation">false</item>
-        <item name="android:navigationBarColor"></item>
-
 
         <!-- For the default popup like MediaRouter, Nearby permissions -->
         <item name="colorBackgroundFloating">@color/colorSecondary</item>

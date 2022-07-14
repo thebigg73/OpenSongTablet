@@ -9,9 +9,8 @@ import androidx.annotation.Nullable;
 import androidx.core.graphics.ColorUtils;
 
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.google.android.material.textview.MaterialTextView;
 
-public class PresenterAlert extends MaterialTextView {
+public class PresenterAlert extends androidx.appcompat.widget.AppCompatTextView {
 
     private int viewHeight = 0;
 

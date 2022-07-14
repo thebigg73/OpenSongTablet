@@ -32,7 +32,6 @@ public class BatteryStatus extends BroadcastReceiver {
     private final ImageView batteryImage;
     private final Context c;
     private final MainActivityInterface mainActivityInterface;
-    private final String TAG = "BatteryStatus";
 
     public interface MyInterface {
         void setUpBatteryMonitor();
@@ -200,4 +199,6 @@ public class BatteryStatus extends BroadcastReceiver {
             return null;
         }
     }
+
+
 }

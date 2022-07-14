@@ -74,7 +74,7 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
     public void updateBackground() {
         // Get the current backgrounds and update the chosen one into the button
         // Do this for the info background preview too
-        RequestOptions options = new RequestOptions().override(128, 72).centerInside();
+        RequestOptions options = new RequestOptions().override(136, 72).centerCrop();
         switch (mainActivityInterface.getPresenterSettings().getBackgroundToUse()) {
             case "img1":
                 GlideApp.with(requireContext()).load(mainActivityInterface.getPresenterSettings().getBackgroundImage1()).apply(options).into(myView.currentBackground);

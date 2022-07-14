@@ -26,22 +26,22 @@
             android:layout_margin="0dp"
             android:padding="0dp">
 
-            <com.google.android.material.textview.MaterialTextView
+            <TextView
                 android:id="@+id/songTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
-            <com.google.android.material.textview.MaterialTextView
+            <TextView
                 android:id="@+id/songAuthor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
-            <com.google.android.material.textview.MaterialTextView
+            <TextView
                 android:id="@+id/songCopyright"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
-            <com.google.android.material.textview.MaterialTextView
+            <TextView
                 android:id="@+id/songCCLI"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />

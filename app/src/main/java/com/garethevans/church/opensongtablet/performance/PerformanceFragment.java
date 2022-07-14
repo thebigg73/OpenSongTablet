@@ -183,9 +183,7 @@ public class PerformanceFragment extends Fragment {
 
     private void removeViews() {
         mainActivityInterface.getSongSheetTitleLayout().removeAllViews();
-        myView.col1.removeAllViews();
-        myView.col2.removeAllViews();
-        myView.col3.removeAllViews();
+        myView.songView.clearViews();
         myView.testPane.removeAllViews();
         myView.recyclerView.removeAllViews();
         myView.imageView.setImageDrawable(null);
@@ -320,6 +318,7 @@ public class PerformanceFragment extends Fragment {
                 // Do the slide in
                 myView.recyclerView.setVisibility(View.VISIBLE);
                 myView.recyclerView.startAnimation(animSlideIn);
+                Log.d(TAG,"recylcerView slideIn");
 
                 // Get a null screenshot
                 getScreenshot(0, 0, 0);
@@ -372,6 +371,7 @@ public class PerformanceFragment extends Fragment {
         // Slide in
         myView.pageHolder.post(() -> {
             myView.pageHolder.setVisibility(View.VISIBLE);
+            Log.d(TAG,"pageHolder slide in");
             myView.pageHolder.startAnimation(animSlideIn);
         });
 
@@ -411,6 +411,7 @@ public class PerformanceFragment extends Fragment {
 
                 // Slide in
                 myView.recyclerView.setVisibility(View.VISIBLE);
+                Log.d(TAG,"recyclerView slide in");
                 myView.recyclerView.startAnimation(animSlideIn);
 
                 // Deal with song actions to run after display (highlighter, notes, etc)
@@ -486,9 +487,7 @@ public class PerformanceFragment extends Fragment {
         waitingOnViewsToDraw = mainActivityInterface.getSectionViews().size();
 
         // Add the views and wait for the vto of each to finish
-        myView.col1.removeAllViews();
-        myView.col2.removeAllViews();
-        myView.col3.removeAllViews();
+        myView.songView.clearViews();
         myView.testPane.removeAllViews();
 
         for (View view : mainActivityInterface.getSectionViews()) {
@@ -550,6 +549,7 @@ public class PerformanceFragment extends Fragment {
 
                         // Slide in
                         myView.recyclerView.setVisibility(View.VISIBLE);
+                        Log.d(TAG,"recyclerView slide in");
                         myView.recyclerView.startAnimation(animSlideIn);
 
                         dealWithStuffAfterReady();
@@ -576,7 +576,7 @@ public class PerformanceFragment extends Fragment {
                         mainActivityInterface.getSectionWidths(), mainActivityInterface.getSectionHeights(),
                         myView.pageHolder, myView.songView, myView.songSheetTitle,
                         screenWidth, screenHeight,
-                        myView.col1, myView.col2, myView.col3);
+                        myView.songView.getCol1(), myView.songView.getCol2(), myView.songView.getCol3());
 
                 // Pass this scale factor to the zoom layout
                 myView.zoomLayout.setCurrentScale(scaleFactor);
@@ -603,6 +603,7 @@ public class PerformanceFragment extends Fragment {
                         }
 
                         myView.pageHolder.setVisibility(View.VISIBLE);
+                        Log.d(TAG,"pageHolder slide in");
                         myView.pageHolder.startAnimation(animSlideIn);
 
                         dealWithStuffAfterReady();
@@ -665,6 +666,7 @@ public class PerformanceFragment extends Fragment {
             mainActivityInterface.dealWithCapo();
 
             // Update the secondary display (if present)
+            displayInterface.updateDisplay("newSongLoaded");
             displayInterface.updateDisplay("setSongInfo");
             displayInterface.updateDisplay("setSongContent");
 
@@ -673,7 +675,15 @@ public class PerformanceFragment extends Fragment {
                     mainActivityInterface.getNearbyConnections().getIsHost()) {
                 mainActivityInterface.getNearbyConnections().sendSongPayload();
             }
-        },(long)getResources().getInteger(R.integer.slide_in_time));
+
+            // TODO Remove after fixed
+            Log.d(TAG,"pageHolder is visible: "+(myView.pageHolder.getVisibility()==View.VISIBLE));
+            Log.d(TAG,"zoomLayout is visible: "+(myView.zoomLayout.getVisibility()==View.VISIBLE));
+            Log.d(TAG,"songView is visible: "+(myView.songView.getVisibility()==View.VISIBLE));
+            Log.d(TAG,"songView_col1 is visible: "+(myView.songView.getVisibilityCol1()==View.VISIBLE));
+            Log.d(TAG,"songView_col2 is visible: "+(myView.songView.getVisibilityCol2()==View.VISIBLE));
+            Log.d(TAG,"songView_col3 is visible: "+(myView.songView.getVisibilityCol3()==View.VISIBLE));
+        }, getResources().getInteger(R.integer.slide_in_time)*2);
     }
     private void dealWithHighlighterFile(int w, int h) {
         if (!mainActivityInterface.getPreferences().

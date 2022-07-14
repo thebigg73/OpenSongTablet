@@ -1589,8 +1589,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         return presenterSettings;
     }
 
-
-
     // TODO Getters to finish
 
     // TODO Setters to finish
@@ -2562,11 +2560,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
         // Fix the page flags
         setWindowFlags(true);
+
+        // Check displays
+        checkDisplays();
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    protected void onStop() {
+        super.onStop();
         // Turn off nearby
         nearbyConnections.turnOffNearby();
         // Stop pad timers
@@ -2582,6 +2583,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         if (autoscroll!=null) {
             autoscroll.stopTimers();
         }
+
         // Copy the persistent database from app storage to user storage
         Log.d(TAG,"Persistent database backed up: "+nonOpenSongSQLiteHelper.copyUserDatabase());
     }
@@ -2617,11 +2619,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         return displayMetrics;
     }
 
-
-
-
-
-
     // The secondary displays (HDMI or Mirroring/Casting)
     @SuppressLint("PrivateResource")
     @Override
@@ -2642,8 +2639,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 prevNumConnectedDisplays = connectedDisplays.length;
                 setupDisplays();
             }
+        } else if (screenMirror!=null){
+            screenMirror.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.cast));
         }
     }
+
     private void setupDisplays() {
         // Go through each connected display and create the secondaryDisplay Presentation class
         // Check there aren't any already connected, if there are, dismiss them
@@ -2702,6 +2702,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                                 break;
                             case "editView":
                                 secondaryDisplay.editView();
+                                break;
+                            case "newSongLoaded":
+                                secondaryDisplay.setIsNewSong();
                                 break;
 
                             // The alert bar

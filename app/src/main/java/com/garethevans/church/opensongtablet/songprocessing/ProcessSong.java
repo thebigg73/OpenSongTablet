@@ -57,9 +57,6 @@ public class ProcessSong {
     private final MainActivityInterface mainActivityInterface;
     private final String TAG = "ProcessSong";
     private final float defFontSize = 8.0f;
-    private int howManyColumns;
-    private float scaleSize_1col;
-    private float[] scaleSize_2cols, scaleSize_3cols;
     private boolean addSectionSpace, blockShadow, displayBoldChordsHeadings,
             displayChords, displayLyrics, displayCapoChords, displayCapoAndNativeChords,
             songAutoScaleColumnMaximise, songAutoScaleOverrideFull,
@@ -1764,50 +1761,50 @@ public class ProcessSong {
         //Log.d(TAG,"need23Columns="+need23ColumnCheck+"  authoScale="+autoScale);
         if (!need23ColumnCheck && (autoScale.equals("N") || autoScale.equals("W"))) {
             //Log.d(TAG,"Defaulting to 1 column");
-            howManyColumns = 1;
-        }
-
-        float col2best = Math.min(col2[0], col2[1]);
-        float col3best = Math.min(col3[0], Math.min(col3[1], col3[2]));
-        int best;
-        if (col1 > col2best) {
-            best = 1;
-            if (col3best > col1) {
-                best = 3;
-            }
+            return 1;
         } else {
-            best = 2;
-            if (col3best > col2best) {
-                best = 3;
+            float col2best = Math.min(col2[0], col2[1]);
+            float col3best = Math.min(col3[0], Math.min(col3[1], col3[2]));
+            int best;
+            if (col1 > col2best) {
+                best = 1;
+                if (col3best > col1) {
+                    best = 3;
+                }
+            } else {
+                best = 2;
+                if (col3best > col2best) {
+                    best = 3;
+                }
             }
-        }
-        //Log.d(TAG,"col1="+col1+"  col2best="+col2best+"  col3best="+col3best+"  best="+best);
-        // Default font size is 14sp when drawing. If scaling takes this below the min font Size, override back to 1 column
-        if (best == 2) {
-            //Log.d(TAG,"col2[2]="+col2[2]);
-            if (col2[2] == 0) {
-                return 1;
-            }
-            float newFontSize2Col = defFontSize * col2best;
+            //Log.d(TAG,"col1="+col1+"  col2best="+col2best+"  col3best="+col3best+"  best="+best);
+            // Default font size is 14sp when drawing. If scaling takes this below the min font Size, override back to 1 column
+            if (best == 2) {
+                //Log.d(TAG,"col2[2]="+col2[2]);
+                if (col2[2] == 0) {
+                    return 1;
+                }
+                float newFontSize2Col = defFontSize * col2best;
 
-            //Log.d(TAG,"newFontSize2Col="+newFontSize2Col+"  fontSizeMin="+fontSizeMin);
-            if (!need23ColumnCheck && songAutoScaleOverrideFull && newFontSize2Col < fontSizeMin) {
-                thisAutoScale = "W";
-                return 1;
+                //Log.d(TAG,"newFontSize2Col="+newFontSize2Col+"  fontSizeMin="+fontSizeMin);
+                if (!need23ColumnCheck && songAutoScaleOverrideFull && newFontSize2Col < fontSizeMin) {
+                    thisAutoScale = "W";
+                    return 1;
+                }
             }
+            if (best == 3) {
+                if (col3[3] == 0) {
+                    return 2;
+                }
+                float newFontSize3Col = defFontSize * col3best;
+                if (songAutoScaleOverrideFull && newFontSize3Col < fontSizeMin) {
+                    thisAutoScale = "W";
+                    return 1;
+                }
+            }
+            Log.d(TAG, "best=" + best);
+            return best;
         }
-        if (best == 3) {
-            if (col3[3] == 0) {
-                return 2;
-            }
-            float newFontSize3Col = defFontSize * col3best;
-            if (songAutoScaleOverrideFull && newFontSize3Col < fontSizeMin) {
-                thisAutoScale = "W";
-                return 1;
-            }
-        }
-
-        return best;
     }
 
 
@@ -1859,24 +1856,24 @@ public class ProcessSong {
 
         thisAutoScale = songAutoScale;
 
-        scaleSize_2cols = new float[3];
-        scaleSize_3cols = new float[5];
+        float[] scaleSize_2cols = new float[3];
+        float[] scaleSize_3cols = new float[5];
         // All scaling types need to process the single column view, either to use it or compare to 2/3 columns
         if (songAutoScale.equals("Y") || need23ColumnCheck) {
             // Figure out two and three columns.  Only do this if we need to to save processing time.
-            col2Scale(screenWidth, screenHeight, currentHeight, songAutoScaleColumnMaximise, mainActivityInterface.getSectionWidths(), mainActivityInterface.getSectionHeights());
-            col3Scale(screenWidth, screenHeight, currentHeight, songAutoScaleColumnMaximise, mainActivityInterface.getSectionWidths(), mainActivityInterface.getSectionHeights());
+            scaleSize_2cols = col2Scale(screenWidth, screenHeight, currentHeight, songAutoScaleColumnMaximise, mainActivityInterface.getSectionWidths(), mainActivityInterface.getSectionHeights());
+            scaleSize_3cols = col3Scale(screenWidth, screenHeight, currentHeight, songAutoScaleColumnMaximise, mainActivityInterface.getSectionWidths(), mainActivityInterface.getSectionHeights());
         }
 
         // Set the scaleSize_1col
-        col1Scale(screenWidth, screenHeight, currentWidth, currentHeight);
+        float scaleSize_1col = col1Scale(screenWidth, screenHeight, currentWidth, currentHeight);
 
         //Log.d(TAG,"scaleSize_1col="+scaleSize_1col);
         //Log.d(TAG,"scaleSize_2cols[0]="+scaleSize_2cols[0]+"  scaleSize_2cols[1]="+scaleSize_2cols[1]+"  scaleSize_2cols[2]="+scaleSize_2cols[2]);
         //Log.d(TAG,"scaleSize_3cols[0]="+scaleSize_3cols[0]+"  scaleSize_3cols[1]="+scaleSize_3cols[1]+"  scaleSize_3cols[2]="+scaleSize_3cols[2]+"  scaleSize_3cols[3]="+scaleSize_3cols[3]);
 
         // Now decide if 1,2 or 3 columns is best
-        howManyColumns = howManyColumnsAreBest(scaleSize_1col, scaleSize_2cols, scaleSize_3cols, songAutoScale, fontSizeMin, songAutoScaleOverrideFull,need23ColumnCheck);
+        int howManyColumns = howManyColumnsAreBest(scaleSize_1col, scaleSize_2cols, scaleSize_3cols, songAutoScale, fontSizeMin, songAutoScaleOverrideFull,need23ColumnCheck);
 
         //Log.d(TAG,"howManyColumns="+howManyColumns);
 
@@ -1914,15 +1911,11 @@ public class ProcessSong {
         }
     }
 
-    public int getHowManyColumns(){
-        return howManyColumns;
-    }
-
     // 1 column stuff
-    private void col1Scale(int screenWidth, int screenHeight, int viewWidth, int viewHeight) {
+    private float col1Scale(int screenWidth, int screenHeight, int viewWidth, int viewHeight) {
         float x_scale = (float) screenWidth / (float) viewWidth;
         float y_scale = (float) screenHeight / (float) viewHeight;
-        scaleSize_1col = Math.min(x_scale, y_scale);
+        return Math.min(x_scale, y_scale);
     }
 
     private void setOneColumn(ArrayList<View> sectionViews, LinearLayout column1, LinearLayout column2, LinearLayout column3,
@@ -1958,9 +1951,9 @@ public class ProcessSong {
 
 
     // 2 column stuff
-    private void col2Scale(int screenWidth, int screenHeight, int totalViewHeight, boolean songAutoScaleColumnMaximise,
+    private float[] col2Scale(int screenWidth, int screenHeight, int totalViewHeight, boolean songAutoScaleColumnMaximise,
                               ArrayList<Integer> viewWidth, ArrayList<Integer> viewHeight) {
-        scaleSize_2cols = new float[3];
+        float[] scaleSize_2cols = new float[3];
 
         // Now go through the views and decide on the number for the first column (the rest is the second column)
         int col1Height = 0;
@@ -2022,6 +2015,8 @@ public class ProcessSong {
             scaleSize_2cols[0] = min;
             scaleSize_2cols[1] = min;
         }
+
+        return scaleSize_2cols;
     }
 
     private void setTwoColumns(ArrayList<View> sectionViews, LinearLayout column1,
@@ -2080,10 +2075,10 @@ public class ProcessSong {
     }
 
     // 3 column stuff
-    private void col3Scale(int screenWidth, int screenHeight, int totalViewHeight,
+    private float[] col3Scale(int screenWidth, int screenHeight, int totalViewHeight,
                               boolean songAutoScaleColumnMaximise, ArrayList<Integer> viewWidth,
                               ArrayList<Integer> viewHeight) {
-        scaleSize_3cols = new float[5];
+        float[] scaleSize_3cols = new float[5];
 
         // Find the third height of all of the views together
         float thirdViewheight = (float) totalViewHeight / 3.0f;
@@ -2183,6 +2178,8 @@ public class ProcessSong {
             scaleSize_3cols[1] = min;
             scaleSize_3cols[2] = min;
         }
+
+        return scaleSize_3cols;
     }
 
     private void setThreeColumns(ArrayList<View> sectionViews, LinearLayout column1,

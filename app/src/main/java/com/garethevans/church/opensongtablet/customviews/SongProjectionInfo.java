@@ -3,28 +3,32 @@ package com.garethevans.church.opensongtablet.customviews;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextClock;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.LinearLayoutCompat;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
-public class SongProjectionInfo extends LinearLayout {
+public class SongProjectionInfo extends LinearLayoutCompat {
 
     private final LinearLayout castSongInfo;
     private final TextView songTitle, songAuthor, songCopyright, songCCLI;
     private final TextClock textClock;
     private final ImageView miniLogo;
     private int viewHeight = 0;
-    private boolean smallText;
+    private boolean smallText, isDisplaying=false;
     private float clockTextSize;
+    private final String TAG = "SongProjectionInfo";
 
-    public SongProjectionInfo(Context context, @Nullable AttributeSet attrs) {
+    public SongProjectionInfo(@NonNull Context context, @Nullable @org.jetbrains.annotations.Nullable AttributeSet attrs) {
         super(context, attrs);
         inflate(context, R.layout.view_song_info, this);
 
@@ -46,6 +50,7 @@ public class SongProjectionInfo extends LinearLayout {
         miniLogo.setId(View.generateViewId());
         textClock.setId(View.generateViewId());
     }
+
 
     // Adjust the layout depending on what is needed
     public void setupLayout(MainActivityInterface mainActivityInterface, boolean miniInfo) {
@@ -100,7 +105,7 @@ public class SongProjectionInfo extends LinearLayout {
             miniLogo.setVisibility(View.GONE);
         }
     }
-    private void setupFonts(MainActivityInterface mainActivityInterface) {
+    public void setupFonts(MainActivityInterface mainActivityInterface) {
         songTitle.setTypeface(mainActivityInterface.getMyFonts().getPresoInfoFont());
         songAuthor.setTypeface(mainActivityInterface.getMyFonts().getPresoInfoFont());
         songCopyright.setTypeface(mainActivityInterface.getMyFonts().getPresoInfoFont());
@@ -114,12 +119,27 @@ public class SongProjectionInfo extends LinearLayout {
         textClock.setTextColor(mainActivityInterface.getMyThemeColors().getPresoInfoFontColor());
     }
 
-    public String getSongTitle() {
-        if (songTitle.getText()!=null) {
-            return songTitle.getText().toString();
+    public String getTextViewString(TextView textView) {
+        if (textView.getText()!=null) {
+            return textView.getText().toString();
         } else {
             return "";
         }
+    }
+
+    public void setNullValues() {
+        songTitle.setText(null);
+        songAuthor.setText(null);
+        songCopyright.setText(null);
+        songCCLI.setText(null);
+    }
+
+    public boolean getValuesNonNull() {
+        return viewIsSet(songTitle) && viewIsSet(songAuthor) && viewIsSet(songCopyright) && viewIsSet(songCCLI);
+    }
+
+    private boolean viewIsSet(TextView textView) {
+        return textView.getText()!=null || textView.getVisibility()==View.GONE;
     }
 
     public void setAlign(int align) {
@@ -141,6 +161,13 @@ public class SongProjectionInfo extends LinearLayout {
             viewHeight = getMeasuredHeight();
         }
         return viewHeight;
+    }
+
+    public void setIsDisplaying(boolean isDisplaying) {
+        this.isDisplaying = isDisplaying;
+    }
+    public boolean getIsDisplaying() {
+        return isDisplaying;
     }
 
     public void setViewHeight(int viewHeight) {
@@ -175,5 +202,19 @@ public class SongProjectionInfo extends LinearLayout {
                 mainActivityInterface.getPresenterSettings().getPresoShowClock(),
                 mainActivityInterface.getPresenterSettings().getPresoClock24h(),
                 mainActivityInterface.getPresenterSettings().getPresoClockSeconds());
+    }
+
+    public boolean isNewInfo(String compareString) {
+        String currentString = getTextViewString(songTitle) + getTextViewString(songAuthor) +
+                getTextViewString(songCopyright) + getTextViewString(songCCLI);
+
+        if (compareString!=null) {
+            Log.d(TAG, "compareString: " + compareString);
+            Log.d(TAG, "currentString: " + currentString);
+            Log.d(TAG, "compareString.equals(currentString)=" + compareString.equals(currentString));
+            return !compareString.equals(currentString);
+        } else {
+            return true;
+        }
     }
 }

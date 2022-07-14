@@ -21,7 +21,11 @@ public class ShowToast {
     private final Runnable hidePopupRunnable = new Runnable() {
         @Override
         public void run() {
-            popupWindow.dismiss();
+            try {
+                popupWindow.dismiss();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     };
 
@@ -55,10 +59,12 @@ public class ShowToast {
                 }
 
                 Runnable showRunnable = () -> {
-                    textToast.setText(message);
-                    popupWindow.showAtLocation(anchor, Gravity.CENTER, 0, 0);
-                    messageEndTime = System.currentTimeMillis() + 2000;
-                    new Handler().postDelayed(hidePopupRunnable, 2000);
+                    if (textToast!=null && popupWindow!=null) {
+                        textToast.setText(message);
+                        popupWindow.showAtLocation(anchor, Gravity.CENTER, 0, 0);
+                        messageEndTime = System.currentTimeMillis() + 2000;
+                        new Handler().postDelayed(hidePopupRunnable, 2000);
+                    }
                 };
                 new Handler(Looper.getMainLooper()).postDelayed(showRunnable, delayTime);
             }

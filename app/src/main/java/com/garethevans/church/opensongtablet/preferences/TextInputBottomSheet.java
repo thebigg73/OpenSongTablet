@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet.preferences;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -118,6 +119,12 @@ public class TextInputBottomSheet extends BottomSheetDialogFragment {
         setListeners();
 
         return myView.getRoot();
+    }
+
+    @Override
+    public void onDismiss(@NonNull DialogInterface dialog) {
+        super.onDismiss(dialog);
+        mainActivityInterface.getSoftKeyboard().hideKeyboard(requireActivity());
     }
 
     private void setViews() {

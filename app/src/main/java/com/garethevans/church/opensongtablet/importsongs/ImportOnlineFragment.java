@@ -44,13 +44,14 @@ public class ImportOnlineFragment extends Fragment {
     private final String[] sources = new String[]{"UltimateGuitar", "Chordie", "SongSelect", "WorshipTogether", "UkuTabs", "HolyChords"};
     private final String[] address = new String[]{"https://www.ultimate-guitar.com/search.php?search_type=title&value=",
             "https://www.chordie.com/results.php?q=", "https://songselect.ccli.com/Search/Results?SearchText=",
-            "https://worship-songs-resources.worshiptogether.com/search?w=", "https://ukutabs.com/?s=",
+            "https://www.worshiptogether.com/search-results/#?cludoquery=", "https://ukutabs.com/?s=",
             "https://holychords.com/search?name="};
     private String webSearchFull, webAddressFinal, source, webString, userAgentDefault;
     private Song newSong;
     private UltimateGuitar ultimateGuitar;
     private Chordie chordie;
     private SongSelect songSelect;
+    private WorshipTogether worshipTogether;
     private UkuTabs ukuTabs;
     private HolyChords holyChords;
     private WebView webView;
@@ -84,6 +85,7 @@ public class ImportOnlineFragment extends Fragment {
     private void setupHelpers() {
         newSong = new Song();
         ultimateGuitar = new UltimateGuitar(requireContext());
+        worshipTogether = new WorshipTogether();
         chordie = new Chordie();
         songSelect = new SongSelect();
         ukuTabs = new UkuTabs();
@@ -326,6 +328,11 @@ public class ImportOnlineFragment extends Fragment {
                     show = true;
                 }
                 break;
+            case "WorshipTogether":
+                if (webString.contains("<div class=\"chord-pro-line\">") && webString.contains("<div class=\"chord-pro-lyric\">")) {
+                    show = true;
+                }
+                break;
             case "Chordie":
                 if (webString.contains("<textarea id=\"chordproContent\"")) {
                     show = true;
@@ -372,6 +379,9 @@ public class ImportOnlineFragment extends Fragment {
         switch (source) {
             case "UltimateGuitar":
                 newSong = ultimateGuitar.processContent(newSong,webString);
+                break;
+            case "WorshipTogether":
+                newSong = worshipTogether.processContent(mainActivityInterface,newSong,webString);
                 break;
             case "Chordie":
                 newSong = chordie.processContent(mainActivityInterface,newSong,webString);

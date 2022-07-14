@@ -2,6 +2,7 @@
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -57,7 +58,8 @@
             android:src="@drawable/pencil"
             android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"
-            android:contentDescription="@string/edit"/>
+            android:contentDescription="@string/edit"
+            tools:ignore="RelativeOverlap" />
 
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

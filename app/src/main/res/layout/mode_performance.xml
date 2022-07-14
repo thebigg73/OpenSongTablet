@@ -58,43 +58,10 @@
             android:clipToPadding="false">
 
             <!-- The song lyrics etc. go here -->
-            <LinearLayout
+            <com.garethevans.church.opensongtablet.customviews.SongContent
                 android:id="@+id/songView"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/songSheetTitle"
-                android:baselineAligned="true"
-                android:clipChildren="false"
-                android:clipToPadding="false"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:id="@+id/col1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:clipChildren="false"
-                    android:clipToPadding="false"
-                    android:orientation="vertical"
-                    android:visibility="gone"/>
-
-                <LinearLayout
-                    android:id="@+id/col2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:clipChildren="false"
-                    android:clipToPadding="false"
-                    android:orientation="vertical"
-                    android:visibility="gone"/>
-
-                <LinearLayout
-                    android:id="@+id/col3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:clipChildren="false"
-                    android:clipToPadding="false"
-                    android:orientation="vertical"
-                    android:visibility="gone"/>
-            </LinearLayout>
+                android:layout_height="wrap_content" />
 
             <!-- The song sheet title if required -->
             <LinearLayout

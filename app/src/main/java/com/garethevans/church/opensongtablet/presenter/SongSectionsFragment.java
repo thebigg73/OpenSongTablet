@@ -85,9 +85,9 @@ public class SongSectionsFragment extends Fragment {
                 mainActivityInterface.navigateToFragment("opensongapp://settings/edit",0);
                 return false;
             });
+            mainActivityInterface.getSoftKeyboard().hideKeyboard(requireActivity());
             updatePresentationOrder();
         }
-
     }
 
     public void updatePresentationOrder() {
@@ -118,6 +118,8 @@ public class SongSectionsFragment extends Fragment {
             mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().
                     notifyItemRangeChanged(0, mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().getItemCount());
         }
+        mainActivityInterface.getSoftKeyboard().hideSoftKeyboard(requireContext(),myView.getRoot());
+
     }
 
     // From edited content via TextInputBottomSheet
@@ -126,13 +128,7 @@ public class SongSectionsFragment extends Fragment {
     }
 
     public void doScrollTo(int thisPos) {
-        try {
-            if (myView.recyclerView.getLayoutManager()!=null) {
-                ((LinearLayoutManager) myView.recyclerView.getLayoutManager()).scrollToPositionWithOffset(thisPos, 0);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        myView.recyclerView.scrollToPosition(thisPos);
     }
 
     public void showTutorial(ArrayList<View> viewsToHighlight) {

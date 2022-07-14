@@ -80,7 +80,6 @@ public class PresenterFragment extends Fragment {
         // Load the song
         doSongLoad(mainActivityInterface.getPreferences().getMyPreferenceString("whichSongFolder",getString(R.string.mainfoldername)),
                 mainActivityInterface.getPreferences().getMyPreferenceString("songfilename","Welcome to OpenSongApp"));
-        mainActivityInterface.getSong().setPresoOrderSongSections(null);
 
         // Prepare the song menu (will be called again after indexing from the main activity index songs)
         if (mainActivityInterface.getSongListBuildIndex().getIndexRequired() &&
@@ -182,8 +181,8 @@ public class PresenterFragment extends Fragment {
         // Get the song views
         getSongViews();
 
-        // Initialise the requirement for the song info bar to be shown
-        displayInterface.updateDisplay("initialiseInfoBarRequired");
+        // Set up the new song for the secondary display.  Doesn't necessarily show it yet though
+        displayInterface.updateDisplay("newSongLoaded");
         displayInterface.updateDisplay("setSongInfo");
 
         // IV - Consume any later pending client section change received from Host (-ve value)
@@ -201,7 +200,9 @@ public class PresenterFragment extends Fragment {
             mainActivityInterface.getPresenterSettings().setCurrentSection(-1);
         }
 
+        // Prepare the song content views - doesn't show them though
         displayInterface.updateDisplay("setSongContent");
+
         if (songSectionsFragment!=null) {
             songSectionsFragment.showSongInfo();
         }
