@@ -304,7 +304,7 @@
     <string name="notsaved">Δεν έχει αποθηκευτεί</string>
     <string name="notset">"Not set"</string>
     <string name="nowifidirect">"Λυπούμαστε, αυτή η συσκευή δεν υποστηρίζει απευθείας WiFi"</string>
-    <string name="off">"OFF"</string>
+    <string name="off">"Off"</string>
     <string name="ok">"OK"</string>
     <string name="oldchordformat">"Detected current chord format"</string>
     <string name="on">"ON"</string>
@@ -389,7 +389,7 @@
     <string name="section_space">"Προσθήκη χώρου ενότητας"</string>
     <string name="select_item_variation">"Select the song to create a set variation"</string>
     <string name="sendtoprojector">"Έργο"</string>
-    <string name="set">"ΣΕΙΡΑ"</string>
+    <string name="set">"Σeipa"</string>
     <string name="set_help">"Drag songs around to change the order of your set"</string>
     <string name="set_manage_click">"Πάτα σε ένα αντικείμενο της σειράς για προβολή"</string>
     <string name="set_manage_swipe">"Σύρε για την διαγραφή αντικειμένου από την λίστα"</string>
@@ -523,14 +523,14 @@
     <string name="nofound">Δεν βρέθηκε προηγούμενος φάκελος. Χρησιμοποιήστε το κόκκινο κουμπί για να επιλέξετε μια τοποθεσία.</string>
     <string name="storage_quicktip">Κατά την επιλογή μιας τοποθεσίας:\nΛίστα αποθηκευτικού χώρου χρησιμοποιώντας το μενού (ίσως χρειαστεί να αλλάξετε τις ρυθμίσεις για να εμφανιστεί όλο το χώρο αποθήκευσης).\nΕΠΙΛΕΞΤΕ ΜΟΝΟ εσωτερικό χώρο αποθήκευσης ή κάρτας SD.\nΣυνιστάται εσωτερική αποθήκευση. Αυτό μπορεί να αναφέρεται ως χώρος αποθήκευσης συσκευής ή με το όνομα της συσκευής σας.\nΣε Android 10+ δεν θα πρέπει να επιλέξετε το φάκελο Λήψεις ή Root. Εάν έχετε αμφιβολίες, επιλέξτε το φάκελο «Έγγραφα».</string>
     <string name="storage_help">Επιλέξτε την τοποθεσία για το φάκελο \"OpenSong\". Αυτή είναι η προεπιλεγμένη θέση αποθήκευσης για αρχεία OpenSong. Μπορείτε να το αλλάξετε ανά πάσα στιγμή από το μενού Επιλογές. Συνιστάται εσωτερική αποθήκευση.\n\nΓια ενημέρωση ή επανεγκατάσταση:\nΜπορείτε να χρησιμοποιήσετε το κίτρινο κουμπί παρακάτω για να βρείτε οποιονδήποτε προηγούμενο φάκελο \"OpenSong\".</string>
-    <string name="information">" Πληροφορίες"</string>
+    <string name="information">Πληροφορίες</string>
     <string name="nearby_host_menu_only">Ακούστε νέους πελάτες μόνο όταν αυτή η σελίδα είναι ορατή</string>
     <string name="client">Πελάτης</string>
     <string name="host">Πλήθος</string>
     <string name="connections_actasclient">Ενεργήστε ως πελάτης</string>
     <string name="autorepeat_time">Χρόνος αυτόματης επανάληψης (από ρυθμίσεις πεντάλ)</string>
     <string name="information_bar_opacity">Αδιαφάνεια στη γραμμή πληροφοριών</string>
-    <string name="presoShowBackground">φόντου</string>
+    <string name="presoShowBackground">Φόντου</string>
     <string name="nearby_large_file">Αυτό το μεγάλο αρχείο τραγουδιού κοινοποιείται</string>
     <string name="midi_delay">Ενδιάμεση μνήμη καθυστέρησης MIDI</string>
     <string name="forum">Βοήθεια (googlegroups)</string>

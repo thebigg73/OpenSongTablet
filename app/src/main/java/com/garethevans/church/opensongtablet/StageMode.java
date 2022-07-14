@@ -1397,18 +1397,13 @@ public class StageMode extends AppCompatActivity implements
         setWindowFlags();
         setWindowFlagsAdvanced();
         FullscreenActivity.needtorefreshsongmenu = true;
+        prepareSongMenu();
         // Add action bar menu long press actions
         // menuButtonLongPressActions is too quick when resuming
         // We are not sure when it becomes stable - so keep trying
-        new Handler().postDelayed(() -> {
-            menuButtonLongPressActions();
-        }, 200);
-        new Handler().postDelayed(() -> {
-            menuButtonLongPressActions();
-        }, 400);
-        new Handler().postDelayed(() -> {
-            menuButtonLongPressActions();
-        }, 600);
+        new Handler().postDelayed(this::menuButtonLongPressActions, 200);
+        new Handler().postDelayed(this::menuButtonLongPressActions, 400);
+        new Handler().postDelayed(this::menuButtonLongPressActions, 600);
     }
 
     @Override
@@ -3120,7 +3115,6 @@ public class StageMode extends AppCompatActivity implements
             // TODO - Fix scaling and positioning of highlightNotes when song is scaled
             if ((!FullscreenActivity.highlightOn && !fromautoshow) ) {
                 // IV - If a manual click of highlight button to hide the highlight then hide - do nothing as already done
-                FullscreenActivity.highlightOn = false;
             } else if (StaticVariables.thisSongScale.equals("Y")) {
                 // IV - If the song has been scaled then reload to display without scale
                 if (highlightNotes.getScaleX() != 1.0f) {
@@ -6074,7 +6068,7 @@ public class StageMode extends AppCompatActivity implements
                         sectionview.setPadding(0, 0, 0, 0);
                         column1_3.addView(sectionview);
 
-                    } else if (x >= FullscreenActivity.thirdsplit_section && x < FullscreenActivity.twothirdsplit_section) {
+                    } else if (x < FullscreenActivity.twothirdsplit_section) {
                         float fontsize = processSong.setScaledFontSize(4);
                         final LinearLayout sectionview2 = processSong.songSectionView(StageMode.this, x, fontsize,
                                 storageAccess, preferences,
@@ -6327,7 +6321,7 @@ public class StageMode extends AppCompatActivity implements
                                         lyricsTextColor, lyricsBackgroundColor, lyricsChordsColor, lyricsCommentColor, lyricsCustomColor,
                                         lyricsCapoColor, presoFontColor, lyricsVerseColor, lyricsChorusColor,
                                         lyricsPreChorusColor, lyricsBridgeColor, lyricsTagColor));
-                            } else if (x >= FullscreenActivity.thirdsplit_section && x < FullscreenActivity.twothirdsplit_section) {
+                            } else if (x < FullscreenActivity.twothirdsplit_section) {
                                 column2_3.addView(processSong.songSectionView(StageMode.this, x, 12.0f,
                                         storageAccess, preferences,
                                         lyricsTextColor, lyricsBackgroundColor, lyricsChordsColor, lyricsCommentColor, lyricsCustomColor,
@@ -7089,7 +7083,7 @@ public class StageMode extends AppCompatActivity implements
         if (direction.equals("up")) {
             song_list_view.smoothScrollBy((int) (-0.8f * songmenu.getHeight()), 1600);
         } else {
-            song_list_view.smoothScrollBy((int) (+0.8f * songmenu.getHeight()), 1600);
+            song_list_view.smoothScrollBy((int) (0.8f * songmenu.getHeight()), 1600);
         }
     }
 
@@ -8954,7 +8948,7 @@ public class StageMode extends AppCompatActivity implements
         long diff = (System.currentTimeMillis() - songTransitionStart);
         if (diff < songTransition_QOS_time) {
             try {
-                Thread.sleep((long) (songTransition_QOS_time - diff));
+                Thread.sleep(songTransition_QOS_time - diff);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

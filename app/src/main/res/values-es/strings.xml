@@ -44,7 +44,7 @@
     <string name="bible_translation">"Biblia código de la versión \n(por ejemplo, LBLA, NBD)"</string>
     <string name="black_screen">"Pantalla en negro"</string>
     <string name="book">"Libro"</string>
-    <string name="bottom">fondo</string>
+    <string name="bottom">Fondo</string>
     <string name="bridge_background">"Fondo Puente"</string>
     <string name="camera">"Cámara"</string>
     <string name="cancel">"Cancelar"</string>
@@ -137,7 +137,7 @@
     <string name="delete">"Borrar"</string>
     <string name="device_list">"Dispositivos disponibles"</string>
     <string name="dim">"El fondo se oscurece"</string>
-    <string name="display">"visualización"</string>
+    <string name="display">"Visualización"</string>
     <string name="display_popups">"Personalizar ventanas emergentes"</string>
     <string name="doubleTap">"Seleccione la acción doble toque"</string>
     <string name="download_new">"Haga clic aquí para descargar una nueva Biblia"</string>
@@ -195,7 +195,7 @@
     <string name="file_chooser">Selector de archivos</string>
     <string name="file_exists">"El archivo ya existe. Por favor, cambie su nombre."</string>
     <string name="file_type">"Tipo de archivo"</string>
-    <string name="file_type_unknown">"desconocido"</string>
+    <string name="file_type_unknown">Desconocido</string>
     <string name="findnewsongs">"Encuentra nuevas canciones"</string>
     <string name="firstsong">"Viendo primera canción"</string>
     <string name="fix">"Autofix"</string>
@@ -222,7 +222,7 @@
     <string name="highlight">"Resaltador"</string>
     <string name="highlight_notallowed">"La escala automática debe estar configurada como completa para esta función"</string>
     <string name="image">"imagen"</string>
-    <string name="image_slide">"imagen slideshow"</string>
+    <string name="image_slide">Imagen slideshow</string>
     <string name="import_onsong_choose">"Archivo de copia de seguridad de importación Onsong"</string>
     <string name="import_onsong_error">"No hay ningún archivo de copia de seguridad Onsong encuentra en /documents/OpenSong/"</string>
     <string name="importnewset">"Importar un conjunto"</string>
@@ -242,15 +242,15 @@
     <string name="link_audio">"Vínculo de archivo de audio"</string>
     <string name="link_choose">"Elija un archivo para enlazar con esta canción"</string>
     <string name="link_file">"Otros archivos"</string>
-    <string name="link_web">"enlace Online"</string>
-    <string name="link_youtube">"enlace de YouTube"</string>
+    <string name="link_web">Enlace Online</string>
+    <string name="link_youtube">Enlace de YouTube</string>
     <string name="load">"Carga"</string>
     <string name="load_preferences">"Preferencias de carga"</string>
     <string name="load_reusable">"Cargar un portaobjetos reutilizable"</string>
     <string name="logo">"Logo"</string>
     <string name="longPress">"Seleccione la acción pulsación larga"</string>
     <string name="longpress">"Mantenga presionado / mantenga presionado"</string>
-    <string name="loop">"lazo"</string>
+    <string name="loop">Lazo</string>
     <string name="loop_slide_pages">"Páginas Loop en diapositivas personalizada"</string>
     <string name="lyrics_color">"Letras de fuente"</string>
     <string name="mainfoldername">"PRINCIPAL"</string>
@@ -310,7 +310,7 @@
     <string name="on">"Encendido"</string>
     <string name="options">"Opciones"</string>
     <string name="options_clearthisset">"BORRAR ESTE SISTEMA"</string>
-    <string name="other">"nu lain"</string>
+    <string name="other">"Nu lain"</string>
     <string name="override_fullautoscale">"Invalidar la escala de auto completo a su anchura, sólo"</string>
     <string name="override_scale_explanation">"Si el tamaño de la fuente autoescala es menor que el tamaño mínimo de la letra deseada, ¿desea la aplicación para anular a un método de escala diferente? El uso de estas opciones le puede obligar a desplazarse horizontal y verticalmente en una canción."</string>
     <string name="override_widthautoscale">"Ancho de anulación únicamente el escalado a ninguna autoescala"</string>
@@ -389,7 +389,7 @@
     <string name="section_space">"Añadir espacio de sección"</string>
     <string name="select_item_variation">"Seleccione la canción para crear una variación conjunto"</string>
     <string name="sendtoprojector">"Proyecto"</string>
-    <string name="set">"CONJUNTO"</string>
+    <string name="set">"Conjunto"</string>
     <string name="set_help">"Canciones Arrastre alrededor para cambiar el orden de su aparato"</string>
     <string name="set_manage_click">"Haga clic en un elemento en el conjunto para visualizarla"</string>
     <string name="set_manage_swipe">"Pase al eliminar un elemento de la lista de temas"</string>
@@ -428,7 +428,7 @@
     <string name="stickynotes">"Notas de la canción"</string>
     <string name="stickynotes_edit">"Editar canción nota adhesiva"</string>
     <string name="stop">"Parar"</string>
-    <string name="storage">"almacenamiento"</string>
+    <string name="storage">"Almacenamiento"</string>
     <string name="storage_check">"Control de almacenamiento"</string>
     <string name="storage_choose">"Administrar almacenamiento"</string>
     <string name="storage_ext">"Almacenamiento externo"</string>
@@ -461,7 +461,7 @@
     <string name="timeformat">"24 horas"</string>
     <string name="timer_learn">"Aprende el tiempo de desplazamiento automático"</string>
     <string name="timer_size">"Tamaño del temporizador"</string>
-    <string name="title">"título"</string>
+    <string name="title">Título</string>
     <string name="toggleScrollBeforeSwipe">"Desplazamiento de palanca antes de la siguiente / anterior canción"</string>
     <string name="toggle_autoscroll_pause">"Alternar pausa de desplazamiento automático"</string>
     <string name="toggle_autoshow_stickynotes">"Autoshow Toggle notas adhesivas"</string>
@@ -523,7 +523,7 @@
     <string name="nofound">No se encontró ninguna carpeta anterior. Utilice el botón rojo para elegir una ubicación.</string>
     <string name="storage_quicktip">Al seleccionar una ubicación:\nEnumere el almacenamiento mediante el menú (es posible que deba cambiar la configuración para mostrar todo el almacenamiento).\nSELECCIONE SOLO ALMACENAMIENTO INTERNO O EN TARJETA SD.\nSe recomienda almacenamiento interno. Esto puede aparecer como almacenamiento del dispositivo o con el nombre de su dispositivo.\nEn Android 10+, no debe seleccionar la carpeta Descargas o raíz. En caso de duda, elija la carpeta \'Documentos\'.</string>
     <string name="storage_help">Elija la ubicación de su carpeta \'OpenSong\'. Esta es la ubicación de almacenamiento predeterminada para los archivos de OpenSong. Puede cambiar esto en cualquier momento desde el menú Opciones. Se recomienda almacenamiento interno.\n\nPara una actualización o reinstalación:\nPuede usar el botón amarillo a continuación para buscar cualquier carpeta \'OpenSong\' anterior.</string>
-    <string name="information">" Información"</string>
+    <string name="information">Información</string>
     <string name="nearby_host_menu_only">Solo escuche a los nuevos clientes cuando esta página esté visible</string>
     <string name="host">Anfitrión</string>
     <string name="client">Cliente</string>

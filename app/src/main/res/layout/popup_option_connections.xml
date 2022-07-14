@@ -233,8 +233,8 @@
             style="@style/MyInfoText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="12dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
             android:padding="8dp"
             android:text="@string/connections_log" />
 

@@ -452,9 +452,9 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
     }
     private static void setRadioButton(RadioButton b, String text) {
         b.setTextSize(textSize);
-        b.setText(text.toUpperCase(StaticVariables.locale));
-        //b.setText(text);
-        //b.setAllCaps(false);
+        //b.setText(text.toUpperCase(StaticVariables.locale));
+        b.setText(text);
+        b.setAllCaps(false);
     }
 
     private static void setTextSwitch(SwitchCompat t, String text) {

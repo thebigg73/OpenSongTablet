@@ -496,6 +496,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         StaticVariables.activity = PresenterMode.this;
         FullscreenActivity.appRunning = true;
         FullscreenActivity.needtorefreshsongmenu = true;
+        prepareSongMenu();
         resizeDrawers();
         // Fix the page flags
         windowFlags();
@@ -1678,14 +1679,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             }
         } catch (Exception e) {
             e.printStackTrace();
-        }
-    }
-
-    private void unhighlightAllSetButtons() {
-        // Unhighlighting all buttons
-        int numbuttons = presenter_set_buttonsListView.getChildCount();
-        for (int z = 0; z < numbuttons; z++) {
-            processSong.unhighlightPresenterSetButton((Button) presenter_set_buttonsListView.getChildAt(z));
         }
     }
 
