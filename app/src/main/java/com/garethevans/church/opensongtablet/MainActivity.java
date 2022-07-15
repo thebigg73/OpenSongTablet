@@ -745,6 +745,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     ((SetManageFragment) callingFragment).doRename();
                     break;
 
+                case "importOnlineFragment":
+                    ((ImportOnlineFragment) callingFragment).continueSaving();
+                    break;
+
             }
         }
     }
@@ -1826,7 +1830,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     break;
 
                 case "renameSet":
-                    // We are renaming a set
+                case "onlineSongOverwrite":
+                    // We are renaming a set    or
+                    // We extracted an online song, but one with the same name exists already
                     updateFragment(fragName,callingFragment,null);
                     allowToast = false;
                     break;

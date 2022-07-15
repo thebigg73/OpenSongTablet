@@ -1,143 +1,169 @@
 package com.garethevans.church.opensongtablet.importsongs;
 
-import android.util.Log;
+import android.os.Build;
+import android.text.Html;
+import android.text.Spanned;
 
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 
 public class WorshipTogether {
 
-    private final String TAG = "WorshipTogether";
-    public Song processContent(MainActivityInterface mainActivityInterface,
-                               Song newSong, String s) {
-
-        // Get the title
-        int start = s.indexOf("<h2");
-        start = s.indexOf(">",start)+1;
-        int end = s.indexOf("</h2>",start);
-        String title = newSong.getTitle();
-        if (start>1 && end>start) {
-            title = s.substring(start,end).trim();
-            Log.d(TAG,"Found title: "+title);
-            newSong.setTitle(title);
-        }
-        newSong.setFilename(title);
-
-        // Get the author
-        start = s.indexOf("<span>Writer");
-        start = s.indexOf("<p>",start)+3;
-        end = s.indexOf("</p>",start);
-        String author = "";
-        if (start>3 && end>start) {
-            author = s.substring(start,end).trim();
-            Log.d(TAG,"Found author: "+author);
-        }
-        newSong.setAuthor(author);
-
-        // Get the tempo
-        start = s.indexOf("<span>BPM:");
-        start = s.indexOf("<p>",start)+3;
-        end = s.indexOf("</p>",start);
-        String bpm = "";
-        if (start>3 && end>start) {
-            bpm = s.substring(start,end).trim();
-            Log.d(TAG,"Found tempo: "+bpm);
-        }
-        newSong.setTempo(bpm);
-
-        // Get the key
-        start = s.indexOf("<span>Original Key:");
-        start = s.indexOf("<a",start);
-        start = s.indexOf(">",start)+1;
-        end = s.indexOf("</a>",start);
-        String key = "";
-        if (start>1 && end>start) {
-            key = s.substring(start,end).trim();
-            Log.d(TAG,"Found key: "+key);
-        }
-        newSong.setKey(key);
-
-        // Get the ccli
-        start = s.indexOf("<span>CCLI #:");
-        start = s.indexOf("<p>",start)+3;
-        end = s.indexOf("</p>",start);
-        String ccli = "";
-        if (start>3 && end>start) {
-            ccli = s.substring(start,end).trim();
-            Log.d(TAG,"Found ccli: "+ccli);
-        }
-        newSong.setCcli(ccli);
-
-        // Now to find the chordpro lyrics
-        String chopro = "";
-        start = s.indexOf("<div class=\"chord-pro-line\">")+28;
-        end = s.indexOf("<div class=\"col-sm-6\">",start);
-        if (start>28 && end>start) {
-            chopro = s.substring(start,end);
-        }
-        chopro = mainActivityInterface.getProcessSong().parseHTML(chopro);
-        chopro = removeTags(chopro);
-
-
-        // Send the stuff off to the ConvertChoPro class for processing
-        // Send anull uri to stop it trying to save the file
-        // This will return the improved song!
-        newSong.setLyrics(chopro);
-        newSong = mainActivityInterface.getConvertChoPro().convertTextToTags(null,newSong);
-
-        return newSong;
-    }
-
-    private String removeTags(String s) {
-        // Split into chordPro lines
-        String[] sections = s.split("<div class=\"chord-pro-line\">");
-        StringBuilder newLines = new StringBuilder();
-
-        for (String section:sections) {
-            String[] lines = section.split("\n");
-
-            StringBuilder newLine = new StringBuilder();
-            for (String line:lines) {
-                line = line.trim();
-                line = line.replace("<!--", "");
-                line = line.replace("-->", "");
-                line = line.replace("<div class=\"chord-pro-segment\">", "");
-                line = line.replace("<div class=\"chord-pro-note\">", "");
-                line = line.replace("<span class=\"matchedChordContainer\">","[");
-                line = line.replace("</span></div>","]");
-                line = line.replace("&nbsp;","");
-                line = line.replace("<span class=\"suffix\">&nbsp;</span></span>","]");
-                line = line.replace("<span class=\"suffix\"></span></span>","]");
-                line = line.replace("</span></span>","]");
-                line = line.replace(" ]","]");
-                line = line.replace("<span class=\"matchedChordContainer\">", "");
-                line = line.replace("<span class=\"matchedChord\" chordnumber=", "");
-                line = line.replace("\"???\">", "");
-                for (int i = 0; i < 13; i++) {
-                    line = line.replace("\"" + i + "\">", "");
-                    line = line.replace("\"#" + i + "\">","");
-                    line = line.replace("\"b" + i + "\">","");
-                }
-                line = line.replace("<span class=\"suffix\">", "");
-                line = line.replace("</span>", "");
-                line = line.replace("</div>", "");
-                line = line.replace("<div class=\"chord-pro-lyric\">", "");
-                line = line.replace("<div class='chord-pro-br'>", "");
-                line = line.replace("]/[","/");
-                line = line.replace(" ]","]");
-                line = line.replace("[ ]","\n");
-                line = line.replace("[&nbsp;]","\n");
-                line = line.replace("[]","\n");
-
-                if (!line.trim().isEmpty()) {
-                    newLine.append(line);
+    private String getSubstring(String startText, String laterStartText, String endText, String searchText) {
+        int startPos = -1;
+        int laterStartPos = -1;
+        int endPos = -1;
+        if (searchText!=null) {
+            if (startText != null) {
+                startPos = searchText.indexOf(startText);
+                if (startPos>-1) {
+                    startPos = startPos + startText.length();
                 }
             }
-            newLines.append(newLine).append("\n");
+            if (laterStartText != null && startPos > -1) {
+                laterStartPos = searchText.indexOf(laterStartText, startPos);
+                if (laterStartPos>-1) {
+                    startPos = laterStartPos + laterStartText.length();
+                }
+            }
+            if (endText != null) {
+                endPos = searchText.indexOf(endText,startPos);
+            }
+            if (startPos > 0 && endPos > startPos) {
+                // Valid substring
+                return searchText.substring(startPos,endPos);
+            }
+        }
+        // Something wasn't right, so return an empty string
+        return "";
+    }
+
+    private String removeHTMLTags(String s) {
+        Spanned spanned;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            spanned = Html.fromHtml(s,Html.FROM_HTML_MODE_COMPACT);
+        } else {
+            spanned = Html.fromHtml(s);
+        }
+        String line = spanned.toString();
+        line = line.replace("<!--", "");
+        line = line.replace("-->", "");
+        return line;
+    }
+
+    public Song processContent(MainActivityInterface mainActivityInterface, Song newSong, String s) {
+        // From Worship Together
+
+        String filename = "WT Song";
+        String author = "";
+        String copyright = "";
+        String theme = "";
+        String key = "";
+        String bpm = "";
+        String ccli = "";
+
+        // Get the title
+        String title = removeHTMLTags(getSubstring("<h2",">","</h2>",s).trim());
+        if (!title.isEmpty()) {
+            filename = title;
+        }
+        newSong.setTitle(title);
+        newSong.setFilename(filename);
+
+        String songTaxonomy = getSubstring("<div class=\"song_taxonomy\">",null,"<div class=\"p-song-tile g-content-tile\">",s).trim();
+
+        if (!songTaxonomy.isEmpty()) {
+            author = removeHTMLTags(
+                    getSubstring("Writer(s):",null,"</div>",songTaxonomy).trim());
+
+            copyright = removeHTMLTags(
+                    getSubstring("Ministry(s):",null,"</div>",songTaxonomy).trim());
+
+            if (copyright.isEmpty()) {
+                copyright = author;
+            }
+
+            theme = removeHTMLTags(
+                    getSubstring("Theme(s):",null,"</div>",songTaxonomy).trim()).replace(", ",";");
+
+            bpm = removeHTMLTags(
+                    getSubstring("BPM:",null,"</div>",songTaxonomy).trim());
+
+            ccli = removeHTMLTags(
+                    getSubstring("CCLI #:",null,"</div>",songTaxonomy).trim());
+
+            key = removeHTMLTags(
+                    getSubstring("Original Key(s):",null,"</div>",songTaxonomy).trim());
+
+            if (key.isEmpty()) {
+                key = removeHTMLTags(
+                        getSubstring("Original Key:",null,"</div>",songTaxonomy).trim());
+
+            }
         }
 
-        Log.d(TAG,"newLines: "+newLines);
+        // Now try to get the lyrics split into lines
+        String songProContent = getSubstring("<div class=\"chord-pro-line\">",null,"<div class=\"col-sm-6\">",s);
+        // Try to make sure tags are consistent with attributes using "..." rather than '...'
+        songProContent = songProContent.replace("='","=\"");
+        songProContent = songProContent.replace("'>","\">");
+        songProContent = songProContent.replace("'/>","\"/>");
 
-        return newLines.toString();
+        String[] lines = songProContent.split("\n");
+
+        // Process each line at at time
+        StringBuilder lyrics = new StringBuilder();
+        StringBuilder newline = new StringBuilder();
+        for (String line:lines) {
+            line = line.trim();
+
+            // Determine if the line is just empty <html> declarations
+            boolean emptystuff = line.equals("</div") || line.contains("<div class=\"chord-pro-br\">") ||
+                    line.contains("<div class=\"chord-pro-segment\">") || line.contains("<div class=\"inner_col\"");
+
+            // Now decide what to do with the line
+            if (!emptystuff && line.contains("<div class=\"chord-pro-disp\"")) {
+                // Start section, so initialise the newline and lyrics
+                lyrics = new StringBuilder();
+                newline = new StringBuilder();
+
+            } else if (!emptystuff && line.contains("<div class=\"chord-pro-line\">")) {
+                // Starting a new line, so add the previous newline to the lyrics text
+                lyrics.append("\n").append(newline);
+                newline = new StringBuilder();
+
+            } else if (!emptystuff && line.contains("<div class=\"chord-pro-note\">")) {
+                // This is a chord
+                String chordbit = getSubstring("<div class=\"chord-pro-note\">","'>","</div>",line);
+                chordbit = chordbit.replace("&nbsp;"," ");
+                if (!chordbit.trim().isEmpty()) {
+                    newline.append("[").append(chordbit.trim()).append("]");
+                }
+
+            } else if (!emptystuff && line.contains("<div class=\"chord-pro-lyric\">")) {
+                // This is lyrics
+                String lyricbit = getSubstring("<div class=\"chord-pro-lyric\">","'>","</div>",line);
+                if (!lyricbit.isEmpty()) {
+                    newline.append(lyricbit);
+                }
+            }
+        }
+
+        // Now process the chordpro lyrics into OpenSong format
+        String lyricBits = removeHTMLTags(lyrics.toString().trim().replace("\n","_NEWLINE_"));
+        lyricBits = lyricBits.replace("_NEWLINE_","\n");
+        newSong.setLyrics(mainActivityInterface.getConvertChoPro().fromChordProToOpenSong(lyricBits.trim()));
+
+        // Add the other info the the song
+        newSong.setFilename(filename);
+        newSong.setTitle(title);
+        newSong.setAuthor(author);
+        newSong.setCopyright(copyright);
+        newSong.setKey(key);
+        newSong.setCcli(ccli);
+        newSong.setTempo(bpm);
+        newSong.setTheme(theme);
+
+        return newSong;
     }
 }

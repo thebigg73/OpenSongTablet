@@ -27,6 +27,7 @@ import androidx.fragment.app.Fragment;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
 import com.garethevans.church.opensongtablet.databinding.SettingsImportOnlineBinding;
+import com.garethevans.church.opensongtablet.filemanagement.AreYouSureBottomSheet;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 
@@ -263,7 +264,6 @@ public class ImportOnlineFragment extends Fragment {
                 changeLayouts(false, true, false);
                 webSearchFull = webAddress + mainActivityInterface.getCheckInternet().getSearchPhrase() + extra;
                 webView.post(() -> webView.loadUrl(webSearchFull));
-                Log.d(TAG, webSearchFull);
             }
         }
     }
@@ -315,10 +315,10 @@ public class ImportOnlineFragment extends Fragment {
             webString = "";
         }
 
-        String[] lines = webString.split("\n");
+        /*String[] lines = webString.split("\n");
         for (String line:lines) {
             Log.d(TAG,"line: "+line);
-        }
+        }*/
 
         switch (source) {
             case "UltimateGuitar":
@@ -359,6 +359,8 @@ public class ImportOnlineFragment extends Fragment {
             myView.saveButton.post(() -> {
                 myView.saveButton.show();
                 mainActivityInterface.getCustomAnimation().pulse(requireContext(),myView.saveButton);
+                mainActivityInterface.getShowCase().singleShowCase(requireActivity(),myView.saveButton,
+                        null,getString(R.string.text_extract_website),false,"textWebsite");
             });
 
         } else {
@@ -438,7 +440,6 @@ public class ImportOnlineFragment extends Fragment {
         exposedDropDownArrayAdapter.keepSelectionPosition(myView.folderChoice,availableFolders);
         changeLayouts(false,false,true);
         myView.saveSong.setOnClickListener(v -> saveTheSong());
-        Log.d(TAG,"lyrics:"+newSong.getLyrics());
         showDownloadProgress(false);
     }
 
@@ -511,6 +512,23 @@ public class ImportOnlineFragment extends Fragment {
         newSong.setFilename(getName);
         newSong.setFolder(getFolder);
         newSong.setSongid(mainActivityInterface.getCommonSQL().getAnySongId(getFolder,getName));
+
+        // Check if this song already exists
+        boolean exists = mainActivityInterface.getStorageAccess().uriExists(
+                mainActivityInterface.getStorageAccess().getUriForItem("Songs",getFolder,getName));
+
+        if (!exists) {
+            // We can proceed with saving
+            continueSaving();
+        } else {
+            // Alert the user with the bottom sheet are you sure
+            AreYouSureBottomSheet areYouSureBottomSheet = new AreYouSureBottomSheet(
+                    "onlineSongOverwrite",getString(R.string.overwrite),null,"importOnlineFragment",this,newSong);
+            areYouSureBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"AreYouSure");
+        }
+    }
+
+    public void continueSaving() {
         if (mainActivityInterface.getSaveSong().
                 doSave(newSong)) {
             // Update the songid file (used later)

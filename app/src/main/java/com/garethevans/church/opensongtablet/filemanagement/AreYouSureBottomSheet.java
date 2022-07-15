@@ -50,10 +50,10 @@ public class AreYouSureBottomSheet extends BottomSheetDialogFragment {
     private final Song song;
 
     public AreYouSureBottomSheet(String what, String textToShow, ArrayList<String> arguments, String fragName, Fragment callingFragment, Song song) {
-        this.what = what;      // Variable passed to MainActivity to trigger required action
-        this.textToShow = textToShow;  // Information displayed about what is about to happen
-        this.arguments = arguments;  // Extra info passed back.  Can be null
-        this.fragName = fragName;    // The fragment requesting confirmation
+        this.what = what;               // Variable passed to MainActivity to trigger required action
+        this.textToShow = textToShow;   // Information displayed about what is about to happen
+        this.arguments = arguments;     // Extra info passed back.  Can be null
+        this.fragName = fragName;       // The fragment requesting confirmation
         this.callingFragment = callingFragment;
         this.song = song;
     }
