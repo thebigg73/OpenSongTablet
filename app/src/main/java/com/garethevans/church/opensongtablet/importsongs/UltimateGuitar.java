@@ -1,6 +1,7 @@
 package com.garethevans.church.opensongtablet.importsongs;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
@@ -8,6 +9,8 @@ import com.garethevans.church.opensongtablet.songprocessing.Song;
 public class UltimateGuitar {
 
     private final MainActivityInterface mainActivityInterface;
+
+    private final String TAG = "UG";
 
     // Song is effectively written in <pre> formatting with chords above lyrics.
     // Chord lines will have the chord identifier in them.  That can be removed
@@ -35,48 +38,41 @@ public class UltimateGuitar {
         newSong.setKey(getKey(s));
         newSong.setCapo(getCapo(s));
 
+        Log.d(TAG,"title: "+newSong.getTitle());
+        Log.d(TAG,"author: "+newSong.getAuthor());
+        Log.d(TAG,"filname: "+newSong.getFilename());
+        Log.d(TAG,"key: "+newSong.getKey());
+        Log.d(TAG,"capo: "+newSong.getCapo());
+
         // Trim out everything around the lyrics/content
-        String contentStart1 = "<div class=\"ugm-b-tab--content js-tab-content\">";
-        int start = s.indexOf(contentStart1);
-        String contentEnd1 = "</pre>";
-        int end = s.indexOf(contentEnd1,start);
-        if (start>=0 && end>start) {
-            s = s.substring(start + contentStart1.length(), end);
+        String lyricsText = mainActivityInterface.getProcessSong().getSubstring(
+                "<div class=\"ugm-b-tab--content js-tab-content\">","<pre>","</pre>",s);
+
+        // Alternative (newer method)
+        if (lyricsText.isEmpty()) {
+            lyricsText = mainActivityInterface.getProcessSong().getSubstring(
+                    "<div class=\"js-page js-global-wrapper\">","<span class=\"y68er\"> ","<div class=\"LJhrL\">",s);
         }
 
-        String contentStart2 = "<div class=\"js-page js-global-wrapper\">";
-        start = s.indexOf(contentStart2);
-        String contentEnd2 = "<div class=\"VvVqJ\">";
-        end = s.indexOf(contentEnd2,start);
-        if (start>0 && end>start) {
-            s = s.substring(start + contentStart2.length(), end);
+        StringBuilder trimmedLyrics = new StringBuilder();
+        for (String lyr:lyricsText.split("\n")) {
+            if (!lyr.trim().isEmpty()) {
+                trimmedLyrics.append(lyr).append("\n");
+            }
         }
-
-        // Trim the lyrics start right up to the <pre tag
-        start = s.indexOf("<pre");
-        end = s.indexOf(">",start);
-        if (start>0 && end>start) {
-            s = s.substring(end+1);
-        }
-
-        // Get rid of extra line breaks
-        s = s.replace("\n\n</span>","\n</span>");
-
-        // Get rid of extra [[ and ]]
-        s = s.replace("[[","[");
-        s = s.replace("]]","]");
 
         // Split the content into lines
-        String[] lines = s.split("\n");
+        String[] lines = trimmedLyrics.toString().split("\n");
         StringBuilder lyrics = new StringBuilder();
         for (String line:lines) {
             String chordIdentifier1 = "<span class=\"text-chord js-tab-ch js-tapped\">";
             String chordIdentifier2 = "<span class=\"_2jIGi\">";
-            if (line.contains(chordIdentifier1) || line.contains(chordIdentifier2)) {
+            String chordIdentifier3 = "<span class=\"fciXY";
+            String chordIdentifier4 = "data-name=\"";
+            if (line.contains(chordIdentifier1) || line.contains(chordIdentifier2) ||
+            line.contains(chordIdentifier3) || line.contains(chordIdentifier4)) {
                 // Make it a chord line
                 line = "." + line;
-                line = line.replaceAll(chordIdentifier1, "");
-                line = line.replaceAll(chordIdentifier2, "");
                 line = line.trim();
             } else if (mainActivityInterface.getProcessSong().looksLikeGuitarTab(line)) {
                 // Looks like a tab line
@@ -90,11 +86,21 @@ public class UltimateGuitar {
                 // Assume it is a lyric line
                 line = " " + line;
             }
-            line = stripOutTags(line);
+            line = mainActivityInterface.getProcessSong().removeHTMLTags(line);
+            Log.d(TAG,"processed line:"+line);
+            //line = stripOutTags(line);
             line = fixHTMLStuff(line);
             lyrics.append(line).append("\n");
         }
-        newSong.setLyrics(lyrics.toString());
+
+        // Get rid of extra [[ and ]]
+        String finalLyrics = lyrics.toString().replace("[[","[");
+        finalLyrics = finalLyrics.replace("]]","]");
+
+        newSong.setLyrics(finalLyrics);
+        for (String lyr:finalLyrics.split("\n")) {
+            Log.d(TAG,"lyr: "+lyr);
+        }
 
         // If we have a capo (which means the key and the chords won't match in UG)
         // We will need to transpose the lyrics to match

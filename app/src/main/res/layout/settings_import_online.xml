@@ -85,6 +85,17 @@
                     android:visibility="gone"
                     app:useCompatPadding="false" />
 
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/grabText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top|center_horizontal"
+                    android:layout_margin="8dp"
+                    android:contentDescription="@string/text_extract_check"
+                    android:src="@drawable/search"
+                    android:visibility="visible"
+                    app:useCompatPadding="false"/>
+
             </FrameLayout>
 
             <FrameLayout

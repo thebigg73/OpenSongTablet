@@ -1,55 +1,9 @@
 package com.garethevans.church.opensongtablet.importsongs;
 
-import android.os.Build;
-import android.text.Html;
-import android.text.Spanned;
-
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 
 public class WorshipTogether {
-
-    private String getSubstring(String startText, String laterStartText, String endText, String searchText) {
-        int startPos = -1;
-        int laterStartPos = -1;
-        int endPos = -1;
-        if (searchText!=null) {
-            if (startText != null) {
-                startPos = searchText.indexOf(startText);
-                if (startPos>-1) {
-                    startPos = startPos + startText.length();
-                }
-            }
-            if (laterStartText != null && startPos > -1) {
-                laterStartPos = searchText.indexOf(laterStartText, startPos);
-                if (laterStartPos>-1) {
-                    startPos = laterStartPos + laterStartText.length();
-                }
-            }
-            if (endText != null) {
-                endPos = searchText.indexOf(endText,startPos);
-            }
-            if (startPos > 0 && endPos > startPos) {
-                // Valid substring
-                return searchText.substring(startPos,endPos);
-            }
-        }
-        // Something wasn't right, so return an empty string
-        return "";
-    }
-
-    private String removeHTMLTags(String s) {
-        Spanned spanned;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            spanned = Html.fromHtml(s,Html.FROM_HTML_MODE_COMPACT);
-        } else {
-            spanned = Html.fromHtml(s);
-        }
-        String line = spanned.toString();
-        line = line.replace("<!--", "");
-        line = line.replace("-->", "");
-        return line;
-    }
 
     public Song processContent(MainActivityInterface mainActivityInterface, Song newSong, String s) {
         // From Worship Together
@@ -63,47 +17,58 @@ public class WorshipTogether {
         String ccli = "";
 
         // Get the title
-        String title = removeHTMLTags(getSubstring("<h2",">","</h2>",s).trim());
+        String title = mainActivityInterface.getProcessSong().removeHTMLTags(
+                mainActivityInterface.getProcessSong().getSubstring(
+                        "<h2",">","</h2>",s).trim());
         if (!title.isEmpty()) {
             filename = title;
         }
         newSong.setTitle(title);
         newSong.setFilename(filename);
 
-        String songTaxonomy = getSubstring("<div class=\"song_taxonomy\">",null,"<div class=\"p-song-tile g-content-tile\">",s).trim();
+        String songTaxonomy = mainActivityInterface.getProcessSong().getSubstring(
+                "<div class=\"song_taxonomy\">",null,"<div class=\"p-song-tile g-content-tile\">",s).trim();
 
         if (!songTaxonomy.isEmpty()) {
-            author = removeHTMLTags(
-                    getSubstring("Writer(s):",null,"</div>",songTaxonomy).trim());
+            author = mainActivityInterface.getProcessSong().removeHTMLTags(
+                    mainActivityInterface.getProcessSong().getSubstring(
+                            "Writer(s):",null,"</div>",songTaxonomy).trim());
 
-            copyright = removeHTMLTags(
-                    getSubstring("Ministry(s):",null,"</div>",songTaxonomy).trim());
+            copyright = mainActivityInterface.getProcessSong().removeHTMLTags(
+                    mainActivityInterface.getProcessSong().getSubstring(
+                            "Ministry(s):",null,"</div>",songTaxonomy).trim());
 
             if (copyright.isEmpty()) {
                 copyright = author;
             }
 
-            theme = removeHTMLTags(
-                    getSubstring("Theme(s):",null,"</div>",songTaxonomy).trim()).replace(", ",";");
+            theme = mainActivityInterface.getProcessSong().removeHTMLTags(
+                    mainActivityInterface.getProcessSong().getSubstring(
+                            "Theme(s):",null,"</div>",songTaxonomy).trim()).replace(", ",";");
 
-            bpm = removeHTMLTags(
-                    getSubstring("BPM:",null,"</div>",songTaxonomy).trim());
+            bpm = mainActivityInterface.getProcessSong().removeHTMLTags(
+                    mainActivityInterface.getProcessSong().getSubstring(
+                            "BPM:",null,"</div>",songTaxonomy).trim());
 
-            ccli = removeHTMLTags(
-                    getSubstring("CCLI #:",null,"</div>",songTaxonomy).trim());
+            ccli = mainActivityInterface.getProcessSong().removeHTMLTags(
+                    mainActivityInterface.getProcessSong().getSubstring(
+                            "CCLI #:",null,"</div>",songTaxonomy).trim());
 
-            key = removeHTMLTags(
-                    getSubstring("Original Key(s):",null,"</div>",songTaxonomy).trim());
+            key = mainActivityInterface.getProcessSong().removeHTMLTags(
+                    mainActivityInterface.getProcessSong().getSubstring(
+                            "Original Key(s):",null,"</div>",songTaxonomy).trim());
 
             if (key.isEmpty()) {
-                key = removeHTMLTags(
-                        getSubstring("Original Key:",null,"</div>",songTaxonomy).trim());
+                key = mainActivityInterface.getProcessSong().removeHTMLTags(
+                        mainActivityInterface.getProcessSong().getSubstring(
+                                "Original Key:",null,"</div>",songTaxonomy).trim());
 
             }
         }
 
         // Now try to get the lyrics split into lines
-        String songProContent = getSubstring("<div class=\"chord-pro-line\">",null,"<div class=\"col-sm-6\">",s);
+        String songProContent = mainActivityInterface.getProcessSong().getSubstring(
+                "<div class=\"chord-pro-line\">",null,"<div class=\"col-sm-6\">",s);
         // Try to make sure tags are consistent with attributes using "..." rather than '...'
         songProContent = songProContent.replace("='","=\"");
         songProContent = songProContent.replace("'>","\">");
@@ -134,7 +99,8 @@ public class WorshipTogether {
 
             } else if (!emptystuff && line.contains("<div class=\"chord-pro-note\">")) {
                 // This is a chord
-                String chordbit = getSubstring("<div class=\"chord-pro-note\">","'>","</div>",line);
+                String chordbit = mainActivityInterface.getProcessSong().getSubstring(
+                        "<div class=\"chord-pro-note\">","'>","</div>",line);
                 chordbit = chordbit.replace("&nbsp;"," ");
                 if (!chordbit.trim().isEmpty()) {
                     newline.append("[").append(chordbit.trim()).append("]");
@@ -142,7 +108,8 @@ public class WorshipTogether {
 
             } else if (!emptystuff && line.contains("<div class=\"chord-pro-lyric\">")) {
                 // This is lyrics
-                String lyricbit = getSubstring("<div class=\"chord-pro-lyric\">","'>","</div>",line);
+                String lyricbit = mainActivityInterface.getProcessSong().getSubstring(
+                        "<div class=\"chord-pro-lyric\">","'>","</div>",line);
                 if (!lyricbit.isEmpty()) {
                     newline.append(lyricbit);
                 }
@@ -150,7 +117,8 @@ public class WorshipTogether {
         }
 
         // Now process the chordpro lyrics into OpenSong format
-        String lyricBits = removeHTMLTags(lyrics.toString().trim().replace("\n","_NEWLINE_"));
+        String lyricBits = mainActivityInterface.getProcessSong().removeHTMLTags(
+                lyrics.toString().trim().replace("\n","_NEWLINE_"));
         lyricBits = lyricBits.replace("_NEWLINE_","\n");
         newSong.setLyrics(mainActivityInterface.getConvertChoPro().fromChordProToOpenSong(lyricBits.trim()));
 

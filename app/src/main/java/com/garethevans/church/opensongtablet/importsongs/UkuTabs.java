@@ -61,7 +61,6 @@ public class UkuTabs {
                 stringBuilder.append(line).append("\n");
             }
         }
-
         newSong.setLyrics(stripOutTags(stringBuilder.toString()));
 
         return newSong;

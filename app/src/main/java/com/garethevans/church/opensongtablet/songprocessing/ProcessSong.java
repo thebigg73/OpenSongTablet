@@ -292,6 +292,41 @@ public class ProcessSong {
         return s;
     }
 
+    public String getSubstring(String startText, String laterStartText, String endText, String searchText) {
+        int startPos = -1;
+        int laterStartPos = -1;
+        int endPos = -1;
+        if (searchText!=null) {
+            if (startText != null) {
+                startPos = searchText.indexOf(startText);
+                if (startPos>-1) {
+                    startPos = startPos + startText.length();
+                }
+            }
+            if (laterStartText != null && startPos > -1) {
+                laterStartPos = searchText.indexOf(laterStartText, startPos);
+                if (laterStartPos>-1) {
+                    startPos = laterStartPos + laterStartText.length();
+                }
+            }
+            if (endText != null) {
+                endPos = searchText.indexOf(endText,startPos);
+            }
+            if (startPos > 0 && endPos > startPos) {
+                // Valid substring
+                return searchText.substring(startPos,endPos);
+            }
+        }
+        // Something wasn't right, so return an empty string
+        return "";
+    }
+
+    public  String removeHTMLTags(String s) {
+        s = s.replace("<!--", "");
+        s = s.replace("-->", "");
+        return s.replaceAll("<.*?>", "");
+    }
+
     public String fixStartOfLines(String lyrics) {
         StringBuilder fixedlyrics = new StringBuilder();
         String[] lines = lyrics.split("\n");

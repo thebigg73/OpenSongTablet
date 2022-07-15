@@ -1159,6 +1159,7 @@ Check out the categories in the right hand options menu.
     <string name="time_seconds">Show seconds</string>
     <string name="menu_song_order">How should songs be listed in the menu?</string>
     <string name="text_extract_website">Song text found on this page.  Click here to extract.</string>
+    <string name="text_extract_check">OpenSongApp will try to find song content automatically, however, you can manually check by clicking on this button.</string>
 
 
 </resources>

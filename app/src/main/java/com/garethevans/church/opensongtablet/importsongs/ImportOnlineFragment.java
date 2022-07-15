@@ -46,7 +46,7 @@ public class ImportOnlineFragment extends Fragment {
     private final String[] address = new String[]{"https://www.ultimate-guitar.com/search.php?search_type=title&value=",
             "https://www.chordie.com/results.php?q=", "https://songselect.ccli.com/Search/Results?SearchText=",
             "https://www.worshiptogether.com/search-results/#?cludoquery=", "https://ukutabs.com/?s=",
-            "https://holychords.com/search?name="};
+            "https://holychords.pro/search?name="};
     private String webSearchFull, webAddressFinal, source, webString, userAgentDefault;
     private Song newSong;
     private UltimateGuitar ultimateGuitar;
@@ -98,6 +98,7 @@ public class ImportOnlineFragment extends Fragment {
         myView.searchLayout.setVisibility(View.VISIBLE);
         myView.webLayout.setVisibility(View.GONE);
         myView.saveLayout.setVisibility(View.GONE);
+        myView.grabText.setVisibility(View.GONE);
 
         ExposedDropDownArrayAdapter exposedDropDownArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.view_exposed_dropdown_item, sources);
         myView.onlineSource.setAdapter(exposedDropDownArrayAdapter);
@@ -136,6 +137,7 @@ public class ImportOnlineFragment extends Fragment {
         myView.searchButton.setOnClickListener(v -> checkConnection());
         myView.closeSearch.setOnClickListener(v -> changeLayouts(true, false, false));
         myView.backButton.setOnClickListener(v -> goBackBrowser());
+        myView.grabText.setOnClickListener(v -> extractContent());
         myView.saveButton.setOnClickListener(v -> processContent());
     }
 
@@ -262,6 +264,8 @@ public class ImportOnlineFragment extends Fragment {
                     !mainActivityInterface.getCheckInternet().getSearchPhrase().isEmpty() &&
                     !webAddress.isEmpty()) {
                 changeLayouts(false, true, false);
+                myView.grabText.setVisibility(View.VISIBLE);
+                mainActivityInterface.getShowCase().singleShowCase(requireActivity(),myView.grabText,null,getString(R.string.text_extract_check),false,"onlineTextSearch");
                 webSearchFull = webAddress + mainActivityInterface.getCheckInternet().getSearchPhrase() + extra;
                 webView.post(() -> webView.loadUrl(webSearchFull));
             }
@@ -315,16 +319,16 @@ public class ImportOnlineFragment extends Fragment {
             webString = "";
         }
 
-        /*String[] lines = webString.split("\n");
+        String[] lines = webString.split("\n");
         for (String line:lines) {
             Log.d(TAG,"line: "+line);
-        }*/
+        }
 
         switch (source) {
             case "UltimateGuitar":
                 if (webString.contains("<div class=\"ugm-b-tab--content js-tab-content\">") ||
                         (webString.contains("<div class=\"js-page js-global-wrapper\">") &&
-                                webString.contains("<span class=\"_3rlxz\">"))) {
+                                webString.contains("<span class=\"y68er\">"))) {
                     show = true;
                 }
                 break;
@@ -357,6 +361,7 @@ public class ImportOnlineFragment extends Fragment {
         }
         if (show) {
             myView.saveButton.post(() -> {
+                myView.grabText.hide();
                 myView.saveButton.show();
                 mainActivityInterface.getCustomAnimation().pulse(requireContext(),myView.saveButton);
                 mainActivityInterface.getShowCase().singleShowCase(requireActivity(),myView.saveButton,
@@ -367,6 +372,7 @@ public class ImportOnlineFragment extends Fragment {
             myView.saveButton.post(() -> {
                 myView.saveButton.hide();
                 myView.saveButton.clearAnimation();
+                myView.grabText.show();
             });
 
         }
@@ -403,8 +409,11 @@ public class ImportOnlineFragment extends Fragment {
         }
         showDownloadProgress(false);
 
-        // Set up the save layout
-        setupSaveLayout();
+        // TODO Set up the save layout
+        for (String lyric:newSong.getLyrics().split("\n")) {
+            Log.d(TAG,"lyric:"+lyric);
+        }
+        //setupSaveLayout();
     }
 
     public void finishedDownloadPDF(Uri uri) {
