@@ -33,13 +33,14 @@ public class ConvertChoPro {
     private String[] lines;
     private StringBuilder parsedLines;
 
+    private Uri newUri;
+
     public ConvertChoPro(Context c) {
         this.c = c;
         mainActivityInterface = (MainActivityInterface) c;
     }
 
     public Song convertTextToTags(Uri uri, Song thisSong) {
-
         initialiseTheVariables();
 
         lyrics = thisSong.getLyrics();
@@ -496,17 +497,10 @@ public class ConvertChoPro {
     }
 
     public Uri getNewSongUri(String songSubFolder, String nsf) {
-        // Prepare a new uri based on the best filename, but make it unique so as not to overwrite existing files
+        // The user has already given permission to overwrite this file if it exists already
         newSongFileName = nsf;
         Uri n = mainActivityInterface.getStorageAccess().getUriForItem("Songs", songSubFolder, newSongFileName);
-        int attempts = 0;
-        while (mainActivityInterface.getStorageAccess().uriExists(n) && attempts < 4) {
-            // Append _ to the end of the name until the filename is unique, or give up after 5 attempts
-            newSongFileName = newSongFileName + "_";
-            n = mainActivityInterface.getStorageAccess().getUriForItem("Songs", songSubFolder, newSongFileName);
-            attempts = attempts + 1;
-            Log.d(TAG, "attempt:" + attempts + " newSongFileName=" + newSongFileName);
-        }
+        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true,n,null,"Songs",songSubFolder,nsf);
         return n;
     }
 
@@ -551,10 +545,11 @@ public class ConvertChoPro {
             fn = fn.replace(".onsong", "");
             fn = fn.replace(".ONSONG", "");
             fn = fn.replace(".usr", "");
-            fn = fn.replace(".US", "");
+            fn = fn.replace(".USR", "");
         }
         fn = mainActivityInterface.getProcessSong().fixLineBreaksAndSlashes(fn);
         fn = mainActivityInterface.getStorageAccess().safeFilename(fn);
+        Log.d(TAG,"fn: "+fn);
         return fn;
     }
 
@@ -1052,6 +1047,10 @@ public class ConvertChoPro {
         newlyrics = new StringBuilder(newlyrics.toString().replace("{", " {"));
 
         return newlyrics.toString();
+    }
+
+    public Uri getNewUri() {
+        return newUri;
     }
 
 }

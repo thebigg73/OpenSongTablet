@@ -79,7 +79,7 @@ public class LoadSong {
 
         // This extracts what it can from the song, and returning an updated song object.
         // Once indexing has finished, we load from the database instead
-        // This is only for indexing and impatient users or if we are loading a PDF/IMG!
+        // This is only for indexing and impatient users or if we are loading a PDF/IMG or importing
 
         if (thisSong.getFolder() == null || thisSong.getFolder().isEmpty()) {
             thisSong.setFolder(c.getString(R.string.mainfoldername));
@@ -99,10 +99,10 @@ public class LoadSong {
         // Determine the filetype by extension - the best songs are xml (OpenSong formatted).
         thisSong.setFiletype(getFileTypeByExtension(thisSong.getFilename()));
 
+        // Get the uri for the song - we know it exists as we found it!
         uri = mainActivityInterface.getStorageAccess().getUriForItem(
                 where, thisSong.getFolder(), thisSong.getFilename());
 
-        // Get the uri for the song - we know it exists as we found it!
         if (mainActivityInterface.getStorageAccess().uriExists(uri)) {
 
             // If this is an image or a PDF (or DOC), we don't load a song object from the file
@@ -201,15 +201,15 @@ public class LoadSong {
                 thisSong.getLyrics() != null) {
             // Song was loaded correctly and was xml format
             mainActivityInterface.getPreferences().setMyPreferenceBoolean("songLoadSuccess", true);
-            mainActivityInterface.getPreferences().setMyPreferenceString("songfilename", thisSong.getFilename());
-            mainActivityInterface.getPreferences().setMyPreferenceString("whichSongFolder", thisSong.getFolder());
+            mainActivityInterface.getPreferences().setMyPreferenceString("songFilename", thisSong.getFilename());
+            mainActivityInterface.getPreferences().setMyPreferenceString("songFolder", thisSong.getFolder());
         } else {
             // Something was wrong, so set the welcome song
             thisSong.setFilename("Welcome to OpenSongApp");
             thisSong.setFolder(c.getString(R.string.mainfoldername));
             mainActivityInterface.getSong().showWelcomeSong(c,thisSong);
-            mainActivityInterface.getPreferences().setMyPreferenceString("songfilename", "Welcome to OpenSongApp");
-            mainActivityInterface.getPreferences().setMyPreferenceString("whichSongFolder", c.getString(R.string.mainfoldername));
+            mainActivityInterface.getPreferences().setMyPreferenceString("songFilename", "Welcome to OpenSongApp");
+            mainActivityInterface.getPreferences().setMyPreferenceString("songFolder", c.getString(R.string.mainfoldername));
         }
     }
 
@@ -308,7 +308,7 @@ public class LoadSong {
                                 break;
                             case "title":
                                 String testthetitle = mainActivityInterface.getProcessSong().parseHTML(xpp.nextText());
-                                if (testthetitle != null && !testthetitle.equals("") && !testthetitle.isEmpty()) {
+                                if (testthetitle != null && !testthetitle.isEmpty()) {
                                     thisSong.setTitle(mainActivityInterface.getProcessSong().parseHTML(testthetitle));
                                 } else if (testthetitle != null && testthetitle.equals("")) {
                                     thisSong.setTitle(thisSong.getFilename());
@@ -536,13 +536,13 @@ public class LoadSong {
         boolean isvalid = false;
         // Get length of file in Kb
         float filesize = mainActivityInterface.getStorageAccess().getFileSizeFromUri(uri);
-        if (filename.endsWith(".txt") || filename.endsWith(".TXT") ||
-                filename.endsWith(".onsong") || filename.endsWith(".ONSONG") ||
-                filename.endsWith(".crd") || filename.endsWith(".CRD") ||
-                filename.endsWith(".chopro") || filename.endsWith(".CHOPRO") ||
-                filename.endsWith(".chordpro") || filename.endsWith(".CHORDPRO") ||
-                filename.endsWith(".usr") || filename.endsWith(".USR") ||
-                filename.endsWith(".pro") || filename.endsWith(".PRO")) {
+        if (filename.toLowerCase(Locale.ROOT).endsWith(".txt") ||
+                filename.toLowerCase(Locale.ROOT).endsWith(".onsong") ||
+                filename.toLowerCase(Locale.ROOT).endsWith(".crd") ||
+                filename.toLowerCase(Locale.ROOT).endsWith(".chopro") ||
+                filename.toLowerCase(Locale.ROOT).endsWith(".chordpro") ||
+                filename.toLowerCase(Locale.ROOT).endsWith(".usr") ||
+                filename.toLowerCase(Locale.ROOT).endsWith(".pro")) {
             isvalid = true;
         } else if (filesize < 2000) {
             // Less than 2Mb

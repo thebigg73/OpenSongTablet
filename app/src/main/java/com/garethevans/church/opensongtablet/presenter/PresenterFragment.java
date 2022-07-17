@@ -78,8 +78,8 @@ public class PresenterFragment extends Fragment {
         setupPager();
 
         // Load the song
-        doSongLoad(mainActivityInterface.getPreferences().getMyPreferenceString("whichSongFolder",getString(R.string.mainfoldername)),
-                mainActivityInterface.getPreferences().getMyPreferenceString("songfilename","Welcome to OpenSongApp"));
+        doSongLoad(mainActivityInterface.getPreferences().getMyPreferenceString("songFolder",getString(R.string.mainfoldername)),
+                mainActivityInterface.getPreferences().getMyPreferenceString("songFilename","Welcome to OpenSongApp"));
 
         // Prepare the song menu (will be called again after indexing from the main activity index songs)
         if (mainActivityInterface.getSongListBuildIndex().getIndexRequired() &&

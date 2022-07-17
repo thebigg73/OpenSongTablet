@@ -409,11 +409,11 @@ public class ImportOnlineFragment extends Fragment {
         }
         showDownloadProgress(false);
 
-        // TODO Set up the save layout
         for (String lyric:newSong.getLyrics().split("\n")) {
             Log.d(TAG,"lyric:"+lyric);
         }
-        //setupSaveLayout();
+
+        setupSaveLayout();
     }
 
     public void finishedDownloadPDF(Uri uri) {
@@ -444,7 +444,7 @@ public class ImportOnlineFragment extends Fragment {
                 R.layout.view_exposed_dropdown_item,availableFolders);
         myView.folderChoice.setAdapter(exposedDropDownArrayAdapter);
         myView.folderChoice.setText(mainActivityInterface.getPreferences().
-                getMyPreferenceString("whichSongFolder",getString(R.string.mainfoldername)));
+                getMyPreferenceString("songFolder",getString(R.string.mainfoldername)));
         // Set the position in the list to the chosen value
         exposedDropDownArrayAdapter.keepSelectionPosition(myView.folderChoice,availableFolders);
         changeLayouts(false,false,true);
@@ -456,7 +456,7 @@ public class ImportOnlineFragment extends Fragment {
     private void copyPDF(Uri inputUri) {
         // Prepare the output file
         String filename = "SongSelect.pdf";
-        String folder = mainActivityInterface.getPreferences().getMyPreferenceString("whichSongFolder",getString(R.string.mainfoldername));
+        String folder = mainActivityInterface.getPreferences().getMyPreferenceString("songFolder",getString(R.string.mainfoldername));
         if (myView.folderChoice.getText()!=null) {
             folder = myView.folderChoice.getText().toString();
         }
@@ -482,8 +482,8 @@ public class ImportOnlineFragment extends Fragment {
             mainActivityInterface.getStorageAccess().copyFile(inputStream,outputStream);
 
             // Update the current song
-            mainActivityInterface.getPreferences().setMyPreferenceString("whichSongFolder",folder);
-            mainActivityInterface.getPreferences().setMyPreferenceString("songfilename",filename);
+            mainActivityInterface.getPreferences().setMyPreferenceString("songFolder",folder);
+            mainActivityInterface.getPreferences().setMyPreferenceString("songFilename",filename);
 
             // Update the main and nonopensong databases
             mainActivityInterface.getSQLiteHelper().createSong(folder,filename);
@@ -531,8 +531,9 @@ public class ImportOnlineFragment extends Fragment {
             continueSaving();
         } else {
             // Alert the user with the bottom sheet are you sure
+            String message = getString(R.string.overwrite)+"\n\n"+getString(R.string.song_name_already_taken);
             AreYouSureBottomSheet areYouSureBottomSheet = new AreYouSureBottomSheet(
-                    "onlineSongOverwrite",getString(R.string.overwrite),null,"importOnlineFragment",this,newSong);
+                    "onlineSongOverwrite",message,null,"importOnlineFragment",this,newSong);
             areYouSureBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"AreYouSure");
         }
     }
@@ -546,9 +547,9 @@ public class ImportOnlineFragment extends Fragment {
 
             // Set the current song to this
             mainActivityInterface.getPreferences().
-                    setMyPreferenceString("whichSongFolder", newSong.getFolder());
+                    setMyPreferenceString("songFolder", newSong.getFolder());
             mainActivityInterface.getPreferences().
-                    setMyPreferenceString("songfilename", newSong.getFilename());
+                    setMyPreferenceString("songFilename", newSong.getFilename());
 
             // Send an instruction to update the song menu (no need for full reindex)
             mainActivityInterface.updateSongMenu(newSong);

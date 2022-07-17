@@ -453,8 +453,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         whichMode = preferences.getMyPreferenceString("whichMode", "Performance");
 
         // Song location
-        song.setFilename(preferences.getMyPreferenceString("songfilename","Welcome to OpenSongApp"));
-        song.setFolder(preferences.getMyPreferenceString("whichSongFolder", getString(R.string.mainfoldername)));
+        song.setFilename(preferences.getMyPreferenceString("songFilename","Welcome to OpenSongApp"));
+        song.setFolder(preferences.getMyPreferenceString("songFolder", getString(R.string.mainfoldername)));
 
         // Set dealt with elsewhere
         setActions.preferenceStringToArrays();
@@ -564,7 +564,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             pedalsFragment.keyDownListener(keyCode);
             return true;
         } else {
-            Log.d(TAG,"onKeyDown("+keyCode+","+keyEvent.toString());
             pedalActions.commonEventDown(keyCode, null);
             if (pedalActions.getButtonNumber(keyCode,null)>0) {
                 return true;
@@ -984,7 +983,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         // Otherwise a new title is passed as a string (in a settings menu)
         windowFlags.setWindowFlags(true);
         appActionBar.setActionBar(what);
-        Log.d(TAG,"what="+what+"  settingsOpen="+settingsOpen);
         menuIconVisibility(what == null || (getMode().equals("Presenter") && !settingsOpen));
         myView.fragmentView.setTop(appActionBar.getActionBarHeight());
     }
@@ -1391,7 +1389,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void sendMidiFromList(int item) {
-        Log.d(TAG,"sendMidiFromList("+item+")");
         if (isCurrentFragment(R.id.midiFragment)) {
             ((MidiFragment)getCurrentFragment()).sendMidiFromList(item);
         }
@@ -1405,7 +1402,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public void registerMidiAction(boolean actionDown, boolean actionUp, boolean actionLong, String note) {
         // If pedalsFragment is open, send the midiNote and event there
-        Log.d(TAG,"currentFragment(pedalsFragment): "+isCurrentFragment(R.id.pedalsFragment));
         try {
             Log.d(TAG, "isListening()=" + ((PedalsFragment) getCurrentFragment()).isListening());
         } catch (Exception e) {
@@ -1630,8 +1626,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         String setFolder = currentSet.getFolder(position);
         String setFilename = currentSet.getFilename(position);
         String songKey;
-
-        Log.d(TAG,"position="+position+"  setFolder="+setFolder+"  setFilename="+setFilename+"  setKey="+setKey);
 
         // Update the index in the set
         currentSet.setIndexSongInSet(position);

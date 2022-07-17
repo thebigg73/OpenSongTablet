@@ -2297,7 +2297,13 @@ public class ProcessSong {
                                    int allowedHeight, String scale) {
         Bitmap bmp = null;
 
-        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Songs", folder, filename);
+        Uri uri;
+        if (folder==null) {
+            // This is an external file
+            uri = mainActivityInterface.getImportUri();
+        } else {
+            uri = mainActivityInterface.getStorageAccess().getUriForItem("Songs", folder, filename);
+        }
 
         // FileDescriptor for file, it allows you to close file when you are done with it
         ParcelFileDescriptor parcelFileDescriptor = getPDFParcelFileDescriptor(uri);

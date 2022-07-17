@@ -81,7 +81,7 @@ public class ImportOptionsFragment extends Fragment {
                                     getActualFilename(data.getDataString());
                             mainActivityInterface.setImportFilename(filename);
                         }
-                        int where = R.id.importFile;
+                        int where = R.id.importFileFragment;
                         if (whichFileType == mainActivityInterface.getPreferences().getFinalInt("REQUEST_OSB_FILE")) {
                             where = R.id.importOSBFragment;
                         } else if (whichFileType == mainActivityInterface.getPreferences().getFinalInt("REQUEST_IOS_FILE")) {
@@ -130,7 +130,7 @@ public class ImportOptionsFragment extends Fragment {
                                 mainActivityInterface.getSong().getFolder(), cameraFilename);
                         mainActivityInterface.updateSongMenu(mainActivityInterface.getSong());
                         mainActivityInterface.getPreferences().setMyPreferenceString(
-                                "songfilename",cameraFilename);
+                                "songFilename",cameraFilename);
                         mainActivityInterface.navHome();
                     }
                 });

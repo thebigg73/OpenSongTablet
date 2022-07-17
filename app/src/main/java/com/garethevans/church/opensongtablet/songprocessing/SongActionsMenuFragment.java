@@ -177,7 +177,7 @@ public class SongActionsMenuFragment extends Fragment {
 
     private void loadNewSong() {
         mainActivityInterface.getPreferences().setMyPreferenceString(
-                "songfilename",mainActivityInterface.getSong().getFilename());
+                "songFilename",mainActivityInterface.getSong().getFilename());
         mainActivityInterface.updateSongMenu(mainActivityInterface.getSong());
         mainActivityInterface.navHome();
     }

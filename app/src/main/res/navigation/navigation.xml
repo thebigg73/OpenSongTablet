@@ -648,6 +648,10 @@
             <navigation
                 android:id="@+id/import_graph"
                 app:startDestination="@id/importOptionsFragment">
+                <deepLink
+                    android:id="@+id/deepLink10"
+                    app:uri="opensongapp://settings/import" />
+
 
                 <!-- The import options fragment -->
                 <fragment
@@ -661,6 +665,9 @@
                     <action
                         android:id="@+id/action_importOptionsFragment_to_importOnlineFragment"
                         app:destination="@id/importOnlineFragment" />
+                    <action
+                        android:id="@+id/action_importOptionsFragment_to_importFileFragment"
+                        app:destination="@id/importFileFragment" />
                 </fragment>
 
                 <!-- OSB Import -->
@@ -671,14 +678,16 @@
                     tools:layout="@layout/storage_backup">
 
                 </fragment>
-                <deepLink
-                    android:id="@+id/deepLink10"
-                    app:uri="opensongapp://settings/import" />
                 <fragment
                     android:id="@+id/importOnlineFragment"
                     android:name="com.garethevans.church.opensongtablet.importsongs.ImportOnlineFragment"
                     android:label="ImportOnlineFragment"
                     tools:layout="@layout/settings_import_online"/>
+                <fragment
+                    android:id="@+id/importFileFragment"
+                    android:name="com.garethevans.church.opensongtablet.importsongs.ImportFileFragment"
+                    android:label="ImportFileFragment"
+                    tools:layout="@layout/settings_import_file"/>
 
             </navigation>
             <fragment

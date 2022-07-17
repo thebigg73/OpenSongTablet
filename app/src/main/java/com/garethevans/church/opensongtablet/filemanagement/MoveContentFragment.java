@@ -198,7 +198,7 @@ public class MoveContentFragment extends Fragment {
                             mainActivityInterface.getSong().getFolder().equals(subfolder)) {
                                 mainActivityInterface.getSong().setFolder(newFolder);
                                 mainActivityInterface.getPreferences().setMyPreferenceString(
-                                        "whichSongFolder",newFolder);
+                                        "songFolder",newFolder);
                             }
                         } else {
                             Log.d(TAG, "error copying " + finalMessage);

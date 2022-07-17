@@ -7,7 +7,6 @@ import android.graphics.Canvas;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -144,8 +143,8 @@ public class PerformanceFragment extends Fragment {
 
         removeViews();
 
-        doSongLoad(mainActivityInterface.getPreferences().getMyPreferenceString("whichSongFolder",getString(R.string.mainfoldername)),
-                mainActivityInterface.getPreferences().getMyPreferenceString("songfilename","Welcome to OpenSongApp"));
+        doSongLoad(mainActivityInterface.getPreferences().getMyPreferenceString("songFolder",getString(R.string.mainfoldername)),
+                mainActivityInterface.getPreferences().getMyPreferenceString("songFilename","Welcome to OpenSongApp"));
 
         // Check if we need to show an alert
         if (mainActivityInterface.getAlertChecks().showPlayServicesAlert() ||
@@ -318,7 +317,6 @@ public class PerformanceFragment extends Fragment {
                 // Do the slide in
                 myView.recyclerView.setVisibility(View.VISIBLE);
                 myView.recyclerView.startAnimation(animSlideIn);
-                Log.d(TAG,"recylcerView slideIn");
 
                 // Get a null screenshot
                 getScreenshot(0, 0, 0);
@@ -371,7 +369,6 @@ public class PerformanceFragment extends Fragment {
         // Slide in
         myView.pageHolder.post(() -> {
             myView.pageHolder.setVisibility(View.VISIBLE);
-            Log.d(TAG,"pageHolder slide in");
             myView.pageHolder.startAnimation(animSlideIn);
         });
 
@@ -411,7 +408,6 @@ public class PerformanceFragment extends Fragment {
 
                 // Slide in
                 myView.recyclerView.setVisibility(View.VISIBLE);
-                Log.d(TAG,"recyclerView slide in");
                 myView.recyclerView.startAnimation(animSlideIn);
 
                 // Deal with song actions to run after display (highlighter, notes, etc)
@@ -549,7 +545,6 @@ public class PerformanceFragment extends Fragment {
 
                         // Slide in
                         myView.recyclerView.setVisibility(View.VISIBLE);
-                        Log.d(TAG,"recyclerView slide in");
                         myView.recyclerView.startAnimation(animSlideIn);
 
                         dealWithStuffAfterReady();
@@ -603,7 +598,6 @@ public class PerformanceFragment extends Fragment {
                         }
 
                         myView.pageHolder.setVisibility(View.VISIBLE);
-                        Log.d(TAG,"pageHolder slide in");
                         myView.pageHolder.startAnimation(animSlideIn);
 
                         dealWithStuffAfterReady();
@@ -675,15 +669,7 @@ public class PerformanceFragment extends Fragment {
                     mainActivityInterface.getNearbyConnections().getIsHost()) {
                 mainActivityInterface.getNearbyConnections().sendSongPayload();
             }
-
-            // TODO Remove after fixed
-            Log.d(TAG,"pageHolder is visible: "+(myView.pageHolder.getVisibility()==View.VISIBLE));
-            Log.d(TAG,"zoomLayout is visible: "+(myView.zoomLayout.getVisibility()==View.VISIBLE));
-            Log.d(TAG,"songView is visible: "+(myView.songView.getVisibility()==View.VISIBLE));
-            Log.d(TAG,"songView_col1 is visible: "+(myView.songView.getVisibilityCol1()==View.VISIBLE));
-            Log.d(TAG,"songView_col2 is visible: "+(myView.songView.getVisibilityCol2()==View.VISIBLE));
-            Log.d(TAG,"songView_col3 is visible: "+(myView.songView.getVisibilityCol3()==View.VISIBLE));
-        }, getResources().getInteger(R.integer.slide_in_time)*2);
+        }, getResources().getInteger(R.integer.slide_in_time)* 2L);
     }
     private void dealWithHighlighterFile(int w, int h) {
         if (!mainActivityInterface.getPreferences().
@@ -806,8 +792,6 @@ public class PerformanceFragment extends Fragment {
 
     // Received from MainActivity after a user clicked on a pdf page or a Stage Mode section
     public void performanceShowSection(int position) {
-        Log.d(TAG,"position:"+position);
-
         // Scroll the recyclerView to the position
         myView.recyclerView.smoothScrollTo(requireContext(),recyclerLayoutManager,position);
         mainActivityInterface.getPresenterSettings().setCurrentSection(position);
@@ -818,11 +802,9 @@ public class PerformanceFragment extends Fragment {
     public void selectSection(int position) {
         if (mainActivityInterface.getSong().getFiletype().equals("PDF") &&
                 Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Log.d(TAG,"Selecting pdf page");
                 pdfPageAdapter.sectionSelected(position);
         } else if (mainActivityInterface.getMode().equals("Stage")) {
             stageSectionAdapter.sectionSelected(position);
-            Log.d(TAG,"Selecting stage mode section");
         }
     }
 

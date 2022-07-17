@@ -190,17 +190,17 @@ public class BootUpFragment extends Fragment {
 
     // Get the last used folder/filename or reset if it didn't load
     private void setFolderAndSong() {
-        mainActivityInterface.getSong().setFolder(mainActivityInterface.getPreferences().getMyPreferenceString("whichSongFolder",
+        mainActivityInterface.getSong().setFolder(mainActivityInterface.getPreferences().getMyPreferenceString("songFolder",
                 getString(R.string.mainfoldername)));
 
-        mainActivityInterface.getSong().setFilename(mainActivityInterface.getPreferences().getMyPreferenceString("songfilename",
+        mainActivityInterface.getSong().setFilename(mainActivityInterface.getPreferences().getMyPreferenceString("songFilename",
                 getString(R.string.welcome)));
 
         if (!mainActivityInterface.getPreferences().getMyPreferenceBoolean("songLoadSuccess",false)) {
             mainActivityInterface.getSong().setFolder(getString(R.string.mainfoldername));
-            mainActivityInterface.getPreferences().setMyPreferenceString("whichSongFolder",mainActivityInterface.getSong().getFolder());
+            mainActivityInterface.getPreferences().setMyPreferenceString("songFolder",mainActivityInterface.getSong().getFolder());
             mainActivityInterface.getSong().setFilename("Welcome to OpenSongApp");
-            mainActivityInterface.getPreferences().setMyPreferenceString("songfilename","Welcome to OpenSongApp");
+            mainActivityInterface.getPreferences().setMyPreferenceString("songFilename","Welcome to OpenSongApp");
         }
     }
 

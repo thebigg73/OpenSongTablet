@@ -1020,7 +1020,7 @@ public class NearbyConnections implements NearbyInterface {
                             Log.d(TAG,"About to add to the database - folder: " + folder + "  filename:"+filename);
                             mainActivityInterface.getSQLiteHelper().createSong(folder,filename);
                             // Set the filetype
-                            mainActivityInterface.getStorageAccess().determineFileTypeByExtension(mainActivityInterface.getSong());
+                            mainActivityInterface.getStorageAccess().isIMGorPDF(mainActivityInterface.getSong());
                             mainActivityInterface.getSong().setTitle(filename);
                             mainActivityInterface.getSQLiteHelper().updateSong(mainActivityInterface.getSong());
                             // Refresh the song menu

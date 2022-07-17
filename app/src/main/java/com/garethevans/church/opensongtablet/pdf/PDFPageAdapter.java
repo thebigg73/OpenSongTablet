@@ -117,8 +117,8 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
 
                     // Set the song load success
                     mainActivityInterface.getPreferences().setMyPreferenceBoolean("songLoadSuccess", true);
-                    mainActivityInterface.getPreferences().setMyPreferenceString("songfilename", mainActivityInterface.getSong().getFilename());
-                    mainActivityInterface.getPreferences().setMyPreferenceString("whichSongFolder", mainActivityInterface.getSong().getFolder());
+                    mainActivityInterface.getPreferences().setMyPreferenceString("songFilename", mainActivityInterface.getSong().getFilename());
+                    mainActivityInterface.getPreferences().setMyPreferenceString("songFolder", mainActivityInterface.getSong().getFolder());
                 }
             }
 
