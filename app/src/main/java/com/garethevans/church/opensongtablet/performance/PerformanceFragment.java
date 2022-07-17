@@ -672,45 +672,46 @@ public class PerformanceFragment extends Fragment {
         }, getResources().getInteger(R.integer.slide_in_time)* 2L);
     }
     private void dealWithHighlighterFile(int w, int h) {
-        if (!mainActivityInterface.getPreferences().
-                getMyPreferenceString("songAutoScale","W").equals("N")) {
-            // Set the highlighter image view to match
-            myView.highlighterView.setVisibility(View.INVISIBLE);
-            // Once the view is ready at the required size, deal with it
-            ViewTreeObserver highlighterVTO = myView.highlighterView.getViewTreeObserver();
-            highlighterVTO.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                @Override
-                public void onGlobalLayout() {
-                    myView.highlighterView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                    // Load in the bitmap with these dimensions
-                    Bitmap highlighterBitmap = mainActivityInterface.getProcessSong().
-                            getHighlighterFile(0, 0);
-                    if (highlighterBitmap != null &&
-                            mainActivityInterface.getPreferences().getMyPreferenceBoolean("drawingAutoDisplay", true)) {
+        try {
+            if (!mainActivityInterface.getPreferences().
+                    getMyPreferenceString("songAutoScale", "W").equals("N")) {
+                // Set the highlighter image view to match
+                myView.highlighterView.setVisibility(View.INVISIBLE);
+                // Once the view is ready at the required size, deal with it
+                ViewTreeObserver highlighterVTO = myView.highlighterView.getViewTreeObserver();
+                highlighterVTO.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        myView.highlighterView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                        // Load in the bitmap with these dimensions
+                        Bitmap highlighterBitmap = mainActivityInterface.getProcessSong().
+                                getHighlighterFile(0, 0);
+                        if (highlighterBitmap != null &&
+                                mainActivityInterface.getPreferences().getMyPreferenceBoolean("drawingAutoDisplay", true)) {
 
-                        myView.highlighterView.setVisibility(View.VISIBLE);
-                        ViewGroup.LayoutParams rlp = myView.highlighterView.getLayoutParams();
-                        rlp.width = w;
-                        rlp.height = h;
-                        myView.highlighterView.setLayoutParams(rlp);
-                        RequestOptions requestOptions = new RequestOptions().centerInside();
-                        GlideApp.with(requireContext()).load(highlighterBitmap).
-                                apply(requestOptions).
-                                into(myView.highlighterView);
+                            myView.highlighterView.setVisibility(View.VISIBLE);
+                            ViewGroup.LayoutParams rlp = myView.highlighterView.getLayoutParams();
+                            rlp.width = w;
+                            rlp.height = h;
+                            myView.highlighterView.setLayoutParams(rlp);
+                            RequestOptions requestOptions = new RequestOptions().centerInside();
+                            GlideApp.with(requireContext()).load(highlighterBitmap).
+                                    apply(requestOptions).
+                                    into(myView.highlighterView);
 
-                        myView.highlighterView.setPivotX(0f);
-                        myView.highlighterView.setPivotY(0);
-                        myView.highlighterView.setTranslationX(0f);
-                        myView.highlighterView.setTranslationY((mainActivityInterface.getSongSheetTitleLayout().getHeight()*scaleFactor) - mainActivityInterface.getSongSheetTitleLayout().getHeight());
-                        myView.highlighterView.setScaleX(scaleFactor);
-                        myView.highlighterView.setScaleY(scaleFactor);
+                            myView.highlighterView.setPivotX(0f);
+                            myView.highlighterView.setPivotY(0);
+                            myView.highlighterView.setTranslationX(0f);
+                            myView.highlighterView.setTranslationY((mainActivityInterface.getSongSheetTitleLayout().getHeight() * scaleFactor) - mainActivityInterface.getSongSheetTitleLayout().getHeight());
+                            myView.highlighterView.setScaleX(scaleFactor);
+                            myView.highlighterView.setScaleY(scaleFactor);
 
-                        // Hide after a certain length of time
-                        int timetohide = mainActivityInterface.getPreferences().getMyPreferenceInt("timeToDisplayHighlighter", 0);
-                        if (timetohide != 0) {
-                            new Handler().postDelayed(() -> myView.highlighterView.setVisibility(View.GONE), timetohide);
-                        }
-                    } else {
+                            // Hide after a certain length of time
+                            int timetohide = mainActivityInterface.getPreferences().getMyPreferenceInt("timeToDisplayHighlighter", 0);
+                            if (timetohide != 0) {
+                                new Handler().postDelayed(() -> myView.highlighterView.setVisibility(View.GONE), timetohide);
+                            }
+                        } else {
                             myView.highlighterView.post(() -> {
                                 try {
                                     myView.highlighterView.setVisibility(View.GONE);
@@ -718,13 +719,16 @@ public class PerformanceFragment extends Fragment {
                                     e.printStackTrace();
                                 }
                             });
+                        }
                     }
-                }
-            });
-            myView.songView.post(() -> myView.songView.getLayoutParams().height = (int)(h*scaleFactor));
-            myView.highlighterView.post(() -> myView.highlighterView.requestLayout());
-        } else {
-            myView.highlighterView.post(() -> myView.highlighterView.setVisibility(View.GONE));
+                });
+                myView.songView.post(() -> myView.songView.getLayoutParams().height = (int) (h * scaleFactor));
+                myView.highlighterView.post(() -> myView.highlighterView.requestLayout());
+            } else {
+                myView.highlighterView.post(() -> myView.highlighterView.setVisibility(View.GONE));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
     private void getScreenshot(int w, int h, int topPadding) {

@@ -588,8 +588,8 @@ public class StorageAccess {
     public String getPartOfUri(Uri uri) {
         // This gets the filename
         String path = uri.getPath();
-        if (path != null && path.contains("OpenSong/Songs")) {
-            path = path.substring(path.lastIndexOf("OpenSong/Songs"));
+        if (path != null && path.contains("OpenSong/")) {
+            path = path.substring(path.lastIndexOf("OpenSong/"));
         }
         return path;
     }

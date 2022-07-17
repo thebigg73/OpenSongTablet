@@ -44,6 +44,7 @@ public class ConvertOnSong {
 
         lyrics = thisSong.getLyrics();
 
+        //
         // Fix line breaks and slashes
         lyrics = mainActivityInterface.getProcessSong().fixLineBreaksAndSlashes(lyrics);
 
@@ -300,6 +301,15 @@ public class ConvertOnSong {
                 line = ";" + mainActivityInterface.getConvertChoPro().removeTags(line, "{comments:").trim();
                 line = ";" + mainActivityInterface.getConvertChoPro().removeTags(line, "{comment:").trim();
 
+            }
+
+            // Get rid of line formatting (bold, italics, etc).
+            if (line.startsWith("*") || line.startsWith("/") || line.startsWith("!"))  {
+                line = line.substring(1);
+            }
+            // Get rid of colours (text '&' or highlighting '>' which would already have been changed to ')').
+            if ((line.startsWith("&") || line.startsWith(")")) && line.contains(":")) {
+                line = line.substring(line.indexOf(":")+1);
             }
 
             // Fix guitar tab so it fits OpenSongApp formatting ;e |

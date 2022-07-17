@@ -85,8 +85,10 @@ public class ConvertChoPro {
             // Get a unique uri for the new song
             Uri newUri = getNewSongUri(songSubFolder, newSongFileName);
 
-            // Now write the modified song
-            writeTheImprovedSong(thisSong, oldSongFileName, newSongFileName, songSubFolder, newUri, uri, newXML);
+            // Now write the modified song as long as it isn't an import in progress (from Variations/_cache)
+            if (!songSubFolder.contains("Variations/_cache")) {
+                writeTheImprovedSong(thisSong, oldSongFileName, newSongFileName, songSubFolder, newUri, uri, newXML);
+            }
         }
 
         thisSong.setFilename(newSongFileName);
@@ -497,10 +499,24 @@ public class ConvertChoPro {
     }
 
     public Uri getNewSongUri(String songSubFolder, String nsf) {
-        // The user has already given permission to overwrite this file if it exists already
         newSongFileName = nsf;
         Uri n = mainActivityInterface.getStorageAccess().getUriForItem("Songs", songSubFolder, newSongFileName);
-        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true,n,null,"Songs",songSubFolder,nsf);
+
+        // Unless we are in a the Variations/_cache folder (when importing), we check that the file
+        // doesn't already exist as we don't want to automatically overwrite an existing file
+        // We try to append _ to the filename up to 5 times
+        Log.d(TAG,"songSubFolder: "+songSubFolder);
+        if (!songSubFolder.contains("Variation")) {
+            int attempts = 0;
+            while (mainActivityInterface.getStorageAccess().uriExists(n) && attempts<5) {
+                newSongFileName = newSongFileName + "_";
+                n = mainActivityInterface.getStorageAccess().getUriForItem("Songs", songSubFolder, newSongFileName);
+                attempts += 1;
+            }
+        }
+        if (!songSubFolder.contains("Variation")) {
+            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, n, null, "Songs", songSubFolder, newSongFileName);
+        }
         return n;
     }
 
@@ -555,7 +571,8 @@ public class ConvertChoPro {
 
     String getSongFolderLocation(Uri uri, String oldSongFileName) {
         String sf = mainActivityInterface.getStorageAccess().getPartOfUri(uri);
-        sf = sf.replace("OpenSong/Songs/", "");
+        sf = sf.replace("OpenSong/Songs","");
+        sf = sf.replace("OpenSong/", "");
         sf = sf.replace(oldSongFileName, "");
         sf = sf.replace("//", "/");
         if (sf.startsWith("/")) {
@@ -564,12 +581,18 @@ public class ConvertChoPro {
         if (sf.endsWith("/")) {
             sf = sf.substring(0, sf.lastIndexOf("/"));
         }
+
+        if (sf.startsWith("Variation")) {
+            sf = "../" + sf;
+        }
+
         return sf;
     }
 
     void writeTheImprovedSong(Song thisSong, String oldSongFileName, String nsf,
                               String songSubFolder, Uri newUri, Uri oldUri, String newXML) {
 
+        Log.d(TAG,"writeTheImprovedSong songSubFolder:"+songSubFolder);
         newSongFileName = nsf;
         // Only do this for songs that exist!
         Log.d(TAG,"oldSongFileName="+oldSongFileName);
@@ -580,35 +603,36 @@ public class ConvertChoPro {
 
         if (oldSongFileName != null && !oldSongFileName.equals("") && newSongFileName != null && !newSongFileName.equals("")
                 && oldUri != null && newUri != null && mainActivityInterface.getStorageAccess().uriExists(oldUri)) {
-            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, newUri,null,"Songs",songSubFolder,newSongFileName);
+            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, newUri, null, "Songs", songSubFolder, newSongFileName);
             OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(newUri);
 
-            Log.d(TAG,"outputStream="+outputStream);
+            Log.d(TAG, "outputStream=" + outputStream);
 
             if (outputStream != null) {
                 // Change the songId (references to the uri)
                 // Now remove the old chordpro file
                 mainActivityInterface.getStorageAccess().writeFileFromString(newXML, outputStream);
-                Log.d(TAG,"attempt to deletefile="+mainActivityInterface.getStorageAccess().deleteFile(oldUri));
+                Log.d(TAG, "attempt to deletefile=" + mainActivityInterface.getStorageAccess().deleteFile(oldUri));
 
                 // Remove old song from database
-                mainActivityInterface.getSQLiteHelper().deleteSong(songSubFolder,oldSongFileName);
+                mainActivityInterface.getSQLiteHelper().deleteSong(songSubFolder, oldSongFileName);
             }
 
             // Update the song filename
             thisSong.setFilename(newSongFileName);
 
             // Now change the database references
-            if (songSubFolder==null || songSubFolder.isEmpty()) {
+            if (songSubFolder == null || songSubFolder.isEmpty()) {
                 songSubFolder = c.getString(R.string.mainfoldername);
             }
 
-            if (!mainActivityInterface.getSQLiteHelper().songExists(songSubFolder,newSongFileName)) {
-                mainActivityInterface.getSQLiteHelper().createSong(songSubFolder,newSongFileName);
+            if (!mainActivityInterface.getSQLiteHelper().songExists(songSubFolder, newSongFileName)) {
+                mainActivityInterface.getSQLiteHelper().createSong(songSubFolder, newSongFileName);
             }
 
             // Write the song object (full details) back to the database;
             mainActivityInterface.getSQLiteHelper().updateSong(thisSong);
+
         }
     }
 

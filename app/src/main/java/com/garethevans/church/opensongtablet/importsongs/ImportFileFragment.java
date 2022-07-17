@@ -37,6 +37,7 @@ public class ImportFileFragment extends Fragment {
     private boolean isIMGorPDF;
     private String basename, requiredExtension;
     private Uri tempFile, copyTo;
+    private String originalFolder, originalFilename;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -51,8 +52,12 @@ public class ImportFileFragment extends Fragment {
         myView = SettingsImportFileBinding.inflate(inflater,container,false);
 
         mainActivityInterface.updateToolbar(getString(R.string.import_from_file));
-        myView.nestedScrollView.setFabToAnimate(myView.importButton);
+        myView.nestedScrollView.setExtendedFabToAnimate(myView.importButton);
 
+        // Get a note of the original folder/filename
+        originalFolder = mainActivityInterface.getSong().getFolder();
+        originalFilename = mainActivityInterface.getSong().getFilename();
+        Log.d(TAG,"Original: "+originalFolder+"/"+originalFilename);
         // Hide everything other than the progress bar while we process the song
         myView.progress.setVisibility(View.VISIBLE);
         myView.content.setVisibility(View.GONE);
@@ -74,6 +79,7 @@ public class ImportFileFragment extends Fragment {
             requiredExtension = "";
             if (mainActivityInterface.getImportFilename().contains(".") && isIMGorPDF) {
                 requiredExtension = mainActivityInterface.getImportFilename().substring(mainActivityInterface.getImportFilename().lastIndexOf("."));
+                basename = mainActivityInterface.getImportFilename();
             }
             Log.d(TAG,"required extension:"+requiredExtension);
 
@@ -106,14 +112,13 @@ public class ImportFileFragment extends Fragment {
         mainActivityInterface.getStorageAccess().copyFile(inputStream,outputStream);
 
         if (isIMGorPDF) {
-            myView.imageView.setVisibility(View.VISIBLE);
             if (mainActivityInterface.getImportFilename().toLowerCase(Locale.ROOT).endsWith(".pdf")) {
                 // Load in a preview if the version of Android is high enough
                 Bitmap bmp = mainActivityInterface.getProcessSong().getBitmapFromPDF(null,null,1,200,200,"N");
-                GlideApp.with(requireContext()).load(bmp).into(myView.imageView);
+                myView.imageView.post(()->GlideApp.with(requireContext()).load(bmp).into(myView.imageView));
                 newSong.setFiletype("PDF");
             } else {
-                GlideApp.with(requireContext()).load(mainActivityInterface.getImportUri()).into(myView.imageView);
+                myView.imageView.post(()->GlideApp.with(requireContext()).load(mainActivityInterface.getImportUri()).into(myView.imageView));
                 newSong.setFiletype("IMG");
             }
         } else {
@@ -123,9 +128,18 @@ public class ImportFileFragment extends Fragment {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            myView.content.setText(newSong.getTitle());
-            myView.content.setHintMonospace();
-            myView.content.setHint(newSong.getLyrics());
+            myView.content.post(()-> {
+                        myView.content.setText(newSong.getTitle());
+                        myView.content.setHintMonospace();
+                        myView.content.setHint(newSong.getLyrics());
+                    });
+
+            // Because we have loaded the song (sort of), we need to reset the mainActivity.getSong()
+            // As this will have been changed by the load process
+            mainActivityInterface.getSong().setFolder(originalFolder);
+            mainActivityInterface.getSong().setFilename(originalFilename);
+            mainActivityInterface.getPreferences().setMyPreferenceString("songFolder",originalFolder);
+            mainActivityInterface.getPreferences().setMyPreferenceString("songFilename",originalFilename);
         }
     }
 
@@ -138,7 +152,11 @@ public class ImportFileFragment extends Fragment {
         // Default to the current folder
         myView.folder.setText(mainActivityInterface.getSong().getFolder());
 
-        myView.content.setVisibility(View.VISIBLE);
+        if (isIMGorPDF) {
+            myView.imageView.setVisibility(View.VISIBLE);
+        } else {
+            myView.content.setVisibility(View.VISIBLE);
+        }
 
         // Check if file with this name already exists
         checkIfFileExists();
@@ -176,28 +194,62 @@ public class ImportFileFragment extends Fragment {
             String folder = myView.folder.getText().toString();
             String filename = myView.filename.getText().toString();
 
+            boolean success;
+
             if (isIMGorPDF) {
                 // Put the required extension back if it isn't there
-                if (!requiredExtension.isEmpty() && !filename.contains(requiredExtension)) {
+                if (!requiredExtension.isEmpty() && !filename.toLowerCase(Locale.ROOT).contains(requiredExtension.toLowerCase(Locale.ROOT))) {
                     filename = filename + requiredExtension;
                 }
+                Log.d(TAG,"filename="+filename);
                 myView.filename.setText(filename);
+                // Now copy the file
+                copyTo = mainActivityInterface.getStorageAccess().getUriForItem("Songs",folder,filename);
+                mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true,copyTo,null,"Songs",folder,filename);
+                OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(copyTo);
+                InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(tempFile);
+                Log.d(TAG,"tempFile: "+tempFile);
+                Log.d(TAG,"copyTo: "+copyTo);
+                success = mainActivityInterface.getStorageAccess().copyFile(inputStream,outputStream);
+                Log.d(TAG,"success:"+success);
+
+            } else {
+                // This is now a proper song, so write it
+                newSong.setFolder(folder);
+                newSong.setFilename(filename);
+                newSong.setFiletype("XML");
+                copyTo = mainActivityInterface.getStorageAccess().getUriForItem("Songs",folder,filename);
+                mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true,copyTo,null,"Songs",folder,filename);
+                OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(copyTo);
+                String xml = mainActivityInterface.getProcessSong().getXML(newSong);
+                Log.d(TAG,"xml:"+xml);
+                success = mainActivityInterface.getStorageAccess().writeFileFromString(xml,outputStream);
             }
 
-            InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(mainActivityInterface.getImportUri());
-            copyTo = mainActivityInterface.getStorageAccess().getUriForItem("Songs",myView.folder.getText().toString(),myView.filename.getText().toString());
-            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true,copyTo,null,"Songs",myView.folder.getText().toString(),myView.filename.getText().toString());
-            OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(copyTo);
-            if (mainActivityInterface.getStorageAccess().copyFile(inputStream,outputStream)) {
+            if (success) {
+                // Now delete the old song and proceed
                 // Remove the temp file from the variations
                 mainActivityInterface.getStorageAccess().deleteFile(tempFile);
 
+                // Add to the database
+                if (isIMGorPDF) {
+                    // Add to the persistent database
+                    mainActivityInterface.getNonOpenSongSQLiteHelper().createSong(folder,filename);
+                }
+
+                mainActivityInterface.getSQLiteHelper().createSong(folder,filename);
+                mainActivityInterface.getSQLiteHelper().updateSong(newSong);
+
                 // Set the song
+                Log.d(TAG,"Setting the mainActivitySong to "+folder+"/"+filename);
                 mainActivityInterface.getSong().setFolder(folder);
                 mainActivityInterface.getSong().setFilename(filename);
                 mainActivityInterface.getPreferences().setMyPreferenceString("songFolder",folder);
                 mainActivityInterface.getPreferences().setMyPreferenceString("songFilename",filename);
+                mainActivityInterface.updateSongList();
                 mainActivityInterface.navHome();
+            } else {
+                mainActivityInterface.getShowToast().doIt(getString(R.string.error));
             }
         }
     }

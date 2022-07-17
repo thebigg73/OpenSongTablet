@@ -418,6 +418,7 @@ public class LoadSong {
                         thisSong.setFiletype("XML");
 
                     } catch (Exception e) {
+                        Log.d(TAG,"Not an straightforward xml file");
                         e.printStackTrace();
                         if (thisSong.getFiletype().equals("XML")) {
                             // This was an XML file and it wasn't a simple issue
