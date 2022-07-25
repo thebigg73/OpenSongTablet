@@ -8588,7 +8588,7 @@ public class StageMode extends AppCompatActivity implements
         }
 
         @Override
-        public void onRouteUnselected(MediaRouter router, MediaRouter.RouteInfo info, int reason) {
+        public void onRouteUnselected(@NonNull MediaRouter router, @NonNull MediaRouter.RouteInfo info, int reason) {
             menuButtonLongPressActions();
             super.onRouteUnselected(router,info,reason);
             teardown();
@@ -8616,22 +8616,22 @@ public class StageMode extends AppCompatActivity implements
         }
 
         @Override
-        public void onRouteAdded(MediaRouter mediaRouter, MediaRouter.RouteInfo routeInfo) {
+        public void onRouteAdded(@NonNull MediaRouter mediaRouter, @NonNull MediaRouter.RouteInfo routeInfo) {
             menuButtonLongPressActions();
         }
 
         @Override
-        public void onRouteRemoved(MediaRouter mediaRouter, MediaRouter.RouteInfo routeInfo) {
+        public void onRouteRemoved(@NonNull MediaRouter mediaRouter, @NonNull MediaRouter.RouteInfo routeInfo) {
             menuButtonLongPressActions();
         }
 
         @Override
-        public void onRouteChanged(MediaRouter mediaRouter, MediaRouter.RouteInfo routeInfo) {
+        public void onRouteChanged(@NonNull MediaRouter mediaRouter, @NonNull MediaRouter.RouteInfo routeInfo) {
             menuButtonLongPressActions();
         }
 
         @Override
-        public void onRouteVolumeChanged(MediaRouter mediaRouter, MediaRouter.RouteInfo routeInfo) {
+        public void onRouteVolumeChanged(@NonNull MediaRouter mediaRouter, @NonNull MediaRouter.RouteInfo routeInfo) {
             menuButtonLongPressActions();
         }
     }
