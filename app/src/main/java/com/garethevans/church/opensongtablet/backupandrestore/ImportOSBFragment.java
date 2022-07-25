@@ -77,6 +77,8 @@ public class ImportOSBFragment extends Fragment {
         myView = StorageBackupBinding.inflate(inflater,container,false);
         mainActivityInterface.updateToolbar(getString(R.string.import_basic));
 
+        myView.nestedScrollView.setExtendedFabToAnimate(myView.createBackupFAB);
+
         // Set up helpers
         setupHelpers();
 

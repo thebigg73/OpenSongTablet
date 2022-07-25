@@ -302,21 +302,23 @@ public class BackupOSBFragment extends Fragment {
             }
 
             // Update the view
-            requireActivity().runOnUiThread(() -> {
-                if (alive) {
-                    myView.progressBar.setVisibility(View.GONE);
-                    if (error) {
-                        String message = getString(R.string.processing) + ": " + getString(R.string.error);
-                        myView.progressText.setText(message);
+            if (alive) {
+                requireActivity().runOnUiThread(() -> {
+                    if (alive) {
+                        myView.progressBar.setVisibility(View.GONE);
+                        if (error) {
+                            String message = getString(R.string.processing) + ": " + getString(R.string.error);
+                            myView.progressText.setText(message);
 
-                    } else {
-                        myView.progressText.setText("");
-                        myView.progressText.setVisibility(View.GONE);
-                        exportBackup();
+                        } else {
+                            myView.progressText.setText("");
+                            myView.progressText.setVisibility(View.GONE);
+                            exportBackup();
+                        }
+                        myView.createBackupFAB.setEnabled(true);
                     }
-                    myView.createBackupFAB.setEnabled(true);
-                }
-            });
+                });
+            }
         };
 
         thread = new Thread(runnable);

@@ -68,6 +68,8 @@ public class DisplayExtraFragment extends Fragment {
         myView.trimLineSpacingSlider.setValue(percentage);
         myView.trimLineSpacingSlider.setLabelFormatter(value -> ((int)value)+"%");
         sliderValToText(percentage);
+        // TODO Maybe add later
+        // myView.addSectionBox.setChecked(getChecked("addSectionBox",false));
         myView.filterSwitch.setChecked(getChecked("filterSections",false));
         visibilityByBoolean(myView.filterLayout,myView.filterSwitch.getChecked());
         myView.filterShow.setChecked(getChecked("filterShow",false));
@@ -144,6 +146,11 @@ public class DisplayExtraFragment extends Fragment {
             updateBooleanPreference("trimLines",isChecked,myView.trimLineSpacingSlider);
             mainActivityInterface.getProcessSong().updateProcessingPreferences();
         });
+        // TODO Maybe add later?
+        /*myView.addSectionBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            updateBooleanPreference("addSectionBox",isChecked,null);
+            mainActivityInterface.getProcessSong().updateProcessingPreferences();
+        });*/
         myView.filterSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             updateBooleanPreference("filterSections",isChecked,myView.filterLayout);
             mainActivityInterface.getProcessSong().updateProcessingPreferences();

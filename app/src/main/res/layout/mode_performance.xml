@@ -28,6 +28,8 @@
         android:id="@+id/testPane"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:clipChildren="false"
+        android:clipToPadding="false"
         android:visibility="invisible" />
 
     <!-- This is used for the pdf pages, images and stage mode -->
@@ -48,20 +50,16 @@
         android:id="@+id/zoomLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:clipChildren="false"
+        android:clipToPadding="false"
         android:isScrollContainer="true">
 
         <RelativeLayout
             android:id="@+id/pageHolder"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:clipChildren="false"
             android:clipToPadding="false">
-
-            <!-- The song lyrics etc. go here -->
-            <com.garethevans.church.opensongtablet.customviews.SongContent
-                android:id="@+id/songView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
 
             <!-- The song sheet title if required -->
             <LinearLayout
@@ -71,6 +69,13 @@
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:orientation="vertical" />
+
+            <!-- The song lyrics etc. go here -->
+            <com.garethevans.church.opensongtablet.customviews.SongContent
+                android:id="@+id/songView"
+                android:layout_below="@+id/songSheetTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
             <!-- This is where images go -->
             <ImageView

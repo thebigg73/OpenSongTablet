@@ -182,6 +182,16 @@
                 android:valueFrom="0"
                 android:valueTo="50"/>
 
+            <!--TODO Add later maybe?
+            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                android:id="@+id/addSectionBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/section_box"
+                android:hint="@string/section_box_info"/>-->
+
             <TableRow style="@style/DividerLine" />
 
             <!--Section filtering-->

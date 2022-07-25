@@ -1160,6 +1160,10 @@ Check out the categories in the right hand options menu.
     <string name="menu_song_order">How should songs be listed in the menu?</string>
     <string name="text_extract_website">Song text found on this page.  Click here to extract.</string>
     <string name="text_extract_check">OpenSongApp will try to find song content automatically, however, you can manually check by clicking on this button.</string>
+    <string name="section_box">Draw section box</string>
+    <string name="section_box_info">Show each section of a song with a box around it (as in stage mode)</string>
+    <string name="onsong_import_folder">Choose a folder to save imported songs</string>
+    <string name="onsong_import_folder_info">The recommended option is to import into a separate OnSong folder.  You can always move songs into other folders later.</string>
 
 
 </resources>

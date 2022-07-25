@@ -82,10 +82,16 @@ public class ImportOptionsFragment extends Fragment {
                             mainActivityInterface.setImportFilename(filename);
                         }
                         int where = R.id.importFileFragment;
-                        if (whichFileType == mainActivityInterface.getPreferences().getFinalInt("REQUEST_OSB_FILE")) {
+                        String fileExtension = "";
+                        if (mainActivityInterface.getImportFilename().contains(".")) {
+                            fileExtension = mainActivityInterface.getImportFilename().substring(mainActivityInterface.getImportFilename().lastIndexOf("."));
+                        }
+                        if (fileExtension.equals(".osb") ||
+                                whichFileType == mainActivityInterface.getPreferences().getFinalInt("REQUEST_OSB_FILE")) {
                             where = R.id.importOSBFragment;
-                        } else if (whichFileType == mainActivityInterface.getPreferences().getFinalInt("REQUEST_IOS_FILE")) {
-                            where = R.id.importiOS;
+                        } else if (fileExtension.equals(".backup") ||
+                                whichFileType == mainActivityInterface.getPreferences().getFinalInt("REQUEST_IOS_FILE")) {
+                            where = R.id.importIOSFragment;
                         }
                         mainActivityInterface.navigateToFragment(null, where);
                     }

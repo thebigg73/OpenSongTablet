@@ -46,7 +46,7 @@ public class SongSheetHeaders {
             String author = thisSong.getAuthor();
             String copyright = thisSong.getCopyright();
 
-            float defFontSize = 8.0f;
+            float defFontSize = 12.0f;
 
             if (title!=null && !title.isEmpty()) {
                 linearLayout.addView(getSongSheetTexts(title,typeface,textColor,defFontSize));

@@ -126,7 +126,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         }).start();
     }
 
-    private void setFolders() {
+    public void setFolders() {
         new Thread(() -> {
             foundFolders = mainActivityInterface.getSQLiteHelper().getFolders();
             if (getActivity()!=null) {

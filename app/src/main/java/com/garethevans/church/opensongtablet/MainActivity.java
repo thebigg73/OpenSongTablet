@@ -73,7 +73,6 @@ import com.garethevans.church.opensongtablet.controls.Swipes;
 import com.garethevans.church.opensongtablet.customslides.CustomSlide;
 import com.garethevans.church.opensongtablet.customslides.CustomSlideFragment;
 import com.garethevans.church.opensongtablet.customviews.DrawNotes;
-import com.garethevans.church.opensongtablet.customviews.GlideApp;
 import com.garethevans.church.opensongtablet.databinding.ActivityBinding;
 import com.garethevans.church.opensongtablet.export.ExportActions;
 import com.garethevans.church.opensongtablet.export.PrepareFormats;
@@ -810,10 +809,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         }
     }
     private boolean hasNearbyPermissions() {
-        if (Build.VERSION.SDK_INT>30) {
+        if (Build.VERSION.SDK_INT>=33) {
+            return checkForPermission(Manifest.permission_group.NEARBY_DEVICES);
+        } else if (Build.VERSION.SDK_INT>30) {
             return checkForPermission(Manifest.permission.BLUETOOTH_SCAN) &&
                     checkForPermission(Manifest.permission.BLUETOOTH_ADVERTISE) &&
-                    checkForPermission(Manifest.permission.BLUETOOTH_CONNECT);
+                    checkForPermission(Manifest.permission.BLUETOOTH_CONNECT) &&
+                    checkForPermission(Manifest.permission.ACCESS_FINE_LOCATION);
         } else if (Build.VERSION.SDK_INT==29 || Build.VERSION.SDK_INT==30) {
             return checkForPermission(Manifest.permission.ACCESS_FINE_LOCATION);
         } else {
@@ -901,7 +903,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             } else {
                 // Check which one(s) we don't have and ask for them!
                 List<String> listPermissionsNeeded = new ArrayList<>();
-                if (Build.VERSION.SDK_INT > 30) {
+                if (Build.VERSION.SDK_INT >= 33) {
+                    if (!checkForPermission(Manifest.permission_group.NEARBY_DEVICES)) {
+                        requestForPermissions(new String[]{Manifest.permission_group.NEARBY_DEVICES});
+                    }
+                } else if (Build.VERSION.SDK_INT > 30) {
                     if (!checkForPermission(Manifest.permission.BLUETOOTH_SCAN)) {
                         listPermissionsNeeded.add(Manifest.permission.BLUETOOTH_SCAN);
                     }
@@ -910,6 +916,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     }
                     if (!checkForPermission(Manifest.permission.BLUETOOTH_CONNECT)) {
                         listPermissionsNeeded.add(Manifest.permission.BLUETOOTH_CONNECT);
+                    }
+                    if (!checkForPermission(Manifest.permission.ACCESS_FINE_LOCATION)) {
+                        listPermissionsNeeded.add(Manifest.permission.ACCESS_FINE_LOCATION);
                     }
                     if (listPermissionsNeeded.size() > 0) {
                         String[] permissions = new String[listPermissionsNeeded.size()];
@@ -981,6 +990,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     public void updateToolbar(String what) {
         // Null titles are for the default song, author, etc.
         // Otherwise a new title is passed as a string (in a settings menu)
+        Log.d(TAG,"what="+what);
+        Log.d(TAG,"settingsOpen="+settingsOpen);
+        Log.d(TAG,"getMode()="+getMode());
         windowFlags.setWindowFlags(true);
         appActionBar.setActionBar(what);
         menuIconVisibility(what == null || (getMode().equals("Presenter") && !settingsOpen));
@@ -992,6 +1004,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         appActionBar.updateToolbarHelp(webAddress);
     }
     private void menuIconVisibility(boolean isVisible) {
+        Log.d(TAG,"isVisible:"+isVisible);
         try {
             if (isVisible) {
                 screenMirror.setVisibility(View.VISIBLE);
@@ -1153,13 +1166,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         getMenuInflater().inflate(R.menu.mainactivitymenu, menu);
 
         screenMirror = (ImageView) menu.findItem(R.id.mirror_menu_item).getActionView();
-        GlideApp.with(this).load(ContextCompat.getDrawable(this,R.drawable.cast)).into(screenMirror);
+        screenMirror.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.cast));
         screenMirror.setOnClickListener(view -> startActivity(new Intent("android.settings.CAST_SETTINGS")));
         myView.toolBar.batteryholder.setOnClickListener(view -> navigateToFragment("opensongapp://settings/display/actionbar",0));
 
         return true;
     }
-
 
     // The drawers and actionbars
     @Override
@@ -1858,8 +1870,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void updateSongList() {
+        // This uses the existing database objects
         if (songMenuFragment!=null) {
             try {
+                songMenuFragment.setFolders();
                 songMenuFragment.refreshSongList();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -2409,12 +2423,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void updateSizes(int width, int height) {
-        /*if (whichMode.equals("Performance") && isCurrentFragment(R.id.performanceFragment)) {
-            ((PerformanceFragment)getCurrentFragment()).updateSizes(width,height);
-            if (getFragmentFromId(R.id.performanceFragment) != null) {
-                //((PerformanceFragment) getFragmentFromId(R.id.performanceFragment)).updateSizes(width, height);
-            }
-        }*/
+        Log.d(TAG,"performanceFragment="+performanceFragment);
+        if (performanceFragment!=null && whichMode.equals("Performance")) {
+            Log.d(TAG,"updateSizes("+width+", "+height+")");
+            performanceFragment.updateSizes(width,height);
+        }
     }
 
     @Override
@@ -2627,20 +2640,28 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         DisplayManager displayManager = (DisplayManager) getSystemService(DISPLAY_SERVICE);
         if (displayManager != null) {
             connectedDisplays = displayManager.getDisplays(DisplayManager.DISPLAY_CATEGORY_PRESENTATION);
-            if (screenMirror!=null) {
-                if (connectedDisplays.length > 0) {
-                    screenMirror.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.cast_connected));
-                } else {
-                    screenMirror.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.cast));
-                }
-            }
+
             // If we have changed the number of connected displays, set them up
             if (connectedDisplays.length > prevNumConnectedDisplays) {
                 prevNumConnectedDisplays = connectedDisplays.length;
                 setupDisplays();
             }
-        } else if (screenMirror!=null){
-            screenMirror.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.cast));
+        } else {
+            connectedDisplays = null;
+            secondaryDisplays = null;
+        }
+
+        updateCastIcon();
+    }
+
+    private void updateCastIcon() {
+        Log.d(TAG,"updateCastIcon()");
+        if (screenMirror!=null) {
+            if (secondaryDisplays!=null && connectedDisplays.length > 0) {
+                screenMirror.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.cast_connected));
+            } else {
+                screenMirror.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.cast));
+            }
         }
     }
 
@@ -2667,6 +2688,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 secondaryDisplays[c].show();
             }
         }
+
+        // Update cast icon
+        updateCastIcon();
     }
 
     @Override

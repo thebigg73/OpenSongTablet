@@ -117,7 +117,8 @@ public class Preferences extends Activity {
     // Below is an alphabetical list of all the user preferences stored in the app!
     //
     // Variable name                   Type        What
-    // addSectionSpace                 boolean     Should a spacing line be added between sections to improve readability (def:true)
+    // addSectionBox                   boolean     Draw a box around sections when in Performance mode (def:false)
+    // *NOTYET addSectionSpace                 boolean     Should a spacing line be added between sections to improve readability (def:true)
     // airTurnMode                     boolean     Should autorepeat onKeyUp (multiple from keyRepeatCount variable) be converted to longKeyPress actions for AirTurn pedals (def:false)
     // appTheme                        String      The theme to use (dark, light, custom1, custom2) (def:dark)
     // autoscrollAutoStart             boolean     Should autoscroll start on page load (needs to be started manually the first time) (def:false)

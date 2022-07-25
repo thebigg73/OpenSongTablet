@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -450,7 +451,7 @@ public class PerformanceFragment extends Fragment {
     private void setUpHeaderListener() {
         // If we want headers, the header layout isn't null, so we can draw and listen
         // Add the view and wait for the vto return
-        if (mainActivityInterface.getSongSheetTitleLayout() != null && mainActivityInterface.getMode().equals("Performance")) {
+        if (mainActivityInterface.getSongSheetTitleLayout() != null && !mainActivityInterface.getMode().equals("Presenter")) {
 
             // Check the header isn't already attached to a view
             if (mainActivityInterface.getSongSheetTitleLayout().getParent()!=null) {
@@ -461,8 +462,13 @@ public class PerformanceFragment extends Fragment {
             vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override
                 public void onGlobalLayout() {
-                    myView.testPane.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    try {
+                        myView.testPane.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     setUpTestViewListener();
+
                 }
             });
 
@@ -512,6 +518,11 @@ public class PerformanceFragment extends Fragment {
         }
     }
     private void songIsReadyToDisplay() {
+        // Set the page holder to fullscreen for now
+        myView.pageHolder.getLayoutParams().width = screenWidth;
+        myView.pageHolder.getLayoutParams().height = screenHeight;
+        myView.songSheetTitle.setVisibility(View.VISIBLE);
+
         try {
             // All views have now been drawn, so measure the arraylist views
             for (int x = 0; x < mainActivityInterface.getSectionViews().size(); x++) {
@@ -564,38 +575,64 @@ public class PerformanceFragment extends Fragment {
                 myView.songView.setVisibility(View.VISIBLE);
                 myView.imageView.setVisibility(View.GONE);
                 myView.recyclerView.setVisibility(View.GONE);
-                myView.zoomLayout.setPageSize(screenWidth, screenHeight);
 
-                scaleFactor = mainActivityInterface.getProcessSong().addViewsToScreen(
+                myView.zoomLayout.setPageSize(screenWidth, screenHeight);
+                myView.pageHolder.getLayoutParams().width = screenWidth;
+                myView.pageHolder.getLayoutParams().height = screenHeight;
+
+                float[] scaleInfo = mainActivityInterface.getProcessSong().addViewsToScreen(
                         false, mainActivityInterface.getSectionViews(),
                         mainActivityInterface.getSectionWidths(), mainActivityInterface.getSectionHeights(),
                         myView.pageHolder, myView.songView, myView.songSheetTitle,
                         screenWidth, screenHeight,
                         myView.songView.getCol1(), myView.songView.getCol2(), myView.songView.getCol3());
 
-                // Pass this scale factor to the zoom layout
+                // Determine how many colums are scaled
+                int heightOfScaled = 0;
+                if (scaleInfo.length==2) {
+                    // 1 column.  [0]=scaleSize, [1]=scaled height
+                    scaleFactor = scaleInfo[0];
+                    heightOfScaled = (int)scaleInfo[1];
+                    for (int x = 0; x < mainActivityInterface.getSectionViews().size(); x++) {
+                        widthBeforeScale = Math.max(widthBeforeScale, mainActivityInterface.getSectionWidths().get(x));
+                        heightBeforeScale += mainActivityInterface.getSectionHeights().get(x);
+                    }
+                    widthAfterScale = (int) (widthBeforeScale * scaleFactor);
+                    myView.pageHolder.getLayoutParams().width = widthAfterScale;
+                } else if (scaleInfo.length==4) {
+                    // 2 columns. [0]=col1scale  [1]=col2scale  [2]=sectionnum for col2  [3]=biggest col height
+                    scaleFactor = Math.max(scaleInfo[0],scaleInfo[1]);
+                    heightOfScaled = (int)scaleInfo[3];
+                    myView.pageHolder.getLayoutParams().width = screenWidth;
+                    myView.songView.getLayoutParams().width = screenWidth;
+                }  else if (scaleInfo.length==6) {
+                    // 3 columns. [0]=col1scale  [1]=col2scale  [2]=col3scale
+                    // [4]=sectionnum for col2  [5]=sectionbum for col3 [6]=biggest col height
+                    scaleFactor = Math.max(scaleInfo[0],Math.max(scaleInfo[1],scaleInfo[2]));
+                    heightOfScaled = (int)scaleInfo[6];
+                    myView.pageHolder.getLayoutParams().width = screenWidth;
+                    myView.songView.getLayoutParams().width = screenWidth;
+                }
+                myView.pageHolder.getLayoutParams().height = heightOfScaled + (int)(mainActivityInterface.getSongSheetTitleLayout().getHeight());
+                myView.songView.getLayoutParams().height = heightOfScaled + (int)(mainActivityInterface.getSongSheetTitleLayout().getHeight());
+
+
+                // Pass this scale factor to the zoom layout as the new minimum scale
                 myView.zoomLayout.setCurrentScale(scaleFactor);
 
-                for (int x = 0; x < mainActivityInterface.getSectionViews().size(); x++) {
-                    widthBeforeScale = Math.max(widthBeforeScale, mainActivityInterface.getSectionWidths().get(x));
-                    heightBeforeScale += mainActivityInterface.getSectionHeights().get(x);
-                }
 
-                widthAfterScale = (int) (widthBeforeScale * scaleFactor);
-                heightAfterScale = (int) (heightBeforeScale * scaleFactor);
-
-                myView.pageHolder.getLayoutParams().width = widthAfterScale;
-                myView.pageHolder.getLayoutParams().height = heightAfterScale;
 
                 myView.zoomLayout.post(() -> {
                     try {
-                        myView.zoomLayout.setSongSize(widthAfterScale, heightAfterScale + (int) (mainActivityInterface.getSongSheetTitleLayout().getHeight() * scaleFactor));
-
+                        // The new song sizes were sent to the zoomLayout in ProcessSong
                         // Because we might have padded the view at the top for song sheet header scaling:
                         int topPadding = 0;
-                        if (myView.songView.getChildCount() > 0 && myView.songView.getChildAt(0) != null) {
-                            topPadding = myView.songView.getChildAt(0).getPaddingTop();
+                        if (myView.songSheetTitle.getChildCount() > 0) {
+                            topPadding = myView.songSheetTitle.getHeight();
                         }
+
+                        Log.d(TAG,"topPadding: "+topPadding);
+                        Log.d(TAG, "translationY: "+myView.songView.getTranslationY());
 
                         myView.pageHolder.setVisibility(View.VISIBLE);
                         myView.pageHolder.startAnimation(animSlideIn);
@@ -605,12 +642,11 @@ public class PerformanceFragment extends Fragment {
                         // Try to take a screenshot ready for any highlighter actions that may be called
                         int finalTopPadding = topPadding;
                         //TODO Multiple columns aren't covered in the width (only based on one column)
-                        getScreenshot(widthAfterScale, heightAfterScale, finalTopPadding);
+                        getScreenshot(myView.pageHolder.getWidth(), myView.pageHolder.getHeight(), finalTopPadding);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 });
-
             }
 
         } catch (Exception e) {
@@ -686,6 +722,7 @@ public class PerformanceFragment extends Fragment {
                         // Load in the bitmap with these dimensions
                         Bitmap highlighterBitmap = mainActivityInterface.getProcessSong().
                                 getHighlighterFile(0, 0);
+                        Log.d(TAG,"highlighterBitmap:"+highlighterBitmap);
                         if (highlighterBitmap != null &&
                                 mainActivityInterface.getPreferences().getMyPreferenceBoolean("drawingAutoDisplay", true)) {
 
@@ -701,8 +738,6 @@ public class PerformanceFragment extends Fragment {
 
                             myView.highlighterView.setPivotX(0f);
                             myView.highlighterView.setPivotY(0);
-                            myView.highlighterView.setTranslationX(0f);
-                            myView.highlighterView.setTranslationY((mainActivityInterface.getSongSheetTitleLayout().getHeight() * scaleFactor) - mainActivityInterface.getSongSheetTitleLayout().getHeight());
                             myView.highlighterView.setScaleX(scaleFactor);
                             myView.highlighterView.setScaleY(scaleFactor);
 
@@ -722,7 +757,6 @@ public class PerformanceFragment extends Fragment {
                         }
                     }
                 });
-                myView.songView.post(() -> myView.songView.getLayoutParams().height = (int) (h * scaleFactor));
                 myView.highlighterView.post(() -> myView.highlighterView.requestLayout());
             } else {
                 myView.highlighterView.post(() -> myView.highlighterView.setVisibility(View.GONE));
@@ -792,6 +826,11 @@ public class PerformanceFragment extends Fragment {
         });
 
         myView.recyclerView.setGestureDetector(gestureDetector);
+    }
+
+    public void updateSizes(int width, int height) {
+        Log.d(TAG,"width="+width+"  height="+height);
+        myView.zoomLayout.setSongSize(width,height);
     }
 
     // Received from MainActivity after a user clicked on a pdf page or a Stage Mode section

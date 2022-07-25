@@ -668,6 +668,9 @@
                     <action
                         android:id="@+id/action_importOptionsFragment_to_importFileFragment"
                         app:destination="@id/importFileFragment" />
+                    <action
+                        android:id="@+id/action_importOptionsFragment_to_importIOSFragment"
+                        app:destination="@id/importIOSFragment" />
                 </fragment>
 
                 <!-- OSB Import -->
@@ -688,6 +691,11 @@
                     android:name="com.garethevans.church.opensongtablet.importsongs.ImportFileFragment"
                     android:label="ImportFileFragment"
                     tools:layout="@layout/settings_import_file"/>
+                <fragment
+                    android:id="@+id/importIOSFragment"
+                    android:name="com.garethevans.church.opensongtablet.backupandrestore.ImportIOSFragment"
+                    android:label="ImportIOSFragment"
+                    tools:layout="@layout/settings_import_ios"/>
 
             </navigation>
             <fragment

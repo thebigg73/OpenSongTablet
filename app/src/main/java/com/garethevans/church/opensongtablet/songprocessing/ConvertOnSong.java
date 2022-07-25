@@ -68,34 +68,40 @@ public class ConvertOnSong {
         // Add spaces to beginnings of lines that aren't comments, chords or tags
         lyrics = mainActivityInterface.getConvertChoPro().addSpacesToLines(lyrics);
 
-        // Get the filename and subfolder (if any) that the original song was in by parsing the uri
-        oldSongFileName = mainActivityInterface.getConvertChoPro().getOldSongFileName(uri);
-        songSubFolder = mainActivityInterface.getConvertChoPro().getSongFolderLocation(uri, oldSongFileName);
+        // If the uri isn't null, we don't need to write here
+        if (uri!=null) {
+            // Get the filename and subfolder (if any) that the original song was in by parsing the uri
+            oldSongFileName = mainActivityInterface.getConvertChoPro().getOldSongFileName(uri);
+            songSubFolder = mainActivityInterface.getConvertChoPro().getSongFolderLocation(uri, oldSongFileName);
 
-        // Prepare the new song filename
-        newSongFileName = mainActivityInterface.getConvertChoPro().getNewSongFileName(uri, title);
+            // Prepare the new song filename
+            newSongFileName = mainActivityInterface.getConvertChoPro().getNewSongFileName(uri, title);
 
-        // Set the correct values
-        setCorrectXMLValues(thisSong);
+            // Set the correct values
+            setCorrectXMLValues(thisSong);
 
-        // Now prepare the new songXML file
-        String myNewXML = mainActivityInterface.getProcessSong().getXML(thisSong);
+            // Now prepare the new songXML file
+            String myNewXML = mainActivityInterface.getProcessSong().getXML(thisSong);
 
-        // Get a unique uri for the new song
-        Uri newUri = mainActivityInterface.getConvertChoPro().getNewSongUri(songSubFolder, newSongFileName);
-        newSongFileName = newUri.getLastPathSegment();
-        // Just in case it had _ appended due to name conflict.
-        // Get rid of the rubbish...
-        if (newSongFileName!=null && newSongFileName.contains("/")) {
-            newSongFileName = newSongFileName.substring(newSongFileName.lastIndexOf("/"));
-            newSongFileName = newSongFileName.replace("/","");
+            // Get a unique uri for the new song
+            Uri newUri = mainActivityInterface.getConvertChoPro().getNewSongUri(songSubFolder, newSongFileName);
+            newSongFileName = newUri.getLastPathSegment();
+            // Just in case it had _ appended due to name conflict.
+            // Get rid of the rubbish...
+            if (newSongFileName != null && newSongFileName.contains("/")) {
+                newSongFileName = newSongFileName.substring(newSongFileName.lastIndexOf("/"));
+                newSongFileName = newSongFileName.replace("/", "");
+            }
+
+            thisSong.setFilename(newSongFileName);
+
+            // Now write the modified song
+            mainActivityInterface.getConvertChoPro().writeTheImprovedSong(thisSong, oldSongFileName, newSongFileName,
+                    songSubFolder, newUri, uri, myNewXML);
+
+        } else {
+            newSongFileName = thisSong.getFilename();
         }
-
-        thisSong.setFilename(newSongFileName);
-
-        // Now write the modified song
-        mainActivityInterface.getConvertChoPro().writeTheImprovedSong(thisSong, oldSongFileName, newSongFileName,
-                songSubFolder, newUri, uri, myNewXML);
 
         // Add it to the database
         thisSong.setFilename(newSongFileName);
