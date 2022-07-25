@@ -33,7 +33,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
 import androidx.documentfile.provider.DocumentFile;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -50,6 +49,7 @@ public class BootUpCheck extends AppCompatActivity {
     // Declare helper classes:
     private Preferences preferences;
     private StorageAccess storageAccess;
+    private Permissions permissions;
 
     // Declare views
     private TextView progressText;
@@ -89,6 +89,7 @@ public class BootUpCheck extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Load the helper classes (preferences)
+        permissions = new Permissions();
         preferences = new Preferences();
         storageAccess = new StorageAccess();
         SetTypeFace setTypeFace = new SetTypeFace();
@@ -332,9 +333,7 @@ public class BootUpCheck extends AppCompatActivity {
         }
     }
     private void checkStoragePermission() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-            // Storage permission has not been granted.
+        if (!permissions.checkForPermission(this,Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             storageGranted = false;
             requestStoragePermission();
         } else {
@@ -342,19 +341,18 @@ public class BootUpCheck extends AppCompatActivity {
         }
     }
     private void requestStoragePermission() {
-        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+        String storagePermission = Manifest.permission.WRITE_EXTERNAL_STORAGE;
+        if (permissions.shouldShowRequestRationale(this,storagePermission)) {
             try {
                 make(findViewById(R.id.page), R.string.storage_rationale,
-                        LENGTH_INDEFINITE).setAction(R.string.ok, view -> ActivityCompat.requestPermissions(BootUpCheck.this,
-                                new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 101)).show();
+                        LENGTH_INDEFINITE).setAction(R.string.ok, view -> permissions.requestForPermissions(this,new String[]{storagePermission},101)).show();
             } catch (Exception e) {
                 e.printStackTrace();
             }
         } else {
             try {
                 // Storage permission has not been granted yet. Request it directly.
-                ActivityCompat.requestPermissions(BootUpCheck.this,
-                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 101);
+                permissions.requestForPermissions(this,new String[]{storagePermission},101);
             } catch (Exception e) {
                 e.printStackTrace();
             }

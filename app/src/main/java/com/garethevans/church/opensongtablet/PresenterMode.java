@@ -149,14 +149,14 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     // MIDI
     private Midi midi;
 
+    // Permissions
+    private Permissions permissions;
+
     // Casting
     private MediaRouter mMediaRouter;
     private MediaRouteSelector mMediaRouteSelector;
     private final MyMediaRouterCallback mMediaRouterCallback = new MyMediaRouterCallback();
     private CastDevice mSelectedDevice;
-
-    // Nearby
-    private String[] nearbyPermissionsString;
 
     // The toolbar and menu
     private Toolbar ab_toolbar;
@@ -308,6 +308,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         FullscreenActivity.appRunning = true;
 
         // Initialise the helpers
+        permissions = new Permissions();
         setActions = new SetActions();
         exportPreparer = new ExportPreparer();
         storageAccess = new StorageAccess();
@@ -412,7 +413,8 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             // IV - refreshAll call later will perform setupButtons, prepareOptionsMenu and setupSongButtons
 
             // Set up the Nearby connection service
-            defineNearbyPermissions();
+            permissions = new Permissions();
+            permissions.setNearbyPermissionsString();
             getBluetoothName();
             nearbyConnections.getUserNickname();
 
@@ -1137,8 +1139,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         @Override
         protected String doInBackground(Object... objects) {
             try {
-                if (ActivityCompat.checkSelfPermission(PresenterMode.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) !=
-                        PackageManager.PERMISSION_GRANTED) {
+                if (!permissions.checkForPermission(PresenterMode.this,Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                     finish();
                 }
             } catch (Exception e) {
@@ -1931,26 +1932,29 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     }
 
     private void getBluetoothName() {
-        try {
-            if (FullscreenActivity.mBluetoothAdapter == null) {
-                FullscreenActivity.mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-            }
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
-                return;
-            }
-            FullscreenActivity.mBluetoothName = FullscreenActivity.mBluetoothAdapter.getName();
-            if (FullscreenActivity.mBluetoothName == null) {
+        // Only do this if we have the correct permissions
+        if (permissions.hasNearbyPermissions(this)) {
+            try {
+                if (FullscreenActivity.mBluetoothAdapter == null) {
+                    FullscreenActivity.mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+                }
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    if (!permissions.checkForPermission(this,Manifest.permission.BLUETOOTH_CONNECT)) {
+                        permissions.requestForPermissions(this, new String[]{Manifest.permission.BLUETOOTH_CONNECT}, 488);
+                        return;
+                    } else {
+                        FullscreenActivity.mBluetoothName = FullscreenActivity.mBluetoothAdapter.getName();
+                    }
+
+                } else {
+                    FullscreenActivity.mBluetoothName = FullscreenActivity.mBluetoothAdapter.getName();
+                }
+                if (FullscreenActivity.mBluetoothName == null) {
+                    FullscreenActivity.mBluetoothName = "Unknown";
+                }
+            } catch (Exception e) {
                 FullscreenActivity.mBluetoothName = "Unknown";
             }
-        } catch (Exception e) {
-            FullscreenActivity.mBluetoothName = "Unknown";
         }
     }
 
@@ -2426,42 +2430,10 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
 
     // Nearby
-    // These are dealt with in NearbyConnections.  Pulled in from interface to listen from optionmenulistener
-    private void defineNearbyPermissions() {
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
-            nearbyPermissionsString = new String[]{Manifest.permission.BLUETOOTH_SCAN,
-                    Manifest.permission.BLUETOOTH_CONNECT, Manifest.permission.BLUETOOTH_ADVERTISE};
-        } else if (Build.VERSION.SDK_INT<Build.VERSION_CODES.Q){
-            nearbyPermissionsString = new String[]{Manifest.permission.ACCESS_COARSE_LOCATION};
-        } else {
-            nearbyPermissionsString = new String[]{Manifest.permission.ACCESS_FINE_LOCATION};
-        }
-    }
-
-    private boolean hasNearbyPermissions() {
-        boolean granted = true;
-        for (String permission:nearbyPermissionsString) {
-            if (ActivityCompat.checkSelfPermission(this,
-                    permission) != PackageManager.PERMISSION_GRANTED) {
-                granted = false;
-                Log.d("StageMode",permission+" not allowed");
-            } else {
-                Log.d("StageMode",permission+" is allowed");
-            }
-        }
-        return granted;
-    }
-
     @Override
     public boolean requestNearbyPermissions() {
-        // Determine if there is an issue with any of the preferences
-        boolean granted = hasNearbyPermissions();
-
-        // If permission isn't granted - ask
-        if (!granted) {
-            ActivityCompat.requestPermissions(this,nearbyPermissionsString,404);
-        }
-        return granted;
+        // Determine if there is an issue with any of the permissions
+        return permissions.requestNearbyPermissions(this,403);
     }
 
     @Override
@@ -3415,11 +3387,12 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     }
     private void dBButtonClick() {
         // Check audio record is allowed
-        if (ActivityCompat.checkSelfPermission(PresenterMode.this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.RECORD_AUDIO)) {
-                Snackbar.make(mLayout, R.string.microphone_rationale, Snackbar.LENGTH_INDEFINITE).setAction(R.string.ok, view -> ActivityCompat.requestPermissions(PresenterMode.this, new String[]{Manifest.permission.RECORD_AUDIO}, StaticVariables.REQUEST_MICROPHONE_CODE)).show();
+        String audioPermission = Manifest.permission.RECORD_AUDIO;
+        if (!permissions.checkForPermission(PresenterMode.this,audioPermission)) {
+            if (permissions.shouldShowRequestRationale(PresenterMode.this,audioPermission)) {
+                Snackbar.make(mLayout, R.string.microphone_rationale, Snackbar.LENGTH_INDEFINITE).setAction(R.string.ok, view -> ActivityCompat.requestPermissions(PresenterMode.this, new String[]{audioPermission}, StaticVariables.REQUEST_MICROPHONE_CODE)).show();
             } else {
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO},
+                permissions.requestForPermissions(this,new String[]{audioPermission},
                         StaticVariables.REQUEST_MICROPHONE_CODE);
             }
 
@@ -3431,6 +3404,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             // After a short time, turn off the button
             Handler delay = new Handler();
             delay.postDelayed(() -> unhighlightButtonClicked(presenter_dB_group), 500);
+
         }
     }
 
@@ -3501,11 +3475,8 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     // The camera permissions and stuff
     @Override
     public void useCamera() {
-        if (ContextCompat.checkSelfPermission(PresenterMode.this,
-                Manifest.permission.CAMERA)
-                != PackageManager.PERMISSION_GRANTED) {
-
-            ActivityCompat.requestPermissions(PresenterMode.this, new String[]{Manifest.permission.CAMERA},
+        if (!permissions.checkForPermission(PresenterMode.this,Manifest.permission.CAMERA)) {
+            permissions.requestForPermissions(this,new String[]{Manifest.permission.CAMERA},
                     StaticVariables.REQUEST_CAMERA_CODE);
         } else {
             startCamera();
