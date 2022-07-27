@@ -145,6 +145,9 @@ public class EditSongFragmentFeatures extends Fragment {
         myView.linkType.setAdapter(linkArrayAdapter);
         myView.linkType.setText(getString(R.string.link_audio));
         setLink();
+
+        // Resize the bottom padding to the soft keyboard height or half the screen height for the soft keyboard (workaround)
+        mainActivityInterface.getWindowFlags().adjustViewPadding(mainActivityInterface,myView.resizeForKeyboardLayout);
     }
 
     private void setLink() {

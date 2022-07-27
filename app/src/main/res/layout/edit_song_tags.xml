@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/DefaultView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -9,19 +8,20 @@
         android:id="@+id/nestedScrollView"
         android:contentDescription="@string/tag_song"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp">
 
         <LinearLayout
+            android:id="@+id/resizeForKeyboardLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginBottom="80dp">
+            android:orientation="vertical">
 
             <com.garethevans.church.opensongtablet.customviews.MaterialEditText
                 android:id="@+id/tags"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:inputType="text|textMultiLine"
                 android:minLines="2"

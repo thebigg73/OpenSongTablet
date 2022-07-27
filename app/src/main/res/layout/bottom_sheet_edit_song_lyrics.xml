@@ -5,163 +5,155 @@
     style="@style/FullscreenBottomSheet"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    app:behavior_hideable="false"
-    app:behavior_peekHeight="32dp"
-    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
-    app:layout_insetEdge="bottom">
+    android:orientation="vertical">
 
-    <com.garethevans.church.opensongtablet.customviews.BottomSheetHandle
-        android:id="@+id/bottomSheetTab"
+    <com.garethevans.church.opensongtablet.customviews.DialogHeader
+        android:id="@+id/dialogHeading"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center_horizontal"
-        app:isDraggableX="false"
-        app:layout_dodgeInsetEdges="bottom" />
+        android:text="@string/extra_settings" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorAltPrimary">
-    <LinearLayout
-        android:id="@+id/lyricsEdit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
-        <TableRow style="@style/DividerLine"/>
+        android:layout_height="match_parent">
 
         <LinearLayout
+            android:id="@+id/lyricsEdit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-        <com.garethevans.church.opensongtablet.customviews.MaterialTextView
-            android:id="@+id/insertSection"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:hint=""
-            android:text="@string/edit_new_section" />
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/formatHelp"
-                android:layout_width="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:src="@drawable/information"
-                android:contentDescription="@string/information"/>
+                android:orientation="horizontal">
+
+                <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                    android:id="@+id/insertSection"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint=""
+                    android:text="@string/edit_new_section" />
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/formatHelp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/information"
+                    android:src="@drawable/information" />
+            </LinearLayout>
+            <TableRow style="@style/DividerLine" />
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                android:id="@+id/autoFix"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/fix_info"
+                android:text="@string/fix" />
+            <TableRow style="@style/DividerLine" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/edit_format" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="64dp"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/openSong"
+                    style="@style/LeftButton"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5"
+                    android:padding="8dp"
+                    android:text="@string/opensong"
+                    app:backgroundTint="@color/colorSecondary" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/choPro"
+                    style="@style/RightButton"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5"
+                    android:padding="8dp"
+                    android:text="@string/chordpro"
+                    app:backgroundTint="@color/colorAltPrimary" />
+            </LinearLayout>
+
+            <TableRow style="@style/DividerLine" />
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                android:id="@+id/textSize"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/edit_text_size" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="64dp">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/textSizeDown"
+                    style="@style/LeftButton"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5"
+                    android:padding="8dp"
+                    android:text="@string/minus_1"
+                    app:backgroundTint="@color/colorAltPrimary" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/textSizeUp"
+                    style="@style/RightButton"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5"
+                    android:padding="8dp"
+                    android:text="@string/plus_1"
+                    app:backgroundTint="@color/colorAltPrimary" />
+            </LinearLayout>
+
+            <TableRow style="@style/DividerLine" />
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                android:id="@+id/transposeText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/transpose" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="64dp">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/transposeDown"
+                    style="@style/LeftButton"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5"
+                    android:padding="8dp"
+                    android:text="@string/minus_1"
+                    app:backgroundTint="@color/colorAltPrimary" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/transposeUp"
+                    style="@style/RightButton"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5"
+                    android:padding="8dp"
+                    android:text="@string/plus_1"
+                    app:backgroundTint="@color/colorAltPrimary" />
+
+            </LinearLayout>
         </LinearLayout>
-        <TableRow style="@style/DividerLine"/>
-
-        <com.garethevans.church.opensongtablet.customviews.MaterialTextView
-            android:id="@+id/autoFix"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/fix_info"
-            android:text="@string/fix" />
-        <TableRow style="@style/DividerLine"/>
-
-        <com.google.android.material.textview.MaterialTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/edit_format" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:minHeight="72dp">
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/convertToOpenSong"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.5"
-                app:backgroundTint="@color/colorSecondary"
-                android:padding="8dp"
-                android:text="@string/opensong"
-                style="@style/LeftButton" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/convertToChoPro"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.5"
-                app:backgroundTint="@color/colorAltPrimary"
-                android:padding="8dp"
-                android:text="@string/chordpro"
-                style="@style/RightButton"/>
-        </LinearLayout>
-        <TableRow style="@style/DividerLine"/>
-
-        <com.google.android.material.textview.MaterialTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/edit_text_size" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:minHeight="72dp">
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/textSizeDown"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="8dp"
-                android:layout_weight="0.5"
-                android:padding="8dp"
-                app:backgroundTint="@color/colorAltPrimary"
-                android:text="@string/minus_1" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/textSizeUp"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginStart="8dp"
-                android:layout_weight="0.5"
-                android:padding="8dp"
-                app:backgroundTint="@color/colorAltPrimary"
-                android:text="@string/plus_1" />
-
-        </LinearLayout>
-        <TableRow style="@style/DividerLine"/>
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/transposeText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/transpose" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:minHeight="72dp">
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/transposeDown"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="8dp"
-                android:layout_weight="0.5"
-                android:padding="8dp"
-                app:backgroundTint="@color/colorAltPrimary"
-                android:text="@string/minus_1" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/transposeUp"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginStart="8dp"
-                android:layout_weight="0.5"
-                android:padding="8dp"
-                app:backgroundTint="@color/colorAltPrimary"
-                android:text="@string/plus_1" />
-
-        </LinearLayout>
-        <TableRow style="@style/DividerLine"
-            android:layout_marginBottom="64dp"/>
-
-    </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </LinearLayout>

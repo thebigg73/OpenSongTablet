@@ -9,7 +9,6 @@ public class __TODO__ {
     // Not checked how variations work when using Nearby on receiving device
     // Still to implement pedal previous next confirm
 
-
     // Occasional bugs harder to replicate/solve
     // Crash when fast scrolling to bottom of song list sometimes indexexception (I think when it gets updated after indexing)
     // Exporting pdfs sometimes stops at the last item and doesn't open up share option

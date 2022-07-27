@@ -15,6 +15,7 @@ public class NestedScrollWithFAB extends NestedScrollView {
 
     private FloatingActionButton fab = null;
     private FloatingActionButton fab2 = null;
+    private FloatingActionButton fab3 = null;
     private ExtendedFloatingActionButton extendedFab = null;
 
     public NestedScrollWithFAB(@NonNull Context context) {
@@ -29,7 +30,7 @@ public class NestedScrollWithFAB extends NestedScrollView {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (fab!=null || fab2!=null || extendedFab!=null) {
+        if (fab!=null || fab2!=null || fab3!=null ||  extendedFab!=null) {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_SCROLL:
                 case MotionEvent.ACTION_MOVE:
@@ -38,6 +39,9 @@ public class NestedScrollWithFAB extends NestedScrollView {
                     }
                     if (fab2!=null) {
                         fab2.hide();
+                    }
+                    if (fab3!=null) {
+                        fab3.hide();
                     }
                     if (extendedFab!=null) {
                         extendedFab.hide();
@@ -50,6 +54,9 @@ public class NestedScrollWithFAB extends NestedScrollView {
                     }
                     if (fab2!=null) {
                         fab2.show();
+                    }
+                    if (fab3!=null) {
+                        fab3.show();
                     }
                     if (extendedFab!=null) {
                         extendedFab.show();
@@ -71,6 +78,9 @@ public class NestedScrollWithFAB extends NestedScrollView {
     }
     public void setFab2ToAnimate(FloatingActionButton fab2) {
         this.fab2 = fab2;
+    }
+    public void setFab3ToAnimate(FloatingActionButton fab3) {
+        this.fab3 = fab3;
     }
 
     public void setExtendedFabToAnimate(ExtendedFloatingActionButton extendedFab) {

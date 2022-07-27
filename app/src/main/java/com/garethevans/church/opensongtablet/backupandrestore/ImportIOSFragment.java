@@ -221,14 +221,13 @@ public class ImportIOSFragment extends Fragment {
         // Anything requiring the main UI checks this fragment is still alive
         new Thread(()->{
             // Check the chosen folder (likely OnSong) exists
-            Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Songs",folder,"");
-            boolean uriExists = mainActivityInterface.getStorageAccess().uriExists(uri);
-            if (!uriExists) {
-                mainActivityInterface.getStorageAccess().createFolder("Songs","",folder);
-            }
+            // Create the folder (if it doesn't already exist).
+            mainActivityInterface.getStorageAccess().createFolder("Songs","",folder,false);
 
             // Now process the backup file
             // Firstly copy the loose files across
+            Uri uri;
+            boolean uriExists;
             try {
                 inputStream = mainActivityInterface.getStorageAccess().
                         getInputStream(mainActivityInterface.getImportUri());

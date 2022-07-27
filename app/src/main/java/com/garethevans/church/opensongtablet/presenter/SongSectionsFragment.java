@@ -85,7 +85,6 @@ public class SongSectionsFragment extends Fragment {
                 mainActivityInterface.navigateToFragment("opensongapp://settings/edit",0);
                 return false;
             });
-            mainActivityInterface.getSoftKeyboard().hideKeyboard(requireActivity());
             updatePresentationOrder();
         }
     }
@@ -118,8 +117,6 @@ public class SongSectionsFragment extends Fragment {
             mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().
                     notifyItemRangeChanged(0, mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().getItemCount());
         }
-        mainActivityInterface.getSoftKeyboard().hideSoftKeyboard(requireContext(),myView.getRoot());
-
     }
 
     // From edited content via TextInputBottomSheet

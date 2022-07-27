@@ -1,7 +1,6 @@
 package com.garethevans.church.opensongtablet.songprocessing;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
@@ -10,7 +9,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,7 +30,7 @@ public class EditSongFragmentLyrics extends Fragment {
     private final String TAG = "EditSongFragmentLyrics";
     private BottomSheetBehavior<View> bottomSheetBehavior;
     private float editTextSize = 11;
-    private int colorOn, colorOff;
+    private int colorOn, colorOff, cursorPos=0;
     private boolean addUndoStep = true;
 
     @Override
@@ -41,21 +39,21 @@ public class EditSongFragmentLyrics extends Fragment {
         mainActivityInterface = (MainActivityInterface) context;
         editSongFragmentInterface = (EditSongFragmentInterface) context;
         // Hide the keyboard
-        mainActivityInterface.getSoftKeyboard().hideKeyboard(requireActivity());
+        //mainActivityInterface.getSoftKeyboard().hideKeyboard(requireActivity());
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Hide the keyboard
-        mainActivityInterface.getSoftKeyboard().hideKeyboard(requireActivity());
+        //mainActivityInterface.getSoftKeyboard().hideKeyboard(requireActivity());
     }
 
     @Override
     public void onResume() {
         super.onResume();
         // Hide the keyboard
-        mainActivityInterface.getSoftKeyboard().hideKeyboard(requireActivity());
+        //mainActivityInterface.getSoftKeyboard().hideKeyboard(requireActivity());
     }
 
     @Nullable
@@ -70,12 +68,27 @@ public class EditSongFragmentLyrics extends Fragment {
         setupListeners();
 
         // Hide the keyboard
-        mainActivityInterface.getSoftKeyboard().hideKeyboard(requireActivity());
+        //mainActivityInterface.getSoftKeyboard().hideKeyboard(requireActivity());
 
         return myView.getRoot();
     }
 
     private void setupValues() {
+        if (!mainActivityInterface.getTempSong().getEditingAsChoPro()) {
+            mainActivityInterface.getTranspose().checkChordFormat(mainActivityInterface.getTempSong());
+        } else {
+            String choProLyrics = mainActivityInterface.getTempSong().getLyrics();
+            // Convert to OpenSong to detect the chord format
+            String openSongLyrics = mainActivityInterface.getConvertChoPro().fromChordProToOpenSong(choProLyrics);
+            // Set the lyrics back to the temp song
+            mainActivityInterface.getTempSong().setLyrics(openSongLyrics);
+            // Now detect the chord format
+            mainActivityInterface.getTranspose().checkChordFormat(mainActivityInterface.getTempSong());
+            // Now set the lyrics back as chordpro
+            mainActivityInterface.getTempSong().setLyrics(choProLyrics);
+        }
+
+
         if ((Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP &&
                 mainActivityInterface.getSong().getFiletype().equals("PDF")) ||
                 mainActivityInterface.getSong().getFiletype().equals("IMG")) {
@@ -85,112 +98,29 @@ public class EditSongFragmentLyrics extends Fragment {
             myView.ocr.setVisibility(View.GONE);
         }
 
-        // The button colors
-        colorOn = getResources().getColor(R.color.colorSecondary);
-        colorOff = getResources().getColor(R.color.colorAltPrimary);
-
-        // Set up the bottomSheet
-        bottomSheetBar();
-
-        myView.lyrics.clearFocus();
-        myView.lyrics.requestFocus();
-
-        myView.bottomSheetLayout.insertSection.setHint("[V]="+getString(R.string.verse) +
-                " , [V1]="+getString(R.string.verse)+" 1, [C]="+getString(R.string.chorus) +
-                ", [B]="+getString(R.string.bridge)+", [P]="+getString(R.string.prechorus) +
-                ", [...]="+getString(R.string.custom));
+        //myView.lyrics.clearFocus();
+        //myView.lyrics.requestFocus();
 
         myView.lyrics.setText(mainActivityInterface.getTempSong().getLyrics());
         mainActivityInterface.getProcessSong().editBoxToMultiline(myView.lyrics);
         editTextSize = mainActivityInterface.getPreferences().getMyPreferenceFloat("editTextSize",14);
-        checkTextSize(0);
+        myView.lyrics.setTextSize(editTextSize);
         mainActivityInterface.getProcessSong().stretchEditBoxToLines(myView.lyrics,20);
 
         validUndoRedo(mainActivityInterface.getTempSong().getLyricsUndosPos());
     }
 
-    private void bottomSheetBar() {
-        bottomSheetBehavior = BottomSheetBehavior.from(myView.bottomSheetLayout.bottomSheet);
-        bottomSheetBehavior.setHideable(false);
-        myView.bottomSheetLayout.bottomSheetTab.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                bottomSheetBehavior.setPeekHeight(myView.bottomSheetLayout.bottomSheetTab.getMeasuredHeight());
-                myView.bottomSheetLayout.bottomSheetTab.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-            }
-        });
-        //bottomSheetBehavior.setGestureInsetBottomIgnored(true);
-        myView.bottomSheetLayout.bottomSheetTab.setOnClickListener(v -> {
-            mainActivityInterface.getSoftKeyboard().hideKeyboard(requireActivity());
-            mainActivityInterface.getSoftKeyboard().hideSoftKeyboard(requireContext(),myView.parentView);
-            if (bottomSheetBehavior.getState()==BottomSheetBehavior.STATE_COLLAPSED) {
-                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-                myView.lyrics.setEnabled(false);
-                myView.dimBackground.setVisibility(View.VISIBLE);
-                if (!mainActivityInterface.getTempSong().getEditingAsChoPro()) {
-                    mainActivityInterface.getTranspose().checkChordFormat(mainActivityInterface.getTempSong());
-                } else {
-                    String choProLyrics = mainActivityInterface.getTempSong().getLyrics();
-                    // Convert to OpenSong to detect the chord format
-                    String openSongLyrics = mainActivityInterface.getConvertChoPro().fromChordProToOpenSong(choProLyrics);
-                    // Set the lyrics back to the temp song
-                    mainActivityInterface.getTempSong().setLyrics(openSongLyrics);
-                    // Now detect the chord format
-                    mainActivityInterface.getTranspose().checkChordFormat(mainActivityInterface.getTempSong());
-                    // Now set the lyrics back as chordpro
-                    mainActivityInterface.getTempSong().setLyrics(choProLyrics);
-                }
-                setTransposeDetectedFormat();
-            } else {
-                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                myView.lyrics.setEnabled(true);
-                myView.dimBackground.setVisibility(View.GONE);
-            }
-        });
-
-        bottomSheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
-            @Override
-            public void onStateChanged(@NonNull View bottomSheet, int newState) {
-                switch (newState) {
-                    case BottomSheetBehavior.STATE_COLLAPSED:
-                    case BottomSheetBehavior.STATE_HIDDEN:
-                        myView.lyrics.setEnabled(true);
-                        myView.dimBackground.setVisibility(View.GONE);
-                        break;
-                    case BottomSheetBehavior.STATE_EXPANDED:
-                    case BottomSheetBehavior.STATE_HALF_EXPANDED:
-                        myView.lyrics.setEnabled(false);
-                        myView.dimBackground.setVisibility(View.VISIBLE);
-                        break;
-                    case BottomSheetBehavior.STATE_DRAGGING:
-                    case BottomSheetBehavior.STATE_SETTLING:
-                        myView.lyrics.setEnabled(false);
-                        break;
-                }
-            }
-
-            @Override
-            public void onSlide (@NonNull View bottomSheet,float slideOffset) {
-                //myView.dimBackground.setVisibility(View.VISIBLE);
-            }
-        });
-    }
-
     private void setupListeners() {
         myView.lyrics.setOnFocusChangeListener((view, b) -> {
-            Log.d(TAG,"b="+b);
             mainActivityInterface.enableSwipe("edit",!b);
         });
 
         myView.lyrics.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
+            public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {}
 
             @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                //mainActivityInterface.getProcessSong().stretchEditBoxToLines(myView.lyrics,20);
-            }
+            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {}
 
             @Override
             public void afterTextChanged(Editable editable) {
@@ -220,76 +150,27 @@ public class EditSongFragmentLyrics extends Fragment {
                         mainActivityInterface.getSong().getFilename());
             }
         });
-        myView.bottomSheetLayout.textSizeDown.setOnClickListener(v -> checkTextSize(-1));
-        myView.bottomSheetLayout.textSizeUp.setOnClickListener(v -> checkTextSize(+1));
-        myView.bottomSheetLayout.insertSection.setOnClickListener(v -> insertSection());
 
-        myView.bottomSheetLayout.convertToOpenSong.setOnClickListener(v -> convertToOpenSong());
-        myView.bottomSheetLayout.convertToChoPro.setOnClickListener(v -> convertToChoPro());
+        myView.settingsButton.setOnClickListener(v -> {
+            cursorPos = myView.lyrics.getSelectionStart();
+            Log.d(TAG,"cursorPos="+cursorPos);
+            LyricsOptionsBottomSheet lyricsOptionsBottomSheet = new LyricsOptionsBottomSheet(this);
+            lyricsOptionsBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"LyricsBottomSheet");
+        });
 
         myView.undoButton.setOnClickListener(v -> undoLyrics());
         myView.redoButton.setOnClickListener(v -> redoLyrics());
-
-        myView.bottomSheetLayout.transposeDown.setOnClickListener(v -> transpose("-1"));
-        myView.bottomSheetLayout.transposeUp.setOnClickListener(v -> transpose("+1"));
-
-        myView.bottomSheetLayout.autoFix.setOnClickListener(v -> autoFix());
-
-        myView.bottomSheetLayout.formatHelp.setOnClickListener(v -> mainActivityInterface.openDocument(null));
 
         // Scroll listener
         myView.nestedScrollView.setExtendedFabToAnimate(editSongFragmentInterface.getSaveButton());
         myView.nestedScrollView.setFabToAnimate(myView.undoButton);
         myView.nestedScrollView.setFab2ToAnimate(myView.redoButton);
+        myView.nestedScrollView.setFab3ToAnimate(myView.settingsButton);
+
+        // Resize the bottom padding to the soft keyboard height or half the screen height for the soft keyboard (workaround)
+        mainActivityInterface.getWindowFlags().adjustViewPadding(mainActivityInterface,myView.resizeForKeyboardLayout);
     }
 
-    private void checkTextSize(int change) {
-        // Adjust it
-        editTextSize = editTextSize + change;
-
-        // Max is 24
-        if (editTextSize>=24) {
-            editTextSize = 24;
-            myView.bottomSheetLayout.textSizeUp.setEnabled(false);
-        } else {
-            myView.bottomSheetLayout.textSizeUp.setEnabled(true);
-        }
-
-        // Min is 8
-        if (editTextSize<=8) {
-            editTextSize = 8;
-            myView.bottomSheetLayout.textSizeDown.setEnabled(false);
-        } else {
-            myView.bottomSheetLayout.textSizeDown.setEnabled(true);
-        }
-
-        // Set the text size
-        myView.lyrics.setTextSize(editTextSize);
-
-        // Save this to the user preferences
-        mainActivityInterface.getPreferences().setMyPreferenceFloat("editTextSize",editTextSize);
-    }
-
-    private void insertSection() {
-        // Try to get the current text position
-        int pos = myView.lyrics.getSelectionStart();
-        if (pos<0) {
-            pos = 0;
-        }
-        String text = myView.lyrics.getText().toString();
-        text = text.substring(0,pos) + "[]" + text.substring(pos);
-        myView.lyrics.setText(text);
-        myView.lyrics.setSelection(pos+1);
-    }
-    public void changelyricFormat() {
-        if (mainActivityInterface.getPreferences().getMyPreferenceBoolean("editAsChordPro",false)) {
-            myView.lyrics.setText(mainActivityInterface.getConvertChoPro().
-                    fromOpenSongToChordPro(mainActivityInterface.getTempSong().getLyrics()));
-        } else {
-            myView.lyrics.setText(mainActivityInterface.getConvertChoPro().
-                    fromChordProToOpenSong(mainActivityInterface.getTempSong().getLyrics()));
-        }
-    }
     private void undoLyrics() {
         // If we can go back, undo the changes
         int lyricsUndosPos = mainActivityInterface.getTempSong().getLyricsUndosPos();
@@ -314,8 +195,41 @@ public class EditSongFragmentLyrics extends Fragment {
         }
         validUndoRedo(lyricsUndosPos);
     }
+    private void validUndoRedo(int currentPosition) {
+        // Enable/disable the undo button
+        myView.undoButton.setEnabled(currentPosition>0);
 
-    private void transpose(String direction) {
+        // Enable/disable the redo button
+        myView.redoButton.setEnabled(currentPosition<mainActivityInterface.getTempSong().getLyricsUndos().size()-1);
+    }
+
+    // The stuff below is called from the LyricsOptionsBottomSheet
+    public float getEditTextSize() {
+        return editTextSize;
+    }
+    public void setEditTextSize(float editTextSize) {
+        this.editTextSize = editTextSize;
+        myView.lyrics.setTextSize(editTextSize);
+    }
+    public void insertSection() {
+        // Try to get the current text position
+        String text = myView.lyrics.getText().toString();
+        text = text.substring(0,cursorPos) + "[]\n" + text.substring(cursorPos);
+        myView.lyrics.setText(text);
+        myView.lyrics.setSelection(cursorPos+1);
+    }
+
+    public void changelyricFormat() {
+        if (mainActivityInterface.getPreferences().getMyPreferenceBoolean("editAsChordPro",false)) {
+            myView.lyrics.setText(mainActivityInterface.getConvertChoPro().
+                    fromOpenSongToChordPro(mainActivityInterface.getTempSong().getLyrics()));
+        } else {
+            myView.lyrics.setText(mainActivityInterface.getConvertChoPro().
+                    fromChordProToOpenSong(mainActivityInterface.getTempSong().getLyrics()));
+        }
+    }
+
+    public void transpose(String direction) {
         // If we are editing as choPro, we need to convert to OpenSong first
         if (mainActivityInterface.getTempSong().getEditingAsChoPro()) {
             String choProLyrics = mainActivityInterface.getTempSong().getLyrics();
@@ -338,65 +252,22 @@ public class EditSongFragmentLyrics extends Fragment {
         myView.lyrics.setText(mainActivityInterface.getTempSong().getLyrics());
     }
 
-    private void convertToOpenSong() {
-        // Only do this if we are editing as ChordPro
-        if (mainActivityInterface.getTempSong().getEditingAsChoPro()) {
-            mainActivityInterface.getTempSong().setEditingAsChoPro(false);
-            myView.bottomSheetLayout.convertToChoPro.setBackgroundTintList(ColorStateList.valueOf(colorOff));
-            myView.bottomSheetLayout.convertToOpenSong.setBackgroundTintList(ColorStateList.valueOf(colorOn));
-            // Get the lyrics converted
-            String lyrics = mainActivityInterface.getConvertChoPro().fromChordProToOpenSong(mainActivityInterface.getTempSong().getLyrics());
-            // Set them into the edit box - don't include an undo/redo step, so pretend we're carrying this out
-            addUndoStep = false;
-            myView.lyrics.setText(lyrics);
-        }
+    public void convertToOpenSong() {
+        // Get the lyrics converted
+        String lyrics = mainActivityInterface.getConvertChoPro().fromChordProToOpenSong(mainActivityInterface.getTempSong().getLyrics());
+        // Set them into the edit box - don't include an undo/redo step, so pretend we're carrying this out
+        addUndoStep = false;
+        myView.lyrics.setText(lyrics);
     }
-    private void convertToChoPro() {
-        // Only do this if we aren't editing as ChordPro
-        if (!mainActivityInterface.getTempSong().getEditingAsChoPro()) {
-            mainActivityInterface.getTempSong().setEditingAsChoPro(true);
-            myView.bottomSheetLayout.convertToChoPro.setBackgroundTintList(ColorStateList.valueOf(colorOn));
-            myView.bottomSheetLayout.convertToOpenSong.setBackgroundTintList(ColorStateList.valueOf(colorOff));
-            // Get the lyrics converted
-            String lyrics = mainActivityInterface.getConvertChoPro().fromOpenSongToChordPro(mainActivityInterface.getTempSong().getLyrics());
-            // Set them into the edit box - don't include an undo/redo step, so pretend we're carrying this out
-            addUndoStep = false;
-            myView.lyrics.setText(lyrics);
-        }
-    }
-    private void validUndoRedo(int currentPosition) {
-        // Enable/disable the undo button
-        myView.undoButton.setEnabled(currentPosition>0);
-
-        // Enable/disable the redo button
-        myView.redoButton.setEnabled(currentPosition<mainActivityInterface.getTempSong().getLyricsUndos().size()-1);
+    public void convertToChoPro() {
+        // Get the lyrics converted
+        String lyrics = mainActivityInterface.getConvertChoPro().fromOpenSongToChordPro(mainActivityInterface.getTempSong().getLyrics());
+        // Set them into the edit box - don't include an undo/redo step, so pretend we're carrying this out
+        addUndoStep = false;
+        myView.lyrics.setText(lyrics);
     }
 
-    private void setTransposeDetectedFormat() {
-        String text = getString(R.string.chordformat_detected) + ": ";
-        switch (mainActivityInterface.getTempSong().getDetectedChordFormat()) {
-            case 1:
-                myView.bottomSheetLayout.transposeText.setHint(text + getString(R.string.chordformat_1));
-                break;
-            case 2:
-                myView.bottomSheetLayout.transposeText.setHint(text + getString(R.string.chordformat_2));
-                break;
-            case 3:
-                myView.bottomSheetLayout.transposeText.setHint(text + getString(R.string.chordformat_3));
-                break;
-            case 4:
-                myView.bottomSheetLayout.transposeText.setHint(text + getString(R.string.chordformat_4));
-                break;
-            case 5:
-                myView.bottomSheetLayout.transposeText.setHint(text + getString(R.string.chordformat_5));
-                break;
-            case 6:
-                myView.bottomSheetLayout.transposeText.setHint(text + getString(R.string.chordformat_6));
-                break;
-        }
-    }
-
-    private void autoFix() {
+    public void autoFix() {
         String lyrics;
         if (mainActivityInterface.getTempSong().getEditingAsChoPro()) {
             lyrics = mainActivityInterface.getConvertChoPro().fromChordProToOpenSong(mainActivityInterface.getTempSong().getLyrics());

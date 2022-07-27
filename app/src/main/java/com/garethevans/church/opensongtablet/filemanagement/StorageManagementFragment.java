@@ -1,6 +1,7 @@
 package com.garethevans.church.opensongtablet.filemanagement;
 
 import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -22,11 +23,12 @@ import java.util.ArrayList;
 public class StorageManagementFragment extends Fragment {
 
     private StorageFolderDisplayBinding myView;
-
+    private final String TAG = "StorageManagement";
     private MainActivityInterface mainActivityInterface;
     private ArrayList<String> infos;
     private ArrayList<View> views = new ArrayList<>();
     private ArrayList<Boolean> rects = new ArrayList<>();
+    private String currentSubDir;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -48,7 +50,6 @@ public class StorageManagementFragment extends Fragment {
     }
 
     private void setUpThread() {
-
         new Thread(() -> {
             requireActivity().runOnUiThread(() -> {
                 myView.progressBar.setVisibility(View.VISIBLE);
@@ -64,6 +65,7 @@ public class StorageManagementFragment extends Fragment {
                 myView.folderList.invalidate();
                 myView.storageGraph.setVisibility(View.VISIBLE);
                 myView.progressBar.setVisibility(View.GONE);
+                mainActivityInterface.forceImmersive();
             });
 
             // Prepare the showcase
@@ -118,12 +120,13 @@ public class StorageManagementFragment extends Fragment {
     }
 
     private void showActionDialog(boolean root, boolean songs, String folder) {
+        currentSubDir = folder;
         FolderManagementBottomSheet dialogFragment = new FolderManagementBottomSheet(this,root,songs,folder);
         dialogFragment.show(requireActivity().getSupportFragmentManager(),"folderManagementDialog");
     }
 
     public void updateFragment() {
-        // Called from MainActivity when change has been made from Dialog
+        // Called from MainActivity when change has been made from DialogFragment
         myView.folderList.removeAllViews();
         setUpThread();
     }
@@ -136,4 +139,41 @@ public class StorageManagementFragment extends Fragment {
         return mainActivityInterface.getStorageAccess().getSongFolders(songIDs,false,null);
     }
 
+
+    // Received back from TextInputBottomSheet via MainActivity
+    public void createNewFolder(String foldername) {
+        // Get the current sub dir
+        String safeFolder = mainActivityInterface.getStorageAccess().safeFilename(foldername);
+        if (mainActivityInterface.getStorageAccess().createFolder("Songs", currentSubDir,
+                safeFolder,true)) {
+            updateFragment();
+        }
+    }
+
+    public void renameFolder(String foldername) {
+        String safeFolder = mainActivityInterface.getStorageAccess().safeFilename(foldername);
+        // Try to rename.  This will check if it already exists and will return success on creation
+        // This also displays the desired toast message
+        if (mainActivityInterface.getStorageAccess().renameFolder(currentSubDir, safeFolder,true)) {
+                updateFragment();
+        }
+    }
+
+    private boolean uriExists(String newFolder) {
+        // Return true if it doesn't already exist.
+        String folder = getNewSubfolder(newFolder);
+        Uri newUri = mainActivityInterface.getStorageAccess().getUriForItem("Songs",folder,"");
+        return mainActivityInterface.getStorageAccess().uriExists(newUri);
+    }
+
+    private String getNewSubfolder(String newFolder) {
+        String folder = "";
+        if (currentSubDir != null && !currentSubDir.isEmpty()
+                && !currentSubDir.equals(getString(R.string.mainfoldername))) {
+            folder += currentSubDir + "/";
+        } else {
+            folder += newFolder;
+        }
+        return folder.replace("//", "/");
+    }
 }

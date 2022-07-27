@@ -473,7 +473,7 @@ public class StorageAccess {
     private String[] fixFoldersAndFiles(String folder, String subfolder, String filename) {
         // This fixes incorrect folders that would cause problems
         String[] returnvals = new String[3];
-        if (subfolder.startsWith("**")) {
+        if (subfolder!=null && subfolder.startsWith("**")) {
             // This is used when custom slides are created as part of a set, making the folder look more obvious
             subfolder = subfolder.replace("**", "../");
             subfolder = subfolder.replace("Images", "Images/_cache");
@@ -483,7 +483,7 @@ public class StorageAccess {
             subfolder = subfolder.replace("Variation", "Variations");
             subfolder = subfolder.replace("Notes", "Notes/_cache");
         }
-        if (subfolder.contains("../")) {
+        if (subfolder!=null && subfolder.contains("../")) {
             // Custom set item or a received file
             subfolder = subfolder.replace("../","");
             if (subfolder.contains("/_cache")) {
@@ -499,7 +499,7 @@ public class StorageAccess {
             folder = "";
         }
 
-        if (subfolder.equals(c.getResources().getString(R.string.mainfoldername)) || subfolder.equals("MAIN")) {
+        if (subfolder==null || subfolder.equals(c.getResources().getString(R.string.mainfoldername)) || subfolder.equals("MAIN")) {
             subfolder = "";
         }
 
@@ -1682,62 +1682,91 @@ public class StorageAccess {
     }
 
     // Actions for folders (create, delete, rename, clear)
-    public boolean renameFolder(Song song, String oldsubfolder, String newsubfolder) {
+    public boolean renameFolder(String oldsubfolder, String newsubfolder, boolean showToast) {
         if (lollipopOrLater()) {
-            return renameFolder_SAF(song, oldsubfolder, newsubfolder);
+            return renameFolder_SAF(oldsubfolder, newsubfolder, showToast);
         } else {
-            return renameFolder_File(song, oldsubfolder, newsubfolder);
+            return renameFolder_File(oldsubfolder, newsubfolder, showToast);
         }
     }
-    private boolean renameFolder_File(Song song, String oldsubfolder, String newsubfolder) {
+    private boolean renameFolder_File(String oldsubfolder, String newsubfolder, boolean showToast) {
         // Now the long bit.  Go through the original folder and copy the files to the new location
         Uri oldUri = getUriForItem("Songs", oldsubfolder, "");
         Uri newUri = getUriForItem("Songs", newsubfolder, "");
+        String message;
+        boolean outcome;
         if (!uriExists(newUri)) {
             if (oldUri != null && newUri != null && oldUri.getPath() != null && newUri.getPath() != null) {
                 File oldfile = new File(oldUri.getPath());
                 File newfile = new File(newUri.getPath());
                 if (oldfile.renameTo(newfile)) {
-                    mainActivityInterface.getShowToast().doIt(c.getString(R.string.rename) + " - " +
-                            c.getString(android.R.string.ok));
-                    song.setFolder(newsubfolder);
-                    return true;
+                    message = c.getString(R.string.success);
+                    outcome = true;
                 } else {
-                    mainActivityInterface.getShowToast().doIt(c.getString(R.string.rename) + " - " +
-                            c.getString(R.string.create_folder_error));
-                    return false;
+                    message = c.getString(R.string.create_folder_error);
+                    outcome = false;
                 }
             } else {
-                mainActivityInterface.getShowToast().doIt(c.getString(R.string.rename) + " - " +
-                        c.getString(R.string.create_folder_error));
-                return false;
+                message = c.getString(R.string.create_folder_error);
+                outcome = false;
             }
         } else {
-            mainActivityInterface.getShowToast().doIt(c.getString(R.string.rename) +
-                    " - " + c.getString(R.string.folder_exists));
-            return false;
+            message = c.getString(R.string.folder_exists);
+            outcome = false;
         }
+        if (showToast) {
+            mainActivityInterface.getShowToast().doIt(message);
+        }
+        return outcome;
     }
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private boolean renameFolder_SAF(Song song, String oldsubfolder, String newsubfolder) {
+    private boolean renameFolder_SAF(String oldsubfolder, String newsubfolder, boolean showToast) {
         // SAF can only rename final name (can't move within directory structure) - No / allowed!
         Uri oldUri = getUriForItem("Songs", oldsubfolder, "");
-        // Only rename the last section
-        if (newsubfolder.contains("/")) {
-            newsubfolder = newsubfolder.substring(newsubfolder.lastIndexOf("/"));
-            newsubfolder = newsubfolder.replace("/", "");
+        // Work out what the new uri should be
+        Uri newUri;
+        // Get rid of the old last folder and replace it
+        if (oldsubfolder.contains("/")) {
+            oldsubfolder = oldsubfolder.substring(0,oldsubfolder.lastIndexOf("/"));
         }
-        try {
-            DocumentsContract.renameDocument(c.getContentResolver(), oldUri, newsubfolder);
-            mainActivityInterface.getShowToast().doIt(c.getString(R.string.rename) + " - " +
-                    c.getString(android.R.string.ok));
-            song.setFolder(newsubfolder);
-            return true;
-        } catch (Exception e) {
-            mainActivityInterface.getShowToast().doIt(c.getString(R.string.rename) + " - " +
-                    c.getString(R.string.create_folder_error));
-            return false;
+        if (oldsubfolder.isEmpty()) {
+            newUri = getUriForItem("Songs", newsubfolder, "");
+        } else {
+           String update = oldsubfolder + "/" + newsubfolder;
+           update = update.replace("//","/");
+           newUri = getUriForItem("Songs", update, "");
         }
+        String message;
+        boolean outcome;
+        if (!uriExists(newUri)) {
+            // Only rename the last section
+            if (newsubfolder.contains("/")) {
+                newsubfolder = newsubfolder.substring(newsubfolder.lastIndexOf("/"));
+                newsubfolder = newsubfolder.replace("/", "");
+            }
+            try {
+                Uri renamed = DocumentsContract.renameDocument(c.getContentResolver(), oldUri, newsubfolder);
+                Log.d(TAG,"renamed="+renamed+"\ndesired="+newUri);
+                if (renamed!=null && renamed.equals(newUri)) {
+                    message = c.getString(R.string.success);
+                    outcome = true;
+                } else {
+                    message = c.getString(R.string.create_folder_error);
+                    outcome = true;
+                }
+            } catch (Exception e) {
+                message = c.getString(R.string.create_folder_error);
+                outcome = false;
+                e.printStackTrace();
+            }
+        } else {
+            message = c.getString(R.string.folder_exists);
+            outcome = false;
+        }
+        if (showToast) {
+            mainActivityInterface.getShowToast().doIt(message);
+        }
+        return outcome;
     }
     public void wipeFolder(String folder, String subfolder) {
         Uri uri = getUriForItem(folder,subfolder,null);
@@ -1768,28 +1797,61 @@ public class StorageAccess {
             e.printStackTrace();
         }
     }
-    public boolean createFolder(String currentDir, String currentSubDir, String newFolder) {
+    public boolean createFolder(String currentDir, String currentSubDir, String newFolder, boolean showToast) {
         // Get the uri for the parent
         Uri dirUri = getUriForItem(currentDir, currentSubDir, "");
-        if (lollipopOrLater()) {
-            return createFolder_SAF(dirUri, newFolder);
+        Uri desireduri = getUriForItem(currentDir,currentSubDir,newFolder);
+        if (!uriExists(desireduri)) {
+            if (lollipopOrLater()) {
+                return createFolder_SAF(dirUri, newFolder, showToast);
+            } else {
+                return createFolder_File(dirUri, newFolder, showToast);
+            }
         } else {
-            return createFolder_File(dirUri, newFolder);
-        }
-    }
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private boolean createFolder_SAF(Uri dirUri, String newFolder) {
-        try {
-            DocumentsContract.createDocument(c.getContentResolver(), dirUri, DocumentsContract.Document.MIME_TYPE_DIR, newFolder);
-            return true;
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            if (showToast) {
+                mainActivityInterface.getShowToast().doIt(c.getString(R.string.folder_exists));
+            }
             return false;
         }
     }
-    private boolean createFolder_File(Uri root, String newName) {
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private boolean createFolder_SAF(Uri dirUri, String newFolder, boolean showToast) {
+        String message;
+        boolean outcome;
+        try {
+            Uri createduri = DocumentsContract.createDocument(c.getContentResolver(), dirUri, DocumentsContract.Document.MIME_TYPE_DIR, newFolder);
+            if (createduri!=null && !createduri.equals(dirUri)) {
+                message = c.getString(R.string.success);
+                outcome = true;
+            } else {
+                message = c.getString(R.string.create_folder_error);
+                outcome = false;
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            message = c.getString(R.string.create_folder_error);
+            outcome = false;
+        }
+        if (showToast) {
+            mainActivityInterface.getShowToast().doIt(message);
+        }
+        return outcome;
+    }
+    private boolean createFolder_File(Uri root, String newName, boolean showToast) {
         File f = new File(root.getPath(), newName);
-        return f.mkdirs();
+        String message;
+        boolean outcome;
+        if (f.mkdirs()) {
+            message = c.getString(R.string.success);
+            outcome = true;
+        } else {
+            message = c.getString(R.string.create_folder_error);
+            outcome = false;
+        }
+        if (showToast) {
+            mainActivityInterface.getShowToast().doIt(message);
+        }
+        return outcome;
     }
     public ArrayList<String> getSongFolders(ArrayList<String> songIDs, boolean addMain, String toIgnore) {
         ArrayList<String> availableFolders = new ArrayList<>();

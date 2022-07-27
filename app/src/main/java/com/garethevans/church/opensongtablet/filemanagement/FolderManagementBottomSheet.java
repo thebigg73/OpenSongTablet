@@ -19,6 +19,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.BottomSheetStorageFolderBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.preferences.TextInputBottomSheet;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -159,13 +160,24 @@ public class FolderManagementBottomSheet extends BottomSheetDialogFragment {
                     break;
 
                 case "createItem":
-                    dialogFragment = new NewNameBottomSheet(callingFragment,"StorageManagementFragment",false,"Songs",subdir,null, false);
-                    dialogFragment.show(requireActivity().getSupportFragmentManager(),"createItem");
+                    // Current sub directory is passed as we will create inside this
+                    mainActivityInterface.setWhattodo("newfolder");
+                    TextInputBottomSheet textInputBottomSheet = new TextInputBottomSheet(callingFragment,"StorageManagementFragment",getString(R.string.new_folder),getString(R.string.new_folder_name),null,null,null,true);
+                    textInputBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"StorageManagementFragment");
                     break;
 
                 case "renameFolder":
-                    dialogFragment = new NewNameBottomSheet(callingFragment,"StorageManagementFragment",false,"Songs",subdir,null, true);
-                    dialogFragment.show(requireActivity().getSupportFragmentManager(),"renameFolder");
+                    // The current sub directory is stored here
+                    mainActivityInterface.setWhattodo("renamefolder");
+                    String lastpart;
+                    if (subdir.contains("/")) {
+                        lastpart = subdir.substring(subdir.lastIndexOf("/"));
+                        lastpart = lastpart.replace("/","");
+                    } else {
+                        lastpart = subdir;
+                    }
+                    TextInputBottomSheet textInputBottomSheet2 = new TextInputBottomSheet(callingFragment,"StorageManagementFragment",getString(R.string.folder_rename),getString(R.string.new_folder_name),lastpart,null,null,true);
+                    textInputBottomSheet2.show(mainActivityInterface.getMyFragmentManager(),"StorageManagementFragment");
                     break;
 
                 case "moveContents":

@@ -478,7 +478,7 @@ public class ProcessSong {
     public String[] getChordPositions(String chord, String lyric) {
         ArrayList<String> chordpositions = new ArrayList<>();
 
-        Log.d(TAG,"getChordPositions()\nchord:'"+chord+"'\nlyric:'"+lyric+"'");
+        //Log.d(TAG,"getChordPositions()\nchord:'"+chord+"'\nlyric:'"+lyric+"'");
         // IV - Set ready for the loop
         boolean thischordcharempty;
         boolean prevchordcharempty = false;
@@ -490,25 +490,25 @@ public class ProcessSong {
             prevlyriccharempty = lyric.startsWith(" ", x - 1);
             prevlyricempty = prevlyricempty && prevlyriccharempty;
 
-            Log.d(TAG,"chord:"+chord);
-            Log.d(TAG,"thischordcharempty:"+thischordcharempty);
-            Log.d(TAG,"prevlyriccharempty:"+prevlyriccharempty);
-            Log.d(TAG,"prevlyricempty:"+prevlyricempty);
+            //Log.d(TAG,"chord:"+chord);
+            //Log.d(TAG,"thischordcharempty:"+thischordcharempty);
+            //Log.d(TAG,"prevlyriccharempty:"+prevlyriccharempty);
+            //Log.d(TAG,"prevlyricempty:"+prevlyricempty);
 
             // Add the start position of a chord
             if (!thischordcharempty && prevchordcharempty) {
                 // Remove the previous chord end position when in a run of chords over lyric spaces
                 if (prevlyricempty && lyric.startsWith(" ", x)) {
-                    Log.d(TAG,"chordpositions.remove("+(chordpositions.size()-1)+")");
+                    //Log.d(TAG,"chordpositions.remove("+(chordpositions.size()-1)+")");
                     chordpositions.remove(chordpositions.size() - 1);
                 }
-                Log.d(TAG,"chordpositions.add("+(String.valueOf(x))+")");
+                //Log.d(TAG,"chordpositions.add("+(String.valueOf(x))+")");
                 chordpositions.add(String.valueOf(x));
                 prevlyricempty = true;
                 // Add the end position of a chord if it ends over a lyric space
             } else if (thischordcharempty && !prevchordcharempty && prevlyriccharempty) {
                 chordpositions.add(String.valueOf(x));
-                Log.d(TAG,"chordpositions.add("+(String.valueOf(x))+")");
+                //Log.d(TAG,"chordpositions.add("+(String.valueOf(x))+")");
                 prevlyricempty = true;
             }
 
@@ -884,12 +884,12 @@ public class ProcessSong {
         boolean hasCapo = capoText!=null && !capoText.isEmpty();
         if (hasCapo && (displayCapoChords || displayCapoAndNativeChords)) {
             int capo = Integer.parseInt(capoText);
-            Log.d(TAG,"string:"+string);
+            //Log.d(TAG,"string:"+string);
             String chordbit = string.substring(0,string.indexOf("____groupline____"));
             chordbit = mainActivityInterface.getTranspose().transposeChordForCapo(capo,chordbit).replaceFirst(".","˄");
             // Add it back in with a capo identifying this part
             string = chordbit + "____groupline____" + string;
-            Log.d(TAG,"string:"+string);
+            //Log.d(TAG,"string:"+string);
         }
 
         // Split the group into lines
@@ -904,7 +904,7 @@ public class ProcessSong {
 
         int minlength = lines[0].length();
         for (int i = 0; i < lines.length; i++) {
-            Log.d(TAG,"lines["+i+"]:"+lines[i]);
+            //Log.d(TAG,"lines["+i+"]:"+lines[i]);
             int length = lines[i].length();
             if (length < minlength) {
                 for (int z = 0; z < (minlength - length); z++) {
@@ -918,11 +918,11 @@ public class ProcessSong {
         ArrayList<Integer> pos = new ArrayList<>();
         if (lines.length > 1) {
 
-            int x=0;
+            /*int x=0;
             for (String line:lines) {
                 Log.d(TAG,"line["+x+"]:"+line);
                 x++;
-            }
+            }*/
             String[] chordPos;
             if (lines[0].startsWith("˄")) {
                 // For capo chords
@@ -934,7 +934,7 @@ public class ProcessSong {
                 chordPos = getChordPositions(lines[0], lines[1]);
             }
             for (String p : chordPos) {
-                Log.d(TAG,"chordpos:"+p);
+                //Log.d(TAG,"chordpos:"+p);
                 pos.add(Integer.valueOf(p));
             }
         }
@@ -973,7 +973,7 @@ public class ProcessSong {
                     }
                     // If this is a chord line that either has highlighting, or needs to to include capo chords
                     // We process separately, otherwise it is handled in the last default 'else'
-                    Log.d(TAG,"linetype:"+linetype+"  str:"+str);
+                    //Log.d(TAG,"linetype:"+linetype+"  str:"+str);
                     switch (linetype) {
                         case "chord":
                             // Only show this if we want chords and if there is a capo, we want both capo and native
@@ -1004,7 +1004,7 @@ public class ProcessSong {
                         case "lyric":
                             if (displayLyrics) {
                                 // TODO
-                                Log.d(TAG,"Lyrics bit:'"+str+"'");
+                                //Log.d(TAG,"Lyrics bit:'"+str+"'");
                                 // IV - This will need more complexity depending on mode and if showing chords
                                 textView.setText(str.replaceAll("[|_]", " "));
                             } else {
@@ -1025,11 +1025,11 @@ public class ProcessSong {
             // Add the final position
             TextView textView = newTextView(linetype, typeface, size, color);
             String str = lines[t].substring(startpos);
-            Log.d(TAG,"str:"+str+" str.startsWith(\".\"):"+str.startsWith("."));
+            //Log.d(TAG,"str:"+str+" str.startsWith(\".\"):"+str.startsWith("."));
             if (str.startsWith(".")) {
                 str = str.replaceFirst(".", "");
             }
-            Log.d(TAG,"str:"+str+" str.startsWith(\"˄\"):"+str.startsWith("˄"));
+            //Log.d(TAG,"str:"+str+" str.startsWith(\"˄\"):"+str.startsWith("˄"));
             if (str.startsWith("˄")) {
                 str = str.replaceFirst("˄", "");
             }
@@ -1813,8 +1813,8 @@ public class ProcessSong {
             newHeight = Math.round(startHeight*scaleSize);
         }
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(newWidth, newHeight);
-        Log.d(TAG, "startWidth:"+startWidth+"  scaleSize:"+scaleSize+"  newWidth:"+newWidth);
-        Log.d(TAG, "startHeight:"+startHeight+"  scaleSize:"+scaleSize+"  newHeight:"+newHeight);
+        //Log.d(TAG, "startWidth:"+startWidth+"  scaleSize:"+scaleSize+"  newWidth:"+newWidth);
+        //Log.d(TAG, "startHeight:"+startHeight+"  scaleSize:"+scaleSize+"  newHeight:"+newHeight);
         column.setLayoutParams(lp);
     }
 
@@ -1823,21 +1823,20 @@ public class ProcessSong {
                                       boolean need23ColumnCheck) {
         // There's a few things to consider here.  Firstly, if scaling is off, best is 1 column.
         // If we are overriding full scale to width only, or 1 col to off, best is 1 column.
-        Log.d(TAG,"col 1 scale="+col1);
-        Log.d(TAG,"need23ColumnCheck: "+need23ColumnCheck);
-        Log.d(TAG,"autoScale: "+autoScale);
+        //Log.d(TAG,"col 1 scale="+col1);
+        //Log.d(TAG,"need23ColumnCheck: "+need23ColumnCheck);
+        //Log.d(TAG,"autoScale: "+autoScale);
 
         if (!need23ColumnCheck && (autoScale.equals("N") || autoScale.equals("W"))) {
-            Log.d(TAG,"Defaulting to 1 column");
+            //Log.d(TAG,"Defaulting to 1 column");
             return 1;
         } else {
-            Log.d(TAG,"Testing 2/3 cols");
+            //Log.d(TAG,"Testing 2/3 cols");
             float col2best = Math.min(col2[0], col2[1]);
-            Log.d(TAG,"2 col best = "+col2best);
+            //Log.d(TAG,"2 col best = "+col2best);
 
             float col3best = Math.min(col3[0], Math.min(col3[1], col3[2]));
-            Log.d(TAG,"3 col best = "+col3best);
-
+            //Log.d(TAG,"3 col best = "+col3best);
             int best;
             if (col1 > col2best) {
                 best = 1;
@@ -1850,16 +1849,16 @@ public class ProcessSong {
                     best = 3;
                 }
             }
-            Log.d(TAG,"col1="+col1+"  col2best="+col2best+"  col3best="+col3best+"  best="+best);
+            //Log.d(TAG,"col1="+col1+"  col2best="+col2best+"  col3best="+col3best+"  best="+best);
             // Default font size is 14sp when drawing. If scaling takes this below the min font Size, override back to 1 column
             if (best == 2) {
-                Log.d(TAG,"col2[2]="+col2[2]);
+                //Log.d(TAG,"col2[2]="+col2[2]);
                 if (col2[2] == 0) {
                     return 1;
                 }
                 float newFontSize2Col = defFontSize * col2best;
 
-                Log.d(TAG,"newFontSize2Col="+newFontSize2Col+"  fontSizeMin="+fontSizeMin);
+                //Log.d(TAG,"newFontSize2Col="+newFontSize2Col+"  fontSizeMin="+fontSizeMin);
                 if (!need23ColumnCheck && songAutoScaleOverrideFull && newFontSize2Col < fontSizeMin) {
                     thisAutoScale = "W";
                     return 1;
@@ -1928,7 +1927,7 @@ public class ProcessSong {
         } else if (songSheetView!=null) {
             songSheetView.setVisibility(View.GONE);
         }
-        Log.d(TAG,"songSheetTitleHeight="+songSheetTitleHeight);
+        //Log.d(TAG,"songSheetTitleHeight="+songSheetTitleHeight);
 
         thisAutoScale = songAutoScale;
 
@@ -1947,7 +1946,7 @@ public class ProcessSong {
         // Now decide if 1,2 or 3 columns is best
         int howManyColumns = howManyColumnsAreBest(scaleSize_1col[0], scaleSize_2cols, scaleSize_3cols, songAutoScale, fontSizeMin, songAutoScaleOverrideFull,need23ColumnCheck);
 
-        Log.d(TAG, "howManyColumns=" + howManyColumns);
+        //Log.d(TAG, "howManyColumns=" + howManyColumns);
 
         switch (howManyColumns) {
             case 1:
@@ -2020,7 +2019,7 @@ public class ProcessSong {
 
         // Get a scaled view (get the actual scale returned as it might be smaller based on max font size)
         resizeColumn(innerCol1, currentWidth, currentHeight, thisScale);
-        Log.d(TAG,"currentHeight of column1="+currentHeight+"  scaled="+(int)(thisScale*currentHeight));
+        //Log.d(TAG,"currentHeight of column1="+currentHeight+"  scaled="+(int)(thisScale*currentHeight));
         setMargins(column1, 0, 0);
         column1.addView(innerCol1);
         columnVisibility(column1, column2, column3, true, false, false);
@@ -2114,7 +2113,7 @@ public class ProcessSong {
 
         int col1Height = getTotal(sectionHeights, 0, (int) scaleSize[2]);
         int col2Height = getTotal(sectionHeights, (int) scaleSize[2], sectionHeights.size());
-        Log.d(TAG,"col1Height="+col1Height+"  col2Height="+col2Height);
+        //Log.d(TAG,"col1Height="+col1Height+"  col2Height="+col2Height);
 
         // Get the actual scale which might be less due to the maxFontSize being exceeded
         float thisScale1 = setScaledView(innerCol1, scaleSize[0], maxFontSize);
@@ -2174,7 +2173,7 @@ public class ProcessSong {
         int col1h = (int) (col1Height*thisScale1);
         int col2h = (int) (col2Height*thisScale2);
 
-        Log.d(TAG,"col1h="+col1h+"  col2h="+col2h);
+        //Log.d(TAG,"col1h="+col1h+"  col2h="+col2h);
 
         scaleSize[0] = thisScale1;
         scaleSize[1] = thisScale2;
@@ -2317,7 +2316,7 @@ public class ProcessSong {
         int col1Height = getTotal(sectionHeights, 0, (int) scaleSize[3]);
         int col2Height = getTotal(sectionHeights, (int) scaleSize[3], (int) scaleSize[4]);
         int col3Height = getTotal(sectionHeights, (int) scaleSize[4], sectionHeights.size());
-        Log.d(TAG,"col1Height="+col1Height+"  col2Height="+col2Height);
+        //Log.d(TAG,"col1Height="+col1Height+"  col2Height="+col2Height);
 
         // Get the actual scale which might be less due to the maxFontSize being exceeded
         float thisScale1 = setScaledView(innerCol1, scaleSize[0], maxFontSize);
@@ -2406,7 +2405,7 @@ public class ProcessSong {
         int col2h = (int) (col2Height*thisScale2);
         int col3h = (int) (col3Height*thisScale3);
 
-        Log.d(TAG,"col1h="+col1h+"  col2h="+col2h+"  col3h="+col3h);
+        //Log.d(TAG,"col1h="+col1h+"  col2h="+col2h+"  col3h="+col3h);
 
         scaleSize[0] = thisScale1;
         scaleSize[1] = thisScale2;

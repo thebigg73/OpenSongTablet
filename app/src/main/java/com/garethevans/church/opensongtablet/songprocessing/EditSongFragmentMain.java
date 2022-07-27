@@ -1,7 +1,6 @@
 package com.garethevans.church.opensongtablet.songprocessing;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -69,6 +68,9 @@ public class EditSongFragmentMain extends Fragment  {
         myView.folder.setAdapter(arrayAdapter);
         myView.folder.setText(mainActivityInterface.getTempSong().getFolder());
         textInputBottomSheet = new TextInputBottomSheet(this,"EditSongFragmentMain",getString(R.string.new_folder),getString(R.string.new_folder_name),null,"","",true);
+
+        // Resize the bottom padding to the soft keyboard height or half the screen height for the soft keyboard (workaround)
+        mainActivityInterface.getWindowFlags().adjustViewPadding(mainActivityInterface,myView.resizeForKeyboardLayout);
     }
 
     // Sor the view visibility, listeners, etc.
@@ -146,18 +148,15 @@ public class EditSongFragmentMain extends Fragment  {
 
 
     public void updateValue(String value) {
-        // New folder name given.  If it isn't null try to create it and select it
+        // New folder name given.  If it isn't null/empty try to create it and select it
         boolean selectNewFolder = false;
         if (value!=null && !value.isEmpty()) {
-            // Try to create the new folder if it doesn't exist
-            Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Songs",value,null);
-            if (!mainActivityInterface.getStorageAccess().uriExists(uri)) {
-                selectNewFolder = mainActivityInterface.getStorageAccess().createFolder(
-                        "Songs","",value);
-            }
+            // Try to create the new folder (this checks that it doesn't already exist)
+            selectNewFolder = mainActivityInterface.getStorageAccess().createFolder(
+                        "Songs","",value,true);
         }
 
-        if (selectNewFolder) {
+        if (!selectNewFolder) {
             ArrayList<String> songIds = mainActivityInterface.getStorageAccess().listSongs();
             mainActivityInterface.getStorageAccess().writeSongIDFile(songIds);
             folders = mainActivityInterface.getStorageAccess().getSongFolders(songIds,true,null);

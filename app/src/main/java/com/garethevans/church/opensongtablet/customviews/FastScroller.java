@@ -277,18 +277,30 @@ public class FastScroller extends LinearLayout {
         this.recyclerView = recyclerView;
 
         if (getParent() instanceof ViewGroup) {
-            setLayoutParams((ViewGroup) getParent());
+            try {
+                setLayoutParams((ViewGroup) getParent());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         } else if (recyclerView.getParent() instanceof ViewGroup) {
-            ViewGroup viewGroup = (ViewGroup) recyclerView.getParent();
-            viewGroup.addView(this);
-            setLayoutParams(viewGroup);
+            try {
+                ViewGroup viewGroup = (ViewGroup) recyclerView.getParent();
+                viewGroup.addView(this);
+                setLayoutParams(viewGroup);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         recyclerView.addOnScrollListener(scrollListener);
 
         post(() -> {
             // set initial positions for bubble and handle
-            setViewPositions(getScrollProportion(FastScroller.this.recyclerView));
+            try {
+                setViewPositions(getScrollProportion(FastScroller.this.recyclerView));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         });
     }
 
@@ -387,43 +399,52 @@ public class FastScroller extends LinearLayout {
     }
 
     private void setRecyclerViewPosition(float y) {
-        if (recyclerView != null && recyclerView.getAdapter() != null && recyclerView.getLayoutManager() != null) {
-            int itemCount = recyclerView.getAdapter().getItemCount();
-            float proportion;
+        try {
+            if (recyclerView != null && recyclerView.getAdapter() != null && recyclerView.getLayoutManager() != null) {
+                int itemCount = recyclerView.getAdapter().getItemCount();
+                float proportion;
 
-            if (handleView.getY() == 0) {
-                proportion = 0f;
-            } else if (handleView.getY() + handleHeight >= viewHeight - TRACK_SNAP_RANGE) {
-                proportion = 1f;
-            } else {
-                proportion = y / (float) viewHeight;
+                if (handleView.getY() == 0) {
+                    proportion = 0f;
+                } else if (handleView.getY() + handleHeight >= viewHeight - TRACK_SNAP_RANGE) {
+                    proportion = 1f;
+                } else {
+                    proportion = y / (float) viewHeight;
+                }
+
+                int scrolledItemCount = Math.round(proportion * itemCount);
+
+                if (isLayoutReversed(recyclerView.getLayoutManager())) {
+                    scrolledItemCount = itemCount - scrolledItemCount;
+                }
+
+                int targetPos = getValueInRange(0, itemCount - 1, scrolledItemCount);
+                recyclerView.getLayoutManager().scrollToPosition(targetPos);
+
+                if (showBubble && sectionIndexer != null) {
+                    bubbleView.setText(sectionIndexer.getSectionText(targetPos));
+                }
             }
-
-            int scrolledItemCount = Math.round(proportion * itemCount);
-
-            if (isLayoutReversed(recyclerView.getLayoutManager())) {
-                scrolledItemCount = itemCount - scrolledItemCount;
-            }
-
-            int targetPos = getValueInRange(0, itemCount - 1, scrolledItemCount);
-            recyclerView.getLayoutManager().scrollToPosition(targetPos);
-
-            if (showBubble && sectionIndexer != null) {
-                bubbleView.setText(sectionIndexer.getSectionText(targetPos));
-            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     private float getScrollProportion(RecyclerView recyclerView) {
-        if (recyclerView == null) {
+        try {
+            if (recyclerView == null) {
+                return 0;
+            }
+
+            final int verticalScrollOffset = recyclerView.computeVerticalScrollOffset();
+            final int verticalScrollRange = recyclerView.computeVerticalScrollRange();
+            final float rangeDiff = verticalScrollRange - viewHeight;
+            float proportion = (float) verticalScrollOffset / (rangeDiff > 0 ? rangeDiff : 1f);
+            return viewHeight * proportion;
+        } catch (Exception e) {
+            e.printStackTrace();
             return 0;
         }
-
-        final int verticalScrollOffset = recyclerView.computeVerticalScrollOffset();
-        final int verticalScrollRange = recyclerView.computeVerticalScrollRange();
-        final float rangeDiff = verticalScrollRange - viewHeight;
-        float proportion = (float) verticalScrollOffset / (rangeDiff > 0 ? rangeDiff : 1f);
-        return viewHeight * proportion;
     }
 
     @SuppressWarnings("SameParameterValue")
@@ -456,22 +477,29 @@ public class FastScroller extends LinearLayout {
     }
 
     private int findFirstVisibleItemPosition(@NonNull final RecyclerView.LayoutManager layoutManager) {
-        if (layoutManager instanceof LinearLayoutManager) {
-            return ((LinearLayoutManager) layoutManager).findFirstVisibleItemPosition();
-        } else if (layoutManager instanceof StaggeredGridLayoutManager) {
-            return ((StaggeredGridLayoutManager) layoutManager).findFirstVisibleItemPositions(null)[0];
+        try {
+            if (layoutManager instanceof LinearLayoutManager) {
+                return ((LinearLayoutManager) layoutManager).findFirstVisibleItemPosition();
+            } else if (layoutManager instanceof StaggeredGridLayoutManager) {
+                return ((StaggeredGridLayoutManager) layoutManager).findFirstVisibleItemPositions(null)[0];
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         return 0;
     }
 
     private boolean isLayoutReversed(@NonNull final RecyclerView.LayoutManager layoutManager) {
-        if (layoutManager instanceof LinearLayoutManager) {
-            return ((LinearLayoutManager) layoutManager).getReverseLayout();
-        } else if (layoutManager instanceof StaggeredGridLayoutManager) {
-            return ((StaggeredGridLayoutManager) layoutManager).getReverseLayout();
+        try {
+            if (layoutManager instanceof LinearLayoutManager) {
+                return ((LinearLayoutManager) layoutManager).getReverseLayout();
+            } else if (layoutManager instanceof StaggeredGridLayoutManager) {
+                return ((StaggeredGridLayoutManager) layoutManager).getReverseLayout();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
         return false;
     }
 
@@ -520,40 +548,48 @@ public class FastScroller extends LinearLayout {
     }
 
     private void showScrollbar() {
-        if (recyclerView.computeVerticalScrollRange() - viewHeight > 0) {
-            float transX = getResources().getDimensionPixelSize(R.dimen.fastscroll_scrollbar_padding_end);
+        try {
+            if (recyclerView.computeVerticalScrollRange() - viewHeight > 0) {
+                float transX = getResources().getDimensionPixelSize(R.dimen.fastscroll_scrollbar_padding_end);
 
-            scrollbar.setTranslationX(transX);
-            scrollbar.setVisibility(VISIBLE);
-            scrollbarAnimator = scrollbar.animate().translationX(0f).alpha(1f)
-                    .setDuration(SCROLLBAR_ANIM_DURATION)
-                    .setListener(new AnimatorListenerAdapter() {
-                        // adapter required for new alpha value to stick
-                    });
+                scrollbar.setTranslationX(transX);
+                scrollbar.setVisibility(VISIBLE);
+                scrollbarAnimator = scrollbar.animate().translationX(0f).alpha(1f)
+                        .setDuration(SCROLLBAR_ANIM_DURATION)
+                        .setListener(new AnimatorListenerAdapter() {
+                            // adapter required for new alpha value to stick
+                        });
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     private void hideScrollbar() {
-        float transX = getResources().getDimensionPixelSize(R.dimen.fastscroll_scrollbar_padding_end);
+        try {
+            float transX = getResources().getDimensionPixelSize(R.dimen.fastscroll_scrollbar_padding_end);
 
-        scrollbarAnimator = scrollbar.animate().translationX(transX).alpha(0f)
-                .setDuration(SCROLLBAR_ANIM_DURATION)
-                .setListener(new AnimatorListenerAdapter() {
+            scrollbarAnimator = scrollbar.animate().translationX(transX).alpha(0f)
+                    .setDuration(SCROLLBAR_ANIM_DURATION)
+                    .setListener(new AnimatorListenerAdapter() {
 
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        super.onAnimationEnd(animation);
-                        scrollbar.setVisibility(GONE);
-                        scrollbarAnimator = null;
-                    }
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            super.onAnimationEnd(animation);
+                            scrollbar.setVisibility(GONE);
+                            scrollbarAnimator = null;
+                        }
 
-                    @Override
-                    public void onAnimationCancel(Animator animation) {
-                        super.onAnimationCancel(animation);
-                        scrollbar.setVisibility(GONE);
-                        scrollbarAnimator = null;
-                    }
-                });
+                        @Override
+                        public void onAnimationCancel(Animator animation) {
+                            super.onAnimationCancel(animation);
+                            scrollbar.setVisibility(GONE);
+                            scrollbarAnimator = null;
+                        }
+                    });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void setHandleSelected(boolean selected) {

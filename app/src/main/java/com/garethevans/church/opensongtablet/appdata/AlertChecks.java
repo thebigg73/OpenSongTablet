@@ -1,7 +1,6 @@
 package com.garethevans.church.opensongtablet.appdata;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.gms.common.ConnectionResult;
@@ -27,7 +26,6 @@ public class AlertChecks {
         int currentVersion = mainActivityInterface.getVersionNumber().getVersionCode();
         int lastUsedVersion = mainActivityInterface.getPreferences().getMyPreferenceInt("lastUsedVersion",0);
 
-        Log.d(TAG,"current: "+currentVersion+"  last: "+lastUsedVersion);
         // Decide if the current app version is newer than the previous version.
         // If so, we want the user to be notified of changed.  The prefs are updated when the button is clicked
         return !alreadySeen && currentVersion > lastUsedVersion;

@@ -62,6 +62,9 @@ public class EditSongFragmentTags extends Fragment {
         myView.hymnnum.setText(mainActivityInterface.getTempSong().getHymnnum());
         myView.presorder.setFocusable(false);
         myView.presorder.setText(mainActivityInterface.getTempSong().getPresentationorder());
+
+        // Resize the bottom padding to the soft keyboard height or half the screen height for the soft keyboard (workaround)
+        mainActivityInterface.getWindowFlags().adjustViewPadding(mainActivityInterface,myView.resizeForKeyboardLayout);
     }
 
     private void setupListeners() {

@@ -62,7 +62,9 @@
         <include
             android:id="@+id/toolBar"
             layout="@layout/view_toolbar" />
+
     </FrameLayout>
+
 
     <!--The left song and set menu-->
     <LinearLayout
@@ -87,4 +89,5 @@
             android:layout_height="match_parent" />
 
     </LinearLayout>
+
 </androidx.drawerlayout.widget.DrawerLayout>

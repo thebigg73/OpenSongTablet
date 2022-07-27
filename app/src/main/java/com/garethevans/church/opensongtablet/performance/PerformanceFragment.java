@@ -7,7 +7,6 @@ import android.graphics.Canvas;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -631,9 +630,6 @@ public class PerformanceFragment extends Fragment {
                             topPadding = myView.songSheetTitle.getHeight();
                         }
 
-                        Log.d(TAG,"topPadding: "+topPadding);
-                        Log.d(TAG, "translationY: "+myView.songView.getTranslationY());
-
                         myView.pageHolder.setVisibility(View.VISIBLE);
                         myView.pageHolder.startAnimation(animSlideIn);
 
@@ -722,7 +718,7 @@ public class PerformanceFragment extends Fragment {
                         // Load in the bitmap with these dimensions
                         Bitmap highlighterBitmap = mainActivityInterface.getProcessSong().
                                 getHighlighterFile(0, 0);
-                        Log.d(TAG,"highlighterBitmap:"+highlighterBitmap);
+
                         if (highlighterBitmap != null &&
                                 mainActivityInterface.getPreferences().getMyPreferenceBoolean("drawingAutoDisplay", true)) {
 
@@ -757,9 +753,21 @@ public class PerformanceFragment extends Fragment {
                         }
                     }
                 });
-                myView.highlighterView.post(() -> myView.highlighterView.requestLayout());
+                myView.highlighterView.post(() -> {
+                    try {
+                        myView.highlighterView.requestLayout();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
             } else {
-                myView.highlighterView.post(() -> myView.highlighterView.setVisibility(View.GONE));
+                myView.highlighterView.post(() -> {
+                    try {
+                        myView.highlighterView.setVisibility(View.GONE);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -829,7 +837,6 @@ public class PerformanceFragment extends Fragment {
     }
 
     public void updateSizes(int width, int height) {
-        Log.d(TAG,"width="+width+"  height="+height);
         myView.zoomLayout.setSongSize(width,height);
     }
 

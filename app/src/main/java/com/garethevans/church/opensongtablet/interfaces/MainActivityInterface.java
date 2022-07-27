@@ -16,7 +16,6 @@ import com.garethevans.church.opensongtablet.animation.ShowCase;
 import com.garethevans.church.opensongtablet.appdata.AlertChecks;
 import com.garethevans.church.opensongtablet.appdata.CheckInternet;
 import com.garethevans.church.opensongtablet.appdata.SetTypeFace;
-import com.garethevans.church.opensongtablet.appdata.SoftKeyboard;
 import com.garethevans.church.opensongtablet.appdata.VersionNumber;
 import com.garethevans.church.opensongtablet.autoscroll.Autoscroll;
 import com.garethevans.church.opensongtablet.bible.Bible;
@@ -52,6 +51,7 @@ import com.garethevans.church.opensongtablet.screensetup.BatteryStatus;
 import com.garethevans.church.opensongtablet.screensetup.DoVibrate;
 import com.garethevans.church.opensongtablet.screensetup.ShowToast;
 import com.garethevans.church.opensongtablet.screensetup.ThemeColors;
+import com.garethevans.church.opensongtablet.screensetup.WindowFlags;
 import com.garethevans.church.opensongtablet.setprocessing.CurrentSet;
 import com.garethevans.church.opensongtablet.setprocessing.SetActions;
 import com.garethevans.church.opensongtablet.songmenu.SongListBuildIndex;
@@ -82,7 +82,6 @@ public interface MainActivityInterface {
     void setMode(String whichMode);
     void setFirstRun(boolean firstRun);
     boolean getFirstRun();
-    SoftKeyboard getSoftKeyboard();
 
     // Preferences and settings
     Preferences getPreferences();
@@ -224,12 +223,14 @@ public interface MainActivityInterface {
     TimeTools getTimeTools();
     DisplayPrevNext getDisplayPrevNext();
     DoVibrate getDoVibrate();
-    void hideKeyboard();
     void displayAreYouSure(String what, String action, ArrayList<String> arguments, String fragName, Fragment callingFragment, Song song);
     void confirmedAction(boolean agree, String what, ArrayList<String> arguments, String fragName, Fragment callingFragment, Song song);
     ShowToast getShowToast();
     String getWhattodo();
     void setWhattodo(String whattodo);
+    void forceImmersive();
+    WindowFlags getWindowFlags();
+    int getSoftKeyboardHeight();
 
     // CCLI
     CCLILog getCCLILog();

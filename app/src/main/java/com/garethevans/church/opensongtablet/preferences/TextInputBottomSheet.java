@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -124,7 +125,13 @@ public class TextInputBottomSheet extends BottomSheetDialogFragment {
     @Override
     public void onDismiss(@NonNull DialogInterface dialog) {
         super.onDismiss(dialog);
-        mainActivityInterface.getSoftKeyboard().hideKeyboard(requireActivity());
+        mainActivityInterface.forceImmersive();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mainActivityInterface.forceImmersive();
     }
 
     private void setViews() {
@@ -162,6 +169,8 @@ public class TextInputBottomSheet extends BottomSheetDialogFragment {
 
             myView.prefEditText.setHint(hint);
             myView.prefEditText.requestFocus();
+
+            myView.prefEditText.setGravity(Gravity.START);
 
         } else {
             // Hide the unwanted views

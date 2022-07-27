@@ -3,7 +3,6 @@ package com.garethevans.church.opensongtablet;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
@@ -20,7 +19,6 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.webkit.MimeTypeMap;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -36,7 +34,9 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.GravityCompat;
+import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -54,7 +54,6 @@ import com.garethevans.church.opensongtablet.appdata.AlertChecks;
 import com.garethevans.church.opensongtablet.appdata.CheckInternet;
 import com.garethevans.church.opensongtablet.appdata.FixLocale;
 import com.garethevans.church.opensongtablet.appdata.SetTypeFace;
-import com.garethevans.church.opensongtablet.appdata.SoftKeyboard;
 import com.garethevans.church.opensongtablet.appdata.VersionNumber;
 import com.garethevans.church.opensongtablet.autoscroll.Autoscroll;
 import com.garethevans.church.opensongtablet.bible.Bible;
@@ -207,7 +206,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private SetTypeFace setTypeFace;
     private ShowCase showCase;
     private ShowToast showToast;
-    private SoftKeyboard softKeyboard;
     private Song song, tempSong, indexingSong;
     private SongListBuildIndex songListBuildIndex;
     private SongSheetHeaders songSheetHeaders;
@@ -257,6 +255,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private MenuItem settingsButton;
     private Locale locale;
     private Bitmap screenShot;
+    private int softKeyboardHeight = 0;
 
     // Set up the activity
     @Override
@@ -283,23 +282,22 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         setupNavigation();
     }
 
+
     private void setupHelpers() {
         storageAccess = new StorageAccess(this);
         preferences = new Preferences(this);
-        softKeyboard = new SoftKeyboard();
 
-        SoftKeyboard.SoftKeyBoardStatusListener listener = new SoftKeyboard.SoftKeyBoardStatusListener() {
-            @Override
-            public void onKeyBoardShow(View rootView, int totalScreenHeight) {
-                setWindowFlags(false);
+        ViewCompat.setOnApplyWindowInsetsListener(getWindow().getDecorView(), (v, insets) -> {
+            boolean imeVisible = insets.isVisible(WindowInsetsCompat.Type.ime());
+            int height = insets.getInsets(WindowInsetsCompat.Type.ime()).bottom;
+            if (height>0) {
+                softKeyboardHeight = height;
             }
-
-            @Override
-            public void onKeyBoardHide(View rootView, int totalScreenHeight) {
-                setWindowFlags(true);
-            }
-        };
-        softKeyboard.assistActivity(this, listener);
+            // Moves the view to above the soft keyboard height
+            v.getRootView().setPadding(0,0,0,height);
+            windowFlags.setImmersive(!imeVisible);
+            return insets;
+        });
 
 
         // The song stuff
@@ -505,6 +503,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     menuOpen = slideOffset>initialVal;
                     decided = true;
                 }
+                // Hide the keyboard by forcing immersive
+                forceImmersive();
             }
 
             @Override
@@ -516,6 +516,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     showTutorial("songsetMenu",null);
                 }
                 showHideActionBar();
+                // Hide the keyboard by forcing immersive
+                forceImmersive();
             }
 
             @Override
@@ -524,7 +526,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 if (!whichMode.equals("Presenter")) {
                     hideActionButton(myView.drawerLayout.getDrawerLockMode(GravityCompat.START) != DrawerLayout.LOCK_MODE_UNLOCKED);
                 }
-                hideKeyboard();
+                // Hide the keyboard by forcing immersive
+                windowFlags.forceImmersive();
                 showHideActionBar();
             }
 
@@ -536,13 +539,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         });
     }
     @Override
-    public void hideKeyboard() {
-        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-        View view = getCurrentFocus();
-        if (view!=null && imm!=null) {
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
+    public void forceImmersive() {
+        windowFlags.forceImmersive();
     }
+
     @Override
     public void setWindowFlags(boolean immersiveOn) {
         // Fix the page flags
@@ -550,7 +550,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             windowFlags = new WindowFlags(this.getWindow());
         }
         try {
-            windowFlags.setWindowFlags(immersiveOn);
+            windowFlags.setImmersive(immersiveOn);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -614,10 +614,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         }
     }
 
-    @Override
-    public SoftKeyboard getSoftKeyboard() {
-        return softKeyboard;
-    }
 
     // Navigation logic
     private void setupNavigation() {
@@ -990,10 +986,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     public void updateToolbar(String what) {
         // Null titles are for the default song, author, etc.
         // Otherwise a new title is passed as a string (in a settings menu)
-        Log.d(TAG,"what="+what);
-        Log.d(TAG,"settingsOpen="+settingsOpen);
-        Log.d(TAG,"getMode()="+getMode());
-        windowFlags.setWindowFlags(true);
+        windowFlags.setImmersive(true);
         appActionBar.setActionBar(what);
         menuIconVisibility(what == null || (getMode().equals("Presenter") && !settingsOpen));
         myView.fragmentView.setTop(appActionBar.getActionBarHeight());
@@ -1004,7 +997,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         appActionBar.updateToolbarHelp(webAddress);
     }
     private void menuIconVisibility(boolean isVisible) {
-        Log.d(TAG,"isVisible:"+isVisible);
         try {
             if (isVisible) {
                 screenMirror.setVisibility(View.VISIBLE);
@@ -1205,8 +1197,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             myView.drawerLayout.openDrawer(GravityCompat.START);
             menuOpen = true;
         }
-        // Force any soft keyboard to close
-        softKeyboard.hideKeyboard(this);
+        forceImmersive();
     }
 
     // The song and set menu
@@ -1360,6 +1351,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         } else {
             return new ArrayList<>();
         }
+    }
+    @Override
+    public int getSoftKeyboardHeight() {
+        return softKeyboardHeight;
+    }
+    @Override
+    public WindowFlags getWindowFlags() {
+        return windowFlags;
     }
 
 
@@ -1783,8 +1782,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     // Folder and subfolder are passed in the arguments.  Blank arguments.get(2) /filenames mean folders
                     result = storageAccess.doDeleteFile(arguments.get(0),arguments.get(1),arguments.get(2));
                     if (arguments.get(2).isEmpty() && arguments.get(0).equals("Songs") && (arguments.get(1).isEmpty()||arguments.get(1)==null)) {
-                        // Emptying the entire songs foler, so need to recreate it on finish
-                        storageAccess.createFolder("Songs","","");
+                        // Emptying the entire songs foler, so need to recreate it on finish.
+                        storageAccess.createFolder("Songs","","",false);
                     }
                     //Rebuild the song index
                     updateSongMenu(fragName, callingFragment, arguments); // Passing the fragment allows an update to be sent to the calling fragment
@@ -2423,9 +2422,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void updateSizes(int width, int height) {
-        Log.d(TAG,"performanceFragment="+performanceFragment);
         if (performanceFragment!=null && whichMode.equals("Performance")) {
-            Log.d(TAG,"updateSizes("+width+", "+height+")");
             performanceFragment.updateSizes(width,height);
         }
     }
@@ -2499,6 +2496,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         break;
                     case "CustomSlideFragment":
                         ((CustomSlideFragment) fragment).getReusable(value);
+                        break;
+                    case "StorageManagementFragment":
+                        if (whattodo.equals("newfolder")) {
+                            ((StorageManagementFragment) fragment).createNewFolder(value);
+                        } else if (whattodo.equals("renamefolder")) {
+                            ((StorageManagementFragment) fragment).renameFolder(value);
+                        }
+                        break;
                 }
             } catch (Exception e) {
                 e.printStackTrace();

@@ -78,8 +78,7 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
-                mainActivityInterface.getSoftKeyboard().hideKeyboard(requireActivity());
-                mainActivityInterface.getSoftKeyboard().hideSoftKeyboard(requireContext(),myView.parent);
+                mainActivityInterface.forceImmersive();
             }
         };
         myView.viewpager.registerOnPageChangeCallback(callback);

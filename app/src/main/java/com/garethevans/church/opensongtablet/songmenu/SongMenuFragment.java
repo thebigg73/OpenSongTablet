@@ -289,7 +289,6 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            Log.d(TAG,"songsFound: "+songsFound.size());
             requireActivity().runOnUiThread(this::updateSongList);
         }).start();
     }
@@ -311,49 +310,46 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
 
     private void displayIndex(ArrayList<Song> songMenuViewItems,
                               SongListAdapter songListAdapter) {
-        myView.songmenualpha.sideIndex.removeAllViews();
-        TextView textView;
-        final Map<String, Integer> map = songListAdapter.getAlphaIndex(songMenuViewItems);
-        Set<String> setString = map.keySet();
-        List<String> indexList = new ArrayList<>(setString);
-        for (String index : indexList) {
-            textView = (TextView) View.inflate(getActivity(), R.layout.view_alphabetical_list, null);
-            textView.setTextSize(mainActivityInterface.getPreferences().getMyPreferenceFloat("songMenuAlphaIndexSize", 14.0f));
-            int i = (int) mainActivityInterface.getPreferences().getMyPreferenceFloat("songMenuAlphaIndexSize", 14.0f) * 2;
-            textView.setPadding(i,i,i,i);
-            textView.setMinimumWidth(16);
-            textView.setMinimumHeight(16);
-            textView.setText(index);
-            textView.setOnClickListener(view -> {
-                TextView selectedIndex = (TextView) view;
-                Log.d(TAG,"selectedIndex: "+selectedIndex);
-                Log.d(TAG,"selectedIndex.getText(): "+selectedIndex.getText());
-                Log.d(TAG,"songListLayoutManager: "+songListLayoutManager);
-                Log.d(TAG,"selectedIndex: "+selectedIndex);
+        try {
+            myView.songmenualpha.sideIndex.removeAllViews();
+            TextView textView;
+            final Map<String, Integer> map = songListAdapter.getAlphaIndex(songMenuViewItems);
+            Set<String> setString = map.keySet();
+            List<String> indexList = new ArrayList<>(setString);
+            for (String index : indexList) {
+                textView = (TextView) View.inflate(getActivity(), R.layout.view_alphabetical_list, null);
+                textView.setTextSize(mainActivityInterface.getPreferences().getMyPreferenceFloat("songMenuAlphaIndexSize", 14.0f));
+                int i = (int) mainActivityInterface.getPreferences().getMyPreferenceFloat("songMenuAlphaIndexSize", 14.0f) * 2;
+                textView.setPadding(i, i, i, i);
+                textView.setMinimumWidth(16);
+                textView.setMinimumHeight(16);
+                textView.setText(index);
+                textView.setOnClickListener(view -> {
+                    TextView selectedIndex = (TextView) view;
 
-                try {
-                    if (selectedIndex.getText() != null &&
-                            songListLayoutManager != null) {
-                        String myval = selectedIndex.getText().toString();
-                        Log.d(TAG,"map="+map);
-                        Log.d(TAG,"map.isEmpty()="+map.isEmpty());
+                    try {
+                        if (selectedIndex.getText() != null &&
+                                songListLayoutManager != null) {
+                            String myval = selectedIndex.getText().toString();
 
-                        if (!map.isEmpty()) {
-                            Integer obj = map.get(myval);
-                            Log.d(TAG,"obj="+obj);
-                            if (obj != null) {
-                                songListLayoutManager.scrollToPositionWithOffset(obj, 0);
+                            if (!map.isEmpty()) {
+                                Integer obj = map.get(myval);
+                                if (obj != null) {
+                                    songListLayoutManager.scrollToPositionWithOffset(obj, 0);
+                                }
                             }
+                            mainActivityInterface.forceImmersive();
                         }
-                        mainActivityInterface.hideKeyboard();
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            });
-            myView.songmenualpha.sideIndex.addView(textView);
+                });
+                myView.songmenualpha.sideIndex.addView(textView);
+            }
+            changeAlphabeticalVisibility(mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuAlphaIndexShow", true));
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        changeAlphabeticalVisibility(mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuAlphaIndexShow", true));
     }
 
     public void changeAlphabeticalLayout() {
@@ -369,7 +365,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     }
     @Override
     public void onItemClicked(int position, String folder, String filename, String key) {
-        mainActivityInterface.hideKeyboard();
+        mainActivityInterface.forceImmersive();
         // Default the slide animations to be next (R2L)
         mainActivityInterface.getDisplayPrevNext().setSwipeDirection("R2L");
         mainActivityInterface.doSongLoad(folder, filename,true);
@@ -378,9 +374,8 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
 
     @Override
     public void onItemLongClicked(int position, String folder, String filename, String key) {
-        mainActivityInterface.hideKeyboard();
+        mainActivityInterface.forceImmersive();
         mainActivityInterface.doSongLoad(folder, filename,false);
-        Log.d(TAG,"onlongclicked() folder: "+folder+"  filename:"+filename);
         myView.actionFAB.performClick();
         songListLayoutManager.scrollToPositionWithOffset(position,0);
     }
@@ -416,7 +411,13 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         fixButtons();
 
         if (songListAdapter!=null) {
-            new Thread(() -> requireActivity().runOnUiThread(() -> songListAdapter.notifyItemRangeChanged(0,songListAdapter.getItemCount()))).start();
+            new Thread(() -> requireActivity().runOnUiThread(() -> {
+                try {
+                    songListAdapter.notifyItemRangeChanged(0,songListAdapter.getItemCount());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            })).start();
         }
     }
 
@@ -425,7 +426,13 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         try {
             new Thread(() -> {
                 if (songListLayoutManager!=null) {
-                    requireActivity().runOnUiThread(() -> songListLayoutManager.scrollToPositionWithOffset(songListAdapter.getPositionOfSong(song),0));
+                    requireActivity().runOnUiThread(() -> {
+                        try {
+                            songListLayoutManager.scrollToPositionWithOffset(songListAdapter.getPositionOfSong(song),0);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    });
                 }
             }).start();
         } catch (Exception e) {
@@ -434,6 +441,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     }
 
     public int getPositionInSongMenu(Song song) {
+        Log.d(TAG,"getPositionOfSong()");
         return songListAdapter.getPositionOfSong(song);
     }
 
