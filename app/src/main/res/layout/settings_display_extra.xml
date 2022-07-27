@@ -149,6 +149,15 @@
                 android:hint="@string/presentation_order_use"/>
 
             <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                android:id="@+id/keepMultiline"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/keep_multiline"
+                android:hint="@string/keep_multiline_info"/>
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
                 android:id="@+id/trimSections"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -181,6 +190,15 @@
                 android:layout_height="wrap_content"
                 android:valueFrom="0"
                 android:valueTo="50"/>
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                android:id="@+id/trimWordSpacing"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/trim_wordspacing"
+                android:hint="@string/trim_wordspacing_info"/>
 
             <!--TODO Add later maybe?
             <com.garethevans.church.opensongtablet.customviews.MaterialSwitch

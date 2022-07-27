@@ -477,6 +477,7 @@ public class Preferences extends Activity {
     // timeToDisplaySticky             int         The time to show sticky notes for before hiding (def=0 means keep on)
     // trimSections                    boolean     Should whitespace be removed from song sections (def:true)
     // trimLines                       boolean     Should the lines be trimmed (using the lineSpacing) value (def:false)
+    // trimWordSpacing                 boolean     Should multiple spaces be trimmed between words (e.g. 'This    is   a    sentence. What   happens?'>'This is a sentence.  What happens?' (def:true)
     // uriTree                         String      A string representation of the user root location (may be the OpenSong folder or its parent) (def:"")
     // uriTreeHome                     String      A string representation of the user home location (The OpenSong folder) (def:"")
     // usePresentationOrder            boolean     Should the song be parsed into the specified presentation order (def:false)

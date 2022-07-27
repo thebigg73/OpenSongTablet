@@ -226,7 +226,7 @@
     <string name="instrument">Nástroj</string>
     <string name="intro_app">"OpenSongApp používá skladby vytvořené v OpenSong a zobrazí je na obrazovce tabletu."</string>
     <string name="item">"Položka"</string>
-    <string name="keepmultiline">Udržujte multiline kompaktní</string>
+    <string name="keep_multiline">Udržujte multiline kompaktní</string>
     <string name="language">"Jazyk"</string>
     <string name="last_song">"Zobrazení poslední položku v sadě"</string>
     <string name="latest_updates">Poslední aktualizace</string>

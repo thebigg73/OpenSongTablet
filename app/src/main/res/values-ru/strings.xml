@@ -227,7 +227,7 @@
     <string name="instrument">Инструмент</string>
     <string name="intro_app">"OpenSongApp использует песни, созданные в OpenSong и отображает их на экране устройства."</string>
     <string name="item">"Пункт"</string>
-    <string name="keepmultiline">Держите многострочный компактный</string>
+    <string name="keep_multiline">Держите многострочный компактный</string>
     <string name="language">"Язык"</string>
     <string name="last_song">"Показана последняя песня"</string>
     <string name="latest_updates">"Последние обновления"</string>

@@ -227,7 +227,7 @@
     <string name="instrument">楽器</string>
     <string name="intro_app">"OpenSongApp で作成した曲を使用しており、タブレット画面上に表示します。それは礼拝のミュージシャンを目指した、とても進行中の作業です。これは、ポートレートモードで最適に動作しますが、私は（念のため）利用可能なランドスケープモードを残してきた。"</string>
     <string name="item">"項目"</string>
-    <string name="keepmultiline">マルチラインコンパクトを保つ</string>
+    <string name="keep_multiline">マルチラインコンパクトを保つ</string>
     <string name="language">"言語"</string>
     <string name="last_song">"セット内の最後の項目を表示します"</string>
     <string name="latest_updates">"最新のアップデート"</string>

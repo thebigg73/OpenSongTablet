@@ -466,7 +466,7 @@
     <string name="pleaseselect">"Molim odaberite"</string>
     <string name="search">"Pretraga"</string>
     <string name="verse">"Strofa"</string>
-    <string name="keepmultiline">Zadržite višeslojno kompaktno</string>
+    <string name="keep_multiline">Zadržite višeslojno kompaktno</string>
     <string name="not_saved">Nije spremljeno</string>
     <string name="extracting">"Izvlačenje"</string>
     <string name="converting">"Pretvaranje"</string>

@@ -227,7 +227,7 @@
     <string name="instrument">Instrument</string>
     <string name="intro_app">"Die OpenSongApp gebruik liedjies geskep in OpenSong en vertoon dit op jou tablet skerm."</string>
     <string name="item">"Item"</string>
-    <string name="keepmultiline">Hou multiline kompak</string>
+    <string name="keep_multiline">Hou multiline kompak</string>
     <string name="language">"Taal"</string>
     <string name="last_song">"Vertoon laaste item in stel"</string>
     <string name="latest_updates">"Laaste updates"</string>

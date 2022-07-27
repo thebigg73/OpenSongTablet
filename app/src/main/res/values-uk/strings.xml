@@ -207,7 +207,7 @@
     <string name="initialisesongs_start">Підготовка папки Songs -</string>
     <string name="instrument">інструмент</string>
     <string name="item">Пункт</string>
-    <string name="keepmultiline">Тримайте багатостроковий компактний</string>
+    <string name="keep_multiline">Тримайте багатостроковий компактний</string>
     <string name="language">Мова</string>
     <string name="last_song">Показати останню пісню</string>
     <string name="latest_updates">Оновлення</string>

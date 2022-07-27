@@ -221,7 +221,7 @@ public class DisplayPrevNext {
     public void showAndHide() {
         // If in using song menu, don't proceed unless user has switched on this preference
         // If in a set, only show if showNext/showPrev is selected
-        if (moveNextInSet || prevNextSongMenu) {
+        if (moveNextInSet || movePrevInSet || prevNextSongMenu) {
             if (showNext && !next.getText().toString().isEmpty() && !nextVisible) {
                 nextVisible = true;
                 next.removeCallbacks(hideNextRunnable);

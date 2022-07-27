@@ -356,7 +356,7 @@
     <string name="is_not_set">Not set</string>
     <string name="item">Item</string>
 
-    <string name="keepmultiline">Keep multiline compact</string>
+    <string name="keep_multiline">Keep multiline compact</string>
     <string name="key">Key</string>
     <array name="key_choice">
         <item/>
@@ -1164,6 +1164,9 @@ Check out the categories in the right hand options menu.
     <string name="section_box_info">Show each section of a song with a box around it (as in stage mode)</string>
     <string name="onsong_import_folder">Choose a folder to save imported songs</string>
     <string name="onsong_import_folder_info">The recommended option is to import into a separate OnSong folder.  You can always move songs into other folders later.</string>
+    <string name="keep_multiline_info">Display songs containing combined verses as they appear in the song edit window.</string>
+    <string name="trim_wordspacing">Trim word spacing</string>
+    <string name="trim_wordspacing_info">Remove excess spaces between words</string>
 
 
 </resources>

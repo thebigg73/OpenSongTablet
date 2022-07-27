@@ -227,7 +227,7 @@
     <string name="instrument">"Όργανο"</string>
     <string name="intro_app">"OpenSongApp χρησιμοποιεί τραγούδια δημιουργημένα στο OpenSong και τα εμφανίζει στην οθόνη της Android συσκευής σας."</string>
     <string name="item">"Item"</string>
-    <string name="keepmultiline">Διατηρήστε συμπαγές πολυγραμμικό</string>
+    <string name="keep_multiline">Διατηρήστε συμπαγές πολυγραμμικό</string>
     <string name="language">"Γλώσσα"</string>
     <string name="last_song">"Εμφάνιση τελευταίου τραγουδιού στην σειρά"</string>
     <string name="latest_updates">"Τελευταίες ενημερώσεις"</string>

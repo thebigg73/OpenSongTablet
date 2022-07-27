@@ -227,7 +227,7 @@
     <string name="instrument">Eszköz</string>
     <string name="intro_app">"OpenSongApp dal létrehozott OpenSong és megjeleníti őket a tablet képernyőjén."</string>
     <string name="item">"Alkatrész"</string>
-    <string name="keepmultiline">Tartsa a többsoros kompakt</string>
+    <string name="keep_multiline">Tartsa a többsoros kompakt</string>
     <string name="language">"Nyelv"</string>
     <string name="last_song">"Bemutatás utolsó eleme szett"</string>
     <string name="latest_updates">"Utolsó frissítések</string>

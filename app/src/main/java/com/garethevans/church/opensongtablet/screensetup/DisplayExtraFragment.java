@@ -59,6 +59,7 @@ public class DisplayExtraFragment extends Fragment {
         myView.showChords.setChecked(getChecked("displayChords",true));
         myView.showLyrics.setChecked(getChecked("displayLyrics",true));
         myView.presoOrder.setChecked(getChecked("usePresentationOrder",false));
+        myView.keepMultiline.setChecked(getChecked("multiLineVerseKeepCompact",false));
         myView.trimSections.setChecked(getChecked("trimSections",true));
         myView.addSectionSpace.setChecked(getChecked("addSectionSpace",true));
         myView.trimLineSpacing.setChecked(getChecked("trimLines",false));
@@ -68,6 +69,7 @@ public class DisplayExtraFragment extends Fragment {
         myView.trimLineSpacingSlider.setValue(percentage);
         myView.trimLineSpacingSlider.setLabelFormatter(value -> ((int)value)+"%");
         sliderValToText(percentage);
+        myView.trimWordSpacing.setChecked(getChecked("trimWordSpacing", true));
         // TODO Maybe add later
         // myView.addSectionBox.setChecked(getChecked("addSectionBox",false));
         myView.filterSwitch.setChecked(getChecked("filterSections",false));
@@ -134,6 +136,10 @@ public class DisplayExtraFragment extends Fragment {
             updateBooleanPreference("usePresentationOrder",isChecked,null);
             mainActivityInterface.getPresenterSettings().setUsePresentationOrder(isChecked);
         });
+        myView.keepMultiline.setOnCheckedChangeListener(((buttonView, isChecked) -> {
+            updateBooleanPreference("multiLineVerseKeepCompact",isChecked,null);
+            mainActivityInterface.getProcessSong().updateProcessingPreferences();
+        }));
         myView.trimSections.setOnCheckedChangeListener((buttonView, isChecked) -> {
             updateBooleanPreference("trimSections",isChecked,null);
             mainActivityInterface.getProcessSong().updateProcessingPreferences();
@@ -146,6 +152,11 @@ public class DisplayExtraFragment extends Fragment {
             updateBooleanPreference("trimLines",isChecked,myView.trimLineSpacingSlider);
             mainActivityInterface.getProcessSong().updateProcessingPreferences();
         });
+        myView.trimWordSpacing.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            updateBooleanPreference("trimWordSpacing",isChecked,null);
+            mainActivityInterface.getProcessSong().updateProcessingPreferences();
+        });
+
         // TODO Maybe add later?
         /*myView.addSectionBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
             updateBooleanPreference("addSectionBox",isChecked,null);

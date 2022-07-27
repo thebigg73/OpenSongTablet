@@ -58,8 +58,9 @@ public class ProcessSong {
     private final float defFontSize = 8.0f;
     private boolean addSectionSpace, blockShadow, displayBoldChordsHeadings,
             displayChords, displayLyrics, displayCapoChords, displayCapoAndNativeChords,
-            songAutoScaleColumnMaximise, songAutoScaleOverrideFull,
-            songAutoScaleOverrideWidth, trimLines, trimSections, addSectionBox;
+            trimWordSpacing, songAutoScaleColumnMaximise, songAutoScaleOverrideFull,
+            songAutoScaleOverrideWidth, trimLines, trimSections, multiLineVerseKeepCompact,
+            addSectionBox;
     private float fontSize, fontSizeMax, fontSizeMin, blockShadowAlpha,
             lineSpacing, scaleHeadings, scaleChords, scaleComments;
     private String songAutoScale;
@@ -91,6 +92,7 @@ public class ProcessSong {
         songAutoScaleOverrideWidth = mainActivityInterface.getPreferences().getMyPreferenceBoolean("songAutoScaleOverrideWidth", false);
         trimLines = mainActivityInterface.getPreferences().getMyPreferenceBoolean("trimLines", true);
         trimSections = mainActivityInterface.getPreferences().getMyPreferenceBoolean("trimSections", true);
+        trimWordSpacing = mainActivityInterface.getPreferences().getMyPreferenceBoolean("trimWordSpacing", true);
         addSectionBox = mainActivityInterface.getPreferences().getMyPreferenceBoolean("addSectionBox",false);
         fontSize = mainActivityInterface.getPreferences().getMyPreferenceFloat("fontSize", 20f);
         fontSizeMax = mainActivityInterface.getPreferences().getMyPreferenceFloat("fontSizeMax", 50f);
@@ -99,6 +101,7 @@ public class ProcessSong {
         scaleHeadings = mainActivityInterface.getPreferences().getMyPreferenceFloat("scaleHeadings", 0.6f);
         scaleChords = mainActivityInterface.getPreferences().getMyPreferenceFloat("scaleChords", 0.8f);
         scaleComments = mainActivityInterface.getPreferences().getMyPreferenceFloat("scaleComments", 0.8f);
+        multiLineVerseKeepCompact = mainActivityInterface.getPreferences().getMyPreferenceBoolean("multiLineVerseKeepCompact", false);
     }
 
     public boolean showingCapo(String capo) {
@@ -986,7 +989,13 @@ public class ProcessSong {
                             break;
                         case "lyric":
                             if (displayLyrics) {
-                                textView.setText(str.replaceAll("[|_]", " "));
+                                str = str.replace("_","");
+                                str = str.replaceAll("[|]"," ");
+                                if (trimWordSpacing) {
+                                    str = str.replaceAll("\\s+", " ");
+                                    str = str.replace(". ", ".  ");
+                                }
+                                textView.setText(str);
                             } else {
                                 textView = null;
                             }
@@ -1025,9 +1034,14 @@ public class ProcessSong {
                 }
             } else if (linetype.equals("lyric")) {
                 if (displayLyrics) {
-                    // TODO
-                    // IV - This will need more complexity depending on mode and if showing chords
-                    textView.setText((str.replaceAll("[|_]", " ")).trim());
+                    str = str.replace("_","");
+                    str = str.replaceAll("[|]"," ");
+                    if (trimWordSpacing) {
+                        str = str.replaceAll("\\s+", " ");
+                        str = str.replace(". ", ".  ");
+                    }
+                    str = str.trim();
+                    textView.setText(str);
                 } else {
                     textView = null;
                 }
@@ -1104,8 +1118,7 @@ public class ProcessSong {
 
     private String fixMultiLineFormat(String string) {
 
-        if (!mainActivityInterface.getPreferences().getMyPreferenceBoolean("multiLineVerseKeepCompact", false) &&
-                isMultiLineFormatSong(string)) {
+        if (!multiLineVerseKeepCompact && isMultiLineFormatSong(string)) {
             // Reset the available song sections
             // Ok the song is in the multiline format
             // [V]
@@ -1199,6 +1212,20 @@ public class ProcessSong {
             }
 
             return improvedlyrics.toString();
+        } else if (multiLineVerseKeepCompact && isMultiLineFormatSong(string)) {
+            // Multiline format, but we want to keep it compact
+            // Add ')  ' after the lines starting with numbers and spaces after the chord identifier
+            StringBuilder fixedLines = new StringBuilder();
+            String[] lines = string.split("\n");
+            for (String line:lines) {
+                if (line.startsWith(".")) {
+                    line = line.replaceFirst(".",".   ");
+                } else if (line.length()>0 && "123456789".contains(line.substring(0,1))) {
+                    line = line.charAt(0) + ")  " + line.substring(1);
+                }
+                fixedLines.append(line).append("\n");
+            }
+            return fixedLines.toString();
         } else {
             // Not multiline format, or not wanting to expand it
             return string;

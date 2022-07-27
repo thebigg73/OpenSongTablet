@@ -227,7 +227,7 @@
     <string name="instrument">Instrument</string>
     <string name="intro_app">"OpenSongApp verwendet Songs die in OpenSong erstellt wurden und zeigt diese auf dem Tablet-Bildschirm an."</string>
     <string name="item">"Item"</string>
-    <string name="keepmultiline">Mehrzeilige Verse kompakt halten</string>
+    <string name="keep_multiline">Mehrzeilige Verse kompakt halten</string>
     <string name="language">"Sprache"</string>
     <string name="last_song">"Letzter Song im Set wird angezeigt"</string>
     <string name="latest_updates">"Neueste Updates"</string>

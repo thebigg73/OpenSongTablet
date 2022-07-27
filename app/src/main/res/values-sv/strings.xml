@@ -227,7 +227,7 @@
     <string name="instrument">"Instrument"</string>
     <string name="intro_app">"OpenSongApp använder låtar som skapats i OpenSong och visar dem på skärmdisplayen."</string>
     <string name="item">"Artikel"</string>
-    <string name="keepmultiline">"Håll multilinkompakt "</string>
+    <string name="keep_multiline">"Håll multilinkompakt "</string>
     <string name="language">"Språk"</string>
     <string name="last_song">"Visar sista föremålet"</string>
     <string name="latest_updates">"Senaste uppdateringarna"</string>
