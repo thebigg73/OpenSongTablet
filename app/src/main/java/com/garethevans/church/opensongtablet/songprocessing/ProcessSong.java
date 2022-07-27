@@ -478,7 +478,7 @@ public class ProcessSong {
     public String[] getChordPositions(String chord, String lyric) {
         ArrayList<String> chordpositions = new ArrayList<>();
 
-        //Log.d(TAG,"getChordPositions()\nchord:'"+chord+"'\nlyric:'"+lyric+"'");
+        Log.d(TAG,"getChordPositions()\nchord:'"+chord+"'\nlyric:'"+lyric+"'");
         // IV - Set ready for the loop
         boolean thischordcharempty;
         boolean prevchordcharempty = false;
@@ -515,6 +515,10 @@ public class ProcessSong {
             prevchordcharempty = thischordcharempty;
         }
         String[] chordpos = new String[chordpositions.size()];
+        Log.d(TAG,"chords"+chord);
+        for (String pos:chordpositions) {
+            Log.d(TAG,"pos="+pos);
+        }
         return chordpositions.toArray(chordpos);
     }
 
@@ -884,18 +888,16 @@ public class ProcessSong {
         boolean hasCapo = capoText!=null && !capoText.isEmpty();
         if (hasCapo && (displayCapoChords || displayCapoAndNativeChords)) {
             int capo = Integer.parseInt(capoText);
-            //Log.d(TAG,"string:"+string);
             String chordbit = string.substring(0,string.indexOf("____groupline____"));
             chordbit = mainActivityInterface.getTranspose().transposeChordForCapo(capo,chordbit).replaceFirst(".","˄");
             // Add it back in with a capo identifying this part
             string = chordbit + "____groupline____" + string;
-            //Log.d(TAG,"string:"+string);
         }
 
         // Split the group into lines
         String[] lines = string.split("____groupline____");
 
-        // Line 0 is the chord line.  All other lines need to be at least this size
+        // Line 0 is the chord line (or capo line).  All other lines need to be at least this size
         // Make it 1 char bigger to identify the end of it
         lines[0] += " ";
         if (lineIsChordForMultiline(lines)) {
@@ -904,7 +906,6 @@ public class ProcessSong {
 
         int minlength = lines[0].length();
         for (int i = 0; i < lines.length; i++) {
-            //Log.d(TAG,"lines["+i+"]:"+lines[i]);
             int length = lines[i].length();
             if (length < minlength) {
                 for (int z = 0; z < (minlength - length); z++) {
@@ -918,19 +919,20 @@ public class ProcessSong {
         ArrayList<Integer> pos = new ArrayList<>();
         if (lines.length > 1) {
 
-            /*int x=0;
+            int x=0;
             for (String line:lines) {
-                Log.d(TAG,"line["+x+"]:"+line);
+                Log.d(TAG,"groupline split up line["+x+"]:"+line);
                 x++;
-            }*/
+            }
             String[] chordPos;
             if (lines[0].startsWith("˄")) {
-                // For capo chords
+                // For capo chords.  lines[1] is the chords, lines[2] the lyrics
                 chordPos = getChordPositions(lines[0], lines[2]);
             } else if (lines[1].startsWith(".")) {
                 // IV - A chord line follows so position this line referring only to itself
                 chordPos = getChordPositions(lines[0], lines[0]);
             } else {
+                // Standard chord line followed by lyrics
                 chordPos = getChordPositions(lines[0], lines[1]);
             }
             for (String p : chordPos) {
@@ -1049,14 +1051,14 @@ public class ProcessSong {
                 if (displayLyrics) {
                     // TODO
                     // IV - This will need more complexity depending on mode and if showing chords
-                    textView.setText(str.replaceAll("[|_]", " "));
+                    textView.setText((str.replaceAll("[|_]", " ")).trim());
                 } else {
                     textView = null;
                 }
             } else if (linetype.equals("chord") || linetype.equals("chordline")) {
                 textView = null;
             } else {
-                textView.setText(str);
+                textView.setText(str.trim());
             }
             if (textView!=null) {
                 tableRow.addView(textView);
@@ -1494,7 +1496,6 @@ public class ProcessSong {
         ArrayList<String> songSections = new ArrayList<>();
         ArrayList<String> groupedSections = new ArrayList<>();
         for (String thisSection : sections) {
-
             String thisSectionCleaned = thisSection.replace("____groupline____", "\n");
             if (!thisSection.trim().isEmpty()) {
                 songSections.add(thisSectionCleaned);
@@ -1572,6 +1573,7 @@ public class ProcessSong {
                         }
 
                         if (line.contains("____groupline____")) {
+                            // Has lyrics and chords
                             if (asPDF) {
                                 linearLayout.addView(groupTable(line, Color.BLACK, Color.BLACK,
                                         Color.BLACK, Color.TRANSPARENT, false));
