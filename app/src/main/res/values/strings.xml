@@ -952,13 +952,17 @@ Check out the categories in the right hand options menu.
     <string name="website_ccli" translatable="false">https://www.opensongapp.com/user-manual/ccli</string>
     <string name="website_connected_display" translatable="false">https://www.opensongapp.com/user-manual/display/casting</string>
     <string name="website_custom_gestures" translatable="false">https://www.opensongapp.com/user-manual/controls/custom-gestures</string>
+    <string name="website_edit_song" translatable="false">https://www.opensongapp.com/user-manual/songs/edit-song</string>
+    <string name="website_edit_song_features" translatable="false">https://www.opensongapp.com/user-manual/songs/edit-song#h.kntse37simcb</string>
+    <string name="website_edit_song_main" translatable="false">https://www.opensongapp.com/user-manual/songs/edit-song#h.dqecqr6jwgf6</string>
+    <string name="website_edit_song_tag" translatable="false">https://www.opensongapp.com/user-manual/songs/edit-song#h.qx5dcmco7fmz</string>
     <string name="website_fonts" translatable="false">https://www.opensongapp.com/user-manual/display/fonts</string>
     <string name="website_foot_pedal" translatable="false">https://www.opensongapp.com/user-manual/controls/foot-pedals</string>
     <string name="website_forum" translatable="false">https://groups.google.com/g/opensongapp</string>
     <string name="website_github" translatable="false">https://github.com/thebigg73/OpenSongTablet</string>
     <string name="website_latest" translatable="false">https://www.opensongapp.com/latest-updates</string>
     <string name="website_menu_settings" translatable="false">https://www.opensongapp.com/user-manual/display/menu</string>
-    <string name="website_midi_connections" translatable="false">https://www.opensongapp.com/user-manual/midi/midi-connections</string>
+    <string name="website_midi_connections" translatable="false">https://www.opensongapp.com/user-manual/midi</string>
     <string name="website_modes" translatable="false">https://www.opensongapp.com/user-guide/the-app-modes</string>
     <string name="website_nearby" translatable="false">https://www.opensongapp.com/user-manual/connect-devices</string>
     <string name="website_page_buttons" translatable="false">https://www.opensongapp.com/user-manual/controls/page-buttons</string>

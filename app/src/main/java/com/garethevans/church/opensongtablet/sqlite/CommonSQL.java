@@ -474,6 +474,7 @@ public class CommonSQL {
 
     public ArrayList<String> getUniqueThemeTags(SQLiteDatabase db) {
         ArrayList<String> themeTags = new ArrayList<>();
+
         String q = "SELECT DISTINCT " + SQLite.COLUMN_THEME + " FROM " + SQLite.TABLE_NAME + " ORDER BY " +
                 SQLite.COLUMN_THEME + " ASC";
 
@@ -488,13 +489,13 @@ public class CommonSQL {
             for (int x=0; x<cursor.getCount(); x++) {
                 cursor.moveToPosition(x);
                 String themes = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_THEME));
-                //Log.d(TAG,"themes: "+themes);
+                Log.d(TAG,"themes: "+themes);
                 if (themes!=null && themes.contains(";")) {
                     String[] themeBits = themes.split(";");
                     for (String bit:themeBits) {
                         if (!themeTags.contains(bit.trim()) && !bit.trim().isEmpty()) {
                             themeTags.add(bit.trim());
-                            //Log.d(TAG,"adding: "+bit.trim());
+                            Log.d(TAG,"adding: "+bit.trim());
                         }
                     }
                 } else if (themes!=null && !themeTags.contains(themes.trim()) && !themes.trim().isEmpty()) {

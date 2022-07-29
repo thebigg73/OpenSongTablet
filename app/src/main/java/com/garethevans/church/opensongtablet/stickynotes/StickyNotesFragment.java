@@ -43,9 +43,9 @@ public class StickyNotesFragment extends Fragment {
     }
 
     private void setupViews() {
+        mainActivityInterface.getProcessSong().editBoxToMultiline(myView.stickyNotes);
+        mainActivityInterface.getProcessSong().stretchEditBoxToLines(myView.stickyNotes,8);
         myView.stickyNotes.setText(mainActivityInterface.getSong().getNotes());
-        myView.stickyNotes.setLines(8);
-        myView.stickyNotes.setMinLines(8);
         myView.autoShowSticky.setChecked(mainActivityInterface.getPreferences().
                 getMyPreferenceBoolean("stickyAuto",true));
         int time = mainActivityInterface.getPreferences().

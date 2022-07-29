@@ -67,9 +67,6 @@ public class EditSongFragmentLyrics extends Fragment {
         // Add listeners
         setupListeners();
 
-        // Hide the keyboard
-        //mainActivityInterface.getSoftKeyboard().hideKeyboard(requireActivity());
-
         return myView.getRoot();
     }
 

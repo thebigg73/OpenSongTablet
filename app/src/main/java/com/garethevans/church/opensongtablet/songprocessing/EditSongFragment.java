@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet.songprocessing;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,6 +54,7 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
 
         // Update the toolbar
         mainActivityInterface.updateToolbar(getResources().getString(R.string.edit));
+        mainActivityInterface.updateToolbarHelp(getString(R.string.website_edit_song));
 
         // Set up the updated song (a copy of the current song for editing)
         mainActivityInterface.setTempSong(new Song(mainActivityInterface.getSong()));
@@ -78,6 +80,21 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
+                Log.d(TAG,"position:"+position);
+                switch (position) {
+                    case 0:
+                        mainActivityInterface.updateToolbarHelp(getString(R.string.website_edit_song));
+                        break;
+                    case 1:
+                        mainActivityInterface.updateToolbarHelp(getString(R.string.website_edit_song_main));
+                        break;
+                    case 2:
+                        mainActivityInterface.updateToolbarHelp(getString(R.string.website_edit_song_features));
+                        break;
+                    case 3:
+                        mainActivityInterface.updateToolbarHelp(getString(R.string.website_edit_song_tag));
+                        break;
+                }
                 mainActivityInterface.forceImmersive();
             }
         };
@@ -100,7 +117,6 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
             }
         }).attach();
     }
-
 
     public void enableSwipe(boolean canSwipe) {
         myView.viewpager.setUserInputEnabled(canSwipe);

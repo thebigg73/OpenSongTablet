@@ -1513,7 +1513,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         }
     }
 
-
     // The getters for references to the helper classes also needed in fragments
     @Override
     public StorageAccess getStorageAccess() {

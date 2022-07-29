@@ -125,9 +125,6 @@ public class LyricsOptionsBottomSheet extends BottomSheetDialogFragment {
             openingFragment.autoFix();
             dismiss();
         });
-
-        myView.formatHelp.setOnClickListener(v -> mainActivityInterface.openDocument(getString(R.string.website_song_format)));
-
     }
 
     private void setTransposeDetectedFormat() {

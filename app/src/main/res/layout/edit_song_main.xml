@@ -86,8 +86,7 @@
                 app:autoSizeMaxTextSize="24sp"
                 app:autoSizeMinTextSize="8sp"
                 app:autoSizeStepGranularity="1sp"
-                app:autoSizeTextType="uniform"
-                android:layout_marginBottom="80dp"/>
+                app:autoSizeTextType="uniform"/>
 
         </LinearLayout>
     </com.garethevans.church.opensongtablet.customviews.NestedScrollWithFAB>

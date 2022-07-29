@@ -2885,7 +2885,7 @@ public class ProcessSong {
         if (themeString.trim().endsWith(";")) {
             themeString = themeString.substring(0, themeString.lastIndexOf((";")));
         }
-        return themeString;
+        return themeString.trim();
     }
 
     public ArrayList<String> getSectionHeadings(String lyrics) {

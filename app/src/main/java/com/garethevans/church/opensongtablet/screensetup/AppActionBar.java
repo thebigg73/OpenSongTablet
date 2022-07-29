@@ -92,7 +92,7 @@ public class AppActionBar {
     }
     public void setActionBar(String newtitle) {
         // By default hide the webHelp (can be shown later)
-        webHelp.setVisibility(View.GONE);
+        updateToolbarHelp(null);
 
         if (newtitle == null) {
             // We are in the Performance/Stage mode

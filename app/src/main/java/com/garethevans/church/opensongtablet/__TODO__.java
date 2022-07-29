@@ -3,7 +3,6 @@ package com.garethevans.church.opensongtablet;
 public class __TODO__ {
 
     // BUGS FROM LIVE TEST
-    // Autoscale with songsheetheader not correctly scaled
 
     // Not checked how variations work when using Nearby on receiving device
     // Still to implement pedal previous next confirm
@@ -17,7 +16,6 @@ public class __TODO__ {
     // TODO strings that reference stuff that was used before and probably should be
     // update_projector_automatically
     // presoFontShadow
-    // keep_multiline
     // editpdf
 
 
