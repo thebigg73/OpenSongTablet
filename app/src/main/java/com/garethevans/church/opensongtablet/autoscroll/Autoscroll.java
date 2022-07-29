@@ -19,6 +19,7 @@ import java.util.TimerTask;
 
 public class Autoscroll {
 
+    private final String TAG = "Autoscroll";
     private boolean isAutoscrolling, wasScrolling, autoscrollOK, isPaused = false, showOn = true,
             autoscrollAutoStart, autoscrollActivated = false, autoscrollUseDefaultTime, usingZoomLayout;
     private final Context c;
@@ -169,8 +170,12 @@ public class Autoscroll {
             timerTask.cancel();
         }
         if (timer != null) {
-            timer.cancel();
-            timer.purge();
+            try {
+                timer.cancel();
+                timer.purge();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
     private void setupTimer() {
@@ -304,6 +309,7 @@ public class Autoscroll {
         // If this is less than 0, no scrolling is required.
         int scrollHeight;
         if (usingZoomLayout) {
+            //songHeight = myZoomLayout.getHeight();
             scrollHeight = (int) (songHeight * myZoomLayout.getScaleFactor()) - displayHeight;
         } else {
             scrollHeight = songHeight - displayHeight;

@@ -423,7 +423,7 @@
     <string name="stop">"停止"</string>
     <string name="storage">"ストレージ"</string>
     <string name="storage_check">"ストレージの確認"</string>
-    <string name="storage_choose">"収納スペースを管理する"</string>
+    <string name="storage_manage">"収納スペースを管理する"</string>
     <string name="storage_ext">"外部記憶装置"</string>
     <string name="storage_notwritable">"使用できません"</string>
     <string name="storage_rationale">"ストレージへのアクセスは読み取りおよび曲やセットを書き込むために必要とされます。"</string>

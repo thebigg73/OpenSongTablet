@@ -23,7 +23,7 @@
             android:drawablePadding="8dp"
             android:gravity="center_vertical"
             android:padding="8dp"
-            android:text="@string/storage_choose"
+            android:text="@string/storage_change"
             android:textSize="22sp"
             app:drawableStartCompat="@mipmap/ic_round_launcher" />
 

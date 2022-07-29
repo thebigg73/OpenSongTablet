@@ -96,7 +96,7 @@
     <string name="autoscroll_time">"Odloženi početak automatskog skrola"</string>
     <string name="song_functionnotavailable">"Ova funkcija nije moguća za pesme"</string>
     <string name="latest_updates">"Poslednje izmene"</string>
-    <string name="storage_choose">"Rad sa memorijom"</string>
+    <string name="storage_manage">"Rad sa memorijom"</string>
     <string name="storage_ext">"Spoljna memorija"</string>
     <string name="link">"Veza"</string>
     <string name="link_choose">"Odabrati datoteku za vezu sa ovom pesmom"</string>

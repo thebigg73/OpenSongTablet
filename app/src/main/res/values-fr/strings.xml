@@ -422,7 +422,7 @@
     <string name="stop">"Arrêter"</string>
     <string name="storage">Stockage</string>
     <string name="storage_check">"Vérification du stockage"</string>
-    <string name="storage_choose">"Gérer le stockage"</string>
+    <string name="storage_manage">"Gérer le stockage"</string>
     <string name="storage_ext">"Stockage externe"</string>
     <string name="storage_notwritable">"Impossible d'utiliser"</string>
     <string name="storage_rationale">"Un accès à votre espace de stockage est nécessaire pour lire et écrire des chansons et des listes."</string>

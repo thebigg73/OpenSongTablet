@@ -423,7 +423,7 @@
     <string name="stop">"Stop"</string>
     <string name="storage">"Speicher"</string>
     <string name="storage_check">"Speicher prüfen"</string>
-    <string name="storage_choose">"Speicher verwalten"</string>
+    <string name="storage_manage">"Speicher verwalten"</string>
     <string name="storage_ext">"Externer Speicher"</string>
     <string name="storage_notwritable">"Kann nicht verwendet werden"</string>
     <string name="storage_rationale">"Um Songs und Sets zu lesen und zu schreiben ist der Zugriff auf den Speicher erforderlich."</string>

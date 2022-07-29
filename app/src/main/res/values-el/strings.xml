@@ -423,7 +423,7 @@
     <string name="stop">"Σταμάτα"</string>
     <string name="storage">"Αποθηκευτικός χώρος"</string>
     <string name="storage_check">"Έλεγχος αποθήκευσης"</string>
-    <string name="storage_choose">"Διαχείρηση αποθήκευσης"</string>
+    <string name="storage_manage">"Διαχείρηση αποθήκευσης"</string>
     <string name="storage_ext">"Εξωτερική αποθήκευση"</string>
     <string name="storage_notwritable">"Αδυναμία χρήσης"</string>
     <string name="storage_rationale">"Απαιτείται πρόσβαση στον χώρο αποθήκευσης για εγγραφή και ανάγνωση τραγουδιών και σειρών."</string>

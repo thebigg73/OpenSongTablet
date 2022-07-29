@@ -28,6 +28,7 @@ import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
@@ -41,6 +42,7 @@ public class BackupRestoreSetsFragment extends Fragment {
     private Uri backupUri;
     private ActivityResultLauncher<Intent> activityResultLauncher;
     private boolean success = false;
+    private final String setSeparator = "__";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -173,24 +175,44 @@ public class BackupRestoreSetsFragment extends Fragment {
     }
 
     private void addCheckBoxes(ArrayList<String> setList) {
-        // Go through the list and add a new checkbox item for each one
-        for (String setItem:setList) {
+        // To make this more readable, keep the MAIN sets separate from folder sets
+        ArrayList<String> mainSets = new ArrayList<>();
+        ArrayList<String> folderSets = new ArrayList<>();
+
+        for (String set:setList) {
+            if (!set.contains(setSeparator)) {
+                mainSets.add(set);
+            } else {
+                folderSets.add(set);
+            }
+        }
+        Collections.sort(mainSets);
+        Collections.sort(folderSets);
+
+        // Now we've sorted, Go through the list and add a new checkbox item for each one
+        addSetCheckBoxes(mainSets);
+        addSetCheckBoxes(folderSets);
+
+        myView.createBackupFAB.setEnabled(myView.foundSetsListView.getChildCount() > 0);
+    }
+
+    private void addSetCheckBoxes(ArrayList<String> set) {
+        for (String setItem:set) {
             CheckBox checkBox = new CheckBox(getContext());
             checkBox.setText(niceSetItem(setItem));
             checkBox.setTag(setItem);
             checkBox.setChecked(true);
-            checkBox.setPadding(16,32,16,32);
+            checkBox.setPadding(16, 32, 16, 32);
             myView.foundSetsListView.addView(checkBox);
         }
-        myView.createBackupFAB.setEnabled(myView.foundSetsListView.getChildCount() > 0);
     }
 
     private String niceSetItem(String setItem) {
         // This returns sets with categories in brackets
-        if (!setItem.contains("__")) {
+        if (!setItem.contains(setSeparator)) {
             return "(" + getString(R.string.mainfoldername) + ") " + setItem;
         } else {
-            String[] bits = setItem.split("__");
+            String[] bits = setItem.split(setSeparator);
             if (bits.length==2) {
                 return "(" + bits[0] + ") " + bits[1];
             } else {

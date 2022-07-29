@@ -423,7 +423,7 @@
     <string name="stop">"Arresta"</string>
     <string name="storage">Immagazzinamento</string>
     <string name="storage_check">"Controllo dello spazio di archiviazione"</string>
-    <string name="storage_choose">"Gestire lo spazio di archiviazione"</string>
+    <string name="storage_manage">"Gestire lo spazio di archiviazione"</string>
     <string name="storage_ext">"Storage esterno"</string>
     <string name="storage_notwritable">"Impossibile utilizzare"</string>
     <string name="storage_rationale">"L\'accesso allo storage è necessario per leggere e scrivere canzoni e set."</string>

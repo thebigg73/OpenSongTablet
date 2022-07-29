@@ -423,7 +423,7 @@
     <string name="stop">"Időzítő megállítása"</string>
     <string name="storage">Tárolás</string>
     <string name="storage_check">"A tárolás ellenőrzése"</string>
-    <string name="storage_choose">"Kezelése tárhely"</string>
+    <string name="storage_manage">"Kezelése tárhely"</string>
     <string name="storage_ext">"Külső tároló"</string>
     <string name="storage_notwritable">"Nem lehet használni"</string>
     <string name="storage_rationale">"Hozzáférés a tárolás szükséges írni és olvasni dalok és készletek."</string>

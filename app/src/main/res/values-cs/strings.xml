@@ -422,7 +422,7 @@
     <string name="stop">"Zastavení"</string>
     <string name="storage">Skladování</string>
     <string name="storage_check">"Kontrola ukládání"</string>
-    <string name="storage_choose">"Správa úložiště"</string>
+    <string name="storage_manage">"Správa úložiště"</string>
     <string name="storage_ext">"Externí paměť"</string>
     <string name="storage_notwritable">"Nelze použít"</string>
     <string name="storage_rationale">"Přístup k vašim úložiště je nutné číst a psát písně a soubory."</string>

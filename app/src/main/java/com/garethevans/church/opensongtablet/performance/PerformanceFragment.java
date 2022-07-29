@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -587,11 +588,12 @@ public class PerformanceFragment extends Fragment {
                         myView.songView.getCol1(), myView.songView.getCol2(), myView.songView.getCol3());
 
                 // Determine how many colums are scaled
-                int heightOfScaled = 0;
+                heightAfterScale = 0;
                 if (scaleInfo.length==2) {
                     // 1 column.  [0]=scaleSize, [1]=scaled height
                     scaleFactor = scaleInfo[0];
-                    heightOfScaled = (int)scaleInfo[1];
+                    Log.d(TAG,"scaleInfo[1]: " +scaleInfo[1]);
+                    heightAfterScale = (int)scaleInfo[1];
                     for (int x = 0; x < mainActivityInterface.getSectionViews().size(); x++) {
                         widthBeforeScale = Math.max(widthBeforeScale, mainActivityInterface.getSectionWidths().get(x));
                         heightBeforeScale += mainActivityInterface.getSectionHeights().get(x);
@@ -601,25 +603,26 @@ public class PerformanceFragment extends Fragment {
                 } else if (scaleInfo.length==4) {
                     // 2 columns. [0]=col1scale  [1]=col2scale  [2]=sectionnum for col2  [3]=biggest col height
                     scaleFactor = Math.max(scaleInfo[0],scaleInfo[1]);
-                    heightOfScaled = (int)scaleInfo[3];
+                    heightAfterScale = (int)scaleInfo[3];
                     myView.pageHolder.getLayoutParams().width = screenWidth;
                     myView.songView.getLayoutParams().width = screenWidth;
                 }  else if (scaleInfo.length==6) {
                     // 3 columns. [0]=col1scale  [1]=col2scale  [2]=col3scale
                     // [4]=sectionnum for col2  [5]=sectionbum for col3 [6]=biggest col height
                     scaleFactor = Math.max(scaleInfo[0],Math.max(scaleInfo[1],scaleInfo[2]));
-                    heightOfScaled = (int)scaleInfo[6];
+                    heightAfterScale = (int)scaleInfo[6];
                     myView.pageHolder.getLayoutParams().width = screenWidth;
                     myView.songView.getLayoutParams().width = screenWidth;
                 }
-                myView.pageHolder.getLayoutParams().height = heightOfScaled + (int)(mainActivityInterface.getSongSheetTitleLayout().getHeight());
-                myView.songView.getLayoutParams().height = heightOfScaled + (int)(mainActivityInterface.getSongSheetTitleLayout().getHeight());
 
+                heightAfterScale = heightAfterScale + (int)(mainActivityInterface.getSongSheetTitleLayout().getHeight());
+
+                myView.pageHolder.getLayoutParams().height = heightAfterScale;
+                myView.songView.getLayoutParams().height = heightAfterScale;
 
                 // Pass this scale factor to the zoom layout as the new minimum scale
                 myView.zoomLayout.setCurrentScale(scaleFactor);
-
-
+                myView.zoomLayout.setSongSize(widthAfterScale,heightAfterScale);
 
                 myView.zoomLayout.post(() -> {
                     try {

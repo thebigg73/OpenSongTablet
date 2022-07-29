@@ -423,7 +423,7 @@
     <string name="stop">"Przerwij"</string>
     <string name="storage">"Przechowywanie"</string>
     <string name="storage_check">"Sprawdzanie pamięci"</string>
-    <string name="storage_choose">"Zarządzaj schowek"</string>
+    <string name="storage_manage">"Zarządzaj schowek"</string>
     <string name="storage_ext">"Pamięć zewnętrzna"</string>
     <string name="storage_notwritable">"Nie można używać"</string>
     <string name="storage_rationale">"Dostęp do pamięci jest wymagane, aby czytać i pisać piosenki i zestawy."</string>

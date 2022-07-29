@@ -423,7 +423,7 @@
     <string name="stop">"Stop"</string>
     <string name="storage">Stoor</string>
     <string name="storage_check">"Kontroleer stoorplek"</string>
-    <string name="storage_choose">"Bestuur stoor"</string>
+    <string name="storage_manage">"Bestuur stoor"</string>
     <string name="storage_ext">"Eksterne stoor"</string>
     <string name="storage_notwritable">"Kan nie gebruik nie"</string>
     <string name="storage_rationale">"Toegang tot jou stoor is nodig om te lees en skryf liedjies en stelle."</string>

@@ -423,7 +423,7 @@
     <string name="stop">"Стоп"</string>
     <string name="storage">"Хранилище"</string>
     <string name="storage_check">"Проверка хранилища"</string>
-    <string name="storage_choose">"Выбор места хранения"</string>
+    <string name="storage_manage">"Выбор места хранения"</string>
     <string name="storage_ext">"Внешние накопители"</string>
     <string name="storage_notwritable">"Невозможно использовать"</string>
     <string name="storage_rationale">"Доступ к вашему хранилищу требуется, для хранения песен и списков."</string>

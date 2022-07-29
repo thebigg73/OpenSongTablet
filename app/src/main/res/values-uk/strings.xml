@@ -395,7 +395,7 @@
     <string name="stop">Стоп</string>
     <string name="storage">Сховище</string>
     <string name="storage_check">Перевірка сховища</string>
-    <string name="storage_choose">Вибір місця зберігання</string>
+    <string name="storage_manage">Вибір місця зберігання</string>
     <string name="storage_ext">Зовнішні накопичувачі</string>
     <string name="storage_notwritable">Неможливо використовувати</string>
     <string name="storage_rationale">Доступ до вашого сховища потрібно, для зберігання пісень і списків.</string>

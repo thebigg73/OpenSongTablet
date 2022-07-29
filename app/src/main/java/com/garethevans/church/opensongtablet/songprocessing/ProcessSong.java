@@ -910,7 +910,7 @@ public class ProcessSong {
         ArrayList<Integer> pos = new ArrayList<>();
         if (lines.length > 1) {
             String[] chordPos;
-            if (lines[0].startsWith("˄")) {
+            if (lines[0].startsWith("˄") && lines.length>2) {
                 // For capo chords.  lines[1] is the chords, lines[2] the lyrics
                 chordPos = getChordPositions(lines[0], lines[2]);
             } else if (lines[1].startsWith(".")) {

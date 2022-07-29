@@ -40,7 +40,7 @@ public class StorageManagementFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = StorageFolderDisplayBinding.inflate(inflater, container, false);
 
-        mainActivityInterface.updateToolbar(getString(R.string.storage));
+        mainActivityInterface.updateToolbar(getString(R.string.storage_manage));
         mainActivityInterface.updateToolbarHelp(getString(R.string.website_storage_overview));
 
         // Do this as separate tasks in a new thread

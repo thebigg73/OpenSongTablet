@@ -2065,6 +2065,7 @@ public class StorageAccess {
                 e.printStackTrace();
             }
         }
+        Collections.sort(al);
         return al;
     }
     private ArrayList<String> listFilesInFolder_File(String folder, String subfolder) {
@@ -2082,6 +2083,7 @@ public class StorageAccess {
                 }
             }
         }
+        Collections.sort(al);
         return al;
     }
     int songCountAtLocation(File f) {

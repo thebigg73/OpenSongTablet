@@ -423,7 +423,7 @@
     <string name="stop">"Sluta"</string>
     <string name="storage">"Lagring"</string>
     <string name="storage_check">"Kontrollerar lagring"</string>
-    <string name="storage_choose">"Hantera lagring"</string>
+    <string name="storage_manage">"Hantera lagring"</string>
     <string name="storage_ext">"Extern lagring"</string>
     <string name="storage_notwritable">"Kan inte användas"</string>
     <string name="storage_rationale">"Tillgång till din lagring krävs för att läsa och skriva sånger och uppsättningar."</string>

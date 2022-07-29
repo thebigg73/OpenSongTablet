@@ -423,7 +423,7 @@
     <string name="stop">"站住"</string>
     <string name="storage">"存储"</string>
     <string name="storage_check">"检查存储"</string>
-    <string name="storage_choose">"管理存储空间"</string>
+    <string name="storage_manage">"管理存储空间"</string>
     <string name="storage_ext">"外部存储"</string>
     <string name="storage_notwritable">"无法使用"</string>
     <string name="storage_rationale">"访问您的存储需要读取和写入歌曲集。"</string>
