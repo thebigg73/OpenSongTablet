@@ -163,7 +163,6 @@ public class CommonSQL {
         int row = db.update(SQLite.TABLE_NAME, values, SQLite.COLUMN_SONGID + "=?",
                 new String[]{String.valueOf(thisSong.getSongid())});
         if (row == 0) {
-            //Log.d(TAG,"inserting="+thisSong.getSongid());
             db.insert(SQLite.TABLE_NAME, null, values);
         }
     }
@@ -286,14 +285,12 @@ public class CommonSQL {
                 SQLite.COLUMN_USER3 + ", " + SQLite.COLUMN_LYRICS + ", " + SQLite.COLUMN_HYMNNUM +
                 " FROM " + SQLite.TABLE_NAME + " ";
         String selectQuery = getBasicSQLQueryStart + sqlMatch + " " + getOrderBySQL;
-        //Log.d(TAG,"selectQuery: "+selectQuery);
 
         String[] selectionArgs = new String[args.size()];
         selectionArgs = args.toArray(selectionArgs);
 
         Cursor cursor = db.rawQuery(selectQuery, selectionArgs);
 
-        //Log.d(TAG,"matching song: "+cursor.getCount());
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
@@ -481,26 +478,19 @@ public class CommonSQL {
         Cursor cursor = db.rawQuery(q, null);
         cursor.moveToFirst();
 
-        //Log.d(TAG,"cursor.getCount()="+cursor.getCount());
-        //Log.d(TAG,"cursor.getColumnCount()="+cursor.getColumnCount());
-        //Log.d(TAG,"ursor.getColumnIndex(SQLite.COLUMN_THEME)="+cursor.getColumnIndex(SQLite.COLUMN_THEME));
-
         if (cursor.getColumnCount()>0 && cursor.getColumnIndex(SQLite.COLUMN_THEME)==0) {
             for (int x=0; x<cursor.getCount(); x++) {
                 cursor.moveToPosition(x);
                 String themes = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_THEME));
-                Log.d(TAG,"themes: "+themes);
                 if (themes!=null && themes.contains(";")) {
                     String[] themeBits = themes.split(";");
                     for (String bit:themeBits) {
                         if (!themeTags.contains(bit.trim()) && !bit.trim().isEmpty()) {
                             themeTags.add(bit.trim());
-                            Log.d(TAG,"adding: "+bit.trim());
                         }
                     }
                 } else if (themes!=null && !themeTags.contains(themes.trim()) && !themes.trim().isEmpty()) {
                     themeTags.add(themes.trim());
-                    //Log.d(TAG,"adding: "+themes.trim());
                 }
             }
         }

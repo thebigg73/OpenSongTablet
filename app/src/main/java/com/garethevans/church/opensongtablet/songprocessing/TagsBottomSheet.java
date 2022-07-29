@@ -2,7 +2,6 @@ package com.garethevans.church.opensongtablet.songprocessing;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,9 +76,7 @@ public class TagsBottomSheet extends BottomSheetDialogFragment {
     public void insertTag() {
         // Check this song doesn't have this tag already (meaning it's already in the list)
         String themeString = mainActivityInterface.getTempSong().getTheme().trim();
-        Log.d(TAG,"current themeString:"+themeString);
         String newThemeString = myView.newTag.getText().toString().trim();
-        Log.d(TAG,"new themeString to add:"+newThemeString);
         if (!themeString.contains(newThemeString + ";") && !themeString.endsWith(newThemeString)) {
             themeString = themeString + "; " + newThemeString;
             themeString = mainActivityInterface.getProcessSong().tidyThemeString(themeString);
