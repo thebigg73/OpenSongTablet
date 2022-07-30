@@ -892,14 +892,17 @@ public class SecondaryDisplay extends Presentation {
 
     public void showSection(final int position) {
         // Decide which view to show.  Do nothing if it is already showing
-        //Log.d(TAG,"position="+position+"  getPresenterSettings().getCurrentSection()="+mainActivityInterface.getPresenterSettings().getCurrentSection());
+        boolean stageOk = mainActivityInterface.getMode().equals("Stage");
+        boolean presenterOk = mainActivityInterface.getMode().equals("Presenter") &&
+                mainActivityInterface.getPresenterSettings().getSongSectionsAdapter()!=null;
+
+        Log.d(TAG,"position="+position+"  getPresenterSettings().getCurrentSection()="+mainActivityInterface.getPresenterSettings().getCurrentSection());
         // TODO need to fix for Stage mode too - getSongSectionsAdapter not initialised
-        if (mainActivityInterface.getMode().equals("Presenter") &&
-                mainActivityInterface.getPresenterSettings().getSongSectionsAdapter()!=null &&
-                (position!=mainActivityInterface.getSong().getCurrentSection() ||
-        position == mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().getSectionEdited())) {
+        if ((stageOk || presenterOk) && position!=-1) {
             // If we edited the section temporarily, remove this position flag
-            mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().setSectionEdited(-1);
+            if (presenterOk) {
+                mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().setSectionEdited(-1);
+            }
             mainActivityInterface.getSong().setCurrentSection(position);
             if (position >= 0 && position < secondaryViews.size()) {
                 // Check the song info status first

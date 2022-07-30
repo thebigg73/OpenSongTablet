@@ -371,6 +371,9 @@ public class ChooseColorBottomSheet extends BottomSheetDialogFragment {
             case "stickyTextColor":
                 title = getString(R.string.text);
                 break;
+            case "presoChordColor":
+                title = getString(R.string.chords);
+                break;
             case "metronomeColor":
                 title = getString(R.string.metronome);
                 break;
@@ -384,10 +387,10 @@ public class ChooseColorBottomSheet extends BottomSheetDialogFragment {
                 title = getString(R.string.block_text_shadow);
                 break;
             case "highlightChordColor":
-                title = getString(R.string.chords);
+                title = getString(R.string.chords) + " ("+getString(R.string.highlight)+")";
                 break;
             case "highlightHeadingColor":
-                title = getString(R.string.title);
+                title = getString(R.string.title) + " ("+getString(R.string.highlight)+")";
                 break;
         }
         return title;

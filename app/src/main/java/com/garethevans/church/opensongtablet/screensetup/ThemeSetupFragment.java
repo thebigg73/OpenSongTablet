@@ -40,6 +40,9 @@ public class ThemeSetupFragment extends Fragment {
         mainActivityInterface.updateToolbar(getString(R.string.theme));
         mainActivityInterface.updateToolbarHelp(getString(R.string.website_themes));
 
+        String text = getString(R.string.presenter_mode) + " / " + getString(R.string.stage_mode);
+        myView.presenterStageMode.setText(text);
+
         // Initialise the themes
         setUpTheme();
 
@@ -123,6 +126,7 @@ public class ThemeSetupFragment extends Fragment {
         myView.titleHighlighting.setColor(mainActivityInterface.getMyThemeColors().getHighlightHeadingColor());
 
         myView.presoButton.setColor(mainActivityInterface.getMyThemeColors().getPresoFontColor());
+        myView.presoChordButton.setColor(mainActivityInterface.getMyThemeColors().getPresoChordColor());
         myView.presoInfoButton.setColor(mainActivityInterface.getMyThemeColors().getPresoInfoFontColor());
         myView.presoAlertButton.setColor(mainActivityInterface.getMyThemeColors().getPresoAlertColor());
         myView.presoShadowButton.setColor(mainActivityInterface.getMyThemeColors().getPresoShadowColor());
@@ -138,6 +142,7 @@ public class ThemeSetupFragment extends Fragment {
     private void setListeners() {
         myView.lyricsButton.setOnClickListener(v-> chooseColor("lyricsTextColor"));
         myView.presoButton.setOnClickListener(v-> chooseColor("presoFontColor"));
+        myView.presoChordButton.setOnClickListener(v-> chooseColor("presoChordColor"));
         myView.presoInfoButton.setOnClickListener(v -> chooseColor("presoInfoFontColor"));
         myView.chordsButton.setOnClickListener(v-> chooseColor("lyricsChordsColor"));
         myView.capoButton.setOnClickListener(v-> chooseColor("lyricsCapoColor"));

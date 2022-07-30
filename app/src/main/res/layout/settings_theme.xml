@@ -158,6 +158,7 @@
                 android:padding="16dp">
 
                 <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/presenterStageMode"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingStart="16dp"
@@ -169,6 +170,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/text"/>
+
+                <com.garethevans.church.opensongtablet.customviews.ThemeItemColor
+                    android:id="@+id/presoChordButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/chords"/>
 
                 <com.garethevans.church.opensongtablet.customviews.ThemeItemColor
                     android:id="@+id/presoInfoButton"
