@@ -67,7 +67,6 @@ public class ChooseColorBottomSheet extends BottomSheetDialogFragment {
         return dialog;
     }
 
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = BottomSheetChooseColorBinding.inflate(inflater,container,false);

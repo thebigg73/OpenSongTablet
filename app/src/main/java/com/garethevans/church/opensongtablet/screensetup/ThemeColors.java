@@ -256,6 +256,7 @@ public class ThemeColors {
         mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"presoHighlightChordColor",   transparent);
         mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"presoHighlightHeadingColor", transparent);
         mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"presoFontColor",             white);
+        mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"presoChordColor",            yellow);
         mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"presoInfoFontColor",         white);
 
         // Others are theme specific
@@ -317,8 +318,6 @@ public class ThemeColors {
                 break;
 
         }
-
-
 
     }
     private void setThemeDark() {
@@ -454,6 +453,8 @@ public class ThemeColors {
                 return getLyricsCustomColor();
             case "presoFontColor":
                 return getPresoFontColor();
+            case "presoChordColor":
+                return getPresoChordColor();
             case "presoInfoFontColor":
                 return getPresoInfoFontColor();
             case "presoAlertColor":

@@ -2659,11 +2659,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
 
     private void updateCastIcon() {
-        Log.d(TAG,"updateCastIcon()");
         if (screenMirror!=null) {
             if (secondaryDisplays!=null && connectedDisplays.length > 0) {
+                Log.d(TAG,"updateCastIcon() to connected");
                 screenMirror.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.cast_connected));
             } else {
+                Log.d(TAG,"updateCastIcon() to disconnected");
                 screenMirror.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.cast));
             }
         }
@@ -2699,6 +2700,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void updateDisplay(String what) {
+        // Update cast icon
+        updateCastIcon();
         if (secondaryDisplays!=null) {
             for (SecondaryDisplay secondaryDisplay : secondaryDisplays) {
                 if (secondaryDisplay != null && secondaryDisplay.isShowing()) {
