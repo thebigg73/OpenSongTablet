@@ -1586,7 +1586,7 @@ public class ProcessSong {
                             } else if (presentation) {
                                 linearLayout.addView(groupTable(line,
                                         mainActivityInterface.getMyThemeColors().getPresoFontColor(),
-                                        mainActivityInterface.getMyThemeColors().getPresoFontColor(),
+                                        mainActivityInterface.getMyThemeColors().getPresoChordColor(),
                                         mainActivityInterface.getMyThemeColors().getLyricsCapoColor(),
                                         mainActivityInterface.getMyThemeColors().getHighlightChordColor(), true));
                             } else {

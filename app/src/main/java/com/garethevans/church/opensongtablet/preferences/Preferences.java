@@ -168,6 +168,7 @@ public class Preferences extends Activity {
     // custom1_lyricsTextColor         int         The color for the lyrics text in the custom1 theme
     // custom1_lyricsVerseColor        int         The color for the background for the verse in the custom1 theme,
     // custom1_presoFontColor          int         The color for the presentation text in the custom1 theme
+    // custom2_presoChordColor         int         The color for the presentation chords in the custom1 theme
     // custom1_presoShadowColor        int         The color for the presentation text shadow in the custom1 theme
     // custom1_presoInfoColor          int         The color for the presentation info text in the custom1 theme
     // custom1_presoAlertColor         int         The color for the presentation alert text in the custom1 theme
@@ -191,6 +192,7 @@ public class Preferences extends Activity {
     // custom2_lyricsTextColor         int         The color for the lyrics text in the custom2 theme
     // custom2_lyricsVerseColor        int         The color for the background for the verse in the custom2 theme,
     // custom2_presoFontColor          int         The color for the presentation text in the custom2 theme
+    // custom2_presoChordColor         int         The color for the presentation chords in the custom2 theme
     // custom2_presoShadowColor        int         The color for the presentation text shadow in the custom2 theme
     // custom2_presoInfoColor          int         The color for the presentation info text in the custom2 theme
     // custom2_presoAlertColor         int         The color for the presentation alert text in the custom2 theme
@@ -240,6 +242,7 @@ public class Preferences extends Activity {
     // dark_lyricsTextColor            int         The color for the lyrics text in the dark theme
     // dark_lyricsVerseColor           int         The color for the background for the verse in the dark theme,
     // dark_presoFontColor             int         The color for the presentation text in the dark theme
+    // dark_presoChordColor            int         The color for the presentation chords in the dark theme
     // dark_presoShadowColor           int         The color for the presentation text shadow in the dark theme
     // dark_presoInfoColor             int         The color for the presentation info text in the dark theme
     // dark_presoAlertColor            int         The color for the presentation alert text in the dark theme
@@ -309,6 +312,7 @@ public class Preferences extends Activity {
     // light_lyricsTextColor           int         The color for the lyrics text in the light theme
     // light_lyricsVerseColor          int         The color for the background for the verse in the light theme,
     // light_presoFontColor            int         The color for the presentation text in the light theme
+    // light_presoChordColor           int         The color for the presentation chords in the light theme
     // light_presoShadowColor          int         The color for the presentation text shadow in the light theme
     // light_presoInfoColor            int         The color for the presentation info text in the light theme
     // light_presoAlertColor           int         The color for the presentation alert text in the light theme
