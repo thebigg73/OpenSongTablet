@@ -143,10 +143,13 @@ public class WindowFlags {
 
 
     public void forceImmersive() {
-        windowInsetsController.hide(WindowInsetsCompat.Type.ime());
-        currentImmersive = false;
-        setImmersive(true);
-        //windowInsetsController.hide(insetTypes);
+        try {
+            windowInsetsController.hide(WindowInsetsCompat.Type.ime());
+            currentImmersive = false;
+            setImmersive(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void adjustViewPadding(MainActivityInterface mainActivityInterface, View view) {

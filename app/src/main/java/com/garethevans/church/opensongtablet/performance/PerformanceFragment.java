@@ -584,8 +584,8 @@ public class PerformanceFragment extends Fragment {
                         false, mainActivityInterface.getSectionViews(),
                         mainActivityInterface.getSectionWidths(), mainActivityInterface.getSectionHeights(),
                         myView.pageHolder, myView.songView, myView.songSheetTitle,
-                        screenWidth, screenHeight,
-                        myView.songView.getCol1(), myView.songView.getCol2(), myView.songView.getCol3());
+                        screenWidth, screenHeight, myView.songView.getCol1(), myView.songView.getCol2(),
+                        myView.songView.getCol3(), false, getResources().getDisplayMetrics());
 
                 // Determine how many colums are scaled
                 heightAfterScale = 0;
@@ -704,7 +704,7 @@ public class PerformanceFragment extends Fragment {
                     mainActivityInterface.getNearbyConnections().getIsHost()) {
                 mainActivityInterface.getNearbyConnections().sendSongPayload();
             }
-        }, getResources().getInteger(R.integer.slide_in_time)* 2L);
+        }, getResources().getInteger(R.integer.slide_in_time));
     }
     private void dealWithHighlighterFile(int w, int h) {
         try {

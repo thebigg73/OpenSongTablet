@@ -3,7 +3,6 @@ package com.garethevans.church.opensongtablet.customviews;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -209,9 +208,6 @@ public class SongProjectionInfo extends LinearLayoutCompat {
                 getTextViewString(songCopyright) + getTextViewString(songCCLI);
 
         if (compareString!=null) {
-            Log.d(TAG, "compareString: " + compareString);
-            Log.d(TAG, "currentString: " + currentString);
-            Log.d(TAG, "compareString.equals(currentString)=" + compareString.equals(currentString));
             return !compareString.equals(currentString);
         } else {
             return true;

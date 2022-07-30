@@ -2703,6 +2703,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             for (SecondaryDisplay secondaryDisplay : secondaryDisplays) {
                 if (secondaryDisplay != null && secondaryDisplay.isShowing()) {
                     try {
+                        Log.d(TAG,"what: "+what);
                         switch (what) {
                             // The song info bar
                             case "initialiseInfoBarRequired":
