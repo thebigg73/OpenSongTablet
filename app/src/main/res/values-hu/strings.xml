@@ -478,7 +478,7 @@
     <string name="volume_value">"Aktuális hangerő értéke"</string>
     <string name="wait">"Várni ...."</string>
     <string name="warning">"Ez a lehetőség csak akkor használható, prezentációs üzemmódban. Legyen tudatában annak, hogy ez a funkció sok memória és összeomlást okozhat. Ön már figyelmeztette!"</string>
-    <string name="websearch">"Keresés Internet aktuális dal"</string>
+    <string name="web_search">"Keresés Internet aktuális dal"</string>
     <string name="width">"Szélesség"</string>
     <string name="youtube">"Keresés YouTube aktuális dal"</string>
     <string name="duplicate">Másolat</string>

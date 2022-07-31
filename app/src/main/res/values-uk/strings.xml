@@ -445,7 +445,7 @@
     <string name="volume_value">Поточне значення гучності</string>
     <string name="wait">Зачекайте ....</string>
     <string name="warning">Ця опція повинна використовуватися тільки в режимі презентації. Пам\'ятайте, що ця функція використовує багато пам\'яті і може призвести до збою. Вас попередили!</string>
-    <string name="websearch">Шукати в інтернет поточну пісню</string>
+    <string name="web_search">Шукати в інтернет поточну пісню</string>
     <string name="width">Ширина</string>
     <string name="youtube">Шукати пісню на YouTube</string>
     <string name="duplicate">дублювати</string>

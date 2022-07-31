@@ -478,7 +478,7 @@
     <string name="volume_value">"当前音量值"</string>
     <string name="wait">"等待...."</string>
     <string name="warning">"应该仅用于演示模式这个选项。请注意，此功能使用大量内存，并可能导致崩溃。 你被警告了！"</string>
-    <string name="websearch">"搜索互联网当前歌曲"</string>
+    <string name="web_search">"搜索互联网当前歌曲"</string>
     <string name="width">"宽度"</string>
     <string name="youtube">"搜索YouTube当前歌曲"</string>
     <string name="duplicate">重复</string>

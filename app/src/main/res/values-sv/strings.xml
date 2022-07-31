@@ -478,7 +478,7 @@
     <string name="volume_value">"Aktuellt volymvärde"</string>
     <string name="wait">"Vänta...."</string>
     <string name="warning">"Detta alternativ bör endast användas för presentationsläge. Var medveten om att den här funktionen använder mycket minne och kan orsaka kraschar. Du har blivit varnad!"</string>
-    <string name="websearch">"Sök internet för den här låten"</string>
+    <string name="web_search">"Sök internet för den här låten"</string>
     <string name="width">"Bredd"</string>
     <string name="youtube">"Sök på YouTube för aktuell sång"</string>
     <string name="duplicate">Duplicera</string>

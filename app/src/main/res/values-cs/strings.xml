@@ -477,7 +477,7 @@
     <string name="volume_value">"Aktuální hodnota objemu"</string>
     <string name="wait">"Počkejte ...."</string>
     <string name="warning">"Tato možnost by měla být použita pouze v režimu prezentace. Uvědomte si, že tato funkce používá velké množství paměti a může způsobit zhroucení. Byli jste varováni!"</string>
-    <string name="websearch">"Hledat Internet pro aktuální skladby"</string>
+    <string name="web_search">"Hledat Internet pro aktuální skladby"</string>
     <string name="width">"Šířka"</string>
     <string name="youtube">"Hledat YouTube pro aktuální skladby"</string>
     <string name="duplicate">Duplikát</string>

@@ -86,6 +86,7 @@ public class SongSectionsFragment extends Fragment {
                 return false;
             });
             updatePresentationOrder();
+            updateAllButtons();
         }
     }
 
@@ -113,6 +114,8 @@ public class SongSectionsFragment extends Fragment {
     }
 
     public void updateAllButtons() {
+        Log.d(TAG,"updateAllButtons() called");
+        Log.d(TAG,"mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().getItemCount()>0: "+(mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().getItemCount()>0));
         if (mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().getItemCount()>0) {
             mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().
                     notifyItemRangeChanged(0, mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().getItemCount());

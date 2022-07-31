@@ -38,6 +38,11 @@ public class ConvertTextSong {
                 // Fix tab lines
                 l = fixTabLines(l);
 
+                // If lines are just empty spaces, clear them
+                if (!l.isEmpty() && l.trim().isEmpty()) {
+                    l = "";
+                }
+
                 // Add the lines back
                 newtext.append(l).append("\n");
             }
@@ -209,6 +214,11 @@ public class ConvertTextSong {
             if (!compiledtext.contains("[")) {
                 compiledtext = "[" + c.getString(R.string.verse) + "]" + "\n" + compiledtext;
             }
+
+            // Remove blank space lines after a tag
+            compiledtext = compiledtext.replace("]\n\n","]\n");
+            compiledtext = compiledtext.replace("\n\n\n","\n\n");
+
             return compiledtext;
         } catch (Exception | OutOfMemoryError e) {
             e.printStackTrace();

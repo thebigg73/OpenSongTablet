@@ -3,6 +3,7 @@ package com.garethevans.church.opensongtablet.presenter;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.os.Build;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +32,7 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
     private int sectionEdited = -1, currentPosition = -1;
     private final String colorChange = "color";
     private String newContent;
+    private final String TAG = "SongSectionsAdapter";
 
     SongSectionsAdapter(Context c, MainActivityInterface mainActivityInterface,
                         PresenterFragment presenterFragment, SongSectionsFragment songSectionsFragment,
@@ -55,6 +57,7 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
 
         // Because we could be using presentation order, we need to get a temp song section for the buttons
 
+        Log.d(TAG,"mainActivityInterface.getSong().getPresoOrderSongSections().size()="+mainActivityInterface.getSong().getPresoOrderSongSections().size());
 
         for (int x = 0; x < mainActivityInterface.getSong().getPresoOrderSongSections().size(); x++) {
             // bits[0] = heading, bits[1] = content - heading

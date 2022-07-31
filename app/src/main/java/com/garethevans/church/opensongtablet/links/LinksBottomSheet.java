@@ -67,6 +67,7 @@ public class LinksBottomSheet extends BottomSheetDialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = BottomSheetLinksBinding.inflate(inflater, container, false);
 
+        myView.nestedScrollView.setFabToAnimate(myView.openLink);
         return myView.getRoot();
     }
 
@@ -117,7 +118,15 @@ public class LinksBottomSheet extends BottomSheetDialogFragment {
                 myView.openLink.setImageDrawable(AppCompatResources.getDrawable(requireContext(),R.drawable.youtube));
                 myView.openLink.setOnClickListener(view -> openDocument());
                 myView.searchLink.setHint(getString(R.string.link_search_youtube));
-                myView.searchLink.setOnClickListener(view -> openBrowser("https://www.youtube.com/results?search_query="));
+                myView.searchLink.setOnClickListener(view -> {
+                    if (myView.youTubeOrMusic.getValue()==0) {
+                        openBrowser("https://www.youtube.com/search?q=");
+                    } else {
+                        openBrowser("https://music.youtube.com/search?q=");
+                    }
+                });
+                myView.youTubeOrMusic.setVisibility(View.VISIBLE);
+                myView.youTubeOrMusic.setTextRight(getString(R.string.youtube) + " " + getString(R.string.music));
                 break;
 
             //music.youtube.com/watch?v=
@@ -175,6 +184,7 @@ public class LinksBottomSheet extends BottomSheetDialogFragment {
     }
 
     private void openDocument() {
+        Log.d(TAG,"getLinkText(): "+getLinkText());
         // Try to open the file or webpage if it isn't null
         if (!getLinkText().isEmpty() && !getLinkText().contains("http")) {
             Uri uri = mainActivityInterface.getStorageAccess().fixLocalisedUri(getLinkText());

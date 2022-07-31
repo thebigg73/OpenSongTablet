@@ -136,9 +136,31 @@
                 android:layout_height="wrap_content"
                 android:text="@string/midi"
                 android:hint="@string/midi_commands" />
-
             <TableRow style="@style/DividerLine" />
 
+            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                android:id="@+id/youTube"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/youtube"
+                android:hint="@string/search" />
+            <TableRow style="@style/DividerLine" />
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                android:id="@+id/youTubeMusic"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/music"
+                android:hint="@string/search" />
+            <TableRow style="@style/DividerLine" />
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                android:id="@+id/spotify"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/spotify"
+                android:hint="@string/search" />
+            <TableRow style="@style/DividerLine" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </LinearLayout>

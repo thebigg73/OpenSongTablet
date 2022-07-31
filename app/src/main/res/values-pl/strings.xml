@@ -478,7 +478,7 @@
     <string name="volume_value">"Wartość prądu objętość"</string>
     <string name="wait">"Czekać ...."</string>
     <string name="warning">"Ta opcja powinna być używana tylko w trybie prezentacji. Należy pamiętać, że funkcja ta używa dużo pamięci i mogą powodować awarie. Zostałeś ostrzeżony!"</string>
-    <string name="websearch">"Szukaj Internet dla bieżącego utworu"</string>
+    <string name="web_search">"Szukaj Internet dla bieżącego utworu"</string>
     <string name="width">"Szerokość"</string>
     <string name="youtube">"Szukaj YouTube dla bieżącego utworu"</string>
     <string name="duplicate">Duplikować</string>

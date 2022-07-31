@@ -423,6 +423,11 @@ public class ConvertChoPro {
         parsedLines = new StringBuilder();
 
         for (String line : lines) {
+            // If line is just empty spaces, clear them
+            if (!line.isEmpty() && line.trim().isEmpty()) {
+                line = "";
+            }
+
             // Try to guess tags used
             if (!line.equals("")) {
                 line = guessTags(line);

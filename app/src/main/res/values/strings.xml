@@ -488,6 +488,7 @@
     <string name="minus_1" translatable="false">-1</string>
     <string name="move_from">Move from</string>
     <string name="move_to_folder">Move to folder</string>
+    <string name="music">Music</string>
     <string name="music_score">Music score</string>
     <string name="music_score_info">Edit score notes</string>
     <string name="my_band">Import Band sample songs</string>
@@ -729,6 +730,7 @@
     <string name="sound_low">Low</string>
     <string name="sound_stick">Stick</string>
     <string name="sound_wood">Wood</string>
+    <string name="spotify" translatable="false">Spotify</string>
     <string name="stage_mode">Stage Mode</string>
     <string name="stage_mode_info">Display songs split into sections or as a stage monitor</string>
     <string name="stage_section_max">Max section height (Stage Mode)</string>
@@ -945,6 +947,7 @@ Check out the categories in the right hand options menu.
 
     <string name="wait">Wait....</string>
     <string name="warn_before_changing_song">Show a warning before moving on to the next song (useful to avoid accidental presses)</string>
+    <string name="web_search">Search internet for this song</string>
     <string name="website">Website</string>
     <string name="website_actionbar" translatable="false">https://www.opensongapp.com/user-manual/display/actionbar</string>
     <string name="website_address" translatable="false">https://www.opensongapp.com</string>
@@ -992,6 +995,8 @@ Check out the categories in the right hand options menu.
     <string name="worshipready" translatable="false">WorshipReady.com</string>
     <string name="worshiptogether" translatable="false">WorshipTogether</string>
 
+    <string name="youtube" translatable="false">YouTube</string>
+
     <string name="zefania" translatable="false">Zefania</string>
 
 
@@ -1014,9 +1019,7 @@ Check out the categories in the right hand options menu.
     <string name="edit_song_books">Books song belongs to</string>
     <string name="edit_song_capo_print">Print capo chords</string>
     <string name="user_guide_text">Please take the time to read the user guide before using the app.</string>
-    <string name="youtube">Search YouTube for current song</string>
     <string name="warning">This option should only be used for presentation mode.  Be aware that this feature uses lots of memory and can cause crashes.  You have been warned!</string>
-    <string name="websearch">Search internet for this song</string>
     <string name="width">Width</string>
     <string name="update_projector">Update\nprojector</string>
     <string name="ultimateguitarsearch">Online search at Ultimate-Guitar.com</string>

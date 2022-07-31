@@ -478,7 +478,7 @@
     <string name="volume_value">"Valor corrente do volume"</string>
     <string name="wait">"Espere Ai ...."</string>
     <string name="warning">"Esta opção só deve ser usado para o modo de apresentação. Esteja ciente de que esse recurso usa muita memória e pode causar acidentes. Você foi avisado!"</string>
-    <string name="websearch">"Pesquisar Internet para música atual"</string>
+    <string name="web_search">"Pesquisar Internet para música atual"</string>
     <string name="width">"Largura"</string>
     <string name="youtube">"Pesquisar YouTube para música atual"</string>
     <string name="duplicate">Duplicar</string>

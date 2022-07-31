@@ -307,7 +307,7 @@
     <string name="profile">"Profil"</string>
     <string name="profile_explanation">"Profili se koriste da sačuvate postavke prikaza"</string>
     <string name="size">"Veličina"</string>
-    <string name="websearch">"Pretražiti Internet za trenutnu pesmu"</string>
+    <string name="web_search">"Pretražiti Internet za trenutnu pesmu"</string>
     <string name="songfolder">"Odaberite fasciklu pesama"</string>
     <string name="stage_mode">"Mod na bini"</string>
     <string name="toobig">"Potrebno je uključiti automatsko podešavanje veličine za png/pdf izvoz"</string>

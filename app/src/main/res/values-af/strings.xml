@@ -478,7 +478,7 @@
     <string name="volume_value">"Huidige volume-waarde"</string>
     <string name="wait">"Wag ...."</string>
     <string name="warning">"Hierdie opsie moet slegs gebruik word vir die aanbieding af. Wees bewus daarvan dat hierdie funksie maak gebruik van baie van die geheue en kan ineenstort veroorsaak. Julle is gewaarsku!"</string>
-    <string name="websearch">"Soek Internet vir die huidige liedjie"</string>
+    <string name="web_search">"Soek Internet vir die huidige liedjie"</string>
     <string name="width">Wydte</string>
     <string name="youtube">"Soek YouTube vir die huidige liedjie"</string>
     <string name="duplicate">Dupliseer</string>

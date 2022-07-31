@@ -478,7 +478,7 @@
     <string name="volume_value">"Текущее значение громкости"</string>
     <string name="wait">"Подождите ...."</string>
     <string name="warning">"Эта опция должна использоваться только в режиме презентации. Помните, что эта функция использует много памяти и может привести к сбою. Вас предупредили!"</string>
-    <string name="websearch">"Искать в интернет текущую песню"</string>
+    <string name="web_search">"Искать в интернет текущую песню"</string>
     <string name="width">"Ширина"</string>
     <string name="youtube">"Искать песню на YouTube"</string>
     <string name="duplicate">дублировать</string>

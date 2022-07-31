@@ -478,7 +478,7 @@
     <string name="volume_value">"現在のボリューム値"</string>
     <string name="wait">"待って...."</string>
     <string name="warning">"このオプションは、プレゼンテーションモードを使用する必要があります。この機能は多くのメモリを使用するとクラッシュを引き起こす可能性があることに注意してください。あなたは警告されています！"</string>
-    <string name="websearch">"現在の曲の検索インターネット"</string>
+    <string name="web_search">"現在の曲の検索インターネット"</string>
     <string name="width">"幅"</string>
     <string name="youtube">"現在の曲のためのYouTubeを検索"</string>
     <string name="duplicate">複製する</string>

@@ -477,7 +477,7 @@
     <string name="volume_value">"Valeur du volume actuel"</string>
     <string name="wait">"Attendez ...."</string>
     <string name="warning">"Cette option ne doit être utilisé pour le mode de présentation. Soyez conscient que cette fonction utilise beaucoup de mémoire et peut causer des accidents. Vous aurez été prévenu!"</string>
-    <string name="websearch">"Rechercher la chanson actuelle sur YouTube"</string>
+    <string name="web_search">"Rechercher la chanson actuelle sur YouTube"</string>
     <string name="width">"Largeur"</string>
     <string name="youtube">"Rechercher la chanson actuelle sur YouTube"</string>
     <string name="duplicate">Dupliquer</string>

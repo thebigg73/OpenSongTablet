@@ -75,7 +75,8 @@ public class LyricsOptionsBottomSheet extends BottomSheetDialogFragment {
         myView.insertSection.setHint("[V]="+getString(R.string.verse) +
                 " , [V1]="+getString(R.string.verse)+" 1, [C]="+getString(R.string.chorus) +
                 ", [B]="+getString(R.string.bridge)+", [P]="+getString(R.string.prechorus) +
-                ", [...]="+getString(R.string.custom));
+                ", [...]="+getString(R.string.custom)+", [*" + getString(R.string.text) + ":" +
+                getString(R.string.verse) + "]="+getString(R.string.filters));
         openSongOrChoProButtonColor();
         myView.textSize.setHint(""+(int)openingFragment.getEditTextSize());
         setTransposeDetectedFormat();

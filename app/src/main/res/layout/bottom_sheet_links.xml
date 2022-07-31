@@ -12,13 +12,17 @@
         android:layout_height="wrap_content"
         android:text="@string/link_info" />
 
-    <androidx.core.widget.NestedScrollView
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <com.garethevans.church.opensongtablet.customviews.NestedScrollWithFAB
+        android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
             <com.garethevans.church.opensongtablet.customviews.MaterialEditText
@@ -26,12 +30,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/link"
+                android:layout_gravity="start"
                 android:saveEnabled="false"
                 android:paddingTop="4dp"
                 android:paddingBottom="4dp"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"/>
 
+            <com.garethevans.church.opensongtablet.customviews.TextSlider
+                android:id="@+id/youTubeOrMusic"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:textLeft="@string/youtube"
+                app:textRight="@string/music"
+                android:visibility="gone"/>
 
             <com.garethevans.church.opensongtablet.customviews.MaterialTextView
                 android:id="@+id/searchLink"
@@ -70,17 +82,18 @@
                 android:text="@string/delete"
                 android:padding="16dp"
                 app:mydrawable="@drawable/delete" />
-
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/openLink"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:contentDescription="@string/open"
-                android:src="@drawable/web"
-                app:useCompatPadding="true" />
-
         </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+    </com.garethevans.church.opensongtablet.customviews.NestedScrollWithFAB>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/openLink"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:contentDescription="@string/open"
+        android:src="@drawable/web"
+        app:useCompatPadding="true"
+        app:elevation="16dp"
+        android:layout_margin="16dp"/>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
 </LinearLayout>

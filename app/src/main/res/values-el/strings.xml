@@ -478,7 +478,7 @@
     <string name="volume_value">"Current volume value"</string>
     <string name="wait">"Wait...."</string>
     <string name="warning">"Αυτή η επιλογή πρέπει να χρησιμοποιηθεί μόνο στην λειτουργία παρουσίασης. Αυτή το χαρακτηριστικό χρησιμοποιεί πολύ μνήμη και μπορεί να προκαλέσει επιπλοκές. Έχεται προειδοποιηθει!"</string>
-    <string name="websearch">"Αναζήτηση στο Internet για το τραγούδι"</string>
+    <string name="web_search">"Αναζήτηση στο Internet για το τραγούδι"</string>
     <string name="width">"Πλάτος"</string>
     <string name="youtube">"Αναζήτηση στο YouTube για το τραγούδι"</string>
     <string name="duplicate">Αντίγραφο</string>

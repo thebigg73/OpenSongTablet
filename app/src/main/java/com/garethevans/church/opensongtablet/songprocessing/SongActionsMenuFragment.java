@@ -54,6 +54,12 @@ public class SongActionsMenuFragment extends Fragment {
             myView.delete.setHint(newText);
             newText = getString(R.string.export_current_song) + currentSong;
             myView.share.setHint(newText);
+            newText = getString(R.string.search) + currentSong;
+            myView.youTube.setHint(newText);
+            myView.youTubeMusic.setHint(newText);
+            myView.spotify.setHint(newText);
+            newText = getString(R.string.youtube) + " " + getString(R.string.music);
+            myView.youTubeMusic.setText(newText);
         }
     }
 
@@ -101,6 +107,30 @@ public class SongActionsMenuFragment extends Fragment {
                 mainActivityInterface.getShowToast().doIt(getString(R.string.not_allowed));
             }
         });
+
+        myView.youTube.setOnClickListener(v -> searchSong("YouTube"));
+        myView.youTubeMusic.setOnClickListener(v -> searchSong("YouTubeMusic"));
+        myView.spotify.setOnClickListener(v -> searchSong("Spotify"));
+    }
+
+    private void searchSong(String where) {
+        switch (where) {
+            case "YouTube":
+                mainActivityInterface.openDocument("https://www.youtube.com/search?q=" +
+                    mainActivityInterface.getSong().getTitle());
+            break;
+
+            case "YouTubeMusic":
+                mainActivityInterface.openDocument("https://music.youtube.com/search?q=" +
+                    mainActivityInterface.getSong().getTitle());
+            break;
+
+            case "Spotify":
+                mainActivityInterface.openDocument("https://open.spotify.com/search/results/" +
+                        mainActivityInterface.getSong().getTitle());
+                break;
+
+        }
     }
 
     private void actionAllowed(int id) {
