@@ -55,8 +55,7 @@ public class SongSectionsFragment extends Fragment {
         myView.presentationOrder.setOnCheckedChangeListener((compoundButton, b) -> {
             mainActivityInterface.getPreferences().setMyPreferenceBoolean("usePresentationOrder",b);
             mainActivityInterface.getPresenterSettings().setUsePresentationOrder(b);
-            mainActivityInterface.doSongLoad(mainActivityInterface.getSong().getFolder(),
-                    mainActivityInterface.getSong().getFilename(),true);
+            mainActivityInterface.updateFragment("presenterFragmentSongSections",getParentFragment(),null);
         });
         updatePresentationOrder();
 
@@ -107,15 +106,16 @@ public class SongSectionsFragment extends Fragment {
             mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().setSelectedPosition(newPosition);
             mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().notifyItemChanged(oldPosition,"colorchange");
             mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().notifyItemChanged(newPosition,"colorchange");
-            if (myView.recyclerView.getLayoutManager()!=null) {
-                ((LinearLayoutManager) myView.recyclerView.getLayoutManager()).scrollToPositionWithOffset(newPosition, 0);
-            }
         }
     }
 
     public void updateAllButtons() {
         Log.d(TAG,"updateAllButtons() called");
         Log.d(TAG,"mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().getItemCount()>0: "+(mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().getItemCount()>0));
+        myView.recyclerView.removeAllViews();
+        mainActivityInterface.setSectionViews(mainActivityInterface.getProcessSong().setSongInLayout(
+                mainActivityInterface.getSong(), false, true));
+        mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().buildSongSections();
         if (mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().getItemCount()>0) {
             mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().
                     notifyItemRangeChanged(0, mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().getItemCount());
@@ -125,10 +125,6 @@ public class SongSectionsFragment extends Fragment {
     // From edited content via TextInputBottomSheet
     public void updateValue(String content) {
         mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().setSectionEditedContent(content);
-    }
-
-    public void doScrollTo(int thisPos) {
-        myView.recyclerView.scrollToPosition(thisPos);
     }
 
     public void showTutorial(ArrayList<View> viewsToHighlight) {

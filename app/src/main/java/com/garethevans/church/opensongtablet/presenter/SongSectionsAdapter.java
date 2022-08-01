@@ -233,7 +233,6 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
         notifyItemChanged(thisPos,colorChange);
         mainActivityInterface.getPresenterSettings().setCurrentSection(thisPos);
         displayInterface.presenterShowSection(thisPos);
-        presenterFragment.doScrollTo(thisPos);
         currentPosition = thisPos;
     }
 

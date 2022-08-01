@@ -33,6 +33,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.appdata.InformationBottomSheet;
 import com.garethevans.church.opensongtablet.customviews.MaterialEditText;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
@@ -1272,10 +1273,6 @@ public class ProcessSong {
         // What if sections aren't in the song (e.g. Intro V2 and Outro)
         // The other issue is that custom tags (e.g. Guitar Solo) can have spaces in them
 
-        // If we've already done this processing, don't do it again.
-        /*if (song.getPresoOrderSongSections()==null || song.getPresoOrderSongSections().size()==0) {
-
-         */
         if (mainActivityInterface.getPresenterSettings().getUsePresentationOrder() &&
                 song.getPresentationorder() != null && !song.getPresentationorder().isEmpty()) {
             // Update to match the presentation order
@@ -1287,6 +1284,7 @@ public class ProcessSong {
 
             // Go through each tag in the song
             for (String tag : song.getSongSectionHeadings()) {
+                Log.d(TAG,"Tag found: "+tag);
                 if (tag.equals("") || tag.equals(" ")) {
                     Log.d(TAG, "Empty search");
                 } else if (tempPresentationOrder.toString().contains(tag)) {
@@ -1297,7 +1295,8 @@ public class ProcessSong {
                     if (errors.length() > 0) {
                         errors.append(("\n"));
                     }
-                    errors.append(tag).append(" - ").append(c.getString(R.string.section_not_found));
+                    // We have sections in the song we haven't included
+                    errors.append(tag).append(" - ").append(c.getString(R.string.section_not_used)).append("\n");
                 }
             }
             // tempPresentationOrder now looks like "Intro <__V1__>V2 <__C__><__V3__><__C__><__C__><__Guitar Solo__><__C__>Outro "
@@ -1308,6 +1307,7 @@ public class ProcessSong {
             // So, if entry doesn't contain __> it isn't in the song
             // Also, anything after __> isn't in the song
             for (int d = 0; d < tempPresOrderArray.length; d++) {
+                Log.d(TAG,"tempPresOrderArray["+d+"]: "+tempPresOrderArray[d]);
                 if (!tempPresOrderArray[d].contains("__>")) {
                     if (!tempPresOrderArray[d].equals("") && !tempPresOrderArray[d].equals(" ")) {
                         if (errors.length() > 0) {
@@ -1344,18 +1344,21 @@ public class ProcessSong {
                 }
             }
 
-            // Display any errors
+            // Display any errors as a bottom sheet (may need time to read)
+            if (!errors.toString().trim().isEmpty()) {
+                InformationBottomSheet informationBottomSheet = new InformationBottomSheet(
+                        c.getString(R.string.presentation_order), errors.toString().trim(),
+                        c.getString(R.string.edit_song), "opensongapp://settings/edit");
+                informationBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "InformationBottomSheet");
+            }
 
-            mainActivityInterface.getShowToast().doIt(errors.toString());
             song.setPresoOrderSongSections(newSections);
             song.setPresoOrderSongHeadings(newHeaders);
         } else {
             // Not using presentation order, so just return what we have
-            //song.setPresoOrderSongSections(song.getSongSections());
             song.setPresoOrderSongSections(song.getGroupedSections());
             song.setPresoOrderSongHeadings(song.getSongSectionHeadings());
         }
-        //}
     }
 
     private TextView lineText(String linetype,
@@ -1422,7 +1425,7 @@ public class ProcessSong {
         }
     }
 
-    private void processSongIntoSections(Song song, boolean presentation) {
+    public void processSongIntoSections(Song song, boolean presentation) {
         // First we process the song (could be the loaded song, or a temp song - that's why we take a reference)
         // 1. Get a temporary version of the lyrics (as we are going to process them)
         String lyrics = song.getLyrics();

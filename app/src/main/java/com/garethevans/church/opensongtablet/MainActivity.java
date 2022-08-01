@@ -717,6 +717,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     }
                     break;
 
+                case "presenterFragment_loadSong":
+                    ((PresenterFragment) callingFragment).doSongLoad(getSong().getFolder(),getSong().getFilename());
+                    break;
+
                 case "presenterFragmentSettings":
                     ((SecondaryDisplaySettingsFragment) callingFragment).updateBackground();
                     ((SecondaryDisplaySettingsFragment) callingFragment).updateInfoBackground();
@@ -725,8 +729,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
                 case "presenterFragmentSongSections":
                     if (presenterFragment!=null) {
+                        Log.d(TAG,"presenterFragmentSongSections");
+                        processSong.processSongIntoSections(song,true);
+                        processSong.matchPresentationOrder(song);
                         presenterFragment.getSongViews();
                         presenterFragment.updateButtons();
+                        for (String presoSection:song.getPresoOrderSongSections()) {
+                            Log.d(TAG,"presoSection:"+presoSection);
+                        }
                     }
                     break;
 

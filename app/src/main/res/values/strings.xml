@@ -1,7 +1,9 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
 <resources>
     <string name="about">About</string>
     <string name="about_description">App info, help, user guide, etc.</string>
     <string name="action">Action</string>
+    <string name="actions">Actions</string>
     <string name="action_button_info">Click to show or hide your page buttons.\n\nEach one can be assigned
         to song actions such as metronome, transpose, pads, etc.\nLong pressing on the main button
         lets you change the settings of each button.\nLong pressing on some page buttons performs
@@ -357,6 +359,7 @@
     <string name="item">Item</string>
 
     <string name="keep_multiline">Keep multiline compact</string>
+    <string name="keep_multiline_info">Display songs containing combined verses as they appear in the song edit window.</string>
     <string name="key">Key</string>
     <array name="key_choice">
         <item/>
@@ -461,6 +464,7 @@
     <string name="menu_settings">Menu settings</string>
     <string name="menu_settings_description">Change settings for the song/set menu</string>
     <string name="menu_song_info">Use this button view and manage your songs</string>
+    <string name="menu_song_order">How should songs be listed in the menu?</string>
     <string name="metronome">Metronome</string>
     <string name="metronome_duration">Metronome duration (bars)</string>
     <string name="metronome_info">Adjust the metronome settings</string>
@@ -519,6 +523,8 @@
     <string name="online_services" translatable="false">UG, SongSelect, Chordie, etc.</string>
     <string name="onsong" translatable="false">iOS/OnSong</string>
     <string name="onsong_import">"Import OnSong backup file"</string>
+    <string name="onsong_import_folder">Choose a folder to save imported songs</string>
+    <string name="onsong_import_folder_info">The recommended option is to import into a separate OnSong folder.  You can always move songs into other folders later.</string>
     <string name="opacity">Opacity</string>
     <string name="open">Open</string>
     <string name="open_song_menu">Open song menu</string>
@@ -644,8 +650,11 @@
     <string name="search_index_start">Building the song index</string>
     <string name="search_index_wait">Please wait until song indexing is completed</string>
     <string name="search_rebuild">Rebuild song index</string>
+    <string name="section_box">Draw section box</string>
+    <string name="section_box_info">Show each section of a song with a box around it (as in stage mode)</string>
     <string name="section_highlighting">Section highlighting</string>
     <string name="section_not_found">This section does not exist in the song.  Please remove this item, or create the section in the lyrics tab.</string>
+    <string name="section_not_used">This section is in the song, but is not in the Presentation order.</string>
     <string name="section_space">Add section space</string>
     <string name="section_space_info">Add a small space between sections to improve visibility</string>
     <string name="select">Select</string>
@@ -769,6 +778,8 @@
     <string name="tempo">Tempo</string>
     <string name="text">Text</string>
     <string name="text_extract">Extract text from file (OCR)</string>
+    <string name="text_extract_check">OpenSongApp will try to find song content automatically, however, you can manually check by clicking on this button.</string>
+    <string name="text_extract_website">Song text found on this page.  Click here to extract.</string>
     <string name="theme">Theme</string>
     <string name="theme_choose">Switch theme</string>
     <string name="theme_custom1">Custom 1</string>
@@ -779,6 +790,7 @@
     <string name="theme_light">Light theme</string>
     <string name="time">Time</string>
     <string name="time_format">24hr</string>
+    <string name="time_seconds">Show seconds</string>
     <string name="time_signature">Time signature</string>
     <string-array name="time_signatures" translatable="false">
         <item/>
@@ -809,6 +821,8 @@
     <string name="transpose_info">Change the chords in the current song</string>
     <string name="trim_sections">Trim sections</string>
     <string name="trim_sections_info">Gets rid of blank lines after each section to maximise text size</string>
+    <string name="trim_wordspacing">Trim word spacing</string>
+    <string name="trim_wordspacing_info">Remove excess spaces between words</string>
     <string name="twitter_user" translatable="false">\@OpenSongApp</string>
 
     <string name="ukulele">Ukulele</string>
@@ -1000,13 +1014,14 @@ Check out the categories in the right hand options menu.
     <string name="zefania" translatable="false">Zefania</string>
 
 
-    <!-- TODO LIKELY TO REMOVE NO USAGES FOUND -->
+    <!-- TODO LIKELY TO USE BUT HAVEN'T YET -->
+    <string name="airTurn" translatable="false">AirTurn</string>
 
+
+    <!-- TODO LIKELY TO REMOVE NO USAGES FOUND -->
     <string name="action_search">Search songs</string>
     <string name="actionbar">Menu bar info</string>
-    <string name="actions">Actions</string>
     <string name="activated">Activated / running</string>
-    <string name="airTurn" translatable="false">AirTurn</string>
     <string name="autoscale_toggle">Toggle autoscale</string>
     <string name="autostart_autoscroll">Keep on autoscroll</string>
     <string name="autostartmetronome">Keep on metronome</string>
@@ -1022,20 +1037,13 @@ Check out the categories in the right hand options menu.
     <string name="warning">This option should only be used for presentation mode.  Be aware that this feature uses lots of memory and can cause crashes.  You have been warned!</string>
     <string name="width">Width</string>
     <string name="update_projector">Update\nprojector</string>
-    <string name="ultimateguitarsearch">Online search at Ultimate-Guitar.com</string>
     <string name="transparency">Transparency</string>
     <string name="top">Top</string>
     <string name="toobig">Please switch autoscale on for png/pdf export</string>
     <string name="theme_color">Uses color set in the theme</string>
-    <string name="switchtoperformmode">Switch to performance mode</string>
     <string name="storage_check">Checking storage</string>
-    <string name="start_screen">Go back to start screen</string>
     <string name="speed">Speed</string>
-    <string name="songfolder">Select song folder</string>
-    <string name="stickynotes">Song notes</string>
     <string name="song_functionnotavailable">This function is not available for songs</string>
-    <string name="size_mini">Mini</string>
-    <string name="size_normal">Normal</string>
     <string name="show_general_advanced">Toggle general/advanced fields</string>
     <string name="sethasbeendeleted">has been deleted from your \'Sets\' folder.</string>
     <string name="set_reset">Reset the current set creating a new one</string>
@@ -1163,17 +1171,5 @@ Check out the categories in the right hand options menu.
     <string name="load_preferences">Loading preferences</string>
     <string name="look_for">Look for</string>
     <string name="lyrics_settings">Lyrics settings</string>
-    <string name="time_seconds">Show seconds</string>
-    <string name="menu_song_order">How should songs be listed in the menu?</string>
-    <string name="text_extract_website">Song text found on this page.  Click here to extract.</string>
-    <string name="text_extract_check">OpenSongApp will try to find song content automatically, however, you can manually check by clicking on this button.</string>
-    <string name="section_box">Draw section box</string>
-    <string name="section_box_info">Show each section of a song with a box around it (as in stage mode)</string>
-    <string name="onsong_import_folder">Choose a folder to save imported songs</string>
-    <string name="onsong_import_folder_info">The recommended option is to import into a separate OnSong folder.  You can always move songs into other folders later.</string>
-    <string name="keep_multiline_info">Display songs containing combined verses as they appear in the song edit window.</string>
-    <string name="trim_wordspacing">Trim word spacing</string>
-    <string name="trim_wordspacing_info">Remove excess spaces between words</string>
-
 
 </resources>
