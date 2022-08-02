@@ -20,6 +20,8 @@
     <string name="add_songs">Add songs</string>
     <string name="added_to_set">has been added to the end of your current set.</string>
     <string name="air_turn_long_press">AirTurn long press mode</string>
+    <string name="air_turn_long_press_info">When using a pedal that does not send long press actions, you can simulate this by setting a desired long press time</string>
+    <string name="air_turn_long_press_time">Long press wait time</string>
     <string name="alert">Alert</string>
     <string name="alert_text">Enter message text</string>
     <string name="alpha">Alpha</string>
@@ -239,6 +241,47 @@
 
     <string name="date">Date</string>
     <string name="dec_autoscroll_speed">Decrease Autoscroll Speed</string>
+    <string name="deeplink_abc" translatable="false">opensongapp://settings/actions/abcnotation</string>
+    <string name="deeplink_actionbar" translatable="false">opensongapp://settings/display/actionbar</string>
+    <string name="deeplink_alert" translatable="false">opensongapp://alert</string>
+    <string name="deeplink_backup" translatable="false">opensongapp://settings/storage/backup</string>
+    <string name="deeplink_bible" translatable="false">opensongapp://settings/bible</string>
+    <string name="deeplink_chords" translatable="false">opensongapp://settings/actions/chords</string>
+    <string name="deeplink_chords_settings" translatable="false">opensongapp://settings/chords/settings</string>
+    <string name="deeplink_chords_custom" translatable="false">opensongapp://settings/chords/custom</string>
+    <string name="deeplink_connected_display" translatable="false">opensongapp://settings/display/connected</string>
+    <string name="deeplink_controls" translatable="false">opensongapp://settings/controls</string>
+    <string name="deeplink_custom_slide" translatable="false">opensongapp://settings/sets/customslide</string>
+    <string name="deeplink_edit" translatable="false">opensongapp://settings/edit</string>
+    <string name="deeplink_export" translatable="false">opensongapp://settings/actions/export</string>
+    <string name="deeplink_fonts" translatable="false">opensongapp://settings/display/fonts</string>
+    <string name="deeplink_gestures" translatable="false">opensongapp://settings/controls/gestures</string>
+    <string name="deeplink_highlighter" translatable="false">opensongapp://songactions/highlighter/edit</string>
+    <string name="deeplink_import" translatable="false">opensongapp://settings/import</string>
+    <string name="deeplink_import_osb" translatable="false">opensongapp://settings/import/osb</string>
+    <string name="deeplink_import_file" translatable="false">opensongapp://settings/import/file</string>
+    <string name="deeplink_kitkat_choose" translatable="false">opensongapp://settings/storage/kitkatchoose</string>
+    <string name="deeplink_links" translatable="false">opensongapp://settings/actions/links</string>
+    <string name="deeplink_metronome" translatable="false">opensongapp://settings/actions/metronome</string>
+    <string name="deeplink_midi" translatable="false">opensongapp://settings/midi</string>
+    <string name="deeplink_nearby" translatable="false">opensongapp://settings/nearby</string>
+    <string name="deeplink_onsong" translatable="false">opensongapp://settings/onsong</string>
+    <string name="deeplink_pads" translatable="false">opensongapp://settings/pads</string>
+    <string name="deeplink_page_buttons" translatable="false">opensongapp://settings/controls/pagebuttons</string>
+    <string name="deeplink_pedals" translatable="false">opensongapp://settings/controls/pedals</string>
+    <string name="deeplink_preferences" translatable="false">opensongapp://preferences</string>
+    <string name="deeplink_performance" translatable="false">opensongapp://performance</string>
+    <string name="deeplink_presenter" translatable="false">opensongapp://presenter</string>
+    <string name="deeplink_profiles" translatable="false">opensongapp://settings/profiles</string>
+    <string name="deeplink_scaling" translatable="false">opensongapp://settings/display/scaling</string>
+    <string name="deeplink_set_storage" translatable="false">opensongapp://settings/storage/setstorage</string>
+    <string name="deeplink_sets" translatable="false">opensongapp://settings/sets</string>
+    <string name="deeplink_sets_backup_restore" translatable="false">opensongapp://settings/sets/backuprestore</string>
+    <string name="deeplink_sets_manage" translatable="false">opensongapp://settings/sets/manage</string>
+    <string name="deeplink_song_actions" translatable="false">opensongapp://settings/actions</string>
+    <string name="deeplink_sticky_notes" translatable="false">opensongapp://settings/actions/stickynotes</string>
+    <string name="deeplink_swipe" translatable="false">opensongapp://settings/controls/swipe</string>
+    <string name="deeplink_theme" translatable="false">opensongapp://settings/display/theme</string>
     <string name="default_autoscroll">Default autoscroll times</string>
     <string name="delete">Delete</string>
     <string name="delete_folder_info">Delete song subdirectory</string>

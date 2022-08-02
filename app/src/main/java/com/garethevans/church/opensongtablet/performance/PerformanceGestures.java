@@ -4,15 +4,14 @@ package com.garethevans.church.opensongtablet.performance;
 
 import android.content.Context;
 import android.os.Build;
-import android.util.Log;
-
-import androidx.recyclerview.widget.RecyclerView;
+import android.view.View;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.abcnotation.MusicScoreBottomSheet;
 import com.garethevans.church.opensongtablet.autoscroll.AutoscrollBottomSheet;
 import com.garethevans.church.opensongtablet.chords.ChordFingeringBottomSheet;
 import com.garethevans.church.opensongtablet.chords.TransposeBottomSheet;
+import com.garethevans.church.opensongtablet.customviews.MyRecyclerView;
 import com.garethevans.church.opensongtablet.customviews.MyZoomLayout;
 import com.garethevans.church.opensongtablet.interfaces.ActionInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
@@ -27,11 +26,10 @@ import com.garethevans.church.opensongtablet.utilities.SoundLevelBottomSheet;
 public class PerformanceGestures {
 
     private final Context c;
-    private final String TAG = "PerformanceGestures";
     private final MainActivityInterface mainActivityInterface;
     private final ActionInterface actionInterface;
     private MyZoomLayout myZoomLayout;
-    private RecyclerView recyclerView;
+    private MyRecyclerView recyclerView;
 
     // Initialise
     public PerformanceGestures(Context c) {
@@ -42,7 +40,7 @@ public class PerformanceGestures {
     public void setZoomLayout(MyZoomLayout myZoomLayout) {
         this.myZoomLayout = myZoomLayout;
     }
-    public void setRecyclerView(RecyclerView recyclerView) {
+    public void setRecyclerView(MyRecyclerView recyclerView) {
         this.recyclerView = recyclerView;
     }
 
@@ -50,7 +48,7 @@ public class PerformanceGestures {
 
     // Edit page buttons
     public void editPageButtons() {
-        mainActivityInterface.navigateToFragment("opensongapp://settings/controls/pagebuttons",0);
+        mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_page_buttons),0);
     }
 
     // Song menu
@@ -66,7 +64,7 @@ public class PerformanceGestures {
     // Edit song
     public void editSong() {
         if (mainActivityInterface.getProcessSong().isValidSong(mainActivityInterface.getSong())) {
-            mainActivityInterface.navigateToFragment("opensongapp://settings/edit", 0);
+            mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_edit), 0);
         } else {
             mainActivityInterface.getShowToast().doIt(c.getString(R.string.not_allowed));
         }
@@ -126,64 +124,119 @@ public class PerformanceGestures {
 
     // Open the metronome settings
     public void metronomeSettings() {
-        mainActivityInterface.navigateToFragment("opensongapp://settings/actions/metronome",0);
+        mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_metronome),0);
     }
 
     // Next song
     public void nextSong() {
-        mainActivityInterface.getDisplayPrevNext().moveToNext();
+        if (mainActivityInterface.getPedalActions().getPedalScrollBeforeMove() && canScroll(true)) {
+            scroll(true);
+        } else {
+            mainActivityInterface.getDisplayPrevNext().moveToNext();
+        }
     }
 
     // Next song
     public void prevSong() {
-        mainActivityInterface.getDisplayPrevNext().moveToPrev();
+        if (mainActivityInterface.getPedalActions().getPedalScrollBeforeMove() && canScroll(false)) {
+            scroll(false);
+        } else {
+            mainActivityInterface.getDisplayPrevNext().moveToPrev();
+        }
+    }
+
+    // This is for the scroll before move
+    private boolean canScroll(boolean scrollDown) {
+        // Check the ZoomLayout for XML
+        if (myZoomLayout != null && myZoomLayout.getVisibility() == View.VISIBLE) {
+            // Can we scroll down?
+            if (scrollDown && !myZoomLayout.getScrolledToBottom()) {
+                return true;
+            } else {
+                return !scrollDown && !myZoomLayout.getScrolledToTop();
+            }
+
+        // Check the recyclerView for images/pdfs
+        } else if (recyclerView != null && recyclerView.getVisibility() == View.VISIBLE) {
+            if (mainActivityInterface.getMode().equals("Stage")) {
+                int currentPos, finalPos;
+                if (mainActivityInterface.getSong().getFiletype().equals("PDF")) {
+                    currentPos = mainActivityInterface.getSong().getPdfPageCurrent();
+                    finalPos = mainActivityInterface.getSong().getPdfPageCount()-1;
+                } else {
+                    currentPos = mainActivityInterface.getSong().getCurrentSection();
+                    finalPos = mainActivityInterface.getSong().getPresoOrderSongSections().size()-1;
+                }
+                if (scrollDown && currentPos<finalPos) {
+                    return true;
+                } else {
+                    return !scrollDown && currentPos > 0;
+                }
+            } else {
+                if (scrollDown && !recyclerView.getScrolledToBottom()) {
+                    return true;
+                } else {
+                    return !scrollDown && !recyclerView.getScrolledToTop();
+                }
+            }
+        } else {
+            return false;
+        }
     }
 
     // Scroll up/down
     public void scroll(boolean scrollDown) {
-        if (myZoomLayout!=null && recyclerView!=null && mainActivityInterface.getMode().equals("Performance")) {
-            try {
-                if (mainActivityInterface.getSong().getFiletype().equals("PDF") &&
-                        Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP) {
-                    int height = (int)(mainActivityInterface.getGestures().getScrollDistance()*recyclerView.getHeight());
-                    if (!scrollDown) {
-                        height = - height;
-                    }
-                    recyclerView.smoothScrollBy(0,height);
-                } else {
-                    myZoomLayout.animateScrollBy(mainActivityInterface.getGestures().getScrollDistance(), scrollDown);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
+        if (myZoomLayout != null && myZoomLayout.getVisibility() == View.VISIBLE) {
+            myZoomLayout.animateScrollBy(mainActivityInterface.getGestures().getScrollDistance(), scrollDown);
+        } else if (mainActivityInterface.getMode().equals("Performance") &&
+                recyclerView != null && recyclerView.getVisibility() == View.VISIBLE) {
+            int height = (int)(mainActivityInterface.getGestures().getScrollDistance()*recyclerView.getHeight());
+            if (!scrollDown) {
+                height = - height;
             }
-        } else if (mainActivityInterface.getMode().equals("Stage") && recyclerView!=null) {
-            if (mainActivityInterface.getSong().getFiletype().equals("PDF") &&
-            Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP) {
-                int currentPage = mainActivityInterface.getSong().getPdfPageCurrent();
-                Log.d(TAG,"currentPage="+currentPage);
-                int totalPages = mainActivityInterface.getSong().getPdfPageCount();
-                if (scrollDown && currentPage<totalPages-1) {
-                    if (recyclerView.getAdapter()!=null) {
-                        ((PDFPageAdapter) recyclerView.getAdapter()).clickOnSection(currentPage + 1);
-                    }
-                } else if (!scrollDown && currentPage>0) {
-                    if (recyclerView.getAdapter()!=null) {
-                        ((PDFPageAdapter) recyclerView.getAdapter()).clickOnSection(currentPage - 1);
+            recyclerView.smoothScrollBy(0,height);
+
+        } else if (mainActivityInterface.getMode().equals("Stage") &&
+                recyclerView != null && recyclerView.getVisibility() == View.VISIBLE) {
+            int currentPosition = mainActivityInterface.getSong().getCurrentSection();
+            int finalPosition = mainActivityInterface.getSong().getPresoOrderSongSections().size() - 1;
+
+            if (mainActivityInterface.getSong().getFiletype().equals("PDF")) {
+                currentPosition = mainActivityInterface.getSong().getPdfPageCurrent();
+                finalPosition = mainActivityInterface.getSong().getPdfPageCount() - 1;
+            }
+            int newPosition = currentPosition;
+
+            if (scrollDown) {
+                if (currentPosition < finalPosition) {
+                    if (recyclerView.getLayoutManager() != null) {
+                        recyclerView.getLayoutManager().scrollToPosition(currentPosition + 1);
+                        newPosition++;
                     }
                 }
             } else {
-                int currentPage = mainActivityInterface.getSong().getCurrentSection();
-                int totalPages = mainActivityInterface.getSectionViews().size()-1;
-                if (scrollDown && currentPage<totalPages) {
-                    if (recyclerView.getAdapter()!=null) {
-                        ((StageSectionAdapter) recyclerView.getAdapter()).clickOnSection(currentPage + 1);
-                    }
-                } else if (!scrollDown && currentPage>0) {
-                    if (recyclerView.getAdapter()!=null) {
-                        ((StageSectionAdapter) recyclerView.getAdapter()).clickOnSection(currentPage - 1);
+                if (currentPosition > 0) {
+                    if (recyclerView.getLayoutManager() != null) {
+                        recyclerView.getLayoutManager().scrollToPosition(currentPosition - 1);
+                        newPosition--;
                     }
                 }
             }
+
+            if (mainActivityInterface.getSong().getFiletype().equals("PDF")) {
+                mainActivityInterface.getSong().setPdfPageCurrent(newPosition);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP &&
+                        recyclerView.getAdapter()!=null) {
+                    ((PDFPageAdapter)recyclerView.getAdapter()).clickOnSection(newPosition);
+                }
+            } else {
+                mainActivityInterface.getSong().setCurrentSection(newPosition);
+                if (recyclerView.getAdapter()!=null) {
+                    ((StageSectionAdapter)recyclerView.getAdapter()).clickOnSection(newPosition);
+                }
+            }
+
+
         }
     }
 
@@ -220,7 +273,7 @@ public class PerformanceGestures {
 
     // Show the chord settings
     public void chordSettings() {
-        mainActivityInterface.navigateToFragment("opensongapp://settings/actions/chords",0);
+        mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_chords),0);
     }
 
     // Toggle between native, capo and both
@@ -234,7 +287,7 @@ public class PerformanceGestures {
             displayCapoAndNativeChords = true;
         } else {
             displayCapoChords = true;
-            displayCapoAndNativeChords = false;
+            //displayCapoAndNativeChords = false; // Already set to this
         }
         mainActivityInterface.getPreferences().setMyPreferenceBoolean("displayCapoChords", displayCapoChords);
         mainActivityInterface.getPreferences().setMyPreferenceBoolean("displayCapoAndNativeChords", displayCapoAndNativeChords);
@@ -258,7 +311,7 @@ public class PerformanceGestures {
 
     // Abc notation settings
     public void abcEdit() {
-        mainActivityInterface.navigateToFragment("opensongapp://settings/actions/abcnotation",0);
+        mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_abc),0);
     }
 
     // Show the highlighter notes
@@ -269,7 +322,7 @@ public class PerformanceGestures {
     // Highlighter edit
     public void highlighterEdit() {
         if (ifPDFAndAllowed() || !mainActivityInterface.getSong().getFiletype().equals("PDF")) {
-            actionInterface.navigateToFragment("opensongapp://songactions/highlighter/edit", 0);
+            actionInterface.navigateToFragment(c.getString(R.string.deeplink_highlighter), 0);
         }
     }
 
@@ -281,7 +334,7 @@ public class PerformanceGestures {
 
     // Sticky notes settings
     public void stickySettings() {
-        actionInterface.navigateToFragment("opensongapp://settings/actions/stickynotes",0);
+        actionInterface.navigateToFragment(c.getString(R.string.deeplink_sticky_notes),0);
     }
 
     // Increase the autoscroll speed
@@ -301,7 +354,7 @@ public class PerformanceGestures {
 
     // Open links
     public void openLinks() {
-        mainActivityInterface.navigateToFragment("opensongapp://settings/actions/links",0);
+        mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_links),0);
     }
 
     // PDF page chooser
@@ -314,32 +367,32 @@ public class PerformanceGestures {
 
     // Open the theme chooser
     public void editTheme() {
-        mainActivityInterface.navigateToFragment("opensongapp://settings/display/theme",0);
+        mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_theme),0);
     }
 
     // Open the autoscale options
     public void editAutoscale() {
-        mainActivityInterface.navigateToFragment("opensongapp://settings/display/scaling",0);
+        mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_scaling),0);
     }
 
     // Edit the fonts
     public void editFonts() {
-        mainActivityInterface.navigateToFragment("opensongapp://settings/display/fonts",0);
+        mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_fonts),0);
     }
 
     // Open the gestures settings
     public void editGestures() {
-        mainActivityInterface.navigateToFragment("opensongapp://settings/controls/gestures",0);
+        mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_gestures),0);
     }
 
     // Open the profile settings
     public void editProfiles() {
-        mainActivityInterface.navigateToFragment("opensongapp://settings/profiles",0);
+        mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_profiles),0);
     }
 
     // Open the pedal settings
     public void editPedals() {
-        mainActivityInterface.navigateToFragment("opensongapp://settings/controls/pedals",0);
+        mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_pedals),0);
     }
 
     // Open the song midi bottom sheet
@@ -350,12 +403,12 @@ public class PerformanceGestures {
 
     // Open the midi settings
     public void editMidi() {
-        mainActivityInterface.navigateToFragment("opensongapp://settings/midi",0);
+        mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_midi),0);
     }
 
     // Get the bible settings
     public void bibleSettings() {
-        mainActivityInterface.navigateToFragment("opensongapp://settings/bible",0);
+        mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_bible),0);
     }
 
     // Sound level

@@ -85,10 +85,10 @@ public class SongMenuBottomSheet extends BottomSheetDialogFragment {
                     mainActivityInterface.getSong().getFilename(),true);
             dismiss();
         });
-        myView.songShare.setOnClickListener(v -> navigateTo("opensongapp://settings/actions/export"));
-        myView.songEdit.setOnClickListener(v -> navigateTo("opensongapp://settings/edit"));
-        myView.songActions.setOnClickListener(v -> navigateTo("opensongapp://settings/actions"));
-        myView.newSongs.setOnClickListener(v -> navigateTo("opensongapp://settings/import"));
+        myView.songShare.setOnClickListener(v -> navigateTo(getString(R.string.deeplink_export)));
+        myView.songEdit.setOnClickListener(v -> navigateTo(getString(R.string.deeplink_edit)));
+        myView.songActions.setOnClickListener(v -> navigateTo(getString(R.string.deeplink_song_actions)));
+        myView.newSongs.setOnClickListener(v -> navigateTo(getString(R.string.deeplink_import)));
         myView.addToSet.setOnClickListener(v -> addToSet());
         myView.addVariationToSet.setOnClickListener(v -> addVariationToSet());
         myView.randomSong.setOnClickListener(v -> {

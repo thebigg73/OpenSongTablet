@@ -42,10 +42,9 @@ public class MyRecyclerView extends RecyclerView {
         setClipToPadding(false);
         setItemAnimator(null);
         floatScrollPos = 0;
-
     }
 
-    public void smoothScrollTo(Context c, LayoutManager layoutManager,int position) {
+    public void smoothScrollTo(Context c, LayoutManager layoutManager, int position) {
         smoothScroller = new LinearSmoothScroller(c) {
             @Override
             protected int getVerticalSnapPreference() {
@@ -98,12 +97,10 @@ public class MyRecyclerView extends RecyclerView {
             if (isUserTouching) {
                 floatScrollPos = floatScrollPos + dy;
             }
-            scrolledToTop = recyclerView.computeVerticalScrollExtent() == 0;
-            scrolledToBottom = (maxScrollY-recyclerView.computeVerticalScrollOffset()) <= 0;
+            scrolledToTop = recyclerView.computeVerticalScrollOffset() == 0;
+            scrolledToBottom = (maxScrollY-recyclerView.computeVerticalScrollOffset()) <= 1;
         }
     }
-
-
 
     private class ItemTouchListener extends RecyclerView.SimpleOnItemTouchListener {
 
@@ -137,7 +134,7 @@ public class MyRecyclerView extends RecyclerView {
     public void doScrollBy(float dy, int duration) {
         // Only do this if we aren't touching the screen!
         // Because scroll is an int, but getting passed a float, we need to keep track
-        // If we fall behind (or ahead), add this on when it bevomes above 1f
+        // If we fall behind (or ahead), add this on when it becomes above 1f
         int currentActual = (int)floatScrollPos;
         float currentWanted = floatScrollPos;
 
@@ -179,6 +176,5 @@ public class MyRecyclerView extends RecyclerView {
     public boolean getScrolledToBottom() {
         return scrolledToBottom;
     }
-
 
 }

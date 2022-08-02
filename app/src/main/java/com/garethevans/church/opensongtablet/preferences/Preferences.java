@@ -118,7 +118,8 @@ public class Preferences extends Activity {
     //
     // Variable name                   Type        What
     // addSectionBox                   boolean     Draw a box around sections when in Performance mode (def:false)
-    // *NOTYET addSectionSpace                 boolean     Should a spacing line be added between sections to improve readability (def:true)
+    // *NOTYET addSectionSpace         boolean     Should a spacing line be added between sections to improve readability (def:true)
+    // airTurnLongPressTime            int         If using airTurnMode, how long should an action_down be held for to simulate longPress (def:1000)
     // airTurnMode                     boolean     Should autorepeat onKeyUp (multiple from keyRepeatCount variable) be converted to longKeyPress actions for AirTurn pedals (def:false)
     // appTheme                        String      The theme to use (dark, light, custom1, custom2) (def:dark)
     // autoscrollAutoStart             boolean     Should autoscroll start on page load (needs to be started manually the first time) (def:false)
@@ -296,8 +297,6 @@ public class Preferences extends Activity {
     // hideActionBar                   boolean     Should the action bar auto hide (def:false)
     // hideInfoBar                     boolean     Should the info bar (Presenter mode only) autohide after initial display + minimum time (def: true)
     // hideLyricsBox                   boolean     Should we hide the box around the lyrics (def:false)
-    // keyRepeatCount                  int         The number of key repeats to count as a long press for AirTurn pedals (def:20)
-    // keyRepeatTime                   int         The time set by the airTurn pedal (def:400)
     // language                        String      The locale set in the menu (def:en)
     // lastUsedVersion                 int         The app version number the last time the app ran (def:0)
     // light_lyricsBackgroundColor     int         The color for the lyrics background in the light theme

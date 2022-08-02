@@ -39,8 +39,8 @@
             android:id="@+id/action_performanceFragment_to_import_graph"
             app:destination="@id/import_graph" />
         <deepLink
-            android:id="@+id/deepLink3"
-            app:uri="opensongapp://performance" />
+            android:id="@+id/deepLinkPerformance"
+            app:uri="@string/deeplink_performance" />
         <action
             android:id="@+id/action_performanceFragment_to_alertInfoDialogFragment"
             app:destination="@id/alertInfoDialogFragment" />
@@ -68,8 +68,8 @@
             android:id="@+id/action_presenterFragment_to_import_graph"
             app:destination="@id/import_graph" />
         <deepLink
-            android:id="@+id/deepLink4"
-            app:uri="opensongapp://presenter" />
+            android:id="@+id/deepLinkPresenter"
+            app:uri="@string/deeplink_presenter" />
         <action
             android:id="@+id/action_presenterFragment_to_alertInfoDialogFragment"
             app:destination="@id/alertInfoDialogFragment" />
@@ -157,8 +157,8 @@
                 android:label="fragment_setstoragelocation"
                 tools:layout="@layout/storage_choose">
                 <deepLink
-                    android:id="@+id/setStorageDeepLink"
-                    app:uri="opensongapp://settings/storage/setstorage" />
+                    android:id="@+id/deepLinkSetStorage"
+                    app:uri="@string/deeplink_set_storage" />
                 <action
                     android:id="@+id/action_setStorageLocationFragment_to_kitKatFolderChoose"
                     app:destination="@id/kitKatFolderChoose" />
@@ -170,8 +170,8 @@
                 android:label="storage_kitkat_choose"
                 tools:layout="@layout/storage_kitkat_chooser">
                 <deepLink
-                    android:id="@+id/kitKatDeepLink"
-                    app:uri="opensongapp://settings/storage/kitkatchoose" />
+                    android:id="@+id/deepLinkKitKat"
+                    app:uri="@string/deeplink_kitkat_choose" />
             </fragment>
             <!-- Choose the storage fragment -->
             <fragment
@@ -180,8 +180,8 @@
                 android:label="fragment_osbbackup"
                 tools:layout="@layout/storage_backup">
                 <deepLink
-                    android:id="@+id/deepLink15"
-                    app:uri="opensongapp://settings/storage/backup" />
+                    android:id="@+id/deepLinkBackup"
+                    app:uri="@string/deeplink_backup" />
             </fragment>
 
             <fragment
@@ -199,8 +199,8 @@
             android:label="settings_nearbyconnections"
             tools:layout="@layout/settings_nearbyconnections">
             <deepLink
-                android:id="@+id/deepLink5"
-                app:uri="opensongapp://settings/nearby" />
+                android:id="@+id/deepLinkNearby"
+                app:uri="@string/deeplink_nearby" />
         </fragment>
 
         <!-- CCLI -->
@@ -260,8 +260,8 @@
                 android:label="settings_theme"
                 tools:layout="@layout/settings_theme">
                 <deepLink
-                    android:id="@+id/deepLink11"
-                    app:uri="opensongapp://settings/display/theme" />
+                    android:id="@+id/deepLinkTheme"
+                    app:uri="@string/deeplink_theme" />
             </fragment>
 
             <!-- Colour chooser -->
@@ -281,8 +281,8 @@
                     android:id="@+id/action_fontSetupFragment_to_fontSetupPreviewFragment"
                     app:destination="@id/fontSetupPreviewFragment" />
                 <deepLink
-                    android:id="@+id/deepLink7"
-                    app:uri="opensongapp://settings/display/fonts" />
+                    android:id="@+id/deepLinkFonts"
+                    app:uri="@string/deeplink_fonts" />
             </fragment>
 
             <!-- Font preview -->
@@ -297,8 +297,8 @@
                 android:label="settings_actionbar"
                 tools:layout="@layout/settings_actionbar">
                 <deepLink
-                    android:id="@+id/deepLink31"
-                    app:uri="opensongapp://settings/display/actionbar" />
+                    android:id="@+id/deepLinkActionBar"
+                    app:uri="@string/deeplink_actionbar" />
             </fragment>
             <fragment
                 android:id="@+id/menuSettingsFragment"
@@ -316,8 +316,8 @@
                 android:label="DisplayScalingFragment"
                 tools:layout="@layout/settings_display_scaling">
                 <deepLink
-                    android:id="@+id/deepLink19"
-                    app:uri="opensongapp://settings/display/scaling" />
+                    android:id="@+id/deepLinkScaling"
+                    app:uri="@string/deeplink_scaling" />
             </fragment>
 
             <!-- Connected display -->
@@ -327,8 +327,8 @@
                 android:label="settings_connected_display"
                 tools:layout="@layout/settings_display_connected">
                 <deepLink
-                    android:id="@+id/deepLink32"
-                    app:uri="opensongapp://settings/display/connected" />
+                    android:id="@+id/deepLinkConnectedDisplay"
+                    app:uri="@string/deeplink_connected_display" />
             </fragment>
 
         </navigation>
@@ -340,8 +340,8 @@
             android:label="settings_midi"
             tools:layout="@layout/settings_midi">
             <deepLink
-                android:id="@+id/deepLink14"
-                app:uri="opensongapp://settings/midi" />
+                android:id="@+id/deepLinkMidi"
+                app:uri="@string/deeplink_midi" />
         </fragment>
 
         <!-- Profiles -->
@@ -351,8 +351,8 @@
             android:label="settings_profiles"
             tools:layout="@layout/settings_profiles">
             <deepLink
-                android:id="@+id/deepLink12"
-                app:uri="opensongapp://settings/profiles" />
+                android:id="@+id/deepLinkProfiles"
+                app:uri="@string/deeplink_profiles" />
         </fragment>
 
         <!-- Controls graph -->
@@ -370,8 +370,8 @@
                     android:id="@+id/action_controlMenuFragment_to_pedalsFragment"
                     app:destination="@id/pedalsFragment" />
                 <deepLink
-                    android:id="@+id/deepLink8"
-                    app:uri="opensongapp://settings/controls" />
+                    android:id="@+id/deepLinkControls"
+                    app:uri="@string/deeplink_controls" />
                 <action
                     android:id="@+id/action_controlMenuFragment_to_pageButtonFragment"
                     app:destination="@id/pageButtonFragment" />
@@ -390,8 +390,8 @@
                 android:label="settings_pedal"
                 tools:layout="@layout/settings_pedal">
                 <deepLink
-                    android:id="@+id/deepLink13"
-                    app:uri="opensongapp://settings/controls/pedals" />
+                    android:id="@+id/deepLinkPedals"
+                    app:uri="@string/deeplink_pedals" />
             </fragment>
             <fragment
                 android:id="@+id/pageButtonFragment"
@@ -399,8 +399,8 @@
                 android:label="PageButtonFragment"
                 tools:layout="@layout/settings_pagebuttons">
                 <deepLink
-                    android:id="@+id/deepLink9"
-                    app:uri="opensongapp://settings/controls/pagebuttons" />
+                    android:id="@+id/deepLinkPageButtons"
+                    app:uri="@string/deeplink_page_buttons" />
             </fragment>
             <fragment
                 android:id="@+id/gesturesFragment"
@@ -408,8 +408,8 @@
                 android:label="GesturesFragment"
                 tools:layout="@layout/settings_gestures">
                 <deepLink
-                    android:id="@+id/deepLink16"
-                    app:uri="opensongapp://settings/controls/gestures" />
+                    android:id="@+id/deepLinkGestures"
+                    app:uri="@string/deeplink_gestures" />
             </fragment>
             <fragment
                 android:id="@+id/swipeFragment"
@@ -417,8 +417,8 @@
                 android:label="SwipeFragment"
                 tools:layout="@layout/settings_swipes">
                 <deepLink
-                    android:id="@+id/deepLink17"
-                    app:uri="opensongapp://settings/controls/swipe" />
+                    android:id="@+id/deepLinkSwipe"
+                    app:uri="@string/deeplink_swipe" />
             </fragment>
 
         </navigation>
@@ -448,8 +448,8 @@
 
         </navigation>
         <deepLink
-            android:id="@+id/deepLink2"
-            app:uri="opensongapp://preferences" />
+            android:id="@+id/deepLinkPreferences"
+            app:uri="@string/deeplink_preferences" />
 
 
         <dialog
@@ -457,8 +457,8 @@
             android:name="com.garethevans.church.opensongtablet.appdata.AlertInfoBottomSheet"
             android:label="@string/information">
             <deepLink
-                android:id="@+id/deepLink6"
-                app:uri="opensongapp://information" />
+                android:id="@+id/deepLinkAlert"
+                app:uri="@string/deeplink_alert" />
         </dialog>
 
         <!--Song actions graph -->
@@ -483,8 +483,8 @@
                     android:id="@+id/action_songActionsMenuFragment_to_stickyNotesFragment"
                     app:destination="@id/stickyNotesFragment" />
                 <deepLink
-                    android:id="@+id/deepLink22"
-                    app:uri="opensongapp://settings/actions" />
+                    android:id="@+id/deepLinkSongActions"
+                    app:uri="@string/deeplink_song_actions" />
                 <action
                     android:id="@+id/action_songActionsMenuFragment_to_exportFragment"
                     app:destination="@id/exportFragment" />
@@ -522,8 +522,8 @@
                 android:label="HighlighterEditFragment"
                 tools:layout="@layout/settings_highlighter_edit">
                 <deepLink
-                    android:id="@+id/deepLink18"
-                    app:uri="opensongapp://songactions/highlighter/edit" />
+                    android:id="@+id/deepLinkHighlighter"
+                    app:uri="@string/deeplink_highlighter" />
             </fragment>
             <fragment
                 android:id="@+id/musicScoreFragment"
@@ -531,8 +531,8 @@
                 android:label="MusicScoreFragment"
                 tools:layout="@layout/settings_abcnotation">
                 <deepLink
-                    android:id="@+id/deepLink20"
-                    app:uri="opensongapp://settings/actions/abcnotation" />
+                    android:id="@+id/deepLinkABC"
+                    app:uri="@string/deeplink_abc" />
             </fragment>
             <fragment
                 android:id="@+id/stickyNotesFragment"
@@ -540,8 +540,8 @@
                 android:label="StickyNotesFragment"
                 tools:layout="@layout/settings_stickynotes">
                 <deepLink
-                    android:id="@+id/deepLink21"
-                    app:uri="opensongapp://settings/actions/stickynotes" />
+                    android:id="@+id/deepLinkStickyNotes"
+                    app:uri="@string/deeplink_sticky_notes" />
             </fragment>
             <fragment
                 android:id="@+id/exportFragment"
@@ -549,8 +549,8 @@
                 android:label="ExportFragment"
                 tools:layout="@layout/settings_export">
                 <deepLink
-                    android:id="@+id/deepLink"
-                    app:uri="opensongapp://settings/actions/export" />
+                    android:id="@+id/deepLinkExport"
+                    app:uri="@string/deeplink_export" />
             </fragment>
             <fragment
                 android:id="@+id/metronomeFragment"
@@ -558,8 +558,8 @@
                 android:label="MetronomeFragment"
                 tools:layout="@layout/settings_metronome">
                 <deepLink
-                    android:id="@+id/metronomeDeepLink"
-                    app:uri="opensongapp://settings/actions/metronome" />
+                    android:id="@+id/deepLinkMetronome"
+                    app:uri="@string/deeplink_metronome" />
             </fragment>
             <fragment
                 android:id="@+id/linksFragment"
@@ -567,8 +567,8 @@
                 android:label="LinksFragment"
                 tools:layout="@layout/settings_links">
                 <deepLink
-                    android:id="@+id/linksDeepLink"
-                    app:uri="opensongapp://settings/actions/links" />
+                    android:id="@+id/deepLinkLinks"
+                    app:uri="@string/deeplink_links" />
                 <action
                     android:id="@+id/action_linksFragment_to_linksBottomSheet"
                     app:destination="@id/linksBottomSheet" />
@@ -592,8 +592,8 @@
                         android:id="@+id/action_chordSettingsFragment_to_customChordsFragment"
                         app:destination="@id/customChordsFragment" />
                     <deepLink
-                        android:id="@+id/deepLink29"
-                        app:uri="opensongapp://settings/actions/chords" />
+                        android:id="@+id/deepLinkChords"
+                        app:uri="@string/deeplink_chords" />
                 </fragment>
                 <fragment
                     android:id="@+id/chordFormatFragment"
@@ -601,8 +601,8 @@
                     android:label="ChordFormatFragment"
                     tools:layout="@layout/settings_chords_format">
                 <deepLink
-                    android:id="@+id/chordFormat_DeepLink"
-                    app:uri="opensongapp://settings/chords/settings" />
+                    android:id="@+id/deepLinkChordSettings"
+                    app:uri="@string/deeplink_chords_settings" />
                 </fragment>
                 <fragment
                     android:id="@+id/customChordsFragment"
@@ -610,8 +610,8 @@
                     android:label="CustomChordsFragment"
                     tools:layout="@layout/settings_chords_custom">
                     <deepLink
-                        android:id="@+id/deepLink26"
-                        app:uri="opensongapp://settings/chords/custom" />
+                        android:id="@+id/deepLinkChordsCustom"
+                        app:uri="@string/deeplink_chords_custom" />
                 </fragment>
 
             </navigation>
@@ -629,8 +629,8 @@
                         android:id="@+id/action_padSettingsFragment_to_padDefaultsFragment"
                         app:destination="@id/padDefaultsFragment" />
                     <deepLink
-                        android:id="@+id/deepLink27"
-                        app:uri="opensongapp://settings/pads" />
+                        android:id="@+id/deepLinkPads"
+                        app:uri="@string/deeplink_pads" />
                 </fragment>
                 <fragment
                     android:id="@+id/customPadsFragment"
@@ -649,8 +649,8 @@
                 android:id="@+id/import_graph"
                 app:startDestination="@id/importOptionsFragment">
                 <deepLink
-                    android:id="@+id/deepLink10"
-                    app:uri="opensongapp://settings/import" />
+                    android:id="@+id/deepLinkImport"
+                    app:uri="@string/deeplink_import" />
 
 
                 <!-- The import options fragment -->
@@ -679,7 +679,9 @@
                     android:name="com.garethevans.church.opensongtablet.backupandrestore.ImportOSBFragment"
                     android:label="fragment_osbbackup"
                     tools:layout="@layout/storage_backup">
-
+                    <deepLink
+                        android:id="@+id/deepLinkImportOSB"
+                        app:uri="@string/deeplink_import_osb"/>
                 </fragment>
                 <fragment
                     android:id="@+id/importOnlineFragment"
@@ -690,12 +692,21 @@
                     android:id="@+id/importFileFragment"
                     android:name="com.garethevans.church.opensongtablet.importsongs.ImportFileFragment"
                     android:label="ImportFileFragment"
-                    tools:layout="@layout/settings_import_file"/>
+                    tools:layout="@layout/settings_import_file">
+                    <deepLink
+                        android:id="@+id/deeplink_import_file"
+                        app:uri="@string/deeplink_import_file"/>
+
+                </fragment>
                 <fragment
                     android:id="@+id/importIOSFragment"
                     android:name="com.garethevans.church.opensongtablet.backupandrestore.ImportIOSFragment"
                     android:label="ImportIOSFragment"
-                    tools:layout="@layout/settings_import_ios"/>
+                    tools:layout="@layout/settings_import_ios">
+                    <deepLink
+                        android:id="@+id/deepLinkOnSong"
+                        app:uri="@string/deeplink_onsong"/>
+                </fragment>
 
             </navigation>
             <fragment
@@ -719,8 +730,8 @@
                 android:label="SetActionsFragment"
                 tools:layout="@layout/settings_sets">
                 <deepLink
-                    android:id="@+id/deepLink23"
-                    app:uri="opensongapp://settings/sets" />
+                    android:id="@+id/deepLinkSets"
+                    app:uri="@string/deeplink_sets" />
                 <action
                     android:id="@+id/action_setActionsFragment_to_setManageFragment"
                     app:destination="@id/setManageFragment" />
@@ -740,8 +751,8 @@
                 android:label="SetManageFragment"
                 tools:layout="@layout/settings_sets_manage">
                 <deepLink
-                    android:id="@+id/deepLink24"
-                    app:uri="opensongapp://settings/sets/manage" />
+                    android:id="@+id/deepLinkSetsManage"
+                    app:uri="@string/deeplink_sets_manage" />
                 </fragment>
 
             <navigation android:id="@+id/bible_graph"
@@ -752,8 +763,8 @@
                     android:label="BibleSettingsFragment"
                     tools:layout="@layout/bible_settings">
                     <deepLink
-                        android:id="@+id/deepLink28"
-                        app:uri="opensongapp://settings/bible" />
+                        android:id="@+id/deepLinkBible"
+                        app:uri="@string/deeplink_bible" />
                     <action
                         android:id="@+id/action_bibleSettingsFragment_to_bibleDownloadFragment"
                         app:destination="@id/bibleDownloadFragment" />
@@ -770,14 +781,18 @@
                 android:label="CustomSlideFragment"
                 tools:layout="@layout/settings_custom_slide">
                 <deepLink
-                    android:id="@+id/deepLink30"
-                    app:uri="opensongapp://settings/sets/customslide" />
+                    android:id="@+id/deepLinkCustomSlide"
+                    app:uri="@string/deeplink_custom_slide" />
             </fragment>
             <fragment
                 android:id="@+id/backupRestoreSetsFragment"
                 android:name="com.garethevans.church.opensongtablet.setprocessing.BackupRestoreSetsFragment"
                 android:label="BackupRestoreSetsFragment"
-                tools:layout="@layout/settings_sets_backups"/>
+                tools:layout="@layout/settings_sets_backups">
+                <deepLink
+                    android:id="@+id/deepLinkSetsBackupRestore"
+                    app:uri="@string/deeplink_sets_backup_restore"/>
+            </fragment>
         </navigation>
         <navigation android:id="@+id/utilities_graph"
             app:startDestination="@id/utilitiesMenuFragment">
@@ -810,8 +825,8 @@
                 android:id="@+id/action_editSongFragment_to_editSongTags"
                 app:destination="@id/editSongTags" />
             <deepLink
-                android:id="@+id/deepLink25"
-                app:uri="opensongapp://settings/edit" />
+                android:id="@+id/deepLinkEdit"
+                app:uri="@string/deeplink_edit" />
             <action
                 android:id="@+id/action_editSongFragment_to_editsongFeatures2"
                 app:destination="@id/editsongFeatures" />

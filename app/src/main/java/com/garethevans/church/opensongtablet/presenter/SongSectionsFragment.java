@@ -81,7 +81,7 @@ public class SongSectionsFragment extends Fragment {
             mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().setSelectedPosition(-1);
             mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().buildSongSections();
             myView.songInfo.setOnLongClickListener(view -> {
-                mainActivityInterface.navigateToFragment("opensongapp://settings/edit",0);
+                mainActivityInterface.navigateToFragment(getString(R.string.deeplink_edit),0);
                 return false;
             });
             updatePresentationOrder();

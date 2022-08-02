@@ -126,7 +126,7 @@ public class MidiSongBottomSheet extends BottomSheetDialogFragment {
 
     private void setupListeners() {
         myView.midiSettings.setOnClickListener(v -> {
-            mainActivityInterface.navigateToFragment("opensongapp://settings/midi",0);
+            mainActivityInterface.navigateToFragment(getString(R.string.deeplink_midi),0);
             dismiss();
         });
     }

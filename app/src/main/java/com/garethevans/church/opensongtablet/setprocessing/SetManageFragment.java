@@ -443,7 +443,7 @@ public class SetManageFragment extends Fragment {
         if (mainActivityInterface.getSongListBuildIndex().getIndexComplete()) {
             // Set the "whattodo" to let the export fragment know we are exporting a set
             mainActivityInterface.setWhattodo("exportset:" + chosenSets);
-            mainActivityInterface.navigateToFragment("opensongapp://settings/actions/export", 0);
+            mainActivityInterface.navigateToFragment(getString(R.string.deeplink_export), 0);
         } else {
             mainActivityInterface.getShowToast().doIt(getString(R.string.search_index_wait));
         }

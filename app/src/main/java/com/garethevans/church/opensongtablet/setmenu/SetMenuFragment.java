@@ -247,4 +247,20 @@ public class SetMenuFragment extends Fragment {
         }
         return si;
     }
+
+    public void scrollMenu(int height) {
+        try {
+            myView.myRecyclerView.smoothScrollBy(0, height);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        getFocus();
+    }
+    public void getFocus() {
+        try {
+            myView.myRecyclerView.requestFocus();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -7,7 +7,6 @@ import android.graphics.Canvas;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -592,7 +591,6 @@ public class PerformanceFragment extends Fragment {
                 if (scaleInfo.length==2) {
                     // 1 column.  [0]=scaleSize, [1]=scaled height
                     scaleFactor = scaleInfo[0];
-                    Log.d(TAG,"scaleInfo[1]: " +scaleInfo[1]);
                     heightAfterScale = (int)scaleInfo[1];
                     for (int x = 0; x < mainActivityInterface.getSectionViews().size(); x++) {
                         widthBeforeScale = Math.max(widthBeforeScale, mainActivityInterface.getSectionWidths().get(x));

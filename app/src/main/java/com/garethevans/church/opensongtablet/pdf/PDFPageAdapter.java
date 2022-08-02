@@ -6,6 +6,7 @@ import android.graphics.pdf.PdfRenderer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.ParcelFileDescriptor;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,6 +46,7 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
     private int currentSection = 0;
     private final String alphaChange = "alpha";
     private boolean fakeClick;
+    private final String TAG = "PDFPageAdapter";
 
     public PDFPageAdapter(Context c, MainActivityInterface mainActivityInterface, DisplayInterface displayInterface, int viewWidth, int viewHeight) {
         this.c = c;
@@ -91,12 +93,18 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
                     int width = page.getWidth();
                     int height = page.getHeight();
                     float scaleFactor;
-                    if (scaleType.equals("Y") && width > 0 && height > 0) {
-                        scaleFactor = Math.min((float) viewWidth / (float) width, (float) viewHeight / (float) height);
-                    } else if (scaleType.equals("W")) {
-                        scaleFactor = (float) viewWidth / (float) width;
+                    if (mainActivityInterface.getMode().equals("Stage")) {
+                        float x_scale = (float)viewWidth/(float)width;
+                        float y_scale = (float)(viewHeight-mainActivityInterface.getAppActionBar().getActionBarHeight())/(float)height;
+                        scaleFactor = Math.min(x_scale,y_scale);
                     } else {
-                        scaleFactor = 1f;
+                        if (scaleType.equals("Y") && width > 0 && height > 0) {
+                            scaleFactor = Math.min((float) viewWidth / (float) width, (float) viewHeight / (float) height);
+                        } else if (scaleType.equals("W")) {
+                            scaleFactor = (float) viewWidth / (float) width;
+                        } else {
+                            scaleFactor = 1f;
+                        }
                     }
 
                     // Add up the heights
@@ -112,6 +120,10 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
                     } else {
                         pageInfo.alpha = 1f;
                     }
+                    if (x==0) {
+                        pageInfo.alpha = 1f;
+                    }
+
                     pageInfos.add(pageInfo);
                     page.close();
 
@@ -160,6 +172,7 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
                             float alphaval = pageInfos.get(position).alpha;
                             if (!mainActivityInterface.getMode().equals("Stage")) {
                                 alphaval = 1f;
+                                pageInfos.get(position).alpha = 1f;
                             }
                             holder.v.setAlpha(alphaval);
                         } catch (Exception e) {
@@ -290,7 +303,6 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
                     // Now update the newly selected position
                     pageInfos.get(position).alpha = 1.0f;
                     notifyItemChanged(position, alphaChange);
-
                 }
 
                 // If stage mode or a pdf, update the presenter and send a nearby payload

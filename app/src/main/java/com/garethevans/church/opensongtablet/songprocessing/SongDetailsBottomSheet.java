@@ -82,7 +82,7 @@ public class SongDetailsBottomSheet extends BottomSheetDialogFragment {
     private void setupListeners() {
         myView.textExtract.setOnClickListener(v -> extractText());
         myView.edit.setOnClickListener(v -> {
-            mainActivityInterface.navigateToFragment("opensongapp://settings/edit",0);
+            mainActivityInterface.navigateToFragment(getString(R.string.deeplink_edit),0);
             dismiss();
         });
     }

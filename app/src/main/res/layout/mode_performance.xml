@@ -9,6 +9,7 @@
     android:clipToPadding="false"
     android:focusable="false"
     android:focusableInTouchMode="false"
+    android:descendantFocusability="blocksDescendants"
     tools:context=".performance.PerformanceFragment">
 
     <!-- The logo watermark -->
@@ -41,8 +42,6 @@
         android:layout_alignParentStart="true"
         android:clipChildren="false"
         android:clipToPadding="false"
-        android:focusableInTouchMode="true"
-        android:focusable="true"
         android:visibility="invisible"/>
 
     <!-- The main content inside a zoom layout -->

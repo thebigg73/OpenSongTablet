@@ -9,16 +9,15 @@
     android:clipChildren="false"
     style="@style/stageSection">
 
-    <FrameLayout
-        android:id="@+id/sectionView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clipToPadding="false"
-        android:clipChildren="false"
-        android:paddingTop="0dp"
-        android:paddingBottom="0dp"
-        android:paddingStart="0dp"
-        android:paddingEnd="0dp" />
+<FrameLayout android:id="@+id/sectionView"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:clipToPadding="false"
+    android:clipChildren="false"
+    android:paddingTop="0dp"
+    android:paddingBottom="0dp"
+    android:paddingStart="0dp"
+    android:paddingEnd="0dp" />
 
 </androidx.cardview.widget.CardView>
 

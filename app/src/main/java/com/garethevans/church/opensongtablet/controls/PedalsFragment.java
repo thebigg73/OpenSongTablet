@@ -155,22 +155,12 @@ public class PedalsFragment extends Fragment {
     }
 
     private void setupSliders() {
-        myView.scrollDistance.setValue((int)(mainActivityInterface.getGestures().getScrollDistance()*100f));
         myView.scrollDistance.setLabelFormatter(value -> (int)value + "%");
         myView.scrollDistance.addOnChangeListener((slider, value, fromUser) -> myView.scrollDistance.setHint((int)value + "%"));
-        myView.scrollDistance.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
-            @Override
-            public void onStartTrackingTouch(@NonNull Slider slider) {
-            }
-
-            @Override
-            public void onStopTrackingTouch(@NonNull Slider slider) {
-                mainActivityInterface.getPreferences().setMyPreferenceFloat("scrollDistance", slider.getValue()/100f);
-                mainActivityInterface.getGestures().setScrollDistance(slider.getValue()/100f);
-            }
-        });
-
+        myView.scrollDistance.addOnSliderTouchListener(new MySliderTouchListener("scrollDistance"));
+        myView.scrollDistance.setValue((int)(mainActivityInterface.getGestures().getScrollDistance()*100f));
     }
+
     private void setupDropDowns() {
         arrayAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.view_exposed_dropdown_item, actions);
         for (int s = 1; s <= 8; s++) {
@@ -247,12 +237,6 @@ public class PedalsFragment extends Fragment {
 
     private void airTurnModeActions() {
         boolean airTurnMode = mainActivityInterface.getPedalActions().getAirTurnMode();
-        myView.airTurnMode.setChecked(airTurnMode);
-        if (airTurnMode) {
-            myView.airTurnOptions.setVisibility(View.VISIBLE);
-        } else {
-            myView.airTurnOptions.setVisibility(View.GONE);
-        }
         myView.airTurnMode.setOnCheckedChangeListener((buttonView, isChecked) -> {
             mainActivityInterface.getPedalActions().setPreferences("airTurnMode",isChecked);
             if (isChecked) {
@@ -261,18 +245,13 @@ public class PedalsFragment extends Fragment {
                 myView.airTurnOptions.setVisibility(View.GONE);
             }
         });
+        myView.airTurnMode.setChecked(airTurnMode);
 
-        int keyRepeatCount = mainActivityInterface.getPedalActions().getKeyRepeatCount();
-        myView.autoRepeatCountSlider.setValue(keyRepeatCount);
-        myView.autoRepeatCountSlider.setHint(keyRepeatCount + "");
-        myView.autoRepeatCountSlider.addOnSliderTouchListener(new MySliderTouchListener("keyRepeatCount"));
-        myView.autoRepeatCountSlider.addOnChangeListener(new MySliderChangeListener("keyRepeatCount"));
-        int keyRepeatTime = mainActivityInterface.getPedalActions().getKeyRepeatTime();
-        myView.autoRepeatTimeSlider.setValue(keyRepeatTime);
-        myView.autoRepeatTimeSlider.setLabelFormatter(value -> ((int)value)+"ms");
-        myView.autoRepeatTimeSlider.setHint(keyRepeatTime + "ms");
-        myView.autoRepeatTimeSlider.addOnSliderTouchListener(new MySliderTouchListener("keyRepeatTime"));
-        myView.autoRepeatTimeSlider.addOnChangeListener(new MySliderChangeListener("keyRepeatTime"));
+        int airTurnLongPressTime = mainActivityInterface.getPedalActions().getAirTurnLongPressTime();
+        myView.airTurnLongPressTime.setValue(airTurnLongPressTime);
+        myView.airTurnLongPressTime.setHint(airTurnLongPressTime + " ms");
+        myView.airTurnLongPressTime.addOnChangeListener((slider, value, fromUser) -> myView.airTurnLongPressTime.setHint((int)value + " ms"));
+        myView.airTurnLongPressTime.addOnSliderTouchListener(new MySliderTouchListener("airTurnLongPressTime"));
     }
 
     // Key listeners called from MainActivity
@@ -418,31 +397,15 @@ public class PedalsFragment extends Fragment {
 
         @Override
         public void onStopTrackingTouch(@NonNull Slider slider) {
-            // Save the value via the gestures fragment
-            mainActivityInterface.getPedalActions().setPreferences(prefName,(int) slider.getValue());
-        }
-
-    }
-
-    private class MySliderChangeListener implements Slider.OnChangeListener {
-
-        private final String prefName;
-
-        MySliderChangeListener(String prefName) {
-            this.prefName = prefName;
-        }
-
-        @Override
-        public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
-            // Update the helper text
-            switch (prefName) {
-                case "keyRepeatTime":
-                    myView.autoRepeatTimeSlider.setHint((int) value + "ms");
-                    break;
-                case "keyRepeatCount":
-                    myView.autoRepeatCountSlider.setHint((int) value + "");
-                    break;
+            if (prefName.equals("scrollDistance")) {
+                // Save the value via the gestures fragment
+                mainActivityInterface.getPreferences().setMyPreferenceFloat("scrollDistance", slider.getValue()/100f);
+                mainActivityInterface.getGestures().setScrollDistance(slider.getValue()/100f);
+            } else if (prefName.equals("airTurnLongPressTime")) {
+                // Save the value via the pedal fragment
+                mainActivityInterface.getPedalActions().setPreferences(prefName, (int)slider.getValue());
             }
         }
+
     }
 }

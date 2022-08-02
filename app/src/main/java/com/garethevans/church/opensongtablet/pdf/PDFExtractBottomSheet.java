@@ -121,7 +121,7 @@ public class PDFExtractBottomSheet extends BottomSheetDialogFragment {
                 mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong());
             }
             // Open the edit song page so the user can check for updates
-            mainActivityInterface.navigateToFragment("opensongapp://settings/edit",0);
+            mainActivityInterface.navigateToFragment(getString(R.string.deeplink_edit),0);
             dismiss();
         });
     }

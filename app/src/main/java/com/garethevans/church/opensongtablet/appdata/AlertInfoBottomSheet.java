@@ -92,7 +92,7 @@ public class AlertInfoBottomSheet extends BottomSheetDialogFragment {
                             mainActivityInterface.getPreferences().getMyPreferenceInt("runssincebackup", 0));
             myView.backupDescription.setText(s);
             myView.backupNowButton.setOnClickListener(v -> {
-                mainActivityInterface.navigateToFragment("opensongapp://settings/storage/backup",0);
+                mainActivityInterface.navigateToFragment(getString(R.string.deeplink_backup),0);
                 dismiss();
             });
         } else {

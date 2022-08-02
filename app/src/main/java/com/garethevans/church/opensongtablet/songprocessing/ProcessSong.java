@@ -1348,7 +1348,7 @@ public class ProcessSong {
             if (!errors.toString().trim().isEmpty()) {
                 InformationBottomSheet informationBottomSheet = new InformationBottomSheet(
                         c.getString(R.string.presentation_order), errors.toString().trim(),
-                        c.getString(R.string.edit_song), "opensongapp://settings/edit");
+                        c.getString(R.string.edit_song), c.getString(R.string.deeplink_edit));
                 informationBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "InformationBottomSheet");
             }
 

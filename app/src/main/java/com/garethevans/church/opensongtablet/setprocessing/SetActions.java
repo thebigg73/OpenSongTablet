@@ -370,7 +370,8 @@ public class SetActions {
             title = c.getString(R.string.set_current);
         } else {
             title = lastSetName.replace(setCategorySeparator, "/");
-            if (!mainActivityInterface.getCurrentSet().getInitialSetString().equals(
+            if (mainActivityInterface.getCurrentSet().getInitialSetString()!=null &&
+                    mainActivityInterface.getCurrentSet().getInitialSetString().equals(
                     mainActivityInterface.getCurrentSet().getCurrentSetString())) {
                 title += " (" + c.getString(R.string.not_saved) + ")";
             }

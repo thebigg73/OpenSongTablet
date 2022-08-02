@@ -112,7 +112,7 @@ public class BootUpFragment extends Fragment {
     private void requireStorageCheck() {
         // Either permission hasn't been granted, or it isn't set properly
         // Switch to the set storage fragment
-        NavHostFragment.findNavController(BootUpFragment.this).navigate(Uri.parse("opensongapp://settings/storage/setstorage"));
+        NavHostFragment.findNavController(BootUpFragment.this).navigate(Uri.parse(getString(R.string.deeplink_set_storage)));
     }
 
     private void startBootProcess() {
@@ -184,7 +184,11 @@ public class BootUpFragment extends Fragment {
     // If the fragment is still attached, display the update message
     private void updateMessage() {
         if (getActivity()!=null && getContext()!=null) {
-            myView.currentAction.post(() -> myView.currentAction.setText(message));
+            try {
+                myView.currentAction.post(() -> myView.currentAction.setText(message));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

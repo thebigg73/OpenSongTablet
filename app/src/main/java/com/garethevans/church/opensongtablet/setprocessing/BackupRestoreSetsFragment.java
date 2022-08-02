@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,8 @@ import com.garethevans.church.opensongtablet.databinding.SettingsSetsBackupsBind
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
@@ -43,6 +46,7 @@ public class BackupRestoreSetsFragment extends Fragment {
     private ActivityResultLauncher<Intent> activityResultLauncher;
     private boolean success = false;
     private final String setSeparator = "__";
+    private final String TAG = "BackupRestoreSets";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -66,6 +70,11 @@ public class BackupRestoreSetsFragment extends Fragment {
             setupFileChooserListener();
             initialiseLauncher();
             openFilePicker();
+        } else if (mainActivityInterface.getWhattodo().equals("intentlaunch")) {
+            mainActivityInterface.updateToolbar(getString(R.string.restore_sets));
+            backupUri = mainActivityInterface.getImportUri();
+            myView.backupName.setText(mainActivityInterface.getImportFilename());
+            setupViews();
         } else {
             // Set up views
             setupViews();
@@ -152,24 +161,40 @@ public class BackupRestoreSetsFragment extends Fragment {
             new Thread(() -> {
                 ArrayList<String> setList = new ArrayList<>();
 
-                InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(backupUri);
-                ZipInputStream zipInputStream = new ZipInputStream(inputStream);
-                ZipEntry ze;
+                InputStream inputStream;
+                if (mainActivityInterface.getWhattodo().equals("restoresets")) {
+                    inputStream = mainActivityInterface.getStorageAccess().getInputStream(backupUri);
 
-                try {
-                    while ((ze = zipInputStream.getNextEntry()) != null) {
-                        setList.add(ze.getName());
+                } else {
+                    File folder = new File(requireActivity().getExternalCacheDir(),"Import");
+                    Log.d(TAG,"created: "+folder.mkdirs());
+                    File file = new File(folder,mainActivityInterface.getImportFilename());
+                    try {
+                        inputStream = new FileInputStream(file);
+                    } catch (Exception e) {
+                        inputStream = null;
                     }
-                    zipInputStream.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
 
-                requireActivity().runOnUiThread(() -> {
-                    // Add the checkboxes
-                    addCheckBoxes(setList);
-                    myView.progressBar.setVisibility(View.GONE);
-                });
+                if (inputStream!=null) {
+                    ZipInputStream zipInputStream = new ZipInputStream(inputStream);
+                    ZipEntry ze;
+
+                    try {
+                        while ((ze = zipInputStream.getNextEntry()) != null) {
+                            setList.add(ze.getName());
+                        }
+                        zipInputStream.close();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    requireActivity().runOnUiThread(() -> {
+                        // Add the checkboxes
+                        addCheckBoxes(setList);
+                        myView.progressBar.setVisibility(View.GONE);
+                    });
+                }
             }).start();
         }
     }

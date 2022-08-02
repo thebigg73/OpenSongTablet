@@ -46,7 +46,7 @@ public class StickyPopUp {
 
         // If no sticky notes exist for the song, navigate to the edit sticky note fragment
         } else if (mainActivityInterface.getSong().getNotes().isEmpty()) {
-            mainActivityInterface.navigateToFragment("opensongapp://settings/actions/stickynotes",0);
+            mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_sticky_notes),0);
 
         // Let's display the popup sticky note
         } else {

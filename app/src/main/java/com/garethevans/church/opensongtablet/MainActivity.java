@@ -81,6 +81,7 @@ import com.garethevans.church.opensongtablet.filemanagement.SaveSong;
 import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
 import com.garethevans.church.opensongtablet.filemanagement.StorageManagementFragment;
 import com.garethevans.church.opensongtablet.highlighter.HighlighterEditFragment;
+import com.garethevans.church.opensongtablet.importsongs.ImportFileFragment;
 import com.garethevans.church.opensongtablet.importsongs.ImportOnlineFragment;
 import com.garethevans.church.opensongtablet.importsongs.WebDownload;
 import com.garethevans.church.opensongtablet.interfaces.ActionInterface;
@@ -149,6 +150,9 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -257,6 +261,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private Bitmap screenShot;
     private int softKeyboardHeight = 0;
 
+    private Intent fileOpenIntent;
+
     // Set up the activity
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -280,8 +286,60 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
         // Set up the navigation controller
         setupNavigation();
+
+        // Did we receive an intent (user clicked on an openable file)?
+        fileOpenIntent = getIntent();
+        dealWithIntent();
     }
 
+    @Override
+    protected void onNewIntent (Intent intent) {
+        super.onNewIntent(intent);
+        fileOpenIntent = intent;
+        dealWithIntent();
+    }
+
+    @SuppressLint("WrongConstant")
+    private void dealWithIntent() {
+        if (fileOpenIntent!=null && fileOpenIntent.getData()!=null) {
+            importUri = fileOpenIntent.getData();
+            // We need to copy this file to our temp storage for now to have later permission
+            InputStream inputStream = null;
+            try {
+                inputStream = getContentResolver().openInputStream(importUri);
+                importFilename = storageAccess.getFileNameFromUri(importUri);
+                if (inputStream!=null) {
+                    File tempLoc = new File(getExternalCacheDir(),"Import");
+                    Log.d(TAG,"Create folder:"+tempLoc.mkdirs());
+                    File tempFile = new File(tempLoc,importFilename);
+                    FileOutputStream outputStream = new FileOutputStream(tempFile);
+                    storageAccess.copyFile(inputStream,outputStream);
+                    importUri = Uri.fromFile(tempFile);
+                    if (importFilename.toLowerCase(Locale.ROOT).endsWith(".osb")) {
+                        // OpenSongApp backup file
+                        navigateToFragment(getString(R.string.deeplink_import_osb), 0);
+                    } else if (importFilename.toLowerCase(Locale.ROOT).endsWith(".osbs")) {
+                        // OpenSongApp sets backup file
+                        setWhattodo("intentlaunch");
+                        navigateToFragment(getString(R.string.deeplink_sets_backup_restore), 0);
+                    } else if (importFilename.toLowerCase(Locale.ROOT).endsWith(".backup")) {
+                        // OnSong backup file
+                        navigateToFragment(getString(R.string.deeplink_onsong), 0);
+                    } else {
+                        // Set, song, pdf or image files are initially sent to the import file
+                        navigateToFragment(getString(R.string.deeplink_import_file), 0);
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if (storageAccess==null) {
+                storageAccess = new StorageAccess(this);
+            }
+        } else {
+            Log.d(TAG, "No intent received");
+        }
+    }
 
     private void setupHelpers() {
         storageAccess = new StorageAccess(this);
@@ -476,7 +534,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             }
         });
         myView.pageButtonRight.actionFAB.setOnLongClickListener(view -> {
-            navigateToFragment("opensongapp://settings/controls/pagebuttons",0);
+            navigateToFragment(getString(R.string.deeplink_page_buttons),0);
             return true;
         });
 
@@ -518,6 +576,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 showHideActionBar();
                 // Hide the keyboard by forcing immersive
                 forceImmersive();
+                myView.menuTop.versionCode.requestFocus();
             }
 
             @Override
@@ -729,14 +788,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
                 case "presenterFragmentSongSections":
                     if (presenterFragment!=null) {
-                        Log.d(TAG,"presenterFragmentSongSections");
                         processSong.processSongIntoSections(song,true);
                         processSong.matchPresentationOrder(song);
                         presenterFragment.getSongViews();
                         presenterFragment.updateButtons();
-                        for (String presoSection:song.getPresoOrderSongSections()) {
-                            Log.d(TAG,"presoSection:"+presoSection);
-                        }
                     }
                     break;
 
@@ -753,6 +808,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     ((ImportOnlineFragment) callingFragment).continueSaving();
                     break;
 
+                case "ImportFileFragment_Set":
+                    ((ImportFileFragment) callingFragment).finishImportSet();
+                    break;
             }
         }
     }
@@ -766,9 +824,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         // If we were in bootfragment, the toolbar was translated -200 out of the way (calls to hide didn't work)
         appActionBar.translateAwayActionBar(false);
         if (whichMode.equals("Presenter")) {
-            navigateToFragment("opensongapp://presenter",0);
+            navigateToFragment(getString(R.string.deeplink_presenter),0);
         } else {
-            navigateToFragment("opensongapp://performance",0);
+            navigateToFragment(getString(R.string.deeplink_performance),0);
         }
         settingsOpen = false;
     }
@@ -811,7 +869,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
     private void openNearbyFragment() {
         if (hasNearbyPermissions()) {
-            navigateToFragment("opensongapp://settings/nearby", 0);
+            navigateToFragment(getString(R.string.deeplink_nearby), 0);
         }
     }
     private boolean hasNearbyPermissions() {
@@ -1150,7 +1208,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 settingsOpen = false;
                 navHome();
             } else {
-                navigateToFragment("opensongapp://preferences", 0);
+                navigateToFragment(getString(R.string.deeplink_preferences), 0);
                 settingsOpen = true;
             }
         }
@@ -1170,7 +1228,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         screenMirror = (ImageView) menu.findItem(R.id.mirror_menu_item).getActionView();
         screenMirror.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.cast));
         screenMirror.setOnClickListener(view -> startActivity(new Intent("android.settings.CAST_SETTINGS")));
-        myView.toolBar.batteryholder.setOnClickListener(view -> navigateToFragment("opensongapp://settings/display/actionbar",0));
+        myView.toolBar.batteryholder.setOnClickListener(view -> navigateToFragment(getString(R.string.deeplink_actionbar),0));
 
         return true;
     }
@@ -1208,6 +1266,24 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             menuOpen = true;
         }
         forceImmersive();
+    }
+    @Override
+    public boolean getMenuOpen() {
+        return menuOpen;
+    }
+    @Override
+    public void scrollOpenMenu(boolean scrollDown) {
+        int height = Math.round(getDisplayMetrics()[1] * 0.5f);
+        if (!scrollDown) {
+            height = -height;
+        }
+        if (showSetMenu) {
+            // Scroll the set menu
+            setMenuFragment.scrollMenu(height);
+        } else {
+            songMenuFragment.scrollMenu(height);
+        }
+        myView.menuTop.versionCode.requestFocus();
     }
 
     // The song and set menu
@@ -1423,11 +1499,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public void registerMidiAction(boolean actionDown, boolean actionUp, boolean actionLong, String note) {
         // If pedalsFragment is open, send the midiNote and event there
-        try {
-            Log.d(TAG, "isListening()=" + ((PedalsFragment) getCurrentFragment()).isListening());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         if (isCurrentFragment(R.id.pedalsFragment) && ((PedalsFragment)getCurrentFragment()).isListening()) {
             if (actionDown) {
                 ((PedalsFragment) getCurrentFragment()).midiDownListener(note);
@@ -1481,7 +1552,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             }
         } else {
             // Open up the metronome settings
-            navigateToFragment("opensongapp://settings/actions/metronome",0);
+            navigateToFragment(getString(R.string.deeplink_metronome),0);
         }
     }
 
@@ -1845,6 +1916,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
                 case "renameSet":
                 case "onlineSongOverwrite":
+                case "importSetIntent":
                     // We are renaming a set    or
                     // We extracted an online song, but one with the same name exists already
                     updateFragment(fragName,callingFragment,null);
@@ -2671,10 +2743,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private void updateCastIcon() {
         if (screenMirror!=null) {
             if (secondaryDisplays!=null && connectedDisplays.length > 0) {
-                Log.d(TAG,"updateCastIcon() to connected");
                 screenMirror.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.cast_connected));
             } else {
-                Log.d(TAG,"updateCastIcon() to disconnected");
                 screenMirror.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.cast));
             }
         }
@@ -2716,7 +2786,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             for (SecondaryDisplay secondaryDisplay : secondaryDisplays) {
                 if (secondaryDisplay != null && secondaryDisplay.isShowing()) {
                     try {
-                        Log.d(TAG,"what: "+what);
                         switch (what) {
                             // The song info bar
                             case "initialiseInfoBarRequired":

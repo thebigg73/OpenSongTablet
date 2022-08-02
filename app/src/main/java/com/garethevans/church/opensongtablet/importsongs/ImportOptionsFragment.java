@@ -145,7 +145,7 @@ public class ImportOptionsFragment extends Fragment {
     private void setListeners() {
         myView.createSong.setOnClickListener(v -> {
             mainActivityInterface.setSong(new Song());
-            mainActivityInterface.navigateToFragment("opensongapp://settings/edit",0);
+            mainActivityInterface.navigateToFragment(getString(R.string.deeplink_edit),0);
         });
         myView.importFile.setOnClickListener(v -> selectFile(mainActivityInterface.getPreferences().getFinalInt("REQUEST_FILE_CHOOSER"),validFiles));
         myView.importOSB.setOnClickListener(v -> selectFile(mainActivityInterface.getPreferences().getFinalInt("REQUEST_OSB_FILE"),validBackups));

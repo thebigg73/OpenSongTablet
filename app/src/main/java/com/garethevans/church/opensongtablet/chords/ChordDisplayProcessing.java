@@ -373,7 +373,7 @@ public class ChordDisplayProcessing {
                 chordLayout.setOnClickListener(view -> {
                     mainActivityInterface.setWhattodo("customChord_"+chordName);
                     Log.d(TAG, "open custom chord: customChord_"+chordName);
-                    mainActivityInterface.navigateToFragment("opensongapp://settings/chords/custom",0);
+                    mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_chords_custom),0);
                 });
             }
             return chordLayout;

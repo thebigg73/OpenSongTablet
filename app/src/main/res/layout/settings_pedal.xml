@@ -61,41 +61,29 @@
 
             <TableRow style="@style/DividerLine" />
 
-            <com.google.android.material.switchmaterial.SwitchMaterial
+            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
                 android:id="@+id/airTurnMode"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/air_turn_long_press" />
+                android:text="@string/air_turn_long_press"
+                android:hint="@string/air_turn_long_press_info"/>
 
             <LinearLayout
                 android:id="@+id/airTurnOptions"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:visibility="gone">
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/autorepeat_rationale" />
+                android:visibility="visible">
 
                 <com.garethevans.church.opensongtablet.customviews.MaterialSlider
-                    android:id="@+id/autoRepeatCount_Slider"
+                    android:id="@+id/airTurnLongPressTime"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:text="@string/autorepeat_count"
-                    android:valueFrom="2"
-                    android:valueTo="200" />
-
-                <com.garethevans.church.opensongtablet.customviews.MaterialSlider
-                    android:id="@+id/autoRepeatTime_Slider"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/autorepeat_time"
-                    android:valueFrom="100"
-                    android:valueTo="5000"
-                    app:stepSize="100" />
+                    android:text="@string/air_turn_long_press_time"
+                    android:valueFrom="500"
+                    android:valueTo="2000"
+                    app:stepSize="100"/>
 
             </LinearLayout>
 

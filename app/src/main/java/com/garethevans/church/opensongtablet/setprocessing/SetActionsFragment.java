@@ -112,7 +112,7 @@ public class SetActionsFragment extends Fragment {
                                     getOutputStream(copyToUri);
                             mainActivityInterface.getStorageAccess().copyFile(inputStream, outputStream);
                             mainActivityInterface.setWhattodo("loadset:"+importFilename);
-                            mainActivityInterface.navigateToFragment("opensongapp://settings/sets/manage", 0);
+                            mainActivityInterface.navigateToFragment(getString(R.string.deeplink_sets_manage), 0);
                         } else {
                             mainActivityInterface.getShowToast().doIt(getString(R.string.file_type)+" "+getString(R.string.unknown));
                         }

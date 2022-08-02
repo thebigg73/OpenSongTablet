@@ -114,7 +114,7 @@ public class KitKatFolderChooseFragment extends Fragment {
             mainActivityInterface.setWhattodo("kitkat:"+currentFolder.getPath());
 
             // Open the storage location fragment and write it there
-            mainActivityInterface.navigateToFragment("opensongapp://settings/storage/setstorage",0);
+            mainActivityInterface.navigateToFragment(getString(R.string.deeplink_set_storage),0);
         });
     }
 }

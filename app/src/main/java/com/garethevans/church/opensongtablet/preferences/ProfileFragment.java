@@ -119,6 +119,6 @@ public class ProfileFragment extends Fragment {
                 .setPopUpTo(R.id.setStorageLocationFragment, true)
                 .build();
         NavHostFragment.findNavController(this)
-                .navigate(Uri.parse("opensongapp://settings/storage/setstorage"),navOptions);
+                .navigate(Uri.parse(getString(R.string.deeplink_set_storage)),navOptions);
     }
 }

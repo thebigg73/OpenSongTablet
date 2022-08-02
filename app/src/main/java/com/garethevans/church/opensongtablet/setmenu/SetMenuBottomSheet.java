@@ -86,7 +86,7 @@ public class SetMenuBottomSheet extends BottomSheetDialogFragment {
             dismiss();
         });
         myView.manageSet.setOnClickListener(v -> {
-            mainActivityInterface.navigateToFragment("opensongapp://settings/sets",-1);
+            mainActivityInterface.navigateToFragment(getString(R.string.deeplink_sets),-1);
             dismiss();
         });
         myView.edit.setOnClickListener(v -> {
@@ -95,11 +95,11 @@ public class SetMenuBottomSheet extends BottomSheetDialogFragment {
             dismiss();
         });
         myView.addScripture.setOnClickListener(v -> {
-            mainActivityInterface.navigateToFragment("opensongapp://settings/bible",0);
+            mainActivityInterface.navigateToFragment(getString(R.string.deeplink_bible),0);
             dismiss();
         });
         myView.addCustom.setOnClickListener(v -> {
-            mainActivityInterface.navigateToFragment("opensongapp://settings/sets/customslide",0);
+            mainActivityInterface.navigateToFragment(getString(R.string.deeplink_custom_slide),0);
             dismiss();
         });
         myView.randomSong.setOnClickListener(v -> {

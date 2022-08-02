@@ -144,6 +144,8 @@ public interface MainActivityInterface {
     ArrayList<Song> getSongsInMenu();
     ArrayList<Song> getSongsFound(String whichMenu);
     SongListBuildIndex getSongListBuildIndex();
+    void scrollOpenMenu(boolean scrollDown);
+    boolean getMenuOpen();
 
     // Action bar
     ActionBar getMyActionBar();

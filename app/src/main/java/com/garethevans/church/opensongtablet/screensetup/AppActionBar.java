@@ -190,7 +190,7 @@ public class AppActionBar {
     }
     private void editSong() {
         if (!mainActivityInterface.getSong().getTitle().equals("Welcome to OpenSongApp")) {
-            mainActivityInterface.navigateToFragment("opensongapp://settings/edit", 0);
+            mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_edit), 0);
         }
     }
 

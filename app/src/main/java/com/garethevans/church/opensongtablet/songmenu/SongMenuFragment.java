@@ -496,4 +496,11 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         }
     }
 
+    public void scrollMenu(int height) {
+        try {
+            myView.songListRecyclerView.smoothScrollBy(0, height);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

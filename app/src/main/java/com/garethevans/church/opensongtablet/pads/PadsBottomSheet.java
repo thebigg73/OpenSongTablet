@@ -190,7 +190,7 @@ public class PadsBottomSheet extends BottomSheetDialogFragment {
             mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong());
         });
         myView.padSettings.setOnClickListener(view -> {
-            mainActivityInterface.navigateToFragment("opensongapp://settings/pads",0);
+            mainActivityInterface.navigateToFragment(getString(R.string.deeplink_pads),0);
             dismiss();
         });
         myView.padPanic.setOnClickListener(v -> {
