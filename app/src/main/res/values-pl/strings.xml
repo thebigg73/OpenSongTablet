@@ -31,9 +31,6 @@
     <string name="audio">Audio</string>
     <string name="audio_source">Źródło dźwięku</string>
     <string name="author">"Autor"</string>
-    <string name="autorepeat_count">Liczba powtórzeń klawiszy wymaganych do emulacji długiego naciśnięcia</string>
-    <string name="autorepeat_rationale">Niektóre pedały (takie jak AirTurn) wysyłają sygnały klawiszy automatycznego powtarzania, które zatrzymują działanie długich naciśnięć. Jeśli używasz jednego z tych pedałów, włącz tryb długiego naciśnięcia AirTurn i dostosuj suwak do liczby powtarzanych sygnałów potrzebnych do symulacji długiego naciśnięcia. Większość klawiatur ma opóźnienie 500 ms i częstotliwość powtarzania około 25 ms. Oznacza to, że przytrzymanie klawisza przez 1 sekundę spowoduje zarejestrowanie 20 naciśnięć klawiszy. Pedały AirTurn umożliwiają dostosowanie częstotliwości powtarzania i czasu opóźnienia za pomocą aplikacji towarzyszącej. Wyższe liczby dla liczby powtórzeń klawiszy oznaczają dłuższe przytrzymanie pedału, aby zarejestrować się jako długie naciśnięcie.</string>
-    <string name="autorepeat_time">Czas automatycznego powtarzania (ustawienie pedału)</string>
     <string name="autoscale">"Autoscale"</string>
     <string name="autoscale_info">Aplikacja sprawi, że tekst będzie tak duży, jak to możliwe, aby zmieścił się na ekranie</string>
     <string name="autoscale_toggle">"Przełącz piosenka skala auto włącz / wyłącz"</string>
@@ -852,4 +849,6 @@
     <string name="width">"Szerokość"</string>
     <string name="words_and_music_by">Słowa i muzyka wg</string>
     <string name="youtube">"Szukaj YouTube dla bieżącego utworu"</string>
+    <string name="air_turn_long_press_info">Używając pedału, który nie wysyła akcji długich naciśnięć, można to zasymulować, ustawiając żądany czas długiego naciśnięcia</string>
+    <string name="air_turn_long_press_time">Długie naciśnięcie czasu oczekiwania!</string>
 </resources>

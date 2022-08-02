@@ -31,9 +31,6 @@
     <string name="audio">Médias</string>
     <string name="audio_source">Source audio</string>
     <string name="author">"Auteur"</string>
-    <string name="autorepeat_count">Nombre de répétitions de touches nécessaires pour émuler un appui long</string>
-    <string name="autorepeat_rationale">Certaines pédales (comme AirTurn) envoient des signaux de touche de répétition automatique, ce qui empêche les actions de pression longue de fonctionner. Si vous utilisez l\'une de ces pédales, activez le mode AirTurn appui long et réglez le curseur sur le nombre de signaux répétés nécessaires pour une action de pression longue simulée. La plupart des claviers ont un retard de 500 ms et un taux de répétition d\'environ 25 ms. Cela signifie qu\'en maintenant une touche enfoncée pendant 1 seconde, 20 pressions de touches seront enregistrées. Les pédales AirTurn vous permettent d\'ajuster le taux de répétition et le temps de retard à l\'aide de leur application compagnon. Des nombres plus élevés pour le nombre de répétitions de touches signifient que vous maintenez la pédale plus longtemps pour vous enregistrer en tant que pression longue.</string>
-    <string name="autorepeat_time">Temps de répétition automatique (réglage de la pédale)</string>
     <string name="autoscale">"Échelle automatique"</string>
     <string name="autoscale_info">L\'application rendra le texte aussi grand que possible pour s\'adapter à l\'écran</string>
     <string name="autoscale_toggle">"Activer / desactiver la mise en page automatique"</string>
@@ -852,4 +849,6 @@
     <string name="width">"Largeur"</string>
     <string name="words_and_music_by">Paroles et musique de</string>
     <string name="youtube">"Rechercher la chanson actuelle sur YouTube"</string>
+    <string name="air_turn_long_press_info">Lorsque vous utilisez une pédale qui n\'envoie pas d\'actions d\'appui long, vous pouvez simuler cela en définissant un temps d\'appui long souhaité</string>
+    <string name="air_turn_long_press_time">Temps d\'attente de la presse longue</string>
 </resources>

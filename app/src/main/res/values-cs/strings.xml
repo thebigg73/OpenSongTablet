@@ -31,9 +31,6 @@
     <string name="audio">Audio</string>
     <string name="audio_source">Zdroj zvuku</string>
     <string name="author">"Autor"</string>
-    <string name="autorepeat_count">Počet opakování kláves potřebných k emulaci dlouhého stisknutí</string>
-    <string name="autorepeat_rationale">Některé pedály (například AirTurn) vysílají klíčové signály automatického opakování, které zastaví činnost dlouhého stisknutí. Pokud používáte jeden z těchto pedálů, zapněte režim dlouhého stisknutí AirTurn a nastavte posuvník na počet opakovaných signálů potřebných pro simulovanou akci dlouhého stisknutí. Většina klávesnic má zpoždění 500ms a opakovací rychlost asi 25ms. To znamená, že podržením tlačítka po dobu 1 sekundy se zaznamená 20 stisknutí tlačítka. Pedály AirTurn vám umožňují upravit rychlost opakování a dobu zpoždění pomocí jejich doprovodné aplikace. Vyšší čísla pro počet opakování tlačítek znamenají, že se pedál drží déle, aby se zaregistroval jako dlouhý stisk.</string>
-    <string name="autorepeat_time">Čas automatického opakování (nastavení pedálu)</string>
     <string name="autoscale">"Autoscale"</string>
     <string name="autoscale_info">Aplikace udělá text co největší, aby se vešel na obrazovku</string>
     <string name="autoscale_toggle">"Přepnout autoscale"</string>
@@ -852,4 +849,6 @@
     <string name="width">"Šířka"</string>
     <string name="words_and_music_by">Slova a hudba od</string>
     <string name="youtube">"Hledat YouTube pro aktuální skladby"</string>
+    <string name="air_turn_long_press_time">Dlouhé stisknutí čekací doby</string>
+    <string name="air_turn_long_press_info">Při použití pedálu, který nevysílá akce dlouhého stisknutí, to můžete simulovat nastavením požadované doby dlouhého stisknutí</string>
 </resources>

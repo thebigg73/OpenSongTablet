@@ -31,9 +31,6 @@
     <string name="audio">音频</string>
     <string name="audio_source">音源</string>
     <string name="author">"作者"</string>
-    <string name="autorepeat_count">模拟长按所需的按键重复次数</string>
-    <string name="autorepeat_rationale">某些踏板（例如AirTurn）会发送自动重复键信号，从而使长按动作停止工作。 如果使用这些踏板之一，请打开AirTurn长按模式，并将滑块调整为模拟长按动作所需的重复信号数。 大多数键盘的延迟时间为500毫秒，重复率约为25毫秒。 这意味着按住一个键1秒钟将记录20次按键。 AirTurn踏板允许您使用其配套应用程序调整重复频率和延迟时间。 按键重复计数的数字越大，表示踩下踏板的时间越长，以表示长按。</string>
-    <string name="autorepeat_time">自动重复时间（踏板设置）</string>
     <string name="autoscale">"自动定标"</string>
     <string name="autoscale_info">该应用程序将使文本尽可能大以适合屏幕</string>
     <string name="autoscale_toggle">"切换自动缩放"</string>
@@ -853,4 +850,6 @@
     <string name="width">"宽度"</string>
     <string name="words_and_music_by">文字和音乐</string>
     <string name="youtube">"搜索YouTube当前歌曲"</string>
+    <string name="air_turn_long_press_time">长按等待时间</string>
+    <string name="air_turn_long_press_info">当使用不发送长按动作的踏板时，您可以通过设置所需的长按时间来模拟</string>
 </resources>

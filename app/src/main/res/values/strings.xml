@@ -19,7 +19,7 @@
     <string name="add_song_to_set">Add current song to set</string>
     <string name="add_songs">Add songs</string>
     <string name="added_to_set">has been added to the end of your current set.</string>
-    <string name="air_turn_long_press">AirTurn long press mode</string>
+    <string name="air_turn_long_press">AirTurn mode</string>
     <string name="air_turn_long_press_info">When using a pedal that does not send long press actions, you can simulate this by setting a desired long press time</string>
     <string name="air_turn_long_press_time">Long press wait time</string>
     <string name="alert">Alert</string>
@@ -35,9 +35,6 @@
     <string name="audio">Audio</string>
     <string name="audio_source">Audio source</string>
     <string name="author">Author</string>
-    <string name="autorepeat_count">Number of key repeats required to emulate long press</string>
-    <string name="autorepeat_rationale">Some pedals (such as AirTurn) send auto repeat key signals which stops the long press actions working. If you are using one of these pedals, switch on the AirTurn long press mode and adjust the slider to the number of repeated signals needed for a simulated long press action.  Most keyboards have a delay of 500ms and a repeat rate of about 25ms. This means that holding down a key for 1 second will record 20 key presses. AirTurn pedals allow you to adjust the repeat rate and delay time using their companion app. Higher numbers for the key repeat count mean holding the pedal for longer to register as a long press.</string>
-    <string name="autorepeat_time">Auto repeat time (pedal setting)</string>
     <string name="autoscale">Autoscale</string>
     <string name="autoscale_info">The app will make the text as large as possible to fit the screen</string>
     <string name="autoscroll">Autoscroll</string>
@@ -1058,7 +1055,7 @@ Check out the categories in the right hand options menu.
 
 
     <!-- TODO LIKELY TO USE BUT HAVEN'T YET -->
-    <string name="airTurn" translatable="false">AirTurn</string>
+
 
 
     <!-- TODO LIKELY TO REMOVE NO USAGES FOUND -->

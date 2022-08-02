@@ -31,9 +31,6 @@
     <string name="audio">Hang-</string>
     <string name="audio_source">Hangforrás</string>
     <string name="author">"Szerző"</string>
-    <string name="autorepeat_count">A hosszú megnyomás emulálásához szükséges gombismétlések száma</string>
-    <string name="autorepeat_rationale">Néhány pedál (például az AirTurn) automatikus ismételt gombjeleket küld, amely megállítja a hosszú nyomás mûködését. Ha ezen pedálok egyikét használja, kapcsolja be az AirTurn hosszú sajtó üzemmódot, és állítsa be a csúszkát a szimulált hosszú sajtoláshoz szükséges ismétlődő jelek számához. A legtöbb billentyűzet 500 ms késleltetéssel és kb. 25 ms ismétlési sebességgel rendelkezik. Ez azt jelenti, hogy egy gomb egy másodpercig tartsa lenyomva a 20 gombnyomást. Az AirTurn pedálok lehetővé teszik az ismétlési sebesség és a késleltetési idő beállítását társaik alkalmazásával. A gombok ismétlési számának magasabb száma azt jelenti, hogy hosszabb ideig tartja a pedált, hogy hosszú nyomásig regisztráljon.</string>
-    <string name="autorepeat_time">Automatikus ismétlési idő (pedálbeállítás)</string>
     <string name="autoscale">Autoscale</string>
     <string name="autoscale_info">Az alkalmazás a szöveget a lehető legnagyobbra teszi, hogy elférjen a képernyőn</string>
     <string name="autoscale_toggle">"Toggle Auto Scale dal be / ki"</string>
@@ -852,4 +849,6 @@
     <string name="width">"Szélesség"</string>
     <string name="words_and_music_by">Szavak és zene</string>
     <string name="youtube">"Keresés YouTube aktuális dal"</string>
+    <string name="air_turn_long_press_time">Hosszú nyomás várakozási idő</string>
+    <string name="air_turn_long_press_info">Ha olyan pedált használ, amely nem küld hosszú lenyomási műveleteket, ezt szimulálhatja a kívánt hosszú lenyomási idő beállításával</string>
 </resources>

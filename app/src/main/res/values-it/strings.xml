@@ -31,9 +31,6 @@
     <string name="audio">Audio</string>
     <string name="audio_source">Sorgente Audio</string>
     <string name="author">"Autore"</string>
-    <string name="autorepeat_count">Numero di ripetizioni dei tasti richieste per emulare la pressione prolungata</string>
-    <string name="autorepeat_rationale">Alcuni pedali (come AirTurn) inviano segnali del tasto di ripetizione automatica che interrompe il funzionamento delle azioni di pressione prolungata. Se si utilizza uno di questi pedali, attivare la modalità di pressione prolungata AirTurn e regolare il dispositivo di scorrimento in base al numero di segnali ripetuti necessari per un\'azione di pressione prolungata simulata. La maggior parte delle tastiere ha un ritardo di 500 ms e una frequenza di ripetizione di circa 25 ms. Ciò significa che tenere premuto un tasto per 1 secondo registrerà 20 pressioni di tasti. I pedali AirTurn ti consentono di regolare la frequenza di ripetizione e il tempo di ritardo usando la loro app di accompagnamento. Numeri più alti per il conteggio delle ripetizioni dei tasti significano tenere premuto il pedale più a lungo per registrarsi come una pressione lunga.</string>
-    <string name="autorepeat_time">Tempo di ripetizione automatica (impostazione del pedale)</string>
     <string name="autoscale">Autoscale</string>
     <string name="autoscale_info">L\'app renderà il testo il più grande possibile per adattarsi allo schermo</string>
     <string name="autoscale_toggle">"Toggle canzone scala automatica accendere / spegnere"</string>
@@ -852,4 +849,6 @@
     <string name="width">"Larghezza"</string>
     <string name="words_and_music_by">Parole e musica di</string>
     <string name="youtube">"Cerca YouTube per la canzone corrente"</string>
+    <string name="air_turn_long_press_time">Tempo di attesa della pressione prolungata</string>
+    <string name="air_turn_long_press_info">Quando si utilizza un pedale che non invia azioni di pressione prolungata, è possibile simularlo impostando un tempo di pressione prolungata desiderato</string>
 </resources>
