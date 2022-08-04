@@ -610,7 +610,8 @@
     <string name="pedal_instructions">Click on a pedal button below to assign it to a keyboard button or midi note and assign actions to it. Most Bluetooth pedals send keyboard commands (e.g. arrow up/down).</string>
     <string name="pedal_midi_warning">To use a midi pedal, make sure you have connected it using the midi settings in the app first.</string>
     <string name="pedal_scroll_before_move">Try to scroll before changing songs</string>
-    <string name="pedal_waiting">"Waiting for button…."</string>
+    <string name="pedal_waiting">Waiting for button…</string>
+    <string name="pedal_warning">Confirm song change by pressing the pedal again after this warning closes</string>
     <string name="performance_mode">Performance mode</string>
     <string name="performance_mode_info">Use your device as a songbook</string>
     <string name="persistent_database">Persistent database</string>
@@ -1182,7 +1183,7 @@ Check out the categories in the right hand options menu.
     <string name="midi_message_sent">MIDI message sent from song</string>
     <string name="midi_usb">Connect USB device</string>
     <string name="mode_settings">Settings specific to this mode</string>
-    <string name="edit_default_delaymax">Max Delay (seconds)</string>
+    <string name="edit_default_delaymax">About</string>
     <string name="edit_song_availabletags">[V] = Verse, [V1] = Verse 1, [C] = Chorus, [C1] for
 		Chorus 1, [P] = Prechorus, [T] = Tag, [B] = Bridge, […(whatever you want)…] = Custom tag.\n Lyric lines start
 		with a space, chord lines with a full stop, comment lines with a

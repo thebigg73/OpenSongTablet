@@ -848,7 +848,7 @@
     <string name="welcome">Ласкаво просимо до OpenSongApp</string>
     <string name="width">Ширина</string>
     <string name="words_and_music_by">Слова і музика</string>
-    <string name="youtube">Шукати пісню на YouTube</string>
     <string name="air_turn_long_press_info">Якщо використовується педаль, яка не надсилає дії тривалого натискання, ви можете імітувати це, встановивши бажаний час тривалого натискання</string>
     <string name="air_turn_long_press_time">Тривале натискання. Час очікування</string>
+    <string name="pedal_warning">Підтвердьте зміну пісні, натиснувши педаль ще раз після того, як це попередження закриється</string>
 </resources>

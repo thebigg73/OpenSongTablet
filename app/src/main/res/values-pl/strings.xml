@@ -848,7 +848,7 @@
     <string name="welcome">Witamy w OpenSongApp</string>
     <string name="width">"Szerokość"</string>
     <string name="words_and_music_by">Słowa i muzyka wg</string>
-    <string name="youtube">"Szukaj YouTube dla bieżącego utworu"</string>
     <string name="air_turn_long_press_info">Używając pedału, który nie wysyła akcji długich naciśnięć, można to zasymulować, ustawiając żądany czas długiego naciśnięcia</string>
     <string name="air_turn_long_press_time">Długie naciśnięcie czasu oczekiwania!</string>
+    <string name="pedal_warning">Potwierdź zmianę utworu, naciskając pedał ponownie po zamknięciu tego ostrzeżenia</string>
 </resources>

@@ -848,7 +848,7 @@
     <string name="welcome">Benvenuto in OpenSongApp</string>
     <string name="width">"Larghezza"</string>
     <string name="words_and_music_by">Parole e musica di</string>
-    <string name="youtube">"Cerca YouTube per la canzone corrente"</string>
     <string name="air_turn_long_press_time">Tempo di attesa della pressione prolungata</string>
     <string name="air_turn_long_press_info">Quando si utilizza un pedale che non invia azioni di pressione prolungata, è possibile simularlo impostando un tempo di pressione prolungata desiderato</string>
+    <string name="pedal_warning">Confermare la modifica del brano premendo nuovamente il pedale dopo la chiusura di questo avviso</string>
 </resources>

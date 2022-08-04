@@ -848,7 +848,7 @@
     <string name="welcome">Bienvenido a OpenSongApp</string>
     <string name="width">"Anchura"</string>
     <string name="words_and_music_by">Palabras y música de</string>
-    <string name="youtube">"Buscar en YouTube para la canción actual"</string>
     <string name="air_turn_long_press_info">Cuando utilice un pedal que no envía acciones de pulsación larga, puede simular esto configurando un tiempo de pulsación larga deseado</string>
     <string name="air_turn_long_press_time">Tiempo de espera de pulsación larga</string>
+    <string name="pedal_warning">Confirme el cambio de canción presionando el pedal nuevamente después de que se cierre esta advertencia</string>
 </resources>

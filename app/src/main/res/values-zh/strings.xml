@@ -849,7 +849,7 @@
     <string name="welcome">欢迎来到 OpenSongApp</string>
     <string name="width">"宽度"</string>
     <string name="words_and_music_by">文字和音乐</string>
-    <string name="youtube">"搜索YouTube当前歌曲"</string>
     <string name="air_turn_long_press_time">长按等待时间</string>
     <string name="air_turn_long_press_info">当使用不发送长按动作的踏板时，您可以通过设置所需的长按时间来模拟</string>
+    <string name="pedal_warning">在此警告关闭后再次踩下踏板以确认歌曲更改</string>
 </resources>

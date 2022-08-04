@@ -848,7 +848,7 @@
     <string name="welcome">OpenSongAppへようこそ</string>
     <string name="width">"幅"</string>
     <string name="words_and_music_by">言葉と音楽</string>
-    <string name="youtube">"現在の曲のためのYouTubeを検索"</string>
     <string name="air_turn_long_press_time">長押し待ち時間</string>
     <string name="air_turn_long_press_info">長押しアクションを送信しないペダルを使用する場合は、希望の長押し時間を設定することでこれをシミュレートできます。</string>
+    <string name="pedal_warning">この警告が消えたら、もう一度ペダルを踏んで曲の変更を確認してください</string>
 </resources>

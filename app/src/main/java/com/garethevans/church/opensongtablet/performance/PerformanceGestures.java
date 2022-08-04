@@ -146,7 +146,7 @@ public class PerformanceGestures {
     }
 
     // This is for the scroll before move
-    private boolean canScroll(boolean scrollDown) {
+    public boolean canScroll(boolean scrollDown) {
         // Check the ZoomLayout for XML
         if (myZoomLayout != null && myZoomLayout.getVisibility() == View.VISIBLE) {
             // Can we scroll down?

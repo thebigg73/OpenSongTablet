@@ -848,7 +848,7 @@
     <string name="welcome">Vítejte v OpenSongApp</string>
     <string name="width">"Šířka"</string>
     <string name="words_and_music_by">Slova a hudba od</string>
-    <string name="youtube">"Hledat YouTube pro aktuální skladby"</string>
     <string name="air_turn_long_press_time">Dlouhé stisknutí čekací doby</string>
     <string name="air_turn_long_press_info">Při použití pedálu, který nevysílá akce dlouhého stisknutí, to můžete simulovat nastavením požadované doby dlouhého stisknutí</string>
+    <string name="pedal_warning">Po zavření tohoto varování potvrďte změnu skladby opětovným stisknutím pedálu</string>
 </resources>

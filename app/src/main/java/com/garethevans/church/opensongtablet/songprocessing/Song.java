@@ -72,6 +72,7 @@ public class Song {
     private boolean scalingFiguredOut = false;
     private boolean currentlyLoading = false; // true when song starts loading, false once displayed
     private boolean editingAsChoPro = false;
+    private boolean pedalWarningActive = true;
 
     // The getters
     public int getId() {
@@ -232,6 +233,9 @@ public class Song {
     public boolean getEditingAsChoPro() {
         return editingAsChoPro;
     }
+    public boolean getPedalWarningActive() {
+        return pedalWarningActive;
+    }
 
     // The setters
     public void setId(int id) {
@@ -374,6 +378,9 @@ public class Song {
     }
     public void setEditingAsChoPro(boolean editingAsChoPro) {
         this.editingAsChoPro = editingAsChoPro;
+    }
+    public void setPedalWarningActive(boolean pedalWarningActive) {
+        this.pedalWarningActive = pedalWarningActive;
     }
 
     // The constructor to create a new song object

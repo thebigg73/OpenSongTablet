@@ -848,7 +848,7 @@
     <string name="welcome">Dobrodošli u OpenSongApp</string>
     <string name="width">Širina</string>
     <string name="words_and_music_by">Reči i muzika</string>
-    <string name="youtube">Pretražiti YouTube za trenutnu pesmu</string>
     <string name="air_turn_long_press_time">Dugi pritisak na vreme čekanja</string>
     <string name="air_turn_long_press_info">Kada koristite pedalu koja ne šalje radnje dugog pritiska, ovo možete simulirati postavljanjem željenog vremena dugog pritiska</string>
+    <string name="pedal_warning">Potvrdite promenu pesme ponovnim pritiskom na pedalu nakon što se ovo upozorenje zatvori</string>
 </resources>

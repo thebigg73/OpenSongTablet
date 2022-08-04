@@ -848,7 +848,7 @@
     <string name="welcome">Willkommen bei OpenSongApp</string>
     <string name="width">"Breite"</string>
     <string name="words_and_music_by">Worte und Musik von</string>
-    <string name="youtube">"Aktuellen Song auf YouTube suchen"</string>
     <string name="air_turn_long_press_info">Wenn Sie ein Pedal verwenden, das keine langen Betätigungen sendet, können Sie dies simulieren, indem Sie eine gewünschte lange Betätigungszeit einstellen</string>
     <string name="air_turn_long_press_time">Wartezeit lange drücken</string>
+    <string name="pedal_warning">Bestätigen Sie den Songwechsel, indem Sie das Pedal erneut drücken, nachdem diese Warnung geschlossen wurde</string>
 </resources>

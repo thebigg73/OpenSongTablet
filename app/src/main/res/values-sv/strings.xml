@@ -848,7 +848,7 @@
     <string name="welcome">Välkommen till OpenSongApp</string>
     <string name="width">"Bredd"</string>
     <string name="words_and_music_by">Ord och musik av</string>
-    <string name="youtube">"Sök på YouTube för aktuell sång"</string>
     <string name="air_turn_long_press_info">När du använder en pedal som inte skickar långa tryckåtgärder kan du simulera detta genom att ställa in en önskad lång trycktid</string>
     <string name="air_turn_long_press_time">Lång tryckväntetid</string>
+    <string name="pedal_warning">Bekräfta låtbyte genom att trycka på pedalen igen efter att denna varning stängts</string>
 </resources>

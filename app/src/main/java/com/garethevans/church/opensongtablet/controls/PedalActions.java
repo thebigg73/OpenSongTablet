@@ -1,6 +1,7 @@
 package com.garethevans.church.opensongtablet.controls;
 
 import android.content.Context;
+import android.os.Handler;
 import android.util.Log;
 
 import com.garethevans.church.opensongtablet.R;
@@ -26,6 +27,10 @@ public class PedalActions {
                     if we were registered as a longPress, reset the keyDown so we can listen again
      */
 
+    // IV - code supporting intentional page turns when using pedal for next/previous.
+    // IV - 'Are you sure?' is displayed and the user must stop, wait and can repeat the action to continue after 2 seconds (an intentional action)
+    // IV - After continue there is a 10s grace period where further pedal use is not tested.  Any pedal 'page' or 'scroll' use extends a further 10s grace period.
+
     private final String TAG = "PedalActions";
     private final Context c;
     private final MainActivityInterface mainActivityInterface;
@@ -45,7 +50,15 @@ public class PedalActions {
     public final String[] defShortActions = new String[]{"","prev","next","up","down","","","",""};
     public final String[] defLongActions  = new String[] {"", "songmenu", "set", "", "", "", "", "", ""};
     private int airTurnLongPressTime;
-    private boolean airTurnMode, pedalScrollBeforeMove, pedalShowWarningBeforeMove, midiAsPedal;
+    private boolean airTurnMode, midiAsPedal, pedalScrollBeforeMove, pedalShowWarningBeforeMove,
+            warningActive, warningGracePeriod, pedalIgnorePrevNext;
+    private final Handler warningWaitHandler = new Handler(), warningGracePeriodHandler = new Handler();
+    private final Runnable warningWaitRunnable = () -> pedalIgnorePrevNext = false;
+    private final Runnable warningGracePeriodRunnable = () -> {
+        warningGracePeriod = false;
+        warningActive = false;
+    };
+
 
     public PedalActions(Context c) {
         this.c = c;
@@ -142,49 +155,89 @@ public class PedalActions {
 
     public void whichEventTriggered(boolean shortpress, int keyCode, String keyMidi) {
         int pedal = getButtonNumber(keyCode, keyMidi);
-        String desiredAction = getDesiredAction(shortpress,pedal);
-        if (desiredAction==null) {
+        String desiredAction = getDesiredAction(shortpress, pedal);
+        if (desiredAction == null) {
             desiredAction = "";
+        }
+
+        // IV - code supporting intentional page turns when using pedal for next/previous.
+        // IV - 'Are you sure?' is displayed and the user must stop, wait and can repeat the action to continue after 2 seconds (an intentional action)
+        // IV - After continue there is a 10s grace period where further pedal use is not tested.  Any pedal 'page' or 'scroll' use extends a further 10s grace period.
+        // IV - Handlers for confirmation of page change when using pedal
+        // Decide if we are allowed to move, or we are in a warning before move phase due to pedalShowWarningBeforeMove
+        // If we can scroll, no need to warn yet
+
+        if (pedalShowWarningBeforeMove &&
+                ((desiredAction.equals("prev") && !mainActivityInterface.getPerformanceGestures().canScroll(false))
+                || (desiredAction.equals("next")) && !mainActivityInterface.getPerformanceGestures().canScroll(true))) {
+            int warningWaitTime = 2000;
+            if (!warningActive && !warningGracePeriod) {
+                // Set the warning to active and display it
+                warningActive = true;
+                mainActivityInterface.getShowToast().doIt(c.getString(R.string.pedal_warning));
+
+                // Set the system to ignore previous and next for the next 2 seconds (warning time)
+                pedalIgnorePrevNext = true;
+                warningWaitHandler.removeCallbacks(warningWaitRunnable);
+                warningWaitHandler.postDelayed(warningWaitRunnable, warningWaitTime);
+
+            } else if (pedalIgnorePrevNext) {
+                // The user has clicked again within the warning time, so reset the warning time
+                warningWaitHandler.removeCallbacks(warningWaitRunnable);
+                warningWaitHandler.postDelayed(warningWaitRunnable, warningWaitTime);
+
+            } else {
+                // The warning time is over and we can allow moving to prev/next
+                // Set the gracePeriod of 10 seconds to allow moving without warnings
+                warningGracePeriod = true;
+                warningGracePeriodHandler.removeCallbacks(warningGracePeriodRunnable);
+                warningGracePeriodHandler.postDelayed(warningGracePeriodRunnable, 10000);
+            }
+        }
+
+        // If we are moving up/down, we can cancel any pedal warnings
+        if (pedalShowWarningBeforeMove && (desiredAction.equals("up") || desiredAction.equals("down"))) {
+            warningActive = false;
+            pedalIgnorePrevNext = false;
+            warningWaitHandler.removeCallbacks(warningWaitRunnable);
         }
 
         switch (desiredAction) {
             case "prev":
-                // If the menu isn't open
-                if (!mainActivityInterface.getMenuOpen()) {
-                    mainActivityInterface.getPerformanceGestures().prevSong();
-                } else {
-                    // If it is, scroll
+                // If the menu is open, scroll up
+                if (mainActivityInterface.getMenuOpen()) {
                     mainActivityInterface.scrollOpenMenu(false);
+                } else if (!pedalIgnorePrevNext) {
+                    warningActive = false;
+                    mainActivityInterface.getPerformanceGestures().prevSong();
                 }
                 break;
 
             case "next":
-                // If the menu isn't open
-                if (!mainActivityInterface.getMenuOpen()) {
-                    mainActivityInterface.getPerformanceGestures().nextSong();
-                } else {
-                    // If it is, scroll
+                // If the menu is open, scroll down
+                if (mainActivityInterface.getMenuOpen()) {
                     mainActivityInterface.scrollOpenMenu(true);
+                } else if (!pedalIgnorePrevNext) {
+                    warningActive = false;
+                    mainActivityInterface.getPerformanceGestures().nextSong();
                 }
                 break;
 
             case "down":
-                // If the menu isn't open
-                if (!mainActivityInterface.getMenuOpen()) {
-                    mainActivityInterface.getPerformanceGestures().scroll(true);
-                } else {
-                    // If it is, scroll
+                // If the menu is open, scroll down
+                if (mainActivityInterface.getMenuOpen()) {
                     mainActivityInterface.scrollOpenMenu(true);
+                } else {
+                    mainActivityInterface.getPerformanceGestures().scroll(true);
                 }
                 break;
 
             case "up":
-                // If the menu isn't open
-                if (!mainActivityInterface.getMenuOpen()) {
-                    mainActivityInterface.getPerformanceGestures().scroll(false);
-                } else {
-                    // If it is, scroll
+                // If the menu is open, scroll up
+                if (mainActivityInterface.getMenuOpen()) {
                     mainActivityInterface.scrollOpenMenu(false);
+                } else {
+                    mainActivityInterface.getPerformanceGestures().scroll(false);
                 }
                 break;
 
@@ -449,4 +502,5 @@ public class PedalActions {
         }
         return pedal;
     }
+
 }

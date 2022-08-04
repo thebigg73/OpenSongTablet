@@ -848,7 +848,7 @@
     <string name="welcome">Καλώς ήρθατε στο OpenSongApp</string>
     <string name="width">"Πλάτος"</string>
     <string name="words_and_music_by">Λέξεις και μουσική από</string>
-    <string name="youtube">"Αναζήτηση στο YouTube για το τραγούδι"</string>
     <string name="air_turn_long_press_info">Όταν χρησιμοποιείτε ένα πεντάλ που δεν στέλνει ενέργειες παρατεταμένου πατήματος, μπορείτε να το προσομοιώσετε ορίζοντας τον επιθυμητό χρόνο παρατεταμένου πάτημας</string>
     <string name="air_turn_long_press_time">Χρόνος αναμονής για παρατεταμένο πάτημα</string>
+    <string name="pedal_warning">Επιβεβαιώστε την αλλαγή τραγουδιού πατώντας ξανά το πεντάλ αφού κλείσει αυτή η προειδοποίηση</string>
 </resources>
