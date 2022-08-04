@@ -146,14 +146,19 @@ class SQLiteHelper extends SQLiteOpenHelper {
     }
 
     boolean songIdExists(SQLiteDatabase db, String songid) {
-        String Query = "SELECT * FROM " + SQLite.TABLE_NAME + " WHERE " + SQLite.COLUMN_SONGID + " = \"" + escapedSQL(songid) + "\"";
-        Cursor cursor = db.rawQuery(Query, null);
-        if(cursor.getCount() <= 0){
+        try {
+            String Query = "SELECT * FROM " + SQLite.TABLE_NAME + " WHERE " + SQLite.COLUMN_SONGID + " = \"" + escapedSQL(songid) + "\"";
+            Cursor cursor = db.rawQuery(Query, null);
+            if (cursor.getCount() <= 0) {
+                cursor.close();
+                return false;
+            }
             cursor.close();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
             return false;
         }
-        cursor.close();
-        return true;
     }
 
     SQLite setSong(SQLite sqLite) {

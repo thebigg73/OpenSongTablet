@@ -219,7 +219,7 @@ class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
 
                 try {
                     // prepare note object
-                    NonOpenSongSQLite sqLite = new NonOpenSongSQLite(
+                    @SuppressLint("Range") NonOpenSongSQLite sqLite = new NonOpenSongSQLite(
                             cursor.getInt(cursor.getColumnIndex(NonOpenSongSQLite.COLUMN_ID)),
                             unescapedSQL(cursor.getString(cursor.getColumnIndex(NonOpenSongSQLite.COLUMN_SONGID))),
                             unescapedSQL(cursor.getString(cursor.getColumnIndex(NonOpenSongSQLite.COLUMN_FILENAME))),

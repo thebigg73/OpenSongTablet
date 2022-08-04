@@ -504,24 +504,26 @@ public class PopUpSetViewNew extends DialogFragment {
         // Add the set items
         StringBuilder setcontents = new StringBuilder();
 
-        for (String getItem: StaticVariables.mSetList) {
-            int songtitlepos = getItem.indexOf("/")+1;
-            getItem = getItem.substring(songtitlepos);
-            setcontents.append(getItem).append(", ");
+        if (StaticVariables.mSetList!=null) {
+            for (String getItem : StaticVariables.mSetList) {
+                int songtitlepos = getItem.indexOf("/") + 1;
+                getItem = getItem.substring(songtitlepos);
+                setcontents.append(getItem).append(", ");
+            }
+
+            setcontents = new StringBuilder(setcontents.substring(0, setcontents.length() - 2));
+
+            String tweet = setcontents.toString();
+            try {
+                tweet = URLEncoder.encode("#OpenSongApp\n" + setcontents, "UTF-8");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            String tweetUrl = "https://twitter.com/intent/tweet?text=" + tweet;
+            Uri uri = Uri.parse(tweetUrl);
+            startActivity(new Intent(Intent.ACTION_VIEW, uri));
         }
-
-        setcontents = new StringBuilder(setcontents.substring(0, setcontents.length() - 2));
-
-        String tweet = setcontents.toString();
-        try {
-            tweet = URLEncoder.encode("#OpenSongApp\n" + setcontents,"UTF-8");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        String tweetUrl = "https://twitter.com/intent/tweet?text=" + tweet;
-        Uri uri = Uri.parse(tweetUrl);
-        startActivity(new Intent(Intent.ACTION_VIEW, uri));
     }
 
     @Override

@@ -1,6 +1,9 @@
 package com.garethevans.church.opensongtablet;
 
 import android.content.Context;
+
+import androidx.annotation.NonNull;
+
 import com.google.android.gms.cast.framework.CastOptions;
 import com.google.android.gms.cast.framework.OptionsProvider;
 import com.google.android.gms.cast.framework.SessionProvider;
@@ -16,7 +19,7 @@ public class CastOptionsProvider implements OptionsProvider {
     }
 
     @Override
-    public List<SessionProvider> getAdditionalSessionProviders(Context context) {
+    public List<SessionProvider> getAdditionalSessionProviders(@NonNull Context context) {
         return null;
     }
 

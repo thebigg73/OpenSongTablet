@@ -131,7 +131,6 @@ class Midi extends Activity {
         return message;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
     boolean sendMidi(byte[] b) {
         boolean success = false;
         if (StaticVariables.midiInputPort!=null) {

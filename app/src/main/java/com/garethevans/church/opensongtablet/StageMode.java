@@ -4206,7 +4206,7 @@ public class StageMode extends AppCompatActivity implements
                 // IV - (?) Disabled so behaviour is to move to the top of PDF (similar to moving to top of onSong song)
                 //StaticVariables.showstartofpdf = false; // Moving backwards, so start at end of pdf
                 // Is there another song in the set?  If so move, if not, do nothing
-                if ((StaticVariables.indexSongInSet > 0 && StaticVariables.mSetList.length > 0)) {
+                if (StaticVariables.mSetList!=null && (StaticVariables.indexSongInSet > 0 && StaticVariables.mSetList.length > 0)) {
                     // Stop the metronome task now as it is high drain and breaks async starts!
                     Metronome.stopMetronomeTask();
                     StaticVariables.setMoveDirection = "back";
@@ -5019,170 +5019,178 @@ public class StageMode extends AppCompatActivity implements
     }
 
     private void doPedalAction(String action) {
-        drawerOrFragmentActive = (mDrawerLayout.isDrawerOpen(songmenu) || mDrawerLayout.isDrawerOpen(optionmenu)) &&
-                !action.equals("songmenu") && !action.equals("optionmenu");
-        // IV - If in a drawer or fragment restrict to move actions
-        // GE - and open and CLOSE drawer
-        if (drawerOrFragmentActive) {
-            switch (action) {
-                case "prev":
-                    pedalPrevious();
-                    break;
+        if (action==null) {
+            action = "";
+        }
 
-                case "next":
-                    pedalNext();
-                    break;
+        try {
+            drawerOrFragmentActive = (mDrawerLayout.isDrawerOpen(songmenu) || mDrawerLayout.isDrawerOpen(optionmenu)) &&
+                    !action.equals("songmenu") && !action.equals("optionmenu");
+            // IV - If in a drawer or fragment restrict to move actions
+            // GE - and open and CLOSE drawer
+            if (drawerOrFragmentActive) {
+                switch (action) {
+                    case "prev":
+                        pedalPrevious();
+                        break;
 
-                case "up":
-                    pedalUp();
-                    break;
+                    case "next":
+                        pedalNext();
+                        break;
 
-                case "down":
-                    pedalDown();
-                    break;
-            }
-        } else {
-            boolean val;
-            switch (action) {
-                default:
-                    StaticVariables.myToastMessage = getString(R.string.pedal) + " - " + getString(R.string.notset);
-                    ShowToast.showToast(StageMode.this);
-                    break;
+                    case "up":
+                        pedalUp();
+                        break;
 
-                case "prev":
-                    pedalPrevious();
-                    break;
+                    case "down":
+                        pedalDown();
+                        break;
+                }
+            } else {
+                boolean val;
+                switch (action) {
+                    default:
+                        StaticVariables.myToastMessage = getString(R.string.pedal) + " - " + getString(R.string.notset);
+                        ShowToast.showToast(StageMode.this);
+                        break;
 
-                case "next":
-                    pedalNext();
-                    break;
+                    case "prev":
+                        pedalPrevious();
+                        break;
 
-                case "up":
-                    pedalUp();
-                    break;
+                    case "next":
+                        pedalNext();
+                        break;
 
-                case "down":
-                    pedalDown();
-                    break;
+                    case "up":
+                        pedalUp();
+                        break;
 
-                case "autoscroll":
-                    gesture5();
-                    break;
+                    case "down":
+                        pedalDown();
+                        break;
 
-                case "pad":
-                    gesture6();
-                    break;
+                    case "autoscroll":
+                        gesture5();
+                        break;
 
-                case "metronome":
-                    gesture7();
-                    break;
+                    case "pad":
+                        gesture6();
+                        break;
 
-                case "pad_autoscroll":
-                    gesture6();
-                    gesture5();
-                    break;
+                    case "metronome":
+                        gesture7();
+                        break;
 
-                case "pad_metronome":
-                    gesture6();
-                    gesture7();
-                    break;
+                    case "pad_autoscroll":
+                        gesture6();
+                        gesture5();
+                        break;
 
-                case "autoscroll_metronome":
-                    gesture5();
-                    gesture7();
-                    break;
+                    case "pad_metronome":
+                        gesture6();
+                        gesture7();
+                        break;
 
-                case "pad_autoscroll_metronome":
-                    gesture5();
-                    gesture6();
-                    gesture7();
-                    break;
+                    case "autoscroll_metronome":
+                        gesture5();
+                        gesture7();
+                        break;
 
-                case "editsong":
-                case "editsongpdf":
-                case "changetheme":
-                case "autoscale":
-                case "transpose":
-                case "fullsearch":
-                case "randomsong":
-                case "abcnotation":
-                case "editset":
-                    FullscreenActivity.whattodo = action;
-                    openFragment();
-                    break;
+                    case "pad_autoscroll_metronome":
+                        gesture5();
+                        gesture6();
+                        gesture7();
+                        break;
 
-                case "showchords":
-                    val = preferences.getMyPreferenceBoolean(StageMode.this, "displayChords", true);
-                    preferences.setMyPreferenceBoolean(StageMode.this, "displayChords", !val);
-                    refreshAll();
-                    break;
+                    case "editsong":
+                    case "editsongpdf":
+                    case "changetheme":
+                    case "autoscale":
+                    case "transpose":
+                    case "fullsearch":
+                    case "randomsong":
+                    case "abcnotation":
+                    case "editset":
+                        FullscreenActivity.whattodo = action;
+                        openFragment();
+                        break;
 
-                case "showcapo":
-                    val = preferences.getMyPreferenceBoolean(StageMode.this, "displayCapoChords", true);
-                    preferences.setMyPreferenceBoolean(StageMode.this, "displayCapoChords", !val);
-                    refreshAll();
-                    break;
+                    case "showchords":
+                        val = preferences.getMyPreferenceBoolean(StageMode.this, "displayChords", true);
+                        preferences.setMyPreferenceBoolean(StageMode.this, "displayChords", !val);
+                        refreshAll();
+                        break;
 
-                case "showlyrics":
-                    val = preferences.getMyPreferenceBoolean(StageMode.this, "displayLyrics", true);
-                    preferences.setMyPreferenceBoolean(StageMode.this, "displayLyrics", !val);
-                    refreshAll();
-                    break;
+                    case "showcapo":
+                        val = preferences.getMyPreferenceBoolean(StageMode.this, "displayCapoChords", true);
+                        preferences.setMyPreferenceBoolean(StageMode.this, "displayCapoChords", !val);
+                        refreshAll();
+                        break;
 
-                case "highlight":
-                    displayHighlight(false);
-                    break;
+                    case "showlyrics":
+                        val = preferences.getMyPreferenceBoolean(StageMode.this, "displayLyrics", true);
+                        preferences.setMyPreferenceBoolean(StageMode.this, "displayLyrics", !val);
+                        refreshAll();
+                        break;
 
-                case "sticky":
-                    if (stickyPopUpWindow != null && stickyPopUpWindow.isShowing()) {
-                        try {
-                            stickyPopUpWindow.dismiss();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    } else {
-                        if (StaticVariables.mNotes == null || StaticVariables.mNotes.equals("")) {
-                            StaticVariables.myToastMessage = getString(R.string.stickynotes) + " - " + getString(R.string.notset);
-                            ShowToast.showToast(StageMode.this);
+                    case "highlight":
+                        displayHighlight(false);
+                        break;
+
+                    case "sticky":
+                        if (stickyPopUpWindow != null && stickyPopUpWindow.isShowing()) {
+                            try {
+                                stickyPopUpWindow.dismiss();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                         } else {
-                            displaySticky(false);
+                            if (StaticVariables.mNotes == null || StaticVariables.mNotes.equals("")) {
+                                StaticVariables.myToastMessage = getString(R.string.stickynotes) + " - " + getString(R.string.notset);
+                                ShowToast.showToast(StageMode.this);
+                            } else {
+                                displaySticky(false);
+                            }
                         }
-                    }
-                    break;
+                        break;
 
-                case "speedup":
-                    increaseAutoScrollSpeed();
-                    break;
+                    case "speedup":
+                        increaseAutoScrollSpeed();
+                        break;
 
-                case "slowdown":
-                    decreaseAutoScrollSpeed();
-                    break;
+                    case "slowdown":
+                        decreaseAutoScrollSpeed();
+                        break;
 
-                case "pause":
-                    StaticVariables.autoscrollispaused = !StaticVariables.autoscrollispaused;
-                    break;
+                    case "pause":
+                        StaticVariables.autoscrollispaused = !StaticVariables.autoscrollispaused;
+                        break;
 
-                case "songmenu":
-                    gesture1();
-                    break;
+                    case "songmenu":
+                        gesture1();
+                        break;
 
-                case "optionmenu":
-                    if (mDrawerLayout.isDrawerOpen(optionmenu)) {
-                        closeMyDrawers("option");
-                    } else {
-                        openMyDrawers("option");
-                    }
-                    break;
+                    case "optionmenu":
+                        if (mDrawerLayout.isDrawerOpen(optionmenu)) {
+                            closeMyDrawers("option");
+                        } else {
+                            openMyDrawers("option");
+                        }
+                        break;
 
-                case "refreshsong":
-                    refreshAll();
-                    break;
+                    case "refreshsong":
+                        refreshAll();
+                        break;
 
-                case "addsongtoset":
-                    PopUpLongSongPressFragment.addtoSet(StageMode.this, preferences);
-                    break;
+                    case "addsongtoset":
+                        PopUpLongSongPressFragment.addtoSet(StageMode.this, preferences);
+                        break;
+                }
             }
-         }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     private void showHighlight() {
         doCancelAsyncTask(show_highlight);
