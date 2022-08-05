@@ -40,7 +40,7 @@ public class PresentationOrderAdapter extends RecyclerView.Adapter<PresentationO
         this.c = c;
         recyclerInterface = (RecyclerInterface) bottomSheet;
 
-        // Process the song and get for any existing tags to choose from
+        // Process the song and get any existing tags to choose from
          mainActivityInterface.getTempSong().setSongSectionHeadings(mainActivityInterface.getProcessSong().getSectionHeadings(
                 mainActivityInterface.getTempSong().getLyrics()));
 
@@ -54,13 +54,23 @@ public class PresentationOrderAdapter extends RecyclerView.Adapter<PresentationO
         }
 
         // Set up the current order
-        // Desktop app splits presentation order items by space delimiter
-        String[] sectionOrder = mainActivityInterface.getTempSong().getPresentationorder().split(" ");
-        for (String order:sectionOrder) {
-            // Custom section names with spaces are restored from underscore value
-            order = order.replace("_", " ");
-            if (!order.trim().isEmpty()) {
-                currentOrder.add(order);
+        // Because the desktop app space delimits, first try to encode known tags
+        String tempPresOrder = mainActivityInterface.getTempSong().getPresentationorder();
+        // Because we could have Chorus, Chorus 1, Chorus 2, reverse sort to search from the end
+        ArrayList<String> revSortedTags = new ArrayList<>(mainActivityInterface.getSong().getSongSectionHeadings());
+        Collections.sort(revSortedTags,Collections.reverseOrder());
+
+        // If we find a matching tag change spaces to ^_^
+        for (String tag:revSortedTags) {
+            tempPresOrder = tempPresOrder.replaceFirst(tag,tag.replace(" ","^_^"));
+        }
+
+        // Now split the temp order by spaces (between tags or unknown tags)
+        String[] tags = tempPresOrder.split(" ");
+        for (String tag:tags) {
+            if (!tag.trim().isEmpty()) {
+                // Put the space back
+                currentOrder.add(tag.replace("^_^"," "));
             }
         }
     }
@@ -145,11 +155,11 @@ public class PresentationOrderAdapter extends RecyclerView.Adapter<PresentationO
     }
 
     public String getPresoOrder() {
-        // Return a string representaiton of the sections
+        // Return a string representation of the sections
         // Section names with spaces need to be encoded in { } with spaces replaced wuth
         StringBuilder stringBuilder = new StringBuilder();
         for (String item:currentOrder) {
-            item = item.replace(" ","_");
+            //item = item.replace(" ","_");
             stringBuilder.append(item).append(" ");
         }
         return stringBuilder.toString().trim();

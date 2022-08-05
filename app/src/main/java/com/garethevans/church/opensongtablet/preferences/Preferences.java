@@ -476,6 +476,7 @@ public class Preferences extends Activity {
     // swipeMinimumDistance            int         The minimum distance for a swipe to be registered (dp) (def:250)
     // swipeMinimumVelocity            int         The minimum speed for a swipe to be registered (dp/s) (def:600)
     // swipeMaxDistanceYError          int         The maximum Y movement in a swipe allowed for it to be recognised (def:200)
+    // temporaryAdvertise              boolean     When acting as a Nearby host, should we only advertise for 10s (def:false)
     // timeToDisplayHighlighter        int         The time to show highlighter notes for before hiding (def=0 means keep on) ms
     // timeToDisplaySticky             int         The time to show sticky notes for before hiding (def=0 means keep on)
     // trimSections                    boolean     Should whitespace be removed from song sections (def:true)

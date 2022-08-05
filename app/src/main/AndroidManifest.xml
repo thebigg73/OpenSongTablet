@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:installLocation="auto"
-    android:versionCode="307"
-    android:versionName="6.0.0_alpha07"
+    android:versionCode="308"
+    android:versionName="6.0.0_alpha08"
     package="com.garethevans.church.opensongtablet">
 
     <uses-feature

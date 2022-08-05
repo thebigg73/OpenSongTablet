@@ -112,6 +112,11 @@ public class SetMenuBottomSheet extends BottomSheetDialogFragment {
             mainActivityInterface.updateFragment("set_updateView",null,null);
             dismiss();
         });
+        myView.sortSet.setOnClickListener(v -> {
+            mainActivityInterface.getSetActions().sortSet();
+            mainActivityInterface.updateFragment("set_updateView",null,null);
+            dismiss();
+        });
     }
 
 }

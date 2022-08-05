@@ -208,27 +208,32 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
         // Because this is a screen touch, do the necessary UI update (check actionbar/prev/next)
         onTouchAction();
 
-        if (mainActivityInterface.getMode().equals("Stage")) {
-            sectionInfos.get(currentSection).alpha = alphaoff;
-            notifyItemChanged(currentSection, alphaChange);
+        try {
+            if (mainActivityInterface.getMode().equals("Stage")) {
+                sectionInfos.get(currentSection).alpha = alphaoff;
+                notifyItemChanged(currentSection, alphaChange);
 
-            // Now update the newly selected position
-            if (position >= 0 && position < sectionInfos.size()) {
-                mainActivityInterface.getSong().setCurrentSection(position);
-                sectionInfos.get(position).alpha = 1.0f;
-                notifyItemChanged(position, alphaChange);
+                // Now update the newly selected position
+                if (position >= 0 && position < sectionInfos.size()) {
+                    mainActivityInterface.getSong().setCurrentSection(position);
+                    sectionInfos.get(position).alpha = 1.0f;
+                    notifyItemChanged(position, alphaChange);
 
-                // Send a nearby notification (the client will ignore if not required or not ready)
-                if (mainActivityInterface.getNearbyConnections().hasValidConnections() &&
-                mainActivityInterface.getNearbyConnections().getIsHost()) {
-                    mainActivityInterface.getNearbyConnections().sendSongSectionPayload();
+                    // Send a nearby notification (the client will ignore if not required or not ready)
+                    if (mainActivityInterface.getNearbyConnections().hasValidConnections() &&
+                            mainActivityInterface.getNearbyConnections().getIsHost()) {
+                        mainActivityInterface.getNearbyConnections().sendSongSectionPayload();
+                    }
                 }
             }
-        }
-        currentSection = position;
+            currentSection = position;
 
-        // Send and update notification to Performance Fragment via the MainActivity
-        displayInterface.performanceShowSection(position);
+            // Send and update notification to Performance Fragment via the MainActivity
+            displayInterface.performanceShowSection(position);
+        } catch (Exception e) {
+            // Likely the number of sections isn't what was expected (probably via Nearby)
+            e.printStackTrace();
+        }
     }
 
     public ArrayList<Float> getHeights() {

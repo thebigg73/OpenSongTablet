@@ -79,7 +79,6 @@ public class NearbyConnectionsFragment extends Fragment {
         // Set the chosen strategy
         updateStrategyButtons();
 
-
         // Change the advertise/discover button colors
         myView.advertiseButton.setBackgroundTintList(offColor);
         myView.discoverButton.setBackgroundTintList(offColor);
@@ -170,7 +169,7 @@ public class NearbyConnectionsFragment extends Fragment {
         myView.bottomSheet.bottomSheetTab.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                bottomSheetBehavior.setPeekHeight(myView.bottomSheet.bottomSheetTab.getMeasuredHeight());
+                myView.bottomSheet.bottomSheetTab.post(() -> bottomSheetBehavior.setPeekHeight(myView.bottomSheet.bottomSheetTab.getMeasuredHeight()));
                 myView.bottomSheet.bottomSheetTab.getViewTreeObserver().removeOnGlobalLayoutListener(this);
             }
         });
@@ -179,9 +178,17 @@ public class NearbyConnectionsFragment extends Fragment {
         myView.bottomSheet.bottomSheetTab.setOnClickListener(v -> {
             advancedShown = !advancedShown;
             if (advancedShown) {
-                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                try {
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             } else {
-                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                try {
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -220,6 +227,7 @@ public class NearbyConnectionsFragment extends Fragment {
         myView.bottomSheet.clientOptions.setVisibility(View.GONE);
         myView.connectedToLayout.setVisibility(View.GONE);
         myView.connectInitiateButtons.setVisibility(View.GONE);
+        myView.temporaryAdvertise.setChecked(mainActivityInterface.getNearbyConnections().getTemporaryAdvertise());
         mainActivityInterface.getNearbyConnections().clearTimer();
 
         if (isHost) {
@@ -228,6 +236,7 @@ public class NearbyConnectionsFragment extends Fragment {
             myView.connectedTo.setHint(mainActivityInterface.getNearbyConnections().getConnectedDevicesAsString());
             myView.connectedToLayout.setVisibility(View.VISIBLE);
             myView.connectInitiateButtons.setVisibility(View.VISIBLE);
+            myView.temporaryAdvertise.setVisibility(View.VISIBLE);
             showcase2();
 
         } else if (isClient) {
@@ -236,10 +245,12 @@ public class NearbyConnectionsFragment extends Fragment {
             myView.connectedTo.setHint(mainActivityInterface.getNearbyConnections().getConnectedDevicesAsString());
             myView.connectedToLayout.setVisibility(View.VISIBLE);
             myView.connectInitiateButtons.setVisibility(View.VISIBLE);
+            myView.temporaryAdvertise.setVisibility(View.GONE);
             showcase2();
 
         } else {
             myView.off.setBackgroundTintList(onColor);
+            myView.temporaryAdvertise.setVisibility(View.GONE);
         }
 
     }
@@ -280,6 +291,11 @@ public class NearbyConnectionsFragment extends Fragment {
             mainActivityInterface.getNearbyConnections().setNearbyStrategy(Strategy.P2P_POINT_TO_POINT);
             updateStrategyButtons();
             myView.off.performClick();
+        });
+
+        myView.temporaryAdvertise.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            mainActivityInterface.getPreferences().getMyPreferenceBoolean("temporaryAdvertise",isChecked);
+            mainActivityInterface.getNearbyConnections().setTemporaryAdvertise(isChecked);
         });
 
         // The client/host options
@@ -350,8 +366,10 @@ public class NearbyConnectionsFragment extends Fragment {
         mainActivityInterface.getNearbyConnections().stopAdvertising();
         mainActivityInterface.getNearbyConnections().stopDiscovery();
 
-        // Initialise the countdown
-        mainActivityInterface.getNearbyConnections().initialiseCountdown();
+        // If we are temporarily advertising, initialise the countdown
+        if (mainActivityInterface.getNearbyConnections().getTemporaryAdvertise()) {
+            mainActivityInterface.getNearbyConnections().initialiseCountdown();
+        }
 
         // Disable the other button
         myView.discoverButton.setEnabled(false);
@@ -362,7 +380,9 @@ public class NearbyConnectionsFragment extends Fragment {
             try {
                 mainActivityInterface.getNearbyConnections().startAdvertising();
                 myView.advertiseButton.setOnClickListener(view -> enableConnectionButtons());
-                mainActivityInterface.getNearbyConnections().setTimer(true, myView.advertiseButton);
+                if (mainActivityInterface.getNearbyConnections().getTemporaryAdvertise()) {
+                    mainActivityInterface.getNearbyConnections().setTimer(true, myView.advertiseButton);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
                 mainActivityInterface.getNearbyConnections().clearTimer();

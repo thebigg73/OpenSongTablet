@@ -1282,6 +1282,7 @@ public class ProcessSong {
             StringBuilder tempPresentationOrder = new StringBuilder(song.getPresentationorder() + " ");
             StringBuilder errors = new StringBuilder();
 
+            Log.d(TAG,"tempPresentationOrder: "+tempPresentationOrder);
             // Go through each tag in the song
             for (String tag : song.getSongSectionHeadings()) {
                 Log.d(TAG,"Tag found: "+tag);

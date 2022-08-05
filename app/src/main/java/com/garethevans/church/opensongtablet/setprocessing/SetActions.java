@@ -294,6 +294,17 @@ public class SetActions {
         // Shuffle the currentSet item array - all entries are like $$_folder/filename_**key**__$$
         Collections.shuffle(mainActivityInterface.getCurrentSet().getSetItems());
 
+        finishChangingSet();
+    }
+
+    public void sortSet() {
+        // Shuffle the currentSet item array - all entries are like $$_folder/filename_**key**__$$
+        Collections.sort(mainActivityInterface.getCurrentSet().getSetItems());
+
+        finishChangingSet();
+    }
+
+    private void finishChangingSet() {
         // Now reset the folder, filename and key arrays as we will rebuild them
         // We don't initialise all arrays as we need to keep the currentSet one
         mainActivityInterface.getCurrentSet().initialiseTheSpecifics();

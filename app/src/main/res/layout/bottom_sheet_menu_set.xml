@@ -88,6 +88,15 @@
                     android:padding="16dp"
                     android:text="@string/set_shuffle" />
 
+                <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                    android:id="@+id/sortSet"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/alphabetical_sort"
+                    custom:mydrawable="@drawable/sort"
+                    android:padding="16dp"
+                    android:text="@string/set_sort" />
+
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
     </LinearLayout>

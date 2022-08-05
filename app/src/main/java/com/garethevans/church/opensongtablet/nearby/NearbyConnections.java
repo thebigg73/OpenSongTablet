@@ -64,7 +64,7 @@ public class NearbyConnections implements NearbyInterface {
     private TimerTask timerTask;
     private SimpleArrayMap<Long, Payload> incomingFilePayloads = new SimpleArrayMap<>();
     private SimpleArrayMap<Long, String> fileNewLocation = new SimpleArrayMap<>();
-    private boolean isHost, receiveHostFiles, keepHostFiles, usingNearby,
+    private boolean isHost, receiveHostFiles, keepHostFiles, usingNearby, temporaryAdvertise,
             isAdvertising = false, isDiscovering = false, nearbyHostMenuOnly,
             receiveHostAutoscroll = true, receiveHostSongSections = true, connectionsOpen,
             waitingForSectionChange = false, nearbyHostPassthrough;
@@ -93,6 +93,7 @@ public class NearbyConnections implements NearbyInterface {
             try {
                 nearbyHostPassthrough = mainActivityInterface.getPreferences().getMyPreferenceBoolean("nearbyHostPassthrough",true);
                 nearbyHostMenuOnly = mainActivityInterface.getPreferences().getMyPreferenceBoolean("nearbyHostMenuOnly", false);
+                temporaryAdvertise = mainActivityInterface.getPreferences().getMyPreferenceBoolean("temporaryAdvertise",false);
                 String preference = mainActivityInterface.getPreferences().getMyPreferenceString("nearbyStrategy","cluster");
                 switch (preference) {
                     case "cluster":
@@ -180,7 +181,12 @@ public class NearbyConnections implements NearbyInterface {
     public void setNearbyHostPassthrough(boolean nearbyHostPassthrough) {
         this.nearbyHostPassthrough = nearbyHostPassthrough;
     }
-
+    public boolean getTemporaryAdvertise() {
+        return temporaryAdvertise;
+    }
+    public void setTemporaryAdvertise(boolean temporaryAdvertise) {
+        this.temporaryAdvertise = temporaryAdvertise;
+    }
 
     // Set the strategy as either cluster (many to many) or star (one to many).
     public void setNearbyStrategy(Strategy nearbyStrategy) {
@@ -814,6 +820,10 @@ public class NearbyConnections implements NearbyInterface {
         doSendPayloadBytes(infoPayload);
     }
 
+    public void sendAutoscrollPayload(String message) {
+        doSendPayloadBytes(message);
+    }
+
 
     // Deal with actions received as a client device
     public void doSectionChange(int mysection) {
@@ -845,6 +855,7 @@ public class NearbyConnections implements NearbyInterface {
         //  FOLDER_xx____xx_FILENAME_xx____xx_R2L/L2R_xx____xx_<?xml>
 
         ArrayList<String> receivedBits = getNearbyIncoming(incoming);
+        Log.d(TAG,"incoming: "+incoming+"\nprevious: "+incomingPrevious);
         boolean incomingChange = (!incoming.equals(incomingPrevious));
 
         Log.d(TAG,"incomingChange="+incomingChange);
@@ -858,8 +869,9 @@ public class NearbyConnections implements NearbyInterface {
             boolean songReceived = (receivedBits.size() >= 4);
 
             Log.d(TAG,"songReceived="+songReceived);
+            Log.d(TAG,"receivedBits.size()="+receivedBits.size());
 
-            Log.d(TAG,"isHost="+isHost+"  hasValidConnections()="+hasValidConnections()+"  receiveHostFiles="+receiveHostFiles);
+            Log.d(TAG,"isHost="+isHost+"  hasValidConnections()="+hasValidConnections()+"  receiveHostFiles="+receiveHostFiles+"  keepHostFiles="+keepHostFiles);
             if (songReceived) {
                 if (!isHost && hasValidConnections() && receiveHostFiles) {
                     // We want to receive host files (we aren't the host either!) and an OpenSong song has been sent/received
@@ -880,7 +892,7 @@ public class NearbyConnections implements NearbyInterface {
                         mainActivityInterface.getSong().setFilename(receivedBits.get(1));
                         // Add to the sqldatabase
                         mainActivityInterface.getSQLiteHelper().createSong(mainActivityInterface.getSong().getFolder(), mainActivityInterface.getSong().getFilename());
-
+                        Log.d(TAG,"keepFile: "+newLocation);
                     } else {
                         newLocation = mainActivityInterface.getStorageAccess().getUriForItem("Received", "", "ReceivedSong");
                         // Prepare the output stream in the Received folder - just keep a temporary version
@@ -890,13 +902,23 @@ public class NearbyConnections implements NearbyInterface {
                         mainActivityInterface.getSong().setFilename("ReceivedSong");
                         // IV - Store the received song filename in case the user wants to duplicate the received song
                         receivedSongFilename = receivedBits.get(1);
+
+                        Log.d(TAG,"receiveFile: "+newLocation);
                     }
+
+                    Log.d(TAG,"outputstream: "+outputStream);
 
                     // Write the file to the desired output stream and load
                     if (nearbyReturnActionsInterface != null) {
-                        mainActivityInterface.getStorageAccess().writeFileFromString(receivedBits.get(3), outputStream);
-                        nearbyReturnActionsInterface.prepareSongMenu();
+                        Log.d(TAG,"write the file: "+mainActivityInterface.getStorageAccess().writeFileFromString(receivedBits.get(3), outputStream));
                         mainActivityInterface.getSong().setCurrentSection(pendingCurrentSection);
+
+                        // If we are keeping the song, update the database song first
+                        if (receiveHostFiles && keepHostFiles) {
+                            mainActivityInterface.setSong(mainActivityInterface.getLoadSong().doLoadSongFile(mainActivityInterface.getSong(),false));
+                            mainActivityInterface.getSQLiteHelper().updateSong(mainActivityInterface.getSong());
+                            mainActivityInterface.updateSongMenu(mainActivityInterface.getSong());
+                        }
                         nearbyReturnActionsInterface.loadSong();
                     }
                 } else if (!isHost && hasValidConnections()) {

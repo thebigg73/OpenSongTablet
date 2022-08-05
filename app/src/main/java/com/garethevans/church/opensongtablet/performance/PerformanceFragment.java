@@ -518,11 +518,11 @@ public class PerformanceFragment extends Fragment {
     }
     private void songIsReadyToDisplay() {
         // Set the page holder to fullscreen for now
-        myView.pageHolder.getLayoutParams().width = screenWidth;
-        myView.pageHolder.getLayoutParams().height = screenHeight;
-        myView.songSheetTitle.setVisibility(View.VISIBLE);
-
         try {
+            myView.pageHolder.getLayoutParams().width = screenWidth;
+            myView.pageHolder.getLayoutParams().height = screenHeight;
+            myView.songSheetTitle.setVisibility(View.VISIBLE);
+
             // All views have now been drawn, so measure the arraylist views
             for (int x = 0; x < mainActivityInterface.getSectionViews().size(); x++) {
                 int width = mainActivityInterface.getSectionViews().get(x).getWidth();

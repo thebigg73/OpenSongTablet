@@ -87,11 +87,18 @@
                     <TableRow style="@style/DividerLine" />
                 </LinearLayout>
 
+                <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                    android:id="@+id/temporaryAdvertise"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:text="@string/connections_advertise_temporary"
+                    android:hint="@string/connections_advertise_temporary_info"/>
                 <LinearLayout
                     android:id="@+id/connectInitiateButtons"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:minHeight="148dp"
+                    android:minHeight="128dp"
                     android:orientation="horizontal">
 
                     <com.google.android.material.button.MaterialButton

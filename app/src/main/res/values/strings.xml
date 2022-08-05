@@ -1212,5 +1212,9 @@ Check out the categories in the right hand options menu.
     <string name="load_preferences">Loading preferences</string>
     <string name="look_for">Look for</string>
     <string name="lyrics_settings">Lyrics settings</string>
+    <string name="alphabetical_sort">Put items in alphabetical order</string>
+    <string name="set_sort">Sort set</string>
+    <string name="connections_advertise_temporary">Limited advertise</string>
+    <string name="connections_advertise_temporary_info">Only advertise for 10 seconds after clicking the advertise button</string>
 
 </resources>

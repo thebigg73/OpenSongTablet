@@ -150,6 +150,12 @@ public class Autoscroll {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
+            // If we are connected as a host, send to client devices
+            if (mainActivityInterface.getNearbyConnections().getIsHost() &&
+            mainActivityInterface.getNearbyConnections().getUsingNearby()) {
+                mainActivityInterface.getNearbyConnections().sendAutoscrollPayload("autoscroll_start");
+            }
         }
     }
     public void stopAutoscroll() {
@@ -157,6 +163,11 @@ public class Autoscroll {
         autoscrollActivated = false;
         // Now end
         endAutoscroll();
+        // If we are connected as a host, send to client devices
+        if (mainActivityInterface.getNearbyConnections().getIsHost() &&
+                mainActivityInterface.getNearbyConnections().getUsingNearby()) {
+            mainActivityInterface.getNearbyConnections().sendAutoscrollPayload("autoscroll_stop");
+        }
     }
     private void endAutoscroll() {
         // Called at normal end.  Doesn't reset activated
