@@ -851,4 +851,8 @@
     <string name="air_turn_long_press_time">Dlouhé stisknutí čekací doby</string>
     <string name="air_turn_long_press_info">Při použití pedálu, který nevysílá akce dlouhého stisknutí, to můžete simulovat nastavením požadované doby dlouhého stisknutí</string>
     <string name="pedal_warning">Po zavření tohoto varování potvrďte změnu skladby opětovným stisknutím pedálu</string>
+    <string name="connections_advertise_temporary">Omezená reklama</string>
+    <string name="connections_advertise_temporary_info">Inzerujte pouze 10 sekund po kliknutí na tlačítko inzerovat</string>
+    <string name="set_sort">Sada řazení</string>
+    <string name="alphabetical_sort">Seřaďte položky v abecedním pořadí</string>
 </resources>

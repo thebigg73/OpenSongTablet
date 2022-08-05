@@ -851,4 +851,8 @@
     <string name="air_turn_long_press_info">Cuando utilice un pedal que no envía acciones de pulsación larga, puede simular esto configurando un tiempo de pulsación larga deseado</string>
     <string name="air_turn_long_press_time">Tiempo de espera de pulsación larga</string>
     <string name="pedal_warning">Confirme el cambio de canción presionando el pedal nuevamente después de que se cierre esta advertencia</string>
+    <string name="connections_advertise_temporary">publicidad limitada</string>
+    <string name="alphabetical_sort">Poner los elementos en orden alfabético</string>
+    <string name="set_sort">Ordenar conjunto</string>
+    <string name="connections_advertise_temporary_info">Anuncie solo durante 10 segundos después de hacer clic en el botón de publicidad</string>
 </resources>

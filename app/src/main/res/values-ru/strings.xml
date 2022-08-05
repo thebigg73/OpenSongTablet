@@ -851,4 +851,8 @@
     <string name="air_turn_long_press_info">При использовании педали, которая не отправляет действия длительного нажатия, вы можете имитировать это, установив желаемое время длительного нажатия.</string>
     <string name="air_turn_long_press_time">Время ожидания при длительном нажатии</string>
     <string name="pedal_warning">Подтвердите смену песни, снова нажав на педаль после того, как это предупреждение исчезнет.</string>
+    <string name="connections_advertise_temporary">Ограниченная реклама</string>
+    <string name="alphabetical_sort">Расположите элементы в алфавитном порядке</string>
+    <string name="set_sort">Сортировать набор</string>
+    <string name="connections_advertise_temporary_info">Реклама только в течение 10 секунд после нажатия кнопки рекламы</string>
 </resources>

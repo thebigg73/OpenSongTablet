@@ -851,4 +851,8 @@
     <string name="air_turn_long_press_info">Lorsque vous utilisez une pédale qui n\'envoie pas d\'actions d\'appui long, vous pouvez simuler cela en définissant un temps d\'appui long souhaité</string>
     <string name="air_turn_long_press_time">Temps d\'attente de la presse longue</string>
     <string name="pedal_warning">Confirmez le changement de morceau en appuyant à nouveau sur la pédale après la fermeture de cet avertissement</string>
+    <string name="connections_advertise_temporary">Publicité limitée</string>
+    <string name="alphabetical_sort">Mettre les éléments par ordre alphabétique</string>
+    <string name="set_sort">Trier l\'ensemble</string>
+    <string name="connections_advertise_temporary_info">Ne faites de la publicité que pendant 10 secondes après avoir cliqué sur le bouton de publicité</string>
 </resources>

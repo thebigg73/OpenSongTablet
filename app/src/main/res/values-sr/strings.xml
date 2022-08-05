@@ -851,4 +851,8 @@
     <string name="air_turn_long_press_time">Dugi pritisak na vreme čekanja</string>
     <string name="air_turn_long_press_info">Kada koristite pedalu koja ne šalje radnje dugog pritiska, ovo možete simulirati postavljanjem željenog vremena dugog pritiska</string>
     <string name="pedal_warning">Potvrdite promenu pesme ponovnim pritiskom na pedalu nakon što se ovo upozorenje zatvori</string>
+    <string name="connections_advertise_temporary">Ograničeno oglašavanje</string>
+    <string name="connections_advertise_temporary_info">Oglašavajte se samo 10 sekundi nakon što kliknete na dugme za oglašavanje</string>
+    <string name="set_sort">Skup za sortiranje</string>
+    <string name="alphabetical_sort">Stavite stavke po abecednom redu</string>
 </resources>

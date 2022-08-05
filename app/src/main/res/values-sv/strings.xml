@@ -851,4 +851,8 @@
     <string name="air_turn_long_press_info">När du använder en pedal som inte skickar långa tryckåtgärder kan du simulera detta genom att ställa in en önskad lång trycktid</string>
     <string name="air_turn_long_press_time">Lång tryckväntetid</string>
     <string name="pedal_warning">Bekräfta låtbyte genom att trycka på pedalen igen efter att denna varning stängts</string>
+    <string name="connections_advertise_temporary">Begränsad annonsera</string>
+    <string name="connections_advertise_temporary_info">Annonsera endast i 10 sekunder efter att du klickat på annonsknappen</string>
+    <string name="set_sort">Sorteringsuppsättning</string>
+    <string name="alphabetical_sort">Placera objekt i alfabetisk ordning</string>
 </resources>

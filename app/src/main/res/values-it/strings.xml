@@ -851,4 +851,8 @@
     <string name="air_turn_long_press_time">Tempo di attesa della pressione prolungata</string>
     <string name="air_turn_long_press_info">Quando si utilizza un pedale che non invia azioni di pressione prolungata, è possibile simularlo impostando un tempo di pressione prolungata desiderato</string>
     <string name="pedal_warning">Confermare la modifica del brano premendo nuovamente il pedale dopo la chiusura di questo avviso</string>
+    <string name="connections_advertise_temporary">Pubblicità limitata</string>
+    <string name="alphabetical_sort">Metti gli articoli in ordine alfabetico</string>
+    <string name="set_sort">Ordina insieme</string>
+    <string name="connections_advertise_temporary_info">Fai pubblicità solo per 10 secondi dopo aver fatto clic sul pulsante Pubblicizza</string>
 </resources>

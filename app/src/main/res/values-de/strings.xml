@@ -851,4 +851,8 @@
     <string name="air_turn_long_press_info">Wenn Sie ein Pedal verwenden, das keine langen Betätigungen sendet, können Sie dies simulieren, indem Sie eine gewünschte lange Betätigungszeit einstellen</string>
     <string name="air_turn_long_press_time">Wartezeit lange drücken</string>
     <string name="pedal_warning">Bestätigen Sie den Songwechsel, indem Sie das Pedal erneut drücken, nachdem diese Warnung geschlossen wurde</string>
+    <string name="connections_advertise_temporary">Begrenzte Werbung</string>
+    <string name="connections_advertise_temporary_info">Werben Sie nur 10 Sekunden lang, nachdem Sie auf die Werbeschaltfläche geklickt haben</string>
+    <string name="set_sort">Satz sortieren</string>
+    <string name="alphabetical_sort">Artikel alphabetisch ordnen</string>
 </resources>

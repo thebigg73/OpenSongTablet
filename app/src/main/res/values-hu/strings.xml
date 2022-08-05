@@ -851,4 +851,8 @@
     <string name="air_turn_long_press_time">Hosszú nyomás várakozási idő</string>
     <string name="air_turn_long_press_info">Ha olyan pedált használ, amely nem küld hosszú lenyomási műveleteket, ezt szimulálhatja a kívánt hosszú lenyomási idő beállításával</string>
     <string name="pedal_warning">Erősítse meg a dalváltást a pedál ismételt megnyomásával, miután ez a figyelmeztetés bezárult</string>
+    <string name="connections_advertise_temporary">Korlátozottan hirdet</string>
+    <string name="connections_advertise_temporary_info">Csak a hirdetés gombra kattintás után 10 másodpercig hirdessen</string>
+    <string name="set_sort">Rendezési készlet</string>
+    <string name="alphabetical_sort">Tedd az elemeket ábécé sorrendbe</string>
 </resources>

@@ -851,4 +851,8 @@
     <string name="air_turn_long_press_info">Ao usar um pedal que não envia ações de toque longo, você pode simular isso definindo um tempo de toque longo desejado</string>
     <string name="air_turn_long_press_time">Pressione longamente o tempo de espera</string>
     <string name="pedal_warning">Confirme a mudança de música pressionando o pedal novamente após o fechamento deste aviso</string>
+    <string name="connections_advertise_temporary">Anúncio limitado</string>
+    <string name="connections_advertise_temporary_info">Anuncie apenas por 10 segundos depois de clicar no botão anunciar</string>
+    <string name="set_sort">Classificar conjunto</string>
+    <string name="alphabetical_sort">Coloque os itens em ordem alfabética</string>
 </resources>

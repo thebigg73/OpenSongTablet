@@ -851,4 +851,8 @@
     <string name="air_turn_long_press_time">Lang druk wag tyd</string>
     <string name="air_turn_long_press_info">Wanneer jy \'n pedaal gebruik wat nie langdrukaksies stuur nie, kan jy dit simuleer deur \'n verlangde lang druktyd in te stel</string>
     <string name="pedal_warning">Bevestig liedjieverandering deur die pedaal weer te druk nadat hierdie waarskuwing gesluit het</string>
+    <string name="connections_advertise_temporary">Beperk adverteer</string>
+    <string name="connections_advertise_temporary_info">Adverteer slegs vir 10 sekondes nadat u op die adverteer-knoppie geklik het</string>
+    <string name="set_sort">Sorteer stel</string>
+    <string name="alphabetical_sort">Plaas items in alfabetiese volgorde</string>
 </resources>

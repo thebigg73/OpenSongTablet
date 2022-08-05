@@ -26,6 +26,7 @@
     <string name="alert_text">Enter message text</string>
     <string name="alpha">Alpha</string>
     <string name="alphabetical">Alphabetical song index</string>
+    <string name="alphabetical_sort">Put items in alphabetical order</string>
     <string name="app_id" translatable="false">4E2B0891</string>
     <string name="app_name" translatable="false">OpenSongApp</string>
     <string name="appearance_change">Adjusts appearance</string>
@@ -187,6 +188,8 @@
     <string name="connections_advertise">Advertise</string>
     <string name="connections_advertise_info">Advertise your device for others to discover</string>
     <string name="connections_advertise_name">Device being advertised: </string>
+    <string name="connections_advertise_temporary">Limited advertise</string>
+    <string name="connections_advertise_temporary_info">Only advertise for 10 seconds after clicking the advertise button</string>
     <string name="connections_advertising">Advertising…</string>
     <string name="connections_change">Once you have made a connection, you can change between host and client as required</string>
     <string name="connections_connect">Connect devices</string>
@@ -722,6 +725,7 @@
     <string name="set_share_info">Share or export a set with others</string>
     <string name="set_shuffle">Shuffle set</string>
     <string name="set_shuffle_info">Randomise the order of songs in the set</string>
+    <string name="set_sort">Sort set</string>
     <string name="set_x_margin">Horizontal margin size</string>
     <string name="set_y_margin">Vertical margin size</string>
     <string name="settings">Settings</string>
@@ -1212,9 +1216,5 @@ Check out the categories in the right hand options menu.
     <string name="load_preferences">Loading preferences</string>
     <string name="look_for">Look for</string>
     <string name="lyrics_settings">Lyrics settings</string>
-    <string name="alphabetical_sort">Put items in alphabetical order</string>
-    <string name="set_sort">Sort set</string>
-    <string name="connections_advertise_temporary">Limited advertise</string>
-    <string name="connections_advertise_temporary_info">Only advertise for 10 seconds after clicking the advertise button</string>
 
 </resources>

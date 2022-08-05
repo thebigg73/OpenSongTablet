@@ -851,4 +851,8 @@
     <string name="air_turn_long_press_time">長押し待ち時間</string>
     <string name="air_turn_long_press_info">長押しアクションを送信しないペダルを使用する場合は、希望の長押し時間を設定することでこれをシミュレートできます。</string>
     <string name="pedal_warning">この警告が消えたら、もう一度ペダルを踏んで曲の変更を確認してください</string>
+    <string name="connections_advertise_temporary">限定広告</string>
+    <string name="connections_advertise_temporary_info">広告ボタンをクリックしてから 10 秒間だけ広告を掲載する</string>
+    <string name="set_sort">ソートセット</string>
+    <string name="alphabetical_sort">項目をアルファベット順に並べる</string>
 </resources>

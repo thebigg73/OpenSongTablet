@@ -851,4 +851,8 @@
     <string name="air_turn_long_press_info">Używając pedału, który nie wysyła akcji długich naciśnięć, można to zasymulować, ustawiając żądany czas długiego naciśnięcia</string>
     <string name="air_turn_long_press_time">Długie naciśnięcie czasu oczekiwania!</string>
     <string name="pedal_warning">Potwierdź zmianę utworu, naciskając pedał ponownie po zamknięciu tego ostrzeżenia</string>
+    <string name="connections_advertise_temporary">Ograniczona reklama</string>
+    <string name="alphabetical_sort">Ułóż elementy w kolejności alfabetycznej</string>
+    <string name="set_sort">Sortuj zestaw</string>
+    <string name="connections_advertise_temporary_info">Reklamuj się tylko przez 10 sekund po kliknięciu przycisku anonsu</string>
 </resources>

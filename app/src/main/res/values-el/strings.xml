@@ -851,4 +851,8 @@
     <string name="air_turn_long_press_info">Όταν χρησιμοποιείτε ένα πεντάλ που δεν στέλνει ενέργειες παρατεταμένου πατήματος, μπορείτε να το προσομοιώσετε ορίζοντας τον επιθυμητό χρόνο παρατεταμένου πάτημας</string>
     <string name="air_turn_long_press_time">Χρόνος αναμονής για παρατεταμένο πάτημα</string>
     <string name="pedal_warning">Επιβεβαιώστε την αλλαγή τραγουδιού πατώντας ξανά το πεντάλ αφού κλείσει αυτή η προειδοποίηση</string>
+    <string name="connections_advertise_temporary">Περιορισμένη διαφήμιση</string>
+    <string name="alphabetical_sort">Βάλτε τα στοιχεία σε αλφαβητική σειρά</string>
+    <string name="set_sort">Σύνολο ταξινόμησης</string>
+    <string name="connections_advertise_temporary_info">Διαφημιστείτε μόνο για 10 δευτερόλεπτα αφού κάνετε κλικ στο κουμπί διαφήμιση</string>
 </resources>
