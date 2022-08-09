@@ -13,8 +13,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:dropDownHeight="200dp"
+        android:textAppearance="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
         android:padding="16dp"
         android:background="@null"
         tools:text="Text"/>
-
 </com.google.android.material.textfield.TextInputLayout>

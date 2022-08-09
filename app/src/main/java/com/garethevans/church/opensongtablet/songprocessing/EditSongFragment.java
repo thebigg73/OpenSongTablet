@@ -2,6 +2,8 @@ package com.garethevans.church.opensongtablet.songprocessing;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +19,9 @@ import com.garethevans.church.opensongtablet.interfaces.EditSongFragmentInterfac
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.tabs.TabLayoutMediator;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 // When we edit a song, we create a write the current song to tempSong in MainActivity
 // We compare the two objects to look for changes and save if requested
@@ -124,7 +129,9 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
 
     private void doSaveChanges() {
         // Send this off for processing in a new Thread
-        new Thread(() -> {
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            Handler handler = new Handler(Looper.getMainLooper());
             // If we were editing the lyrics as ChoPro, convert to OpenSong
             if (mainActivityInterface.getTempSong().getEditingAsChoPro()) {
                 String lyrics = mainActivityInterface.getTempSong().getLyrics();
@@ -134,11 +141,11 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
             }
             if (mainActivityInterface.getSaveSong().doSave(mainActivityInterface.getTempSong())) {
                 // If successful, go back to the home page.  Otherwise stay here and await user decision from toast
-                requireActivity().runOnUiThread(() -> mainActivityInterface.navHome());
+                handler.post(() -> mainActivityInterface.navHome());
             } else {
-                mainActivityInterface.getShowToast().doIt(requireContext().getString(R.string.not_saved));
+                handler.post(() -> mainActivityInterface.getShowToast().doIt(requireContext().getString(R.string.not_saved)));
             }
-        }).start();
+        });
     }
 
     @Override

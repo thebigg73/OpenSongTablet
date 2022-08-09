@@ -21,7 +21,6 @@
                 android:layout_height="wrap_content"
                 android:text="@string/pad"
                 android:hint="@string/actions_current_song" />
-
             <TableRow style="@style/DividerLine" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialTextView
@@ -30,7 +29,6 @@
                 android:layout_height="wrap_content"
                 android:text="@string/custom"
                 android:hint="@string/pad_custom_short" />
-
             <TableRow style="@style/DividerLine" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialTextView
@@ -39,9 +37,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/settings"
                 android:hint="@string/pad_settings_info" />
-
             <TableRow style="@style/DividerLine" />
-
         </LinearLayout>
     </com.garethevans.church.opensongtablet.customviews.NestedScrollWithFAB>
 
@@ -54,5 +50,4 @@
         android:contentDescription="@string/start_stop_pad"
         android:src="@drawable/play"
         app:useCompatPadding="false" />
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

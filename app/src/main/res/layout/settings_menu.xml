@@ -32,7 +32,6 @@
                 app:heading="@string/menu_song_order"
                 app:textLeft="@string/filename"
                 app:textRight="@string/title"/>
-
             <TableRow style="@style/DividerLine" />
 
             <com.google.android.material.switchmaterial.SwitchMaterial
@@ -51,7 +50,6 @@
                 android:text="@string/size"
                 android:valueFrom="6.0"
                 android:valueTo="24.0" />
-
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </LinearLayout>

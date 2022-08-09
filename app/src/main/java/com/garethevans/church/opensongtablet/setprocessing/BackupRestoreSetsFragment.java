@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,6 +34,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
@@ -158,7 +162,9 @@ public class BackupRestoreSetsFragment extends Fragment {
 
             // Get a list of the sets in the zip file (alphabetically)
             // Do this in a new Thread
-            new Thread(() -> {
+            ExecutorService executorService = Executors.newSingleThreadExecutor();
+            executorService.execute(() -> {
+                Handler handler = new Handler(Looper.getMainLooper());
                 ArrayList<String> setList = new ArrayList<>();
 
                 InputStream inputStream;
@@ -189,13 +195,13 @@ public class BackupRestoreSetsFragment extends Fragment {
                         e.printStackTrace();
                     }
 
-                    requireActivity().runOnUiThread(() -> {
+                    handler.post(() -> {
                         // Add the checkboxes
                         addCheckBoxes(setList);
                         myView.progressBar.setVisibility(View.GONE);
                     });
                 }
-            }).start();
+            });
         }
     }
 
@@ -256,7 +262,9 @@ public class BackupRestoreSetsFragment extends Fragment {
         backupFilename = myView.backupName.getText().toString();
 
         // Do the main lifting in a new thread
-        new Thread(() -> {
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            Handler handler = new Handler(Looper.getMainLooper());
             if (backupFilename.isEmpty()) {
                 backupFilename = "OpenSongSetBackup.osbs";
             }
@@ -296,14 +304,14 @@ public class BackupRestoreSetsFragment extends Fragment {
                 e.printStackTrace();
             }
 
-            requireActivity().runOnUiThread(() -> {
+            handler.post(() -> {
                 if (myView!=null) {
                     myView.progressBar.setVisibility(View.GONE);
                 }
                 Intent intent = mainActivityInterface.getExportActions().exportBackup(backupUri, backupFilename);
                 startActivity(Intent.createChooser(intent, getString(R.string.backup_info)));
             });
-        }).start();
+        });
 
     }
 
@@ -314,7 +322,9 @@ public class BackupRestoreSetsFragment extends Fragment {
         success = false;
         boolean overwrite = myView.overWrite.isChecked();
 
-        new Thread(() -> {
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            Handler handler = new Handler(Looper.getMainLooper());
             // Get a note of the chosen sets
             getChosenSets();
 
@@ -346,7 +356,7 @@ public class BackupRestoreSetsFragment extends Fragment {
                 success = false;
             }
 
-            requireActivity().runOnUiThread(() -> {
+            handler.post(() -> {
                 myView.progressBar.setVisibility(View.GONE);
                 if (success) {
                     mainActivityInterface.getShowToast().doIt(getString(R.string.success));
@@ -354,8 +364,7 @@ public class BackupRestoreSetsFragment extends Fragment {
                     mainActivityInterface.getShowToast().doIt(getString(R.string.error));
                 }
             });
-
-        }).start();
+        });
     }
 
     private void getChosenSets() {

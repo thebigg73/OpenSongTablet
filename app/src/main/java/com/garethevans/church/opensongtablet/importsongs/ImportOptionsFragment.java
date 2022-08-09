@@ -37,7 +37,6 @@ public class ImportOptionsFragment extends Fragment {
     private SettingsImportBinding myView;
     private final String[] validFiles = new String[] {"text/plain","image/*","text/xml","application/xml","application/pdf","application/octet-stream"};
     private final String[] validBackups = new String[] {"application/zip","application/octet-stream","application/*"};
-    private Thread thread;
     private ActivityResultLauncher<Intent> activityResultLauncher;
     private ActivityResultLauncher<String> cameraPermission;
     private ActivityResultLauncher<Uri> takePhoto;
@@ -179,21 +178,13 @@ public class ImportOptionsFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        killThread();
+
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        killThread();
         myView = null;
-    }
-
-    private void killThread() {
-        if (thread!=null) {
-            thread.interrupt();
-            thread = null;
-        }
     }
 
 }

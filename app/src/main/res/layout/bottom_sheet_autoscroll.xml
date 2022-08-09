@@ -59,7 +59,6 @@
                     android:hint="@string/autoscroll_time"
                     android:inputType="number"
                     app:suffixText="secs" />
-
             </LinearLayout>
 
             <com.google.android.material.button.MaterialButton
@@ -75,7 +74,6 @@
                 android:layout_height="wrap_content"
                 android:text="@string/timer_learn"
                 android:visibility="gone"/>
-
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </LinearLayout>

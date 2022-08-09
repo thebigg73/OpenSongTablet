@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
@@ -72,6 +73,7 @@ import com.garethevans.church.opensongtablet.controls.Swipes;
 import com.garethevans.church.opensongtablet.customslides.CustomSlide;
 import com.garethevans.church.opensongtablet.customslides.CustomSlideFragment;
 import com.garethevans.church.opensongtablet.customviews.DrawNotes;
+import com.garethevans.church.opensongtablet.customviews.MyToolbar;
 import com.garethevans.church.opensongtablet.databinding.ActivityBinding;
 import com.garethevans.church.opensongtablet.export.ExportActions;
 import com.garethevans.church.opensongtablet.export.PrepareFormats;
@@ -110,9 +112,7 @@ import com.garethevans.church.opensongtablet.preferences.ProfileActions;
 import com.garethevans.church.opensongtablet.presenter.PresenterFragment;
 import com.garethevans.church.opensongtablet.presenter.PresenterSettings;
 import com.garethevans.church.opensongtablet.presenter.SongSectionsFragment;
-import com.garethevans.church.opensongtablet.screensetup.AppActionBar;
 import com.garethevans.church.opensongtablet.screensetup.BatteryStatus;
-import com.garethevans.church.opensongtablet.screensetup.DoVibrate;
 import com.garethevans.church.opensongtablet.screensetup.FontSetupFragment;
 import com.garethevans.church.opensongtablet.screensetup.ShowToast;
 import com.garethevans.church.opensongtablet.screensetup.ThemeColors;
@@ -157,6 +157,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 // TODO TIDY UP
 public class MainActivity extends AppCompatActivity implements MainActivityInterface,
@@ -169,7 +171,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     // The helpers sorted alphabetically
     private ABCNotation abcNotation;
     private AlertChecks alertChecks;
-    private AppActionBar appActionBar;
+    //private CustomToolBar customToolBar;
     private Autoscroll autoscroll;
     private Bible bible;
     private CCLILog ccliLog;
@@ -184,7 +186,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private CustomAnimation customAnimation;
     private CustomSlide customSlide;
     private DisplayPrevNext displayPrevNext;
-    private DoVibrate doVibrate;
     private DrawNotes drawNotes;
     private ExportActions exportActions;
     private FixLocale fixLocale;
@@ -237,7 +238,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private NearbyConnectionsFragment nearbyConnectionsFragment;
     private PedalsFragment pedalsFragment;
     private ViewPager2 viewPager;
-    private ActionBar actionBar;
     private AppBarConfiguration appBarConfiguration;
     private SecondaryDisplay[] secondaryDisplays;
     private Display[] connectedDisplays;
@@ -304,7 +304,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         if (fileOpenIntent!=null && fileOpenIntent.getData()!=null) {
             importUri = fileOpenIntent.getData();
             // We need to copy this file to our temp storage for now to have later permission
-            InputStream inputStream = null;
+            InputStream inputStream;
             try {
                 inputStream = getContentResolver().openInputStream(importUri);
                 importFilename = storageAccess.getFileNameFromUri(importUri);
@@ -357,7 +357,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             return insets;
         });
 
-
         // The song stuff
         songListBuildIndex = new SongListBuildIndex(this);
 
@@ -371,7 +370,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         fixLocale = new FixLocale();
         checkInternet = new CheckInternet();
         nearbyConnections = new NearbyConnections(this);
-        doVibrate = new DoVibrate();
         customAnimation = new CustomAnimation();
         webDownload = new WebDownload();
         alertChecks = new AlertChecks(this);
@@ -439,32 +437,31 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
 
     private void setupActionbar() {
-        setSupportActionBar(myView.toolBar.myToolbar);
-            actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
+        setSupportActionBar(myView.myToolbar);
     }
 
     @Override
-    public void showHideActionBar() {
-        // This moves the content depending on the actionbar height (0 if autohide)
-        if (settingsOpen) {
-            myView.fragmentView.setPadding(0,actionBar.getHeight(),0,0);
+    public void showActionBar() {
+        boolean contentBehind = myView.myToolbar.contentBehind(settingsOpen||menuOpen);
+        Log.d(TAG,"contentBehind="+contentBehind);
+        moveContentForActionBar(contentBehind);
+        myView.myToolbar.showActionBar(settingsOpen||menuOpen);
+    }
+
+    @Override
+    public void moveContentForActionBar(boolean contentBehind) {
+        if (contentBehind) {
+            myView.fragmentView.setPadding(0, 0,0,0);
         } else {
-            myView.fragmentView.setPadding(0,appActionBar.getActionBarHeight(),0,0);
+            myView.fragmentView.setPadding(0,myView.myToolbar.getActionBarHeight(true),0,0);
         }
-        appActionBar.showActionBar(settingsOpen||menuOpen);
     }
 
     private void setupViews() {
         windowFlags = new WindowFlags(this.getWindow());
-        appActionBar = new AppActionBar(this,this,actionBar, myView.toolBar.myToolbar,
-                myView.toolBar.inSet, myView.toolBar.songtitleAb, myView.toolBar.songauthorAb,
-                myView.toolBar.songkeyAb, myView.toolBar.songcapoAb, myView.toolBar.digitalclock,
-                myView.toolBar.webHelp);
+        myView.myToolbar.initialiseToolbar(this,this, getSupportActionBar());
         pageButtons.setMainFABS(
-                myView.pageButtonRight.actionFAB, myView.pageButtonRight.custom1Button,
+                myView.actionFAB, myView.pageButtonRight.custom1Button,
                 myView.pageButtonRight.custom2Button,myView.pageButtonRight.custom3Button,
                 myView.pageButtonRight.custom4Button,myView.pageButtonRight.custom5Button,
                 myView.pageButtonRight.custom6Button,myView.pageButtonRight.bottomButtons);
@@ -481,6 +478,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
     @Override
     public void initialiseActivity() {
+        // This is called after successfully passing BootUpFragment
+
         // Set up song / set menu tabs
         setUpSongMenuTabs();
 
@@ -525,7 +524,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         setTypeFace.setUpAppFonts(new Handler(),new Handler(),new Handler(),new Handler(),new Handler());
     }
     private void setListeners() {
-        myView.pageButtonRight.actionFAB.setOnClickListener(v  -> {
+        myView.actionFAB.setOnClickListener(v  -> {
             if (pageButtonActive) {
                 pageButtonActive = false;
                 Handler h = new Handler();
@@ -533,7 +532,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 animatePageButtons();
             }
         });
-        myView.pageButtonRight.actionFAB.setOnLongClickListener(view -> {
+        myView.actionFAB.setOnLongClickListener(view -> {
             navigateToFragment(getString(R.string.deeplink_page_buttons),0);
             return true;
         });
@@ -573,7 +572,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 if (setSongMenuFragment()) {
                     showTutorial("songsetMenu",null);
                 }
-                showHideActionBar();
                 // Hide the keyboard by forcing immersive
                 forceImmersive();
                 myView.menuTop.versionCode.requestFocus();
@@ -587,7 +585,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 }
                 // Hide the keyboard by forcing immersive
                 windowFlags.forceImmersive();
-                showHideActionBar();
             }
 
             @Override
@@ -676,9 +673,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     // Navigation logic
     private void setupNavigation() {
+        Log.d(TAG, "setUpNavigation()");
         navHostFragment =
                 (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
-        if (navHostFragment!=null) {
+        if (navHostFragment != null) {
             navController = navHostFragment.getNavController();
         }
         // Passing each menu ID as a set of Ids because each
@@ -687,19 +685,21 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 R.id.performanceFragment, R.id.presenterFragment)
                 .setOpenableLayout(myView.drawerLayout)
                 .build();
-
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+        NavigationUI.setupActionBarWithNavController(this,navController,appBarConfiguration);
+        NavigationUI.setupWithNavController(myView.myToolbar, navController, appBarConfiguration);
 
     }
+
     @Override
     public void navigateToFragment(String deepLink, int id) {
         // Either sent a deeplink string, or a fragment id
         lockDrawer(true);
         closeDrawer(true);  // Only the Performance and Presenter fragments allow this.  Switched on in these fragments
         hideActionButton(true);
+        showActionBar();
         runOnUiThread(() -> {
             try {
-                if (deepLink!=null) {
+                if (deepLink != null) {
                     navController.navigate(Uri.parse(deepLink));
                 } else {
                     navController.navigate(id);
@@ -821,14 +821,33 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         if (navController.getCurrentDestination()!=null) {
             navController.popBackStack(Objects.requireNonNull(navController.getCurrentDestination()).getId(), true);
         }
-        // If we were in bootfragment, the toolbar was translated -200 out of the way (calls to hide didn't work)
-        appActionBar.translateAwayActionBar(false);
         if (whichMode.equals("Presenter")) {
             navigateToFragment(getString(R.string.deeplink_presenter),0);
         } else {
             navigateToFragment(getString(R.string.deeplink_performance),0);
         }
         settingsOpen = false;
+        showMenuItems(true);
+    }
+    private void showMenuItems(boolean show) {
+        Log.d(TAG,"showMenuItems("+show+")");
+        if (show) {
+            if (screenMirror!=null) {
+                screenMirror.setVisibility(View.VISIBLE);
+            }
+            myView.myToolbar.showClock(true);
+            if (batteryStatus!=null) {
+                batteryStatus.showBattery(true);
+            }
+        } else {
+            if (screenMirror!=null) {
+                screenMirror.setVisibility(View.GONE);
+            }
+            myView.myToolbar.showClock(false);
+            if (batteryStatus!=null) {
+                batteryStatus.showBattery(false);
+            }
+        }
     }
     @Override
     public boolean onSupportNavigateUp() {
@@ -843,6 +862,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     private boolean isCurrentFragment(int fragId) {
         runOnUiThread(() -> getSupportFragmentManager().executePendingTransactions());
+
         int currFrag = -1;
         if (navController!=null && navController.getCurrentDestination()!=null) {
             currFrag = navController.getCurrentDestination().getId();
@@ -1020,69 +1040,49 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     public void hideActionButton(boolean hide) {
         runOnUiThread(() -> {
             if (hide) {
-                myView.pageButtonRight.actionFAB.setVisibility(View.GONE);
+                myView.actionFAB.setVisibility(View.GONE);
                 myView.pageButtonRight.bottomButtons.setVisibility(View.GONE);
                 myView.onScreenInfo.getInfo().setVisibility(View.GONE);
                 myView.nextPrevInfo.nextPrevInfoLayout.setVisibility(View.GONE);
 
             } else {
-                myView.pageButtonRight.actionFAB.setVisibility(View.VISIBLE);
+                myView.actionFAB.setVisibility(View.VISIBLE);
                 myView.pageButtonRight.bottomButtons.setVisibility(View.VISIBLE);
                 myView.onScreenInfo.getInfo().setVisibility(View.VISIBLE);
                 if (displayPrevNext.getShowPrev() || displayPrevNext.getShowNext()) {
                     myView.nextPrevInfo.nextPrevInfoLayout.setVisibility(View.VISIBLE);
                 }
                 // Do this with a delay
-                customAnimation.fadeActionButton(myView.pageButtonRight.actionFAB, themeColors.getPageButtonsSplitAlpha());
+                customAnimation.fadeActionButton(myView.actionFAB, themeColors.getPageButtonsSplitAlpha());
             }
         });
     }
     @Override
-    public void hideActionBar(boolean hide) {
-        if (hide) {
-            if (getSupportActionBar()!=null) {
-                getSupportActionBar().hide();
-            }
-        } else {
-            if (getSupportActionBar()!=null) {
-                getSupportActionBar().show();
-            }
-        }
-
+    public void hideActionBar() {
+        //getSupportActionBar().hide();
+        //myView.myToolbar.justShowOrHide(!hide);
+        Log.d(TAG,"hideActionBar");
     }
     @Override
     public void updateToolbar(String what) {
         // Null titles are for the default song, author, etc.
         // Otherwise a new title is passed as a string (in a settings menu)
         windowFlags.setImmersive(true);
-        appActionBar.setActionBar(what);
-        menuIconVisibility(what == null || (getMode().equals("Presenter") && !settingsOpen));
-        myView.fragmentView.setTop(appActionBar.getActionBarHeight());
+        myView.myToolbar.setActionBar(what);
+        myView.fragmentView.setTop(myView.myToolbar.getActionBarHeight(settingsOpen||menuOpen));
     }
+
     @Override
     public void updateToolbarHelp(String webAddress) {
         // Null or empty web addresses hide the webHelp button
-        appActionBar.updateToolbarHelp(webAddress);
-    }
-    private void menuIconVisibility(boolean isVisible) {
-        try {
-            if (isVisible) {
-                screenMirror.setVisibility(View.VISIBLE);
-                myView.toolBar.batteryholder.setVisibility(View.VISIBLE);
-            } else {
-                screenMirror.setVisibility(View.GONE);
-                myView.toolBar.batteryholder.setVisibility(View.GONE);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        myView.myToolbar.updateToolbarHelp(webAddress);
     }
 
     @Override
     public void updateActionBarSettings(String prefName, float floatval, boolean isvisible) {
         // If the user changes settings from the ActionBarSettingsFragment, they get sent here to deal with
         // So let's pass them on to the AppActionBar helper
-        appActionBar.updateActionBarSettings(prefName,floatval,isvisible);
+        myView.myToolbar.updateActionBarSettings(prefName,floatval,isvisible);
     }
     @Override
     public void showTutorial(String what, ArrayList<View> viewsToHighlight) {
@@ -1098,13 +1098,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             default:
                 whichShowcase = "performanceMode";
                 // The hamburger (song/set menu)
-                if (myView.toolBar.getRoot().getChildCount() > 2) {
-                    final View view = myView.toolBar.getRoot().getChildAt(2);
+                if (myView.myToolbar.getChildCount() > 2) {
+                    final View view = myView.myToolbar.getChildAt(2);
                     targets.add(view);
                     infos.add("Open the menu to view and manage your songs and sets");
                 } else {
-                    for (int i = 0; i < myView.toolBar.getRoot().getChildCount(); ++i) {
-                        final View child = myView.toolBar.getRoot().getChildAt(i);
+                    for (int i = 0; i < myView.myToolbar.getChildCount(); ++i) {
+                        final View child = myView.myToolbar.getChildAt(i);
                         if (child != null && child.getClass().toString().contains("ImageView")) {
                             targets.add(child);
                             infos.add("Open the menu to view and manage your songs and sets");
@@ -1116,7 +1116,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 infos.add(getString(R.string.extra_settings));
                 rects.add(false);
                 rects.add(false);
-                targets.add(myView.pageButtonRight.actionFAB);
+                targets.add(myView.actionFAB);
                 infos.add(getString(R.string.action_button_info));
                 rects.add(false);
                 break;
@@ -1124,13 +1124,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             case "presenterSongs":
                 whichShowcase = "presenterSongs";
                 // The hamburger (song/set menu)
-                if (myView.toolBar.getRoot().getChildCount() > 2) {
-                    final View view = myView.toolBar.getRoot().getChildAt(2);
+                if (myView.myToolbar.getChildCount() > 2) {
+                    final View view = myView.myToolbar.getChildAt(2);
                     targets.add(view);
                     infos.add("Open the menu to view and manage your songs and sets");
                 } else {
-                    for (int i = 0; i < myView.toolBar.getRoot().getChildCount(); ++i) {
-                        final View child = myView.toolBar.getRoot().getChildAt(i);
+                    for (int i = 0; i < myView.myToolbar.getChildCount(); ++i) {
+                        final View child = myView.myToolbar.getChildAt(i);
                         if (child != null && child.getClass().toString().contains("ImageView")) {
                             targets.add(child);
                             infos.add("Open the menu to view and manage your songs and sets");
@@ -1202,7 +1202,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        showHideActionBar();
+        //showActionBar();
         if ("Settings".equals(item.toString())) {
             if (settingsOpen) {
                 settingsOpen = false;
@@ -1210,6 +1210,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             } else {
                 navigateToFragment(getString(R.string.deeplink_preferences), 0);
                 settingsOpen = true;
+                showMenuItems(false);
             }
         }
         return super.onOptionsItemSelected(item);
@@ -1219,17 +1220,15 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     public void refreshMenuItems() {
         invalidateOptionsMenu();
     }
+
     @SuppressLint("PrivateResource")
     @Override
     public boolean onCreateOptionsMenu(@NonNull Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.mainactivitymenu, menu);
-
         screenMirror = (ImageView) menu.findItem(R.id.mirror_menu_item).getActionView();
         screenMirror.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.cast));
         screenMirror.setOnClickListener(view -> startActivity(new Intent("android.settings.CAST_SETTINGS")));
-        myView.toolBar.batteryholder.setOnClickListener(view -> navigateToFragment(getString(R.string.deeplink_actionbar),0));
-
         return true;
     }
 
@@ -1240,7 +1239,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
     @Override
     public ActionBar getMyActionBar() {
-        return actionBar;
+        return null;
     }
     @Override
     public void lockDrawer(boolean lock) {
@@ -1248,12 +1247,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         if (myView != null) {
             if (lock) {
                 settingsOpen = true;
+                showMenuItems(false);
                 myView.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
             } else {
                 settingsOpen = false;
                 myView.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
             }
-            showHideActionBar();
+            //showActionBar();
         }
     }
     @Override
@@ -1270,6 +1270,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public boolean getMenuOpen() {
         return menuOpen;
+    }
+    @Override
+    public boolean needActionBar() {
+        return menuOpen||settingsOpen;
     }
     @Override
     public void scrollOpenMenu(boolean scrollDown) {
@@ -1344,18 +1348,20 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
     @Override
     public void indexSongs() {
-        new Thread(() -> {
-            runOnUiThread(() -> showToast.doIt(getString(R.string.search_index_start)));
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            Handler handler = new Handler(Looper.getMainLooper());
+            handler.post(() -> showToast.doIt(getString(R.string.search_index_start)));
             songListBuildIndex.setIndexComplete(false);
             songListBuildIndex.fullIndex();
-            runOnUiThread(() -> {
+            handler.post(() -> {
                 songListBuildIndex.setIndexRequired(false);
                 songListBuildIndex.setIndexComplete(true);
                 showToast.doIt(getString(R.string.search_index_end));
                 updateSongMenu(song);
-                updateFragment("set_updateKeys",null,null);
+                updateFragment("set_updateKeys", null, null);
             });
-        }).start();
+        });
     }
     @Override
     public void moveToSongInSongMenu() {
@@ -1450,17 +1456,17 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     // Page buttons
     private void animatePageButtons() {
-        float rotation = myView.pageButtonRight.actionFAB.getRotation();
+        float rotation = myView.actionFAB.getRotation();
         pageButtons.animatePageButton(rotation == 0);
     }
     @Override
     public void updatePageButtonLayout() {
         // We have changed something about the page buttons (or initialising them
-        if (myView.pageButtonRight.actionFAB.getRotation()!=0) {
+        if (myView.actionFAB.getRotation()!=0) {
             pageButtons.animatePageButton(false);
         }
         pageButtons.updateColors();
-        pageButtons.setPageButton(myView.pageButtonRight.actionFAB, -1, false);
+        pageButtons.setPageButton(myView.actionFAB, -1, false);
         for (int x=0; x<6; x++) {
             pageButtons.setPageButton(pageButtons.getFAB(x), x, false);
         }
@@ -2033,7 +2039,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     public void fullIndex() {
         if (fullIndexRequired) {
             showToast.doIt(getString(R.string.search_index_start));
-            new Thread(() -> {
+            ExecutorService executorService = Executors.newSingleThreadExecutor();
+            executorService.execute(() -> {
+                Handler handler = new Handler(Looper.getMainLooper());
                 String outcome = songListBuildIndex.fullIndex();
                 if (songMenuFragment!=null) {
                     try {
@@ -2042,14 +2050,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         e.printStackTrace();
                     }
                 }
-                runOnUiThread(() -> {
+                handler.post(() -> {
                     if (!outcome.isEmpty()) {
                         showToast.doIt(outcome.trim());
                     }
                     updateFragment("set_updateKeys",null,null);
                 });
-
-            }).start();
+            });
         }
     }
 
@@ -2120,11 +2127,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public PerformanceGestures getPerformanceGestures() {
         return performanceGestures;
-    }
-
-    @Override
-    public DoVibrate getDoVibrate() {
-        return doVibrate;
     }
 
     @Override
@@ -2258,9 +2260,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         return transpose;
     }
     @Override
-    public AppActionBar getAppActionBar() {
-        return appActionBar;
+    public MyToolbar getToolbar() {
+        return myView.myToolbar;
     }
+
     @Override
     public Swipes getSwipes() {
         return swipes;
@@ -2693,19 +2696,21 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         // Set the fullscreen window flags]
         setWindowFlags(true);
         if (hasFocus) {
-            appActionBar.showActionBar(settingsOpen);
+            showActionBar();
         }
     }
 
     @Override
     public void setUpBatteryMonitor() {
-        if (actionBar!=null && batteryStatus==null) {
-            batteryStatus = new BatteryStatus(this,myView.toolBar.batteryimage,
-                    myView.toolBar.batterycharge, actionBar);
+        if (batteryStatus==null) {
+            /*batteryStatus = new BatteryStatus(this,myView.myToolbar.getBatteryimage(),
+                    myView.myToolbar.getBatterycharge(), Objects.requireNonNull(getSupportActionBar()).getHeight());
+
+            */
+            batteryStatus = new BatteryStatus(this,myView.myToolbar.getBatteryimage(),
+                    myView.myToolbar.getBatterycharge(), myView.myToolbar.getActionBarHeight(true));
         }
-        if (batteryStatus!=null) {
-            batteryStatus.setUpBatteryMonitor();
-        }
+        batteryStatus.setUpBatteryMonitor();
     }
 
     @Override

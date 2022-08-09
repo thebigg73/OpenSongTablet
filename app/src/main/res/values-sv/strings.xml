@@ -560,7 +560,8 @@
     <string name="pdftotext_extract">"Extrahera text från PDF"</string>
     <string name="pdftotext_found">"Text hittades:"</string>
     <string name="pedal">"Trampa"</string>
-    <string name="pedal_avoid_repeat">Visa en varning innan du går till nästa låt (användbart för att undvika oavsiktliga tryckningar)</string>
+    <string name="pedal_avoid_repeat">Visa en varning innan du går till nästa låt</string>
+    <string name="pedal_avoid_repeat_info">Användbart för att undvika oavsiktliga tryckningar</string>
     <string name="pedal_controls">Ställ in fotpedalknappar och åtgärder</string>
     <string name="pedal_instructions">Klicka på en pedalknapp nedan för att tilldela den till en tangentbordsknapp eller midi not och tilldela åtgärder till den. De flesta Bluetooth-pedaler skickar tangentbordskommandon (t.ex. pil upp/ned).</string>
     <string name="pedal_midi_warning">För att använda en midi-pedal, se till att du har anslutit den med midi-inställningarna i appen först.</string>
@@ -841,7 +842,6 @@
     <string name="volume">"Volym"</string>
     <string name="volume_value">"Aktuellt volymvärde"</string>
     <string name="wait">"Vänta...."</string>
-    <string name="warn_before_changing_song">Visa en varning innan du går till nästa låt (användbart för att undvika oavsiktliga tryck)</string>
     <string name="warning">"Detta alternativ bör endast användas för presentationsläge. Var medveten om att den här funktionen använder mycket minne och kan orsaka kraschar. Du har blivit varnad!"</string>
     <string name="web_search">"Sök internet för den här låten"</string>
     <string name="website">Hemsida</string>
@@ -855,4 +855,5 @@
     <string name="connections_advertise_temporary_info">Annonsera endast i 10 sekunder efter att du klickat på annonsknappen</string>
     <string name="set_sort">Sorteringsuppsättning</string>
     <string name="alphabetical_sort">Placera objekt i alfabetisk ordning</string>
+    <string name="pedal_scroll_before_move_info">Tillåter att nästa och föregående pedaler även fungerar som rullpedaler</string>
 </resources>

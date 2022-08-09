@@ -32,7 +32,6 @@
             android:padding="0dp"
             android:textColor="@color/vlightgrey"
             tools:text="@string/info_text" />
-
     </LinearLayout>
 
     <com.google.android.material.switchmaterial.SwitchMaterial
@@ -42,5 +41,4 @@
         android:layout_gravity="center"
         android:paddingStart="16dp"
         android:paddingEnd="0dp"/>
-
 </LinearLayout>

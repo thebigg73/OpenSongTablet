@@ -29,6 +29,7 @@ import com.garethevans.church.opensongtablet.controls.PedalActions;
 import com.garethevans.church.opensongtablet.controls.Swipes;
 import com.garethevans.church.opensongtablet.customslides.CustomSlide;
 import com.garethevans.church.opensongtablet.customviews.DrawNotes;
+import com.garethevans.church.opensongtablet.customviews.MyToolbar;
 import com.garethevans.church.opensongtablet.export.ExportActions;
 import com.garethevans.church.opensongtablet.export.PrepareFormats;
 import com.garethevans.church.opensongtablet.filemanagement.LoadSong;
@@ -46,9 +47,7 @@ import com.garethevans.church.opensongtablet.performance.PerformanceGestures;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.preferences.ProfileActions;
 import com.garethevans.church.opensongtablet.presenter.PresenterSettings;
-import com.garethevans.church.opensongtablet.screensetup.AppActionBar;
 import com.garethevans.church.opensongtablet.screensetup.BatteryStatus;
-import com.garethevans.church.opensongtablet.screensetup.DoVibrate;
 import com.garethevans.church.opensongtablet.screensetup.ShowToast;
 import com.garethevans.church.opensongtablet.screensetup.ThemeColors;
 import com.garethevans.church.opensongtablet.screensetup.WindowFlags;
@@ -149,13 +148,15 @@ public interface MainActivityInterface {
 
     // Action bar
     ActionBar getMyActionBar();
-    AppActionBar getAppActionBar();
+    MyToolbar getToolbar();
     BatteryStatus getBatteryStatus();
-    void hideActionBar(boolean hide);
-    void showHideActionBar();
+    void hideActionBar();
+    void showActionBar();
     void updateToolbar(String what);
     void updateToolbarHelp(String webAddress);
     void updateActionBarSettings(String prefName, float floatval, boolean isvisible);
+    void moveContentForActionBar(boolean actionBarShowing);
+    boolean needActionBar();
 
     // Page button(s)
     PageButtons getPageButtons();
@@ -224,7 +225,6 @@ public interface MainActivityInterface {
     AlertChecks getAlertChecks();
     TimeTools getTimeTools();
     DisplayPrevNext getDisplayPrevNext();
-    DoVibrate getDoVibrate();
     void displayAreYouSure(String what, String action, ArrayList<String> arguments, String fragName, Fragment callingFragment, Song song);
     void confirmedAction(boolean agree, String what, ArrayList<String> arguments, String fragName, Fragment callingFragment, Song song);
     ShowToast getShowToast();

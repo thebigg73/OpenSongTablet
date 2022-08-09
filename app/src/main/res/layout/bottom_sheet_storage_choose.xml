@@ -33,7 +33,6 @@
                 android:layout_height="wrap_content"
                 android:padding="16dp"
                 android:text="@string/storage_quicktip" />
-
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </LinearLayout>

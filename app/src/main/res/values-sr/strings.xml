@@ -560,7 +560,8 @@
     <string name="pdftotext_extract">Ekstrakt teksta iz PDF-a</string>
     <string name="pdftotext_found">Pronađeno je tekst:</string>
     <string name="pedal">Pedala</string>
-    <string name="pedal_avoid_repeat">Prikaži upozorenje pre prelaska na sledeću pesmu (korisno da se izbegne slučajna pritiskanja)</string>
+    <string name="pedal_avoid_repeat">Prikaži upozorenje pre prelaska na sledeću pesmu</string>
+    <string name="pedal_avoid_repeat_info">Korisno da se izbegne slučajna pritiskanja</string>
     <string name="pedal_controls">Podesite dugmad i radnje nožne pedale</string>
     <string name="pedal_instructions">Kliknite na dugme pedale ispod da biste ga dodelili dugmetu na tastaturi ili midi noti i dodelili mu akcije. Većina Bluetooth pedala šalje komande sa tastature (npr. strelica gore/dole).</string>
     <string name="pedal_midi_warning">Da biste koristili midi pedalu, prvo proverite da li ste je povezali koristeći midi podešavanja u aplikaciji.</string>
@@ -841,7 +842,6 @@
     <string name="volume">Jačina</string>
     <string name="volume_value">Trenutna jačina zvuka</string>
     <string name="wait">Sačekajte....</string>
-    <string name="warn_before_changing_song">Pokažite upozorenje pre prelaska na sledeću pesmu (korisno da izbegnete slučajne pritiske)</string>
     <string name="warning">Ova opcija bi se trebala koristiti samo u modu prezentacije. Obratite pažnju da ova opcija koristi dosta memorije i može uzrokovati obaranje aplikacije. Upozoreni ste!</string>
     <string name="web_search">Pretražiti Internet za trenutnu pesmu</string>
     <string name="website">Veb sajt</string>
@@ -855,4 +855,5 @@
     <string name="connections_advertise_temporary_info">Oglašavajte se samo 10 sekundi nakon što kliknete na dugme za oglašavanje</string>
     <string name="set_sort">Skup za sortiranje</string>
     <string name="alphabetical_sort">Stavite stavke po abecednom redu</string>
+    <string name="pedal_scroll_before_move_info">Omogućava da sledeća i prethodna pedale takođe funkcionišu kao pedale za pomeranje</string>
 </resources>

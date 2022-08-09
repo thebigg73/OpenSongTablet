@@ -5,8 +5,8 @@
     style="@style/DefaultView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="0dp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="0dp">
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/presenterTabs"
@@ -22,70 +22,68 @@
         android:layout_weight="1"
         android:orientation="horizontal">
 
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/viewPager"
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="match_parent"
-        android:soundEffectsEnabled="false"
-        tools:ignore="NestedWeights" />
-
-    <LinearLayout
-        android:id="@+id/sideBit"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="@color/colorAltPrimary"
-        android:layout_marginStart="8dp"
-        android:padding="8dp">
-
-        <com.google.android.material.switchmaterial.SwitchMaterial
-            android:id="@+id/showLogoSide"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:checked="true"
-            android:padding="0dp"
-            android:text="@string/show_logo" />
-
-        <com.google.android.material.switchmaterial.SwitchMaterial
-            android:id="@+id/blankScreenSide"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:checked="false"
-            android:padding="0dp"
-            android:text="@string/blank_screen" />
-
-        <com.google.android.material.switchmaterial.SwitchMaterial
-            android:id="@+id/blackScreenSide"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:checked="false"
-            android:padding="0dp"
-            android:text="@string/black_screen" />
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewPager"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:layout_gravity="center_horizontal">
+            android:soundEffectsEnabled="false"
+            tools:ignore="NestedWeights" />
 
-            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-                android:id="@+id/panicSide"
+        <LinearLayout
+            android:id="@+id/sideBit"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="8dp"
+            android:background="@color/colorAltPrimary"
+            android:orientation="vertical"
+            android:padding="8dp">
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/showLogoSide"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:contentDescription="@string/project"
-                android:gravity="center"
-                android:padding="16dp"
-                android:layout_margin="8dp"
-                android:soundEffectsEnabled="false"
-                android:text="@string/panic"
-                app:icon="@drawable/projector"
-                app:iconGravity="top" />
+                android:checked="true"
+                android:padding="0dp"
+                android:text="@string/show_logo" />
 
-        </FrameLayout>
-    </LinearLayout>
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/blankScreenSide"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                android:padding="0dp"
+                android:text="@string/blank_screen" />
 
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/blackScreenSide"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                android:padding="0dp"
+                android:text="@string/black_screen" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1">
+
+                <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                    android:id="@+id/panicSide"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_margin="8dp"
+                    android:contentDescription="@string/project"
+                    android:gravity="center"
+                    android:padding="16dp"
+                    android:soundEffectsEnabled="false"
+                    android:text="@string/panic"
+                    app:icon="@drawable/projector"
+                    app:iconGravity="top" />
+            </FrameLayout>
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
@@ -96,48 +94,46 @@
         android:background="@color/colorAltPrimary"
         android:orientation="horizontal">
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="1"
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/showLogo"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:checked="true"
+                android:padding="0dp"
+                android:text="@string/show_logo" />
 
-                <com.google.android.material.switchmaterial.SwitchMaterial
-                    android:id="@+id/showLogo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:checked="true"
-                    android:padding="0dp"
-                    android:text="@string/show_logo" />
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/blankScreen"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                android:padding="0dp"
+                android:text="@string/blank_screen" />
 
-                <com.google.android.material.switchmaterial.SwitchMaterial
-                    android:id="@+id/blankScreen"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:checked="false"
-                    android:padding="0dp"
-                    android:text="@string/blank_screen" />
-
-                <com.google.android.material.switchmaterial.SwitchMaterial
-                    android:id="@+id/blackScreen"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:checked="false"
-                    android:padding="0dp"
-                    android:text="@string/black_screen" />
-
-
-            </LinearLayout>
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/blackScreen"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                android:padding="0dp"
+                android:text="@string/black_screen" />
+        </LinearLayout>
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/panicBottom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_margin="8dp"
             android:contentDescription="@string/project"
             android:gravity="center"
             android:padding="16dp"
-            android:layout_margin="8dp"
             android:soundEffectsEnabled="false"
             android:text="@string/panic"
             app:icon="@drawable/projector"

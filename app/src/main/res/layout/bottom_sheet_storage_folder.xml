@@ -83,7 +83,6 @@
                 android:padding="16dp"
                 android:text="@string/export_song_directory"
                 custom:mydrawable="@drawable/list_bullet" />
-
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </LinearLayout>

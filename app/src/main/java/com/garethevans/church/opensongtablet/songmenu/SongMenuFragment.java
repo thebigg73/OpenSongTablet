@@ -3,6 +3,7 @@ package com.garethevans.church.opensongtablet.songmenu;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -28,6 +29,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class SongMenuFragment extends Fragment implements SongListAdapter.AdapterCallback {
 
@@ -110,10 +113,12 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     }
 
     private void setUpExposedDropDowns() {
-        new Thread(() -> {
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            Handler handler = new Handler(Looper.getMainLooper());
             try {
                 keyArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.view_exposed_dropdown_item, getResources().getStringArray(R.array.key_choice));
-                requireActivity().runOnUiThread(() -> {
+                handler.post(() -> {
                     myView.filters.keySearch.setAdapter(keyArrayAdapter);
                     myView.filters.keySearch.addTextChangedListener(new MyTextWatcher("key"));
                     myView.filters.artistSearch.addTextChangedListener(new MyTextWatcher("artist"));
@@ -123,14 +128,16 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }).start();
+        });
     }
 
     public void setFolders() {
-        new Thread(() -> {
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            Handler handler = new Handler(Looper.getMainLooper());
             foundFolders = mainActivityInterface.getSQLiteHelper().getFolders();
             if (getActivity()!=null) {
-                requireActivity().runOnUiThread(() -> {
+                handler.post(() -> {
                     folderArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.view_exposed_dropdown_item, foundFolders);
                     myView.filters.folderSearch.setAdapter(folderArrayAdapter);
                     // folderSearchVal = mainActivityInterface.getSong().getFolder();
@@ -141,7 +148,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                     }
                 });
             }
-        }).start();
+        });
     }
 
     private void fixButtons() {
@@ -279,8 +286,10 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     }
     public void prepareSearch() {
         getSearchVals();
-        new Thread(() -> {
-            requireActivity().runOnUiThread(() -> buttonsEnabled(false));
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            Handler handler = new Handler(Looper.getMainLooper());
+            handler.post(() -> buttonsEnabled(false));
             try {
                 songsFound = mainActivityInterface.getSQLiteHelper().getSongsByFilters(
                         songListSearchByFolder, songListSearchByArtist, songListSearchByKey,
@@ -289,8 +298,8 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            requireActivity().runOnUiThread(this::updateSongList);
-        }).start();
+            handler.post(this::updateSongList);
+        });
     }
 
     public void updateSongList() {
@@ -411,22 +420,28 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         fixButtons();
 
         if (songListAdapter!=null) {
-            new Thread(() -> requireActivity().runOnUiThread(() -> {
-                try {
-                    songListAdapter.notifyItemRangeChanged(0,songListAdapter.getItemCount());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            })).start();
+            ExecutorService executorService = Executors.newSingleThreadExecutor();
+            executorService.execute(() -> {
+                Handler handler = new Handler(Looper.getMainLooper());
+                handler.post(() -> {
+                    try {
+                        songListAdapter.notifyItemRangeChanged(0, songListAdapter.getItemCount());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+            });
         }
     }
 
     public void moveToSongInMenu(Song song) {
         //scroll to the song in the song menu
         try {
-            new Thread(() -> {
+            ExecutorService executorService = Executors.newSingleThreadExecutor();
+            executorService.execute(() -> {
+                Handler handler = new Handler(Looper.getMainLooper());
                 if (songListLayoutManager!=null) {
-                    requireActivity().runOnUiThread(() -> {
+                    handler.post(() -> {
                         try {
                             songListLayoutManager.scrollToPositionWithOffset(songListAdapter.getPositionOfSong(song),0);
                         } catch (Exception e) {
@@ -434,7 +449,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                         }
                     });
                 }
-            }).start();
+            });
         } catch (Exception e) {
             e.printStackTrace();
         }

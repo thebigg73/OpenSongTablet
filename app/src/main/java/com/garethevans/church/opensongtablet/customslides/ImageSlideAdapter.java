@@ -180,7 +180,7 @@ public class ImageSlideAdapter  extends RecyclerView.Adapter<ImageSlideViewHolde
     private void onTouchAction() {
         mainActivityInterface.getDisplayPrevNext().showAndHide();
         mainActivityInterface.updateOnScreenInfo("showhide");
-        mainActivityInterface.showHideActionBar();
+        mainActivityInterface.showActionBar();
     }
 
     public void sectionSelected(int position) {

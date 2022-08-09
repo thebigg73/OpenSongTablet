@@ -26,9 +26,7 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/connections_device_name"
                     android:text="@string/connections_device_name" />
-
                 <TableRow style="@style/DividerLine" />
-
 
                 <com.garethevans.church.opensongtablet.customviews.MaterialTextView
                     android:layout_width="match_parent"
@@ -67,9 +65,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:text="@string/connections_actasclient" />
-
                 </LinearLayout>
-
                 <TableRow style="@style/DividerLine" />
 
                 <LinearLayout
@@ -120,7 +116,6 @@
                         android:layout_weight="1"
                         android:padding="4dp"
                         android:text="@string/connections_discover" />
-
                 </LinearLayout>
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>

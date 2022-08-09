@@ -19,6 +19,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/autoscale" />
+
             <!--Autoscroll on/off-->
             <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
                 android:id="@+id/useAutoscale"
@@ -65,7 +66,6 @@
                     android:text="@string/maximise_columns"
                     android:hint="@string/maximise_columns_info"/>
 
-
                 <com.garethevans.church.opensongtablet.customviews.MaterialSlider
                     android:id="@+id/maxFontSize"
                     android:layout_width="match_parent"
@@ -106,9 +106,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
                     android:text="@string/override_widthautoscale" />
-
             </LinearLayout>
-
             <TableRow style="@style/DividerLine" />
 
             <!--Scale headings-->

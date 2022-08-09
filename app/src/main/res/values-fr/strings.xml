@@ -560,7 +560,8 @@
     <string name="pdftotext_extract">"Extrait du texte de PDF"</string>
     <string name="pdftotext_found">"Texte trouvé:"</string>
     <string name="pedal">"Pédale"</string>
-    <string name="pedal_avoid_repeat">Afficher un avertissement avant de passer à la chanson suivante (utile pour éviter les appuis accidentels)</string>
+    <string name="pedal_avoid_repeat">Afficher un avertissement avant de passer à la chanson suivante</string>
+    <string name="pedal_avoid_repeat_info">Utile pour éviter les appuis accidentels</string>
     <string name="pedal_controls">Configurer les boutons et les actions de la pédale</string>
     <string name="pedal_instructions">Cliquez sur un bouton de pédale ci-dessous pour l\'assigner à un bouton de clavier ou à une note midi et lui assigner des actions. La plupart des pédales Bluetooth envoient des commandes au clavier (par exemple, flèche haut/bas).</string>
     <string name="pedal_midi_warning">Pour utiliser une pédale midi, assurez-vous d\'abord de l\'avoir connectée à l\'aide des paramètres midi de l\'application.</string>
@@ -841,7 +842,6 @@
     <string name="volume">"Volume"</string>
     <string name="volume_value">"Valeur du volume actuel"</string>
     <string name="wait">"Attendez ...."</string>
-    <string name="warn_before_changing_song">Afficher un avertissement avant de passer à la chanson suivante (utile pour éviter les pressions accidentelles)</string>
     <string name="warning">"Cette option ne doit être utilisé pour le mode de présentation. Soyez conscient que cette fonction utilise beaucoup de mémoire et peut causer des accidents. Vous aurez été prévenu!"</string>
     <string name="web_search">"Rechercher la chanson actuelle sur YouTube"</string>
     <string name="website">Site Internet</string>
@@ -855,4 +855,5 @@
     <string name="alphabetical_sort">Mettre les éléments par ordre alphabétique</string>
     <string name="set_sort">Trier l\'ensemble</string>
     <string name="connections_advertise_temporary_info">Ne faites de la publicité que pendant 10 secondes après avoir cliqué sur le bouton de publicité</string>
+    <string name="pedal_scroll_before_move_info">Permet aux pédales suivantes et précédentes de fonctionner également comme pédales de défilement</string>
 </resources>

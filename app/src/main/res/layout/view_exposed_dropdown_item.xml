@@ -5,5 +5,4 @@
     android:layout_height="wrap_content"
     android:ellipsize="end"
     android:padding="16dp"
-    android:maxLines="1"
-    android:background="@null"/>
+    android:maxLines="1"/>

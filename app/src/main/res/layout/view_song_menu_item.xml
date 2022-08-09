@@ -57,7 +57,6 @@
                 android:paddingBottom="16dp"
                 android:minWidth="0dp"
                 android:minHeight="0dp"/>
-
         </LinearLayout>
 
         <TableRow style="@style/DividerLine"

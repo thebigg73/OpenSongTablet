@@ -51,10 +51,8 @@
                 android:valueTo="22"
                 app:stepSize="1"
                 android:padding="0dp"/>
-
             <TableRow style="@style/DividerLine"/>
         </LinearLayout>
-
 
         <TextView
             android:layout_width="match_parent"
@@ -103,7 +101,6 @@
                 android:valueTo="16"
                 app:stepSize="1"
                 android:padding="0dp"/>
-
             <TableRow style="@style/DividerLine"/>
         </LinearLayout>
 
@@ -157,7 +154,6 @@
                     android:valueTo="16"
                     app:stepSize="1"
                     android:padding="0dp"/>
-
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

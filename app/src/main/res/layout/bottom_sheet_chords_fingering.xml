@@ -46,7 +46,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     app:columnCount="3" />
-
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
     </LinearLayout>

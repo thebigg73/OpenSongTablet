@@ -32,7 +32,6 @@
                 app:hideScrollbar="false"
                 app:scrollTrackColor="@color/colorPrimary"
                 app:showTrack="true" />
-
         </FrameLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -56,5 +55,4 @@
         android:indeterminate="true"
         android:visibility="visible"
         app:elevation="24dp" />
-
 </RelativeLayout>

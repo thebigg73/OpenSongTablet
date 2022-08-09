@@ -20,7 +20,6 @@
                 android:layout_height="wrap_content"
                 android:text="@string/load"
                 android:hint="@string/profile_restore" />
-
             <TableRow style="@style/DividerLine" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialTextView
@@ -29,7 +28,6 @@
                 android:layout_height="wrap_content"
                 android:text="@string/save"
                 android:hint="@string/profile_backup" />
-
             <TableRow style="@style/DividerLine" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialTextView
@@ -38,9 +36,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/reset"
                 android:hint="@string/reset_text" />
-
             <TableRow style="@style/DividerLine" />
-
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </LinearLayout>

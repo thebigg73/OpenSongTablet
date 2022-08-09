@@ -560,7 +560,8 @@
     <string name="pdftotext_extract">"Εξαγωγή κειμένου από PDF"</string>
     <string name="pdftotext_found">"Βρέθηκε κείμενο:"</string>
     <string name="pedal">"Πετάλι"</string>
-    <string name="pedal_avoid_repeat">Εμφάνιση προειδοποίησης πριν μεταβείτε στο επόμενο τραγούδι (χρήσιμο για την αποφυγή τυχαίων πατημάτων)</string>
+    <string name="pedal_avoid_repeat">Εμφάνιση προειδοποίησης πριν μεταβείτε στο επόμενο τραγούδι</string>
+    <string name="pedal_avoid_repeat_info">Χρήσιμο για την αποφυγή τυχαίων πατημάτων</string>
     <string name="pedal_controls">Ρυθμίστε τα κουμπιά και τις ενέργειες του πεντάλ ποδιού</string>
     <string name="pedal_instructions">Κάντε κλικ σε ένα κουμπί πεντάλ παρακάτω για να το αντιστοιχίσετε σε ένα κουμπί πληκτρολογίου ή μια νότα midi και να αντιστοιχίσετε ενέργειες σε αυτό. Τα περισσότερα πεντάλ Bluetooth στέλνουν εντολές πληκτρολογίου (π.χ. βέλος πάνω/κάτω).</string>
     <string name="pedal_midi_warning">Για να χρησιμοποιήσετε ένα πεντάλ midi, βεβαιωθείτε ότι το έχετε συνδέσει χρησιμοποιώντας τις ρυθμίσεις midi στην εφαρμογή πρώτα.</string>
@@ -841,7 +842,6 @@
     <string name="volume">"Volume"</string>
     <string name="volume_value">"Current volume value"</string>
     <string name="wait">"Wait...."</string>
-    <string name="warn_before_changing_song">Εμφάνιση προειδοποίησης πριν μεταβείτε στο επόμενο τραγούδι (χρήσιμο για την αποφυγή τυχαίων πατημάτων)</string>
     <string name="warning">"Αυτή η επιλογή πρέπει να χρησιμοποιηθεί μόνο στην λειτουργία παρουσίασης. Αυτή το χαρακτηριστικό χρησιμοποιεί πολύ μνήμη και μπορεί να προκαλέσει επιπλοκές. Έχεται προειδοποιηθει!"</string>
     <string name="web_search">"Αναζήτηση στο Internet για το τραγούδι"</string>
     <string name="website">Δικτυακός τόπος</string>
@@ -855,4 +855,5 @@
     <string name="alphabetical_sort">Βάλτε τα στοιχεία σε αλφαβητική σειρά</string>
     <string name="set_sort">Σύνολο ταξινόμησης</string>
     <string name="connections_advertise_temporary_info">Διαφημιστείτε μόνο για 10 δευτερόλεπτα αφού κάνετε κλικ στο κουμπί διαφήμιση</string>
+    <string name="pedal_scroll_before_move_info">Επιτρέπει στο επόμενο και το προηγούμενο πεντάλ να λειτουργούν και ως πεντάλ κύλισης</string>
 </resources>

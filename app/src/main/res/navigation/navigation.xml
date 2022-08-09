@@ -188,7 +188,10 @@
                 android:id="@+id/moveContentFragment"
                 android:name="com.garethevans.church.opensongtablet.filemanagement.MoveContentFragment"
                 android:label="MoveContentDialog"
-                tools:layout="@layout/storage_move"/>
+                tools:layout="@layout/storage_move">
+                <deepLink android:id="@+id/deepLinkMove"
+                    app:uri="@string/deeplink_move"/>
+            </fragment>
 
         </navigation>
 

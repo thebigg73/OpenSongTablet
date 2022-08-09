@@ -69,7 +69,6 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/divisions"
                         android:text="@string/divisions" />
-
                 </LinearLayout>
 
                 <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
@@ -89,9 +88,7 @@
                     android:layout_marginBottom="16dp"
                     android:padding="16dp"
                     android:text="@string/tap_tempo" />
-
             </LinearLayout>
-
             <TableRow style="@style/DividerLine"/>
 
             <LinearLayout
@@ -135,7 +132,6 @@
                     android:value="0"
                     android:valueFrom="0"
                     android:valueTo="64" />
-
                 <TableRow style="@style/DividerLine" />
 
                 <com.google.android.material.textview.MaterialTextView
@@ -162,7 +158,6 @@
                     android:value="80"
                     android:valueFrom="0"
                     android:valueTo="100" />
-
                 <TableRow style="@style/DividerLine" />
 
                 <com.google.android.material.textview.MaterialTextView
@@ -189,7 +184,6 @@
                     android:value="80"
                     android:valueFrom="0"
                     android:valueTo="100" />
-
             </LinearLayout>
         </LinearLayout>
     </com.garethevans.church.opensongtablet.customviews.NestedScrollWithFAB>
@@ -202,5 +196,4 @@
         android:contentDescription="@string/start_stop_metronome"
         android:src="@drawable/play"
         app:useCompatPadding="true" />
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

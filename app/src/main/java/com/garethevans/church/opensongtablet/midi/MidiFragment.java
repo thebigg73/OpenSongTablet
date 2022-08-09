@@ -19,6 +19,7 @@ import android.media.midi.MidiManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.ParcelUuid;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -45,6 +46,8 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class MidiFragment extends Fragment {
 
@@ -82,26 +85,29 @@ public class MidiFragment extends Fragment {
         // Register this fragment with the main activity to deal with listeners
         mainActivityInterface.registerFragment(this, "MidiFragment");
 
-        new Thread(() -> requireActivity().runOnUiThread(() -> {
-            // Set up the drop downs
-            setUpMidiCommands();
-            setUpMidiChannels();
-            setUpMidiValues();
-            setUpMidiNotes();
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            Handler handler = new Handler(Looper.getMainLooper());
+            handler.post(() -> {
+                // Set up the drop downs
+                setUpMidiCommands();
+                setUpMidiChannels();
+                setUpMidiValues();
+                setUpMidiNotes();
 
-            // Set known values
-            setValues();
-            setupAdapter();
-            buildList();
-            //initialiseCurrentMessages();
+                // Set known values
+                setValues();
+                setupAdapter();
+                buildList();
+                //initialiseCurrentMessages();
 
-            // Hide the desired views
-            hideShowViews(true, false);
+                // Hide the desired views
+                hideShowViews(true, false);
 
-            // Set listeners
-            setListeners();
-        })).start();
-
+                // Set listeners
+                setListeners();
+            });
+        });
         return myView.getRoot();
     }
 

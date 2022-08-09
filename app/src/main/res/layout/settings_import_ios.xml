@@ -91,7 +91,5 @@
         android:text="@string/overwrite"
         android:gravity="center"
         android:layout_below="@+id/progressBar"/>
-
     </RelativeLayout>
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

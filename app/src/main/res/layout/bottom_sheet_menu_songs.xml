@@ -146,7 +146,6 @@
                 android:padding="16dp"
                 android:text="@string/search_rebuild"
                 app:mydrawable="@drawable/menu" />
-
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </LinearLayout>

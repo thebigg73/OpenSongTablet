@@ -19,19 +19,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/infoText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/infoText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/actionButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/action"
-                android:padding="16dp"/>
+                android:padding="16dp"
+                android:text="@string/action" />
         </LinearLayout>
-
     </androidx.core.widget.NestedScrollView>
 </LinearLayout>

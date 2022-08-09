@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/DefaultView"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -20,7 +19,6 @@
                 android:layout_height="wrap_content"
                 android:text="@string/theme_edit"
                 android:hint="@string/theme_dark" />
-
             <TableRow style="@style/DividerLine" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialTextView
@@ -29,7 +27,6 @@
                 android:layout_height="wrap_content"
                 android:text="@string/font_choose"
                 android:hint="@string/font_choose_description" />
-
             <TableRow style="@style/DividerLine" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialTextView
@@ -38,7 +35,6 @@
                 android:layout_height="wrap_content"
                 android:text="@string/scaling"
                 android:hint="@string/scaling_info" />
-
             <TableRow style="@style/DividerLine" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialTextView
@@ -47,7 +43,6 @@
                 android:layout_height="wrap_content"
                 android:text="@string/song_display"
                 android:hint="@string/extra_settings" />
-
             <TableRow style="@style/DividerLine" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialTextView
@@ -56,7 +51,6 @@
                 android:layout_height="wrap_content"
                 android:text="@string/connected_display"
                 android:hint="@string/connected_display_description" />
-
             <TableRow style="@style/DividerLine" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialTextView
@@ -65,7 +59,6 @@
                 android:layout_height="wrap_content"
                 android:text="@string/actionbar_display"
                 android:hint="@string/actionbar_info" />
-
             <TableRow style="@style/DividerLine" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialTextView
@@ -74,9 +67,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/menu_settings"
                 android:hint="@string/menu_settings_description" />
-
             <TableRow style="@style/DividerLine" />
-
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </LinearLayout>

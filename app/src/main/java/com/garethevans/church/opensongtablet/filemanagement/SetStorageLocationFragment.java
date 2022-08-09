@@ -12,6 +12,8 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,8 +25,6 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavOptions;
-import androidx.navigation.fragment.NavHostFragment;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.animation.CustomAnimation;
@@ -35,6 +35,8 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import uk.co.deanwild.materialshowcaseview.IShowcaseListener;
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
@@ -76,9 +78,20 @@ public class SetStorageLocationFragment extends Fragment {
 
         myView = StorageChooseBinding.inflate(inflater, container, false);
 
-        // This moves the content depending on the actionbar height (0 if autohide)
-        mainActivityInterface.hideActionButton(true);
-        mainActivityInterface.lockDrawer(true);
+        // If this is our first time here - all good
+        // However, if we are just wanting to check/change the storage,
+        // we don't want the extra title bar
+        if (mainActivityInterface.getWhattodo().equals("storageOk")) {
+            mainActivityInterface.moveContentForActionBar(true);
+            mainActivityInterface.showActionBar();
+            mainActivityInterface.setWhattodo("");
+            myView.headerText.setVisibility(View.GONE);
+
+        } else {
+            myView.headerText.setVisibility(View.VISIBLE);
+            mainActivityInterface.moveContentForActionBar(false);
+            mainActivityInterface.hideActionBar();
+        }
 
         // Set up the views
         initialiseViews();
@@ -99,7 +112,7 @@ public class SetStorageLocationFragment extends Fragment {
         // If we have it, this will update the text, if not it will ask for permission
         checkStatus();
 
-        mainActivityInterface.getAppActionBar().translateAwayActionBar(true);
+        //mainActivityInterface.getAppActionBar().translateAwayActionBar(true);
 
         // Showcase
         storageShowcase();
@@ -145,17 +158,13 @@ public class SetStorageLocationFragment extends Fragment {
         builder.build().show(requireActivity());
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        mainActivityInterface.getAppActionBar().translateAwayActionBar(true);
-    }
-
     private void initialiseViews() {
         // Lock the menu and hide the actionbar and action button
         mainActivityInterface.lockDrawer(true);
         mainActivityInterface.hideActionButton(true);
 
+        //mainActivityInterface.getAppActionBar().translateAwayActionBar(true);
+        //myView.getRoot().setTranslationY(-mainActivityInterface.getAppActionBar().getActionBarHeight());
         // Set up the storage location currently set in an edit box that acts like a button only
         myView.progressText.setFocusable(false);
         myView.progressText.setClickable(true);
@@ -281,7 +290,10 @@ public class SetStorageLocationFragment extends Fragment {
         // Run in a new thread
         // This is only for KitKat up to Oreo.  Not allowed for newer versions without
         // Manage Storage permissions, which is overkill!
-        new Thread(() -> {
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            Handler handler = new Handler(Looper.getMainLooper());
+
             // Go through the directories recursively and add them to an arraylist
             folder = new File("/storage");
             walkFiles(folder);
@@ -290,7 +302,7 @@ public class SetStorageLocationFragment extends Fragment {
             walkFiles(folder);
 
             // Set up the file list, as long as the user wasn't bored and closed the window!
-            requireActivity().runOnUiThread(() -> {
+            handler.post(() -> {
                 if (locations != null) {
                     // Hide the  and reenable stuff
                     setEnabledOrDisabled(true);
@@ -321,7 +333,7 @@ public class SetStorageLocationFragment extends Fragment {
                 }
             });
 
-        }).start();
+        });
     }
     private void walkFiles(File root) {
 
@@ -364,7 +376,8 @@ public class SetStorageLocationFragment extends Fragment {
     }
     private void displayWhere(String msg) {
         final String str = msg;
-        requireActivity().runOnUiThread(() -> myView.previousStorageTextView.setText(str));
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.post(() -> myView.previousStorageTextView.setText(str));
     }
 
     // Deal with allowing or hiding the start button
@@ -401,10 +414,12 @@ public class SetStorageLocationFragment extends Fragment {
         }
     }
     private void goToSongs() {
-        NavOptions navOptions = new NavOptions.Builder()
+        mainActivityInterface.navHome();
+    /*    NavOptions navOptions = new NavOptions.Builder()
                 .setPopUpTo(R.id.setStorageLocationFragment, false)
                 .build();
         NavHostFragment.findNavController(this).navigate(R.id.bootUpFragment, null, navOptions);
+    */
     }
     private void pulseButton(View v) {
         CustomAnimation ca = new CustomAnimation();

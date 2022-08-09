@@ -52,5 +52,4 @@
         android:contentDescription="@string/export"
         android:src="@drawable/share"
         app:useCompatPadding="true" />
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

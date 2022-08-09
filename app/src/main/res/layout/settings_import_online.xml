@@ -35,7 +35,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="@string/search" />
-
     </LinearLayout>
 
     <FrameLayout
@@ -95,19 +94,18 @@
                     android:src="@drawable/search"
                     android:visibility="visible"
                     app:useCompatPadding="false"/>
-
             </FrameLayout>
 
             <FrameLayout
                 android:id="@+id/webViewHolder"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-            <WebView
-                android:id="@+id/webView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-            </FrameLayout>
 
+                <WebView
+                    android:id="@+id/webView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </FrameLayout>
         </LinearLayout>
 
         <ProgressBar
@@ -116,7 +114,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:visibility="visible" />
-
     </FrameLayout>
 
     <LinearLayout
@@ -148,6 +145,5 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="@string/save" />
-
     </LinearLayout>
 </LinearLayout>

@@ -560,7 +560,8 @@
     <string name="pdftotext_extract">"PDFからテキストを抽出する"</string>
     <string name="pdftotext_found">"見つかったテキスト："</string>
     <string name="pedal">"ペダル"</string>
-    <string name="pedal_avoid_repeat">次の曲に移動する前に警告を表示します（誤って押すのを避けるために便利です）</string>
+    <string name="pedal_avoid_repeat">次の曲に移動する前に警告を表示します</string>
+    <string name="pedal_avoid_repeat_info">誤って押すのを避けるために便利です</string>
     <string name="pedal_controls">フットペダルのボタンとアクションを設定する</string>
     <string name="pedal_instructions">下のペダルボタンをクリックして、キーボードボタンまたはMIDIノートに割り当て、アクションを割り当てます。 ほとんどのBluetoothペダルは、キーボードコマンドを送信します（例：上/下矢印）。</string>
     <string name="pedal_midi_warning">MIDIペダルを使用するには、最初にアプリのMIDI設定を使用して接続していることを確認してください。</string>
@@ -841,7 +842,6 @@
     <string name="volume">"ボリューム"</string>
     <string name="volume_value">"現在のボリューム値"</string>
     <string name="wait">"待って...."</string>
-    <string name="warn_before_changing_song">次の曲に移動する前に警告を表示します（誤って押すのを防ぐのに役立ちます）</string>
     <string name="warning">"このオプションは、プレゼンテーションモードを使用する必要があります。この機能は多くのメモリを使用するとクラッシュを引き起こす可能性があることに注意してください。あなたは警告されています！"</string>
     <string name="web_search">"現在の曲の検索インターネット"</string>
     <string name="website">Webサイト</string>
@@ -855,4 +855,5 @@
     <string name="connections_advertise_temporary_info">広告ボタンをクリックしてから 10 秒間だけ広告を掲載する</string>
     <string name="set_sort">ソートセット</string>
     <string name="alphabetical_sort">項目をアルファベット順に並べる</string>
+    <string name="pedal_scroll_before_move_info">次のペダルと前のペダルをスクロール ペダルとしても機能させることができます。</string>
 </resources>

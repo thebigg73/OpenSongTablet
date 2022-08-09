@@ -13,9 +13,9 @@
             android:id="@+id/layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:layout_marginBottom="100dp"
             android:clipChildren="false"
-            android:layout_marginBottom="100dp">
+            android:orientation="vertical">
 
             <com.garethevans.church.opensongtablet.customviews.MaterialTextView
                 android:id="@+id/chordsInSong"
@@ -61,34 +61,34 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:src="@drawable/delete"
-                    android:text="@string/delete"
-                    app:fabSize="normal"
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp"
-                    android:contentDescription="@string/delete" />
+                    android:contentDescription="@string/delete"
+                    android:src="@drawable/delete"
+                    android:text="@string/delete"
+                    app:fabSize="normal" />
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/newChord"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:layout_marginStart="8dp"
                     android:contentDescription="@string/new_something"
                     android:src="@drawable/plus"
-                    android:layout_marginStart="8dp"
                     app:fabSize="normal" />
             </LinearLayout>
 
-                <com.garethevans.church.opensongtablet.customviews.MaterialTextView
-                    android:id="@+id/customCode"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:text="@string/customchords_code"
-                    android:hint=""
-                    style="@style/largeText"
-                    android:inputType="none" />
+            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                android:id="@+id/customCode"
+                style="@style/largeText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:hint=""
+                android:inputType="none"
+                android:text="@string/customchords_code" />
 
             <TableLayout
                 android:id="@+id/guitarChordLayout"
@@ -97,13 +97,12 @@
                 android:layout_gravity="center_horizontal"
                 android:clipChildren="false" />
 
-
-                <include android:id="@+id/pianoChordLayout"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    layout="@layout/view_chord_piano"/>
-
+            <include
+                android:id="@+id/pianoChordLayout"
+                layout="@layout/view_chord_piano"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
@@ -112,7 +111,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        app:icon="@drawable/save"
-        android:text="@string/save"/>
-
+        android:text="@string/save"
+        app:icon="@drawable/save" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

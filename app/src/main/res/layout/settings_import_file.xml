@@ -46,9 +46,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/overwrite" />
-
             </LinearLayout>
-
             <TableRow style="@style/DividerLine" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialTextView
@@ -62,8 +60,8 @@
                 android:id="@+id/imageView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"/>
-
+                android:visibility="gone"
+                android:contentDescription="@string/image" />
         </LinearLayout>
     </com.garethevans.church.opensongtablet.customviews.NestedScrollWithFAB>
 
@@ -82,5 +80,4 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"/>
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

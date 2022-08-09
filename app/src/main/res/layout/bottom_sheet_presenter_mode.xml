@@ -63,9 +63,7 @@
                         android:contentDescription="@string/cast_skip_next"
                         android:src="@drawable/skip_forward"
                         custom:useCompatPadding="true" />
-
                 </androidx.gridlayout.widget.GridLayout>
-
                 <TableRow style="@style/DividerLine" />
 
                 <com.garethevans.church.opensongtablet.customviews.MaterialTextView
@@ -116,7 +114,6 @@
                     android:text="@string/alert"
                     custom:mydrawable="@drawable/alert"
                     custom:showCheckBox="true" />
-
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
     </LinearLayout>

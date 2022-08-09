@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -27,6 +29,8 @@ import com.garethevans.church.opensongtablet.preferences.TextInputBottomSheet;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class SetManageFragment extends Fragment {
 
@@ -478,16 +482,18 @@ public class SetManageFragment extends Fragment {
         mainActivityInterface.getPreferences().setMyPreferenceString(
                 "setCurrentLastName", setName);
 
-        new Thread(() -> {
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            Handler handler = new Handler(Looper.getMainLooper());
             // Empty the cache directories as new sets can have custom items
             mainActivityInterface.getSetActions().loadSets(setUris);
             // Import ended
-            requireActivity().runOnUiThread(() -> {
+            handler.post(() -> {
                 myView.progressBar.setVisibility(View.GONE);
                 mainActivityInterface.navHome();
                 mainActivityInterface.chooseMenu(true);
             });
-        }).start();
+        });
     }
 
 

@@ -560,7 +560,8 @@
     <string name="pdftotext_extract">"Szöveg kivonatolása PDF-ből"</string>
     <string name="pdftotext_found">"Talált szöveg:"</string>
     <string name="pedal">"Pedál"</string>
-    <string name="pedal_avoid_repeat">Figyelmeztetés megjelenítése, mielőtt a következő dalra lépne (hasznos a véletlen megnyomások elkerülése érdekében)</string>
+    <string name="pedal_avoid_repeat">Figyelmeztetés megjelenítése, mielőtt a következő dalra lépne</string>
+    <string name="pedal_avoid_repeat_info">Hasznos a véletlen megnyomások elkerülése érdekében</string>
     <string name="pedal_controls">Állítsa be a lábpedál gombjait és műveleteit</string>
     <string name="pedal_instructions">Kattintson az alábbi pedálgombra, hogy hozzárendelje egy billentyűzetgombhoz vagy midi hangjegyhez, és rendeljen hozzá műveleteket. A legtöbb Bluetooth-pedál billentyűzetparancsokat küld (pl. fel/le nyíl).</string>
     <string name="pedal_midi_warning">Midi-pedál használatához először győződjön meg arról, hogy csatlakoztatta az alkalmazás midi-beállításaival.</string>
@@ -841,7 +842,6 @@
     <string name="volume">"Hangerő"</string>
     <string name="volume_value">"Aktuális hangerő értéke"</string>
     <string name="wait">"Várni ...."</string>
-    <string name="warn_before_changing_song">Mutasson figyelmeztetést, mielőtt a következő dalra lépne (hasznos a véletlen megnyomás elkerülése érdekében)</string>
     <string name="warning">"Ez a lehetőség csak akkor használható, prezentációs üzemmódban. Legyen tudatában annak, hogy ez a funkció sok memória és összeomlást okozhat. Ön már figyelmeztette!"</string>
     <string name="web_search">"Keresés Internet aktuális dal"</string>
     <string name="website">Weboldal</string>
@@ -855,4 +855,5 @@
     <string name="connections_advertise_temporary_info">Csak a hirdetés gombra kattintás után 10 másodpercig hirdessen</string>
     <string name="set_sort">Rendezési készlet</string>
     <string name="alphabetical_sort">Tedd az elemeket ábécé sorrendbe</string>
+    <string name="pedal_scroll_before_move_info">Lehetővé teszi, hogy a következő és az előző pedálok görgetőpedálként is működjenek</string>
 </resources>

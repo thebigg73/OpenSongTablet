@@ -15,8 +15,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.appcompat.app.ActionBar;
-
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 public class BatteryStatus extends BroadcastReceiver {
@@ -25,9 +23,8 @@ public class BatteryStatus extends BroadcastReceiver {
 
     private float batteryTextSize, charge;
     private int batteryDialThickness;
-    private int actionBarHeight = 0;
+    private int toolbarHeight = 0;
     private boolean batteryTextOn, batteryDialOn;
-    private final ActionBar actionBar;
     private final TextView batteryCharge;
     private final ImageView batteryImage;
     private final Context c;
@@ -37,12 +34,12 @@ public class BatteryStatus extends BroadcastReceiver {
         void setUpBatteryMonitor();
     }
 
-    public BatteryStatus(Context c, ImageView batteryImage, TextView batteryCharge, ActionBar actionBar) {
+    public BatteryStatus(Context c, ImageView batteryImage, TextView batteryCharge, int toolbarHeight) {
         this.c = c;
         mainActivityInterface = (MainActivityInterface) c;
         this.batteryImage = batteryImage;
         this.batteryCharge = batteryCharge;
-        this.actionBar = actionBar;
+        this.toolbarHeight = toolbarHeight;
     }
 
     public void setUpBatteryMonitor() {
@@ -123,10 +120,9 @@ public class BatteryStatus extends BroadcastReceiver {
         }
 
         // Get the image
-        if (batteryCharge != null && actionBar != null) {
+        if (batteryCharge != null) {
             if (batteryDialOn) {
-                actionBarHeight = actionBar.getHeight();
-                if (actionBarHeight > 0) {
+                if (toolbarHeight > 0) {
                     batteryImage.post(this::setBatteryImage);
                 }
             }
@@ -140,7 +136,7 @@ public class BatteryStatus extends BroadcastReceiver {
 
     public BitmapDrawable batteryImage(int charge) {
 
-        int size = (int)(actionBarHeight*0.75f);
+        int size = (int)(toolbarHeight*0.75f);
         if (size>0) {
             Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
             Bitmap bmp = Bitmap.createBitmap(size, size, conf);
@@ -197,6 +193,21 @@ public class BatteryStatus extends BroadcastReceiver {
             return drawable;
         } else {
             return null;
+        }
+    }
+
+    public void showBattery(boolean show) {
+        // Only show if this is our preference
+        if (show) {
+            if (batteryDialOn) {
+                batteryImage.setVisibility(View.VISIBLE);
+            }
+            if (batteryTextOn) {
+                batteryCharge.setVisibility(View.VISIBLE);
+            }
+        } else {
+            batteryImage.setVisibility(View.GONE);
+            batteryCharge.setVisibility(View.GONE);
         }
     }
 

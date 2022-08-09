@@ -561,7 +561,8 @@
     <string name="pdftotext_extract">"从PDF提取文本"</string>
     <string name="pdftotext_found">"发现文字："</string>
     <string name="pedal">"踏板"</string>
-    <string name="pedal_avoid_repeat">在移至下一首歌曲之前显示警告（有助于避免意外按下）</string>
+    <string name="pedal_avoid_repeat">在移至下一首歌曲之前显示警告</string>
+    <string name="pedal_avoid_repeat_info">有助于避免意外按下</string>
     <string name="pedal_controls">设置脚踏板按钮和动作</string>
     <string name="pedal_instructions">单击下面的踏板按钮将其分配给键盘按钮或 MIDI 音符并为其分配动作。 大多数蓝牙踏板发送键盘命令（例如向上/向下箭头）。</string>
     <string name="pedal_midi_warning">要使用 MIDI 踏板，请确保您首先使用应用程序中的 MIDI 设置连接它。</string>
@@ -842,7 +843,6 @@
     <string name="volume">"音量"</string>
     <string name="volume_value">"当前音量值"</string>
     <string name="wait">"等待...."</string>
-    <string name="warn_before_changing_song">在移至下一首歌曲之前显示警告（有助于避免意外按下）</string>
     <string name="warning">"应该仅用于演示模式这个选项。请注意，此功能使用大量内存，并可能导致崩溃。 你被警告了！"</string>
     <string name="web_search">"搜索互联网当前歌曲"</string>
     <string name="website">网站</string>
@@ -856,4 +856,5 @@
     <string name="alphabetical_sort">按字母顺序放置项目</string>
     <string name="set_sort">排序集</string>
     <string name="connections_advertise_temporary_info">点击广告按钮后仅广告 10 秒</string>
+    <string name="pedal_scroll_before_move_info">允许下一个和上一个踏板也可以用作滚动踏板</string>
 </resources>

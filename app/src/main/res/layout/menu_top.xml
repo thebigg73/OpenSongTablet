@@ -1,26 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:custom="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <com.garethevans.church.opensongtablet.customviews.MaterialTextView
         android:id="@+id/versionCode"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/colorAltPrimary"
         android:gravity="end"
         android:paddingStart="12dp"
-        android:paddingEnd="12dp"
         android:paddingTop="12dp"
-        android:background="@color/colorAltPrimary"
+        android:paddingEnd="12dp"
         custom:mydrawable="@drawable/arrow_left" />
 
-<com.google.android.material.tabs.TabLayout
-    android:id="@+id/tabs"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/colorAltPrimary"
-    style="@style/menuTabs"/>
-
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabs"
+        style="@style/menuTabs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorAltPrimary" />
 </LinearLayout>

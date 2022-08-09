@@ -3,6 +3,8 @@ package com.garethevans.church.opensongtablet.setmenu;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +22,8 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class SetMenuFragment extends Fragment {
 
@@ -44,14 +48,18 @@ public class SetMenuFragment extends Fragment {
         myView.myRecyclerView.setVisibility(View.GONE);
         myView.progressBar.setVisibility(View.VISIBLE);
 
-        new Thread(() -> {
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            Handler handler = new Handler(Looper.getMainLooper());
             mainActivityInterface.getSetActions().buildSetArraysFromItems();
-            setupAdapter();
-            buildList();
-            setListeners();
-            updateSetTitle();
-            scrollToItem();
-        }).start();
+            handler.post(() -> {
+                setupAdapter();
+                buildList();
+                setListeners();
+                updateSetTitle();
+                scrollToItem();
+            });
+        });
 
         return myView.getRoot();
     }

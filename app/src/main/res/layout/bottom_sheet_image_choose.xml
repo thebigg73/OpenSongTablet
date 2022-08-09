@@ -69,7 +69,6 @@
                         android:background="@drawable/overlay_rounded_box" />
                 </FrameLayout>
             </LinearLayout>
-
             <TableRow style="@style/DividerLine" />
 
             <TableLayout
@@ -173,7 +172,6 @@
                             android:background="@drawable/overlay_rounded_box" />
                     </FrameLayout>
 
-
                     <FrameLayout
                         android:id="@+id/video2Background"
                         android:layout_width="0dp"
@@ -217,7 +215,6 @@
                         android:gravity="center_horizontal"
                         android:labelFor="@id/video2"
                         android:text="@string/choose_video2" />
-
                 </TableRow>
             </TableLayout>
         </LinearLayout>

@@ -3,6 +3,7 @@ package com.garethevans.church.opensongtablet.metronome;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -24,6 +25,8 @@ import com.google.android.material.slider.Slider;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class MetronomeFragment extends Fragment {
 
@@ -234,13 +237,17 @@ public class MetronomeFragment extends Fragment {
         tapTempoRunnableCheck = () -> {
             // This is called after 2 seconds when a tap is initiated
             // Any previous instance is of course cancelled first
-            requireActivity().runOnUiThread(() -> {
-                myView.tapTempo.setEnabled(false);
-                myView.tapTempo.setText(getString(R.string.reset));
-                myView.tapTempo.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                // Waited too long, reset count
-                total_calc_bpm = 0;
-                total_counts = 0;
+            ExecutorService executorService = Executors.newSingleThreadExecutor();
+            executorService.execute(() -> {
+                Handler handler = new Handler(Looper.getMainLooper());
+                handler.post(() -> {
+                    myView.tapTempo.setEnabled(false);
+                    myView.tapTempo.setText(getString(R.string.reset));
+                    myView.tapTempo.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                    // Waited too long, reset count
+                    total_calc_bpm = 0;
+                    total_counts = 0;
+                });
             });
             if (tapTempoHandlerReset!=null) {
                 tapTempoHandlerReset.removeCallbacks(tapTempoRunnableReset);
@@ -250,10 +257,14 @@ public class MetronomeFragment extends Fragment {
         };
         tapTempoRunnableReset = () -> {
             // Reset the tap tempo timer
-            requireActivity().runOnUiThread(() -> {
-                myView.tapTempo.setEnabled(true);
-                myView.tapTempo.setText(getString(R.string.tap_tempo));
-                myView.tapTempo.setBackgroundColor(getResources().getColor(R.color.colorSecondary));
+            ExecutorService executorService = Executors.newSingleThreadExecutor();
+            executorService.execute(() -> {
+                Handler handler = new Handler(Looper.getMainLooper());
+                handler.post(() -> {
+                            myView.tapTempo.setEnabled(true);
+                            myView.tapTempo.setText(getString(R.string.tap_tempo));
+                            myView.tapTempo.setBackgroundColor(getResources().getColor(R.color.colorSecondary));
+                });
             });
             // Start the metronome
             mainActivityInterface.getMetronome().startMetronome();

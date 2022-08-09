@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +26,8 @@ import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -43,8 +47,7 @@ public class BackupOSBFragment extends Fragment {
     private boolean alive = true;
     boolean wantHighlighter, wantPersistentDB;
 
-    private Thread thread;
-    private Runnable runnable;
+    private ExecutorService executorService;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -64,19 +67,22 @@ public class BackupOSBFragment extends Fragment {
     }
 
     private void setupViews() {
-        new Thread(() -> {
+        executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            Handler handler = new Handler(Looper.getMainLooper());
+
             // Hide the progress text view for new
-            myView.progressText.setVisibility(View.GONE);
+            handler.post(() -> myView.progressText.setVisibility(View.GONE));
 
             // Get the default file name
             String deffilename = defaultFilename();
-            requireActivity().runOnUiThread(() -> myView.backupName.setText(deffilename));
+            handler.post(() -> myView.backupName.setText(deffilename));
 
             // Get a list of available folders in the app
             ArrayList<String> folders = mainActivityInterface.getCommonSQL().getFolders(mainActivityInterface.getSQLiteHelper().getDB());
 
             // Create a new checkbox entry (default to ticked) for each one
-            requireActivity().runOnUiThread(() -> {
+            handler.post(() -> {
                 for (String folder:folders) {
                     CheckBox checkBox = new CheckBox(getContext());
                     checkBox.setText(folder);
@@ -93,7 +99,7 @@ public class BackupOSBFragment extends Fragment {
             // Set the persistent database to backup by default
             myView.includePersistentDB.setChecked(true);
 
-        }).start();
+        });
 
         myView.nestedScrollView.setExtendedFabToAnimate(myView.createBackupFAB);
     }
@@ -124,10 +130,13 @@ public class BackupOSBFragment extends Fragment {
         wantPersistentDB = myView.includePersistentDB.getChecked();
 
         getCheckedFolders();
-        runnable = () -> {
+
+        executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            Handler handler = new Handler(Looper.getMainLooper());
 
             // Get the backup file name and checked folders
-            requireActivity().runOnUiThread(() -> {
+            handler.post(() -> {
                 if (alive) {
                     // Check the backup file name
                     if (myView.backupName.getText()!=null) {
@@ -170,7 +179,7 @@ public class BackupOSBFragment extends Fragment {
             // Include the database
             if (wantPersistentDB) {
                 // Copy the current appDB to the userDB (the one in Settings)
-                requireActivity().runOnUiThread(() -> {
+                handler.post(() -> {
                     String message = getString(R.string.processing) + ": " + SQLite.NON_OS_DATABASE_NAME;
                     myView.progressText.setText(message);
                 });
@@ -216,7 +225,7 @@ public class BackupOSBFragment extends Fragment {
                                 }
                                 if (zipOutputStream != null) {
                                     // Update the screen
-                                    requireActivity().runOnUiThread(() -> {
+                                    handler.post(() -> {
                                         String message = getString(R.string.processing) + ": " + file;
                                         myView.progressText.setText(message);
                                     });
@@ -264,7 +273,7 @@ public class BackupOSBFragment extends Fragment {
                                     ze = new ZipEntry("_Highlighter/" + file);
                                     if (zipOutputStream != null) {
                                         // Update the screen
-                                        requireActivity().runOnUiThread(() -> {
+                                        handler.post(() -> {
                                             String message = getString(R.string.processing) + ": " + file;
                                             myView.progressText.setText(message);
                                         });
@@ -303,7 +312,7 @@ public class BackupOSBFragment extends Fragment {
 
             // Update the view
             if (alive) {
-                requireActivity().runOnUiThread(() -> {
+                handler.post(() -> {
                     if (alive) {
                         myView.progressBar.setVisibility(View.GONE);
                         if (error) {
@@ -319,10 +328,7 @@ public class BackupOSBFragment extends Fragment {
                     }
                 });
             }
-        };
-
-        thread = new Thread(runnable);
-        thread.start();
+        });
     }
 
     private void exportBackup() {
@@ -350,10 +356,12 @@ public class BackupOSBFragment extends Fragment {
 
     private void killThread() {
         alive = false;
-        if (thread!=null) {
-            thread.interrupt();
-            runnable = null;
-            thread = null;
+        if (executorService!=null) {
+            try {
+                executorService.shutdownNow();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 }

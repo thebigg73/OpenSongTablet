@@ -19,7 +19,6 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/bible_download_for_offline"
                 android:text="@string/download" />
-
             <TableRow style="@style/DividerLine" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialTextView
@@ -28,7 +27,6 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/bible_browse_offline"
                 android:text="@string/bible_browse" />
-
             <TableRow style="@style/DividerLine" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialTextView
@@ -37,9 +35,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/search_biblegateway"
                 android:text="@string/bible_browse" />
-
             <TableRow style="@style/DividerLine" />
-
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </LinearLayout>

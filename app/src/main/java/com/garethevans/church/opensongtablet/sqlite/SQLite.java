@@ -14,7 +14,6 @@ package com.garethevans.church.opensongtablet.sqlite;
 // Updates to PDFs and images therefore require edits in the SQL database and the NonSQLDatabase
 // We only need to touch the PDF/image if we delete it
 
-
 public class SQLite {
 
     // The initialisers

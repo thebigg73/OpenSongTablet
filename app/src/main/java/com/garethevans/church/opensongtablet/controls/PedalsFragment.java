@@ -120,9 +120,9 @@ public class PedalsFragment extends Fragment {
                 mainActivityInterface.getPedalActions().getMidiAsPedal()) {
             String message = getString(R.string.midi_pedal) + ": " +
                     mainActivityInterface.getMidi().getMidiDeviceName();
-            myView.midiPedal.setText(message);
+            myView.midiAsPedal.setHint(message);
         } else {
-            myView.midiPedal.setText(getString(R.string.pedal_midi_warning));
+            myView.midiAsPedal.setHint(getString(R.string.pedal_midi_warning));
         }
     }
 

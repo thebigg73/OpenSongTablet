@@ -36,6 +36,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class ImportOnlineFragment extends Fragment {
 
@@ -281,7 +283,8 @@ public class ImportOnlineFragment extends Fragment {
         }
 
         // Run the rest in a new thread
-        new Thread(() -> {
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
             webString = "";
             webView.post(() -> {
                 try {
@@ -290,7 +293,7 @@ public class ImportOnlineFragment extends Fragment {
                     e.printStackTrace();
                 }
             });
-        }).start();
+        });
     }
 
     private final ValueCallback<String> webContent = new ValueCallback<String>() {
@@ -559,21 +562,6 @@ public class ImportOnlineFragment extends Fragment {
         } else {
             mainActivityInterface.getShowToast().doIt(getString(R.string.error));
         }
-    }
-
-    private void grabchordpro(String content) {
-        // Need to run a async task to grab html text
-
-
-       /* // If we are in songselect, trigger the download to keep the stats live
-        if (StaticVariables.whattodo.equals("songselect")) {
-            try {
-                // Trigger the download of the pdf
-                webresults_WebView.loadUrl("javascript:document.getElementById('chordSheetDownloadButton').click()");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }*/
     }
 
     private void showDownloadProgress(final boolean waiting) {

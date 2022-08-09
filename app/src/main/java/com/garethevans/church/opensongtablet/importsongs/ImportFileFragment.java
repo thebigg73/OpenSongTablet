@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -30,6 +31,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class ImportFileFragment extends Fragment {
 
@@ -62,7 +65,6 @@ public class ImportFileFragment extends Fragment {
         // Get a note of the original folder/filename
         originalFolder = mainActivityInterface.getSong().getFolder();
         originalFilename = mainActivityInterface.getSong().getFilename();
-        Log.d(TAG,"Original: "+originalFolder+"/"+originalFilename);
         // Hide everything other than the progress bar while we process the song
         myView.progress.setVisibility(View.VISIBLE);
         myView.content.setVisibility(View.GONE);
@@ -71,7 +73,9 @@ public class ImportFileFragment extends Fragment {
         myView.folder.setVisibility(View.GONE);
         myView.filename.setVisibility(View.GONE);
 
-        new Thread(() -> {
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            Handler handler = new Handler(Looper.getMainLooper());
             // Get the available folders and base name
             basename = mainActivityInterface.getImportFilename().replaceAll("\\.[^.]*$", "");
             setcategory = getString(R.string.mainfoldername);
@@ -91,24 +95,19 @@ public class ImportFileFragment extends Fragment {
             }
             newSong.setFilename(mainActivityInterface.getImportFilename());
             isIMGorPDF = mainActivityInterface.getStorageAccess().isIMGorPDF(newSong);
-            Log.d(TAG,"isIMGorPDF:"+isIMGorPDF);
-            Log.d(TAG,"filename:"+mainActivityInterface.getImportFilename());
-            Log.d(TAG,"uri:"+mainActivityInterface.getImportUri());
-            Log.d(TAG,"basename:"+basename);
             requiredExtension = "";
             if (mainActivityInterface.getImportFilename().contains(".") && isIMGorPDF) {
                 requiredExtension = mainActivityInterface.getImportFilename().substring(mainActivityInterface.getImportFilename().lastIndexOf("."));
                 basename = mainActivityInterface.getImportFilename();
             }
-            Log.d(TAG,"required extension:"+requiredExtension);
 
             // Set up the folder exposed dropdown
-            Looper.prepare();
-            exposedDropDownArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(),myView.folder, R.layout.view_exposed_dropdown_item,folders);
-            myView.folder.setAdapter(exposedDropDownArrayAdapter);
-            // Default to the current folder
-            myView.folder.setText(mainActivityInterface.getSong().getFolder());
-
+            handler.post(() -> {
+                        exposedDropDownArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(), myView.folder, R.layout.view_exposed_dropdown_item, folders);
+                        myView.folder.setAdapter(exposedDropDownArrayAdapter);
+                        // Default to the current folder
+                        myView.folder.setText(mainActivityInterface.getSong().getFolder());
+                    });
             // Try to read in the song using the import information.  This copies to the Variations/_cache folder
             if (mainActivityInterface.getImportFilename().endsWith(".osts")) {
                 readInSetFile();
@@ -117,7 +116,7 @@ public class ImportFileFragment extends Fragment {
                 readInFile();
             }
 
-            requireActivity().runOnUiThread(() -> {
+            handler.post(() -> {
                 // Update the views and get the
                 updateViews();
 
@@ -129,7 +128,7 @@ public class ImportFileFragment extends Fragment {
                 myView.folder.setVisibility(View.VISIBLE);
                 myView.importButton.setVisibility(View.VISIBLE);
             });
-        }).start();
+        });
 
         return myView.getRoot();
     }
@@ -281,15 +280,12 @@ public class ImportFileFragment extends Fragment {
                     if (!requiredExtension.isEmpty() && !filename.toLowerCase(Locale.ROOT).contains(requiredExtension.toLowerCase(Locale.ROOT))) {
                         filename = filename + requiredExtension;
                     }
-                    Log.d(TAG, "filename=" + filename);
                     myView.filename.setText(filename);
                     // Now copy the file
                     copyTo = mainActivityInterface.getStorageAccess().getUriForItem("Songs", folder, filename);
                     mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, copyTo, null, "Songs", folder, filename);
                     OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(copyTo);
                     InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(tempFile);
-                    Log.d(TAG, "tempFile: " + tempFile);
-                    Log.d(TAG, "copyTo: " + copyTo);
                     success = mainActivityInterface.getStorageAccess().copyFile(inputStream, outputStream);
                     Log.d(TAG, "success:" + success);
 
@@ -302,7 +298,6 @@ public class ImportFileFragment extends Fragment {
                     mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, copyTo, null, "Songs", folder, filename);
                     OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(copyTo);
                     String xml = mainActivityInterface.getProcessSong().getXML(newSong);
-                    Log.d(TAG, "xml:" + xml);
                     success = mainActivityInterface.getStorageAccess().writeFileFromString(xml, outputStream);
                 }
 
@@ -321,7 +316,6 @@ public class ImportFileFragment extends Fragment {
                     mainActivityInterface.getSQLiteHelper().updateSong(newSong);
 
                     // Set the song
-                    Log.d(TAG, "Setting the mainActivitySong to " + folder + "/" + filename);
                     mainActivityInterface.getSong().setFolder(folder);
                     mainActivityInterface.getSong().setFilename(filename);
                     mainActivityInterface.getPreferences().setMyPreferenceString("songFolder", folder);
@@ -337,7 +331,6 @@ public class ImportFileFragment extends Fragment {
 
     public void finishImportSet() {
         try {
-            Log.d(TAG, "finishImportSet()");
             // Copy the file
             File tempLoc = new File(requireActivity().getExternalCacheDir(), "Import");
             Log.d(TAG, "Create folder:" + tempLoc.mkdirs());
@@ -345,8 +338,6 @@ public class ImportFileFragment extends Fragment {
             InputStream inputStream = new FileInputStream(tempFile);
             mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, copyTo, null, "Sets", "", newSetName);
             OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(copyTo);
-            Log.d(TAG, "inputStream:" + inputStream);
-            Log.d(TAG, "outputStream:" + outputStream);
             Log.d(TAG, "copy: " + mainActivityInterface.getStorageAccess().copyFile(inputStream, outputStream));
             ArrayList<Uri> thisSet = new ArrayList<>();
             thisSet.add(copyTo);

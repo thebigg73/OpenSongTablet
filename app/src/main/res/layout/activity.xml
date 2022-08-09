@@ -3,24 +3,32 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:clipChildren="false"
+    android:clipToPadding="false">
 
     <FrameLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:clipChildren="false"
+        android:clipToPadding="false">
 
         <!--The main fragments get loaded up here-->
         <RelativeLayout
             android:id="@+id/fragmentView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:clipChildren="false"
+            android:clipToPadding="false">
 
             <androidx.fragment.app.FragmentContainerView
                 android:id="@+id/nav_host_fragment"
                 android:name="androidx.navigation.fragment.NavHostFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:clipChildren="false"
+                android:clipToPadding="false"
                 app:defaultNavHost="true"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -37,6 +45,18 @@
                 android:layout_alignParentEnd="true"/>
 
             <!-- The page buttons -->
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/actionFAB"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/action"
+                android:src="@drawable/plus"
+                android:layout_margin="8dp"
+                app:useCompatPadding="false"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:visibility="visible"/>
+
             <include
                 android:id="@+id/pageButtonRight"
                 layout="@layout/view_page_buttons"
@@ -45,8 +65,9 @@
                 android:layout_below="@+id/onScreenInfo"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true"
-                android:clipChildren="true"
-                android:clipToPadding="true" />
+                android:layout_margin="8dp"
+                android:clipChildren="false"
+                android:clipToPadding="false" />
 
             <!-- The previous and next info -->
             <include
@@ -56,15 +77,20 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_marginEnd="8dp"
-                android:layout_toStartOf="@+id/pageButtonRight" />
+                android:layout_toStartOf="@+id/actionFAB" />
         </RelativeLayout>
 
-        <include
-            android:id="@+id/toolBar"
-            layout="@layout/view_toolbar" />
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/ActionBar">
+        <com.garethevans.church.opensongtablet.customviews.MyToolbar
+            android:id="@+id/myToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        </com.google.android.material.appbar.AppBarLayout>
 
     </FrameLayout>
-
 
     <!--The left song and set menu-->
     <LinearLayout
@@ -87,7 +113,5 @@
             android:id="@+id/viewpager"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
-
     </LinearLayout>
-
 </androidx.drawerlayout.widget.DrawerLayout>

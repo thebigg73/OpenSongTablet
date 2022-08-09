@@ -560,7 +560,8 @@
     <string name="pdftotext_extract">"Extrair texto de PDF"</string>
     <string name="pdftotext_found">"Texto encontrado:"</string>
     <string name="pedal">"Pedal"</string>
-    <string name="pedal_avoid_repeat">Mostrar um aviso antes de passar para a próxima música (útil para evitar pressionamentos acidentais)</string>
+    <string name="pedal_avoid_repeat">Mostrar um aviso antes de passar para a próxima música</string>
+    <string name="pedal_avoid_repeat_info">Útil para evitar pressionamentos acidentais</string>
     <string name="pedal_controls">Configurar botões e ações do pedal</string>
     <string name="pedal_instructions">Clique em um botão de pedal abaixo para atribuí-lo a um botão do teclado ou nota midi e atribuir ações a ele. A maioria dos pedais Bluetooth envia comandos de teclado (por exemplo, seta para cima/para baixo).</string>
     <string name="pedal_midi_warning">Para usar um pedal midi, certifique-se de conectá-lo usando as configurações midi no aplicativo primeiro.</string>
@@ -841,7 +842,6 @@
     <string name="volume">"Volume"</string>
     <string name="volume_value">"Valor corrente do volume"</string>
     <string name="wait">"Espere Ai ...."</string>
-    <string name="warn_before_changing_song">Mostre um aviso antes de passar para a próxima música (útil para evitar pressionamentos acidentais)</string>
     <string name="warning">"Esta opção só deve ser usado para o modo de apresentação. Esteja ciente de que esse recurso usa muita memória e pode causar acidentes. Você foi avisado!"</string>
     <string name="web_search">"Pesquisar Internet para música atual"</string>
     <string name="website">Local na rede Internet</string>
@@ -855,4 +855,5 @@
     <string name="connections_advertise_temporary_info">Anuncie apenas por 10 segundos depois de clicar no botão anunciar</string>
     <string name="set_sort">Classificar conjunto</string>
     <string name="alphabetical_sort">Coloque os itens em ordem alfabética</string>
+    <string name="pedal_scroll_before_move_info">Permite que os pedais seguinte e anterior também funcionem como pedais de rolagem</string>
 </resources>

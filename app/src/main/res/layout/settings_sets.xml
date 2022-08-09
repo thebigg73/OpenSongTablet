@@ -20,7 +20,6 @@
                 android:layout_height="wrap_content"
                 android:text="@string/set_new"
                 android:hint="@string/set_new_info" />
-
             <TableRow style="@style/DividerLine" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialTextView
@@ -29,7 +28,6 @@
                 android:layout_height="wrap_content"
                 android:text="@string/load"
                 android:hint="@string/set_load_info" />
-
             <TableRow style="@style/DividerLine" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialTextView
@@ -38,7 +36,6 @@
                 android:layout_height="wrap_content"
                 android:text="@string/save"
                 android:hint="@string/set_save_info" />
-
             <TableRow style="@style/DividerLine" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialTextView
@@ -47,7 +44,6 @@
                 android:layout_height="wrap_content"
                 android:text="@string/rename"
                 android:hint="@string/rename_info" />
-
             <TableRow style="@style/DividerLine" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialTextView
@@ -56,7 +52,6 @@
                 android:layout_height="wrap_content"
                 android:text="@string/delete"
                 android:hint="@string/set_delete_info" />
-
             <TableRow style="@style/DividerLine" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialTextView
@@ -65,7 +60,6 @@
                 android:layout_height="wrap_content"
                 android:text="@string/bible"
                 android:hint="@string/bible_browse" />
-
             <TableRow style="@style/DividerLine" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialTextView
@@ -74,7 +68,6 @@
                 android:layout_height="wrap_content"
                 android:text="@string/custom_slide"
                 android:hint="@string/add_custom_slide" />
-
             <TableRow style="@style/DividerLine" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialTextView
@@ -83,7 +76,6 @@
                 android:layout_height="wrap_content"
                 android:text="@string/share"
                 android:hint="@string/set_share_info" />
-
             <TableRow style="@style/DividerLine" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialTextView
@@ -92,7 +84,6 @@
                 android:layout_height="wrap_content"
                 android:text="@string/import_basic"
                 android:hint="@string/import_from_file" />
-
             <TableRow style="@style/DividerLine" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialTextView
@@ -101,7 +92,6 @@
                 android:layout_height="wrap_content"
                 android:text="@string/backup"
                 android:hint="@string/backup_info" />
-
             <TableRow style="@style/DividerLine" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialTextView
@@ -110,9 +100,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/restore"
                 android:hint="@string/backup_import" />
-
             <TableRow style="@style/DividerLine" />
-
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </LinearLayout>

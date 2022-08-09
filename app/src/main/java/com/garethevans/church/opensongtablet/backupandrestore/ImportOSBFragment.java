@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.DocumentsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -30,6 +32,8 @@ import java.io.OutputStream;
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -49,8 +53,7 @@ public class ImportOSBFragment extends Fragment {
     private ArrayList<String> allZipItems;
     private boolean error, hasPersistentDB, hasHighlighterNotes;
 
-    private Thread thread;
-    private Runnable runnable;
+    private ExecutorService executorService;
     private boolean alive = true;
 
     private InputStream inputStream;
@@ -152,15 +155,15 @@ public class ImportOSBFragment extends Fragment {
         hasHighlighterNotes = false;
         hasPersistentDB = false;
 
-        runnable = () -> {
-
-            requireActivity().runOnUiThread(() -> {
-                // Let the user know we're processing the file
-                if (alive) {
-                    myView.progressBar.setVisibility(View.VISIBLE);
-                    myView.progressText.setVisibility(View.VISIBLE);
-                    myView.progressText.setText(getString(R.string.processing));
-                }
+        executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            Handler handler = new Handler(Looper.getMainLooper());
+            handler.post(() -> {
+               if (alive) {
+                   myView.progressBar.setVisibility(View.VISIBLE);
+                   myView.progressText.setVisibility(View.VISIBLE);
+                   myView.progressText.setText(getString(R.string.processing));
+               }
             });
 
             try {
@@ -217,7 +220,8 @@ public class ImportOSBFragment extends Fragment {
                     }
                 }
             }
-            requireActivity().runOnUiThread(() -> {
+
+            handler.post(() -> {
                 if (error && alive) {
                     myView.progressText.setText(getString(R.string.error));
                 } else if (alive) {
@@ -267,9 +271,7 @@ public class ImportOSBFragment extends Fragment {
                 myView.progressBar.setVisibility(View.GONE);
             });
             okToLoad();
-        };
-        thread = new Thread(runnable);
-        thread.start();
+        });
     }
 
     private int getCurrentSongs() {
@@ -322,12 +324,13 @@ public class ImportOSBFragment extends Fragment {
         item = 0;
 
         // The actual importing runs in a new thread
-        runnable = () -> {
-
+        executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            Handler handler = new Handler(Looper.getMainLooper());
             inputStream = mainActivityInterface.getStorageAccess().getInputStream(importUri);
             zipInputStream = new ZipInputStream(new BufferedInputStream(inputStream));
 
-            requireActivity().runOnUiThread(() -> {
+            handler.post(() -> {
                 if (alive) {
                     myView.progressBar.setVisibility(View.VISIBLE);
                     canoverwrite = myView.overWrite.isChecked();
@@ -339,7 +342,7 @@ public class ImportOSBFragment extends Fragment {
             // Go through the checked folders and check they exist on the local storage
             // If not, create them
             for (String folder : checkedFolders) {
-                requireActivity().runOnUiThread(() -> {
+                handler.post(() -> {
                     if (alive) {
                         message = getString(R.string.folder) + ": " + folder;
                         myView.progressText.setText(message);
@@ -389,7 +392,7 @@ public class ImportOSBFragment extends Fragment {
                             // We want it and either it doesn't exist, or we've selected overwriting
                             // Update the disply
                             zipProgress++;
-                            requireActivity().runOnUiThread(() -> {
+                            handler.post(() -> {
                                 String name;
                                 if (ze==null || ze.getName()==null) {
                                     name = "";
@@ -452,12 +455,12 @@ public class ImportOSBFragment extends Fragment {
                             if (error) {
                                 error = false;
                                 if (alive) {
-                                    requireActivity().runOnUiThread(() -> myView.progressText.setText(getString(R.string.error)));
+                                    handler.post(() -> myView.progressText.setText(getString(R.string.error)));
                                 }
                             }
                         } else {
                             if (alive) {
-                                requireActivity().runOnUiThread(() -> {
+                                handler.post(() -> {
                                     message = getString(R.string.connections_searching) + " (" + item + "/" + allZipItems.size() + ")";
                                     myView.progressText.setText(message);
                                 });
@@ -468,7 +471,7 @@ public class ImportOSBFragment extends Fragment {
                 }
 
                 if (alive) {
-                    requireActivity().runOnUiThread(() -> {
+                    handler.post(() -> {
                         mainActivityInterface.getMyActionBar().setHomeButtonEnabled(true);
                         myView.progressBar.setVisibility(View.GONE);
                         myView.progressText.setText("");
@@ -498,16 +501,14 @@ public class ImportOSBFragment extends Fragment {
                 e.printStackTrace();
                 mainActivityInterface.getMyActionBar().setHomeButtonEnabled(true);
                 if (getContext()!=null && alive) {
-                    requireActivity().runOnUiThread(() -> {
+                    handler.post(() -> {
                         myView.progressText.setText(getString(R.string.error));
                         myView.progressBar.setVisibility(View.GONE);
                         myView.createBackupFAB.setEnabled(true);
                     });
                 }
             }
-        };
-        thread = new Thread(runnable);
-        thread.start();
+        });
     }
 
     private void importSample(String url, String filename) {
@@ -515,19 +516,21 @@ public class ImportOSBFragment extends Fragment {
         // Get the WebDownload
         WebDownload webDownload = mainActivityInterface.getWebDownload();
         // Run this in a new thread
-        runnable = () -> {
+        executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            Handler handler = new Handler(Looper.getMainLooper());
             if (alive) {
-                requireActivity().runOnUiThread(() -> myView.progressBar.setVisibility(View.VISIBLE));
+                handler.post(() -> myView.progressBar.setVisibility(View.VISIBLE));
             }
             String[] messages = webDownload.doDownload(getContext(), url,filename);
             if (alive) {
-                requireActivity().runOnUiThread(() -> myView.progressBar.setVisibility(View.GONE));
+                handler.post(() -> myView.progressBar.setVisibility(View.GONE));
             }
             if (messages[1]==null) {
                 // There was a problem
                 mainActivityInterface.getShowToast().doIt(messages[0]);
                 if (getActivity()!=null) {
-                    requireActivity().runOnUiThread(() -> mainActivityInterface.navigateToFragment(null, R.id.import_graph));
+                    handler.post(() -> mainActivityInterface.navigateToFragment(null, R.id.import_graph));
                 }
 
             } else {
@@ -536,7 +539,7 @@ public class ImportOSBFragment extends Fragment {
                 mainActivityInterface.setImportUri(Uri.parse(messages[1]));
                 importUri = Uri.parse(messages[1]);
                 if (alive) {
-                    requireActivity().runOnUiThread(() -> {
+                    handler.post(() -> {
                         // Set up the correct values
                         setupValues();
 
@@ -548,9 +551,7 @@ public class ImportOSBFragment extends Fragment {
                     });
                 }
             }
-        };
-        thread = new Thread(runnable);
-        thread.start();
+        });
     }
 
     @Override
@@ -568,10 +569,12 @@ public class ImportOSBFragment extends Fragment {
 
     private void killThread() {
         alive = false;
-        if (thread!=null) {
-            thread.interrupt();
-            runnable = null;
-            thread = null;
+        try {
+            if (executorService!=null) {
+                executorService.shutdownNow();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

@@ -25,6 +25,7 @@
         android:background="@color/colorAltPrimary"
         android:padding="16dp"
         android:orientation="vertical">
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -108,9 +109,7 @@
                 android:src="@drawable/delete"
                 app:fabSize="mini"
                 app:useCompatPadding="true" />
-
         </LinearLayout>
-
     </HorizontalScrollView>
 
     <LinearLayout
@@ -127,7 +126,6 @@
             android:text="@string/size"
             android:valueFrom="1"
             android:valueTo="50" />
-
     </LinearLayout>
 
     <LinearLayout
@@ -218,7 +216,6 @@
                     app:backgroundTint="@color/blue"
                     app:fabSize="mini"
                     app:useCompatPadding="true" />
-
             </LinearLayout>
         </HorizontalScrollView>
     </LinearLayout>
@@ -230,6 +227,5 @@
         android:layout_gravity="center_horizontal"
         android:padding="16dp"
         android:text="@string/save" />
-
     </LinearLayout>
 </LinearLayout>

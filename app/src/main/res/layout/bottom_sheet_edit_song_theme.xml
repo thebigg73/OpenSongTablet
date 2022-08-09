@@ -41,7 +41,5 @@
             android:src="@drawable/plus"
             app:fabSize="mini"
             app:useCompatPadding="true" />
-
     </LinearLayout>
-
 </LinearLayout>

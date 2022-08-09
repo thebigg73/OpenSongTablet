@@ -6,7 +6,6 @@ import android.graphics.pdf.PdfRenderer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.ParcelFileDescriptor;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -95,7 +94,7 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
                     float scaleFactor;
                     if (mainActivityInterface.getMode().equals("Stage")) {
                         float x_scale = (float)viewWidth/(float)width;
-                        float y_scale = (float)(viewHeight-mainActivityInterface.getAppActionBar().getActionBarHeight())/(float)height;
+                        float y_scale = (float)(viewHeight-mainActivityInterface.getToolbar().getActionBarHeight(mainActivityInterface.needActionBar()))/(float)height;
                         scaleFactor = Math.min(x_scale,y_scale);
                     } else {
                         if (scaleType.equals("Y") && width > 0 && height > 0) {
@@ -278,7 +277,7 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
     private void onTouchAction() {
         mainActivityInterface.getDisplayPrevNext().showAndHide();
         mainActivityInterface.updateOnScreenInfo("showhide");
-        mainActivityInterface.showHideActionBar();
+        mainActivityInterface.showActionBar();
     }
 
     public void clickOnSection(int position) {

@@ -62,7 +62,6 @@
                     android:layout_margin="16dp"
                     android:padding="16dp"
                     android:text="@string/play_services_how" />
-
                 <TableRow style="@style/DividerLine" />
             </LinearLayout>
 
@@ -85,9 +84,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
                     android:text="@string/backup_now" />
-
                 <TableRow style="@style/DividerLine" />
-
             </LinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

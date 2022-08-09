@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/parent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -33,11 +32,9 @@
             android:alpha="0.6"
             android:background="@color/black"
             android:visibility="gone" />
-
     </RelativeLayout>
 
     <!-- The bottom dialog -->
     <include android:id="@+id/bottomSheet"
         layout="@layout/bottom_sheet_highlighter" />
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

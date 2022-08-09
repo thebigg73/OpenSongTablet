@@ -25,5 +25,4 @@
         android:scrollHorizontally="true"
         android:background="@null"
         tools:text="The text" />
-
 </com.google.android.material.textfield.TextInputLayout>

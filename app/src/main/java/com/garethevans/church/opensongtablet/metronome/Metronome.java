@@ -7,6 +7,7 @@ import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Handler;
+import android.os.Looper;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
@@ -14,6 +15,8 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Metronome {
 
@@ -58,7 +61,7 @@ public class Metronome {
         activity = null;
         isRunning = false;
         // Make sure the action bar resets to the off color
-        mainActivityInterface.getAppActionBar().doFlash(metronomeFlashOffColor);
+        mainActivityInterface.getToolbar().doFlash(metronomeFlashOffColor);
 
         stopTimers(false);
 
@@ -317,7 +320,11 @@ public class Metronome {
 
                     }
                     if (visualMetronome) {
-                        activity.runOnUiThread(() -> mainActivityInterface.getAppActionBar().doFlash(metronomeFlashOnColor));
+                        ExecutorService executorService = Executors.newSingleThreadExecutor();
+                        executorService.execute(() -> {
+                            Handler handler = new Handler(Looper.getMainLooper());
+                            handler.post(() -> mainActivityInterface.getToolbar().doFlash(metronomeFlashOnColor));
+                        });
                     }
                     beat ++;
                     beatsRunningTotal ++;
@@ -336,7 +343,7 @@ public class Metronome {
         visualTimer = new Timer();
         visualTimerTask = new TimerTask() {
             public void run() {
-                visualTimerHandler.post(() -> activity.runOnUiThread(() -> mainActivityInterface.getAppActionBar().doFlash(metronomeFlashOffColor)));
+                visualTimerHandler.post(() -> activity.runOnUiThread(() -> mainActivityInterface.getToolbar().doFlash(metronomeFlashOffColor)));
             }
         };
         visualTimer.scheduleAtFixedRate(visualTimerTask, beatTimeLength/2, beatTimeLength);

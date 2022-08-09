@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -35,6 +36,9 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.pdf.PDFPageAdapter;
 import com.garethevans.church.opensongtablet.stage.StageSectionAdapter;
 import com.garethevans.church.opensongtablet.stickynotes.StickyPopUp;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class PerformanceFragment extends Fragment {
 
@@ -75,8 +79,8 @@ public class PerformanceFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         dealWithStickyNotes(false,true);
-        if (mainActivityInterface.getAppActionBar()!=null) {
-            mainActivityInterface.getAppActionBar().setPerformanceMode(false);
+        if (mainActivityInterface.getToolbar()!=null) {
+            mainActivityInterface.getToolbar().setPerformanceMode(false);
         }
         mainActivityInterface.registerFragment(null,"Performance");
     }
@@ -126,8 +130,8 @@ public class PerformanceFragment extends Fragment {
         setGestureListeners();
 
         // Show the actionBar and hide it after a time if that's the user's preference
-        mainActivityInterface.getAppActionBar().setPerformanceMode(true);
-        mainActivityInterface.showHideActionBar();
+        mainActivityInterface.getToolbar().setPerformanceMode(true);
+        mainActivityInterface.showActionBar();
 
         // Set tutorials
         Handler h = new Handler();
@@ -181,12 +185,16 @@ public class PerformanceFragment extends Fragment {
     }
 
     private void removeViews() {
-        mainActivityInterface.getSongSheetTitleLayout().removeAllViews();
-        myView.songView.clearViews();
-        myView.testPane.removeAllViews();
-        myView.recyclerView.removeAllViews();
-        myView.imageView.setImageDrawable(null);
-        mainActivityInterface.setSectionViews(null);
+        try {
+            mainActivityInterface.getSongSheetTitleLayout().removeAllViews();
+            myView.songView.clearViews();
+            myView.testPane.removeAllViews();
+            myView.recyclerView.removeAllViews();
+            myView.imageView.setImageDrawable(null);
+            mainActivityInterface.setSectionViews(null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     // This stuff loads the song and prepares the views
@@ -201,7 +209,10 @@ public class PerformanceFragment extends Fragment {
         mainActivityInterface.getSong().setFolder(folder);
         mainActivityInterface.getSong().setFilename((filename));
 
-        new Thread(() -> {
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            Handler handler = new Handler(Looper.getMainLooper());
+
             // Prepare the slide out and in animations based on swipe direction
             setupSlideOut();
             setupSlideIn();
@@ -219,17 +230,15 @@ public class PerformanceFragment extends Fragment {
             myView.recyclerView.post(() -> {
                 if (myView.recyclerView.getVisibility() == View.VISIBLE) {
                     myView.recyclerView.startAnimation(animSlideOut);
-                    myView.recyclerView.postDelayed(() -> requireActivity().runOnUiThread(this::prepareSongViews), requireContext().getResources().getInteger(R.integer.slide_out_time));
                 }
             });
-
             myView.pageHolder.post(() -> {
                 if (myView.pageHolder.getVisibility()==View.VISIBLE) {
                     myView.pageHolder.startAnimation(animSlideOut);
-                    myView.pageHolder.postDelayed(() -> requireActivity().runOnUiThread(this::prepareSongViews),requireContext().getResources().getInteger(R.integer.slide_out_time));
                 }
             });
-        }).start();
+            handler.postDelayed(this::prepareSongViews,requireContext().getResources().getInteger(R.integer.slide_out_time));
+        });
     }
     private void setupSlideOut() {
         // Set up the type of animate in
@@ -248,7 +257,7 @@ public class PerformanceFragment extends Fragment {
         }
     }
     private void prepareSongViews() {
-        // This is called on the UI thread above
+        // This is called on the UI thread above via the handler from mainLooper()
         // Reset the song views
         mainActivityInterface.setSectionViews(null);
         waitingOnViewsToDraw = 0;
@@ -261,9 +270,9 @@ public class PerformanceFragment extends Fragment {
 
         int[] screenSizes = mainActivityInterface.getDisplayMetrics();
         screenWidth = screenSizes[0];
-        screenHeight = screenSizes[1] - mainActivityInterface.getAppActionBar().getActionBarHeight();
+        screenHeight = screenSizes[1] - mainActivityInterface.getToolbar().getActionBarHeight(mainActivityInterface.needActionBar());
         availableWidth = getResources().getDisplayMetrics().widthPixels;
-        availableHeight = getResources().getDisplayMetrics().heightPixels - mainActivityInterface.getMyActionBar().getHeight();
+        availableHeight = getResources().getDisplayMetrics().heightPixels - mainActivityInterface.getToolbar().getActionBarHeight(mainActivityInterface.needActionBar());
         widthBeforeScale = 0;
         heightBeforeScale = 0;
 
@@ -606,14 +615,14 @@ public class PerformanceFragment extends Fragment {
                     myView.songView.getLayoutParams().width = screenWidth;
                 }  else if (scaleInfo.length==6) {
                     // 3 columns. [0]=col1scale  [1]=col2scale  [2]=col3scale
-                    // [4]=sectionnum for col2  [5]=sectionbum for col3 [6]=biggest col height
+                    // [3]=sectionnum for col2  [4]=sectionbum for col3 [5]=biggest col height
                     scaleFactor = Math.max(scaleInfo[0],Math.max(scaleInfo[1],scaleInfo[2]));
-                    heightAfterScale = (int)scaleInfo[6];
+                    heightAfterScale = (int)scaleInfo[5];
                     myView.pageHolder.getLayoutParams().width = screenWidth;
                     myView.songView.getLayoutParams().width = screenWidth;
                 }
 
-                heightAfterScale = heightAfterScale + (int)(mainActivityInterface.getSongSheetTitleLayout().getHeight());
+                heightAfterScale = heightAfterScale + mainActivityInterface.getSongSheetTitleLayout().getHeight();
 
                 myView.pageHolder.getLayoutParams().height = heightAfterScale;
                 myView.songView.getLayoutParams().height = heightAfterScale;
@@ -829,7 +838,7 @@ public class PerformanceFragment extends Fragment {
             if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
                 mainActivityInterface.getDisplayPrevNext().showAndHide();
                 mainActivityInterface.updateOnScreenInfo("showhide");
-                mainActivityInterface.showHideActionBar();
+                mainActivityInterface.showActionBar();
             }
             return gestureDetector.onTouchEvent(motionEvent);
         });

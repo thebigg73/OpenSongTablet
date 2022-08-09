@@ -66,7 +66,6 @@
                     app:useCompatPadding="true"
                     android:src="@drawable/arrow_right"
                     android:contentDescription="@string/next" />
-
             </LinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

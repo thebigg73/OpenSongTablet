@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,12 +15,13 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavOptions;
-import androidx.navigation.fragment.NavHostFragment;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.BootupLogoBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /*
 This fragment is the first one that the main activity loads up.
@@ -73,7 +76,7 @@ public class BootUpFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        mainActivityInterface.getAppActionBar().translateAwayActionBar(true);
+        //mainActivityInterface.getToolbar().translateAwayActionBar(true);
     }
 
 
@@ -112,72 +115,58 @@ public class BootUpFragment extends Fragment {
     private void requireStorageCheck() {
         // Either permission hasn't been granted, or it isn't set properly
         // Switch to the set storage fragment
-        NavHostFragment.findNavController(BootUpFragment.this).navigate(Uri.parse(getString(R.string.deeplink_set_storage)));
+        mainActivityInterface.setWhattodo("storageBad");
+        mainActivityInterface.navigateToFragment(getString(R.string.deeplink_set_storage),0);
     }
 
     private void startBootProcess() {
         // Start the boot process
         if (getContext() != null) {
-            new Thread(() -> {
-                // Tell the user we're initialising the storage
-                message = getString(R.string.processing) + ": " + getString(R.string.storage);
-                mainActivityInterface.getSongListBuildIndex().setIndexRequired(true);
-                updateMessage();
-
-                // Get the last used song and folder.  If the song failed to load, reset to default
-                setFolderAndSong();
-
-                // Check for saved storage locations
-                final String progress = mainActivityInterface.getStorageAccess().
-                        createOrCheckRootFolders(uriTree);
-                boolean foldersok = !progress.contains("Error");
-
-                if (foldersok) {
-                    // Build the basic song index by scanning the songs and creating a songIDs file
-                    message = getString(R.string.processing) + "\n" + getString(R.string.wait);
+            ExecutorService executorService = Executors.newSingleThreadExecutor();
+            executorService.execute(() -> {
+                Handler handler = new Handler(Looper.getMainLooper());
+                    // Tell the user we're initialising the storage
+                    message = getString(R.string.processing) + ": " + getString(R.string.storage);
+                    mainActivityInterface.getSongListBuildIndex().setIndexRequired(true);
                     updateMessage();
 
-                    mainActivityInterface.quickSongMenuBuild();
+                    // Get the last used song and folder.  If the song failed to load, reset to default
+                    setFolderAndSong();
 
-                    // Finished indexing
-                    message = getString(R.string.success);
-                    updateMessage();
+                    // Check for saved storage locations
+                    final String progress = mainActivityInterface.getStorageAccess().
+                            createOrCheckRootFolders(uriTree);
+                    boolean foldersok = !progress.contains("Error");
 
-                    mainActivityInterface.setMode(mainActivityInterface.getPreferences().getMyPreferenceString("whichMode", "Performance"));
+                    if (foldersok) {
+                        // Build the basic song index by scanning the songs and creating a songIDs file
+                        message = getString(R.string.processing) + "\n" + getString(R.string.wait);
+                        updateMessage();
 
-                    // Increase the boot times for prompting a user to backup their songs
-                    int runssincebackup = mainActivityInterface.getPreferences().getMyPreferenceInt("runssincebackup",0);
-                    mainActivityInterface.getPreferences().setMyPreferenceInt("runssincebackup", runssincebackup+1);
+                        mainActivityInterface.quickSongMenuBuild();
 
-                    // Set up the rest of the main activity
-                    requireActivity().runOnUiThread(() -> {
-                        // Load up the correct Fragment
-                        int destination;
-                        switch (mainActivityInterface.getMode()) {
-                            case "Performance":
-                            case "Stage":
-                            default:
-                                destination = R.id.performanceFragment;
-                                break;
+                        // Finished indexing
+                        message = getString(R.string.success);
+                        updateMessage();
 
-                            case "Presenter":
-                                destination = R.id.presenterFragment;
-                                break;
-                        }
-                        NavOptions navOptions = new NavOptions.Builder().
-                                setPopUpTo(R.id.bootUpFragment,false).
-                                build();
-                        NavHostFragment.findNavController(this).navigate(destination,null,navOptions);
-                        mainActivityInterface.getAppActionBar().translateAwayActionBar(false);
-                        mainActivityInterface.initialiseActivity();
-                    });
+                        mainActivityInterface.setMode(mainActivityInterface.getPreferences().getMyPreferenceString("whichMode", "Performance"));
 
-                } else {
-                    // There was a problem with the folders, so restart the app!
-                    Log.d(TAG, "Problem with app folders - restarting");
-                    requireActivity().recreate();
-                }
-            }).start();
+                        // Increase the boot times for prompting a user to backup their songs
+                        int runssincebackup = mainActivityInterface.getPreferences().getMyPreferenceInt("runssincebackup",0);
+                        mainActivityInterface.getPreferences().setMyPreferenceInt("runssincebackup", runssincebackup+1);
+
+                        // Set up the rest of the main activity
+                        handler.post(() -> {
+                            mainActivityInterface.initialiseActivity();
+                            mainActivityInterface.navHome();
+                        });
+
+                    } else {
+                        // There was a problem with the folders, so restart the app!
+                        Log.d(TAG, "Problem with app folders - restarting");
+                        requireActivity().recreate();
+                    }
+                });
         }
     }
 

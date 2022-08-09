@@ -90,9 +90,7 @@
                     android:isScrollContainer="true"
                     android:orientation="vertical"
                     android:paddingBottom="60dp" />
-
             </LinearLayout>
-
         </com.garethevans.church.opensongtablet.customviews.NestedScrollWithFAB>
 
         <ProgressBar
@@ -115,5 +113,4 @@
         app:icon="@drawable/save"
         android:text="@string/import_basic"
         app:useCompatPadding="true" />
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

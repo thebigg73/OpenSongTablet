@@ -18,8 +18,8 @@
                 android:id="@+id/churchDetails"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/ccli_church"
-                android:hint="@string/ccli_licence" />
+                android:hint="@string/ccli_licence"
+                android:text="@string/ccli_church" />
 
             <TableRow style="@style/DividerLine" />
 
@@ -27,21 +27,21 @@
                 android:id="@+id/logSize"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/filename"
-                android:layout_marginBottom="16dp"/>
+                android:layout_marginBottom="16dp"
+                android:text="@string/filename" />
 
             <HorizontalScrollView
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1">
-            <com.garethevans.church.opensongtablet.customviews.MyZoomLayout
-                android:id="@+id/zoomLayout"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:isScrollContainer="true"
-                android:fadeScrollbars="false" />
-            </HorizontalScrollView>
 
+                <com.garethevans.church.opensongtablet.customviews.MyZoomLayout
+                    android:id="@+id/zoomLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:fadeScrollbars="false"
+                    android:isScrollContainer="true" />
+            </HorizontalScrollView>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </LinearLayout>

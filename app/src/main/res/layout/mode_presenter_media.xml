@@ -8,64 +8,62 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <com.google.android.material.textview.MaterialTextView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/bible"
-            android:padding="8dp"/>
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <com.garethevans.church.opensongtablet.customviews.MaterialTextView
-            android:id="@+id/bibleOffline"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/set_add"
-            android:padding="8dp"
-            android:text="@string/bible_browse_offline"
-            app:mydrawable="@drawable/bible" />
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="@string/bible" />
 
-        <com.garethevans.church.opensongtablet.customviews.MaterialTextView
-            android:id="@+id/bibleOnline"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/set_add"
-            android:padding="8dp"
-            android:text="@string/search_biblegateway"
-            app:mydrawable="@drawable/web" />
+            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                android:id="@+id/bibleOffline"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/set_add"
+                android:padding="8dp"
+                android:text="@string/bible_browse_offline"
+                app:mydrawable="@drawable/bible" />
 
-    <TableRow style="@style/DividerLine" />
+            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                android:id="@+id/bibleOnline"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/set_add"
+                android:padding="8dp"
+                android:text="@string/search_biblegateway"
+                app:mydrawable="@drawable/web" />
 
-        <com.google.android.material.textview.MaterialTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/audio"
-            android:padding="8dp"/>
+            <TableRow style="@style/DividerLine" />
 
-        <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
-            android:id="@+id/audioSource"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/audio_source"/>
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="@string/audio" />
 
-        <com.garethevans.church.opensongtablet.customviews.MaterialTextView
-            android:id="@+id/mediaLoaded"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/media_selected"
-            android:hint="@string/not_available"
-            app:mydrawable="@drawable/music_note"
-            android:padding="8dp" />
+            <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                android:id="@+id/audioSource"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/audio_source" />
 
-        <com.garethevans.church.opensongtablet.customviews.MaterialMediaControl
-            android:id="@+id/mediaControl"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                android:id="@+id/mediaLoaded"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/not_available"
+                android:padding="8dp"
+                android:text="@string/media_selected"
+                app:mydrawable="@drawable/music_note" />
 
-
-    </LinearLayout>
+            <com.garethevans.church.opensongtablet.customviews.MaterialMediaControl
+                android:id="@+id/mediaControl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

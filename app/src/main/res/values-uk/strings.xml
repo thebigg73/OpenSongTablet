@@ -560,7 +560,8 @@
     <string name="pdftotext_extract">Витяг тексту з PDF</string>
     <string name="pdftotext_found">Текст знайдений:</string>
     <string name="pedal">Педаль</string>
-    <string name="pedal_avoid_repeat">Показувати попередження перед переходом до наступної пісні (корисно, щоб уникнути випадкових натискань)</string>
+    <string name="pedal_avoid_repeat">Показувати попередження перед переходом до наступної пісні</string>
+    <string name="pedal_avoid_repeat_info">Корисно, щоб уникнути випадкових натискань</string>
     <string name="pedal_controls">Налаштуйте кнопки та дії ножної педалі</string>
     <string name="pedal_instructions">Натисніть кнопку педалі нижче, щоб призначити її кнопці клавіатури або міді-ноті та призначити їй дії. Більшість педалей Bluetooth надсилають команди з клавіатури (наприклад, стрілку вгору/вниз).</string>
     <string name="pedal_midi_warning">Щоб використовувати міді-педаль, спочатку переконайтеся, що ви підключили її за допомогою налаштувань midi в додатку.</string>
@@ -841,7 +842,6 @@
     <string name="volume">Гучність</string>
     <string name="volume_value">Поточне значення гучності</string>
     <string name="wait">Зачекайте ....</string>
-    <string name="warn_before_changing_song">Показувати попередження перед переходом до наступної пісні (корисно, щоб уникнути випадкових натискань)</string>
     <string name="warning">Ця опція повинна використовуватися тільки в режимі презентації. Пам\'ятайте, що ця функція використовує багато пам\'яті і може призвести до збою. Вас попередили!</string>
     <string name="web_search">Шукати в інтернет поточну пісню</string>
     <string name="website">веб-сайт</string>
@@ -855,4 +855,5 @@
     <string name="alphabetical_sort">Розставте предмети в алфавітному порядку</string>
     <string name="set_sort">Набір сортів</string>
     <string name="connections_advertise_temporary_info">Розміщуйте рекламу лише протягом 10 секунд після натискання кнопки реклами</string>
+    <string name="pedal_scroll_before_move_info">Дозволяє наступній і попередній педалі також функціонувати як педалі прокручування</string>
 </resources>

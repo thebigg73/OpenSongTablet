@@ -19,7 +19,6 @@
                 android:id="@+id/abcWebView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
-
         </LinearLayout>
     </com.garethevans.church.opensongtablet.customviews.NestedScrollWithFAB>
 
@@ -31,5 +30,4 @@
         android:contentDescription="@string/save"
         android:text="@string/save"
         app:icon="@drawable/save"/>
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

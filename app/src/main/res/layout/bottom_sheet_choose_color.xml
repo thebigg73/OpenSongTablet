@@ -89,7 +89,6 @@
                         android:layout_margin="0dp"
                         android:background="@drawable/overlay_rounded_box" />
                 </FrameLayout>
-
             </LinearLayout>
 
             <com.garethevans.church.opensongtablet.customviews.MaterialEditText
@@ -141,7 +140,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/save" />
-
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </LinearLayout>

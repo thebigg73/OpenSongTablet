@@ -72,7 +72,6 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:visibility="gone" />
-
     </RelativeLayout>
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
@@ -87,5 +86,4 @@
         app:icon="@drawable/save"
         android:text="@string/backup"
         app:useCompatPadding="true" />
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

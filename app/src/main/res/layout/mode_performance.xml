@@ -102,8 +102,6 @@
                 android:contentDescription="@string/image"
                 android:visibility="invisible"
                 tools:ignore="ImageContrastCheck"/>
-
         </RelativeLayout>
     </com.garethevans.church.opensongtablet.customviews.MyZoomLayout>
-
 </RelativeLayout>

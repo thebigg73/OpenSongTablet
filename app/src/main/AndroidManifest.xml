@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:installLocation="auto"
-    android:versionCode="308"
-    android:versionName="6.0.0_alpha08"
+    android:versionCode="309"
+    android:versionName="6.0.0_alpha09"
     package="com.garethevans.church.opensongtablet">
 
     <uses-feature
@@ -108,7 +108,7 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:configChanges="orientation|navigation|keyboard|screenSize|keyboardHidden"
+            android:configChanges="orientation|navigation|keyboard|screenSize|keyboardHidden|screenLayout"
             android:windowSoftInputMode="adjustResize"
             android:launchMode="singleInstance"
             android:theme="@style/AppTheme">

@@ -55,7 +55,6 @@
                     android:hint="@string/filename"
                     android:layout_marginStart="8dp"
                     android:layout_gravity="bottom"/>
-
             </LinearLayout>
 
             <com.garethevans.church.opensongtablet.customviews.MaterialEditText
@@ -65,7 +64,6 @@
                 android:inputType="textMultiLine"
                 android:minLines="20"
                 android:hint="@string/lyrics"/>
-
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
@@ -75,5 +73,4 @@
         android:layout_height="wrap_content"
         android:text="@string/create_new_song"
         android:layout_margin="16dp"/>
-
 </LinearLayout>

@@ -23,7 +23,7 @@ public class TagsBottomSheet extends BottomSheetDialogFragment {
 
     private BottomSheetEditSongThemeBinding myView;
     private final Fragment callingFragment;
-    private final String fragName, TAG="TagsBottomSheet";
+    private final String fragName;
     private MainActivityInterface mainActivityInterface;
     private TagsAdapter tagsAdapter;
 

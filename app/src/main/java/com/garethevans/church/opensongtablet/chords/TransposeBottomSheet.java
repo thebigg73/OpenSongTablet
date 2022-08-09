@@ -4,6 +4,8 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +21,9 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class TransposeBottomSheet extends BottomSheetDialogFragment {
 
@@ -234,7 +239,9 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
 
     private void doTranspose() {
         getValues();
-        new Thread(() -> {
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            Handler handler = new Handler(Looper.getMainLooper());
             String transposeDirection;
             int transposeTimes = (int)myView.transposeSlider.getValue();
 
@@ -274,7 +281,7 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
             // Now save the changes
             mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong());
 
-            requireActivity().runOnUiThread(() -> {
+            handler.post(() -> {
                 // Update the song menu
                 mainActivityInterface.updateSongMenu(mainActivityInterface.getSong());
 
@@ -284,7 +291,7 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
             });
 
             dismiss();
-        }).start();
+        });
     }
 
 }

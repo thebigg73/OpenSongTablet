@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -18,12 +17,12 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-        <com.garethevans.church.opensongtablet.customviews.MaterialEditText
-            android:id="@+id/title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:hint="@string/title"/>
+            <com.garethevans.church.opensongtablet.customviews.MaterialEditText
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:hint="@string/title" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialEditText
                 android:id="@+id/author"
@@ -40,54 +39,51 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:hint="@string/copyright" />
-
-            <TableRow style="@style/DividerLine"/>
+            <TableRow style="@style/DividerLine" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-            <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
-                android:id="@+id/folder"
-                android:layout_width="0dp"
-                android:layout_weight="0.4"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:layout_gravity="bottom"
-                android:hint="@string/folder"/>
+                <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                    android:id="@+id/folder"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_weight="0.4"
+                    android:hint="@string/folder" />
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialEditText
-                android:id="@+id/filename"
-                android:layout_width="0dp"
-                android:layout_weight="0.6"
-                android:layout_height="wrap_content"
-                android:hint="@string/filename"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:layout_gravity="bottom"/>
-
+                <com.garethevans.church.opensongtablet.customviews.MaterialEditText
+                    android:id="@+id/filename"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_weight="0.6"
+                    android:hint="@string/filename" />
             </LinearLayout>
 
-            <TableRow style="@style/DividerLine"/>
+            <TableRow style="@style/DividerLine" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialEditText
                 android:id="@+id/songNotes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/song_notes"
-                android:inputType="text|textMultiLine"
                 android:imeOptions="actionNone"
-                android:minLines="5"
-                android:maxLines="5"
+                android:inputType="text|textMultiLine"
                 android:lines="5"
+                android:maxLines="5"
+                android:minLines="5"
                 app:autoSizeMaxTextSize="24sp"
                 app:autoSizeMinTextSize="8sp"
                 app:autoSizeStepGranularity="1sp"
-                app:autoSizeTextType="uniform"/>
-
+                app:autoSizeTextType="uniform" />
         </LinearLayout>
     </com.garethevans.church.opensongtablet.customviews.NestedScrollWithFAB>
 </LinearLayout>

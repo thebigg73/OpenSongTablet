@@ -9,6 +9,7 @@ import com.google.android.gms.common.GoogleApiAvailability;
 public class AlertChecks {
 
     // This class deals with checking if the app should show alerts
+    @SuppressWarnings("unused")
     private final String TAG = "AlertChecks";
     private final Context c;
     private final MainActivityInterface mainActivityInterface;

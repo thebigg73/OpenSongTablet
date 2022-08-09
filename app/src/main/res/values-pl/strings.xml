@@ -560,7 +560,8 @@
     <string name="pdftotext_extract">"Wyodrębnij tekst z pliku PDF"</string>
     <string name="pdftotext_found">"Tekst znaleziony:"</string>
     <string name="pedal">"Pedał"</string>
-    <string name="pedal_avoid_repeat">Pokaż ostrzeżenie przed przejściem do następnego utworu (przydatne, aby uniknąć przypadkowych naciśnięć)</string>
+    <string name="pedal_avoid_repeat">Pokaż ostrzeżenie przed przejściem do następnego utworu</string>
+    <string name="pedal_avoid_repeat_info">Przydatne, aby uniknąć przypadkowych naciśnięć</string>
     <string name="pedal_controls">Skonfiguruj przyciski i akcje pedału nożnego</string>
     <string name="pedal_instructions">Kliknij przycisk pedału poniżej, aby przypisać go do przycisku klawiatury lub nuty midi i przypisać do niego akcje. Większość pedałów Bluetooth wysyła polecenia z klawiatury (np. strzałka w górę/w dół).</string>
     <string name="pedal_midi_warning">Aby użyć pedału midi, upewnij się, że najpierw został podłączony przy użyciu ustawień midi w aplikacji.</string>
@@ -841,7 +842,6 @@
     <string name="volume">"Głośność"</string>
     <string name="volume_value">"Wartość prądu objętość"</string>
     <string name="wait">"Czekać ...."</string>
-    <string name="warn_before_changing_song">Pokaż ostrzeżenie przed przejściem do następnego utworu (przydatne, aby uniknąć przypadkowych naciśnięć)</string>
     <string name="warning">"Ta opcja powinna być używana tylko w trybie prezentacji. Należy pamiętać, że funkcja ta używa dużo pamięci i mogą powodować awarie. Zostałeś ostrzeżony!"</string>
     <string name="web_search">"Szukaj Internet dla bieżącego utworu"</string>
     <string name="website">Stronie internetowej</string>
@@ -855,4 +855,5 @@
     <string name="alphabetical_sort">Ułóż elementy w kolejności alfabetycznej</string>
     <string name="set_sort">Sortuj zestaw</string>
     <string name="connections_advertise_temporary_info">Reklamuj się tylko przez 10 sekund po kliknięciu przycisku anonsu</string>
+    <string name="pedal_scroll_before_move_info">Umożliwia, aby następny i poprzedni pedał działał również jako pedały przewijania</string>
 </resources>

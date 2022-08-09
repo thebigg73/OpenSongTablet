@@ -32,6 +32,8 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class BibleGatewayBottomSheet extends BottomSheetDialogFragment {
 
@@ -215,7 +217,8 @@ public class BibleGatewayBottomSheet extends BottomSheetDialogFragment {
         public void onPageFinished(WebView view,String url) {
             super.onPageFinished(view,url);
             myView.progressBar.setVisibility(View.GONE);
-            new Thread(() -> {
+            ExecutorService executorService = Executors.newSingleThreadExecutor();
+            executorService.execute(() -> {
                 webString = "";
                 myView.webView.post(() -> {
                     try {
@@ -224,7 +227,7 @@ public class BibleGatewayBottomSheet extends BottomSheetDialogFragment {
                         e.printStackTrace();
                     }
                 });
-            }).start();
+            });
         }
     }
 

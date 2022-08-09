@@ -13,8 +13,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavOptions;
-import androidx.navigation.fragment.NavHostFragment;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.BottomSheetStorageFolderBinding;
@@ -77,7 +75,7 @@ public class FolderManagementBottomSheet extends BottomSheetDialogFragment {
         // Initialise the 'close' floatingactionbutton
         myView.dialogHeading.setClose(this);
 
-        new Thread(() -> requireActivity().runOnUiThread(this::setupView)).start();
+        setupView();
 
         return myView.getRoot();
     }
@@ -138,16 +136,12 @@ public class FolderManagementBottomSheet extends BottomSheetDialogFragment {
         public void onClick(View v) {
             switch (what) {
                 case "resetStorage":
-                    NavOptions navOptions = new NavOptions.Builder()
-                            .setPopUpTo(R.id.setStorageLocationFragment, true)
-                            .build();
-                    NavHostFragment.findNavController(callingFragment)
-                            .navigate(R.id.setStorageLocationFragment,null,navOptions);
+                    mainActivityInterface.setWhattodo("storageOk");
+                    mainActivityInterface.navigateToFragment(getString(R.string.deeplink_set_storage),0);
                     break;
 
                 case "backupOSB":
-                    NavHostFragment.findNavController(callingFragment)
-                            .navigate(R.id.backupOSBFragment,null,null);
+                    mainActivityInterface.navigateToFragment(getString(R.string.deeplink_backup),0);
                     break;
 
                 case "deleteItem":
@@ -183,8 +177,7 @@ public class FolderManagementBottomSheet extends BottomSheetDialogFragment {
                 case "moveContents":
                     Bundle bundle = new Bundle();
                     bundle.putString("subdir", subdir);
-                    NavHostFragment.findNavController(callingFragment)
-                            .navigate(R.id.moveContentFragment,bundle,null);
+                    mainActivityInterface.navigateToFragment(getString(R.string.deeplink_move),0);
                     break;
             }
 

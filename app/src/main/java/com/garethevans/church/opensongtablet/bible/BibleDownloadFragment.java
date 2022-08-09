@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +26,8 @@ import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -109,7 +113,9 @@ public class BibleDownloadFragment extends Fragment {
             Log.d(TAG,"Connected!");
             progressBar(true);
             // Run this in a new Thread
-            new Thread(() -> {
+            ExecutorService executorService = Executors.newSingleThreadExecutor();
+            executorService.execute(() -> {
+                Handler handler = new Handler(Looper.getMainLooper());
                 try {
                     // Get the url based on the text position
                     int position = -1;
@@ -124,19 +130,19 @@ public class BibleDownloadFragment extends Fragment {
                             Uri uri = Uri.parse(downloadInfo[1]);
                             // Now we need to extract the xmm file from the zip file
                             if (extractBibleZipFile(uri)) {
-                                requireActivity().runOnUiThread(() -> mainActivityInterface.getShowToast().doIt(getString(R.string.success)));
+                                handler.post(() -> mainActivityInterface.getShowToast().doIt(getString(R.string.success)));
                             } else {
-                                requireActivity().runOnUiThread(() -> mainActivityInterface.getShowToast().doIt(getString(R.string.error)));
+                                handler.post(() -> mainActivityInterface.getShowToast().doIt(getString(R.string.error)));
                             }
                         } else {
-                            requireActivity().runOnUiThread(() -> mainActivityInterface.getShowToast().doIt(downloadInfo[0]));
+                            handler.post(() -> mainActivityInterface.getShowToast().doIt(downloadInfo[0]));
                         }
                     }
-                    requireActivity().runOnUiThread(() -> progressBar(false));
+                    handler.post(() -> progressBar(false));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                }).start();
+                });
         } else {
             mainActivityInterface.getShowToast().doIt(getString(R.string.requires_internet));
             progressBar(false);

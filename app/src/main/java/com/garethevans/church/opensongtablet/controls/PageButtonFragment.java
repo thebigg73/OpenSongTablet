@@ -2,6 +2,8 @@ package com.garethevans.church.opensongtablet.controls;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -24,6 +26,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.slider.Slider;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 // This allows the user to decide on the actions of the 6 customisable page buttons
 
@@ -60,8 +64,10 @@ public class PageButtonFragment extends Fragment {
     }
 
     private void setupPageButtons() {
-        new Thread(() -> {
-            requireActivity().runOnUiThread(() -> {
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            Handler handler = new Handler(Looper.getMainLooper());
+            handler.post(() -> {
                 int opacity = (int)(mainActivityInterface.getMyThemeColors().getPageButtonsSplitAlpha()*100);
                 if (opacity<myView.opacity.getValueFrom()) {
                     opacity = (int)myView.opacity.getValueFrom();
@@ -103,13 +109,13 @@ public class PageButtonFragment extends Fragment {
                 }
             });
             arrayAdapter = new ExposedDropDownArrayAdapter(requireActivity(), R.layout.view_exposed_dropdown_item, mainActivityInterface.getPageButtons().getPageButtonAvailableText());
-            requireActivity().runOnUiThread(() -> {
+            handler.post(() -> {
                 for (int x=0;x<6;x++) {
                     setTheDropDowns(x);
                     setTheText(x);
                 }
             });
-        }).start();
+        });
     }
 
     private void addMyButtons() {

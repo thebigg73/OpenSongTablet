@@ -18,7 +18,6 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.EditSongLyricsBinding;
 import com.garethevans.church.opensongtablet.interfaces.EditSongFragmentInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
 // This fragment purely deals with the lyrics/chords
 
@@ -28,9 +27,8 @@ public class EditSongFragmentLyrics extends Fragment {
     private EditSongFragmentInterface editSongFragmentInterface;
     private EditSongLyricsBinding myView;
     private final String TAG = "EditSongFragmentLyrics";
-    private BottomSheetBehavior<View> bottomSheetBehavior;
     private float editTextSize = 11;
-    private int colorOn, colorOff, cursorPos=0;
+    private int cursorPos=0;
     private boolean addUndoStep = true;
 
     @Override
@@ -95,9 +93,6 @@ public class EditSongFragmentLyrics extends Fragment {
             myView.ocr.setVisibility(View.GONE);
         }
 
-        //myView.lyrics.clearFocus();
-        //myView.lyrics.requestFocus();
-
         myView.lyrics.setText(mainActivityInterface.getTempSong().getLyrics());
         mainActivityInterface.getProcessSong().editBoxToMultiline(myView.lyrics);
         editTextSize = mainActivityInterface.getPreferences().getMyPreferenceFloat("editTextSize",14);
@@ -108,9 +103,7 @@ public class EditSongFragmentLyrics extends Fragment {
     }
 
     private void setupListeners() {
-        myView.lyrics.setOnFocusChangeListener((view, b) -> {
-            mainActivityInterface.enableSwipe("edit",!b);
-        });
+        myView.lyrics.setOnFocusChangeListener((view, b) -> mainActivityInterface.enableSwipe("edit",!b));
 
         myView.lyrics.addTextChangedListener(new TextWatcher() {
             @Override

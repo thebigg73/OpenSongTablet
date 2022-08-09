@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +26,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class ExportFragment extends Fragment {
 
@@ -159,10 +163,12 @@ public class ExportFragment extends Fragment {
         textSet = myView.textSet.isChecked();
 
         // Do this in a new Thread
-        new Thread(() -> {
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            Handler handler = new Handler(Looper.getMainLooper());
 
             // If we are exporting a song, we do this once, if not, we do it for each song in the set
-            requireActivity().runOnUiThread(() -> {
+            handler.post(() -> {
                 myView.progressBar.setVisibility(View.VISIBLE);
                 myView.progressText.setVisibility(View.VISIBLE);
                 myView.shareButton.setEnabled(false);
@@ -245,7 +251,7 @@ public class ExportFragment extends Fragment {
                                 // This stops the next pdf from overwriting this one if it is slow
                                 processingSetPDFs = true;
 
-                                requireActivity().runOnUiThread(() -> {
+                                handler.post(() -> {
                                     listen.setValue(false); //Initilize with a value
                                     Song song = mainActivityInterface.getSQLiteHelper().getSpecificSong(location[0], location[1]);
                                     createOnTheFly(song);
@@ -277,7 +283,7 @@ public class ExportFragment extends Fragment {
                 // If all is well, we send the intent.
                 // If we are still processing a pdf, we check again at the end of that pass
                 if (songsProcessed == songsToAdd) {
-                    requireActivity().runOnUiThread(this::openIntent);
+                    handler.post(this::openIntent);
                 }
 
             } else {
@@ -288,7 +294,7 @@ public class ExportFragment extends Fragment {
 
                     } else {
                         // Create PDF song on the fly
-                        requireActivity().runOnUiThread(() -> {
+                        handler.post(() -> {
                             listen.setValue(false); //Initilize with a value
                             createOnTheFly(mainActivityInterface.getSong());
                             listen.observe(getViewLifecycleOwner(), isDone -> {
@@ -311,7 +317,7 @@ public class ExportFragment extends Fragment {
                     initiateShare("image/*");
                 }
             }
-        }).start();
+        });
     }
 
     public void openIntent() {
@@ -381,7 +387,8 @@ public class ExportFragment extends Fragment {
             }
         }
         Intent intent = mainActivityInterface.getExportActions().setShareIntent(content,type,uri,uris);
-        requireActivity().runOnUiThread(() -> {
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.post(() -> {
             startActivity(Intent.createChooser(intent,getString(R.string.export_current_song)));
             myView.progressBar.setVisibility(View.GONE);
             myView.shareButton.setEnabled(true);

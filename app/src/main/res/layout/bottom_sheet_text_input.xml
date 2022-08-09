@@ -49,7 +49,6 @@
                     android:layout_gravity="end"
                     android:layout_marginTop="16dp"
                     android:text="@android:string/ok" />
-
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
     </LinearLayout>

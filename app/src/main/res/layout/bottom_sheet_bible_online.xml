@@ -27,34 +27,35 @@
             android:id="@+id/webBack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:contentDescription="@string/back"
             android:src="@drawable/arrow_left"
-            android:layout_gravity="center"
-            app:fabSize="mini"/>
+            app:fabSize="mini" />
 
         <FrameLayout
             android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content">
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:id="@+id/webGrabText"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/extract"
-            app:icon="@drawable/download"
-            android:padding="16dp"
-            android:layout_gravity="center" />
+            android:layout_weight="1">
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/webGrabText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="16dp"
+                android:text="@string/extract"
+                app:icon="@drawable/download" />
         </FrameLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/webClose"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:contentDescription="@string/back"
             android:src="@drawable/close"
             app:backgroundTint="@color/red"
-            android:layout_gravity="center"
-            app:fabSize="mini"/>
+            app:fabSize="mini" />
     </LinearLayout>
 
     <RelativeLayout
@@ -84,6 +85,7 @@
                         android:id="@+id/searchPhrase"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="start"
                         android:layout_marginBottom="8dp"
                         android:hint="@string/bible_search"
                         android:text="" />
@@ -92,6 +94,7 @@
                         android:id="@+id/versionCode"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="start"
                         android:layout_marginTop="8dp"
                         android:layout_marginBottom="8dp"
                         android:hint="@string/bible_translation"
@@ -151,25 +154,25 @@
                         android:id="@+id/lineLength"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/line_length"
                         android:layout_marginTop="4dp"
                         android:layout_marginBottom="4dp"
+                        android:text="@string/line_length"
+                        android:value="60"
                         android:valueFrom="20"
                         android:valueTo="100"
-                        android:value="60"
-                        app:stepSize="5"/>
+                        app:stepSize="5" />
 
                     <com.garethevans.church.opensongtablet.customviews.MaterialSlider
                         android:id="@+id/linesPerSlide"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/lines_per_slide"
                         android:layout_marginTop="4dp"
                         android:layout_marginBottom="4dp"
+                        android:text="@string/lines_per_slide"
+                        android:value="8"
                         android:valueFrom="2"
                         android:valueTo="16"
-                        android:value="8"
-                        app:stepSize="1"/>
+                        app:stepSize="1" />
 
                     <com.garethevans.church.opensongtablet.customviews.MaterialEditText
                         android:id="@+id/content"
@@ -181,7 +184,6 @@
                         android:inputType="textMultiLine"
                         app:useMonospace="true" />
                 </LinearLayout>
-
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
     </RelativeLayout>
@@ -190,7 +192,7 @@
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"/>
+        android:layout_centerInParent="true" />
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/addToSet"
@@ -200,7 +202,6 @@
         android:layout_alignParentBottom="true"
         android:padding="16dp"
         android:text="@string/set_add"
-        app:icon="@drawable/plus"
-        android:visibility="gone"/>
-
+        android:visibility="gone"
+        app:icon="@drawable/plus" />
 </RelativeLayout>

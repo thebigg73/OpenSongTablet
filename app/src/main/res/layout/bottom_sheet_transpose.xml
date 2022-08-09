@@ -5,128 +5,128 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-<LinearLayout android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:layout_marginBottom="48dp">
-
-    <com.garethevans.church.opensongtablet.customviews.DialogHeader
-        android:id="@+id/dialogHeading"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/transpose" />
+        android:layout_marginBottom="48dp"
+        android:orientation="vertical">
 
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <LinearLayout
+        <com.garethevans.church.opensongtablet.customviews.DialogHeader
+            android:id="@+id/dialogHeading"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
+            android:text="@string/transpose" />
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialSlider
-                android:id="@+id/transposeSlider"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@null"
-                app:thumbRadius="24dp"
-                app:trackHeight="8dp"
-                android:valueFrom="-12"
-                android:valueTo="12"
-                app:trackColor="@color/colorSecondary"
-                app:thumbColor="@color/colorAltSecondary"/>
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/keyChangeTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:padding="16dp"
-                android:text="@string/key"
-                android:textSize="24sp" />
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/capoChange"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:gravity="center_horizontal"
-                android:text="@string/transpose_capo"
-                android:visibility="invisible"/>
-
-            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
-                android:id="@+id/assumePreferred"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/chordformat_preferred" />
-
-            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
-                android:id="@+id/warningFormatMatch"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:text="@string/chordformat_detected"/>
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
             <LinearLayout
-                android:id="@+id/chordFormat"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="12dp"
-                android:layout_marginBottom="12dp">
+                android:orientation="vertical"
+                android:padding="16dp">
 
-                <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
-                    android:id="@+id/chordFormatFrom"
-                    android:layout_width="0dp"
+                <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+                    android:id="@+id/transposeSlider"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="4dp"
-                    android:hint="@string/chordformat_detected"/>
+                    android:text="@null"
+                    android:valueFrom="-12"
+                    android:valueTo="12"
+                    app:thumbColor="@color/colorAltSecondary"
+                    app:thumbRadius="24dp"
+                    app:trackColor="@color/colorSecondary"
+                    app:trackHeight="8dp" />
 
-                <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
-                    android:id="@+id/chordFormatTo"
-                    android:layout_width="0dp"
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/keyChangeTextView"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginStart="4dp"
-                    android:hint="@string/chordformat_desired"/>
+                    android:gravity="center"
+                    android:padding="16dp"
+                    android:text="@string/key"
+                    android:textSize="24sp" />
 
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/capoChange"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:gravity="center_horizontal"
+                    android:text="@string/transpose_capo"
+                    android:visibility="invisible" />
+
+                <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                    android:id="@+id/assumePreferred"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/chordformat_preferred" />
+
+                <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                    android:id="@+id/warningFormatMatch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="@string/chordformat_detected" />
+
+                <LinearLayout
+                    android:id="@+id/chordFormat"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="12dp"
+                    android:orientation="horizontal">
+
+                    <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                        android:id="@+id/chordFormatFrom"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="4dp"
+                        android:layout_weight="1"
+                        android:hint="@string/chordformat_detected" />
+
+                    <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                        android:id="@+id/chordFormatTo"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_weight="1"
+                        android:hint="@string/chordformat_desired" />
+                </LinearLayout>
+
+                <TableRow style="@style/DividerLine" />
+
+                <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                    android:id="@+id/chordsFormat"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="@string/pref_key_text"
+                    android:text="@string/chord_settings"
+                    app:mydrawable="@drawable/settings" />
+
+                <TableRow style="@style/DividerLine" />
+
+                <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                    android:id="@+id/transposeCapo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/transpose_capo_info"
+                    android:text="@string/transpose_capo" />
             </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
 
-            <TableRow style="@style/DividerLine"/>
-            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
-                android:id="@+id/chordsFormat"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:hint="@string/pref_key_text"
-                android:text="@string/chord_settings"
-                app:mydrawable="@drawable/settings"/>
-            <TableRow style="@style/DividerLine"/>
-
-            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
-                android:id="@+id/transposeCapo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/transpose_capo"
-                android:hint="@string/transpose_capo_info"/>
-            
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
-
-</LinearLayout>
+    </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/doTransposeButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
         android:layout_marginTop="16dp"
         android:padding="16dp"
-        app:icon="@drawable/transpose"
         android:text="@string/transpose"
-        android:layout_gravity="end|bottom"
-        app:useCompatPadding="true"
-        app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"/>
-
+        app:icon="@drawable/transpose"
+        app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"
+        app:useCompatPadding="true" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

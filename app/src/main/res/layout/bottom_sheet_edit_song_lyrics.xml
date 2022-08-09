@@ -71,7 +71,6 @@
                     android:text="@string/chordpro"
                     app:backgroundTint="@color/colorAltPrimary" />
             </LinearLayout>
-
             <TableRow style="@style/DividerLine" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialTextView
@@ -105,7 +104,6 @@
                     android:text="@string/plus_1"
                     app:backgroundTint="@color/colorAltPrimary" />
             </LinearLayout>
-
             <TableRow style="@style/DividerLine" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialTextView
@@ -138,7 +136,6 @@
                     android:padding="8dp"
                     android:text="@string/plus_1"
                     app:backgroundTint="@color/colorAltPrimary" />
-
             </LinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

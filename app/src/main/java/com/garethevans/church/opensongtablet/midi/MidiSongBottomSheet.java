@@ -103,7 +103,7 @@ public class MidiSongBottomSheet extends BottomSheetDialogFragment {
         String[] bits = mainActivityInterface.getSong().getMidi().trim().split("\n");
         Log.d(TAG,"bits.length: "+bits.length);
         for (String command : bits) {
-            if (command!=null && !command.equals("") && !command.isEmpty() && getActivity()!=null) {
+            if (command != null && !command.isEmpty() && getActivity() != null) {
                 // Get a human readable version of the midi code
                 Log.d(TAG,"command: "+command);
                 String readable = mainActivityInterface.getMidi().getReadableStringFromHex(command);

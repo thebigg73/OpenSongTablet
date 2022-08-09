@@ -35,7 +35,6 @@
                 android:layout_marginTop="16dp"
                 android:layout_gravity="end"
                 android:text="@string/confirm" />
-
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </LinearLayout>

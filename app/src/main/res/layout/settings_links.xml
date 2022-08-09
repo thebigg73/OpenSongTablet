@@ -44,9 +44,7 @@
             android:layout_height="wrap_content"
             android:hint="@string/link_file"
             android:text="@string/link_file" />
-
             <TableRow style="@style/DividerLine"/>
-
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </LinearLayout>

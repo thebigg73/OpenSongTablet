@@ -23,27 +23,21 @@
                 android:paddingBottom="16dp"
                 android:text="@string/pedal_instructions" />
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/midiPedal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="16dp"
-                android:paddingBottom="16dp"
-                android:text="@string/pedal_midi_warning" />
-
-            <com.google.android.material.switchmaterial.SwitchMaterial
+            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
                 android:id="@+id/midiAsPedal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/midi_pedal"/>
-
+                android:text="@string/midi_pedal"
+                android:hint="@string/pedal_midi_warning"/>
             <TableRow style="@style/DividerLine" />
 
-            <com.google.android.material.switchmaterial.SwitchMaterial
+            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
                 android:id="@+id/pedalToggleScrollBeforeSwipeButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/pedal_scroll_before_move" />
+                android:layout_marginBottom="16dp"
+                android:text="@string/pedal_scroll_before_move"
+                android:hint="@string/pedal_scroll_before_move_info"/>
 
             <com.garethevans.church.opensongtablet.customviews.MaterialSlider
                 android:id="@+id/scrollDistance"
@@ -53,12 +47,12 @@
                 android:valueTo="100"
                 android:text="@string/scroll_amount"/>
 
-            <com.google.android.material.switchmaterial.SwitchMaterial
+            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
                 android:id="@+id/pedalToggleWarnBeforeSwipeButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/pedal_avoid_repeat" />
-
+                android:text="@string/pedal_avoid_repeat"
+                android:hint="@string/pedal_avoid_repeat_info"/>
             <TableRow style="@style/DividerLine" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
@@ -73,7 +67,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <com.garethevans.church.opensongtablet.customviews.MaterialSlider
                     android:id="@+id/airTurnLongPressTime"
@@ -84,9 +78,7 @@
                     android:valueFrom="500"
                     android:valueTo="2000"
                     app:stepSize="100"/>
-
             </LinearLayout>
-
             <TableRow style="@style/DividerLine" />
 
             <!--BUTTON 1-->
@@ -125,7 +117,6 @@
                     android:gravity="center_vertical"
                     android:text="@string/is_not_set"
                     app:drawableStartCompat="@drawable/midi" />
-
             </RelativeLayout>
 
             <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
@@ -143,7 +134,6 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:hint="@string/long_press" />
-
             <TableRow style="@style/DividerLine" />
 
             <!--BUTTON 2-->
@@ -182,7 +172,6 @@
                     android:gravity="center_vertical"
                     android:text="@string/is_not_set"
                     app:drawableStartCompat="@drawable/midi" />
-
             </RelativeLayout>
 
             <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
@@ -200,10 +189,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:hint="@string/long_press" />
-
-
             <TableRow style="@style/DividerLine" />
-
 
             <!--BUTTON 3-->
             <RelativeLayout
@@ -241,7 +227,6 @@
                     android:gravity="center_vertical"
                     android:text="@string/is_not_set"
                     app:drawableStartCompat="@drawable/midi" />
-
             </RelativeLayout>
 
             <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
@@ -259,9 +244,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:hint="@string/long_press" />
-
             <TableRow style="@style/DividerLine" />
-
 
             <!--BUTTON 4-->
             <RelativeLayout
@@ -299,7 +282,6 @@
                     android:gravity="center_vertical"
                     android:text="@string/is_not_set"
                     app:drawableStartCompat="@drawable/midi" />
-
             </RelativeLayout>
 
             <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
@@ -317,12 +299,9 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:hint="@string/long_press" />
-
             <TableRow style="@style/DividerLine" />
 
-
             <!--BUTTON 5-->
-
             <RelativeLayout
                 android:id="@+id/button5Header"
                 android:layout_width="match_parent"
@@ -358,7 +337,6 @@
                     android:gravity="center_vertical"
                     android:text="@string/is_not_set"
                     app:drawableStartCompat="@drawable/midi" />
-
             </RelativeLayout>
 
             <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
@@ -376,9 +354,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:hint="@string/long_press" />
-
             <TableRow style="@style/DividerLine" />
-
 
             <!--BUTTON 6-->
             <RelativeLayout
@@ -416,7 +392,6 @@
                     android:gravity="center_vertical"
                     android:text="@string/is_not_set"
                     app:drawableStartCompat="@drawable/midi" />
-
             </RelativeLayout>
 
             <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
@@ -434,9 +409,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:hint="@string/long_press" />
-
             <TableRow style="@style/DividerLine" />
-
 
             <!--BUTTON 7-->
             <RelativeLayout
@@ -474,7 +447,6 @@
                     android:gravity="center_vertical"
                     android:text="@string/is_not_set"
                     app:drawableStartCompat="@drawable/midi" />
-
             </RelativeLayout>
 
             <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
@@ -492,9 +464,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:hint="@string/long_press" />
-
             <TableRow style="@style/DividerLine" />
-
 
             <!--BUTTON 8-->
             <RelativeLayout
@@ -532,7 +502,6 @@
                     android:gravity="center_vertical"
                     android:text="@string/is_not_set"
                     app:drawableStartCompat="@drawable/midi" />
-
             </RelativeLayout>
 
             <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
@@ -550,9 +519,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:hint="@string/long_press" />
-
             <TableRow style="@style/DividerLine" />
-
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </LinearLayout>

@@ -560,7 +560,8 @@
     <string name="pdftotext_extract">"Onttrek teks uit PDF"</string>
     <string name="pdftotext_found">"Teks gevind:"</string>
     <string name="pedal">"Pedal"</string>
-    <string name="pedal_avoid_repeat">Wys \'n waarskuwing voordat jy na die volgende liedjie beweeg (nuttig om toevallige druk te vermy)</string>
+    <string name="pedal_avoid_repeat">Wys \'n waarskuwing voordat jy na die volgende liedjie beweeg</string>
+    <string name="pedal_avoid_repeat_info">Nuttig om toevallige druk te vermy</string>
     <string name="pedal_controls">Stel voetpedaalknoppies en -aksies op</string>
     <string name="pedal_instructions">Klik op \'n pedaalknoppie hieronder om dit aan \'n sleutelbordknoppie of midi-noot toe te wys en handelinge daaraan toe te wys. Die meeste Bluetooth-pedale stuur sleutelbordopdragte (bv. pyl op/af).</string>
     <string name="pedal_midi_warning">Om \'n midi-pedaal te gebruik, maak seker dat jy dit eers met die midi-instellings in die toepassing gekoppel het.</string>
@@ -841,7 +842,6 @@
     <string name="volume">"Deel"</string>
     <string name="volume_value">"Huidige volume-waarde"</string>
     <string name="wait">"Wag ...."</string>
-    <string name="warn_before_changing_song">Wys \'n waarskuwing voordat u na die volgende liedjie gaan (nuttig om toevallige perse te vermy)</string>
     <string name="warning">"Hierdie opsie moet slegs gebruik word vir die aanbieding af. Wees bewus daarvan dat hierdie funksie maak gebruik van baie van die geheue en kan ineenstort veroorsaak. Julle is gewaarsku!"</string>
     <string name="web_search">"Soek Internet vir die huidige liedjie"</string>
     <string name="website">Webwerf</string>
@@ -855,4 +855,5 @@
     <string name="connections_advertise_temporary_info">Adverteer slegs vir 10 sekondes nadat u op die adverteer-knoppie geklik het</string>
     <string name="set_sort">Sorteer stel</string>
     <string name="alphabetical_sort">Plaas items in alfabetiese volgorde</string>
+    <string name="pedal_scroll_before_move_info">Laat volgende en vorige pedale ook as blaaipedale funksioneer</string>
 </resources>

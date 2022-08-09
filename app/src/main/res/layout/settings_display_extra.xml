@@ -90,9 +90,7 @@
                 android:checked="false"
                 android:text="@string/pad_hide"
                 android:hint="@string/info_text_autohide_info"/>
-
             <TableRow style="@style/DividerLine" />
-
 
             <!--Bold chords and headings, lyrics box-->
             <com.google.android.material.textview.MaterialTextView
@@ -128,7 +126,6 @@
                 android:layout_marginBottom="8dp"
                 android:text="@string/show_lyrics"
                 android:hint="@string/show_lyrics_info"/>
-
             <TableRow style="@style/DividerLine" />
 
             <!--Section trimming and spaces-->
@@ -220,7 +217,6 @@
                 android:layout_marginTop="16dp"
                 android:text="@string/filter_section" />
 
-
             <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
                 android:id="@+id/filterSwitch"
                 android:layout_width="match_parent"
@@ -235,7 +231,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-
 
                 <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
                     android:id="@+id/filterShow"
@@ -268,13 +263,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:text="@string/save" />
-
             </LinearLayout>
 
             <TableRow
                 style="@style/DividerLine"
                 android:layout_marginBottom="400dp" />
-
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </LinearLayout>

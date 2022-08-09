@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,8 @@ import com.garethevans.church.opensongtablet.databinding.SettingsFontsPreviewBin
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class FontSetupPreviewFragment extends DialogFragment {
 
@@ -57,15 +60,17 @@ public class FontSetupPreviewFragment extends DialogFragment {
     }
 
     private void setupWebView(String ab) {
-        new Thread(() -> {
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            Handler handler = new Handler(Looper.getMainLooper());
             if (fontNames==null || fontNames.isEmpty()) {
                 fontNames = mainActivityInterface.getMyFonts().getFontsFromGoogle();
                 getAlphaList();
-                requireActivity().runOnUiThread(this::prepareAlphaList);
+                handler.post(this::prepareAlphaList);
             }
             String content = preparePageContent(ab);
-            requireActivity().runOnUiThread(() -> prepareWebView(content));
-        }).start();
+            handler.post(() -> prepareWebView(content));
+        });
     }
 
     public void prepareWebView(String content) {
@@ -136,11 +141,15 @@ public class FontSetupPreviewFragment extends DialogFragment {
     private void doSave(String fontName) {
         fontName = fontName.replace("+"," ");
         mainActivityInterface.getMyFonts().changeFont(mainActivityInterface.getWhattodo(),fontName,handler);
-        new Thread(() -> requireActivity().runOnUiThread(() -> {
-            mainActivityInterface.popTheBackStack(R.id.fontSetupFragment,true);
-            mainActivityInterface.navigateToFragment(getString(R.string.deeplink_fonts),0);
-            dismiss();
-        })).start();
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            Handler handler = new Handler(Looper.getMainLooper());
+            handler.post(() -> {
+                mainActivityInterface.popTheBackStack(R.id.fontSetupFragment, true);
+                mainActivityInterface.navigateToFragment(getString(R.string.deeplink_fonts), 0);
+                dismiss();
+            });
+        });
     }
 
     @Override

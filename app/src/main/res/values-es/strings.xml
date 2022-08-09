@@ -560,7 +560,8 @@
     <string name="pdftotext_extract">"Extraer texto de PDF"</string>
     <string name="pdftotext_found">"Texto encontrado:"</string>
     <string name="pedal">"Pedal"</string>
-    <string name="pedal_avoid_repeat">Mostrar una advertencia antes de pasar a la siguiente canción (útil para evitar pulsaciones accidentales)</string>
+    <string name="pedal_avoid_repeat">Mostrar una advertencia antes de pasar a la siguiente canción</string>
+    <string name="pedal_avoid_repeat_info">Útil para evitar pulsaciones accidentales</string>
     <string name="pedal_controls">Configurar botones y acciones del pedal</string>
     <string name="pedal_instructions">Haga clic en un botón de pedal a continuación para asignarlo a un botón de teclado o nota midi y asignarle acciones. La mayoría de los pedales Bluetooth envían comandos de teclado (por ejemplo, flecha arriba/abajo).</string>
     <string name="pedal_midi_warning">Para usar un pedal midi, primero asegúrese de haberlo conectado usando la configuración midi en la aplicación.</string>
@@ -841,7 +842,6 @@
     <string name="volume">"Volumen"</string>
     <string name="volume_value">"Valor del volumen actual"</string>
     <string name="wait">"Espere ...."</string>
-    <string name="warn_before_changing_song">Mostrar una advertencia antes de pasar a la siguiente canción (útil para evitar prensas accidentales)</string>
     <string name="warning">"Esta opción sólo se debe utilizar para el modo de presentación. Tenga en cuenta que esta función utiliza mucha memoria y puede causar accidentes. ¡Usted ha sido advertido!"</string>
     <string name="web_search">"Buscar en Internet para la canción actual"</string>
     <string name="website">Sitio web</string>
@@ -855,4 +855,5 @@
     <string name="alphabetical_sort">Poner los elementos en orden alfabético</string>
     <string name="set_sort">Ordenar conjunto</string>
     <string name="connections_advertise_temporary_info">Anuncie solo durante 10 segundos después de hacer clic en el botón de publicidad</string>
+    <string name="pedal_scroll_before_move_info">Permite que los pedales siguiente y anterior también funcionen como pedales de desplazamiento</string>
 </resources>

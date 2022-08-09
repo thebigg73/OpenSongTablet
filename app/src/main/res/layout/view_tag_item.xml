@@ -44,6 +44,5 @@
             app:fabSize="mini"
             android:contentDescription="@string/delete"
             android:src="@drawable/delete" />
-
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

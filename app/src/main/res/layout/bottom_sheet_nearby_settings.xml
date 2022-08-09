@@ -2,13 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/bottomSheet"
-    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
     style="@style/FullscreenBottomSheet"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@null"
     android:orientation="vertical"
-    app:layout_insetEdge="bottom"
-    android:background="@null">
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+    app:layout_insetEdge="bottom">
 
     <ImageView
         android:id="@+id/bottomSheetTab"
@@ -23,10 +23,10 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@drawable/rounded_dialog"
         android:paddingStart="16dp"
-        android:paddingEnd="16dp"
         android:paddingTop="16dp"
-        android:background="@drawable/rounded_dialog">
+        android:paddingEnd="16dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -34,116 +34,117 @@
             android:orientation="vertical"
             app:backgroundTint="@color/colorAltPrimary">
 
-    <com.garethevans.church.opensongtablet.customviews.MaterialTextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/connections_mode"
-        android:hint="@string/connections_mode_info"
-        android:layout_marginBottom="4dp"/>
+            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:hint="@string/connections_mode_info"
+                android:text="@string/connections_mode" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:minHeight="96dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:minHeight="96dp"
+                android:orientation="horizontal">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/clusterMode"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.5"
-            android:padding="8dp"
-            android:text="@string/connections_mode_cluster"
-            style="@style/LeftButton" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/clusterMode"
+                    style="@style/LeftButton"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5"
+                    android:padding="8dp"
+                    android:text="@string/connections_mode_cluster" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/starMode"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.5"
-            android:padding="8dp"
-            android:text="@string/connections_mode_star"
-            style="@style/MiddleButton"
-            app:backgroundTint="@color/colorAltPrimary" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/starMode"
+                    style="@style/MiddleButton"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5"
+                    android:padding="8dp"
+                    android:text="@string/connections_mode_star"
+                    app:backgroundTint="@color/colorAltPrimary" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/singleMode"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.5"
-            android:padding="8dp"
-            android:text="@string/connections_mode_single"
-            style="@style/RightButton"
-            app:backgroundTint="@color/colorAltPrimary" />
-    </LinearLayout>
-    <TableRow style="@style/DividerLine"/>
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/singleMode"
+                    style="@style/RightButton"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5"
+                    android:padding="8dp"
+                    android:text="@string/connections_mode_single"
+                    app:backgroundTint="@color/colorAltPrimary" />
+            </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/hostOptions"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+            <TableRow style="@style/DividerLine" />
 
-        <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
-            android:id="@+id/nearbyHostMenuOnly"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/nearby_host_menu_only"
-            android:hint="@string/nearby_host_menu_only_info" />
+            <LinearLayout
+                android:id="@+id/hostOptions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-        <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
-            android:id="@+id/hostPassthrough"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/connections_host_passthrough"
-            android:hint="@string/connections_host_passthrough_info" />
+                <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                    android:id="@+id/nearbyHostMenuOnly"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/nearby_host_menu_only_info"
+                    android:text="@string/nearby_host_menu_only" />
 
-        <TableRow style="@style/DividerLine" />
-    </LinearLayout>
+                <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                    android:id="@+id/hostPassthrough"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/connections_host_passthrough_info"
+                    android:text="@string/connections_host_passthrough" />
 
-    <LinearLayout
-        android:id="@+id/clientOptions"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+                <TableRow style="@style/DividerLine" />
+            </LinearLayout>
 
-        <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
-            android:id="@+id/receiveHostFiles"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/connections_receive_host"
-            android:hint="@string/connections_receive_host_info" />
+            <LinearLayout
+                android:id="@+id/clientOptions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-        <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
-            android:id="@+id/keepHostFiles"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/connections_keephostsongs"
-            android:hint="@string/connections_keephostsongs_info" />
+                <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                    android:id="@+id/receiveHostFiles"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/connections_receive_host_info"
+                    android:text="@string/connections_receive_host" />
 
-        <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
-            android:id="@+id/receiveHostSections"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/song_sections"
-            android:hint="@string/connections_song_sections_info" />
+                <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                    android:id="@+id/keepHostFiles"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/connections_keephostsongs_info"
+                    android:text="@string/connections_keephostsongs" />
 
-        <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
-            android:id="@+id/receiveAutoscroll"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/autoscroll"
-            android:hint="@string/connection_autoscroll_info" />
-        <TableRow style="@style/DividerLine"/>
-    </LinearLayout>
+                <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                    android:id="@+id/receiveHostSections"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/connections_song_sections_info"
+                    android:text="@string/song_sections" />
 
-    <com.garethevans.church.opensongtablet.customviews.MaterialTextView
-        android:id="@+id/connectionsLog"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/connections_log"
-        android:hint=""/>
+                <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                    android:id="@+id/receiveAutoscroll"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/connection_autoscroll_info"
+                    android:text="@string/autoscroll" />
 
+                <TableRow style="@style/DividerLine" />
+            </LinearLayout>
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                android:id="@+id/connectionsLog"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint=""
+                android:text="@string/connections_log" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </LinearLayout>

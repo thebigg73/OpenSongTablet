@@ -62,7 +62,7 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
             int sectionHeight = mainActivityInterface.getSectionHeights().get(x);
 
             float x_scale = (float)(mainActivityInterface.getDisplayMetrics()[0]-16)/(float)sectionWidth;
-            float y_scale = (float)(mainActivityInterface.getDisplayMetrics()[1]-mainActivityInterface.getAppActionBar().getActionBarHeight())*stageModeScale/(float)sectionHeight;
+            float y_scale = (float)(mainActivityInterface.getDisplayMetrics()[1]-mainActivityInterface.getToolbar().getActionBarHeight(mainActivityInterface.needActionBar()))*stageModeScale/(float)sectionHeight;
             float scale = Math.min(x_scale,y_scale);
             // Check the scale isn't bigger than the maximum font size
             scale = Math.min(scale,(maxFontSize/14f));
@@ -193,7 +193,7 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
     private void onTouchAction() {
         mainActivityInterface.getDisplayPrevNext().showAndHide();
         mainActivityInterface.updateOnScreenInfo("showhide");
-        mainActivityInterface.showHideActionBar();
+        mainActivityInterface.showActionBar();
     }
 
     public void clickOnSection(int position) {

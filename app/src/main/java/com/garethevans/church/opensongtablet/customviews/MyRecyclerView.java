@@ -128,7 +128,7 @@ public class MyRecyclerView extends RecyclerView {
     private void onTouchAction() {
         mainActivityInterface.getDisplayPrevNext().showAndHide();
         mainActivityInterface.updateOnScreenInfo("showcapo");
-        mainActivityInterface.showHideActionBar();
+        mainActivityInterface.showActionBar();
     }
 
     public void doScrollBy(float dy, int duration) {

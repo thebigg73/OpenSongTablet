@@ -68,14 +68,9 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/devicesText"
                         android:layout_centerInParent="true" />
-
-
                 </RelativeLayout>
-
                 <TableRow style="@style/DividerLine" />
-
             </LinearLayout>
-
 
             <LinearLayout
                 android:id="@+id/connectionStatus"
@@ -119,7 +114,6 @@
                         android:layout_margin="12dp"
                         android:padding="12dp"
                         android:text="@string/midi_disconnect" />
-
                 </LinearLayout>
 
                 <com.google.android.material.switchmaterial.SwitchMaterial
@@ -127,11 +121,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/midi_pedal" />
-
                 <TableRow style="@style/DividerLine" />
-
             </LinearLayout>
-
 
             <LinearLayout
                 android:id="@+id/midiMessages"
@@ -212,7 +203,6 @@
                             android:layout_weight="1"
                             android:layout_marginStart="4dp"
                             android:hint="@string/midi_velocity" />
-
                     </LinearLayout>
 
                     <com.garethevans.church.opensongtablet.customviews.MaterialEditText
@@ -240,7 +230,6 @@
                         android:layout_gravity="center_horizontal"
                         android:padding="8dp"
                         android:text="@string/midi_add" />
-
                 </LinearLayout>
 
                 <com.google.android.material.textview.MaterialTextView
@@ -252,7 +241,6 @@
                     android:id="@+id/recyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
-
             </LinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

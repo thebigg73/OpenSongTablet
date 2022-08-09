@@ -22,8 +22,8 @@
                 android:id="@+id/backgroundLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="16dp">
+                android:layout_marginBottom="16dp"
+                android:orientation="horizontal">
 
                 <com.garethevans.church.opensongtablet.customviews.MaterialTextView
                     android:layout_width="0dp"
@@ -37,39 +37,40 @@
                     android:layout_height="72dp"
                     android:layout_marginStart="16dp">
 
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center"
-                            android:background="@drawable/alpha_wide"
-                            android:layout_margin="4dp"/>
-                        <ImageView
-                    android:id="@+id/currentBackground"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:contentDescription="@string/background"
-                            android:layout_margin="4dp" />
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_margin="4dp"
+                        android:background="@drawable/alpha_wide" />
+
+                    <ImageView
+                        android:id="@+id/currentBackground"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="4dp"
+                        android:contentDescription="@string/background" />
+
                     <com.google.android.material.floatingactionbutton.FloatingActionButton
                         android:id="@+id/videoBackgroundIcon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom|end"
-                        android:src="@drawable/play"
-                        app:backgroundTint="@color/colorAltPrimary"
-                        android:tint="@color/colorAltSecondary"
-                        app:fabCustomSize="16dp"
-                        app:useCompatPadding="false"
+                        android:contentDescription="@string/media"
                         android:enabled="false"
                         android:padding="0dp"
-                        android:contentDescription="@string/media" />
+                        android:src="@drawable/play"
+                        android:tint="@color/colorAltSecondary"
+                        app:backgroundTint="@color/colorAltPrimary"
+                        app:fabCustomSize="16dp"
+                        app:useCompatPadding="false" />
 
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center"
-                            android:background="@drawable/overlay_rounded_box"
-                            android:layout_margin="0dp"/>
-
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_margin="0dp"
+                        android:background="@drawable/overlay_rounded_box" />
                 </FrameLayout>
             </LinearLayout>
 
@@ -77,21 +78,22 @@
                 android:id="@+id/presoBackgroundAlpha"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
                 android:text="@string/preso_alpha"
                 android:valueFrom="0"
-                android:valueTo="100"
-                android:layout_marginBottom="16dp"/>
+                android:valueTo="100" />
+
             <TableRow
                 android:id="@+id/presoBackgroundDivider"
-                style="@style/DividerLine"/>
+                style="@style/DividerLine" />
 
             <!-- Logo -->
             <LinearLayout
                 android:id="@+id/logoLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="16dp">
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal">
 
                 <com.garethevans.church.opensongtablet.customviews.MaterialTextView
                     android:layout_width="0dp"
@@ -104,18 +106,20 @@
                     android:layout_width="128dp"
                     android:layout_height="72dp"
                     android:layout_marginStart="16dp">
-                <ImageView
-                    android:id="@+id/currentLogo"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="4dp"
-                    android:contentDescription="@string/logo" />
+
+                    <ImageView
+                        android:id="@+id/currentLogo"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="4dp"
+                        android:contentDescription="@string/logo" />
+
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
-                        android:background="@drawable/overlay_rounded_box"
-                        android:layout_margin="0dp"/>
+                        android:layout_margin="0dp"
+                        android:background="@drawable/overlay_rounded_box" />
                 </FrameLayout>
             </LinearLayout>
 
@@ -123,11 +127,11 @@
                 android:id="@+id/logoSize"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
                 android:text="@string/size"
                 android:valueFrom="10"
                 android:valueTo="100"
-                app:stepSize="1"
-                android:layout_marginBottom="16dp"/>
+                app:stepSize="1" />
 
             <TableRow
                 android:id="@+id/logoDivider"
@@ -138,11 +142,11 @@
                 android:id="@+id/crossFadeTime"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 android:text="@string/crossfade_time"
                 android:valueFrom="200"
                 android:valueTo="3000"
-                app:stepSize="200"
-                android:layout_marginTop="16dp"/>
+                app:stepSize="200" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialSlider
                 android:id="@+id/rotateDisplay"
@@ -166,20 +170,21 @@
                 android:id="@+id/verticalMargin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
                 android:text="@string/set_y_margin"
                 android:valueFrom="-50"
                 android:valueTo="50"
-                app:stepSize="1"
-                android:layout_marginBottom="16dp"/>
-            <TableRow style="@style/DividerLine"/>
+                app:stepSize="1" />
+
+            <TableRow style="@style/DividerLine" />
 
             <!-- The song information bar -->
             <LinearLayout
                 android:id="@+id/infoBackground"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="16dp">
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal">
 
                 <com.garethevans.church.opensongtablet.customviews.MaterialTextView
                     android:layout_width="0dp"
@@ -193,12 +198,12 @@
                     android:layout_height="72dp"
                     android:layout_marginStart="16dp">
 
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center"
-                            android:background="@drawable/alpha_wide"
-                            android:layout_margin="4dp"/>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_margin="4dp"
+                        android:background="@drawable/alpha_wide" />
 
                     <ImageView
                         android:id="@+id/infoBackgroundColor"
@@ -211,28 +216,28 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
-                        android:background="@drawable/overlay_rounded_box"
-                        android:layout_margin="0dp"/>
+                        android:layout_margin="0dp"
+                        android:background="@drawable/overlay_rounded_box" />
 
                 </FrameLayout>
             </LinearLayout>
 
             <com.garethevans.church.opensongtablet.customviews.TextThreeSlider
                 android:id="@+id/infoAlign"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:drawableC="@drawable/align_center"
                 app:drawableL="@drawable/align_left"
                 app:drawableR="@drawable/align_right"
-                app:drawableC="@drawable/align_center"
-                app:label="@string/song_alignment_information"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                app:label="@string/song_alignment_information" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
                 android:id="@+id/hideInfoBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/info_text_autohide"
+                android:layout_marginBottom="16dp"
                 android:hint="@string/info_text_autohide_info"
-                android:layout_marginBottom="16dp"/>
+                android:text="@string/info_text_autohide" />
 
             <LinearLayout
                 android:id="@+id/infoSizes"
@@ -245,42 +250,44 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="0dp"
-                    android:valueFrom="6"
-                    android:valueTo="22"
+                    android:text="@string/title"
                     android:value="14"
-                    android:text="@string/title" />
+                    android:valueFrom="6"
+                    android:valueTo="22" />
+
                 <com.garethevans.church.opensongtablet.customviews.MaterialSlider
                     android:id="@+id/authorTextSize"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="0dp"
-                    android:valueFrom="6"
-                    android:valueTo="22"
+                    android:text="@string/author"
                     android:value="12"
-                    android:text="@string/author" />
+                    android:valueFrom="6"
+                    android:valueTo="22" />
+
                 <com.garethevans.church.opensongtablet.customviews.MaterialSlider
                     android:id="@+id/copyrightTextSize"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="0dp"
-                    android:valueFrom="6"
-                    android:valueTo="22"
+                    android:text="@string/copyright"
                     android:value="12"
-                    android:text="@string/copyright" />
+                    android:valueFrom="6"
+                    android:valueTo="22" />
 
                 <com.google.android.material.switchmaterial.SwitchMaterial
                     android:id="@+id/clockOn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/time"/>
-
+                    android:text="@string/time" />
             </LinearLayout>
 
             <LinearLayout
-                    android:id="@+id/clockSettings"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                android:id="@+id/clockSettings"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
                 <com.google.android.material.switchmaterial.SwitchMaterial
                     android:id="@+id/clock24hr"
                     android:layout_width="match_parent"
@@ -299,66 +306,64 @@
                     android:id="@+id/clockTextSize"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:padding="0dp"
                     android:text="@string/size"
                     android:valueFrom="6"
                     android:valueTo="16"
-                    app:stepSize="1"
-                    android:padding="0dp"/>
-
+                    app:stepSize="1" />
             </LinearLayout>
-            <TableRow style="@style/DividerLine"/>
+            <TableRow style="@style/DividerLine" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialSlider
                 android:id="@+id/maxFontSize"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:text="@string/max_font_size"
                 android:valueFrom="10"
-                android:valueTo="100"
-                android:text="@string/max_font_size" />
+                android:valueTo="100" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
                 android:id="@+id/showChords"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="@string/show_chords"
-                android:hint="@string/show_chords_info"/>
+                android:hint="@string/show_chords_info"
+                android:text="@string/show_chords" />
 
             <com.garethevans.church.opensongtablet.customviews.TextThreeSlider
                 android:id="@+id/contentHorizontalAlign"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:drawableC="@drawable/align_center"
                 app:drawableL="@drawable/align_left"
                 app:drawableR="@drawable/align_right"
-                app:drawableC="@drawable/align_center"
-                app:label="@string/song_alignment_content"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                app:label="@string/song_alignment_content" />
 
             <com.garethevans.church.opensongtablet.customviews.TextThreeSlider
                 android:id="@+id/contentVerticalAlign"
-                app:drawableL="@drawable/align_top"
-                app:drawableC="@drawable/align_middle"
-                app:drawableR="@drawable/align_bottom"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                app:drawableC="@drawable/align_middle"
+                app:drawableL="@drawable/align_top"
+                app:drawableR="@drawable/align_bottom" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
                 android:id="@+id/blockShadow"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="@string/block_text_shadow"
-                android:hint="@string/block_text_shadow_info"/>
+                android:hint="@string/block_text_shadow_info"
+                android:text="@string/block_text_shadow" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialSlider
                 android:id="@+id/blockShadowAlpha"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:text="@string/opacity"
                 android:valueFrom="10"
-                android:valueTo="100"
-                android:text="@string/opacity" />
-
+                android:valueTo="100" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </FrameLayout>

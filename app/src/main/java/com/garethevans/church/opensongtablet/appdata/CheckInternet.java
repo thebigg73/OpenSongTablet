@@ -5,6 +5,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
 import android.os.Build;
+import android.util.Log;
 
 import androidx.fragment.app.Fragment;
 
@@ -13,6 +14,8 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class CheckInternet {
 
@@ -47,7 +50,8 @@ public class CheckInternet {
     }
 
     public void checkConnection(Fragment fragment, int fragId, MainActivityInterface mainActivityInterface) {
-        new Thread(() -> {
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
             boolean connected;
             try {
                 Socket sock = new Socket();
@@ -58,7 +62,7 @@ public class CheckInternet {
                 connected = false;
             }
             mainActivityInterface.isWebConnected(fragment,fragId,connected);
-        }).start();
+        });
     }
 
     public void setSearchPhrase(String searchPhrase) {

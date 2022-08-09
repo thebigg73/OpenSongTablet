@@ -3,7 +3,7 @@
 
     <!-- This is my main dark theme-->
     <!-- Set the main app theme-->
-    <style name="AppTheme" parent="Theme.MaterialComponents.NoActionBar">
+    <style name="AppTheme" parent="Theme.Material3.Dark.NoActionBar">
         <!-- Font and text settings -->
         <item name="fontFamily">@font/lato</item>
         <item name="android:fontFamily">@font/lato</item>
@@ -11,7 +11,7 @@
         <item name="android:textColorPrimary">@color/white</item>
         <item name="android:textColorSecondary">@color/lightgrey</item>
         <item name="colorControlActivated">@color/colorSecondary</item>
-        <item name="colorControlNormal">@color/colorSecondary</item>
+        <item name="colorControlNormal">@color/white</item>
         <item name="colorControlHighlight">@color/colorSecondary</item>
         <item name="android:textSize">18sp</item>
         <item name="android:textColorHighlight">@color/colorSecondary</item>
@@ -32,15 +32,19 @@
         <item name="colorSecondaryVariant">@color/colorSecondary</item>
         <item name="scrimBackground">@color/scrim</item>
         <item name="android:windowBackground">@color/colorPrimary</item>
+        <item name="colorPrimaryContainer">@color/colorSecondary</item>
 
         <!-- Status bar stuff -->
         <item name="android:windowNoTitle">true</item>
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
         <item name="windowActionBarOverlay">true</item>
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowTranslucentNavigation">false</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+        <item name="navigationIconTint">@color/white</item>
 
         <!-- For the default popup like MediaRouter, Nearby permissions -->
         <item name="colorBackgroundFloating">@color/colorSecondary</item>
@@ -50,8 +54,9 @@
         <item name="castMiniControllerStyle">@style/CustomCastMiniController</item>
 
         <!-- Exposed popup window -->
-        <item name="popupMenuBackground">@drawable/popup_bg</item>
-        <item name="android:popupBackground">@drawable/popup_bg</item>
+        <!--<item name="popupMenuBackground">@drawable/popup_bg</item>-->
+        <!--<item name="android:popupBackground">@drawable/popup_bg</item>-->
+        <item name="popupMenuBackground">@color/white</item>
 
         <!-- Override widgets throughout the app -->
         <item name="bottomSheetDialogTheme">@style/BottomSheetDialogTheme</item>
@@ -84,31 +89,26 @@
     <style name="ExposedDropDown" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
         <item name="materialThemeOverlay">@style/ExposedMaterialOverlay</item>
         <item name="hintEnabled">true</item>
-        <item name="hintTextColor">?attr/colorOnSurface</item>
-        <item name="endIconTint">?attr/colorOnSurface</item>
-        <item name="android:textColorHint">?attr/colorOnSurface</item>
+        <item name="hintTextColor">@color/vlightgrey</item>
+        <item name="endIconTint">@color/vlightgrey</item>
+        <item name="android:textColorHint">@color/vlightgrey</item>
         <!-- The box -->
         <item name="boxBackgroundMode">outline</item>
         <item name="boxStrokeWidth">1dp</item>
-        <item name="boxStrokeColor">?attr/colorOnSurface</item>
-        <item name="boxBackgroundColor">@color/colorAltPrimary</item>
+        <item name="boxStrokeColor">@color/white</item>
     </style>
     <style name="ExposedMaterialOverlay" parent="">
-        <item name="colorSurface">@color/colorAltPrimary</item>
+        <item name="colorSurface">@color/transparent</item>
         <item name="colorOnSurface">@color/vlightgrey</item>
         <item name="colorError">@color/red</item>
         <item name="autoCompleteTextViewStyle">@style/ExposedDropDownItem</item>
 
     </style>
     <style name="ExposedDropDownItem" parent="Widget.AppCompat.AutoCompleteTextView">
+        <item name="materialThemeOverlay">@style/TextInputOverlay</item>
         <!-- Disable text entry and background color -->
         <item name="android:inputType">none</item>
-        <!--<item name="background">@null</item>-->
-        <item name="background">@color/transparent</item>
-        <!--<item name="colorSurface">@color/colorSecondary</item>-->
-        <!-- The text cursor -->
-        <!-- Style the text cursor and highlight colours -->
-        <item name="materialThemeOverlay">@style/TextInputOverlay</item>
+        <item name="background">@null</item>
     </style>
 
 
@@ -149,7 +149,7 @@
 
         <item name="materialThemeOverlay">@style/TextInputOverlay</item>
     </style>
-    <style name="EditTextLayout" parent="">
+    <style name="EditTextLayout" parent="AppTheme">
         <!-- Max lines = 1 and set Enter to complete entry-->
         <item name="android:lines">1</item>
         <item name="android:maxLines">1</item>
@@ -174,11 +174,13 @@
     </style>
 
     <!-- The ActionBar -->
-    <style name="AppTheme.ActionBar" parent="ThemeOverlay.MaterialComponents.Toolbar.Primary">
-        <item name="android:theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+    <style name="ActionBar" parent="AppTheme">
         <item name="android:background">@color/colorAltPrimary</item>
+        <item name="background">@color/colorAltPrimary</item>
         <item name="windowActionBarOverlay">true</item>
         <item name="android:windowActionBarOverlay">true</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:textColor">@color/white</item>
     </style>
 
     <!--For the Preferences windows-->

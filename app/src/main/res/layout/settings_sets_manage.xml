@@ -43,7 +43,6 @@
                     android:contentDescription="@string/new_category"
                     android:src="@drawable/plus"
                     app:useCompatPadding="true" />
-
             </LinearLayout>
 
             <CheckBox
@@ -67,7 +66,6 @@
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
                 android:text="@string/set_load_merge" />
-
             <TableRow style="@style/DividerLine" />
 
             <LinearLayout
@@ -77,9 +75,7 @@
                 android:layout_weight="1"
                 android:isScrollContainer="true"
                 android:orientation="vertical" />
-
         </LinearLayout>
-
     </com.garethevans.church.opensongtablet.customviews.NestedScrollWithFAB>
 
     <FrameLayout
@@ -104,5 +100,4 @@
         android:padding="16dp"
         android:text="@string/load"
         app:icon="@drawable/save" />
-
 </RelativeLayout>

@@ -560,7 +560,8 @@
     <string name="pdftotext_extract">"Extrahujte text z PDF"</string>
     <string name="pdftotext_found">"Nalezeno:"</string>
     <string name="pedal">"Pedál"</string>
-    <string name="pedal_avoid_repeat">Zobrazit varování před přechodem na další skladbu (užitečné, aby se zabránilo náhodnému stisknutí)</string>
+    <string name="pedal_avoid_repeat">Zobrazit varování před přechodem na další skladbu</string>
+    <string name="pedal_avoid_repeat_info">Užitečné, aby se zabránilo náhodnému stisknutí</string>
     <string name="pedal_controls">Nastavte tlačítka a akce nožního pedálu</string>
     <string name="pedal_instructions">Kliknutím na tlačítko pedálu níže jej přiřadíte tlačítku klávesnice nebo notě midi a přiřadíte jim akce. Většina pedálů Bluetooth vysílá příkazy z klávesnice (např. šipka nahoru/dolů).</string>
     <string name="pedal_midi_warning">Chcete-li použít midi pedál, ujistěte se, že jste jej nejprve připojili pomocí nastavení midi v aplikaci.</string>
@@ -841,7 +842,6 @@
     <string name="volume">"Hlasitost"</string>
     <string name="volume_value">"Aktuální hodnota objemu"</string>
     <string name="wait">"Počkejte ...."</string>
-    <string name="warn_before_changing_song">Před přechodem na další skladbu zobrazit varování (užitečné, aby se zabránilo náhodnému stisknutí)</string>
     <string name="warning">"Tato možnost by měla být použita pouze v režimu prezentace. Uvědomte si, že tato funkce používá velké množství paměti a může způsobit zhroucení. Byli jste varováni!"</string>
     <string name="web_search">"Hledat Internet pro aktuální skladby"</string>
     <string name="website">Webová stránka</string>
@@ -855,4 +855,5 @@
     <string name="connections_advertise_temporary_info">Inzerujte pouze 10 sekund po kliknutí na tlačítko inzerovat</string>
     <string name="set_sort">Sada řazení</string>
     <string name="alphabetical_sort">Seřaďte položky v abecedním pořadí</string>
+    <string name="pedal_scroll_before_move_info">Umožňuje, aby další a předchozí pedály fungovaly také jako rolovací pedály</string>
 </resources>

@@ -96,7 +96,6 @@
                     custom:mydrawable="@drawable/sort"
                     android:padding="16dp"
                     android:text="@string/set_sort" />
-
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
     </LinearLayout>

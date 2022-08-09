@@ -81,10 +81,7 @@ public class PerformanceGestures {
         // Tell the user that the song has been added.
         mainActivityInterface.getShowToast().doIt("\"" + mainActivityInterface.getSong().getFilename() + "\" " +
                 c.getString(R.string.added_to_set));
-
-        // Vibrate to let the user know something happened
-        mainActivityInterface.getDoVibrate().vibrate(c, 50);
-
+        
         mainActivityInterface.getCurrentSet().addSetItem(itemForSet);
         mainActivityInterface.getCurrentSet().addSetValues(mainActivityInterface.getSong());
         mainActivityInterface.updateSetList();

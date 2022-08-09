@@ -264,6 +264,7 @@
     <string name="deeplink_links" translatable="false">opensongapp://settings/actions/links</string>
     <string name="deeplink_metronome" translatable="false">opensongapp://settings/actions/metronome</string>
     <string name="deeplink_midi" translatable="false">opensongapp://settings/midi</string>
+    <string name="deeplink_move" translatable="false">opensongapp://settings/storage/move</string>
     <string name="deeplink_nearby" translatable="false">opensongapp://settings/nearby</string>
     <string name="deeplink_onsong" translatable="false">opensongapp://settings/onsong</string>
     <string name="deeplink_pads" translatable="false">opensongapp://settings/pads</string>
@@ -608,11 +609,13 @@
     <string name="pdftotext_extract">Extract text from PDF</string>
     <string name="pdftotext_found">Text found:</string>
     <string name="pedal">Pedal</string>
-    <string name="pedal_avoid_repeat">Show a warning before moving to the next song (useful to avoid accidental presses)</string>
+    <string name="pedal_avoid_repeat">Show a warning before moving to the next song</string>
+    <string name="pedal_avoid_repeat_info">Useful to avoid accidental presses</string>
     <string name="pedal_controls">Set up foot pedal buttons and actions</string>
     <string name="pedal_instructions">Click on a pedal button below to assign it to a keyboard button or midi note and assign actions to it. Most Bluetooth pedals send keyboard commands (e.g. arrow up/down).</string>
     <string name="pedal_midi_warning">To use a midi pedal, make sure you have connected it using the midi settings in the app first.</string>
     <string name="pedal_scroll_before_move">Try to scroll before changing songs</string>
+    <string name="pedal_scroll_before_move_info">Allows next/previous pedals to also function as scroll pedals</string>
     <string name="pedal_waiting">Waiting for button…</string>
     <string name="pedal_warning">Confirm song change by pressing the pedal again after this warning closes</string>
     <string name="performance_mode">Performance mode</string>
@@ -1005,7 +1008,6 @@ Check out the categories in the right hand options menu.
     <string name="volume_value">Current volume value</string>
 
     <string name="wait">Wait....</string>
-    <string name="warn_before_changing_song">Show a warning before moving on to the next song (useful to avoid accidental presses)</string>
     <string name="web_search">Search internet for this song</string>
     <string name="website">Website</string>
     <string name="website_actionbar" translatable="false">https://www.opensongapp.com/user-manual/display/actionbar</string>

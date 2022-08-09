@@ -51,7 +51,6 @@
                     android:hint="@string/autoscroll_time"
                     android:inputType="number"
                     app:suffixText="secs" />
-
             </LinearLayout>
 
             <com.google.android.material.textview.MaterialTextView
@@ -75,7 +74,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/ask" />
-
             </RadioGroup>
 
             <com.google.android.material.switchmaterial.SwitchMaterial
@@ -93,7 +91,6 @@
                 android:checked="false"
                 android:text="@string/autoscroll_hide"
                 android:hint="@string/info_text_autohide_info"/>
-
             <TableRow style="@style/DividerLine" />
 
             <com.google.android.material.textview.MaterialTextView
@@ -130,7 +127,6 @@
                     android:hint="@string/autoscroll_time"
                     android:inputType="number"
                     app:suffixText="secs" />
-
             </LinearLayout>
 
             <com.google.android.material.button.MaterialButton
@@ -154,5 +150,4 @@
         android:layout_gravity="bottom|end"
         android:src="@drawable/play"
         android:contentDescription="@string/start_stop_autoscroll" />
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

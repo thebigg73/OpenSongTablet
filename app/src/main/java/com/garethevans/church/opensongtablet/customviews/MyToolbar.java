@@ -1,69 +1,86 @@
-package com.garethevans.church.opensongtablet.screensetup;
+package com.garethevans.church.opensongtablet.customviews;
 
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
+import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextClock;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.widget.Toolbar;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.SongDetailsBottomSheet;
+import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.textview.MaterialTextView;
 
-public class AppActionBar {
 
-    // This holds references to the items in the ActionBar (except the battery)
+public class MyToolbar extends MaterialToolbar {
+
+    // This holds references to the items in the Toolbar (except the battery)
     // Battery changes get sent via the mainactivityInterface
-    private final Activity activity;
-    private final Context c;
-    private final MainActivityInterface mainActivityInterface;
-    private final Toolbar toolbar;
-    private final ActionBar actionBar;
+    // The toolbar is set as the supportActionbar received as actionBar, so can called via that as well
+
+    private Activity activity;
+    private Context c;
+    private MainActivityInterface mainActivityInterface;
+    private ActionBar actionBar;
+    private final RelativeLayout batteryholder;
     private final TextView title;
     private final TextView author;
     private final TextView key;
     private final TextView capo;
     private final TextClock clock;
-    private final ImageView setIcon;
+    private final ImageView setIcon, batteryimage;
     private final ImageView webHelp;
-    private final Handler delayactionBarHide;
-    private final Runnable hideActionBarRunnable;
+    private final com.google.android.material.textview.MaterialTextView batterycharge;
+    private Handler delayActionBarHide;
+    private Runnable hideActionBarRunnable;
     private final int autoHideTime = 1200;
     private float clockTextSize;
-    private boolean clock24hFormat, clockOn, hideActionBar, clockSeconds;
+    private boolean clock24hFormat, clockOn, hideActionBar, clockSeconds, performanceMode;
+    private final String TAG = "MyToolbar";
 
-    private boolean performanceMode;
-
-    public AppActionBar(Activity activity, Context c, ActionBar actionBar, Toolbar toolbar, ImageView setIcon, TextView title, TextView author,
-                        TextView key, TextView capo, TextClock clock, ImageView webHelp) {
+    // Set up the view and view items
+    public void initialiseToolbar(Activity activity, Context c, ActionBar actionBar) {
         this.activity = activity;
         this.c = c;
         mainActivityInterface = (MainActivityInterface) c;
         this.actionBar = actionBar;
-        this.toolbar = toolbar;
-        this.title = title;
-        this.author = author;
-        this.key = key;
-        this.capo = capo;
-        this.clock = clock;
-        this.setIcon = setIcon;
-        this.webHelp = webHelp;
-        delayactionBarHide = new Handler();
+        delayActionBarHide = new Handler();
         hideActionBarRunnable = () -> {
-            if (actionBar != null && actionBar.isShowing()) {
+            if (actionBar.isShowing()) {
                 actionBar.hide();
             }
         };
-
         updateActionBarPrefs();
     }
+    public MyToolbar(@NonNull Context context, @Nullable @org.jetbrains.annotations.Nullable AttributeSet attrs) {
+        super(context, attrs);
+        View v = inflate(context, R.layout.view_toolbar, this);
+        setIcon = v.findViewById(R.id.setIcon);
+        title = v.findViewById(R.id.songtitle_ab);
+        key = v.findViewById(R.id.songkey_ab);
+        capo = v.findViewById(R.id.songcapo_ab);
+        author = v.findViewById(R.id.songauthor_ab);
+        batteryholder = v.findViewById(R.id.batteryholder);
+        batteryimage = v.findViewById(R.id.batteryimage);
+        batterycharge = v.findViewById(R.id.batterycharge);
+        clock = v.findViewById(R.id.digitalclock);
+        webHelp = v.findViewById(R.id.webHelp);
 
+        batteryholder.setOnClickListener(v1 -> mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_actionbar), 0));
+    }
+
+    // Deal with the preferences used for the actionbar
     private void updateActionBarPrefs() {
         clockTextSize = mainActivityInterface.getPreferences().getMyPreferenceFloat("clockTextSize",9.0f);
         clock24hFormat = mainActivityInterface.getPreferences().getMyPreferenceBoolean("clock24hFormat",true);
@@ -72,24 +89,63 @@ public class AppActionBar {
         hideActionBar = mainActivityInterface.getPreferences().getMyPreferenceBoolean("hideActionBar",false);
         updateClock();
     }
+    public void updateActionBarSettings(String prefName, float value, boolean isvisible) {
 
-    public void translateAwayActionBar(boolean moveAway) {
-        if (moveAway) {
-            toolbar.setTranslationY(-200);
-            toolbar.setVisibility(View.GONE);
-            justShowOrHide(false);
-        } else {
-            toolbar.setTranslationY(0);
-            toolbar.setVisibility(View.VISIBLE);
-            justShowOrHide(true);
+        switch (prefName) {
+            case "batteryDialOn":
+                mainActivityInterface.getBatteryStatus().setBatteryDialOn(isvisible);
+                break;
+            case "batteryDialThickness":
+                mainActivityInterface.getBatteryStatus().setBatteryDialThickness((int)value);
+                mainActivityInterface.getBatteryStatus().setBatteryImage();
+                break;
+            case "batteryTextOn":
+                mainActivityInterface.getBatteryStatus().setBatteryTextOn(isvisible);
+                break;
+            case "batteryTextSize":
+                mainActivityInterface.getBatteryStatus().setBatteryTextSize(value);
+                break;
+            case "clockOn":
+                hideView(clock,!isvisible);
+                break;
+            case "clock24hFormat":
+                clock24hFormat = isvisible;
+                updateClock();
+                break;
+            case "clockSeconds":
+                clockSeconds = isvisible;
+                updateClock();
+                break;
+            case "clockTextSize":
+                clock.setTextSize(value);
+                break;
+            case "songTitleSize":
+                title.setTextSize(value);
+                key.setTextSize(value);
+                capo.setTextSize(value);
+                break;
+            case "songAuthorSize":
+                author.setTextSize(value);
+                break;
+            case "hideActionBar":
+                setHideActionBar(!isvisible);
+                break;
         }
     }
+
+    // If we have chosen to autohide the actionbar
+    public boolean contentBehind(boolean menuOpen) {
+        return (hideActionBar && performanceMode && !menuOpen);
+    }
+
     public void setHideActionBar(boolean hideActionBar) {
         this.hideActionBar = hideActionBar;
     }
     public boolean getHideActionBar() {
         return hideActionBar;
     }
+
+    // Update the text in the actionbar to either be a song info, or menu title
     public void setActionBar(String newtitle) {
         // By default hide the webHelp (can be shown later)
         updateToolbarHelp(null);
@@ -159,7 +215,6 @@ public class AppActionBar {
         } else {
             // We are in a different fragment, so hide the song info stuff
             setIcon.setVisibility(View.GONE);
-            actionBar.show();
             if (title != null) {
                 title.setTextSize(18.0f);
                 title.setText(newtitle);
@@ -168,6 +223,8 @@ public class AppActionBar {
             }
         }
     }
+
+    // Update the web help icon in the toolbar
     public void updateToolbarHelp(String webAddress) {
         // This allows a help button to be shown in the action bar
         // This links to the specific page in the user manul (if webAddress isn't null)
@@ -182,66 +239,27 @@ public class AppActionBar {
         }
     }
 
+    // Clicking on the song title/author/etc. opens up the song details bottom sheet
     private void openDetails() {
         if (!mainActivityInterface.getSong().getTitle().equals("Welcome to OpenSongApp")) {
             SongDetailsBottomSheet songDetailsBottomSheet = new SongDetailsBottomSheet();
             songDetailsBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "songDetailsBottomSheet");
         }
     }
+
+    // Allow editing the song by long pressing on the title/author/etc. if not null
     private void editSong() {
         if (!mainActivityInterface.getSong().getTitle().equals("Welcome to OpenSongApp")) {
             mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_edit), 0);
         }
     }
 
+    // Set the capo string
     public void setActionBarCapo(TextView capo, String string) {
         capo.setText(string);
     }
 
-    public void updateActionBarSettings(String prefName, float value, boolean isvisible) {
-
-        switch (prefName) {
-            case "batteryDialOn":
-                mainActivityInterface.getBatteryStatus().setBatteryDialOn(isvisible);
-                break;
-            case "batteryDialThickness":
-                mainActivityInterface.getBatteryStatus().setBatteryDialThickness((int)value);
-                mainActivityInterface.getBatteryStatus().setBatteryImage();
-                break;
-            case "batteryTextOn":
-                mainActivityInterface.getBatteryStatus().setBatteryTextOn(isvisible);
-                break;
-            case "batteryTextSize":
-                mainActivityInterface.getBatteryStatus().setBatteryTextSize(value);
-                break;
-            case "clockOn":
-                hideView(clock,!isvisible);
-                break;
-            case "clock24hFormat":
-                clock24hFormat = isvisible;
-                updateClock();
-                break;
-            case "clockSeconds":
-                clockSeconds = isvisible;
-                updateClock();
-                break;
-            case "clockTextSize":
-                clock.setTextSize(value);
-                break;
-            case "songTitleSize":
-                title.setTextSize(value);
-                key.setTextSize(value);
-                capo.setTextSize(value);
-                break;
-            case "songAuthorSize":
-                author.setTextSize(value);
-                break;
-            case "hideActionBar":
-                setHideActionBar(!isvisible);
-                break;
-        }
-    }
-
+    // This is used to show/hide various parts of the toolbar text (author, copyright, etc)
     private void hideView(View v, boolean hide) {
         if (hide) {
             v.setVisibility(View.GONE);
@@ -251,90 +269,128 @@ public class AppActionBar {
     }
 
     // Action bar stuff
-    public void toggleActionBar(boolean wasScrolling, boolean scrollButton,
+    /*public void toggleActionBar(boolean wasScrolling, boolean scrollButton,
                                 boolean menusActive) {
         try {
-            delayactionBarHide.removeCallbacks(hideActionBarRunnable);
+            delayActionBarHide.removeCallbacks(hideActionBarRunnable);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (actionBar != null) {
-            if (wasScrolling || scrollButton) {
-                if (hideActionBar && !menusActive) {
-                    actionBar.hide();
-                }
-            } else if (!menusActive) {
-                if (actionBar.isShowing() && hideActionBar) {
-                    delayactionBarHide.postDelayed(hideActionBarRunnable, 500);
-                } else {
-                    actionBar.show();
-                    // Set a runnable to hide it after 3 seconds
-                    if (hideActionBar) {
-                        delayactionBarHide.postDelayed(hideActionBarRunnable, autoHideTime);
-                    }
+
+        if (wasScrolling || scrollButton) {
+            if (hideActionBar && !menusActive) {
+                mainActivityInterface.hideActionBar();
+                //actionBar.hide();
+            }
+        } else if (!menusActive) {
+            if (isShown() && hideActionBar) {
+                delayActionBarHide.postDelayed(hideActionBarRunnable, 500);
+            } else {
+                mainActivityInterface.hideActionBar();
+                //actionBar.show();
+                // Set a runnable to hide it after 3 seconds
+                if (hideActionBar) {
+                    delayActionBarHide.postDelayed(hideActionBarRunnable, autoHideTime);
                 }
             }
         }
-    }
+    }*/
 
 
-    // Set when entering/exiting performance mode
+    // Set when entering/exiting performance mode as this is used to determine if we can autohide actionbar
     public void setPerformanceMode(boolean inPerformanceMode) {
         performanceMode = inPerformanceMode;
     }
 
     // Show/hide the actionbar
     public void showActionBar(boolean menuOpen) {
-        // Show the ActionBar based on the user preferences
-        // If we are in performance mode (boolean set when opening/closing PerformanceFragment)
-        // The we can autohide if the user preferences state that's what is wanted
-        // If we are not in performance mode, we don't set a runnable to autohide them
+        // Remove any existing callbacks to hide the actionbar
         try {
-            delayactionBarHide.removeCallbacks(hideActionBarRunnable);
+            delayActionBarHide.removeCallbacks(hideActionBarRunnable);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        if (actionBar != null) {
-            actionBar.show();
-        }
+        // Now show the action bar
+        actionBar.show();
 
+        // If we need to hide the actionbar again, set a runnable, as long as the menu isn't open
         if (hideActionBar && performanceMode && !menuOpen) {
             try {
-                delayactionBarHide.postDelayed(hideActionBarRunnable, autoHideTime);
+                delayActionBarHide.postDelayed(hideActionBarRunnable, autoHideTime);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
-    public void justShowOrHide(boolean show) {
-        if (actionBar!=null && show) {
-            actionBar.show();
-        } else if (actionBar!=null) {
-            actionBar.hide();
+
+    /*public void justShowOrHide(boolean show) {
+        if (show) {
+            //mainActivityInterface.hideActionBar(false);
+            //actionBar.show();
+        } else {
+            //mainActivityInterface.hideActionBar(true);
+            //actionBar.hide();
         }
-    }
+    }*/
 
     public void removeCallBacks() {
-        delayactionBarHide.removeCallbacks(hideActionBarRunnable);
+        delayActionBarHide.removeCallbacks(hideActionBarRunnable);
     }
 
     // Flash on/off for metronome
     public void doFlash(int colorBar) {
-        actionBar.setBackgroundDrawable(new ColorDrawable(colorBar));
+        setBackground(new ColorDrawable(colorBar));
+        //toolbar.setBackgroundDrawable(new ColorDrawable(colorBar));
+        //actionBar.setBackgroundDrawable(new ColorDrawable(colorBar));
     }
 
     // Get the actionbar height - fakes a height of 0 if autohiding
-    public int getActionBarHeight() {
-        if (hideActionBar && performanceMode) {
+    public int getActionBarHeight(boolean menuOpen) {
+        Log.d(TAG,"getHeight()="+getHeight());
+        if (hideActionBar && performanceMode && !menuOpen) {
+            Log.d(TAG,"heightToUse=0");
             return 0;
         } else {
-            return actionBar.getHeight();
+            //return getHeight();
+            Log.d(TAG,"heightToUse="+getHeight());
+            return getHeight();
         }
     }
 
     public void updateClock() {
         mainActivityInterface.getTimeTools().setFormat(clock,clockTextSize,
                 clockOn, clock24hFormat, clockSeconds);
+    }
+
+    public void batteryholderVisibility(int visibility) {
+        batteryholder.setVisibility(visibility);
+    }
+
+    public ImageView getBatteryimage() {
+        return batteryimage;
+    }
+
+    public MaterialTextView getBatterycharge() {
+        return batterycharge;
+    }
+
+    public void showClock(boolean show) {
+        if (show && clockOn) {
+            // Only show if that is our preference
+            clock.setVisibility(View.VISIBLE);
+        } else {
+            clock.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void setNavigationOnClickListener(OnClickListener listener) {
+        super.setNavigationOnClickListener(listener);
+    }
+
+    @Override
+    public void setOnMenuItemClickListener(OnMenuItemClickListener listener) {
+        super.setOnMenuItemClickListener(listener);
     }
 }
