@@ -5,7 +5,6 @@ import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -347,14 +346,15 @@ public class MyToolbar extends MaterialToolbar {
 
     // Get the actionbar height - fakes a height of 0 if autohiding
     public int getActionBarHeight(boolean menuOpen) {
-        Log.d(TAG,"getHeight()="+getHeight());
         if (hideActionBar && performanceMode && !menuOpen) {
-            Log.d(TAG,"heightToUse=0");
             return 0;
         } else {
-            //return getHeight();
-            Log.d(TAG,"heightToUse="+getHeight());
-            return getHeight();
+            if (getHeight()==0) {
+                // Just in case there was a call before drawn
+                return 168;
+            } else {
+                return getHeight();
+            }
         }
     }
 

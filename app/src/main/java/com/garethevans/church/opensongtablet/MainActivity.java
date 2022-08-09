@@ -443,7 +443,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public void showActionBar() {
         boolean contentBehind = myView.myToolbar.contentBehind(settingsOpen||menuOpen);
-        Log.d(TAG,"contentBehind="+contentBehind);
         moveContentForActionBar(contentBehind);
         myView.myToolbar.showActionBar(settingsOpen||menuOpen);
     }
@@ -500,7 +499,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
         // Set up nearby
         setupNearby();
-
     }
     private void initialiseStartVariables() {
         themeColors.setThemeName(preferences.getMyPreferenceString("appTheme", "dark"));
@@ -696,7 +694,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         lockDrawer(true);
         closeDrawer(true);  // Only the Performance and Presenter fragments allow this.  Switched on in these fragments
         hideActionButton(true);
-        showActionBar();
         runOnUiThread(() -> {
             try {
                 if (deepLink != null) {
@@ -708,6 +705,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 e.printStackTrace();
             }
         });
+        if (id != R.id.setStorageLocationFragment && deepLink!=null && deepLink.equals(getString(R.string.storage_change))) {
+            showActionBar();
+        }
     }
     @Override
     public void popTheBackStack(int id, boolean inclusive) {
@@ -1057,12 +1057,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             }
         });
     }
+
     @Override
     public void hideActionBar() {
-        //getSupportActionBar().hide();
-        //myView.myToolbar.justShowOrHide(!hide);
-        Log.d(TAG,"hideActionBar");
+        getSupportActionBar().hide();
     }
+
     @Override
     public void updateToolbar(String what) {
         // Null titles are for the default song, author, etc.
@@ -1202,7 +1202,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        //showActionBar();
         if ("Settings".equals(item.toString())) {
             if (settingsOpen) {
                 settingsOpen = false;
@@ -1253,7 +1252,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 settingsOpen = false;
                 myView.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
             }
-            //showActionBar();
+
         }
     }
     @Override
@@ -2696,7 +2695,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         // Set the fullscreen window flags]
         setWindowFlags(true);
         if (hasFocus) {
-            showActionBar();
+            if (navController.getCurrentDestination().getId()!=R.id.setStorageLocationFragment) {
+                showActionBar();
+            }
         }
     }
 

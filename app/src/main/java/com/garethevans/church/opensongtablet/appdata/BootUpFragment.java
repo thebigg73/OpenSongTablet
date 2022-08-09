@@ -159,6 +159,8 @@ public class BootUpFragment extends Fragment {
                         handler.post(() -> {
                             mainActivityInterface.initialiseActivity();
                             mainActivityInterface.navHome();
+                            mainActivityInterface.showActionBar();
+                            mainActivityInterface.moveContentForActionBar(false);
                         });
 
                     } else {

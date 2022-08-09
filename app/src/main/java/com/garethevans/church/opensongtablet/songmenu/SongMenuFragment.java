@@ -86,8 +86,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         songListAdapter = new SongListAdapter(requireContext(), blank,
                 SongMenuFragment.this);
         myView.songListRecyclerView.setAdapter(songListAdapter);
-        }
-
+    }
 
     private void setValues(Song song) {
         songListSearchByFolder = mainActivityInterface.getPreferences().getMyPreferenceBoolean("songListSearchByFolder", false);

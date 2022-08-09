@@ -155,7 +155,7 @@ public interface MainActivityInterface {
     void updateToolbar(String what);
     void updateToolbarHelp(String webAddress);
     void updateActionBarSettings(String prefName, float floatval, boolean isvisible);
-    void moveContentForActionBar(boolean actionBarShowing);
+    void moveContentForActionBar(boolean contentBehind);
     boolean needActionBar();
 
     // Page button(s)

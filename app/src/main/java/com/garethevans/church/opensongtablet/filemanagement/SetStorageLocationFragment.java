@@ -72,25 +72,25 @@ public class SetStorageLocationFragment extends Fragment {
         mainActivityInterface = (MainActivityInterface) context;
     }
 
-
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
         myView = StorageChooseBinding.inflate(inflater, container, false);
-
+        mainActivityInterface.hideActionBar();
         // If this is our first time here - all good
         // However, if we are just wanting to check/change the storage,
         // we don't want the extra title bar
         if (mainActivityInterface.getWhattodo().equals("storageOk")) {
-            mainActivityInterface.moveContentForActionBar(true);
+            mainActivityInterface.moveContentForActionBar(false);
             mainActivityInterface.showActionBar();
             mainActivityInterface.setWhattodo("");
             myView.headerText.setVisibility(View.GONE);
 
         } else {
+            Log.d(TAG,"Don't want actionbar");
             myView.headerText.setVisibility(View.VISIBLE);
-            mainActivityInterface.moveContentForActionBar(false);
             mainActivityInterface.hideActionBar();
+            mainActivityInterface.moveContentForActionBar(true);
         }
 
         // Set up the views
