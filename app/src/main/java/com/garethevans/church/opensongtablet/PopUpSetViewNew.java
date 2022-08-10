@@ -384,6 +384,34 @@ public class PopUpSetViewNew extends DialogFragment {
             }
         });
 
+        FloatingActionButton sort = V.findViewById(R.id.sort);
+        sort.setOnClickListener(v -> {
+            // Save any changes to current set first
+            doSave();
+
+            if (StaticVariables.mTempSetList == null && StaticVariables.mSetList != null) {
+                // Somehow the temp set list is null, so build it again
+                StaticVariables.mTempSetList = new ArrayList<>();
+                Collections.addAll(StaticVariables.mTempSetList, StaticVariables.mSetList);
+            }
+
+            if (StaticVariables.mTempSetList!=null && StaticVariables.mTempSetList.size()>0) {
+                // Redraw the lists
+                Collections.sort(StaticVariables.mTempSetList);
+
+                // Prepare the page for redrawing....
+                StaticVariables.doneshuffle = true;
+
+                // Run the listener
+                PopUpSetViewNew.this.dismiss();
+
+                // Use the shuffle listener again - virtually the same anyway!
+                if (mListener != null) {
+                    mListener.shuffleSongsInSet();
+                }
+            }
+        });
+
         FloatingActionButton saveAsProperSet = V.findViewById(R.id.saveAsProperSet);
         saveAsProperSet.setOnClickListener(view -> {
             // Save any changes to current set first

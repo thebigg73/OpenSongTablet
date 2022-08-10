@@ -17,7 +17,8 @@ public class Permissions {
             nearbyPermissionsString = new String[]{Manifest.permission_group.NEARBY_DEVICES};
         } else if (Build.VERSION.SDK_INT > 30) {
             nearbyPermissionsString = new String[]{Manifest.permission.BLUETOOTH_SCAN,
-                    Manifest.permission.BLUETOOTH_ADVERTISE, Manifest.permission.BLUETOOTH_CONNECT};
+                    Manifest.permission.BLUETOOTH_ADVERTISE, Manifest.permission.BLUETOOTH_CONNECT,
+                    Manifest.permission.ACCESS_FINE_LOCATION};
         } else if (Build.VERSION.SDK_INT == 29 || Build.VERSION.SDK_INT == 30) {
             nearbyPermissionsString = new String[]{Manifest.permission.ACCESS_FINE_LOCATION};
         } else {
@@ -46,7 +47,6 @@ public class Permissions {
         }
         return granted;
     }
-
 
     // General checks and requests for permission
     public boolean checkForPermission(Context c, String permission) {

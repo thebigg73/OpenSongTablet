@@ -135,6 +135,20 @@
             tools:ignore="HardcodedText" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/sort"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fabSize="mini"
+            app:borderWidth="0dp"
+            app:elevation="0dp"
+            android:src="@drawable/sort"
+            android:layout_margin="8dp"
+            android:alpha="0.8"
+            app:backgroundTint="@color/grey"
+            android:contentDescription="Sort"
+            tools:ignore="HardcodedText" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/saveAsProperSet"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
