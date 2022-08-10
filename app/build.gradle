@@ -95,5 +95,4 @@ dependencies {
     //implementation fileTree(include: ['*.jar'], dir: 'libs')                            // To allow local jar files in libs
     //implementation 'androidx.legacy:legacy-support-v4:1.0.0'                            // Older device support in views
 
-
 }
