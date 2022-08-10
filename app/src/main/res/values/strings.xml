@@ -246,6 +246,7 @@
     <string name="deeplink_alert" translatable="false">opensongapp://alert</string>
     <string name="deeplink_backup" translatable="false">opensongapp://settings/storage/backup</string>
     <string name="deeplink_bible" translatable="false">opensongapp://settings/bible</string>
+    <string name="deeplink_bootup" translatable="false">opensongapp://bootup</string>
     <string name="deeplink_chords" translatable="false">opensongapp://settings/actions/chords</string>
     <string name="deeplink_chords_settings" translatable="false">opensongapp://settings/chords/settings</string>
     <string name="deeplink_chords_custom" translatable="false">opensongapp://settings/chords/custom</string>

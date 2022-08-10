@@ -414,12 +414,7 @@ public class SetStorageLocationFragment extends Fragment {
         }
     }
     private void goToSongs() {
-        mainActivityInterface.navHome();
-    /*    NavOptions navOptions = new NavOptions.Builder()
-                .setPopUpTo(R.id.setStorageLocationFragment, false)
-                .build();
-        NavHostFragment.findNavController(this).navigate(R.id.bootUpFragment, null, navOptions);
-    */
+        mainActivityInterface.navigateToFragment(getString(R.string.deeplink_bootup),0);
     }
     private void pulseButton(View v) {
         CustomAnimation ca = new CustomAnimation();

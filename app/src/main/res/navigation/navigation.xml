@@ -11,6 +11,8 @@
         android:name="com.garethevans.church.opensongtablet.appdata.BootUpFragment"
         android:label="bootup_logo"
         tools:layout="@layout/bootup_logo">
+        <deepLink android:id="@+id/deepLinkBoot"
+            app:uri="@string/deeplink_bootup"/>
         <action
             android:id="@+id/action_bootUpFragment_to_performanceFragment"
             app:destination="@id/performanceFragment" />
