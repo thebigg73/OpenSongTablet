@@ -1030,6 +1030,7 @@ Check out the categories in the right hand options menu.
     <string name="website_midi_connections" translatable="false">https://www.opensongapp.com/user-manual/midi</string>
     <string name="website_modes" translatable="false">https://www.opensongapp.com/user-guide/the-app-modes</string>
     <string name="website_nearby" translatable="false">https://www.opensongapp.com/user-manual/connect-devices</string>
+    <string name="website_ocr" translatable="false">https://www.opensongapp.com/user-manual/songs/ocr</string>
     <string name="website_page_buttons" translatable="false">https://www.opensongapp.com/user-manual/controls/page-buttons</string>
     <string name="website_paypal" translatable="false">https://www.paypal.me/opensongapp</string>
     <string name="website_play_services_help" translatable="false">https://www.opensongapp.com/user-guide/devices-without-google-play</string>
@@ -1037,11 +1038,10 @@ Check out the categories in the right hand options menu.
     <string name="website_rate" translatable="false">https://play.google.com/store/apps/details?id=</string>
     <string name="website_scaling" translatable="false">https://www.opensongapp.com/user-manual/display/scaling</string>
     <string name="website_song_add" translatable="false">https://www.opensongapp.com/user-manual/songs/add-songs</string>
-    <string name="website_song_camera" translatable="false">https://www.opensongapp.com/user-manual/songs/add-songs/camera</string>
+    <string name="website_song_camera" translatable="false">https://www.opensongapp.com/user-manual/songs/camera</string>
     <string name="website_song_display" translatable="false">https://www.opensongapp.com/user-manual/display/song-display</string>
-    <string name="website_song_file" translatable="false">https://www.opensongapp.com/user-manual/songs/add-songs/import-file</string>
-    <string name="website_song_format" translatable="false">https://www.opensongapp.com/user-guide/songs/creating-new-songs</string>
-    <string name="website_song_new" translatable="false">https://www.opensongapp.com/user-manual/songs/add-songs/create-new-song</string>
+    <string name="website_song_file" translatable="false">https://www.opensongapp.com/user-manual/songs/import-file</string>
+    <string name="website_song_new" translatable="false">https://www.opensongapp.com/user-manual/songs/create-new-song</string>
     <string name="website_song_online" translatable="false">https://www.opensongapp.com/user-manual/songs/add-songs/online-import</string>
     <string name="website_song_opensongapp" translatable="false">https://www.opensongapp.com/user-manual/songs/add-songs/backup-songs</string>
     <string name="website_song_onsong" translatable="false">https://www.opensongapp.com/user-manual/songs/add-songs/ios-onsong</string>

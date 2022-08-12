@@ -90,7 +90,19 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
         bits[0] = bits[0].trim();
 
         // Tidy up the content
-        String[] lines = bits[1].split("\n");
+        bits[1] = tidyContent(bits[1]);
+        return bits;
+    }
+
+    private String tidyContent(String str) {
+        if (str.contains("____groupline____")) {
+            str = str.replace("____groupline____","\n");
+        } else {
+            // Just text, so trim spaces
+            str = mainActivityInterface.getProcessSong().fixExcessSpaces(str);
+        }
+
+        String[] lines = str.split("\n");
         StringBuilder newContent = new StringBuilder();
         for (String line : lines) {
             line = line.trim();
@@ -102,8 +114,7 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
             }
             newContent.append(line).append("\n");
         }
-        bits[1] = newContent.toString();
-        return bits;
+        return newContent.toString();
     }
 
     @NonNull
@@ -204,7 +215,7 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
         // Open up the text for this section in a bottom sheet for editing
         TextInputBottomSheet textInputBottomSheet = new TextInputBottomSheet(songSectionsFragment, "SongSectionsFragment",
                 c.getString(R.string.edit_temporary), c.getString(R.string.content), null, null,
-                mainActivityInterface.getSong().getPresoOrderSongSections().get(section), false);
+                mainActivityInterface.getSong().getPresoOrderSongSections().get(section).replace("____groupline____","\n"), false);
         textInputBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "textInputBottomSheet");
     }
 
@@ -240,6 +251,8 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
         if (sectionEdited > -1) {
             try {
                 // Update the song sections
+                content = mainActivityInterface.getProcessSong().makeGroups(content,
+                        mainActivityInterface.getPresenterSettings().getPresoShowChords());
                 mainActivityInterface.getSong().getPresoOrderSongSections().set(sectionEdited, content);
 
                 // Now edit the section card view to match

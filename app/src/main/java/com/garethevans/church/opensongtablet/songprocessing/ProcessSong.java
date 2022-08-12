@@ -62,7 +62,7 @@ public class ProcessSong {
             displayChords, displayLyrics, displayCapoChords, displayCapoAndNativeChords,
             trimWordSpacing, songAutoScaleColumnMaximise, songAutoScaleOverrideFull,
             songAutoScaleOverrideWidth, trimLines, trimSections, multiLineVerseKeepCompact,
-            addSectionBox;
+            addSectionBox, multilineSong;
     private float fontSize, fontSizeMax, fontSizeMin, blockShadowAlpha,
             lineSpacing, scaleHeadings, scaleChords, scaleComments;
     private String songAutoScale;
@@ -361,6 +361,18 @@ public class ProcessSong {
                 replace("\\'", "'");
     }
 
+    private String fixWordStretch(String s) {
+        // This replaces text like hal____low_______ed with hal  - low    -  ed
+        // Deal with up to 2-8 underscores.  The rest are just replaced
+        if (s.contains("_")) {
+            String[] unders   = new String[]{"________","_______","______","_____", "____","___","__","_"};
+            String[] replaces = new String[]{"   -    ","   -   ","   -  ","  -  ", " -  "," - ","- ","-"};
+            for (int i = 0; i<8; i++) {
+                s = s.replace(unders[i],replaces[i]);
+            }
+        }
+        return s;
+    }
     public String determineLineTypes(String string) {
         String type;
         if (string.startsWith("[")) {
@@ -793,13 +805,14 @@ public class ProcessSong {
     }
 
     // Splitting the song up in to manageable chunks
-    private String makeGroups(String string, boolean displayChords) {
+    public String makeGroups(String string, boolean displayChords) {
         if (string == null) {
             string = "";
         }
         String[] lines = string.split("\n");
         StringBuilder sb = new StringBuilder();
 
+        Log.d(TAG,"string:"+string);
         // Go through each line and add bits together as groups ($_groupline_$ between bits, \n for new group)
         int i = 0;
         while (i < lines.length) {
@@ -810,13 +823,15 @@ public class ProcessSong {
                 int nl = i + 1;
                 boolean stillworking = true;
                 if (shouldNextLineBeAdded(nl, lines, true)) {
-                    sb.append("____groupline____").append(lines[nl]);
+                    Log.d(TAG,"lines["+nl+"]:"+lines[nl]+"     fixed:"+fixWordStretch(lines[nl]));
+                    sb.append("____groupline____").append(fixWordStretch(lines[nl]));
                     while (stillworking) {
                         // Keep going for multiple lines to be added
                         if (shouldNextLineBeAdded(nl + 1, lines, false)) {
                             i = nl;
                             nl++;
-                            sb.append("____groupline____").append(lines[nl]);
+                            sb.append("____groupline____").append(fixWordStretch(lines[nl]));
+                            Log.d(TAG,"lines["+nl+"]:"+lines[nl]+"     fixed:"+fixWordStretch(lines[nl]));
                         } else {
                             i++;
                             stillworking = false;
@@ -830,7 +845,7 @@ public class ProcessSong {
                 lines[i] = " " + lines[i];
                 sb.append("\n").append(lines[i]);
             } else if (displayLyrics && !lines[i].startsWith(".")) {
-                sb.append("\n").append(lines[i]);
+                sb.append("\n").append(fixWordStretch(lines[i]));
             }
             i++;
         }
@@ -994,9 +1009,23 @@ public class ProcessSong {
                                 str = str.replace("_","");
                                 str = str.replaceAll("[|]"," ");
                                 if (trimWordSpacing) {
-                                    str = str.replaceAll("\\s+", " ");
-                                    str = str.replace(". ", ".  ");
+                                    if (!multiLineVerseKeepCompact && !multilineSong) {
+                                        str = fixExcessSpaces(str);
+                                    }
                                 }
+                                if (presentation || !mainActivityInterface.getMode().equals("Performance")) {
+                                    str = fixExcessSpaces(str);
+                                }
+
+                                String start = "";
+                                String end = "";
+                                if (str.startsWith(" ") && !str.trim().startsWith("-")) {
+                                    start = " ";
+                                }
+                                if (str.endsWith(" ") && !str.trim().endsWith("-")) {
+                                    end = " ";
+                                }
+                                str = start + str.trim() + end;
                                 textView.setText(str);
                             } else {
                                 textView = null;
@@ -1004,6 +1033,10 @@ public class ProcessSong {
                             break;
                         default:
                             // Just set the text
+                            if (presentation || !mainActivityInterface.getMode().equals("Performance") ||
+                                    (!multiLineVerseKeepCompact && !multilineSong)) {
+                                str = fixExcessSpaces(str);
+                            }
                             textView.setText(str);
                             break;
                     }
@@ -1039,8 +1072,7 @@ public class ProcessSong {
                     str = str.replace("_","");
                     str = str.replaceAll("[|]"," ");
                     if (trimWordSpacing) {
-                        str = str.replaceAll("\\s+", " ");
-                        str = str.replace(". ", ".  ");
+                        str = fixExcessSpaces(str);
                     }
                     str = str.trim();
                     textView.setText(str);
@@ -1118,9 +1150,10 @@ public class ProcessSong {
         return (lines[0].length() > 1 && lines.length > 1 && lines[1].matches("^[0-9].*$"));
     }
 
-    private String fixMultiLineFormat(String string) {
-
-        if (!multiLineVerseKeepCompact && isMultiLineFormatSong(string)) {
+    private String fixMultiLineFormat(String string, boolean presentation) {
+        multilineSong = isMultiLineFormatSong(string);
+        if (!mainActivityInterface.getMode().equals("Performance") || presentation ||
+                (!multiLineVerseKeepCompact && multilineSong)) {
             // Reset the available song sections
             // Ok the song is in the multiline format
             // [V]
@@ -1214,7 +1247,7 @@ public class ProcessSong {
             }
 
             return improvedlyrics.toString();
-        } else if (multiLineVerseKeepCompact && isMultiLineFormatSong(string)) {
+        } else if (multiLineVerseKeepCompact && multilineSong) {
             // Multiline format, but we want to keep it compact
             // Add ')  ' after the lines starting with numbers and spaces after the chord identifier
             StringBuilder fixedLines = new StringBuilder();
@@ -1382,12 +1415,30 @@ public class ProcessSong {
             } else if (linetype.equals("lyric")) {
                 // TODO
                 // IV - This will need more complexity depending on mode and if showing chords
+                if ((!mainActivityInterface.getMode().equals("Performance") &&
+                        (presentation || trimWordSpacing)) ||
+                        (!multilineSong || !multiLineVerseKeepCompact)) {
+                    str = fixExcessSpaces(str);
+                }
+
                 textView.setText(str.replaceAll("[|_]", " "));
             } else {
                 textView.setText(str);
             }
         }
         return textView;
+    }
+
+    public String fixExcessSpaces(String str) {
+        if (trimWordSpacing) {
+            // This removes multiple spaces and returns single spaces
+            Log.d(TAG, "fixExcessSpace start: " + str);
+            str = str.replaceAll("\\s+", " ");
+            // Now fix sentences
+            str = str.replace(". ", ".  ");
+            Log.d(TAG, "fixExcessSpace end: " + str);
+        }
+        return str;
     }
 
     // Prepare the views
@@ -1432,7 +1483,7 @@ public class ProcessSong {
         String lyrics = song.getLyrics();
 
         // 2. Check for multiline verse formatting e.g. [V] 1. 2. etc.
-        lyrics = fixMultiLineFormat(lyrics);
+        lyrics = fixMultiLineFormat(lyrics, presentation);
 
         // 3. Go through the song lyrics and get any section headers.  These get added to the song object
         song.setSongSectionHeadings(getSectionHeadings(lyrics));
@@ -1582,6 +1633,7 @@ public class ProcessSong {
                                     mainActivityInterface.getMyThemeColors().getLyricsCapoColor());
                         }
 
+
                         if (line.contains("____groupline____")) {
                             // Has lyrics and chords
                             if (asPDF) {
@@ -1601,15 +1653,15 @@ public class ProcessSong {
                                         mainActivityInterface.getMyThemeColors().getHighlightChordColor(), false));
                             }
                         } else {
-                            if (asPDF) {
-                                linearLayout.addView(lineText(linetype, line, typeface,
-                                        size, textColor, Color.TRANSPARENT, Color.TRANSPARENT, presentation));
-
-                            } else if (!presentation || !line.isEmpty()) {
+                            if (!presentation || !line.isEmpty()) {
                                 linearLayout.addView(lineText(linetype, line, typeface,
                                         size, textColor,
                                         mainActivityInterface.getMyThemeColors().getHighlightHeadingColor(),
                                         mainActivityInterface.getMyThemeColors().getHighlightChordColor(), presentation));
+                            } else {
+                                // PDF or presentation
+                                linearLayout.addView(lineText(linetype, line, typeface,
+                                        size, textColor, Color.TRANSPARENT, Color.TRANSPARENT, presentation));
                             }
                         }
                     }

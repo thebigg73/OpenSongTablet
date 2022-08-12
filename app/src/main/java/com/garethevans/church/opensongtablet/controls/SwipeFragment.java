@@ -79,9 +79,9 @@ public class SwipeFragment extends Fragment {
         mainActivityInterface.getSwipes().setSizes(mainActivityInterface.getDrawNotes().getMeasuredWidth(), mainActivityInterface.getDrawNotes().getMeasuredHeight());
 
         // Set up the sliders
-        setSlider(myView.swipeDistance, "swipeWidth", mainActivityInterface.getSwipes().getWidthPx(), mainActivityInterface.getSwipes().getMinWidth(), mainActivityInterface.getSwipes().getMaxWidth(), "px", true);
-        setSlider(myView.swipeHeight, "swipeHeight", mainActivityInterface.getSwipes().getHeightPx(), mainActivityInterface.getSwipes().getMinHeight(), mainActivityInterface.getSwipes().getMaxHeight(), "px", true);
-        setSlider(myView.swipeSpeed, "swipeTime", mainActivityInterface.getSwipes().getTimeMs(), mainActivityInterface.getSwipes().getMinTime(), mainActivityInterface.getSwipes().getMaxTime(), "s", true);
+        setSlider(myView.swipeDistance, "swipeWidth", mainActivityInterface.getSwipes().getWidthPx(), mainActivityInterface.getSwipes().getMinWidth(), mainActivityInterface.getSwipes().getMaxWidth(), " px", true);
+        setSlider(myView.swipeHeight, "swipeHeight", mainActivityInterface.getSwipes().getHeightPx(), mainActivityInterface.getSwipes().getMinHeight(), mainActivityInterface.getSwipes().getMaxHeight(), " px", true);
+        setSlider(myView.swipeSpeed, "swipeTime", mainActivityInterface.getSwipes().getTimeMs(), mainActivityInterface.getSwipes().getMinTime(), mainActivityInterface.getSwipes().getMaxTime(), " ms", true);
     }
 
     private void showOrHide(boolean show) {
@@ -153,13 +153,13 @@ public class SwipeFragment extends Fragment {
 
                 switch (pref) {
                     case "swipeTime":
-                        myView.swipeSpeed.setHint(Math.round(value)+"s");
+                        myView.swipeSpeed.setHint(Math.round(value)+" ms");
                         break;
                     case "swipeWidth":
-                        myView.swipeDistance.setHint(Math.round(value)+"px");
+                        myView.swipeDistance.setHint(Math.round(value)+" px");
                         break;
                     case "swipeHeight":
-                        myView.swipeHeight.setHint(Math.round(value)+"px");
+                        myView.swipeHeight.setHint(Math.round(value)+" px");
                         break;
                 }
 
@@ -171,9 +171,9 @@ public class SwipeFragment extends Fragment {
     // Get the values back from the drawNotes vies via MainActivity
     public void getSwipeValues(int returnedWidth, int returnedHeight, int returnedTime) {
         // Change the seekbars to match, but don't change the listeners
-        setSlider(myView.swipeDistance, "swipeWidth", returnedWidth, mainActivityInterface.getSwipes().getMinWidth(), mainActivityInterface.getSwipes().getMaxWidth(), "px", false);
-        setSlider(myView.swipeHeight, "swipeHeight", returnedHeight, mainActivityInterface.getSwipes().getMinHeight(), mainActivityInterface.getSwipes().getMaxHeight(), "px", false);
-        setSlider(myView.swipeSpeed, "swipeTime", returnedTime, mainActivityInterface.getSwipes().getMinTime(), mainActivityInterface.getSwipes().getMaxTime(), "s", false);
+        setSlider(myView.swipeDistance, "swipeWidth", returnedWidth, mainActivityInterface.getSwipes().getMinWidth(), mainActivityInterface.getSwipes().getMaxWidth(), " px", false);
+        setSlider(myView.swipeHeight, "swipeHeight", returnedHeight, mainActivityInterface.getSwipes().getMinHeight(), mainActivityInterface.getSwipes().getMaxHeight(), " px", false);
+        setSlider(myView.swipeSpeed, "swipeTime", returnedTime, mainActivityInterface.getSwipes().getMinTime(), mainActivityInterface.getSwipes().getMaxTime(), " ms", false);
     }
 
     private boolean dealingWith = false;

@@ -75,6 +75,8 @@ public class DisplayExtraFragment extends Fragment {
         myView.filterSwitch.setChecked(getChecked("filterSections",false));
         visibilityByBoolean(myView.filterLayout,myView.filterSwitch.getChecked());
         myView.filterShow.setChecked(getChecked("filterShow",false));
+        String text = getString(R.string.save) + " (" + getString(R.string.filters) + ")";
+        myView.filterSave.setText(text);
         mainActivityInterface.getProcessSong().editBoxToMultiline(myView.filters);
         mainActivityInterface.getProcessSong().stretchEditBoxToLines(myView.filters,4);
     }

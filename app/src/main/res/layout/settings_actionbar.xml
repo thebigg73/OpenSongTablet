@@ -14,7 +14,6 @@
             android:id="@+id/autohideActionBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
             android:text="@string/actionbar_autohide" />
 
         <TextView
@@ -28,7 +27,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="8dp"
             android:padding="0dp"
             android:orientation="vertical">
 
@@ -57,14 +56,13 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="8dp"
             android:text="@string/battery"
             style="@style/largeText"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="8dp"
             android:padding="0dp"
             android:orientation="vertical">
 
@@ -107,14 +105,13 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="8dp"
             android:text="@string/time"
             style="@style/largeText"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="8dp"
             android:padding="0dp"
             android:orientation="vertical">
 

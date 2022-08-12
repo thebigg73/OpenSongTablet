@@ -17,12 +17,6 @@
             android:layout_marginBottom="200dp"
             android:orientation="vertical">
 
-            <com.google.android.material.textview.MaterialTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="16dp"
-                android:text="@string/pedal_instructions" />
-
             <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
                 android:id="@+id/midiAsPedal"
                 android:layout_width="match_parent"
@@ -80,6 +74,12 @@
                     app:stepSize="100"/>
             </LinearLayout>
             <TableRow style="@style/DividerLine" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="16dp"
+                android:text="@string/pedal_instructions" />
 
             <!--BUTTON 1-->
             <RelativeLayout

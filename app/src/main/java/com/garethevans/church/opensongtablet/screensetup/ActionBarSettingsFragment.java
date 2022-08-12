@@ -2,7 +2,6 @@ package com.garethevans.church.opensongtablet.screensetup;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,32 +43,27 @@ public class ActionBarSettingsFragment extends Fragment {
     }
 
     private void setupPreferences() {
-        // The song title and author
-        myView.titleTextSize.setHintTextSize(mainActivityInterface.getPreferences().getMyPreferenceFloat("songTitleSize",13.0f));
-        myView.authorTextSize.setHintTextSize(mainActivityInterface.getPreferences().getMyPreferenceFloat("songAuthorSize",11.0f));
-
-        // The sliders
         float titleTextSize = checkMin(mainActivityInterface.getPreferences().getMyPreferenceFloat("songTitleSize", 13),6);
         float authorTextSize = checkMin(mainActivityInterface.getPreferences().getMyPreferenceFloat("songAuthorSize", 11),6);
         float batteryTextSize = checkMin(mainActivityInterface.getPreferences().getMyPreferenceFloat("batteryTextSize", 9),6);
         float clockTextSize = checkMin(mainActivityInterface.getPreferences().getMyPreferenceFloat("clockTextSize", 9),6);
         int batteryDialSize = (int)checkMin(mainActivityInterface.getPreferences().getMyPreferenceInt("batteryDialThickness", 4),1);
 
-        Log.d("ActionBarSettings","clockTextSize="+clockTextSize);
+        // The sliders
         myView.titleTextSize.setValue(titleTextSize);
-        myView.titleTextSize.setHint(clockTextSize+"sp");
-        myView.titleTextSize.setLabelFormatter(value -> ((int)value)+"sp");
+        myView.titleTextSize.setHint(titleTextSize+" sp");
+        myView.titleTextSize.setLabelFormatter(value -> ((int)value)+" sp");
         myView.titleTextSize.setHintTextSize(titleTextSize);
         myView.authorTextSize.setValue(authorTextSize);
-        myView.authorTextSize.setHint(authorTextSize+"sp");
-        myView.authorTextSize.setLabelFormatter(value -> ((int)value)+"sp");
+        myView.authorTextSize.setHint(authorTextSize+" sp");
+        myView.authorTextSize.setLabelFormatter(value -> ((int)value)+" sp");
         myView.authorTextSize.setHintTextSize(authorTextSize);
         myView.batteryDialSize.setValue(batteryDialSize);
-        myView.batteryDialSize.setLabelFormatter(value -> ((int)value)+"px");
+        myView.batteryDialSize.setLabelFormatter(value -> ((int)value)+" px");
         myView.batteryTextSize.setValue(batteryTextSize);
-        myView.batteryTextSize.setLabelFormatter(value -> ((int)value)+"sp");
+        myView.batteryTextSize.setLabelFormatter(value -> ((int)value)+" sp");
         myView.clockTextSize.setValue(clockTextSize);
-        myView.clockTextSize.setLabelFormatter(value -> ((int)value)+"sp");
+        myView.clockTextSize.setLabelFormatter(value -> ((int)value)+" sp");
 
         // The switches
         myView.autohideActionBar.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("hideActionBar",false));
@@ -152,10 +146,10 @@ public class ActionBarSettingsFragment extends Fragment {
         public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
             if (isfloat) {
                 if (prefName.equals("songTitleSize")) {
-                    myView.titleTextSize.setHint((int)value + "sp");
+                    myView.titleTextSize.setHint((int)value + " sp");
                     myView.titleTextSize.setHintTextSize(value);
                 } else if (prefName.equals("songAuthorSize")) {
-                    myView.authorTextSize.setHint((int)value + "sp");
+                    myView.authorTextSize.setHint((int)value + " sp");
                     myView.authorTextSize.setHintTextSize(value);
                 } else {
                     updateActionBar(prefName, value, false);

@@ -5,7 +5,6 @@ import android.net.Uri;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import androidx.appcompat.app.ActionBar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -147,7 +146,6 @@ public interface MainActivityInterface {
     boolean getMenuOpen();
 
     // Action bar
-    ActionBar getMyActionBar();
     MyToolbar getToolbar();
     BatteryStatus getBatteryStatus();
     void hideActionBar();
@@ -157,6 +155,7 @@ public interface MainActivityInterface {
     void updateActionBarSettings(String prefName, float floatval, boolean isvisible);
     void moveContentForActionBar(boolean contentBehind);
     boolean needActionBar();
+    void allowNavigationUp(boolean allow);
 
     // Page button(s)
     PageButtons getPageButtons();

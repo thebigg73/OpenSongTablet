@@ -1,12 +1,12 @@
 package com.garethevans.church.opensongtablet.pdf;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
+import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,6 +16,8 @@ import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAda
 import com.garethevans.church.opensongtablet.databinding.BottomSheetPdfExtractBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import java.util.ArrayList;
@@ -38,6 +40,19 @@ public class PDFExtractBottomSheet extends BottomSheetDialogFragment {
         mainActivityInterface = (MainActivityInterface) context;
     }
 
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        BottomSheetDialog dialog = (BottomSheetDialog) super.onCreateDialog(savedInstanceState);
+        dialog.setOnShowListener(dialog1 -> {
+            FrameLayout bottomSheet = ((BottomSheetDialog) dialog1).findViewById(com.google.android.material.R.id.design_bottom_sheet);
+            if (bottomSheet != null) {
+                BottomSheetBehavior.from(bottomSheet).setState(BottomSheetBehavior.STATE_EXPANDED);
+            }
+        });
+        return dialog;
+    }
+
     @Nullable
     @org.jetbrains.annotations.Nullable
     @Override
@@ -45,11 +60,8 @@ public class PDFExtractBottomSheet extends BottomSheetDialogFragment {
         myView = BottomSheetPdfExtractBinding.inflate(inflater, container, false);
 
         myView.dialogHeader.setClose(this);
-
-        Window w = requireActivity().getWindow();
-        if (w!=null) {
-            w.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-        }
+        myView.dialogHeader.setWebHelp(mainActivityInterface, getString(R.string.website_ocr));
+        myView.nestedScrollView.setExtendedFabToAnimate(myView.saveSearchable);
 
         // Set up the lyrics
         setupLyrics();

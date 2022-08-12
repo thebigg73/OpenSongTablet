@@ -28,7 +28,6 @@ import android.widget.RelativeLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.app.ActivityCompat;
@@ -829,6 +828,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         settingsOpen = false;
         showMenuItems(true);
     }
+    @Override
+    public void allowNavigationUp(boolean allow) {
+        if (getSupportActionBar()!=null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(allow);
+            getSupportActionBar().setHomeButtonEnabled(allow);
+        }
+    }
     private void showMenuItems(boolean show) {
         Log.d(TAG,"showMenuItems("+show+")");
         if (show) {
@@ -1235,10 +1241,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public DrawerLayout getDrawer() {
         return myView.drawerLayout;
-    }
-    @Override
-    public ActionBar getMyActionBar() {
-        return null;
     }
     @Override
     public void lockDrawer(boolean lock) {

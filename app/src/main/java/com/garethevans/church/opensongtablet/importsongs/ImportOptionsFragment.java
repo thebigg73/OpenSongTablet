@@ -123,15 +123,19 @@ public class ImportOptionsFragment extends Fragment {
                 mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(false, uri,null,"Songs",
                         mainActivityInterface.getSong().getFolder(),cameraFilename);
 
+                Log.d(TAG,"uri:" +uri);
                 takePhoto.launch(uri);
             }
         });
         takePhoto = registerForActivityResult(new ActivityResultContracts.TakePicture(),
                 result -> {
                     if (result) {
+                        Log.d(TAG,"success");
                         mainActivityInterface.getSong().setFilename(cameraFilename);
                         // Add to the database
                         mainActivityInterface.getNonOpenSongSQLiteHelper().createSong(
+                                mainActivityInterface.getSong().getFolder(), cameraFilename);
+                        mainActivityInterface.getSQLiteHelper().createSong(
                                 mainActivityInterface.getSong().getFolder(), cameraFilename);
                         mainActivityInterface.updateSongMenu(mainActivityInterface.getSong());
                         mainActivityInterface.getPreferences().setMyPreferenceString(

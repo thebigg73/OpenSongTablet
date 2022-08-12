@@ -111,14 +111,18 @@ public class SongSectionsFragment extends Fragment {
 
     public void updateAllButtons() {
         Log.d(TAG,"updateAllButtons() called");
-        Log.d(TAG,"mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().getItemCount()>0: "+(mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().getItemCount()>0));
-        myView.recyclerView.removeAllViews();
-        mainActivityInterface.setSectionViews(mainActivityInterface.getProcessSong().setSongInLayout(
+        if (mainActivityInterface.getPresenterSettings().getSongSectionsAdapter()!=null) {
+
+            Log.d(TAG, "mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().getItemCount()>0: " + (mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().getItemCount() > 0));
+            myView.recyclerView.removeAllViews();
+        /*mainActivityInterface.setSectionViews(mainActivityInterface.getProcessSong().setSongInLayout(
                 mainActivityInterface.getSong(), false, true));
-        mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().buildSongSections();
-        if (mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().getItemCount()>0) {
-            mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().
-                    notifyItemRangeChanged(0, mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().getItemCount());
+        */
+            mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().buildSongSections();
+            if (mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().getItemCount() > 0) {
+                mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().
+                        notifyItemRangeChanged(0, mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().getItemCount());
+            }
         }
     }
 
