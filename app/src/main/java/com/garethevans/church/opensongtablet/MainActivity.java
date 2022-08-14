@@ -1354,7 +1354,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             Handler handler = new Handler(Looper.getMainLooper());
             handler.post(() -> showToast.doIt(getString(R.string.search_index_start)));
             songListBuildIndex.setIndexComplete(false);
-            songListBuildIndex.fullIndex();
+            songListBuildIndex.fullIndex(songMenuFragment.getProgressText());
             handler.post(() -> {
                 songListBuildIndex.setIndexRequired(false);
                 songListBuildIndex.setIndexComplete(true);
@@ -1967,6 +1967,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             }
         }
     }
+
+    @Override
+    public void updateCheckForThisSong(Song thisSong) {
+        songMenuFragment.updateCheckForThisSong(thisSong);
+    }
+
     @Override
     public void removeSetItem(int currentSetPosition) {
         if (setMenuFragment!=null) {
@@ -2043,7 +2049,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             ExecutorService executorService = Executors.newSingleThreadExecutor();
             executorService.execute(() -> {
                 Handler handler = new Handler(Looper.getMainLooper());
-                String outcome = songListBuildIndex.fullIndex();
+                String outcome = songListBuildIndex.fullIndex(songMenuFragment.getProgressText());
                 if (songMenuFragment!=null) {
                     try {
                         songMenuFragment.updateSongMenu(song);

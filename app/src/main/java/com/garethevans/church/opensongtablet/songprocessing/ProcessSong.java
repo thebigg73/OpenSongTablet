@@ -812,7 +812,6 @@ public class ProcessSong {
         String[] lines = string.split("\n");
         StringBuilder sb = new StringBuilder();
 
-        Log.d(TAG,"string:"+string);
         // Go through each line and add bits together as groups ($_groupline_$ between bits, \n for new group)
         int i = 0;
         while (i < lines.length) {
@@ -823,7 +822,6 @@ public class ProcessSong {
                 int nl = i + 1;
                 boolean stillworking = true;
                 if (shouldNextLineBeAdded(nl, lines, true)) {
-                    Log.d(TAG,"lines["+nl+"]:"+lines[nl]+"     fixed:"+fixWordStretch(lines[nl]));
                     sb.append("____groupline____").append(fixWordStretch(lines[nl]));
                     while (stillworking) {
                         // Keep going for multiple lines to be added
@@ -831,7 +829,6 @@ public class ProcessSong {
                             i = nl;
                             nl++;
                             sb.append("____groupline____").append(fixWordStretch(lines[nl]));
-                            Log.d(TAG,"lines["+nl+"]:"+lines[nl]+"     fixed:"+fixWordStretch(lines[nl]));
                         } else {
                             i++;
                             stillworking = false;
@@ -1315,10 +1312,8 @@ public class ProcessSong {
             StringBuilder tempPresentationOrder = new StringBuilder(song.getPresentationorder() + " ");
             StringBuilder errors = new StringBuilder();
 
-            Log.d(TAG,"tempPresentationOrder: "+tempPresentationOrder);
             // Go through each tag in the song
             for (String tag : song.getSongSectionHeadings()) {
-                Log.d(TAG,"Tag found: "+tag);
                 if (tag.equals("") || tag.equals(" ")) {
                     Log.d(TAG, "Empty search");
                 } else if (tempPresentationOrder.toString().contains(tag)) {
@@ -1341,7 +1336,6 @@ public class ProcessSong {
             // So, if entry doesn't contain __> it isn't in the song
             // Also, anything after __> isn't in the song
             for (int d = 0; d < tempPresOrderArray.length; d++) {
-                Log.d(TAG,"tempPresOrderArray["+d+"]: "+tempPresOrderArray[d]);
                 if (!tempPresOrderArray[d].contains("__>")) {
                     if (!tempPresOrderArray[d].equals("") && !tempPresOrderArray[d].equals(" ")) {
                         if (errors.length() > 0) {
@@ -1432,11 +1426,9 @@ public class ProcessSong {
     public String fixExcessSpaces(String str) {
         if (trimWordSpacing) {
             // This removes multiple spaces and returns single spaces
-            Log.d(TAG, "fixExcessSpace start: " + str);
             str = str.replaceAll("\\s+", " ");
             // Now fix sentences
             str = str.replace(". ", ".  ");
-            Log.d(TAG, "fixExcessSpace end: " + str);
         }
         return str;
     }

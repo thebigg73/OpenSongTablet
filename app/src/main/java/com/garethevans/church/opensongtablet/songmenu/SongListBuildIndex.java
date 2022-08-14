@@ -4,11 +4,13 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.view.View;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 import com.garethevans.church.opensongtablet.sqlite.SQLite;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -59,10 +61,12 @@ public class SongListBuildIndex {
         mainActivityInterface.getSQLiteHelper().insertFast();
     }
 
-    public String fullIndex() {
+    public String fullIndex(ExtendedFloatingActionButton progressText) {
         // The basic database was created on boot.
         // Now comes the time consuming bit that fully indexes the songs into the database
         currentlyIndexing = true;
+        progressText.setText("0%");
+        progressText.setVisibility(View.VISIBLE);
         StringBuilder returnString = new StringBuilder();
         try (SQLiteDatabase db = mainActivityInterface.getSQLiteHelper().getDB()) {
             // Go through each entry in the database and get the folder and filename.
@@ -73,6 +77,8 @@ public class SongListBuildIndex {
             Cursor cursor = db.rawQuery(altquery, null);
 
             if (cursor.getCount()>0) {
+                // Get the total song number
+                int totalSongs = cursor.getCount();
                 cursor.moveToFirst();
 
                 // We now iterate through each song in turn!
@@ -140,8 +146,15 @@ public class SongListBuildIndex {
                             }
                         }
                     }
+                    int position = cursor.getPosition();
+                    progressText.post(() -> {
+                        String progValue = (Math.round(((float)position/(float)totalSongs)*100)) + "%  ("+position+"/"+totalSongs+")";
+                        progressText.setText(progValue);
+                    });
+
                 } while (cursor.moveToNext());
             }
+            progressText.post(() -> progressText.setVisibility(View.GONE));
             cursor.close();
             indexRequired = false;
             indexComplete = true;

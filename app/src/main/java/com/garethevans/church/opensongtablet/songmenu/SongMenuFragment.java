@@ -24,6 +24,7 @@ import com.garethevans.church.opensongtablet.customviews.FastScroller;
 import com.garethevans.church.opensongtablet.databinding.MenuSongsBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -104,11 +105,6 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         showHideRows(myView.filters.keySearch, songListSearchByKey);
         showHideRows(myView.filters.tagSearch, songListSearchByTag);
         showHideRows(myView.filters.filterSearch, songListSearchByFilter);
-    }
-
-    public void refreshTickedSongs() {
-        songListAdapter.initialiseCheckedArray(mainActivityInterface.getCurrentSet());
-        songListAdapter.notifyDataSetChanged();
     }
 
     private void setUpExposedDropDowns() {
@@ -299,6 +295,24 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
             }
             handler.post(this::updateSongList);
         });
+    }
+
+    public void updateCheckForThisSong(Song thisSong) {
+        // Call to update something about a specific song
+        int pos = -1;
+        for (int i=0; i<songsFound.size(); i++) {
+            if (songsFound.get(i).getFilename().equals(thisSong.getFilename()) &&
+                    songsFound.get(i).getFolder().equals(thisSong.getFolder())) {
+                pos = i;
+                Log.d(TAG,"i: "+i+" songsFound: "+songsFound.get(i).getFolder()+"/"+songsFound.get(i).getFilename()+"   against:"+thisSong.getFolder()+"/"+thisSong.getFilename());
+                break;
+            }
+        }
+        if (pos>-1) {
+            // Update the checklist in the adapter
+            songListAdapter.changeCheckBox(pos);
+        }
+        Log.d(TAG,"found pos: "+pos);
     }
 
     public void updateSongList() {
@@ -516,5 +530,9 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public ExtendedFloatingActionButton getProgressText() {
+        return myView.progressText;
     }
 }

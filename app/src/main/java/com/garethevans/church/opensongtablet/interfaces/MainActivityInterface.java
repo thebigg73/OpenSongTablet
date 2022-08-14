@@ -144,6 +144,7 @@ public interface MainActivityInterface {
     SongListBuildIndex getSongListBuildIndex();
     void scrollOpenMenu(boolean scrollDown);
     boolean getMenuOpen();
+    void updateCheckForThisSong(Song thisSong);
 
     // Action bar
     MyToolbar getToolbar();

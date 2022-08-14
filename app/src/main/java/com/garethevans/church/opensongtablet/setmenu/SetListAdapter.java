@@ -13,6 +13,7 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.FastScroller;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.interfaces.SetItemTouchInterface;
+import com.garethevans.church.opensongtablet.songprocessing.Song;
 
 import java.util.ArrayList;
 
@@ -129,6 +130,9 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
             Log.d(TAG, "setList at pos: " + setList.get(fromPosition).songfolder + "/" + setList.get(fromPosition).songfilename);
             mainActivityInterface.getCurrentSet().removeFromCurrentSet(fromPosition, null);
 
+            Song songRemoved = mainActivityInterface.getSQLiteHelper().getSpecificSong(
+                    setList.get(fromPosition).songfolder, setList.get(fromPosition).songfilename);
+
             // Update the set string
             mainActivityInterface.getCurrentSet().setCurrentSetString(mainActivityInterface.getSetActions().getSetAsPreferenceString());
 
@@ -143,12 +147,14 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
             for (int x = fromPosition; x < setList.size(); x++) {
                 setList.get(x).songitem = (x + 1) + ".";
                 notifyItemChanged(x);
+                Log.d(TAG, "updated " + x);
             }
 
             // Update the title
             mainActivityInterface.updateSetTitle();
 
-            mainActivityInterface.updateSongList();
+            mainActivityInterface.updateCheckForThisSong(songRemoved);
+            //mainActivityInterface.updateSongList();
 
         } catch (Exception e) {
             e.printStackTrace();

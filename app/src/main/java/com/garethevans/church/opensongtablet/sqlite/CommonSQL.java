@@ -69,14 +69,15 @@ public class CommonSQL {
 
     // Song ID tasks and checks for values
     public String getAnySongId(String folder, String filename) {
-        // Double '' to make SQL safe
+        if (folder==null || folder.isEmpty()) {
+            folder = c.getString(R.string.mainfoldername);
+        }
         return folder + "/" + filename;
     }
 
     boolean songIdExists(SQLiteDatabase db, String songid) {
-        String[] selectionArgs = new String[]{songid};
+        String[] selectionArgs = new String[]{escape(songid)};
         String Query = "SELECT * FROM " + SQLite.TABLE_NAME + " WHERE " + SQLite.COLUMN_SONGID + " = ? ";
-
         Cursor cursor = db.rawQuery(Query, selectionArgs);
         boolean exists = cursor.getCount() > 0;
         closeCursor(cursor);
@@ -256,7 +257,6 @@ public class CommonSQL {
             args.add("%"+filterVal+"%");
             args.add("%"+filterVal+"%");
             args.add("%"+filterVal+"%");
-
         }
 
         if (!sqlMatch.isEmpty()) {
@@ -408,8 +408,8 @@ public class CommonSQL {
 
     public boolean songExists(SQLiteDatabase db, String folder, String filename) {
         String songId = getAnySongId(folder, filename);
-        String sql = "SELECT * FROM " + SQLite.TABLE_NAME + " WHERE " + SQLite.COLUMN_SONGID + "=\"" + songId + "\"";
-        Cursor cursor = db.rawQuery(sql, null);
+        String sql = "SELECT * FROM " + SQLite.TABLE_NAME + " WHERE " + SQLite.COLUMN_SONGID + "= ? ";
+        Cursor cursor = db.rawQuery(sql, new String[]{songId});
         int count;
         if (cursor == null) {
             // Error, so not found
@@ -435,6 +435,7 @@ public class CommonSQL {
                 cursor.moveToPosition(x);
                 String folder = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_FOLDER))
                         .replace("MAIN/",c.getString(R.string.mainfoldername));
+                folder = folder.replace(c.getString(R.string.mainfoldername)+"/",c.getString(R.string.mainfoldername));
                 folders.add(folder);
             }
         }
@@ -525,6 +526,17 @@ public class CommonSQL {
         if (text.endsWith(", ")) {
             text = text.substring(0,text.lastIndexOf(", "));
         }
+        return text;
+    }
+
+    private String escape(String text) {
+        // If the text contains ', escape it
+        // First remove ''
+        while (text.contains("''")) {
+            text = text.replace("''","'");
+        };
+        // Now escape by doubling
+        text = text.replace("'","''");
         return text;
     }
 

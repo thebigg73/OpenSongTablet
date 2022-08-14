@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet.songmenu;
 
 import android.content.Context;
 import android.os.Build;
+import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -85,6 +86,28 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
             return songList.size();
         } else {
             return 0;
+        }
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull SongItemViewHolder holder, int position, @NonNull List<Object> payloads) {
+        if (payloads.isEmpty()) {
+            super.onBindViewHolder(holder, position, payloads);
+        } else {
+            // Compare each Object in the payloads to the PAYLOAD you provided to notifyItemChanged
+            for (Object payload : payloads) {
+                if (payload.equals("checkChange")) {
+                    // We want to update the checkbox
+                    Log.d(TAG,"do checkChange on: "+ holder.itemTitle.getText());
+                    holder.itemChecked.post(()->{
+                        try {
+                            holder.itemChecked.setChecked(checkedArray.get(position));
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    });
+                }
+            }
         }
     }
 
@@ -275,4 +298,12 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
         return linkedHashMap;
     }
 
+    public void changeCheckBox(int pos) {
+        Log.d(TAG,"checkedArray.size()+"+checkedArray.size());
+        if (songList.size()>pos) {
+            // Get the current value and change it
+            checkedArray.put(pos,false);
+            notifyItemChanged(pos, "checkChange");
+        }
+    }
 }

@@ -181,5 +181,4 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
     // TODO Flush entries that aren't in the filesystem, or alert the user to issues (perhaps asking to update the entry?
 
 
-    // TODO Allow user to backup this database.  After opening, copy to the OpenSong/ folder (out of the system storage)?
 }
