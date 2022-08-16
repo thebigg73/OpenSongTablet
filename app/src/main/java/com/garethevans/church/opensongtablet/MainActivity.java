@@ -1,10 +1,8 @@
 package com.garethevans.church.opensongtablet;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.hardware.display.DisplayManager;
@@ -30,7 +28,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.GravityCompat;
@@ -106,6 +103,7 @@ import com.garethevans.church.opensongtablet.pdf.OCR;
 import com.garethevans.church.opensongtablet.performance.DisplayPrevNext;
 import com.garethevans.church.opensongtablet.performance.PerformanceFragment;
 import com.garethevans.church.opensongtablet.performance.PerformanceGestures;
+import com.garethevans.church.opensongtablet.preferences.AppPermissions;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.preferences.ProfileActions;
 import com.garethevans.church.opensongtablet.presenter.PresenterFragment;
@@ -140,8 +138,6 @@ import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
 import com.garethevans.church.opensongtablet.sqlite.NonOpenSongSQLiteHelper;
 import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
 import com.garethevans.church.opensongtablet.utilities.TimeTools;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
@@ -153,13 +149,11 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-// TODO TIDY UP
 public class MainActivity extends AppCompatActivity implements MainActivityInterface,
         ActionInterface, NearbyInterface, NearbyReturnActionsInterface, DialogReturnInterface,
         MidiAdapterInterface, SwipeDrawingInterface, BatteryStatus.MyInterface,
@@ -200,6 +194,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private PageButtons pageButtons;
     private PedalActions pedalActions;
     private PerformanceGestures performanceGestures;
+    private AppPermissions appPermissions;
     private Preferences preferences;
     private PrepareFormats prepareFormats;
     private PresenterSettings presenterSettings;
@@ -274,7 +269,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         myView = ActivityBinding.inflate(getLayoutInflater());
         setContentView(myView.getRoot());
 
-        // Initialise helpers
+        // Initialise helpers (the ones needed to start - others are set up later)
         setupHelpers();
 
         // Set up the action bar
@@ -377,6 +372,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         setTypeFace = new SetTypeFace(this);
         themeColors = new ThemeColors(this);
         profileActions = new ProfileActions(this);
+        appPermissions = new AppPermissions(this);
 
         // The databases
         sqLiteHelper = new SQLiteHelper(this);
@@ -726,7 +722,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     // Check this was successful (saved as arguments)
                     if (arguments!=null && arguments.size()>0 && arguments.get(0).equals("success")) {
                         // Write a blank xml file with the song name in it
-                        // TODO
                         song = processSong.initialiseSong(song.getFolder(),"NEWSONGFILENAME");
                         String newSongText = processSong.getXML(song);
                         if (storageAccess.doStringWriteToFile("Songs",song.getFolder(), song.getFilename(),newSongText)) {
@@ -893,25 +888,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     public NearbyConnections getNearbyConnections() {
         return nearbyConnections;
     }
-    private void openNearbyFragment() {
-        if (hasNearbyPermissions()) {
-            navigateToFragment(getString(R.string.deeplink_nearby), 0);
-        }
-    }
-    private boolean hasNearbyPermissions() {
-        if (Build.VERSION.SDK_INT>=33) {
-            return checkForPermission(Manifest.permission_group.NEARBY_DEVICES);
-        } else if (Build.VERSION.SDK_INT>30) {
-            return checkForPermission(Manifest.permission.BLUETOOTH_SCAN) &&
-                    checkForPermission(Manifest.permission.BLUETOOTH_ADVERTISE) &&
-                    checkForPermission(Manifest.permission.BLUETOOTH_CONNECT) &&
-                    checkForPermission(Manifest.permission.ACCESS_FINE_LOCATION);
-        } else if (Build.VERSION.SDK_INT==29 || Build.VERSION.SDK_INT==30) {
-            return checkForPermission(Manifest.permission.ACCESS_FINE_LOCATION);
-        } else {
-            return checkForPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
-        }
-    }
 
     @Override
     public void nearbyEnableConnectionButtons() {
@@ -972,74 +948,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
     @Override
     public void doSendPayloadBytes(String infoPayload) {
-        // TODO - IV addition to check if needed (obs no FullscreenActivity anymore!
-        // // IV - Do not send section 0 payload when loading a song
-        //        if (!FullscreenActivity.alreadyloading) {
         nearbyConnections.doSendPayloadBytes(infoPayload);
-        // }
-    }
-    @Override
-    public boolean requestNearbyPermissions(boolean needPlayServices) {
-        // Only do this if the user has Google APIs installed or we don't need them
-        // (for midi bluetooth), otherwise, there is no point
-        if (!needPlayServices || GoogleApiAvailability.getInstance().
-                isGooglePlayServicesAvailable(this) == ConnectionResult.SUCCESS) {
-
-            // Check for the relevant Bluetooth permissions (depends on Build.SDK_VERSION)
-            if (hasNearbyPermissions()) {
-                // We have the required permissions!
-                return true;
-
-            } else {
-                // Check which one(s) we don't have and ask for them!
-                List<String> listPermissionsNeeded = new ArrayList<>();
-                if (Build.VERSION.SDK_INT >= 33) {
-                    if (!checkForPermission(Manifest.permission_group.NEARBY_DEVICES)) {
-                        requestForPermissions(new String[]{Manifest.permission_group.NEARBY_DEVICES});
-                    }
-                } else if (Build.VERSION.SDK_INT > 30) {
-                    if (!checkForPermission(Manifest.permission.BLUETOOTH_SCAN)) {
-                        listPermissionsNeeded.add(Manifest.permission.BLUETOOTH_SCAN);
-                    }
-                    if (!checkForPermission(Manifest.permission.BLUETOOTH_ADVERTISE)) {
-                        listPermissionsNeeded.add(Manifest.permission.BLUETOOTH_ADVERTISE);
-                    }
-                    if (!checkForPermission(Manifest.permission.BLUETOOTH_CONNECT)) {
-                        listPermissionsNeeded.add(Manifest.permission.BLUETOOTH_CONNECT);
-                    }
-                    if (!checkForPermission(Manifest.permission.ACCESS_FINE_LOCATION)) {
-                        listPermissionsNeeded.add(Manifest.permission.ACCESS_FINE_LOCATION);
-                    }
-                    if (listPermissionsNeeded.size() > 0) {
-                        String[] permissions = new String[listPermissionsNeeded.size()];
-                        for (int x = 0; x < listPermissionsNeeded.size(); x++) {
-                            permissions[x] = listPermissionsNeeded.get(x);
-                        }
-                        requestForPermissions(permissions);
-                    }
-                } else if (Build.VERSION.SDK_INT == 29 || Build.VERSION.SDK_INT == 30) {
-                    requestForPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION});
-                } else {
-                    requestForPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION});
-                }
-                return false;
-            }
-        } else {
-            Log.d(TAG,"GooglePlayServices not installed");
-            installPlayServices();
-            // Not allowed on this device
-            return false;
-        }
     }
 
-    @Override
-    public boolean checkForPermission(String permission) {
-        return ActivityCompat.checkSelfPermission(this,permission) == PackageManager.PERMISSION_GRANTED;
-    }
-    @Override
-    public void requestForPermissions(String[] permissions) {
-        ActivityCompat.requestPermissions(this, permissions,403);
-    }
 
     // Instructions sent from fragments for MainActivity to deal with
     @Override
@@ -1066,7 +977,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void hideActionBar() {
-        getSupportActionBar().hide();
+        if (getSupportActionBar()!=null) {
+            getSupportActionBar().hide();
+        }
     }
 
     @Override
@@ -1611,6 +1524,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         return preferences;
     }
     @Override
+    public AppPermissions getAppPermissions() {
+        return appPermissions;
+    }
+    @Override
     public SetTypeFace getMyFonts() {
         return setTypeFace;
     }
@@ -1686,13 +1603,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     public PresenterSettings getPresenterSettings() {
         return presenterSettings;
     }
-
-    // TODO Getters to finish
-
-    // TODO Setters to finish
-
-
-
 
     @Override
     public void doSongLoad(String folder, String filename, boolean closeDrawer) {
@@ -2100,9 +2010,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
 
 
-
-
-
     @Override
     public void setSong(Song song) {
         this.song = song;
@@ -2115,10 +2022,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     public void setTempSong(Song tempSong) {
         this.tempSong = tempSong;
     }
-
-
-
-
 
 
     @Override
@@ -2548,13 +2451,17 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
 
     @Override
-    public void goToPreviousItem() {
+    public void goToPreviousPage() {
         // TODO
+        // Received from nearbyAction
+
     }
 
     @Override
-    public void goToNextItem() {
+    public void goToNextPage() {
         // TODO
+        // Received from nearbyAction
+
     }
 
     // Sent from bottom sheet and requires an update in calling fragment
@@ -2613,38 +2520,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         }
     }
 
-
-    // Get permissions request callback
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String[] permissions, @NonNull int[] grantResults) {
-        // If request is cancelled, the result arrays are empty.
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (grantResults.length > 0
-                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-            switch (requestCode) {
-                case 5503:
-                    //startCamera();
-                    break;
-
-                case 404:
-                case 403:
-                    // Access coarse/fine location, so can open the menu at 'Connect devices'
-                    // The following checks we have both before navigating
-                    if (whattodo!=null && whattodo.equals("nearby")) {
-                        openNearbyFragment();
-                    }
-                    break;
-            }
-        }
-    }
-
-
-
-
-
-
     @Override
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
@@ -2702,8 +2577,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         super.onWindowFocusChanged(hasFocus);
         // Set the fullscreen window flags]
         setWindowFlags(true);
-        if (hasFocus) {
-            if (navController.getCurrentDestination().getId()!=R.id.setStorageLocationFragment) {
+        if (hasFocus && navController!=null && navController.getCurrentDestination()!=null) {
+            if (Objects.requireNonNull(navController.getCurrentDestination()).getId()!=R.id.setStorageLocationFragment) {
                 showActionBar();
             }
         }
@@ -2712,10 +2587,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public void setUpBatteryMonitor() {
         if (batteryStatus==null) {
-            /*batteryStatus = new BatteryStatus(this,myView.myToolbar.getBatteryimage(),
-                    myView.myToolbar.getBatterycharge(), Objects.requireNonNull(getSupportActionBar()).getHeight());
-
-            */
             batteryStatus = new BatteryStatus(this,myView.myToolbar.getBatteryimage(),
                     myView.myToolbar.getBatterycharge(), myView.myToolbar.getActionBarHeight(true));
         }

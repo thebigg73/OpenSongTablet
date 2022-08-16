@@ -23,7 +23,6 @@ import android.provider.DocumentsContract;
 import android.provider.OpenableColumns;
 import android.util.Base64;
 import android.util.Log;
-import android.webkit.MimeTypeMap;
 
 import androidx.annotation.RequiresApi;
 import androidx.documentfile.provider.DocumentFile;
@@ -31,9 +30,6 @@ import androidx.documentfile.provider.DocumentFile;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
-
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -59,7 +55,6 @@ public class StorageAccess {
         mainActivityInterface = (MainActivityInterface) c;
     }
 
-    // TODO TIDY UP
     private final Context c;
     private final MainActivityInterface mainActivityInterface;
     public final String appFolder = "OpenSong";
@@ -107,8 +102,6 @@ public class StorageAccess {
                 } else {
                     uri = homeFolder_File(uriTree_String);
                 }
-            } else {
-                uri = null;
             }
 
         } catch (Exception e) {
@@ -781,39 +774,6 @@ public class StorageAccess {
             return false;
         }
     }
-    boolean containsXMLTags(Uri uri) {
-        try {
-            boolean found = false;
-            String utf = getUTFEncoding(uri);
-            InputStream inputStream = getInputStream(uri);
-            XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
-            factory.setNamespaceAware(true);
-            XmlPullParser xpp = factory.newPullParser();
-            xpp.setInput(inputStream, utf);
-            int eventType;
-            eventType = xpp.getEventType();
-            while (eventType != XmlPullParser.END_DOCUMENT && !found) {
-                if (eventType == XmlPullParser.START_TAG) {
-                    if (xpp.getName().equals("lyrics")) {
-                        found = true; // It's a song
-                        Log.d(TAG,"found song");
-                    } else if (xpp.getName().equals("set")) {
-                        found = true; // It's a set
-                        Log.d(TAG,"found set");
-                    }
-                }
-                // If it isn't an xml file, an error is about to be thrown
-                try {
-                    eventType = xpp.next();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-            return found;
-        } catch (Exception e) {
-            return false;
-        }
-    }
     public boolean isTextFile(Uri uri) {
         boolean istext = false;
         if (uri != null && uri.getLastPathSegment() != null) {
@@ -826,38 +786,6 @@ public class StorageAccess {
             }
         }
         return istext;
-    }
-    boolean checkFileExtensionValid(Uri uri) {
-        // This lets us know if the file is appropriate to read the title/author/key from during indexing
-        String filename;
-        if (uri != null && uri.getLastPathSegment() != null) {
-            filename = uri.getLastPathSegment().toLowerCase(Locale.ROOT);
-        } else {
-            filename = "";
-        }
-        boolean isvalid = true;
-        String type = null;
-        if (filename.lastIndexOf(".") > 1 && filename.lastIndexOf(".") < filename.length() - 1) {
-            MimeTypeMap mime = MimeTypeMap.getSingleton();
-            int index = filename.lastIndexOf('.') + 1;
-            String ext = filename.substring(index).toLowerCase(Locale.ROOT);
-            type = mime.getMimeTypeFromExtension(ext);
-        }
-
-        if (type != null && !type.equals("")) {
-            if (type.contains("image") || type.contains("application") || type.contains("pdf") || type.contains("video") || type.contains("audio")) {
-                isvalid = false;
-            }
-        }
-
-        if (filename.endsWith(".pdf") || filename.endsWith(".jpg") ||
-                filename.endsWith(".png") || filename.endsWith(".gif") ||
-                filename.endsWith(".doc") || filename.endsWith(".docx") ||
-                filename.endsWith(".zip") || filename.endsWith(".apk") ||
-                filename.endsWith(".tar") || filename.endsWith(".backup")) {
-            isvalid = false;
-        }
-        return isvalid;
     }
     public boolean isIMGorPDF(Song song) {
         // Determines if we can load song as text, image or pdf
@@ -1001,30 +929,6 @@ public class StorageAccess {
         }
         return null;
     }
-    /*Uri getFileProviderUri(Context c, MainActivityInterface mainActivityInterface, String folder, String subfolder, String filename) {
-        if (lollipopOrLater()) {
-            return getFileProviderUri_SAF(c, mainActivityInterface, folder, subfolder, filename);
-        } else {
-            return getFileProviderUri_File(c, mainActivityInterface, folder, subfolder, filename);
-        }
-    }
-    private Uri getFileProviderUri_SAF(Context c, MainActivityInterface mainActivityInterface, String folder, String subfolder, String filename) {
-        // No real need as we are using content uris anyway
-        return getUriForItem(folder, subfolder, filename);
-    }
-    private Uri getFileProviderUri_File(Context c, MainActivityInterface mainActivityInterface, String folder, String subfolder, String filename) {
-        String s = stringForFile(folder);
-        File f = new File(s);
-        if (subfolder != null && !subfolder.isEmpty() && !subfolder.equals(c.getString(R.string.mainfoldername)) && !subfolder.equals("MAIN")) {
-            f = new File(f, subfolder);
-        }
-        if (filename != null && !filename.isEmpty() && !filename.equals(c.getString(R.string.mainfoldername)) && !filename.equals("MAIN")) {
-            f = new File(f, filename);
-        }
-        // Convert to a FileProvider uri
-        return FileProvider.getUriForFile(c, "OpenSongAppFiles", f);
-    }
-    */
     private DocumentFile documentFileFromRootUri(Uri uri, String path) {
         if (uri != null && lollipopOrLater()) {
             return DocumentFile.fromTreeUri(c, uri);
@@ -1096,18 +1000,6 @@ public class StorageAccess {
     }
 
     // Basic file actions (read, create, copy, delete, write)
-    /*public boolean saveSongFile() {
-        Log.w(TAG,"saveSongFile() called");
-        // This is called from the SaveSong class and uses the current Song object in MainActivity
-        // First get the song uri
-        // Because it may not be in the songs folder, lets check!
-        ArrayList<String> newLocation = fixNonSongs(mainActivityInterface.getSong().getFolder());
-        // Write the string file
-        return doStringWriteToFile(c,mainActivityInterface,newLocation.get(0), newLocation.get(1),
-                mainActivityInterface.getSong().getFilename(),
-                mainActivityInterface.getProcessSong().getXML(mainActivityInterface.getSong()));
-    }
-    */
     public boolean saveThisSongFile(Song thisSong) {
         Log.d(TAG,"saveSongFile() called");
         // This is called from the SaveSong class and uses the sent Song object
@@ -1749,11 +1641,10 @@ public class StorageAccess {
                 Log.d(TAG,"renamed="+renamed+"\ndesired="+newUri);
                 if (renamed!=null && renamed.equals(newUri)) {
                     message = c.getString(R.string.success);
-                    outcome = true;
                 } else {
                     message = c.getString(R.string.create_folder_error);
-                    outcome = true;
                 }
+                outcome = true;
             } catch (Exception e) {
                 message = c.getString(R.string.create_folder_error);
                 outcome = false;

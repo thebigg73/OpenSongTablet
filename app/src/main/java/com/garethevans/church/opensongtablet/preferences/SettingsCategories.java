@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -22,6 +24,7 @@ public class SettingsCategories extends Fragment {
 
     private SettingsCategoriesBinding myView;
     private MainActivityInterface mainActivityInterface;
+    ActivityResultLauncher<String[]> nearbyConnectionsPermission;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -42,6 +45,9 @@ public class SettingsCategories extends Fragment {
 
         // Set the mode in the button
         setModeText();
+
+        // Set up the permission launcher for Nearby
+        setPermissions();
 
         // Set listeners
         setListeners();
@@ -92,6 +98,17 @@ public class SettingsCategories extends Fragment {
         myView.midiButton.setHint(message);
     }
 
+    private void setPermissions() {
+        nearbyConnectionsPermission = registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), isGranted -> {
+            if (mainActivityInterface.getAppPermissions().hasGooglePlay() &&
+                    mainActivityInterface.getAppPermissions().hasNearbyPermissions()) {
+                mainActivityInterface.navigateToFragment(null, R.id.nearbyConnectionsFragment);
+            } else {
+                mainActivityInterface.getShowToast().doIt(getString(R.string.permissions_refused));
+            }
+        });
+    }
+
     private void setListeners() {
         myView.storageButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null, R.id.storage_graph));
         myView.displayButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null, R.id.display_graph));
@@ -99,14 +116,15 @@ public class SettingsCategories extends Fragment {
         myView.setActionsButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null, R.id.set_graph));
         myView.gesturesButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null, R.id.control_graph));
         myView.connectButton.setOnClickListener(v -> {
-            // Check we have the required permissions
+            // Check we have the required permissions and if so the launcher navigates to the connect fragment
             mainActivityInterface.setWhattodo("nearby");
-            if (mainActivityInterface.requestNearbyPermissions(true)) {
-                mainActivityInterface.navigateToFragment(null, R.id.nearbyConnectionsFragment);
-            }
+            nearbyConnectionsPermission.launch(mainActivityInterface.getAppPermissions().getNearbyPermissions());
         });
         myView.modeButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null, R.id.modeFragment));
-        myView.midiButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null, R.id.midiFragment));
+        myView.midiButton.setOnClickListener(v -> {
+            // This button is only available if we are running Marshmallow or later
+            mainActivityInterface.navigateToFragment(null, R.id.midiFragment);
+        });
         myView.profilesButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null, R.id.profileFragment));
         myView.ccliButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null, R.id.settingsCCLI));
         myView.utilitiesButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null, R.id.utilities_graph));

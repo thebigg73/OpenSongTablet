@@ -5,7 +5,6 @@
     <string name="action">"アクション"</string>
     <string name="action_button_info">クリックしてページボタンを表示または非表示にします。\n\nメトロノーム、トランスポーズ、パッドなどの曲のアクションに各ボタンを割り当てることができます。\nメインボタンを長押しすると、各ボタンの設定を変更できます。\n長押し 一部のページボタンは、開始/停止/編集などのクイックアクションを実行します</string>
     <string name="action_long_press">追加の長押しアクション</string>
-    <string name="action_search">"検索の歌"</string>
     <string name="action_short_press">短押し/クリックアクション</string>
     <string name="actionbar">"メニューバー情報"</string>
     <string name="actionbar_autohide">アクションバーを自動的に非表示</string>
@@ -52,7 +51,6 @@
     <string name="backing_track">"バッキングトラックを選択してください"</string>
     <string name="backup">バックアップ</string>
     <string name="backup_and_restore">バックアップと復元</string>
-    <string name="backup_error">"OpenSongフォルダが見つかりませOpenSongAppバックアップファイルはありません"</string>
     <string name="backup_export">"エクスポートOpenSongAppバックアップ"</string>
     <string name="backup_highlighter">蛍光ペンのメモを含める</string>
     <string name="backup_import">"インポートOpenSongAppバックアップ"</string>
@@ -175,22 +173,18 @@
     <string name="connections_advertise">広告する</string>
     <string name="connections_advertise_info">他の人が発見できるようにデバイスを宣伝する</string>
     <string name="connections_advertise_name">"放送装置："</string>
-    <string name="connections_advertise_stop">デバイスはアドバタイズされなくなりました</string>
     <string name="connections_advertising">広告…</string>
     <string name="connections_change">接続が完了すると、必要に応じてホストとクライアントを切り替えることができます</string>
     <string name="connections_connect">"デバイスを接続する"</string>
     <string name="connections_connected">"に接続されています"</string>
     <string name="connections_connected_devices_info">現在接続されているデバイスのリストを表示します</string>
     <string name="connections_description">OpenSongAppを実行している他のデバイスに接続します</string>
-    <string name="connections_device_found">デバイスが見つかりました</string>
     <string name="connections_device_name">装置名</string>
     <string name="connections_disconnect">"切断する"</string>
     <string name="connections_discover">"サービスを発見する"</string>
     <string name="connections_discover_info">現在宣伝している他のデバイスを探す</string>
     <string name="connections_discover_stop">"発見を止める"</string>
-    <string name="connections_enable">近くの接続を有効にする</string>
     <string name="connections_failure">"接続障害"</string>
-    <string name="connections_host">"見つかったホスト："</string>
     <string name="connections_host_passthrough">ホストパススルー</string>
     <string name="connections_host_passthrough_info">他のホストから受信したメッセージが接続されたクライアントに通過できるようにする</string>
     <string name="connections_keephostsongs">ホストの曲を保持する</string>
@@ -206,10 +200,8 @@
     <string name="connections_receive_host">"ホストソングを受信する"</string>
     <string name="connections_receive_host_info">自分の曲ではなく、ホストバージョンの曲を表示する</string>
     <string name="connections_searching">"検索中…"</string>
-    <string name="connections_service_start">"サービスを開始する"</string>
     <string name="connections_service_stop">"サービスを停止する"</string>
     <string name="connections_song_sections_info">曲のセクションの変更を聞く</string>
-    <string name="connections_success">"接続成功"</string>
     <string name="content">"コンテンツ"</string>
     <string name="continuous">連続的</string>
     <string name="controls">コントロール</string>
@@ -541,10 +533,6 @@
     <string name="pad_settings_info">デフォルトのパッド設定</string>
     <string name="page_background">"ページの背景"</string>
     <string name="page_buttons">"ページボタン"</string>
-    <string name="pagebutton_custom_group">"グループのカスタムボタンをグループ化する"</string>
-    <string name="pagebutton_extrainfo_group">"グループの追加情報ボタン"</string>
-    <string name="pagebutton_group">"すべてのページボタンをグループ化する"</string>
-    <string name="pagebutton_visibility">"ページボタンの表示/非表示"</string>
     <string name="pageturn_instructions">"このページでは。ソングページを下にしてセットを移動するか、上にスクロールを制御する（例えば、ブルートゥースフットスイッチなど）ページめくり器からボタンを割り当てることができます\n \nあなたは、デバイスがすでにあなたのAndroidタブレットが接続されていることを確認する必要がありますとに切り替えました。\n \nOKを緑や青のボタンを下にしてなど、お使いのフットスイッチで所望の制御ボタンを押してください"</string>
     <string name="pageturn_next">"[次へ]ボタンは、設定された"</string>
     <string name="pan">"左/右"</string>
@@ -856,4 +844,5 @@
     <string name="set_sort">ソートセット</string>
     <string name="alphabetical_sort">項目をアルファベット順に並べる</string>
     <string name="pedal_scroll_before_move_info">次のペダルと前のペダルをスクロール ペダルとしても機能させることができます。</string>
+    <string name="permissions_refused">アクセス許可が拒否されました。オプションが再び表示されない場合は、Android の設定から手動で許可する必要がある可能性があります</string>
 </resources>

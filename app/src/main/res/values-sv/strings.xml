@@ -5,7 +5,6 @@
     <string name="action">"Handling"</string>
     <string name="action_button_info">Klicka för att visa eller dölja sidoknapparna.\n\nVar och en kan tilldelas sångåtgärder som metronomer, transponering, kuddar, etc.\nLång tryckning på huvudknappen låter dig ändra inställningarna för varje knapp.\nLång tryckning på vissa sidoknappar utför snabba åtgärder som start / stopp / redigering</string>
     <string name="action_long_press">Ytterligare långa tryckåtgärder</string>
-    <string name="action_search">"Söka låtar"</string>
     <string name="action_short_press">Kort tryck/klick</string>
     <string name="actionbar">"Menyraden info"</string>
     <string name="actionbar_autohide">Dölj åtgärdsfältet automatiskt</string>
@@ -52,7 +51,6 @@
     <string name="backing_track">"Välj backing track"</string>
     <string name="backup">Säkerhetskopiering</string>
     <string name="backup_and_restore">Säkerhetskopiering och återställning</string>
-    <string name="backup_error">"Ingen OpenSongApp-backupfil finns i OpenSong-mappen"</string>
     <string name="backup_export">"Exportera OpenSongApp-säkerhetskopiering"</string>
     <string name="backup_highlighter">Inkludera anteckningar med överstrykningspenna</string>
     <string name="backup_import">"Importera OpenSongApp-säkerhetskopiering"</string>
@@ -175,22 +173,18 @@
     <string name="connections_advertise">Annonsera</string>
     <string name="connections_advertise_info">Annonsera din enhet så att andra kan upptäcka den</string>
     <string name="connections_advertise_name">"Sändningsenhet:"</string>
-    <string name="connections_advertise_stop">Enheten annonseras inte längre</string>
     <string name="connections_advertising">Reklam…</string>
     <string name="connections_change">När du har upprättat en anslutning kan du byta mellan värd och klient efter behov</string>
     <string name="connections_connect">"Anslut enheter"</string>
     <string name="connections_connected">"Ansluten till"</string>
     <string name="connections_connected_devices_info">Visar en lista över för närvarande anslutna enheter</string>
     <string name="connections_description">Anslut till andra enheter som kör OpenSongApp</string>
-    <string name="connections_device_found">Enheten hittades</string>
     <string name="connections_device_name">Enhetsnamn</string>
     <string name="connections_disconnect">"Koppla ifrån"</string>
     <string name="connections_discover">"Upptäck tjänster"</string>
     <string name="connections_discover_info">Leta efter andra enheter som för närvarande annonserar</string>
     <string name="connections_discover_stop">"Sluta upptäckt"</string>
-    <string name="connections_enable">Aktivera anslutningar i närheten</string>
     <string name="connections_failure">"Anslutningsfel"</string>
-    <string name="connections_host">"Hittade värd:"</string>
     <string name="connections_host_passthrough">Värdgenomföring</string>
     <string name="connections_host_passthrough_info">Tillåt meddelanden som tas emot från andra värdar att passera till anslutna klienter</string>
     <string name="connections_keephostsongs">Håll värdlåtar</string>
@@ -206,10 +200,8 @@
     <string name="connections_receive_host">"Ta emot värdlåt"</string>
     <string name="connections_receive_host_info">Se värdversionen av låten istället för din egen</string>
     <string name="connections_searching">"Sökande…"</string>
-    <string name="connections_service_start">"Starta service"</string>
     <string name="connections_service_stop">"Stoppa tjänsten"</string>
     <string name="connections_song_sections_info">Lyssna efter ändringar i sångsektionen</string>
-    <string name="connections_success">"Anslutning framgång"</string>
     <string name="content">"Innehåll"</string>
     <string name="continuous">Kontinuerlig</string>
     <string name="controls">Kontrollera</string>
@@ -541,10 +533,6 @@
     <string name="pad_settings_info">Standard inställningar för dynan</string>
     <string name="page_background">"Sidan bakgrund"</string>
     <string name="page_buttons">"Sidoknappar"</string>
-    <string name="pagebutton_custom_group">"Grupp anpassade knappar"</string>
-    <string name="pagebutton_extrainfo_group">"Grupp extra informationsknappar"</string>
-    <string name="pagebutton_group">"Gruppera alla sidoknappar"</string>
-    <string name="pagebutton_visibility">"Visa / dölj sidoknappar"</string>
     <string name="pageturn_instructions">"På den här sidan kan du tilldela knappar från en sidvändande enhet (t.ex. en bluetooth fotströmbrytare) för att styra rörelser genom uppsättningar eller bläddra upp och ner på en sångsida. \ N \ nDu måste se till att enheten redan är ansluten till din Android-surfplatta Och slås på. \ N \ nKlicka på de gröna eller blå knapparna nedan och tryck sedan på önskad kontrollknapp på fotkontakten etc."</string>
     <string name="pageturn_next">Nästa</string>
     <string name="pan">"Panorera"</string>
@@ -856,4 +844,5 @@
     <string name="set_sort">Sorteringsuppsättning</string>
     <string name="alphabetical_sort">Placera objekt i alfabetisk ordning</string>
     <string name="pedal_scroll_before_move_info">Tillåter att nästa och föregående pedaler även fungerar som rullpedaler</string>
+    <string name="permissions_refused">Behörigheter nekades och kan behöva beviljas manuellt från Android-inställningarna om du inte ser alternativet igen</string>
 </resources>

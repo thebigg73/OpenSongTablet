@@ -540,6 +540,5 @@ public class CommonSQL {
         return text;
     }
 
-    // TODO go through the non-opensong database and populate that data
     // TODO delete stuff from the non-opensong database where the file has gone
 }

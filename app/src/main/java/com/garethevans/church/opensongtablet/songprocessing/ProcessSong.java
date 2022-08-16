@@ -42,7 +42,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Locale;
 
-// TODO Line and section breaks | and ||
 // TODO Tidy up
 
 public class ProcessSong {
@@ -299,7 +298,7 @@ public class ProcessSong {
 
     public String getSubstring(String startText, String laterStartText, String endText, String searchText) {
         int startPos = -1;
-        int laterStartPos = -1;
+        int laterStartPos;
         int endPos = -1;
         if (searchText!=null) {
             if (startText != null) {
@@ -1867,10 +1866,7 @@ public class ProcessSong {
     private void resizeColumn(LinearLayout column, int startWidth, int startHeight, float scaleSize) {
         // Used to resize the inner columns which get added to columns 1,2,3
         int newWidth = Math.round(startWidth*scaleSize);
-        int newHeight = startHeight;
-        if (Math.round(startHeight*scaleSize)>startHeight) {
-            newHeight = Math.round(startHeight*scaleSize);
-        }
+        int newHeight = Math.max(Math.round(startHeight * scaleSize), startHeight);
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(newWidth, newHeight);
         column.setLayoutParams(lp);
     }
@@ -2010,7 +2006,7 @@ public class ProcessSong {
                         currentHeight, scaleSize_1col, fontSizeMax, songSheetTitleHeight, presentation);
 
             case 2:
-                return setTwoColumns(sectionViews, column1, column2, column3, sectionWidths,
+                return setTwoColumns(sectionViews, column1, column2, column3,
                         sectionHeights, scaleSize_2cols, fontSizeMax, (int) ((float) screenWidth / 2.0f - padding),
                         songSheetTitleHeight, presentation, displayMetrics);
 
@@ -2153,9 +2149,9 @@ public class ProcessSong {
     }
 
     private float[] setTwoColumns(ArrayList<View> sectionViews, LinearLayout column1,
-                               LinearLayout column2, LinearLayout column3,
-                               ArrayList<Integer> sectionWidths, ArrayList<Integer> sectionHeights,
-                               float[] scaleSize, float maxFontSize, int halfwidth,
+                                  LinearLayout column2, LinearLayout column3,
+                                  ArrayList<Integer> sectionHeights,
+                                  float[] scaleSize, float maxFontSize, int halfwidth,
                                   int songSheetTitleHeight, boolean presentation,
                                   DisplayMetrics displayMetrics) {
         // Use 2 columns, but hide them all for now
@@ -2563,9 +2559,8 @@ public class ProcessSong {
             mainActivityInterface.getSong().setCurrentSection(0);
             page = 0;
         } else {
-            //mainActivityInterface.getSong().setPdfPageCurrent(page);
-            //mainActivityInterface.getSong().setPdfPageCurrent(page);
-            //mainActivityInterface.getSong().setCurrentSection(page);
+            mainActivityInterface.getSong().setPdfPageCurrent(page);
+            mainActivityInterface.getSong().setCurrentSection(page);
         }
         return page;
     }
@@ -2665,8 +2660,8 @@ public class ProcessSong {
         }
     }
 
-    // Not working yet
-    /*public Bitmap trimBitmap(Bitmap bmp) {
+    // TODO Not working yet
+    public Bitmap trimBitmap(Bitmap bmp) {
         int imgHeight = bmp.getHeight();
         int imgWidth = bmp.getWidth();
 
@@ -2734,8 +2729,9 @@ public class ProcessSong {
                 endHeight - startHeight
         );
         //bmp.recycle();
+        Log.d(TAG,"resizedBitmap: "+resizedBitmap);
         return resizedBitmap;
-    }*/
+    }
 
 
 

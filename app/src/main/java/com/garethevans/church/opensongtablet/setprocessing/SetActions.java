@@ -251,15 +251,6 @@ public class SetActions {
             }
         }
 
-        /*for (String setItem:mainActivityInterface.getCurrentSet().getSetItems()) {
-            Log.d(TAG,"setItem: "+setItem);
-        }
-        for (String setFilename:mainActivityInterface.getCurrentSet().getSetFilenames()) {
-            Log.d(TAG,"setFilename: "+setFilename);
-        }*/
-
-        //Log.d(TAG,"found position: "+position+ " positionNoKey: "+positionNoKey+"  positionVariation: "+positionVariation);
-
         // If we have a current set index position and it matches this song, use the existing position
         int currentSetPosition = mainActivityInterface.getCurrentSet().getIndexSongInSet();
         if (currentSetPosition>-1 && mainActivityInterface.getCurrentSet().getSetItems().size()>currentSetPosition) {

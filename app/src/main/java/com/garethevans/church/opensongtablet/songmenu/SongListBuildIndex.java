@@ -10,7 +10,7 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 import com.garethevans.church.opensongtablet.sqlite.SQLite;
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.google.android.material.textview.MaterialTextView;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -61,12 +61,14 @@ public class SongListBuildIndex {
         mainActivityInterface.getSQLiteHelper().insertFast();
     }
 
-    public String fullIndex(ExtendedFloatingActionButton progressText) {
+    public String fullIndex(MaterialTextView progressText) {
         // The basic database was created on boot.
         // Now comes the time consuming bit that fully indexes the songs into the database
         currentlyIndexing = true;
-        progressText.setText("0%");
-        progressText.setVisibility(View.VISIBLE);
+        progressText.post(() -> {
+            progressText.setText("0%");
+            progressText.setVisibility(View.VISIBLE);
+        });
         StringBuilder returnString = new StringBuilder();
         try (SQLiteDatabase db = mainActivityInterface.getSQLiteHelper().getDB()) {
             // Go through each entry in the database and get the folder and filename.

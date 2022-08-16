@@ -5,7 +5,6 @@
     <string name="action">Действие</string>
     <string name="action_button_info">Нажмите, чтобы отобразить или скрыть кнопки страницы.\n\nКаждую из них можно назначить действиям в песне, таким как метрономы, транспонирование, пэды и т. Д.\nДлительное нажатие на основную кнопку позволяет изменять настройки каждой кнопки.\nДлительное нажатие на некоторые кнопки страницы выполняют быстрые действия, такие как запуск / остановка / редактирование</string>
     <string name="action_long_press">Дополнительное длительное нажатие</string>
-    <string name="action_search">"Поиск песен"</string>
     <string name="action_short_press">Короткое нажатие/щелчок</string>
     <string name="actionbar">"Информация на панели меню"</string>
     <string name="actionbar_autohide">Автоматически скрывать панель действий</string>
@@ -52,7 +51,6 @@
     <string name="backing_track">"Выберите бэк-трек"</string>
     <string name="backup">Резервный</string>
     <string name="backup_and_restore">Резервное копирование и восстановление</string>
-    <string name="backup_error">"Файл резервной копии OpenSongApp не найден в папке OpenSong"</string>
     <string name="backup_export">"Экспорт резервной копии OpenSongApp"</string>
     <string name="backup_highlighter">Включить маркеры</string>
     <string name="backup_import">"Импорт резервной копии OpenSongApp"</string>
@@ -175,22 +173,18 @@
     <string name="connections_advertise">Рекламировать</string>
     <string name="connections_advertise_info">Рекламируйте свое устройство, чтобы другие могли его обнаружить</string>
     <string name="connections_advertise_name">"Вещательное устройство:"</string>
-    <string name="connections_advertise_stop">Устройство больше не рекламируется</string>
     <string name="connections_advertising">Реклама…</string>
     <string name="connections_change">После того, как вы установили соединение, вы можете переключаться между хостом и клиентом по мере необходимости.</string>
     <string name="connections_connect">"Подключение устройств"</string>
     <string name="connections_connected">"Подключен к"</string>
     <string name="connections_connected_devices_info">Показывает список подключенных в данный момент устройств</string>
     <string name="connections_description">Подключайтесь к другим устройствам, на которых запущен OpenSongApp</string>
-    <string name="connections_device_found">Найдено устройство</string>
     <string name="connections_device_name">Имя устройства</string>
     <string name="connections_disconnect">"Отключиться от"</string>
     <string name="connections_discover">"Поиск устройств"</string>
     <string name="connections_discover_info">Ищите другие устройства, которые в настоящее время рекламируются</string>
     <string name="connections_discover_stop">"Прекратить поиск"</string>
-    <string name="connections_enable">Включить близлежащие подключения</string>
     <string name="connections_failure">"Сбой подключения"</string>
-    <string name="connections_host">"Найден хост:"</string>
     <string name="connections_host_passthrough">Передача хоста</string>
     <string name="connections_host_passthrough_info">Разрешить передачу сообщений, полученных от других хостов, подключенным клиентам</string>
     <string name="connections_keephostsongs">Сохранить песни хозяина</string>
@@ -206,10 +200,8 @@
     <string name="connections_receive_host">"Принимать песни от хостов"</string>
     <string name="connections_receive_host_info">Просмотр хост-версии песни вместо собственной</string>
     <string name="connections_searching">"Поиск …"</string>
-    <string name="connections_service_start">"Запустить службу"</string>
     <string name="connections_service_stop">"Остановить службу"</string>
     <string name="connections_song_sections_info">Слушайте изменения раздела песни</string>
-    <string name="connections_success">"Успешно подключено"</string>
     <string name="content">"Cодержание"</string>
     <string name="continuous">Hепрерывный</string>
     <string name="controls">Контроль</string>
@@ -541,10 +533,6 @@
     <string name="pad_settings_info">Настройки пэда по умолчанию</string>
     <string name="page_background">"Фон"</string>
     <string name="page_buttons">Kнопки страниц</string>
-    <string name="pagebutton_custom_group">"Групповые пользовательские кнопки"</string>
-    <string name="pagebutton_extrainfo_group">"Кнопки дополнительной информации группы"</string>
-    <string name="pagebutton_group">"Группировать кнопки всех страниц"</string>
-    <string name="pagebutton_visibility">"Показать / скрыть кнопки страниц"</string>
     <string name="pageturn_instructions">"Эта страница позволяет назначить кнопки дополнительного устройства (такие как педальный переключатель Bluetooth ) для управления перемещением по списку или прокрутки вверх и вниз на странице песни. \ П \nВы должны убедиться, что устройство уже подключено к вашему Android планшету и включено. \ п \nНажмите на зеленую или синюю кнопку ниже, а затем нажмите кнопку управления на ножном переключатель, и т.д."</string>
     <string name="pageturn_next">"Назначьте кнопку «Далее»"</string>
     <string name="pan">"Панорама"</string>
@@ -856,4 +844,5 @@
     <string name="set_sort">Сортировать набор</string>
     <string name="connections_advertise_temporary_info">Реклама только в течение 10 секунд после нажатия кнопки рекламы</string>
     <string name="pedal_scroll_before_move_info">Позволяет использовать следующую и предыдущую педали в качестве педалей прокрутки.</string>
+    <string name="permissions_refused">Разрешения были отклонены, и, возможно, потребуется предоставить их вручную в настройках Android, если вы снова не видите эту опцию.</string>
 </resources>

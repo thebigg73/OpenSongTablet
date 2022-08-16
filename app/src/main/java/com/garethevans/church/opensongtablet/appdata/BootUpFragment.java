@@ -1,8 +1,6 @@
 package com.garethevans.church.opensongtablet.appdata;
 
-import android.Manifest;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
@@ -100,8 +97,7 @@ public class BootUpFragment extends Fragment {
         return (storagePermissionGranted() && storageLocationSet() && storageLocationValid());
     }
     private boolean storagePermissionGranted() {
-        return (getContext()!=null && ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                == PackageManager.PERMISSION_GRANTED);
+        return mainActivityInterface.getAppPermissions().hasStoragePermissions();
     }
     private boolean storageLocationSet() {
         uriTreeString = mainActivityInterface.getPreferences().getMyPreferenceString("uriTree", "");

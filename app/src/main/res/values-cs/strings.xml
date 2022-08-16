@@ -5,7 +5,6 @@
     <string name="action">"Akce"</string>
     <string name="action_button_info">Kliknutím zobrazíte nebo skryjete tlačítka stránky.\n\nKaždému lze přiřadit akce písní, jako jsou metronomy, transpozice, pady atd.\nDlouhým stisknutím hlavního tlačítka můžete změnit nastavení jednotlivých tlačítek.\nDlouhým stisknutím některá tlačítka stránky provádějí rychlé akce, jako je spuštění / zastavení / úpravy</string>
     <string name="action_long_press">Dodatečná akce dlouhého stisknutí</string>
-    <string name="action_search">"Hledání skladby"</string>
     <string name="action_short_press">Krátké stisknutí/kliknutí</string>
     <string name="actionbar">"Menu bar info"</string>
     <string name="actionbar_autohide">Automaticky skrýt panel akcí</string>
@@ -52,7 +51,6 @@
     <string name="backing_track">"Vyberte si doprovodnou stopu"</string>
     <string name="backup">Záloha</string>
     <string name="backup_and_restore">Zálohování a obnovení</string>
-    <string name="backup_error">"Nebyl nalezen ve složce OpenSong OpenSongApp záložní soubor"</string>
     <string name="backup_export">Zálohování Export OpenSongApp</string>
     <string name="backup_highlighter">Zahrňte poznámky ke zvýrazňovači</string>
     <string name="backup_import">Zálohování import OpenSongApp</string>
@@ -175,22 +173,18 @@
     <string name="connections_advertise">Inzerovat</string>
     <string name="connections_advertise_info">Inzerujte své zařízení, aby jej mohli objevit ostatní</string>
     <string name="connections_advertise_name">"Vysílací zařízení:"</string>
-    <string name="connections_advertise_stop">Zařízení již není inzerováno</string>
     <string name="connections_advertising">Reklamní…</string>
     <string name="connections_change">Jakmile vytvoříte připojení, můžete podle potřeby přepínat mezi hostitelem a klientem</string>
     <string name="connections_connect">"Připojte zařízení"</string>
     <string name="connections_connected">"Připojen k"</string>
     <string name="connections_connected_devices_info">Zobrazuje seznam aktuálně připojených zařízení</string>
     <string name="connections_description">Připojte se k dalším zařízením se spuštěnou OpenSongApp</string>
-    <string name="connections_device_found">Zařízení nalezeno</string>
     <string name="connections_device_name">Název zařízení</string>
     <string name="connections_disconnect">"Odpojit od"</string>
     <string name="connections_discover">"Objevte služby"</string>
     <string name="connections_discover_info">Hledejte další zařízení, která aktuálně inzerují</string>
     <string name="connections_discover_stop">"Zastavte objev"</string>
-    <string name="connections_enable">Povolit blízká připojení</string>
     <string name="connections_failure">"Selhání připojení"</string>
-    <string name="connections_host">"Nalezeno hostitele:"</string>
     <string name="connections_host_passthrough">Hostitelský průchod</string>
     <string name="connections_host_passthrough_info">Umožněte zprávám přijatým od jiných hostitelů procházet připojeným klientům</string>
     <string name="connections_keephostsongs">Udržujte hostitelské písně</string>
@@ -206,10 +200,8 @@
     <string name="connections_receive_host">"Přijměte hostující skladby"</string>
     <string name="connections_receive_host_info">Zobrazte hostitelskou verzi skladby namísto své vlastní</string>
     <string name="connections_searching">"Hledání …"</string>
-    <string name="connections_service_start">"Spusťte službu"</string>
     <string name="connections_service_stop">"Zastavte službu"</string>
     <string name="connections_song_sections_info">Listen for song section changes</string>
-    <string name="connections_success">"Úspěch spojení"</string>
     <string name="content">"Obsah"</string>
     <string name="continuous">Kontinuální</string>
     <string name="controls">Řízení</string>
@@ -541,10 +533,6 @@
     <string name="pad_settings_info">Výchozí nastavení podložky</string>
     <string name="page_background">"Page pozadí"</string>
     <string name="page_buttons">"Tlačítka strana"</string>
-    <string name="pagebutton_custom_group">"Skupiny uživatelských tlačítek"</string>
-    <string name="pagebutton_extrainfo_group">"Skupinové doplňkové informace"</string>
-    <string name="pagebutton_group">"Skupiny všech tlačítek stránky"</string>
-    <string name="pagebutton_visibility">"Zobrazit / skrýt tlačítka stránky"</string>
     <string name="pageturn_instructions">"Tato stránka vám umožňuje přiřadit tlačítka ze zařízení na otáčení stránek (např. bluetooth nožního spínače) pro ovládání pohybu pomocí sady nebo rolování nahoru a dolů na stránce písně.\n\nK musí zajistit, že zařízení je již připojen k Android tabletu a zapnout.\n\nKlikněte na zelených nebo modrých tlačítek níže a stiskněte tlačítko požadovaného ovládání na nožním spínačem, atd."</string>
     <string name="pageturn_next">Další</string>
     <string name="pan">"Levý / Pravý"</string>
@@ -856,4 +844,5 @@
     <string name="set_sort">Sada řazení</string>
     <string name="alphabetical_sort">Seřaďte položky v abecedním pořadí</string>
     <string name="pedal_scroll_before_move_info">Umožňuje, aby další a předchozí pedály fungovaly také jako rolovací pedály</string>
+    <string name="permissions_refused">Oprávnění byla odmítnuta a možná bude nutné je udělit ručně z nastavení systému Android, pokud se tato možnost znovu nezobrazí</string>
 </resources>

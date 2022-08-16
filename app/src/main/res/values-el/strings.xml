@@ -5,7 +5,6 @@
     <string name="action">"Δράση"</string>
     <string name="action_button_info">Κάντε κλικ για εμφάνιση ή απόκρυψη των κουμπιών της σελίδας σας.\n\nΚάθε μπορεί να αντιστοιχιστεί σε ενέργειες τραγουδιού, όπως μετρονόμοι, μετατόπιση, μαξιλάρια κ.λπ.\nΜε παρατεταμένη πίεση στο κύριο κουμπί μπορείτε να αλλάξετε τις ρυθμίσεις κάθε κουμπιού. ορισμένα κουμπιά σελίδας εκτελούν γρήγορες ενέργειες όπως έναρξη / διακοπή / επεξεργασία</string>
     <string name="action_long_press">Πρόσθετη δράση παρατεταμένου πάτημας</string>
-    <string name="action_search">"Αναζήτηση τραγουδιών"</string>
     <string name="action_short_press">Ενέργεια σύντομης πίεσης/κλικ</string>
     <string name="actionbar">"Πληροφορίες Γραμμή μενού"</string>
     <string name="actionbar_autohide">Αυτόματη απόκρυψη της γραμμής ενεργειών</string>
@@ -52,7 +51,6 @@
     <string name="backing_track">"Choose backing track"</string>
     <string name="backup">Αντιγράφων ασφαλείας</string>
     <string name="backup_and_restore">Δημιουργία αντιγράφων ασφαλείας και επαναφορά</string>
-    <string name="backup_error">"Δεν υπάρχει αρχείο αντιγράφου ασφαλείας OpenSongApp βρίσκονται στο φάκελο OpenSong"</string>
     <string name="backup_export">"Εξαγωγή OpenSongApp αντιγράφων ασφαλείας"</string>
     <string name="backup_highlighter">Συμπεριλάβετε σημειώσεις με highlighter</string>
     <string name="backup_import">"Εισαγωγής OpenSongApp αντιγράφων ασφαλείας"</string>
@@ -175,22 +173,18 @@
     <string name="connections_advertise">Διαφημίζω</string>
     <string name="connections_advertise_info">Διαφημίστε τη συσκευή σας για να την ανακαλύψουν άλλοι</string>
     <string name="connections_advertise_name">"Συσκευή εκπομπής:"</string>
-    <string name="connections_advertise_stop">Η συσκευή δεν διαφημίζεται πλέον</string>
     <string name="connections_advertising">Διαφήμιση…</string>
     <string name="connections_change">Αφού πραγματοποιήσετε μια σύνδεση, μπορείτε να αλλάξετε μεταξύ κεντρικού υπολογιστή και πελάτη, όπως απαιτείται</string>
     <string name="connections_connect">"Σύνδεση συσκευών"</string>
     <string name="connections_connected">"Συνδεδεμένος με"</string>
     <string name="connections_connected_devices_info">Εμφανίζει μια λίστα με τις τρέχουσες συνδεδεμένες συσκευές</string>
     <string name="connections_description">Συνδεθείτε σε άλλες συσκευές που εκτελούν OpenSongApp</string>
-    <string name="connections_device_found">Βρέθηκε συσκευή</string>
     <string name="connections_device_name">Ονομα της συσκευής</string>
     <string name="connections_disconnect">"Αποσύνδεση από"</string>
     <string name="connections_discover">"Ανακαλύψτε τις υπηρεσίες"</string>
     <string name="connections_discover_info">Αναζητήστε άλλες συσκευές που διαφημίζονται αυτήν τη στιγμή</string>
     <string name="connections_discover_stop">"Σταματήστε την ανακάλυψη"</string>
-    <string name="connections_enable">Ενεργοποίηση κοντινών συνδέσεων</string>
     <string name="connections_failure">"Αποτυχία σύνδεσης"</string>
-    <string name="connections_host">"Βρέθηκε κεντρικός υπολογιστής:"</string>
     <string name="connections_host_passthrough">Διέλευση κεντρικού υπολογιστή</string>
     <string name="connections_host_passthrough_info">Επιτρέψτε στα μηνύματα που λαμβάνονται από άλλους κεντρικούς υπολογιστές να περάσουν σε συνδεδεμένους πελάτες</string>
     <string name="connections_keephostsongs">Κρατήστε τα κεντρικά τραγούδια</string>
@@ -206,10 +200,8 @@
     <string name="connections_receive_host">"Λήψη τραγουδιών υποδοχής"</string>
     <string name="connections_receive_host_info">Δείτε την έκδοση υποδοχής του τραγουδιού αντί της δικής σας</string>
     <string name="connections_searching">"Ερευνητικός…"</string>
-    <string name="connections_service_start">"Ξεκινήστε την υπηρεσία"</string>
     <string name="connections_service_stop">"Σταματήστε την υπηρεσία"</string>
     <string name="connections_song_sections_info">Ακούστε για αλλαγές στην ενότητα τραγουδιών</string>
-    <string name="connections_success">"Η επιτυχία της σύνδεσης"</string>
     <string name="content">"Περιεχόμενο"</string>
     <string name="continuous">Συνεχής</string>
     <string name="controls">Ελεγχος</string>
@@ -541,10 +533,6 @@
     <string name="pad_settings_info">Προεπιλεγμένες ρυθμίσεις pad</string>
     <string name="page_background">"Φόντο σελίδας"</string>
     <string name="page_buttons">"Page buttons"</string>
-    <string name="pagebutton_custom_group">"Ομαδικά προσαρμοσμένα κουμπιά"</string>
-    <string name="pagebutton_extrainfo_group">"Κουμπιά πρόσθετων πληροφοριών ομάδας"</string>
-    <string name="pagebutton_group">"Ομαδοποιήστε όλα τα κουμπιά σελίδας"</string>
-    <string name="pagebutton_visibility">"Εμφάνιση / απόκρυψη κουμπιών σελίδας"</string>
     <string name="pageturn_instructions">"This page allows you to assign buttons from a page turning device (such as a bluetooth footswitch) to control moving through sets or scrolling up and down on a song page.\n\nYou must ensure that the device is already connected to your Android tablet and switched on.\n\nClick on the green or blue buttons below then press the desired control button on your footswitch, etc."</string>
     <string name="pageturn_next">Next</string>
     <string name="pan">"Pan"</string>
@@ -856,4 +844,5 @@
     <string name="set_sort">Σύνολο ταξινόμησης</string>
     <string name="connections_advertise_temporary_info">Διαφημιστείτε μόνο για 10 δευτερόλεπτα αφού κάνετε κλικ στο κουμπί διαφήμιση</string>
     <string name="pedal_scroll_before_move_info">Επιτρέπει στο επόμενο και το προηγούμενο πεντάλ να λειτουργούν και ως πεντάλ κύλισης</string>
+    <string name="permissions_refused">Τα δικαιώματα απορρίφθηκαν και ενδέχεται να χρειαστεί να παραχωρηθούν με μη αυτόματο τρόπο από τις ρυθμίσεις Android, εάν δεν δείτε ξανά την επιλογή</string>
 </resources>

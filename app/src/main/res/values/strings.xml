@@ -621,6 +621,7 @@
     <string name="pedal_warning">Confirm song change by pressing the pedal again after this warning closes</string>
     <string name="performance_mode">Performance mode</string>
     <string name="performance_mode_info">Use your device as a songbook</string>
+    <string name="permissions_refused">Permissions were refused and may need to be granted manually from Android settings if you do not see the option again</string>
     <string name="persistent_database">Persistent database</string>
     <string name="persistent_database_info">This stores extra information (key, notes, autoscroll, midi, etc.) for non OpenSong songs such as PDF files</string>
     <string name="piano">Piano</string>
@@ -1067,7 +1068,6 @@ Check out the categories in the right hand options menu.
 
 
     <!-- TODO LIKELY TO REMOVE NO USAGES FOUND -->
-    <string name="action_search">Search songs</string>
     <string name="actionbar">Menu bar info</string>
     <string name="activated">Activated / running</string>
     <string name="autoscale_toggle">Toggle autoscale</string>
@@ -1116,10 +1116,6 @@ Check out the categories in the right hand options menu.
     <string name="select_item_variation">Select the song to create a set variation</string>
     <string name="pad_choose_key">Please select the key of this song</string>
     <string name="page_background">Page background</string>
-    <string name="pagebutton_custom_group">Group custom buttons</string>
-    <string name="pagebutton_extrainfo_group">Group extra information buttons</string>
-    <string name="pagebutton_group">Group all page buttons</string>
-    <string name="pagebutton_visibility">Show/hide page buttons</string>
     <string name="pageturn_instructions">"This page allows you to assign buttons from a page turning device (such as a bluetooth footswitch) to control moving through sets or scrolling up and down on a song page.\n\nYou must ensure that the device is already connected to your Android tablet and switched on.\n\nClick on the green or blue buttons below then press the desired control button on your footswitch, etc."</string>
     <string name="pageturn_next">Next</string>
     <string name="pdf_functionnotavailable">This function is not available for PDF documents</string>
@@ -1129,7 +1125,6 @@ Check out the categories in the right hand options menu.
     <string name="position">Position</string>
     <string name="profile_description">Backup and restore your settings</string>
     <string name="options">Options</string>
-    <string name="backup_error">"No OpenSongApp backup file found in OpenSong folder"</string>
     <string name="backup_export">Export OpenSongApp backup</string>
     <string name="capo_toggle_bothcapo">Show both capo and native chords if available</string>
     <string-array name="capoprint" translatable="false">
@@ -1150,12 +1145,6 @@ Check out the categories in the right hand options menu.
     <string name="chords_sharp">Use # chords</string>
     <string name="click_to_change">Click to change</string>
     <string name="client">Client</string>
-    <string name="connections_advertise_stop">Device no longer being advertised</string>
-    <string name="connections_device_found">Device found</string>
-    <string name="connections_enable">Enable nearby connections</string>
-    <string name="connections_host">Found host:</string>
-    <string name="connections_service_start">Start service</string>
-    <string name="connections_success">Connection success</string>
     <string name="continuous">Continuous</string>
     <string name="convert_song">Please convert this song into OpenSong format (by viewing it) before adding it to a set</string>
     <string name="converting">Converting</string>

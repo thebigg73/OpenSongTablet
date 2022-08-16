@@ -5,7 +5,6 @@
     <string name="action">"Azione"</string>
     <string name="action_button_info">Fai clic per mostrare o nascondere i pulsanti della tua pagina.\n\nOgnuno può essere assegnato ad azioni del brano come metronomi, trasposizione, pad, ecc.\nPremendo a lungo il pulsante principale è possibile modificare le impostazioni di ciascun pulsante.\nPremendo a lungo su alcuni pulsanti di pagina eseguono azioni rapide come avvio / arresto / modifica</string>
     <string name="action_long_press">Azione di pressione prolungata aggiuntiva</string>
-    <string name="action_search">"Cerca canzoni"</string>
     <string name="action_short_press">Azione di pressione breve/clic</string>
     <string name="actionbar">"Informazioni Barra dei menu"</string>
     <string name="actionbar_autohide">Nascondi automaticamente la barra delle azioni</string>
@@ -52,7 +51,6 @@
     <string name="backing_track">"Scegli base musicale"</string>
     <string name="backup">Backup</string>
     <string name="backup_and_restore">Backup e ripristino</string>
-    <string name="backup_error">"Nessun file di backup OpenSongApp trovato nella cartella OpenSong"</string>
     <string name="backup_export">"Esporta backup OpenSongApp"</string>
     <string name="backup_highlighter">Includi note sull\'evidenziatore</string>
     <string name="backup_import">Fi backup Importa OpenSongApp</string>
@@ -175,22 +173,18 @@
     <string name="connections_advertise">Pubblicizza</string>
     <string name="connections_advertise_info">Pubblicizza il tuo dispositivo affinché gli altri lo scoprano</string>
     <string name="connections_advertise_name">"Dispositivo di trasmissione:"</string>
-    <string name="connections_advertise_stop">Dispositivo non più pubblicizzato</string>
     <string name="connections_advertising">Pubblicità…</string>
     <string name="connections_change">Dopo aver stabilito una connessione, è possibile passare da host a client come richiesto</string>
     <string name="connections_connect">"Collegare i dispositivi"</string>
     <string name="connections_connected">"Collegato a"</string>
     <string name="connections_connected_devices_info">Mostra un elenco dei dispositivi attualmente collegati</string>
     <string name="connections_description">Connettiti ad altri dispositivi che eseguono OpenSongApp</string>
-    <string name="connections_device_found">Dispositivo trovato</string>
     <string name="connections_device_name">Nome del dispositivo</string>
     <string name="connections_disconnect">"Scollegare da"</string>
     <string name="connections_discover">"Scopri i servizi"</string>
     <string name="connections_discover_info">Cerca altri dispositivi che stanno attualmente facendo pubblicità</string>
     <string name="connections_discover_stop">"Arresti la scoperta"</string>
-    <string name="connections_enable">Abilita connessioni vicine</string>
     <string name="connections_failure">"Errore di connessione"</string>
-    <string name="connections_host">"Ospite trovato:"</string>
     <string name="connections_host_passthrough">Passaggio dell\'ospite</string>
     <string name="connections_host_passthrough_info">Consenti ai messaggi ricevuti da altri host di passare ai client connessi</string>
     <string name="connections_keephostsongs">Mantieni le canzoni host</string>
@@ -206,10 +200,8 @@
     <string name="connections_receive_host">"Ricevi canzoni host"</string>
     <string name="connections_receive_host_info">Visualizza la versione host del brano anziché la tua</string>
     <string name="connections_searching">"Ricerca in corso …"</string>
-    <string name="connections_service_start">"Avviare il servizio"</string>
     <string name="connections_service_stop">"Servizio di arresto"</string>
     <string name="connections_song_sections_info">Ascolta le modifiche alla sezione dei brani</string>
-    <string name="connections_success">"Successo del collegamento"</string>
     <string name="content">"Contenuto"</string>
     <string name="continuous">Continuo</string>
     <string name="controls">Controlli</string>
@@ -541,10 +533,6 @@
     <string name="pad_settings_info">Impostazioni predefinite del pad</string>
     <string name="page_background">"Sfondo della pagina"</string>
     <string name="page_buttons">"Pulsanti pagina"</string>
-    <string name="pagebutton_custom_group">"Pulsanti personalizzati del gruppo"</string>
-    <string name="pagebutton_extrainfo_group">"Pulsanti di informazioni aggiuntive per il gruppo"</string>
-    <string name="pagebutton_group">"Gruppo tutti i pulsanti di pagina"</string>
-    <string name="pagebutton_visibility">"Mostra / nascondi i pulsanti della pagina"</string>
     <string name="pageturn_instructions">"Questa pagina consente di assegnare tasti di un dispositivo di girare pagina (come un interruttore a pedale bluetooth) per controllare muove attraverso insiemi o scorrere su e giù su una pagina di canzone. \n \nÈ deve garantire che il dispositivo è già collegato al tablet Android e acceso. \n \nCliccare sui pulsanti verdi o blu sotto e poi premere il pulsante di controllo desiderato sul pedale, ecc"</string>
     <string name="pageturn_next">Avanti</string>
     <string name="pan">"Sinistra / Destra"</string>
@@ -856,4 +844,5 @@
     <string name="set_sort">Ordina insieme</string>
     <string name="connections_advertise_temporary_info">Fai pubblicità solo per 10 secondi dopo aver fatto clic sul pulsante Pubblicizza</string>
     <string name="pedal_scroll_before_move_info">Consente ai pedali successivo e precedente di funzionare anche come pedali di scorrimento</string>
+    <string name="permissions_refused">Le autorizzazioni sono state rifiutate e potrebbe essere necessario concederle manualmente dalle impostazioni di Android se non vedi più l\'opzione</string>
 </resources>

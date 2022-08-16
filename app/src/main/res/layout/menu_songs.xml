@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="false"
+    xmlns:toolsNs="http://schemas.android.com/tools"
+    android:clipChildren="false"
     android:clipToPadding="false"
-    android:clipChildren="false">
+    android:fitsSystemWindows="false">
 
     <RelativeLayout
         android:id="@+id/relativeLayout"
@@ -112,13 +112,13 @@
                             android:id="@+id/songListRecyclerView"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:orientation="vertical"
                             app:bubbleColor="@color/colorSecondary"
                             app:bubbleSize="small"
                             app:bubbleTextColor="@color/white"
                             app:handleColor="@color/colorAltSecondary"
                             app:hideScrollbar="false"
                             app:scrollTrackColor="@color/colorPrimary"
-                            android:orientation="vertical"
                             app:showTrack="true" />
                     </FrameLayout>
                 </LinearLayout>
@@ -128,18 +128,23 @@
         <FrameLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toStartOf="@+id/actionFAB"
-            android:layout_alignParentStart="true"
             android:layout_alignBottom="@+id/actionFAB"
+            android:layout_alignParentStart="true"
+            android:layout_toStartOf="@+id/actionFAB"
             android:focusable="false"
             android:focusableInTouchMode="false">
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:id="@+id/progressText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:icon="@drawable/timer"
-            android:text=""
-            android:layout_margin="16dp"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/progressText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                toolsNs:text="0%"
+                android:background="@drawable/rectangle"
+                app:backgroundTint="@color/colorSecondary"
+                android:padding="16dp"
+                android:gravity="center_vertical"
+                android:drawableStart="@drawable/timer" />
         </FrameLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton

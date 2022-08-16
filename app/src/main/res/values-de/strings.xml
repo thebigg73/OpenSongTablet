@@ -5,7 +5,6 @@
     <string name="action">"Aktion"</string>
     <string name="action_button_info">Klicken Sie hier, um Ihre Seitentasten ein- oder auszublenden.\n\nJede kann Songaktionen wie Metronomen, Transponieren, Pads usw. zugewiesen werden.\nDurch langes Drücken der Haupttaste können Sie die Einstellungen der einzelnen Tasten ändern.\nLange Drücken auf Einige Seitenschaltflächen führen schnelle Aktionen wie Starten / Stoppen / Bearbeiten aus</string>
     <string name="action_long_press">Zusätzliche lange Druckaktion</string>
-    <string name="action_search">"Songs suchen"</string>
     <string name="action_short_press">Aktion kurz drücken/klicken</string>
     <string name="actionbar">"Menüleiste Info"</string>
     <string name="actionbar_autohide">Aktionsleiste automatisch ausblenden</string>
@@ -52,7 +51,6 @@
     <string name="backing_track">"Hintergrundmusik wählen"</string>
     <string name="backup">Sicherung</string>
     <string name="backup_and_restore">Sichern und Wiederherstellen</string>
-    <string name="backup_error">"Keine OpenSongApp Sicherungsdatei in Opensong Ordner gefunden"</string>
     <string name="backup_export">"OpenSongApp Sicherung exportieren"</string>
     <string name="backup_highlighter">Fügen Sie Textmarker-Notizen hinzu</string>
     <string name="backup_import">"OpenSongApp Sicherung importieren"</string>
@@ -175,22 +173,18 @@
     <string name="connections_advertise">Werben</string>
     <string name="connections_advertise_info">Werben Sie für Ihr Gerät, damit andere es entdecken können</string>
     <string name="connections_advertise_name">"Sendendes Gerät:"</string>
-    <string name="connections_advertise_stop">Gerät wird nicht mehr beworben</string>
     <string name="connections_advertising">Werbung…</string>
     <string name="connections_change">Nachdem Sie eine Verbindung hergestellt haben, können Sie bei Bedarf zwischen Host und Client wechseln</string>
     <string name="connections_connect">"Geräte anschließen"</string>
     <string name="connections_connected">"Angeschlossen"</string>
     <string name="connections_connected_devices_info">Zeigt eine Liste der aktuell verbundenen Geräte an</string>
     <string name="connections_description">Stellen Sie eine Verbindung zu anderen Geräten her, auf denen OpenSongApp ausgeführt wird</string>
-    <string name="connections_device_found">Gerät gefunden</string>
     <string name="connections_device_name">Gerätename</string>
     <string name="connections_disconnect">"Trennen von"</string>
     <string name="connections_discover">"Dienste suchen"</string>
     <string name="connections_discover_info">Suchen Sie nach anderen Geräten, die derzeit Werbung schalten</string>
     <string name="connections_discover_stop">"Suche beenden"</string>
-    <string name="connections_enable">Aktivieren Sie Verbindungen in der Nähe</string>
     <string name="connections_failure">"Verbindungsfehler"</string>
-    <string name="connections_host">"Gefundener Host:"</string>
     <string name="connections_host_passthrough">Host-Passthrough</string>
     <string name="connections_host_passthrough_info">Zulassen, dass von anderen Hosts empfangene Nachrichten an verbundene Clients weitergeleitet werden</string>
     <string name="connections_keephostsongs">Behalten Sie Host-Songs</string>
@@ -206,10 +200,8 @@
     <string name="connections_receive_host">"Host-Songs empfangen"</string>
     <string name="connections_receive_host_info">Zeigen Sie die Host-Version des Songs anstelle Ihrer eigenen an</string>
     <string name="connections_searching">"Suchen …"</string>
-    <string name="connections_service_start">"Dienst starten"</string>
     <string name="connections_service_stop">"Dienst anhalten"</string>
     <string name="connections_song_sections_info">Achten Sie auf Änderungen in Songabschnitten</string>
-    <string name="connections_success">"Verbindungserfolg"</string>
     <string name="content">"Inhalt"</string>
     <string name="continuous">Kontinuierlich</string>
     <string name="controls">Steuerung</string>
@@ -541,10 +533,6 @@
     <string name="pad_settings_info">Standard-Pad-Einstellungen</string>
     <string name="page_background">"Hintergrund Seite"</string>
     <string name="page_buttons">"Schaltflächen konfigurieren"</string>
-    <string name="pagebutton_custom_group">"Benutzerdefinierte Schaltflächen gruppieren"</string>
-    <string name="pagebutton_extrainfo_group">"Zusätzliche Informationstasten gruppieren"</string>
-    <string name="pagebutton_group">"Alle Seitentasten gruppieren"</string>
-    <string name="pagebutton_visibility">"Schaltflächen anzeigen / ausblenden"</string>
     <string name="pageturn_instructions">"Auf dieser Seite können Sie die Tasten eines externen Schalters zum Seitenwechsel (z.B. Bluetooth-Fußschalter) zuweisen, um damit durch Sets zu navigieren oder eine Liedseite hoch und runter zu scrollen. \n\n Sie müssen sicherstellen, dass das Gerät bereits mit Ihrem Android-Tablet verbunden und eingeschaltet ist. \n\nKlicken Sie auf die grünen oder blauen Tasten unten und betätigen Sie dann die gewünschte Taste auf Ihrem Fußschalter."</string>
     <string name="pageturn_next">Weiter</string>
     <string name="pan">"Links / Rechts"</string>
@@ -856,4 +844,5 @@
     <string name="set_sort">Satz sortieren</string>
     <string name="alphabetical_sort">Artikel alphabetisch ordnen</string>
     <string name="pedal_scroll_before_move_info">Ermöglicht, dass das nächste und das vorherige Pedal auch als Scroll-Pedale fungieren</string>
+    <string name="permissions_refused">Berechtigungen wurden verweigert und müssen möglicherweise manuell über die Android-Einstellungen gewährt werden, wenn Sie die Option nicht erneut sehen</string>
 </resources>

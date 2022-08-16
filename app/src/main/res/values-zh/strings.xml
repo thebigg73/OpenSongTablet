@@ -5,7 +5,6 @@
     <string name="action">"行动"</string>
     <string name="action_button_info">单击以显示或隐藏页面按钮。\n\n可以将每个按钮分配给节拍，移调，打击垫等歌曲操作。\n长按主按钮可更改每个按钮的设置。\n长按 一些页面按钮执行快速操作，例如开始/停止/编辑</string>
     <string name="action_long_press">额外的长按动作</string>
-    <string name="action_search">"搜索歌曲"</string>
     <string name="action_short_press">短按/点击动作</string>
     <string name="actionbar">"Traka izbornika info"</string>
     <string name="actionbar_autohide">自动隐藏操作栏</string>
@@ -52,7 +51,6 @@
     <string name="backing_track">"选择依托轨道"</string>
     <string name="backup">备份</string>
     <string name="backup_and_restore">备份还原</string>
-    <string name="backup_error">"在OpenSong文件夹中找到没有OpenSongApp备份文件"</string>
     <string name="backup_export">"出口OpenSongApp备份"</string>
     <string name="backup_highlighter">Sluit highlighter notas in</string>
     <string name="backup_import">"进口OpenSongApp备份备份"</string>
@@ -176,22 +174,18 @@
     <string name="connections_advertise">广告</string>
     <string name="connections_advertise_info">宣传您的设备以供其他人发现</string>
     <string name="connections_advertise_name">"广播设备："</string>
-    <string name="connections_advertise_stop">设备不再发布</string>
     <string name="connections_advertising">广告…</string>
     <string name="connections_change">建立连接后，您可以根据需要在主机和客户端之间进行切换</string>
     <string name="connections_connect">"连接设备"</string>
     <string name="connections_connected">"连接到"</string>
     <string name="connections_connected_devices_info">显示当前连接的设备列表</string>
     <string name="connections_description">连接到其他运行OpenSongApp的设备</string>
-    <string name="connections_device_found">找到设备</string>
     <string name="connections_device_name">设备名称</string>
     <string name="connections_disconnect">"断开连接"</string>
     <string name="connections_discover">"发现服务"</string>
     <string name="connections_discover_info">查找当前正在投放广告的其他设备</string>
     <string name="connections_discover_stop">"停止发现"</string>
-    <string name="connections_enable">启用附近的连接</string>
     <string name="connections_failure">"连接失败"</string>
-    <string name="connections_host">"找到主机："</string>
     <string name="connections_host_passthrough">主机直通</string>
     <string name="connections_host_passthrough_info">允许从其他主机收到的消息传递到连接的客户端</string>
     <string name="connections_keephostsongs">保留主持人的歌曲</string>
@@ -207,10 +201,8 @@
     <string name="connections_receive_host">"接收主播歌曲"</string>
     <string name="connections_receive_host_info">查看歌曲的宿主版本而不是您自己的版本</string>
     <string name="connections_searching">"搜索…"</string>
-    <string name="connections_service_start">"开始服务"</string>
     <string name="connections_service_stop">"停止服务"</string>
     <string name="connections_song_sections_info">聆听歌曲部分的变化</string>
-    <string name="connections_success">"连接成功"</string>
     <string name="content">"内容"</string>
     <string name="continuous">连续</string>
     <string name="controls">控制</string>
@@ -542,10 +534,6 @@
     <string name="pad_settings_info">默认打击垫设置</string>
     <string name="page_background">"页面背景"</string>
     <string name="page_buttons">"页按钮"</string>
-    <string name="pagebutton_custom_group">"组自定义按钮"</string>
-    <string name="pagebutton_extrainfo_group">"组合额外信息按钮"</string>
-    <string name="pagebutton_group">"分组所有页面按钮"</string>
-    <string name="pagebutton_visibility">"显示/隐藏页面按钮"</string>
     <string name="pageturn_instructions">"此页面允许你指定从一个翻页按钮设备（如蓝牙脚踏开关）来控制移动，通过设置或向上和向下滚动一首歌页面上。\n \n您必须确保该设备已经连接到你的Andr​​oid平板电脑并打开。\n \n单击下面的绿色或蓝色按钮，然后按你的脚踏开关所需的控制按钮等"</string>
     <string name="pageturn_next">下一步</string>
     <string name="pan">"左/右"</string>
@@ -857,4 +845,5 @@
     <string name="set_sort">排序集</string>
     <string name="connections_advertise_temporary_info">点击广告按钮后仅广告 10 秒</string>
     <string name="pedal_scroll_before_move_info">允许下一个和上一个踏板也可以用作滚动踏板</string>
+    <string name="permissions_refused">权限被拒绝，如果您没有再次看到该选项，可能需要从 Android 设置中手动授予</string>
 </resources>

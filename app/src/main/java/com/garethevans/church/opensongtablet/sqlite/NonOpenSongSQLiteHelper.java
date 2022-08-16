@@ -143,7 +143,6 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
         }
     }
 
-    // TODO MIGHT REMOVE AS THE CONTENTS OF THIS DATABASE ARE PULLED INTO THE MAIN ONE AT RUNTIME
     // Find specific song
     public Song getSpecificSong(String folder, String filename) {
         // This gets basic info from the normal temporary SQLite database

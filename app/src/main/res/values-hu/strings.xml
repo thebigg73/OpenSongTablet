@@ -5,7 +5,6 @@
     <string name="action">"Akció"</string>
     <string name="action_button_info">Kattintson az oldalgombok megjelenítéséhez vagy elrejtéséhez.\n\nMindegyiket hozzárendelhetünk olyan dalműveletekhez, mint metronomok, átültetés, betétek stb.\nHosszan lenyomva a fő gombot, megváltoztathatja az egyes gombok beállításait.\nHosszan nyomja meg egyes oldalgombok gyors műveleteket hajtanak végre, például indítás / leállítás / szerkesztés</string>
     <string name="action_long_press">Kiegészítő hosszú megnyomásos művelet</string>
-    <string name="action_search">"Keresés dalok"</string>
     <string name="action_short_press">Rövid nyomás/kattintás művelet</string>
     <string name="actionbar">"Menüsor info"</string>
     <string name="actionbar_autohide">Műveletsáv automatikus elrejtése</string>
@@ -52,7 +51,6 @@
     <string name="backing_track">"Válasszon háttér pályán"</string>
     <string name="backup">Biztonsági mentés</string>
     <string name="backup_and_restore">Mentés és visszaállítás</string>
-    <string name="backup_error">"Nem OpenSongApp backup fájlt talált OpenSong mappában"</string>
     <string name="backup_export">"Export OpenSongApp mentés"</string>
     <string name="backup_highlighter">Tartalmazzon kiemelő jegyzeteket</string>
     <string name="backup_import">"Import OpenSongApp mentés"</string>
@@ -175,22 +173,18 @@
     <string name="connections_advertise">Hirdet</string>
     <string name="connections_advertise_info">Hirdesse eszközét, hogy mások felfedezhessék</string>
     <string name="connections_advertise_name">"Broadcasting eszköz:"</string>
-    <string name="connections_advertise_stop">Az eszközt már nem hirdetik</string>
     <string name="connections_advertising">Hirdető…</string>
     <string name="connections_change">Miután létrejött a kapcsolat, szükség szerint válthat a gazdagép és az ügyfél között</string>
     <string name="connections_connect">Eszközök csatlakoztatása</string>
     <string name="connections_connected">"Csatlakozva valamihez"</string>
     <string name="connections_connected_devices_info">Megjeleníti a jelenleg csatlakoztatott eszközök listáját</string>
     <string name="connections_description">Csatlakozzon más, az OpenSongApp alkalmazást futtató eszközökhöz</string>
-    <string name="connections_device_found">Eszköz megtalálva</string>
     <string name="connections_device_name">Eszköz neve</string>
     <string name="connections_disconnect">"bontása a"</string>
     <string name="connections_discover">"Fedezze szolgáltatások"</string>
     <string name="connections_discover_info">Keressen más, jelenleg hirdetett eszközöket</string>
     <string name="connections_discover_stop">"A stop felfedezés"</string>
-    <string name="connections_enable">A közeli kapcsolatok engedélyezése</string>
     <string name="connections_failure">"Csatlakozási hiba"</string>
-    <string name="connections_host">"Talált host:"</string>
     <string name="connections_host_passthrough">Gazda áthaladása</string>
     <string name="connections_host_passthrough_info">Engedélyezze a más gazdagépektől kapott üzenetek eljutását a csatlakoztatott ügyfelekhez</string>
     <string name="connections_keephostsongs">Tartsa be a fogadó dalokat</string>
@@ -206,10 +200,8 @@
     <string name="connections_receive_host">"Kap host dalok"</string>
     <string name="connections_receive_host_info">Tekintse meg a dal gazdagép verzióját a saját helyett</string>
     <string name="connections_searching">"Keresés …"</string>
-    <string name="connections_service_start">"Kezdés szolgáltatás"</string>
     <string name="connections_service_stop">"stop szolgáltatás"</string>
     <string name="connections_song_sections_info">Hallgassa meg a dalszakasz változásait</string>
-    <string name="connections_success">"Csatlakozás sikeres"</string>
     <string name="content">"Tartalom"</string>
     <string name="continuous">Folyamatos</string>
     <string name="controls">Vezérlők</string>
@@ -541,10 +533,6 @@
     <string name="pad_settings_info">Alapértelmezett pad beállításai</string>
     <string name="page_background">"Oldal háttér"</string>
     <string name="page_buttons">"Oldal gombok"</string>
-    <string name="pagebutton_custom_group">"Csoport egyedi gombok"</string>
-    <string name="pagebutton_extrainfo_group">"Csoport további információkat gombok"</string>
-    <string name="pagebutton_group">"Csoport minden oldal gombok"</string>
-    <string name="pagebutton_visibility">"Show / hide oldal gombok"</string>
     <string name="pageturn_instructions">"Ez az oldal lehetővé teszi, hogy hozzá gombokat a lapozás eszközt (például a bluetooth lábkapcsoló) ellenőrzése mozognak készletek vagy fel-le irányú egy dalt oldalon. \n\nA gondoskodnia kell arról, hogy a készülék már csatlakoztatva van az Android tablet és be van kapcsolva. \n\nA a zöld vagy a kék gomb alatt, majd nyomja meg a kívánt gombot a lábkapcsoló stb"</string>
     <string name="pageturn_next">Tovább</string>
     <string name="pan">"Bal / Jobb"</string>
@@ -856,4 +844,5 @@
     <string name="set_sort">Rendezési készlet</string>
     <string name="alphabetical_sort">Tedd az elemeket ábécé sorrendbe</string>
     <string name="pedal_scroll_before_move_info">Lehetővé teszi, hogy a következő és az előző pedálok görgetőpedálként is működjenek</string>
+    <string name="permissions_refused">Az engedélyeket elutasították, és előfordulhat, hogy manuálisan kell megadni az Android beállításaiból, ha nem látja újra a lehetőséget</string>
 </resources>

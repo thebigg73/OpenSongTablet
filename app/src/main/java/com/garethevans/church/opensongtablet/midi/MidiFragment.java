@@ -1,6 +1,5 @@
 package com.garethevans.church.opensongtablet.midi;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -11,7 +10,6 @@ import android.bluetooth.le.ScanFilter;
 import android.bluetooth.le.ScanResult;
 import android.bluetooth.le.ScanSettings;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.media.midi.MidiDevice;
 import android.media.midi.MidiDeviceInfo;
@@ -30,10 +28,11 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -66,6 +65,7 @@ public class MidiFragment extends Fragment {
     private ArrayList<MidiInfo> midiInfos;
     private MidiMessagesAdapter midiMessagesAdapter;
     private LinearLayoutManager llm;
+    ActivityResultLauncher<String[]> midiScanPermissions;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -84,6 +84,9 @@ public class MidiFragment extends Fragment {
 
         // Register this fragment with the main activity to deal with listeners
         mainActivityInterface.registerFragment(this, "MidiFragment");
+
+        // Set up the permission launcher for Nearby
+        setPermissions();
 
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
@@ -109,6 +112,16 @@ public class MidiFragment extends Fragment {
             });
         });
         return myView.getRoot();
+    }
+
+    private void setPermissions() {
+        midiScanPermissions = registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), isGranted -> {
+            Log.d(TAG,"Permissions: "+isGranted);
+            myView.enableBluetooth.setChecked(mainActivityInterface.getAppPermissions().hasMidiScanPermissions());
+            if (!mainActivityInterface.getAppPermissions().hasMidiScanPermissions()) {
+                mainActivityInterface.getShowToast().doIt(getString(R.string.permissions_refused));
+            }
+        });
     }
 
     // Set the values in the field
@@ -242,12 +255,13 @@ public class MidiFragment extends Fragment {
         myView.enableBluetooth.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
                 // Check we have the permission
-                if (!allowBluetoothSearch(true)) {
+                if (!mainActivityInterface.getAppPermissions().hasMidiScanPermissions()) {
                     myView.enableBluetooth.setChecked(false);
+                    midiScanPermissions.launch(mainActivityInterface.getAppPermissions().getMidiScanPermissions());
                     return;
                 }
             }
-            if (isChecked) {
+            if (isChecked && mainActivityInterface.getAppPermissions().hasMidiScanPermissions()) {
                 // Get scanner.  This is only allowed for Marshmallow or later
                 BluetoothManager bluetoothManager = (BluetoothManager) requireActivity().getSystemService(Context.BLUETOOTH_SERVICE);
                 if (bluetoothManager != null) {
@@ -306,8 +320,7 @@ public class MidiFragment extends Fragment {
 
     // Check permissions
     private boolean allowBluetoothSearch(boolean switchOn) {
-        // Same permissions as Google Nearby!
-        return switchOn && mainActivityInterface.requestNearbyPermissions(false);
+        return switchOn && mainActivityInterface.getAppPermissions().hasMidiScanPermissions();
     }
 
     // Scan for devices (USB or Bluetooth)
@@ -318,7 +331,7 @@ public class MidiFragment extends Fragment {
         myView.searchProgressLayout.setVisibility(View.VISIBLE);
         myView.progressBar.setVisibility(View.VISIBLE);
         if (mainActivityInterface.getMidi().getIncludeBluetoothMidi() &&
-            mainActivityInterface.requestNearbyPermissions(false)) {
+            mainActivityInterface.getAppPermissions().hasMidiScanPermissions()) {
             startScanBluetooth();
         } else {
             startScanUSB();
@@ -396,11 +409,8 @@ public class MidiFragment extends Fragment {
         scanFilters.add(scanFilter);
 
         ScanSettings scanSettings = new ScanSettings.Builder().build();
-
-        if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.BLUETOOTH_SCAN) != PackageManager.PERMISSION_GRANTED) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.BLUETOOTH_SCAN}, 107);
-            }
+        if (!mainActivityInterface.getAppPermissions().hasMidiScanPermissions()) {
+            midiScanPermissions.launch(mainActivityInterface.getAppPermissions().getMidiScanPermissions());
         } else if (bluetoothLeScanner != null) {
             bluetoothLeScanner.startScan(scanFilters, scanSettings, scanCallback);
         } else {
@@ -433,17 +443,16 @@ public class MidiFragment extends Fragment {
         }
 
 
+        @SuppressLint("MissingPermission")
         private void addBluetoothDevice(BluetoothDevice device) {
             Log.d("d", "device=" + device);
             if (device != null && !bluetoothDevices.contains(device)) {
                 bluetoothDevices.add(device);
-                if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                        ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.BLUETOOTH_CONNECT}, 100);
-                    }
-                    return;
+                if (!mainActivityInterface.getAppPermissions().hasMidiScanPermissions()) {
+                    midiScanPermissions.launch(mainActivityInterface.getAppPermissions().getMidiScanPermissions());
+                } else {
+                    Log.d("d", "name=" + device.getName());
                 }
-                Log.d("d", "name=" + device.getName());
             }
         }
     };
@@ -464,6 +473,7 @@ public class MidiFragment extends Fragment {
         }
     }
 
+    @SuppressLint("MissingPermission")
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void updateDevices(boolean bluetoothscan) {
         try {
@@ -493,46 +503,43 @@ public class MidiFragment extends Fragment {
                 LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                 llp.setMargins(12, 12, 12, 12);
                 textView.setLayoutParams(llp);
-                if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                        ActivityCompat.requestPermissions(requireActivity(),new String[]{Manifest.permission.BLUETOOTH_CONNECT},108);
-                    }
-                    return;
+                if (!mainActivityInterface.getAppPermissions().hasMidiScanPermissions()) {
+                    midiScanPermissions.launch(mainActivityInterface.getAppPermissions().getMidiScanPermissions());
                 } else {
                     textView.setText(bluetoothDevices.get(x).getName());
+                    textView.setTextSize(18.0f);
+                    textView.setPadding(24, 24, 24, 24);
+                    int finalX = x;
+                    textView.setOnClickListener(v -> {
+                        // Disconnect any other devices
+                        mainActivityInterface.getMidi().disconnectDevice();
+                        // Set the new details
+
+                        if (bluetoothscan) {
+                            mainActivityInterface.getMidi().setMidiDeviceName(bluetoothDevices.get(finalX).getName());
+                            mainActivityInterface.getMidi().setMidiDeviceAddress(bluetoothDevices.get(finalX).getAddress());
+                        } else {
+                            mainActivityInterface.getMidi().setMidiDeviceName(usbNames.get(finalX));
+                            mainActivityInterface.getMidi().setMidiDeviceAddress(usbManufact.get(finalX));
+                        }
+                        mainActivityInterface.getMidi().setMidiManager((MidiManager) requireActivity().getSystemService(Context.MIDI_SERVICE));
+
+                        if (bluetoothscan && mainActivityInterface.getMidi().getMidiManager() != null) {
+                            mainActivityInterface.getMidi().getMidiManager().openBluetoothDevice(bluetoothDevices.get(finalX), device -> {
+                                mainActivityInterface.getMidi().setMidiDevice(device);
+                                setupDevice(device);
+                                selected.postDelayed(runnable, 1000);
+                            }, null);
+                        } else if (mainActivityInterface.getMidi().getMidiManager()!=null) {
+                            mainActivityInterface.getMidi().getMidiManager().openDevice(usbDevices[finalX], device -> {
+                                mainActivityInterface.getMidi().setMidiDevice(device);
+                                setupDevice(device);
+                                selected.postDelayed(runnable, 1000);
+                            }, null);
+                        }
+                    });
+                    myView.foundDevicesLayout.addView(textView);
                 }
-                textView.setTextSize(18.0f);
-                textView.setPadding(24, 24, 24, 24);
-                int finalX = x;
-                textView.setOnClickListener(v -> {
-                    // Disconnect any other devices
-                    mainActivityInterface.getMidi().disconnectDevice();
-                    // Set the new details
-
-                    if (bluetoothscan) {
-                        mainActivityInterface.getMidi().setMidiDeviceName(bluetoothDevices.get(finalX).getName());
-                        mainActivityInterface.getMidi().setMidiDeviceAddress(bluetoothDevices.get(finalX).getAddress());
-                    } else {
-                        mainActivityInterface.getMidi().setMidiDeviceName(usbNames.get(finalX));
-                        mainActivityInterface.getMidi().setMidiDeviceAddress(usbManufact.get(finalX));
-                    }
-                    mainActivityInterface.getMidi().setMidiManager((MidiManager) requireActivity().getSystemService(Context.MIDI_SERVICE));
-
-                    if (bluetoothscan && mainActivityInterface.getMidi().getMidiManager() != null) {
-                        mainActivityInterface.getMidi().getMidiManager().openBluetoothDevice(bluetoothDevices.get(finalX), device -> {
-                            mainActivityInterface.getMidi().setMidiDevice(device);
-                            setupDevice(device);
-                            selected.postDelayed(runnable, 1000);
-                        }, null);
-                    } else if (mainActivityInterface.getMidi().getMidiManager()!=null) {
-                        mainActivityInterface.getMidi().getMidiManager().openDevice(usbDevices[finalX], device -> {
-                            mainActivityInterface.getMidi().setMidiDevice(device);
-                            setupDevice(device);
-                            selected.postDelayed(runnable, 1000);
-                        }, null);
-                    }
-                });
-                myView.foundDevicesLayout.addView(textView);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -692,6 +699,7 @@ public class MidiFragment extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        // Save it to the song
         mainActivityInterface.getMidi().updateSongMessages();
     }
     // Called back from MainActivity
@@ -702,6 +710,7 @@ public class MidiFragment extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        // Save it to the song
         mainActivityInterface.getMidi().updateSongMessages();
     }
 
@@ -740,42 +749,18 @@ public class MidiFragment extends Fragment {
         });
     }
 
-    // Save the song messages
-    private void saveSongMessages() {
-        mainActivityInterface.getMidi().updateSongMessages();
-        try {
-            // Get a string representation of the midi commands
-            StringBuilder s = new StringBuilder();
-            for (MidiInfo midiInfo : midiMessagesAdapter.getMidiInfos()) {
-                String command = midiInfo.midiCommand.trim();
-                if (!command.isEmpty()) {
-                    s.append(command).append("\n");
-                }
-            }
-            s = new StringBuilder(s.toString().trim()); // Get rid of extra line breaks
-            Log.d("d","s="+s);
-            mainActivityInterface.getSong().setMidi(s.toString());
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (bluetoothLeScanner != null &&
-                ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.BLUETOOTH_SCAN)
-                        == PackageManager.PERMISSION_GRANTED &&
-                        Build.VERSION.SDK_INT>=Build.VERSION_CODES.M) {
+        if (bluetoothLeScanner != null && mainActivityInterface.getAppPermissions().hasMidiScanPermissions() &&
+                Build.VERSION.SDK_INT>=Build.VERSION_CODES.M) {
             try {
                 bluetoothLeScanner.stopScan(scanCallback);
+            } catch (SecurityException e) {
+                Log.d(TAG, "Security exception");
             } catch (Exception e) {
                 Log.d(TAG, "Scanner unable to be stopped (maybe already stopped!)");
             }
         }
-
-        // Save the song
-        mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong());
     }
 }

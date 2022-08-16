@@ -7,8 +7,8 @@ public interface NearbyReturnActionsInterface {
     void selectSection(int i);
     void prepareSongMenu();
     void loadSong();
-    void goToPreviousItem();
-    void goToNextItem();
+    void goToPreviousPage();
+    void goToNextPage();
     void nearbyEnableConnectionButtons();
     void nearbyUpdateCountdownText(boolean advertise, MaterialButton materialButton);
 }

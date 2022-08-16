@@ -5,7 +5,6 @@
     <string name="action">Radnja</string>
     <string name="action_button_info">Kliknite da biste prikazali ili sakrili dugmad na stranici.\n\nSve se mogu dodeliti radnjama pesama kao što su metronomi, transponovanje, jastučići itd.\nDugo pritiskanje glavnog dugmeta omogućava vam da promenite podešavanja svakog</string>
     <string name="action_long_press">Dodatna akcija dugog pritiska</string>
-    <string name="action_search">Pretraga pesama</string>
     <string name="action_short_press">Radnja kratkog pritiska/klik</string>
     <string name="actionbar">Traka izbornika info</string>
     <string name="actionbar_autohide">Automatski sakrijte traku sa radnjama</string>
@@ -52,7 +51,6 @@
     <string name="backing_track">Odaberite matricu</string>
     <string name="backup">Backup</string>
     <string name="backup_and_restore">Pravljenje rezervnih kopija i vraćanje</string>
-    <string name="backup_error">Nije pronađena datoteka OpenSongApp rezervne kopije u fascikli OpenSong</string>
     <string name="backup_export">Izvoz OpenSongApp rezervne kopije</string>
     <string name="backup_highlighter">Uključite beleške za isticanje</string>
     <string name="backup_import">Uvoz OpenSongApp rezervne kopije</string>
@@ -175,22 +173,18 @@
     <string name="connections_advertise">Oglašavajte se</string>
     <string name="connections_advertise_info">Oglasite svoj uređaj kako bi ga drugi otkrili</string>
     <string name="connections_advertise_name">Uređaj za odašiljanje</string>
-    <string name="connections_advertise_stop">Uređaj se više ne oglašava</string>
     <string name="connections_advertising">Oglašavanje…</string>
     <string name="connections_change">Kada uspostavite vezu, možete da prelazite između hosta i klijenta po potrebi</string>
     <string name="connections_connect">Povezivanje uređaja</string>
     <string name="connections_connected">Povezan sa</string>
     <string name="connections_connected_devices_info">Prikazuje listu trenutno povezanih uređaja</string>
     <string name="connections_description">Povežite se sa drugim uređajima na kojima je pokrenut OpenSongApp</string>
-    <string name="connections_device_found">Uređaj pronađen</string>
     <string name="connections_device_name">Ime uređaja</string>
     <string name="connections_disconnect">Odvojite od</string>
     <string name="connections_discover">Pronalaženje servisa</string>
     <string name="connections_discover_info">Potražite druge uređaje koji se trenutno oglašavaju</string>
     <string name="connections_discover_stop">Zaustavljanje pronalaženja</string>
-    <string name="connections_enable">Omogućite veze u blizini</string>
     <string name="connections_failure">Greška kod povezivanja</string>
-    <string name="connections_host">Pronađen domaćin:</string>
     <string name="connections_host_passthrough">Host passthrough</string>
     <string name="connections_host_passthrough_info">Dozvolite da poruke primljene od drugih hostova prolaze do povezanih klijenata</string>
     <string name="connections_keephostsongs">Zadržite domaćinske pesme</string>
@@ -206,10 +200,8 @@
     <string name="connections_receive_host">Prijem pesama od domaćina</string>
     <string name="connections_receive_host_info">Pogledajte host verziju pesme umesto svoje</string>
     <string name="connections_searching">Pretraga…</string>
-    <string name="connections_service_start">Pokretanje servisa</string>
     <string name="connections_service_stop">Zaustavljanje servisa</string>
     <string name="connections_song_sections_info">Slušajte promene odeljka pesama</string>
-    <string name="connections_success">Povezivanje uspelo</string>
     <string name="content">Sadržaj</string>
     <string name="continuous">Kontinuirano</string>
     <string name="controls">Kontrole</string>
@@ -541,10 +533,6 @@
     <string name="pad_settings_info">Podrazumevana podešavanja podloge</string>
     <string name="page_background">Pozadina stranice</string>
     <string name="page_buttons">Tasteri na stranici</string>
-    <string name="pagebutton_custom_group">Grupisanje prilagođenih dugmadi</string>
-    <string name="pagebutton_extrainfo_group">Dodatno grupisanje info dugmadi</string>
-    <string name="pagebutton_group">Grupisanje svih dugmadi strane</string>
-    <string name="pagebutton_visibility">Prikaz/sakrivanje svih dugmadi strane</string>
     <string name="pageturn_instructions">Ova strana Vam omogućava da dodelite dugme sa uređaja za promenu strane (kao npr bluetooth pedala) za kontrolu pomeranja po set listi ili skrolovanja gore ili dole prikaza pesme. \n\nMorate osigurati da je uređaj već povezan sa Vašim Android tabletom i uključen. \n\nKliknuti na zelenu ili plavu dugmad ispod, zatim pritisnuti željeno kontrolno dugme na Vašoj pedali, itd</string>
     <string name="pageturn_next">Sledeće</string>
     <string name="pan">Pan</string>
@@ -856,4 +844,5 @@
     <string name="set_sort">Skup za sortiranje</string>
     <string name="alphabetical_sort">Stavite stavke po abecednom redu</string>
     <string name="pedal_scroll_before_move_info">Omogućava da sledeća i prethodna pedale takođe funkcionišu kao pedale za pomeranje</string>
+    <string name="permissions_refused">Dozvole su odbijene i možda će biti potrebno da ih dodelite ručno iz podešavanja Android-a ako ponovo ne vidite opciju</string>
 </resources>

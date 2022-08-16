@@ -43,6 +43,7 @@ import com.garethevans.church.opensongtablet.pdf.MakePDF;
 import com.garethevans.church.opensongtablet.pdf.OCR;
 import com.garethevans.church.opensongtablet.performance.DisplayPrevNext;
 import com.garethevans.church.opensongtablet.performance.PerformanceGestures;
+import com.garethevans.church.opensongtablet.preferences.AppPermissions;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.preferences.ProfileActions;
 import com.garethevans.church.opensongtablet.presenter.PresenterSettings;
@@ -87,6 +88,7 @@ public interface MainActivityInterface {
     ProfileActions getProfileActions();
     SetTypeFace getMyFonts();
     ThemeColors getMyThemeColors();
+    AppPermissions getAppPermissions();
 
     // Song stuff
     Song getSong();
@@ -198,9 +200,6 @@ public interface MainActivityInterface {
     NearbyConnections getNearbyConnections(MainActivityInterface mainActivityInterface);
     NearbyConnections getNearbyConnections();
     void updateConnectionsLog();
-    boolean requestNearbyPermissions(boolean needPlayServices);
-    boolean checkForPermission(String permission);
-    void requestForPermissions(String[] permissions);
 
     // Midi
     Midi getMidi();

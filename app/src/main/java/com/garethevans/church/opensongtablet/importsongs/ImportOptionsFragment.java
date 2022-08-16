@@ -2,7 +2,6 @@ package com.garethevans.church.opensongtablet.importsongs;
 
 import static com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_INDEFINITE;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -106,7 +105,7 @@ public class ImportOptionsFragment extends Fragment {
                     Snackbar.make(myView.getRoot(), R.string.camera_info,
                             LENGTH_INDEFINITE).setAction(android.R.string.ok, view -> {
                                 try {
-                                    cameraPermission.launch(Manifest.permission.CAMERA);
+                                    cameraPermission.launch(mainActivityInterface.getAppPermissions().getCameraPermissions());
                                 } catch (Exception e) {
                                     Log.d(TAG,"User probably left this fragment");
                                 }
@@ -176,7 +175,7 @@ public class ImportOptionsFragment extends Fragment {
 
     private void getCamera() {
         // Check permission and go for it if ok
-        cameraPermission.launch(Manifest.permission.CAMERA);
+        cameraPermission.launch(mainActivityInterface.getAppPermissions().getCameraPermissions());
     }
 
     @Override

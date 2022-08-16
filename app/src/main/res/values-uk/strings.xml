@@ -5,7 +5,6 @@
     <string name="action">Дія</string>
     <string name="action_button_info">Натисніть, щоб показати або приховати кнопки сторінки.  Кожному можна призначити такі дії пісні, як метроном, транспонування, пэди тощо. Тривале натискання на головну кнопку дозволяє змінити налаштування кожної кнопки. Тривале натискання деяких кнопок сторінки виконує швидкі дії, такі як запуск/зупинка/редагування</string>
     <string name="action_long_press">Додаткова дія довгого натискання</string>
-    <string name="action_search">Пошук пісень</string>
     <string name="action_short_press">Коротка дія натискання/клацання</string>
     <string name="actionbar">Інформація на панелі меню</string>
     <string name="actionbar_autohide">Автоматично приховати панель дій</string>
@@ -52,7 +51,6 @@
     <string name="backing_track">Виберіть бек-трек</string>
     <string name="backup">Резервне копіювання</string>
     <string name="backup_and_restore">Резервне копіювання і відновлення</string>
-    <string name="backup_error">Файл резервної копії OpenSongApp не знайдений в папці OpenSong</string>
     <string name="backup_export">Експорт резервної копії OpenSongApp</string>
     <string name="backup_highlighter">Включіть нотатки маркера</string>
     <string name="backup_import">Імпорт резервної копії OpenSongApp</string>
@@ -175,22 +173,18 @@
     <string name="connections_advertise">Рекламувати</string>
     <string name="connections_advertise_info">Рекламуйте свій пристрій, щоб інші знайшли його</string>
     <string name="connections_advertise_name">Рекламований пристрій:</string>
-    <string name="connections_advertise_stop">Пристрій більше не рекламується</string>
     <string name="connections_advertising">Реклама…</string>
     <string name="connections_change">Після встановлення з’єднання ви можете перемикатися між хостом і клієнтом за потребою</string>
     <string name="connections_connect">Підключення пристроїв</string>
     <string name="connections_connected">Підключений до</string>
     <string name="connections_connected_devices_info">Показує список підключених на даний момент пристроїв</string>
     <string name="connections_description">Підключайтеся до інших пристроїв під керуванням OpenSongApp</string>
-    <string name="connections_device_found">Пристрій знайдено</string>
     <string name="connections_device_name">Ім\'я пристрою</string>
     <string name="connections_disconnect">Відключити</string>
     <string name="connections_discover">Пошук пристроїв</string>
     <string name="connections_discover_info">Шукайте інші пристрої, які зараз рекламуються</string>
     <string name="connections_discover_stop">Припинити пошук</string>
-    <string name="connections_enable">Увімкнути прилеглі з\'єднання</string>
     <string name="connections_failure">Не вдається підключити</string>
-    <string name="connections_host">Знайдений хост:</string>
     <string name="connections_host_passthrough">Перехід хоста</string>
     <string name="connections_host_passthrough_info">Дозволити повідомленням, отриманим від інших хостів, передавати підключеним клієнтам</string>
     <string name="connections_keephostsongs">Зберігати пісні сервера</string>
@@ -206,10 +200,8 @@
     <string name="connections_receive_host">Приймати пісні від хостів</string>
     <string name="connections_receive_host_info">Перегляньте хост-версію пісні замість власної</string>
     <string name="connections_searching">Пошук…</string>
-    <string name="connections_service_start">Запустити службу</string>
     <string name="connections_service_stop">Зупинити службу</string>
     <string name="connections_song_sections_info">Слухайте зміни розділу пісні</string>
-    <string name="connections_success">Успішно підключено</string>
     <string name="content">Зміст</string>
     <string name="continuous">безперервний</string>
     <string name="controls">Елементи керування</string>
@@ -541,10 +533,6 @@
     <string name="pad_settings_info">Налаштування панелі за замовчуванням</string>
     <string name="page_background">Фон</string>
     <string name="page_buttons">Kнопки сторінок</string>
-    <string name="pagebutton_custom_group">Групові спеціальні кнопки</string>
-    <string name="pagebutton_extrainfo_group">Кнопки додаткової інформації групи</string>
-    <string name="pagebutton_group">Групувати кнопки всіх сторінок</string>
-    <string name="pagebutton_visibility">Показати / приховати кнопки сторінок</string>
     <string name="pageturn_instructions">Ця сторінка дозволяє призначити кнопки додаткового пристрою (такі як педальний перемикач Bluetooth) для управління переміщенням по списку або прокрутки вгору і вниз на сторінці пісні. \ П \ nВи повинні переконатися, що пристрій вже підключено до вашого Android планшету і включено. \ п \ nНажміте на зелену або синю кнопку нижче, а потім натисніть кнопку управління на ножному перемикач, і т.д. </string>
     <string name="pageturn_next">Призначте кнопку« Далі »</string>
     <string name="pan">Панорама</string>
@@ -856,4 +844,5 @@
     <string name="set_sort">Набір сортів</string>
     <string name="connections_advertise_temporary_info">Розміщуйте рекламу лише протягом 10 секунд після натискання кнопки реклами</string>
     <string name="pedal_scroll_before_move_info">Дозволяє наступній і попередній педалі також функціонувати як педалі прокручування</string>
+    <string name="permissions_refused">У дозволах було відмовлено. Можливо, їх потрібно буде надати вручну з налаштувань Android, якщо ви знову не бачите цю опцію</string>
 </resources>

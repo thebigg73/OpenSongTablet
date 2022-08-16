@@ -3,11 +3,9 @@ package com.garethevans.church.opensongtablet.filemanagement;
 import static com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_INDEFINITE;
 import static com.google.android.material.snackbar.Snackbar.make;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -23,7 +21,6 @@ import android.widget.TextView;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
@@ -214,6 +211,9 @@ public class SetStorageLocationFragment extends Fragment {
                         checkStatus();
                         showStorageLocation();
                         myView.setStorage.performClick();
+                    } else {
+                        uriTreeHome = null;
+                        showStorageLocation();
                     }
                 });
     }
@@ -382,7 +382,7 @@ public class SetStorageLocationFragment extends Fragment {
 
     // Deal with allowing or hiding the start button
     private void checkStatus() {
-        if (isStorageGranted() && isStorageSet() && isStorageValid()) {
+        if (mainActivityInterface.getAppPermissions().hasStoragePermissions() && isStorageSet() && isStorageValid()) {
             myView.firstRun.setVisibility(View.GONE);
             myView.startApp.setVisibility(View.VISIBLE);
             pulseButton(myView.startApp);
@@ -400,6 +400,7 @@ public class SetStorageLocationFragment extends Fragment {
             myView.startApp.setVisibility(View.GONE);
             myView.setStorage.setVisibility(View.VISIBLE);
             pulseButton(myView.setStorage);
+            uriTreeHome = null;
         }
     }
     private void setEnabledOrDisabled(boolean what) {
@@ -424,18 +425,14 @@ public class SetStorageLocationFragment extends Fragment {
     // Below are some checks that will be called to see if we are good to go
     // Firstly check if we have granted the storage permission.  This is the first check
     private void checkStoragePermission() {
-        if (isStorageGranted()) {
+        if (mainActivityInterface.getAppPermissions().hasStoragePermissions()) {
             // Permission has been granted, so set the storage location
             showStorageLocation();
 
         } else {
             // Storage permission has not been granted.  Launch the request to allow it
-            requestStorage();
+            storagePermission.launch(mainActivityInterface.getAppPermissions().getStoragePermissions());
         }
-    }
-    private boolean isStorageGranted() {
-        return ContextCompat.checkSelfPermission(requireActivity(),
-                Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
     }
 
     // Checks for the storage being okay to proceed
@@ -453,11 +450,8 @@ public class SetStorageLocationFragment extends Fragment {
     }
 
     // Now deal with getting a suitable storage location
-    private void requestStorage() {
-        storagePermission.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-    }
     private void chooseStorageLocation() {
-        if (isStorageGranted()) {
+        if (mainActivityInterface.getAppPermissions().hasStoragePermissions()) {
             Intent intent;
             if (mainActivityInterface.getStorageAccess().lollipopOrLater()) {
                 intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
@@ -531,7 +525,7 @@ public class SetStorageLocationFragment extends Fragment {
             String outputText = niceLocation[1] + "\n" + niceLocation[0];
             myView.progressText.setText(outputText);
             warningCheck();
+            checkStatus();
         }
-        checkStatus();
     }
 }

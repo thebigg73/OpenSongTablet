@@ -4,7 +4,6 @@
     <string name="action">"Aksie"</string>
     <string name="action_button_info">Klik om u bladsyknoppies te wys of weg te steek.\n\nElkeen kan toegewys word aan liedjie-aksies soos metronomes, transponeer, boekies, ens.\nAs u die hoofknoppie lang indruk, kan u die instellings van elke knoppie verander.\nLang druk op sommige bladsyknoppies voer vinnige aksies uit soos begin / stop / wysig</string>
     <string name="action_long_press">Bykomende langdrukaksie</string>
-    <string name="action_search">"Soek songs"</string>
     <string name="action_short_press">Kort druk/klik aksie</string>
     <string name="actionbar">"Menubalk info"</string>
     <string name="actionbar_autohide">Versteek aksiebalk outomaties</string>
@@ -51,7 +50,6 @@
     <string name="backing_track">"Kies backing track"</string>
     <string name="backup">Ondersteuning</string>
     <string name="backup_and_restore">Friends en herstel</string>
-    <string name="backup_error">"Geen OpenSongApp rugsteunlêer gevind in OpenSong gids"</string>
     <string name="backup_export">"Uitvoer OpenSongApp Friends"</string>
     <string name="backup_highlighter">Sluit highlighter notas in</string>
     <string name="backup_import">"Invoer OpenSongApp Friends"</string>
@@ -175,22 +173,18 @@
     <string name="connections_advertise">Adverteer</string>
     <string name="connections_advertise_info">Adverteer jou toestel sodat ander dit kan ontdek</string>
     <string name="connections_advertise_name">"Uitsaai toestel:"</string>
-    <string name="connections_advertise_stop">Toestel word nie meer geadverteer nie</string>
     <string name="connections_advertising">Adverteer tans …</string>
     <string name="connections_change">Sodra jy \'n verbinding gemaak het, kan jy tussen gasheer en kliënt verander soos vereis</string>
     <string name="connections_connect">"Koppel toestelle"</string>
     <string name="connections_connected">"Gekoppel aan"</string>
     <string name="connections_connected_devices_info">Wys \'n lys van tans gekoppelde toestelle</string>
     <string name="connections_description">Verbind met ander toestelle wat OpenSongApp gebruik</string>
-    <string name="connections_device_found">Toestel gevind</string>
     <string name="connections_device_name">Toestel naam</string>
     <string name="connections_disconnect">"Ontkoppel van"</string>
     <string name="connections_discover">"Ontdek dienste"</string>
     <string name="connections_discover_info">Soek ander toestelle wat tans adverteer</string>
     <string name="connections_discover_stop">"Stop ontdekking"</string>
-    <string name="connections_enable">Aktiveer nabygeleë verbindings</string>
     <string name="connections_failure">"Konneksie mislukking"</string>
-    <string name="connections_host">"Gevind gasheer:"</string>
     <string name="connections_host_passthrough">Gasheer deurloop</string>
     <string name="connections_host_passthrough_info">Laat toe dat boodskappe wat van ander gashere ontvang is, na gekoppelde kliënte deurgaan</string>
     <string name="connections_keephostsongs">Hou gasheerliedjies</string>
@@ -206,10 +200,8 @@
     <string name="connections_receive_host">"Ontvang gasheer liedjies"</string>
     <string name="connections_receive_host_info">Bekyk die gasheerweergawe van die liedjie in plaas van jou eie</string>
     <string name="connections_searching">"Soek …"</string>
-    <string name="connections_service_start">"Begin diens"</string>
     <string name="connections_service_stop">"Stop diens"</string>
     <string name="connections_song_sections_info">Luister vir veranderinge in die liedjie-afdeling</string>
-    <string name="connections_success">"Verbinding sukses"</string>
     <string name="content">"Inhoud"</string>
     <string name="continuous">Deurlopende</string>
     <string name="controls">Beheer</string>
@@ -541,10 +533,6 @@
     <string name="pad_settings_info">Verstek pad instellings</string>
     <string name="page_background">"Page agtergrond"</string>
     <string name="page_buttons">"Page knoppies"</string>
-    <string name="pagebutton_custom_group">"Groep persoonlike knoppies"</string>
-    <string name="pagebutton_extrainfo_group">"Groep ekstra inligting knoppies"</string>
-    <string name="pagebutton_group">"Groepeer alle bladsy knoppies"</string>
-    <string name="pagebutton_visibility">"Wys / verberg bladsy knoppies"</string>
     <string name="pageturn_instructions">"Hierdie bladsy laat jou knoppies van 'n bladsy draai toestel (soos 'n bluetooth voet schakelaar) toe te ken, te beheer beweeg deur stelle of blaai op en af ​​op 'n liedjie bladsy. \ N \ nJy moet verseker dat die toestel is reeds gekoppel aan jou Android-tablet en aangeskakel. \ n \ nKliek op die groen of blou knoppies druk dan op die verlangde beheer knoppie op jou voet schakelaar, ens"</string>
     <string name="pageturn_next">Volgende</string>
     <string name="pan">"Links / regs"</string>
@@ -856,4 +844,5 @@
     <string name="set_sort">Sorteer stel</string>
     <string name="alphabetical_sort">Plaas items in alfabetiese volgorde</string>
     <string name="pedal_scroll_before_move_info">Laat volgende en vorige pedale ook as blaaipedale funksioneer</string>
+    <string name="permissions_refused">Toestemmings is geweier en moet dalk handmatig vanaf Android-instellings verleen word as jy nie weer die opsie sien nie</string>
 </resources>

@@ -1019,12 +1019,12 @@ public class NearbyConnections implements NearbyInterface {
                 if (mainActivityInterface.getDisplayPrevNext().getSwipeDirection().equals("L2R")) {
                     // Go back
                     if (nearbyReturnActionsInterface != null) {
-                        nearbyReturnActionsInterface.goToPreviousItem();
+                        nearbyReturnActionsInterface.goToPreviousPage();
                     }
                 } else {
                     // Go forward
                     if (nearbyReturnActionsInterface != null) {
-                        nearbyReturnActionsInterface.goToNextItem();
+                        nearbyReturnActionsInterface.goToNextPage();
                     }
                 }
             } else if (newLocation != null && payload.asFile() != null) { // i.e. we have received the file by choice

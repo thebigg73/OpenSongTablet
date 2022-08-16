@@ -2,10 +2,9 @@ package com.garethevans.church.opensongtablet.utilities;
 
 import static com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_INDEFINITE;
 
-import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.pm.PackageManager;
 import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
@@ -21,7 +20,6 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.BottomSheetSoundLevelMeterBinding;
@@ -86,8 +84,8 @@ public class SoundLevelBottomSheet extends BottomSheetDialogFragment {
 
     private void setListeners() {
         myView.getRoot().setOnClickListener(v -> {
-            if (ContextCompat.checkSelfPermission(requireContext(),Manifest.permission.RECORD_AUDIO)!=PackageManager.PERMISSION_GRANTED) {
-                activityResultLauncher.launch(Manifest.permission.RECORD_AUDIO);
+            if (!mainActivityInterface.getAppPermissions().hasAudioPermissions()) {
+                activityResultLauncher.launch(mainActivityInterface.getAppPermissions().getAudioPermissions());
             } else {
                 myView.getRoot().setOnClickListener(null);
             }
@@ -118,6 +116,7 @@ public class SoundLevelBottomSheet extends BottomSheetDialogFragment {
         myView.maxvolrange.setHint("0 - " + range);
     }
 
+    @SuppressLint("MissingPermission") // Checked in getAppPermissions
     private void checkPermissions() {
         activityResultLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
             if (isGranted) {
@@ -125,7 +124,7 @@ public class SoundLevelBottomSheet extends BottomSheetDialogFragment {
                     audio = null;
                 }
                 int sampleRate = 44100;
-                if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED) {
+                if (mainActivityInterface.getAppPermissions().hasAudioPermissions()) {
 
                     try {
                         bufferSize = AudioRecord.getMinBufferSize(sampleRate, AudioFormat.CHANNEL_IN_MONO,
@@ -147,18 +146,21 @@ public class SoundLevelBottomSheet extends BottomSheetDialogFragment {
                     }
                 }
 
-            } else if (shouldShowRequestPermissionRationale(Manifest.permission.RECORD_AUDIO)) {
+            } else if (shouldShowRequestPermissionRationale(mainActivityInterface.getAppPermissions().getAudioPermissions())) {
                 // Permission hasn't been allowed and we are due to explain why
                 try {
                     Snackbar.make(myView.dialogHeader, R.string.microphone_rationale,
-                            LENGTH_INDEFINITE).setAction(android.R.string.ok, view -> activityResultLauncher.launch(Manifest.permission.RECORD_AUDIO)).show();
+                            LENGTH_INDEFINITE).setAction(android.R.string.ok, view -> activityResultLauncher.launch(
+                                    mainActivityInterface.getAppPermissions().getAudioPermissions())).show();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
 
+            } else {
+                mainActivityInterface.getShowToast().doIt(getString(R.string.permissions_refused));
             }
         });
-        activityResultLauncher.launch(Manifest.permission.RECORD_AUDIO);
+        activityResultLauncher.launch(mainActivityInterface.getAppPermissions().getAudioPermissions());
     }
 
     @Override
