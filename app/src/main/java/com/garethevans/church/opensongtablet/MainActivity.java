@@ -1121,7 +1121,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if ("Settings".equals(item.toString())) {
+        if (getString(R.string.settings).equals(item.toString())) {
             if (settingsOpen) {
                 settingsOpen = false;
                 navHome();

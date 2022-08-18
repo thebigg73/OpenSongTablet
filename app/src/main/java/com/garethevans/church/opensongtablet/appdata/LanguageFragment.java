@@ -60,7 +60,7 @@ public class LanguageFragment extends Fragment {
                 RadioButton button = myView.languageGroup.findViewById(checkedId);
                 String tag = button.getTag().toString();
                 mainActivityInterface.getPreferences().setMyPreferenceString("language",tag);
-                Snackbar.make(requireActivity().findViewById(R.id.coordinator),"You will need to restart the app to see the changes",Snackbar.LENGTH_LONG).show();
+                Snackbar.make(myView.getRoot(),"You will need to restart the app to see the changes",Snackbar.LENGTH_LONG).show();
             });
             myView.languageGroup.addView(radioButton);
         }
