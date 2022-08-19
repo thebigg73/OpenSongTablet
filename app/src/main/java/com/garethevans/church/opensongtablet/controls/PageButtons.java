@@ -115,7 +115,6 @@ public class PageButtons {
                     setInterpolator(interpolator).start();
             actionButton.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
         }
-        //actionButton.setAlpha(pageButtonAlpha);
         for (int x=0; x<6; x++) {
             if (pageButtonVisibility.get(x)) {
                 getFAB(x).setVisibility(View.VISIBLE);
@@ -130,12 +129,12 @@ public class PageButtons {
 
     private void animateView(View view, boolean animateIn) {
         float alpha = 0f;
-        int translationBy = translateY;
+        int translationBy = translateY + actionButton.getHeight();
         Runnable endRunnable = hideView(view, animateIn);
         Runnable startRunnable = hideView(view, animateIn);
 
         if (animateIn) {
-            translationBy = -translateY;
+            translationBy = -translateY - actionButton.getHeight();
             alpha = pageButtonAlpha;
             endRunnable = () -> view.setAlpha(pageButtonAlpha);
         } else {
