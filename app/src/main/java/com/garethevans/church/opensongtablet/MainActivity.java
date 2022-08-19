@@ -81,6 +81,7 @@ import com.garethevans.church.opensongtablet.filemanagement.StorageManagementFra
 import com.garethevans.church.opensongtablet.highlighter.HighlighterEditFragment;
 import com.garethevans.church.opensongtablet.importsongs.ImportFileFragment;
 import com.garethevans.church.opensongtablet.importsongs.ImportOnlineFragment;
+import com.garethevans.church.opensongtablet.importsongs.ImportOptionsFragment;
 import com.garethevans.church.opensongtablet.importsongs.WebDownload;
 import com.garethevans.church.opensongtablet.interfaces.ActionInterface;
 import com.garethevans.church.opensongtablet.interfaces.DialogReturnInterface;
@@ -589,7 +590,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
     @Override
     public void forceImmersive() {
-        windowFlags.forceImmersive();
+        runOnUiThread(() -> {
+            windowFlags.forceImmersive();
+        });
     }
 
     @Override
@@ -831,7 +834,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         }
     }
     private void showMenuItems(boolean show) {
-        Log.d(TAG,"showMenuItems("+show+")");
         if (show) {
             if (screenMirror!=null) {
                 screenMirror.setVisibility(View.VISIBLE);
@@ -2235,6 +2237,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     ((FontSetupFragment) fragment).isConnected(isConnected);
                 } else if (fragId==R.id.importOnlineFragment) {
                     ((ImportOnlineFragment) fragment).isConnected(isConnected);
+                } else if (fragId==R.id.importOSBFragment) {
+                    ((ImportOptionsFragment) fragment).isConnected(isConnected);
                 }
             } catch (Exception e) {
                 e.printStackTrace();

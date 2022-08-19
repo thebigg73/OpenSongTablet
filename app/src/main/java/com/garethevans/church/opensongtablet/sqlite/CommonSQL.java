@@ -440,6 +440,9 @@ public class CommonSQL {
             }
         }
         closeCursor(cursor);
+        if (folders.size()==0) {
+            folders.add(c.getString(R.string.mainfoldername));
+        }
         return folders;
     }
 

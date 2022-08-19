@@ -21,7 +21,8 @@
         android:text="@string/storage_change"
         android:textColor="@color/black"
         android:textSize="22sp"
-        app:drawableStartCompat="@mipmap/ic_round_launcher" />
+        app:drawableStartCompat="@drawable/logo"
+        app:drawableTint="@color/colorPrimary"/>
 
     <TableRow style="@style/DividerLine" />
 

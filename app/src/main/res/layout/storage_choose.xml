@@ -13,6 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:background="@color/colorAltPrimary"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <com.google.android.material.textview.MaterialTextView
@@ -24,8 +25,7 @@
             android:gravity="center_vertical"
             android:padding="8dp"
             android:text="@string/storage_change"
-            android:textSize="22sp"
-            app:drawableStartCompat="@mipmap/ic_round_launcher" />
+            android:textSize="22sp" />
 
         <ImageView
             android:id="@+id/webHelp"

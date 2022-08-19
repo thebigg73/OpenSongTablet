@@ -53,8 +53,8 @@ public class AboutAppFragment extends Fragment {
         myView.manualButton.setOnClickListener(v -> mainActivityInterface.openDocument(getString(R.string.website_user_guide)));
         myView.forumButton.setOnClickListener(v -> mainActivityInterface.openDocument(getString(R.string.website_forum)));
         myView.rateButton.setOnClickListener(v -> mainActivityInterface.openDocument(getString(R.string.website_rate)+requireActivity().getPackageName()));
-        myView.paypalButton.setOnClickListener(v -> mainActivityInterface.openDocument(getString(R.string.paypal)));
-        myView.gitbubButton.setOnClickListener(v -> mainActivityInterface.openDocument(getString(R.string.github)));
+        myView.paypalButton.setOnClickListener(v -> mainActivityInterface.openDocument(getString(R.string.website_paypal)));
+        myView.gitbubButton.setOnClickListener(v -> mainActivityInterface.openDocument(getString(R.string.website_github)));
         myView.languageButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.languageFragment));
     }
 

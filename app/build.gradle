@@ -3,7 +3,6 @@ apply plugin: 'androidx.navigation.safeargs'
 
 android {
     compileSdkVersion 32
-    buildToolsVersion '32.1.0-rc1'
     buildTypes {
         release {
             minifyEnabled true
@@ -76,6 +75,7 @@ dependencies {
     implementation 'androidx.preference:preference:1.2.0'                               // The app preferences
     implementation 'androidx.multidex:multidex:2.0.1'                                   // Allow splitting of file for older devices
     implementation 'androidx.annotation:annotation:1.4.0'                               // Allows annotations in code
+    implementation 'androidx.core:core:1.8.0'
     annotationProcessor 'androidx.annotation:annotation:1.4.0'                          // Allows annotations in code
     implementation 'org.apache.commons:commons-compress:1.21'                           // For creating and editing compressed files (osb, backup)
     implementation 'com.github.bumptech.glide:glide:4.13.2'

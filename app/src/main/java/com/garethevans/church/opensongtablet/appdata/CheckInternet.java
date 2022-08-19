@@ -21,6 +21,7 @@ public class CheckInternet {
 
     private String searchPhrase;
     private String searchSite = "UltimateGuitar";
+    private final String TAG = "CheckInternet";
 
     public boolean isNetworkConnected(Context c, MainActivityInterface mainActivityInterface) {
         boolean onlyUseWiFi = mainActivityInterface.getPreferences().getMyPreferenceBoolean("download_wifi_only",true);
@@ -61,6 +62,7 @@ public class CheckInternet {
             } catch (IOException e) {
                 connected = false;
             }
+            Log.d(TAG,"connected="+connected);
             mainActivityInterface.isWebConnected(fragment,fragId,connected);
         });
     }

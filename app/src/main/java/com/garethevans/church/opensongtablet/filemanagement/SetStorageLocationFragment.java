@@ -82,6 +82,7 @@ public class SetStorageLocationFragment extends Fragment {
             mainActivityInterface.showActionBar();
             mainActivityInterface.setWhattodo("");
             myView.headerText.setVisibility(View.GONE);
+            mainActivityInterface.updateToolbarHelp(getString(R.string.website_storage_set));
 
         } else {
             Log.d(TAG,"Don't want actionbar");
@@ -208,10 +209,12 @@ public class SetStorageLocationFragment extends Fragment {
         storagePermission = registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
                     if (isGranted) {
                         // Permission is granted.
+                        Log.d(TAG,"permission is granted");
                         checkStatus();
                         showStorageLocation();
                         myView.setStorage.performClick();
                     } else {
+                        Log.d(TAG,"permission not granted");
                         uriTreeHome = null;
                         showStorageLocation();
                     }
@@ -431,7 +434,8 @@ public class SetStorageLocationFragment extends Fragment {
 
         } else {
             // Storage permission has not been granted.  Launch the request to allow it
-            storagePermission.launch(mainActivityInterface.getAppPermissions().getStoragePermissions());
+            Log.d(TAG,"Doesn't have permission");
+            //storagePermission.launch(mainActivityInterface.getAppPermissions().getStoragePermissions());
         }
     }
 

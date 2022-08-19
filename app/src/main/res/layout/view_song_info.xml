@@ -14,7 +14,7 @@
             android:layout_gravity="center"
             android:layout_marginEnd="24dp"
             android:contentDescription="@string/logo"
-            android:src="@mipmap/ic_round_launcher" />
+            android:src="@drawable/logo" />
 
         <LinearLayout
             android:id="@+id/contentLayout"

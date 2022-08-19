@@ -67,7 +67,7 @@ public class AppPermissions {
         return Manifest.permission.WRITE_EXTERNAL_STORAGE;
     }
     public boolean hasStoragePermissions() {
-        return checkForPermission(getStoragePermissions());
+        return Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP || checkForPermission(getStoragePermissions());
     }
 
     // CAMERA

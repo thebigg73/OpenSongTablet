@@ -145,6 +145,10 @@ public class PerformanceFragment extends Fragment {
             mainActivityInterface.setFirstRun(false);
         }
 
+        // Tint the watermark to the text colour
+        myView.waterMark.setColorFilter(mainActivityInterface.getMyThemeColors().getLyricsTextColor(),
+                android.graphics.PorterDuff.Mode.SRC_IN);
+
         removeViews();
 
         doSongLoad(mainActivityInterface.getPreferences().getMyPreferenceString("songFolder",getString(R.string.mainfoldername)),

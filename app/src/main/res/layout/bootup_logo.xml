@@ -11,10 +11,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/currentAction"
-        android:scaleType="centerInside"
         android:layout_centerInParent="true"
         android:contentDescription="@string/app_name"
-        android:src="@drawable/ost_logo"
+        android:scaleType="fitCenter"
+        android:src="@drawable/splash_logo"
+        android:padding="32dp"
         android:visibility="visible" />
 
     <TextView

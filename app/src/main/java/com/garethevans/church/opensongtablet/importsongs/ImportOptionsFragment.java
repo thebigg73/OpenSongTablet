@@ -155,12 +155,13 @@ public class ImportOptionsFragment extends Fragment {
         myView.importCamera.setOnClickListener(v -> getCamera());
         myView.importOnline.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.importOnlineFragment));
         myView.importChurch.setOnClickListener(v -> {
+            // Check connection
             mainActivityInterface.setWhattodo("importChurchSample");
-            mainActivityInterface.navigateToFragment(null,R.id.importOSBFragment);
+            mainActivityInterface.getCheckInternet().checkConnection(this, R.id.importOSBFragment, mainActivityInterface);
         });
         myView.importBand.setOnClickListener(v -> {
             mainActivityInterface.setWhattodo("importBandSample");
-            mainActivityInterface.navigateToFragment(null,R.id.importOSBFragment);
+            mainActivityInterface.getCheckInternet().checkConnection(this, R.id.importOSBFragment, mainActivityInterface);
         });
     }
 
@@ -178,6 +179,14 @@ public class ImportOptionsFragment extends Fragment {
         cameraPermission.launch(mainActivityInterface.getAppPermissions().getCameraPermissions());
     }
 
+    public void isConnected(boolean isConnected) {
+        if (isConnected) {
+            mainActivityInterface.navigateToFragment(getString(R.string.deeplink_import_osb),0);
+        } else {
+            mainActivityInterface.setWhattodo("");
+            mainActivityInterface.getShowToast().doIt(getString(R.string.network_error));
+        }
+    }
     @Override
     public void onDetach() {
         super.onDetach();

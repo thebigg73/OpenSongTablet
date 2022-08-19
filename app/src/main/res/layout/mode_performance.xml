@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/mypage"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -20,8 +21,8 @@
         android:layout_centerInParent="true"
         android:alpha="0.1"
         android:contentDescription="@string/app_name"
-        android:scaleType="centerInside"
-        android:src="@mipmap/ic_round_launcher"
+        android:scaleType="fitXY"
+        android:src="@drawable/logo"
         tools:ignore="ImageContrastCheck" />
 
     <!-- Where we draw the test sections to get sizes -->
@@ -72,9 +73,9 @@
             <!-- The song lyrics etc. go here -->
             <com.garethevans.church.opensongtablet.customviews.SongContent
                 android:id="@+id/songView"
-                android:layout_below="@+id/songSheetTitle"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/songSheetTitle" />
 
             <!-- This is where images go -->
             <ImageView
@@ -88,7 +89,7 @@
                 android:clipToPadding="false"
                 android:contentDescription="@string/image"
                 android:scaleType="fitXY"
-                android:visibility="invisible"/>
+                android:visibility="invisible" />
 
             <!-- This is where highlighter notes go -->
             <ImageView
@@ -101,7 +102,7 @@
                 android:clipToPadding="false"
                 android:contentDescription="@string/image"
                 android:visibility="invisible"
-                tools:ignore="ImageContrastCheck"/>
+                tools:ignore="ImageContrastCheck" />
         </RelativeLayout>
     </com.garethevans.church.opensongtablet.customviews.MyZoomLayout>
 </RelativeLayout>

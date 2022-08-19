@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.DocumentsContract;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -406,14 +405,9 @@ public class ImportOSBFragment extends Fragment {
                             });
 
                             // Make sure the file exists (might be non-existent)
-                            Log.d(TAG,"alive: "+alive+"   exists:"+exists+"   name:"+ze.getName());
                             if (!exists && alive) {
-                                Log.d(TAG,ze.getName());
-                                Log.d(TAG,"file_uri="+file_uri);
                                 if (ze.getName().contains("_Highlighter/")) {
                                     filename = ze.getName().replace("_Highlighter/","");
-                                    Log.d(TAG,"filename="+filename);
-                                    Log.d(TAG,"Into highlighter: folder="+filefolder+"  filename="+filename+"  file_uri="+file_uri);
                                     mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(
                                             false, file_uri,null,"Highlighter","",filename);
                                 } else if (ze.getName().equals(SQLite.NON_OS_DATABASE_NAME)) {
@@ -421,7 +415,6 @@ public class ImportOSBFragment extends Fragment {
                                             false, file_uri,null,"Settings","",SQLite.NON_OS_DATABASE_NAME);
                                 } else {
                                     filename = ze.getName().replace(filefolder, "").replace("/", "");
-                                    Log.d(TAG,"Into songs: folder="+filefolder+"  filename="+filename+"  file_uri="+file_uri);
                                     mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(
                                             true, file_uri, null, "Songs", filefolder, filename);
                                 }

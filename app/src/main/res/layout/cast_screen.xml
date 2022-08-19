@@ -170,6 +170,6 @@
         android:layout_margin="16dp"
         android:contentDescription="@string/app_name"
         android:padding="16dp"
-        android:src="@drawable/ost_logo"
+        android:src="@drawable/splash_logo"
         android:visibility="gone" />
 </FrameLayout>

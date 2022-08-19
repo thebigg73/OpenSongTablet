@@ -6,7 +6,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -304,7 +303,6 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
             if (songsFound.get(i).getFilename().equals(thisSong.getFilename()) &&
                     songsFound.get(i).getFolder().equals(thisSong.getFolder())) {
                 pos = i;
-                Log.d(TAG,"i: "+i+" songsFound: "+songsFound.get(i).getFolder()+"/"+songsFound.get(i).getFilename()+"   against:"+thisSong.getFolder()+"/"+thisSong.getFilename());
                 break;
             }
         }
@@ -312,7 +310,6 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
             // Update the checklist in the adapter
             songListAdapter.changeCheckBox(pos);
         }
-        Log.d(TAG,"found pos: "+pos);
     }
 
     public void updateSongList() {
@@ -469,7 +466,6 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     }
 
     public int getPositionInSongMenu(Song song) {
-        Log.d(TAG,"getPositionOfSong()");
         return songListAdapter.getPositionOfSong(song);
     }
 
