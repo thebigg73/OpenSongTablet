@@ -45,6 +45,7 @@ class StaticVariables {
     static String settoload = "";
     static String setMoveDirection = "";
     static String setnamechosen = "";
+    static String setSongDetail = "";
     static String[] mSet;
     static String[] mSetList;
     static boolean setView;

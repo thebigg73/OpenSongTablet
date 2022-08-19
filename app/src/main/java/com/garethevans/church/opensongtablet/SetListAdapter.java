@@ -1,6 +1,7 @@
 package com.garethevans.church.opensongtablet;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,7 +66,12 @@ class SetListAdapter extends RecyclerView.Adapter<SetListAdapter.SetItemViewHold
             setitemViewHolder.vIcon.setImageResource(R.drawable.ic_music_note_white_36dp);
             issong = true;
         }
-
+        // IV - Highlight icon of current song when in the set
+        if (i == StaticVariables.indexSongInSet) {
+            setitemViewHolder.vIcon.setBackgroundTintList(ColorStateList.valueOf(0xff888888));
+        } else {
+            setitemViewHolder.vIcon.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
+        }
         String folderrelocate;
         if (si.songicon.equals(c.getResources().getString(R.string.image))) {
             folderrelocate = "../Images/_cache";
