@@ -154,7 +154,6 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
             mainActivityInterface.updateSetTitle();
 
             mainActivityInterface.updateCheckForThisSong(songRemoved);
-            //mainActivityInterface.updateSongList();
 
         } catch (Exception e) {
             e.printStackTrace();

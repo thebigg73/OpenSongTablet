@@ -85,6 +85,7 @@ public class PerformanceGestures {
         mainActivityInterface.getCurrentSet().addSetItem(itemForSet);
         mainActivityInterface.getCurrentSet().addSetValues(mainActivityInterface.getSong());
         mainActivityInterface.updateSetList();
+        mainActivityInterface.updateCheckForThisSong(mainActivityInterface.getSong());
     }
 
     // Redraw the lyrics page

@@ -302,7 +302,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
         Log.d(TAG,"checkedArray.size()+"+checkedArray.size());
         if (songList.size()>pos) {
             // Get the current value and change it
-            checkedArray.put(pos,false);
+            checkedArray.put(pos,!checkedArray.get(pos));
             notifyItemChanged(pos, "checkChange");
         }
     }
