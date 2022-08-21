@@ -522,8 +522,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         myView.actionFAB.setOnClickListener(v  -> {
             if (pageButtonActive) {
                 pageButtonActive = false;
+                // Reenable the page button after the animation time
                 Handler h = new Handler();
-                h.postDelayed(() -> pageButtonActive = true,600);
+                h.postDelayed(() -> pageButtonActive = true,getPageButtons().getAnimationTime());
                 animatePageButtons();
             }
         });
@@ -591,9 +592,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
     @Override
     public void forceImmersive() {
-        runOnUiThread(() -> {
-            windowFlags.forceImmersive();
-        });
+        runOnUiThread(() -> windowFlags.forceImmersive());
     }
 
     @Override
@@ -1385,7 +1384,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         }
         pageButtons.updateColors();
         pageButtons.setPageButton(myView.actionFAB, -1, false);
-        for (int x=0; x<6; x++) {
+        for (int x=0; x<getPageButtons().getPageButtonNum(); x++) {
             pageButtons.setPageButton(pageButtons.getFAB(x), x, false);
         }
     }

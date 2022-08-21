@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,6 +43,7 @@ public class PageButtonFragment extends Fragment {
     private ArrayList<MaterialTextView> longTexts;
     private SettingsPagebuttonsBinding myView;
     private ExposedDropDownArrayAdapter arrayAdapter;
+    private final String TAG = "PageButtonFragment";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -235,6 +237,7 @@ public class PageButtonFragment extends Fragment {
     private void saveDropDownChoice(int x, String text) {
         // x tells us the button we are dealing with and action is, well, the action
         int foundpos = mainActivityInterface.getPageButtons().getPositionFromText(text);
+        Log.d(TAG,"foundpos="+foundpos);
         mainActivityInterface.getPageButtons().setPageButtonAction(x,foundpos);
         mainActivityInterface.getPageButtons().setPageButtonText(x,foundpos);
         mainActivityInterface.getPageButtons().setPageButtonShortText(x,foundpos);

@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
-import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.LinearLayout;
 
@@ -46,11 +45,10 @@ public class PageButtons {
 
     // My chosen buttons in the edit fragment
     private final int pageButtonNum = 8;
+    private final int animationTime = 200;
     private ArrayList<String> pageButtonAction, pageButtonText, pageButtonShortText, pageButtonLongText;
     private ArrayList<Drawable> pageButtonDrawable;
     private ArrayList<Boolean> pageButtonVisibility;
-
-    private int translate;
 
     public PageButtons(Context c) {
         this.c = c;
@@ -117,12 +115,12 @@ public class PageButtons {
 
     public void animatePageButton(boolean open) {
         if (open) {
-            ViewCompat.animate(actionButton).rotation(45f).withLayer().setDuration(200).
+            ViewCompat.animate(actionButton).rotation(45f).withLayer().setDuration(animationTime).
                     setInterpolator(interpolator).start();
             int redAlpha = ColorUtils.setAlphaComponent(c.getResources().getColor(R.color.red), (int)(pageButtonAlpha*255));
             actionButton.setBackgroundTintList(ColorStateList.valueOf(redAlpha));
         } else {
-            ViewCompat.animate(actionButton).rotation(0f).withLayer().setDuration(200).
+            ViewCompat.animate(actionButton).rotation(0f).withLayer().setDuration(animationTime).
                     setInterpolator(interpolator).start();
             actionButton.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
         }
@@ -394,6 +392,8 @@ public class PageButtons {
         DrawableCompat.setTint(drawable, pageButtonIconColor);
         fab.setImageDrawable(drawable);
 
+        Log.d(TAG,"buttonNum:"+buttonNum);
+
         if (buttonNum>=0 && buttonNum<=pageButtonNum) {
             Drawable buttonDrawable = pageButtonDrawable.get(buttonNum);
             buttonDrawable.mutate();
@@ -402,7 +402,8 @@ public class PageButtons {
             fab.setTag(pageButtonAction.get(buttonNum));
             if (pageButtonVisibility.get(buttonNum) && actionButton.getRotation()!=0) {
                 fab.show();
-            } else {
+            } else if (!editing) {
+                // Don't hide buttons on the pagebuttonsfragment (editing page)
                 fab.hide();
             }
             if (!editing) {
@@ -422,7 +423,7 @@ public class PageButtons {
             Log.d(TAG,"making button "+buttonNum+" visible");
             fab.setImageDrawable(ResourcesCompat.getDrawable(c.getResources(),drawableIds.get(0),null));
             fab.setTag("");
-            fab.setVisibility(View.VISIBLE);
+            fab.show();
             fab.setOnClickListener(null);
         }
     }
@@ -625,5 +626,8 @@ public class PageButtons {
 
     public int getPageButtonNum() {
         return pageButtonNum;
+    }
+    public int getAnimationTime() {
+        return animationTime;
     }
 }
