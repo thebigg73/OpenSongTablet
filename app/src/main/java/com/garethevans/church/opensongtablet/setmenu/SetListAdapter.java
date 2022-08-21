@@ -72,7 +72,7 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
             for (Object payload : payloads) {
                 if (payload.equals("highlightItem")) {
                     // We want to update the highlight colour to on/off
-                    if (highlightedArray.get(position)) {
+                    if (highlightedArray.get(position,false)) {
                         setColor(holder, onColor);
                     } else {
                         setColor(holder, offColor);

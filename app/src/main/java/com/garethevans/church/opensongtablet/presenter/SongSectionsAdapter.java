@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.os.Build;
 import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,21 +27,20 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
     private final MainActivityInterface mainActivityInterface;
     private final DisplayInterface displayInterface;
     private ArrayList<SongSectionInfo> songSections;
-    private final PresenterFragment presenterFragment;
     private final SongSectionsFragment songSectionsFragment;
     private final int onColor, offColor;
     private int sectionEdited = -1, currentPosition = -1;
     private final String colorChange = "color";
     private String newContent;
+    private SparseBooleanArray highlightedArray = new SparseBooleanArray();
     private final String TAG = "SongSectionsAdapter";
 
     SongSectionsAdapter(Context c, MainActivityInterface mainActivityInterface,
-                        PresenterFragment presenterFragment, SongSectionsFragment songSectionsFragment,
+                        SongSectionsFragment songSectionsFragment,
                         DisplayInterface displayInterface) {
         this.c = c;
         this.mainActivityInterface = mainActivityInterface;
         this.displayInterface = displayInterface;
-        this.presenterFragment = presenterFragment;
         this.songSectionsFragment = songSectionsFragment;
         onColor = ContextCompat.getColor(c, R.color.colorSecondary);
         offColor = ContextCompat.getColor(c, R.color.colorAltPrimary);
@@ -70,6 +70,7 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
             songSectionInfo.position = x;
             songSections.add(songSectionInfo);
         }
+        highlightedArray = new SparseBooleanArray();
         notifyItemRangeChanged(0, mainActivityInterface.getSong().getPresoOrderSongSections().size());
     }
 
@@ -136,10 +137,10 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
             for (Object payload : payloads) {
                 if (payload.equals(colorChange)) {
                     // We want to update the highlight colour to on/off
-                    if (position==currentPosition) {
-                        setColor(holder,onColor,offColor);
+                    if (highlightedArray.get(position,false)) {
+                        setColor(holder, onColor, offColor);
                     } else {
-                        setColor(holder,offColor,onColor);
+                        setColor(holder, offColor, onColor);
                     }
                 }
             }
@@ -152,23 +153,12 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
         String heading = si.heading;
         String content = si.content;
         int section = si.position;
-        if (position == mainActivityInterface.getPresenterSettings().getCurrentSection()) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                holder.item.setBackgroundTintList(ColorStateList.valueOf(onColor));
-                holder.edit.setBackgroundTintList(ColorStateList.valueOf(offColor));
-            } else {
-                holder.item.setBackgroundColor(onColor);
-                holder.edit.setBackgroundColor(offColor);
-            }
+        if (highlightedArray.get(position,false)) {
+            setColor(holder,onColor,offColor);
         } else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                holder.item.setBackgroundTintList(ColorStateList.valueOf(offColor));
-                holder.edit.setBackgroundTintList(ColorStateList.valueOf(onColor));
-            } else {
-                holder.item.setBackgroundColor(offColor);
-                holder.edit.setBackgroundColor(onColor);
-            }
+            setColor(holder,offColor,onColor);
         }
+
         boolean needsImage = si.needsImage;
 
         holder.content.setTypeface(mainActivityInterface.getMyFonts().getMonoFont());
@@ -240,7 +230,9 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
 
     private void itemSelected(int thisPos) {
         notifyItemChanged(thisPos);
-        notifyItemChanged(mainActivityInterface.getPresenterSettings().getCurrentSection(),colorChange);
+        highlightedArray.put(currentPosition,false);
+        highlightedArray.put(thisPos,true);
+        notifyItemChanged(currentPosition,colorChange);
         notifyItemChanged(thisPos,colorChange);
         mainActivityInterface.getPresenterSettings().setCurrentSection(thisPos);
         displayInterface.presenterShowSection(thisPos);

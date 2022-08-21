@@ -142,7 +142,7 @@ public class PresenterFragment extends Fragment {
 
             mainActivityInterface.getPresenterSettings().setSongSectionsAdapter(
                     new SongSectionsAdapter(requireContext(),mainActivityInterface,
-                            this,songSectionsFragment,displayInterface));
+                            songSectionsFragment,displayInterface));
 
             myView.viewPager.setAdapter(pageAdapter);
             new TabLayoutMediator(myView.presenterTabs, myView.viewPager, (tab, position) -> {

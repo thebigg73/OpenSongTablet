@@ -1722,6 +1722,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public void checkSetMenuItemHighlighted(int setPosition) {
         // See if we need to force the highlighting of the setItem in the set menu
+        // This is called from the MyToolbar
+        // Will only do something if the set item isn't already highlighted - normally on boot
         if (setPosition>-1) {
             setMenuFragment.initialiseSetItem(setPosition);
         }
