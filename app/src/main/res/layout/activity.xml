@@ -45,6 +45,19 @@
                 android:layout_alignParentEnd="true"/>
 
             <!-- The page buttons -->
+            <include
+                android:id="@+id/pageButtonRight"
+                layout="@layout/view_page_buttons"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/actionFAB"
+                android:layout_below="@+id/onScreenInfo"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="16dp"
+                android:clipChildren="true"/>
+
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/actionFAB"
                 android:layout_width="wrap_content"
@@ -54,21 +67,7 @@
                 android:layout_margin="8dp"
                 app:useCompatPadding="false"
                 android:layout_alignParentEnd="true"
-                android:layout_alignParentBottom="true"
-                android:visibility="visible"/>
-
-            <include
-                android:id="@+id/pageButtonRight"
-                layout="@layout/view_page_buttons"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_below="@+id/onScreenInfo"
-                android:layout_above="@id/actionFAB"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentBottom="true"
-                android:layout_margin="8dp"
-                android:clipChildren="false"
-                android:clipToPadding="false" />
+                android:layout_alignParentBottom="true" />
 
             <!-- The previous and next info -->
             <include

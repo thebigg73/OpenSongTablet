@@ -6,8 +6,9 @@ package com.garethevans.church.opensongtablet.controls;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.View;
-import android.view.animation.OvershootInterpolator;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.LinearLayout;
 
 import androidx.core.content.res.ResourcesCompat;
@@ -23,6 +24,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 
 public class PageButtons {
+
+    private final String TAG = "PageButtons";
 
     // For the actions
     private final Context c;
@@ -47,7 +50,7 @@ public class PageButtons {
     private ArrayList<Drawable> pageButtonDrawable;
     private ArrayList<Boolean> pageButtonVisibility;
 
-    private final int translateY;
+    private int translate;
 
     public PageButtons(Context c) {
         this.c = c;
@@ -63,8 +66,6 @@ public class PageButtons {
 
         // Now get our button preferences
         setPreferences();
-
-        translateY = c.getResources().getDisplayMetrics().heightPixels;
     }
 
     public void setMainFABS(FloatingActionButton actionButton, FloatingActionButton custom1,
@@ -74,15 +75,18 @@ public class PageButtons {
         this.actionButton = actionButton;
         fabs = new ArrayList<>();
         updateColors();
+        custom1.hide();
+        custom2.hide();
+        custom3.hide();
+        custom4.hide();
+        custom5.hide();
+        custom6.hide();
         custom1.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
         custom2.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
         custom3.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
         custom4.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
         custom5.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
         custom6.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
-        Drawable drawable1 = custom1.getDrawable();
-        DrawableCompat.setTint(drawable1, pageButtonIconColor);
-        custom1.setImageDrawable(drawable1);
         fabs.add(custom1);
         fabs.add(custom2);
         fabs.add(custom3);
@@ -102,55 +106,26 @@ public class PageButtons {
     public FloatingActionButton getFAB(int x) {
         return fabs.get(x);
     }
-    private final OvershootInterpolator interpolator = new OvershootInterpolator(0.75f);
+    private final AccelerateDecelerateInterpolator interpolator = new AccelerateDecelerateInterpolator();
 
     public void animatePageButton(boolean open) {
         if (open) {
-            ViewCompat.animate(actionButton).rotation(45f).withLayer().setDuration(500).
+            ViewCompat.animate(actionButton).rotation(45f).withLayer().setDuration(200).
                     setInterpolator(interpolator).start();
             int redAlpha = ColorUtils.setAlphaComponent(c.getResources().getColor(R.color.red), (int)(pageButtonAlpha*255));
             actionButton.setBackgroundTintList(ColorStateList.valueOf(redAlpha));
         } else {
-            ViewCompat.animate(actionButton).rotation(0f).withLayer().setDuration(500).
+            ViewCompat.animate(actionButton).rotation(0f).withLayer().setDuration(200).
                     setInterpolator(interpolator).start();
             actionButton.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
         }
         for (int x=0; x<6; x++) {
-            if (pageButtonVisibility.get(x)) {
-                getFAB(x).setVisibility(View.VISIBLE);
+            if (pageButtonVisibility.get(x) && open) {
+                getFAB(x).show();
             } else {
-                getFAB(x).setVisibility(View.GONE);
+                getFAB(x).hide();
             }
         }
-        pageButtonsLayout.invalidate();
-
-        animateView(pageButtonsLayout,open);
-    }
-
-    private void animateView(View view, boolean animateIn) {
-        float alpha = 0f;
-        int translationBy = translateY + actionButton.getHeight();
-        Runnable endRunnable = hideView(view, animateIn);
-        Runnable startRunnable = hideView(view, animateIn);
-
-        if (animateIn) {
-            translationBy = -translateY - actionButton.getHeight();
-            alpha = pageButtonAlpha;
-            endRunnable = () -> view.setAlpha(pageButtonAlpha);
-        } else {
-            startRunnable = () -> view.setAlpha(pageButtonAlpha);
-        }
-        ViewCompat.animate(view).alpha(alpha).translationYBy(translationBy).setDuration(500).
-                setInterpolator(interpolator).withStartAction(startRunnable).withEndAction(endRunnable).start();
-    }
-    private Runnable hideView(View view, boolean show) {
-        return () -> {
-            if (show) {
-                view.setVisibility(View.VISIBLE);
-            } else {
-                view.setVisibility(View.GONE);
-            }
-        };
     }
 
     // This stuff below is mostly for the edit fragment
@@ -414,10 +389,10 @@ public class PageButtons {
             DrawableCompat.setTint(buttonDrawable, pageButtonIconColor);
             fab.setImageDrawable(buttonDrawable);
             fab.setTag(pageButtonAction.get(buttonNum));
-            if (pageButtonVisibility.get(buttonNum)) {
-                fab.setVisibility(View.VISIBLE);
+            if (pageButtonVisibility.get(buttonNum) && actionButton.getRotation()!=0) {
+                fab.show();
             } else {
-                fab.setVisibility(View.GONE);
+                fab.hide();
             }
             if (!editing) {
                 fab.setOnClickListener(v -> {
@@ -433,6 +408,7 @@ public class PageButtons {
                 fab.setOnClickListener(null);
             }
         } else if (buttonNum>=0) {
+            Log.d(TAG,"making button "+buttonNum+" visible");
             fab.setImageDrawable(ResourcesCompat.getDrawable(c.getResources(),drawableIds.get(0),null));
             fab.setTag("");
             fab.setVisibility(View.VISIBLE);
@@ -627,4 +603,12 @@ public class PageButtons {
         }
     }
 
+
+    // For orientation change, close the page buttons if they are open
+    // Also set the translation to the new height
+    public void requestLayout() {
+        if (actionButton.getRotation()!=0) {
+            animatePageButton(false);
+        }
+    }
 }

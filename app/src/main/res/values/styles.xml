@@ -84,6 +84,7 @@
         <item name="android:soundEffectsEnabled">false</item>
     </style>
 
+
     <!-- Override styles for custom views -->
     <!-- Exposed Drop Down (actually an AutoCompleteTextView inside a TextInputLayout) -->
     <style name="ExposedDropDown" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">

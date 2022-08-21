@@ -299,10 +299,18 @@ public class MetronomeFragment extends Fragment {
     private void setStartStopIcon(boolean isRunning) {
         if (isRunning) {
             // Set the icon to stop
-            myView.startStopButton.setImageDrawable(AppCompatResources.getDrawable(requireContext(),R.drawable.stop));
+            try {
+                myView.startStopButton.post(() -> myView.startStopButton.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.stop)));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         } else {
             // Set the icon to play
-            myView.startStopButton.setImageDrawable(AppCompatResources.getDrawable(requireContext(),R.drawable.play));
+            try {
+                myView.startStopButton.post(() -> myView.startStopButton.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.play)));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

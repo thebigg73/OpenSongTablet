@@ -1,94 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="end|bottom"
-    android:focusable="false"
-    android:clipToPadding="false"
-    android:clipChildren="false">
+    android:layout_height="match_parent"
+    android:gravity="bottom">
 
-        <androidx.core.widget.NestedScrollView
-            android:layout_width="match_parent"
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:focusable="false">
+
+        <LinearLayout
+            android:id="@+id/bottomButtons"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:clipChildren="false"
-            android:clipToPadding="false">
+            android:orientation="vertical">
 
-            <LinearLayout
-                android:id="@+id/bottomButtons"
-                android:layout_width="match_parent"
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/custom1Button"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:orientation="vertical"
-                android:clipToPadding="false"
-                android:clipChildren="false">
+                android:layout_gravity="center_horizontal|bottom"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:contentDescription="@string/quicklaunch_button1"
+                android:src="@drawable/help" />
 
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/custom1Button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/quicklaunch_button1"
-                    android:src="@drawable/help"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:visibility="gone"
-                    android:layout_gravity="center_horizontal|bottom"/>
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/custom2Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|bottom"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:contentDescription="@string/quicklaunch_button2"
+                android:src="@drawable/help" />
 
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/custom2Button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/quicklaunch_button2"
-                    android:src="@drawable/help"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:visibility="gone"
-                    android:layout_gravity="center_horizontal|bottom"/>
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/custom3Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|bottom"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:contentDescription="@string/quicklaunch_button3"
+                android:src="@drawable/help" />
 
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/custom3Button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/quicklaunch_button3"
-                    android:src="@drawable/help"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:visibility="gone"
-                    android:layout_gravity="center_horizontal|bottom"/>
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/custom4Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|bottom"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:contentDescription="@string/quicklaunch_button4"
+                android:src="@drawable/help" />
 
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/custom4Button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/quicklaunch_button4"
-                    android:src="@drawable/help"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:visibility="gone"
-                    android:layout_gravity="center_horizontal|bottom"/>
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/custom5Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|bottom"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:contentDescription="@string/quicklaunch_button5"
+                android:src="@drawable/help" />
 
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/custom5Button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/quicklaunch_button5"
-                    android:src="@drawable/help"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:visibility="gone"
-                    android:layout_gravity="center_horizontal|bottom"/>
-
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/custom6Button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/quicklaunch_button6"
-                    android:src="@drawable/help"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:visibility="gone"
-                    android:layout_gravity="center_horizontal|bottom"/>
-            </LinearLayout>
-        </androidx.core.widget.NestedScrollView>
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/custom6Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|bottom"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:contentDescription="@string/quicklaunch_button6"
+                android:src="@drawable/help" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</LinearLayout>
