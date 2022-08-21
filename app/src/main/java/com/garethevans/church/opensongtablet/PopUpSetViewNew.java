@@ -31,17 +31,24 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
+@SuppressWarnings("ComparatorCombinators")
 public class PopUpSetViewNew extends DialogFragment {
 
     private static Dialog setfrag;
     private boolean longKeyPress = false;
     private int keyRepeatCount = 0;
     private final String TAG = "PopUpSetViewNew";
-
+    private static MyInterface mListener;
+    private static SetActions setActions;
+    static ArrayList<String> mSongName = new ArrayList<>();
+    static ArrayList<String> mFolderName = new ArrayList<>();
+    private RecyclerView mRecyclerView;
+    private StorageAccess storageAccess;
+    private Preferences preferences;
 
     static PopUpSetViewNew newInstance() {
         PopUpSetViewNew frag;
@@ -95,7 +102,8 @@ public class PopUpSetViewNew extends DialogFragment {
 
         // Fix the song name and folder for loading
         StaticVariables.songfilename = storageAccess.safeFilename(newsongname.toString());
-        StaticVariables.whichSongFolder = "../Variations";
+        preferences.setMyPreferenceString(c,"whichSongFolder", "../Variations");
+        StaticVariables.whatsongforsetwork = setActions.getSongForSetWork(c);
 
         // Replace the set item with the variation
         StaticVariables.mSetList[StaticVariables.indexSongInSet] = "**" + c.getResources().getString(R.string.variation) + "/" + storageAccess.safeFilename(newsongname.toString());
@@ -118,8 +126,6 @@ public class PopUpSetViewNew extends DialogFragment {
         }
     }
 
-    private static MyInterface mListener;
-
     @Override
     public void onAttach(@NonNull Context context) {
         mListener = (MyInterface) context;
@@ -131,14 +137,6 @@ public class PopUpSetViewNew extends DialogFragment {
         mListener = null;
         super.onDetach();
     }
-
-    static ArrayList<String> mSongName = new ArrayList<>();
-    static ArrayList<String> mFolderName = new ArrayList<>();
-    private RecyclerView mRecyclerView;
-
-    private StorageAccess storageAccess;
-    private Preferences preferences;
-    private SetActions setActions;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -202,7 +200,7 @@ public class PopUpSetViewNew extends DialogFragment {
         try {
             dismiss();
         } catch (Exception e) {
-            Log.d("d", "Error closing fragment");
+            Log.d(TAG, "Error closing fragment");
         }
     }
 
@@ -213,7 +211,7 @@ public class PopUpSetViewNew extends DialogFragment {
         mFolderName = new ArrayList<>();
 
         if (StaticVariables.mTempSetList==null) {
-            Log.d("PopUpSetView","mTempSetList is null");
+            Log.d(TAG,"mTempSetList is null");
         }
         String tempTitle;
         if (StaticVariables.mTempSetList != null && StaticVariables.mTempSetList.size() > 0) {
@@ -324,19 +322,14 @@ public class PopUpSetViewNew extends DialogFragment {
 
         mRecyclerView.setLayoutManager(llm);
 
-        // Grab the saved set list array and put it into a list
-        // This way we work with a temporary version
         if (StaticVariables.doneshuffle && StaticVariables.mTempSetList != null && StaticVariables.mTempSetList.size() > 0) {
-            Log.d("d", "We've shuffled the set list");
+            Log.d(TAG, "We've shuffled the set list");
         } else {
-            StaticVariables.mTempSetList = new ArrayList<>();
-            if (StaticVariables.mSetList != null) {
-                StaticVariables.mTempSetList.addAll(Arrays.asList(StaticVariables.mSetList));
-            }
+            // IV - We work with temporary set list array 'mTempSetList' prepared by this call
+            setActions.prepareSetList(getContext(),preferences);
         }
 
         extractSongsAndFolders();
-        StaticVariables.doneshuffle = false;
 
         SetListAdapter ma = new SetListAdapter(createList(StaticVariables.mTempSetList.size()), getContext(), preferences);
         mRecyclerView.setAdapter(ma);
@@ -397,7 +390,8 @@ public class PopUpSetViewNew extends DialogFragment {
 
             if (StaticVariables.mTempSetList!=null && StaticVariables.mTempSetList.size()>0) {
                 // Redraw the lists
-                Collections.sort(StaticVariables.mTempSetList);
+                Collections.sort(StaticVariables.mTempSetList,
+                        (Comparator<? super String>) (o1, o2) -> o1.substring(o1.indexOf("/")).compareTo(o2.substring(o2.indexOf("/"))));
 
                 // Prepare the page for redrawing....
                 StaticVariables.doneshuffle = true;
@@ -453,12 +447,29 @@ public class PopUpSetViewNew extends DialogFragment {
             helpSwipeItem_TextView.setVisibility(View.GONE);
             listSetTweetButton.hide();
             set_shuffle.hide();
+            sort.hide();
             helptext.setVisibility(View.VISIBLE);
         }
 
 
-        // Try to move to the corresponding item in the set that we are viewing.
-        setActions.indexSongInSet();
+        // Try to move to the corresponding item in the temporary set that we are viewing.
+        // IV - Shuffle/Sort reopens this popup and can use stored song detail to index the song in TempSetList.
+        if (StaticVariables.doneshuffle) {
+            StaticVariables.doneshuffle = false;
+            if (!StaticVariables.setSongDetail.equals("")) {
+                StaticVariables.indexSongInSet = StaticVariables.mTempSetList.lastIndexOf(StaticVariables.setSongDetail);
+            } else {
+                StaticVariables.indexSongInSet = -1;
+            }
+        } else {
+            setActions.indexSongInSet();
+            // Store song detail
+            if (StaticVariables.indexSongInSet > -1) {
+                StaticVariables.setSongDetail = StaticVariables.mTempSetList.get(StaticVariables.indexSongInSet);
+            } else {
+                StaticVariables.setSongDetail = "";
+            }
+        }
 
         // If the song is found (indexSongInSet>-1 and lower than the number of items shown), smooth scroll to it
         if (StaticVariables.indexSongInSet>-1 && StaticVariables.indexSongInSet< StaticVariables.mTempSetList.size()) {
@@ -585,7 +596,7 @@ public class PopUpSetViewNew extends DialogFragment {
                 longKeyPress = event.isLongPress();
                 boolean actionrecognised;
                 if (event.getAction() == KeyEvent.ACTION_DOWN && !longKeyPress) {
-                    Log.d("PopUpSetViewNew", "Pedal listener onKeyDown:" + keyCode);
+                    Log.d(TAG, "Pedal listener onKeyDown:" + keyCode);
                     event.startTracking();
                     // AirTurn pedals don't do long press, but instead autorepeat.  To deal with, count onKeyDown
                     // If the app detects more than a set number (reset when onKeyUp/onLongPress) it triggers onLongPress
@@ -601,7 +612,7 @@ public class PopUpSetViewNew extends DialogFragment {
                     if (longKeyPress) {
                         event.startTracking();
                         actionrecognised = doLongKeyPressAction(keyCode);
-                        Log.d("PopUpSetViewNew", "Is long press!!!");
+                        Log.d(TAG, "Is long press!!!");
                         longKeyPress = false;
                         keyRepeatCount = 0;
                         if (actionrecognised) {
@@ -614,7 +625,7 @@ public class PopUpSetViewNew extends DialogFragment {
                         // onKeyUp
                         keyRepeatCount = 0;
 
-                        Log.d("PopUpSetViewNew", "Pedal listener onKeyUp:" + keyCode);
+                        Log.d(TAG, "Pedal listener onKeyUp:" + keyCode);
                         if (keyCode == preferences.getMyPreferenceInt(getContext(), "pedal1Code", 21)) {
                             doPedalAction(preferences.getMyPreferenceString(getContext(), "pedal1ShortPressAction", "prev"));
                             return true;
@@ -669,13 +680,13 @@ public class PopUpSetViewNew extends DialogFragment {
             actionrecognised = true;
             doPedalAction(preferences.getMyPreferenceString(getContext(),"pedal6LongPressAction","editset"));
         }
-        Log.d("d","actionrecognised="+actionrecognised);
+        Log.d(TAG,"actionrecognised="+actionrecognised);
         return actionrecognised;
     }
 
 
     private void doPedalAction(String action) {
-        Log.d("d","doPedalAction(\""+action+"\")");
+        Log.d(TAG,"doPedalAction(\""+action+"\")");
         try {
             switch (action) {
                 case "prev":
