@@ -447,6 +447,7 @@ public class PopUpSetViewNew extends DialogFragment {
             helpSwipeItem_TextView.setVisibility(View.GONE);
             listSetTweetButton.hide();
             set_shuffle.hide();
+            sort.hide();
             helptext.setVisibility(View.VISIBLE);
         }
 

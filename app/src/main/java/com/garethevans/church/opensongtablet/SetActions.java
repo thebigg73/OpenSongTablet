@@ -190,6 +190,7 @@ class SetActions {
                 StaticVariables.mTempSetList.addAll(Arrays.asList(StaticVariables.mSetList));
             } else {
                 StaticVariables.mSetList = null;
+                StaticVariables.mTempSetList = new ArrayList<>();
                 StaticVariables.setSize = 0;
             }
 
