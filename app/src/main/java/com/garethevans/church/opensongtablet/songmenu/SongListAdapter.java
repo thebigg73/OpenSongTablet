@@ -257,7 +257,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
 
     @NonNull
     @Override
-    public SongItemViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+    public SongItemViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         try {
             View itemView = LayoutInflater.from(viewGroup.getContext()).
                     inflate(R.layout.view_song_menu_item, viewGroup, false);

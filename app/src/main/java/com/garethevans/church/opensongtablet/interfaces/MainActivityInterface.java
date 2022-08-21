@@ -122,6 +122,7 @@ public interface MainActivityInterface {
     void updateSetList();
     void addSetItem(int currentSetPosition);
     void removeSetItem(int currentSetPosition);
+    void checkSetMenuItemHighlighted(int setPosition);
 
     // Menus
     DrawerLayout getDrawer();

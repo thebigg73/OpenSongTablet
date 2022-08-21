@@ -1639,6 +1639,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
         // Update the index in the set
         currentSet.setIndexSongInSet(position);
+        setMenuFragment.updateItem(position);
 
         // Get the song key (from the database)
         if (storageAccess.isSpecificFileExtension("imageorpdf", currentSet.getFilename(position))) {
@@ -1716,6 +1717,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             }
         }
         doSongLoad(setFolder, setFilename, true);
+    }
+
+    @Override
+    public void checkSetMenuItemHighlighted(int setPosition) {
+        // See if we need to force the highlighting of the setItem in the set menu
+        if (setPosition>-1) {
+            setMenuFragment.initialiseSetItem(setPosition);
+        }
     }
 
     @Override

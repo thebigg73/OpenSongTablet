@@ -71,7 +71,7 @@ public class SetMenuFragment extends Fragment {
     }
 
     private void setupAdapter() {
-        setListAdapter = new SetListAdapter(mainActivityInterface);
+        setListAdapter = new SetListAdapter(requireContext());
         ItemTouchHelper.Callback callback = new SetListItemTouchHelper(setListAdapter);
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
         setListAdapter.setTouchHelper(itemTouchHelper);
@@ -180,6 +180,7 @@ public class SetMenuFragment extends Fragment {
                 getIconIdentifier(folder,filename);
 
         updateSetTitle();
+        setListAdapter.updateHighlightedItem(position);
         setListAdapter.notifyItemChanged(position);
     }
 
@@ -269,6 +270,13 @@ public class SetMenuFragment extends Fragment {
             myView.myRecyclerView.requestFocus();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public void initialiseSetItem(int setPosition) {
+        // Only do this if we actually needed to highlight an item
+        if (setListAdapter!=null && setListAdapter.initialiseSetItem(setPosition)) {
+            myView.myRecyclerView.post(() -> llm.scrollToPositionWithOffset(mainActivityInterface.getCurrentSet().getIndexSongInSet() , 0));
         }
     }
 }

@@ -156,6 +156,9 @@ public class MyToolbar extends MaterialToolbar {
             // If we are in a set, show the icon
             int positionInSet = mainActivityInterface.getSetActions().indexSongInSet(mainActivityInterface.getSong());
             if (positionInSet>-1) {
+                // Check the set menu fragment to see if we need to highlight
+                // This happens if we just loaded a song (not clicking on the set item in the menu)
+                mainActivityInterface.checkSetMenuItemHighlighted(positionInSet);
                 setIcon.setVisibility(View.VISIBLE);
                 mainActivityInterface.getCurrentSet().setIndexSongInSet(positionInSet);
             } else {
@@ -267,35 +270,6 @@ public class MyToolbar extends MaterialToolbar {
         }
     }
 
-    // Action bar stuff
-    /*public void toggleActionBar(boolean wasScrolling, boolean scrollButton,
-                                boolean menusActive) {
-        try {
-            delayActionBarHide.removeCallbacks(hideActionBarRunnable);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        if (wasScrolling || scrollButton) {
-            if (hideActionBar && !menusActive) {
-                mainActivityInterface.hideActionBar();
-                //actionBar.hide();
-            }
-        } else if (!menusActive) {
-            if (isShown() && hideActionBar) {
-                delayActionBarHide.postDelayed(hideActionBarRunnable, 500);
-            } else {
-                mainActivityInterface.hideActionBar();
-                //actionBar.show();
-                // Set a runnable to hide it after 3 seconds
-                if (hideActionBar) {
-                    delayActionBarHide.postDelayed(hideActionBarRunnable, autoHideTime);
-                }
-            }
-        }
-    }*/
-
-
     // Set when entering/exiting performance mode as this is used to determine if we can autohide actionbar
     public void setPerformanceMode(boolean inPerformanceMode) {
         performanceMode = inPerformanceMode;
@@ -322,16 +296,6 @@ public class MyToolbar extends MaterialToolbar {
             }
         }
     }
-
-    /*public void justShowOrHide(boolean show) {
-        if (show) {
-            //mainActivityInterface.hideActionBar(false);
-            //actionBar.show();
-        } else {
-            //mainActivityInterface.hideActionBar(true);
-            //actionBar.hide();
-        }
-    }*/
 
     public void removeCallBacks() {
         delayActionBarHide.removeCallbacks(hideActionBarRunnable);

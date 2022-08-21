@@ -5,6 +5,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,6 +21,7 @@ public class SetItemViewHolder extends RecyclerView.ViewHolder implements
     final MaterialTextView vSongTitle;
     final MaterialTextView vSongFolder;
     final RelativeLayout vCard;
+    final CardView cardView;
     private final ItemTouchHelper itemTouchHelper;
     private final SetItemTouchInterface setItemTouchInterface;
     private final GestureDetector gestureDetector;
@@ -27,6 +29,7 @@ public class SetItemViewHolder extends RecyclerView.ViewHolder implements
 
     public SetItemViewHolder(MainActivityInterface mainActivityInterface, View v, ItemTouchHelper itemTouchHelper, SetItemTouchInterface setItemTouchInterface) {
         super(v);
+        cardView = v.findViewById(R.id.card_view);
         vCard = v.findViewById(R.id.cardview_layout);
         vItem = v.findViewById(R.id.cardview_item);
         vSongTitle = v.findViewById(R.id.cardview_songtitle);

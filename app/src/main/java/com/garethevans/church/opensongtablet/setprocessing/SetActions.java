@@ -19,6 +19,7 @@ import java.io.OutputStream;
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Locale;
 
 // This class interacts with the CurrentSet object and does the processing, etc.
@@ -290,8 +291,8 @@ public class SetActions {
 
     public void sortSet() {
         // Shuffle the currentSet item array - all entries are like $$_folder/filename_**key**__$$
-        Collections.sort(mainActivityInterface.getCurrentSet().getSetItems());
-
+        Comparator<String> comparator = (o1, o2) -> o1.substring(o1.indexOf("/")).compareTo(o2.substring(o2.indexOf("/")));
+        Collections.sort(mainActivityInterface.getCurrentSet().getSetItems(), comparator);
         finishChangingSet();
     }
 
@@ -307,6 +308,8 @@ public class SetActions {
         String setCurrent = getSetAsPreferenceString();
         mainActivityInterface.getCurrentSet().setCurrentSetString(setCurrent);
         mainActivityInterface.getPreferences().setMyPreferenceString("setCurrent",setCurrent);
+        indexSongInSet(mainActivityInterface.getSong());
+        mainActivityInterface.getDisplayPrevNext().setPrevNext();
     }
 
     public void checkMissingKeys() {
