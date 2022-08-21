@@ -845,4 +845,6 @@
     <string name="alphabetical_sort">Tedd az elemeket ábécé sorrendbe</string>
     <string name="pedal_scroll_before_move_info">Lehetővé teszi, hogy a következő és az előző pedálok görgetőpedálként is működjenek</string>
     <string name="permissions_refused">Az engedélyeket elutasították, és előfordulhat, hogy manuálisan kell megadni az Android beállításaiból, ha nem látja újra a lehetőséget</string>
+    <string name="quicklaunch_button7">7. gomb</string>
+    <string name="quicklaunch_button8">8. gomb</string>
 </resources>

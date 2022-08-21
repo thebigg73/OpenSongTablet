@@ -459,7 +459,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 myView.actionFAB, myView.pageButtonRight.custom1Button,
                 myView.pageButtonRight.custom2Button,myView.pageButtonRight.custom3Button,
                 myView.pageButtonRight.custom4Button,myView.pageButtonRight.custom5Button,
-                myView.pageButtonRight.custom6Button,myView.pageButtonRight.bottomButtons);
+                myView.pageButtonRight.custom6Button,myView.pageButtonRight.custom7Button,
+                myView.pageButtonRight.custom8Button,myView.pageButtonRight.bottomButtons);
         pageButtons.animatePageButton(false);
     }
 

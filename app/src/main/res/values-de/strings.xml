@@ -845,4 +845,6 @@
     <string name="alphabetical_sort">Artikel alphabetisch ordnen</string>
     <string name="pedal_scroll_before_move_info">Ermöglicht, dass das nächste und das vorherige Pedal auch als Scroll-Pedale fungieren</string>
     <string name="permissions_refused">Berechtigungen wurden verweigert und müssen möglicherweise manuell über die Android-Einstellungen gewährt werden, wenn Sie die Option nicht erneut sehen</string>
+    <string name="quicklaunch_button7">Schaltfläche 7</string>
+    <string name="quicklaunch_button8">Schaltfläche 8</string>
 </resources>

@@ -845,4 +845,6 @@
     <string name="alphabetical_sort">項目をアルファベット順に並べる</string>
     <string name="pedal_scroll_before_move_info">次のペダルと前のペダルをスクロール ペダルとしても機能させることができます。</string>
     <string name="permissions_refused">アクセス許可が拒否されました。オプションが再び表示されない場合は、Android の設定から手動で許可する必要がある可能性があります</string>
+    <string name="quicklaunch_button7">ボタン7</string>
+    <string name="quicklaunch_button8">ボタン8</string>
 </resources>

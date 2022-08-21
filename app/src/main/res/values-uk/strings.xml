@@ -845,4 +845,6 @@
     <string name="connections_advertise_temporary_info">Розміщуйте рекламу лише протягом 10 секунд після натискання кнопки реклами</string>
     <string name="pedal_scroll_before_move_info">Дозволяє наступній і попередній педалі також функціонувати як педалі прокручування</string>
     <string name="permissions_refused">У дозволах було відмовлено. Можливо, їх потрібно буде надати вручну з налаштувань Android, якщо ви знову не бачите цю опцію</string>
+    <string name="quicklaunch_button7">Кнопка 7</string>
+    <string name="quicklaunch_button8">Кнопка 8</string>
 </resources>

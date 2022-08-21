@@ -846,4 +846,6 @@
     <string name="connections_advertise_temporary_info">点击广告按钮后仅广告 10 秒</string>
     <string name="pedal_scroll_before_move_info">允许下一个和上一个踏板也可以用作滚动踏板</string>
     <string name="permissions_refused">权限被拒绝，如果您没有再次看到该选项，可能需要从 Android 设置中手动授予</string>
+    <string name="quicklaunch_button7">按钮7</string>
+    <string name="quicklaunch_button8">按钮8</string>
 </resources>

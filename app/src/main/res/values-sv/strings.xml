@@ -845,4 +845,6 @@
     <string name="alphabetical_sort">Placera objekt i alfabetisk ordning</string>
     <string name="pedal_scroll_before_move_info">Tillåter att nästa och föregående pedaler även fungerar som rullpedaler</string>
     <string name="permissions_refused">Behörigheter nekades och kan behöva beviljas manuellt från Android-inställningarna om du inte ser alternativet igen</string>
+    <string name="quicklaunch_button7">Knapp 7</string>
+    <string name="quicklaunch_button8">Knapp 8</string>
 </resources>

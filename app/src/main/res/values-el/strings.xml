@@ -845,4 +845,6 @@
     <string name="connections_advertise_temporary_info">Διαφημιστείτε μόνο για 10 δευτερόλεπτα αφού κάνετε κλικ στο κουμπί διαφήμιση</string>
     <string name="pedal_scroll_before_move_info">Επιτρέπει στο επόμενο και το προηγούμενο πεντάλ να λειτουργούν και ως πεντάλ κύλισης</string>
     <string name="permissions_refused">Τα δικαιώματα απορρίφθηκαν και ενδέχεται να χρειαστεί να παραχωρηθούν με μη αυτόματο τρόπο από τις ρυθμίσεις Android, εάν δεν δείτε ξανά την επιλογή</string>
+    <string name="quicklaunch_button7">Κουμπί 7</string>
+    <string name="quicklaunch_button8">Κουμπί 8</string>
 </resources>

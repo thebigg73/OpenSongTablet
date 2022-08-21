@@ -845,4 +845,6 @@
     <string name="alphabetical_sort">Coloque os itens em ordem alfabética</string>
     <string name="pedal_scroll_before_move_info">Permite que os pedais seguinte e anterior também funcionem como pedais de rolagem</string>
     <string name="permissions_refused">As permissões foram recusadas e podem precisar ser concedidas manualmente nas configurações do Android se você não vir a opção novamente</string>
+    <string name="quicklaunch_button7">Botão 7</string>
+    <string name="quicklaunch_button8">Botão 8</string>
 </resources>

@@ -845,4 +845,6 @@
     <string name="alphabetical_sort">Stavite stavke po abecednom redu</string>
     <string name="pedal_scroll_before_move_info">Omogućava da sledeća i prethodna pedale takođe funkcionišu kao pedale za pomeranje</string>
     <string name="permissions_refused">Dozvole su odbijene i možda će biti potrebno da ih dodelite ručno iz podešavanja Android-a ako ponovo ne vidite opciju</string>
+    <string name="quicklaunch_button7">Dugme 7</string>
+    <string name="quicklaunch_button8">Dugme 8</string>
 </resources>

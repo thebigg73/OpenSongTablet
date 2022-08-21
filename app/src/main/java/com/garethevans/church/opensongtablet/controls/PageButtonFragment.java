@@ -97,7 +97,7 @@ public class PageButtonFragment extends Fragment {
                 addTextViews();
 
                 // Now iterate through each button and set it up
-                for (int x = 0; x < 6; x++) {
+                for (int x = 0; x < mainActivityInterface.getPageButtons().getPageButtonNum(); x++) {
                     mainActivityInterface.getPageButtons().setPageButton(myButtons.get(x), x, true);
                     myButtons.get(x).setVisibility(View.VISIBLE);
                     setVisibilityFromBoolean(myLayouts.get(x), mainActivityInterface.getPageButtons().getPageButtonVisibility(x));
@@ -110,7 +110,7 @@ public class PageButtonFragment extends Fragment {
             });
             arrayAdapter = new ExposedDropDownArrayAdapter(requireActivity(), R.layout.view_exposed_dropdown_item, mainActivityInterface.getPageButtons().getPageButtonAvailableText());
             handler.post(() -> {
-                for (int x=0;x<6;x++) {
+                for (int x=0;x<mainActivityInterface.getPageButtons().getPageButtonNum();x++) {
                     setTheDropDowns(x);
                     setTheText(x);
                 }
@@ -126,6 +126,8 @@ public class PageButtonFragment extends Fragment {
         myButtons.add(myView.button4);
         myButtons.add(myView.button5);
         myButtons.add(myView.button6);
+        myButtons.add(myView.button7);
+        myButtons.add(myView.button8);
     }
 
     private void addVisibleSwitches() {
@@ -136,6 +138,8 @@ public class PageButtonFragment extends Fragment {
         mySwitches.add(myView.button4Active);
         mySwitches.add(myView.button5Active);
         mySwitches.add(myView.button6Active);
+        mySwitches.add(myView.button7Active);
+        mySwitches.add(myView.button8Active);
     }
     private void addButtonLayouts() {
         myLayouts = new ArrayList<>();
@@ -145,6 +149,8 @@ public class PageButtonFragment extends Fragment {
         myLayouts.add(myView.button4View);
         myLayouts.add(myView.button5View);
         myLayouts.add(myView.button6View);
+        myLayouts.add(myView.button7View);
+        myLayouts.add(myView.button8View);
     }
     private void addTextViews() {
         exposedDropDowns = new ArrayList<>();
@@ -156,6 +162,8 @@ public class PageButtonFragment extends Fragment {
         exposedDropDowns.add(myView.button4Opt);
         exposedDropDowns.add(myView.button5Opt);
         exposedDropDowns.add(myView.button6Opt);
+        exposedDropDowns.add(myView.button7Opt);
+        exposedDropDowns.add(myView.button8Opt);
 
         shortTexts.add(myView.button1ShortPress);
         shortTexts.add(myView.button2ShortPress);
@@ -163,6 +171,8 @@ public class PageButtonFragment extends Fragment {
         shortTexts.add(myView.button4ShortPress);
         shortTexts.add(myView.button5ShortPress);
         shortTexts.add(myView.button6ShortPress);
+        shortTexts.add(myView.button7ShortPress);
+        shortTexts.add(myView.button8ShortPress);
 
         longTexts.add(myView.button1LongPress);
         longTexts.add(myView.button2LongPress);
@@ -170,6 +180,8 @@ public class PageButtonFragment extends Fragment {
         longTexts.add(myView.button4LongPress);
         longTexts.add(myView.button5LongPress);
         longTexts.add(myView.button6LongPress);
+        longTexts.add(myView.button7LongPress);
+        longTexts.add(myView.button8LongPress);
     }
 
     private void changeVisibilityPreference(int x, boolean visible) {

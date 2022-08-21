@@ -845,4 +845,6 @@
     <string name="connections_advertise_temporary_info">Anuncie solo durante 10 segundos después de hacer clic en el botón de publicidad</string>
     <string name="pedal_scroll_before_move_info">Permite que los pedales siguiente y anterior también funcionen como pedales de desplazamiento</string>
     <string name="permissions_refused">Se rechazaron los permisos y es posible que deban otorgarse manualmente desde la configuración de Android si no vuelve a ver la opción</string>
+    <string name="quicklaunch_button7">Botón 7</string>
+    <string name="quicklaunch_button8">Botón 8</string>
 </resources>

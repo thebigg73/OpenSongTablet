@@ -20,16 +20,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:text="@string/opacity"
                 android:valueFrom="20"
-                android:valueTo="100"
-                android:text="@string/opacity" />
+                android:valueTo="100" />
+
             <TableRow style="@style/DividerLine" />
 
             <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/button1Active"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/visible"/>
+                android:text="@string/visible" />
 
             <LinearLayout
                 android:id="@+id/button1View"
@@ -47,10 +48,10 @@
                         android:id="@+id/button1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:contentDescription="@string/button"
-                        android:src="@drawable/help"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginEnd="16dp"/>
+                        android:layout_marginEnd="16dp"
+                        android:contentDescription="@string/button"
+                        android:src="@drawable/help" />
 
                     <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
                         android:id="@+id/button1Opt"
@@ -65,27 +66,28 @@
                     android:id="@+id/button1ShortPress"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="@string/action_short_press"
+                    android:hint=""
                     android:paddingTop="16dp"
                     android:paddingBottom="8dp"
-                    android:hint="" />
+                    android:text="@string/action_short_press" />
 
                 <com.garethevans.church.opensongtablet.customviews.MaterialTextView
                     android:id="@+id/button1LongPress"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="@string/action_long_press"
+                    android:hint=""
                     android:paddingTop="8dp"
                     android:paddingBottom="8dp"
-                    android:hint="" />
+                    android:text="@string/action_long_press" />
             </LinearLayout>
+
             <TableRow style="@style/DividerLine" />
 
             <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/button2Active"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/visible"/>
+                android:text="@string/visible" />
 
             <LinearLayout
                 android:id="@+id/button2View"
@@ -103,10 +105,10 @@
                         android:id="@+id/button2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:contentDescription="@string/button"
-                        android:src="@drawable/help"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginEnd="16dp"/>
+                        android:layout_marginEnd="16dp"
+                        android:contentDescription="@string/button"
+                        android:src="@drawable/help" />
 
                     <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
                         android:id="@+id/button2Opt"
@@ -121,27 +123,28 @@
                     android:id="@+id/button2ShortPress"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="@string/action_short_press"
+                    android:hint=""
                     android:paddingTop="16dp"
                     android:paddingBottom="8dp"
-                    android:hint="" />
+                    android:text="@string/action_short_press" />
 
                 <com.garethevans.church.opensongtablet.customviews.MaterialTextView
                     android:id="@+id/button2LongPress"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="@string/action_long_press"
+                    android:hint=""
                     android:paddingTop="8dp"
                     android:paddingBottom="8dp"
-                    android:hint="" />
+                    android:text="@string/action_long_press" />
             </LinearLayout>
+
             <TableRow style="@style/DividerLine" />
 
             <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/button3Active"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/visible"/>
+                android:text="@string/visible" />
 
             <LinearLayout
                 android:id="@+id/button3View"
@@ -159,10 +162,10 @@
                         android:id="@+id/button3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:contentDescription="@string/button"
-                        android:src="@drawable/help"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginEnd="16dp"/>
+                        android:layout_marginEnd="16dp"
+                        android:contentDescription="@string/button"
+                        android:src="@drawable/help" />
 
                     <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
                         android:id="@+id/button3Opt"
@@ -177,27 +180,28 @@
                     android:id="@+id/button3ShortPress"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="@string/action_short_press"
+                    android:hint=""
                     android:paddingTop="16dp"
                     android:paddingBottom="8dp"
-                    android:hint="" />
+                    android:text="@string/action_short_press" />
 
                 <com.garethevans.church.opensongtablet.customviews.MaterialTextView
                     android:id="@+id/button3LongPress"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="@string/action_long_press"
+                    android:hint=""
                     android:paddingTop="8dp"
                     android:paddingBottom="8dp"
-                    android:hint="" />
+                    android:text="@string/action_long_press" />
             </LinearLayout>
+
             <TableRow style="@style/DividerLine" />
 
             <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/button4Active"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/visible"/>
+                android:text="@string/visible" />
 
             <LinearLayout
                 android:id="@+id/button4View"
@@ -215,10 +219,10 @@
                         android:id="@+id/button4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:contentDescription="@string/button"
-                        android:src="@drawable/help"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginEnd="16dp"/>
+                        android:layout_marginEnd="16dp"
+                        android:contentDescription="@string/button"
+                        android:src="@drawable/help" />
 
                     <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
                         android:id="@+id/button4Opt"
@@ -233,27 +237,28 @@
                     android:id="@+id/button4ShortPress"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="@string/action_short_press"
+                    android:hint=""
                     android:paddingTop="16dp"
                     android:paddingBottom="8dp"
-                    android:hint="" />
+                    android:text="@string/action_short_press" />
 
                 <com.garethevans.church.opensongtablet.customviews.MaterialTextView
                     android:id="@+id/button4LongPress"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="@string/action_long_press"
+                    android:hint=""
                     android:paddingTop="8dp"
                     android:paddingBottom="8dp"
-                    android:hint="" />
+                    android:text="@string/action_long_press" />
             </LinearLayout>
+
             <TableRow style="@style/DividerLine" />
 
             <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/button5Active"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/visible"/>
+                android:text="@string/visible" />
 
             <LinearLayout
                 android:id="@+id/button5View"
@@ -271,10 +276,10 @@
                         android:id="@+id/button5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:contentDescription="@string/button"
-                        android:src="@drawable/help"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginEnd="16dp"/>
+                        android:layout_marginEnd="16dp"
+                        android:contentDescription="@string/button"
+                        android:src="@drawable/help" />
 
                     <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
                         android:id="@+id/button5Opt"
@@ -289,27 +294,28 @@
                     android:id="@+id/button5ShortPress"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="@string/action_short_press"
+                    android:hint=""
                     android:paddingTop="16dp"
                     android:paddingBottom="8dp"
-                    android:hint="" />
+                    android:text="@string/action_short_press" />
 
                 <com.garethevans.church.opensongtablet.customviews.MaterialTextView
                     android:id="@+id/button5LongPress"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="@string/action_long_press"
+                    android:hint=""
                     android:paddingTop="8dp"
                     android:paddingBottom="8dp"
-                    android:hint="" />
+                    android:text="@string/action_long_press" />
             </LinearLayout>
+
             <TableRow style="@style/DividerLine" />
 
             <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/button6Active"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/visible"/>
+                android:text="@string/visible" />
 
             <LinearLayout
                 android:id="@+id/button6View"
@@ -327,10 +333,10 @@
                         android:id="@+id/button6"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:contentDescription="@string/button"
-                        android:src="@drawable/help"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginEnd="16dp"/>
+                        android:layout_marginEnd="16dp"
+                        android:contentDescription="@string/button"
+                        android:src="@drawable/help" />
 
                     <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
                         android:id="@+id/button6Opt"
@@ -345,19 +351,133 @@
                     android:id="@+id/button6ShortPress"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="@string/action_short_press"
+                    android:hint=""
                     android:paddingTop="16dp"
                     android:paddingBottom="8dp"
-                    android:hint="" />
+                    android:text="@string/action_short_press" />
 
                 <com.garethevans.church.opensongtablet.customviews.MaterialTextView
                     android:id="@+id/button6LongPress"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="@string/action_long_press"
+                    android:hint=""
                     android:paddingTop="8dp"
                     android:paddingBottom="8dp"
-                    android:hint="" />
+                    android:text="@string/action_long_press" />
+            </LinearLayout>
+
+            <TableRow style="@style/DividerLine" />
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/button7Active"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/visible" />
+
+            <LinearLayout
+                android:id="@+id/button7View"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/button7"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginEnd="16dp"
+                        android:contentDescription="@string/button"
+                        android:src="@drawable/help" />
+
+                    <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                        android:id="@+id/button7Opt"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:hint="@string/action" />
+                </LinearLayout>
+
+                <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                    android:id="@+id/button7ShortPress"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint=""
+                    android:paddingTop="16dp"
+                    android:paddingBottom="8dp"
+                    android:text="@string/action_short_press" />
+
+                <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                    android:id="@+id/button7LongPress"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint=""
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:text="@string/action_long_press" />
+            </LinearLayout>
+
+            <TableRow style="@style/DividerLine" />
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/button8Active"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/visible" />
+
+            <LinearLayout
+                android:id="@+id/button8View"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/button8"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginEnd="16dp"
+                        android:contentDescription="@string/button"
+                        android:src="@drawable/help" />
+
+                    <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                        android:id="@+id/button8Opt"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:hint="@string/action" />
+                </LinearLayout>
+
+                <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                    android:id="@+id/button8ShortPress"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint=""
+                    android:paddingTop="16dp"
+                    android:paddingBottom="8dp"
+                    android:text="@string/action_short_press" />
+
+                <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                    android:id="@+id/button8LongPress"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint=""
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:text="@string/action_long_press" />
             </LinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

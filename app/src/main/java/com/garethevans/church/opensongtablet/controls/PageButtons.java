@@ -45,7 +45,7 @@ public class PageButtons {
     private ArrayList<FloatingActionButton> fabs;
 
     // My chosen buttons in the edit fragment
-    private final int pageButtonNum = 6;
+    private final int pageButtonNum = 8;
     private ArrayList<String> pageButtonAction, pageButtonText, pageButtonShortText, pageButtonLongText;
     private ArrayList<Drawable> pageButtonDrawable;
     private ArrayList<Boolean> pageButtonVisibility;
@@ -71,7 +71,8 @@ public class PageButtons {
     public void setMainFABS(FloatingActionButton actionButton, FloatingActionButton custom1,
                        FloatingActionButton custom2, FloatingActionButton custom3,
                        FloatingActionButton custom4, FloatingActionButton custom5,
-                       FloatingActionButton custom6, LinearLayout pageButtonsLayout) {
+                       FloatingActionButton custom6, FloatingActionButton custom7,
+                            FloatingActionButton custom8, LinearLayout pageButtonsLayout) {
         this.actionButton = actionButton;
         fabs = new ArrayList<>();
         updateColors();
@@ -81,18 +82,24 @@ public class PageButtons {
         custom4.hide();
         custom5.hide();
         custom6.hide();
+        custom7.hide();
+        custom8.hide();
         custom1.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
         custom2.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
         custom3.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
         custom4.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
         custom5.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
         custom6.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
+        custom7.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
+        custom8.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
         fabs.add(custom1);
         fabs.add(custom2);
         fabs.add(custom3);
         fabs.add(custom4);
         fabs.add(custom5);
         fabs.add(custom6);
+        fabs.add(custom7);
+        fabs.add(custom8);
         pageButtonsLayout.setAlpha(pageButtonAlpha);
         this.pageButtonsLayout = pageButtonsLayout;
     }
@@ -119,7 +126,7 @@ public class PageButtons {
                     setInterpolator(interpolator).start();
             actionButton.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
         }
-        for (int x=0; x<6; x++) {
+        for (int x=0; x<pageButtonNum; x++) {
             if (pageButtonVisibility.get(x) && open) {
                 getFAB(x).show();
             } else {
@@ -369,8 +376,12 @@ public class PageButtons {
                 pageButtonDrawable.add(ResourcesCompat.getDrawable(c.getResources(),drawableIds.get(0),null));
             }
 
-            // Set the visibility
-            pageButtonVisibility.add(actionInterface.getPreferences().getMyPreferenceBoolean("pageButtonShow"+(x+1),true));
+            // Set the visibility.  By default the first 6 are visible
+            if (x<6) {
+                pageButtonVisibility.add(actionInterface.getPreferences().getMyPreferenceBoolean("pageButtonShow" + (x + 1), true));
+            } else {
+                pageButtonVisibility.add(actionInterface.getPreferences().getMyPreferenceBoolean("pageButtonShow" + (x + 1), false));
+            }
         }
     }
 
@@ -610,5 +621,9 @@ public class PageButtons {
         if (actionButton.getRotation()!=0) {
             animatePageButton(false);
         }
+    }
+
+    public int getPageButtonNum() {
+        return pageButtonNum;
     }
 }

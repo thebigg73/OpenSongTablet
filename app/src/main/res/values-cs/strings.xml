@@ -845,4 +845,6 @@
     <string name="alphabetical_sort">Seřaďte položky v abecedním pořadí</string>
     <string name="pedal_scroll_before_move_info">Umožňuje, aby další a předchozí pedály fungovaly také jako rolovací pedály</string>
     <string name="permissions_refused">Oprávnění byla odmítnuta a možná bude nutné je udělit ručně z nastavení systému Android, pokud se tato možnost znovu nezobrazí</string>
+    <string name="quicklaunch_button7">Tlačítko 7</string>
+    <string name="quicklaunch_button8">Tlačítko 8</string>
 </resources>

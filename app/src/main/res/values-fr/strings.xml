@@ -845,4 +845,6 @@
     <string name="connections_advertise_temporary_info">Ne faites de la publicité que pendant 10 secondes après avoir cliqué sur le bouton de publicité</string>
     <string name="pedal_scroll_before_move_info">Permet aux pédales suivantes et précédentes de fonctionner également comme pédales de défilement</string>
     <string name="permissions_refused">Les autorisations ont été refusées et peuvent devoir être accordées manuellement à partir des paramètres Android si vous ne voyez plus l\'option</string>
+    <string name="quicklaunch_button7">Bouton 7</string>
+    <string name="quicklaunch_button8">Bouton 8</string>
 </resources>

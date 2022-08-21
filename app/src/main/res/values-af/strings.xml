@@ -593,6 +593,8 @@
     <string name="quicklaunch_button4">"Knoppie 4"</string>
     <string name="quicklaunch_button5">Knoppie 5</string>
     <string name="quicklaunch_button6">Knoppie 6</string>
+    <string name="quicklaunch_button7">Knoppie 7</string>
+    <string name="quicklaunch_button8">Knoppie 8</string>
     <string name="quicklaunch_currentaction">"Huidige aksie"</string>
     <string name="quicklaunch_title">"Pas vinnig begin knoppies aan"</string>
     <string name="random_song">"Vind 'n ewekansige liedjie"</string>

@@ -845,4 +845,6 @@
     <string name="connections_advertise_temporary_info">Reklamuj się tylko przez 10 sekund po kliknięciu przycisku anonsu</string>
     <string name="pedal_scroll_before_move_info">Umożliwia, aby następny i poprzedni pedał działał również jako pedały przewijania</string>
     <string name="permissions_refused">Uprawnienia zostały odrzucone i może być konieczne przyznanie ich ręcznie w ustawieniach Androida, jeśli nie widzisz tej opcji ponownie</string>
+    <string name="quicklaunch_button7">Przycisk 7</string>
+    <string name="quicklaunch_button8">Przycisk 8</string>
 </resources>

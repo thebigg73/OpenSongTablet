@@ -75,6 +75,26 @@
                 android:layout_marginBottom="8dp"
                 android:contentDescription="@string/quicklaunch_button6"
                 android:src="@drawable/help" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/custom7Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|bottom"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:contentDescription="@string/quicklaunch_button7"
+                android:src="@drawable/help" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/custom8Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|bottom"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:contentDescription="@string/quicklaunch_button8"
+                android:src="@drawable/help" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </LinearLayout>

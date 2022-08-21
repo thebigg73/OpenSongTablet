@@ -845,4 +845,6 @@
     <string name="connections_advertise_temporary_info">Fai pubblicità solo per 10 secondi dopo aver fatto clic sul pulsante Pubblicizza</string>
     <string name="pedal_scroll_before_move_info">Consente ai pedali successivo e precedente di funzionare anche come pedali di scorrimento</string>
     <string name="permissions_refused">Le autorizzazioni sono state rifiutate e potrebbe essere necessario concederle manualmente dalle impostazioni di Android se non vedi più l\'opzione</string>
+    <string name="quicklaunch_button7">Pulsante 7</string>
+    <string name="quicklaunch_button8">Pulsante 8</string>
 </resources>
