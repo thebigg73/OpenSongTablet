@@ -194,25 +194,6 @@ class SetActions {
                 StaticVariables.setSize = 0;
             }
 
-            // TODO remove
-            /*if (StaticVariables.mTempSetList!=null) {
-                for (String s : StaticVariables.mTempSetList) {
-                    Log.d(TAG, "mTempSetList: " + s);
-                }
-            }
-
-            if (StaticVariables.mSetList!=null) {
-                for (String s : StaticVariables.mSetList) {
-                    Log.d(TAG, "mSetList: " + s);
-                }
-            }
-
-            if (StaticVariables.mSet!=null) {
-                for (String s : StaticVariables.mSet) {
-                    Log.d(TAG, "mSet: " + s);
-                }
-            }*/
-
         } catch (Exception e) {
             e.printStackTrace();
         }

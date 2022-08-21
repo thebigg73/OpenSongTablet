@@ -2,6 +2,9 @@ package com.garethevans.church.opensongtablet;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.os.Build;
+import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +24,8 @@ class SetListAdapter extends RecyclerView.Adapter<SetListAdapter.SetItemViewHold
     private final List<SetItemInfo> setList;
     private final Context c;
     private final Preferences preferences;
+    private final int onColor = 0xff888888, offColor = 0xff555555;
+    private final SparseBooleanArray highlightedArray = new SparseBooleanArray();
 
     SetListAdapter(List<SetItemInfo> setList, Context context, Preferences p) {
         this.setList = setList;
@@ -31,6 +36,35 @@ class SetListAdapter extends RecyclerView.Adapter<SetListAdapter.SetItemViewHold
     @Override
     public int getItemCount() {
         return setList.size();
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull SetItemViewHolder holder, int position, @NonNull List<Object> payloads) {
+        if (payloads.isEmpty()) {
+            super.onBindViewHolder(holder, position, payloads);
+        } else {
+            // Compare each Object in the payloads to the PAYLOAD you provided to notifyItemChanged
+            for (Object payload : payloads) {
+                if (payload.equals("highlightItem")) {
+                    // We want to update the highlight colour to on/off
+                    if (highlightedArray.get(position,false)) {
+                        Log.d("SetListAdapter","position="+position+"  on");
+                        setColor(holder, onColor);
+                    } else {
+                        Log.d("SetListAdapter","position="+position+"  off");
+                        setColor(holder, offColor);
+                    }
+                }
+            }
+        }
+    }
+
+    private void setColor(SetItemViewHolder holder, int cardColor) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            holder.vIcon.setBackgroundTintList(ColorStateList.valueOf(cardColor));
+        } else {
+            holder.vIcon.setBackgroundColor(cardColor);
+        }
     }
 
     @Override
@@ -66,12 +100,19 @@ class SetListAdapter extends RecyclerView.Adapter<SetListAdapter.SetItemViewHold
             setitemViewHolder.vIcon.setImageResource(R.drawable.ic_music_note_white_36dp);
             issong = true;
         }
+
         // IV - Highlight icon of current song when in the set
-        if (i == StaticVariables.indexSongInSet) {
-            setitemViewHolder.vIcon.setBackgroundTintList(ColorStateList.valueOf(0xff888888));
+        // GE - Fix
+        if (i==StaticVariables.currentSetPosition) {
+            highlightedArray.put(i,true);
+            Log.d("SetListAdapter","i="+i+"  on");
+            setColor(setitemViewHolder,onColor);
         } else {
-            setitemViewHolder.vIcon.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
+            highlightedArray.put(i,false);
+            Log.d("SetListAdapter","i="+i+"  off");
+            setColor(setitemViewHolder,offColor);
         }
+
         String folderrelocate;
         if (si.songicon.equals(c.getResources().getString(R.string.image))) {
             folderrelocate = "../Images/_cache";
@@ -127,6 +168,7 @@ class SetListAdapter extends RecyclerView.Adapter<SetListAdapter.SetItemViewHold
             } else {
                 PopUpSetViewNew.loadSong(c,preferences);
             }
+            updateHighlightedItem(item);
         });
 
         if (FullscreenActivity.whattodo.equals("setitemvariation") && !issong) {
@@ -187,6 +229,18 @@ class SetListAdapter extends RecyclerView.Adapter<SetListAdapter.SetItemViewHold
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void updateHighlightedItem(int position) {
+        int currentPosition = StaticVariables.currentSetPosition;
+        Log.d("SetListAdapter","currentPosition:"+currentPosition+"  position:"+position);
+        if (currentPosition!=-1) {
+            highlightedArray.put(currentPosition,false);
+            notifyItemChanged(currentPosition,"highlightItem");
+        }
+        highlightedArray.put(position,true);
+        notifyItemChanged(position,"highlightItem");
+        StaticVariables.currentSetPosition = position;
     }
 
 }
