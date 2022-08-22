@@ -67,7 +67,7 @@ class SetListAdapter extends RecyclerView.Adapter<SetListAdapter.SetItemViewHold
             issong = true;
         }
         // IV - Highlight icon of current song when in the set
-        if (i == StaticVariables.indexSongInSet) {
+        if (si.songitem.equals((StaticVariables.indexSongInSet + 1) + ".")) {
             setitemViewHolder.vIcon.setBackgroundTintList(ColorStateList.valueOf(0xff888888));
         } else {
             setitemViewHolder.vIcon.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
