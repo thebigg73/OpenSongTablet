@@ -102,6 +102,7 @@ public class PopUpSetViewNew extends DialogFragment {
 
         // Fix the song name and folder for loading
         StaticVariables.songfilename = storageAccess.safeFilename(newsongname.toString());
+        StaticVariables.whichSongFolder = "../Variations";
         preferences.setMyPreferenceString(c,"whichSongFolder", "../Variations");
         StaticVariables.whatsongforsetwork = setActions.getSongForSetWork(c);
 
