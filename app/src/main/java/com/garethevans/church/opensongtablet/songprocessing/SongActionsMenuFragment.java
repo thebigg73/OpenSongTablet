@@ -64,14 +64,15 @@ public class SongActionsMenuFragment extends Fragment {
     }
 
     private void setListeners() {
+        myView.backupButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(getString(R.string.deeplink_backup),0));
         myView.importButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.import_graph));
         myView.edit.setOnClickListener(v -> actionAllowed(R.id.editsong_graph));
         myView.duplicate.setOnClickListener(v -> {
             if (mainActivityInterface.getProcessSong().isValidSong(mainActivityInterface.getSong())) {
                 TextInputBottomSheet textInputBottomSheet = new TextInputBottomSheet(this,"songActionsMenuFragment",
-                        getString(R.string.duplicate),getString(R.string.song_new_name),
+                        getString(R.string.duplicate),getString(R.string.filename),
                         getString(R.string.duplicate) + ": " +
-                                mainActivityInterface.getSong().getFilename(),
+                                mainActivityInterface.getSong().getFilename() + "\n" + getString(R.string.song_new_name),
                         null,null,true);
                 textInputBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "textInputBottomSheet");
             } else {

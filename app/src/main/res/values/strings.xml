@@ -1017,6 +1017,7 @@ Check out the categories in the right hand options menu.
     <string name="website_actionbar" translatable="false">https://www.opensongapp.com/user-manual/display/actionbar</string>
     <string name="website_address" translatable="false">https://www.opensongapp.com</string>
     <string name="website_app_mode" translatable="false">https://www.opensongapp.com/user-manual/app-mode</string>
+    <string name="website_backup" translatable="false">https://www.opensongapp.com/user-manual/songs/opensongapp-backup</string>
     <string name="website_ccli" translatable="false">https://www.opensongapp.com/user-manual/ccli</string>
     <string name="website_connected_display" translatable="false">https://www.opensongapp.com/user-manual/display/casting</string>
     <string name="website_custom_gestures" translatable="false">https://www.opensongapp.com/user-manual/controls/custom-gestures</string>
@@ -1024,6 +1025,8 @@ Check out the categories in the right hand options menu.
     <string name="website_edit_song_features" translatable="false">https://www.opensongapp.com/user-manual/songs/edit-song#h.kntse37simcb</string>
     <string name="website_edit_song_main" translatable="false">https://www.opensongapp.com/user-manual/songs/edit-song#h.dqecqr6jwgf6</string>
     <string name="website_edit_song_tag" translatable="false">https://www.opensongapp.com/user-manual/songs/edit-song#h.qx5dcmco7fmz</string>
+    <string name="website_export_set" translatable="false">https://www.opensongapp.com/user-manual/sets/export-set</string>
+    <string name="website_export_song" translatable="false">https://www.opensongapp.com/user-manual/songs/export-song</string>
     <string name="website_fonts" translatable="false">https://www.opensongapp.com/user-manual/display/fonts</string>
     <string name="website_foot_pedal" translatable="false">https://www.opensongapp.com/user-manual/controls/foot-pedals</string>
     <string name="website_forum" translatable="false">https://groups.google.com/g/opensongapp</string>
@@ -1039,6 +1042,7 @@ Check out the categories in the right hand options menu.
     <string name="website_play_services_help" translatable="false">https://www.opensongapp.com/user-guide/devices-without-google-play</string>
     <string name="website_profiles" translatable="false">https://www.opensongapp.com/user-manual/profiles</string>
     <string name="website_rate" translatable="false">https://play.google.com/store/apps/details?id=</string>
+    <string name="website_restore" translatable="false">https://www.opensongapp.com/user-manual/songs/restore-from-backup</string>
     <string name="website_scaling" translatable="false">https://www.opensongapp.com/user-manual/display/scaling</string>
     <string name="website_song_add" translatable="false">https://www.opensongapp.com/user-manual/songs/add-songs</string>
     <string name="website_song_camera" translatable="false">https://www.opensongapp.com/user-manual/songs/camera</string>

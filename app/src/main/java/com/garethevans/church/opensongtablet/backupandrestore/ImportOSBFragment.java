@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.DocumentsContract;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,8 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.sqlite.SQLite;
 
 import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.Collator;
@@ -64,6 +67,7 @@ public class ImportOSBFragment extends Fragment {
     private int item;
     private String message;
     private boolean canoverwrite;
+    private File tempDBFile;
 
     private ActivityResultLauncher<Intent> activityResultLauncher;
 
@@ -78,6 +82,7 @@ public class ImportOSBFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = StorageBackupBinding.inflate(inflater,container,false);
         mainActivityInterface.updateToolbar(getString(R.string.import_basic));
+        mainActivityInterface.updateToolbarHelp(getString(R.string.website_restore));
 
         myView.nestedScrollView.setExtendedFabToAnimate(myView.createBackupFAB);
 
@@ -365,11 +370,15 @@ public class ImportOSBFragment extends Fragment {
                         boolean wantit = false;
                         String filename;
                         String filefolder = "";
+                        boolean isDB = false;
                         if (alive) {
                             if (ze.getName().startsWith("_Highlighter")) {
                                 file_uri = mainActivityInterface.getStorageAccess().getUriForItem("Highlighter", "", ze.getName().replace("_Highlighter/",""));
                             } else if (ze.getName().equals(SQLite.NON_OS_DATABASE_NAME)) {
-                                file_uri = mainActivityInterface.getStorageAccess().getUriForItem("Settings","",SQLite.NON_OS_DATABASE_NAME);
+                                // Put the database into our app folder
+                                tempDBFile = new File(requireContext().getExternalFilesDir("Database"), "importedDB.db");
+                                file_uri = Uri.fromFile(tempDBFile);
+                                isDB = true;
                             } else {
                                 file_uri = mainActivityInterface.getStorageAccess().getUriForItem("Songs", "", ze.getName());
                                 if (alive) {
@@ -387,9 +396,9 @@ public class ImportOSBFragment extends Fragment {
                                     (!ze.getName().equals(SQLite.NON_OS_DATABASE_NAME) && checkedFolders.contains(filefolder)) ||
                                     (filefolder.equals("_Highlighter") && myView.includeHighlighter.isChecked());
                         }
-                        if (alive && wantit && (!exists || canoverwrite)) {
+                        if (alive && wantit && (!exists || canoverwrite || isDB)) {
                             // We want it and either it doesn't exist, or we've selected overwriting
-                            // Update the disply
+                            // Update the display
                             zipProgress++;
                             handler.post(() -> {
                                 String name;
@@ -411,8 +420,10 @@ public class ImportOSBFragment extends Fragment {
                                     mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(
                                             false, file_uri,null,"Highlighter","",filename);
                                 } else if (ze.getName().equals(SQLite.NON_OS_DATABASE_NAME)) {
-                                    mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(
-                                            false, file_uri,null,"Settings","",SQLite.NON_OS_DATABASE_NAME);
+                                    // the file_uri is actually pointing to the app folder as we will save it there then SQL insert or replace in the existing DB
+                                    Uri final_file_uri = mainActivityInterface.getStorageAccess().getUriForItem("Settings","",SQLite.NON_OS_DATABASE_NAME);
+                                            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(
+                                            false, final_file_uri,null,"Settings","",SQLite.NON_OS_DATABASE_NAME);
                                 } else {
                                     filename = ze.getName().replace(filefolder, "").replace("/", "");
                                     mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(
@@ -420,7 +431,11 @@ public class ImportOSBFragment extends Fragment {
                                 }
                             }
                             if (alive) {
-                                outputStream = mainActivityInterface.getStorageAccess().getOutputStream(file_uri);
+                                if (ze.getName().equals(SQLite.NON_OS_DATABASE_NAME)) {
+                                    outputStream = new FileOutputStream(tempDBFile);
+                                } else {
+                                    outputStream = mainActivityInterface.getStorageAccess().getOutputStream(file_uri);
+                                }
                             }
 
                             // Write the file
@@ -431,6 +446,7 @@ public class ImportOSBFragment extends Fragment {
                                         outputStream.write(buffer, 0, count);
                                     }
                                 } else {
+                                    Log.d(TAG,"error = "+ze.getName());
                                     error = true;
                                 }
                             } catch (Exception e) {
@@ -445,6 +461,7 @@ public class ImportOSBFragment extends Fragment {
                                     error = true;
                                 }
                             }
+
                             if (error) {
                                 error = false;
                                 if (alive) {
@@ -460,10 +477,21 @@ public class ImportOSBFragment extends Fragment {
                             }
                         }
                     }
+
                     zipInputStream.closeEntry();
                 }
 
                 if (alive) {
+                    // Deal with the database
+                    if (hasPersistentDB && tempDBFile != null) {
+                        // We will use SQL to merge the database to our existing one
+                        // If we are allowing overwrite, we use REPLACE, if not we use INSERT OR IGNORE
+                        String dbPath = tempDBFile.getPath();
+                        Log.d(TAG,"dbPath="+dbPath);
+                        mainActivityInterface.getNonOpenSongSQLiteHelper().importDB(dbPath,canoverwrite);
+                        tempDBFile = null;
+                    }
+
                     handler.post(() -> {
                         mainActivityInterface.allowNavigationUp(true);
                         myView.progressBar.setVisibility(View.GONE);

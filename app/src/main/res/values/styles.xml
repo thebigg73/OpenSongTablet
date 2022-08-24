@@ -17,12 +17,12 @@
         <item name="android:textColorHighlight">@color/colorSecondary</item>
 
         <!-- Default colors -->
-        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimary">@color/colorSecondary</item>
         <item name="colorAccent">@color/colorSecondary</item>
         <item name="colorOnPrimary">@color/white</item>
         <item name="colorSecondary">@color/colorSecondary</item>
         <item name="colorOnSecondary">@color/white</item>
-        <item name="colorSurface">@color/colorPrimary</item>
+        <item name="colorSurface">@color/colorSecondary</item>
         <item name="colorOnSurface">@color/white</item>
         <item name="colorOnBackground">@color/white</item>
         <item name="colorError">@color/red</item>
@@ -111,9 +111,6 @@
         <item name="android:inputType">none</item>
         <item name="background">@null</item>
     </style>
-
-
-
 
     <!-- The material switch -->
     <style name="Switch" parent="Widget.MaterialComponents.CompoundButton.Switch">
@@ -339,7 +336,7 @@
         <item name="materialThemeOverlay">@style/MediaRouterOverlay</item>
         <item name="colorPrimaryDark">@color/colorAltPrimary</item>
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorAccent">@color/yellow</item>
+        <item name="colorAccent">@color/colorAltSecondary</item>
     </style>
 
     <style name="MediaRouterOverlay" parent="">

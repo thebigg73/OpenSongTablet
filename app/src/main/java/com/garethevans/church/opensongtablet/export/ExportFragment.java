@@ -82,6 +82,7 @@ public class ExportFragment extends Fragment {
 
         // Check if we are exporting a set
         if (mainActivityInterface.getWhattodo().startsWith("exportset:")) {
+            mainActivityInterface.updateToolbarHelp(getString(R.string.website_export_set));
             setToExport = mainActivityInterface.getWhattodo().replace("exportset:","");
 
             // Set the default
@@ -110,6 +111,7 @@ public class ExportFragment extends Fragment {
 
         } else {
             // Hide the options based on the song format
+            mainActivityInterface.updateToolbarHelp(getString(R.string.website_export_song));
             if (mainActivityInterface.getSong().getFiletype().equals("IMG") ||
             mainActivityInterface.getSong().getFiletype().equals("PDF")) {
                 myView.chordPro.setVisibility(View.GONE);

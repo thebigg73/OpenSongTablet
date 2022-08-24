@@ -86,7 +86,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:visibility="gone">
+                android:visibility="visible">
 
                 <com.google.android.material.textview.MaterialTextView
                     style="@style/largeText"
@@ -100,43 +100,43 @@
                     android:layout_height="match_parent"
                     android:checkedButton="@+id/pdf">
 
-                    <androidx.appcompat.widget.AppCompatRadioButton
+                    <com.google.android.material.radiobutton.MaterialRadioButton
                         android:id="@+id/pdf"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/pdf" />
 
-                    <androidx.appcompat.widget.AppCompatRadioButton
+                    <com.google.android.material.radiobutton.MaterialRadioButton
                         android:id="@+id/image"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/image" />
 
-                    <androidx.appcompat.widget.AppCompatRadioButton
+                    <com.google.android.material.radiobutton.MaterialRadioButton
                         android:id="@+id/openSongApp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/export_ost" />
 
-                    <androidx.appcompat.widget.AppCompatRadioButton
+                    <com.google.android.material.radiobutton.MaterialRadioButton
                         android:id="@+id/openSong"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/export_desktop" />
 
-                    <androidx.appcompat.widget.AppCompatRadioButton
+                    <com.google.android.material.radiobutton.MaterialRadioButton
                         android:id="@+id/onSong"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/export_onsong" />
 
-                    <androidx.appcompat.widget.AppCompatRadioButton
+                    <com.google.android.material.radiobutton.MaterialRadioButton
                         android:id="@+id/chordPro"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/export_chordpro" />
 
-                    <androidx.appcompat.widget.AppCompatRadioButton
+                    <com.google.android.material.radiobutton.MaterialRadioButton
                         android:id="@+id/text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

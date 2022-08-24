@@ -289,6 +289,7 @@ public class SetActions {
         finishChangingSet();
     }
 
+    @SuppressWarnings("ComparatorCombinators")
     public void sortSet() {
         // Shuffle the currentSet item array - all entries are like $$_folder/filename_**key**__$$
         Comparator<String> comparator = (o1, o2) -> o1.substring(o1.indexOf("/")).compareTo(o2.substring(o2.indexOf("/")));

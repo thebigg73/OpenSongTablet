@@ -98,8 +98,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_margin="24dp"
-        app:icon="@drawable/save"
+        app:icon="@drawable/database_import"
         android:text="@string/import_basic"
         app:useCompatPadding="true" />
 

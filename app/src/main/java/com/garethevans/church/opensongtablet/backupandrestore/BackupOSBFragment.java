@@ -14,6 +14,7 @@ import android.widget.CheckBox;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
@@ -60,6 +61,7 @@ public class BackupOSBFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = StorageBackupBinding.inflate(inflater,container,false);
         mainActivityInterface.updateToolbar(getString(R.string.backup));
+        mainActivityInterface.updateToolbarHelp(getString(R.string.website_backup));
 
         setupViews();
 
@@ -93,11 +95,13 @@ public class BackupOSBFragment extends Fragment {
                 }
 
                 myView.createBackupFAB.setText(getString(R.string.export));
+                myView.createBackupFAB.setIcon(ContextCompat.getDrawable(requireContext(),R.drawable.database_export));
                 myView.createBackupFAB.setOnClickListener(v -> doSave());
+
+                // Set the persistent database to backup by default
+                myView.includePersistentDB.setChecked(true);
             });
 
-            // Set the persistent database to backup by default
-            myView.includePersistentDB.setChecked(true);
 
         });
 
