@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.print.PrintManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,15 +43,17 @@ public class ExportFragment extends Fragment {
     private int headerLayoutWidth, headerLayoutHeight;
     private String setToExport = null;
     private int songsToAdd, songsProcessed;
-    boolean openSong = false;
-    boolean openSongApp = false;
-    boolean pdf = false;
-    boolean onsong = false;
-    boolean openSongSet = false;
-    boolean openSongAppSet = false;
-    boolean includeSongs = false;
-    boolean textSet = false;
-    volatile boolean processingSetPDFs = false;
+    private boolean openSong = false;
+    private boolean openSongApp = false;
+    private boolean pdf = false;
+    private boolean print = false;
+    private boolean onsong = false;
+    private boolean openSongSet = false;
+    private boolean openSongAppSet = false;
+    private boolean includeSongs = false;
+    private boolean textSet = false;
+    private volatile boolean processingSetPDFs = false;
+    private String[] location;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -105,6 +108,7 @@ public class ExportFragment extends Fragment {
             myView.image.setVisibility(View.GONE);
             myView.text.setVisibility(View.GONE);
             myView.chordPro.setVisibility(View.GONE);
+            myView.print.setVisibility(View.GONE);
 
             // Now show the set view
             myView.setOptionsLayout.setVisibility(View.VISIBLE);
@@ -163,6 +167,7 @@ public class ExportFragment extends Fragment {
         openSongAppSet = myView.openSongAppSet.isChecked();
         includeSongs = myView.includeSongs.isChecked();
         textSet = myView.textSet.isChecked();
+        print = myView.print.isChecked();
 
         // Do this in a new Thread
         ExecutorService executorService = Executors.newSingleThreadExecutor();
@@ -216,7 +221,7 @@ public class ExportFragment extends Fragment {
                         // Especially is we have selected more than one set)
                         if (!songsAlreadyAdded.toString().contains(id)) {
                             songsAlreadyAdded.append("\n").append(id);
-                            String[] location = mainActivityInterface.getExportActions().getFolderAndFile(id);
+                            location = mainActivityInterface.getExportActions().getFolderAndFile(id);
                             updateProgressText(location[1]);
                             boolean likelyXML = !location[1].contains(".") || location[1].toLowerCase(Locale.ROOT).endsWith(".xml");
                             boolean likelyPDF = location[1].toLowerCase(Locale.ROOT).endsWith(".pdf");
@@ -263,7 +268,7 @@ public class ExportFragment extends Fragment {
                                                     sectionViewsPDF, sectionViewWidthsPDF,
                                                     sectionViewHeightsPDF, headerLayoutPDF,
                                                     headerLayoutWidth, headerLayoutHeight,
-                                                    location[1] + ".pdf"));
+                                                    location[1] + ".pdf",null));
                                             listen.removeObservers(getViewLifecycleOwner());
                                             songsProcessed++;
                                             processingSetPDFs = false;
@@ -317,6 +322,19 @@ public class ExportFragment extends Fragment {
 
                 } else if (myView.image.isChecked()) {
                     initiateShare("image/*");
+
+                } else if (myView.print.isChecked()) {
+                    // Create PDF song on the fly
+                    handler.post(() -> {
+                        listen.setValue(false); //Initilize with a value
+                        createOnTheFly(mainActivityInterface.getSong());
+                        listen.observe(getViewLifecycleOwner(), isDone -> {
+                            if (isDone) {
+                                listen.removeObservers(getViewLifecycleOwner());
+                                initiateShare("print");
+                            }
+                        });
+                    });
                 }
             }
         });
@@ -352,7 +370,7 @@ public class ExportFragment extends Fragment {
                 // Create a PDF on the fly
                 uri = mainActivityInterface.getMakePDF().createTextPDF(
                         sectionViewsPDF, sectionViewWidthsPDF, sectionViewHeightsPDF, headerLayoutPDF,
-                        headerLayoutWidth, headerLayoutHeight, exportFilename);
+                        headerLayoutWidth, headerLayoutHeight, exportFilename, null);
 
             } else if (type.equals("text/xml") && myView.openSongApp.isChecked()) {
                 // Make a copy of the file as an .ost
@@ -386,12 +404,18 @@ public class ExportFragment extends Fragment {
                 uri = getExportUri(mainActivityInterface.getSong(),".txt");
                 exportFilename = getExportFilename(mainActivityInterface.getSong(),".txt");
                 mainActivityInterface.getStorageAccess().doStringWriteToFile("Export","",exportFilename,content);
+
             }
         }
         Intent intent = mainActivityInterface.getExportActions().setShareIntent(content,type,uri,uris);
         Handler handler = new Handler(Looper.getMainLooper());
         handler.post(() -> {
-            startActivity(Intent.createChooser(intent,getString(R.string.export_current_song)));
+            if (type.equals("print") && myView.print.isChecked()) {
+                // Open the printer intent
+                doPrint();
+            } else {
+                startActivity(Intent.createChooser(intent, getString(R.string.export_current_song)));
+            }
             myView.progressBar.setVisibility(View.GONE);
             myView.shareButton.setEnabled(true);
         });
@@ -509,5 +533,21 @@ public class ExportFragment extends Fragment {
             String progressText = getString(R.string.processing) + ": " + text;
             myView.progressText.setText(progressText);
         });
+    }
+
+    private void doPrint() {
+        // Get a PrintManager instance
+        PrintManager printManager = (PrintManager) requireActivity().getSystemService(Context.PRINT_SERVICE);
+
+        // Set job name, which will be displayed in the print queue
+        String jobName = requireActivity().getString(R.string.app_name) + " Document";
+
+        // Start a print job, passing in a PrintDocumentAdapter implementation
+        // to handle the generation of a print document
+        PrinterAdapter printerAdapter = new PrinterAdapter(requireActivity());
+        printerAdapter.updateSections(sectionViewsPDF, sectionViewWidthsPDF, sectionViewHeightsPDF,
+                headerLayoutPDF, headerLayoutWidth, headerLayoutHeight, getString(R.string.song));
+        mainActivityInterface.getMakePDF().setPreferedAttributes();
+        printManager.print(jobName, printerAdapter,mainActivityInterface.getMakePDF().getPrintAttributes());
     }
 }

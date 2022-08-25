@@ -847,4 +847,5 @@
     <string name="permissions_refused">Les autorisations ont été refusées et peuvent devoir être accordées manuellement à partir des paramètres Android si vous ne voyez plus l\'option</string>
     <string name="quicklaunch_button7">Bouton 7</string>
     <string name="quicklaunch_button8">Bouton 8</string>
+    <string name="print">Imprimer</string>
 </resources>

@@ -837,17 +837,17 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private void showMenuItems(boolean show) {
         if (show) {
             if (screenMirror!=null) {
-                screenMirror.setVisibility(View.VISIBLE);
+                screenMirror.post(() -> screenMirror.setVisibility(View.VISIBLE));
             }
-            myView.myToolbar.showClock(true);
+            myView.myToolbar.post(() -> myView.myToolbar.showClock(true));
             if (batteryStatus!=null) {
                 batteryStatus.showBattery(true);
             }
         } else {
             if (screenMirror!=null) {
-                screenMirror.setVisibility(View.GONE);
+                screenMirror.post(() -> screenMirror.setVisibility(View.GONE));
             }
-            myView.myToolbar.showClock(false);
+            myView.myToolbar.post(() -> myView.myToolbar.showClock(false));
             if (batteryStatus!=null) {
                 batteryStatus.showBattery(false);
             }

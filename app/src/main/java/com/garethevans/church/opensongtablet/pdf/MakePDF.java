@@ -20,8 +20,8 @@ import java.util.ArrayList;
 public class MakePDF {
 
     private final MainActivityInterface mainActivityInterface;
-    private final int margin = 36;            // Based on 1/72 of an inch:  54/72  * 2.54 = 1cm
-    private final int footerHeight = 12;      // Based on 1/72 of an inch:  90/72  * 2.54 = 2.0cm
+    private final float margin_cm = 1.3f;           // 1.3cm
+    private final float footerHeight_cm = 0.5f;     // 0.5cm
     private int headerHeight, docWidth, docHeight, availableHeight, pageNum=1, totalPages=1;
     private Paint linePaint, footerPaint;
     private PdfDocument pdfDocument;
@@ -29,15 +29,18 @@ public class MakePDF {
     private float sectionScaling;
     private Canvas pageCanvas;
     private final String TAG = "MakePDF";
+    private PrintAttributes printAttributes;
 
     public MakePDF(Context c) {
         mainActivityInterface = (MainActivityInterface) c;
     }
     public Uri createTextPDF(ArrayList<View> sectionViews, ArrayList<Integer> sectionWidths,
                              ArrayList<Integer> sectionHeights, LinearLayout headerLayout,
-                             int headerLayoutWidth, int headerLayoutHeight, String exportFilename) {
+                             int headerLayoutWidth, int headerLayoutHeight, String exportFilename,
+                             PrintAttributes printAttributes) {
 
         Log.d(TAG,"exportFilename="+exportFilename);
+        this.printAttributes = printAttributes;
 
         // Set the paint values
         setPaintDefaults();
@@ -66,7 +69,6 @@ public class MakePDF {
         Uri uri = getPDFUri(exportFilename);
         //pdfDocument.finishPage(page);
         saveThePDF(uri);
-
         return uri;
     }
 
@@ -88,7 +90,22 @@ public class MakePDF {
 
     // Initialise the sizes and page numbers
     private void initialiseSizes() {
-        String pdfSize = mainActivityInterface.getPreferences().getMyPreferenceString("pdfSize","A4");
+
+        if (printAttributes==null) {
+            setPreferedAttributes();
+        } else {
+            docWidth = (int) (((float)printAttributes.getMediaSize().getWidthMils()/1000f)*72f);
+            docHeight = (int) (((float)printAttributes.getMediaSize().getHeightMils()/1000f)*72f);
+        }
+
+        pageNum = 1;
+        totalPages = 1;
+
+    }
+
+    public void setPreferedAttributes() {
+        String pdfSize = mainActivityInterface.getPreferences().getMyPreferenceString("pdfSize", "A4");
+
         PrintAttributes.MediaSize mediaSize;
         switch (pdfSize) {
             case "A4":
@@ -99,10 +116,9 @@ public class MakePDF {
                 mediaSize = PrintAttributes.MediaSize.NA_LETTER;
                 break;
         }
+        printAttributes = new PrintAttributes.Builder().setMediaSize(mediaSize).build();
         docWidth =  (int) (((float)mediaSize.getWidthMils()/1000.0f)*72.0f);
         docHeight = (int) (((float)mediaSize.getHeightMils()/1000.0f)*72.0f);
-        pageNum = 1;
-        totalPages = 1;
     }
 
     // Create and start the new page based on the current page number
@@ -121,27 +137,27 @@ public class MakePDF {
         int headerWidth = headerLayoutWidth;
         headerHeight = headerLayoutHeight;
         float headerScaling;
-        if (headerWidth < (docWidth - (margin * 2))) {
-            // Don't make it any bigger!
-            headerScaling = 1.0f;
-        } else {
-            headerScaling = ((float) (docWidth - (margin * 2))) / (float) headerWidth;
-            headerWidth = docWidth - (margin * 2);
-            headerHeight = (int) ((float) headerHeight * headerScaling);
-        }
+        // Get the maximum scale possible by the width of the document
+        float maxWidthScaling = ((float) (docWidth - (cmToPx(margin_cm) * 2))) / (float) headerWidth;
+        // Get the maximum scale possible by the preferred maximum header height (3.5cm)
+        float maxHeightScaling = ((float) cmToPx(3.5f) / (float) headerHeight);
+        headerScaling = Math.min(maxWidthScaling,maxHeightScaling);
+        headerWidth = (int) ((float)headerWidth * headerScaling);
+        headerHeight = (int) ((float)headerHeight * headerScaling);
+
 
         // Do any scaling
         scaleThisView(headerLayout, headerWidth, headerHeight, headerScaling);
 
         // Save the canvas, translate for correct write positioning, then restore the canvas state/position
         pageCanvas.save();
-        pageCanvas.translate(margin, margin);
+        pageCanvas.translate(cmToPx(margin_cm),cmToPx(margin_cm));
         pageCanvas.scale(headerScaling,headerScaling);
         headerLayout.draw(pageCanvas);
         pageCanvas.restore();
 
         // Draw a horizontal line under the heading
-        drawHorizontalLine(headerHeight + margin);
+        drawHorizontalLine(headerHeight + cmToPx(margin_cm));
         headerHeight = headerHeight + 4;
     }
 
@@ -161,8 +177,8 @@ public class MakePDF {
         // The height is the document height minus 2x margin (top and bottom) and header and footer
         // The header can vary depending on the content, but the footer is always the same
 
-        int availableWidth = docWidth - (margin * 2);
-        availableHeight = docHeight - (margin * 2)  - headerHeight - footerHeight;
+        int availableWidth = docWidth - (cmToPx(margin_cm) * 2);
+        availableHeight = docHeight - (cmToPx(margin_cm) * 2) - headerHeight - cmToPx(footerHeight_cm);
 
         // We need to make sure that at least all sections can fit on the available page
         // If any are bigger, we need to scale down
@@ -199,21 +215,21 @@ public class MakePDF {
         Rect bounds = new Rect();
         String string = "Prepared by OpenSongApp (https://www.opensongapp.com)";
         footerPaint.getTextBounds(string,0,string.length(),bounds);
-        pageCanvas.drawText(string,margin,docHeight-margin-footerHeight,footerPaint);
+        pageCanvas.drawText(string,cmToPx(margin_cm),docHeight-cmToPx(margin_cm)-cmToPx(footerHeight_cm),footerPaint);
 
         // The page numbering if there is more than 1 page needed
         if (totalPages>1) {
             bounds = new Rect();
             String pageString = "Page " + pageNum + "/" + totalPages;
             footerPaint.getTextBounds(pageString,0,pageString.length(),bounds);
-            pageCanvas.drawText(pageString,docWidth-margin-bounds.width(),docHeight-margin-footerHeight,footerPaint);
+            pageCanvas.drawText(pageString,docWidth-cmToPx(margin_cm)-bounds.width(),docHeight-cmToPx(margin_cm)-cmToPx(footerHeight_cm),footerPaint);
         }
 
         // Draw a line
-        drawHorizontalLine(docHeight-margin-footerHeight-12);
+        drawHorizontalLine(docHeight-cmToPx(margin_cm)-cmToPx(footerHeight_cm)-12);
     }
     private void drawHorizontalLine(int y) {
-        pageCanvas.drawLine(margin, y, docWidth - margin, y, linePaint);
+        pageCanvas.drawLine(cmToPx(margin_cm), y, docWidth - cmToPx(margin_cm), y, linePaint);
     }
 
     // Add the song either from the section views or creating them manually
@@ -223,7 +239,7 @@ public class MakePDF {
         // Now add the views one at a time.  If necessary, we create a new page as we go
 
         // Set our starting positions and sizes
-        float ypos = headerHeight + margin;
+        float ypos = headerHeight + cmToPx(margin_cm);
         int spaceStillAvailable = availableHeight;
 
         // Go through views one at a time
@@ -243,7 +259,7 @@ public class MakePDF {
                 // Start a new page, but we no longer need a header, so add that back to the size
                 startPage();
                 spaceStillAvailable = availableHeight + headerHeight - newHeight;
-                ypos = margin;
+                ypos = cmToPx(margin_cm);
             } else {
                 spaceStillAvailable = spaceStillAvailable - newHeight;
             }
@@ -253,7 +269,7 @@ public class MakePDF {
 
             // Save, translate to account for new position, write, then restore the page canvas
             pageCanvas.save();
-            pageCanvas.translate(margin, ypos);
+            pageCanvas.translate(cmToPx(margin_cm),ypos);
             pageCanvas.scale(sectionScaling,sectionScaling);
             view.draw(pageCanvas);
             pageCanvas.restore();
@@ -298,5 +314,23 @@ public class MakePDF {
         // Remove it as we want to create a new version!
         mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, uri, null, "Export", "", exportFilename);
         return uri;
+    }
+
+    public PdfDocument getPdfDocument() {
+        return pdfDocument;
+    }
+    public PrintAttributes getPrintAttributes() {
+        return printAttributes;
+    }
+    public int getDocWidth() {
+        return docWidth;
+    }
+    public int getDocHeight() {
+        return docHeight;
+    }
+
+    private int cmToPx(float cm) {
+        // Convert cm to inches by dividing by 2.54, the to dpi by multiplying by 72 (resolution)
+        return Math.round((cm/2.54f)*72);
     }
 }

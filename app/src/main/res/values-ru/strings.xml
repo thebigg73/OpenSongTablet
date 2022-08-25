@@ -847,4 +847,5 @@
     <string name="permissions_refused">Разрешения были отклонены, и, возможно, потребуется предоставить их вручную в настройках Android, если вы снова не видите эту опцию.</string>
     <string name="quicklaunch_button7">Кнопка 7</string>
     <string name="quicklaunch_button8">Кнопка 8</string>
+    <string name="print">Распечатать</string>
 </resources>

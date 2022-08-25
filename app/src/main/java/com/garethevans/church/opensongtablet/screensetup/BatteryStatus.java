@@ -23,7 +23,7 @@ public class BatteryStatus extends BroadcastReceiver {
 
     private float batteryTextSize, charge;
     private int batteryDialThickness;
-    private int toolbarHeight = 0;
+    private int toolbarHeight;
     private boolean batteryTextOn, batteryDialOn;
     private final TextView batteryCharge;
     private final ImageView batteryImage;
@@ -200,14 +200,14 @@ public class BatteryStatus extends BroadcastReceiver {
         // Only show if this is our preference
         if (show) {
             if (batteryDialOn) {
-                batteryImage.setVisibility(View.VISIBLE);
+                batteryImage.post(() -> batteryImage.setVisibility(View.VISIBLE));
             }
             if (batteryTextOn) {
-                batteryCharge.setVisibility(View.VISIBLE);
+                batteryImage.post(() -> batteryCharge.setVisibility(View.VISIBLE));
             }
         } else {
-            batteryImage.setVisibility(View.GONE);
-            batteryCharge.setVisibility(View.GONE);
+            batteryImage.post(() -> batteryImage.setVisibility(View.GONE));
+            batteryCharge.post(() -> batteryCharge.setVisibility(View.GONE));
         }
     }
 

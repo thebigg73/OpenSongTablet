@@ -68,6 +68,7 @@ public class ImportIOSFragment extends Fragment {
 
         // Update the title
         mainActivityInterface.updateToolbar(getString(R.string.onsong_import));
+        mainActivityInterface.updateToolbarHelp(getString(R.string.website_import_onsongbackup));
 
         myView.filename.setText(mainActivityInterface.getImportFilename());
 
