@@ -58,6 +58,7 @@ public class MidiSongBottomSheet extends BottomSheetDialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         myView = BottomSheetSongMidiBinding.inflate(inflater,container,false);
         myView.dialogHeading.setClose(this);
+        myView.dialogHeading.setWebHelp(mainActivityInterface,getString(R.string.website_midi_song));
 
         // Get the midi device
         getMidiDeviceName();

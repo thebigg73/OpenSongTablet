@@ -25,6 +25,7 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.preferences.TextInputBottomSheet;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class CustomChordsFragment extends Fragment {
 
@@ -34,9 +35,12 @@ public class CustomChordsFragment extends Fragment {
             customChordsName;
     private ArrayList<String> chordsCodeForInstrument, chordsNameForInstrument,
             chordsFretForInstrument, chordsFingeringForInstrument;
-    private String currentCode;
+    // currentCode is updated as notes are changed.  defaultCode is the loaded/initial notes
+    private String currentCode, defaultCode;
     private ArrayList<Boolean> pianoKeysOn;
-    int selectedIndex = 0;
+    private boolean delete = false;
+    private int selectedIndex = 0;
+    private final String TAG = "CustomChordsFrag";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -50,7 +54,10 @@ public class CustomChordsFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         myView = SettingsChordsCustomBinding.inflate(inflater, container, false);
         mainActivityInterface.updateToolbar(getString(R.string.custom_chords));
+        mainActivityInterface.updateToolbarHelp(getString(R.string.website_chords_custom));
 
+        myView.instrument.setFocusable(false);
+        myView.chordName.setFocusable(false);
         // Get the chords in the song
         getChordsInSong();
 
@@ -69,21 +76,16 @@ public class CustomChordsFragment extends Fragment {
         // Build the guitar frets from the child layouts
         // Show the correct chord diagram (or hide if no custom chord)
         // Build the chord
-        if (!myView.chordName.getText().toString().isEmpty()) {
-            if (isPiano()) {
-                adjustPianoVisibility();
-                vtoPiano();
-                buildPiano();
-                displayPianoChord();
-            } else {
-                adjustGuitarVisibility();
-                vtoGuitar();
-                buildGuitarFrets();
-                displayGuitarChord();
-            }
+        if (isPiano()) {
+            adjustPianoVisibility();
+            vtoPiano();
+            buildPiano();
+            displayPianoChord();
         } else {
-            myView.guitarChordLayout.setVisibility(View.GONE);
-            myView.pianoChordLayout.piano.setVisibility(View.GONE);
+            adjustGuitarVisibility();
+            vtoGuitar();
+            buildGuitarFrets();
+            displayGuitarChord();
         }
 
         canShowSave();
@@ -190,6 +192,7 @@ public class CustomChordsFragment extends Fragment {
                 getPrefFromInstrument(myView.instrument.getText().toString());
         for (int i=0; i<customChordCode.size(); i++) {
             if (customChordCode.get(i).contains("_"+chordPref+"_")) {
+
                 chordsCodeForInstrument.add(customChordCode.get(i));
                 chordsNameForInstrument.add(customChordsName.get(i));
                 chordsFretForInstrument.add(customChordsFret.get(i));
@@ -216,6 +219,7 @@ public class CustomChordsFragment extends Fragment {
             currentCode = "";
             selectedIndex = -1;
         }
+        defaultCode = currentCode;
     }
 
     // Listeners for the menus and options
@@ -266,9 +270,7 @@ public class CustomChordsFragment extends Fragment {
                 if (editable!=null && !editable.toString().isEmpty()) {
                     selectedIndex = chordsNameForInstrument.indexOf(editable.toString());
                     if (isPiano()) {
-                        // Set the VTO for when the view is ready
-                        vtoPiano();
-                        // Build the piano view
+                        // Build the piano view which includes the vto
                         buildPiano();
                         // Build the chord
                         displayPianoChord();
@@ -295,6 +297,7 @@ public class CustomChordsFragment extends Fragment {
             if (customChordsName.size()>0 && !myView.chordName.getText().toString().isEmpty()) {
                 // Simply set this chord code to empty, then trigger the save which replaces it with nothing!
                 myView.customCode.setHint("");
+                delete = true;
                 doSave();
             }
         });
@@ -412,18 +415,20 @@ public class CustomChordsFragment extends Fragment {
                     DisplayMetrics displayMetrics = new DisplayMetrics();
                     requireActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
                     int width = displayMetrics.widthPixels;
-                    float scale = ((float) width / 2f) / (float) childWidth;
-                    myView.guitarChordLayout.setGravity(Gravity.CENTER | Gravity.TOP);
-                    ViewGroup.LayoutParams layoutParams = myView.guitarChordLayout.getLayoutParams();
-                    layoutParams.height = (int) (childHeight * scale);
-                    myView.guitarChordLayout.setPivotX(childWidth / 2f);
-                    myView.guitarChordLayout.setPivotY(0);
-                    myView.guitarChordLayout.setScaleX(scale);
-                    myView.guitarChordLayout.setScaleY(scale);
-                    myView.guitarChordLayout.setLayoutParams(layoutParams);
-                    myView.guitarChordLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                    myView.layout.invalidate();
-                    myView.guitarChordLayout.setVisibility(View.VISIBLE);
+                    if (childWidth>0) {
+                        float scale = ((float) width / 2f) / (float) childWidth;
+                        myView.guitarChordLayout.setGravity(Gravity.CENTER | Gravity.TOP);
+                        ViewGroup.LayoutParams layoutParams = myView.guitarChordLayout.getLayoutParams();
+                        layoutParams.height = (int) (childHeight * scale);
+                        myView.guitarChordLayout.setPivotX(childWidth / 2f);
+                        myView.guitarChordLayout.setPivotY(0);
+                        myView.guitarChordLayout.setScaleX(scale);
+                        myView.guitarChordLayout.setScaleY(scale);
+                        myView.guitarChordLayout.setLayoutParams(layoutParams);
+                        myView.guitarChordLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                        myView.layout.invalidate();
+                        myView.guitarChordLayout.setVisibility(View.VISIBLE);
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -574,6 +579,7 @@ public class CustomChordsFragment extends Fragment {
                             getPrefFromInstrument(myView.instrument.getText().toString()) +
                     "_" + myView.chordName.getText().toString();
             myView.customCode.setHint(codeString);
+            currentCode = codeString;
             canShowSave();
         }
     }
@@ -581,6 +587,7 @@ public class CustomChordsFragment extends Fragment {
     // Deal with the piano display
     private void buildPiano() {
         // This measures the piano view and scales
+        resetPianoNotes();
         setPianoListeners();
         vtoPiano();
     }
@@ -598,7 +605,8 @@ public class CustomChordsFragment extends Fragment {
         if (fingering.endsWith(",")) {
             fingering = fingering.substring(0,fingering.lastIndexOf(","));
         }
-        myView.customCode.setHint(fingering + "_p_" + myView.chordName.getText());
+        currentCode = fingering + "_p_" + myView.chordName.getText();
+        myView.customCode.setHint(currentCode);
         // Check is save should be shown
         canShowSave();
     }
@@ -625,9 +633,10 @@ public class CustomChordsFragment extends Fragment {
             if (which >= 0) {
                 // Update the code
                 currentCode = chordsCodeForInstrument.get(which);
-                myView.customCode.setHint(currentCode);
+                defaultCode = currentCode;
+                myView.customCode.setHint(defaultCode);
                 // The piano notes will be in the format of A,C#,E_p
-                String[] notes = customChordsFingering.get(which).split(",");
+                String[] notes = chordsFingeringForInstrument.get(which).split(",");
                 // Go through each note and colour tint the view
                 // Get the starting position for the first note in the array
                 int start = mainActivityInterface.getChordDisplayProcessing().getPianoNotesArray().indexOf(notes[0]);
@@ -644,16 +653,40 @@ public class CustomChordsFragment extends Fragment {
                             // Add the piano key array true value for this key
                             pianoKeysOn.set(x,true);
                             noteToFind++;  // Once we've found them all, this won't get called again
+                        } else if (noteToFind < notes.length) {
+                            mainActivityInterface.getChordDisplayProcessing().tintDrawable(
+                                    myView.pianoChordLayout.piano.findViewById(mainActivityInterface.getChordDisplayProcessing().
+                                            getPianoKeysArray().get(x)),
+                                    mainActivityInterface.getChordDisplayProcessing().
+                                            getPianoNotesArray().get(x), false);
+                            pianoKeysOn.set(x,false);
                         }
                     }
+                } else {
+                    resetPianoNotes();
                 }
             } else {
                 currentCode = "";
                 myView.customCode.setHint("");
+                resetPianoNotes();
             }
         } else {
             currentCode = "";
             myView.customCode.setHint("");
+        }
+    }
+
+    private void resetPianoNotes() {
+        if (pianoKeysOn==null || pianoKeysOn.size()==0) {
+            pianoKeysOn = new ArrayList<>(mainActivityInterface.getChordDisplayProcessing().getPianoNotesArray().size());
+        }
+        for (int x=0; x<mainActivityInterface.getChordDisplayProcessing().getPianoKeysArray().size(); x++) {
+            mainActivityInterface.getChordDisplayProcessing().tintDrawable(
+                    myView.pianoChordLayout.piano.findViewById(mainActivityInterface.getChordDisplayProcessing().
+                            getPianoKeysArray().get(x)), mainActivityInterface.getChordDisplayProcessing().getPianoNotesArray().get(x), false);
+            if (pianoKeysOn.size()>x) {
+                pianoKeysOn.set(x, false);
+            }
         }
     }
 
@@ -691,21 +724,21 @@ public class CustomChordsFragment extends Fragment {
                     DisplayMetrics displayMetrics = new DisplayMetrics();
                     requireActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
                     int width = displayMetrics.widthPixels;
-
                     double padding = Math.ceil(16 * getResources().getDisplayMetrics().density);
-
-                    float scale = ((float) (width - 2 * padding)) / (float) childWidth;
-                    myView.pianoChordLayout.piano.setGravity(Gravity.CENTER | Gravity.TOP);
-                    ViewGroup.LayoutParams layoutParams = myView.pianoChordLayout.piano.getLayoutParams();
-                    layoutParams.height = (int) (childHeight * scale);
-                    myView.pianoChordLayout.piano.setPivotX(childWidth / 2f);
-                    myView.pianoChordLayout.piano.setPivotY(0);
-                    myView.pianoChordLayout.piano.setScaleX(scale);
-                    myView.pianoChordLayout.piano.setScaleY(scale);
-                    myView.pianoChordLayout.piano.setLayoutParams(layoutParams);
-                    myView.pianoChordLayout.piano.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                    myView.layout.invalidate();
-                    myView.pianoChordLayout.piano.setVisibility(View.VISIBLE);
+                    if (childWidth>0) {
+                        float scale = ((float) (width - 2 * padding)) / (float) childWidth;
+                        myView.pianoChordLayout.piano.setGravity(Gravity.CENTER | Gravity.TOP);
+                        ViewGroup.LayoutParams layoutParams = myView.pianoChordLayout.piano.getLayoutParams();
+                        layoutParams.height = (int) (childHeight * scale);
+                        myView.pianoChordLayout.piano.setPivotX(childWidth / 2f);
+                        myView.pianoChordLayout.piano.setPivotY(0);
+                        myView.pianoChordLayout.piano.setScaleX(scale);
+                        myView.pianoChordLayout.piano.setScaleY(scale);
+                        myView.pianoChordLayout.piano.setLayoutParams(layoutParams);
+                        myView.pianoChordLayout.piano.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                        myView.layout.invalidate();
+                        myView.pianoChordLayout.piano.setVisibility(View.VISIBLE);
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -719,7 +752,7 @@ public class CustomChordsFragment extends Fragment {
         // 1. We have a name in the dropdown
         // 2. The current chord code is different to the one loaded up
         boolean name = !myView.chordName.getText().toString().isEmpty();
-        boolean diff = !myView.customCode.getHint().toString().equals(currentCode);
+        boolean diff = !currentCode.equals(defaultCode);
         if (name && diff) {
             myView.save.show();
         } else {
@@ -728,21 +761,39 @@ public class CustomChordsFragment extends Fragment {
     }
     private void doSave() {
         // Replace the currently edited chord
+        // Remove the default code (original)
+        if (!currentCode.equals(defaultCode)) {
+            customChordCode.remove(defaultCode);
+        }
         int position = customChordCode.indexOf(currentCode);
         if (position>-1) {
-            customChordCode.set(position, myView.customCode.getHint().toString());
-        } else if (myView.customCode.getHint()!=null && !myView.customCode.getText().toString().isEmpty()){
-            customChordCode.add(0,myView.customCode.getHint().toString());
+            if (delete) {
+                delete = false;
+                customChordCode.set(position, "");
+            } else {
+                customChordCode.set(position, currentCode);
+            }
+        } else if (currentCode!=null && !currentCode.isEmpty()){
+            if (!delete) {
+                customChordCode.add(0, currentCode);
+            }
         }
 
         // Go through the arrayLists and build the custom chords
         StringBuilder customChordText = new StringBuilder();
+        // Remove duplicates
+        HashSet<String> hashSet = new HashSet<>(customChordCode);
+        customChordCode.clear();
+        customChordCode.addAll(hashSet);
         for (String code:customChordCode) {
-            customChordText.append(code).append(" ");
+            if (!code.trim().isEmpty()) {
+                customChordText.append(code).append(" ");
+            }
         }
         mainActivityInterface.getSong().setCustomChords(customChordText.toString().trim());
         mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong());
         currentCode = "";
+
 
         // Load the chords in the song back up as a custom chord might fix a chord not in the database
         getChordsInSong();
@@ -778,7 +829,6 @@ public class CustomChordsFragment extends Fragment {
                 mainActivityInterface.getShowToast().doIt(getString(R.string.custom_chord_exists));
             } else {
                 // Build a default chord
-                String defaultCode;
                 if (isPiano()) {
                     defaultCode = instrCode;
                 } else {
@@ -791,7 +841,8 @@ public class CustomChordsFragment extends Fragment {
 
                 // Set the new code to the code hint and trigger the save
                 // Because it doesn't match the currentCode, it won't overwrite anything
-                currentCode = "new_chord";
+                //currentCode = "new_chord";
+                currentCode = defaultCode;
                 myView.customCode.setHint(defaultCode);
                 doSave();
             }

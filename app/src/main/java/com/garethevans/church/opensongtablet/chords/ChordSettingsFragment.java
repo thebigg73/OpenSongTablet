@@ -31,6 +31,7 @@ public class ChordSettingsFragment extends DialogFragment {
         myView = SettingsChordsBinding.inflate(inflater,container,false);
 
         mainActivityInterface.updateToolbar(getString(R.string.chords));
+        mainActivityInterface.updateToolbarHelp(getString(R.string.website_chords));
 
         // Set up listeners
         setupListeners();

@@ -40,6 +40,7 @@ public class ChordFormatFragment extends Fragment {
         myView = SettingsChordsFormatBinding.inflate(inflater,container,false);
 
         mainActivityInterface.updateToolbar(getString(R.string.chord_settings));
+        mainActivityInterface.updateToolbarHelp(getString(R.string.website_chords_settings));
 
         // Set the initial values
         setValues();

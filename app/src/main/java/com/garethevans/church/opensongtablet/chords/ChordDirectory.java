@@ -1,7 +1,5 @@
 package com.garethevans.church.opensongtablet.chords;
 
-import android.util.Log;
-
 public class ChordDirectory {
 
     private final String TAG = "ChordDirectory";
@@ -123,7 +121,6 @@ public class ChordDirectory {
         // Now we can remove the $ sign
         chordtoworkon = chordtoworkon.replace("$", "");
 
-        Log.d(TAG,"Simplified chord: "+chordtoworkon);
         return chordtoworkon;
     }
 

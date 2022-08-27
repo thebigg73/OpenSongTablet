@@ -67,6 +67,7 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
         myView = BottomSheetTransposeBinding.inflate(inflater,container,false);
 
         myView.dialogHeading.setText(getString(R.string.transpose));
+        myView.dialogHeading.setWebHelp(mainActivityInterface,getString(R.string.website_chords_transpose));
         myView.dialogHeading.setClose(this);
 
         // Detect chord format - done on song load, but a recheck here incase the user changed the song

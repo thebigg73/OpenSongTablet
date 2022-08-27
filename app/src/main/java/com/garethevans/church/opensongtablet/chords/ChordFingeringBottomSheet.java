@@ -52,6 +52,7 @@ public class ChordFingeringBottomSheet extends BottomSheetDialogFragment {
         myView = BottomSheetChordsFingeringBinding.inflate(inflater, container, false);
 
         myView.dialogHeader.setClose(this);
+        myView.dialogHeader.setWebHelp(mainActivityInterface,getString(R.string.website_chords_fingering));
 
         // Initialise the chord directory and processing helpers
 
