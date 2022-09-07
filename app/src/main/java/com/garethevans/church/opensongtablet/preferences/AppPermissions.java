@@ -24,7 +24,7 @@ public class AppPermissions {
     // Nearby
     public String[] getNearbyPermissions() {
         if (Build.VERSION.SDK_INT>=33) {
-            return new String[] {Manifest.permission_group.NEARBY_DEVICES};
+            return new String[] {Manifest.permission.NEARBY_WIFI_DEVICES};
         } else if (Build.VERSION.SDK_INT>30) {
             return new String[] {Manifest.permission.BLUETOOTH_SCAN, Manifest.permission.BLUETOOTH_ADVERTISE,
                     Manifest.permission.BLUETOOTH_CONNECT, Manifest.permission.ACCESS_FINE_LOCATION};

@@ -289,10 +289,17 @@ public class SetActions {
         finishChangingSet();
     }
 
-    @SuppressWarnings("ComparatorCombinators")
     public void sortSet() {
         // Shuffle the currentSet item array - all entries are like $$_folder/filename_**key**__$$
-        Comparator<String> comparator = (o1, o2) -> o1.substring(o1.indexOf("/")).compareTo(o2.substring(o2.indexOf("/")));
+        Comparator<String> comparator = (o1, o2) -> {
+            if (o1.contains("/") && o1.lastIndexOf("/") < o1.length() - 1) {
+                o1 = o1.substring(o1.indexOf("/") + 1);
+            }
+            if (o2.contains("/") && o2.lastIndexOf("/") < o2.length() - 1) {
+                o2 = o2.substring(o2.indexOf("/") + 1);
+            }
+            return o1.compareTo(o2);
+        };
         Collections.sort(mainActivityInterface.getCurrentSet().getSetItems(), comparator);
         finishChangingSet();
     }
