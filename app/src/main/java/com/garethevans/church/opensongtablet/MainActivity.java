@@ -1453,6 +1453,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         }
     }
 
+    public void showAbc(boolean forceShow, boolean hide) {
+        // Try to show the abc score
+        if (!whichMode.equals("Presenter") && performanceFragment!=null) {
+            performanceFragment.dealWithAbc(forceShow,hide);
+        }
+    }
+
     // Highlighter
     @Override
     public void toggleHighlighter() {

@@ -14,7 +14,6 @@ import androidx.fragment.app.Fragment;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.SettingsLanguageBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.google.android.material.snackbar.Snackbar;
 
 public class LanguageFragment extends Fragment {
 
@@ -53,22 +52,26 @@ public class LanguageFragment extends Fragment {
             radioButton.setTag(languageCodes[x]);
 
             radioButton.setPadding(24,24,24,24);
+            myView.languageGroup.addView(radioButton);
+
             if (languageCode.equals(languageCodes[x])) {
                 id = radioButton.getId();
+                myView.languageGroup.check(id);
             }
-            myView.languageGroup.setOnCheckedChangeListener((group, checkedId) -> {
-                RadioButton button = myView.languageGroup.findViewById(checkedId);
-                String tag = button.getTag().toString();
-                mainActivityInterface.getPreferences().setMyPreferenceString("language",tag);
-                Snackbar.make(myView.getRoot(),"You will need to restart the app to see the changes",Snackbar.LENGTH_LONG).show();
-            });
-            myView.languageGroup.addView(radioButton);
         }
-        try{
+        myView.languageGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            RadioButton button = myView.languageGroup.findViewById(checkedId);
+            String tag = button.getTag().toString();
+            mainActivityInterface.getPreferences().setMyPreferenceString("language", tag);
+            InformationBottomSheet informationBottomSheet = new InformationBottomSheet(getString(R.string.restart),
+                    getString(R.string.restart_required), getString(R.string.restart), "restart");
+            informationBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "restart");
+        });
+        /*try {
             myView.languageGroup.check(id);
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     @Override

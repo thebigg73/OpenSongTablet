@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet.appdata;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -67,10 +68,21 @@ public class InformationBottomSheet extends BottomSheetDialogFragment {
         }
 
         if (deepLink!=null) {
-            myView.actionButton.setOnClickListener((view) -> {
-                mainActivityInterface.navigateToFragment(deepLink,-1);
-                dismiss();
-            });
+            if (deepLink.equals("restart")) {
+                myView.actionButton.setOnClickListener((view) -> {
+                    dismiss();
+                    Intent intent = requireActivity().getBaseContext().getPackageManager().getLaunchIntentForPackage(requireActivity().getBaseContext().getPackageName() );
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    android.os.Process.killProcess(android.os.Process.myPid());
+                    System.exit(0);
+                });
+            } else {
+                myView.actionButton.setOnClickListener((view) -> {
+                    mainActivityInterface.navigateToFragment(deepLink, -1);
+                    dismiss();
+                });
+            }
         } else {
             myView.actionButton.setVisibility(View.GONE);
         }

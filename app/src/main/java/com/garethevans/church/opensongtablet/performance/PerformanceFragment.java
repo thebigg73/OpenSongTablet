@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -24,6 +25,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.bumptech.glide.request.RequestOptions;
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.abcnotation.ABCPopup;
 import com.garethevans.church.opensongtablet.appdata.AlertInfoBottomSheet;
 import com.garethevans.church.opensongtablet.controls.GestureListener;
 import com.garethevans.church.opensongtablet.customslides.ImageSlideAdapter;
@@ -44,6 +46,7 @@ public class PerformanceFragment extends Fragment {
 
     private final String TAG = "PerformanceFragment";
     private StickyPopUp stickyPopUp;
+    private ABCPopup abcPopup;
     private MainActivityInterface mainActivityInterface;
     private ActionInterface actionInterface;
     private DisplayInterface displayInterface;
@@ -167,6 +170,7 @@ public class PerformanceFragment extends Fragment {
     // Getting the preferences and helpers ready
     private void initialiseHelpers() {
         stickyPopUp = new StickyPopUp(requireContext());
+        abcPopup = new ABCPopup(requireContext());
         mainActivityInterface.getPerformanceGestures().setZoomLayout(myView.zoomLayout);
         mainActivityInterface.getPerformanceGestures().setRecyclerView(myView.recyclerView);
         myView.recyclerView.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false));
@@ -717,6 +721,22 @@ public class PerformanceFragment extends Fragment {
             }
         }, getResources().getInteger(R.integer.slide_in_time));
     }
+    public void dealWithAbc(boolean forceShow, boolean hide) {
+        if (hide) {
+            if (abcPopup!=null) {
+                abcPopup.closeScore();
+            }
+        } else {
+            if ((mainActivityInterface != null && mainActivityInterface.getSong() != null &&
+                    mainActivityInterface.getSong().getAbc() != null &&
+                    !mainActivityInterface.getSong().getAbc().isEmpty() &&
+                    mainActivityInterface.getPreferences().
+                            getMyPreferenceBoolean("abcAuto", false)) || forceShow) {
+                // This is called from the MainActivity when we clicked on the page button
+                abcPopup.floatABC(myView.pageHolder, forceShow);
+            }
+        }
+    }
     private void dealWithHighlighterFile(int w, int h) {
         try {
             if (!mainActivityInterface.getPreferences().
@@ -738,18 +758,19 @@ public class PerformanceFragment extends Fragment {
 
                             myView.highlighterView.setVisibility(View.VISIBLE);
                             ViewGroup.LayoutParams rlp = myView.highlighterView.getLayoutParams();
-                            rlp.width = w;
-                            rlp.height = h;
+                            rlp.width = (int)((float)w*scaleFactor);
+                            rlp.height = (int)((float)h*scaleFactor);
                             myView.highlighterView.setLayoutParams(rlp);
                             RequestOptions requestOptions = new RequestOptions().centerInside();
                             GlideApp.with(requireContext()).load(highlighterBitmap).
-                                    apply(requestOptions).
+                                    apply(requestOptions).override(rlp.width,rlp.height).
                                     into(myView.highlighterView);
 
                             myView.highlighterView.setPivotX(0f);
-                            myView.highlighterView.setPivotY(0);
-                            myView.highlighterView.setScaleX(scaleFactor);
-                            myView.highlighterView.setScaleY(scaleFactor);
+                            myView.highlighterView.setPivotY(0f);
+                            //myView.highlighterView.setScaleX(scaleFactor);
+                            //myView.highlighterView.setScaleY(scaleFactor);
+                            Log.d(TAG,"w="+w+"  h="+h+"  scaleFactor="+scaleFactor);
 
                             // Hide after a certain length of time
                             int timetohide = mainActivityInterface.getPreferences().getMyPreferenceInt("timeToDisplayHighlighter", 0);

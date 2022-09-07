@@ -239,7 +239,6 @@ public interface MainActivityInterface {
 
     // ABC Notation
     ABCNotation getAbcNotation();
-
     // Highlighter notes
     DrawNotes getDrawNotes();
     void setDrawNotes(DrawNotes view);

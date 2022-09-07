@@ -64,6 +64,7 @@ public class MusicScoreFragment extends Fragment {
                 // Something has changed
                 mainActivityInterface.getSong().setAbc(myJsString);
                 mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong());
+                mainActivityInterface.getShowToast().doIt(getString(R.string.success));
             }
         }
     }

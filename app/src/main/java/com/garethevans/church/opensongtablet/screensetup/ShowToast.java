@@ -60,10 +60,14 @@ public class ShowToast {
 
                 Runnable showRunnable = () -> {
                     if (textToast!=null && popupWindow!=null) {
-                        textToast.setText(message);
-                        popupWindow.showAtLocation(anchor, Gravity.CENTER, 0, 0);
-                        messageEndTime = System.currentTimeMillis() + 2000;
-                        new Handler().postDelayed(hidePopupRunnable, 2000);
+                        try {
+                            textToast.setText(message);
+                            popupWindow.showAtLocation(anchor, Gravity.CENTER, 0, 0);
+                            messageEndTime = System.currentTimeMillis() + 2000;
+                            new Handler().postDelayed(hidePopupRunnable, 2000);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                 };
                 new Handler(Looper.getMainLooper()).postDelayed(showRunnable, delayTime);

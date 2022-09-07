@@ -7,7 +7,6 @@ import android.os.Build;
 import android.view.View;
 
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.abcnotation.MusicScoreBottomSheet;
 import com.garethevans.church.opensongtablet.autoscroll.AutoscrollBottomSheet;
 import com.garethevans.church.opensongtablet.chords.ChordFingeringBottomSheet;
 import com.garethevans.church.opensongtablet.chords.TransposeBottomSheet;
@@ -303,8 +302,9 @@ public class PerformanceGestures {
 
     // Show the abc notation
     public void showABCNotation() {
-        MusicScoreBottomSheet musicScoreBottomSheet = new MusicScoreBottomSheet();
-        musicScoreBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"MusicScoreBottomSheet");
+        //MusicScoreBottomSheet musicScoreBottomSheet = new MusicScoreBottomSheet();
+        //musicScoreBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"MusicScoreBottomSheet");
+        actionInterface.showAbc(true, false);
     }
 
     // Abc notation settings
@@ -431,7 +431,6 @@ public class PerformanceGestures {
                 return false;
             }
         } else {
-            mainActivityInterface.getShowToast().doIt(c.getString(R.string.not_allowed));
             return false;
         }
     }

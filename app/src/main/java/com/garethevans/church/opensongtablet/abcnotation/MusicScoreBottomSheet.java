@@ -17,6 +17,9 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 public class MusicScoreBottomSheet extends BottomSheetDialogFragment {
 
     private BottomSheetAbcNotationBinding myView;
@@ -55,7 +58,10 @@ public class MusicScoreBottomSheet extends BottomSheetDialogFragment {
     }
 
     private void setViews() {
-        mainActivityInterface.getAbcNotation().setWebView(myView.abcWebView,mainActivityInterface,
-                false);
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> mainActivityInterface.getAbcNotation().setWebView(myView.abcWebView,mainActivityInterface,
+                false));
+        /*mainActivityInterface.getAbcNotation().setWebView(myView.abcWebView,mainActivityInterface,
+                false);*/
     }
 }

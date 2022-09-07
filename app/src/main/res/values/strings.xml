@@ -1222,5 +1222,7 @@ Check out the categories in the right hand options menu.
     <string name="load_preferences">Loading preferences</string>
     <string name="look_for">Look for</string>
     <string name="lyrics_settings">Lyrics settings</string>
+    <string name="restart_required">Please restart the app to apply the changes</string>
+    <string name="restart">Restart</string>
 
 </resources>

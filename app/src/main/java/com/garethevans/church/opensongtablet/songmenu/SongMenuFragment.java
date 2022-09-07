@@ -155,12 +155,16 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     }
 
     private void fixColor(Button button, boolean active) {
-        int activecolor = getResources().getColor(R.color.colorSecondary);
-        int inactivecolor = getResources().getColor(R.color.transparent);
-        if (active) {
-            button.setBackgroundColor(activecolor);
-        } else {
-            button.setBackgroundColor(inactivecolor);
+        try {
+            int activecolor = getResources().getColor(R.color.colorSecondary);
+            int inactivecolor = getResources().getColor(R.color.transparent);
+            if (active) {
+                button.setBackgroundColor(activecolor);
+            } else {
+                button.setBackgroundColor(inactivecolor);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

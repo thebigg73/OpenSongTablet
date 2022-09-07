@@ -20,6 +20,7 @@ public class ABCNotation {
             public void run() {
                 webView.getSettings().getJavaScriptEnabled();
                 webView.getSettings().setJavaScriptEnabled(true);
+                webView.setInitialScale(1);
                 webView.getSettings().setDomStorageEnabled(true);
                 webView.getSettings().setLoadWithOverviewMode(true);
                 webView.getSettings().setUseWideViewPort(true);
@@ -92,6 +93,7 @@ public class ABCNotation {
         try {
             newContent = Uri.encode(newContent, "UTF-8");
         } catch  (Exception e) {
+            e.printStackTrace();
         }
         webView.evaluateJavascript("javascript:updateABC('"+newContent+"');",null);
         if (edit) {
