@@ -2437,6 +2437,12 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     }
 
     @Override
+    public boolean hasNearbyPermissions() {
+        // Determine if there is an issue with any of the permissions
+        return permissions.hasNearbyPermissions(this);
+    }
+
+    @Override
     public void startDiscovery() {
         nearbyConnections.startDiscovery();
     }

@@ -5,16 +5,18 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.util.Log;
 
 import androidx.core.app.ActivityCompat;
 
 public class Permissions {
 
     // Nearby
+    private final String TAG = "Permissions";
     private String[] nearbyPermissionsString;
     public void setNearbyPermissionsString() {
         if (Build.VERSION.SDK_INT >= 33) {
-            nearbyPermissionsString = new String[]{Manifest.permission_group.NEARBY_DEVICES};
+            nearbyPermissionsString = new String[]{Manifest.permission.NEARBY_WIFI_DEVICES};
         } else if (Build.VERSION.SDK_INT > 30) {
             nearbyPermissionsString = new String[]{Manifest.permission.BLUETOOTH_SCAN,
                     Manifest.permission.BLUETOOTH_ADVERTISE, Manifest.permission.BLUETOOTH_CONNECT,
@@ -41,8 +43,13 @@ public class Permissions {
         // Determine if there is an issue with any of the preferences
         boolean granted = hasNearbyPermissions(activity);
 
+        Log.d(TAG,"granted:"+granted);
         // If permission isn't granted - ask
         if (!granted) {
+            for (String s:nearbyPermissionsString) {
+                Log.d(TAG,"nearbyPermissions:"+s);
+                Log.d(TAG,"allowed: "+((int)(ActivityCompat.checkSelfPermission(activity,s))==PackageManager.PERMISSION_GRANTED));
+            }
             requestForPermissions(activity,nearbyPermissionsString,requestCode);
         }
         return granted;
@@ -54,7 +61,8 @@ public class Permissions {
     }
 
     public void requestForPermissions(Activity activity, String[] permissions, int requestCode) {
-        ActivityCompat.requestPermissions(activity, permissions,requestCode);
+        Log.d(TAG,"Asking for permissions");
+        ActivityCompat.requestPermissions(activity, permissions, requestCode);
     }
 
     public boolean shouldShowRequestRationale(Activity activity, String permission) {

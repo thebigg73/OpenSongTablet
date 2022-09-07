@@ -5772,6 +5772,12 @@ public class StageMode extends AppCompatActivity implements
         return permissions.requestNearbyPermissions(this,403);
     }
 
+    @Override
+    public boolean hasNearbyPermissions() {
+        // Determine if there is an issue with any of the permissions
+        return permissions.hasNearbyPermissions(this);
+    }
+
     @SuppressLint("StaticFieldLeak")
     @SuppressWarnings("deprecation")
     private class ShareSet extends AsyncTask<Object, Void, String> {

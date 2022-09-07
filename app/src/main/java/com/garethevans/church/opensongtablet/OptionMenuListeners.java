@@ -79,6 +79,7 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
         void selectAFileUri(String s);
         void profileWork(String s);
         boolean requestNearbyPermissions();
+        boolean hasNearbyPermissions();
         void installPlayServices();
     }
 
@@ -401,7 +402,9 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
                 break;
 
             case "CONNECT":
-                connectOptionListener(v,c,preferences);
+                if (mListener!=null && mListener.requestNearbyPermissions()) {
+                    connectOptionListener(v, c, preferences);
+                }
                 break;
 
             case "MIDI":
@@ -571,9 +574,11 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
             // Check for Google Play availability
             if (GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(c) == ConnectionResult.SUCCESS) {
                 Log.d("d","Success");
-                StaticVariables.whichOptionMenu = "CONNECT";
-                if (mListener!=null) {
+                if (mListener!=null && mListener.hasNearbyPermissions()) {
+                    StaticVariables.whichOptionMenu = "CONNECT";
                     mListener.prepareOptionMenu();
+                } else {
+                    mListener.requestNearbyPermissions();
                 }
             } else {
                 mListener.installPlayServices();
@@ -1936,7 +1941,6 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
         });
 
         if (!mListener.requestNearbyPermissions()) {
-            Log.d("OptionMenuListener","request Nearby permission");
             StaticVariables.whichOptionMenu = "MAIN";
             mListener.closeMyDrawers("option");
         }
