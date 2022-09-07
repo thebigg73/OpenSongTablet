@@ -53,7 +53,6 @@ class StaticVariables {
     static boolean setchanged = false;
     static int setSize, indexSongInSet;
     static ArrayList<String> mTempSetList;
-    static int currentSetPosition = -1;
     
     // Storage variables
     static Uri uriTree;
