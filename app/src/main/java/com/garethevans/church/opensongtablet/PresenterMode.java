@@ -3928,8 +3928,14 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         Intent intent = new Intent(PresenterMode.this,
                 PresenterMode.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        PendingIntent notificationPendingIntent = PendingIntent.getActivity(
-                PresenterMode.this, 0, intent, 0);
+        PendingIntent notificationPendingIntent;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+            notificationPendingIntent = PendingIntent.getActivity(
+                    PresenterMode.this, 0, intent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
+        } else {
+            notificationPendingIntent = PendingIntent.getActivity(
+                    PresenterMode.this, 0, intent, 0);
+        }
 
         CastRemoteDisplayLocalService.NotificationSettings settings =
                 new CastRemoteDisplayLocalService.NotificationSettings.Builder()

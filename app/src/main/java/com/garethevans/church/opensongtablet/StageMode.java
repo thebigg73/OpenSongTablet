@@ -1261,7 +1261,7 @@ public class StageMode extends AppCompatActivity implements
         @Override
         protected String doInBackground(Object... objects) {
             try {
-                if (!permissions.checkForPermission(StageMode.this,Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                if (permissions!=null && !permissions.checkForPermission(StageMode.this,Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                     finish();
                 }
             } catch (Exception e) {
@@ -4932,8 +4932,15 @@ public class StageMode extends AppCompatActivity implements
         Intent intent = new Intent(StageMode.this,
                 StageMode.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        PendingIntent notificationPendingIntent = PendingIntent.getActivity(
-                StageMode.this, 0, intent, 0);
+        PendingIntent notificationPendingIntent;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+            notificationPendingIntent = PendingIntent.getActivity(
+                    StageMode.this, 0, intent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
+        } else {
+            notificationPendingIntent = PendingIntent.getActivity(
+                    StageMode.this, 0, intent, 0);
+        }
+
 
         CastRemoteDisplayLocalService.NotificationSettings settings =
                 new CastRemoteDisplayLocalService.NotificationSettings.Builder()

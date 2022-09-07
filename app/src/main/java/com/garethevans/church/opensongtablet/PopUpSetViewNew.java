@@ -32,7 +32,6 @@ import java.io.OutputStream;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 @SuppressWarnings("ComparatorCombinators")
@@ -391,8 +390,16 @@ public class PopUpSetViewNew extends DialogFragment {
 
             if (StaticVariables.mTempSetList!=null && StaticVariables.mTempSetList.size()>0) {
                 // Redraw the lists
-                Collections.sort(StaticVariables.mTempSetList,
-                        (Comparator<? super String>) (o1, o2) -> o1.substring(o1.indexOf("/")).compareTo(o2.substring(o2.indexOf("/"))));
+                // GE Fix if the string didn't contain "/" this crashed using previous method
+                Collections.sort(StaticVariables.mTempSetList, (o1, o2) -> {
+                    if (o1.contains("/") && o1.indexOf("/")<o1.length()-1) {
+                        o1 = o1.substring(o1.indexOf("/")+1);
+                    }
+                    if (o2.contains("/") && o2.indexOf("/")<o2.length()-1) {
+                        o2 = o2.substring(o2.indexOf("/")+1);
+                    }
+                    return o1.compareTo(o2);
+                });
 
                 // Prepare the page for redrawing....
                 StaticVariables.doneshuffle = true;
