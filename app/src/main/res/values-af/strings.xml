@@ -281,6 +281,7 @@
     <string name="exit_confirm">"Is jy seker jy wil die program te verlaat?"</string>
     <string name="export">"Uitvoer"</string>
     <string name="export_chordpro">"ChordPro liedjie (.cho)"</string>
+    <string name="export_current_set">Please restart the app to apply the changes</string>
     <string name="export_current_song">"Deel die huidige liedjie"</string>
     <string name="export_desktop">"Desktop lêer (geen lêer uitbreiding)"</string>
     <string name="export_include_set_songs">Sluit liedjies in wat in die stel geïdentifiseer is</string>
@@ -848,4 +849,6 @@
     <string name="pedal_scroll_before_move_info">Laat volgende en vorige pedale ook as blaaipedale funksioneer</string>
     <string name="permissions_refused">Toestemmings is geweier en moet dalk handmatig vanaf Android-instellings verleen word as jy nie weer die opsie sien nie</string>
     <string name="print">Druk</string>
+    <string name="restart_required">Herbegin asseblief die toepassing om die veranderinge toe te pas</string>
+    <string name="restart">Begin oor</string>
 </resources>

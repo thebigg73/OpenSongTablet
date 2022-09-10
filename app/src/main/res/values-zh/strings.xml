@@ -282,6 +282,7 @@
     <string name="exit_confirm">"您确定要退出程序？"</string>
     <string name="export">"出口"</string>
     <string name="export_chordpro">"ChordPro歌曲（.cho）"</string>
+    <string name="export_current_set">共享当前集</string>
     <string name="export_current_song">"分享当前歌曲"</string>
     <string name="export_desktop">"桌面文件（无文件扩展名）"</string>
     <string name="export_include_set_songs">包括在集合中识别的歌曲</string>
@@ -849,4 +850,6 @@
     <string name="quicklaunch_button7">按钮7</string>
     <string name="quicklaunch_button8">按钮8</string>
     <string name="print">打印</string>
+    <string name="restart_required">请重新启动应用程序以应用更改</string>
+    <string name="restart">重新开始</string>
 </resources>

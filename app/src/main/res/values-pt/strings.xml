@@ -281,6 +281,7 @@
     <string name="exit_confirm">"Tem certeza de que deseja sair do programa?"</string>
     <string name="export">"Exportar"</string>
     <string name="export_chordpro">"ChordPro song (.cho)"</string>
+    <string name="export_current_set">Compartilhar o conjunto atual</string>
     <string name="export_current_song">"Partilhe a música atual"</string>
     <string name="export_desktop">"Arquivo da área de trabalho (sem extensão de arquivo)"</string>
     <string name="export_include_set_songs">Incluir músicas identificadas no conjunto</string>
@@ -848,4 +849,6 @@
     <string name="quicklaunch_button7">Botão 7</string>
     <string name="quicklaunch_button8">Botão 8</string>
     <string name="print">Imprimir</string>
+    <string name="restart_required">Reinicie o aplicativo para aplicar as alterações</string>
+    <string name="restart">Reiniciar</string>
 </resources>

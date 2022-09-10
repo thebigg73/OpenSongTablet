@@ -318,6 +318,7 @@
     <string name="exit_confirm">Are you sure you want to exit the program?</string>
     <string name="export">Export</string>
     <string name="export_chordpro">ChordPro song (.cho)</string>
+    <string name="export_current_set">Share the current set</string>
     <string name="export_current_song">Share the current song</string>
     <string name="export_desktop">Desktop file (no file extension)</string>
     <string name="export_include_set_songs">Include songs identified in the set</string>
@@ -677,6 +678,8 @@
     <string name="reset_colours">Reset Colours</string>
     <string name="reset_text">If you are having difficulties with the app, try clearing your preferences. This will not delete your songs.</string>
     <string name="respect_copyright">Respect copyright - always use legally</string>
+    <string name="restart">Restart</string>
+    <string name="restart_required">Please restart the app to apply the changes</string>
     <string name="restore">Restore</string>
     <string name="restore_sets">Restore sets</string>
     <string name="resume">Resume</string>
@@ -1222,7 +1225,5 @@ Check out the categories in the right hand options menu.
     <string name="load_preferences">Loading preferences</string>
     <string name="look_for">Look for</string>
     <string name="lyrics_settings">Lyrics settings</string>
-    <string name="restart_required">Please restart the app to apply the changes</string>
-    <string name="restart">Restart</string>
 
 </resources>
