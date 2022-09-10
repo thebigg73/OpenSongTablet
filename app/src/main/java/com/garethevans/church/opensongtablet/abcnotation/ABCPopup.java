@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -19,9 +18,6 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.FloatWindow;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 // Virtually identical to the sticky popup, but with its own positions
 public class ABCPopup {
@@ -80,16 +76,16 @@ public class ABCPopup {
 
         // The main layout (FloatWindow) is just a custom linearlayout where I've overridden the performclick
         floatWindow = new FloatWindow(c);
-        /*LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
-        */
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(100,100);
+
+        //LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(100,100);
         floatWindow.setLayoutParams(layoutParams);
         floatWindow.setOrientation(LinearLayout.VERTICAL);
         GradientDrawable drawable = (GradientDrawable) ResourcesCompat.getDrawable(c.getResources(),
                 R.drawable.popup_sticky,null);
         if (drawable!=null) {
-            drawable.setColor(mainActivityInterface.getMyThemeColors().getPageButtonsColor());
+            drawable.setColor(mainActivityInterface.getMyThemeColors().getColorInt("white"));
         }
         popupWindow.setBackgroundDrawable(null);
         floatWindow.setBackground(drawable);
@@ -107,21 +103,17 @@ public class ABCPopup {
         floatWindow.addView(closeButton);
 
         // Now the WebView for the music score
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
         WebView webView = new WebView(c);
-        webView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+        webView.setAlpha(mainActivityInterface.getMyThemeColors().getPageButtonsSplitAlpha());
+        webView.setLayoutParams(new LinearLayout.LayoutParams((int)(mainActivityInterface.getDisplayMetrics()[0] *
+                mainActivityInterface.getPreferences().getMyPreferenceFloat("abcPopupWidth",0.95f)),
                 LinearLayout.LayoutParams.WRAP_CONTENT));
         webView.getSettings().setJavaScriptEnabled(true);
-        executorService.execute(() -> {
-            Handler handler = new Handler(Looper.getMainLooper());
-            mainActivityInterface.getAbcNotation().setWebView(webView, mainActivityInterface,
+        mainActivityInterface.getAbcNotation().setWebView(webView, mainActivityInterface,
                     false);
-            handler.post(() -> {
-                Log.d(TAG,"webView:"+webView);
-                floatWindow.addView(webView);
-                popupWindow.setContentView(floatWindow);
-            });
-        });
+
+        floatWindow.addView(webView);
+        popupWindow.setContentView(floatWindow);
     }
 
     private void setListeners() {
@@ -131,8 +123,6 @@ public class ABCPopup {
     private void getPositionAndSize() {
         posX = mainActivityInterface.getPreferences().getMyPreferenceInt("stickyXPosition", -1);
         posY = mainActivityInterface.getPreferences().getMyPreferenceInt("stickyYPosition", -1);
-        int w = c.getResources().getDisplayMetrics().widthPixels;
-        int h = c.getResources().getDisplayMetrics().heightPixels;
 
         // Fix the sizes
         if (posX < 0) {

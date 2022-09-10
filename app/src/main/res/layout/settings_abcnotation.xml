@@ -19,6 +19,23 @@
                 android:id="@+id/abcWebView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
+
+            <com.google.android.material.textview.MaterialTextView
+                style="@style/largeText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/display_popups" />
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+                android:id="@+id/sizeSlider"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/size"
+                android:valueFrom="50"
+                android:valueTo="100"
+                android:value="80"/>
+
         </LinearLayout>
     </com.garethevans.church.opensongtablet.customviews.NestedScrollWithFAB>
 

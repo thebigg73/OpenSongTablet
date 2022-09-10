@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.SettingsAbcnotationBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.google.android.material.slider.Slider;
 
 public class MusicScoreFragment extends Fragment {
 
@@ -49,11 +50,31 @@ public class MusicScoreFragment extends Fragment {
         mainActivityInterface.getAbcNotation().setWebView(myView.abcWebView,mainActivityInterface,
                 true);
         myView.abcWebView.post(() -> myView.abcWebView.addJavascriptInterface(new JsInterface(), "AndroidApp"));
+        myView.sizeSlider.setValue((int)(100*mainActivityInterface.getPreferences().getMyPreferenceFloat("abcPopupWidth",0.95f)));
+        myView.sizeSlider.setLabelFormatter(value -> ((int)value)+"%");
+        myView.sizeSlider.setHint((int)myView.sizeSlider.getValue()+"%");
     }
 
     private void setListeners() {
         myView.editABC.setOnClickListener(v -> doSave());
         myView.nestedScrollView.setExtendedFabToAnimate(myView.editABC);
+        myView.sizeSlider.addOnChangeListener(new Slider.OnChangeListener() {
+            @Override
+            public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
+               myView.sizeSlider.setHint((int)value+"%");
+            }
+        });
+        myView.sizeSlider.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
+            @Override
+            public void onStartTrackingTouch(@NonNull Slider slider) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(@NonNull Slider slider) {
+                mainActivityInterface.getPreferences().setMyPreferenceFloat("abcPopupWidth",myView.sizeSlider.getValue()/100f);
+            }
+        });
     }
 
     private class JsInterface {

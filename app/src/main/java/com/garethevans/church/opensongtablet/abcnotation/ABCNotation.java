@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet.abcnotation;
 
 import android.annotation.SuppressLint;
 import android.net.Uri;
+import android.util.Log;
 import android.view.View;
 import android.webkit.ConsoleMessage;
 import android.webkit.WebChromeClient;
@@ -11,6 +12,8 @@ import android.webkit.WebViewClient;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 public class ABCNotation {
+
+    private final String TAG = "ABCNotation";
 
     @SuppressLint("SetJavaScriptEnabled")
     public void setWebView(WebView webView, MainActivityInterface mainActivityInterface,
@@ -55,9 +58,9 @@ public class ABCNotation {
             super.onPageFinished(webView, url);
 
             if (mainActivityInterface.getSong().getAbc().isEmpty()) {
-                updateContent(webView,getSongInfo(mainActivityInterface),edit);
+                updateContent(mainActivityInterface,webView,getSongInfo(mainActivityInterface),edit);
             } else {
-                updateContent(webView,mainActivityInterface.getSong().getAbc(),edit);
+                updateContent(mainActivityInterface,webView,mainActivityInterface.getSong().getAbc(),edit);
             }
 
             if (edit) {
@@ -89,17 +92,29 @@ public class ABCNotation {
         return info;
     }
 
-    private void updateContent(WebView webView, String newContent, boolean edit) {
+    private void updateContent(MainActivityInterface mainActivityInterface,
+                               WebView webView, String newContent, boolean edit) {
         try {
             newContent = Uri.encode(newContent, "UTF-8");
         } catch  (Exception e) {
             e.printStackTrace();
         }
-        webView.evaluateJavascript("javascript:updateABC('"+newContent+"');",null);
+
+        String notation = String.format("#%08X", (mainActivityInterface.getMyThemeColors().getLyricsTextColor()));
+        String page = String.format("#%08X", (mainActivityInterface.getMyThemeColors().getLyricsBackgroundColor()));
+
+        Log.d(TAG,"notation: "+notation+"   page: "+page);
+
         if (edit) {
             webView.loadUrl("javascript:displayOnly();");
+            webView.loadUrl("javascript:setWidth("+(int)(mainActivityInterface.getDisplayMetrics()[0] *
+                            mainActivityInterface.getPreferences().getMyPreferenceFloat("abcPopupWidth",0.95f))+");");
         } else {
             webView.loadUrl("javascript:displayAndEdit();");
+            webView.loadUrl("javascript:setWidth("+mainActivityInterface.getDisplayMetrics()[0]+");");
         }
+
+        webView.evaluateJavascript("javascript:updateABC('"+newContent+"');",null);
+
     }
 }

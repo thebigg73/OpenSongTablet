@@ -153,6 +153,11 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
         SetItemInfo thisItem = setList.get(fromPosition);
         setList.remove(fromPosition);
         setList.add(toPosition,thisItem);
+
+        // TODO Highlighting not updating, might need to check after item is dropped for new setitemposition
+        boolean from_highlighted = highlightedArray.get(fromPosition,false);
+        highlightedArray.put(fromPosition,false);
+        highlightedArray.put(toPosition,from_highlighted);
         notifyItemChanged(fromPosition);
         notifyItemChanged(toPosition);
         notifyItemMoved(fromPosition,toPosition);

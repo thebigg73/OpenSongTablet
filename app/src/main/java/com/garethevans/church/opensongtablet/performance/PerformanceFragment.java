@@ -839,6 +839,9 @@ public class PerformanceFragment extends Fragment {
             if (stickyPopUp!=null) {
                 stickyPopUp.closeSticky();
             }
+            if (abcPopup!=null) {
+                abcPopup.closeScore();
+            }
         } else {
             if ((mainActivityInterface != null && mainActivityInterface.getSong() != null &&
                     mainActivityInterface.getSong().getNotes() != null &&
