@@ -5,7 +5,6 @@ public class __TODO__ {
     // Check persistent database import with overwrite on/off
 
     // BUGS FROM LIVE TEST
-    // Fix music score popup window
     // Dragging set items breaks highlighted item
 
     // Update text in presenter mode not working for second screen

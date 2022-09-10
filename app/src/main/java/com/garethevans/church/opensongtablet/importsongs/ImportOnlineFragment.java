@@ -267,7 +267,7 @@ public class ImportOnlineFragment extends Fragment {
                     !webAddress.isEmpty()) {
                 changeLayouts(false, true, false);
                 myView.grabText.setVisibility(View.VISIBLE);
-                mainActivityInterface.getShowCase().singleShowCase(requireActivity(),myView.grabText,null,getString(R.string.text_extract_check),false,"onlineTextSearch");
+                myView.grabText.post(() -> mainActivityInterface.getShowCase().singleShowCase(requireActivity(),myView.grabText,null,getString(R.string.text_extract_check),false,"onlineTextSearch"));
                 webSearchFull = webAddress + mainActivityInterface.getCheckInternet().getSearchPhrase() + extra;
                 webView.post(() -> webView.loadUrl(webSearchFull));
             }

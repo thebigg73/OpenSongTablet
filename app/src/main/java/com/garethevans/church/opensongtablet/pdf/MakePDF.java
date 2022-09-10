@@ -42,6 +42,7 @@ public class MakePDF {
         Log.d(TAG,"exportFilename="+exportFilename);
         this.printAttributes = printAttributes;
 
+        Log.d(TAG,"sectionViews.size(): "+sectionViews.size());
         // Set the paint values
         setPaintDefaults();
 

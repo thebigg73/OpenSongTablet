@@ -493,6 +493,20 @@ public class ExportFragment extends Fragment {
 
         mainActivityInterface.getProcessSong().updateProcessingPreferences();
 
+        // If we don't have any sections in the song, change the double line breaks into sections
+        if (!thisSong.getLyrics().contains("\n[")) {
+            String[] lines = thisSong.getLyrics().split("\n");
+            StringBuilder stringBuilder = new StringBuilder();
+            for (String line:lines) {
+                if (line.trim().isEmpty()) {
+                    stringBuilder.append("[]\n");
+                } else {
+                    stringBuilder.append(line).append("\n");
+                }
+            }
+            thisSong.setLyrics(stringBuilder.toString());
+        }
+
         // Create the content for the section views.
         sectionViewsPDF = mainActivityInterface.getProcessSong().
                 setSongInLayout(thisSong,true, false);
