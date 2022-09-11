@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/DefaultView"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -27,14 +26,15 @@
         android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/progressText"
+        android:padding="16dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="64dp">
 
             <LinearLayout
                 android:id="@+id/setOptionsLayout"
@@ -68,29 +68,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/export_text"/>
 
-                <!--<RadioGroup
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
 
-                    <androidx.appcompat.widget.AppCompatRadioButton
-                        android:id="@+id/openSongAppSet"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/export_set" />
-
-                    <androidx.appcompat.widget.AppCompatRadioButton
-                        android:id="@+id/openSongSet"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/export_desktop" />
-
-                    <androidx.appcompat.widget.AppCompatRadioButton
-                        android:id="@+id/textSet"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/export_text" />
-                </RadioGroup>
--->
                 <com.google.android.material.switchmaterial.SwitchMaterial
                     android:id="@+id/includeSongs"
                     android:layout_width="match_parent"
@@ -111,6 +89,20 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/song" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/currentFormat"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/export_current_format"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/setExportInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="@string/export_convert_song"/>
 
                 <com.google.android.material.checkbox.MaterialCheckBox
                     android:id="@+id/pdf"
@@ -213,23 +205,6 @@
         </LinearLayout>
     </com.garethevans.church.opensongtablet.customviews.NestedScrollWithFAB>
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:visibility="visible" />
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/progressText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"
-        android:minHeight="200dp"
-        android:minLines="4"
-        android:visibility="gone" />
-
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/shareButton"
         android:layout_width="wrap_content"
@@ -239,6 +214,7 @@
         android:contentDescription="@string/export"
         app:icon="@drawable/share"
         android:text="@string/share"
+        android:layout_margin="8dp"
         app:useCompatPadding="true" />
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
@@ -249,8 +225,34 @@
         android:layout_toStartOf="@id/shareButton"
         android:contentDescription="@string/export"
         app:icon="@drawable/print"
-        android:layout_marginEnd="16dp"
         android:text="@string/print"
+        android:layout_margin="8dp"
         app:useCompatPadding="true" />
+
+    <FrameLayout
+        android:id="@+id/scrim"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/scrim"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:visibility="gone"/>
+
+    <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+        android:id="@+id/progressText"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="32dp"
+        android:padding="16dp"
+        android:background="@drawable/popup_bg"
+        app:mydrawable="@drawable/timer"
+        android:text="@string/processing"
+        android:hint="@string/processing"
+        android:minHeight="120dp"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:visibility="gone"/>
 
 </RelativeLayout>

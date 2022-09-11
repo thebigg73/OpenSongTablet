@@ -317,6 +317,8 @@
     <string name="exit">Exit</string>
     <string name="exit_confirm">Are you sure you want to exit the program?</string>
     <string name="export">Export</string>
+    <string name="export_current_format">Songs in their current format</string>
+    <string name="export_convert_song">OpenSong formatted songs can also be converted to the following formats</string>
     <string name="export_chordpro">ChordPro song (.cho)</string>
     <string name="export_current_set">Share the current set</string>
     <string name="export_current_song">Share the current song</string>

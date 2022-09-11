@@ -34,29 +34,28 @@ public class MakePDF {
     public MakePDF(Context c) {
         mainActivityInterface = (MainActivityInterface) c;
     }
-    public Uri createTextPDF(ArrayList<View> sectionViews, ArrayList<Integer> sectionWidths,
-                             ArrayList<Integer> sectionHeights, LinearLayout headerLayout,
-                             int headerLayoutWidth, int headerLayoutHeight, String exportFilename,
-                             PrintAttributes printAttributes) {
 
+    public void createBlankPDFDoc(String exportFilename, PrintAttributes printAttributes){
         Log.d(TAG,"exportFilename="+exportFilename);
         this.printAttributes = printAttributes;
 
-        Log.d(TAG,"sectionViews.size(): "+sectionViews.size());
         // Set the paint values
         setPaintDefaults();
 
         // Create the document
         pdfDocument = new PdfDocument();
 
+        // Initialise the sizes
         initialiseSizes();
 
         // Start for page 1
         startPage();
+    }
 
-        // The PDF will be created using the views created by the mode for the current song,
-        // or on the fly for a non-current song when selecting export as PDF
-
+    // Create the content for the current item
+    public void addCurrentItemToPDF(ArrayList<View> sectionViews, ArrayList<Integer> sectionWidths,
+                                    ArrayList<Integer> sectionHeights, LinearLayout headerLayout,
+                                    int headerLayoutWidth, int headerLayoutHeight) {
         // Add or create the header
         createHeader(headerLayout, headerLayoutWidth, headerLayoutHeight);
 
@@ -65,12 +64,32 @@ public class MakePDF {
 
         // Add in the song sections and the footer at the bottom of each page.
         addSectionViews(sectionViews, sectionWidths, sectionHeights);
+    }
 
+    public Uri getPDFFile(String exportFilename) {
         // Save the PDF document ready for sharing
         Uri uri = getPDFUri(exportFilename);
         //pdfDocument.finishPage(page);
         saveThePDF(uri);
         return uri;
+    }
+
+    // This makes a single PDF based on one item
+    public Uri createTextPDF(ArrayList<View> sectionViews, ArrayList<Integer> sectionWidths,
+                             ArrayList<Integer> sectionHeights, LinearLayout headerLayout,
+                             int headerLayoutWidth, int headerLayoutHeight, String exportFilename,
+                             PrintAttributes printAttributes) {
+
+        // Create the PDF doc with the default settings
+        createBlankPDFDoc(exportFilename,printAttributes);
+
+        // Add the currently drawn sections to the PDF document
+        // These are sent from the exportFragment
+        addCurrentItemToPDF(sectionViews, sectionWidths, sectionHeights,
+                headerLayout, headerLayoutWidth, headerLayoutHeight);
+
+        // Save the PDF document and return the PDF uri
+        return getPDFFile(exportFilename);
     }
 
     // Initialise the PDF and Paint stuff

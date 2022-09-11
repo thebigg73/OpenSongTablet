@@ -181,6 +181,7 @@ public class ExportActions {
                                             xpp.getAttributeValue(null, "type").equals("song")){
                                         String folder;
                                         String filename = stripSlashes(mainActivityInterface.getProcessSong().parseHTML(xpp.getAttributeValue(null, "name")));
+                                        String location = "";
                                         String title = "";
                                         String key = "";
                                         String author = "";
@@ -214,6 +215,7 @@ public class ExportActions {
                                                 // Not stored in the set, so look for the song value
                                                 key = thisSong.getKey();
                                             }
+                                            location = " ["+folder+"/"+filename+"]";
                                             title = thisSong.getTitle();
                                             author = thisSong.getAuthor();
                                             hymn = thisSong.getHymnnum();
@@ -225,7 +227,7 @@ public class ExportActions {
                                         if (!key.isEmpty()) {
                                             key = "¬ (" + key + ")";
                                         } else {
-                                            key = "¬ ";
+                                            key = "";
                                         }
 
                                         author = "¬ "+fixNull(author);
@@ -234,14 +236,14 @@ public class ExportActions {
                                         if (!hymn.isEmpty()) {
                                             hymn = "¬ #" + hymn;
                                         } else {
-                                            hymn = "¬ ";
+                                            hymn = "";
                                         }
 
                                         ccli = fixNull(ccli);
                                         if (!ccli.isEmpty() && mainActivityInterface.getPreferences().getMyPreferenceBoolean("ccliAutomaticLogging",false)) {
                                             ccli = "¬ CCLI Song #" + ccli;
                                         } else {
-                                            ccli = "¬ ";
+                                            ccli = "";
                                         }
 
                                         title = fixNull(title);
@@ -252,10 +254,11 @@ public class ExportActions {
                                         if (!custom.isEmpty()) {
                                             custom = " (" + custom + ")";
                                         }
-                                        String bittoadd = title + custom + author + hymn + ccli + key + "\n";
+
+                                        String bittoadd = title + location + custom + author + hymn + ccli + key + "\n";
 
                                         // IV - , (comma) is the delimiter so use within content is replaced with " |" and the the temporary delimeter ¬ replaced with ,
-                                        stringBuilderSet.append(bittoadd.replace(","," |").replace("¬", ","));
+                                        stringBuilderSet.append(bittoadd.replace(","," |").replace("¬", ",").replace(" |",","));
                                         stringBuilderIDs.append(id).append("\n");
                                     }
                                     break;
