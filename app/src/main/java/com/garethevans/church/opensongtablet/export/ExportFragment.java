@@ -45,7 +45,7 @@ public class ExportFragment extends Fragment {
     private String setToExport = null;
     private String exportType;
     private String shareTitle;
-    private String setList;
+    private String textContent;
     private int songsToAdd, songsProcessed;
     private boolean openSong = false;
     private boolean openSongApp = false;
@@ -184,7 +184,6 @@ public class ExportFragment extends Fragment {
         myView.progressText.setVisibility(View.GONE);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     private void prepareExport() {
         // This process the export options.
 
@@ -224,6 +223,7 @@ public class ExportFragment extends Fragment {
         }
     }
 
+    @SuppressWarnings("StatementWithEmptyBody")
     private void doExportSet() {
         // Do this in a new Thread
         ExecutorService executorService = Executors.newSingleThreadExecutor();
@@ -251,10 +251,11 @@ public class ExportFragment extends Fragment {
                 }
             }
 
-            String[] setData = new String[2];
+            String[] setData;
+            setData = mainActivityInterface.getExportActions().parseSets(setNames);
+            textContent = setData[0];
+
             if (textSet || includeSongs) {
-                setData = mainActivityInterface.getExportActions().parseSets(setNames);
-                setList = setData[0];
                 if (textSet) {
                     mainActivityInterface.getStorageAccess().doStringWriteToFile(
                             "Export", "", "Set.txt", setData[1]);
@@ -399,6 +400,12 @@ public class ExportFragment extends Fragment {
             boolean isXML = filetype.equals("XML");
             boolean isIMG = filetype.equals("IMG");
 
+            if (isXML) {
+                textContent = mainActivityInterface.getPrepareFormats().getSongAsText(mainActivityInterface.getSong());
+            } else {
+                textContent = mainActivityInterface.getSong().getFilename();
+            }
+
             if (pdf && isPDF || openSong && isXML || image && isIMG) {
                 // Just add the xml or pdf song
                 uris.add(mainActivityInterface.getStorageAccess().getUriForItem("Songs",
@@ -445,9 +452,8 @@ public class ExportFragment extends Fragment {
             }
 
             if (text && isXML) {
-                String content = mainActivityInterface.getPrepareFormats().getSongAsText(mainActivityInterface.getSong());
                 if (mainActivityInterface.getStorageAccess().doStringWriteToFile("Export", "",
-                        filename + ".txt", content)) {
+                        filename + ".txt", textContent)) {
                     uris.add(mainActivityInterface.getStorageAccess().getUriForItem("Export", "",
                             filename + ".txt"));
                     if (!mimeTypes.contains("text/plain")) {
@@ -492,19 +498,16 @@ public class ExportFragment extends Fragment {
     }
 
     private void initiateShare() {
-        String content = null;
-
         // Sharing a song should initiate the CCLI Log of printed (value 6)
         if (mainActivityInterface.getPreferences().getMyPreferenceBoolean("ccliAutomaticLogging",false)) {
             mainActivityInterface.getCCLILog().addEntry(mainActivityInterface.getSong(),"6");
         }
 
-        Intent intent = mainActivityInterface.getExportActions().setShareIntent(content,"*/*",null,uris);
+        Intent intent = mainActivityInterface.getExportActions().setShareIntent(textContent,"*/*",null,uris);
         intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
         intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name) + " " +
                 exportType + ": " + mainActivityInterface.getSong().getTitle());
-        intent.putExtra(Intent.EXTRA_TEXT, mainActivityInterface.getPrepareFormats().
-                getSongAsText(mainActivityInterface.getSong()));
+        intent.putExtra(Intent.EXTRA_TEXT, textContent);
 
         Handler handler = new Handler(Looper.getMainLooper());
         handler.post(() -> {

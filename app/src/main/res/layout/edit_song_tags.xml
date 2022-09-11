@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <com.garethevans.church.opensongtablet.customviews.NestedScrollWithFAB
@@ -37,6 +38,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
+                app:endIconMode="clear_text"
                 android:hint="@string/edit_song_aka" />
             <TableRow style="@style/DividerLine"/>
 
@@ -53,6 +55,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
                     android:layout_marginEnd="4dp"
+                    app:endIconMode="clear_text"
                     android:hint="@string/ccli"/>
 
                 <com.garethevans.church.opensongtablet.customviews.MaterialEditText
@@ -64,6 +67,7 @@
                     android:layout_marginStart="4dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
+                    app:endIconMode="clear_text"
                     android:layout_gravity="bottom"/>
             </LinearLayout>
 
@@ -80,6 +84,7 @@
                     android:layout_marginEnd="4dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
+                    app:endIconMode="clear_text"
                     android:hint="@string/user_2"/>
 
                 <com.garethevans.church.opensongtablet.customviews.MaterialEditText
@@ -91,6 +96,7 @@
                     android:layout_marginStart="4dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
+                    app:endIconMode="clear_text"
                     android:layout_gravity="bottom"/>
             </LinearLayout>
 
@@ -107,6 +113,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
                     android:layout_marginEnd="4dp"
+                    app:endIconMode="clear_text"
                     android:hint="@string/hymn_number"/>
 
                 <com.garethevans.church.opensongtablet.customviews.MaterialEditText

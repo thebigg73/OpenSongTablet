@@ -31,6 +31,7 @@
                     android:hint="@string/filename"
                     android:paddingTop="8dp"
                     android:paddingBottom="8dp"
+                    app:endIconMode="clear_text"
                     android:text="@string/app_name" />
 
                 <com.google.android.material.switchmaterial.SwitchMaterial

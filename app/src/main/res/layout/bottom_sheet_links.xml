@@ -32,6 +32,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
                     android:hint="@string/link"
+                    app:endIconMode="clear_text"
                     android:paddingStart="16dp"
                     android:paddingTop="4dp"
                     android:paddingEnd="16dp"

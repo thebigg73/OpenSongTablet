@@ -30,6 +30,7 @@
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:hint="@string/new_something"
+            app:endIconMode="clear_text"
             android:padding="16dp" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton

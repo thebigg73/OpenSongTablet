@@ -18,6 +18,7 @@
             android:id="@+id/searchPhrase"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:endIconMode="clear_text"
             android:text="@null"
             android:hint="@string/search" />
 
@@ -129,6 +130,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@null"
+            app:endIconMode="clear_text"
             android:hint="@string/filename" />
 
         <com.garethevans.church.opensongtablet.customviews.ExposedDropDown

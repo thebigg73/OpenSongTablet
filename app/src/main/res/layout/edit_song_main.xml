@@ -22,6 +22,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
+                app:endIconMode="clear_text"
                 android:hint="@string/title" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialEditText
@@ -30,6 +31,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
+                app:endIconMode="clear_text"
                 android:hint="@string/artist" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialEditText
@@ -38,6 +40,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
+                app:endIconMode="clear_text"
                 android:hint="@string/copyright" />
             <TableRow style="@style/DividerLine" />
 
@@ -65,6 +68,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
                     android:layout_weight="0.6"
+                    app:endIconMode="clear_text"
                     android:hint="@string/filename" />
             </LinearLayout>
 
@@ -80,6 +84,7 @@
                 android:lines="5"
                 android:maxLines="5"
                 android:minLines="5"
+                app:endIconMode="clear_text"
                 app:autoSizeMaxTextSize="24sp"
                 app:autoSizeMinTextSize="8sp"
                 app:autoSizeStepGranularity="1sp"

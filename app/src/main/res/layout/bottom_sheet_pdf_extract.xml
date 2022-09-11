@@ -58,6 +58,7 @@
                     android:layout_weight="0.6"
                     android:layout_height="wrap_content"
                     android:hint="@string/filename"
+                    app:endIconMode="clear_text"
                     android:layout_marginStart="8dp"
                     android:layout_gravity="bottom"/>
             </LinearLayout>

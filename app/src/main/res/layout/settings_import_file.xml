@@ -20,6 +20,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
+                app:endIconMode="clear_text"
                 android:hint="@string/filename" />
 
             <com.garethevans.church.opensongtablet.customviews.ExposedDropDown

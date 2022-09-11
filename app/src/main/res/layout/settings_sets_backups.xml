@@ -33,6 +33,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/filename"
+                    app:endIconMode="clear_text"
                     android:paddingTop="8dp"
                     android:paddingBottom="8dp"
                     android:text="@string/app_name" />

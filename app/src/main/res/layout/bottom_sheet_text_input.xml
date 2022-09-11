@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     style="FullscreenBottomSheet"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -34,6 +35,7 @@
 
                 <com.garethevans.church.opensongtablet.customviews.MaterialEditText
                     android:id="@+id/prefEditText"
+                    app:endIconMode="clear_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
