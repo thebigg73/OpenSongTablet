@@ -280,6 +280,7 @@
     <string name="exit">出口</string>
     <string name="exit_confirm">"あなたがプログラムを終了してもよろしいですか？"</string>
     <string name="export">"輸出する"</string>
+    <string name="export_convert_song">OpenSong 形式の曲は、次の形式に変換することもできます</string>
     <string name="export_chordpro">"ChordProの歌（.cho）"</string>
     <string name="export_current_set">現在のセットを共有する</string>
     <string name="export_current_song">"現在の曲を共有する"</string>
@@ -851,4 +852,5 @@
     <string name="print">印刷する</string>
     <string name="restart_required">アプリを再起動して変更を適用してください</string>
     <string name="restart">再起動</string>
+    <string name="export_current_format">現在の形式の曲</string>
 </resources>

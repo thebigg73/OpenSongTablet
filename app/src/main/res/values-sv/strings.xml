@@ -280,6 +280,7 @@
     <string name="exit">Utgång</string>
     <string name="exit_confirm">"Är du säker på att du vill avsluta programmet?"</string>
     <string name="export">"Exportera"</string>
+    <string name="export_convert_song">OpenSong-formaterade låtar kan också konverteras till följande format</string>
     <string name="export_chordpro">"ChordPro-låten (.cho)"</string>
     <string name="export_current_set">Dela den aktuella uppsättningen</string>
     <string name="export_current_song">"Dela den aktuella låten"</string>
@@ -851,4 +852,5 @@
     <string name="print">Skriva ut</string>
     <string name="restart_required">Starta om appen för att tillämpa ändringarna</string>
     <string name="restart">Omstart</string>
+    <string name="export_current_format">Låtar i deras nuvarande format</string>
 </resources>

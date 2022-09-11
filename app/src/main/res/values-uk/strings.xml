@@ -280,6 +280,7 @@
     <string name="exit">Вихід</string>
     <string name="exit_confirm">Ви впевнені, що хочете вийти?</string>
     <string name="export">Експорт</string>
+    <string name="export_convert_song">Пісні у форматі OpenSong також можна конвертувати в такі формати</string>
     <string name="export_chordpro">Файл в форматі ChordPro (.cho)</string>
     <string name="export_current_set">Поділіться поточним набором</string>
     <string name="export_current_song">Поділиться поточної піснею</string>
@@ -851,4 +852,5 @@
     <string name="print">Роздрукувати</string>
     <string name="restart_required">Перезапустіть програму, щоб застосувати зміни</string>
     <string name="restart">Omstart</string>
+    <string name="export_current_format">Пісні в поточному форматі</string>
 </resources>

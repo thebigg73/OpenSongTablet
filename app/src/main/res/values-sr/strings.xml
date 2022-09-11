@@ -280,6 +280,7 @@
     <string name="exit">Izađi</string>
     <string name="exit_confirm">Da li ste sigurni da želite da izađete iz programa?</string>
     <string name="export">Izvoz</string>
+    <string name="export_convert_song">Pesme u OpenSong formatu takođe se mogu konvertovati u sledeće formate</string>
     <string name="export_chordpro">ChordPro song (.cho)</string>
     <string name="export_current_set">Podelite trenutni skup</string>
     <string name="export_current_song">Podeliti trenutnu pesmu</string>
@@ -851,4 +852,5 @@
     <string name="print">Print</string>
     <string name="restart_required">Ponovo pokrenite aplikaciju da biste primenili promene</string>
     <string name="restart">Ponovo pokrenuti</string>
+    <string name="export_current_format">Pesme u trenutnom formatu</string>
 </resources>

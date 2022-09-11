@@ -280,6 +280,7 @@
     <string name="exit">Výstup</string>
     <string name="exit_confirm">"Jste si jisti, že chcete ukončit program?"</string>
     <string name="export">"Exportovat"</string>
+    <string name="export_convert_song">Skladby ve formátu OpenSong lze také převést do následujících formátů</string>
     <string name="export_chordpro">"ChordPro song (.cho)"</string>
     <string name="export_current_set">Sdílejte aktuální sadu</string>
     <string name="export_current_song">"Podělte se o aktuální skladbu"</string>
@@ -851,4 +852,5 @@
     <string name="print">Tisk</string>
     <string name="restart_required">Chcete-li použít změny, restartujte aplikaci</string>
     <string name="restart">Restartujte</string>
+    <string name="export_current_format">Skladby v aktuálním formátu</string>
 </resources>

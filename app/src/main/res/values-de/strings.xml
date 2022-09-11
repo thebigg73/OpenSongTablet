@@ -280,6 +280,7 @@
     <string name="exit">Ausgang</string>
     <string name="exit_confirm">"Sind Sie sicher, dass Sie das Programm beenden möchten?"</string>
     <string name="export">"Export"</string>
+    <string name="export_convert_song">Songs im OpenSong-Format können auch in die folgenden Formate konvertiert werden</string>
     <string name="export_chordpro">"ChordPro Song (.cho)"</string>
     <string name="export_current_set">Teilen Sie das aktuelle Set</string>
     <string name="export_current_song">"Aktuellen Song teilen"</string>
@@ -851,4 +852,5 @@
     <string name="print">Drucken</string>
     <string name="restart_required">Bitte starten Sie die App neu, um die Änderungen zu übernehmen</string>
     <string name="restart">Neu starten</string>
+    <string name="export_current_format">Songs in ihrem aktuellen Format</string>
 </resources>
