@@ -308,6 +308,7 @@ public class StorageAccess {
     }
 
 
+
     // Deal with parsing, creating, editing file and folder names
     // This gets the File location for the app as a String (for appending).  PreLollipop only
     public String[] niceUriTree(Uri uri) {
@@ -587,6 +588,7 @@ public class StorageAccess {
         return path;
     }
 
+
     // Get information about the files
     public String getUTFEncoding(Uri uri) {
         // Try to determine the BOM for UTF encoding
@@ -840,6 +842,7 @@ public class StorageAccess {
     }
 
 
+
     // Get references to the files and folders
     public Uri getUriForItem(String folder, String subfolder, String filename) {
             String[] fixedfolders = fixFoldersAndFiles(folder, subfolder, filename);
@@ -998,6 +1001,7 @@ public class StorageAccess {
         Log.d(TAG,"uriString="+uriString);
         return uriString;
     }
+
 
     // Basic file actions (read, create, copy, delete, write)
     public boolean saveThisSongFile(Song thisSong) {
@@ -1232,34 +1236,6 @@ public class StorageAccess {
                 e.printStackTrace();
             }
             return stringBuilder.toString();
-
-        /*
-        // Older method
-        if (in != null) {
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            byte[] buf = new byte[1024];
-            int len;
-            try {
-                while ((len = in.read(buf)) != -1) {
-                    outputStream.write(buf, 0, len);
-                }
-                outputStream.flush();
-                outputStream.close();
-                in.close();
-            } catch (Exception e) {
-                Log.d(TAG, "Error reading text file");
-                e.printStackTrace();
-                return "";
-            } catch (OutOfMemoryError e2) {
-                e2.printStackTrace();
-                return "";
-            }
-            try {
-                return outputStream.toString();
-            } catch (Exception | OutOfMemoryError e) {
-                return "";
-            }*/
-
         } else {
             return "";
         }
@@ -1453,6 +1429,7 @@ public class StorageAccess {
     }
     public boolean doDeleteFile(String location, String subfolder, String filename) {
         Uri uri = getUriForItem(location, subfolder, filename);
+        mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" doDeleteFile deleteFile "+location+"/"+subfolder+"/"+filename);
         return deleteFile(uri);
     }
     public String getImageSlide(String loc) {
@@ -1537,6 +1514,7 @@ public class StorageAccess {
         // Copy the file, which also closes the streams and on success, delete the old file
         if (copyFile(inputStream, outputStream)) {
             // Likely the inputStream or outputStream was null, so don't delete the old file!
+            mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" renameFileFromUri_SAF deleteFile "+oldUri);
             deleteFile(oldUri);
             return true;
         } else {
@@ -2001,4 +1979,24 @@ public class StorageAccess {
         return count;
     }
 
+
+    public void updateFileActivityLog(String logText) {
+        try {
+            Uri logUri = getUriForItem("Settings","","fileWriteActivity.txt");
+            if (!uriExists(logUri)) {
+                lollipopCreateFileForOutputStream(false,logUri,null,"Settings","","fileWriteActivity.txt");
+            }
+            float logUriSize = getFileSizeFromUri(logUri);
+            Log.d(TAG,"Writing to logFile (size="+logUriSize+"): "+logText);
+            OutputStream outputStream;
+            if (getFileSizeFromUri(logUri)>500) {
+                outputStream = c.getContentResolver().openOutputStream(logUri, "wt");
+            } else {
+                outputStream = c.getContentResolver().openOutputStream(logUri, "wa");
+            }
+            mainActivityInterface.getStorageAccess().writeFileFromString(logText+"\n",outputStream);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

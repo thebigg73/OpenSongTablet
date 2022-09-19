@@ -183,6 +183,7 @@ public class MoveContentFragment extends Fragment {
                 try {
                     for (int x = 0; x < filesChosen.size(); x++) {
                         outputFile = mainActivityInterface.getStorageAccess().getUriForItem("Songs", newFolder, filesChosen.get(x));
+                        mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" doMove Create Songs/"+newFolder+"/"+filesChosen.get(x)+"  deleteOld=true");
                         mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(
                                 true, outputFile,
                                 null, "Songs", newFolder, filesChosen.get(x));
@@ -191,7 +192,9 @@ public class MoveContentFragment extends Fragment {
                         // Update the progress
                         String finalMessage = subfolder + "/" + filesChosen.get(x) + " > " + newFolder + "/" + filesChosen.get(x);
                         requireActivity().runOnUiThread(() -> myView.progressText.setText(finalMessage));
+                        mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" doMove copyFile from "+uris.get(x)+" to Songs/" + newFolder+"/"+filesChosen.get(x));
                         if (mainActivityInterface.getStorageAccess().copyFile(inputStream, outputStream)) {
+                            mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" doMove deleteFile "+uris.get(x));
                             mainActivityInterface.getStorageAccess().deleteFile(uris.get(x));
                             // Check we weren't viewing this file - if so, update our preference
                             if (mainActivityInterface.getSong().getFilename().equals(filesChosen.get(x)) &&
@@ -268,12 +271,16 @@ public class MoveContentFragment extends Fragment {
 
     private void renameHighlighterFiles(Uri oldUri, String newFilename) {
         Uri highlighterOutputUri = mainActivityInterface.getStorageAccess().getUriForItem("Highlighter","",newFilename);
+        mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" Create Highlighter/"+newFilename+"  deleteOld=false");
         mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(false, highlighterOutputUri,null,"Highlighter",
                 "",newFilename);
         InputStream highlighterInputStream = mainActivityInterface.getStorageAccess().getInputStream(oldUri);
         OutputStream highlighterOutputStream = mainActivityInterface.getStorageAccess().getOutputStream(highlighterOutputUri);
+        mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" renameHighlighter copyFile from "+oldUri+" to Highligher/" + newFilename);
+
         boolean success = mainActivityInterface.getStorageAccess().copyFile(highlighterInputStream,highlighterOutputStream);
         if (success) {
+            mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" renameHighlighterFile deleteFile "+oldUri);
             mainActivityInterface.getStorageAccess().deleteFile(oldUri);
         }
         try {

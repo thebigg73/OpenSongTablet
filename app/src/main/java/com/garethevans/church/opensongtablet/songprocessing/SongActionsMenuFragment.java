@@ -24,6 +24,7 @@ public class SongActionsMenuFragment extends Fragment {
 
     private MainActivityInterface mainActivityInterface;
     private SettingsSongactionsBinding myView;
+    private final String TAG = "SongActionsMenuFrag";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -168,6 +169,7 @@ public class SongActionsMenuFragment extends Fragment {
                         getInputStream(originalUri);
                 OutputStream outputStream = mainActivityInterface.getStorageAccess().
                         getOutputStream(duplicateSongUri);
+                mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" copyPDF copyFile from Songs/"+folder+"/"+oldName+" to Songs/"+folder+"/"+newName);
                 if (mainActivityInterface.getStorageAccess().copyFile(inputStream,outputStream)) {
                     // Success.  Add to the non-opensong database
                     mainActivityInterface.getShowToast().doIt(getString(R.string.success));
@@ -184,6 +186,7 @@ public class SongActionsMenuFragment extends Fragment {
                 }
 
             } else {
+                mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" doDuplicate doStringWriteToFile Songs/"+mainActivityInterface.getSong().getFolder()+"/"+newName+" with: "+content);
                 if (mainActivityInterface.getStorageAccess().doStringWriteToFile(
                         "Songs", mainActivityInterface.getSong().getFolder(),
                         newName, content)) {

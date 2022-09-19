@@ -167,6 +167,7 @@ public class BibleDownloadFragment extends Fragment {
             while ((ze = zis.getNextEntry()) != null) {
                 if (ze.getName() != null && !ze.getName().startsWith("_")) {
                     Log.d(TAG,"ze.getName()="+ze.getName());
+                    mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" extractBibleZipFile createFile "+folder+"/"+subfolder+"/"+ze.getName());
                     mainActivityInterface.getStorageAccess().createFile(null, folder, subfolder, ze.getName());
                     Uri newUri = mainActivityInterface.getStorageAccess().getUriForItem(folder, subfolder, ze.getName());
                     OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(newUri);
@@ -199,6 +200,7 @@ public class BibleDownloadFragment extends Fragment {
         }
         // Delete the zip file
         if (getContext()!=null) {
+            mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" extractBibleZipFile deleteFile "+zipUri);
             mainActivityInterface.getStorageAccess().deleteFile(zipUri);
         }
 

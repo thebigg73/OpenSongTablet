@@ -18,6 +18,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.Collator;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Locale;
@@ -530,11 +531,13 @@ public class SetActions {
         // As long as the original and target uris are different, do the copy
         if (!uriOriginal.equals(uriVariation)) {
             // Make sure there is a file to write the output to (remove any existing first)
+            mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" makeVariation Create Variations/"+filename+" deleteOld=true");
             mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, uriVariation, null, folderVariations, "", filename);
 
             // Get an input/output stream reference and copy (streams are closed in copyFile())
             InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(uriOriginal);
             OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(uriVariation);
+            mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" makeVariation copyFile from "+uriOriginal+" to Variations/"+filename);
             boolean success = mainActivityInterface.getStorageAccess().copyFile(inputStream, outputStream);
             Log.d(TAG, "file copied from " + uriOriginal + " to " + uriVariation + ": " + success);
         }
@@ -1339,11 +1342,13 @@ public class SetActions {
                             Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(folderImages, cache, safeFilename);
 
                             // Check the uri exists for the outputstream to be valid
+                            mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" getImage Create Images/_cache/"+safeFilename+" deleteOld=true");
                             mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, uri, null,
                                     folderImages, cache, safeFilename);
 
                             OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(uri);
                             byte[] decodedString = Base64.decode(image_content, Base64.DEFAULT);
+                            mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" getImage writeFileFromDecodedImageString "+uri+" with: "+ Arrays.toString(decodedString));
                             mainActivityInterface.getStorageAccess().writeFileFromDecodedImageString(outputStream, decodedString);
 
                             slide_images.append(uri.toString()).append("\n");
@@ -1421,6 +1426,7 @@ public class SetActions {
     private void writeTempSlide(String folder, String subfolder, Song tempSong) {
         // Get the song as XML
         tempSong.setSongXML(mainActivityInterface.getProcessSong().getXML(tempSong));
+        mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" writeTempSlide doStringWriteToFile "+folder+"/"+subfolder+"/"+tempSong.getFilename()+" with: "+tempSong.getSongXML());
         mainActivityInterface.getStorageAccess().doStringWriteToFile(folder,subfolder,tempSong.getFilename(),tempSong.getSongXML());
     }
 

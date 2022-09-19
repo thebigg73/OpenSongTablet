@@ -119,6 +119,7 @@ public class ImportOptionsFragment extends Fragment {
                 cameraFilename = "Camera_"+sdf.format(new Date())+".png";
                 uri = mainActivityInterface.getStorageAccess().getUriForItem("Songs", mainActivityInterface.getSong().getFolder(),
                         cameraFilename);
+                mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" Create camerafile Songs/"+mainActivityInterface.getSong().getFolder()+"/"+cameraFilename+"  deleteOld=false");
                 mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(false, uri,null,"Songs",
                         mainActivityInterface.getSong().getFolder(),cameraFilename);
 

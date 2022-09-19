@@ -1568,6 +1568,19 @@ public class ProcessSong {
             matchPresentationOrder(song);
         }
 
+        //
+        if (asPDF && mainActivityInterface.getMakePDF().getIsSetListPrinting()) {
+            // This is the set list PDF print.  Items are split by empty section headers []
+            // We need to now remove those and trim the section content otherwise the PDF has gaps between lines
+            for (int i=0; i<song.getSongSections().size(); i++) {
+                song.getSongSections().set(i,song.getSongSections().get(i).replace("[]","").replace(".,",",").trim());
+                song.getGroupedSections().set(i,song.getGroupedSections().get(i).replace("[]","").replace(".,",",").trim());
+            }
+            for (int i=0; i<song.getPresoOrderSongSections().size(); i++) {
+                song.getPresoOrderSongSections().set(i,song.getPresoOrderSongSections().get(i).replace("[]","").replace(".,",",").trim());
+            }
+        }
+
         // Now we deal with creating the views from the available sections
         int backgroundColor;
         int textColor;
@@ -1588,7 +1601,8 @@ public class ProcessSong {
                 if (trimSections) {
                     section = section.trim();
                 }
-                if (!presentation && addSectionSpace && sect != (song.getPresoOrderSongSections().size() - 1)) { // Don't do for last section
+                if (!presentation && addSectionSpace && !mainActivityInterface.getMakePDF().getIsSetListPrinting() &&
+                        sect != (song.getPresoOrderSongSections().size() - 1)) { // Don't do for last section
                     section = section + "\n ";
                 }
                 LinearLayout linearLayout = newLinearLayout(); // transparent color

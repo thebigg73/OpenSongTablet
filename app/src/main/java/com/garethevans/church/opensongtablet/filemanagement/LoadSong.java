@@ -471,7 +471,7 @@ public class LoadSong {
     public void fixSongs() {
         if (songsToFix!=null && songsToFix.size()>0) {
             for (Song thisSong:songsToFix) {
-                Log.d(TAG,"Trying to fix: "+thisSong.getFolder()+"/"+thisSong.getFilename());
+                mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" Fix Songs/"+thisSong.getFolder()+"/"+thisSong.getFilename()+"  deleteOld=true");
                 Uri thisSongUri = mainActivityInterface.getStorageAccess().getUriForItem("Songs",thisSong.getFolder(),thisSong.getFilename());
                 InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(thisSongUri);
                 String content = mainActivityInterface.getStorageAccess().readTextFileToString(inputStream);
@@ -482,8 +482,10 @@ public class LoadSong {
                 }
                 if (content.contains("</song>") && (content.indexOf("</song>") + 7) < content.length()) {
                     content = content.substring(0, content.indexOf("</song>")) + "</song>";
-                    Log.d(TAG,"success = "+ mainActivityInterface.getStorageAccess().doStringWriteToFile(
-                            "Songs", thisSong.getFolder(), thisSong.getFilename(), content));
+                    mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" fixSongs doStringWriteToFile Songs/"+thisSong.getFolder()+"/"+thisSong.getFilename()+" with: "+content);
+                    boolean success = mainActivityInterface.getStorageAccess().doStringWriteToFile(
+                            "Songs", thisSong.getFolder(), thisSong.getFilename(), content);
+                   Log.d(TAG,"fixSong: "+success);
                 }
 
             }
@@ -588,6 +590,7 @@ public class LoadSong {
 
             // Now save the song again (output stream is closed in the write file method)
             OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(uri);
+            mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" fixXML writeFileFromString "+uri+" with: "+newXML);
             mainActivityInterface.getStorageAccess().writeFileFromString(newXML.toString(),outputStream);
 
             // Try to extract the section we need

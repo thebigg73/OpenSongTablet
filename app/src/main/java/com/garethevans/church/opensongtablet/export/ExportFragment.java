@@ -42,8 +42,9 @@ public class ExportFragment extends Fragment {
     private ArrayList<String> setNames;
     private Uri uri;
     private final MutableLiveData<Boolean> listen = new MutableLiveData<>();
-    private ArrayList<View> sectionViewsPDF;
-    private ArrayList<Integer> sectionViewWidthsPDF, sectionViewHeightsPDF;
+    private ArrayList<View> sectionViewsPDF = new ArrayList<>();
+    private ArrayList<Integer> sectionViewWidthsPDF = new ArrayList<>(),
+            sectionViewHeightsPDF = new ArrayList<>();
     private LinearLayout headerLayoutPDF;
     private int headerLayoutWidth, headerLayoutHeight;
     private String setToExport = null;
@@ -67,6 +68,7 @@ public class ExportFragment extends Fragment {
     private volatile boolean processingSetPDFs = false;
     private String[] location;
     private String[] setData;
+    private Song tempSong;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -173,20 +175,12 @@ public class ExportFragment extends Fragment {
             myView.includeSongs.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    Log.d(TAG,"isChecked:"+isChecked);
                     mainActivityInterface.getPreferences().setMyPreferenceBoolean("exportSetSongs",isChecked);
                     showHideSongOptions(isChecked);
                 }
             });
             showHideSongOptions(myView.includeSongs.isChecked());
-
-            // The listener for the include songs
-            myView.includeSongs.setOnCheckedChangeListener((compoundButton, b) -> {
-                if (b) {
-                    myView.songOptionsLayout.setVisibility(View.VISIBLE);
-                } else {
-                    myView.songOptionsLayout.setVisibility(View.GONE);
-                }
-            });
 
             // If we are exporting songs, hide the ones not allowed for sets
             myView.image.setVisibility(View.GONE);
@@ -336,6 +330,7 @@ public class ExportFragment extends Fragment {
             // Add a text version of the set
             if (textSet || includeSongs) {
                 if (textSet) {
+                    mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" doExportSet doStringWriteToFile Export/"+setToExport+".txt with: "+setData[1]);
                     mainActivityInterface.getStorageAccess().doStringWriteToFile(
                             "Export", "", setToExport + ".txt", setData[1]);
                     if (textSet) {
@@ -390,6 +385,7 @@ public class ExportFragment extends Fragment {
 
                         // Add OpenSongApp files
                         if (openSongApp && likelyXML) {
+                            mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" doExportSet CopyFromTo Songs/"+location[0]+"/"+location[1]+" to Export/"+location[1]+".ost");
                             uris.add(mainActivityInterface.getStorageAccess().copyFromTo(
                                     "Songs", location[0], location[1],
                                     "Export", "", location[1] + ".ost"));
@@ -402,6 +398,7 @@ public class ExportFragment extends Fragment {
                         if (onsong && likelyXML) {
                             // Get the text from the file
                             String content = mainActivityInterface.getPrepareFormats().getSongAsOnSong(song);
+                            mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" doExportSet doStringWriteToFile Export/"+location[1]+".onsong with: "+content);
                             if (mainActivityInterface.getStorageAccess().doStringWriteToFile("Export", "", location[1] + ".onsong", content)) {
                                 uris.add(mainActivityInterface.getStorageAccess().getUriForItem("Export", "", location[1] + ".onsong"));
                                 if (!mimeTypes.contains("text/plain")) {
@@ -414,6 +411,7 @@ public class ExportFragment extends Fragment {
                         if (chordPro && likelyXML) {
                             // Get the text from the file
                             String content = mainActivityInterface.getPrepareFormats().getSongAsChoPro(song);
+                            mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" doExportSet doStringWriteToFile Export/"+location[1]+".cho with: "+content);
                             if (mainActivityInterface.getStorageAccess().doStringWriteToFile("Export", "", location[1] + ".cho", content)) {
                                 uris.add(mainActivityInterface.getStorageAccess().getUriForItem("Export", "", location[1] + ".cho"));
                                 if (!mimeTypes.contains("text/plain")) {
@@ -426,6 +424,7 @@ public class ExportFragment extends Fragment {
                         if (text && likelyXML) {
                             // Get the text from the file
                             String content = mainActivityInterface.getPrepareFormats().getSongAsText(song);
+                            mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" doExportSet doStringWriteToFile Export/"+location[1]+".txt with: "+content);
                             if (mainActivityInterface.getStorageAccess().doStringWriteToFile("Export", "", location[1] + ".txt", content)) {
                                 uris.add(mainActivityInterface.getStorageAccess().getUriForItem("Export", "", location[1] + ".txt"));
                                 if (!mimeTypes.contains("text/plain")) {
@@ -519,6 +518,7 @@ public class ExportFragment extends Fragment {
             }
 
             if (openSongApp && isXML) {
+                mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" doExportSong CopyFromTo Songs/"+folder+"/"+filename+" to Export/"+filename+".ost");
                 uris.add(mainActivityInterface.getStorageAccess().copyFromTo("Songs",
                         folder, filename, "Export", "", filename + ".ost"));
                 if (!mimeTypes.contains("text/plain")) {
@@ -528,6 +528,7 @@ public class ExportFragment extends Fragment {
 
             if (onsong && isXML) {
                 String content = mainActivityInterface.getPrepareFormats().getSongAsOnSong(mainActivityInterface.getSong());
+                mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" doExportSong doStringWriteToFile Export/"+filename+".onsong with: "+content);
                 if (mainActivityInterface.getStorageAccess().doStringWriteToFile("Export", "",
                         filename + ".onsong", content)) {
                     uris.add(mainActivityInterface.getStorageAccess().getUriForItem("Export", "",
@@ -540,6 +541,7 @@ public class ExportFragment extends Fragment {
 
             if (chordPro && isXML) {
                 String content = mainActivityInterface.getPrepareFormats().getSongAsChoPro(mainActivityInterface.getSong());
+                mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" doExportSong doStringWriteToFile Export/"+filename+".cho with: "+content);
                 if (mainActivityInterface.getStorageAccess().doStringWriteToFile("Export", "",
                         filename + ".cho", content)) {
                     uris.add(mainActivityInterface.getStorageAccess().getUriForItem("Export", "",
@@ -551,6 +553,7 @@ public class ExportFragment extends Fragment {
             }
 
             if (text && isXML) {
+                mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" doExportSong doStringWriteToFile Export/"+filename+".txt with: "+textContent);
                 if (mainActivityInterface.getStorageAccess().doStringWriteToFile("Export", "",
                         filename + ".txt", textContent)) {
                     uris.add(mainActivityInterface.getStorageAccess().getUriForItem("Export", "",
@@ -612,6 +615,8 @@ public class ExportFragment extends Fragment {
         InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(
                 mainActivityInterface.getExportActions().getActualSongFile(mainActivityInterface.getSong()));
         OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(uri);
+        mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" copyOpenSongApp CopyFile Songs/"+
+                mainActivityInterface.getExportActions().getActualSongFile(mainActivityInterface.getSong())+" to "+uri);
         mainActivityInterface.getStorageAccess().copyFile(inputStream,outputStream);
         return uri;
     }
@@ -626,10 +631,12 @@ public class ExportFragment extends Fragment {
 
         // If the output file exists, delete it first (so we sort of overwrite)
         if (mainActivityInterface.getStorageAccess().uriExists(uri)) {
+            mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" getExportUri deleteFile "+uri);
             mainActivityInterface.getStorageAccess().deleteFile(uri);
         }
 
         // Now create a blank file ready to assign an outputStream
+        mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" Create Export/"+exportFilename+"  deleteOld=true");
         mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true,
                 uri,null,"Export","", exportFilename);
 
@@ -653,7 +660,7 @@ public class ExportFragment extends Fragment {
         myView.hiddenSections.removeAllViews();
         myView.hiddenHeader.removeAllViews();
     }
-    private void createOnTheFlyHeader(Song thisSong) {
+    public void createOnTheFlyHeader(Song thisSong) {
         // Get the song sheet header
         // Once this has drawn, move to the next stage of the song sections
         float scaleComments = mainActivityInterface.getPreferences().getMyPreferenceFloat("scaleComments",0.8f);
@@ -675,7 +682,7 @@ public class ExportFragment extends Fragment {
                 scaleComments,true);
         myView.hiddenHeader.addView(headerLayoutPDF);
     }
-    private void createOnTheFlySections(Song thisSong) {
+    public void createOnTheFlySections(Song thisSong) {
 
         mainActivityInterface.getProcessSong().updateProcessingPreferences();
 
@@ -722,6 +729,8 @@ public class ExportFragment extends Fragment {
                 }
             }
         });
+
+        Log.d(TAG,"sectionViewsPDF.size(): "+sectionViewsPDF.size());
         // Add the section views and this will trigger the VTO
         for (int x=0; x<sectionViewsPDF.size(); x++) {
             myView.hiddenSections.addView(sectionViewsPDF.get(x));
@@ -744,18 +753,62 @@ public class ExportFragment extends Fragment {
 
         // Start a print job, passing in a PrintDocumentAdapter implementation
         // to handle the generation of a print document
-        PrinterAdapter printerAdapter = new PrinterAdapter(requireActivity());
 
         if (isSet) {
+            // Set the variable that will remove gaps from set items on the set list page(s)
+            mainActivityInterface.getMakePDF().setIsSetListPrinting(true);
+
             // For the set, we need a text version of the set
             Log.d(TAG,"setToExport: "+setToExport);
             Log.d(TAG,"setData[0]: "+setData[0]);
             Log.d(TAG,"setData[1]: "+setData[1]);
+
+            // This is sent to the MultipagePrinterAdapter class to deal with
+            MultipagePrinterAdapter multipagePrinterAdapter = new MultipagePrinterAdapter(requireActivity());
+            multipagePrinterAdapter.updateSetList(this,setToExport,setData[0],setData[1]);
+            mainActivityInterface.getMakePDF().setPreferedAttributes();
+            printManager.print(jobName, multipagePrinterAdapter,mainActivityInterface.getMakePDF().getPrintAttributes());
+
         } else {
+            PrinterAdapter printerAdapter = new PrinterAdapter(requireActivity());
             printerAdapter.updateSections(sectionViewsPDF, sectionViewWidthsPDF, sectionViewHeightsPDF,
                     headerLayoutPDF, headerLayoutWidth, headerLayoutHeight, getString(R.string.song));
             mainActivityInterface.getMakePDF().setPreferedAttributes();
             printManager.print(jobName, printerAdapter, mainActivityInterface.getMakePDF().getPrintAttributes());
         }
+    }
+
+    // Getters
+    public ArrayList<View> getSectionViews() {
+        return sectionViewsPDF;
+    }
+    public ArrayList<Integer> getSectionWidths() {
+        return sectionViewWidthsPDF;
+    }
+    public ArrayList<Integer> getSectionHeights() {
+        return sectionViewHeightsPDF;
+    }
+    public LinearLayout getHeaderLayout() {
+        return headerLayoutPDF;
+    }
+    public void setHeaderLayoutPDF(LinearLayout headerLayoutPDF) {
+        this.headerLayoutPDF = headerLayoutPDF;
+    }
+    public int getHeaderWidth() {
+        return headerLayoutWidth;
+    }
+    public int getHeaderHeight() {
+        return headerLayoutHeight;
+    }
+    public LinearLayout getHiddenHeader() {
+        return myView.hiddenHeader;
+    }
+    public LinearLayout getHiddenSections() {
+        return myView.hiddenSections;
+    }
+    public void resetSectionViews() {
+        sectionViewsPDF = new ArrayList<>();
+        sectionViewWidthsPDF = new ArrayList<>();
+        sectionViewHeightsPDF = new ArrayList<>();
     }
 }

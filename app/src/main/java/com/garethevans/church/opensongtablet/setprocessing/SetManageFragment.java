@@ -352,12 +352,14 @@ public class SetManageFragment extends Fragment {
                 mainActivityInterface.getShowToast().doIt(
                         getString(R.string.file_exists));
             } else {
+                mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" saveSet Create Sets/"+setName+" deleteOld=true");
                 mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, uri, null,
                         "Sets", "", setName);
                 OutputStream outputStream = mainActivityInterface.getStorageAccess().
                         getOutputStream(uri);
 
                 String setXML = mainActivityInterface.getSetActions().createSetXML();
+                mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" saveSet writeFileFromString Sets/"+setName+" with: "+setXML);
                 if (mainActivityInterface.getStorageAccess().writeFileFromString(
                         setXML, outputStream)) {
                     // Update the last loaded set now it is saved.
@@ -386,6 +388,7 @@ public class SetManageFragment extends Fragment {
                 Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Sets", "", setBit);
                 if (mainActivityInterface.getStorageAccess().uriExists(uri)) {
                     // Try deleting the set file
+                    mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" deleteSet deleteFile "+uri);
                     if (!mainActivityInterface.getStorageAccess().deleteFile(uri)) {
                         success = false;
                     }
@@ -514,6 +517,7 @@ public class SetManageFragment extends Fragment {
 
     public void doRename() {
         // Received back from the are you sure dialog
+        mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" doRename renameFileFromUri "+oldSetUri+" to "+newSetUri);
         mainActivityInterface.getStorageAccess().renameFileFromUri(
                 oldSetUri,newSetUri,"Sets","",newSetFilename);
         prepareSets();

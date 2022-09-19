@@ -442,6 +442,7 @@ public class HighlighterEditFragment extends Fragment {
             // Set the original highlighter file if it exists
             Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Highlighter", "",
                     mainActivityInterface.getProcessSong().getHighlighterFilename(mainActivityInterface.getSong(), requireContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT));
+            mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" doDelete deleteFile "+uri);
             if (mainActivityInterface.getStorageAccess().deleteFile(uri)) {
                 mainActivityInterface.getShowToast().doIt(getString(R.string.success));
             } else {
@@ -490,6 +491,7 @@ public class HighlighterEditFragment extends Fragment {
             String hname = mainActivityInterface.getProcessSong().getHighlighterFilename(mainActivityInterface.getSong(), orientation == Configuration.ORIENTATION_PORTRAIT);
             highlighterUri = mainActivityInterface.getStorageAccess().getUriForItem("Highlighter", "", hname);
             // Check the uri exists for the outputstream to be valid
+            mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" Create Highlighter/"+hname+"  deleteOld=false");
             mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(
                     false, highlighterUri, null, "Highlighter", "", hname);
 
@@ -507,6 +509,7 @@ public class HighlighterEditFragment extends Fragment {
                     Log.d(TAG, "bitmap=" + highlighterBitmap);
                     OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(highlighterUri);
                     Log.d(TAG, "outputStream=" + outputStream);
+                    mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" saveFile writeImage "+highlighterUri);
                     mainActivityInterface.getStorageAccess().writeImage(outputStream, highlighterBitmap);
                     mainActivityInterface.getShowToast().doIt(getString(R.string.success));
                 } else {

@@ -167,8 +167,11 @@ public class ImportFileFragment extends Fragment {
         // Make a temporary copy of the song in the Variations/_cache folder
         InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(mainActivityInterface.getImportUri());
         tempFile = mainActivityInterface.getStorageAccess().getUriForItem("Variations","_cache",mainActivityInterface.getImportFilename());
+        mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+"Read in file Variations/_cache/"+mainActivityInterface.getImportFilename()+"  deleteOld=false");
         mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(false,tempFile,null,"Variations","_cache",mainActivityInterface.getImportFilename());
         OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(tempFile);
+        mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" readInFile copyFile from " + mainActivityInterface.getImportUri()+" to Variations/_cache/"+mainActivityInterface.getImportFilename());
+
         mainActivityInterface.getStorageAccess().copyFile(inputStream,outputStream);
 
         if (isIMGorPDF) {
@@ -283,9 +286,11 @@ public class ImportFileFragment extends Fragment {
                     myView.filename.setText(filename);
                     // Now copy the file
                     copyTo = mainActivityInterface.getStorageAccess().getUriForItem("Songs", folder, filename);
+                    mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" Copy to Songs/"+folder+"/"+filename+"  deleteOld=true");
                     mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, copyTo, null, "Songs", folder, filename);
                     OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(copyTo);
                     InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(tempFile);
+                    mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" doImport copyFile from "+tempFile+" to Songs/" + folder + "/" + filename);
                     success = mainActivityInterface.getStorageAccess().copyFile(inputStream, outputStream);
                     Log.d(TAG, "success:" + success);
 
@@ -295,15 +300,18 @@ public class ImportFileFragment extends Fragment {
                     newSong.setFilename(filename);
                     newSong.setFiletype("XML");
                     copyTo = mainActivityInterface.getStorageAccess().getUriForItem("Songs", folder, filename);
+                    mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" Copy to Songs/"+folder+"/"+filename+"  deleteOld=true");
                     mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, copyTo, null, "Songs", folder, filename);
                     OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(copyTo);
                     String xml = mainActivityInterface.getProcessSong().getXML(newSong);
+                    mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" doImport writeFileFromString Songs/"+folder+"/"+filename+" with: "+xml);
                     success = mainActivityInterface.getStorageAccess().writeFileFromString(xml, outputStream);
                 }
 
                 if (success) {
                     // Now delete the old song and proceed
                     // Remove the temp file from the variations
+                    mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" doImport deleteFile "+tempFile);
                     mainActivityInterface.getStorageAccess().deleteFile(tempFile);
 
                     // Add to the database
@@ -336,8 +344,10 @@ public class ImportFileFragment extends Fragment {
             Log.d(TAG, "Create folder:" + tempLoc.mkdirs());
             File tempFile = new File(tempLoc, mainActivityInterface.getImportFilename());
             InputStream inputStream = new FileInputStream(tempFile);
+            mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" Finish import  Sets/"+newSetName+"  deleteOld=true");
             mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, copyTo, null, "Sets", "", newSetName);
             OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(copyTo);
+            mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" finishImportSet copyFile from "+tempFile+" to Sets/" + newSetName);
             Log.d(TAG, "copy: " + mainActivityInterface.getStorageAccess().copyFile(inputStream, outputStream));
             ArrayList<Uri> thisSet = new ArrayList<>();
             thisSet.add(copyTo);

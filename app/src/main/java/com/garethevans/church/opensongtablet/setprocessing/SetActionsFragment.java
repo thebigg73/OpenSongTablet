@@ -107,9 +107,11 @@ public class SetActionsFragment extends Fragment {
 
                             Log.d(TAG,"importFile: "+importFilename);
                             Uri copyToUri = mainActivityInterface.getStorageAccess().getUriForItem("Sets", "", importFilename);
+                            mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" initialiseLauncher Create Sets/"+importFilename+" deleteOld=true");
                             mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, copyToUri, null, "Sets", "", importFilename);
                             OutputStream outputStream = mainActivityInterface.getStorageAccess().
                                     getOutputStream(copyToUri);
+                            mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" copyPDF copyFile from "+contentUri+" to Sets/"+importFilename);
                             mainActivityInterface.getStorageAccess().copyFile(inputStream, outputStream);
                             mainActivityInterface.setWhattodo("loadset:"+importFilename);
                             mainActivityInterface.navigateToFragment(getString(R.string.deeplink_sets_manage), 0);
