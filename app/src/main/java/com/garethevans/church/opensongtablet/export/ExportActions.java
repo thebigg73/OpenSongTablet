@@ -257,7 +257,8 @@ public class ExportActions {
                                             custom = " (" + custom + ")";
                                         }
 
-                                        String bittoadd = title + location + custom + author + hymn + ccli + key + "\n";
+                                        //String bittoadd = title + location + custom + author + hymn + ccli + key + "\n";
+                                        String bittoadd = title + custom + author + hymn + ccli + key + "\n";
 
                                         // IV - , (comma) is the delimiter so use within content is replaced with " |" and the the temporary delimeter ¬ replaced with ,
                                         stringBuilderSet.append(bittoadd.replace(","," |").replace("¬", ",").replace(" |",","));
