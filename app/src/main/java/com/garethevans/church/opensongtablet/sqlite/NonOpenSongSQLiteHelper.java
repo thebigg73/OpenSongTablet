@@ -54,8 +54,10 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
         mainActivityInterface.getStorageAccess().getFileSizeFromUri(userDB)>0) {
             InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(userDB);
             OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(appDB);
+            mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" importDatabase copyFile from "+userDB+" to "+appDB);
             Log.d(TAG,"User database copied in: "+mainActivityInterface.getStorageAccess().copyFile(inputStream,outputStream));
         } else {
+            mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" importDatabse Create Settings/"+SQLite.NON_OS_DATABASE_NAME+" deleteOld=false");
             mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(false, userDB,null,"Settings","",
                     SQLite.NON_OS_DATABASE_NAME);
             Log.d(TAG,"Copy appDB to userDB: "+copyUserDatabase());
@@ -66,6 +68,7 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
         // This copies the app persistent database into the user's OpenSong folder
         InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(appDB);
         OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(userDB);
+        mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" copyPDF copyFile from "+appDB+" to "+userDB);
         return mainActivityInterface.getStorageAccess().copyFile(inputStream,outputStream);
     }
 

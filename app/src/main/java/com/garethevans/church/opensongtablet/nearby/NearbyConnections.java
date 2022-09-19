@@ -883,9 +883,11 @@ public class NearbyConnections implements NearbyInterface {
                     if (keepHostFiles) {
                         // Prepare the output stream in the client Songs folder
                         // Check the folder exists, if not, create it
+                        mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" payloadOpenSong createFile Songs/"+receivedBits.get(0));
                         mainActivityInterface.getStorageAccess().createFile(DocumentsContract.Document.MIME_TYPE_DIR, "Songs", receivedBits.get(0), "");
                         newLocation = mainActivityInterface.getStorageAccess().getUriForItem("Songs", receivedBits.get(0), receivedBits.get(1));
                         // Create the file if it doesn't exist
+                        mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" payLoadOpenSong() keepHostFiles Create Songs/"+receivedBits.get(0)+"/"+receivedBits.get(1)+"  deleteOld=true");
                         mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, newLocation, null, "Songs", receivedBits.get(0), receivedBits.get(1));
                         outputStream = mainActivityInterface.getStorageAccess().getOutputStream(newLocation);
                         mainActivityInterface.getSong().setFolder(receivedBits.get(0));
@@ -896,6 +898,7 @@ public class NearbyConnections implements NearbyInterface {
                     } else {
                         newLocation = mainActivityInterface.getStorageAccess().getUriForItem("Received", "", "ReceivedSong");
                         // Prepare the output stream in the Received folder - just keep a temporary version
+                        mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" payLoadOpenSong !keepHostFiles Create Songs/"+receivedBits.get(0)+"/"+receivedBits.get(1)+" deleteOld=true");
                         mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, newLocation, null, "Received", "", "ReceivedSong");
                         outputStream = mainActivityInterface.getStorageAccess().getOutputStream(newLocation);
                         mainActivityInterface.getSong().setFolder("../Received");
@@ -910,6 +913,7 @@ public class NearbyConnections implements NearbyInterface {
 
                     // Write the file to the desired output stream and load
                     if (nearbyReturnActionsInterface != null) {
+                        mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" payloadOpenSong writeFileFromString "+newLocation+" with: "+receivedBits.get(3));
                         Log.d(TAG,"write the file: "+mainActivityInterface.getStorageAccess().writeFileFromString(receivedBits.get(3), outputStream));
                         mainActivityInterface.getSong().setCurrentSection(pendingCurrentSection);
 
@@ -993,11 +997,13 @@ public class NearbyConnections implements NearbyInterface {
                 newLocation = mainActivityInterface.getStorageAccess().getUriForItem("Songs", folder, filename);
                 if (!mainActivityInterface.getStorageAccess().uriExists(newLocation)) {
                     Log.d(TAG,"Client doesn't have the song, so create it");
-                    mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, newLocation, null, "Songs", folder, filename);
+                    mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" payloadFile Create Songs/"+folder+"/"+filename+" deleteOld=false");
+                    mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(false, newLocation, null, "Songs", folder, filename);
                 } else {
                     // Check it isn't a zero filesize/corrupt
                     if (mainActivityInterface.getStorageAccess().getFileSizeFromUri(newLocation)==0) {
                         Log.d(TAG,"0b file - bring in this one");
+                        mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" payloadFile 0kb file Create Songs/"+folder+"/"+filename+" deleteOld=true");
                         mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, newLocation, null, "Songs", folder, filename);
                     } else {
                         // Set to null as we don't need to create it as we already have this song
@@ -1011,6 +1017,7 @@ public class NearbyConnections implements NearbyInterface {
                 // IV - Store the received song filename in case the user wants to duplicate the received song
                 receivedSongFilename = filename;
                 newLocation = mainActivityInterface.getStorageAccess().getUriForItem("Received", "", filename);
+                mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" payloadFile Create Received/"+folder+"/"+filename+" deleteOld=true");
                 mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, newLocation, null, "Received", "", filename);
             }
             mainActivityInterface.getSong().setFolder(folder);
@@ -1033,6 +1040,7 @@ public class NearbyConnections implements NearbyInterface {
                 OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(newLocation);
                 Log.d(TAG, "receiving File.  Original uri=" + originalUri);
                 Log.d(TAG, "new location = " + newLocation);
+                mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" payloadFile copyFile from "+originalUri+" to "+newLocation);
                 if (mainActivityInterface.getStorageAccess().copyFile(inputStream, outputStream)) {
                     if (nearbyReturnActionsInterface != null) {
                         mainActivityInterface.getSong().setCurrentSection(pendingCurrentSection);
@@ -1058,6 +1066,7 @@ public class NearbyConnections implements NearbyInterface {
                 try {
                     Log.d(TAG, "try to remove originalUri");
                     if (mainActivityInterface.getStorageAccess().uriExists(originalUri)) {
+                        mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" payloadFile deleteFile "+originalUri);
                         mainActivityInterface.getStorageAccess().deleteFile(originalUri);
                     }
                 } catch (Exception e) {

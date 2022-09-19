@@ -14,6 +14,7 @@ import java.util.ArrayList;
 
 public class PrepareFormats {
 
+    private final String TAG = "PrepareFormats";
     private final MainActivityInterface mainActivityInterface;
 
     public PrepareFormats(Context c) {
@@ -50,18 +51,21 @@ public class PrepareFormats {
         }
         if (txt && thisSongSQL !=null) {
             String text = getSongAsText(thisSongSQL);
+            mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" makeSongExportCopies doStringWriteToFile Export/"+newFilename+".txt with: "+text);
             if (mainActivityInterface.getStorageAccess().doStringWriteToFile("Export","",newFilename+".txt",text)) {
                 uris.add(mainActivityInterface.getStorageAccess().getUriForItem("Export","",newFilename+".txt"));
             }
         }
         if (chopro && thisSongSQL !=null) {
             String text = getSongAsChoPro(thisSongSQL);
+            mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" makeSongExportCopies doStringWriteToFile Export/"+newFilename+".chopro with: "+text);
             if (mainActivityInterface.getStorageAccess().doStringWriteToFile("Export","",newFilename+".chopro",text)) {
                 uris.add(mainActivityInterface.getStorageAccess().getUriForItem("Export","",newFilename+".chopro"));
             }
         }
         if (onsong && thisSongSQL !=null) {
             String text = getSongAsOnSong(thisSongSQL);
+            mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" makeSongExportCopies doStringWriteToFile Export/"+newFilename+".onsong with: "+text);
             if (mainActivityInterface.getStorageAccess().doStringWriteToFile("Export","",newFilename+".onsong",text)) {
                 uris.add(mainActivityInterface.getStorageAccess().getUriForItem("Export","",newFilename+".onsong"));
             }
@@ -72,10 +76,13 @@ public class PrepareFormats {
     private Uri doMakeCopy(String currentFolder, String currentFilename, String newFilename) {
         Uri targetFile = mainActivityInterface.getStorageAccess().getUriForItem("Songs",currentFolder,currentFilename);
         Uri destinationFile = mainActivityInterface.getStorageAccess().getUriForItem("Export","",newFilename);
+        mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" Create Export/"+newFilename+"  deleteOld=true");
         mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true,
                 destinationFile,null,"Export","",newFilename);
         InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(targetFile);
         OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(destinationFile);
+        mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" doMakeCopy from Songs/"+currentFolder+"/"+currentFilename+" to Export/" + newFilename);
+
         if (mainActivityInterface.getStorageAccess().copyFile(inputStream,outputStream)) {
             return destinationFile;
         } else {
@@ -128,9 +135,11 @@ public class PrepareFormats {
         }
         newFilename = newFilename + thisSong.getFilename() + ".png";
         Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Export","",newFilename);
+        mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" Create Export/"+newFilename+"  deleteOld=true");
         mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true,
                 uri, "application/pdf","Export","",newFilename);
         OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(uri);
+        mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" doImport writeImage Export/"+newFilename);
         mainActivityInterface.getStorageAccess().writeImage(outputStream,mainActivityInterface.getScreenshot());
         return uri;
     }

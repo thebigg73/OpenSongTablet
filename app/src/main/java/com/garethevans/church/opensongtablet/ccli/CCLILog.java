@@ -96,6 +96,7 @@ public class CCLILog {
                 "<log>\n</log>\n";
 
         // Write the new file
+        mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" createBlankXML doStringWriteToFile Settings/ActivityLog.xml with: "+blankXML);
         return mainActivityInterface.getStorageAccess().doStringWriteToFile("Settings","","ActivityLog.xml",blankXML);
     }
 

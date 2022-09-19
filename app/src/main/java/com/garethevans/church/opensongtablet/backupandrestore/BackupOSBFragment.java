@@ -166,6 +166,7 @@ public class BackupOSBFragment extends Fragment {
             byte[] tempBuff = new byte[1024];
             // Check the temp folder exists
             Uri backupUri = mainActivityInterface.getStorageAccess().getUriForItem("Backups","",backupFilename);
+            mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" Create Backups/"+backupFilename+"  deleteOld=true");
             mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true,
                     backupUri,null,"Backups","",backupFilename);
             OutputStream outputStream;

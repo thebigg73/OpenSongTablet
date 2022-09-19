@@ -477,11 +477,13 @@ public class ImportOnlineFragment extends Fragment {
         newSong.setFiletype("PDF");
 
         Uri outputUri = mainActivityInterface.getStorageAccess().getUriForItem("Songs",folder,filename);
+        mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" CopyPDF Songs/"+folder+"/"+filename+"  deleteOld=false");
         mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(false, outputUri,null,"Songs",folder,filename);
         OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(outputUri);
         InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(inputUri);
         try {
             // Copy the file
+            mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" copyPDF copyFile from "+inputUri+" to Songs/"+folder+"/"+filename);
             mainActivityInterface.getStorageAccess().copyFile(inputStream,outputStream);
 
             // Update the current song

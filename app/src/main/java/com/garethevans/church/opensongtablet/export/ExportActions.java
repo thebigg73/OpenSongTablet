@@ -18,6 +18,7 @@ public class ExportActions {
 
     private final Context c;
     private final MainActivityInterface mainActivityInterface;
+    private final String TAG = "ExportActions";
 
     public ExportActions(Context c) {
         this.c = c;
@@ -108,6 +109,7 @@ public class ExportActions {
     public ArrayList<Uri> addOpenSongAppSetsToUris(ArrayList<String> setNames) {
         ArrayList<Uri> extraUris = new ArrayList<>();
         for (String setName : setNames) {
+            mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" addOpenSongAppSetsToUris CopyFromTo Sets/"+setName+" to Export/"+setName+".osts");
             extraUris.add(mainActivityInterface.getStorageAccess().copyFromTo(
                     "Sets", "", setName,
                     "Export", "", setName + ".osts"));

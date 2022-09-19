@@ -12,6 +12,7 @@ public class CustomSlide {
     // This object holds and deals with any custom slide objects
     private final Context c;
     private final MainActivityInterface mainActivityInterface;
+    private final String TAG = "CustomSlide";
 
     // Firstly the variables used when on the create slide page
     private String createType = "note";     // Type of custom slide being created
@@ -129,9 +130,11 @@ public class CustomSlide {
             // Now prepare to save the file
             // If it is flagged to be reusable, it also gets saved in the top level folder
             // All custom slides get saved into the temp _cache folder for use with this set
+            mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" addItemToSet doStringWriteToFile "+folder+"/_cache/"+file+" with: "+xml);
             mainActivityInterface.getStorageAccess().doStringWriteToFile(folder, "_cache", file, xml);
 
             if (reusable) {
+                mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" addItemToSet doStringWriteToFile "+folder+"/"+file+" with: "+xml);
                 mainActivityInterface.getStorageAccess().doStringWriteToFile(folder, "", file, xml);
             }
 

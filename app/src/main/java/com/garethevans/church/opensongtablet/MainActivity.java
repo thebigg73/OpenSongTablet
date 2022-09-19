@@ -308,6 +308,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     Log.d(TAG,"Create folder:"+tempLoc.mkdirs());
                     File tempFile = new File(tempLoc,importFilename);
                     FileOutputStream outputStream = new FileOutputStream(tempFile);
+                    storageAccess.updateFileActivityLog(TAG+" dealWithIntent CopyFile "+importUri+" to "+tempFile);
                     storageAccess.copyFile(inputStream,outputStream);
                     importUri = Uri.fromFile(tempFile);
                     if (importFilename.toLowerCase(Locale.ROOT).endsWith(".osb")) {
@@ -728,6 +729,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         // Write a blank xml file with the song name in it
                         song = processSong.initialiseSong(song.getFolder(),"NEWSONGFILENAME");
                         String newSongText = processSong.getXML(song);
+                        // Save the song.  This also calls lollipopCreateFile with 'true' to deleting old
+                        getStorageAccess().updateFileActivityLog(TAG+" updateFragment doStringWriteToFile Songs/"+song.getFolder()+"/"+song.getFilename()+" with: "+newSongText);
                         if (storageAccess.doStringWriteToFile("Songs",song.getFolder(), song.getFilename(),newSongText)) {
                             navigateToFragment(null,R.id.editSongFragment);
                         } else {
@@ -1704,11 +1707,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     copySong.getDesiredChordFormat()).getLyrics());
             // Get the song XML
             String songXML = processSong.getXML(copySong);
-            // If the file already exists, remove it as we might have edited the original
-            storageAccess.lollipopCreateFileForOutputStream(true,
-                    variationUri, null, "Variations", "", newFilename);
-
-            // Save the song
+            // Save the song.  This also calls lollipopCreateFile with 'true' to deleting old
+            getStorageAccess().updateFileActivityLog(TAG+" loadSongFromSet doStringWriteToFile Variations/"+newFilename+" with: "+songXML);
             storageAccess.doStringWriteToFile("Variations", "", newFilename, songXML);
 
             setFolder = newFolder;
@@ -1776,6 +1776,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             boolean allowToast = true;
             switch(what) {
                 case "deleteSong":
+                    getStorageAccess().updateFileActivityLog(TAG+" confirmedAction deleteFile Songs/"+song.getFolder()+"/"+song.getFilename());
                     result = storageAccess.doDeleteFile("Songs",
                             song.getFolder(), song.getFilename());
                     // Now remove from the SQL database
@@ -1797,6 +1798,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
                 case "deleteItem":
                     // Folder and subfolder are passed in the arguments.  Blank arguments.get(2) /filenames mean folders
+                    getStorageAccess().updateFileActivityLog(TAG+" confirmedAction deleteFile "+arguments.get(0)+"/"+arguments.get(1)+"/"+arguments.get(2));
                     result = storageAccess.doDeleteFile(arguments.get(0),arguments.get(1),arguments.get(2));
                     if (arguments.get(2).isEmpty() && arguments.get(0).equals("Songs") && (arguments.get(1).isEmpty()||arguments.get(1)==null)) {
                         // Emptying the entire songs foler, so need to recreate it on finish.

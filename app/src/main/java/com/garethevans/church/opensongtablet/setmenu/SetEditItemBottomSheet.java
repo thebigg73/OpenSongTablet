@@ -199,6 +199,7 @@ public class SetEditItemBottomSheet extends BottomSheetDialogFragment {
             // Delete the variation file and put the original folder back?
             Uri variationUri = mainActivityInterface.getStorageAccess().getUriForItem("Variations","",myView.editFilename.getText().toString());
             if (mainActivityInterface.getStorageAccess().uriExists(variationUri)) {
+                mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" setAsVariation deleteFile "+variationUri);
                 mainActivityInterface.getStorageAccess().deleteFile(variationUri);
             }
             // Update the matching card

@@ -13,6 +13,7 @@ public class SaveSong {
 
     private final Context c;
     private final MainActivityInterface mainActivityInterface;
+    private final String TAG = "SaveSong";
 
     public SaveSong(Context c) {
         this.c = c;
@@ -56,10 +57,12 @@ public class SaveSong {
                 Uri landscapeOld = mainActivityInterface.getStorageAccess().getUriForItem("Highlighter","", oldHighlighterFile_l);
                 if (mainActivityInterface.getStorageAccess().uriExists(portraitOld)) {
                     Uri portraitNew = mainActivityInterface.getStorageAccess().getUriForItem("Highlighter", "", newHighlighterFile_p);
+                    mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" doSave renameFileFromUri "+portraitOld+" to "+portraitNew);
                     mainActivityInterface.getStorageAccess().renameFileFromUri(portraitOld,portraitNew,"Highlighter","",newHighlighterFile_p);
                 }
                 if (mainActivityInterface.getStorageAccess().uriExists(landscapeOld)) {
                     Uri landscapeNew = mainActivityInterface.getStorageAccess().getUriForItem("Highlighter", "", newHighlighterFile_l);
+                    mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" doSave renameFileFromUri "+landscapeOld+" to "+landscapeNew);
                     mainActivityInterface.getStorageAccess().renameFileFromUri(landscapeOld,landscapeNew,"Highlighter", "", newHighlighterFile_l);
                 }
             }
@@ -73,6 +76,7 @@ public class SaveSong {
                 if (oldFilename!=null && !oldFilename.isEmpty() && oldLocation.get(0)!=null && oldLocation.get(1)!=null) {
                     Uri oldUri = mainActivityInterface.getStorageAccess().
                             getUriForItem(oldLocation.get(0), oldLocation.get(1), oldFilename);
+                    mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" doSave deleteFile "+oldUri);
                     mainActivityInterface.getStorageAccess().deleteFile(oldUri);
                 }
             }
@@ -119,6 +123,7 @@ public class SaveSong {
 
             // Now save the song file and return the success!
             if (thisSong.getFiletype().equals("XML")) {
+                mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" updateSong Songs/"+thisSong.getFolder()+"/"+thisSong.getFilename());
                 return mainActivityInterface.getStorageAccess().saveThisSongFile(thisSong);
             } else {
                 return true;

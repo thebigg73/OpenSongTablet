@@ -152,6 +152,7 @@ public class ProfileActions {
             // Check the file exists, if not create it
             if (!mainActivityInterface.getStorageAccess().uriExists(uri)) {
                 String name = uri.getLastPathSegment();
+                mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" saveProfile Create Profiles/"+name+" deleteOld=true");
                 mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, uri, null, "Profiles", "", name);
             }
 
@@ -161,6 +162,7 @@ public class ProfileActions {
             InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(prefsFile);
             OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(uri);
 
+            mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" saveProfile copyFile from "+prefsFile+" to "+uri);
             mainActivityInterface.getStorageAccess().copyFile(inputStream, outputStream);
         } catch (Exception e) {
             Log.d(TAG,"Error saving");

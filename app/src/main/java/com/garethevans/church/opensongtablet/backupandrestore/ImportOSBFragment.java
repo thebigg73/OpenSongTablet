@@ -353,6 +353,7 @@ public class ImportOSBFragment extends Fragment {
                     }
                 });
                 if (alive) {
+                    mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" doImport createFile Songs/"+folder);
                     mainActivityInterface.getStorageAccess().createFile(DocumentsContract.Document.MIME_TYPE_DIR,
                             "Songs", folder, "");
                 }
@@ -417,15 +418,18 @@ public class ImportOSBFragment extends Fragment {
                             if (!exists && alive) {
                                 if (ze.getName().contains("_Highlighter/")) {
                                     filename = ze.getName().replace("_Highlighter/","");
+                                    mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" Create Highlighter/"+filename+"  deleteOld=false");
                                     mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(
                                             false, file_uri,null,"Highlighter","",filename);
                                 } else if (ze.getName().equals(SQLite.NON_OS_DATABASE_NAME)) {
                                     // the file_uri is actually pointing to the app folder as we will save it there then SQL insert or replace in the existing DB
                                     Uri final_file_uri = mainActivityInterface.getStorageAccess().getUriForItem("Settings","",SQLite.NON_OS_DATABASE_NAME);
-                                            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(
+                                    mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" Create Settings/"+SQLite.NON_OS_DATABASE_NAME+"  deleteOld=false");
+                                    mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(
                                             false, final_file_uri,null,"Settings","",SQLite.NON_OS_DATABASE_NAME);
                                 } else {
                                     filename = ze.getName().replace(filefolder, "").replace("/", "");
+                                    mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" Create Songs/"+filefolder+"/"+filename+"  deleteOld=true");
                                     mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(
                                             true, file_uri, null, "Songs", filefolder, filename);
                                 }

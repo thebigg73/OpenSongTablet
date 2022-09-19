@@ -20,9 +20,9 @@ import java.util.ArrayList;
 public class MakePDF {
 
     private final MainActivityInterface mainActivityInterface;
-    private final float margin_cm = 1.3f;           // 1.3cm
-    private final float footerHeight_cm = 0.5f;     // 0.5cm
-    private int headerHeight, docWidth, docHeight, availableHeight, pageNum=1, totalPages=1;
+    private final float margin_cm = 1.5f;           // 1.5cm
+    private final float footerHeight_cm = 0.6f;     // 0.6cm
+    private int headerHeight, headerWidth, docWidth, docHeight, availableHeight, pageNum=1, totalPages=1;
     private Paint linePaint, footerPaint;
     private PdfDocument pdfDocument;
     private PdfDocument.Page page;
@@ -30,6 +30,9 @@ public class MakePDF {
     private Canvas pageCanvas;
     private final String TAG = "MakePDF";
     private PrintAttributes printAttributes;
+    private boolean isSetListPrinting = false;
+    private boolean showTotalPage = true;
+    private String exportFilename;
 
     public MakePDF(Context c) {
         mainActivityInterface = (MainActivityInterface) c;
@@ -37,6 +40,7 @@ public class MakePDF {
 
     public void createBlankPDFDoc(String exportFilename, PrintAttributes printAttributes){
         Log.d(TAG,"exportFilename="+exportFilename);
+        this.exportFilename = exportFilename;
         this.printAttributes = printAttributes;
 
         // Set the paint values
@@ -47,9 +51,6 @@ public class MakePDF {
 
         // Initialise the sizes
         initialiseSizes();
-
-        // Start for page 1
-        startPage();
     }
 
     // Create the content for the current item
@@ -57,7 +58,11 @@ public class MakePDF {
                                     ArrayList<Integer> sectionHeights, LinearLayout headerLayout,
                                     int headerLayoutWidth, int headerLayoutHeight) {
         // Add or create the header
-        createHeader(headerLayout, headerLayoutWidth, headerLayoutHeight);
+        headerHeight = headerLayoutHeight;
+        headerWidth = headerLayoutWidth;
+        startPage();
+
+        createHeader(headerLayout);
 
         // Get the space available to the song sections and pages needed to fit them all in
         determineSpaceAndPages(sectionWidths, sectionHeights);
@@ -81,6 +86,7 @@ public class MakePDF {
                              PrintAttributes printAttributes) {
 
         // Create the PDF doc with the default settings
+        headerHeight = headerLayoutHeight;
         createBlankPDFDoc(exportFilename,printAttributes);
 
         // Add the currently drawn sections to the PDF document
@@ -152,30 +158,47 @@ public class MakePDF {
     }
 
     // Headers and footers
-    private void createHeader(LinearLayout headerLayout, int headerLayoutWidth,
-                              int headerLayoutHeight) {
-        int headerWidth = headerLayoutWidth;
-        headerHeight = headerLayoutHeight;
+    private void createHeader(LinearLayout headerLayout) {
         float headerScaling;
         // Get the maximum scale possible by the width of the document
         float maxWidthScaling = ((float) (docWidth - (cmToPx(margin_cm) * 2))) / (float) headerWidth;
-        // Get the maximum scale possible by the preferred maximum header height (3.5cm)
-        float maxHeightScaling = ((float) cmToPx(3.5f) / (float) headerHeight);
-        headerScaling = Math.min(maxWidthScaling,maxHeightScaling);
+        // Get the maximum scale possible by the preferred maximum header height (2.5cm)
+        float maxHeightScaling = ((float) cmToPx(2.5f) / (float) headerHeight);
+        if (headerHeight==0) {
+            headerScaling = 1f;
+        } else {
+            headerScaling = Math.min(maxWidthScaling, maxHeightScaling);
+        }
+        Log.d(TAG,"headerHeight="+headerHeight);
         headerWidth = (int) ((float)headerWidth * headerScaling);
         headerHeight = (int) ((float)headerHeight * headerScaling);
 
+        Log.d(TAG,"headerScaling="+headerScaling);
+        Log.d(TAG,"headerHeight="+headerHeight);
 
         // Do any scaling
         scaleThisView(headerLayout, headerWidth, headerHeight, headerScaling);
 
-        // Save the canvas, translate for correct write positioning, then restore the canvas state/position
-        pageCanvas.save();
-        pageCanvas.translate(cmToPx(margin_cm),cmToPx(margin_cm));
-        pageCanvas.scale(headerScaling,headerScaling);
-        headerLayout.draw(pageCanvas);
-        pageCanvas.restore();
+        Log.d(TAG,"save canvas");
+        Log.d(TAG,"pageCanvas:"+pageCanvas);
+        Log.d(TAG,"pageNum="+pageNum);
 
+        pageCanvas = page.getCanvas();
+        // Save the canvas, translate for correct write positioning, then restore the canvas state/position
+        try {
+            pageCanvas.save();
+            Log.d(TAG,"translate canvas");
+            pageCanvas.translate(cmToPx(margin_cm), cmToPx(margin_cm));
+            Log.d(TAG,"scale canvas");
+            pageCanvas.scale(headerScaling, headerScaling);
+            Log.d(TAG,"draw canvas");
+            headerLayout.draw(pageCanvas);
+            Log.d(TAG,"restore canvas");
+            pageCanvas.restore();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Log.d(TAG,"horizontal line");
         // Draw a horizontal line under the heading
         drawHorizontalLine(headerHeight + cmToPx(margin_cm));
         headerHeight = headerHeight + 4;
@@ -240,7 +263,13 @@ public class MakePDF {
         // The page numbering if there is more than 1 page needed
         if (totalPages>1) {
             bounds = new Rect();
-            String pageString = "Page " + pageNum + "/" + totalPages;
+            String pageString;
+            if (showTotalPage) {
+                pageString = "Page " + pageNum + "/" + totalPages;
+            } else {
+                pageString = "Page " + pageNum;
+            }
+
             footerPaint.getTextBounds(pageString,0,pageString.length(),bounds);
             pageCanvas.drawText(pageString,docWidth-cmToPx(margin_cm)-bounds.width(),docHeight-cmToPx(margin_cm)-cmToPx(footerHeight_cm),footerPaint);
         }
@@ -260,6 +289,8 @@ public class MakePDF {
 
         // Set our starting positions and sizes
         float ypos = headerHeight + cmToPx(margin_cm);
+        Log.d(TAG,"headerHeight="+headerHeight);
+        Log.d(TAG,"ypos="+ypos);
         int spaceStillAvailable = availableHeight;
 
         // Go through views one at a time
@@ -301,6 +332,10 @@ public class MakePDF {
         // Add the footer to the last page and finish it
         createFooter();
         pdfDocument.finishPage(page);
+
+        // Because there may be addition pages added (multiple files combined)
+        pageNum++;
+        totalPages++;
     }
 
     // Do any scaling
@@ -323,15 +358,18 @@ public class MakePDF {
         try {
             pdfDocument.writeTo(outputStream);
             outputStream.close();
+            Log.d(TAG,"pdfDocument close");
             pdfDocument.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
+        showTotalPage = true;
     }
     private Uri getPDFUri(String exportFilename) {
         Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Export", "", exportFilename);
 
         // Remove it as we want to create a new version!
+        mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" getPDFUri Create Export/"+exportFilename+" deleteOld=true");
         mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, uri, null, "Export", "", exportFilename);
         return uri;
     }
@@ -352,5 +390,15 @@ public class MakePDF {
     private int cmToPx(float cm) {
         // Convert cm to inches by dividing by 2.54, the to dpi by multiplying by 72 (resolution)
         return Math.round((cm/2.54f)*72);
+    }
+    public void setIsSetListPrinting(boolean isSetListPrinting) {
+        this.isSetListPrinting = isSetListPrinting;
+        showTotalPage = !isSetListPrinting;
+    }
+    public boolean getIsSetListPrinting() {
+        return isSetListPrinting;
+    }
+    public String getExportFilename() {
+        return exportFilename;
     }
 }

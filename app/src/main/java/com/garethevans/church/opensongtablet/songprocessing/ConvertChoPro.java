@@ -520,6 +520,7 @@ public class ConvertChoPro {
             }
         }
         if (!songSubFolder.contains("Variation")) {
+            mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" getNewSongUri Create Songs/"+songSubFolder+"/"+newSongFileName+" deleteOld=true");
             mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, n, null, "Songs", songSubFolder, newSongFileName);
         }
         return n;
@@ -608,6 +609,7 @@ public class ConvertChoPro {
 
         if (oldSongFileName != null && !oldSongFileName.equals("") && newSongFileName != null && !newSongFileName.equals("")
                 && oldUri != null && newUri != null && mainActivityInterface.getStorageAccess().uriExists(oldUri)) {
+            mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" writeTheImprovedSong Create Songs/"+songSubFolder+"/"+newSongFileName+" deleteOld=true");
             mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, newUri, null, "Songs", songSubFolder, newSongFileName);
             OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(newUri);
 
@@ -616,7 +618,9 @@ public class ConvertChoPro {
             if (outputStream != null) {
                 // Change the songId (references to the uri)
                 // Now remove the old chordpro file
+                mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" writeTheImprovedSong writeFileFromString "+newUri+" with: "+newXML);
                 mainActivityInterface.getStorageAccess().writeFileFromString(newXML, outputStream);
+                mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" writeTheImprovedSong deleteFile "+oldUri);
                 Log.d(TAG, "attempt to deletefile=" + mainActivityInterface.getStorageAccess().deleteFile(oldUri));
 
                 // Remove old song from database
