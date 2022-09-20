@@ -111,7 +111,6 @@ public class ABCPopup {
         webView.getSettings().setJavaScriptEnabled(true);
         mainActivityInterface.getAbcNotation().setWebView(webView, mainActivityInterface,
                     false);
-
         floatWindow.addView(webView);
         popupWindow.setContentView(floatWindow);
     }

@@ -411,6 +411,9 @@ public class LoadSong {
                             case "abcnotation":
                                 thisSong.setAbc(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
                                 break;
+                            case "abctranspose":
+                                thisSong.setAbcTranspose(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
+                                break;
                             case "style":
                             case "backgrounds":
                                 // Simplest way to get this is to keep a record that it exists

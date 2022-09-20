@@ -1080,6 +1080,8 @@ Check out the categories in the right hand options menu.
     <string name="youtube" translatable="false">YouTube</string>
 
     <string name="zefania" translatable="false">Zefania</string>
+    <string name="zoom_level">Zoom level</string>
+
 
 
     <!-- TODO LIKELY TO USE BUT HAVEN'T YET -->

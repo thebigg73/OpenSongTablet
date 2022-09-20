@@ -853,4 +853,5 @@
     <string name="restart_required">Starta om appen för att tillämpa ändringarna</string>
     <string name="restart">Omstart</string>
     <string name="export_current_format">Låtar i deras nuvarande format</string>
+    <string name="zoom_level">Zoomnivå</string>
 </resources>

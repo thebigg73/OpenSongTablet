@@ -42,6 +42,7 @@ public class Song {
     private String customchords="";
     private String notes="";
     private String abc="";
+    private String abctranspose="0";
     private String linkyoutube="";
     private String linkweb="";
     private String linkaudio="";
@@ -72,7 +73,6 @@ public class Song {
     private boolean scalingFiguredOut = false;
     private boolean currentlyLoading = false; // true when song starts loading, false once displayed
     private boolean editingAsChoPro = false;
-    private boolean pedalWarningActive = true;
 
     // The getters
     public int getId() {
@@ -141,6 +141,9 @@ public class Song {
     public String getCustomchords() {return customchords;}
     public String getNotes() {return notes;}
     public String getAbc() {return abc;}
+    public String getAbcTranspose() {
+        return abctranspose;
+    }
     public String getLinkyoutube() {return linkyoutube;}
     public String getLinkweb() {return linkweb;}
     public String getLinkaudio() {return linkaudio;}
@@ -233,9 +236,6 @@ public class Song {
     public boolean getEditingAsChoPro() {
         return editingAsChoPro;
     }
-    public boolean getPedalWarningActive() {
-        return pedalWarningActive;
-    }
 
     // The setters
     public void setId(int id) {
@@ -304,6 +304,9 @@ public class Song {
     public void setCustomChords(String customchords) {this.customchords = customchords;}
     public void setNotes(String notes) {this.notes = notes;}
     public void setAbc(String abc) {this.abc = abc;}
+    public void setAbcTranspose(String abctranspose) {
+        this.abctranspose = abctranspose;
+    }
     public void setLinkyoutube(String linkyoutube) {this.linkyoutube = linkyoutube;}
     public void setLinkweb(String linkweb) {this.linkweb = linkweb;}
     public void setLinkaudio(String linkaudio) {this.linkaudio = linkaudio;}
@@ -379,9 +382,6 @@ public class Song {
     public void setEditingAsChoPro(boolean editingAsChoPro) {
         this.editingAsChoPro = editingAsChoPro;
     }
-    public void setPedalWarningActive(boolean pedalWarningActive) {
-        this.pedalWarningActive = pedalWarningActive;
-    }
 
     // The constructor to create a new song object
     public Song() {}
@@ -419,12 +419,11 @@ public class Song {
         this.customchords = toCopy.customchords;
         this.notes = toCopy.notes;
         this.abc = toCopy.abc;
+        this.abctranspose = toCopy.abctranspose;
         this.linkyoutube = toCopy.linkyoutube;
         this.linkweb = toCopy.linkweb;
         this.linkaudio = toCopy.linkaudio;
         this.linkother = toCopy.linkother;
-        this.presentationorder = toCopy.presentationorder;
-
         this.hasExtraStuff = toCopy.hasExtraStuff;
         this.filetype = toCopy.filetype;
         this.detectedChordFormat = toCopy.detectedChordFormat;

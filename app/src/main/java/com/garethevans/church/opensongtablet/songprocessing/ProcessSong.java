@@ -160,6 +160,7 @@ public class ProcessSong {
         myNEWXML += "  <loop_audio>" + parseToHTMLEntities(thisSong.getPadloop()) + "</loop_audio>\n";
         myNEWXML += "  <link_other>" + parseToHTMLEntities(thisSong.getLinkother()) + "</link_other>\n";
         myNEWXML += "  <abcnotation>" + parseToHTMLEntities(thisSong.getAbc()) + "</abcnotation>\n";
+        myNEWXML += "  <abctranspose>" + parseToHTMLEntities(thisSong.getAbcTranspose()) + "</abctranspose>\n";
 
         if (thisSong.getHasExtraStuff()) {
             String extraStuff = mainActivityInterface.getLoadSong().getExtraStuff(thisSong);

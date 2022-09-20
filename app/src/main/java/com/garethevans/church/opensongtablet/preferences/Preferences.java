@@ -119,6 +119,8 @@ public class Preferences extends Activity {
     // Variable name                   Type        What
     // abcAuto                         boolean     Should abc notation automatically be shown? (def:false)
     // abcPopupWidth                   float       The percentage of the screen width for the abc score popup (def:0.95f)
+    // abcTranspose                    int         The visual transposing of abc notation
+    // abcZoom                         int         How much the staff width is reduced thus zooming in.  Calculated by width/zoom (def:2)
     // addSectionBox                   boolean     Draw a box around sections when in Performance mode (def:false)
     // *NOTYET addSectionSpace         boolean     Should a spacing line be added between sections to improve readability (def:true)
     // airTurnLongPressTime            int         If using airTurnMode, how long should an action_down be held for to simulate longPress (def:1000)

@@ -15,6 +15,7 @@ public class ABCNotation {
 
     private final String TAG = "ABCNotation";
 
+
     @SuppressLint("SetJavaScriptEnabled")
     public void setWebView(WebView webView, MainActivityInterface mainActivityInterface,
                            boolean edit) {
@@ -104,17 +105,47 @@ public class ABCNotation {
         String page = String.format("#%08X", (mainActivityInterface.getMyThemeColors().getLyricsBackgroundColor()));
 
         Log.d(TAG,"notation: "+notation+"   page: "+page);
+        int transpose;
+        try {
+            if (mainActivityInterface.getSong().getAbcTranspose()==null ||
+                    mainActivityInterface.getSong().getAbcTranspose().isEmpty()) {
+                transpose = 0;
+            } else {
+                transpose = Integer.parseInt(mainActivityInterface.getSong().getAbcTranspose());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            transpose = 0;
+        }
+        webView.loadUrl("javascript:setTranspose("+transpose+");");
 
         if (edit) {
             webView.loadUrl("javascript:displayOnly();");
             webView.loadUrl("javascript:setWidth("+(int)(mainActivityInterface.getDisplayMetrics()[0] *
-                            mainActivityInterface.getPreferences().getMyPreferenceFloat("abcPopupWidth",0.95f))+");");
+                            mainActivityInterface.getPreferences().getMyPreferenceFloat("abcPopupWidth",0.95f))+","+
+                    mainActivityInterface.getPreferences().getMyPreferenceInt("abcZoom",2)+");");
         } else {
             webView.loadUrl("javascript:displayAndEdit();");
-            webView.loadUrl("javascript:setWidth("+mainActivityInterface.getDisplayMetrics()[0]+");");
+            webView.loadUrl("javascript:setWidth("+mainActivityInterface.getDisplayMetrics()[0]+","+
+                    mainActivityInterface.getPreferences().getMyPreferenceInt("abcZoom",2)+");");
         }
 
         webView.evaluateJavascript("javascript:updateABC('"+newContent+"');",null);
 
+        webView.loadUrl("javascript:initEditor()");
+    }
+
+    public void updateTranspose(WebView webView, int transpose) {
+        webView.post(() -> {
+            webView.loadUrl("javascript:setTranspose(" + transpose + ");");
+            webView.loadUrl("javascript:initEditor()");
+        });
+    }
+
+    public void updateZoom(WebView webView, int zoom) {
+        webView.post(() -> {
+            webView.loadUrl("javascript:setZoom("+zoom+");");
+            webView.loadUrl("javascript:initEditor()");
+        });
     }
 }

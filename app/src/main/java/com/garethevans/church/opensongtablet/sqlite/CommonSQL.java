@@ -43,9 +43,9 @@ public class CommonSQL {
                 SQLite.COLUMN_AUTOSCROLL_LENGTH, SQLite.COLUMN_TEMPO, SQLite.COLUMN_PAD_FILE,
                 SQLite.COLUMN_PAD_LOOP, SQLite.COLUMN_MIDI, SQLite.COLUMN_MIDI_INDEX, SQLite.COLUMN_CAPO,
                 SQLite.COLUMN_CAPO_PRINT, SQLite.COLUMN_CUSTOM_CHORDS, SQLite.COLUMN_NOTES, SQLite.COLUMN_ABC,
-                SQLite.COLUMN_LINK_YOUTUBE, SQLite.COLUMN_LINK_YOUTUBE, SQLite.COLUMN_LINK_WEB,
-                SQLite.COLUMN_LINK_AUDIO, SQLite.COLUMN_LINK_OTHER, SQLite.COLUMN_PRESENTATIONORDER,
-                SQLite.COLUMN_FILETYPE};
+                SQLite.COLUMN_ABC_TRANSPOSE, SQLite.COLUMN_LINK_YOUTUBE, SQLite.COLUMN_LINK_YOUTUBE,
+                SQLite.COLUMN_LINK_WEB, SQLite.COLUMN_LINK_AUDIO, SQLite.COLUMN_LINK_OTHER,
+                SQLite.COLUMN_PRESENTATIONORDER, SQLite.COLUMN_FILETYPE};
 
         String mainQuery = "ALTER TABLE " + SQLite.TABLE_NAME + " ADD COLUMN ";
         String thisQuery;
@@ -154,6 +154,7 @@ public class CommonSQL {
         values.put(SQLite.COLUMN_CUSTOM_CHORDS, thisSong.getCustomchords());
         values.put(SQLite.COLUMN_NOTES, thisSong.getNotes());
         values.put(SQLite.COLUMN_ABC, thisSong.getAbc());
+        values.put(SQLite.COLUMN_ABC_TRANSPOSE, thisSong.getAbcTranspose());
         values.put(SQLite.COLUMN_LINK_YOUTUBE, thisSong.getLinkyoutube());
         values.put(SQLite.COLUMN_LINK_WEB, thisSong.getLinkweb());
         values.put(SQLite.COLUMN_LINK_AUDIO, thisSong.getLinkaudio());
@@ -384,6 +385,7 @@ public class CommonSQL {
                 thisSong.setCustomChords((getValue(cursor, SQLite.COLUMN_CUSTOM_CHORDS)));
                 thisSong.setNotes(getValue(cursor, SQLite.COLUMN_NOTES));
                 thisSong.setAbc(getValue(cursor, SQLite.COLUMN_ABC));
+                thisSong.setAbcTranspose(getValue(cursor, SQLite.COLUMN_ABC_TRANSPOSE));
                 thisSong.setLinkyoutube(getValue(cursor, SQLite.COLUMN_LINK_YOUTUBE));
                 thisSong.setLinkweb(getValue(cursor, SQLite.COLUMN_LINK_WEB));
                 thisSong.setLinkaudio(getValue(cursor, SQLite.COLUMN_LINK_AUDIO));

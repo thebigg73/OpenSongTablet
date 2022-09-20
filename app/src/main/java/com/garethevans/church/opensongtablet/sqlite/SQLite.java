@@ -24,6 +24,7 @@ public class SQLite {
     (Values in brackets are the xml file fields if they are different)
 
     abc (abcnotation)
+    abctranspose
     aka
     alttheme
     author
@@ -95,6 +96,7 @@ public class SQLite {
     public static final String COLUMN_CUSTOM_CHORDS = "customchords";
     public static final String COLUMN_NOTES = "notes";
     public static final String COLUMN_ABC = "abc";
+    public static final String COLUMN_ABC_TRANSPOSE = "abctranspose";
     public static final String COLUMN_LINK_YOUTUBE = "linkyoutube";
     public static final String COLUMN_LINK_WEB = "linkweb";
     public static final String COLUMN_LINK_AUDIO = "linkaudio";
@@ -135,6 +137,7 @@ public class SQLite {
                     + COLUMN_CUSTOM_CHORDS + " TEXT,"
                     + COLUMN_NOTES + " TEXT,"
                     + COLUMN_ABC + " TEXT,"
+                    + COLUMN_ABC_TRANSPOSE + " TEXT,"
                     + COLUMN_LINK_YOUTUBE + " TEXT,"
                     + COLUMN_LINK_WEB + " TEXT,"
                     + COLUMN_LINK_AUDIO + " TEXT,"

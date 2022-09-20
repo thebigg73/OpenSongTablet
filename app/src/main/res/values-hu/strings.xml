@@ -853,4 +853,5 @@
     <string name="restart_required">A módosítások alkalmazásához indítsa újra az alkalmazást</string>
     <string name="restart">Újrakezd</string>
     <string name="export_current_format">Dalok jelenlegi formátumukban</string>
+    <string name="zoom_level">Nagyítási szint</string>
 </resources>

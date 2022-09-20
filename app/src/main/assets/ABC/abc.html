@@ -41,18 +41,12 @@
 <script type="text/javascript">
 var s = "";
 var w = 720;
+var z = 2;
+var t = 0;
+
 function updateABC(s) {
     var unencoded = decodeURIComponent(s);
     document.getElementById("abc").innerHTML = unencoded;
-    document.getElementById("abc").innerHTML = "T: Cooley's\n" +
-			"M: 4/4\n" +
-			"L: 1/8\n" +
-			"R: reel\n" +
-			"K: Emin\n" +
-			"|:D2|EB{c}BA B2 EB|~B2 AB dBAG|FDAD BDAD|FDAD dAFD|\n" +
-			"EBBA B2 EB|B2 AB defg|afe^c dBAF|DEFD E2:|\n" +
-			"|:gf|eB B2 efge|eB B2 gedB|A2 FA DAFA|A2 FA defg|\n" +
-			"eB B2 eBgB|eB B2 defg|afe^c dBAF|DEFD E2:|";
     initEditor();
 }
 updateABC(s);
@@ -75,6 +69,10 @@ function getTextVal() {
     //window.AndroidApp.receiveString(myJsString);
 }
 
+function setTranspose(halfSteps) {
+    t = halfSteps;
+}
+
 function initEditor() {
     new ABCJS.Editor("abc", { paper_id: "paper",
     abcjsParams: {
@@ -82,7 +80,11 @@ function initEditor() {
         paddingbottom: 0,
         paddingright: 0,
         paddingleft: 0,
+        staffwidth: w/z,
         responsive: "resize",
+        viewportHorizontal: true,
+        viewportVertical: true,
+        visualTranspose: t,
         },
     generate_midi: false,
     midi_id:"midi",
@@ -109,10 +111,15 @@ function displayAndEdit() {
     document.getElementById("abc").style.display = "block";
 }
 
-function setWidth(wd) {
+function setWidth(wd,zoom) {
     w = wd;
+    z = zoom;
     document.getElementById("top").style.width = w+"px";
     document.getElementById("top").style.height = "100%";
+}
+
+function setZoom(zoom) {
+    z = zoom;
 }
 
 window.addEventListener("load", initEditor, false);

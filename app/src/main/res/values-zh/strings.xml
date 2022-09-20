@@ -854,4 +854,5 @@
     <string name="restart_required">请重新启动应用程序以应用更改</string>
     <string name="restart">重新开始</string>
     <string name="export_current_format">当前格式的歌曲</string>
+    <string name="zoom_level">Zoemvlak</string>
 </resources>
