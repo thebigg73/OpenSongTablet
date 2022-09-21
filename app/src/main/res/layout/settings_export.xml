@@ -51,6 +51,12 @@
                     android:text="@string/set" />
 
                 <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/setPDF"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/pdf"/>
+
+                <com.google.android.material.checkbox.MaterialCheckBox
                     android:id="@+id/openSongAppSet"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -146,61 +152,6 @@
                     android:layout_height="wrap_content"
                     android:text="@string/export_text"/>
 
-                <!--<RadioGroup
-                    android:id="@+id/exportFormat"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:checkedButton="@+id/pdf">
-
-                    <com.google.android.material.radiobutton.MaterialRadioButton
-                        android:id="@+id/pdf"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/pdf" />
-
-                    <com.google.android.material.radiobutton.MaterialRadioButton
-                        android:id="@+id/image"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/image" />
-
-                    <com.google.android.material.radiobutton.MaterialRadioButton
-                        android:id="@+id/openSongApp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/export_ost" />
-
-                    <com.google.android.material.radiobutton.MaterialRadioButton
-                        android:id="@+id/openSong"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/export_desktop" />
-
-                    <com.google.android.material.radiobutton.MaterialRadioButton
-                        android:id="@+id/onSong"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/export_onsong" />
-
-                    <com.google.android.material.radiobutton.MaterialRadioButton
-                        android:id="@+id/chordPro"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/export_chordpro" />
-
-                    <com.google.android.material.radiobutton.MaterialRadioButton
-                        android:id="@+id/text"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/export_text" />
-
-                    <com.google.android.material.radiobutton.MaterialRadioButton
-                        android:id="@+id/print"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/print" />
-
-                </RadioGroup>-->
             </LinearLayout>
         </LinearLayout>
     </com.garethevans.church.opensongtablet.customviews.NestedScrollWithFAB>

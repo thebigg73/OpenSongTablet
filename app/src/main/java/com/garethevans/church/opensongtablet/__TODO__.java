@@ -6,6 +6,7 @@ public class __TODO__ {
 
     // BUGS FROM LIVE TEST
     // Dragging set items breaks highlighted item
+    // Test exporting song
 
     // Update text in presenter mode not working for second screen
     // SongSelect only recognising Chord pages (not score?)

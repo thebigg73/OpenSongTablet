@@ -510,7 +510,6 @@ public class ConvertChoPro {
         // Unless we are in a the Variations/_cache folder (when importing), we check that the file
         // doesn't already exist as we don't want to automatically overwrite an existing file
         // We try to append _ to the filename up to 5 times
-        Log.d(TAG,"songSubFolder: "+songSubFolder);
         if (!songSubFolder.contains("Variation")) {
             int attempts = 0;
             while (mainActivityInterface.getStorageAccess().uriExists(n) && attempts<5) {
@@ -571,7 +570,6 @@ public class ConvertChoPro {
         }
         fn = mainActivityInterface.getProcessSong().fixLineBreaksAndSlashes(fn);
         fn = mainActivityInterface.getStorageAccess().safeFilename(fn);
-        Log.d(TAG,"fn: "+fn);
         return fn;
     }
 
@@ -598,22 +596,13 @@ public class ConvertChoPro {
     void writeTheImprovedSong(Song thisSong, String oldSongFileName, String nsf,
                               String songSubFolder, Uri newUri, Uri oldUri, String newXML) {
 
-        Log.d(TAG,"writeTheImprovedSong songSubFolder:"+songSubFolder);
         newSongFileName = nsf;
         // Only do this for songs that exist!
-        Log.d(TAG,"oldSongFileName="+oldSongFileName);
-        Log.d(TAG,"newSongFileName="+newSongFileName);
-        Log.d(TAG,"oldUri="+oldUri);
-        Log.d(TAG,"newUri="+newUri);
-        Log.d(TAG,"storageAccess.uriExists(c, oldUri)="+mainActivityInterface.getStorageAccess().uriExists(oldUri));
-
         if (oldSongFileName != null && !oldSongFileName.equals("") && newSongFileName != null && !newSongFileName.equals("")
                 && oldUri != null && newUri != null && mainActivityInterface.getStorageAccess().uriExists(oldUri)) {
             mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" writeTheImprovedSong Create Songs/"+songSubFolder+"/"+newSongFileName+" deleteOld=true");
             mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, newUri, null, "Songs", songSubFolder, newSongFileName);
             OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(newUri);
-
-            Log.d(TAG, "outputStream=" + outputStream);
 
             if (outputStream != null) {
                 // Change the songId (references to the uri)
@@ -851,7 +840,6 @@ public class ConvertChoPro {
             switch (mainActivityInterface.getProcessSong().howToProcessLines(y, linenums, thislinetype, nextlinetype, previouslinetype)) {
                 // If this is a chord line followed by a lyric line.
                 case "chord_then_lyric":
-                    Log.d(TAG,"chord_then_lyric: "+thisLine);
                     // IV - We have a next line - make lines the same length.
                     nextLine = lines[y + 1].replaceAll("\\s+$", "");
                     if (thisLine.length() < nextLine.length()) {
@@ -878,13 +866,11 @@ public class ConvertChoPro {
                                 }
                             }
                         }
-                        Log.d(TAG,"chord_to_add: "+chord_to_add);
                         newlyrics.append(chord_to_add).append(lyrics_returned[w]);
                     }
                     break;
 
                 case "chord_only":
-                    Log.d(TAG,"chord_only: "+thisLine);
                     // Use same logic as chord_then_lyric to guarantee consistency
                     String tempString = mainActivityInterface.getProcessSong().fixLineLength("", thisLine.length());
                     // IV - Chord positioning now uses a lyric line - in this case no lyrics!
@@ -910,7 +896,6 @@ public class ConvertChoPro {
                     break;
 
                 case "lyric_no_chord":
-                    Log.d(TAG,"lyric_no_chord: "+thisLine);
                     // Another place to end a Chorus
                     if (thisLine.replace(" ","").equals("")) {
                         if (dealingwithchorus) {
@@ -925,7 +910,6 @@ public class ConvertChoPro {
                     break;
 
                 case "comment_no_chord":
-                    Log.d(TAG,"comment_no_chord: "+thisLine);
                     newlyrics.append("{c:").append(lines[y].replaceFirst(";","")).append("}");
                     break;
 
@@ -935,7 +919,6 @@ public class ConvertChoPro {
                     break;
 
                 case "heading":
-                    Log.d(TAG,"heading: "+thisLine);
                     // If this is a chorus, deal with it appropriately
                     // Add the heading as a comment with hash
                     if (thisLine.startsWith("[C")) {
@@ -953,7 +936,6 @@ public class ConvertChoPro {
                     break;
 
                 default:
-                    Log.d(TAG,"default: "+thisLine);
                     // If a line is blank we need to add it and consider an end of a Chorus
                     if (thisLine.trim().equals("")) {
                         // Add just a line beginning (trim the line)
