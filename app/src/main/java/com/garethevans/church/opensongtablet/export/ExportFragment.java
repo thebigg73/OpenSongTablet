@@ -18,15 +18,12 @@ import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.MutableLiveData;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.SettingsExportBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.concurrent.ExecutorService;
@@ -38,44 +35,18 @@ public class ExportFragment extends Fragment {
     private MainActivityInterface mainActivityInterface;
     private final String TAG = "ExportFragment";
     private ArrayList<Uri> uris;
-    private ArrayList<String> mimeTypes;
-    private ArrayList<String> setNames;
-    private Uri uri;
-    private final MutableLiveData<Boolean> listen = new MutableLiveData<>();
-    private final MutableLiveData<Boolean> listenSet = new MutableLiveData<>();
+    private ArrayList<String> mimeTypes, setNames;
     private ArrayList<View> sectionViewsPDF = new ArrayList<>();
-    private ArrayList<Integer> sectionViewWidthsPDF = new ArrayList<>(),
-            sectionViewHeightsPDF = new ArrayList<>();
+    private ArrayList<Integer> sectionViewWidthsPDF = new ArrayList<>(), sectionViewHeightsPDF = new ArrayList<>();
     private LinearLayout headerLayoutPDF;
-    private int headerLayoutWidth, headerLayoutHeight;
-    private String setToExport = null;
-    private String exportType;
-    private String shareTitle;
-    private String exportTitle;
-    private String textContent;
-    private String setContent;
-    private int songsToAdd, songsProcessed;
-    private boolean openSong = false;
-    private boolean currentFormat = false;
-    private boolean openSongApp = false;
-    private boolean pdf = false;
-    private boolean image = false;
-    private boolean chordPro = false;
-    private boolean onsong = false;
-    private boolean text = false;
-    private boolean setPDF = false;
-    private boolean openSongSet = false;
-    private boolean openSongAppSet = false;
-    private boolean includeSongs = false;
-    private boolean textSet = false;
-    private volatile boolean processingSetPDFs = false;
-    private String[] location;
-    private String[] setData;
-    private String[] ids;
-    private Song tempSong;
+    private int headerLayoutWidth, headerLayoutHeight, songsToAdd, songsProcessed;
+    private String setToExport = null, exportType, shareTitle, textContent, setContent;
+    private boolean openSong = false, currentFormat = false, openSongApp = false, pdf = false, image = false,
+            chordPro = false, onsong = false, text = false, setPDF = false, openSongSet = false,
+            openSongAppSet = false, includeSongs = false, textSet = false, isPrint;
+    private String[] location, setData, ids;
     private StringBuilder songsAlreadyAdded;
     private Handler handler;
-    private boolean isPrint;
     private float scaleComments;
 
     @Override
@@ -105,6 +76,9 @@ public class ExportFragment extends Fragment {
         } else {
             setContent = null;
         }
+
+        uris = new ArrayList<>();
+        mimeTypes = new ArrayList<>();
 
         // Some options are hidden by default and only visible if we have a proper OpenSong song
         // If exporting a set, some options aren't allowed
@@ -139,7 +113,6 @@ public class ExportFragment extends Fragment {
     }
 
     private void showUsable() {
-
         // By default everything is hidden.  Only make the correct ones visible
 
         // Set the defaults for set export
@@ -152,7 +125,7 @@ public class ExportFragment extends Fragment {
         myView.currentFormat.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("exportCurrentFormat",true));
         myView.pdf.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("exportPDF",false));
         myView.openSongApp.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("exportOpenSongApp",false));
-        //myView.openSong.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("exportDesktop",false));
+        myView.openSong.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("exportDesktop",false));
         myView.onSong.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("exportOnSong",false));
         myView.chordPro.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("exportChordPro",false));
         myView.text.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("exportText",false));
@@ -293,24 +266,18 @@ public class ExportFragment extends Fragment {
         myView.print.setEnabled(false);
         myView.print.hide();
 
-        uris = new ArrayList<>();
-        mimeTypes = new ArrayList<>();
-
         // Deal with set exporting
         if (mainActivityInterface.getWhattodo().startsWith("exportset:")) {
             exportType = getString(R.string.set);
             shareTitle = setToExport;
-            exportTitle = setToExport;
             doExportSet();
         } else {
             exportType = getString(R.string.song);
             shareTitle = mainActivityInterface.getSong().getFilename();
-            exportTitle = mainActivityInterface.getSong().getFilename();
             doExportSong();
         }
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     private void doExportSet() {
         // Do this in a new Thread
         ExecutorService executorService = Executors.newSingleThreadExecutor();
@@ -358,7 +325,6 @@ public class ExportFragment extends Fragment {
                 songsAlreadyAdded = new StringBuilder();
                 songsToAdd = ids.length;
                 songsProcessed = 0;
-                processingSetPDFs = false;
 
                 for (int x=0; x<songsToAdd; x++) {
                     String id = ids[x];
@@ -462,7 +428,7 @@ public class ExportFragment extends Fragment {
 
         if (setPDF) {
             mainActivityInterface.getMakePDF().setIsSetListPrinting(true);
-            tempSong = new Song();
+            Song tempSong = new Song();
             tempSong.setTitle(setToExport);
             String[] items = setData[1].split("\n");
             StringBuilder setItems = new StringBuilder();
@@ -482,7 +448,7 @@ public class ExportFragment extends Fragment {
         // Go through the songs if we are adding them as pdfs until we have processed all
         if (!includeSongs || !pdf || songsProcessed==songsToAdd-1) {
             initiateShare();
-        } else if (includeSongs && pdf) {
+        } else {
             String id = ids[songsProcessed];
             location = mainActivityInterface.getExportActions().getFolderAndFile(id);
             boolean likelyXML = !location[1].contains(".") || location[1].toLowerCase(Locale.ROOT).endsWith(".xml");
@@ -496,8 +462,6 @@ public class ExportFragment extends Fragment {
             }
             songsProcessed++;
 
-        } else {
-            initiateShare();
         }
     }
     private void doExportSong() {
@@ -616,40 +580,6 @@ public class ExportFragment extends Fragment {
             myView.print.show();
         });
     }
-
-    private Uri copyOpenSongApp(Song song) {
-        uri = getExportUri(song,".ost");
-        InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(
-                mainActivityInterface.getExportActions().getActualSongFile(mainActivityInterface.getSong()));
-        OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(uri);
-        mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" copyOpenSongApp CopyFile Songs/"+
-                mainActivityInterface.getExportActions().getActualSongFile(mainActivityInterface.getSong())+" to "+uri);
-        mainActivityInterface.getStorageAccess().copyFile(inputStream,outputStream);
-        return uri;
-    }
-    private String getExportFilename(Song song, String extension) {
-        return song.getFolder().replace("/","_") + "_" +
-                song.getFilename().replace("/","_") + extension;
-    }
-    private Uri getExportUri(Song song, String extension) {
-        String exportFilename = getExportFilename(song, extension);
-        uri = mainActivityInterface.getStorageAccess().getUriForItem("Export","",
-                exportFilename);
-
-        // If the output file exists, delete it first (so we sort of overwrite)
-        if (mainActivityInterface.getStorageAccess().uriExists(uri)) {
-            mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" getExportUri deleteFile "+uri);
-            mainActivityInterface.getStorageAccess().deleteFile(uri);
-        }
-
-        // Now create a blank file ready to assign an outputStream
-        mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" Create Export/"+exportFilename+"  deleteOld=true");
-        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true,
-                uri,null,"Export","", exportFilename);
-
-        return uri;
-    }
-
 
     // We can create nice views on the fly here by processing the Song, then populating the views
     private void createOnTheFly(Song thisSong, String pdfName) {
@@ -818,12 +748,6 @@ public class ExportFragment extends Fragment {
     }
     public void setHeaderLayoutPDF(LinearLayout headerLayoutPDF) {
         this.headerLayoutPDF = headerLayoutPDF;
-    }
-    public int getHeaderWidth() {
-        return headerLayoutWidth;
-    }
-    public int getHeaderHeight() {
-        return headerLayoutHeight;
     }
     public LinearLayout getHiddenHeader() {
         return myView.hiddenHeader;
