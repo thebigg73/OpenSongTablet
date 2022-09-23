@@ -90,7 +90,11 @@ public class SongActionsMenuFragment extends Fragment {
                 mainActivityInterface.getShowToast().doIt(getString(R.string.not_allowed));
             }
         });
-        myView.share.setOnClickListener(v -> actionAllowed(R.id.exportFragment));
+        myView.share.setOnClickListener(v -> {
+            // Set the 'whatToDo' variable as empty so it isn't treated as a set
+            mainActivityInterface.setWhattodo("");
+            actionAllowed(R.id.exportFragment);
+        });
 
         myView.pad.setOnClickListener(v -> actionAllowed(R.id.pads_graph));
         myView.autoscroll.setOnClickListener(v -> actionAllowed(R.id.autoscrollSettingsFragment));

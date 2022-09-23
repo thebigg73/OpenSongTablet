@@ -28,13 +28,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp">
 
                 <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
                     android:id="@+id/setCategory"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="2dp"
                     android:hint="@string/category" />
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -43,7 +48,9 @@
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/new_category"
                     android:src="@drawable/plus"
-                    app:useCompatPadding="true" />
+                    android:layout_marginStart="8dp"
+                    android:layout_gravity="center_vertical"
+                    app:useCompatPadding="false" />
             </LinearLayout>
 
             <CheckBox

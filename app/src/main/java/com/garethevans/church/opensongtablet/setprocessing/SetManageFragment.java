@@ -112,6 +112,7 @@ public class SetManageFragment extends Fragment {
         // Decide on the views required
         switch (whattodo) {
             case "saveset":
+                mainActivityInterface.updateToolbarHelp("");
                 mainActivityInterface.updateToolbar(getString(R.string.set) + ": " + getString(R.string.save));
                 myView.setName.setVisibility(View.VISIBLE);
                 myView.overWrite.setVisibility(View.VISIBLE);
@@ -126,6 +127,7 @@ public class SetManageFragment extends Fragment {
                 break;
 
             case "renameset":
+                mainActivityInterface.updateToolbarHelp("");
                 mainActivityInterface.updateToolbar(getString(R.string.set) + ": " + getString(R.string.rename));
                 myView.setName.setVisibility(View.VISIBLE);
                 myView.overWrite.setVisibility(View.VISIBLE);
@@ -140,6 +142,7 @@ public class SetManageFragment extends Fragment {
                 break;
 
             case "deleteset":
+                mainActivityInterface.updateToolbarHelp("");
                 mainActivityInterface.updateToolbar(getString(R.string.set) + ": " + getString(R.string.delete));
                 myView.setName.setVisibility(View.GONE);
                 myView.overWrite.setVisibility(View.GONE);
@@ -154,6 +157,7 @@ public class SetManageFragment extends Fragment {
 
             case "exportset":
                 mainActivityInterface.updateToolbar(getString(R.string.set) + ": " + getString(R.string.export));
+                mainActivityInterface.updateToolbarHelp(getString(R.string.website_export_set));
                 myView.setName.setVisibility(View.GONE);
                 myView.overWrite.setVisibility(View.GONE);
                 myView.newCategory.setVisibility(View.GONE);
@@ -167,6 +171,7 @@ public class SetManageFragment extends Fragment {
 
             case "loadset":
             default:
+                mainActivityInterface.updateToolbarHelp("");
                 mainActivityInterface.updateToolbar(getString(R.string.set) + ": " + getString(R.string.load));
                 myView.setName.setVisibility(View.GONE);
                 myView.overWrite.setVisibility(View.GONE);

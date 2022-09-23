@@ -34,14 +34,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:paddingBottom="64dp">
+            android:layout_marginBottom="64dp">
 
             <LinearLayout
                 android:id="@+id/setOptionsLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingBottom="32dp"
                 android:visibility="gone">
 
                 <com.google.android.material.textview.MaterialTextView
@@ -54,7 +53,7 @@
                     android:id="@+id/setPDF"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/pdf"/>
+                    android:text="@string/pdf" />
 
                 <com.google.android.material.checkbox.MaterialCheckBox
                     android:id="@+id/openSongAppSet"
@@ -74,12 +73,11 @@
                     android:layout_height="wrap_content"
                     android:text="@string/export_text"/>
 
-
                 <com.google.android.material.switchmaterial.SwitchMaterial
                     android:id="@+id/includeSongs"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="4dp"
                     android:text="@string/export_include_set_songs" />
             </LinearLayout>
 
@@ -88,7 +86,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <com.google.android.material.textview.MaterialTextView
                     style="@style/largeText"
@@ -106,8 +104,8 @@
                     android:id="@+id/setExportInfo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="4dp"
                     android:text="@string/export_convert_song"/>
 
                 <com.google.android.material.checkbox.MaterialCheckBox

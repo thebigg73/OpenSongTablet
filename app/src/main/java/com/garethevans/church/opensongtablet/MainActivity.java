@@ -534,6 +534,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             return true;
         });
 
+        // The menu help
+        myView.menuTop.menuHelp.setOnClickListener(v -> {
+            if (showSetMenu) {
+                openDocument(getString(R.string.website_menu_set));
+            } else {
+                openDocument(getString(R.string.website_menu_song));
+            }
+        });
         myView.drawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
             float initialVal = -1.0f;
             boolean decided;
