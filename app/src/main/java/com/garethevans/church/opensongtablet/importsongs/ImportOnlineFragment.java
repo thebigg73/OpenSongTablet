@@ -544,8 +544,8 @@ public class ImportOnlineFragment extends Fragment {
     }
 
     public void continueSaving() {
-        // Set the current song to a blank one as the song save process checks for a change of filename/folder
-        // As this would be detected, it would try to delete the old file, which we don't want
+        // Set the current song to a this one as the song save process checks for a change of filename/folder
+        // As this would be detected, it would try to delete the old (currently viewed) file, which we don't want
         mainActivityInterface.getSong().setFolder(newSong.getFolder());
         mainActivityInterface.getSong().setFilename(newSong.getFilename());
 
