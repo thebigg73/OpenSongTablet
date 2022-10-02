@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,12 +28,13 @@ import java.util.concurrent.Executors;
 
 public class TransposeBottomSheet extends BottomSheetDialogFragment {
 
+    private final String TAG = "TransposeBottomSheet";
     private boolean editSong = false;  // This is set to true when coming here from EditSongFragment
-
+    private boolean editFileRequired, transposeCapo, transposeSet, transposeVariation, assumePreferred, transposeCopy;
     private BottomSheetTransposeBinding myView;
     private MainActivityInterface mainActivityInterface;
-    private int fromFormat, toFormat, prefFormat;
-    private String originalKey;
+    private int fromFormat, toFormat, prefFormat, transposeTimes, position;
+    private String originalKey, newKey, setFolder, songFolder;
 
     public TransposeBottomSheet(boolean editSong) {
         // This is called from the EditSongFragment.  Receive temp lyrics and key
@@ -86,6 +88,44 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
     }
 
     private void setupViews() {
+        // If this song is in the current set, show the transpose in set switch
+        position = mainActivityInterface.getSetActions().indexSongInSet(mainActivityInterface.getSong());
+        songFolder = mainActivityInterface.getSong().getFolder();
+        myView.transposeSetItem.setChecked(false);
+        myView.transposeVariation.setChecked(false);
+        myView.transposeCopy.setChecked(false);
+        myView.transposeCapo.setChecked(false);
+
+        if (position>-1) {
+            // In a set, so hide the song only transpose options
+            myView.transposeCapo.setVisibility(View.GONE);
+            myView.transposeCopy.setVisibility(View.GONE);
+
+            // Show the set options
+            setFolder = mainActivityInterface.getCurrentSet().getFolder(position);
+            if (setFolder.contains("**Variation")) {
+                // Hide variation creation and the set item transpose
+                myView.transposeVariation.setVisibility(View.GONE);
+                myView.transposeSetItem.setVisibility(View.GONE);
+
+            } else {
+                // Allow variation creation and setItem transpose (default)
+                myView.transposeVariation.setVisibility(View.VISIBLE);
+                myView.transposeSetItem.setVisibility(View.VISIBLE);
+                myView.transposeSetItem.setChecked(true);
+            }
+
+        } else {
+            // Not in a set, so hide the set options
+            setFolder = songFolder;
+            myView.transposeSetItem.setVisibility(View.GONE);
+            myView.transposeVariation.setVisibility(View.GONE);
+
+            // Show the song options
+            myView.transposeCapo.setVisibility(View.VISIBLE);
+            myView.transposeCopy.setVisibility(View.VISIBLE);
+        }
+
         myView.transposeSlider.setValue(0);
 
         // Get the key of the song if set
@@ -111,7 +151,6 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
         String detectedSummary = detectedName + ": " + detectedAppearance;
         myView.warningFormatMatch.setHint(detectedSummary);
 
-
         myView.assumePreferred.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean(
                 "chordFormatUsePreferred", false));
         prefFormat = mainActivityInterface.getPreferences().getMyPreferenceInt(
@@ -122,9 +161,6 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
         myView.assumePreferred.setHint(hint);
 
         usePreferredChordFormat(myView.assumePreferred.getChecked());
-
-        myView.capoChange.setVisibility(View.GONE);
-        myView.transposeCapo.setChecked(false);
     }
 
     private void buildChordFormatOptions() {
@@ -151,23 +187,22 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
         //0=-6, 1=-5, 2=-4, 3=-3, 4=-2, 5=-1, 6=0, 7=1, 8=2, 9=3, 10=4, 11=5, 12=6
         myView.transposeSlider.addOnChangeListener((slider, value, fromUser) -> {
             // Update the text
-            String newKey;
+            String thisNewKey;
             if (originalKey==null || originalKey.isEmpty() || originalKey.equals("0")) {
                 if (value>0) {
-                    newKey = "+" + (int)value;
+                    thisNewKey = "+" + (int)value;
                 } else {
-                    newKey = "" + (int) value;
+                    thisNewKey = "" + (int) value;
                 }
-                myView.keyChangeTextView.setText(newKey);
+                myView.keyChangeTextView.setText(thisNewKey);
+                newKey = "";
             } else {
                 // We need to get the transposed key
                 String keyToNum = mainActivityInterface.getTranspose().keyToNumber(originalKey);
                 if (value<0) {
                     newKey = mainActivityInterface.getTranspose().transposeNumber(keyToNum,"-1",(int)Math.abs(value));
-                    // newKey = mainActivityInterface.getTranspose().transposeKey(keyToNum,"-1",(int)Math.abs(value));
                 } else if (value>0) {
                     newKey = mainActivityInterface.getTranspose().transposeNumber(keyToNum,"+1",(int)Math.abs(value));
-                    //newKey = mainActivityInterface.getTranspose().transposeKey(keyToNum,"+1",(int)Math.abs(value));
                 } else {
                     newKey = originalKey;
                 }
@@ -181,7 +216,21 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
             usePreferredChordFormat(isChecked);
         });
 
-        myView.doTransposeButton.setOnClickListener(v -> doTranspose());
+        myView.transposeSetItem.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                myView.transposeVariation.setChecked(false);
+            }
+        });
+        myView.transposeVariation.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                myView.transposeSetItem.setChecked(false);
+            }
+        });
+
+        myView.doTransposeButton.setOnClickListener(v -> {
+            Log.d(TAG,"about to call doTranspose");
+            doTranspose();
+        });
 
         myView.chordsFormat.setOnClickListener(view -> {
             mainActivityInterface.navigateToFragment(getString(R.string.deeplink_chords_settings),0);
@@ -224,7 +273,7 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
     }
 
     private void getValues() {
-        if (myView.assumePreferred.getChecked()) {
+        if (assumePreferred) {
             fromFormat = mainActivityInterface.getPreferences().getMyPreferenceInt(
                     "chordFormat", 1);
             toFormat = fromFormat;
@@ -239,59 +288,118 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
     }
 
     private void doTranspose() {
+        Log.d(TAG,"doTranspose() called");
         getValues();
+        transposeSet = myView.transposeSetItem.getChecked();
+        transposeVariation = myView.transposeVariation.getChecked();
+        transposeCapo = myView.transposeCapo.getChecked();
+        transposeCopy = myView.transposeCopy.getChecked();
+        transposeTimes = (int) myView.transposeSlider.getValue();
+        assumePreferred = myView.assumePreferred.getChecked();
+
+        // Need to decide what file gets transposed
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             Handler handler = new Handler(Looper.getMainLooper());
             String transposeDirection;
-            int transposeTimes = (int)myView.transposeSlider.getValue();
 
             // Simplify slider to minimum number of transpose steps
             // Why transpose up 11 times, when you can just transpose down once.
             // Giving the option as it makes it easier for the user to select new key
-            if (transposeTimes>6) {
+            if (transposeTimes > 6) {
                 // 7>-5  8>-4 9>-3 10>-2 11>-1 12>0
-                transposeTimes = transposeTimes-12;
-            } else if (transposeTimes<-6) {
+                transposeTimes = transposeTimes - 12;
+            } else if (transposeTimes < -6) {
                 // -7>5 -8>4 -9>3 -10>2 -11>1 -12>0
-                transposeTimes = 12+transposeTimes;
+                transposeTimes = 12 + transposeTimes;
             }
 
-            if (transposeTimes>=0) {
+            if (transposeTimes >= 0) {
                 transposeDirection = "+1";
             } else {
                 transposeDirection = "-1";
             }
 
             transposeTimes = Math.abs(transposeTimes);
+            Log.d(TAG,"transposeTimes="+transposeTimes);
 
-            //If requested transpose the capo fret number
-            if (myView.transposeCapo.isSelected()) {
-                String capo = mainActivityInterface.getSong().getCapo();
-                mainActivityInterface.getSong().setCapo(String.valueOf(((Integer.parseInt("0" + capo) + 12 + (transposeTimes * Integer.parseInt(transposeDirection))) % 12)));
-                if (mainActivityInterface.getSong().getCapo().equals("0")) {
-                    mainActivityInterface.getSong().setCapo("");
+            editFileRequired = true;
+
+            // If we are in a set (position>-1)
+            if (position>-1) {
+                // Transpose the key in the set.
+                // This deals with normal songs and songs that are already had temp key changes from the set list
+                mainActivityInterface.getCurrentSet().setKey(position, newKey);
+
+                if (!setFolder.contains("**Variation") && !transposeSet && !transposeVariation) {
+                    // If this is a normal song and want to actually transpose it normally, transpose and resave
+                    mainActivityInterface.getSong().setFolder(setFolder);
+                    mainActivityInterface.getTranspose().doTranspose(mainActivityInterface.getSong(),
+                            transposeDirection, transposeTimes, fromFormat, toFormat);
+                    mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong());
+
+                } else if (!setFolder.contains("**Variation") && transposeVariation) {
+                    // If this is a normal song, but want to convert to a variation
+                    mainActivityInterface.getSetActions().makeVariation(position);
+
+                } else if (setFolder.contains("Variation")) {
+                    // This song was already a variation (no option to transposeSet or transposeVariation)
+                    mainActivityInterface.getTranspose().doTranspose(mainActivityInterface.getSong(),
+                            transposeDirection, transposeTimes, fromFormat, toFormat);
+                    mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong());
                 }
+
+                // If this is a normal song, but we want to just transpose in the set list,
+                // Nothing more is required
+
+                // Update the set list/menu
+                handler.post(() -> {
+                    mainActivityInterface.updateSetList();
+                    mainActivityInterface.loadSongFromSet(position);
+                    dismiss();
+                });
+
+            } else {
+                // Not in a set
+                // If requested transpose the capo fret number
+
+                String newFilename = mainActivityInterface.getSong().getFilename()+" ("+getString(R.string.copy_of)+")";
+                String newTitle = mainActivityInterface.getSong().getTitle()+" ("+getString(R.string.copy_of)+")";
+                String newCapo = String.valueOf(((Integer.parseInt("0" + mainActivityInterface.getSong().getCapo()) + 12 +
+                        (transposeTimes * Integer.parseInt(transposeDirection))) % 12));
+                if (newCapo.equals("0")) {
+                    newCapo = "";
+                }
+
+                // All options require transpose
+                mainActivityInterface.getTranspose().doTranspose(mainActivityInterface.getSong(),
+                        transposeDirection, transposeTimes, fromFormat, toFormat);
+
+                if (transposeCapo) {
+                    mainActivityInterface.getSong().setCapo(newCapo);
+                }
+
+                if (transposeCopy) {
+                    // Make a copy of the song that is transposed (leaving the original untouched)
+                    mainActivityInterface.getSong().setFilename(newFilename);
+                    mainActivityInterface.getSong().setTitle(newTitle);
+                    mainActivityInterface.getSQLiteHelper().createSong(songFolder,newFilename);
+                    mainActivityInterface.getSaveSong().doSave(mainActivityInterface.getSong());
+
+                } else {
+                    // Just update the song and be done with it!
+                    mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong());
+                }
+
+                // Update the song menu and load the song again
+                handler.post(() -> {
+                    mainActivityInterface.updateSongMenu(mainActivityInterface.getSong());
+                    mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong());
+                    mainActivityInterface.doSongLoad(mainActivityInterface.getSong().getFolder(),
+                            mainActivityInterface.getSong().getFilename(), true);
+                    dismiss();
+                });
             }
-            // doTranspose will write the song including any transposed capo
-
-            // Do the transpose (song and key)
-            mainActivityInterface.getTranspose().doTranspose(mainActivityInterface.getSong(),
-                    transposeDirection, transposeTimes, fromFormat, toFormat);
-
-            // Now save the changes
-            mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong());
-
-            handler.post(() -> {
-                // Update the song menu
-                mainActivityInterface.updateSongMenu(mainActivityInterface.getSong());
-
-                // Load the song again
-                mainActivityInterface.doSongLoad(mainActivityInterface.getSong().getFolder(),
-                        mainActivityInterface.getSong().getFilename(), true);
-            });
-
-            dismiss();
         });
     }
 

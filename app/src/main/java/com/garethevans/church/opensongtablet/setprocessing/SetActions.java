@@ -547,7 +547,9 @@ public class SetActions {
         mainActivityInterface.getCurrentSet().setItem(position, getSongForSetWork(folder,filename,key));
         mainActivityInterface.getCurrentSet().setFolder(position, folder);
         mainActivityInterface.getCurrentSet().setFilename(position, filename);
+        mainActivityInterface.getCurrentSet().setKey(position,key);
         mainActivityInterface.getCurrentSet().setCurrentSetString(mainActivityInterface.getSetActions().getSetAsPreferenceString());
+        Log.d(TAG,"newSet: "+mainActivityInterface.getCurrentSet().getCurrentSetString());
     }
 
     public int getItemIcon(String valueToDecideFrom) {

@@ -6,7 +6,6 @@ public class __TODO__ {
 
     // BUGS FROM LIVE TEST
     // Dragging set items breaks highlighted item
-    // Test exporting song
 
     // Update text in presenter mode not working for second screen
     // SongSelect only recognising Chord pages (not score?)
@@ -14,7 +13,6 @@ public class __TODO__ {
 
     // Occasional bugs harder to replicate/solve
     // Crash when fast scrolling to bottom of song list sometimes indexexception (I think when it gets updated after indexing)
-    // Exporting pdfs sometimes stops at the last item and doesn't open up share option
 
     // TODO strings that reference stuff that was used before and probably should be
     // update_projector_automatically
@@ -25,11 +23,4 @@ public class __TODO__ {
     //TODO - still to complete
     // Anything still listed below needs work
     // Anything missing has been tested as okay
-    /*
-
-
-
-}
-
-     */
 }

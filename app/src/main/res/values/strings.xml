@@ -1231,5 +1231,9 @@ Check out the categories in the right hand options menu.
     <string name="load_preferences">Loading preferences</string>
     <string name="look_for">Look for</string>
     <string name="lyrics_settings">Lyrics settings</string>
+    <string name="transpose_set_item">Transpose in set only</string>
+    <string name="transpose_set_item_info">When viewing this song in the current set, it will temporarily be transposed.  The original song will be unchanged.</string>
+    <string name="copy_of">Copy</string>
+    <string name="transpose_copy">Make a copy of this song and transpose it, leaving the original unchanged.</string>
 
 </resources>

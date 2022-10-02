@@ -52,6 +52,8 @@ public class SongActionsMenuFragment extends Fragment {
         if (currentSong!=null && !currentSong.isEmpty()) {
             currentSong = " (" + currentSong + ")";
             String newText = getString(R.string.edit_song) + currentSong;
+            myView.edit.setHint(newText);
+            newText = getString(R.string.delete) + currentSong;
             myView.delete.setHint(newText);
             newText = getString(R.string.export_current_song) + currentSong;
             myView.share.setHint(newText);
