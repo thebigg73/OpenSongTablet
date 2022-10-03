@@ -34,7 +34,7 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
     private BottomSheetTransposeBinding myView;
     private MainActivityInterface mainActivityInterface;
     private int fromFormat, toFormat, prefFormat, transposeTimes, position;
-    private String originalKey, newKey, setFolder, songFolder;
+    private String originalKey, newKey, setFolder, songFolder, setFilename;
 
     public TransposeBottomSheet(boolean editSong) {
         // This is called from the EditSongFragment.  Receive temp lyrics and key
@@ -103,6 +103,7 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
 
             // Show the set options
             setFolder = mainActivityInterface.getCurrentSet().getFolder(position);
+            setFilename = mainActivityInterface.getCurrentSet().getFilename(position);
             if (setFolder.contains("**Variation")) {
                 // Hide variation creation and the set item transpose
                 myView.transposeVariation.setVisibility(View.GONE);
@@ -330,7 +331,15 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
                 // Transpose the key in the set.
                 // This deals with normal songs and songs that are already had temp key changes from the set list
                 mainActivityInterface.getCurrentSet().setKey(position, newKey);
+                Log.d(TAG,"setFolder:"+setFolder+"  songFolder:"+songFolder+"  position:"+position);
 
+                if (songFolder.equals("**Variation") && !setFolder.contains("**Variation")){
+                    // This song is already a temp variation that is transposed
+                    // We need to call the original file
+                    mainActivityInterface.getSong().setFolder(setFolder);
+                    mainActivityInterface.getSong().setFilename(setFilename);
+                    mainActivityInterface.getLoadSong().doLoadSong(mainActivityInterface.getSong(),false);
+                }
                 if (!setFolder.contains("**Variation") && !transposeSet && !transposeVariation) {
                     // If this is a normal song and want to actually transpose it normally, transpose and resave
                     mainActivityInterface.getSong().setFolder(setFolder);

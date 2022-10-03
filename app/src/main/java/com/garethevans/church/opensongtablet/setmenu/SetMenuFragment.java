@@ -146,23 +146,29 @@ public class SetMenuFragment extends Fragment {
     public void prepareCurrentSet() {
         // We have received a call to redraw the set list either on first load or after song indexing
         myView.myRecyclerView.post(() -> {
-            myView.myRecyclerView.removeAllViews();
-            myView.myRecyclerView.invalidate();
+            // Clear the original setlist by passing in a new blank arraylist
+            // This also deals with notifying changes
+            setListAdapter.updateSetList(new ArrayList<>());
+            buildList();
+            updateSetTitle();
         });
-        buildList();
-        updateSetTitle();
     }
 
     private void buildList() {
-        setItemInfos = new ArrayList<>();
-        for (int i = 0; i<mainActivityInterface.getCurrentSet().getSetItems().size(); i++) {
-            setItemInfos.add(makeSetItem(i));
+        try {
+            setItemInfos = new ArrayList<>();
+            for (int i = 0; i < mainActivityInterface.getCurrentSet().getSetItems().size(); i++) {
+                setItemInfos.add(makeSetItem(i));
+            }
+            myView.myRecyclerView.post(() -> {
+                setListAdapter.updateSetList(setItemInfos);
+                myView.myRecyclerView.setVisibility(View.VISIBLE);
+            });
+            myView.progressBar.post(() -> myView.progressBar.setVisibility(View.GONE));
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        myView.myRecyclerView.post(() -> {
-            setListAdapter.updateSetList(setItemInfos);
-            myView.myRecyclerView.setVisibility(View.VISIBLE);
-            myView.progressBar.setVisibility(View.GONE);
-        });
+
     }
 
     public void updateItem(int position) {

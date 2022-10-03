@@ -44,16 +44,16 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
     }
 
     public void updateSetList(ArrayList<SetItemInfo> setItemInfos) {
-        if (setList!=null) {
+        if (setList != null) {
             int size = getItemCount();
             setList.clear();
-            notifyItemRangeRemoved(0,size);
+            notifyItemRangeRemoved(0, size);
         } else {
             setList = new ArrayList<>();
         }
 
-        for (int x=0; x<setItemInfos.size(); x++) {
-            setList.add(x,setItemInfos.get(x));
+        for (int x = 0; x < setItemInfos.size(); x++) {
+            setList.add(x, setItemInfos.get(x));
             notifyItemInserted(x);
         }
     }
