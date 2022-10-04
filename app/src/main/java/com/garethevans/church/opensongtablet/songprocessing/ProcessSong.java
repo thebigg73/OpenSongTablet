@@ -416,12 +416,14 @@ public class ProcessSong {
                 }
                 break;
             case "lyric":
-                if (!previouslinetype.equals("chord"))
+                if (!previouslinetype.equals("chord")) {
                     what = "lyric_no_chord";
+                }
                 break;
             case "comment":
-                if (!previouslinetype.equals("chord"))
+                if (!previouslinetype.equals("chord")) {
                     what = "comment_no_chord";
+                }
                 break;
             case "capoinfo":
                 what = "capo_info";
@@ -1584,6 +1586,7 @@ public class ProcessSong {
 
         // Now we deal with creating the views from the available sections
         int backgroundColor;
+        int overallBackgroundColor;
         int textColor;
         if (presentation) {
             backgroundColor = Color.TRANSPARENT;
@@ -1595,6 +1598,7 @@ public class ProcessSong {
             backgroundColor = mainActivityInterface.getMyThemeColors().getLyricsBackgroundColor();
             textColor = mainActivityInterface.getMyThemeColors().getLyricsTextColor();
         }
+        overallBackgroundColor = backgroundColor;
 
         for (int sect = 0; sect < song.getPresoOrderSongSections().size(); sect++) {
             String section = song.getPresoOrderSongSections().get(sect);
@@ -1621,15 +1625,21 @@ public class ProcessSong {
                 if (!section.trim().isEmpty()) {
                     // Now split by line
                     String[] lines = section.split("\n");
-                    for (String line : lines) {
+                    for (int l=0; l<lines.length; l++) {
+                        String line = lines[l];
                         // Get the text stylings
                         String linetype = getLineType(line);
+
                         if (presentation && linetype.equals("heading")) {
                             // Don't need this for the presentation view
                             line = "";
                         }
+                        backgroundColor = overallBackgroundColor;
                         if (!asPDF && !presentation && (linetype.equals("heading") || linetype.equals("comment") || linetype.equals("tab"))) {
                             backgroundColor = getBGColor(line);
+                            if (l==0) {
+                                overallBackgroundColor = backgroundColor;
+                            }
                         }
                         Typeface typeface = getTypeface(presentation, linetype);
                         float size = getFontSize(linetype);
@@ -1652,18 +1662,22 @@ public class ProcessSong {
                                         mainActivityInterface.getMyThemeColors().getLyricsCapoColor(),
                                         mainActivityInterface.getMyThemeColors().getHighlightChordColor(), true));
                             } else {
-                                linearLayout.addView(groupTable(line,
+                                TableLayout tl = groupTable(line,
                                         mainActivityInterface.getMyThemeColors().getLyricsTextColor(),
                                         mainActivityInterface.getMyThemeColors().getLyricsChordsColor(),
                                         mainActivityInterface.getMyThemeColors().getLyricsCapoColor(),
-                                        mainActivityInterface.getMyThemeColors().getHighlightChordColor(), false));
+                                        mainActivityInterface.getMyThemeColors().getHighlightChordColor(), false);
+                                tl.setBackgroundColor(backgroundColor);
+                                linearLayout.addView(tl);
                             }
                         } else {
                             if (!presentation || !line.isEmpty()) {
-                                linearLayout.addView(lineText(linetype, line, typeface,
+                                TextView tv = lineText(linetype, line, typeface,
                                         size, textColor,
                                         mainActivityInterface.getMyThemeColors().getHighlightHeadingColor(),
-                                        mainActivityInterface.getMyThemeColors().getHighlightChordColor(), presentation));
+                                        mainActivityInterface.getMyThemeColors().getHighlightChordColor(), presentation);
+                                tv.setBackgroundColor(backgroundColor);
+                                linearLayout.addView(tv);
                             } else {
                                 // PDF or presentation
                                 linearLayout.addView(lineText(linetype, line, typeface,
@@ -1672,8 +1686,8 @@ public class ProcessSong {
                         }
                     }
 
-                    linearLayout.setBackgroundColor(backgroundColor);
-                    sectionColors.add(backgroundColor);
+                    linearLayout.setBackgroundColor(overallBackgroundColor);
+                    sectionColors.add(overallBackgroundColor);
 
                     sectionViews.add(linearLayout);
                 }
@@ -2744,7 +2758,6 @@ public class ProcessSong {
                 endHeight - startHeight
         );
         //bmp.recycle();
-        Log.d(TAG,"resizedBitmap: "+resizedBitmap);
         return resizedBitmap;
     }
 
