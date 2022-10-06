@@ -568,48 +568,38 @@ public class LoadSong {
         // Error in the xml as this is run from a catch block - tell the user we're trying to fix it!
         mainActivityInterface.getShowToast().doIt(c.getString(R.string.fix));
         StringBuilder newXML = new StringBuilder();
-        String tofix;
+        String toFix;
 
-        // If an XML file has unencoded ampersands or quotes, fix them
-        try {
-            tofix = getSongAsText(where,thisSong.getFolder(),thisSong.getFilename());
-            if (tofix.contains("<")) {
-                String[] sections = tofix.split("<");
-                for (String bit : sections) {
-                    // We are going though a section at a time
-                    int postofix = bit.indexOf(">");
-                    if (postofix >= 0) {
-                        String startbit = "<"+bit.substring(0,postofix);
-                        String bittofix = doFix(bit.substring(postofix));
-                        newXML.append(startbit).append(bittofix);
-                    } else {
-                        // No closing tag identifier, so add it
-                        newXML.append("<").append(bit).append(">");
-                    }
-                }
+        // Try to get this section
+        toFix = getSongAsText(where,thisSong.getFolder(),thisSong.getFilename());
+
+        Log.d(TAG,"toFix:"+toFix);
+        if (!section.isEmpty() && toFix.contains("<"+section+">") && toFix.contains("</"+section+">")) {
+            int start = toFix.indexOf("<"  + section + ">") + section.length() + 2;
+            int end   = toFix.indexOf("</" + section + ">");
+            Log.d(TAG,"start:"+start+"  end:"+end);
+            if (start>-1 && end>start) {
+                String origExtracted = toFix.substring(start,end);
+                String newExtracted  = origExtracted.replace("<","&lt;");
+                newExtracted = newExtracted.replace(">","&gt;");
+
+                toFix = toFix.replace(origExtracted,newExtracted);
+
+                // Now save the song again (output stream is closed in the write file method)
+                OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(uri);
+                mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" fixXML writeFileFromString "+uri+" with: "+toFix);
+                mainActivityInterface.getStorageAccess().writeFileFromString(toFix,outputStream);
+
+                Log.d(TAG,"fixed "+section+" :"+newExtracted);
+                return newExtracted;
             } else {
-                newXML.append(tofix);
+                toFix = "";
             }
-
-            // Now save the song again (output stream is closed in the write file method)
-            OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(uri);
-            mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" fixXML writeFileFromString "+uri+" with: "+newXML);
-            mainActivityInterface.getStorageAccess().writeFileFromString(newXML.toString(),outputStream);
-
-            // Try to extract the section we need
-            if (newXML.toString().contains("<"+section+">") && newXML.toString().contains("</"+section+">")) {
-                int start = newXML.indexOf("<"+section+">") + 2 + section.length();
-                int end = newXML.indexOf("</"+section+">");
-                thisSong.setFiletype("XML");
-                return newXML.substring(start,end);
-            } else {
-                return newXML.toString();
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "";
+        } else {
+            toFix = "";
         }
+        Log.d(TAG,"fixed "+section+" :"+toFix);
+        return toFix;
     }
 
     private String doFix(String tofix) {

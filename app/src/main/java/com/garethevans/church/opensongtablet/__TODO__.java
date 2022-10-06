@@ -2,7 +2,6 @@ package com.garethevans.church.opensongtablet;
 
 public class __TODO__ {
 
-    // Inline set - add key and update if set list is updated in the set menu
 
     // Check persistent database import with overwrite on/off
 
