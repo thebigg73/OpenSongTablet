@@ -98,6 +98,29 @@ public class PerformanceGestures {
         mainActivityInterface.updateCheckForThisSong(mainActivityInterface.getSong());
     }
 
+    // Add to set as a variation
+    public void addToSetAsVariation() {
+        // Make a copy of this song in the variations folder
+        mainActivityInterface.getStorageAccess().doStringWriteToFile("Variations","",
+                mainActivityInterface.getSong().getFilename(),mainActivityInterface.getProcessSong().getXML(mainActivityInterface.getSong()));
+        mainActivityInterface.getSong().setFolder("**Variations");
+
+        String itemForSet = mainActivityInterface.getSetActions().whatToLookFor(mainActivityInterface.getSong());
+
+        // Allow the song to be added, even if it is already there
+        String val = mainActivityInterface.getPreferences().getMyPreferenceString("setCurrent","") + itemForSet;
+        mainActivityInterface.getPreferences().setMyPreferenceString("setCurrent",val);
+
+        // Tell the user that the song has been added.
+        mainActivityInterface.getShowToast().doIt("\"" + mainActivityInterface.getSong().getFilename() + "\" " +
+                c.getString(R.string.added_to_set)+" (" + c.getString(R.string.variation) + " )");
+
+        mainActivityInterface.getCurrentSet().addSetItem(itemForSet);
+        mainActivityInterface.getCurrentSet().addSetValues(mainActivityInterface.getSong());
+        mainActivityInterface.updateSetList();
+        mainActivityInterface.updateCheckForThisSong(mainActivityInterface.getSong());
+    }
+
     // Redraw the lyrics page
     public void loadSong() {
         mainActivityInterface.doSongLoad(mainActivityInterface.getSong().getFolder(),mainActivityInterface.getSong().getFilename(),true);

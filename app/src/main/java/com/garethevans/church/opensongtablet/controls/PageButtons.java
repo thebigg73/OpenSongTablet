@@ -153,6 +153,7 @@ public class PageButtons {
         actions.add("pdfpage");
         actions.add("highlight");
         actions.add("editsong");
+        actions.add("addtoset");
         actions.add("scrolldown");
         actions.add("scrollup");
         actions.add("next");
@@ -192,6 +193,7 @@ public class PageButtons {
         text.add(c.getString(R.string.select_page));
         text.add(c.getString(R.string.highlight));
         text.add(c.getString(R.string.edit) + " " + c.getString(R.string.song));
+        text.add(c.getString(R.string.add_song_to_set));
         text.add(c.getString(R.string.scroll_down));
         text.add(c.getString(R.string.scroll_up));
         text.add(c.getString(R.string.next));
@@ -231,6 +233,7 @@ public class PageButtons {
         shortText.add(c.getString(R.string.select));
         shortText.add(c.getString(R.string.show) + " / " + c.getString(R.string.hide));
         shortText.add(c.getString(R.string.open));
+        shortText.add(c.getString(R.string.set_add));
         shortText.add(c.getString(R.string.select));
         shortText.add(c.getString(R.string.select));
         shortText.add(c.getString(R.string.select));
@@ -270,6 +273,7 @@ public class PageButtons {
         longText.add("");
         longText.add(c.getString(R.string.edit));
         longText.add("");
+        longText.add(c.getString(R.string.variation_make));
         longText.add("");
         longText.add("");
         longText.add("");
@@ -309,6 +313,7 @@ public class PageButtons {
         drawableIds.add(R.drawable.book);
         drawableIds.add(R.drawable.highlighter);
         drawableIds.add(R.drawable.set_edit);
+        drawableIds.add(R.drawable.set_add);
         drawableIds.add(R.drawable.arrow_down);
         drawableIds.add(R.drawable.arrow_up);
         drawableIds.add(R.drawable.arrow_right);
@@ -546,6 +551,13 @@ public class PageButtons {
                 break;
             case "editsong":
                 actionInterface.getPerformanceGestures().editSong();
+                break;
+            case "addtoset":
+                if (isLongPress) {
+                    actionInterface.getPerformanceGestures().addToSetAsVariation();
+                } else {
+                    actionInterface.getPerformanceGestures().addToSet();
+                }
                 break;
             case "scrolldown":
                 actionInterface.getPerformanceGestures().scroll(true);
