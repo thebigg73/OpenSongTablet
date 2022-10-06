@@ -142,6 +142,7 @@ public class PageButtons {
         actions = new ArrayList<>();
         actions.add("");
         actions.add("set");
+        actions.add("inlineset");
         actions.add("transpose");
         actions.add("pad");
         actions.add("metronome");
@@ -180,6 +181,7 @@ public class PageButtons {
         text = new ArrayList<>();
         text.add("");
         text.add(c.getString(R.string.set_current));
+        text.add(c.getString(R.string.set_inline));
         text.add(c.getString(R.string.transpose));
         text.add(c.getString(R.string.pad));
         text.add(c.getString(R.string.metronome));
@@ -218,6 +220,7 @@ public class PageButtons {
         shortText = new ArrayList<>();
         shortText.add("");
         shortText.add(c.getString(R.string.show));
+        shortText.add(c.getString(R.string.show) + " / " + c.getString(R.string.hide));
         shortText.add(c.getString(R.string.open));
         shortText.add(c.getString(R.string.start) + " / " + c.getString(R.string.stop));
         shortText.add(c.getString(R.string.start) + " / " + c.getString(R.string.stop));
@@ -260,6 +263,7 @@ public class PageButtons {
         longText.add(c.getString(R.string.settings));
         longText.add(c.getString(R.string.settings));
         longText.add(c.getString(R.string.settings));
+        longText.add(c.getString(R.string.settings));
         longText.add("");
         longText.add(c.getString(R.string.edit));
         longText.add(c.getString(R.string.edit));
@@ -294,6 +298,7 @@ public class PageButtons {
         drawableIds = new ArrayList<>();
         drawableIds.add(R.drawable.help);
         drawableIds.add(R.drawable.list_number);
+        drawableIds.add(R.drawable.inline_set);
         drawableIds.add(R.drawable.transpose);
         drawableIds.add(R.drawable.amplifier);
         drawableIds.add(R.drawable.metronome);
@@ -480,6 +485,13 @@ public class PageButtons {
                 break;
             case "set":
                 actionInterface.getPerformanceGestures().setMenu();
+                break;
+            case "inlineset":
+                if (isLongPress) {
+                    actionInterface.getPerformanceGestures().inlineSetSettings();
+                } else {
+                    actionInterface.getPerformanceGestures().inlineSet();
+                }
                 break;
             case "transpose":
                 actionInterface.getPerformanceGestures().transpose();

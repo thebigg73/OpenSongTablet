@@ -41,6 +41,9 @@ public class PerformanceGestures {
     }
     public void setRecyclerView(MyRecyclerView recyclerView) {
         this.recyclerView = recyclerView;
+        if (mainActivityInterface!=null) {
+            this.recyclerView.initialiseRecyclerView(mainActivityInterface);
+        }
     }
 
     // The following are called from GestureListener, PedalActions, PageButtons
@@ -58,6 +61,14 @@ public class PerformanceGestures {
     // Set menu
     public void setMenu() {
         mainActivityInterface.chooseMenu(true);
+    }
+
+    // Inline set
+    public void inlineSet() {
+        mainActivityInterface.toggleInlineSet();
+    }
+    public void inlineSetSettings() {
+        mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_inlineset),0);
     }
 
     // Edit song

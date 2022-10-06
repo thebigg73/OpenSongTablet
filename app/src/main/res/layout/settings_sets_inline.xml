@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                android:id="@+id/showInlineSet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/set_inline"
+                android:hint="@string/set_inline_info"/>
+            <TableRow style="@style/DividerLine"/>
+
+            <LinearLayout
+                android:id="@+id/sliderLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+            <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+                android:id="@+id/widthSlider"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/width"
+                android:valueFrom="10"
+                android:valueTo="80"
+                android:value="30"
+                app:stepSize="10" />
+            <TableRow style="@style/DividerLine"/>
+            </LinearLayout>
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

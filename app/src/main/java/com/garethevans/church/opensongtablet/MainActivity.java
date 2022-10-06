@@ -760,6 +760,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                             setMenuFragment.updateItem(Integer.parseInt(arguments.get(0)));
                         }
                     }
+                    // If we are not in presenter mode and using inline set, update that
+                    if (performanceFragment!=null && !whichMode.equals("Presentation")) {
+                        if (fragName.equals("set_updateView")) {
+                            performanceFragment.updateInlineSetSet();
+                        } else if (arguments!=null && arguments.size()>0) {
+                            performanceFragment.updateInlineSetItem(Integer.parseInt(arguments.get(0)));
+                        }
+                    }
                     break;
                 case "linksFragment":
                     // Update the values in the links
@@ -1380,7 +1388,37 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     public WindowFlags getWindowFlags() {
         return windowFlags;
     }
-
+    @Override
+    public void toggleInlineSet() {
+        if (performanceFragment!=null && !whichMode.equals("Presentation")) {
+            performanceFragment.toggleInlineSet();
+        }
+        loadSong();
+    }
+    @Override
+    public void updateInlineSet(boolean show, float width) {
+        if (performanceFragment!=null && !whichMode.equals("Presentation")) {
+            performanceFragment.updateInlineSet(show,width);
+        }
+    }
+    @Override
+    public void updateInlineSetMove(int from, int to) {
+        if (performanceFragment!=null && !whichMode.equals("Presentation")) {
+            performanceFragment.updateInlineSetMove(from,to);
+        }
+    }
+    @Override
+    public void updateInlineSetRemoved(int from) {
+        if (performanceFragment!=null && !whichMode.equals("Presentation")) {
+            performanceFragment.updateInlineSetRemoved(from);
+        }
+    }
+    @Override
+    public void initialiseInlineSetItem(int position) {
+        if (performanceFragment!=null && !whichMode.equals("Presentation")) {
+            performanceFragment.initialiseInlineSetItem(position);
+        }
+    }
 
     // Page buttons
     private void animatePageButtons() {
@@ -2570,6 +2608,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             pad.setCurrentOrientation(newConfig.orientation);
             pageButtons.requestLayout();
             doSongLoad(song.getFolder(),song.getFilename(),true);
+        }
+        if (!settingsOpen && performanceFragment!=null && !whichMode.equals("Presentation")) {
+            performanceFragment.orientationInlineSet(newConfig.orientation);
         }
     }
     @Override

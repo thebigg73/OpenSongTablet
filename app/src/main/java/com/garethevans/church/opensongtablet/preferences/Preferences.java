@@ -306,6 +306,8 @@ public class Preferences extends Activity {
     // hideActionBar                   boolean     Should the action bar auto hide (def:false)
     // hideInfoBar                     boolean     Should the info bar (Presenter mode only) autohide after initial display + minimum time (def: true)
     // hideLyricsBox                   boolean     Should we hide the box around the lyrics (def:false)
+    // inlineSet                       boolean     Should we show the inline setlist (def:false)
+    // inlineSetWidth                  float       The width (as a percentage of screen width) of the inline setlist (def:0.3f)
     // language                        String      The locale set in the menu (def:en)
     // lastUsedVersion                 int         The app version number the last time the app ran (def:0)
     // light_lyricsBackgroundColor     int         The color for the lyrics background in the light theme

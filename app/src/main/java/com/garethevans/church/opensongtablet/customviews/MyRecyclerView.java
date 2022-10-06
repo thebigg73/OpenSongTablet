@@ -15,8 +15,8 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 public class MyRecyclerView extends RecyclerView {
 
-    private final MainActivityInterface mainActivityInterface;
     private final String TAG = "MyRecyclerView";
+    private MainActivityInterface mainActivityInterface;
     private boolean isUserTouching;
     private boolean scrolledToTop=true;
     private boolean scrolledToBottom=false;
@@ -25,23 +25,75 @@ public class MyRecyclerView extends RecyclerView {
     private float floatScrollPos;
 
     private final LinearInterpolator linearInterpolator = new LinearInterpolator();
-    private ScrollListener scrollListener;
-    private ItemTouchListener itemTouchListener;
+    private final ScrollListener scrollListener;
+    private final ItemTouchListener itemTouchListener;
 
     RecyclerView.SmoothScroller smoothScroller;
 
-    public MyRecyclerView(@NonNull Context c) {
-        super(c);
-        mainActivityInterface = (MainActivityInterface) c;
+    public MyRecyclerView(@NonNull Context context) {
+        super(context);
         scrollListener = new ScrollListener();
         itemTouchListener = new ItemTouchListener();
         addOnScrollListener(scrollListener);
         addOnItemTouchListener(itemTouchListener);
-        this.setOverScrollMode(OVER_SCROLL_ALWAYS);
+        setOverScrollMode(OVER_SCROLL_ALWAYS);
         setClipChildren(false);
         setClipToPadding(false);
         setItemAnimator(null);
         floatScrollPos = 0;
+    }
+
+    public MyRecyclerView(@NonNull Context context, @Nullable @org.jetbrains.annotations.Nullable AttributeSet attrs) {
+        super(context, attrs);
+        scrollListener = new ScrollListener();
+        itemTouchListener = new ItemTouchListener();
+        addOnScrollListener(scrollListener);
+        addOnItemTouchListener(itemTouchListener);
+        setOverScrollMode(OVER_SCROLL_ALWAYS);
+        setClipChildren(false);
+        floatScrollPos = 0;
+    }
+
+    public void initialiseRecyclerView(MainActivityInterface mainActivityInterface) {
+        this.mainActivityInterface = mainActivityInterface;
+    }
+
+    public void setUserTouching(boolean isUserTouching) {
+        this.isUserTouching = isUserTouching;
+    }
+
+    public boolean getIsUserTouching() {
+        return isUserTouching;
+    }
+    public void scrollToTop() {
+        try {
+            scrollToPosition(0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        scrolledToTop = true;
+        scrolledToBottom = false;
+        floatScrollPos = 0;
+    }
+
+    public void doScrollBy(float dy, int duration) {
+        // Only do this if we aren't touching the screen!
+        // Because scroll is an int, but getting passed a float, we need to keep track
+        // If we fall behind (or ahead), add this on when it becomes above 1f
+
+        int currentActual = (int)floatScrollPos;
+
+        float currentWanted = floatScrollPos;
+
+        // How far behind are we?  Add this on
+        float behind = (currentWanted - currentActual);
+
+        floatScrollPos += dy;
+
+        int scrollAmount = (int)(dy+behind);
+        if (!isUserTouching) {
+            smoothScrollBy(0,scrollAmount,linearInterpolator,duration);
+        }
     }
 
     public void smoothScrollTo(Context c, LayoutManager layoutManager, int position) {
@@ -55,21 +107,17 @@ public class MyRecyclerView extends RecyclerView {
         layoutManager.startSmoothScroll(smoothScroller);
     }
 
-    public void removeListeners() {
-        removeOnScrollListener(scrollListener);
-        scrollListener = null;
-        removeOnItemTouchListener(itemTouchListener);
-        itemTouchListener = null;
+
+    public void setMaxScrollY(int maxScrollY) {
+        this.maxScrollY = maxScrollY;
     }
 
-    public MyRecyclerView(@NonNull Context c, @Nullable @org.jetbrains.annotations.Nullable AttributeSet attrs) {
-        super(c, attrs);
-        mainActivityInterface = (MainActivityInterface) c;
-        addOnScrollListener(new ScrollListener());
-        addOnItemTouchListener(new ItemTouchListener());
-        this.setOverScrollMode(OVER_SCROLL_ALWAYS);
-        setClipChildren(false);
-        floatScrollPos = 0;
+    public boolean getScrolledToTop() {
+        return scrolledToTop;
+    }
+
+    public boolean getScrolledToBottom() {
+        return scrolledToBottom;
     }
 
     public void setGestureDetector(GestureDetector gestureDetector) {
@@ -101,6 +149,13 @@ public class MyRecyclerView extends RecyclerView {
             scrolledToBottom = (maxScrollY-recyclerView.computeVerticalScrollOffset()) <= 1;
         }
     }
+    private void onTouchAction() {
+        if (mainActivityInterface!=null) {
+            mainActivityInterface.getDisplayPrevNext().showAndHide();
+            mainActivityInterface.updateOnScreenInfo("showcapo");
+            mainActivityInterface.showActionBar();
+        }
+    }
 
     private class ItemTouchListener extends RecyclerView.SimpleOnItemTouchListener {
 
@@ -124,57 +179,4 @@ public class MyRecyclerView extends RecyclerView {
             }
         }
     }
-
-    private void onTouchAction() {
-        mainActivityInterface.getDisplayPrevNext().showAndHide();
-        mainActivityInterface.updateOnScreenInfo("showcapo");
-        mainActivityInterface.showActionBar();
-    }
-
-    public void doScrollBy(float dy, int duration) {
-        // Only do this if we aren't touching the screen!
-        // Because scroll is an int, but getting passed a float, we need to keep track
-        // If we fall behind (or ahead), add this on when it becomes above 1f
-        int currentActual = (int)floatScrollPos;
-        float currentWanted = floatScrollPos;
-
-        // How far behind are we?  Add this on
-        float behind = (currentWanted - currentActual);
-
-        floatScrollPos += dy;
-
-        int scrollAmount = (int)(dy+behind);
-        if (!isUserTouching) {
-            smoothScrollBy(0,scrollAmount,linearInterpolator,duration);
-        }
-    }
-
-    public void scrollToTop() {
-        try {
-            scrollToPosition(0);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        scrolledToTop = true;
-        scrolledToBottom = false;
-        floatScrollPos = 0;
-    }
-
-    public void setMaxScrollY(int maxScrollY) {
-        this.maxScrollY = maxScrollY;
-    }
-
-    public void setUserTouching(boolean isUserTouching) {
-        this.isUserTouching = isUserTouching;
-    }
-    public boolean getIsUserTouching() {
-        return isUserTouching;
-    }
-    public boolean getScrolledToTop() {
-        return scrolledToTop;
-    }
-    public boolean getScrolledToBottom() {
-        return scrolledToBottom;
-    }
-
 }

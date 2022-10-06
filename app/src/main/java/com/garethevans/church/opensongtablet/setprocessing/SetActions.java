@@ -46,6 +46,7 @@ public class SetActions {
     private final String cache = "_cache";
     private final String customLocStart = "**";
 
+    private int positionInSet = -1;
     private ArrayList<Integer> missingKeyPositions;
 
     public SetActions(Context c) {
@@ -269,6 +270,7 @@ public class SetActions {
 
         if (position>-1) {
             // If a key was specified in the set and it matches this song, go to that position in the set
+            positionInSet = position;
             return position;
         } else {
             // If a key wasn't specified in the set, but the song folder/filename matches, go to that position
@@ -276,13 +278,16 @@ public class SetActions {
             // If a key was specified in the set, but the song clicked on in the song menu is different,
             // stay out of the set view by returning -1 for the found position.
             // Or simply, the song just isn't in the set
-
+            positionInSet = positionNoKey;
             return positionNoKey;
         }
 
 
     }
 
+    public int getPositionInSet() {
+        return positionInSet;
+    }
     public void shuffleSet() {
         // Shuffle the currentSet item array - all entries are like $$_folder/filename_**key**__$$
         Collections.shuffle(mainActivityInterface.getCurrentSet().getSetItems());

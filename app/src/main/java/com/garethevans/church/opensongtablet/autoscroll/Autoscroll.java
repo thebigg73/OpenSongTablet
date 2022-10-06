@@ -59,6 +59,9 @@ public class Autoscroll {
         colorOn = mainActivityInterface.getMyThemeColors().getExtraInfoTextColor();
         this.myZoomLayout = myZoomLayout;
         this.myRecyclerView = myRecyclerView;
+        if (mainActivityInterface!=null) {
+            this.myRecyclerView.initialiseRecyclerView(mainActivityInterface);
+        }
     }
 
     public void initialiseSongAutoscroll(int songHeight, int displayHeight) {

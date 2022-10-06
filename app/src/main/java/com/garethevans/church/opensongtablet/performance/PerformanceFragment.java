@@ -43,7 +43,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class PerformanceFragment extends Fragment {
-
     private final String TAG = "PerformanceFragment";
     private StickyPopUp stickyPopUp;
     private ABCPopup abcPopup;
@@ -190,6 +189,8 @@ public class PerformanceFragment extends Fragment {
             myView.waterMark.setVisibility(View.GONE);
         }
         mainActivityInterface.updateOnScreenInfo("setpreferences");
+        myView.inlineSetList.initialisePreferences(requireContext(),mainActivityInterface);
+        myView.inlineSetList.prepareSet();
     }
 
     private void removeViews() {
@@ -203,6 +204,30 @@ public class PerformanceFragment extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    public void toggleInlineSet() {
+        myView.inlineSetList.toggleInlineSet();
+    }
+    public void updateInlineSet(boolean show, float width) {
+        myView.inlineSetList.updateInlineSet(show,(int)width*screenWidth);
+    }
+    public void orientationInlineSet(int orientation) {
+        myView.inlineSetList.orientationChanged(orientation);
+    }
+    public void updateInlineSetSet() {
+        //myView.inlineSetList.prepareSet();
+    }
+    public void updateInlineSetItem(int position) {
+        myView.inlineSetList.updateSelected(position);
+    }
+    public void updateInlineSetMove(int from, int to) {
+        myView.inlineSetList.updateInlineSetMove(from,to);
+    }
+    public void updateInlineSetRemoved(int from) {
+        myView.inlineSetList.updateInlineSetRemoved(from);
+    }
+    public void initialiseInlineSetItem(int position) {
+        myView.inlineSetList.initialiseInlineSetItem(position);
     }
 
     // This stuff loads the song and prepares the views
@@ -276,10 +301,16 @@ public class PerformanceFragment extends Fragment {
         // Set the default color
         myView.pageHolder.setBackgroundColor(mainActivityInterface.getMyThemeColors().getLyricsBackgroundColor());
 
+        // Update the toolbar with the song (null).  This also sets the positionInSet in SetActions
+        mainActivityInterface.updateToolbar(null);
+
+        // If we are in a set, send that info to the inline set custom view to see if it should draw
+        myView.inlineSetList.checkVisibility();
+
         int[] screenSizes = mainActivityInterface.getDisplayMetrics();
-        screenWidth = screenSizes[0];
+        screenWidth = screenSizes[0] - myView.inlineSetList.getInlineSetWidth();
         screenHeight = screenSizes[1] - mainActivityInterface.getToolbar().getActionBarHeight(mainActivityInterface.needActionBar());
-        availableWidth = getResources().getDisplayMetrics().widthPixels;
+        availableWidth = getResources().getDisplayMetrics().widthPixels - myView.inlineSetList.getInlineSetWidth();
         availableHeight = getResources().getDisplayMetrics().heightPixels - mainActivityInterface.getToolbar().getActionBarHeight(mainActivityInterface.needActionBar());
         widthBeforeScale = 0;
         heightBeforeScale = 0;
@@ -307,8 +338,7 @@ public class PerformanceFragment extends Fragment {
             prepareXMLView();
         }
 
-        // Update the toolbar with the song (null)
-        mainActivityInterface.updateToolbar(null);
+
     }
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void preparePDFView() {

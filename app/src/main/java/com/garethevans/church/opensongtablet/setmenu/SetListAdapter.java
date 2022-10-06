@@ -162,6 +162,8 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
         notifyItemChanged(toPosition);
         notifyItemMoved(fromPosition,toPosition);
 
+        mainActivityInterface.updateInlineSetMove(fromPosition,toPosition);
+
         // Update the title
         mainActivityInterface.updateSetTitle();
         updateSetPrevNext();
@@ -172,9 +174,6 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
         // Check the setList matches the current set!
         try {
             // Remove the item from the current set
-            Log.d(TAG, "fromPosition: " + fromPosition);
-            Log.d(TAG, "currentSet at pos: " + mainActivityInterface.getCurrentSet().getItem(fromPosition));
-            Log.d(TAG, "setList at pos: " + setList.get(fromPosition).songfolder + "/" + setList.get(fromPosition).songfilename);
             mainActivityInterface.getCurrentSet().removeFromCurrentSet(fromPosition, null);
 
             Song songRemoved = mainActivityInterface.getSQLiteHelper().getSpecificSong(
@@ -186,16 +185,15 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
             // Save the preference
             mainActivityInterface.getPreferences().setMyPreferenceString("setCurrent", mainActivityInterface.getCurrentSet().getCurrentSetString());
 
-            Log.d(TAG, "setList size before: " + setList.size());
             setList.remove(fromPosition);
             notifyItemRemoved(fromPosition);
-            Log.d(TAG, "setList size after: " + setList.size());
             // Go through the setList from this position and sort the numbers
             for (int x = fromPosition; x < setList.size(); x++) {
                 setList.get(x).songitem = (x + 1) + ".";
                 notifyItemChanged(x);
-                Log.d(TAG, "updated " + x);
             }
+
+            mainActivityInterface.updateInlineSetRemoved(fromPosition);
 
             // Update the title
             mainActivityInterface.updateSetTitle();
@@ -210,6 +208,7 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
     @Override
     public void onItemClicked(MainActivityInterface mainActivityInterface, int position) {
         updateHighlightedItem(position);
+        mainActivityInterface.initialiseInlineSetItem(position);
         mainActivityInterface.loadSongFromSet(position);
     }
 
@@ -262,6 +261,9 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
             currentPosition = setPosition;
             highlightedArray.put(currentPosition,true);
             notifyItemChanged(currentPosition,"highlightItem");
+
+            mainActivityInterface.initialiseInlineSetItem(setPosition);
+
             return true;
         }
         return false;

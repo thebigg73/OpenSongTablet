@@ -1235,5 +1235,9 @@ Check out the categories in the right hand options menu.
     <string name="transpose_set_item_info">When viewing this song in the current set, it will temporarily be transposed.  The original song will be unchanged.</string>
     <string name="copy_of">Copy</string>
     <string name="transpose_copy">Make a copy of this song and transpose it, leaving the original unchanged.</string>
+    <string name="set_inline">Inline set</string>
+    <string name="deeplink_inlineset">opensongapp://settings/set/inlineset</string>
+    <string name="set_inline_info">Show the setlist on the screen beside the song window</string>
+    <string name="website_inline_set">https://www.opensongapp.com/user-manual/display/inline-set</string>
 
 </resources>

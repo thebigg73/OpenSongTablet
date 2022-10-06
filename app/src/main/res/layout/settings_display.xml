@@ -68,6 +68,15 @@
                 android:text="@string/menu_settings"
                 android:hint="@string/menu_settings_description" />
             <TableRow style="@style/DividerLine" />
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                android:id="@+id/inlineSet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/set_inline"
+                android:hint="@string/set_inline_info" />
+            <TableRow style="@style/DividerLine" />
+
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </LinearLayout>

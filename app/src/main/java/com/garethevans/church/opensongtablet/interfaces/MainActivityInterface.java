@@ -123,6 +123,11 @@ public interface MainActivityInterface {
     void addSetItem(int currentSetPosition);
     void removeSetItem(int currentSetPosition);
     void checkSetMenuItemHighlighted(int setPosition);
+    void toggleInlineSet();
+    void updateInlineSet(boolean showInline, float width);
+    void updateInlineSetMove(int from, int to);
+    void updateInlineSetRemoved(int from);
+    void initialiseInlineSetItem(int position);
 
     // Menus
     DrawerLayout getDrawer();
