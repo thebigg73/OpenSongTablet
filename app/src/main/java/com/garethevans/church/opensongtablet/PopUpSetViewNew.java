@@ -34,7 +34,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-@SuppressWarnings("ComparatorCombinators")
 public class PopUpSetViewNew extends DialogFragment {
 
     private static Dialog setfrag;
@@ -103,6 +102,7 @@ public class PopUpSetViewNew extends DialogFragment {
         StaticVariables.songfilename = storageAccess.safeFilename(newsongname.toString());
         StaticVariables.whichSongFolder = "../Variations";
         preferences.setMyPreferenceString(c,"whichSongFolder", "../Variations");
+        SetActions setActions = new SetActions();
         StaticVariables.whatsongforsetwork = setActions.getSongForSetWork(c);
 
         // Replace the set item with the variation
