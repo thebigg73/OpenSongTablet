@@ -103,7 +103,6 @@
     <string name="capo_toggle_bothcapo">"同时显示变调夹和本地和弦（如果可用）"</string>
     <string name="category">"类别"</string>
     <string name="cavaquinho">"Cavaquinho"</string>
-    <string name="ccli">"CCLI"</string>
     <string name="ccli_automatic">"自动记录使用情况统计"</string>
     <string name="ccli_church">"教堂名称"</string>
     <string name="ccli_description">CCLI设置</string>
@@ -209,6 +208,8 @@
     <string name="controls_description">脚踏板和屏幕手势</string>
     <string name="convert_song">"请将它添加到一组转换之前这首歌为OpenSong格式（通过查看它）"</string>
     <string name="converting">"转换"</string>
+    <string name="transpose_copy">复制这首歌并将其移调，保持原件不变。</string>
+    <string name="copy_of">复制</string>
     <string name="copyright">"版权信息"</string>
     <string name="create_folder_error">"在建立新的文件夹的错误！"</string>
     <string name="create_new_song">"创建新曲"</string>
@@ -660,6 +661,8 @@
     <string name="set_current">"当前设置"</string>
     <string name="set_delete_info">删除旧集</string>
     <string name="set_help">"拖动歌曲各地更改设置的顺序"</string>
+    <string name="set_inline">内联集</string>
+    <string name="set_inline_info">在歌曲窗口旁边的屏幕上显示设置列表</string>
     <string name="set_load_info">加载以前保存的集合</string>
     <string name="set_load_merge">选择多个将按所选顺序合并它们。</string>
     <string name="set_manage">管理您的集</string>
@@ -855,4 +858,6 @@
     <string name="restart">重新开始</string>
     <string name="export_current_format">当前格式的歌曲</string>
     <string name="zoom_level">Zoemvlak</string>
+    <string name="transpose_set_item">仅在集合中转置</string>
+    <string name="transpose_set_item_info">在当前集合中查看这首歌曲时，它会被临时移调。原曲不变。</string>
 </resources>

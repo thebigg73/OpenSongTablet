@@ -208,6 +208,8 @@
     <string name="controls_description">Pedały nożne i gesty na ekranie</string>
     <string name="convert_song">"Proszę przekonwertować do formatu tej piosenki OpenSong (oglądając go) przed dodaniem go do zestawu"</string>
     <string name="converting">"Konwersja"</string>
+    <string name="transpose_copy">Zrób kopię tego utworu i przetransponuj go, pozostawiając oryginał bez zmian.</string>
+    <string name="copy_of">Kopiuj</string>
     <string name="copyright">"Copyright informacji"</string>
     <string name="create_folder_error">"Wystąpił błąd podczas tworzenia nowego folderu !"</string>
     <string name="create_new_song">"Stwórz nową piosenkę"</string>
@@ -659,6 +661,8 @@
     <string name="set_current">"Aktualny zestaw"</string>
     <string name="set_delete_info">Usuń stare zestawy</string>
     <string name="set_help">"Przeciągnij piosenki wokół, aby zmienić kolejność zestawu"</string>
+    <string name="set_inline">Zestaw wbudowany</string>
+    <string name="set_inline_info">Pokaż setlistę na ekranie obok okna utworu</string>
     <string name="set_load_info">Załaduj wcześniej zapisany zestaw</string>
     <string name="set_load_merge">Wybranie więcej niż jednego spowoduje scalenie ich w wybranej kolejności.</string>
     <string name="set_manage">Zarządzaj swoimi zestawami</string>
@@ -854,4 +858,6 @@
     <string name="restart">Uruchom ponownie</string>
     <string name="export_current_format">Piosenki w ich obecnym formacie</string>
     <string name="zoom_level">Stopień przybliżenia</string>
+    <string name="transpose_set_item">Transpozycja tylko w zestawie</string>
+    <string name="transpose_set_item_info">Podczas oglądania tego utworu w bieżącym zestawie zostanie on tymczasowo transponowany. Oryginalna piosenka pozostanie niezmieniona.</string>
 </resources>

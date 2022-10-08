@@ -208,6 +208,8 @@
     <string name="controls_description">Pédales et gestes à l\'écran</string>
     <string name="convert_song">"Merci de convertir cette chanson au format OpenSong (en l\'affichant) avant de l\'ajouter à une liste"</string>
     <string name="converting">"Conversion"</string>
+    <string name="transpose_copy">Faites une copie de cette chanson et transposez-la en laissant l\'original inchangé.</string>
+    <string name="copy_of">Copie</string>
     <string name="copyright">"Infos Copyright"</string>
     <string name="create_folder_error">"Erreur lors de la création du nouveau dossier !"</string>
     <string name="create_new_song">"Créer un nouveau morceau"</string>
@@ -659,6 +661,8 @@
     <string name="set_current">"Liste actuelle"</string>
     <string name="set_delete_info">Supprimer les anciens ensembles</string>
     <string name="set_help">"Deplacez les chansons dans l\'ordre choisis"</string>
+    <string name="set_inline">Ensemble en ligne</string>
+    <string name="set_inline_info">Afficher la setlist sur l\'écran à côté de la fenêtre de la chanson</string>
     <string name="set_load_info">Charger un ensemble précédemment enregistré</string>
     <string name="set_load_merge">En choisir plusieurs les fusionnera dans l\'ordre sélectionné.</string>
     <string name="set_manage">Gérez vos ensembles</string>
@@ -854,4 +858,6 @@
     <string name="restart">Redémarrer</string>
     <string name="export_current_format">Chansons dans leur format actuel</string>
     <string name="zoom_level">Le niveau de zoom</string>
+    <string name="transpose_set_item">Transposer en set uniquement</string>
+    <string name="transpose_set_item_info">Lors de la visualisation de cette chanson dans le set actuel, elle sera temporairement transposée. La chanson originale sera inchangée.</string>
 </resources>

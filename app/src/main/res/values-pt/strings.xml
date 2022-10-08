@@ -208,6 +208,8 @@
     <string name="controls_description">Pedais e gestos na tela</string>
     <string name="convert_song">"Por favor, converter essa música em formato OpenSong (por vê-lo) antes de adicioná-la a um conjunto"</string>
     <string name="converting">"Convertendo"</string>
+    <string name="transpose_copy">Faça uma cópia desta música e transponha-a, deixando o original inalterado.</string>
+    <string name="copy_of">Cópia de</string>
     <string name="copyright">"Info Copyright"</string>
     <string name="create_folder_error">"Houve um erro ao criar a nova pasta !"</string>
     <string name="create_new_song">"Criar uma nova canção"</string>
@@ -659,6 +661,8 @@
     <string name="set_current">"Conjunto atual"</string>
     <string name="set_delete_info">Excluir conjuntos antigos</string>
     <string name="set_help">"Arraste as músicas ao redor para mudar a ordem do seu conjunto"</string>
+    <string name="set_inline">Conjunto embutido</string>
+    <string name="set_inline_info">Mostrar o setlist na tela ao lado da janela da música</string>
     <string name="set_load_info">Carregar um conjunto salvo anteriormente</string>
     <string name="set_load_merge">Escolher mais de um irá mesclá-los na ordem selecionada.</string>
     <string name="set_manage">Gerencie seus conjuntos</string>
@@ -854,4 +858,6 @@
     <string name="restart">Reiniciar</string>
     <string name="export_current_format">Músicas em seu formato atual</string>
     <string name="zoom_level">Nível de zoom</string>
+    <string name="transpose_set_item">Transpor apenas em conjunto</string>
+    <string name="transpose_set_item_info">Ao visualizar esta música no conjunto atual, ela será temporariamente transposta. A música original não será alterada.</string>
 </resources>

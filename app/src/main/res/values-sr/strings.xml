@@ -208,6 +208,8 @@
     <string name="controls_description">Nožne pedale i pokreti ekrana</string>
     <string name="convert_song">Molimo prebacite ovu pesmu u OpenSong format (pregledajući je) pre nego što je dodate na set listu</string>
     <string name="converting">Pretvaranje</string>
+    <string name="transpose_copy">Napravite kopiju ove pesme i transponujte je, ostavljajući original nepromenjen.</string>
+    <string name="copy_of">Kopiraj</string>
     <string name="copyright">Copyright info</string>
     <string name="create_folder_error">Nastala je greška tokom pravljenja nove fascikle!</string>
     <string name="create_new_song">Napraviti novu pesmu</string>
@@ -659,6 +661,8 @@
     <string name="set_current">Trenutna set lista</string>
     <string name="set_delete_info">Izbrišite stare komplete</string>
     <string name="set_help">Prevlačite pesme da bi promenili redosled na set listi</string>
+    <string name="set_inline">Inline set</string>
+    <string name="set_inline_info">Prikažite set listu na ekranu pored prozora sa pesmom</string>
     <string name="set_load_info">Učitajte prethodno sačuvani set</string>
     <string name="set_load_merge">Ako izaberete više od jednog, oni će se spojiti u izabranom redosledu.</string>
     <string name="set_manage">Upravljajte svojim setovima</string>
@@ -854,4 +858,6 @@
     <string name="restart">Ponovo pokrenuti</string>
     <string name="export_current_format">Pesme u trenutnom formatu</string>
     <string name="zoom_level">Nivo zumiranja</string>
+    <string name="transpose_set_item">Transponujte samo u setu</string>
+    <string name="transpose_set_item_info">Kada gledate ovu pesmu u trenutnom skupu, ona će privremeno biti transponovana. Originalna pesma će ostati nepromenjena.</string>
 </resources>

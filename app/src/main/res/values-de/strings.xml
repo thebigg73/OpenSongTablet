@@ -208,6 +208,8 @@
     <string name="controls_description">Fußpedale und Bildschirmgesten</string>
     <string name="convert_song">"Bitte konvertieren Sie das Lied ins Opensong Format (indem Sie es anzeigen), bevor Sie es zum Set zufügen"</string>
     <string name="converting">"Konvertierung"</string>
+    <string name="transpose_copy">Erstellen Sie eine Kopie dieses Liedes und transponieren Sie es, wobei Sie das Original unverändert lassen.</string>
+    <string name="copy_of">Kopieren</string>
     <string name="copyright">"Copyright-Informationen"</string>
     <string name="create_folder_error">"Es gab einen Fehler beim Erstellen des neuen Ordners!"</string>
     <string name="create_new_song">"Neuer Song"</string>
@@ -659,6 +661,8 @@
     <string name="set_current">"Aktuelles Set"</string>
     <string name="set_delete_info">Alte Sätze löschen</string>
     <string name="set_help">"Elemente verschieben um die Reihenfolge im aktuellen Set zu ändern"</string>
+    <string name="set_inline">Inline-Set</string>
+    <string name="set_inline_info">Zeigen Sie die Setlist auf dem Bildschirm neben dem Song-Fenster an</string>
     <string name="set_load_info">Laden Sie einen zuvor gespeicherten Satz</string>
     <string name="set_load_merge">Wenn Sie mehr als eine auswählen, werden sie in der ausgewählten Reihenfolge zusammengeführt.</string>
     <string name="set_manage">Verwalten Sie Ihre Sets</string>
@@ -854,4 +858,6 @@
     <string name="restart">Neu starten</string>
     <string name="export_current_format">Songs in ihrem aktuellen Format</string>
     <string name="zoom_level">Zoomstufe</string>
+    <string name="transpose_set_item">Nur im Satz transponieren</string>
+    <string name="transpose_set_item_info">Wenn Sie diesen Song im aktuellen Set ansehen, wird er vorübergehend transponiert. Der ursprüngliche Song bleibt unverändert.</string>
 </resources>

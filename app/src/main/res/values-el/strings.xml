@@ -208,6 +208,8 @@
     <string name="controls_description">Πεντάλ ποδιών και χειρονομίες οθόνης</string>
     <string name="convert_song">"Please convert this song into OpenSong format (by viewing it) before adding it to a set"</string>
     <string name="converting">"Μετατροπή"</string>
+    <string name="transpose_copy">Δημιουργήστε ένα αντίγραφο αυτού του τραγουδιού και μεταφέρετέ το, αφήνοντας το πρωτότυπο αμετάβλητο.</string>
+    <string name="copy_of">Αντίγραφο</string>
     <string name="copyright">"Copyright info"</string>
     <string name="create_folder_error">"Υπήρξε πρόβλημα στην δημιουργία νέου φακέλου!"</string>
     <string name="create_new_song">"Δημιουργία νέου τραγουδιού"</string>
@@ -659,6 +661,8 @@
     <string name="set_current">"Current set"</string>
     <string name="set_delete_info">Διαγράψτε παλιά σετ</string>
     <string name="set_help">"Drag songs around to change the order of your set"</string>
+    <string name="set_inline">Ενσωματωμένο σετ</string>
+    <string name="set_inline_info">Εμφάνιση του setlist στην οθόνη δίπλα στο παράθυρο τραγουδιών</string>
     <string name="set_load_info">Φορτώστε ένα προηγουμένως αποθηκευμένο σύνολο</string>
     <string name="set_load_merge">Εάν επιλέξετε περισσότερα από ένα, θα συγχωνευθούν με την επιλεγμένη σειρά.</string>
     <string name="set_manage">Διαχειριστείτε τα σετ σας</string>
@@ -854,4 +858,6 @@
     <string name="restart">Επανεκκίνηση</string>
     <string name="export_current_format">Τραγούδια στην τρέχουσα μορφή τους</string>
     <string name="zoom_level">Επίπεδο ζουμ</string>
+    <string name="transpose_set_item">Μεταφορά μόνο στο σετ</string>
+    <string name="transpose_set_item_info">Κατά την προβολή αυτού του τραγουδιού στο τρέχον σύνολο, θα μεταφερθεί προσωρινά. Το αρχικό τραγούδι θα παραμείνει αμετάβλητο.</string>
 </resources>

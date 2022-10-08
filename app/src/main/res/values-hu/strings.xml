@@ -208,6 +208,8 @@
     <string name="controls_description">Lábpedálok és képernyőmozdulatok</string>
     <string name="convert_song">"Kérjük, átalakítani ezt a dalt OpenSong formátumban (megtekintésével is), mielőtt hozzáadja a beállított"</string>
     <string name="converting">Áttérés</string>
+    <string name="transpose_copy">Készítsen másolatot erről a dalról, és transzponálja azt úgy, hogy az eredetit változatlanul hagyja.</string>
+    <string name="copy_of">Másolat</string>
     <string name="copyright">"Szerzői jogi információk"</string>
     <string name="create_folder_error">"Hiba történt létrehozása az új mappa !"</string>
     <string name="create_new_song">"Új dal"</string>
@@ -659,6 +661,8 @@
     <string name="set_current">"Aktuális készlet"</string>
     <string name="set_delete_info">Törölje a régi készleteket</string>
     <string name="set_help">"Drag dalok körül, hogy a sorrend megváltoztatása a beállított"</string>
+    <string name="set_inline">Inline készlet</string>
+    <string name="set_inline_info">Jelenítse meg a setlist listát a dal ablaka melletti képernyőn</string>
     <string name="set_load_info">Töltsön be egy korábban mentett készletet</string>
     <string name="set_load_merge">Ha egynél többet választ, azok a kiválasztott sorrendben egyesülnek.</string>
     <string name="set_manage">Kezelje készleteit</string>
@@ -854,4 +858,6 @@
     <string name="restart">Újrakezd</string>
     <string name="export_current_format">Dalok jelenlegi formátumukban</string>
     <string name="zoom_level">Nagyítási szint</string>
+    <string name="transpose_set_item">Csak készletben transzponálja</string>
+    <string name="transpose_set_item_info">Amikor ezt a dalt az aktuális készletben tekinti meg, az átmenetileg át lesz ültetve. Az eredeti dal változatlan marad.</string>
 </resources>

@@ -208,6 +208,8 @@
     <string name="controls_description">Pedali e gesti sullo schermo</string>
     <string name="convert_song">"Si prega di convertire questo brano in formato OpenSong (visualizzando esso) prima di aggiungerlo al set"</string>
     <string name="converting">"Conversione"</string>
+    <string name="transpose_copy">Fai una copia di questo brano e trasponilo, lasciando invariato l\'originale.</string>
+    <string name="copy_of">Copia</string>
     <string name="copyright">"Info Copyright"</string>
     <string name="create_folder_error">"Si è verificato un errore durante la creazione della nuova cartella !"</string>
     <string name="create_new_song">"Crea una nuova canzone"</string>
@@ -659,6 +661,8 @@
     <string name="set_current">"Set corrente"</string>
     <string name="set_delete_info">Elimina i vecchi set</string>
     <string name="set_help">"Trascinare brani intorno per cambiare l' ordine del set"</string>
+    <string name="set_inline">Insieme in linea</string>
+    <string name="set_inline_info">Mostra la scaletta sullo schermo accanto alla finestra del brano</string>
     <string name="set_load_info">Carica un set precedentemente salvato</string>
     <string name="set_load_merge">Scegliendo più di uno li unirà nell\'ordine selezionato.</string>
     <string name="set_manage">Gestisci i tuoi set</string>
@@ -854,4 +858,6 @@
     <string name="restart">Ricomincia</string>
     <string name="export_current_format">Brani nel formato attuale</string>
     <string name="zoom_level">Livello di zoom</string>
+    <string name="transpose_set_item">Trasponi solo nel set</string>
+    <string name="transpose_set_item_info">Quando visualizzi questo brano nel set corrente, verrà temporaneamente trasposto. La canzone originale rimarrà invariata.</string>
 </resources>

@@ -222,6 +222,7 @@
     <string name="content">Content</string>
     <string name="controls">Controls</string>
     <string name="controls_description">Foot pedals and screen gestures</string>
+    <string name="copy_of">Copy</string>
     <string name="copyright">Copyright</string>
     <string name="create_folder_error">There was an error creating the new folder!</string>
     <string name="create_new_song">Create new song</string>
@@ -261,6 +262,7 @@
     <string name="deeplink_import" translatable="false">opensongapp://settings/import</string>
     <string name="deeplink_import_osb" translatable="false">opensongapp://settings/import/osb</string>
     <string name="deeplink_import_file" translatable="false">opensongapp://settings/import/file</string>
+    <string name="deeplink_inlineset" translatable="false">opensongapp://settings/set/inlineset</string>
     <string name="deeplink_kitkat_choose" translatable="false">opensongapp://settings/storage/kitkatchoose</string>
     <string name="deeplink_links" translatable="false">opensongapp://settings/actions/links</string>
     <string name="deeplink_metronome" translatable="false">opensongapp://settings/actions/metronome</string>
@@ -724,6 +726,8 @@
     <string name="set_current">Current set</string>
     <string name="set_delete_info">Delete old sets</string>
     <string name="set_help">Drag songs around to change the order of your set</string>
+    <string name="set_inline">Inline set</string>
+    <string name="set_inline_info">Show the setlist on the screen beside the song window</string>
     <string name="set_load_info">Load a previously saved set</string>
     <string name="set_load_merge">Choosing more than one will merge them in the order selected.</string>
     <string name="set_manage">Manage your sets</string>
@@ -876,7 +880,10 @@
     <string name="transpose">Transpose</string>
     <string name="transpose_capo">Transpose by capo fret change</string>
     <string name="transpose_capo_info">Keep the chords the same, but change the position of the capo</string>
+    <string name="transpose_copy">Make a copy of this song and transpose it, leaving the original unchanged.</string>
     <string name="transpose_info">Change the chords in the current song</string>
+    <string name="transpose_set_item">Transpose in set only</string>
+    <string name="transpose_set_item_info">When viewing this song in the current set, it will temporarily be transposed.  The original song will be unchanged.</string>
     <string name="trim_sections">Trim sections</string>
     <string name="trim_sections_info">Gets rid of blank lines after each section to maximise text size</string>
     <string name="trim_wordspacing">Trim word spacing</string>
@@ -1043,6 +1050,7 @@ Check out the categories in the right hand options menu.
     <string name="website_forum" translatable="false">https://groups.google.com/g/opensongapp</string>
     <string name="website_github" translatable="false">https://github.com/thebigg73/OpenSongTablet</string>
     <string name="website_import_onsongbackup" translatable="false">https://www.opensongapp.com/user-manual/songs/ios-onsong</string>
+    <string name="website_inline_set" translatable="false">https://www.opensongapp.com/user-manual/display/inline-set</string>
     <string name="website_latest" translatable="false">https://www.opensongapp.com/latest-updates</string>
     <string name="website_menu_set" translatable="false">https://www.opensongapp.com/user-manual/sets/set-menu</string>
     <string name="website_menu_settings" translatable="false">https://www.opensongapp.com/user-manual/display/menu</string>
@@ -1083,10 +1091,6 @@ Check out the categories in the right hand options menu.
 
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zoom_level">Zoom level</string>
-
-
-
-    <!-- TODO LIKELY TO USE BUT HAVEN'T YET -->
 
 
 
@@ -1231,13 +1235,5 @@ Check out the categories in the right hand options menu.
     <string name="load_preferences">Loading preferences</string>
     <string name="look_for">Look for</string>
     <string name="lyrics_settings">Lyrics settings</string>
-    <string name="transpose_set_item">Transpose in set only</string>
-    <string name="transpose_set_item_info">When viewing this song in the current set, it will temporarily be transposed.  The original song will be unchanged.</string>
-    <string name="copy_of">Copy</string>
-    <string name="transpose_copy">Make a copy of this song and transpose it, leaving the original unchanged.</string>
-    <string name="set_inline">Inline set</string>
-    <string name="deeplink_inlineset">opensongapp://settings/set/inlineset</string>
-    <string name="set_inline_info">Show the setlist on the screen beside the song window</string>
-    <string name="website_inline_set">https://www.opensongapp.com/user-manual/display/inline-set</string>
 
 </resources>

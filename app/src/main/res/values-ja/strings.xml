@@ -208,6 +208,8 @@
     <string name="controls_description">フットペダルと画面ジェスチャー</string>
     <string name="convert_song">"セットに追加する前に（それを見て）OpenSong形式にこの曲を変換してください"</string>
     <string name="converting">"変換中"</string>
+    <string name="transpose_copy">この曲のコピーを作成し、オリジナルを変更せずに移調します。</string>
+    <string name="copy_of">コピー</string>
     <string name="copyright">"著作権情報"</string>
     <string name="create_folder_error">"新しいフォルダの作成中にエラーが発生しました！"</string>
     <string name="create_new_song">"新規ソングを作成し"</string>
@@ -659,6 +661,8 @@
     <string name="set_current">"現在のセット"</string>
     <string name="set_delete_info">古いセットを削除する</string>
     <string name="set_help">"ドラッグ曲は周りのあなたのセットの順序を変更するには"</string>
+    <string name="set_inline">インライン セット</string>
+    <string name="set_inline_info">曲ウィンドウの横の画面にセットリストを表示します</string>
     <string name="set_load_info">以前に保存したセットをロードします</string>
     <string name="set_load_merge">複数を選択すると、選択した順序でそれらがマージされます。</string>
     <string name="set_manage">セットを管理する</string>
@@ -854,4 +858,6 @@
     <string name="restart">再起動</string>
     <string name="export_current_format">現在の形式の曲</string>
     <string name="zoom_level">ズームレベル</string>
+    <string name="transpose_set_item">セットのみ転置</string>
+    <string name="transpose_set_item_info">現在のセットでこの曲を表示すると、一時的に移調されます。原曲は変わらない。</string>
 </resources>

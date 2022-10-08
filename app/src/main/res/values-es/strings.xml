@@ -208,6 +208,8 @@
     <string name="controls_description">Pedales y gestos de pantalla</string>
     <string name="convert_song">"Por favor, convertir la canción en formato OpenSong (viéndolo) antes de añadir a un conjunto"</string>
     <string name="converting">"Mudado"</string>
+    <string name="transpose_copy">Haga una copia de esta canción y transpóngala, dejando el original sin cambios.</string>
+    <string name="copy_of">Copiar</string>
     <string name="copyright">"Información Legal"</string>
     <string name="create_folder_error">"Hubo un error al crear la nueva carpeta !"</string>
     <string name="create_new_song">"Crear nueva canción"</string>
@@ -659,6 +661,8 @@
     <string name="set_current">"Conjunto actual"</string>
     <string name="set_delete_info">Eliminar conjuntos antiguos</string>
     <string name="set_help">"Canciones Arrastre alrededor para cambiar el orden de su aparato"</string>
+    <string name="set_inline">Conjunto en línea</string>
+    <string name="set_inline_info">Mostrar la lista de canciones en la pantalla al lado de la ventana de la canción</string>
     <string name="set_load_info">Cargar un conjunto previamente guardado</string>
     <string name="set_load_merge">Si elige más de uno, se fusionarán en el orden seleccionado.</string>
     <string name="set_manage">Gestiona tus conjuntos</string>
@@ -854,4 +858,6 @@
     <string name="restart">Reiniciar</string>
     <string name="export_current_format">Canciones en su formato actual</string>
     <string name="zoom_level">Nivel de zoom</string>
+    <string name="transpose_set_item">Transponer solo en conjunto</string>
+    <string name="transpose_set_item_info">Al ver esta canción en el conjunto actual, se transpondrá temporalmente. La canción original permanecerá sin cambios.</string>
 </resources>

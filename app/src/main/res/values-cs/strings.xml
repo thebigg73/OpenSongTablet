@@ -208,6 +208,8 @@
     <string name="controls_description">Nožní pedály a gesta na obrazovce</string>
     <string name="convert_song">"Prosím, převést tuto píseň do formátu OpenSong (zobrazením to) před přidáním do souboru"</string>
     <string name="converting">"Konverze"</string>
+    <string name="transpose_copy">Vytvořte kopii této písně a transponujte ji, originál ponechte beze změny.</string>
+    <string name="copy_of">Kopírovat</string>
     <string name="copyright">"Copyright info"</string>
     <string name="create_folder_error">"Došlo k chybě při vytváření nové složky !"</string>
     <string name="create_new_song">"Vytvořit nový song"</string>
@@ -659,6 +661,8 @@
     <string name="set_current">"Aktuální set"</string>
     <string name="set_delete_info">Smažte staré sady</string>
     <string name="set_help">"Přetažením písně , a tak změnit pořadí vašeho přístroje"</string>
+    <string name="set_inline">Inline sada</string>
+    <string name="set_inline_info">Zobrazit setlist na obrazovce vedle okna skladby</string>
     <string name="set_load_info">Načtěte dříve uloženou sadu</string>
     <string name="set_load_merge">Výběrem více než jednoho je sloučíte ve zvoleném pořadí.</string>
     <string name="set_manage">Spravujte své sady</string>
@@ -854,4 +858,6 @@
     <string name="restart">Restartujte</string>
     <string name="export_current_format">Skladby v aktuálním formátu</string>
     <string name="zoom_level">Úroveň přiblížení</string>
+    <string name="transpose_set_item">Transponujte pouze v sadě</string>
+    <string name="transpose_set_item_info">Při prohlížení této skladby v aktuální sadě bude dočasně transponována. Původní skladba zůstane nezměněna.</string>
 </resources>

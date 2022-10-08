@@ -102,7 +102,6 @@
     <string name="capo_toggle_bothcapo">"Wys beide capo en inheemse akkoorde indien beskikbaar"</string>
     <string name="category">"kategorie"</string>
     <string name="cavaquinho">"Cavaquinho"</string>
-    <string name="ccli">"CCLI"</string>
     <string name="ccli_automatic">"Rekord gebruik statistieke outomaties"</string>
     <string name="ccli_church">"Kerknaam"</string>
     <string name="ccli_description">CCLI-instellings</string>
@@ -208,6 +207,7 @@
     <string name="controls_description">Voetpedale en skermbewegings</string>
     <string name="convert_song">"Asseblief omskep hierdie lied in OpenSong formaat (deur die lees van dit) voordat dit by 'n stel"</string>
     <string name="converting">Omskakeling</string>
+    <string name="copy_of">Kopieer</string>
     <string name="copyright">"Kopiereg inligting"</string>
     <string name="create_folder_error">"Daar was 'n fout met die skep van die nuwe gids !"</string>
     <string name="create_new_song">"Skep nuwe lied"</string>
@@ -661,6 +661,8 @@
     <string name="set_current">"Huidige stel"</string>
     <string name="set_delete_info">Vee ou stelle uit</string>
     <string name="set_help">"Sleep liedjies rondom die einde van jou stel om te verander"</string>
+    <string name="set_inline">Inlyn stel</string>
+    <string name="set_inline_info">Wys die stellys op die skerm langs die liedjievenster</string>
     <string name="set_load_info">Laai \'n voorheen gestoorde stel</string>
     <string name="set_load_merge">Deur meer as een te kies, sal hulle in die geselekteerde volgorde saamsmelt.</string>
     <string name="set_manage">Bestuur jou stelle</string>
@@ -803,6 +805,7 @@
     <string name="transpose">"Transponeer"</string>
     <string name="transpose_capo">Transponeer deur capo fret verandering</string>
     <string name="transpose_capo_info">Hou die akkoorde dieselfde, maar verander die posisie van die capo</string>
+    <string name="transpose_copy">Maak \'n kopie van hierdie liedjie en transponeer dit, en laat die oorspronklike onveranderd.</string>
     <string name="transpose_info">Verander die akkoorde in die huidige liedjie</string>
     <string name="trim_sections">"Sny afdelings"</string>
     <string name="trim_sections_info">Raak ontslae van leë reëls na elke afdeling om teksgrootte te maksimeer</string>
@@ -854,4 +857,6 @@
     <string name="restart">Begin oor</string>
     <string name="export_current_format">Liedjies in hul huidige formaat</string>
     <string name="zoom_level">Zoemvlak</string>
+    <string name="transpose_set_item">Transponeer slegs in stel</string>
+    <string name="transpose_set_item_info">Wanneer hierdie liedjie in die huidige stel bekyk word, sal dit tydelik getransponeer word. Die oorspronklike liedjie sal onveranderd wees.</string>
 </resources>

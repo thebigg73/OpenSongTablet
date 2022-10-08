@@ -208,6 +208,8 @@
     <string name="controls_description">Ножні педалі та екранні жести</string>
     <string name="convert_song">Будь ласка, перетворіть пісню в формат OpenSong (через перегляд) перед додаванням в список</string>
     <string name="converting">Перетворення</string>
+    <string name="transpose_copy">Зробіть копію цієї пісні та транспонуйте її, залишивши оригінал без змін.</string>
+    <string name="copy_of">Копія</string>
     <string name="copyright">Інформація про авторське право</string>
     <string name="create_folder_error">Помилка при створенні папки!</string>
     <string name="create_new_song">Створити нову пісню</string>
@@ -659,6 +661,8 @@
     <string name="set_current">Поточні записи</string>
     <string name="set_delete_info">Видалити старі набори</string>
     <string name="set_help">Перемістити пісні, щоб змінити порядок у списку</string>
+    <string name="set_inline">Вбудований набір</string>
+    <string name="set_inline_info">Показати сет-лист на екрані біля вікна пісні</string>
     <string name="set_load_info">Завантажте раніше збережений набір</string>
     <string name="set_load_merge">Якщо вибрати декілька, вони об’єднаються у вибраному порядку.</string>
     <string name="set_manage">Керуйте своїми наборами</string>
@@ -854,4 +858,6 @@
     <string name="restart">Omstart</string>
     <string name="export_current_format">Пісні в поточному форматі</string>
     <string name="zoom_level">Рівень масштабування</string>
+    <string name="transpose_set_item">Транспонувати лише в наборі</string>
+    <string name="transpose_set_item_info">Під час перегляду цієї пісні в поточному наборі її буде тимчасово транспоновано. Оригінальна пісня залишиться без змін.</string>
 </resources>
