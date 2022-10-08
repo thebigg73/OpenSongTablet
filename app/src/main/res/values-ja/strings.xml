@@ -2,6 +2,8 @@
 <resources>
     <string name="about">約</string>
     <string name="about_description">アプリ情報、ヘルプ、ユーザーガイドなど。</string>
+    <string name="abc_transpose_to_song">曲のキーに自動移調</string>
+    <string name="abc_transpose_to_song_info">Se una chiave è impostata nella canzone e nella notazione abc, l\'app proverà a regolare l\'output della notazione abc in modo che corrisponda alla chiave della canzone.</string>
     <string name="action">"アクション"</string>
     <string name="action_button_info">クリックしてページボタンを表示または非表示にします。\n\nメトロノーム、トランスポーズ、パッドなどの曲のアクションに各ボタンを割り当てることができます。\nメインボタンを長押しすると、各ボタンの設定を変更できます。\n長押し 一部のページボタンは、開始/停止/編集などのクイックアクションを実行します</string>
     <string name="action_long_press">追加の長押しアクション</string>

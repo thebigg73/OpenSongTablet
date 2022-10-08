@@ -1,6 +1,17 @@
 <resources>
     <string name="about">Oor</string>
     <string name="about_description">Inligting oor inligting, hulp, gebruikersgids, ens.</string>
+    <string name="abc_transpose_to_song">Transponeer outomaties na liedsleutel</string>
+    <string name="abc_transpose_to_song">Transponeer outomaties na liedsleutel</string>
+    <string name="abc_transpose_to_song">Transponeer outomaties na liedsleutel</string>
+    <string name="abc_transpose_to_song">outomaties</string>
+    <string name="abc_transpose_to_song">Transponeer outomaties na liedsleutel</string>
+    <string name="abc_transpose_to_song">Transponeer outomaties na liedsleutel</string>
+    <string name="abc_transpose_to_song">Transponeer outomaties na liedsleutel</string>
+    <string name="abc_transpose_to_song">Transponeer outomaties na liedsleutel</string>
+    <string name="abc_transpose_to_song">Transponeer outomaties na liedsleutel</string>
+    <string name="abc_transpose_to_song">Transponeer outomaties na liedsleutel</string>
+    <string name="abc_transpose_to_song_info">As \'n sleutel in die liedjie en in die abc-notasie gestel is, sal die toepassing probeer om die uitvoer van die abc-notasie aan te pas om by die liedjiesleutel te pas.</string>
     <string name="action">"Aksie"</string>
     <string name="action_button_info">Klik om u bladsyknoppies te wys of weg te steek.\n\nElkeen kan toegewys word aan liedjie-aksies soos metronomes, transponeer, boekies, ens.\nAs u die hoofknoppie lang indruk, kan u die instellings van elke knoppie verander.\nLang druk op sommige bladsyknoppies voer vinnige aksies uit soos begin / stop / wysig</string>
     <string name="action_long_press">Bykomende langdrukaksie</string>

@@ -2,6 +2,8 @@
 <resources>
     <string name="about">Cerca de</string>
     <string name="about_description">Informações do aplicativo, ajuda, guia do usuário, etc.</string>
+    <string name="abc_transpose_to_song">Transposição automática para a tecla da música</string>
+    <string name="abc_transpose_to_song_info">Se uma tecla for definida na música e na notação abc, o aplicativo tentará ajustar a saída da notação abc para corresponder à tecla da música.</string>
     <string name="action">"Açao"</string>
     <string name="action_button_info">Clique para mostrar ou ocultar os botões da página.\n\nCada um pode ser atribuído às ações da música, como metrônomos, transpor, pads, etc.\nPressionar longamente o botão principal permite alterar as configurações de cada botão.\nO pressionamento longo alguns botões de página realizam ações rápidas, como iniciar / parar / editar</string>
     <string name="action_long_press">Ação adicional de pressão longa</string>

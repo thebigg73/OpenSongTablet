@@ -2,6 +2,8 @@
 <resources>
     <string name="about">O tome</string>
     <string name="about_description">Informacije o aplikaciji, pomoć, korisnički vodič itd.</string>
+    <string name="abc_transpose_to_song">Automatsko transponovanje u taster pesme</string>
+    <string name="abc_transpose_to_song_info">Ako je ključ podešen u pesmi i u abc notaciji, aplikacija će pokušati da prilagodi izlaz abc notacije tako da odgovara ključu pesme.</string>
     <string name="action">Radnja</string>
     <string name="action_button_info">Kliknite da biste prikazali ili sakrili dugmad na stranici.\n\nSve se mogu dodeliti radnjama pesama kao što su metronomi, transponovanje, jastučići itd.\nDugo pritiskanje glavnog dugmeta omogućava vam da promenite podešavanja svakog</string>
     <string name="action_long_press">Dodatna akcija dugog pritiska</string>

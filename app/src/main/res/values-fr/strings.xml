@@ -2,6 +2,8 @@
 <resources>
     <string name="about">À propos</string>
     <string name="about_description">Informations sur l\'application, aide, guide de l\'utilisateur, etc.</string>
+    <string name="abc_transpose_to_song">Transposition automatique à la clé de la chanson</string>
+    <string name="abc_transpose_to_song_info">Si une clé est définie dans la chanson et dans la notation abc, l\'application essaiera d\'ajuster la sortie de la notation abc pour qu\'elle corresponde à la clé de la chanson.</string>
     <string name="action">Chacun peut être affecté à des actions de morceau telles que les métronomes, la transposition, les pads, etc.</string>
     <string name="action_button_info">Cliquez pour afficher ou masquer les boutons de votre page.\n\nChacun peut être affecté à des actions de morceau telles que les métronomes, la transposition, les pads, etc.\nUn appui long sur le bouton principal vous permet de modifier les paramètres de chaque bouton.\nUn appui long sur certains boutons de page effectue des actions rapides telles que démarrer / arrêter / modifier</string>
     <string name="action_long_press">Action de pression longue supplémentaire</string>

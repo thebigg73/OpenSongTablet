@@ -2,6 +2,8 @@
 <resources>
     <string name="about">Acerca de</string>
     <string name="about_description">Información de la aplicación, ayuda, guía del usuario, etc.</string>
+    <string name="abc_transpose_to_song">Transposición automática a clave de canción</string>
+    <string name="abc_transpose_to_song_info">Si se establece una clave en la canción y en la notación abc, la aplicación intentará ajustar la salida de la notación abc para que coincida con la clave de la canción.</string>
     <string name="action">"Acción"</string>
     <string name="action_button_info">Haz clic para mostrar u ocultar los botones de tu página.\n\nCada uno puede asignarse a acciones de canciones como metrónomos, transposición, pads, etc.\nPulsar prolongadamente el botón principal te permite cambiar la configuración de cada botón.\nPresionar prolongadamente algunos botones de página realizan acciones rápidas como iniciar / detener / editar</string>
     <string name="action_long_press">Acción de pulsación prolongada adicional</string>

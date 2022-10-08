@@ -2,6 +2,8 @@
 <resources>
     <string name="about">Handla om</string>
     <string name="about_description">Appinfo, hjälp, användarhandbok etc.</string>
+    <string name="abc_transpose_to_song">Autotransponera till sångnyckel</string>
+    <string name="abc_transpose_to_song_info">Om en tangent är inställd i låten och i abc-notationen, kommer appen att försöka justera utmatningen av abc-notationen för att matcha sångnyckeln.</string>
     <string name="action">"Handling"</string>
     <string name="action_button_info">Klicka för att visa eller dölja sidoknapparna.\n\nVar och en kan tilldelas sångåtgärder som metronomer, transponering, kuddar, etc.\nLång tryckning på huvudknappen låter dig ändra inställningarna för varje knapp.\nLång tryckning på vissa sidoknappar utför snabba åtgärder som start / stopp / redigering</string>
     <string name="action_long_press">Ytterligare långa tryckåtgärder</string>

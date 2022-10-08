@@ -2,6 +2,8 @@
 <resources>
     <string name="about">Di</string>
     <string name="about_description">Informazioni sull\'app, aiuto, guida per l\'utente, ecc.</string>
+    <string name="abc_transpose_to_song">Trasposizione automatica alla chiave del brano</string>
+    <string name="abc_transpose_to_song_info">Se una chiave è impostata nella canzone e nella notazione abc, l\'app proverà a regolare l\'output della notazione abc in modo che corrisponda alla chiave della canzone.</string>
     <string name="action">"Azione"</string>
     <string name="action_button_info">Fai clic per mostrare o nascondere i pulsanti della tua pagina.\n\nOgnuno può essere assegnato ad azioni del brano come metronomi, trasposizione, pad, ecc.\nPremendo a lungo il pulsante principale è possibile modificare le impostazioni di ciascun pulsante.\nPremendo a lungo su alcuni pulsanti di pagina eseguono azioni rapide come avvio / arresto / modifica</string>
     <string name="action_long_press">Azione di pressione prolungata aggiuntiva</string>

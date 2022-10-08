@@ -2,6 +2,8 @@
 <resources>
     <string name="about">About</string>
     <string name="about_description">App info, help, user guide, etc.</string>
+    <string name="abc_transpose_to_song">Auto transpose to song key</string>
+    <string name="abc_transpose_to_song_info">If a key is set in the song and in the abc notation, the app will try to adjust the output of the abc notation to match the song key.</string>
     <string name="action">Action</string>
     <string name="actions">Actions</string>
     <string name="action_button_info">Click to show or hide your page buttons.\n\nEach one can be assigned
@@ -1235,7 +1237,5 @@ Check out the categories in the right hand options menu.
     <string name="load_preferences">Loading preferences</string>
     <string name="look_for">Look for</string>
     <string name="lyrics_settings">Lyrics settings</string>
-    <string name="abc_transpose_to_song">Auto transpose to song key</string>
-    <string name="abc_transpose_to_song_info">If a key is set in the song and in the abc notation, the app will try to adjust the output of the abc notation to match the song key.</string>
 
 </resources>

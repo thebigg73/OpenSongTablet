@@ -2,6 +2,8 @@
 <resources>
     <string name="about">Asi</string>
     <string name="about_description">Informace o aplikaci, nápověda, uživatelská příručka atd.</string>
+    <string name="abc_transpose_to_song">Automatická transpozice do tóniny písně</string>
+    <string name="abc_transpose_to_song_info">Pokud je ve skladbě a v notaci abc nastavena tónina, aplikace se pokusí upravit výstup notace abc tak, aby odpovídal tónině skladby.</string>
     <string name="action">"Akce"</string>
     <string name="action_button_info">Kliknutím zobrazíte nebo skryjete tlačítka stránky.\n\nKaždému lze přiřadit akce písní, jako jsou metronomy, transpozice, pady atd.\nDlouhým stisknutím hlavního tlačítka můžete změnit nastavení jednotlivých tlačítek.\nDlouhým stisknutím některá tlačítka stránky provádějí rychlé akce, jako je spuštění / zastavení / úpravy</string>
     <string name="action_long_press">Dodatečná akce dlouhého stisknutí</string>

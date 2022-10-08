@@ -2,6 +2,8 @@
 <resources>
     <string name="about">Über</string>
     <string name="about_description">App-Informationen, Hilfe, Benutzerhandbuch usw.</string>
+    <string name="abc_transpose_to_song">Automatische Transponierung in die Tonart des Songs</string>
+    <string name="abc_transpose_to_song_info">Wenn im Song und in der abc-Notation eine Tonart festgelegt ist, versucht die App, die Ausgabe der abc-Notation an die Tonart des Songs anzupassen.</string>
     <string name="action">"Aktion"</string>
     <string name="action_button_info">Klicken Sie hier, um Ihre Seitentasten ein- oder auszublenden.\n\nJede kann Songaktionen wie Metronomen, Transponieren, Pads usw. zugewiesen werden.\nDurch langes Drücken der Haupttaste können Sie die Einstellungen der einzelnen Tasten ändern.\nLange Drücken auf Einige Seitenschaltflächen führen schnelle Aktionen wie Starten / Stoppen / Bearbeiten aus</string>
     <string name="action_long_press">Zusätzliche lange Druckaktion</string>

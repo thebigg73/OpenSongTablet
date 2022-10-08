@@ -2,6 +2,8 @@
 <resources>
     <string name="about">Ról ről</string>
     <string name="about_description">Alkalmazás információk, súgó, felhasználói útmutató stb.</string>
+    <string name="abc_transpose_to_song">Automatikus transzponálás a dal kulcsára</string>
+    <string name="abc_transpose_to_song_info">Εάν έχει οριστεί ένα πλήκτρο στο τραγούδι και στη σημειογραφία abc, η εφαρμογή θα προσπαθήσει να προσαρμόσει την έξοδο της σημειογραφίας abc ώστε να ταιριάζει με το πλήκτρο τραγουδιού.</string>
     <string name="action">"Akció"</string>
     <string name="action_button_info">Kattintson az oldalgombok megjelenítéséhez vagy elrejtéséhez.\n\nMindegyiket hozzárendelhetünk olyan dalműveletekhez, mint metronomok, átültetés, betétek stb.\nHosszan lenyomva a fő gombot, megváltoztathatja az egyes gombok beállításait.\nHosszan nyomja meg egyes oldalgombok gyors műveleteket hajtanak végre, például indítás / leállítás / szerkesztés</string>
     <string name="action_long_press">Kiegészítő hosszú megnyomásos művelet</string>
