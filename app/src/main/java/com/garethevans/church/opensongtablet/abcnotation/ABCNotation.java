@@ -15,7 +15,6 @@ public class ABCNotation {
 
     private final String TAG = "ABCNotation";
 
-
     @SuppressLint("SetJavaScriptEnabled")
     public void setWebView(WebView webView, MainActivityInterface mainActivityInterface,
                            boolean edit) {
@@ -148,4 +147,31 @@ public class ABCNotation {
             webView.loadUrl("javascript:initEditor()");
         });
     }
+
+    public int getABCTransposeFromSongKey(MainActivityInterface mainActivityInterface) {
+        // This gets the key from existing abc notation (if set)
+        // We then compare to the actual song key (if set)
+        // If they are different, set the transpose value
+        String[] abcLines = mainActivityInterface.getSong().getAbc().split("\n");
+        String abcKey = "";
+        int transposeTimes = 0;
+        for (String abcLine:abcLines) {
+            if (abcLine.startsWith("K:")) {
+                abcLine = abcLine.replace("K:","");
+                abcLine = abcLine.replace("min","m");
+                abcKey = abcLine.trim();
+                break;
+            }
+        }
+        if (!abcKey.isEmpty() && !mainActivityInterface.getSong().getKey().isEmpty() &&
+            !mainActivityInterface.getSong().getKey().equals(abcKey)) {
+            transposeTimes = mainActivityInterface.getTranspose().getTransposeTimes(
+                    abcKey, mainActivityInterface.getSong().getKey());
+            mainActivityInterface.getSong().setAbcTranspose(transposeTimes+"");
+            mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong());
+        }
+
+        return transposeTimes;
+    }
+
 }

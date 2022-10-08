@@ -46,7 +46,7 @@ public class ABCPopup {
                 e.printStackTrace();
             }
             // If no score notes exist for the song, navigate to the edit score fragment
-        } else if (mainActivityInterface.getSong().getNotes().isEmpty()) {
+        } else if (mainActivityInterface.getSong().getAbc().isEmpty()) {
             mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_abc),0);
 
             // Let's display the popup music score
@@ -73,6 +73,11 @@ public class ABCPopup {
     private void setupViews() {
         // The popup
         popupWindow = new PopupWindow(c);
+
+        // Check if the user wants to autotranspose the abc to the song key.  If so do it
+        if (mainActivityInterface.getPreferences().getMyPreferenceBoolean("abcTransposeAuto",true)) {
+            mainActivityInterface.getAbcNotation().getABCTransposeFromSongKey(mainActivityInterface);
+        }
 
         // The main layout (FloatWindow) is just a custom linearlayout where I've overridden the performclick
         floatWindow = new FloatWindow(c);

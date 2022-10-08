@@ -118,6 +118,7 @@ public class Preferences extends Activity {
     //
     // Variable name                   Type        What
     // abcAuto                         boolean     Should abc notation automatically be shown? (def:false)
+    // abcAutoTranspose                boolean     Should the abc notation output be transposed to match the song key (def:true)
     // abcPopupWidth                   float       The percentage of the screen width for the abc score popup (def:0.95f)
     // abcTranspose                    int         The visual transposing of abc notation
     // abcZoom                         int         How much the staff width is reduced thus zooming in.  Calculated by width/zoom (def:2)

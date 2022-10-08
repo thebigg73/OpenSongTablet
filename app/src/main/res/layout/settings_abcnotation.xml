@@ -46,6 +46,14 @@
                 android:valueTo="4"
                 android:value="2"/>
 
+            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                android:id="@+id/autoTranspose"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/abc_transpose_to_song"
+                android:hint="@string/abc_transpose_to_song_info"
+                android:layout_marginBottom="16dp"/>
+
             <com.garethevans.church.opensongtablet.customviews.MaterialSlider
                 android:id="@+id/transposeSlider"
                 android:layout_width="match_parent"

@@ -172,4 +172,9 @@ public class MaterialSlider extends LinearLayout {
         slider.setLabelFormatter(labelFormatter);
     }
 
+    @Override
+    public void setEnabled(boolean enabled) {
+        super.setEnabled(enabled);
+        slider.setEnabled(enabled);
+    }
 }

@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.webkit.JavascriptInterface;
+import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -38,6 +39,9 @@ public class MusicScoreFragment extends Fragment {
 
         requireActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
+        // Check if we have song and abc keys set and adjust the options accordingly
+        checkSongAndABCKey();
+
         // Set up the views
         setViews();
 
@@ -58,16 +62,54 @@ public class MusicScoreFragment extends Fragment {
         myView.zoomSlider.setValue(mainActivityInterface.getPreferences().getMyPreferenceInt("abcZoom",2));
         myView.zoomSlider.setHint((int)myView.zoomSlider.getValue()+"");
         myView.zoomSlider.setLabelFormatter(value -> (int)value+"");
-        myView.transposeSlider.setValue(Integer.parseInt(mainActivityInterface.getSong().getAbcTranspose()));
+        myView.transposeSlider.setValue(getTransposeValue());
         myView.transposeSlider.setHint((int)myView.transposeSlider.getValue()+"");
         myView.transposeSlider.setLabelFormatter(value -> (int)value+"");
     }
 
+    private void checkSongAndABCKey() {
+        if (!mainActivityInterface.getSong().getKey().isEmpty() && mainActivityInterface.getSong().getAbc().contains("K:")) {
+            myView.autoTranspose.setVisibility(View.VISIBLE);
+            myView.autoTranspose.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("abcAutoTranspose",true));
+            Log.d(TAG,"both song and abc key set");
+        } else {
+            myView.autoTranspose.setVisibility(View.GONE);
+            myView.autoTranspose.setChecked(false);
+            Log.d(TAG,"one of the keys isn't set");
+        }
+    }
 
+    private int getTransposeValue() {
+        int transposeVal = 0;
+        if (myView.autoTranspose.getChecked()) {
+            myView.transposeSlider.setEnabled(false);
+            transposeVal = mainActivityInterface.getAbcNotation().getABCTransposeFromSongKey(mainActivityInterface);
+        } else if (!mainActivityInterface.getSong().getAbcTranspose().isEmpty()) {
+            myView.transposeSlider.setEnabled(true);
+            transposeVal = Integer.parseInt(mainActivityInterface.getSong().getAbcTranspose());
+        } else {
+            myView.transposeSlider.setEnabled(true);
+        }
+        Log.d(TAG,"transposeVal:"+transposeVal);
+        return transposeVal;
+    }
 
     private void setListeners() {
         myView.editABC.setOnClickListener(v -> doSave());
         myView.nestedScrollView.setExtendedFabToAnimate(myView.editABC);
+        myView.autoTranspose.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                mainActivityInterface.getPreferences().setMyPreferenceBoolean("abcTransposeAuto",isChecked);
+                if (isChecked) {
+                    int transpVal = getTransposeValue();
+                    myView.transposeSlider.setValue(transpVal);
+                    myView.transposeSlider.setHint(""+transpVal);
+                }
+                myView.transposeSlider.setEnabled(!isChecked);
+                mainActivityInterface.getAbcNotation().updateTranspose(myView.abcWebView,(int)myView.transposeSlider.getValue());
+            }
+        });
         myView.sizeSlider.addOnChangeListener((slider, value, fromUser) -> myView.sizeSlider.setHint((int)value+"%"));
         myView.zoomSlider.addOnChangeListener((slider, value, fromUser) -> myView.zoomSlider.setHint((int)value+""));
         myView.transposeSlider.addOnChangeListener((slider, value, fromUser) -> myView.transposeSlider.setHint((int)value+""));
