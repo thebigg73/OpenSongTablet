@@ -1065,52 +1065,56 @@ public class StageMode extends AppCompatActivity implements
     @Override
     public void adjustABInfo() {
         boolean inuse = false;
-        // Change the visibilities
-        if (preferences.getMyPreferenceBoolean(StageMode.this,"batteryDialOn",true)) {
-            batteryimage.setVisibility(View.VISIBLE);
-            inuse = true;
-        } else {
-            batteryimage.setVisibility(View.INVISIBLE);
-        }
-        if (preferences.getMyPreferenceBoolean(StageMode.this,"batteryTextOn",true)) {
-            batterycharge.setVisibility(View.VISIBLE);
-            inuse = true;
-        } else {
-            batterycharge.setVisibility(View.GONE);
-        }
-        if (preferences.getMyPreferenceBoolean(StageMode.this,"clockOn",true)) {
-            digitalclock.setVisibility(View.VISIBLE);
-            inuse = true;
-        } else {
-            digitalclock.setVisibility(View.GONE);
-        }
-
-        if (inuse) {
-            // Set the text sizes
-            batterycharge.setTextSize(preferences.getMyPreferenceFloat(StageMode.this, "batteryTextSize", 9.0f));
-            digitalclock.setTextSize(preferences.getMyPreferenceFloat(StageMode.this, "clockTextSize", 9.0f));
-            songtitle_ab.setTextSize(preferences.getMyPreferenceFloat(StageMode.this, "songTitleSize", 13.0f));
-            songtitle_ab.setSingleLine(true);
-            songcapo_ab.setTextSize(preferences.getMyPreferenceFloat(StageMode.this, "songTitleSize", 13.0f));
-            songcapo_ab.setSingleLine(true);
-            songauthor_ab.setTextSize(preferences.getMyPreferenceFloat(StageMode.this, "songAuthorSize", 11.0f));
-            songauthor_ab.setSingleLine(true);
-            songkey_ab.setTextSize(preferences.getMyPreferenceFloat(StageMode.this, "songTitleSize", 13.0f));
-            songkey_ab.setSingleLine(true);
-
-            // Set the time format
-            Calendar c = Calendar.getInstance();
-            SimpleDateFormat df;
-            if (preferences.getMyPreferenceBoolean(StageMode.this, "clock24hFormat", true)) {
-                df = new SimpleDateFormat("HH:mm", StaticVariables.locale);
+        try {
+            // Change the visibilities
+            if (preferences.getMyPreferenceBoolean(StageMode.this, "batteryDialOn", true)) {
+                batteryimage.setVisibility(View.VISIBLE);
+                inuse = true;
             } else {
-                df = new SimpleDateFormat("h:mm", StaticVariables.locale);
+                batteryimage.setVisibility(View.INVISIBLE);
             }
-            String formattedTime = df.format(c.getTime());
-            digitalclock.setText(formattedTime);
-            batteryholder.setVisibility(View.VISIBLE);
-        } else {
-            batteryholder.setVisibility(View.GONE);
+            if (preferences.getMyPreferenceBoolean(StageMode.this, "batteryTextOn", true)) {
+                batterycharge.setVisibility(View.VISIBLE);
+                inuse = true;
+            } else {
+                batterycharge.setVisibility(View.GONE);
+            }
+            if (preferences.getMyPreferenceBoolean(StageMode.this, "clockOn", true)) {
+                digitalclock.setVisibility(View.VISIBLE);
+                inuse = true;
+            } else {
+                digitalclock.setVisibility(View.GONE);
+            }
+
+            if (inuse) {
+                // Set the text sizes
+                batterycharge.setTextSize(preferences.getMyPreferenceFloat(StageMode.this, "batteryTextSize", 9.0f));
+                digitalclock.setTextSize(preferences.getMyPreferenceFloat(StageMode.this, "clockTextSize", 9.0f));
+                songtitle_ab.setTextSize(preferences.getMyPreferenceFloat(StageMode.this, "songTitleSize", 13.0f));
+                songtitle_ab.setSingleLine(true);
+                songcapo_ab.setTextSize(preferences.getMyPreferenceFloat(StageMode.this, "songTitleSize", 13.0f));
+                songcapo_ab.setSingleLine(true);
+                songauthor_ab.setTextSize(preferences.getMyPreferenceFloat(StageMode.this, "songAuthorSize", 11.0f));
+                songauthor_ab.setSingleLine(true);
+                songkey_ab.setTextSize(preferences.getMyPreferenceFloat(StageMode.this, "songTitleSize", 13.0f));
+                songkey_ab.setSingleLine(true);
+
+                // Set the time format
+                Calendar c = Calendar.getInstance();
+                SimpleDateFormat df;
+                if (preferences.getMyPreferenceBoolean(StageMode.this, "clock24hFormat", true)) {
+                    df = new SimpleDateFormat("HH:mm", StaticVariables.locale);
+                } else {
+                    df = new SimpleDateFormat("h:mm", StaticVariables.locale);
+                }
+                String formattedTime = df.format(c.getTime());
+                digitalclock.setText(formattedTime);
+                batteryholder.setVisibility(View.VISIBLE);
+            } else {
+                batteryholder.setVisibility(View.GONE);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
