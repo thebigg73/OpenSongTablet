@@ -102,6 +102,7 @@ public class EditSongFragmentFeatures extends Fragment {
         myView.tempo.setAdapter(tempoArrayAdapter);
         myView.tempo.setHint(getString(R.string.tempo) + " ("+getString(R.string.bpm)+")");
         myView.tempo.setText(mainActivityInterface.getTempSong().getTempo());
+        mainActivityInterface.getMetronome().initialiseTapTempo(myView.tapTempo,myView.timesig,null,null,myView.tempo);
 
         // The timesig
         ArrayList<String> timesigs = new ArrayList<>();
@@ -118,11 +119,15 @@ public class EditSongFragmentFeatures extends Fragment {
         myView.timesig.setText(mainActivityInterface.getTempSong().getTimesig());
 
         // Duration and delay
-        myView.duration.setInputType(InputType.TYPE_CLASS_NUMBER);
+        myView.durationMins.setInputType(InputType.TYPE_CLASS_NUMBER);
+        myView.durationSecs.setInputType(InputType.TYPE_CLASS_NUMBER);
         myView.delay.setInputType(InputType.TYPE_CLASS_NUMBER);
-        myView.duration.setDigits("0123456789");
+        myView.durationMins.setDigits("0123456789");
+        myView.durationSecs.setDigits("0123456789");
         myView.delay.setDigits("0123456789");
-        myView.duration.setText(mainActivityInterface.getTempSong().getAutoscrolllength());
+        int[] timeVals = mainActivityInterface.getTimeTools().getMinsSecsFromSecs(Integer.parseInt(mainActivityInterface.getTempSong().getAutoscrolllength()));
+        myView.durationMins.setText(timeVals[0]+"");
+        myView.durationSecs.setText(timeVals[1]+"");
         myView.delay.setText(mainActivityInterface.getTempSong().getAutoscrolldelay());
 
         // The midi, abc and customchords
@@ -207,7 +212,8 @@ public class EditSongFragmentFeatures extends Fragment {
         });
         myView.tempo.addTextChangedListener(new MyTextWatcher("tempo"));
         myView.timesig.addTextChangedListener(new MyTextWatcher("timesig"));
-        myView.duration.addTextChangedListener(new MyTextWatcher("duration"));
+        myView.durationMins.addTextChangedListener(new MyTextWatcher("durationMins"));
+        myView.durationSecs.addTextChangedListener(new MyTextWatcher("durationSecs"));
         myView.delay.addTextChangedListener(new MyTextWatcher("delay"));
         myView.midi.addTextChangedListener(new MyTextWatcher("midi"));
         myView.abc.addTextChangedListener(new MyTextWatcher("abc"));
@@ -215,6 +221,7 @@ public class EditSongFragmentFeatures extends Fragment {
         myView.linkType.addTextChangedListener(new MyTextWatcher("linktype"));
         myView.linkValue.addTextChangedListener(new MyTextWatcher("linkvalue"));
 
+        myView.tapTempo.setOnClickListener(button -> mainActivityInterface.getMetronome().tapTempo());
         // Scroll listener
         myView.nestedScrollView.setExtendedFabToAnimate(editSongFragmentInterface.getSaveButton());
     }
@@ -265,8 +272,9 @@ public class EditSongFragmentFeatures extends Fragment {
                 case "timesig":
                     mainActivityInterface.getTempSong().setTimesig(editable.toString());
                     break;
-                case "duration":
-                    mainActivityInterface.getTempSong().setAutoscrolllength(editable.toString());
+                case "durationMins":
+                case "durationSecs":
+                    updateTime();
                     break;
                 case "delay":
                     mainActivityInterface.getTempSong().setAutoscrolldelay(editable.toString());
@@ -299,6 +307,28 @@ public class EditSongFragmentFeatures extends Fragment {
         }
     }
 
+    private void updateTime() {
+        // Because secs could be over 60, get the total, reformat and update
+        String minsText;
+        String secsText;
+        if (myView.durationMins.getText()==null ||
+        myView.durationMins.getText().toString().isEmpty()) {
+            minsText = "0";
+        } else {
+            minsText = myView.durationMins.getText().toString();
+        }
+        if (myView.durationSecs.getText()==null ||
+                myView.durationSecs.getText().toString().isEmpty()) {
+            secsText = "0";
+        } else {
+            secsText = myView.durationSecs.getText().toString();
+        }
+        int mins = Integer.parseInt(minsText);
+        int secs = Integer.parseInt(secsText);
+        int total = (mins*60) + secs;
+        int[] timeVals = mainActivityInterface.getTimeTools().getMinsSecsFromSecs(total);
+        mainActivityInterface.getTempSong().setAutoscrolllength(total+"");
+    }
     private String shortText(String niceText) {
         Log.d(TAG,"niceText="+niceText);
         if (niceText.equals(getString(R.string.off))) {

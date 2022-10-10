@@ -75,7 +75,8 @@ public class ExportActions {
     public String[] getFolderAndFile(String songId) {
         String[] location = new String[2];
         if (songId.contains("/")) {
-            location[0] = songId.substring(0,songId.lastIndexOf("/")).replace("/","_");
+            //location[0] = songId.substring(0,songId.lastIndexOf("/")).replace("/","_");
+            location[0] = songId.substring(0,songId.lastIndexOf("/"));
             location[1] = songId.replace(location[0],"").replace("/","");
         } else {
             location[0] = c.getString(R.string.mainfoldername);

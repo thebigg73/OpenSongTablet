@@ -1,9 +1,13 @@
 package com.garethevans.church.opensongtablet.utilities;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.TextClock;
 
 public class TimeTools {
+
+    private final String TAG = "TimeTools";
+
     public String timeFormatFixer(int secstime) {
         if (secstime<0) {
             return ("0:00");
@@ -20,6 +24,23 @@ public class TimeTools {
             return time;
         }
     }
+
+    public int[] getMinsSecsFromSecs(int totalsecs) {
+        Log.d(TAG,"totalSecs: "+totalsecs);
+        String time = timeFormatFixer(totalsecs);
+        String[] splitTime = time.split(":");
+        int[] timeVals = new int[2];
+        timeVals[0] = Integer.parseInt(splitTime[0]);
+        timeVals[1] = Integer.parseInt(splitTime[1]);
+        Log.d(TAG,"mins: "+timeVals[0]+"  secs: "+timeVals[1]);
+
+        return timeVals;
+    }
+
+    public int totalSecs(int min, int sec) {
+        return (min*60) + sec;
+    }
+
 
     public void setFormat(TextClock textClock, float textSize, boolean visible,
                           boolean is24hr, boolean showSeconds) {

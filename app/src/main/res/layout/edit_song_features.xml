@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -64,14 +65,15 @@
                 <com.google.android.material.switchmaterial.SwitchMaterial
                     android:id="@+id/loop"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_marginStart="8dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="8dp"
                     android:layout_marginEnd="0dp"
-                    android:layout_marginBottom="16dp"
+                    android:layout_marginBottom="8dp"
                     android:layout_weight="1"
                     android:text="@string/loop" />
             </LinearLayout>
+            <TableRow style="@style/DividerLine"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -103,34 +105,63 @@
                     android:hint="@string/time_signature" />
             </LinearLayout>
 
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/tapTempo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:padding="16dp"
+                android:text="@string/tap_tempo" />
+            <TableRow style="@style/DividerLine"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:text="@string/song_duration" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="bottom"
                 android:orientation="horizontal"
-                android:weightSum="2">
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp">
 
                 <com.garethevans.church.opensongtablet.customviews.MaterialEditText
-                    android:id="@+id/duration"
+                    android:id="@+id/durationMins"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:hint="@string/time_mins"
+                    android:layout_marginEnd="4dp"
+                    android:inputType="number"
+                    app:suffixText="m"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text=":"
+                    android:gravity="center_vertical"
+                    tools:ignore="HardcodedText" />
+
+                <com.garethevans.church.opensongtablet.customviews.MaterialEditText
+                    android:id="@+id/durationSecs"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_marginStart="0dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="8dp"
                     android:layout_weight="1"
-                    android:hint="@string/song_duration"
+                    android:hint="@string/time_secs"
+                    android:layout_marginStart="4dp"
                     android:inputType="number"
-                    app:suffixText="s" />
+                    app:suffixText="s"/>
 
                 <com.garethevans.church.opensongtablet.customviews.MaterialEditText
                     android:id="@+id/delay"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="0dp"
-                    android:layout_marginBottom="8dp"
-                    android:layout_weight="1"
+                    android:layout_marginStart="22dp"
+                    android:layout_weight="1.5"
                     android:hint="@string/autoscroll_time"
                     android:inputType="number"
                     app:suffixText="s" />

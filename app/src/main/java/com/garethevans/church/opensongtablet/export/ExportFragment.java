@@ -435,7 +435,7 @@ public class ExportFragment extends Fragment {
                 setItems.append(setItemEntry).append("\n[]\n");
             }
             tempSong.setLyrics(setItems.toString());
-            createOnTheFly(tempSong,setToExport+".pdf");
+            createOnTheFly(tempSong,getString(R.string.set) +" " +setToExport+".pdf");
         } else {
             renderPDFSongs();
         }

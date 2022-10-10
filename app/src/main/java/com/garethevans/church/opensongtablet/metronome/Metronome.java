@@ -8,9 +8,12 @@ import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.customviews.ExposedDropDown;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
 import java.util.Timer;
@@ -25,6 +28,7 @@ public class Metronome {
     private final Context c;
     private final MainActivityInterface mainActivityInterface;
     private Activity activity;  // For run on UI updates
+    private final String TAG = "Metronome";
     private int beat, beats, divisions, beatTimeLength, beatsRequired, beatsRunningTotal,
             metronomeFlashOnColor, metronomeFlashOffColor, tickClip, tockClip;
     private float volumeTickLeft = 1.0f, volumeTickRight = 1.0f, volumeTockLeft = 1.0f,
@@ -38,6 +42,13 @@ public class Metronome {
     private final Handler metronomeTimerHandler = new Handler();
     private final Handler visualTimerHandler = new Handler();
     private ArrayList<Integer> tickBeats;
+
+    private ExposedDropDown beatsView, divisionsView, timeSigView, tempoView;
+    private long old_time = 0L;
+    private int total_calc_bpm = 0, total_counts = 0;
+    private Handler tapTempoHandlerCheck, tapTempoHandlerReset;
+    private Runnable tapTempoRunnableCheck, tapTempoRunnableReset;
+
 
     public Metronome(Activity activity) {
         this.activity = activity;
@@ -58,7 +69,6 @@ public class Metronome {
         }
     }
     public void stopMetronome() {
-        activity = null;
         isRunning = false;
         // Make sure the action bar resets to the off color
         mainActivityInterface.getToolbar().doFlash(metronomeFlashOffColor);
@@ -203,7 +213,7 @@ public class Metronome {
     public ArrayList<String> processTimeSignature() {
         ArrayList<String> timeSignature = new ArrayList<>();
         String ts = mainActivityInterface.getSong().getTimesig();
-        if (ts!=null && !ts.isEmpty() && ts.contains("/")) {
+        if (ts != null && ts.contains("/")) {
             validTimeSig = true;
             try {
                 String[] splits = ts.split("/");
@@ -314,9 +324,13 @@ public class Metronome {
                         beat = 1;
                     }
                     if (tickBeats.contains(beat)) {
-                        soundPool.play(tickClip, volumeTickLeft, volumeTickRight, 2, 0, 1);
+                        if (soundPool!=null) {
+                            soundPool.play(tickClip, volumeTickLeft, volumeTickRight, 2, 0, 1);
+                        }
                     } else {
-                        soundPool.play(tockClip, volumeTockLeft, volumeTockRight, 1, 0, 1);
+                        if (soundPool!=null) {
+                            soundPool.play(tockClip, volumeTockLeft, volumeTockRight, 1, 0, 1);
+                        }
 
                     }
                     if (visualMetronome) {
@@ -343,7 +357,11 @@ public class Metronome {
         visualTimer = new Timer();
         visualTimerTask = new TimerTask() {
             public void run() {
-                visualTimerHandler.post(() -> activity.runOnUiThread(() -> mainActivityInterface.getToolbar().doFlash(metronomeFlashOffColor)));
+                if (activity != null) {
+                    visualTimerHandler.post(() -> activity.runOnUiThread(() -> mainActivityInterface.getToolbar().doFlash(metronomeFlashOffColor)));
+                } else {
+                    Log.d(TAG,"activity is null");
+                }
             }
         };
         visualTimer.scheduleAtFixedRate(visualTimerTask, beatTimeLength/2, beatTimeLength);
@@ -374,5 +392,122 @@ public class Metronome {
             metronomeTimer = null;
             visualTimer = null;
         }
+    }
+
+    public void initialiseTapTempo(MaterialButton tapButton, ExposedDropDown timeSigView,
+                                   ExposedDropDown beatsView, ExposedDropDown divisionsView,
+                                   ExposedDropDown tempoView) {
+        this.timeSigView = timeSigView;
+        this.beatsView = beatsView;
+        this.divisionsView = divisionsView;
+        this.tempoView = tempoView;
+
+        // Initialise the tapTempo values
+        total_calc_bpm = 0;
+        total_counts = 0;
+        tapTempoRunnableCheck = () -> {
+            // This is called after 2 seconds when a tap is initiated
+            // Any previous instance is of course cancelled first
+            ExecutorService executorService = Executors.newSingleThreadExecutor();
+            executorService.execute(() -> {
+                Handler handler = new Handler(Looper.getMainLooper());
+                handler.post(() -> {
+                    tapButton.setEnabled(false);
+                    tapButton.setText(c.getString(R.string.reset));
+                    tapButton.setBackgroundColor(c.getResources().getColor(R.color.colorPrimary));
+                    // Waited too long, reset count
+                    total_calc_bpm = 0;
+                    total_counts = 0;
+                });
+            });
+            if (tapTempoHandlerReset != null) {
+                tapTempoHandlerReset.removeCallbacks(tapTempoRunnableReset);
+            }
+            tapTempoHandlerReset = new Handler();
+            tapTempoHandlerReset.postDelayed(tapTempoRunnableReset, 500);
+        };
+        tapTempoRunnableReset = () -> {
+            // Reset the tap tempo timer
+            ExecutorService executorService = Executors.newSingleThreadExecutor();
+            executorService.execute(() -> {
+                Handler handler = new Handler(Looper.getMainLooper());
+                handler.post(() -> {
+                    tapButton.setEnabled(true);
+                    tapButton.setText(c.getString(R.string.tap_tempo));
+                    tapButton.setBackgroundColor(c.getResources().getColor(R.color.colorSecondary));
+                });
+            });
+            // Start the metronome if we are in the metronome fragment where divisions isn't null
+            if (divisionsView!=null) {
+                startMetronome();
+            }
+        };
+
+    }
+
+    public void tapTempo() {
+        // This function checks the previous tap_tempo time and calculates the bpm
+        // Variables for tap tempo
+
+        // When tapping for compound/complex time signatures
+        // They sometimes go in double or triple time
+        if (getIsRunning()) {
+            stopMetronome();
+        }
+
+        long new_time = System.currentTimeMillis();
+        long time_passed = new_time - old_time;
+        int calc_bpm = Math.round((1 / ((float) time_passed / 1000)) * 60);
+
+        // Need to decide on the time sig.
+        // If it ends in /2, then double the tempo
+        // If it ends in /4, then leave as is
+        // If it ends in /8, then half it
+        // If it isn't set, set it to default as 4/4
+        String timeSig = mainActivityInterface.getSong().getTimesig();
+        if (timeSig.isEmpty()) {
+            if (beatsView!=null && divisionsView!=null) {
+                beatsView.setText("4");
+                divisionsView.setText("4");
+            } else if (timeSigView!=null) {
+                timeSigView.setText("4/4");
+            }
+            mainActivityInterface.getSong().setTimesig("4/4");
+        }
+
+        if (time_passed < 1500) {
+            total_calc_bpm += calc_bpm;
+            total_counts++;
+        } else {
+            // Waited too long, reset count
+            total_calc_bpm = 0;
+            total_counts = 0;
+        }
+
+        // Based on the time signature, get a meterDivisionFactor
+        float meterTimeFactor = mainActivityInterface.getMetronome().meterTimeFactor();
+        int av_bpm = Math.round(((float) total_calc_bpm / (float) total_counts) / meterTimeFactor);
+
+        if (av_bpm < 300 && av_bpm >= 40) {
+            tempoView.setText(""+av_bpm);
+            mainActivityInterface.getSong().setTempo(""+av_bpm);
+
+        } else if (av_bpm <40) {
+            tempoView.setText("40");
+            mainActivityInterface.getSong().setTempo("40");
+        }  else {
+            tempoView.setText("299");
+            mainActivityInterface.getSong().setTempo("299");
+        }
+
+        old_time = new_time;
+
+        // Set a handler to check the button tap.
+        // If the counts haven't increased after 1.5 seconds, reset it
+        if (tapTempoHandlerCheck!=null) {
+            tapTempoHandlerCheck.removeCallbacks(tapTempoRunnableCheck);
+        }
+        tapTempoHandlerCheck = new Handler();
+        tapTempoHandlerCheck.postDelayed(tapTempoRunnableCheck,1500);
     }
 }
