@@ -363,6 +363,7 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
 
                 // Update the set list/menu
                 handler.post(() -> {
+                    mainActivityInterface.getSetActions().saveTheSet();
                     mainActivityInterface.updateSetList();
                     mainActivityInterface.loadSongFromSet(position);
                     dismiss();

@@ -35,6 +35,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.StringReader;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -44,11 +45,11 @@ public class ImportOnlineFragment extends Fragment {
     private MainActivityInterface mainActivityInterface;
     private SettingsImportOnlineBinding myView;
     private final String TAG = "ImportOnline";
-    private final String[] sources = new String[]{"UltimateGuitar", "Chordie", "SongSelect", "WorshipTogether", "UkuTabs", "HolyChords"};
+    private final String[] sources = new String[]{"UltimateGuitar", "Chordie", "SongSelect", "WorshipTogether", "UkuTabs", "HolyChords", "La Boîte à chansons"};
     private final String[] address = new String[]{"https://www.ultimate-guitar.com/search.php?search_type=title&value=",
             "https://www.chordie.com/results.php?q=", "https://songselect.ccli.com/Search/Results?SearchText=",
             "https://www.worshiptogether.com/search-results/#?cludoquery=", "https://ukutabs.com/?s=",
-            "https://holychords.pro/search?name="};
+            "https://holychords.pro/search?name=", "https://www.boiteachansons.net/recherche/"};
     private String webSearchFull, webAddressFinal, source, webString, userAgentDefault;
     private Song newSong;
     private UltimateGuitar ultimateGuitar;
@@ -57,6 +58,7 @@ public class ImportOnlineFragment extends Fragment {
     private WorshipTogether worshipTogether;
     private UkuTabs ukuTabs;
     private HolyChords holyChords;
+    private Boiteachansons boiteachansons;
     private WebView webView;
 
     @Override
@@ -93,6 +95,7 @@ public class ImportOnlineFragment extends Fragment {
         songSelect = new SongSelect();
         ukuTabs = new UkuTabs();
         holyChords = new HolyChords();
+        boiteachansons = new Boiteachansons();
     }
 
     private void setupViews() {
@@ -269,7 +272,25 @@ public class ImportOnlineFragment extends Fragment {
                 myView.grabText.setVisibility(View.VISIBLE);
                 myView.grabText.post(() -> mainActivityInterface.getShowCase().singleShowCase(requireActivity(),myView.grabText,null,getString(R.string.text_extract_check),false,"onlineTextSearch"));
                 webSearchFull = webAddress + mainActivityInterface.getCheckInternet().getSearchPhrase() + extra;
-                webView.post(() -> webView.loadUrl(webSearchFull));
+                String justaddress = webAddress;
+                webView.post(() -> {
+                    if (source.equals("La Boîte à chansons")) {
+                        try {
+                            String postData = "inpRecherche=" + URLEncoder.encode(mainActivityInterface.getCheckInternet().getSearchPhrase(), "UTF-8");
+                            webView.postUrl(justaddress,postData.getBytes());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            webView.loadUrl(webSearchFull);
+                        }
+
+                    } else {
+                        webView.loadUrl(webSearchFull);
+                    }
+
+
+
+
+                });
             }
         }
     }
@@ -361,6 +382,11 @@ public class ImportOnlineFragment extends Fragment {
                     show = true;
                 }
                 break;
+            case "La Boîte à chansons":
+                if (webString.contains("<div class=\"dEntetePartition\">")) {
+                    show = true;
+                }
+                break;
         }
         if (show) {
             myView.saveButton.post(() -> {
@@ -408,6 +434,10 @@ public class ImportOnlineFragment extends Fragment {
             case "HolyChords":
                 Log.d(TAG, "getting here HolyChords");
                 newSong = holyChords.processContent(newSong,webString);
+                break;
+            case "La Boîte à chansons":
+                Log.d(TAG,"getting here La Boîte à chansons");
+                newSong = boiteachansons.processContent(mainActivityInterface,newSong,webString);
                 break;
         }
         showDownloadProgress(false);

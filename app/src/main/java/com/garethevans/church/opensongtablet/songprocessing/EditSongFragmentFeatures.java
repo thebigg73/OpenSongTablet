@@ -125,6 +125,10 @@ public class EditSongFragmentFeatures extends Fragment {
         myView.durationMins.setDigits("0123456789");
         myView.durationSecs.setDigits("0123456789");
         myView.delay.setDigits("0123456789");
+        if (mainActivityInterface.getTempSong().getAutoscrolllength()==null ||
+        mainActivityInterface.getTempSong().getAutoscrolllength().isEmpty()) {
+            mainActivityInterface.getTempSong().setAutoscrolllength("0");
+        }
         int[] timeVals = mainActivityInterface.getTimeTools().getMinsSecsFromSecs(Integer.parseInt(mainActivityInterface.getTempSong().getAutoscrolllength()));
         myView.durationMins.setText(timeVals[0]+"");
         myView.durationSecs.setText(timeVals[1]+"");

@@ -1239,5 +1239,8 @@ Check out the categories in the right hand options menu.
     <string name="lyrics_settings">Lyrics settings</string>
     <string name="time_mins">Minutes</string>
     <string name="time_secs">Seconds</string>
+    <string name="edit_song_variation_temp">This item is transposed in the set.  You have been taken to the original song for editing.</string>
+    <string name="edit_song_variation">You are editing a song that is a set variation item.  Any changes are saved to the variation in the set only.</string>
+    <string name="scale_auto">Toggle autoscale settings</string>
 
 </resources>

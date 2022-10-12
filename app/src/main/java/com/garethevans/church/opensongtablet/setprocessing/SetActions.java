@@ -281,8 +281,6 @@ public class SetActions {
             positionInSet = positionNoKey;
             return positionNoKey;
         }
-
-
     }
 
     public int getPositionInSet() {
@@ -504,7 +502,8 @@ public class SetActions {
         // This also updates the set menu to point to the new temporary item
         // This allows the user to freely edit the variation object
         // This is also called after an item is clicked in a set with a different key to the default
-        // If this happens, the variation is transposed by the required amount
+        // If this happens, the variation is transposed by the required amount, but is a temporary variation
+        // Temporary variations keep the original song folder in the currentSet.getFolder() variable, but change in the song.getFolder()
 
         // The set may have been edited and then the user clicks on a song, so save the set to preferences first
         mainActivityInterface.getPreferences().setMyPreferenceString("setCurrent",

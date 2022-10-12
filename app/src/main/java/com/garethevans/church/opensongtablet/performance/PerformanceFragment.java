@@ -904,6 +904,11 @@ public class PerformanceFragment extends Fragment {
         myView.recyclerView.setGestureDetector(gestureDetector);
     }
 
+    public void toggleScale() {
+        Log.d(TAG,"toggleScale() called");
+        myView.zoomLayout.toggleScale();
+    }
+
     public void updateSizes(int width, int height) {
         myView.zoomLayout.setSongSize(width,height);
     }

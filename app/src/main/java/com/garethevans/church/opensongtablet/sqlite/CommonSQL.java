@@ -534,6 +534,20 @@ public class CommonSQL {
         return text;
     }
 
+    public String getFolderForSong(SQLiteDatabase db, String filename) {
+        String folder = c.getString(R.string.mainfoldername);
+        String selectQuery = "SELECT " + SQLite.COLUMN_FOLDER + " FROM " + SQLite.TABLE_NAME + " WHERE " + SQLite.COLUMN_FILENAME + " = ?;";
+        String[] args = {filename};
+        Cursor cursor = db.rawQuery(selectQuery, args);
+        Log.d(TAG,"cursorCount="+cursor.getCount());
+        if (cursor.getCount()>0) {
+            cursor.moveToFirst();
+            folder = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_FOLDER));
+        }
+        cursor.close();
+        return folder;
+    }
+
     private String escape(String text) {
         // If the text contains ', escape it
         // First remove ''

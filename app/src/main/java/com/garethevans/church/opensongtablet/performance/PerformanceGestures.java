@@ -4,6 +4,7 @@ package com.garethevans.church.opensongtablet.performance;
 
 import android.content.Context;
 import android.os.Build;
+import android.util.Log;
 import android.view.View;
 
 import com.garethevans.church.opensongtablet.R;
@@ -26,6 +27,7 @@ public class PerformanceGestures {
 
     private final Context c;
     private final MainActivityInterface mainActivityInterface;
+    private final String TAG = "PerformanceGestures";
     private final ActionInterface actionInterface;
     private MyZoomLayout myZoomLayout;
     private MyRecyclerView recyclerView;
@@ -74,6 +76,19 @@ public class PerformanceGestures {
     // Edit song
     public void editSong() {
         if (mainActivityInterface.getProcessSong().isValidSong(mainActivityInterface.getSong())) {
+            // The song is a valid XML file
+            // If this is in a set and it is a temp variation, we need to edit the original instead
+            int positionInSet = mainActivityInterface.getCurrentSet().getIndexSongInSet();
+            if (positionInSet>-1 && mainActivityInterface.getCurrentSet().getSetItems().size()>positionInSet) {
+                if (!mainActivityInterface.getCurrentSet().getFolder(positionInSet).equals(mainActivityInterface.getSong().getFolder())) {
+                    mainActivityInterface.getSong().setFolder(mainActivityInterface.getCurrentSet().getFolder(positionInSet));
+                    mainActivityInterface.getSong().setFilename(mainActivityInterface.getCurrentSet().getFilename(positionInSet));
+                    mainActivityInterface.getLoadSong().doLoadSongFile(mainActivityInterface.getSong(),false);
+                    mainActivityInterface.setWhattodo("editTempVariation");
+                } else if (mainActivityInterface.getCurrentSet().getFolder(positionInSet).contains("**Variation")) {
+                    mainActivityInterface.setWhattodo("editActualVariation");
+                }
+            }
             mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_edit), 0);
         } else {
             mainActivityInterface.getShowToast().doIt(c.getString(R.string.not_allowed));
@@ -405,6 +420,10 @@ public class PerformanceGestures {
     // Open the autoscale options
     public void editAutoscale() {
         mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_scaling),0);
+    }
+    public void toggleScale() {
+        Log.d(TAG,"toggleScale() called");
+        mainActivityInterface.toggleScale();
     }
 
     // Edit the fonts

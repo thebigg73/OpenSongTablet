@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.appdata.InformationBottomSheet;
 import com.garethevans.church.opensongtablet.databinding.EditSongBinding;
 import com.garethevans.church.opensongtablet.interfaces.EditSongFragmentInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
@@ -66,12 +67,31 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
         mainActivityInterface.getTempSong().setLyricsUndosPos(0);
         mainActivityInterface.getTempSong().setLyricsUndos(0,mainActivityInterface.getTempSong().getLyrics());
 
+        Log.d(TAG,"songFolder:"+mainActivityInterface.getSong().getFolder()+"  tempSongFolder:"+ mainActivityInterface.getTempSong().getFolder());
         // Initialise views
         setUpTabs();
 
         // Set the save listener
         myView.saveChanges.setOnClickListener(v -> doSaveChanges());
+
+        // If we tried to edit a temporary variation or an actual variation - let the user know
+        InformationBottomSheet informationBottomSheet = null;
+        if (mainActivityInterface.getWhattodo()!=null &&
+                mainActivityInterface.getWhattodo().equals("editTempVariation")) {
+            informationBottomSheet = new InformationBottomSheet(getString(R.string.information),
+                    getString(R.string.edit_song_variation_temp),getString(R.string.okay),null);
+        } else if (mainActivityInterface.getWhattodo()!=null &&
+                mainActivityInterface.getWhattodo().equals("editActualVariation")) {
+            informationBottomSheet = new InformationBottomSheet(getString(R.string.information),
+                    getString(R.string.edit_song_variation),getString(R.string.okay),null);
+        }
+
+        if (informationBottomSheet!=null) {
+            mainActivityInterface.setWhattodo("");
+            informationBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"Information");
+        }
         return myView.getRoot();
+
     }
 
     private void setUpTabs() {

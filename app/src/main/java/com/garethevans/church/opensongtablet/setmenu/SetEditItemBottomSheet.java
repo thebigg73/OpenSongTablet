@@ -205,7 +205,9 @@ public class SetEditItemBottomSheet extends BottomSheetDialogFragment {
             // Update the matching card
             newFolder = currentSetFolder.get(setPosition);
             if (newFolder.startsWith("**")) {
-                newFolder = getString(R.string.mainfoldername);
+                Log.d(TAG,"newFolder="+newFolder);
+                // Try to find a matching song in the database, if not it will return mainfoldername
+                newFolder = mainActivityInterface.getSQLiteHelper().getFolderForSong(mainActivityInterface.getCurrentSet().getFilename(setPosition));
             }
             // Fix the item in the set
             String filename = mainActivityInterface.getCurrentSet().getFilename(setPosition);

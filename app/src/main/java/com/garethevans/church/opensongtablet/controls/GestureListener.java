@@ -56,6 +56,9 @@ public class GestureListener extends GestureDetector.SimpleOnGestureListener {
             case "addtoset":
                 performanceGestures.addToSet();
                 break;
+            case "togglescale":
+                performanceGestures.toggleScale();
+                break;
             case "scrolldown":
                 performanceGestures.scroll(true);
                 break;

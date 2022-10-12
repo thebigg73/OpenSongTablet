@@ -828,8 +828,19 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 case "ImportFileFragment_Set":
                     ((ImportFileFragment) callingFragment).finishImportSet();
                     break;
+
+                case "toggleScale":
+                    if (performanceFragment!=null && !whichMode.equals("Presenter")) {
+                        performanceFragment.toggleScale();
+                    }
+
             }
         }
+    }
+
+    public void toggleScale() {
+        Log.d(TAG,"toggleScale() called");
+        updateFragment("toggleScale",null,null);
     }
     @Override
     public void navHome() {
@@ -1721,7 +1732,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             if (!setFolder.contains("**")) {
                 // Not a variation already, so we'll make it one with the set key
                 newFolder = "**" + getString(R.string.variation);
-                newFilename = setFolder + "_" + setFilename + "_" + setKey;
+                newFilename = setFolder.replace("/","_") + "_" + setFilename + "_" + setKey;
+                newFilename = newFilename.replace("__","_");
+                //newFilename = setFilename + "_" + setKey;
             } else {
                 // Already a variation, don't change the file name
                 newFolder = setFolder;

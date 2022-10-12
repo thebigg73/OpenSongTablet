@@ -41,6 +41,7 @@ public class Gestures {
         gestures.add("setmenu");
         gestures.add("editsong");
         gestures.add("addtoset");
+        gestures.add("togglescale");
         gestures.add("scrolldown");
         gestures.add("scrollup");
         gestures.add("next");
@@ -69,6 +70,7 @@ public class Gestures {
         gestureDescriptions.add(c.getString(R.string.set_current) + showhide);
         gestureDescriptions.add(c.getString(R.string.edit_song));
         gestureDescriptions.add(c.getString(R.string.add_song_to_set));
+        gestureDescriptions.add(c.getString(R.string.scale_style));
         gestureDescriptions.add(c.getString(R.string.scroll_down));
         gestureDescriptions.add(c.getString(R.string.scroll_up));
         gestureDescriptions.add(c.getString(R.string.next));

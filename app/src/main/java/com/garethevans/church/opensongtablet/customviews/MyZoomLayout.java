@@ -3,6 +3,7 @@ package com.garethevans.church.opensongtablet.customviews;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
@@ -26,7 +27,7 @@ public class MyZoomLayout extends FrameLayout {
     private final OverScroller overScroller;
     private int viewWidth, viewHeight, maxScrollX, maxScrollY, overShootX, overShootY,
             songWidth, songHeight, originalSongWidth, originalSongHeight;
-    private boolean scrolledToTop, scrolledToBottom;
+    private boolean scrolledToTop, scrolledToBottom, gestureControl;
     private float maxScaleFactor = 3f;
 
     public MyZoomLayout(Context c, @Nullable AttributeSet attrs, int defStyleAttr) {
@@ -61,7 +62,7 @@ public class MyZoomLayout extends FrameLayout {
 
     public void setCurrentScale(float currentScale) {
         // Get the scale already worked out to fit the lyrics
-        // We want the scale to be 5x normal
+        // We want the max scale to be 5x normal
         maxScaleFactor = 5f * (1/currentScale);
     }
 
@@ -78,7 +79,7 @@ public class MyZoomLayout extends FrameLayout {
             scrolledToTop = overScroller.getCurrY()<=0;
             invalidate();
         }
-        if (isUserTouching && isScaling) {
+        if ((isUserTouching && isScaling) || gestureControl) {
             canvas.save();
             getChildAt(0).setTranslationX(0);
             getChildAt(0).setTranslationY(0);
@@ -115,23 +116,26 @@ public class MyZoomLayout extends FrameLayout {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (event.getAction() == MotionEvent.ACTION_DOWN ||
-                event.getAction() == MotionEvent.ACTION_BUTTON_PRESS) {
-            isUserTouching = true;
-            isFirstScrollEvent = true;
-            calculateMaxScrolls();
-            this.performClick();
-        } else if (event.getAction() == MotionEvent.ACTION_UP ||
-                event.getAction() == MotionEvent.ACTION_BUTTON_RELEASE ||
-                event.getAction() == MotionEvent.ACTION_CANCEL) {
-            isUserTouching = false;
-            isFirstScrollEvent = true;
-        }
+        if (!gestureControl) {
+            if (event.getAction() == MotionEvent.ACTION_DOWN ||
+                    event.getAction() == MotionEvent.ACTION_BUTTON_PRESS) {
+                isUserTouching = true;
+                isFirstScrollEvent = true;
+                calculateMaxScrolls();
 
-        boolean b0 = gestureDetector.onTouchEvent(event);
-        boolean b1 = scaleDetector.onTouchEvent(event);
-        return b0 || b1;
-        //return true;
+            } else if (event.getAction() == MotionEvent.ACTION_UP ||
+                    event.getAction() == MotionEvent.ACTION_BUTTON_RELEASE ||
+                    event.getAction() == MotionEvent.ACTION_CANCEL) {
+                isUserTouching = false;
+                isFirstScrollEvent = true;
+                this.performClick();
+            }
+
+            boolean b0 = gestureDetector.onTouchEvent(event);
+            boolean b1 = scaleDetector.onTouchEvent(event);
+            return b0 || b1;
+        }
+        return true;
     }
 
     @Override
@@ -163,6 +167,7 @@ public class MyZoomLayout extends FrameLayout {
     private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
         @Override
         public boolean onScale(ScaleGestureDetector detector) {
+            Log.d(TAG,"onScale()");
             scaleFactor *= detector.getScaleFactor();
             if (scaleFactor > maxScaleFactor) {
                 scaleFactor = maxScaleFactor;
@@ -185,7 +190,6 @@ public class MyZoomLayout extends FrameLayout {
     }
 
     private class GestureListener extends GestureDetector.SimpleOnGestureListener {
-
         @Override
         public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
             // First scroll event should be ignored because of bad distanceX
@@ -274,5 +278,38 @@ public class MyZoomLayout extends FrameLayout {
     }
     public boolean getScrolledToBottom() {
         return scrolledToBottom;
+    }
+
+    public void toggleScale() {
+        if (!gestureControl) {
+            isUserTouching = false;
+            gestureControl = true;
+            scrollTo(0,0);
+            // Set a timer to enable it again
+            postDelayed(() -> gestureControl = false,600);
+            // This is called from a gesture or page button
+            // It toggles between fit all to fit width
+            float zoomFitWidth = (float) viewWidth / (float) originalSongWidth;
+            float zoomFitAll = Math.min((float) viewWidth / (float) originalSongWidth, (float) viewHeight / (float) originalSongHeight);
+            if (scaleFactor != zoomFitAll) {
+                scaleFactor = zoomFitAll;
+            } else {
+                scaleFactor = zoomFitWidth;
+            }
+
+            if (scaleFactor > maxScaleFactor) {
+                scaleFactor = maxScaleFactor;
+            }
+            if (scaleFactor < minScale) {
+                scaleFactor = minScale;
+            }
+
+            songWidth = (int) (originalSongWidth * scaleFactor);
+            songHeight = (int) (originalSongHeight * scaleFactor);
+
+            calculateMaxScrolls();
+
+            invalidate();
+        }
     }
 }

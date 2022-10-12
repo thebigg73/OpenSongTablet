@@ -219,14 +219,16 @@ public class InlineSetList extends RecyclerView {
         }
 
         public void updateInlineSetMove(int from, int to) {
-            setList.get(from).item = (to+1);
-            setList.get(to).item = (from+1);
-            InlineSetItemInfo thisItem = setList.get(from);
-            setList.remove(from);
-            setList.add(to,thisItem);
-            notifyItemChanged(from);
-            notifyItemChanged(to);
-            notifyItemMoved(from,to);
+            if (setList!=null) {
+                setList.get(from).item = (to + 1);
+                setList.get(to).item = (from + 1);
+                InlineSetItemInfo thisItem = setList.get(from);
+                setList.remove(from);
+                setList.add(to, thisItem);
+                notifyItemChanged(from);
+                notifyItemChanged(to);
+                notifyItemMoved(from, to);
+            }
         }
 
         public void updateInlineSetRemoved(int from) {

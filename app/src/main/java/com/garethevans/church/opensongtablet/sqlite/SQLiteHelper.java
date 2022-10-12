@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 
@@ -185,6 +186,16 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             return mainActivityInterface.getCommonSQL().getSongsWithThemeTag(db, tag);
         } catch (OutOfMemoryError | Exception e) {
             return "";
+        }
+    }
+
+    public String getFolderForSong(String filename) {
+        // Set the default folder
+        try (SQLiteDatabase db = getDB()) {
+            return mainActivityInterface.getCommonSQL().getFolderForSong(db, filename);
+        } catch (OutOfMemoryError | Exception e) {
+            e.printStackTrace();
+            return c.getString(R.string.mainfoldername);
         }
     }
 }
