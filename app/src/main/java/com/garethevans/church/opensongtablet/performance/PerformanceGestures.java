@@ -480,7 +480,7 @@ public class PerformanceGestures {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 return true;
             } else {
-                mainActivityInterface.getShowToast().doIt(c.getString(R.string.not_high_enough_api));
+                mainActivityInterface.getShowToast().doIt(c.getString(R.string.not_allowed));
                 return false;
             }
         } else {

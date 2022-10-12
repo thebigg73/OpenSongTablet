@@ -472,7 +472,7 @@ public class PerformanceFragment extends Fragment {
         // If we are old Android and can't show a pdf, tell the user
         if (mainActivityInterface.getSong().getFiletype().equals("PDF") &&
                 android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP) {
-            mainActivityInterface.getShowToast().doIt(getString(R.string.not_high_enough_api));
+            mainActivityInterface.getShowToast().doIt(getString(R.string.not_allowed));
         }
 
         mainActivityInterface.setSectionViews(null);

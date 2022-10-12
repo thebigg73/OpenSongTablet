@@ -132,7 +132,7 @@ public class NearbyConnectionsFragment extends Fragment {
         targets.add(myView.client);
         targets.add(myView.bottomSheet.bottomSheetTab);
         ArrayList<String> infos = new ArrayList<>();
-        infos.add(getString(R.string.connections_device_name)+"\n"+getString(R.string.click_to_change));
+        infos.add(getString(R.string.connections_device_name)+"\n"+getString(R.string.edit));
         infos.add(getString(R.string.connections_off));
         infos.add(getString(R.string.connections_actashost_info));
         infos.add(getString(R.string.connections_actasclient_info));

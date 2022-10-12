@@ -6,9 +6,11 @@ import android.os.Handler;
 import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -46,6 +48,8 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     private SongListAdapter songListAdapter;
     private LinearLayoutManager songListLayoutManager;
     private ArrayList<String> foundFolders;
+    private int alphalistposition = -1;
+    private String alphaSelected = "";
 
     private MainActivityInterface mainActivityInterface;
 
@@ -324,22 +328,22 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                 songsFound, SongMenuFragment.this);
         myView.songListRecyclerView.setAdapter(songListAdapter);
         myView.songListRecyclerView.setFastScrollEnabled(true);
-        displayIndex(songsFound, songListAdapter);
+        displayIndex();
         myView.progressBar.setVisibility(View.GONE);
         buttonsEnabled(true);
         // Update the filter row values
         //setFolders();
     }
 
-    private void displayIndex(ArrayList<Song> songMenuViewItems,
-                              SongListAdapter songListAdapter) {
+    private void displayIndex() {
         try {
             myView.songmenualpha.sideIndex.removeAllViews();
             TextView textView;
-            final Map<String, Integer> map = songListAdapter.getAlphaIndex(songMenuViewItems);
+            final Map<String, Integer> map = songListAdapter.getAlphaIndex(songsFound);
             Set<String> setString = map.keySet();
             List<String> indexList = new ArrayList<>(setString);
-            for (String index : indexList) {
+            for (int p=0; p<indexList.size(); p++) {
+                String index = indexList.get(p);
                 textView = (TextView) View.inflate(getActivity(), R.layout.view_alphabetical_list, null);
                 textView.setTextSize(mainActivityInterface.getPreferences().getMyPreferenceFloat("songMenuAlphaIndexSize", 14.0f));
                 int i = (int) mainActivityInterface.getPreferences().getMyPreferenceFloat("songMenuAlphaIndexSize", 14.0f) * 2;
@@ -347,9 +351,9 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                 textView.setMinimumWidth(16);
                 textView.setMinimumHeight(16);
                 textView.setText(index);
+                int finalP = p;
                 textView.setOnClickListener(view -> {
                     TextView selectedIndex = (TextView) view;
-
                     try {
                         if (selectedIndex.getText() != null &&
                                 songListLayoutManager != null) {
@@ -361,6 +365,11 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                                     songListLayoutManager.scrollToPositionWithOffset(obj, 0);
                                 }
                             }
+                            alphaSelected = index;
+                            alphalistposition = finalP;
+                            if (mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuAlphaIndexLevel2",false)) {
+                                displayIndex2();
+                            }
                             mainActivityInterface.forceImmersive();
                         }
                     } catch (Exception e) {
@@ -370,6 +379,79 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                 myView.songmenualpha.sideIndex.addView(textView);
             }
             changeAlphabeticalVisibility(mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuAlphaIndexShow", true));
+            Log.d(TAG,"Index myView.songmenualpha.sideIndex.getChildCount():" + myView.songmenualpha.sideIndex.getChildCount());
+            Log.d(TAG,"Index alphalistpostion"+alphalistposition);
+
+            myView.songmenualpha.sideIndex.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    myView.songmenualpha.sideIndex.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    if (myView.songmenualpha.sideIndex.getChildCount()>alphalistposition && myView.songmenualpha.sideIndex.getChildAt(alphalistposition)!=null) {
+                        myView.songmenualpha.indexScrollview.scrollTo(0, myView.songmenualpha.sideIndex.getChildAt(alphalistposition).getTop());
+                    } else {
+                        myView.songmenualpha.indexScrollview.scrollTo(0,0);
+                    }
+                }
+            });
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void displayIndex2() {
+        try {
+            myView.songmenualpha.sideIndex.removeAllViews();
+            TextView textView;
+            final Map<String, Integer> map2 = songListAdapter.getAlphaIndex2();
+            Set<String> setString = map2.keySet();
+            List<String> indexList = new ArrayList<>(setString);
+            for (String index : indexList) {
+                textView = (TextView) View.inflate(getActivity(), R.layout.view_alphabetical_list, null);
+                textView.setTextSize(mainActivityInterface.getPreferences().getMyPreferenceFloat("songMenuAlphaIndexSize", 14.0f));
+                int i = (int) mainActivityInterface.getPreferences().getMyPreferenceFloat("songMenuAlphaIndexSize", 14.0f) * 2;
+                textView.setPadding(i, i, i, i);
+                textView.setMinimumWidth(16);
+                textView.setMinimumHeight(16);
+                textView.setText(index);
+                textView.setOnClickListener(view -> {
+                    TextView selectedIndex = (TextView) view;
+                    try {
+                        if (selectedIndex.getText() != null &&
+                                songListLayoutManager != null) {
+                            String myval = selectedIndex.getText().toString();
+
+                            if (!map2.isEmpty()) {
+                                Integer obj = map2.get(myval);
+                                if (obj != null) {
+                                    songListLayoutManager.scrollToPositionWithOffset(obj, 0);
+                                }
+                            }
+                            displayIndex();
+                            mainActivityInterface.forceImmersive();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+                myView.songmenualpha.sideIndex.addView(textView);
+            }
+            changeAlphabeticalVisibility(mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuAlphaIndexShow", true));
+            myView.songmenualpha.sideIndex.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    int pos = songListAdapter.getPositionOfAlpha2fromAlpha(alphaSelected);
+                    myView.songmenualpha.sideIndex.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    if (myView.songmenualpha.sideIndex.getChildCount()>pos && myView.songmenualpha.sideIndex.getChildAt(pos)!=null) {
+                        int childTop = myView.songmenualpha.sideIndex.getChildAt(pos).getTop();
+                        myView.songmenualpha.indexScrollview.scrollTo(0, childTop);
+                    } else {
+                        myView.songmenualpha.indexScrollview.scrollTo(0,0);
+                    }
+                }
+            });
+
+
         } catch (Exception e) {
             e.printStackTrace();
         }

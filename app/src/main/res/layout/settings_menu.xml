@@ -42,6 +42,15 @@
                 android:layout_marginBottom="8dp"
                 android:text="@string/alphabetical" />
 
+            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                android:id="@+id/level2Index"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/alphabetical_level2"
+                android:hint="@string/alphabetical_level2_info"
+                android:layout_marginBottom="8dp"/>
+
+
             <com.garethevans.church.opensongtablet.customviews.MaterialSlider
                 android:id="@+id/songAlphabeticalSize"
                 android:layout_width="match_parent"

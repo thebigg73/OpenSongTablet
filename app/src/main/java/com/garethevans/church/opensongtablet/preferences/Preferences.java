@@ -470,6 +470,7 @@ public class Preferences extends Activity {
     // songListSearchByTag             boolean     Should we search in the song list using a custom folder (def:false)
     // songListSearchByFilter          boolean     Should we search in the song list using a custom filter (def:false)
     // songLoadSuccess                 boolean     Indicates if the song loaded correctly (won't load a song next time if it crashed) (def:false)
+    // songMenuAlphaIndexLevel2        boolean     Should the alphabetical index have a level 2 filter (clicking on it displays two letters) (def:false)
     // songMenuAlphaIndexShow          boolean     Should we show the alphabetical index in the song menu (def:true)
     // songMenuAlphaIndexSize          float       The text size for the alphabetical index in the song menu (def:14.0f)
     // songMenuSetTicksShow            boolean     Should we show the ticks identifying song is in the set in the song menu (def:true)

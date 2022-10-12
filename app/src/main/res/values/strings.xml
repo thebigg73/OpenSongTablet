@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <resources>
-    <string name="about">About</string>
-    <string name="about_description">App info, help, user guide, etc.</string>
     <string name="abc_transpose_to_song">Auto transpose to song key</string>
     <string name="abc_transpose_to_song_info">If a key is set in the song and in the abc notation, the app will try to adjust the output of the abc notation to match the song key.</string>
+    <string name="about">About</string>
+    <string name="about_description">App info, help, user guide, etc.</string>
     <string name="action">Action</string>
-    <string name="actions">Actions</string>
     <string name="action_button_info">Click to show or hide your page buttons.\n\nEach one can be assigned
         to song actions such as metronome, transpose, pads, etc.\nLong pressing on the main button
         lets you change the settings of each button.\nLong pressing on some page buttons performs
@@ -15,6 +14,7 @@
     <string name="actionbar_autohide">Automatically hide action bar</string>
     <string name="actionbar_display">Actionbar</string>
     <string name="actionbar_info">Change the appearance of the information in the actionbar</string>
+    <string name="actions">Actions</string>
     <string name="actions_current_song">Actions for current song</string>
     <string name="add_custom_slide">Add custom slide to set</string>
     <string name="add_reusable">Save as a reusable slide</string>
@@ -28,6 +28,8 @@
     <string name="alert_text">Enter message text</string>
     <string name="alpha">Alpha</string>
     <string name="alphabetical">Alphabetical song index</string>
+    <string name="alphabetical_level2">Two character alphabetical index</string>
+    <string name="alphabetical_level2_info">Clicking on an item in the alphabetical index will toggle between one and two character alphabetical index</string>
     <string name="alphabetical_sort">Put items in alphabetical order</string>
     <string name="app_id" translatable="false">4E2B0891</string>
     <string name="app_name" translatable="false">OpenSongApp</string>
@@ -51,7 +53,6 @@
     <string name="autoshow_highlight">Autoshow highlighter notes</string>
     <string name="autoshow_stickynotes">Autoshow sticky notes</string>
     <string name="average">Average</string>
-
     <string name="back">Back</string>
     <string name="background">Background</string>
     <string name="backup">Backup</string>
@@ -92,7 +93,6 @@
     <string name="bridge">Bridge</string>
     <string name="bridge_background">Bridge background</string>
     <string name="button">Button</string>
-
     <string name="camera">Camera</string>
     <string name="camera_info">Take a photograph of a songsheet</string>
     <string name="cancel">Cancel</string>
@@ -203,9 +203,9 @@
     <string name="connections_discover">Discover services</string>
     <string name="connections_discover_info">Look for other devices that are currently advertising</string>
     <string name="connections_discover_stop">Stop discovery</string>
+    <string name="connections_failure">Unable to connect</string>
     <string name="connections_host_passthrough">Host passthrough</string>
     <string name="connections_host_passthrough_info">Allow messages received from other hosts to pass through to connected clients</string>
-    <string name="connections_failure">Unable to connect</string>
     <string name="connections_keephostsongs">Keep host songs</string>
     <string name="connections_keephostsongs_info">If you do not already have the host song in your library, the app will copy if for you</string>
     <string name="connections_log">Connection log (click to clear).  If you have any issues, reset your WiFi and restart the app.</string>
@@ -241,7 +241,6 @@
     <string name="custom_slide">Custom slide (with content)</string>
     <string name="customchords_code">Custom code</string>
     <string name="customchords_name">Chord name</string>
-
     <string name="date">Date</string>
     <string name="dec_autoscroll_speed">Decrease Autoscroll Speed</string>
     <string name="deeplink_abc" translatable="false">opensongapp://settings/actions/abcnotation</string>
@@ -251,8 +250,8 @@
     <string name="deeplink_bible" translatable="false">opensongapp://settings/bible</string>
     <string name="deeplink_bootup" translatable="false">opensongapp://bootup</string>
     <string name="deeplink_chords" translatable="false">opensongapp://settings/actions/chords</string>
-    <string name="deeplink_chords_settings" translatable="false">opensongapp://settings/chords/settings</string>
     <string name="deeplink_chords_custom" translatable="false">opensongapp://settings/chords/custom</string>
+    <string name="deeplink_chords_settings" translatable="false">opensongapp://settings/chords/settings</string>
     <string name="deeplink_connected_display" translatable="false">opensongapp://settings/display/connected</string>
     <string name="deeplink_controls" translatable="false">opensongapp://settings/controls</string>
     <string name="deeplink_custom_slide" translatable="false">opensongapp://settings/sets/customslide</string>
@@ -262,8 +261,8 @@
     <string name="deeplink_gestures" translatable="false">opensongapp://settings/controls/gestures</string>
     <string name="deeplink_highlighter" translatable="false">opensongapp://songactions/highlighter/edit</string>
     <string name="deeplink_import" translatable="false">opensongapp://settings/import</string>
-    <string name="deeplink_import_osb" translatable="false">opensongapp://settings/import/osb</string>
     <string name="deeplink_import_file" translatable="false">opensongapp://settings/import/file</string>
+    <string name="deeplink_import_osb" translatable="false">opensongapp://settings/import/osb</string>
     <string name="deeplink_inlineset" translatable="false">opensongapp://settings/set/inlineset</string>
     <string name="deeplink_kitkat_choose" translatable="false">opensongapp://settings/storage/kitkatchoose</string>
     <string name="deeplink_links" translatable="false">opensongapp://settings/actions/links</string>
@@ -275,8 +274,8 @@
     <string name="deeplink_pads" translatable="false">opensongapp://settings/pads</string>
     <string name="deeplink_page_buttons" translatable="false">opensongapp://settings/controls/pagebuttons</string>
     <string name="deeplink_pedals" translatable="false">opensongapp://settings/controls/pedals</string>
-    <string name="deeplink_preferences" translatable="false">opensongapp://preferences</string>
     <string name="deeplink_performance" translatable="false">opensongapp://performance</string>
+    <string name="deeplink_preferences" translatable="false">opensongapp://preferences</string>
     <string name="deeplink_presenter" translatable="false">opensongapp://presenter</string>
     <string name="deeplink_profiles" translatable="false">opensongapp://settings/profiles</string>
     <string name="deeplink_scaling" translatable="false">opensongapp://settings/display/scaling</string>
@@ -302,7 +301,6 @@
     <string name="duplicate">Duplicate</string>
     <string name="duplicate_sections">You have used the same tag multiple times in the song.  This can cause problems when setting the order.</string>
     <string name="duplicate_song">Create a copy of this song</string>
-
     <string name="edit">Edit</string>
     <string name="edit_format">Song edit format</string>
     <string name="edit_new_section">Insert new section</string>
@@ -310,6 +308,8 @@
     <string name="edit_set_item_info">Change item or key or make a variation</string>
     <string name="edit_song">Edit song</string>
     <string name="edit_song_aka">Also known as</string>
+    <string name="edit_song_variation">You are editing a song that is a set variation item.  Any changes are saved to the variation in the set only.</string>
+    <string name="edit_song_variation_temp">This item is transposed in the set.  You have been taken to the original song for editing.</string>
     <string name="edit_temporary">Temporary edit</string>
     <string name="edit_text_size">Edit text size</string>
     <string name="editpdf">Edit in external PDF program</string>
@@ -321,9 +321,9 @@
     <string name="exit">Exit</string>
     <string name="exit_confirm">Are you sure you want to exit the program?</string>
     <string name="export">Export</string>
-    <string name="export_current_format">Songs in their current format</string>
-    <string name="export_convert_song">OpenSong formatted songs can also be converted to the following formats</string>
     <string name="export_chordpro">ChordPro song (.cho)</string>
+    <string name="export_convert_song">OpenSong formatted songs can also be converted to the following formats</string>
+    <string name="export_current_format">Songs in their current format</string>
     <string name="export_current_set">Share the current set</string>
     <string name="export_current_song">Share the current song</string>
     <string name="export_desktop">Desktop file (no file extension)</string>
@@ -331,13 +331,13 @@
     <string name="export_onsong">OnSong song (.onsong)</string>
     <string name="export_ost">OpenSongApp song (.ost)</string>
     <string name="export_set">OpenSongApp set (.osts)</string>
-    <string name="export_text">Text (.txt)</string>
     <string name="export_song_directory">Export list of songs</string>
+    <string name="export_text">Text (.txt)</string>
     <string name="extra">Extra information</string>
     <string name="extra_settings">Advanced settings</string>
     <string name="extract">Extract text</string>
-
     <string name="file">File</string>
+    <string name="file_choose_info">Select the required file(s) below.</string>
     <string name="file_chooser">File chooser</string>
     <string name="file_exists">File already exists.  Please rename it.</string>
     <string name="file_type">File type</string>
@@ -373,12 +373,10 @@
     <string name="font_presentation_info">Presentation information font</string>
     <string name="forum">Forum</string>
     <string name="forum_description">Report bugs, get help and request features</string>
-
     <string name="github" translatable="false">GitHub</string>
     <string name="github_description">Contribute to app development</string>
     <string name="green">Green</string>
     <string name="guitar">Guitar</string>
-
     <string name="hdmi" translatable="false">HDMI</string>
     <string name="heading_scale">Scale heading text</string>
     <string name="help">Help (Online)</string>
@@ -388,7 +386,6 @@
     <string name="highlight_info">Edit highlighter notes / annotations</string>
     <string name="holychords" translatable="false">HolyChords.com</string>
     <string name="hymn_number">Hymn number</string>
-
     <string name="image">Image</string>
     <string name="image_change">Click on the image to change</string>
     <string name="image_slide">Image slideshow</string>
@@ -409,7 +406,6 @@
     <string name="intro">Intro</string>
     <string name="is_not_set">Not set</string>
     <string name="item">Item</string>
-
     <string name="keep_multiline">Keep multiline compact</string>
     <string name="keep_multiline_info">Display songs containing combined verses as they appear in the song edit window.</string>
     <string name="key">Key</string>
@@ -450,7 +446,6 @@
         <item>G#m</item>
         <item>Abm</item>
     </array>
-
     <string name="landscape">Landscape</string>
     <string name="language">Language</string>
     <array name="languagelist" translatable="false">
@@ -502,14 +497,13 @@
     <string name="lorem" translatable="false">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</string>
     <string name="lyrics">Lyrics</string>
     <string name="lyrics_color">Lyrics font</string>
-
     <string name="main_song_display">Main song display</string>
     <string name="mainfoldername">MAIN</string>
     <string name="mandolin">Mandolin</string>
     <string name="max_font_size">Maximum autoscale font size</string>
+    <string name="max_vol_range">Graphical volume indicator range</string>
     <string name="maximise_columns">Scale columns independently.</string>
     <string name="maximise_columns_info">If a song is shown in multiple columns (e.g. when rotated to landscape), this allows each column to zoom to fill the portion of the screen it is allocated.</string>
-    <string name="max_vol_range">Graphical volume indicator range</string>
     <string name="media">Media</string>
     <string name="media_selected">Media loaded</string>
     <string name="menu_set_info">Use this button to view and manage your sets</string>
@@ -549,7 +543,6 @@
     <string name="music_score_info">Edit score notes</string>
     <string name="my_band">Import Band sample songs</string>
     <string name="my_church">Import Church sample songs</string>
-
     <string name="nearby_host_menu_only">Only listen for new clients when this page is visible</string>
     <string name="nearby_host_menu_only_info">Connection requests will not be shown unless you are on this page</string>
     <string name="network_error">Network error</string>
@@ -567,7 +560,6 @@
     <string name="not_saved">Not saved</string>
     <string name="note">Note</string>
     <string name="nothing_selected">Nothing selected</string>
-
     <string name="off">Off</string>
     <string name="okay">OK</string>
     <string name="on">On</string>
@@ -588,7 +580,6 @@
     <string name="override_scale_explanation">If the autoscale font size is less than the desired minimum font size, do you want the app to override to a different scaling method?  Using these options may force you to scroll horizontally and vertically in a song</string>
     <string name="override_widthautoscale">Override width only scaling to no autoscale</string>
     <string name="overwrite">Overwrite existing item</string>
-
     <string name="pad">Pad</string>
     <string name="pad_auto">Auto</string>
     <string name="pad_cross_fade">Cross-fade pads</string>
@@ -658,7 +649,6 @@
     <string name="promptbackup">You haven\'t backed up your song library in the last 10 times you have used this app.
         This is highly recommended as you can recover your songs if anything goes wrong.
         Ideally you should keep a copy of your backup file on the cloud (e.g. Google Drive) or email it to yourself.</string>
-
     <string name="quicklaunch_button1">Button 1</string>
     <string name="quicklaunch_button2">Button 2</string>
     <string name="quicklaunch_button3">Button 3</string>
@@ -668,7 +658,6 @@
     <string name="quicklaunch_button7">Button 7</string>
     <string name="quicklaunch_button8">Button 8</string>
     <string name="quicklaunch_title">Customise quick launch buttons</string>
-
     <string name="random_song">Find a random song</string>
     <string name="random_song_info">Select a random song from those currently shown in the menu</string>
     <string name="rate">Rate this app</string>
@@ -691,10 +680,10 @@
     <string name="resume">Resume</string>
     <string name="root">ROOT</string>
     <string name="rotate_display">Rotate display</string>
-
     <string name="save">Save</string>
     <string name="save_changes">Save changes</string>
     <string name="save_text_for_searching">Save text for searching</string>
+    <string name="scale_auto">Toggle autoscale settings</string>
     <string name="scale_style">Scale style</string>
     <string name="scale_width">Maximum width (ignoring height)</string>
     <string name="scale_width_info">When switched on, the app zooms the text to fill the width of the screen.  You might have to scroll down to see the rest of the song.  When off, the app fits the entire song into the window.</string>
@@ -772,6 +761,7 @@
     <string name="song_alignment_content">Song content alignment</string>
     <string name="song_alignment_information">Song information alignment</string>
     <string name="song_display">Song display</string>
+    <string name="song_doesnt_exist">That song isn\'t on your device.  Have you deleted it?</string>
     <string name="song_duration">Song duration (seconds)</string>
     <string name="song_features">Song features</string>
     <string name="song_features_warning">These values are best set using the dedicated song feature options in the settings menu. Save the song first. You can, however, manually edit the values here.</string>
@@ -785,12 +775,11 @@
     <string name="song_sections_project">Click on a song section to send it to the connected displays</string>
     <string name="song_swipe_toggle">Allow swiping between songs</string>
     <string name="song_title">Song title</string>
-    <string name="song_doesnt_exist">That song isn\'t on your device.  Have you deleted it?</string>
     <string name="songs">Songs</string>
+    <string name="songs_in_folder">Song folder</string>
     <string name="songselect" translatable="false">SongSelect</string>
     <string name="songsheet">Songsheet</string>
     <string name="songsheet_info">Displays a title with information about the song</string>
-    <string name="songs_in_folder">Song folder</string>
     <string name="sound">Sound</string>
     <string name="sound_bass_drum">Bass drum</string>
     <string name="sound_bell">Bell</string>
@@ -831,7 +820,6 @@
     <string name="swipe_allowance">Vertical movement allowed</string>
     <string name="swipe_distance">Swipe distance</string>
     <string name="swipe_info">Adjust gestures to move between songs</string>
-
     <string name="tag">Tag</string>
     <string name="tag_background">Tag background</string>
     <string name="tag_song">Song tags</string>
@@ -854,7 +842,9 @@
     <string name="theme_light">Light theme</string>
     <string name="time">Time</string>
     <string name="time_format">24hr</string>
+    <string name="time_mins">Minutes</string>
     <string name="time_seconds">Show seconds</string>
+    <string name="time_secs">Seconds</string>
     <string name="time_signature">Time signature</string>
     <string-array name="time_signatures" translatable="false">
         <item/>
@@ -891,7 +881,6 @@
     <string name="trim_wordspacing">Trim word spacing</string>
     <string name="trim_wordspacing_info">Remove excess spaces between words</string>
     <string name="twitter_user" translatable="false">\@OpenSongApp</string>
-
     <string name="ukulele">Ukulele</string>
     <string name="ukutabs" translatable="false">UkuTabs.com</string>
     <string name="unknown">Unknown</string>
@@ -1012,7 +1001,6 @@ Check out the categories in the right hand options menu.
 .| G  |"</string>
     <string name="utilities">Utilities</string>
     <string name="utilities_info">Other tools for musicians</string>
-
     <string name="variation">Variation</string>
     <string name="variation_edit">This item can be edited.  The original will be unaffected.</string>
     <string name="variation_make">Make a set item variation</string>
@@ -1025,7 +1013,6 @@ Check out the categories in the right hand options menu.
     <string name="visual_metronome">Visual</string>
     <string name="volume">Volume</string>
     <string name="volume_value">Current volume value</string>
-
     <string name="wait">Wait....</string>
     <string name="web_search">Search internet for this song</string>
     <string name="website">Website</string>
@@ -1035,10 +1022,10 @@ Check out the categories in the right hand options menu.
     <string name="website_backup" translatable="false">https://www.opensongapp.com/user-manual/songs/opensongapp-backup</string>
     <string name="website_ccli" translatable="false">https://www.opensongapp.com/user-manual/ccli</string>
     <string name="website_chords" translatable="false">https://www.opensongapp.com/user-manual/songs/song-actions/chords/chords</string>
-    <string name="website_chords_fingering" translatable="false">https://www.opensongapp.com/user-manual/songs/song-actions/chords/chord-fingering</string>
     <string name="website_chords_custom" translatable="false">https://www.opensongapp.com/user-manual/songs/song-actions/chords/custom-chords</string>
-    <string name="website_chords_transpose" translatable="false">https://www.opensongapp.com/user-manual/songs/song-actions/chords/transpose</string>
+    <string name="website_chords_fingering" translatable="false">https://www.opensongapp.com/user-manual/songs/song-actions/chords/chord-fingering</string>
     <string name="website_chords_settings" translatable="false">https://www.opensongapp.com/user-manual/songs/song-actions/chords/chord-settings</string>
+    <string name="website_chords_transpose" translatable="false">https://www.opensongapp.com/user-manual/songs/song-actions/chords/transpose</string>
     <string name="website_connected_display" translatable="false">https://www.opensongapp.com/user-manual/display/casting</string>
     <string name="website_custom_gestures" translatable="false">https://www.opensongapp.com/user-manual/controls/custom-gestures</string>
     <string name="website_edit_song" translatable="false">https://www.opensongapp.com/user-manual/songs/edit-song</string>
@@ -1075,8 +1062,8 @@ Check out the categories in the right hand options menu.
     <string name="website_song_file" translatable="false">https://www.opensongapp.com/user-manual/songs/import-file</string>
     <string name="website_song_new" translatable="false">https://www.opensongapp.com/user-manual/songs/create-new-song</string>
     <string name="website_song_online" translatable="false">https://www.opensongapp.com/user-manual/songs/add-songs/online-import</string>
-    <string name="website_song_opensongapp" translatable="false">https://www.opensongapp.com/user-manual/songs/add-songs/backup-songs</string>
     <string name="website_song_onsong" translatable="false">https://www.opensongapp.com/user-manual/songs/add-songs/ios-onsong</string>
+    <string name="website_song_opensongapp" translatable="false">https://www.opensongapp.com/user-manual/songs/add-songs/backup-songs</string>
     <string name="website_song_sample" translatable="false">https://www.opensongapp.com/user-manual/songs/add-songs/sample-songs</string>
     <string name="website_sound_level_meter" translatable="false">https://www.opensongapp.com/user-manual/sound-level-meter</string>
     <string name="website_storage_overview" translatable="false">https://www.opensongapp.com/user-manual/storage/storage-overview</string>
@@ -1085,162 +1072,11 @@ Check out the categories in the right hand options menu.
     <string name="website_themes" translatable="false">https://www.opensongapp.com/user-manual/display/themes</string>
     <string name="website_user_guide" translatable="false">https://www.opensongapp.com/user-guide</string>
     <string name="welcome">Welcome to OpenSongApp</string>
+    <string name="width">Width</string>
     <string name="words_and_music_by">Words and music by</string>
     <string name="worshipready" translatable="false">WorshipReady.com</string>
     <string name="worshiptogether" translatable="false">WorshipTogether</string>
-
     <string name="youtube" translatable="false">YouTube</string>
-
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zoom_level">Zoom level</string>
-
-
-
-    <!-- TODO LIKELY TO REMOVE NO USAGES FOUND -->
-    <string name="actionbar">Menu bar info</string>
-    <string name="activated">Activated / running</string>
-    <string name="autoscale_toggle">Toggle autoscale</string>
-    <string name="autostart_autoscroll">Keep on autoscroll</string>
-    <string name="autostartmetronome">Keep on metronome</string>
-    <string name="backing_track">Choose backing track</string>
-    <string name="backup_and_restore">Backup and restore</string>
-    <string name="backup_success">OpenSongApp backup created</string>
-    <string name="bad_time">Slide time has not been set correctly</string>
-    <string name="bold_text">Display lyrics in bold</string>
-    <string name="bottom">Bottom</string>
-    <string name="edit_song_books">Books song belongs to</string>
-    <string name="edit_song_capo_print">Print capo chords</string>
-    <string name="user_guide_text">Please take the time to read the user guide before using the app.</string>
-    <string name="warning">This option should only be used for presentation mode.  Be aware that this feature uses lots of memory and can cause crashes.  You have been warned!</string>
-    <string name="width">Width</string>
-    <string name="update_projector">Update\nprojector</string>
-    <string name="transparency">Transparency</string>
-    <string name="top">Top</string>
-    <string name="toobig">Please switch autoscale on for png/pdf export</string>
-    <string name="theme_color">Uses color set in the theme</string>
-    <string name="storage_check">Checking storage</string>
-    <string name="speed">Speed</string>
-    <string name="song_functionnotavailable">This function is not available for songs</string>
-    <string name="show_general_advanced">Toggle general/advanced fields</string>
-    <string name="sethasbeendeleted">has been deleted from your \'Sets\' folder.</string>
-    <string name="set_reset">Reset the current set creating a new one</string>
-    <string name="set_new_name">New set name</string>
-    <string name="search_log">Check the search database error log</string>
-    <string name="search_fields">Search fields</string>
-    <string name="scrollbuttons_toggle">Toggle scroll buttons</string>
-    <string name="refreshsongs">Refresh song menu</string>
-    <string name="remindme">Remind me later</string>
-    <string name="remove_item_from_set">Remove item from set</string>
-    <string name="removed_from_set">has been removed from your set.</string>
-    <string name="quick_navigate">Quick navigate</string>
-    <string name="quicklaunch_currentaction">Current action</string>
-    <string name="gesture3">Add song to set</string>
-    <string name="gesturesandmenus">Gestures and menus</string>
-    <string name="get_songs">Get songs</string>
-    <string name="grabchordpro">Extract ChordPro data</string>
-    <string name="hide_actionbar">Hide top menu bar on/off</string>
-    <string name="hidelyricsbox">Hide lyrics box</string>
-    <string name="highlight_notallowed">Autoscale needs to be set to full for this feature</string>
-    <string name="host">Host</string>
-    <string name="select_item_variation">Select the song to create a set variation</string>
-    <string name="pad_choose_key">Please select the key of this song</string>
-    <string name="page_background">Page background</string>
-    <string name="pageturn_instructions">"This page allows you to assign buttons from a page turning device (such as a bluetooth footswitch) to control moving through sets or scrolling up and down on a song page.\n\nYou must ensure that the device is already connected to your Android tablet and switched on.\n\nClick on the green or blue buttons below then press the desired control button on your footswitch, etc."</string>
-    <string name="pageturn_next">Next</string>
-    <string name="pdf_functionnotavailable">This function is not available for PDF documents</string>
-    <string name="pdfonly">No ChordPro, just the PDF</string>
-    <string name="phrasesearch">Enter search phrase (title, author, lyrics, etc.)</string>
-    <string name="pleaseselect">Please select</string>
-    <string name="position">Position</string>
-    <string name="profile_description">Backup and restore your settings</string>
-    <string name="options">Options</string>
-    <string name="backup_export">Export OpenSongApp backup</string>
-    <string name="capo_toggle_bothcapo">Show both capo and native chords if available</string>
-    <string-array name="capoprint" translatable="false">
-        <item/>
-        <item>Yes</item>
-        <item>No</item>
-    </string-array>
-    <string name="choose_chordformat">Choose chord format</string>
-    <string name="choosechordfont">Choose chord font</string>
-    <string name="choosechordformat">Choose your preferred chord format when transposing a song</string>
-    <string name="chooselyricfont">Choose lyric font</string>
-    <string name="choosesongname">Choose a name for this song</string>
-    <string name="choosestickyfont">Choose sticky notes font</string>
-    <string name="chordiesearch">Online search at Chordie.com</string>
-    <string name="chordpro_false">No ChordPro song detected!</string>
-    <string name="chordproprogress">Looking for ChordPro song data on page…</string>
-    <string name="chords_flat">Use b chords</string>
-    <string name="chords_sharp">Use # chords</string>
-    <string name="click_to_change">Click to change</string>
-    <string name="client">Client</string>
-    <string name="continuous">Continuous</string>
-    <string name="convert_song">Please convert this song into OpenSong format (by viewing it) before adding it to a set</string>
-    <string name="converting">Converting</string>
-    <string name="current_category">Current category</string>
-    <string name="currentkeycode">Current keycode</string>
-    <string name="custom_chords_use_instrument">Click on the instrument to generate the code</string>
-    <string name="custom_search">Custom search</string>
-    <string name="customchords_fret">Label for first fret</string>
-    <string name="customchords_nochordname">Chord name has not been set</string>
-    <string name="customchords_noinstrument">Instrument has not been selected</string>
-    <string name="customchords_save">Save new custom chord to song</string>
-    <string name="customchords_saved">Currently saved custom chords</string>
-    <string name="customgestures">Assign custom gestures</string>
-    <string name="destination">Destination</string>
-    <string name="dim">Background darken</string>
-    <string name="display_popups">Customise popup windows</string>
-    <string name="download_new">Click here to download a new Bible</string>
-    <string name="nashville_error">No Nashville/Numeral chord format detected</string>
-    <string name="nearby_large_file">This large song file is being shared</string>
-    <string name="no">No</string>
-    <string name="no_folders">You need to create a subfolder to allow moving of files</string>
-    <string name="nodisplays">No external displays connected.  Please connect to a secondary display using an HDMI output or MiraCast compatible wireless display.</string>
-    <string name="not_high_enough_api">You need a newer version of Android for this!</string>
-    <string name="nowifidirect">Sorry, this device does not support WiFi direct</string>
-    <string name="managesets">Rename sets</string>
-    <string name="media_chooser">Media chooser</string>
-    <string name="media_play">Play</string>
-    <string name="menu_swipe_toggle">Toggle song list and option menus swipe on/off</string>
-    <string name="menu_text_size">Menu text size</string>
-    <string name="menu_width">Menu width</string>
-    <string name="midi_message_receive">MIDI message to activate song</string>
-    <string name="midi_message_sent">MIDI message sent from song</string>
-    <string name="midi_usb">Connect USB device</string>
-    <string name="mode_settings">Settings specific to this mode</string>
-    <string name="edit_default_delaymax">About</string>
-    <string name="edit_song_availabletags">[V] = Verse, [V1] = Verse 1, [C] = Chorus, [C1] for
-		Chorus 1, [P] = Prechorus, [T] = Tag, [B] = Bridge, […(whatever you want)…] = Custom tag.\n Lyric lines start
-		with a space, chord lines with a full stop, comment lines with a
-		semicolon.</string>
-    <string name="edit_song_keyline">Key line</string>
-    <string name="edit_song_pitch">Pitch pipe notes for song</string>
-    <string name="edit_song_restrictions">Restrictions</string>
-    <string name="error_missingsection">Missing sections</string>
-    <string name="export_png">Screenshot image (.png)</string>
-    <string name="exportsavedset">Share the saved set</string>
-    <string name="extracting">Extracting</string>
-    <string name="extradisplay">Secondary display detected.  Songs will be displayed on the secondary display.</string>
-    <string name="file_choose_info">Select the required file(s) below.</string>
-    <string name="filter_structure">[*filter:V] = filtered verse section</string>
-    <string name="findnewsongs">Find new songs</string>
-    <string name="floating_window">Floating window</string>
-    <string name="font_choose_preview">Choose with web preview</string>
-    <string name="fontsize">You need to turn off auto scale song.</string>
-    <string name="footpedal">Assign foot pedal</string>
-    <string name="full">Full</string>
-    <string name="import_onsong_error">"No OnSong backup file found in /documents/OpenSong/"</string>
-    <string name="import_song">Import a song</string>
-    <string name="importnewset">Import a set</string>
-    <string name="initialisesongs_start">Initialising \'Songs\' folder -</string>
-    <string name="intro_app">OpenSongApp uses songs created in OpenSong and displays them on your device screen.</string>
-    <string name="load_preferences">Loading preferences</string>
-    <string name="look_for">Look for</string>
-    <string name="lyrics_settings">Lyrics settings</string>
-    <string name="time_mins">Minutes</string>
-    <string name="time_secs">Seconds</string>
-    <string name="edit_song_variation_temp">This item is transposed in the set.  You have been taken to the original song for editing.</string>
-    <string name="edit_song_variation">You are editing a song that is a set variation item.  Any changes are saved to the variation in the set only.</string>
-    <string name="scale_auto">Toggle autoscale settings</string>
-
 </resources>

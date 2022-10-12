@@ -21,6 +21,7 @@ import com.garethevans.church.opensongtablet.songprocessing.Song;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> implements FastScroller.SectionIndexer {
 
@@ -29,6 +30,8 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
     private final MainActivityInterface mainActivityInterface;
     private final SparseBooleanArray checkedArray = new SparseBooleanArray();
     private final boolean showChecked;
+
+    LinkedHashMap<String, Integer> linkedHashMap, linkedHashMap2;
 
     AdapterCallback callback;
 
@@ -282,24 +285,54 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
     }
 
     Map<String, Integer> getAlphaIndex(List<Song> songlist) {
-        Map<String, Integer> linkedHashMap = new LinkedHashMap<>();
+        linkedHashMap = new LinkedHashMap<>();
+        linkedHashMap2 = new LinkedHashMap<>();
         if (songlist != null && songlist.size()>0) {
             for (int i = 0; i < songlist.size(); i++) {
-                String index = "";
-                if (songlist.get(i) != null && songlist.get(i).getTitle() != null && !songlist.get(i).getTitle().equals("")) {
-                    index = songlist.get(i).getTitle().substring(0, 1).toUpperCase(mainActivityInterface.getLocale());
+                String index = "";  // First letter
+                String index2 = ""; // First 2 letters
+                if (songlist.get(i) != null && songlist.get(i).getTitle() != null && !songlist.get(i).getTitle().isEmpty()) {
+                    String title = songlist.get(i).getTitle().toUpperCase(mainActivityInterface.getLocale());
+                    index = title.substring(0,1);
+                    if (title.length()>1) {
+                        index2 = title.substring(0,2);
+                    } else {
+                        index2 = index;
+                    }
                 }
 
                 if (linkedHashMap.get(index) == null) {
                     linkedHashMap.put(index, i);
                 }
+
+                if (linkedHashMap2.get(index2) == null) {
+                    linkedHashMap2.put(index2, i);
+                }
+
             }
         }
         return linkedHashMap;
     }
+    Map<String, Integer> getAlphaIndex2() {
+        return linkedHashMap2;
+    }
+
+    public int getPositionOfAlpha2fromAlpha(String index1) {
+        // get the key set
+        Set<String> keySet = linkedHashMap2.keySet();
+        String[] keyArray = keySet.toArray(new String[0]);
+
+        int pos = 0;
+        for (int x=0; x<keyArray.length; x++) {
+           if (keyArray[x].startsWith(index1)) {
+               pos = x;
+               break;
+           }
+        }
+        return pos;
+    }
 
     public void changeCheckBox(int pos) {
-        Log.d(TAG,"checkedArray.size()+"+checkedArray.size());
         if (songList.size()>pos) {
             // Get the current value and change it
             checkedArray.put(pos,!checkedArray.get(pos));

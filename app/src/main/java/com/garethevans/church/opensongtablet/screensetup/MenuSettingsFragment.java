@@ -49,8 +49,10 @@ public class MenuSettingsFragment extends Fragment {
         boolean showTickBoxes = mainActivityInterface.getPreferences().
                 getMyPreferenceBoolean("songMenuSetTicksShow",true);
         boolean sortByTitles = mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuSortTitles",true);
+        boolean songMenuAlphaIndexLevel2 = mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuAlphaIndexLevel2",false);
 
         myView.songAlphabeticalShow.setChecked(showAlphabetical);
+        myView.level2Index.setChecked(songMenuAlphaIndexLevel2);
         myView.songAlphabeticalSize.setValue(fontSize);
         myView.songAlphabeticalSize.setHint(fontSize+"sp");
         myView.songAlphabeticalSize.setLabelFormatter(value -> ((int)value)+"sp");
@@ -76,6 +78,7 @@ public class MenuSettingsFragment extends Fragment {
             // Try to update the song menu
             mainActivityInterface.updateSongMenu("menuSettingsFragment",null, null);
         });
+        myView.level2Index.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getPreferences().setMyPreferenceBoolean("songMenuAlphaIndexLevel2",isChecked));
         myView.songAlphabeticalSize.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
             @Override
             public void onStartTrackingTouch(@NonNull Slider slider) { }
@@ -93,10 +96,12 @@ public class MenuSettingsFragment extends Fragment {
     }
 
     private void showHideSize(boolean show) {
-        // If we are showing check boxes, we can show the size layout, if not, hide it
+        // If we are showing alphabetical lists, we can show the size and level2 layout, if not, hide them
         if (show) {
+            myView.level2Index.setVisibility(View.VISIBLE);
             myView.songAlphabeticalSize.setVisibility(View.VISIBLE);
         } else {
+            myView.level2Index.setVisibility(View.GONE);
             myView.songAlphabeticalSize.setVisibility(View.GONE);
         }
     }
