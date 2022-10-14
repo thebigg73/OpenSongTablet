@@ -998,14 +998,12 @@ public class StorageAccess {
                 uriString = "../" + uriString;
             }
         }
-        Log.d(TAG,"uriString="+uriString);
         return uriString;
     }
 
 
     // Basic file actions (read, create, copy, delete, write)
     public boolean saveThisSongFile(Song thisSong) {
-        Log.d(TAG,"saveSongFile() called");
         // This is called from the SaveSong class and uses the sent Song object
         // First get the song uri
         // Because it may not be in the songs folder, lets check!
@@ -1616,7 +1614,6 @@ public class StorageAccess {
             }
             try {
                 Uri renamed = DocumentsContract.renameDocument(c.getContentResolver(), oldUri, newsubfolder);
-                Log.d(TAG,"renamed="+renamed+"\ndesired="+newUri);
                 if (renamed!=null && renamed.equals(newUri)) {
                     message = c.getString(R.string.success);
                 } else {

@@ -422,7 +422,6 @@ public class PerformanceGestures {
         mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_scaling),0);
     }
     public void toggleScale() {
-        Log.d(TAG,"toggleScale() called");
         mainActivityInterface.toggleScale();
     }
 

@@ -21,7 +21,8 @@ public class MakePDF {
 
     private final MainActivityInterface mainActivityInterface;
     private final float margin_cm = 1.5f;           // 1.5cm
-    private final float footerHeight_cm = 0.6f;     // 0.6cm
+    private final float footerHeight_cm = 0.6f;     // 0.
+    private final int linePos = 12;
     private int headerHeight, headerWidth, docWidth, docHeight, availableHeight, pageNum=1, totalPages=1;
     private Paint linePaint, footerPaint;
     private PdfDocument pdfDocument;
@@ -33,6 +34,7 @@ public class MakePDF {
     private boolean isSetListPrinting = false;
     private boolean showTotalPage = true;
     private String exportFilename;
+    private float maxFontSize = 16f;
 
     public MakePDF(Context c) {
         mainActivityInterface = (MainActivityInterface) c;
@@ -221,7 +223,7 @@ public class MakePDF {
         // The header can vary depending on the content, but the footer is always the same
 
         int availableWidth = docWidth - (cmToPx(margin_cm) * 2);
-        availableHeight = docHeight - (cmToPx(margin_cm) * 2) - headerHeight - cmToPx(footerHeight_cm);
+        availableHeight = docHeight - (cmToPx(margin_cm) * 2) - headerHeight - cmToPx(footerHeight_cm)-linePos;
 
         // We need to make sure that at least all sections can fit on the available page
         // If any are bigger, we need to scale down
@@ -275,7 +277,7 @@ public class MakePDF {
         }
 
         // Draw a line
-        drawHorizontalLine(docHeight-cmToPx(margin_cm)-cmToPx(footerHeight_cm)-12);
+        drawHorizontalLine(docHeight-cmToPx(margin_cm)-cmToPx(footerHeight_cm)-linePos);
     }
     private void drawHorizontalLine(int y) {
         pageCanvas.drawLine(cmToPx(margin_cm), y, docWidth - cmToPx(margin_cm), y, linePaint);

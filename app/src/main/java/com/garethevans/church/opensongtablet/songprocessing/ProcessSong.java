@@ -1416,7 +1416,6 @@ public class ProcessSong {
                         (!multilineSong || !multiLineVerseKeepCompact)) {
                     str = fixExcessSpaces(str);
                 }
-
                 textView.setText(str.replaceAll("[|_]", " "));
             } else {
                 textView.setText(str);

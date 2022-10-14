@@ -6,7 +6,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -379,8 +378,6 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                 myView.songmenualpha.sideIndex.addView(textView);
             }
             changeAlphabeticalVisibility(mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuAlphaIndexShow", true));
-            Log.d(TAG,"Index myView.songmenualpha.sideIndex.getChildCount():" + myView.songmenualpha.sideIndex.getChildCount());
-            Log.d(TAG,"Index alphalistpostion"+alphalistposition);
 
             myView.songmenualpha.sideIndex.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override

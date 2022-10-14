@@ -229,6 +229,7 @@
     <string name="create_folder_error">There was an error creating the new folder!</string>
     <string name="create_new_song">Create new song</string>
     <string name="crossfade_time">Cross-fade time</string>
+    <string name="csv" translatable="false">CSV</string>
     <string name="current_location">Selected location</string>
     <string name="custom">Custom</string>
     <string name="custom_background">Custom tag background</string>
@@ -1034,6 +1035,7 @@ Check out the categories in the right hand options menu.
     <string name="website_edit_song_tag" translatable="false">https://www.opensongapp.com/user-manual/songs/edit-song#h.qx5dcmco7fmz</string>
     <string name="website_export_set" translatable="false">https://www.opensongapp.com/user-manual/sets/export-set</string>
     <string name="website_export_song" translatable="false">https://www.opensongapp.com/user-manual/songs/export-song</string>
+    <string name="website_export_song_list" translatable="false">https://www.opensongapp.com/user-manual/storage/export-list-of-songs</string>
     <string name="website_fonts" translatable="false">https://www.opensongapp.com/user-manual/display/fonts</string>
     <string name="website_foot_pedal" translatable="false">https://www.opensongapp.com/user-manual/controls/foot-pedals</string>
     <string name="website_forum" translatable="false">https://groups.google.com/g/opensongapp</string>

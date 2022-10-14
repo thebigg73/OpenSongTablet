@@ -11,7 +11,6 @@ import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
@@ -82,7 +81,7 @@ public class FolderManagementBottomSheet extends BottomSheetDialogFragment {
 
     private void setupView() {
         myView.backupFolder.setVisibility(View.VISIBLE);
-        myView.backupFolder.setOnClickListener(new ActionClickListener("backupOSB", 0));
+        myView.backupFolder.setOnClickListener(new ActionClickListener("backupOSB"));
 
         if (root) {
             myView.dialogHeading.setText(mainActivityInterface.getStorageAccess().
@@ -91,16 +90,16 @@ public class FolderManagementBottomSheet extends BottomSheetDialogFragment {
             myView.moveContents.setVisibility(View.GONE);
             myView.renameFolder.setVisibility(View.GONE);
             myView.deleteSubdirectory.setVisibility(View.GONE);
-            myView.changeLocation.setOnClickListener(new ActionClickListener("resetStorage", R.id.setStorageLocationFragment));
-            myView.exportSongList.setVisibility(View.GONE);
+            myView.changeLocation.setOnClickListener(new ActionClickListener("resetStorage"));
+            myView.exportSongList.setVisibility(View.VISIBLE);
         } else if (songs) {
             String s = "OpenSong/Songs";
             myView.dialogHeading.setText(s);
             myView.changeLocation.setVisibility(View.GONE);
             myView.renameFolder.setVisibility(View.GONE);
-            myView.moveContents.setOnClickListener(new ActionClickListener("moveContents",0));
+            myView.moveContents.setOnClickListener(new ActionClickListener("moveContents"));
             myView.deleteSubdirectory.setVisibility(View.GONE);
-            myView.createSubdirectory.setOnClickListener(new ActionClickListener("createItem", 0));
+            myView.createSubdirectory.setOnClickListener(new ActionClickListener("createItem"));
             myView.exportSongList.setVisibility(View.VISIBLE);
             myView.exportSongList.setOnClickListener(v -> {
                 ExportSongListBottomSheet exportSongListBottomSheet = new ExportSongListBottomSheet();
@@ -112,25 +111,19 @@ public class FolderManagementBottomSheet extends BottomSheetDialogFragment {
             String s = "OpenSong/Songs/" + subdir;
             myView.dialogHeading.setText(s);
             myView.changeLocation.setVisibility(View.GONE);
-            myView.createSubdirectory.setOnClickListener(new ActionClickListener("createItem", 0));
-            myView.moveContents.setOnClickListener(new ActionClickListener("moveContents",0));
-            myView.renameFolder.setOnClickListener(new ActionClickListener("renameFolder",0));
-            myView.deleteSubdirectory.setOnClickListener(new ActionClickListener("deleteItem", 0));
-            myView.exportSongList.setVisibility(View.GONE);
+            myView.createSubdirectory.setOnClickListener(new ActionClickListener("createItem"));
+            myView.moveContents.setOnClickListener(new ActionClickListener("moveContents"));
+            myView.renameFolder.setOnClickListener(new ActionClickListener("renameFolder"));
+            myView.deleteSubdirectory.setOnClickListener(new ActionClickListener("deleteItem"));
+            myView.exportSongList.setVisibility(View.VISIBLE);
         }
     }
 
     private class ActionClickListener implements View.OnClickListener {
-        String what;
-        int id;
-        String action;
-        ArrayList<String> arguments;
-        DialogFragment dialogFragment;
+        private final String what;
 
-
-        ActionClickListener(String what, int id) {
+        private ActionClickListener(String what) {
             this.what = what;
-            this.id = id;
         }
         @Override
         public void onClick(View v) {
@@ -145,8 +138,8 @@ public class FolderManagementBottomSheet extends BottomSheetDialogFragment {
                     break;
 
                 case "deleteItem":
-                    action = getString(R.string.delete) + ": " + "OpenSong/Songs/" + subdir + "\n" + getString(R.string.delete_folder_warning);
-                    arguments = new ArrayList<>();
+                    String action = getString(R.string.delete) + ": " + "OpenSong/Songs/" + subdir + "\n" + getString(R.string.delete_folder_warning);
+                    ArrayList<String> arguments = new ArrayList<>();
                     arguments.add("Songs");
                     arguments.add(subdir);
                     arguments.add("");

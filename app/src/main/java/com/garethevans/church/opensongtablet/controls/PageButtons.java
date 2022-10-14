@@ -402,8 +402,6 @@ public class PageButtons {
         DrawableCompat.setTint(drawable, pageButtonIconColor);
         fab.setImageDrawable(drawable);
 
-        Log.d(TAG,"buttonNum:"+buttonNum);
-
         if (buttonNum>=0 && buttonNum<=pageButtonNum) {
             Drawable buttonDrawable = pageButtonDrawable.get(buttonNum);
             buttonDrawable.mutate();
@@ -430,7 +428,6 @@ public class PageButtons {
                 fab.setOnClickListener(null);
             }
         } else if (buttonNum>=0) {
-            Log.d(TAG,"making button "+buttonNum+" visible");
             fab.setImageDrawable(ResourcesCompat.getDrawable(c.getResources(),drawableIds.get(0),null));
             fab.setTag("");
             fab.show();

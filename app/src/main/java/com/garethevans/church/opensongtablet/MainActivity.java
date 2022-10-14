@@ -679,7 +679,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     // Navigation logic
     private void setupNavigation() {
-        Log.d(TAG, "setUpNavigation()");
         navHostFragment =
                 (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         if (navHostFragment != null) {
@@ -839,7 +838,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
 
     public void toggleScale() {
-        Log.d(TAG,"toggleScale() called");
         updateFragment("toggleScale",null,null);
     }
     @Override
@@ -2617,7 +2615,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         // Only do this if we are not in a settings menu though!
         if (!settingsOpen && pad.getOrientationChanged()) {
             // Set the current orientation
-            Log.d(TAG,"orientation changed");
             pad.setCurrentOrientation(newConfig.orientation);
             pageButtons.requestLayout();
             doSongLoad(song.getFolder(),song.getFilename(),true);

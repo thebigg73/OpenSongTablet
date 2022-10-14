@@ -800,7 +800,6 @@ public class PerformanceFragment extends Fragment {
                             myView.highlighterView.setPivotY(0f);
                             //myView.highlighterView.setScaleX(scaleFactor);
                             //myView.highlighterView.setScaleY(scaleFactor);
-                            Log.d(TAG,"w="+w+"  h="+h+"  scaleFactor="+scaleFactor);
 
                             // Hide after a certain length of time
                             int timetohide = mainActivityInterface.getPreferences().getMyPreferenceInt("timeToDisplayHighlighter", 0);
@@ -905,7 +904,6 @@ public class PerformanceFragment extends Fragment {
     }
 
     public void toggleScale() {
-        Log.d(TAG,"toggleScale() called");
         myView.zoomLayout.toggleScale();
     }
 
