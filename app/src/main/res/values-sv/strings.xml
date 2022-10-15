@@ -610,7 +610,7 @@
     <string name="song_alignment_information">Justering av låtinformation</string>
     <string name="song_display">Låtdisplay</string>
     <string name="song_doesnt_exist">"Den sången finns inte på din enhet. Har du raderat det?"</string>
-    <string name="song_duration">"Song duration (sekunder)"</string>
+    <string name="song_duration">Song duration</string>
     <string name="song_features">Låtfunktioner</string>
     <string name="song_features_warning">Dessa värden ställs bäst in med de dedikerade sångfunktionsalternativen i inställningsmenyn. Spara låten först. Du kan dock redigera värdena manuellt här.</string>
     <string name="song_menu_checkboxes">"Visa inställda kryssrutor i låtmenyn"</string>

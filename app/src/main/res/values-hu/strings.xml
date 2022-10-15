@@ -610,7 +610,7 @@
     <string name="song_alignment_information">A dal információinak összehangolása</string>
     <string name="song_display">Dal megjelenítése</string>
     <string name="song_doesnt_exist">"Ez a dal nem a készüléken. Már törölte azt?"</string>
-    <string name="song_duration">"Song időtartama (másodpercben)"</string>
+    <string name="song_duration">Song időtartama</string>
     <string name="song_features">A dal jellemzői</string>
     <string name="song_features_warning">Ezeket az értékeket a legjobban a beállítások menüben található dal funkció opcióival lehet beállítani. Először mentse el a dalt. Itt azonban manuálisan is szerkesztheti az értékeket.</string>
     <string name="song_menu_checkboxes">"Itt található készlet jelölőnégyzetet dal menü"</string>

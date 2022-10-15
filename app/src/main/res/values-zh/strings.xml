@@ -610,7 +610,7 @@
     <string name="song_alignment_information">歌曲信息对齐</string>
     <string name="song_display">歌曲展示</string>
     <string name="song_doesnt_exist">"这首歌是不是你的设备上。你已经删除了它？"</string>
-    <string name="song_duration">"歌曲持续时间（秒）"</string>
+    <string name="song_duration">歌曲持续时间</string>
     <string name="song_features">歌曲特色</string>
     <string name="song_features_warning">这些值最好使用设置菜单中的专用歌曲功能选项进行设置。 先保存歌曲。 但是，您可以在此处手动编辑值。</string>
     <string name="song_menu_checkboxes">"在歌曲菜单中显示设置复选框"</string>

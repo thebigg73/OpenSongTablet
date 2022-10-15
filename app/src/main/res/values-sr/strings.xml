@@ -610,7 +610,7 @@
     <string name="song_alignment_information">Usklađivanje informacija o pesmi</string>
     <string name="song_display">Prikaz pesme</string>
     <string name="song_doesnt_exist">Ta pesma nije na Vašem uređaju. Da li ste je obrisali?</string>
-    <string name="song_duration">Dužina pesme (sec)</string>
+    <string name="song_duration">Dužina pesme</string>
     <string name="song_features">Karakteristike pesme</string>
     <string name="song_features_warning">Ove vrednosti se najbolje podešavaju korišćenjem posebnih opcija za pesmu u meniju podešavanja. Prvo sačuvajte pesmu. Međutim, ovde možete ručno urediti vrednosti.</string>
     <string name="song_menu_checkboxes">Prikazivanje ček boksa u meniju pesama</string>

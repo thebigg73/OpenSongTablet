@@ -610,7 +610,7 @@
     <string name="song_alignment_information">曲情報アラインメント</string>
     <string name="song_display">ソングディスプレイ</string>
     <string name="song_doesnt_exist">"その曲は、お使いのデバイス上にありません。あなたはそれを削除したことがありますか？"</string>
-    <string name="song_duration">"曲の時間（秒）"</string>
+    <string name="song_duration">曲の時間</string>
     <string name="song_features">曲の特徴</string>
     <string name="song_features_warning">これらの値は、設定メニューの専用の曲機能オプションを使用して設定するのが最適です。 最初に曲を保存します。 ただし、ここで値を手動で編集できます。</string>
     <string name="song_menu_checkboxes">"ソングメニューで設定したチェックボックスを表示する"</string>

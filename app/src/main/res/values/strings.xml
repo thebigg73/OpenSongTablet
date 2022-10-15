@@ -763,7 +763,7 @@
     <string name="song_alignment_information">Song information alignment</string>
     <string name="song_display">Song display</string>
     <string name="song_doesnt_exist">That song isn\'t on your device.  Have you deleted it?</string>
-    <string name="song_duration">Song duration (seconds)</string>
+    <string name="song_duration">Song duration</string>
     <string name="song_features">Song features</string>
     <string name="song_features_warning">These values are best set using the dedicated song feature options in the settings menu. Save the song first. You can, however, manually edit the values here.</string>
     <string name="song_menu_checkboxes">Show set checkboxes in song menu</string>
@@ -1020,6 +1020,7 @@ Check out the categories in the right hand options menu.
     <string name="website_actionbar" translatable="false">https://www.opensongapp.com/user-manual/display/actionbar</string>
     <string name="website_address" translatable="false">https://www.opensongapp.com</string>
     <string name="website_app_mode" translatable="false">https://www.opensongapp.com/user-manual/app-mode</string>
+    <string name="website_autoscroll" translatable="false">https://www.opensongapp.com/user-manual/songs/song-actions/autoscroll</string>
     <string name="website_backup" translatable="false">https://www.opensongapp.com/user-manual/songs/opensongapp-backup</string>
     <string name="website_ccli" translatable="false">https://www.opensongapp.com/user-manual/ccli</string>
     <string name="website_chords" translatable="false">https://www.opensongapp.com/user-manual/songs/song-actions/chords/chords</string>
@@ -1051,6 +1052,7 @@ Check out the categories in the right hand options menu.
     <string name="website_modes" translatable="false">https://www.opensongapp.com/user-guide/the-app-modes</string>
     <string name="website_nearby" translatable="false">https://www.opensongapp.com/user-manual/connect-devices</string>
     <string name="website_ocr" translatable="false">https://www.opensongapp.com/user-manual/songs/ocr</string>
+    <string name="website_pad" translatable="false">https://www.opensongapp.com/user-manual/songs/song-actions/pads</string>
     <string name="website_page_buttons" translatable="false">https://www.opensongapp.com/user-manual/controls/page-buttons</string>
     <string name="website_paypal" translatable="false">https://www.paypal.me/opensongapp</string>
     <string name="website_play_services_help" translatable="false">https://www.opensongapp.com/user-guide/devices-without-google-play</string>
@@ -1081,4 +1083,5 @@ Check out the categories in the right hand options menu.
     <string name="youtube" translatable="false">YouTube</string>
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zoom_level">Zoom level</string>
+    <string name="autoscroll_delay">Delay</string>
 </resources>

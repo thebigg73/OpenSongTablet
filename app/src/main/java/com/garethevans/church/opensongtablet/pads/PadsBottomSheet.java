@@ -64,6 +64,7 @@ public class PadsBottomSheet extends BottomSheetDialogFragment {
         myView = BottomSheetPadsBinding.inflate(inflater, container, false);
 
         myView.dialogHeading.setClose(this);
+        myView.dialogHeading.setWebHelp(mainActivityInterface,getString(R.string.website_pad));
 
         // Set up values
         setupValues();

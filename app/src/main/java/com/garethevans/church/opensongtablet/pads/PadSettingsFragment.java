@@ -33,6 +33,7 @@ public class PadSettingsFragment extends Fragment {
         myView = SettingsPadsBinding.inflate(inflater, container, false);
 
         mainActivityInterface.updateToolbar(getString(R.string.pad));
+        mainActivityInterface.updateToolbarHelp(getString(R.string.website_pad));
         setListeners();
 
         return myView.getRoot();

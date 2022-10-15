@@ -610,7 +610,7 @@
     <string name="song_alignment_information">Ausrichtung der Songinformationen</string>
     <string name="song_display">Liedanzeige</string>
     <string name="song_doesnt_exist">"Dieser Song ist nicht auf Ihrem Gerät. Wurde er gelöscht?"</string>
-    <string name="song_duration">"Song-Dauer (in Sekunden)"</string>
+    <string name="song_duration">Song-Dauer</string>
     <string name="song_features">Song-Funktionen</string>
     <string name="song_features_warning">Diese Werte werden am besten mit den speziellen Song-Feature-Optionen im Einstellungsmenü eingestellt. Speichern Sie zuerst das Lied. Sie können die Werte hier jedoch manuell bearbeiten.</string>
     <string name="song_menu_checkboxes">"Set-Kontrollkästchen im Liedmenü anzeigen"</string>

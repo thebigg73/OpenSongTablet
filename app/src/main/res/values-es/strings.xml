@@ -610,7 +610,7 @@
     <string name="song_alignment_information">Alineación de la información de la canción</string>
     <string name="song_display">Visualización de canciones</string>
     <string name="song_doesnt_exist">"Esa canción no está en su dispositivo. ¿Has borrado él?"</string>
-    <string name="song_duration">"Duración Song (segundos)"</string>
+    <string name="song_duration">Duración Song</string>
     <string name="song_features">Características de la canción</string>
     <string name="song_features_warning">Estos valores se configuran mejor utilizando las opciones de funciones de canciones dedicadas en el menú de configuración. Guarde la canción primero. Sin embargo, puede editar manualmente los valores aquí.</string>
     <string name="song_menu_checkboxes">"Mostrar casillas de verificación en el menú de canciones"</string>

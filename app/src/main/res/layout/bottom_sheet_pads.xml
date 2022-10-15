@@ -42,15 +42,13 @@
                         app:icon="@drawable/play" />
                 </FrameLayout>
 
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
                     android:id="@+id/padPanic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    app:backgroundTint="@color/red"
-                    android:contentDescription="@string/panic"
-                    android:src="@drawable/information"
-                    app:fabSize="mini" />
+                    android:layout_gravity="end"
+                    android:text="@string/panic"
+                    app:icon="@drawable/information"/>
             </LinearLayout>
 
             <com.garethevans.church.opensongtablet.customviews.ExposedDropDown

@@ -610,7 +610,7 @@
     <string name="song_alignment_information">Zarovnání informací o skladbě</string>
     <string name="song_display">Zobrazení písně</string>
     <string name="song_doesnt_exist">"Že píseň není na vašem zařízení. Už jste ji odstraněn?"</string>
-    <string name="song_duration">"Doba song (v sekundách)"</string>
+    <string name="song_duration">Doba song</string>
     <string name="song_features">Vlastnosti písně</string>
     <string name="song_features_warning">Tyto hodnoty lze nejlépe nastavit pomocí možností vyhrazených funkcí skladby v nabídce nastavení. Nejprve skladbu uložte. Zde však můžete ručně upravit hodnoty.</string>
     <string name="song_menu_checkboxes">"Zobrazit zaškrtávací políčka v nabídce skladby"</string>

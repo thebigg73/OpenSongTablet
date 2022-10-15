@@ -329,7 +329,7 @@ public class EditSongFragmentFeatures extends Fragment {
         }
         int mins = Integer.parseInt(minsText);
         int secs = Integer.parseInt(secsText);
-        int total = (mins*60) + secs;
+        int total = mainActivityInterface.getTimeTools().totalSecs(mins,secs);
         int[] timeVals = mainActivityInterface.getTimeTools().getMinsSecsFromSecs(total);
         mainActivityInterface.getTempSong().setAutoscrolllength(total+"");
     }

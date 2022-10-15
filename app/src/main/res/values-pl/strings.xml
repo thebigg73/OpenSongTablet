@@ -610,7 +610,7 @@
     <string name="song_alignment_information">Wyrównanie informacji o utworze</string>
     <string name="song_display">Wyświetlanie utworu</string>
     <string name="song_doesnt_exist">"Ta piosenka nie jest w urządzeniu. Czy ona usunięta?"</string>
-    <string name="song_duration">"Czas trwania utworu (s)"</string>
+    <string name="song_duration">Czas trwania utworu</string>
     <string name="song_features">Funkcje piosenki</string>
     <string name="song_features_warning">Te wartości najlepiej ustawić za pomocą dedykowanych opcji funkcji utworu w menu ustawień. Najpierw zapisz piosenkę. Możesz jednak ręcznie edytować wartości tutaj.</string>
     <string name="song_menu_checkboxes">"Pokaż zaznaczone pola wyboru w menu piosenki"</string>

@@ -610,7 +610,7 @@
     <string name="song_alignment_information">Liedjie inligting belyning</string>
     <string name="song_display">Liedjie vertoon</string>
     <string name="song_doesnt_exist">"Daardie liedjie is nie op jou toestel. Het jy dit verwyder?"</string>
-    <string name="song_duration">"Lied duur (sekondes)"</string>
+    <string name="song_duration">Lied duur</string>
     <string name="song_features">Lied kenmerke</string>
     <string name="song_features_warning">Hierdie waardes word die beste gestel deur die toegewyde liedjie-funksie-opsies in die instellingskieslys te gebruik. Stoor eers die liedjie. U kan egter die waardes hier handmatig wysig.</string>
     <string name="song_menu_checkboxes">"Wys verstek bokse in die lied menu"</string>

@@ -610,7 +610,7 @@
     <string name="song_alignment_information">Ευθυγράμμιση πληροφοριών τραγουδιού</string>
     <string name="song_display">Εμφάνιση τραγουδιού</string>
     <string name="song_doesnt_exist">"Αυτό το τραγούδι δεν βρίσκεται στην συσκευή σου. Μήπως το διέγραψες;"</string>
-    <string name="song_duration">"Song duration (seconds)"</string>
+    <string name="song_duration">Song duration</string>
     <string name="song_features">Χαρακτηριστικά τραγουδιού</string>
     <string name="song_features_warning">Αυτές οι τιμές ρυθμίζονται καλύτερα χρησιμοποιώντας τις αποκλειστικές επιλογές δυνατοτήτων τραγουδιού στο μενού ρυθμίσεων. Αποθηκεύστε πρώτα το τραγούδι. Μπορείτε, ωστόσο, να επεξεργαστείτε με μη αυτόματο τρόπο τις τιμές εδώ.</string>
     <string name="song_menu_checkboxes">"Εμφάνιση των πλαισίων ελέγχου στο μενού τραγουδιών"</string>

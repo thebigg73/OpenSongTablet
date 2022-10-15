@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -21,7 +22,8 @@ public class Autoscroll {
 
     private final String TAG = "Autoscroll";
     private boolean isAutoscrolling, wasScrolling, autoscrollOK, isPaused = false, showOn = true,
-            autoscrollAutoStart, autoscrollActivated = false, autoscrollUseDefaultTime, usingZoomLayout;
+            autoscrollAutoStart, autoscrollActivated = false, autoscrollUseDefaultTime,
+            onscreenAutoscrollHide, usingZoomLayout;
     private final Context c;
     private final MainActivityInterface mainActivityInterface;
     private int songDelay, songDuration, displayHeight, songHeight, scrollTime, flashCount,
@@ -56,10 +58,10 @@ public class Autoscroll {
     }
 
     public void initialiseAutoscroll(MyZoomLayout myZoomLayout, MyRecyclerView myRecyclerView) {
-        colorOn = mainActivityInterface.getMyThemeColors().getExtraInfoTextColor();
         this.myZoomLayout = myZoomLayout;
         this.myRecyclerView = myRecyclerView;
         if (mainActivityInterface!=null) {
+            colorOn = mainActivityInterface.getMyThemeColors().getExtraInfoTextColor();
             this.myRecyclerView.initialiseRecyclerView(mainActivityInterface);
         }
     }
@@ -67,6 +69,53 @@ public class Autoscroll {
     public void initialiseSongAutoscroll(int songHeight, int displayHeight) {
         this.displayHeight = displayHeight;
         this.songHeight = songHeight;
+        autoscrollView.setOnClickListener(view -> isPaused = !isPaused);
+        autoscrollView.setOnLongClickListener(view -> {
+            stopAutoscroll();
+            return true;
+        });
+        setupAutoscrollPreferences();
+    }
+
+    // The preferences for autoscroll;
+    public void setAutoscrollAutoStart(boolean autoscrollAutoStart) {
+        this.autoscrollAutoStart = autoscrollAutoStart;
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean("autoscrollAutoStart",autoscrollAutoStart);
+    }
+    public boolean getAutoscrollAutoStart() {
+        return autoscrollAutoStart;
+    }
+    public void setAutoscrollUseDefaultTime(boolean autoscrollUseDefaultTime) {
+        this.autoscrollUseDefaultTime = autoscrollUseDefaultTime;
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean("autoscrollUseDefaultTime",autoscrollUseDefaultTime);
+    }
+    public boolean getAutoscrollUseDefaultTime() {
+        return autoscrollUseDefaultTime;
+    }
+    public void setAutoscrollDefaultSongPreDelay(int autoscrollDefaultSongPreDelay) {
+        this.autoscrollDefaultSongPreDelay = autoscrollDefaultSongPreDelay;
+        mainActivityInterface.getPreferences().setMyPreferenceInt("autoscrollDefaultSongPreDelay",autoscrollDefaultSongPreDelay);
+    }
+    public int getAutoscrollDefaultSongPreDelay() {
+        return autoscrollDefaultSongPreDelay;
+    }
+    public void setAutoscrollDefaultSongLength(int autoscrollDefaultSongLength) {
+        this.autoscrollDefaultSongLength = autoscrollDefaultSongLength;
+        mainActivityInterface.getPreferences().setMyPreferenceInt("autoscrollDefaultSongLength",autoscrollDefaultSongLength);
+    }
+    public int getAutoscrollDefaultSongLength() {
+        return autoscrollDefaultSongLength;
+    }
+    public void setOnscreenAutoscrollHide(boolean onscreenAutoscrollHide) {
+        this.onscreenAutoscrollHide = onscreenAutoscrollHide;
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean(
+                "onscreenAutoscrollHide",onscreenAutoscrollHide);
+    }
+    public boolean getOnscreenAutoscrollHide() {
+        return onscreenAutoscrollHide;
+    }
+
+    public void setupAutoscrollPreferences() {
         autoscrollAutoStart = mainActivityInterface.getPreferences().getMyPreferenceBoolean(
                 "autoscrollAutoStart", false);
         autoscrollUseDefaultTime = mainActivityInterface.getPreferences().getMyPreferenceBoolean(
@@ -75,11 +124,8 @@ public class Autoscroll {
                 "autoscrollDefaultSongPreDelay", 20);
         autoscrollDefaultSongLength = mainActivityInterface.getPreferences().getMyPreferenceInt(
                 "autoscrollDefaultSongLength", 180);
-        autoscrollView.setOnClickListener(view -> isPaused = !isPaused);
-        autoscrollView.setOnLongClickListener(view -> {
-            stopAutoscroll();
-            return true;
-        });
+        onscreenAutoscrollHide = mainActivityInterface.getPreferences().getMyPreferenceBoolean(
+                "onscreenAutoscrollHide",true);
     }
 
     public boolean getIsPaused() {
@@ -96,6 +142,10 @@ public class Autoscroll {
         scrollIncrementScale = 1f;
         songDelay = stringToInt(mainActivityInterface.getSong().getAutoscrolldelay());
         songDuration = stringToInt(mainActivityInterface.getSong().getAutoscrolllength());
+        Log.d(TAG,"songDuration:"+songDuration);
+        Log.d(TAG,"autoscrollUseDefaultTime:"+autoscrollUseDefaultTime);
+        Log.d(TAG,"autoscrollDefaultSongPreDelay:"+autoscrollDefaultSongPreDelay);
+        Log.d(TAG,"autoscrollDefaultSongLength:"+autoscrollDefaultSongLength);
         if (songDuration==0 && autoscrollUseDefaultTime) {
             songDelay = autoscrollDefaultSongPreDelay;
             songDuration = autoscrollDefaultSongLength;
@@ -127,6 +177,7 @@ public class Autoscroll {
         // If we are in Stage mode, or viewing a pdf, we scroll the RecyclerView
         usingZoomLayout = mainActivityInterface.getMode().equals("Performance") && mainActivityInterface.getSong().getFiletype().equals("XML");
 
+        Log.d(TAG,"usingZoomLayout:"+usingZoomLayout);
         if (usingZoomLayout) {
             myZoomLayout.setIsUserTouching(false);
             myZoomLayout.scrollTo(0,0);
@@ -136,6 +187,8 @@ public class Autoscroll {
         }
 
         figureOutTimes();
+
+        Log.d(TAG,"autoscrollOK:"+autoscrollOK);
 
         if (autoscrollOK) {
             if (timer==null) {
@@ -187,6 +240,7 @@ public class Autoscroll {
             try {
                 timer.cancel();
                 timer.purge();
+                timer = null;
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -352,25 +406,23 @@ public class Autoscroll {
         scrollIncrementScale = 0.75f * scrollIncrementScale;
     }
     private int stringToInt(String string) {
-        if (string!=null && !string.isEmpty()) {
-            try {
-                return Integer.parseInt(string);
-            } catch (Exception e) {
-                return 0;
-            }
-        } else {
+        int val;
+        if (string==null || string.isEmpty()) {
             return 0;
+        } else {
+            return Integer.parseInt(string);
         }
     }
 
     // This is called from both the Autoscroll settings and bottom sheet to activate the link audio button
-    public void checkLinkAudio(MaterialButton materialButton, MaterialEditText durationText,
+    public void checkLinkAudio(MaterialButton fromLinkButton, MaterialEditText minText, MaterialEditText secText,
                                 MaterialEditText delayText, final int delay) {
         // If link audio is set and time is valid get it and set the button action
         if (mainActivityInterface.getSong().getLinkaudio()!=null &&
                 !mainActivityInterface.getSong().getLinkaudio().isEmpty()) {
             Uri uri = mainActivityInterface.getStorageAccess().fixLocalisedUri(mainActivityInterface.getSong().getLinkaudio());
-            if (uri!=null && mainActivityInterface.getStorageAccess().uriExists(uri)) {
+            if (!mainActivityInterface.getSong().getLinkaudio().isEmpty() &&
+                    uri!=null && mainActivityInterface.getStorageAccess().uriExists(uri)) {
                 MediaPlayer mediaPlayer = new MediaPlayer();
                 try {
                     mediaPlayer.setDataSource(c, uri);
@@ -378,17 +430,20 @@ public class Autoscroll {
                     e.printStackTrace();
                 }
                 mediaPlayer.prepareAsync();
-                mediaPlayer.setOnPreparedListener(mediaPlayer1 -> materialButton.setOnClickListener(v -> {
+                fromLinkButton.setVisibility(View.VISIBLE);
+
+                mediaPlayer.setOnPreparedListener(mediaPlayer1 -> fromLinkButton.setOnClickListener(v -> {
                     // Updating the text fields triggers the listener which saves
                     int duration = mediaPlayer1.getDuration()/1000;
                     if (delay > duration) {
-                        delayText.setText(duration+"");
+                        delayText.setText("0");
                     }
-                    durationText.setText(""+duration);
-                    materialButton.setVisibility(View.VISIBLE);
+                    int[] time = mainActivityInterface.getTimeTools().getMinsSecsFromSecs(duration);
+                    minText.setText(""+time[0]);
+                    secText.setText(""+time[1]);
                 }));
             } else {
-                materialButton.setVisibility(View.GONE);
+                fromLinkButton.setVisibility(View.GONE);
             }
         }
     }

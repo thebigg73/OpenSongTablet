@@ -32,6 +32,7 @@ public class PadDefaultsFragment extends Fragment {
         myView = SettingsPadsDefaultsBinding.inflate(inflater, container, false);
 
         mainActivityInterface.updateToolbar(getString(R.string.pad_settings_info));
+        mainActivityInterface.updateToolbarHelp(getString(R.string.website_pad));
 
         // Set up views based on preferences
         setupViews();

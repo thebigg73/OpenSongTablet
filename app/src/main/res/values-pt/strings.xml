@@ -610,7 +610,7 @@
     <string name="song_alignment_information">Alinhamento das informações da música</string>
     <string name="song_display">Exibição da música</string>
     <string name="song_doesnt_exist">"Essa música não é do seu dispositivo. Você já apagou?"</string>
-    <string name="song_duration">"Duração Song (segundos)"</string>
+    <string name="song_duration">Duração Song</string>
     <string name="song_features">Recursos da música</string>
     <string name="song_features_warning">Esses valores são melhor definidos usando as opções de recursos de música dedicados no menu de configurações. Salve a música primeiro. Você pode, no entanto, editar manualmente os valores aqui.</string>
     <string name="song_menu_checkboxes">"Mostrar caixas de seleção no menu de músicas"</string>

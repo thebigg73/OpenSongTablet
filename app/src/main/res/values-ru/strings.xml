@@ -610,7 +610,7 @@
     <string name="song_alignment_information">Выравнивание информации о песне</string>
     <string name="song_display">Дисплей песни</string>
     <string name="song_doesnt_exist">"Песни нет на устройстве. Вы удалили её?"</string>
-    <string name="song_duration">"Продолжительность песни (в секундах)"</string>
+    <string name="song_duration">Продолжительность песни</string>
     <string name="song_features">Особенности песни</string>
     <string name="song_features_warning">Эти значения лучше всего установить с помощью специальных параметров функции песни в меню настроек. Сначала сохраните песню. Однако вы можете вручную редактировать значения здесь.</string>
     <string name="song_menu_checkboxes">"Показывать установленные флажки в меню песен"</string>

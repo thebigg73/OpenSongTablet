@@ -1992,7 +1992,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         } else if (autoscroll.getIsAutoscrolling()) {
             autoscroll.stopAutoscroll();
         } else {
-            autoscroll.startAutoscroll();
+            if (song.getAutoscrolllength()==null || song.getAutoscrolllength().isEmpty()) {
+                performanceGestures.autoscrollSettings();
+            } else {
+                autoscroll.startAutoscroll();
+            }
         }
     }
 

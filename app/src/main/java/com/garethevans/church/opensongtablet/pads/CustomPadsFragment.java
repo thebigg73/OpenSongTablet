@@ -39,6 +39,7 @@ public class CustomPadsFragment extends Fragment {
         myView = SettingsPadsCustomBinding.inflate(inflater, container, false);
 
         mainActivityInterface.updateToolbar(getString(R.string.pad) + " (" + getString(R.string.custom) + ")");
+        mainActivityInterface.updateToolbarHelp(getString(R.string.website_pad));
 
         // Set up the file launcher listener
         setupLauncher();
