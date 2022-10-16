@@ -8,11 +8,15 @@ import android.widget.Filter;
 import androidx.annotation.NonNull;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class ExposedDropDownArrayAdapter extends ArrayAdapter<String> {
+
+    ExposedDropDown exposedDropDown;
+    MainActivityInterface mainActivityInterface;
 
     public ExposedDropDownArrayAdapter(@NonNull Context context, int resource, @NonNull ArrayList<String> objects) {
         super(context, resource, objects);
@@ -24,11 +28,15 @@ public class ExposedDropDownArrayAdapter extends ArrayAdapter<String> {
 
     public ExposedDropDownArrayAdapter(@NonNull Context context, ExposedDropDown exposedDropDown, int resource, @NonNull String[] objects) {
         super(context, resource, objects);
+        this.exposedDropDown = exposedDropDown;
+        exposedDropDown.setPopupSize((MainActivityInterface) context);
         keepSelectionPosition(exposedDropDown,objects);
     }
 
     public ExposedDropDownArrayAdapter(@NonNull Context context, ExposedDropDown exposedDropDown, int resource, @NonNull ArrayList<String> objects) {
         super(context, resource, objects);
+        this.exposedDropDown = exposedDropDown;
+        exposedDropDown.setPopupSize((MainActivityInterface) context);
         keepSelectionPosition(exposedDropDown,objects);
     }
 
@@ -123,5 +131,6 @@ public class ExposedDropDownArrayAdapter extends ArrayAdapter<String> {
         Collections.addAll(arrayList, stringArray);
         return arrayList.indexOf(string);
     }
+
 
 }

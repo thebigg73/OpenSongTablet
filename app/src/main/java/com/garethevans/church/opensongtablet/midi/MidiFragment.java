@@ -133,7 +133,7 @@ public class MidiFragment extends Fragment {
         midiCommand.add(getString(R.string.midi_controller));
         midiCommand.add("MSB");
         midiCommand.add("LSB");
-        ExposedDropDownArrayAdapter midiCommandAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.view_exposed_dropdown_item, midiCommand);
+        ExposedDropDownArrayAdapter midiCommandAdapter = new ExposedDropDownArrayAdapter(requireContext(), myView.midiCommand, R.layout.view_exposed_dropdown_item, midiCommand);
         myView.midiCommand.setAdapter(midiCommandAdapter);
     }
 
@@ -145,7 +145,7 @@ public class MidiFragment extends Fragment {
             midiChannel.add("" + i);
             i++;
         }
-        ExposedDropDownArrayAdapter midiChannelAdpter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.view_exposed_dropdown_item, midiChannel);
+        ExposedDropDownArrayAdapter midiChannelAdpter = new ExposedDropDownArrayAdapter(requireContext(), myView.midiChannel, R.layout.view_exposed_dropdown_item, midiChannel);
         myView.midiChannel.setAdapter(midiChannelAdpter);
     }
 
@@ -160,6 +160,9 @@ public class MidiFragment extends Fragment {
         myView.midiController.setAdapter(midiValueAdapter);
         myView.midiValue.setAdapter(midiValueAdapter);
         myView.midiVelocity.setAdapter(midiValueAdapter);
+        myView.midiController.setPopupSize(mainActivityInterface);
+        myView.midiValue.setPopupSize(mainActivityInterface);
+        myView.midiVelocity.setPopupSize(mainActivityInterface);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -171,7 +174,7 @@ public class MidiFragment extends Fragment {
             midiNote.add(mainActivityInterface.getMidi().getNoteFromInt(i));
             i++;
         }
-        ExposedDropDownArrayAdapter midiNoteAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.view_exposed_dropdown_item, midiNote);
+        ExposedDropDownArrayAdapter midiNoteAdapter = new ExposedDropDownArrayAdapter(requireContext(), myView.midiNote, R.layout.view_exposed_dropdown_item, midiNote);
         myView.midiNote.setAdapter(midiNoteAdapter);
     }
 

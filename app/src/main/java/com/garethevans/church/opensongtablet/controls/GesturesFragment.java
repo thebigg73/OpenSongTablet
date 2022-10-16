@@ -54,7 +54,7 @@ public class GesturesFragment extends Fragment {
     private void setupDropDowns() {
         // Get the arrays for the dropdowns
         ArrayList<String> availableDescriptions = mainActivityInterface.getGestures().getGestureDescriptions();
-        ExposedDropDownArrayAdapter descriptionsAdapter1 = new ExposedDropDownArrayAdapter(requireContext(), R.layout.view_exposed_dropdown_item, availableDescriptions);
+        ExposedDropDownArrayAdapter descriptionsAdapter1 = new ExposedDropDownArrayAdapter(requireContext(), myView.doubleTap, R.layout.view_exposed_dropdown_item, availableDescriptions);
         ExposedDropDownArrayAdapter descriptionsAdapter2 = new ExposedDropDownArrayAdapter(requireContext(), myView.longPress, R.layout.view_exposed_dropdown_item, availableDescriptions);
         myView.doubleTap.setAdapter(descriptionsAdapter1);
         myView.longPress.setAdapter(descriptionsAdapter2);

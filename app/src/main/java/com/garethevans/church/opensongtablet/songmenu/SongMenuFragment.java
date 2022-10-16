@@ -117,7 +117,8 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         executorService.execute(() -> {
             Handler handler = new Handler(Looper.getMainLooper());
             try {
-                keyArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.view_exposed_dropdown_item, getResources().getStringArray(R.array.key_choice));
+                keyArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(),
+                        myView.filters.keySearch,R.layout.view_exposed_dropdown_item, getResources().getStringArray(R.array.key_choice));
                 handler.post(() -> {
                     myView.filters.keySearch.setAdapter(keyArrayAdapter);
                     myView.filters.keySearch.addTextChangedListener(new MyTextWatcher("key"));
@@ -139,7 +140,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
             foundFolders = mainActivityInterface.getSQLiteHelper().getFolders();
             if (getActivity()!=null) {
                 handler.post(() -> {
-                    folderArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.view_exposed_dropdown_item, foundFolders);
+                    folderArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(), myView.filters.folderSearch,R.layout.view_exposed_dropdown_item, foundFolders);
                     myView.filters.folderSearch.setAdapter(folderArrayAdapter);
                     // folderSearchVal = mainActivityInterface.getSong().getFolder();
                     myView.filters.folderSearch.addTextChangedListener(new MyTextWatcher("folder"));
@@ -276,7 +277,11 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
 
     private void showHideRows(View view, boolean show) {
         if (show) {
-            view.post(() -> view.setVisibility(View.VISIBLE));
+            view.post(() -> {
+                view.setVisibility(View.VISIBLE);
+                myView.filters.folderSearch.setPopupSize(mainActivityInterface);
+                myView.filters.keySearch.setPopupSize(mainActivityInterface);
+            });
         } else {
             view.post(() -> view.setVisibility(View.GONE));
         }
@@ -634,4 +639,5 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     public MaterialTextView getProgressText() {
         return myView.progressText;
     }
+
 }

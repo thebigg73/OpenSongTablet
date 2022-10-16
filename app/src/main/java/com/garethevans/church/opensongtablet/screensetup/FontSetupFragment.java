@@ -28,7 +28,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class FontSetupFragment extends Fragment {
-
     private SettingsFontsBinding myView;
     private ArrayList<String> fontNames;
     private String fontLyric, fontChord, fontPreso, fontPresoInfo, fontSticky, which;

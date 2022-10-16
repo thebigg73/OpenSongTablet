@@ -102,7 +102,7 @@ public class MoveContentFragment extends Fragment {
             requireActivity().runOnUiThread(() -> {
                 if (availableFromFolders.size() != 0) {
                     ExposedDropDownArrayAdapter folderFromArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(),
-                            R.layout.view_exposed_dropdown_item, availableFromFolders);
+                            myView.currentFolderChoice,R.layout.view_exposed_dropdown_item, availableFromFolders);
                     myView.currentFolderChoice.setAdapter(folderFromArrayAdapter);
                     myView.currentFolderChoice.setText(subfolder);
                     myView.currentFolderChoice.addTextChangedListener(new TextWatcher() {
@@ -135,7 +135,7 @@ public class MoveContentFragment extends Fragment {
             requireActivity().runOnUiThread(() -> {
                 if (availableMoveFolders.size() != 0) {
                     ExposedDropDownArrayAdapter folderArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(),
-                            R.layout.view_exposed_dropdown_item, availableMoveFolders);
+                            myView.folderChoice, R.layout.view_exposed_dropdown_item, availableMoveFolders);
                     myView.folderChoice.setAdapter(folderArrayAdapter);
                     myView.folderChoice.setText(availableMoveFolders.get(0));
                 }

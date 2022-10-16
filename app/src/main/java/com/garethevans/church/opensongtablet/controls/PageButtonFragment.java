@@ -203,6 +203,7 @@ public class PageButtonFragment extends Fragment {
 
     private void setTheDropDowns(int pos) {
         exposedDropDowns.get(pos).setAdapter(arrayAdapter);
+        exposedDropDowns.get(pos).setPopupSize(mainActivityInterface);
         exposedDropDowns.get(pos).setText(mainActivityInterface.getPageButtons().getPageButtonText(pos));
         arrayAdapter.keepSelectionPosition(exposedDropDowns.get(pos),mainActivityInterface.getPageButtons().getPageButtonAvailableText());
         exposedDropDowns.get(pos).addTextChangedListener(new TextWatcher() {

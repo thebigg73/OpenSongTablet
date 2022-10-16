@@ -357,4 +357,5 @@ public class MyToolbar extends MaterialToolbar {
     public void setOnMenuItemClickListener(OnMenuItemClickListener listener) {
         super.setOnMenuItemClickListener(listener);
     }
+
 }

@@ -2,9 +2,12 @@ package com.garethevans.church.opensongtablet.customviews;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 
@@ -12,7 +15,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.textfield.TextInputLayout;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class ExposedDropDown extends TextInputLayout {
 
@@ -27,8 +34,10 @@ public class ExposedDropDown extends TextInputLayout {
 
         int[] set = new int[]{android.R.attr.text, android.R.attr.hint};
         TypedArray a = context.obtainStyledAttributes(attrs, set);
+
         CharSequence text = a.getText(0);
         CharSequence hint = a.getText(1);
+
         autoCompleteTextView.setSingleLine(true);
         // The popup background is set in styles, but it seems to require programmatic setting!
         autoCompleteTextView.setDropDownBackgroundResource(R.drawable.popup_bg);
@@ -86,5 +95,41 @@ public class ExposedDropDown extends TextInputLayout {
 
     public AutoCompleteTextView getAutoCompleteTextView() {
         return autoCompleteTextView;
+    }
+
+    public void setPopupSize(MainActivityInterface mainActivityInterface) {
+        autoCompleteTextView.setOnFocusChangeListener((v, hasFocus) -> {
+            try {
+                setPopupSize(mainActivityInterface);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            Handler handler = new Handler(Looper.getMainLooper());
+            handler.post(() -> {
+                boolean largePopups = mainActivityInterface.getPreferences().getMyPreferenceBoolean("largePopups",false);
+                if (largePopups) {
+                    try {
+                        if (autoCompleteTextView!=null) {
+                            // Get the location of the popup position and negatively offset this minus the toolbar height
+                            int[] location = new int[2];
+
+                            autoCompleteTextView.getLocationOnScreen(location);
+                            int y = location[1] + autoCompleteTextView.getHeight() - mainActivityInterface.getToolbar().getActionBarHeight(true);
+                            autoCompleteTextView.setDropDownVerticalOffset(-y);
+
+                            Log.d("ed","location[1]:"+location[1]);
+                            int height = mainActivityInterface.getDisplayMetrics()[1] - (mainActivityInterface.getToolbar().getActionBarHeight(false)*2);
+                            autoCompleteTextView.setDropDownHeight(height);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        });
+
     }
 }

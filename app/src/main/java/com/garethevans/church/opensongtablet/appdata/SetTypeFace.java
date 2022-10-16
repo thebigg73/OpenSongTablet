@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet.appdata;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Handler;
 import android.util.Log;
 import android.widget.TextView;
@@ -15,10 +16,14 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class SetTypeFace {
 
@@ -33,6 +38,7 @@ public class SetTypeFace {
     private Typeface presoInfoFont;
     private Typeface stickyFont;
     private Typeface monoFont;
+
 
     public SetTypeFace(Context c) {
         this.c = c;
@@ -121,11 +127,29 @@ public class SetTypeFace {
         setMonoFont(Typeface.MONOSPACE);
     }
 
-    public void changeFont(String which, String fontName,Handler handler) {
+    public void changeFont(String which, String fontName, Handler handler) {
         // Save the preferences
         mainActivityInterface.getPreferences().setMyPreferenceString(which,fontName);
         // Update the font
-        getGoogleFont(fontName,which,null,handler);
+        if (fontName.startsWith("Fonts/")) {
+            try {
+            String actualName = fontName.replace("Fonts/","");
+            // We need the font to be in a file readable location - the app storage
+            // Copy the chosen file here
+            File dir = c.getExternalFilesDir("files");
+            File fontFile = new File(dir,actualName);
+            Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Fonts","",actualName);
+            InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(uri);
+            FileOutputStream outputStream = new FileOutputStream(fontFile);
+            mainActivityInterface.getStorageAccess().copyFile(inputStream,outputStream);
+            Typeface typeface = Typeface.createFromFile(fontFile.getPath());
+            doSetDesiredFont(which,typeface,fontName,null);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            getGoogleFont(fontName, which, null, handler);
+        }
     }
 
     public void getGoogleFont(String fontName, String which, TextView textView, Handler handler) {
@@ -158,34 +182,37 @@ public class SetTypeFace {
             }
 
             private void setDesiredFont(Typeface typeface, String thisFont) {
-                // Set the desired font
-                switch (which) {
-                    case "fontLyric":
-                        setLyricFont(typeface);
-                        break;
-                    case "fontChord":
-                        setChordFont(typeface);
-                        break;
-                    case "fontSticky":
-                        setStickyFont(typeface);
-                        break;
-                    case "fontPreso":
-                        setPresoFont(typeface);
-                        break;
-                    case "fontPresoInfo":
-                        setPresoInfoFont(typeface);
-                        break;
-                }
-                mainActivityInterface.getPreferences().setMyPreferenceString(which,thisFont);
-
-                // If we are previewing the font, update the text (this will be null otherwise)
-                if (textView != null) {
-                    textView.setTypeface(typeface);
-                }
+                doSetDesiredFont(which,typeface,thisFont,textView);
             }
         };
     }
 
+    private void doSetDesiredFont(String which, Typeface typeface, String fontName,TextView textView) {
+        // Set the desired font
+        switch (which) {
+            case "fontLyric":
+                setLyricFont(typeface);
+                break;
+            case "fontChord":
+                setChordFont(typeface);
+                break;
+            case "fontSticky":
+                setStickyFont(typeface);
+                break;
+            case "fontPreso":
+                setPresoFont(typeface);
+                break;
+            case "fontPresoInfo":
+                setPresoInfoFont(typeface);
+                break;
+        }
+        mainActivityInterface.getPreferences().setMyPreferenceString(which,fontName);
+
+        // If we are previewing the font, update the text (this will be null otherwise)
+        if (textView != null) {
+            textView.setTypeface(typeface);
+        }
+    }
     public ArrayList<String> bundledFonts() {
         ArrayList<String> f = new ArrayList<>();
         f.add("Lato");
@@ -269,6 +296,15 @@ public class SetTypeFace {
                         }
                     }
                 }
+            }
+        }
+
+        // Now add in any fonts stored in the user folder (for non Google Service users)
+        ArrayList<String> userFonts = mainActivityInterface.getStorageAccess().listFilesInFolder("Fonts","");
+        if (userFonts!=null && userFonts.size()>0) {
+            Collections.sort(userFonts, Collections.reverseOrder());
+            for (String userFont:userFonts) {
+                fontNames.add(0, "Fonts/"+userFont);
             }
         }
         return fontNames;

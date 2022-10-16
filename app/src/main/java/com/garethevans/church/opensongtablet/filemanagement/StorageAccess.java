@@ -59,7 +59,7 @@ public class StorageAccess {
     private final MainActivityInterface mainActivityInterface;
     public final String appFolder = "OpenSong";
     private final String TAG = "StorageAccess";
-    private final String[] rootFolders = {"Backgrounds", "Export", "Highlighter", "Images", "Media",
+    private final String[] rootFolders = {"Backgrounds", "Export", "Fonts", "Highlighter", "Images", "Media",
             "Notes", "OpenSong Scripture", "Pads", "Profiles", "Received", "Scripture",
             "Sets", "Settings", "Slides", "Songs", "Variations", "Backups"};
     private final String[] cacheFolders = {"Backgrounds/_cache", "Images/_cache", "Notes/_cache",

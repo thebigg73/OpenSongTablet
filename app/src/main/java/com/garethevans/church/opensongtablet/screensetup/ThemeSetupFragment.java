@@ -59,7 +59,7 @@ public class ThemeSetupFragment extends Fragment {
         themes.add(getString(R.string.theme_custom1));
         themes.add(getString(R.string.theme_custom2));
 
-        ExposedDropDownArrayAdapter arrayAdapter = new ExposedDropDownArrayAdapter(requireContext(),R.layout.view_exposed_dropdown_item,themes);
+        ExposedDropDownArrayAdapter arrayAdapter = new ExposedDropDownArrayAdapter(requireContext(),myView.themeName,R.layout.view_exposed_dropdown_item,themes);
         myTheme = mainActivityInterface.getPreferences().getMyPreferenceString("appTheme","dark");
         switch (myTheme) {
             case "dark":

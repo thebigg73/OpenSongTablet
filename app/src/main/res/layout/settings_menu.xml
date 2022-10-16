@@ -59,6 +59,15 @@
                 android:text="@string/size"
                 android:valueFrom="6.0"
                 android:valueTo="24.0" />
+            <TableRow style="@style/DividerLine"/>
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                android:id="@+id/largePopups"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/popup_large"
+                android:hint="@string/popup_large_info"/>
+
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </LinearLayout>

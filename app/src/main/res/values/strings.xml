@@ -1094,4 +1094,6 @@ Check out the categories in the right hand options menu.
     <string name="tag_new">Click here to create a new tag that you can add to songs</string>
     <string name="tag_search">Click here to show only songs that already have this tag</string>
     <string name="ignore_warning">Ignore warning</string>
+    <string name="popup_large">Large popups</string>
+    <string name="popup_large_info">Use large popups for drop-down menus</string>
 </resources>

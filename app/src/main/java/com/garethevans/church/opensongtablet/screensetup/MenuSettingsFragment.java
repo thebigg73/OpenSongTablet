@@ -50,7 +50,7 @@ public class MenuSettingsFragment extends Fragment {
                 getMyPreferenceBoolean("songMenuSetTicksShow",true);
         boolean sortByTitles = mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuSortTitles",true);
         boolean songMenuAlphaIndexLevel2 = mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuAlphaIndexLevel2",false);
-
+        myView.largePopups.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("largePopups",false));
         myView.songAlphabeticalShow.setChecked(showAlphabetical);
         myView.level2Index.setChecked(songMenuAlphaIndexLevel2);
         myView.songAlphabeticalSize.setValue(fontSize);
@@ -93,6 +93,7 @@ public class MenuSettingsFragment extends Fragment {
         });
         myView.songAlphabeticalSize.addOnChangeListener((slider, value, fromUser) -> myView.songAlphabeticalSize.setHint(value+"sp"));
         myView.songMenuOrder.addOnChangeListener((slider, value, fromUser) -> mainActivityInterface.getPreferences().setMyPreferenceBoolean("songMenuSortTitles",value==1));
+        myView.largePopups.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getPreferences().setMyPreferenceBoolean("largePopups",isChecked));
     }
 
     private void showHideSize(boolean show) {
