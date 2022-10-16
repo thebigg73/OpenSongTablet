@@ -154,12 +154,14 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     }
     public ArrayList<Song> getSongsByFilters(boolean searchByFolder, boolean searchByArtist,
                                              boolean searchByKey, boolean searchByTag,
-                                             boolean searchByFilter, String folderVal, String artistVal,
-                                             String keyVal, String tagVal, String filterVal) {
+                                             boolean searchByFilter, boolean searchByTitle,
+                                             String folderVal, String artistVal, String keyVal,
+                                             String tagVal, String filterVal, String titleVal) {
 
         try (SQLiteDatabase db = getDB()) {
-           return mainActivityInterface.getCommonSQL().getSongsByFilters(db, searchByFolder, searchByArtist, searchByKey, searchByTag, searchByFilter,
-                    folderVal, artistVal, keyVal, tagVal, filterVal);
+           return mainActivityInterface.getCommonSQL().getSongsByFilters(db, searchByFolder,
+                   searchByArtist, searchByKey, searchByTag, searchByFilter, searchByTitle,
+                    folderVal, artistVal, keyVal, tagVal, filterVal, titleVal);
         } catch (OutOfMemoryError | Exception e) {
             e.printStackTrace();
             return new ArrayList<>();

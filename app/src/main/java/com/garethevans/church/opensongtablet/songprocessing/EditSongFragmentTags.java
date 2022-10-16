@@ -15,6 +15,7 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.EditSongTagsBinding;
 import com.garethevans.church.opensongtablet.interfaces.EditSongFragmentInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.tags.TagsBottomSheet;
 
 import java.util.ArrayList;
 
@@ -179,8 +180,9 @@ public class EditSongFragmentTags extends Fragment {
         if (position >= 0 && !tagToRemove.isEmpty()) {
             ArrayList<Song> songs = mainActivityInterface.getSQLiteHelper().getSongsByFilters(
                     false, false,
-                    false, true, false, null, null,
-                    null, tagToRemove, null);
+                    false, true, false, false,
+                    null, null,
+                    null, tagToRemove, null, null);
             for (Song thisSong : songs) {
                 thisSong = mainActivityInterface.getSQLiteHelper().getSpecificSong(
                         thisSong.getFolder(), thisSong.getFilename());

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/cardView"
+    style="@style/recyclerItem"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+        <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+            android:id="@+id/songInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/title"
+            android:hint="@string/tag_song"/>
+</com.google.android.material.card.MaterialCardView>

@@ -523,6 +523,9 @@
                 <action
                     android:id="@+id/action_songActionsMenuFragment_to_autoscrollSettingsFragment"
                     app:destination="@id/autoscrollSettingsFragment" />
+                <action
+                    android:id="@+id/action_songActionsMenuFragment_to_bulkTagAssignFragment"
+                    app:destination="@id/bulkTagAssignFragment" />
             </fragment>
             <fragment
                 android:id="@+id/highlighterFragment"
@@ -731,6 +734,14 @@
                 android:name="com.garethevans.church.opensongtablet.autoscroll.AutoscrollSettingsFragment"
                 android:label="AutoscrollSettings"
                 tools:layout="@layout/settings_autoscroll"/>
+            <fragment
+                android:id="@+id/bulkTagAssignFragment"
+                android:name="com.garethevans.church.opensongtablet.tags.BulkTagAssignFragment"
+                android:label="BulkTagAssignFragment"
+                tools:layout="@layout/settings_tag_manage">
+                <deepLink android:id="@+id/bulkTagAssignFragment"
+                    app:uri="@string/deeplink_tags"/>
+            </fragment>
 
         </navigation>
         <fragment

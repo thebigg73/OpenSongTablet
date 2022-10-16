@@ -214,8 +214,9 @@ public class CommonSQL {
     // Search for values in the table
     public ArrayList<Song> getSongsByFilters(SQLiteDatabase db, boolean searchByFolder,
                                       boolean searchByArtist, boolean searchByKey, boolean searchByTag,
-                                      boolean searchByFilter, String folderVal, String artistVal,
-                                      String keyVal, String tagVal, String filterVal) {
+                                      boolean searchByFilter, boolean searchByTitle, String folderVal,
+                                             String artistVal, String keyVal, String tagVal,
+                                             String filterVal, String titleVal) {
         ArrayList<Song> songs = new ArrayList<>();
 
         // To avoid SQL injections, we need to build the args
@@ -238,6 +239,12 @@ public class CommonSQL {
             sqlMatch += SQLite.COLUMN_ALTTHEME + " LIKE ? ) AND ";
             args.add("%"+tagVal+"%");
             args.add("%"+tagVal+"%");
+        }
+        if (searchByTitle && titleVal != null && titleVal.length() > 0) {
+            sqlMatch += "(" + SQLite.COLUMN_TITLE + " LIKE ? OR ";
+            sqlMatch += SQLite.COLUMN_FILENAME + " LIKE ? ) AND ";
+            args.add("%"+titleVal+"%");
+            args.add("%"+titleVal+"%");
         }
         if (searchByFilter && filterVal != null && filterVal.length() > 0) {
             sqlMatch += "(" + SQLite.COLUMN_LYRICS + " LIKE ? OR ";
@@ -300,6 +307,8 @@ public class CommonSQL {
                 String au = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_AUTHOR));
                 String ke = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_KEY));
                 String ti = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_TITLE));
+                String th = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_THEME));
+                String at = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_ALTTHEME));
 
                 Song song = new Song();
                 song.setFilename(fi);
@@ -307,6 +316,8 @@ public class CommonSQL {
                 song.setAuthor(au);
                 song.setKey(ke);
                 song.setTitle(ti);
+                song.setTheme(th);
+                song.setAlttheme(at);
 
                 songs.add(song);
 

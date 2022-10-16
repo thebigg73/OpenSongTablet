@@ -106,6 +106,13 @@ public class SongActionsMenuFragment extends Fragment {
         myView.links.setOnClickListener(v -> actionAllowed(R.id.linksFragment));
         myView.chords.setOnClickListener(v -> actionAllowed(R.id.chords_graph));
         myView.notation.setOnClickListener(v -> actionAllowed(R.id.musicScoreFragment));
+        myView.tags.setOnClickListener(v -> {
+            if (mainActivityInterface.getSongListBuildIndex().getCurrentlyIndexing()) {
+                mainActivityInterface.getShowToast().doIt(getString(R.string.search_index_wait));
+            } else {
+                mainActivityInterface.navigateToFragment(getString(R.string.deeplink_tags), 0);
+            }
+        });
         myView.midi.setOnClickListener(v -> {
             if (mainActivityInterface.getProcessSong().isValidSong(mainActivityInterface.getSong())) {
                 mainActivityInterface.navHome();

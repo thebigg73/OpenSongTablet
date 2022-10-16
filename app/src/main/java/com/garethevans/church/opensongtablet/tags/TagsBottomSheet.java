@@ -1,4 +1,4 @@
-package com.garethevans.church.opensongtablet.songprocessing;
+package com.garethevans.church.opensongtablet.tags;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -27,7 +27,7 @@ public class TagsBottomSheet extends BottomSheetDialogFragment {
     private MainActivityInterface mainActivityInterface;
     private TagsAdapter tagsAdapter;
 
-    TagsBottomSheet(Fragment callingFragment, String fragName) {
+    public TagsBottomSheet(Fragment callingFragment, String fragName) {
         this.callingFragment = callingFragment;
         this.fragName = fragName;
     }
@@ -49,10 +49,12 @@ public class TagsBottomSheet extends BottomSheetDialogFragment {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         myView = BottomSheetEditSongThemeBinding.inflate(inflater, container, false);
 
         myView.dialogHeading.setClose(this);
+        myView.dialogHeading.setWebHelp(mainActivityInterface,getString(R.string.website_edit_song_tag));
 
         setCurrentTags();
 

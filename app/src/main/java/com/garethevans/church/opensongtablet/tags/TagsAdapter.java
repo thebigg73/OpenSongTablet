@@ -1,4 +1,4 @@
-package com.garethevans.church.opensongtablet.songprocessing;
+package com.garethevans.church.opensongtablet.tags;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -44,9 +44,10 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.ViewHolder> {
 
         // Also add any in the current temp song tags if they aren't there already
         String currTag = mainActivityInterface.getTempSong().getTheme();
-        if (currTag==null) {
-            currTag = "";
+        if (currTag==null || currTag.isEmpty()) {
+            currTag = ";";
         }
+
         String[] currTags = currTag.split(";");
         for (String tag:currTags) {
             if (!tag.trim().isEmpty() && !tags.contains(tag.trim())) {

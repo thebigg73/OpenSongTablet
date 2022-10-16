@@ -134,7 +134,6 @@
                 android:layout_height="wrap_content"
                 android:text="@string/music_score"
                 android:hint="@string/music_score_info" />
-
             <TableRow style="@style/DividerLine" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialTextView
@@ -143,6 +142,14 @@
                 android:layout_height="wrap_content"
                 android:text="@string/midi"
                 android:hint="@string/midi_commands" />
+            <TableRow style="@style/DividerLine" />
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                android:id="@+id/tags"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/tag_song"
+                android:hint="@string/tag_song_info" />
             <TableRow style="@style/DividerLine" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialTextView
