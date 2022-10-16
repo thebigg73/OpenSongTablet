@@ -100,10 +100,12 @@ public class AlertInfoBottomSheet extends BottomSheetDialogFragment {
         }
 
         // Check for Google Play Service error
-        if (mainActivityInterface.getAlertChecks().showPlayServicesAlert()) {
+        if (!mainActivityInterface.getAlertChecks().getIgnorePlayServicesWarning() &&
+                mainActivityInterface.getAlertChecks().showPlayServicesAlert()) {
             Log.d(TAG, "onresume()  Play store isn't installed");
             myView.playServices.setVisibility(View.VISIBLE);
             myView.playServicesInfo.setOnClickListener(b -> webLink(getString(R.string.website_play_services_help)));
+            myView.ignorePlayServices.setOnClickListener(b -> mainActivityInterface.getAlertChecks().setIgnorePlayServicesWarning(true));
         } else {
             myView.playServices.setVisibility(View.GONE);
         }

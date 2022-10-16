@@ -55,13 +55,30 @@
                     android:padding="16dp"
                     android:text="@string/play_services_error" />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/playServicesInfo"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    android:padding="16dp"
-                    android:text="@string/play_services_how" />
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/ignorePlayServices"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="16dp"
+                        android:layout_weight="1"
+                        android:padding="16dp"
+                        android:text="@string/ignore_warning" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/playServicesInfo"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="16dp"
+                        android:layout_weight="1"
+                        android:padding="16dp"
+                        android:text="@string/play_services_how" />
+                </LinearLayout>
+
                 <TableRow style="@style/DividerLine" />
             </LinearLayout>
 
@@ -84,6 +101,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
                     android:text="@string/backup_now" />
+
                 <TableRow style="@style/DividerLine" />
             </LinearLayout>
         </LinearLayout>

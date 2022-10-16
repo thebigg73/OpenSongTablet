@@ -13,14 +13,25 @@ public class AlertChecks {
     private final String TAG = "AlertChecks";
     private final Context c;
     private final MainActivityInterface mainActivityInterface;
-    private boolean alreadySeen = false;
+    private boolean alreadySeen = false, ignorePlayServicesWarning;
     public AlertChecks(Context c) {
         this.c = c;
         mainActivityInterface = (MainActivityInterface) c;
+        ignorePlayServicesWarning = mainActivityInterface.getPreferences().getMyPreferenceBoolean("ignorePlayServicesWarning",false);
     }
 
     public boolean showPlayServicesAlert() {
-        return !alreadySeen && GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(c) != ConnectionResult.SUCCESS;
+        boolean hasPlayServices = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(c) != ConnectionResult.SUCCESS;
+        return (ignorePlayServicesWarning || (!alreadySeen && hasPlayServices));
+    }
+
+    public boolean getIgnorePlayServicesWarning() {
+        return ignorePlayServicesWarning;
+    }
+
+    public void setIgnorePlayServicesWarning(boolean ignorePlayServicesWarning) {
+        this.ignorePlayServicesWarning = ignorePlayServicesWarning;
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean("ignorePlayServicesWarning",ignorePlayServicesWarning);
     }
 
     public boolean showUpdateInfo() {

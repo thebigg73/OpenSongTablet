@@ -138,6 +138,7 @@ import com.garethevans.church.opensongtablet.songprocessing.SongSheetHeaders;
 import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
 import com.garethevans.church.opensongtablet.sqlite.NonOpenSongSQLiteHelper;
 import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
+import com.garethevans.church.opensongtablet.tags.BulkTagAssignFragment;
 import com.garethevans.church.opensongtablet.utilities.TimeTools;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
@@ -1739,8 +1740,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 newFilename = setFilename;
             }
 
-            Uri variationUri = storageAccess.getUriForItem("Variations", "", newFilename);
-
             // Get a tempSong we can write
             Song copySong = new Song();
             if (setFolder.contains("**") || setFolder.contains("../")) {
@@ -2587,6 +2586,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                             ((StorageManagementFragment) fragment).renameFolder(value);
                         }
                         break;
+                    case "BulkTagAssignFragment":
+                        ((BulkTagAssignFragment) fragment).addNewTag(value);
+                        break;
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -2715,11 +2717,21 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
 
     private void updateCastIcon() {
-        if (screenMirror!=null) {
-            if (secondaryDisplays!=null && connectedDisplays.length > 0) {
-                screenMirror.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.cast_connected));
-            } else {
-                screenMirror.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.cast));
+        if (alertChecks.getIgnorePlayServicesWarning()) {
+            screenMirror.setVisibility(View.GONE);
+
+        } else {
+            if (screenMirror!=null) {
+                if (secondaryDisplays != null && connectedDisplays.length > 0) {
+                    screenMirror.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.cast_connected));
+                } else {
+                    screenMirror.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.cast));
+                }
+                if (menuOpen) {
+                    screenMirror.setVisibility(View.GONE);
+                } else {
+                    screenMirror.setVisibility(View.VISIBLE);
+                }
             }
         }
     }
