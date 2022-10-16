@@ -2694,6 +2694,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         displayMetrics[2] = metrics.densityDpi;
         return displayMetrics;
     }
+    @Override
+    public float getDisplayDensity() {
+        DisplayMetrics metrics = this.getResources().getDisplayMetrics();
+        return metrics.density;
+    }
 
     // The secondary displays (HDMI or Mirroring/Casting)
     @SuppressLint("PrivateResource")

@@ -127,6 +127,14 @@ public class ExposedDropDown extends TextInputLayout {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+                } else {
+                    try {
+                        autoCompleteTextView.setDropDownVerticalOffset(-autoCompleteTextView.getHeight());
+                        int newHeight = (int)((float)getContext().getResources().getDimension(R.dimen.exposed_dropdown_height));
+                        autoCompleteTextView.setDropDownHeight(newHeight);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             });
         });

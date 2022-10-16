@@ -12,7 +12,7 @@
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:dropDownHeight="200dp"
+        android:dropDownHeight="@dimen/exposed_dropdown_height"
         android:textAppearance="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
         android:padding="16dp"
         android:background="@null"
