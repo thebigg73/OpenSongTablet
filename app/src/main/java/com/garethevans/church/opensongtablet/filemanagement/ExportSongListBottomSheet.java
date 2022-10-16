@@ -195,7 +195,8 @@ public class ExportSongListBottomSheet extends BottomSheetDialogFragment {
                     // For each selected directory, list the songs that exist.
                     ArrayList<Song> songs = mainActivityInterface.getSQLiteHelper().
                             getSongsByFilters(true, false, false,
-                                    false, false, folder, null, null, null, null);
+                                    false, false, false, folder,
+                                    null, null, null, null, null);
                     songContentsTextPDF.append("[").append(folder).append("]\n");
                     for (Song song : songs) {
                         String songFilename = song.getFilename();
