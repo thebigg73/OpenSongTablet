@@ -40,6 +40,7 @@
     <string name="autoscroll">"Auto-scrolla"</string>
     <string name="autoscroll_autostart">Håll autoscroll aktiverat när du byter låt</string>
     <string name="autoscroll_default_or_prompt">"Om du inte har angett en låtperiod bör standardvärdena användas eller vill du bli frågad varje gång?"</string>
+    <string name="autoscroll_delay">Dröjsmål</string>
     <string name="autoscroll_hide">Autodölj autoscroll</string>
     <string name="autoscroll_info">Justera inställningarna för autoscroll</string>
     <string name="autoscroll_link_audio">Använd varaktighet för länkljudfil</string>
@@ -269,11 +270,13 @@
     <string name="filter_by_key">Denna knapp används för att inkludera ett nyckelfilter för din sånglista</string>
     <string name="filter_by_tag">Denna knapp används för att inkludera ett tagg / temafilter för din sånglista</string>
     <string name="filter_by_this_value">Ytterligare filtrera efter detta värde. Det här filtret söker på titlar, filnamn, användarfält och psalmnummer</string>
+    <string name="filter_by_title">Sök efter låttitel</string>
     <string name="filter_entry">Lägg till varje filter på en ny rad nedan.</string>
     <string name="filter_info">Du kan filtrera avsnitt genom att använda prefix. Om du lägger till filtret \"gitarr\" kommer alla avsnitt som använder detta prefix att filtreras. t.ex. [*gitarr:instrumental]</string>
     <string name="filter_mode_info">Som standard är filtrerade sektioner dolda, men du kan ställa in detta för att bara visa dessa filtrerade sektioner istället</string>
     <string name="filter_results">Filtrera resultat</string>
     <string name="filter_section">Sektionsfiltrering</string>
+    <string name="filter_songs">Filtrera listan över låtar som visas</string>
     <string name="filters">Filter</string>
     <string name="find_existing">"Hitta tidigare installationsplatser för OpenSong-filer"</string>
     <string name="first_run">Antingen är det första gången du kör appen, eller så har något förändrats. På grund av Android-behörigheter behöver vi ställa in önskad lagringsplats för att appen ska lagra dess filer.</string>
@@ -303,6 +306,7 @@
     <string name="highlight">"Highlighter"</string>
     <string name="highlight_info">Redigera anteckningar/kommentarer med överstrykningspenna</string>
     <string name="hymn_number">"Sångnummer"</string>
+    <string name="ignore_warning">Ignorera varning</string>
     <string name="image">"Bild"</string>
     <string name="image_change">Klicka på bilden för att ändra</string>
     <string name="image_slide">"Bildspel"</string>
@@ -478,6 +482,8 @@
     <string name="piano">"Piano"</string>
     <string name="play_services_error">För att kunna använda Google Cast, teckensnitt och anslutningar i närheten måste du installera Google Play-tjänster.</string>
     <string name="play_services_how">Visa mig hur</string>
+    <string name="popup_large">Stora popup-fönster</string>
+    <string name="popup_large_info">Använd stora popup-fönster för rullgardinsmenyer</string>
     <string name="portrait">Porträtt</string>
     <string name="prechorus">"Pre-Chorus"</string>
     <string name="prechorus_background">"Prechorus bakgrund"</string>
@@ -667,8 +673,13 @@
     <string name="swipe_distance">"Dra avstånd"</string>
     <string name="swipe_info">Justera gester för att flytta mellan låtarna</string>
     <string name="tag">"Märka"</string>
+    <string name="tag_add_remove">Markerade låtar innehåller den valda taggen. Klicka på valfri låt för att lägga till/ta bort den valda taggen.</string>
     <string name="tag_background">"Tag bakgrund"</string>
+    <string name="tag_new">Klicka här för att skapa en ny tagg som du kan lägga till i låtar</string>
+    <string name="tag_search">Klicka här för att bara visa låtar som redan har den här taggen</string>
     <string name="tag_song">Låttaggar</string>
+    <string name="tag_song_info">Hantera låttaggar för att hjälpa till med låtsökning</string>
+    <string name="tag_to_use">Taggen att lägga till eller ta bort från låtar</string>
     <string name="tag_verse">"Vers"</string>
     <string name="tags_remove_from_songs">Den här temataggen kommer att tas bort från följande låtar:</string>
     <string name="tap">"Kort tryck / tryck"</string>

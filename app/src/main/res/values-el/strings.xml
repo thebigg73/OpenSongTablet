@@ -40,6 +40,7 @@
     <string name="autoscroll">"Αυτόματη κύλιση"</string>
     <string name="autoscroll_autostart">Διατηρήστε την αυτόματη κύλιση ενεργοποιημένη όταν αλλάζετε τραγούδια</string>
     <string name="autoscroll_default_or_prompt">"Εάν δεν έχει οριστεί διάρκεια τραγουδιού να χρησιμοποιηθούν οι προεπιλεγμένες τιμές ή να γίνεται ερώτηση κάθε φορά;"</string>
+    <string name="autoscroll_delay">Καθυστέρηση</string>
     <string name="autoscroll_hide">Αυτόματη απόκρυψη αυτόματης κύλισης</string>
     <string name="autoscroll_info">Προσαρμόστε τις ρυθμίσεις αυτόματης κύλισης</string>
     <string name="autoscroll_link_audio">Χρησιμοποιήστε τη διάρκεια του αρχείου ήχου συνδέσμου</string>
@@ -269,11 +270,13 @@
     <string name="filter_by_key">Αυτό το κουμπί χρησιμοποιείται για να συμπεριλάβει ένα βασικό φίλτρο για τη λίστα τραγουδιών σας</string>
     <string name="filter_by_tag">Αυτό το κουμπί χρησιμοποιείται για να συμπεριλάβει μια ετικέτα / φίλτρο θέματος για τη λίστα τραγουδιών σας</string>
     <string name="filter_by_this_value">Περαιτέρω φιλτράρισμα με αυτήν την τιμή. Αυτό το φίλτρο αναζητά τίτλους, ονόματα αρχείων, πεδία χρηστών και αριθμούς ύμνων</string>
+    <string name="filter_by_title">Αναζήτηση ανά τίτλο τραγουδιού</string>
     <string name="filter_entry">Προσθέστε κάθε φίλτρο σε μια νέα γραμμή παρακάτω.</string>
     <string name="filter_info">Μπορείτε να φιλτράρετε ενότητες χρησιμοποιώντας προθέματα. Εάν προσθέσετε το φίλτρο \"κιθάρα\", τυχόν τμήματα που χρησιμοποιούν αυτό το πρόθεμα θα φιλτράρονται. π.χ. [*κιθάρα: Instrumental]</string>
     <string name="filter_mode_info">Από προεπιλογή, οι φιλτραρισμένες ενότητες είναι κρυφές, αλλά μπορείτε να το ρυθμίσετε έτσι ώστε να εμφανίζονται μόνο αυτές οι φιλτραρισμένες ενότητες</string>
     <string name="filter_results">Φιλτράρισμα αποτελεσμάτων</string>
     <string name="filter_section">Φιλτράρισμα ενότητας</string>
+    <string name="filter_songs">Φιλτράρετε τη λίστα των τραγουδιών που εμφανίζονται</string>
     <string name="filters">Φίλτρα</string>
     <string name="find_existing">"Βρείτε προηγούμενες θέσεις εγκατάστασης για αρχεία OpenSong"</string>
     <string name="first_run">Είτε αυτή είναι η πρώτη φορά που εκτελείτε την εφαρμογή, είτε κάτι έχει αλλάξει. Λόγω των αδειών Android, πρέπει να ορίσετε την επιθυμητή τοποθεσία αποθήκευσης ώστε η εφαρμογή να αποθηκεύει τα αρχεία της.</string>
@@ -303,6 +306,7 @@
     <string name="highlight">"Υψηλός φωτισμός"</string>
     <string name="highlight_info">Επεξεργασία σημειώσεων / σχολιασμών επισήμανσης</string>
     <string name="hymn_number">"Hymn number"</string>
+    <string name="ignore_warning">Αγνοήστε την προειδοποίηση</string>
     <string name="image">"Εικόνα"</string>
     <string name="image_change">Κάντε κλικ στην εικόνα για αλλαγή</string>
     <string name="image_slide">"Image slideshow"</string>
@@ -478,6 +482,8 @@
     <string name="piano">"Πιάνο"</string>
     <string name="play_services_error">Για να χρησιμοποιήσετε το Google Cast, τις γραμματοσειρές και τις κοντινές συνδέσεις, θα πρέπει να εγκαταστήσετε τις Υπηρεσίες Google Play.</string>
     <string name="play_services_how">Δείξε μου πώς</string>
+    <string name="popup_large">Μεγάλα αναδυόμενα παράθυρα</string>
+    <string name="popup_large_info">Χρησιμοποιήστε μεγάλα αναδυόμενα παράθυρα για αναπτυσσόμενα μενού</string>
     <string name="portrait">Πορτρέτο</string>
     <string name="prechorus">"Προ ρεφρέν"</string>
     <string name="prechorus_background">"Φόντο προ ρεφρέν"</string>
@@ -667,8 +673,13 @@
     <string name="swipe_distance">"Σύρετε την απόσταση"</string>
     <string name="swipe_info">Προσαρμόστε τις χειρονομίες για να μετακινηθείτε μεταξύ των τραγουδιών</string>
     <string name="tag">"Tag"</string>
+    <string name="tag_add_remove">Τα επισημασμένα τραγούδια περιέχουν την επιλεγμένη ετικέτα. Κάντε κλικ σε οποιοδήποτε τραγούδι για να προσθέσετε/αφαιρέσετε την επιλεγμένη ετικέτα.</string>
     <string name="tag_background">"Tag background"</string>
+    <string name="tag_new">Κάντε κλικ εδώ για να δημιουργήσετε μια νέα ετικέτα που μπορείτε να προσθέσετε στα τραγούδια</string>
+    <string name="tag_search">Κάντε κλικ εδώ για να εμφανίσετε μόνο τραγούδια που έχουν ήδη αυτήν την ετικέτα</string>
     <string name="tag_song">Ετικέτες τραγουδιών</string>
+    <string name="tag_song_info">Διαχειριστείτε ετικέτες τραγουδιών για να βοηθήσετε στην αναζήτηση τραγουδιών</string>
+    <string name="tag_to_use">Η ετικέτα για προσθήκη ή αφαίρεση από τραγούδια</string>
     <string name="tag_verse">"Κουπλέ"</string>
     <string name="tags_remove_from_songs">Αυτή η ετικέτα θέματος θα αφαιρεθεί από τα ακόλουθα τραγούδια:</string>
     <string name="tap">"Πατήστε σύντομα / πατήστε"</string>

@@ -40,6 +40,7 @@
     <string name="autoscroll">"Auto-défilement"</string>
     <string name="autoscroll_autostart">Gardez le défilement automatique activé lorsque vous changez de chanson</string>
     <string name="autoscroll_default_or_prompt">"Si vous ne l\'avez pas fixée, voulez vous que la durée de la chanson soit la valeur par défaut ou voulez-vous que l\'on vous demande ?"</string>
+    <string name="autoscroll_delay">Retard</string>
     <string name="autoscroll_hide">Masquer automatiquement le défilement automatique</string>
     <string name="autoscroll_info">Ajuster les paramètres de défilement automatique</string>
     <string name="autoscroll_link_audio">Utiliser la durée du fichier audio du lien</string>
@@ -269,11 +270,13 @@
     <string name="filter_by_key">Ce bouton est utilisé pour inclure un filtre clé pour votre liste de chansons</string>
     <string name="filter_by_tag">Ce bouton est utilisé pour inclure un filtre de balises/thèmes pour votre liste de chansons</string>
     <string name="filter_by_this_value">Filtrez ensuite par cette valeur. Ce filtre recherche les titres, les noms de fichiers, les champs utilisateur et les numéros d\'hymnes</string>
+    <string name="filter_by_title">Rechercher par titre de chanson</string>
     <string name="filter_entry">Ajoutez chaque filtre sur une nouvelle ligne ci-dessous.</string>
     <string name="filter_info">Vous pouvez filtrer les sections en utilisant des préfixes. Si vous ajoutez le filtre \'guitare\', toutes les sections utilisant ce préfixe seront filtrées. par exemple. [*guitare : instrumentale]</string>
     <string name="filter_mode_info">Par défaut, les sections filtrées sont masquées, mais vous pouvez définir cette option pour afficher uniquement ces sections filtrées à la place</string>
     <string name="filter_results">Filtrer les résultats</string>
     <string name="filter_section">Filtrage de section</string>
+    <string name="filter_songs">Filtrer la liste des chansons affichées</string>
     <string name="filters">Filtres</string>
     <string name="find_existing">"Trouver les emplacements d'installation précédents pour les fichiers OpenSong"</string>
     <string name="first_run">Soit c\'est la première fois que vous exécutez l\'application, soit quelque chose a changé. En raison des autorisations d\'Android, nous avons besoin que vous définissiez l\'emplacement de stockage souhaité pour que l\'application stocke ses fichiers.</string>
@@ -303,6 +306,7 @@
     <string name="highlight">"Surligneur"</string>
     <string name="highlight_info">Modifier les notes/annotations du surligneur</string>
     <string name="hymn_number">"Numéro d\'hymne"</string>
+    <string name="ignore_warning">Ignorer l\'avertissement</string>
     <string name="image">Image</string>
     <string name="image_change">Cliquez sur l\'image pour changer</string>
     <string name="image_slide">Image diaporama</string>
@@ -478,6 +482,8 @@
     <string name="piano">Piano</string>
     <string name="play_services_error">Pour utiliser Google Cast, les polices et les connexions à proximité, vous devrez installer les services Google Play.</string>
     <string name="play_services_how">Me montrer comment</string>
+    <string name="popup_large">Grandes fenêtres contextuelles</string>
+    <string name="popup_large_info">Utilisez de grandes fenêtres contextuelles pour les menus déroulants</string>
     <string name="portrait">Portrait</string>
     <string name="prechorus">Pre-refrain</string>
     <string name="prechorus_background">"Fond des pre-refrains"</string>
@@ -667,8 +673,13 @@
     <string name="swipe_distance">"Balayez la distance"</string>
     <string name="swipe_info">Ajustez les gestes pour passer d\'une chanson à l\'autre</string>
     <string name="tag">Tag</string>
+    <string name="tag_add_remove">Les chansons en surbrillance contiennent la balise choisie. Cliquez sur n\'importe quelle chanson pour ajouter/supprimer la balise choisie.</string>
     <string name="tag_background">"Fond des Tags"</string>
+    <string name="tag_new">Cliquez ici pour créer un nouveau tag que vous pouvez ajouter aux chansons</string>
+    <string name="tag_search">Cliquez ici pour afficher uniquement les chansons qui ont déjà cette étiquette</string>
     <string name="tag_song">Balises de chansons</string>
+    <string name="tag_song_info">Gérer les balises de chansons pour faciliter la recherche de chansons</string>
+    <string name="tag_to_use">Le tag à ajouter ou supprimer des chansons</string>
     <string name="tag_verse">Couplet</string>
     <string name="tags_remove_from_songs">Cette balise de thème sera supprimée des chansons suivantes :</string>
     <string name="tap">"Appui court / tap"</string>

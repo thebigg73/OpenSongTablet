@@ -40,6 +40,7 @@
     <string name="autoscroll">Автопрокрутка</string>
     <string name="autoscroll_autostart">Залишайте активованим автопрокрутку під час зміни пісень</string>
     <string name="autoscroll_default_or_prompt">Якщо не задана тривалість пісні, будуть використані значення за замовчуванням, або ви хочете уточнювати кожен раз?</string>
+    <string name="autoscroll_delay">Затримка</string>
     <string name="autoscroll_hide">Автоматичне приховування автопрокрутки</string>
     <string name="autoscroll_info">Налаштуйте параметри автопрокрутки</string>
     <string name="autoscroll_link_audio">Використовуйте тривалість аудіофайлу посилання</string>
@@ -269,11 +270,13 @@
     <string name="filter_by_key">Ця кнопка використовується для включення ключового фільтра для вашого списку пісень</string>
     <string name="filter_by_tag">Ця кнопка використовується для включення фільтра тегів/тем для вашого списку пісень</string>
     <string name="filter_by_this_value">Далі відфільтруйте за цим значенням. Цей фільтр шукає заголовки, імена файлів, поля користувача та номери гімнів</string>
+    <string name="filter_by_title">Пошук за назвою пісні</string>
     <string name="filter_entry">Додайте кожен фільтр в новий рядок нижче.</string>
     <string name="filter_info">Ви можете фільтрувати розділи за допомогою префіксів. \n Якщо ви виберете «приховати» і додасте фільтр, «гітара» та розділи, які використовують цей префікс, будуть приховані. наприклад [* гітара: Інструментальна]</string>
     <string name="filter_mode_info">За замовчуванням відфільтровані розділи приховані, але ви можете налаштувати, щоб натомість відображалися лише ці відфільтровані розділи</string>
     <string name="filter_results">Відфільтруйте результати</string>
     <string name="filter_section">Фільтрація розділів</string>
+    <string name="filter_songs">Відфільтрувати список відображених пісень</string>
     <string name="filters">фільтри</string>
     <string name="find_existing">Знайдіть попередні місця встановлення файлів OpenSong</string>
     <string name="first_run">Або ви вперше запускаєте програму, або щось змінилося. Через дозволи Android нам потрібно вказати потрібне місце для зберігання файлів програми.</string>
@@ -303,6 +306,7 @@
     <string name="highlight">Маркер</string>
     <string name="highlight_info">Редагувати примітки/анотації маркера</string>
     <string name="hymn_number">Номер Гімну</string>
+    <string name="ignore_warning">Ігнорувати попередження</string>
     <string name="image">Зображення</string>
     <string name="image_change">Натисніть на зображення, щоб змінити</string>
     <string name="image_slide">Зображення слайд</string>
@@ -478,6 +482,8 @@
     <string name="piano">Піаніно</string>
     <string name="play_services_error">Щоб використовувати Google Cast, Fonts і Nearby Connections, вам необхідно встановити Google Play Services.</string>
     <string name="play_services_how">Показати мені, як</string>
+    <string name="popup_large">Великі спливаючі вікна</string>
+    <string name="popup_large_info">Використовуйте великі спливаючі вікна для спадних меню</string>
     <string name="portrait">Портрет</string>
     <string name="prechorus">Предпріпев</string>
     <string name="prechorus_background">Фон предсприспіва</string>
@@ -667,8 +673,13 @@
     <string name="swipe_distance">Інтервал ковзання</string>
     <string name="swipe_info">Налаштуйте жести, щоб переміщатися між піснями</string>
     <string name="tag">Тег</string>
+    <string name="tag_add_remove">Виділені пісні містять вибраний тег. Натисніть будь-яку пісню, щоб додати/видалити вибраний тег.</string>
     <string name="tag_background">Фон тегів</string>
+    <string name="tag_new">Натисніть тут, щоб створити новий тег, який можна додати до пісень</string>
+    <string name="tag_search">Натисніть тут, щоб показати лише пісні, які вже мають цей тег</string>
     <string name="tag_song">Теги пісень</string>
+    <string name="tag_song_info">Керуйте тегами пісень, щоб допомогти з пошуком пісень</string>
+    <string name="tag_to_use">Тег, який можна додати або видалити з пісень</string>
     <string name="tag_verse">куплет</string>
     <string name="tags_remove_from_songs">Цей тег теми буде видалено з таких пісень:</string>
     <string name="tap">Коротке натискання/тап</string>

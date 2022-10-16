@@ -40,6 +40,7 @@
     <string name="autoscroll">"自动滚动"</string>
     <string name="autoscroll_autostart">更改歌曲时保持自动滚动激活</string>
     <string name="autoscroll_default_or_prompt">"如果你还没有设置一首歌的持续时间应使用默认值，或者你想每次都问？"</string>
+    <string name="autoscroll_delay">延迟</string>
     <string name="autoscroll_hide">自动隐藏自动滚动</string>
     <string name="autoscroll_info">调整自动滚动设置</string>
     <string name="autoscroll_link_audio">链接音频文件的使用时长</string>
@@ -269,11 +270,13 @@
     <string name="filter_by_key">此按钮用于为您的歌曲列表添加按键过滤器</string>
     <string name="filter_by_tag">此按钮用于为歌曲列表添加标签/主题过滤器</string>
     <string name="filter_by_this_value">通过该值进一步过滤。 该过滤器搜索标题，文件名，用户字段和赞美诗编号</string>
+    <string name="filter_by_title">按歌名搜索</string>
     <string name="filter_entry">在下面的新行中添加每个过滤器。</string>
     <string name="filter_info">您可以使用前缀过滤部分。 如果您添加过滤器“吉他”，则任何使用此前缀的部分都将被过滤。 例如 [*吉他：器乐]</string>
     <string name="filter_mode_info">默认情况下，过滤部分是隐藏的，但您可以将其设置为仅显示这些过滤部分</string>
     <string name="filter_results">过滤结果</string>
     <string name="filter_section">段过滤</string>
+    <string name="filter_songs">过滤显示的歌曲列表</string>
     <string name="filters">过滤器</string>
     <string name="find_existing">"查找OpenSong文件的以前的安装位置"</string>
     <string name="first_run">这是您第一次运行该应用程序，还是发生了某些变化。 由于Android的权限，我们需要您为应用设置所需的存储位置以存储其文件。</string>
@@ -303,6 +306,7 @@
     <string name="highlight">"荧光笔"</string>
     <string name="highlight_info">编辑荧光笔注释/注释</string>
     <string name="hymn_number">"圣诗"</string>
+    <string name="ignore_warning">忽略警告</string>
     <string name="image">"像"</string>
     <string name="image_change">点击图片进行更改</string>
     <string name="image_slide">"图像幻灯片"</string>
@@ -478,6 +482,8 @@
     <string name="piano">钢琴</string>
     <string name="play_services_error">要使用Google Cast，字体和附近的连接，您需要安装Google Play服务。</string>
     <string name="play_services_how">告诉我如何</string>
+    <string name="popup_large">大型弹出窗口</string>
+    <string name="popup_large_info">为下拉菜单使用大弹出窗口</string>
     <string name="portrait">肖像</string>
     <string name="prechorus">前合唱</string>
     <string name="prechorus_background">"Prechorus背景"</string>
@@ -667,8 +673,13 @@
     <string name="swipe_distance">"滑动距离"</string>
     <string name="swipe_info">调整手势以在歌曲之间移动</string>
     <string name="tag">标签</string>
+    <string name="tag_add_remove">突出显示的歌曲包含所选标签。单击任何歌曲以添加/删除所选标签。</string>
     <string name="tag_background">"标签背景"</string>
+    <string name="tag_new">单击此处创建一个新标签，您可以将其添加到歌曲中</string>
+    <string name="tag_search">单击此处仅显示已具有此标签的歌曲</string>
     <string name="tag_song">歌曲标签</string>
+    <string name="tag_song_info">管理歌曲标签以帮助歌曲搜索</string>
+    <string name="tag_to_use">从歌曲中添加或删除的标签</string>
     <string name="tag_verse">诗句</string>
     <string name="tags_remove_from_songs">此主题标签将从以下歌曲中移除：</string>
     <string name="tap">"短按/轻按"</string>
@@ -738,5 +749,5 @@
     <string name="welcome">欢迎来到 OpenSongApp</string>
     <string name="width">宽度</string>
     <string name="words_and_music_by">文字和音乐</string>
-    <string name="zoom_level">Zoemvlak</string>
+    <string name="zoom_level">缩放级别</string>
 </resources>

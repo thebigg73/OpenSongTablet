@@ -40,6 +40,7 @@
     <string name="autoscroll">"自動スクロール"</string>
     <string name="autoscroll_autostart">曲を変更するときは、自動スクロールを有効にしてください</string>
     <string name="autoscroll_default_or_prompt">"あなたはデフォルト値が使用されるべき曲の時間を設定したり、それぞれの時間を求められることがしたいですしていない場合は？"</string>
+    <string name="autoscroll_delay">遅れ</string>
     <string name="autoscroll_hide">自動スクロールを自動非表示</string>
     <string name="autoscroll_info">自動スクロール設定を調整します</string>
     <string name="autoscroll_link_audio">リンクオーディオファイルの期間を使用する</string>
@@ -269,11 +270,13 @@
     <string name="filter_by_key">このボタンは、曲リストのキーフィルターを含めるために使用されます</string>
     <string name="filter_by_tag">このボタンは、曲リストのタグ/テーマフィルターを含めるために使用されます</string>
     <string name="filter_by_this_value">この値でさらにフィルタリングします。 このフィルターは、タイトル、ファイル名、ユーザーフィールド、賛美歌番号を検索します</string>
+    <string name="filter_by_title">曲名で探す</string>
     <string name="filter_entry">以下の新しい行に各フィルターを追加します。</string>
     <string name="filter_info">プレフィックスを使用してセクションをフィルタリングできます。 フィルタ「guitar」を追加すると、このプレフィックスを使用するセクションはすべてフィルタリングされます。 例えば [*ギター：インストゥルメンタル]</string>
     <string name="filter_mode_info">デフォルトでは、フィルタリングされたセクションは非表示になっていますが、代わりにこれらのフィルタリングされたセクションのみを表示するように設定できます</string>
     <string name="filter_results">結果をフィルタリングする</string>
     <string name="filter_section">セクションフィルタリング</string>
+    <string name="filter_songs">表示される曲のリストをフィルタリングする</string>
     <string name="filters">フィルタ</string>
     <string name="find_existing">"OpenSongファイルの以前のインストール場所を見つける"</string>
     <string name="first_run">アプリを初めて実行するか、何かが変更されました。 Androidの権限により、アプリがファイルを保存するための希望の保存場所を設定する必要があります。</string>
@@ -303,6 +306,7 @@
     <string name="highlight">"蛍光ペン"</string>
     <string name="highlight_info">蛍光ペンのメモ/注釈を編集する</string>
     <string name="hymn_number">"賛美歌番号"</string>
+    <string name="ignore_warning">警告を無視</string>
     <string name="image">"像"</string>
     <string name="image_change">変更するには画像をクリックしてください</string>
     <string name="image_slide">"画像スライドショー"</string>
@@ -478,6 +482,8 @@
     <string name="piano">ピアノ</string>
     <string name="play_services_error">Google Cast、Fonts、Nearby Connectionsを使用するには、GooglePlayサービスをインストールする必要があります。</string>
     <string name="play_services_how">どうするか教えて</string>
+    <string name="popup_large">大きなポップアップ</string>
+    <string name="popup_large_info">ドロップダウン メニューに大きなポップアップを使用する</string>
     <string name="portrait">ポートレート</string>
     <string name="prechorus">プリコーラス</string>
     <string name="prechorus_background">"Prechorusの背景"</string>
@@ -667,8 +673,13 @@
     <string name="swipe_distance">"スワイプ距離"</string>
     <string name="swipe_info">ジェスチャーを調整して曲間を移動する</string>
     <string name="tag">荷札</string>
+    <string name="tag_add_remove">強調表示された曲には、選択したタグが含まれています。任意の曲をクリックして、選択したタグを追加/削除します。</string>
     <string name="tag_background">"タグの背景"</string>
+    <string name="tag_new">ここをクリックして、曲に追加できる新しいタグを作成します</string>
+    <string name="tag_search">このタグがすでに付いている曲のみを表示するには、ここをクリックしてください</string>
     <string name="tag_song">曲タグ</string>
+    <string name="tag_song_info">曲の検索に役立つ曲のタグを管理する</string>
+    <string name="tag_to_use">曲に追加または削除するタグ</string>
     <string name="tag_verse">詩句</string>
     <string name="tags_remove_from_songs">このテーマタグは、次の曲から削除されます。</string>
     <string name="tap">"ショートプレス/タップ"</string>

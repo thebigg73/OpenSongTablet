@@ -40,6 +40,7 @@
     <string name="autoscroll">"Auto-scroll"</string>
     <string name="autoscroll_autostart">Pozostaw aktywne automatyczne przewijanie podczas zmiany utworów</string>
     <string name="autoscroll_default_or_prompt">"Jeśli nie ustawić czas trwania utworu domyślne wartości powinny być używane lub chcesz się pytanie za każdym razem?"</string>
+    <string name="autoscroll_delay">Opóźnienie</string>
     <string name="autoscroll_hide">Automatyczne ukrywanie automatycznego przewijania</string>
     <string name="autoscroll_info">Dostosuj ustawienia automatycznego przewijania</string>
     <string name="autoscroll_link_audio">Użyj czasu trwania linku do pliku audio</string>
@@ -269,11 +270,13 @@
     <string name="filter_by_key">Ten przycisk służy do włączenia kluczowego filtra do listy utworów</string>
     <string name="filter_by_tag">Ten przycisk służy do włączenia filtru tagów/motywów do listy utworów</string>
     <string name="filter_by_this_value">Dalsze filtrowanie według tej wartości. Ten filtr wyszukuje tytuły, nazwy plików, pola użytkownika i numery hymnów</string>
+    <string name="filter_by_title">Szukaj według tytułu utworu</string>
     <string name="filter_entry">Dodaj każdy filtr w nowej linii poniżej.</string>
     <string name="filter_info">Sekcje można filtrować za pomocą przedrostków. Jeśli dodasz filtr „gitara”, wszystkie sekcje używające tego prefiksu zostaną odfiltrowane. np. [*gitara:Instrumentalna]</string>
     <string name="filter_mode_info">Domyślnie filtrowane sekcje są ukryte, ale możesz ustawić tę opcję, aby zamiast tego wyświetlać tylko te filtrowane sekcje</string>
     <string name="filter_results">Filtruj wyniki</string>
     <string name="filter_section">Filtrowanie sekcji</string>
+    <string name="filter_songs">Filtruj listę wyświetlanych utworów</string>
     <string name="filters">Filtry</string>
     <string name="find_existing">"Znajdź poprzednie lokalizacje instalacji dla plików OpenSong"</string>
     <string name="first_run">Albo uruchamiasz aplikację po raz pierwszy, albo coś się zmieniło. Ze względu na uprawnienia Androida musisz ustawić żądaną lokalizację przechowywania, aby aplikacja mogła przechowywać swoje pliki.</string>
@@ -303,6 +306,7 @@
     <string name="highlight">"Zakreślacz"</string>
     <string name="highlight_info">Edytuj notatki / adnotacje z wyróżnieniem</string>
     <string name="hymn_number">"Numer hymn"</string>
+    <string name="ignore_warning">Zignoruj ostrzeżenie</string>
     <string name="image">Obraz</string>
     <string name="image_change">Kliknij na obrazek, aby zmienić</string>
     <string name="image_slide">Pokaz obrazu</string>
@@ -478,6 +482,8 @@
     <string name="piano">Pianino</string>
     <string name="play_services_error">Aby korzystać z Google Cast, czcionek i pobliskich połączeń, musisz zainstalować usługi Google Play.</string>
     <string name="play_services_how">Pokaż mi jak</string>
+    <string name="popup_large">Duże wyskakujące okienka</string>
+    <string name="popup_large_info">Używaj dużych wyskakujących okienek do rozwijanych menu</string>
     <string name="portrait">Portret</string>
     <string name="prechorus">Przejście do refrenu</string>
     <string name="prechorus_background">"Prechorus tle"</string>
@@ -667,8 +673,13 @@
     <string name="swipe_distance">"Odchyl odległość"</string>
     <string name="swipe_info">Dostosuj gesty, aby poruszać się między utworami</string>
     <string name="tag">Dodatek</string>
+    <string name="tag_add_remove">Wyróżnione utwory zawierają wybrany tag. Kliknij dowolny utwór, aby dodać/usunąć wybrany tag.</string>
     <string name="tag_background">"Tło tag"</string>
+    <string name="tag_new">Kliknij tutaj, aby utworzyć nowy tag, który możesz dodać do utworów</string>
+    <string name="tag_search">Kliknij tutaj, aby wyświetlić tylko utwory, które mają już ten tag</string>
     <string name="tag_song">Tagi piosenek</string>
+    <string name="tag_song_info">Zarządzaj tagami utworów, aby pomóc w wyszukiwaniu utworów</string>
+    <string name="tag_to_use">Tag do dodania lub usunięcia z utworów</string>
     <string name="tag_verse">Zwrotka</string>
     <string name="tags_remove_from_songs">Ten tag motywu zostanie usunięty z następujących utworów:</string>
     <string name="tap">"Krótkie naciśnięcie / dotknięcie"</string>

@@ -40,6 +40,7 @@
     <string name="autoscroll">"Auto-scroll"</string>
     <string name="autoscroll_autostart">Tartsa az automatikus görgetést bekapcsolva, amikor dalokat vált</string>
     <string name="autoscroll_default_or_prompt">"Ha még nem állította be a dalt időtartama legyen az alapértelmezett értékeket lehet használni, vagy szeretne kérni, minden egyes alkalommal?"</string>
+    <string name="autoscroll_delay">Késleltetés</string>
     <string name="autoscroll_hide">Automatikus görgetés automatikus elrejtése</string>
     <string name="autoscroll_info">Módosítsa az automatikus görgetés beállításait</string>
     <string name="autoscroll_link_audio">A hivatkozás hangfájljának időtartama</string>
@@ -269,11 +270,13 @@
     <string name="filter_by_key">Ez a gomb egy kulcsszűrő beillesztésére szolgál a dallistához</string>
     <string name="filter_by_tag">Ez a gomb egy címke/téma szűrő beillesztésére szolgál a dallistához</string>
     <string name="filter_by_this_value">További szűrés ezzel az értékkel. Ez a szűrő címekben, fájlnevekben, felhasználói mezőkben és himnuszszámokban keres</string>
+    <string name="filter_by_title">Keresés a dal címe szerint</string>
     <string name="filter_entry">Adja hozzá az egyes szűrőket egy új sorhoz.</string>
     <string name="filter_info">A szakaszokat előtagok használatával szűrheti. Ha hozzáadja a „gitár” szűrőt, az ezt az előtagot használó szakaszok szűrésre kerülnek. például. [*gitár: hangszeres]</string>
     <string name="filter_mode_info">Alapértelmezés szerint a szűrt szakaszok rejtettek, de beállíthatja, hogy csak ezek a szűrt szakaszok jelenjenek meg</string>
     <string name="filter_results">Eredmények szűrése</string>
     <string name="filter_section">Szakaszszűrés</string>
+    <string name="filter_songs">Szűrje ki a megjelenített dalok listáját</string>
     <string name="filters">Szűrők</string>
     <string name="find_existing">"Az OpenSong fájlok korábbi telepítési helyeinek keresése"</string>
     <string name="first_run">Vagy most futtatja először az alkalmazást, vagy valami megváltozott. Az Android engedélyei miatt be kell állítanunk a kívánt tárhelyet az alkalmazás számára a fájlok tárolására.</string>
@@ -303,6 +306,7 @@
     <string name="highlight">"Kiemelő"</string>
     <string name="highlight_info">Kiemelő jegyzetek / megjegyzések szerkesztése</string>
     <string name="hymn_number">"Hymn szám"</string>
+    <string name="ignore_warning">Figyelmeztetés figyelmen kívül hagyása</string>
     <string name="image">"Kép"</string>
     <string name="image_change">Kattints a képre a változtatáshoz</string>
     <string name="image_slide">Kép slideshow</string>
@@ -478,6 +482,8 @@
     <string name="piano">Zongora</string>
     <string name="play_services_error">A Google Cast, a Betűtípusok és a Közeli kapcsolatok használatához telepítenie kell a Google Play szolgáltatásokat.</string>
     <string name="play_services_how">Mutassa meg, hogyan</string>
+    <string name="popup_large">Nagy előugró ablakok</string>
+    <string name="popup_large_info">Használjon nagy előugró ablakokat a legördülő menükhöz</string>
     <string name="portrait">Portré</string>
     <string name="prechorus">Pre-Kórus</string>
     <string name="prechorus_background">"Prechorus háttér"</string>
@@ -667,8 +673,13 @@
     <string name="swipe_distance">"Swipe távolság"</string>
     <string name="swipe_info">A dalok közötti mozgáshoz módosítsa a kézmozdulatokat</string>
     <string name="tag">Címke</string>
+    <string name="tag_add_remove">A kiemelt dalok tartalmazzák a kiválasztott címkét. Kattintson bármelyik dalra a kiválasztott címke hozzáadásához/eltávolításához.</string>
     <string name="tag_background">"Tag háttér"</string>
+    <string name="tag_new">Kattintson ide egy új címke létrehozásához, amelyet hozzáadhat a dalokhoz</string>
+    <string name="tag_search">Kattintson ide, ha csak azokat a dalokat szeretné megjeleníteni, amelyek már rendelkeznek ezzel a címkével</string>
     <string name="tag_song">Dalcímkék</string>
+    <string name="tag_song_info">Kezelje a dalcímkéket, hogy segítse a dalkeresést</string>
+    <string name="tag_to_use">A dalokhoz hozzáadandó vagy onnan eltávolítandó címke</string>
     <string name="tag_verse">Vers</string>
     <string name="tags_remove_from_songs">Ez a témacímke el lesz távolítva a következő dalokról:</string>
     <string name="tap">"Rövid megnyomás / érintés"</string>

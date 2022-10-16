@@ -40,6 +40,7 @@
     <string name="autoscroll">"Autoscroll"</string>
     <string name="autoscroll_autostart">Lassen Sie Autoscroll aktiviert, wenn Sie Songs wechseln</string>
     <string name="autoscroll_default_or_prompt">"Wenn Sie keine Song Dauer eingestellt haben, die Standardwerte verwenden oder jedes Mal nachfragen?"</string>
+    <string name="autoscroll_delay">Verzögerung</string>
     <string name="autoscroll_hide">Autoscroll automatisch ausblenden</string>
     <string name="autoscroll_info">Passen Sie die Autoscroll-Einstellungen an</string>
     <string name="autoscroll_link_audio">Verwenden Sie die Dauer der verknüpften Audiodatei</string>
@@ -269,11 +270,13 @@
     <string name="filter_by_key">Diese Schaltfläche wird verwendet, um einen Schlüsselfilter für Ihre Songliste einzufügen</string>
     <string name="filter_by_tag">Diese Schaltfläche wird verwendet, um einen Tag-/Themenfilter für Ihre Songliste einzufügen</string>
     <string name="filter_by_this_value">Weiter nach diesem Wert filtern. Dieser Filter durchsucht Titel, Dateinamen, Benutzerfelder und Liednummern</string>
+    <string name="filter_by_title">Suche nach Songtitel</string>
     <string name="filter_entry">Fügen Sie jeden Filter in einer neuen Zeile hinzu.</string>
     <string name="filter_info">Sie können Abschnitte mithilfe von Präfixen filtern. Wenn Sie den Filter „Gitarre“ hinzufügen, werden alle Abschnitte mit diesem Präfix gefiltert. z.B. [*Gitarre:Instrumental]</string>
     <string name="filter_mode_info">Standardmäßig sind gefilterte Abschnitte ausgeblendet, aber Sie können dies so einstellen, dass stattdessen nur diese gefilterten Abschnitte angezeigt werden</string>
     <string name="filter_results">Filter Ergebnisse</string>
     <string name="filter_section">Abschnittsfilterung</string>
+    <string name="filter_songs">Filtern Sie die Liste der angezeigten Songs</string>
     <string name="filters">Filter</string>
     <string name="find_existing">"Nach früheren Installationsorten für OpenSong-Dateien suchen"</string>
     <string name="first_run">Entweder führen Sie die App zum ersten Mal aus, oder es hat sich etwas geändert. Aufgrund von Android-Berechtigungen müssen Sie Ihren gewünschten Speicherort für die App zum Speichern ihrer Dateien festlegen.</string>
@@ -303,6 +306,7 @@
     <string name="highlight">"Textmarker"</string>
     <string name="highlight_info">Textmarker-Notizen / Anmerkungen bearbeiten</string>
     <string name="hymn_number">"Liederbuch Nummer"</string>
+    <string name="ignore_warning">Warnung ignorieren</string>
     <string name="image">"Bild"</string>
     <string name="image_change">Klicken Sie auf das Bild, um es zu ändern</string>
     <string name="image_slide">"Bilder-Folie"</string>
@@ -478,6 +482,8 @@
     <string name="piano">Klavier</string>
     <string name="play_services_error">Um Google Cast, Schriftarten und Verbindungen in der Nähe verwenden zu können, müssen Sie Google Play Services installieren.</string>
     <string name="play_services_how">Zeig mir wie</string>
+    <string name="popup_large">Große Popups</string>
+    <string name="popup_large_info">Verwenden Sie große Popups für Dropdown-Menüs</string>
     <string name="portrait">Porträt</string>
     <string name="prechorus">Vorspiel</string>
     <string name="prechorus_background">"Hintergrund Prechorus"</string>
@@ -667,8 +673,13 @@
     <string name="swipe_distance">"Wisch-Weite"</string>
     <string name="swipe_info">Passen Sie Gesten an, um zwischen Songs zu wechseln</string>
     <string name="tag">Markierung</string>
+    <string name="tag_add_remove">Hervorgehobene Songs enthalten das ausgewählte Tag. Klicken Sie auf ein beliebiges Lied, um das ausgewählte Tag hinzuzufügen/zu entfernen.</string>
     <string name="tag_background">"Hintergrund Tag"</string>
+    <string name="tag_new">Klicken Sie hier, um ein neues Tag zu erstellen, das Sie Songs hinzufügen können</string>
+    <string name="tag_search">Klicken Sie hier, um nur Songs anzuzeigen, die dieses Tag bereits haben</string>
     <string name="tag_song">Song-Tags</string>
+    <string name="tag_song_info">Verwalten Sie Song-Tags, um bei der Songsuche zu helfen</string>
+    <string name="tag_to_use">Das Tag, das zu Songs hinzugefügt oder daraus entfernt werden soll</string>
     <string name="tag_verse">Vers</string>
     <string name="tags_remove_from_songs">Dieses Themen-Tag wird aus den folgenden Songs entfernt:</string>
     <string name="tap">"Kurz drücken/tippen"</string>

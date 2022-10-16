@@ -40,6 +40,7 @@
     <string name="autoscroll">"Auto-scroll"</string>
     <string name="autoscroll_autostart">Mantenha a rolagem automática ativada ao alterar as músicas</string>
     <string name="autoscroll_default_or_prompt">"Se você não tiver definido uma duração da música deve ser utilizado os valores padrão ou você quer ser solicitado a cada vez?"</string>
+    <string name="autoscroll_delay">Atraso</string>
     <string name="autoscroll_hide">Ocultar rolagem automática</string>
     <string name="autoscroll_info">Ajuste as configurações de rolagem automática</string>
     <string name="autoscroll_link_audio">Use a duração do arquivo de áudio do link</string>
@@ -269,11 +270,13 @@
     <string name="filter_by_key">Este botãoéusado para incluir um filtro chave para a sua lista de músicas</string>
     <string name="filter_by_tag">Este botão é usado para incluir um filtro de tag/tema para sua lista de músicas</string>
     <string name="filter_by_this_value">Filtre ainda mais por este valor. Este filtro pesquisa títulos, nomes de arquivos, campos de usuário e números de hinos</string>
+    <string name="filter_by_title">Pesquisar pelo título da música</string>
     <string name="filter_entry">Adicione cada filtro em uma nova linha abaixo.</string>
     <string name="filter_info">Você pode filtrar seções usando prefixos. Se você adicionar o filtro \'guitarra\', todas as seções que usam esse prefixo serão filtradas. por exemplo. [*guitarra:Instrumental]</string>
     <string name="filter_mode_info">Por padrão, as seções filtradas ficam ocultas, mas você pode definir isso para mostrar apenas essas seções filtradas</string>
     <string name="filter_results">Filtrar resultados</string>
     <string name="filter_section">Filtragem de seção</string>
+    <string name="filter_songs">Filtre a lista de músicas mostradas</string>
     <string name="filters">Filtros</string>
     <string name="find_existing">"Encontre locais de instalação anteriores para arquivos OpenSong"</string>
     <string name="first_run">Ou esta é a primeira vez que você executa o aplicativo ou algo mudou. Devido às permissões do Android, precisamos que você defina o local de armazenamento desejado para o aplicativo armazenar seus arquivos.</string>
@@ -303,6 +306,7 @@
     <string name="highlight">"Marcador"</string>
     <string name="highlight_info">Editar notas/anotações do marcador</string>
     <string name="hymn_number">"Número Hymn"</string>
+    <string name="ignore_warning">Ignorar aviso</string>
     <string name="image">Imagem</string>
     <string name="image_change">Clique na imagem para alterar</string>
     <string name="image_slide">Slideshow imagem</string>
@@ -478,6 +482,8 @@
     <string name="piano">Piano</string>
     <string name="play_services_error">Para usar o Google Cast, fontes e conexões próximas, você precisará instalar o Google Play Services.</string>
     <string name="play_services_how">Mostre-me como</string>
+    <string name="popup_large">Grandes pop-ups</string>
+    <string name="popup_large_info">Use pop-ups grandes para menus suspensos</string>
     <string name="portrait">Retrato</string>
     <string name="prechorus">Pré-Refrão</string>
     <string name="prechorus_background">"Pré-refrão fundo"</string>
@@ -667,8 +673,13 @@
     <string name="swipe_distance">"Deslizar a distância"</string>
     <string name="swipe_info">Ajuste os gestos para se mover entre as músicas</string>
     <string name="tag">Etiqueta</string>
+    <string name="tag_add_remove">As músicas destacadas contêm a tag escolhida. Clique em qualquer música para adicionar/remover a tag escolhida.</string>
     <string name="tag_background">"Tag fundo"</string>
+    <string name="tag_new">Clique aqui para criar uma nova tag que você pode adicionar às músicas</string>
+    <string name="tag_search">Clique aqui para mostrar apenas as músicas que já possuem essa tag</string>
     <string name="tag_song">Tags de música</string>
+    <string name="tag_song_info">Gerencie tags de músicas para ajudar na pesquisa de músicas</string>
+    <string name="tag_to_use">A tag a ser adicionada ou removida das músicas</string>
     <string name="tag_verse">Verso</string>
     <string name="tags_remove_from_songs">Esta tag de tema será removida das seguintes músicas:</string>
     <string name="tap">"Pressione / toque rapidamente"</string>

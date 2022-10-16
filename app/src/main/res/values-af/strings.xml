@@ -40,6 +40,7 @@
     <string name="autoscroll">"Auto-boek"</string>
     <string name="autoscroll_autostart">Hou outoscroll geaktiveer wanneer jy van liedjies verander</string>
     <string name="autoscroll_default_or_prompt">"As jy \'n duur lied moet die standaard waardes gebruik word nie gestel het of wil jy elke keer gevra word?"</string>
+    <string name="autoscroll_delay">Vertraag</string>
     <string name="autoscroll_hide">Versteek outoscroll outomaties</string>
     <string name="autoscroll_info">Pas die outoscroll-instellings aan</string>
     <string name="autoscroll_link_audio">Gebruik duur van skakel oudiolêer</string>
@@ -269,11 +270,13 @@
     <string name="filter_by_key">Hierdie knoppie word gebruik om \'n sleutelfilter vir u liedjelys in te sluit</string>
     <string name="filter_by_tag">Hierdie knoppie word gebruik om \'n etiket / temafilter vir u liedjieslys in te sluit</string>
     <string name="filter_by_this_value">Filtreer verder volgens hierdie waarde. Hierdie filter deursoek titels, lêername, gebruikersvelde en lofliednommers</string>
+    <string name="filter_by_title">Soek volgens liedjietitel</string>
     <string name="filter_entry">Voeg elke filter op \'n nuwe reël hieronder by.</string>
     <string name="filter_info">Jy kan afdelings filter deur voorvoegsels te gebruik. As jy die filter \'kitaar\' byvoeg, sal enige afdelings wat hierdie voorvoegsel gebruik, gefiltreer word. bv. [*kitaar:Instrumenteel]</string>
     <string name="filter_mode_info">By verstek word gefiltreerde afdelings versteek, maar jy kan dit stel om eerder net hierdie gefiltreerde afdelings te wys</string>
     <string name="filter_results">Filter resultate</string>
     <string name="filter_section">Seksie filter</string>
+    <string name="filter_songs">Filtreer die lys liedjies wat gewys word</string>
     <string name="filters">Filters</string>
     <string name="find_existing">"Vind vorige installasie plekke vir OpenSong lêers"</string>
     <string name="first_run">Dit is u eerste keer dat u die program gebruik, of dat iets verander het. As gevolg van Android-toestemmings, moet u die gewenste stoorplek vir die program instel om die lêers daarvan te stoor.</string>
@@ -303,6 +306,7 @@
     <string name="highlight">Highlighter</string>
     <string name="highlight_info">Wysig highlighter notas / aantekeninge</string>
     <string name="hymn_number">"Hymn aantal"</string>
+    <string name="ignore_warning">Ignoreer waarskuwing</string>
     <string name="image">"Image"</string>
     <string name="image_change">Klik op die prent om te verander</string>
     <string name="image_slide">"Image skyfievertoning"</string>
@@ -478,6 +482,8 @@
     <string name="piano">Klavier</string>
     <string name="play_services_error">Om Google Cast, lettertipes en verbindings in die buurt te gebruik, moet u Google Play Services installeer.</string>
     <string name="play_services_how">Wys my hoe</string>
+    <string name="popup_large">Groot pop-ups</string>
+    <string name="popup_large_info">Gebruik groot opspringers vir aftrekkieslyste</string>
     <string name="portrait">Portret</string>
     <string name="prechorus">Pre-Koor</string>
     <string name="prechorus_background">"Prechorus agtergrond"</string>
@@ -667,8 +673,13 @@
     <string name="swipe_distance">"Swipe afstand"</string>
     <string name="swipe_info">Pas gebare aan om tussen liedjies te beweeg</string>
     <string name="tag">Tag</string>
+    <string name="tag_add_remove">Gemerkte liedjies bevat die gekose merker. Klik op enige liedjie om die gekose merker by te voeg/verwyder.</string>
     <string name="tag_background">"Tag agtergrond"</string>
+    <string name="tag_new">Klik hier om \'n nuwe merker te skep wat jy by liedjies kan voeg</string>
+    <string name="tag_search">Klik hier om slegs liedjies te wys wat reeds hierdie merker het</string>
     <string name="tag_song">Liedjie tags</string>
+    <string name="tag_song_info">Bestuur liedjie-etikette om te help met liedsoektog</string>
+    <string name="tag_to_use">Die merker om by te voeg of uit liedjies te verwyder</string>
     <string name="tag_verse">Vers</string>
     <string name="tags_remove_from_songs">Hierdie temamerker sal van die volgende liedjies verwyder word:</string>
     <string name="tap">"Kort druk / tik"</string>

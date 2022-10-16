@@ -40,6 +40,7 @@
     <string name="autoscroll">Automatski skrol</string>
     <string name="autoscroll_autostart">Neka automatsko pomeranje bude aktivirano kada menjate pesme</string>
     <string name="autoscroll_default_or_prompt">Ako niste postavili dužinu pesme, da li da se koristi unapred postavljeno vreme ili da pitamo svaki put?</string>
+    <string name="autoscroll_delay">Kašnjenje</string>
     <string name="autoscroll_hide">Autohide autoscroll</string>
     <string name="autoscroll_info">Podesite podešavanja automatskog pomeranja</string>
     <string name="autoscroll_link_audio">Koristite trajanje audio datoteke veze</string>
@@ -269,11 +270,13 @@
     <string name="filter_by_key">Ovo dugme služi za uključivanje ključnog filtera za vašu listu pesama</string>
     <string name="filter_by_tag">Ovo dugme se koristi za uključivanje filtera oznaka / tema za vašu listu pesama</string>
     <string name="filter_by_this_value">Dalje filtrirajte prema ovoj vrednosti. Ovaj filter pretražuje naslove, imena datoteka, korisnička polja i brojeve himni</string>
+    <string name="filter_by_title">Traži po naslovu pesme</string>
     <string name="filter_entry">Dodajte svaki filter u novi red ispod.</string>
     <string name="filter_info">Možete filtrirati odeljke pomoću prefiksa. Ako dodate filter „gitara“, svi delovi koji koriste ovaj prefiks biće filtrirani. na primer. [*gitara:Instrumental]</string>
     <string name="filter_mode_info">Filtrirani odeljci su podrazumevano skriveni, ali ovo možete podesiti da prikazuje samo ove filtrirane odeljke</string>
     <string name="filter_results">Filtrirajte rezultate</string>
     <string name="filter_section">Filtriranje sekcija</string>
+    <string name="filter_songs">Filtrirajte prikazanu listu pesama</string>
     <string name="filters">Filteri</string>
     <string name="find_existing">Pronaći lokacije prethodnih OpenSong datoteka</string>
     <string name="first_run">Ili prvi put pokrećete aplikaciju ili se nešto promenilo. Zbog Android dozvola, treba da podesite željeno mesto skladištenja za aplikaciju da čuva svoje datoteke.</string>
@@ -303,6 +306,7 @@
     <string name="highlight">Alat za isticanje</string>
     <string name="highlight_info">Uredite beleške/napomene u markeru</string>
     <string name="hymn_number">Broj himne</string>
+    <string name="ignore_warning">Ignorirajte upozorenje</string>
     <string name="image">Slika</string>
     <string name="image_change">Kliknite na sliku da biste je promenili</string>
     <string name="image_slide">Slajd-šou slika</string>
@@ -478,6 +482,8 @@
     <string name="piano">Klavir</string>
     <string name="play_services_error">Da biste koristili Google Cast, fontove i veze u blizini, moraćete da instalirate Google Plai usluge.</string>
     <string name="play_services_how">Pokaži mi kako</string>
+    <string name="popup_large">Veliki iskačući prozori</string>
+    <string name="popup_large_info">Koristite velike iskačuće prozore za padajuće menije</string>
     <string name="portrait">Portret</string>
     <string name="prechorus">Pred-Refren</string>
     <string name="prechorus_background">Pozadina predrefrena</string>
@@ -667,8 +673,13 @@
     <string name="swipe_distance">Prijeđite prstom udaljenost</string>
     <string name="swipe_info">Podesite pokrete za kretanje između pesama</string>
     <string name="tag">Oznaka</string>
+    <string name="tag_add_remove">Istaknute pesme sadrže izabranu oznaku. Kliknite na bilo koju pesmu da biste dodali/uklonili izabranu oznaku.</string>
     <string name="tag_background">Pozadina oznake</string>
+    <string name="tag_new">Kliknite ovde da biste kreirali novu oznaku koju možete dodati pesmama</string>
+    <string name="tag_search">Kliknite ovde da biste prikazali samo pesme koje već imaju ovu oznaku</string>
     <string name="tag_song">Oznake pesama</string>
+    <string name="tag_song_info">Upravljajte oznakama pesama da biste pomogli u pretraživanju pesama</string>
+    <string name="tag_to_use">Oznaka za dodavanje ili uklanjanje iz pesama</string>
     <string name="tag_verse">Strofa</string>
     <string name="tags_remove_from_songs">Ova oznaka teme će biti uklonjena iz sledećih pesama:</string>
     <string name="tap">Kratak pritisak/Tap</string>

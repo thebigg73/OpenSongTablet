@@ -40,6 +40,7 @@
     <string name="autoscroll">"Auto-scroll"</string>
     <string name="autoscroll_autostart">Při změně skladeb mějte aktivovaný automatický posun</string>
     <string name="autoscroll_default_or_prompt">"Pokud jste nenastavili dobu trvání píseň by měla být použita výchozí hodnoty, nebo chcete být pokaždé zeptat?"</string>
+    <string name="autoscroll_delay">Zpoždění</string>
     <string name="autoscroll_hide">Automaticky skrýt automatické posouvání</string>
     <string name="autoscroll_info">Upravte nastavení automatického posouvání</string>
     <string name="autoscroll_link_audio">Použít dobu trvání odkazového zvukového souboru</string>
@@ -269,11 +270,13 @@
     <string name="filter_by_key">Toto tlačítko slouží k zahrnutí klíčového filtru pro váš seznam skladeb</string>
     <string name="filter_by_tag">Toto tlačítko slouží k zahrnutí filtru značek / motivů pro váš seznam skladeb</string>
     <string name="filter_by_this_value">Dále filtrovat podle této hodnoty. Tento filtr vyhledává tituly, názvy souborů, uživatelská pole a čísla hymnů</string>
+    <string name="filter_by_title">Vyhledávání podle názvu skladby</string>
     <string name="filter_entry">Přidejte každý filtr na nový řádek níže.</string>
     <string name="filter_info">Sekce můžete filtrovat pomocí předpon. Pokud přidáte filtr \'kytara\', všechny sekce používající tuto předponu budou filtrovány. např. [*kytara:Instrumentální]</string>
     <string name="filter_mode_info">Ve výchozím nastavení jsou filtrované sekce skryté, ale můžete nastavit, aby se místo toho zobrazovaly pouze tyto filtrované sekce</string>
     <string name="filter_results">Filtrovat výsledky</string>
     <string name="filter_section">Filtrování sekcí</string>
+    <string name="filter_songs">Filtrujte seznam zobrazených skladeb</string>
     <string name="filters">Filtry</string>
     <string name="find_existing">"Najít předchozí umístění instalace pro soubory OpenSong"</string>
     <string name="first_run">Buď aplikaci spouštíte poprvé, nebo se něco změnilo. Z důvodu oprávnění systému Android potřebujeme, abyste aplikaci nastavili požadované umístění úložiště, do kterého se budou ukládat její soubory.</string>
@@ -303,6 +306,7 @@
     <string name="highlight">"Zvýrazňovač"</string>
     <string name="highlight_info">Upravit poznámky / anotace zvýrazňovače</string>
     <string name="hymn_number">"Číslo Hymn"</string>
+    <string name="ignore_warning">Ignorovat varování</string>
     <string name="image">"Obraz"</string>
     <string name="image_change">Pro změnu klikněte na obrázek</string>
     <string name="image_slide">"Image slideshow"</string>
@@ -478,6 +482,8 @@
     <string name="piano">Klavir</string>
     <string name="play_services_error">Abyste mohli používat Google Cast, písma a připojení v okolí, budete si muset nainstalovat služby Google Play.</string>
     <string name="play_services_how">Ukaž mi jak</string>
+    <string name="popup_large">Velká vyskakovací okna</string>
+    <string name="popup_large_info">Pro rozevírací nabídky použijte velká vyskakovací okna</string>
     <string name="portrait">Portrét</string>
     <string name="prechorus">Před-refrén</string>
     <string name="prechorus_background">"Prechorus pozadí"</string>
@@ -667,8 +673,13 @@
     <string name="swipe_distance">"Přesuňte vzdálenost"</string>
     <string name="swipe_info">Upravte gesta pro pohyb mezi skladbami</string>
     <string name="tag">Tag</string>
+    <string name="tag_add_remove">Zvýrazněné skladby obsahují vybranou značku. Kliknutím na libovolnou skladbu přidáte/odstraníte vybranou značku.</string>
     <string name="tag_background">"Tag pozadí"</string>
+    <string name="tag_new">Kliknutím sem vytvoříte novou značku, kterou můžete přidat ke skladbám</string>
+    <string name="tag_search">Kliknutím sem zobrazíte pouze skladby, které již tuto značku mají</string>
     <string name="tag_song">Tagy písní</string>
+    <string name="tag_song_info">Spravujte značky skladeb, které vám pomohou s vyhledáváním skladeb</string>
+    <string name="tag_to_use">Značka, kterou chcete přidat nebo odebrat ze skladeb</string>
     <string name="tag_verse">Sloka</string>
     <string name="tags_remove_from_songs">Tato značka tématu bude odstraněna z následujících skladeb:</string>
     <string name="tap">"Krátkým stisknutím / klepnutím"</string>

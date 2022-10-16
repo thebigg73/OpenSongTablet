@@ -40,6 +40,7 @@
     <string name="autoscroll">"Auto-scroll"</string>
     <string name="autoscroll_autostart">Mantenga el desplazamiento automático activado al cambiar de canción</string>
     <string name="autoscroll_default_or_prompt">"Si no ha configurado una duración canción se deben utilizar los valores por defecto o quieres que se le pregunte cada vez?"</string>
+    <string name="autoscroll_delay">Demora</string>
     <string name="autoscroll_hide">Ocultar desplazamiento automático</string>
     <string name="autoscroll_info">Ajustar la configuración de desplazamiento automático</string>
     <string name="autoscroll_link_audio">Usar la duración del archivo de audio del enlace</string>
@@ -269,11 +270,13 @@
     <string name="filter_by_key">Este botón se utiliza para incluir un filtro clave para su lista de canciones.</string>
     <string name="filter_by_tag">Este botón se utiliza para incluir un filtro de etiqueta / tema para su lista de canciones</string>
     <string name="filter_by_this_value">Filtre más por este valor. Este filtro busca títulos, nombres de archivos, campos de usuario y números de himnos</string>
+    <string name="filter_by_title">Buscar por título de canción</string>
     <string name="filter_entry">Agregue cada filtro en una nueva línea a continuación.</string>
     <string name="filter_info">Puede filtrar secciones usando prefijos. Si agrega el filtro \'guitarra\', se filtrarán todas las secciones que usen este prefijo. p.ej. [*guitarra:Instrumental]</string>
     <string name="filter_mode_info">De forma predeterminada, las secciones filtradas están ocultas, pero puede configurar esto para que solo muestre estas secciones filtradas.</string>
     <string name="filter_results">Filtrar Resultados</string>
     <string name="filter_section">Filtrado de secciones</string>
+    <string name="filter_songs">Filtrar la lista de canciones mostradas</string>
     <string name="filters">Filtros</string>
     <string name="find_existing">"Encuentra ubicaciones de instalación previas para archivos OpenSong"</string>
     <string name="first_run">O esta es la primera vez que ejecuta la aplicación o algo ha cambiado. Debido a los permisos de Android, necesitamos que configure la ubicación de almacenamiento deseada para que la aplicación almacene sus archivos.</string>
@@ -303,6 +306,7 @@
     <string name="highlight">"Resaltador"</string>
     <string name="highlight_info">Editar notas/anotaciones de resaltado</string>
     <string name="hymn_number">"Número Himno"</string>
+    <string name="ignore_warning">Ignorar advertencia</string>
     <string name="image">Imagen</string>
     <string name="image_change">Click en la imagen para cambiar</string>
     <string name="image_slide">Imagen slideshow</string>
@@ -478,6 +482,8 @@
     <string name="piano">Piano</string>
     <string name="play_services_error">Para utilizar Google Cast, fuentes y conexiones cercanas, deberá instalar Google Play Services.</string>
     <string name="play_services_how">Muéstrame cómo</string>
+    <string name="popup_large">Ventanas emergentes grandes</string>
+    <string name="popup_large_info">Use ventanas emergentes grandes para los menús desplegables</string>
     <string name="portrait">Retrato</string>
     <string name="prechorus">Pre-Coro</string>
     <string name="prechorus_background">"Prechorus fondo"</string>
@@ -667,8 +673,13 @@
     <string name="swipe_distance">"Distancia de desplazamiento"</string>
     <string name="swipe_info">Ajusta los gestos para moverte entre canciones</string>
     <string name="tag">Etiqueta</string>
+    <string name="tag_add_remove">Las canciones destacadas contienen la etiqueta elegida. Haga clic en cualquier canción para agregar/eliminar la etiqueta elegida.</string>
     <string name="tag_background">"Fondo Tag"</string>
+    <string name="tag_new">Haga clic aquí para crear una nueva etiqueta que puede agregar a las canciones</string>
+    <string name="tag_search">Haga clic aquí para mostrar solo las canciones que ya tienen esta etiqueta</string>
     <string name="tag_song">Etiquetas de canciones</string>
+    <string name="tag_song_info">Administre etiquetas de canciones para ayudar con la búsqueda de canciones</string>
+    <string name="tag_to_use">La etiqueta para agregar o quitar de las canciones</string>
     <string name="tag_verse">Verso</string>
     <string name="tags_remove_from_songs">Esta etiqueta de tema se eliminará de las siguientes canciones:</string>
     <string name="tap">"Pulsación corta / toque"</string>

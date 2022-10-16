@@ -45,6 +45,7 @@
     <string name="autoscroll">Autoscroll</string>
     <string name="autoscroll_autostart">Keep autoscroll activated when changing songs</string>
     <string name="autoscroll_default_or_prompt">If you haven\'t set a song duration should the default values be used or do you want to be asked each time?</string>
+    <string name="autoscroll_delay">Delay</string>
     <string name="autoscroll_hide">Autohide autoscroll</string>
     <string name="autoscroll_info">Adjust the autoscroll settings</string>
     <string name="autoscroll_link_audio">Use duration of link audio file</string>
@@ -351,11 +352,13 @@
     <string name="filter_by_key">This button is used to include a key filter for your song list</string>
     <string name="filter_by_tag">This button is used to include a tag/theme filter for your song list</string>
     <string name="filter_by_this_value">Further filter by this value.  This filter searches titles, filenames, user fields and hymn numbers</string>
+    <string name="filter_by_title">Search by song title</string>
     <string name="filter_entry">Add each filter on a new line below.</string>
     <string name="filter_info">You can filter sections by using prefixes.  If you add the filter \'guitar\', any sections using this prefix would be filtered. e.g. [*guitar:Instrumental]</string>
     <string name="filter_mode_info">By default filtered sections are hidden, but you can set this to only show these filtered sections instead</string>
     <string name="filter_results">Filter results</string>
     <string name="filter_section">Section filtering</string>
+    <string name="filter_songs">Filter the list of songs shown</string>
     <string name="filters">Filters</string>
     <string name="find_existing">Find previous installation locations for OpenSong files</string>
     <string name="first_run">Either this is your first time running the app, or something has changed. Due to Android permissions, we need you to set your desired storage location for the app to store its files.</string>
@@ -388,6 +391,7 @@
     <string name="highlight_info">Edit highlighter notes / annotations</string>
     <string name="holychords" translatable="false">HolyChords.com</string>
     <string name="hymn_number">Hymn number</string>
+    <string name="ignore_warning">Ignore warning</string>
     <string name="image">Image</string>
     <string name="image_change">Click on the image to change</string>
     <string name="image_slide">Image slideshow</string>
@@ -628,6 +632,8 @@
     <string name="play_services_error">To use Google Cast, Fonts and Nearby Connections, you will need to install Google Play Services.</string>
     <string name="play_services_how">Show me how</string>
     <string name="plus_1" translatable="false">+1</string>
+    <string name="popup_large">Large popups</string>
+    <string name="popup_large_info">Use large popups for drop-down menus</string>
     <string name="portrait">Portrait</string>
     <string name="prechorus">Pre-Chorus</string>
     <string name="prechorus_background">Prechorus background</string>
@@ -823,8 +829,13 @@
     <string name="swipe_distance">Swipe distance</string>
     <string name="swipe_info">Adjust gestures to move between songs</string>
     <string name="tag">Tag</string>
+    <string name="tag_add_remove">Highlighted songs contain the chosen tag.  Click on any song to add/remove the chosen tag.</string>
     <string name="tag_background">Tag background</string>
+    <string name="tag_new">Click here to create a new tag that you can add to songs</string>
+    <string name="tag_search">Click here to show only songs that already have this tag</string>
     <string name="tag_song">Song tags</string>
+    <string name="tag_song_info">Manage song tags to help with song searching</string>
+    <string name="tag_to_use">The tag to add or remove from songs</string>
     <string name="tag_verse">Verse</string>
     <string name="tags_remove_from_songs">This theme tag will be removed from the following songs:</string>
     <string name="tap">Short press/tap</string>
@@ -1085,15 +1096,4 @@ Check out the categories in the right hand options menu.
     <string name="youtube" translatable="false">YouTube</string>
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zoom_level">Zoom level</string>
-    <string name="autoscroll_delay">Delay</string>
-    <string name="filter_by_title">Search by song title</string>
-    <string name="tag_song_info">Manage song tags to help with song searching</string>
-    <string name="filter_songs">Filter the list of songs shown</string>
-    <string name="tag_to_use">The tag to add or remove from songs</string>
-    <string name="tag_add_remove">Highlighted songs contain the chosen tag.  Click on any song to add/remove the chosen tag.</string>
-    <string name="tag_new">Click here to create a new tag that you can add to songs</string>
-    <string name="tag_search">Click here to show only songs that already have this tag</string>
-    <string name="ignore_warning">Ignore warning</string>
-    <string name="popup_large">Large popups</string>
-    <string name="popup_large_info">Use large popups for drop-down menus</string>
 </resources>

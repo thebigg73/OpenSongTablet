@@ -40,6 +40,7 @@
     <string name="autoscroll">"Auto-scroll"</string>
     <string name="autoscroll_autostart">Mantieni lo scorrimento automatico attivato quando cambi i brani</string>
     <string name="autoscroll_default_or_prompt">"Se non è stata impostata una durata canzone dovrebbero essere utilizzati i valori predefiniti o vuoi essere chiesto ogni volta?"</string>
+    <string name="autoscroll_delay">Ritardo</string>
     <string name="autoscroll_hide">Nascondi automaticamente lo scorrimento automatico</string>
     <string name="autoscroll_info">Regola le impostazioni di scorrimento automatico</string>
     <string name="autoscroll_link_audio">Usa la durata del file audio del collegamento</string>
@@ -269,11 +270,13 @@
     <string name="filter_by_key">Questo pulsante viene utilizzato per includere un filtro chiave per l\'elenco dei brani</string>
     <string name="filter_by_tag">Questo pulsante viene utilizzato per includere un filtro tag/tema per l\'elenco dei brani</string>
     <string name="filter_by_this_value">Filtra ulteriormente in base a questo valore. Questo filtro ricerca titoli, nomi di file, campi utente e numeri di inni</string>
+    <string name="filter_by_title">Cerca per titolo del brano</string>
     <string name="filter_entry">Aggiungi ogni filtro su una nuova riga di seguito.</string>
     <string name="filter_info">Puoi filtrare le sezioni usando i prefissi. Se aggiungi il filtro \"chitarra\", tutte le sezioni che utilizzano questo prefisso verranno filtrate. per esempio. [*chitarra:strumentale]</string>
     <string name="filter_mode_info">Per impostazione predefinita, le sezioni filtrate sono nascoste, ma puoi impostarlo per mostrare solo queste sezioni filtrate</string>
     <string name="filter_results">Filtra i risultati</string>
     <string name="filter_section">Filtraggio di sezioni</string>
+    <string name="filter_songs">Filtra l\'elenco dei brani visualizzati</string>
     <string name="filters">Filtri</string>
     <string name="find_existing">"Trova le posizioni di installazione precedenti per i file OpenSong"</string>
     <string name="first_run">O questa è la prima volta che esegui l\'app o qualcosa è cambiato. A causa delle autorizzazioni Android, è necessario che tu imposti la posizione di archiviazione desiderata per l\'app in cui archiviare i suoi file.</string>
@@ -303,6 +306,7 @@
     <string name="highlight">"Evidenziatore"</string>
     <string name="highlight_info">Modifica note/annotazioni dell\'evidenziatore</string>
     <string name="hymn_number">"Numero Hymn"</string>
+    <string name="ignore_warning">Ignora avviso</string>
     <string name="image">"Immagine"</string>
     <string name="image_change">Clicca sull\'immagine per cambiare</string>
     <string name="image_slide">Immagine presentazione</string>
@@ -478,6 +482,8 @@
     <string name="piano">Pianoforte</string>
     <string name="play_services_error">Per utilizzare Google Cast, i caratteri e le connessioni nelle vicinanze, dovrai installare Google Play Services.</string>
     <string name="play_services_how">Mostrami come</string>
+    <string name="popup_large">Grandi popup</string>
+    <string name="popup_large_info">Usa popup di grandi dimensioni per i menu a discesa</string>
     <string name="portrait">Ritratto</string>
     <string name="prechorus">Pre-ritornello</string>
     <string name="prechorus_background">"Prechorus sfondo"</string>
@@ -667,8 +673,13 @@
     <string name="swipe_distance">"Spostare la distanza"</string>
     <string name="swipe_info">Regola i gesti per spostarti tra i brani</string>
     <string name="tag">Tag</string>
+    <string name="tag_add_remove">I brani in evidenza contengono il tag scelto. Fare clic su qualsiasi brano per aggiungere/rimuovere il tag scelto.</string>
     <string name="tag_background">"Tag sfondo"</string>
+    <string name="tag_new">Fai clic qui per creare un nuovo tag che puoi aggiungere ai brani</string>
+    <string name="tag_search">Fare clic qui per mostrare solo i brani che hanno già questo tag</string>
     <string name="tag_song">Tag delle canzoni</string>
+    <string name="tag_song_info">Gestisci i tag dei brani per facilitare la ricerca dei brani</string>
+    <string name="tag_to_use">Il tag da aggiungere o rimuovere dai brani</string>
     <string name="tag_verse">Strofa</string>
     <string name="tags_remove_from_songs">Questo tag tema verrà rimosso dai seguenti brani:</string>
     <string name="tap">"Pressione breve / tocco"</string>
