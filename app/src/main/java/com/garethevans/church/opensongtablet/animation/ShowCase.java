@@ -63,11 +63,18 @@ public class ShowCase {
                 dismisstexts_ornulls.add(c.getResources().getString(android.R.string.ok));
             }
         }
+        if (rects==null) {
+            rects = new ArrayList<>();
+            for (int z=0; z<targets.size(); z++) {
+                rects.add(true);
+            }
+        }
 
         for (int i=0; i<targets.size(); i++) {
             if (dismisstexts_ornulls.get(i)==null) {
                 dismisstexts_ornulls.set(i,c.getResources().getString(android.R.string.ok));
             }
+
             if (targets.get(i)!=null) {
                 sequence.addSequenceItem(singleShowCaseBuilder(c, targets.get(i), dismisstexts_ornulls.get(i),
                         information.get(i), rects.get(i),null).build());

@@ -307,6 +307,7 @@ public class Preferences extends Activity {
     // hideActionBar                   boolean     Should the action bar auto hide (def:false)
     // hideInfoBar                     boolean     Should the info bar (Presenter mode only) autohide after initial display + minimum time (def: true)
     // hideLyricsBox                   boolean     Should we hide the box around the lyrics (def:false)
+    // ignorePlayServicesWarning       boolean     Has the user ticked the box to not show this again (def:false);
     // inlineSet                       boolean     Should we show the inline setlist (def:false)
     // inlineSetWidth                  float       The width (as a percentage of screen width) of the inline setlist (def:0.3f)
     // language                        String      The locale set in the menu (def:en)
@@ -468,6 +469,7 @@ public class Preferences extends Activity {
     // songListSearchByArtist          boolean     Should we search in the song list using a custom artist (def:false)
     // songListSearchByKey             boolean     Should we search in the song list using a custom key (def:false)
     // songListSearchByTag             boolean     Should we search in the song list using a custom folder (def:false)
+    // songListSearchByTitle           boolean     Should we search in the song list using a custom title (def:false)
     // songListSearchByFilter          boolean     Should we search in the song list using a custom filter (def:false)
     // songLoadSuccess                 boolean     Indicates if the song loaded correctly (won't load a song next time if it crashed) (def:false)
     // songMenuAlphaIndexLevel2        boolean     Should the alphabetical index have a level 2 filter (clicking on it displays two letters) (def:false)

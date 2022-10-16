@@ -287,6 +287,7 @@
     <string name="deeplink_song_actions" translatable="false">opensongapp://settings/actions</string>
     <string name="deeplink_sticky_notes" translatable="false">opensongapp://settings/actions/stickynotes</string>
     <string name="deeplink_swipe" translatable="false">opensongapp://settings/controls/swipe</string>
+    <string name="deeplink_tags" translatable="false">opensongapp://settings/actions/tags</string>
     <string name="deeplink_theme" translatable="false">opensongapp://settings/display/theme</string>
     <string name="default_autoscroll">Default autoscroll times</string>
     <string name="delete">Delete</string>
@@ -1073,6 +1074,7 @@ Check out the categories in the right hand options menu.
     <string name="website_storage_overview" translatable="false">https://www.opensongapp.com/user-manual/storage/storage-overview</string>
     <string name="website_storage_set" translatable="false">https://www.opensongapp.com/user-manual/storage/set-storage-location</string>
     <string name="website_swipe_settings" translatable="false">https://www.opensongapp.com/user-manual/controls/swipe-settings</string>
+    <string name="website_tags" translatable="false">https://www.opensongapp.com/user-manual/songs/song-actions/tags</string>
     <string name="website_themes" translatable="false">https://www.opensongapp.com/user-manual/display/themes</string>
     <string name="website_user_guide" translatable="false">https://www.opensongapp.com/user-guide</string>
     <string name="welcome">Welcome to OpenSongApp</string>
@@ -1084,4 +1086,12 @@ Check out the categories in the right hand options menu.
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zoom_level">Zoom level</string>
     <string name="autoscroll_delay">Delay</string>
+    <string name="filter_by_title">Search by song title</string>
+    <string name="tag_song_info">Manage song tags to help with song searching</string>
+    <string name="filter_songs">Filter the list of songs shown</string>
+    <string name="tag_to_use">The tag to add or remove from songs</string>
+    <string name="tag_add_remove">Highlighted songs contain the chosen tag.  Click on any song to add/remove the chosen tag.</string>
+    <string name="tag_new">Click here to create a new tag that you can add to songs</string>
+    <string name="tag_search">Click here to show only songs that already have this tag</string>
+    <string name="ignore_warning">Ignore warning</string>
 </resources>
