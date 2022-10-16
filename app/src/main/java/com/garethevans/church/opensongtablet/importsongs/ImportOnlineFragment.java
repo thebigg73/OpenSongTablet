@@ -45,11 +45,13 @@ public class ImportOnlineFragment extends Fragment {
     private MainActivityInterface mainActivityInterface;
     private SettingsImportOnlineBinding myView;
     private final String TAG = "ImportOnline";
-    private final String[] sources = new String[]{"UltimateGuitar", "Chordie", "SongSelect", "WorshipTogether", "UkuTabs", "HolyChords", "La Boîte à chansons"};
+    private final String[] sources = new String[]{"UltimateGuitar", "Chordie", "SongSelect",
+            "WorshipTogether", "UkuTabs", "HolyChords", "La Boîte à chansons", "eChords"};
     private final String[] address = new String[]{"https://www.ultimate-guitar.com/search.php?search_type=title&value=",
             "https://www.chordie.com/results.php?q=", "https://songselect.ccli.com/Search/Results?SearchText=",
             "https://www.worshiptogether.com/search-results/#?cludoquery=", "https://ukutabs.com/?s=",
-            "https://holychords.pro/search?name=", "https://www.boiteachansons.net/recherche/"};
+            "https://holychords.pro/search?name=", "https://www.boiteachansons.net/recherche/",
+            "https://www.e-chords.com/search-all/"};
     private String webSearchFull, webAddressFinal, source, webString, userAgentDefault;
     private Song newSong;
     private UltimateGuitar ultimateGuitar;
@@ -59,6 +61,7 @@ public class ImportOnlineFragment extends Fragment {
     private UkuTabs ukuTabs;
     private HolyChords holyChords;
     private Boiteachansons boiteachansons;
+    private EChords eChords;
     private WebView webView;
 
     @Override
@@ -96,6 +99,7 @@ public class ImportOnlineFragment extends Fragment {
         ukuTabs = new UkuTabs();
         holyChords = new HolyChords();
         boiteachansons = new Boiteachansons();
+        eChords = new EChords();
     }
 
     private void setupViews() {
@@ -105,10 +109,9 @@ public class ImportOnlineFragment extends Fragment {
         myView.saveLayout.setVisibility(View.GONE);
         myView.grabText.setVisibility(View.GONE);
 
-        ExposedDropDownArrayAdapter exposedDropDownArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.view_exposed_dropdown_item, sources);
+        ExposedDropDownArrayAdapter exposedDropDownArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(),
+                myView.onlineSource,R.layout.view_exposed_dropdown_item, sources);
         myView.onlineSource.setAdapter(exposedDropDownArrayAdapter);
-        // Set the position in the list to the chosen value
-        exposedDropDownArrayAdapter.keepSelectionPosition(myView.onlineSource, sources);
         if (mainActivityInterface.getCheckInternet().getSearchPhrase() != null) {
             myView.searchPhrase.setText(mainActivityInterface.getCheckInternet().getSearchPhrase());
         }
@@ -286,10 +289,6 @@ public class ImportOnlineFragment extends Fragment {
                     } else {
                         webView.loadUrl(webSearchFull);
                     }
-
-
-
-
                 });
             }
         }
@@ -387,6 +386,11 @@ public class ImportOnlineFragment extends Fragment {
                     show = true;
                 }
                 break;
+            case "eChords":
+                if (webString.contains("<pre id=\"core\"")) {
+                    show = true;
+                }
+                break;
         }
         if (show) {
             myView.saveButton.post(() -> {
@@ -439,14 +443,18 @@ public class ImportOnlineFragment extends Fragment {
                 Log.d(TAG,"getting here La Boîte à chansons");
                 newSong = boiteachansons.processContent(mainActivityInterface,newSong,webString);
                 break;
+            case "eChords":
+                Log.d(TAG,"getting here eChords");
+                newSong = eChords.processContent(newSong,webString);
+                break;
         }
         showDownloadProgress(false);
 
-        for (String lyric:newSong.getLyrics().split("\n")) {
+        /*for (String lyric:newSong.getLyrics().split("\n")) {
             Log.d(TAG,"lyric:"+lyric);
-        }
+        }*/
 
-        setupSaveLayout();
+        //setupSaveLayout();
     }
 
     public void finishedDownloadPDF(Uri uri) {
@@ -474,12 +482,10 @@ public class ImportOnlineFragment extends Fragment {
         ArrayList<String> availableFolders = mainActivityInterface.getStorageAccess().getSongFolders(
                 mainActivityInterface.getStorageAccess().listSongs(), true, null);
         ExposedDropDownArrayAdapter exposedDropDownArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(),
-                R.layout.view_exposed_dropdown_item,availableFolders);
+                myView.folderChoice, R.layout.view_exposed_dropdown_item,availableFolders);
         myView.folderChoice.setAdapter(exposedDropDownArrayAdapter);
         myView.folderChoice.setText(mainActivityInterface.getPreferences().
                 getMyPreferenceString("songFolder",getString(R.string.mainfoldername)));
-        // Set the position in the list to the chosen value
-        exposedDropDownArrayAdapter.keepSelectionPosition(myView.folderChoice,availableFolders);
         changeLayouts(false,false,true);
         myView.saveSong.setOnClickListener(v -> saveTheSong());
         showDownloadProgress(false);
