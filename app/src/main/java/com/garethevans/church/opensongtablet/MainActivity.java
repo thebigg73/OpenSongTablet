@@ -1179,6 +1179,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         screenMirror = (ImageView) menu.findItem(R.id.mirror_menu_item).getActionView();
         screenMirror.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.cast));
         screenMirror.setOnClickListener(view -> startActivity(new Intent("android.settings.CAST_SETTINGS")));
+        updateCastIcon();
         return true;
     }
 
@@ -2717,21 +2718,19 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
 
     private void updateCastIcon() {
-        if (alertChecks.getIgnorePlayServicesWarning()) {
+        if (alertChecks.getIgnorePlayServicesWarning() && screenMirror!=null) {
             screenMirror.setVisibility(View.GONE);
 
-        } else {
-            if (screenMirror!=null) {
-                if (secondaryDisplays != null && connectedDisplays.length > 0) {
-                    screenMirror.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.cast_connected));
-                } else {
-                    screenMirror.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.cast));
-                }
-                if (menuOpen) {
-                    screenMirror.setVisibility(View.GONE);
-                } else {
-                    screenMirror.setVisibility(View.VISIBLE);
-                }
+        } else if (screenMirror!=null) {
+            if (secondaryDisplays != null && connectedDisplays.length > 0) {
+                screenMirror.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.cast_connected));
+            } else {
+                screenMirror.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.cast));
+            }
+            if (menuOpen) {
+                screenMirror.setVisibility(View.GONE);
+            } else {
+                screenMirror.setVisibility(View.VISIBLE);
             }
         }
     }
