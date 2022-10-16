@@ -39,9 +39,10 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     // The helper classes used
     private MenuSongsBinding myView;
     private boolean songButtonActive = true;
-    private String folderSearchVal = "", artistSearchVal = "", keySearchVal = "", tagSearchVal = "", filterSearchVal = "";
+    private String folderSearchVal = "", artistSearchVal = "", keySearchVal = "", tagSearchVal = "",
+            filterSearchVal = "", titleSearchVal = "";
     private boolean songListSearchByFolder, songListSearchByArtist, songListSearchByKey,
-            songListSearchByTag, songListSearchByFilter;
+            songListSearchByTag, songListSearchByFilter, songListSearchByTitle;
     private ArrayList<Song> songsFound;
     private ExposedDropDownArrayAdapter folderArrayAdapter, keyArrayAdapter;
     private SongListAdapter songListAdapter;
@@ -102,11 +103,13 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         songListSearchByKey = mainActivityInterface.getPreferences().getMyPreferenceBoolean("songListSearchByKey", false);
         songListSearchByTag = mainActivityInterface.getPreferences().getMyPreferenceBoolean("songListSearchByTag", false);
         songListSearchByFilter = mainActivityInterface.getPreferences().getMyPreferenceBoolean("songListSearchByFilter", false);
+        songListSearchByTitle = mainActivityInterface.getPreferences().getMyPreferenceBoolean("songListSearchByTitle",false);
         showHideRows(myView.filters.folderSearch, songListSearchByFolder);
         showHideRows(myView.filters.artistSearch, songListSearchByArtist);
         showHideRows(myView.filters.keySearch, songListSearchByKey);
         showHideRows(myView.filters.tagSearch, songListSearchByTag);
         showHideRows(myView.filters.filterSearch, songListSearchByFilter);
+        showHideRows(myView.filters.titleSearch, songListSearchByTitle);
     }
 
     private void setUpExposedDropDowns() {
@@ -121,6 +124,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                     myView.filters.artistSearch.addTextChangedListener(new MyTextWatcher("artist"));
                     myView.filters.tagSearch.addTextChangedListener(new MyTextWatcher("tag"));
                     myView.filters.filterSearch.addTextChangedListener(new MyTextWatcher("filter"));
+                    myView.filters.titleSearch.addTextChangedListener(new MyTextWatcher("title"));
                 });
             } catch (Exception e) {
                 e.printStackTrace();
@@ -149,11 +153,12 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     }
 
     private void fixButtons() {
-        fixColor(myView.folderButton, songListSearchByFolder);
-        fixColor(myView.artistButton, songListSearchByArtist);
-        fixColor(myView.keyButton, songListSearchByKey);
-        fixColor(myView.tagButton, songListSearchByTag);
-        fixColor(myView.filterButton, songListSearchByFilter);
+        fixColor(myView.filterButtons.folderButton, songListSearchByFolder);
+        fixColor(myView.filterButtons.artistButton, songListSearchByArtist);
+        fixColor(myView.filterButtons.keyButton, songListSearchByKey);
+        fixColor(myView.filterButtons.tagButton, songListSearchByTag);
+        fixColor(myView.filterButtons.filterButton, songListSearchByFilter);
+        fixColor(myView.filterButtons.titleButton, songListSearchByTitle);
         prepareSearch();
     }
 
@@ -202,54 +207,64 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                 super.onScrollStateChanged(recyclerView, newState);
             }
         });
-        myView.folderButton.setOnClickListener(v -> {
+        myView.filterButtons.folderButton.setOnClickListener(v -> {
             songListSearchByFolder = !songListSearchByFolder;
             mainActivityInterface.getPreferences().setMyPreferenceBoolean("songListSearchByFolder", songListSearchByFolder);
             fixButtons();
             showHideRows(myView.filters.folderSearch, songListSearchByFolder);
             if (songListSearchByFolder) {
-                runShowCaseSequence(myView.folderButton, myView.filters.folderSearch, getString(R.string.filter_by_folder),
+                runShowCaseSequence(myView.filterButtons.folderButton, myView.filters.folderSearch, getString(R.string.filter_by_folder),
                         getString(R.string.filter_by_dropdown), true, true, "myView.filters.folderSearch");
             }
         });
-        myView.artistButton.setOnClickListener(v -> {
+        myView.filterButtons.artistButton.setOnClickListener(v -> {
             songListSearchByArtist = !songListSearchByArtist;
             mainActivityInterface.getPreferences().setMyPreferenceBoolean("songListSearchByArtist", songListSearchByArtist);
             fixButtons();
             showHideRows(myView.filters.artistSearch, songListSearchByArtist);
             if (songListSearchByArtist) {
-                runShowCaseSequence(myView.artistButton, myView.filters.artistSearch, getString(R.string.filter_by_artist),
+                runShowCaseSequence(myView.filterButtons.artistButton, myView.filters.artistSearch, getString(R.string.filter_by_artist),
                         getString(R.string.filter_by_edit), true, true, "myView.filters.artistSearch");
             }
         });
-        myView.keyButton.setOnClickListener(v -> {
+        myView.filterButtons.keyButton.setOnClickListener(v -> {
             songListSearchByKey = !songListSearchByKey;
             mainActivityInterface.getPreferences().setMyPreferenceBoolean("songListSearchByKey", songListSearchByKey);
             fixButtons();
             showHideRows(myView.filters.keySearch, songListSearchByKey);
             if (songListSearchByKey) {
-                runShowCaseSequence(myView.keyButton, myView.filters.keySearch, getString(R.string.filter_by_key),
+                runShowCaseSequence(myView.filterButtons.keyButton, myView.filters.keySearch, getString(R.string.filter_by_key),
                         getString(R.string.filter_by_dropdown), true, true, "myView.filters.keySearch");
             }
         });
-        myView.tagButton.setOnClickListener(v -> {
+        myView.filterButtons.tagButton.setOnClickListener(v -> {
             songListSearchByTag = !songListSearchByTag;
             mainActivityInterface.getPreferences().setMyPreferenceBoolean("songListSearchByTag", songListSearchByTag);
             fixButtons();
             showHideRows(myView.filters.tagSearch, songListSearchByTag);
             if (songListSearchByTag) {
-                runShowCaseSequence(myView.tagButton, myView.filters.tagSearch, getString(R.string.filter_by_tag),
+                runShowCaseSequence(myView.filterButtons.tagButton, myView.filters.tagSearch, getString(R.string.filter_by_tag),
                         getString(R.string.filter_by_edit), true, true, "myView.filters.tagSearch");
             }
         });
-        myView.filterButton.setOnClickListener(v -> {
+        myView.filterButtons.filterButton.setOnClickListener(v -> {
             songListSearchByFilter = !songListSearchByFilter;
             mainActivityInterface.getPreferences().setMyPreferenceBoolean("songListSearchByFilter", songListSearchByFilter);
             fixButtons();
             showHideRows(myView.filters.filterSearch, songListSearchByFilter);
             if (songListSearchByFilter) {
-                runShowCaseSequence(myView.filterButton, myView.filters.filterSearch, getString(R.string.filter_by_this_value),
+                runShowCaseSequence(myView.filterButtons.filterButton, myView.filters.filterSearch, getString(R.string.filter_by_this_value),
                         getString(R.string.filter_by_edit), true, true, "myView.filters.filterSearch");
+            }
+        });
+        myView.filterButtons.titleButton.setOnClickListener(v -> {
+            songListSearchByTitle = !songListSearchByTitle;
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean("songListSearchByTitle",songListSearchByTitle);
+            fixButtons();
+            showHideRows(myView.filters.titleSearch, songListSearchByTitle);
+            if (songListSearchByTitle) {
+                runShowCaseSequence(myView.filterButtons.titleButton, myView.filters.titleSearch, getString(R.string.filter_by_title),
+                        getString(R.string.filter_by_edit), true, true, "myView.filters.titleSearch");
             }
         });
     }
@@ -274,11 +289,12 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     }
 
     private void buttonsEnabled(boolean enabled) {
-        myView.folderButton.setEnabled(enabled);
-        myView.artistButton.setEnabled(enabled);
-        myView.keyButton.setEnabled(enabled);
-        myView.tagButton.setEnabled(enabled);
-        myView.filterButton.setEnabled(enabled);
+        myView.filterButtons.folderButton.setEnabled(enabled);
+        myView.filterButtons.artistButton.setEnabled(enabled);
+        myView.filterButtons.keyButton.setEnabled(enabled);
+        myView.filterButtons.tagButton.setEnabled(enabled);
+        myView.filterButtons.filterButton.setEnabled(enabled);
+        myView.filterButtons.titleButton.setEnabled(enabled);
         myView.actionFAB.setEnabled(enabled);
     }
 
@@ -294,8 +310,9 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
             try {
                 songsFound = mainActivityInterface.getSQLiteHelper().getSongsByFilters(
                         songListSearchByFolder, songListSearchByArtist, songListSearchByKey,
-                        songListSearchByTag, songListSearchByFilter, folderSearchVal,
-                        artistSearchVal, keySearchVal, tagSearchVal, filterSearchVal);
+                        songListSearchByTag, songListSearchByFilter, songListSearchByTitle,
+                        folderSearchVal, artistSearchVal, keySearchVal, tagSearchVal,
+                        filterSearchVal, titleSearchVal);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -597,6 +614,9 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                     break;
                 case "filter":
                     filterSearchVal = value;
+                    break;
+                case "title":
+                    titleSearchVal = value;
                     break;
             }
             prepareSearch();

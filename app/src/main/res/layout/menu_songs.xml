@@ -21,60 +21,8 @@
             android:orientation="vertical">
 
             <!-- Filter buttons -->
-            <com.google.android.material.button.MaterialButtonToggleGroup
-                android:id="@+id/searchButtonGroup"
-                style="@style/menuToggle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:weightSum="5"
-                app:checkedButton="@+id/folderButton">
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/filterButton"
-                    style="@style/IconOnlyButton"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    app:icon="@drawable/search"
-                    app:iconSize="24dp" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/keyButton"
-                    style="@style/IconOnlyButton"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    app:icon="@drawable/clef"
-                    app:iconSize="24dp" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/artistButton"
-                    style="@style/IconOnlyButton"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    app:icon="@drawable/artist"
-                    app:iconSize="24dp" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/folderButton"
-                    style="@style/IconOnlyButton"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    app:icon="@drawable/folder_search"
-                    app:iconSize="24dp" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/tagButton"
-                    style="@style/IconOnlyButton"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    app:icon="@drawable/tag"
-                    app:iconSize="24dp" />
-            </com.google.android.material.button.MaterialButtonToggleGroup>
+            <include android:id="@+id/filterButtons"
+                layout="@layout/menu_filter_buttons"/>
 
             <include
                 android:id="@+id/filters"

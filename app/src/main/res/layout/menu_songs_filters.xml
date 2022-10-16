@@ -6,6 +6,17 @@
     android:orientation="vertical">
 
     <com.garethevans.church.opensongtablet.customviews.MaterialEditText
+        android:id="@+id/titleSearch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/title"
+        app:endIconMode="clear_text"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"/>
+
+    <com.garethevans.church.opensongtablet.customviews.MaterialEditText
         android:id="@+id/filterSearch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
