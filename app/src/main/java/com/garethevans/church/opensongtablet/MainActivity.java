@@ -440,9 +440,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void showActionBar() {
-        boolean contentBehind = myView.myToolbar.contentBehind(settingsOpen||menuOpen);
+        boolean contentBehind = myView.myToolbar.contentBehind(settingsOpen);
         moveContentForActionBar(contentBehind);
-        myView.myToolbar.showActionBar(settingsOpen||menuOpen);
+        myView.myToolbar.showActionBar(settingsOpen);
     }
 
     @Override
@@ -714,8 +714,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             }
         });
         if (id != R.id.setStorageLocationFragment && deepLink!=null && deepLink.equals(getString(R.string.storage_change))) {
-            showActionBar();
+            settingsOpen = true;
         }
+        showActionBar();
     }
     @Override
     public void popTheBackStack(int id, boolean inclusive) {
@@ -1217,6 +1218,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public boolean getMenuOpen() {
         return menuOpen;
+    }
+    @Override
+    public boolean getSettingsOpen() {
+        return settingsOpen;
     }
     @Override
     public boolean needActionBar() {

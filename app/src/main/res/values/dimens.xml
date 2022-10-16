@@ -54,5 +54,4 @@
     <integer name="slide_in_time">200</integer>
 
     <dimen name="exposed_dropdown_height">200dp</dimen>
-    <integer name="exposed_dropdown_int">200</integer>
 </resources>

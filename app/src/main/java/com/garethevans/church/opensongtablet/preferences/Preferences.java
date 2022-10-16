@@ -305,6 +305,7 @@ public class Preferences extends Activity {
     // gestureScreenDoubleTap          int         The action for double tapping on the song screen (def 2 = edit song - based on menu position)
     // gestureScreenLongPress          int         The action for long pressing on the song screen (def 3 = add song to set - based on menu position)
     // hideActionBar                   boolean     Should the action bar auto hide (def:false)
+    // hideActionBarTime               int         How long should the action bar be visible for before hiding (def:1200)
     // hideInfoBar                     boolean     Should the info bar (Presenter mode only) autohide after initial display + minimum time (def: true)
     // hideLyricsBox                   boolean     Should we hide the box around the lyrics (def:false)
     // ignorePlayServicesWarning       boolean     Has the user ticked the box to not show this again (def:false);

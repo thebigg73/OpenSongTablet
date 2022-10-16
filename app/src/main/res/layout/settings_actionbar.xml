@@ -10,11 +10,21 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <com.google.android.material.switchmaterial.SwitchMaterial
+        <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
             android:id="@+id/autohideActionBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/actionbar_autohide" />
+
+        <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+            android:id="@+id/actionBarHideTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/time"
+            android:valueFrom="1000"
+            android:valueTo="5000"
+            app:stepSize="200"/>
+        <TableRow style="@style/DividerLine"/>
 
         <TextView
             android:layout_width="match_parent"

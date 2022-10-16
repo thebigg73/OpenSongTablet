@@ -43,7 +43,7 @@ public class MyToolbar extends MaterialToolbar {
     private final com.google.android.material.textview.MaterialTextView batterycharge;
     private Handler delayActionBarHide;
     private Runnable hideActionBarRunnable;
-    private final int autoHideTime = 1200;
+    private int actionBarHideTime = 1200;
     private float clockTextSize;
     private boolean clock24hFormat, clockOn, hideActionBar, clockSeconds, performanceMode;
     private final String TAG = "MyToolbar";
@@ -56,7 +56,7 @@ public class MyToolbar extends MaterialToolbar {
         this.actionBar = actionBar;
         delayActionBarHide = new Handler();
         hideActionBarRunnable = () -> {
-            if (actionBar.isShowing()) {
+            if (actionBar.isShowing() && !mainActivityInterface.needActionBar()) {
                 actionBar.hide();
             }
         };
@@ -76,7 +76,10 @@ public class MyToolbar extends MaterialToolbar {
         clock = v.findViewById(R.id.digitalclock);
         webHelp = v.findViewById(R.id.webHelp);
 
-        batteryholder.setOnClickListener(v1 -> mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_actionbar), 0));
+        batteryholder.setOnClickListener(v1 -> {
+            mainActivityInterface.showActionBar();
+            mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_actionbar), 0);
+        });
     }
 
     // Deal with the preferences used for the actionbar
@@ -86,6 +89,7 @@ public class MyToolbar extends MaterialToolbar {
         clockOn = mainActivityInterface.getPreferences().getMyPreferenceBoolean("clockOn",true);
         clockSeconds = mainActivityInterface.getPreferences().getMyPreferenceBoolean("clockSeconds",false);
         hideActionBar = mainActivityInterface.getPreferences().getMyPreferenceBoolean("hideActionBar",false);
+        actionBarHideTime = mainActivityInterface.getPreferences().getMyPreferenceInt("actionBarHideTime",1200);
         updateClock();
     }
     public void updateActionBarSettings(String prefName, float value, boolean isvisible) {
@@ -128,6 +132,9 @@ public class MyToolbar extends MaterialToolbar {
                 break;
             case "hideActionBar":
                 setHideActionBar(!isvisible);
+                break;
+            case "actionBarHideTime":
+                actionBarHideTime = (int)value;
                 break;
         }
     }
@@ -290,7 +297,7 @@ public class MyToolbar extends MaterialToolbar {
         // If we need to hide the actionbar again, set a runnable, as long as the menu isn't open
         if (hideActionBar && performanceMode && !menuOpen) {
             try {
-                delayActionBarHide.postDelayed(hideActionBarRunnable, autoHideTime);
+                delayActionBarHide.postDelayed(hideActionBarRunnable, actionBarHideTime);
             } catch (Exception e) {
                 e.printStackTrace();
             }

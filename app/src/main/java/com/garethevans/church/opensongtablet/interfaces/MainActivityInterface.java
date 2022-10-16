@@ -153,6 +153,7 @@ public interface MainActivityInterface {
     SongListBuildIndex getSongListBuildIndex();
     void scrollOpenMenu(boolean scrollDown);
     boolean getMenuOpen();
+    boolean getSettingsOpen();
     void updateCheckForThisSong(Song thisSong);
 
     // Action bar

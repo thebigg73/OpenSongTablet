@@ -48,6 +48,7 @@ public class ActionBarSettingsFragment extends Fragment {
         float batteryTextSize = checkMin(mainActivityInterface.getPreferences().getMyPreferenceFloat("batteryTextSize", 9),6);
         float clockTextSize = checkMin(mainActivityInterface.getPreferences().getMyPreferenceFloat("clockTextSize", 9),6);
         int batteryDialSize = (int)checkMin(mainActivityInterface.getPreferences().getMyPreferenceInt("batteryDialThickness", 4),1);
+        int actionBarHideTime = (int)(checkMin(mainActivityInterface.getPreferences().getMyPreferenceInt("actionBarHideTime",1200),1000));
 
         // The sliders
         myView.titleTextSize.setValue(titleTextSize);
@@ -64,9 +65,18 @@ public class ActionBarSettingsFragment extends Fragment {
         myView.batteryTextSize.setLabelFormatter(value -> ((int)value)+" sp");
         myView.clockTextSize.setValue(clockTextSize);
         myView.clockTextSize.setLabelFormatter(value -> ((int)value)+" sp");
+        myView.actionBarHideTime.setValue(actionBarHideTime);
+        myView.actionBarHideTime.setHint(actionBarHideTime + " ms");
+        myView.actionBarHideTime.setLabelFormatter(value -> ((int)value)+" ms");
 
         // The switches
         myView.autohideActionBar.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("hideActionBar",false));
+        if (myView.autohideActionBar.getChecked()) {
+            myView.actionBarHideTime.setVisibility(View.VISIBLE);
+        } else {
+            myView.actionBarHideTime.setVisibility(View.GONE);
+        }
+
         showOrHideView(mainActivityInterface.getPreferences().getMyPreferenceBoolean("batteryDialOn",true),
                 true,myView.batteryDialOnOff,myView.batteryDialSize);
         showOrHideView(mainActivityInterface.getPreferences().getMyPreferenceBoolean("batteryTextOn",true),
@@ -87,10 +97,16 @@ public class ActionBarSettingsFragment extends Fragment {
         myView.batteryDialSize.addOnSliderTouchListener(new MyOnSliderTouch("batteryDialThickness",false));
         myView.batteryTextSize.addOnSliderTouchListener(new MyOnSliderTouch("batteryTextSize",true));
         myView.clockTextSize.addOnSliderTouchListener(new MyOnSliderTouch("clockTextSize",true));
-
+        myView.actionBarHideTime.addOnChangeListener(new MyOnChangeListener("actionBarHideTime",false));
+        myView.actionBarHideTime.addOnSliderTouchListener(new MyOnSliderTouch("actionBarHideTime",false));
         myView.autohideActionBar.setOnCheckedChangeListener((buttonView, isChecked) -> {
             updateActionBar("hideActionBar",0.0f,!isChecked);
             mainActivityInterface.getPreferences().setMyPreferenceBoolean("hideActionBar",isChecked);
+            if (isChecked) {
+                myView.actionBarHideTime.setVisibility(View.VISIBLE);
+            } else {
+                myView.actionBarHideTime.setVisibility(View.GONE);
+            }
         });
         myView.batteryDialOnOff.setOnCheckedChangeListener((buttonView, isChecked) -> {
             updateActionBar("batteryDialOn",0.0f,isChecked);
@@ -149,12 +165,15 @@ public class ActionBarSettingsFragment extends Fragment {
                     myView.titleTextSize.setHint((int)value + " sp");
                     myView.titleTextSize.setHintTextSize(value);
                 } else if (prefName.equals("songAuthorSize")) {
-                    myView.authorTextSize.setHint((int)value + " sp");
+                    myView.authorTextSize.setHint((int) value + " sp");
                     myView.authorTextSize.setHintTextSize(value);
                 } else {
                     updateActionBar(prefName, value, false);
                 }
             } else {
+                if (prefName.equals("actionBarHideTime")) {
+                    myView.actionBarHideTime.setHint((int)value + " ms");
+                }
                 updateActionBar(prefName, (int)value, false);
             }
         }
