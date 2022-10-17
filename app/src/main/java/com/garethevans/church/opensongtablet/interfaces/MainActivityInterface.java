@@ -51,6 +51,7 @@ import com.garethevans.church.opensongtablet.screensetup.BatteryStatus;
 import com.garethevans.church.opensongtablet.screensetup.ShowToast;
 import com.garethevans.church.opensongtablet.screensetup.ThemeColors;
 import com.garethevans.church.opensongtablet.screensetup.WindowFlags;
+import com.garethevans.church.opensongtablet.setmenu.SetItemInfo;
 import com.garethevans.church.opensongtablet.setprocessing.CurrentSet;
 import com.garethevans.church.opensongtablet.setprocessing.SetActions;
 import com.garethevans.church.opensongtablet.songmenu.SongListBuildIndex;
@@ -128,6 +129,7 @@ public interface MainActivityInterface {
     void updateInlineSet(boolean showInline, float width);
     void updateInlineSetMove(int from, int to);
     void updateInlineSetRemoved(int from);
+    void updateInlineSetAdded(SetItemInfo setItemInfo);
     void initialiseInlineSetItem(int position);
 
     // Menus

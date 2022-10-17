@@ -72,7 +72,7 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
             for (Object payload : payloads) {
                 if (payload.equals("highlightItem")) {
                     // We want to update the highlight colour to on/off
-                    if (highlightedArray.get(position,false)) {
+                    if (highlightedArray.get(position, false)) {
                         setColor(holder, onColor);
                     } else {
                         setColor(holder, offColor);
@@ -95,27 +95,27 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
         SetItemInfo si = setList.get(i);
         String key = si.songkey;
         String titlesongname = si.songtitle;
-        if (key!=null && !key.equals("null") && !key.isEmpty()) {
-            titlesongname = titlesongname + " ("+key+")";
+        if (key != null && !key.equals("null") && !key.isEmpty()) {
+            titlesongname = titlesongname + " (" + key + ")";
         } else {
             si.songkey = "";
         }
-        if (highlightedArray.get(i,false)) {
-            setColor(setitemViewHolder,onColor);
+        if (highlightedArray.get(i, false)) {
+            setColor(setitemViewHolder, onColor);
         } else {
-            setColor(setitemViewHolder,offColor);
+            setColor(setitemViewHolder, offColor);
         }
 
         setitemViewHolder.vItem.setText(si.songitem);
         String newfoldername = si.songfoldernice;
-        if (newfoldername!=null && newfoldername.startsWith("**")) {
-            newfoldername = newfoldername.replace("**","");
+        if (newfoldername != null && newfoldername.startsWith("**")) {
+            newfoldername = newfoldername.replace("**", "");
         }
         setitemViewHolder.vSongTitle.setText(titlesongname);
         setitemViewHolder.vSongFolder.setText(newfoldername);
         int icon = mainActivityInterface.getSetActions().getItemIcon(si.songicon);
 
-        setitemViewHolder.vItem.setCompoundDrawablesWithIntrinsicBounds(icon,0,0,0);
+        setitemViewHolder.vItem.setCompoundDrawablesWithIntrinsicBounds(icon, 0, 0, 0);
     }
 
     @NonNull
@@ -125,7 +125,7 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
                 from(viewGroup.getContext()).
                 inflate(R.layout.view_set_item, viewGroup, false);
 
-        return new SetItemViewHolder(mainActivityInterface,itemView,itemTouchHelper,this);
+        return new SetItemViewHolder(mainActivityInterface, itemView, itemTouchHelper, this);
     }
 
 
@@ -137,10 +137,10 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
         String thisSetItem = mainActivityInterface.getCurrentSet().getItem(fromPosition);
 
         // Remove from this position
-        mainActivityInterface.getCurrentSet().removeFromCurrentSet(fromPosition,null);
+        mainActivityInterface.getCurrentSet().removeFromCurrentSet(fromPosition, null);
 
         // Add to the new position
-        mainActivityInterface.getCurrentSet().addToCurrentSet(toPosition,thisSetItem,thisFolder,thisFilename,thisKey);
+        mainActivityInterface.getCurrentSet().addToCurrentSet(toPosition, thisSetItem, thisFolder, thisFilename, thisKey);
 
         // Update the set string
         mainActivityInterface.getCurrentSet().setCurrentSetString(mainActivityInterface.getSetActions().getSetAsPreferenceString());
@@ -148,21 +148,21 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
         // Save the preference
         mainActivityInterface.getPreferences().setMyPreferenceString("setCurrent", mainActivityInterface.getCurrentSet().getCurrentSetString());
 
-        setList.get(fromPosition).songitem = (toPosition+1) + ".";
-        setList.get(toPosition).songitem = (fromPosition+1) + ".";
+        setList.get(fromPosition).songitem = (toPosition + 1) + ".";
+        setList.get(toPosition).songitem = (fromPosition + 1) + ".";
         SetItemInfo thisItem = setList.get(fromPosition);
         setList.remove(fromPosition);
-        setList.add(toPosition,thisItem);
+        setList.add(toPosition, thisItem);
 
         // TODO Highlighting not updating, might need to check after item is dropped for new setitemposition
-        boolean from_highlighted = highlightedArray.get(fromPosition,false);
-        highlightedArray.put(fromPosition,false);
-        highlightedArray.put(toPosition,from_highlighted);
+        boolean from_highlighted = highlightedArray.get(fromPosition, false);
+        highlightedArray.put(fromPosition, false);
+        highlightedArray.put(toPosition, from_highlighted);
         notifyItemChanged(fromPosition);
         notifyItemChanged(toPosition);
-        notifyItemMoved(fromPosition,toPosition);
+        notifyItemMoved(fromPosition, toPosition);
 
-        mainActivityInterface.updateInlineSetMove(fromPosition,toPosition);
+        mainActivityInterface.updateInlineSetMove(fromPosition, toPosition);
 
         // Update the title
         mainActivityInterface.updateSetTitle();
@@ -185,15 +185,8 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
             // Save the preference
             mainActivityInterface.getPreferences().setMyPreferenceString("setCurrent", mainActivityInterface.getCurrentSet().getCurrentSetString());
 
-            setList.remove(fromPosition);
-            notifyItemRemoved(fromPosition);
-            // Go through the setList from this position and sort the numbers
-            for (int x = fromPosition; x < setList.size(); x++) {
-                setList.get(x).songitem = (x + 1) + ".";
-                notifyItemChanged(x);
-            }
-
-            mainActivityInterface.updateInlineSetRemoved(fromPosition);
+            // Remove the item from the set list and notify the adapter of changes
+            itemRemoved(fromPosition);
 
             // Update the title
             mainActivityInterface.updateSetTitle();
@@ -215,24 +208,24 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
     @Override
     public void onContentChanged(int position) {
         notifyItemChanged(position);
-        Log.d(TAG,"CHANGES: setCurrent:"+mainActivityInterface.getCurrentSet().getCurrentSetString());
+        Log.d(TAG, "CHANGES: setCurrent:" + mainActivityInterface.getCurrentSet().getCurrentSetString());
     }
 
     public void updateHighlightedItem(int position) {
         int oldPosition = currentPosition;
         currentPosition = position;
-        if (oldPosition!=-1) {
-            highlightedArray.put(oldPosition,false);
-            notifyItemChanged(oldPosition,"highlightItem");
+        if (oldPosition != -1) {
+            highlightedArray.put(oldPosition, false);
+            notifyItemChanged(oldPosition, "highlightItem");
         }
-        highlightedArray.put(currentPosition,true);
-        notifyItemChanged(currentPosition,"highlightItem");
+        highlightedArray.put(currentPosition, true);
+        notifyItemChanged(currentPosition, "highlightItem");
     }
 
     @Override
     public CharSequence getSectionText(int position) {
-        if (setList!=null &&
-                setList.size()>position) {
+        if (setList != null &&
+                setList.size() > position) {
             return setList.get(position).songitem;
         } else {
             return "";
@@ -251,21 +244,41 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
     public boolean initialiseSetItem(int setPosition) {
         // Only used when app boots and we are already viewing a set item
         // This comes via the MyToolbar where we add a tick for a set item
-        if (currentPosition!=setPosition) {
+        if (currentPosition != setPosition) {
             // If we already had a currentPosition, clear it
-            if (currentPosition!=-1) {
-                highlightedArray.put(currentPosition,false);
-                notifyItemChanged(currentPosition,"highlightItem");
+            if (currentPosition != -1) {
+                highlightedArray.put(currentPosition, false);
+                notifyItemChanged(currentPosition, "highlightItem");
             }
             // Now highlight the loaded position
             currentPosition = setPosition;
-            highlightedArray.put(currentPosition,true);
-            notifyItemChanged(currentPosition,"highlightItem");
+            highlightedArray.put(currentPosition, true);
+            notifyItemChanged(currentPosition, "highlightItem");
 
             mainActivityInterface.initialiseInlineSetItem(setPosition);
 
             return true;
         }
         return false;
+    }
+
+    public void itemRemoved(int position) {
+        setList.remove(position);
+        notifyItemRemoved(position);
+        // Go through the setList from this position and sort the numbers
+        for (int x = position; x < setList.size(); x++) {
+            setList.get(x).songitem = (x + 1) + ".";
+            notifyItemChanged(x);
+        }
+        // Update the inline set too
+        mainActivityInterface.updateInlineSetRemoved(position);
+    }
+
+    public void itemAdded(SetItemInfo setItemInfo) {
+        setList.add(setItemInfo);
+        notifyItemInserted(setList.size()-1);
+
+        // Update the inline set too
+        mainActivityInterface.updateInlineSetAdded(setItemInfo);
     }
 }

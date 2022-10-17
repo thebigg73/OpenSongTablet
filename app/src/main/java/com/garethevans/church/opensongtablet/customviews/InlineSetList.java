@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.setmenu.SetItemInfo;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.util.ArrayList;
@@ -241,6 +242,11 @@ public class InlineSetList extends RecyclerView {
             }
         }
 
+        public void updateInlineSetAddded(InlineSetItemInfo inlineSetItemInfo) {
+            setList.add(inlineSetItemInfo);
+            notifyItemInserted(setList.size()-1);
+        }
+
         public void initialiseInlineSetItem(int position) {
             // If we already had a currentPosition, clear it
             if (selectedItem!=-1) {
@@ -297,6 +303,14 @@ public class InlineSetList extends RecyclerView {
     }
     public void updateInlineSetRemoved(int from) {
         inlineSetListAdapter.updateInlineSetRemoved(from);
+    }
+    public void updateInlineSetAdded(SetItemInfo setItemInfo) {
+        InlineSetItemInfo info = new InlineSetItemInfo();
+        info.item = setList.size();
+        info.songtitle = setItemInfo.songtitle;
+        info.songfolder = setItemInfo.songfolder;
+        info.songkey = setItemInfo.songkey;
+        inlineSetListAdapter.updateInlineSetAddded(info);
     }
     public void initialiseInlineSetItem(int position) {
         inlineSetListAdapter.initialiseInlineSetItem(position);

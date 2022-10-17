@@ -37,6 +37,7 @@
         android:id="@+id/inlineSetList"
         android:layout_width="0dp"
         android:layout_height="match_parent"
+        android:background="@color/colorPrimary"
         android:elevation="8dp"/>
 
     <!-- This is used for the pdf pages, images and stage mode -->

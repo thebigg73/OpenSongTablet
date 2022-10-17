@@ -197,8 +197,7 @@ public class SetMenuFragment extends Fragment {
     }
 
     public void addSetItem(int currentSetPosition) {
-        setListAdapter.getSetList().add(makeSetItem(currentSetPosition));
-        setListAdapter.notifyItemInserted(currentSetPosition);
+        setListAdapter.itemAdded(makeSetItem(currentSetPosition));
         updateSetTitle();
     }
 
@@ -215,8 +214,7 @@ public class SetMenuFragment extends Fragment {
 
     // Called from clicking on checkboxes in song menu (via MainActivity)
     public void removeSetItem(int currentSetPosition) {
-        setListAdapter.getSetList().remove(currentSetPosition);
-        setListAdapter.notifyItemRemoved(currentSetPosition);
+        setListAdapter.itemRemoved(currentSetPosition);
         updateSetTitle();
     }
     private SetItemInfo makeSetItem(int i) {

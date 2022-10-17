@@ -8,7 +8,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -36,6 +35,7 @@ import com.garethevans.church.opensongtablet.interfaces.ActionInterface;
 import com.garethevans.church.opensongtablet.interfaces.DisplayInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.pdf.PDFPageAdapter;
+import com.garethevans.church.opensongtablet.setmenu.SetItemInfo;
 import com.garethevans.church.opensongtablet.stage.StageSectionAdapter;
 import com.garethevans.church.opensongtablet.stickynotes.StickyPopUp;
 
@@ -225,6 +225,9 @@ public class PerformanceFragment extends Fragment {
     }
     public void updateInlineSetRemoved(int from) {
         myView.inlineSetList.updateInlineSetRemoved(from);
+    }
+    public void updateInlineSetAdded(SetItemInfo setItemInfo) {
+        myView.inlineSetList.updateInlineSetAdded(setItemInfo);
     }
     public void initialiseInlineSetItem(int position) {
         myView.inlineSetList.initialiseInlineSetItem(position);

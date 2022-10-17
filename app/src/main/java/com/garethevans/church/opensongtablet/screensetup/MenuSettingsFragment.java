@@ -50,7 +50,7 @@ public class MenuSettingsFragment extends Fragment {
                 getMyPreferenceBoolean("songMenuSetTicksShow",true);
         boolean sortByTitles = mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuSortTitles",true);
         boolean songMenuAlphaIndexLevel2 = mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuAlphaIndexLevel2",false);
-        myView.largePopups.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("largePopups",false));
+        myView.largePopups.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("largePopups",true));
         myView.songAlphabeticalShow.setChecked(showAlphabetical);
         myView.level2Index.setChecked(songMenuAlphaIndexLevel2);
         myView.songAlphabeticalSize.setValue(fontSize);

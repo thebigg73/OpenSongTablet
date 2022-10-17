@@ -454,7 +454,7 @@ public class ImportOnlineFragment extends Fragment {
             Log.d(TAG,"lyric:"+lyric);
         }*/
 
-        //setupSaveLayout();
+        setupSaveLayout();
     }
 
     public void finishedDownloadPDF(Uri uri) {

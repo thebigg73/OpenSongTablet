@@ -94,26 +94,22 @@ public class ExposedDropDownArrayAdapter extends ArrayAdapter<String> {
     }
 
     private boolean listenerAction(ExposedDropDown exposedDropDown, ArrayList<String> arrayList, boolean isShowing) {
-        // isShowing seems to be the opposite for the dropdown arrow and the clickable area
-        // This is due to what is focused I think
         if (isShowing) {
             exposedDropDown.getAutoCompleteTextView().dismissDropDown();
         } else {
             exposedDropDown.getAutoCompleteTextView().showDropDown();
             exposedDropDown.getAutoCompleteTextView().setListSelection(getPositionInArray(getSelectedText(exposedDropDown), arrayList));
         }
-        return !isShowing;
+        return isShowing;
     }
     private boolean listenerAction(ExposedDropDown exposedDropDown, String[] stringArray, boolean isShowing) {
-        // isShowing seems to be the opposite for the dropdown arrow and the clickable area
-        // This is due to what is focused I think
         if (isShowing) {
             exposedDropDown.getAutoCompleteTextView().dismissDropDown();
         } else {
             exposedDropDown.getAutoCompleteTextView().showDropDown();
             exposedDropDown.getAutoCompleteTextView().setListSelection(getPositionInArray(getSelectedText(exposedDropDown), stringArray));
         }
-        return !isShowing;
+        return isShowing;
     }
 
     private String getSelectedText(ExposedDropDown exposedDropDown) {

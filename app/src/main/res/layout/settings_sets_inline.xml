@@ -33,9 +33,9 @@
                 android:layout_height="wrap_content"
                 android:text="@string/width"
                 android:valueFrom="10"
-                android:valueTo="80"
+                android:valueTo="95"
                 android:value="30"
-                app:stepSize="10" />
+                app:stepSize="5" />
             <TableRow style="@style/DividerLine"/>
             </LinearLayout>
         </LinearLayout>

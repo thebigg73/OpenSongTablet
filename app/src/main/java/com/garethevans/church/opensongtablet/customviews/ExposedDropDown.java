@@ -77,9 +77,11 @@ public class ExposedDropDown extends TextInputLayout {
 
     public void setText(String text) {
         autoCompleteTextView.setText(text);
+        autoCompleteTextView.clearFocus();
     }
     public void setHint(String hint) {
         textInputLayout.setHint(hint);
+        textInputLayout.clearFocus();
     }
     public void setAdapter(ExposedDropDownArrayAdapter arrayAdapter) {
         autoCompleteTextView.setAdapter(arrayAdapter);
@@ -109,7 +111,7 @@ public class ExposedDropDown extends TextInputLayout {
         executorService.execute(() -> {
             Handler handler = new Handler(Looper.getMainLooper());
             handler.post(() -> {
-                boolean largePopups = mainActivityInterface.getPreferences().getMyPreferenceBoolean("largePopups",false);
+                boolean largePopups = mainActivityInterface.getPreferences().getMyPreferenceBoolean("largePopups",true);
                 if (largePopups) {
                     try {
                         if (autoCompleteTextView!=null) {

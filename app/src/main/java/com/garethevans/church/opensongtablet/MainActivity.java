@@ -118,6 +118,7 @@ import com.garethevans.church.opensongtablet.screensetup.ThemeSetupFragment;
 import com.garethevans.church.opensongtablet.screensetup.WindowFlags;
 import com.garethevans.church.opensongtablet.secondarydisplay.SecondaryDisplay;
 import com.garethevans.church.opensongtablet.secondarydisplay.SecondaryDisplaySettingsFragment;
+import com.garethevans.church.opensongtablet.setmenu.SetItemInfo;
 import com.garethevans.church.opensongtablet.setmenu.SetMenuFragment;
 import com.garethevans.church.opensongtablet.setprocessing.CurrentSet;
 import com.garethevans.church.opensongtablet.setprocessing.SetActions;
@@ -1427,6 +1428,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     public void updateInlineSetRemoved(int from) {
         if (performanceFragment!=null && !whichMode.equals("Presentation")) {
             performanceFragment.updateInlineSetRemoved(from);
+        }
+    }
+    @Override
+    public void updateInlineSetAdded(SetItemInfo setItemInfo) {
+        if (performanceFragment!=null && !whichMode.equals("Presentation")) {
+            performanceFragment.updateInlineSetAdded(setItemInfo);
         }
     }
     @Override
