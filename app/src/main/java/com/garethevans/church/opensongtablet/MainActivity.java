@@ -249,6 +249,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private LinearLayout songSheetTitleLayout;
     private ArrayList<Integer> sectionWidths, sectionHeights, songSheetTitleLayoutSize, sectionColors;
     private String whichMode, whattodo, importFilename;
+    private final String presenter = "Presenter", performance = "Performance";
     private Uri importUri;
     private boolean settingsOpen = false, showSetMenu,
             pageButtonActive = true, fullIndexRequired, menuOpen, firstRun=true;
@@ -502,7 +503,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
     private void initialiseStartVariables() {
         themeColors.setThemeName(preferences.getMyPreferenceString("appTheme", "dark"));
-        whichMode = preferences.getMyPreferenceString("whichMode", "Performance");
+        whichMode = preferences.getMyPreferenceString("whichMode", performance);
 
         // Song location
         song.setFilename(preferences.getMyPreferenceString("songFilename","Welcome to OpenSongApp"));
@@ -561,7 +562,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 } else if (!decided && initialVal!=-0.0f) {
                     // We have our first value, so now compare.
                     // If we are getting bigger = opening, if smaller, closing
-                    if (!whichMode.equals("Presenter")) {
+                    if (!whichMode.equals(presenter)) {
                         hideActionButton(slideOffset > initialVal);
                     }
                     menuOpen = slideOffset>initialVal;
@@ -587,7 +588,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             @Override
             public void onDrawerClosed(@NonNull View drawerView) {
                 menuOpen = false;
-                if (!whichMode.equals("Presenter")) {
+                if (!whichMode.equals(presenter)) {
                     hideActionButton(myView.drawerLayout.getDrawerLockMode(GravityCompat.START) != DrawerLayout.LOCK_MODE_UNLOCKED);
                 }
                 // Hide the keyboard by forcing immersive
@@ -763,11 +764,17 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         }
                     }
                     // If we are not in presenter mode and using inline set, update that
-                    if (performanceFragment!=null && !whichMode.equals("Presentation")) {
+                    if (performanceValid()) {
                         if (fragName.equals("set_updateView")) {
                             performanceFragment.updateInlineSetSet();
                         } else if (arguments!=null && arguments.size()>0) {
                             performanceFragment.updateInlineSetItem(Integer.parseInt(arguments.get(0)));
+                        }
+                    } else if (presenterValid()) {
+                        if (fragName.equals("set_updateView")) {
+                            presenterFragment.updateInlineSetSet();
+                        } else if (arguments!=null && arguments.size()>0) {
+                            presenterFragment.updateInlineSetItem(Integer.parseInt(arguments.get(0)));
                         }
                     }
                     break;
@@ -790,7 +797,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     break;
 
                 case "presenterFragment_showCase":
-                    if (presenterFragment!=null) {
+                    if (presenterValid()) {
                         presenterFragment.showTutorial();
                     }
                     break;
@@ -806,7 +813,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     break;
 
                 case "presenterFragmentSongSections":
-                    if (presenterFragment!=null) {
+                    if (presenterValid()) {
                         processSong.processSongIntoSections(song,true);
                         processSong.matchPresentationOrder(song);
                         presenterFragment.getSongViews();
@@ -832,7 +839,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     break;
 
                 case "toggleScale":
-                    if (performanceFragment!=null && !whichMode.equals("Presenter")) {
+                    if (performanceValid()) {
                         performanceFragment.toggleScale();
                     }
 
@@ -846,11 +853,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public void navHome() {
         lockDrawer(false);
-        whichMode = preferences.getMyPreferenceString("whichMode","Performance");
+        whichMode = preferences.getMyPreferenceString("whichMode",performance);
         if (navController.getCurrentDestination()!=null) {
             navController.popBackStack(Objects.requireNonNull(navController.getCurrentDestination()).getId(), true);
         }
-        if (whichMode.equals("Presenter")) {
+        if (whichMode.equals(presenter)) {
             navigateToFragment(getString(R.string.deeplink_presenter),0);
         } else {
             navigateToFragment(getString(R.string.deeplink_performance),0);
@@ -1405,41 +1412,61 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     public WindowFlags getWindowFlags() {
         return windowFlags;
     }
+
+    private boolean performanceValid() {
+        return performanceFragment!=null && !whichMode.equals(presenter);
+    }
+    private boolean presenterValid() {
+        return presenterFragment!=null && whichMode.equals(presenter);
+    }
+
     @Override
     public void toggleInlineSet() {
-        if (performanceFragment!=null && !whichMode.equals("Presentation")) {
+        if (performanceValid()) {
             performanceFragment.toggleInlineSet();
+        } else if (presenterValid()) {
+            presenterFragment.toggleInlineSet();
         }
         loadSong();
     }
     @Override
     public void updateInlineSet(boolean show, float width) {
-        if (performanceFragment!=null && !whichMode.equals("Presentation")) {
+        if (performanceValid()) {
             performanceFragment.updateInlineSet(show,width);
+        } else if (presenterValid()) {
+            presenterFragment.updateInlineSet(show,width);
         }
     }
     @Override
     public void updateInlineSetMove(int from, int to) {
-        if (performanceFragment!=null && !whichMode.equals("Presentation")) {
+        if (performanceValid()) {
             performanceFragment.updateInlineSetMove(from,to);
+        } else if (presenterValid()) {
+            presenterFragment.updateInlineSetMove(from,to);
         }
     }
     @Override
     public void updateInlineSetRemoved(int from) {
-        if (performanceFragment!=null && !whichMode.equals("Presentation")) {
+        if (performanceValid()) {
             performanceFragment.updateInlineSetRemoved(from);
+        } else if (presenterValid()) {
+            presenterFragment.updateInlineSetRemoved(from);
         }
     }
     @Override
     public void updateInlineSetAdded(SetItemInfo setItemInfo) {
-        if (performanceFragment!=null && !whichMode.equals("Presentation")) {
+        if (performanceValid()) {
             performanceFragment.updateInlineSetAdded(setItemInfo);
+        } else if (presenterValid()) {
+            presenterFragment.updateInlineSetAdded(setItemInfo);
         }
     }
     @Override
     public void initialiseInlineSetItem(int position) {
-        if (performanceFragment!=null && !whichMode.equals("Presentation")) {
+        if (performanceValid()) {
             performanceFragment.initialiseInlineSetItem(position);
+        } else if (presenterValid()) {
+            presenterFragment.initialiseInlineSetItem(position);
         }
     }
 
@@ -1520,14 +1547,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public void showSticky(boolean forceshow, boolean hide) {
         // Try to show the sticky note
-        if (!whichMode.equals("Presenter") && performanceFragment!=null) {
+        if (performanceValid()) {
             performanceFragment.dealWithStickyNotes(forceshow,hide);
         }
     }
 
     public void showAbc(boolean forceShow, boolean hide) {
         // Try to show the abc score
-        if (!whichMode.equals("Presenter") && performanceFragment!=null) {
+        if (performanceValid()) {
             performanceFragment.dealWithAbc(forceShow,hide);
         }
     }
@@ -1536,7 +1563,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public void toggleHighlighter() {
         // Try to show the highlighter
-        if (!whichMode.equals("Presenter") && performanceFragment!=null) {
+        if (performanceValid()) {
             performanceFragment.toggleHighlighter();
         }
     }
@@ -1687,14 +1714,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void doSongLoad(String folder, String filename, boolean closeDrawer) {
-        if (whichMode.equals("Presenter")) {
-            if (presenterFragment!=null) {
+        if (whichMode.equals(presenter)) {
+            if (presenterValid()) {
                 presenterFragment.doSongLoad(folder,filename);
             } else {
                 navigateToFragment(null,R.id.presenterFragment);
             }
         } else {
-            if (performanceFragment!=null) {
+            if (performanceValid()) {
                 performanceFragment.doSongLoad(folder,filename);
             } else {
                 navigateToFragment(null,R.id.performanceFragment);
@@ -2163,7 +2190,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public String getMode() {
         if (whichMode==null) {
-            whichMode = preferences.getMyPreferenceString("whichMode", "Performance");
+            whichMode = preferences.getMyPreferenceString("whichMode", performance);
         }
         return whichMode;
     }
@@ -2513,7 +2540,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void updateSizes(int width, int height) {
-        if (performanceFragment!=null && whichMode.equals("Performance")) {
+        if (performanceValid()) {
             performanceFragment.updateSizes(width,height);
         }
     }
@@ -2522,9 +2549,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     public void selectSection(int i) {
         // Only do this if we are not in a settings fragment
         if (!settingsOpen) {
-            if (whichMode.equals("Presenter") && presenterFragment != null) {
+            if (presenterValid()) {
                 presenterFragment.selectSection(i);
-            } else if (!whichMode.equals("Presenter") && performanceFragment != null) {
+            } else if (performanceValid()) {
                 performanceFragment.selectSection(i);
             }
         } else {
@@ -2638,8 +2665,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             pageButtons.requestLayout();
             doSongLoad(song.getFolder(),song.getFilename(),true);
         }
-        if (!settingsOpen && performanceFragment!=null && !whichMode.equals("Presentation")) {
+        if (!settingsOpen && performanceValid()) {
             performanceFragment.orientationInlineSet(newConfig.orientation);
+        } else if (!settingsOpen && presenterValid()) {
+            presenterFragment.orientationInlineSet(newConfig.orientation);
         }
     }
     @Override
@@ -2883,7 +2912,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     public void performanceShowSection(int position) {
         // This gets a section from from the user selecting either a PDF page or a Stage Mode section
         // Send it back to Performance Mode to deal with the outcome (scroll to, update display, etc)
-        if (performanceFragment!=null) {
+        if (performanceValid()) {
             performanceFragment.performanceShowSection(position);
         }
     }

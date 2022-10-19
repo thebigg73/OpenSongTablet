@@ -107,6 +107,7 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
             setColor(setitemViewHolder, onColor);
         } else if (dragPosition == i) {
             setColor(setitemViewHolder, onColor);
+            dragPosition = -1;
         } else {
             setColor(setitemViewHolder, offColor);
         }

@@ -122,7 +122,6 @@ public class ExposedDropDown extends TextInputLayout {
                             int y = location[1] + autoCompleteTextView.getHeight() - mainActivityInterface.getToolbar().getActionBarHeight(true);
                             autoCompleteTextView.setDropDownVerticalOffset(-y);
 
-                            Log.d("ed","location[1]:"+location[1]);
                             int height = mainActivityInterface.getDisplayMetrics()[1] - (mainActivityInterface.getToolbar().getActionBarHeight(false)*2);
                             autoCompleteTextView.setDropDownHeight(height);
                         }

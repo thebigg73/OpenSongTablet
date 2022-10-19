@@ -19,6 +19,7 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.ModePresenterBinding;
 import com.garethevans.church.opensongtablet.interfaces.DisplayInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.setmenu.SetItemInfo;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 import java.util.ArrayList;
@@ -73,6 +74,10 @@ public class PresenterFragment extends Fragment {
 
         // Get preferences
         getPreferences();
+
+        // Initialise the inline set
+        myView.inlineSetList.initialisePreferences(requireContext(),mainActivityInterface);
+        myView.inlineSetList.prepareSet();
 
         // Set up the the pager
         setupPager();
@@ -180,6 +185,7 @@ public class PresenterFragment extends Fragment {
         mainActivityInterface.getProcessSong().processSongIntoSections(
                 mainActivityInterface.getSong(), true);
         mainActivityInterface.getProcessSong().matchPresentationOrder(mainActivityInterface.getSong());
+
         // Get the song views
         getSongViews();
 
@@ -208,6 +214,9 @@ public class PresenterFragment extends Fragment {
         if (songSectionsFragment!=null) {
             songSectionsFragment.showSongInfo();
         }
+
+        // If we are in a set, send that info to the inline set custom view to see if it should draw
+        myView.inlineSetList.checkVisibility();
     }
 
     private void getPreferences() {
@@ -305,6 +314,36 @@ public class PresenterFragment extends Fragment {
 
     public void selectSection(int section) {
         songSectionsFragment.selectSection(section);
+    }
+
+    // Inline set
+    public void toggleInlineSet() {
+        myView.inlineSetList.toggleInlineSet();
+    }
+    public void updateInlineSet(boolean show, float width) {
+        myView.inlineSetList.updateInlineSet(show,(int)width*mainActivityInterface.getDisplayMetrics()[0]);
+    }
+    public void orientationInlineSet(int orientation) {
+        myView.inlineSetList.orientationChanged(orientation);
+    }
+    public void updateInlineSetSet() {
+        //myView.inlineSetList.prepareSet();
+    }
+    public void updateInlineSetItem(int position) {
+        Log.d(TAG,"update :"+position);
+        myView.inlineSetList.updateSelected(position);
+    }
+    public void updateInlineSetMove(int from, int to) {
+        myView.inlineSetList.updateInlineSetMove(from,to);
+    }
+    public void updateInlineSetRemoved(int from) {
+        myView.inlineSetList.updateInlineSetRemoved(from);
+    }
+    public void updateInlineSetAdded(SetItemInfo setItemInfo) {
+        myView.inlineSetList.updateInlineSetAdded(setItemInfo);
+    }
+    public void initialiseInlineSetItem(int position) {
+        myView.inlineSetList.initialiseInlineSetItem(position);
     }
 
 }

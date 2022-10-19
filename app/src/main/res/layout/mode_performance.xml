@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/mypage"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -32,13 +33,6 @@
         android:clipChildren="false"
         android:clipToPadding="false"
         android:visibility="invisible" />
-
-    <com.garethevans.church.opensongtablet.customviews.InlineSetList
-        android:id="@+id/inlineSetList"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:background="@color/colorPrimary"
-        android:elevation="8dp"/>
 
     <!-- This is used for the pdf pages, images and stage mode -->
     <!-- No scaling allowed on this -->
@@ -113,4 +107,11 @@
                 tools:ignore="ImageContrastCheck" />
         </RelativeLayout>
     </com.garethevans.church.opensongtablet.customviews.MyZoomLayout>
+
+    <com.garethevans.church.opensongtablet.customviews.InlineSetList
+        android:id="@+id/inlineSetList"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimary"
+        app:elevation="8dp"/>
 </RelativeLayout>
