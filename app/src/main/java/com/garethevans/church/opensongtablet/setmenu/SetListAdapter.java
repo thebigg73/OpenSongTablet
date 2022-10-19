@@ -29,7 +29,7 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
     private ItemTouchHelper itemTouchHelper;
     private final String TAG = "SetListAdapter";
     private final int onColor, offColor;
-    private int currentPosition = -1;
+    private int currentPosition = -1, dragPosition = -1;
     private ArrayList<SetItemInfo> setList;
     private final SparseBooleanArray highlightedArray = new SparseBooleanArray();
 
@@ -74,6 +74,9 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
                     // We want to update the highlight colour to on/off
                     if (highlightedArray.get(position, false)) {
                         setColor(holder, onColor);
+                    } else if (dragPosition==position){
+                        setColor(holder,onColor);
+                        dragPosition=0;
                     } else {
                         setColor(holder, offColor);
                     }
@@ -101,6 +104,8 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
             si.songkey = "";
         }
         if (highlightedArray.get(i, false)) {
+            setColor(setitemViewHolder, onColor);
+        } else if (dragPosition == i) {
             setColor(setitemViewHolder, onColor);
         } else {
             setColor(setitemViewHolder, offColor);
@@ -131,6 +136,7 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
 
     @Override
     public void onItemMoved(int fromPosition, int toPosition) {
+        dragPosition = toPosition;
         String thisFolder = setList.get(fromPosition).songfolder;
         String thisFilename = setList.get(fromPosition).songfilename;
         String thisKey = setList.get(fromPosition).songkey;
@@ -154,9 +160,9 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
         setList.remove(fromPosition);
         setList.add(toPosition, thisItem);
 
-        // TODO Highlighting not updating, might need to check after item is dropped for new setitemposition
         boolean from_highlighted = highlightedArray.get(fromPosition, false);
-        highlightedArray.put(fromPosition, false);
+        boolean to_highlighted = highlightedArray.get(toPosition, false);
+        highlightedArray.put(fromPosition, to_highlighted);
         highlightedArray.put(toPosition, from_highlighted);
         notifyItemChanged(fromPosition);
         notifyItemChanged(toPosition);
