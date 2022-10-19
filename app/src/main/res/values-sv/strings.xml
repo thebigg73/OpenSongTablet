@@ -85,6 +85,7 @@
     <string name="bold_chords_headings">Visa ackord och rubriker med fet stil</string>
     <string name="book">Bok</string>
     <string name="both">Både</string>
+    <string name="bottom">Botten</string>
     <string name="bridge">"Bro"</string>
     <string name="bridge_background">"Bro bakgrund"</string>
     <string name="button">Knapp</string>
@@ -364,6 +365,8 @@
     <string name="main_song_display">Huvudsångsdisplay</string>
     <string name="mainfoldername">"HUVUDSAKLIG"</string>
     <string name="mandolin">"Mandolin"</string>
+    <string name="margins">Marginaler</string>
+    <string name="margins_info">Justera marginalerna runt innehållet för att undvika skärmutskärningar och rundade hörn</string>
     <string name="max_font_size">"Maximal skriftstorlek för autoskala"</string>
     <string name="max_vol_range">"Indikatorområde för grafiskt volym"</string>
     <string name="maximise_columns">Skala kolumner oberoende av varandra.</string>

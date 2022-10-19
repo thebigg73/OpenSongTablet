@@ -85,6 +85,7 @@
     <string name="bold_chords_headings">Az akkordok és a fejlécek vastag betűvel jelennek meg</string>
     <string name="book">"Könyv"</string>
     <string name="both">Mindkét</string>
+    <string name="bottom">Alsó</string>
     <string name="bridge">Híd</string>
     <string name="bridge_background">"Bridge háttér"</string>
     <string name="button">Gomb</string>
@@ -364,6 +365,8 @@
     <string name="main_song_display">Fő dal megjelenítése</string>
     <string name="mainfoldername">"FŐBB"</string>
     <string name="mandolin">Mandolin</string>
+    <string name="margins">Margók</string>
+    <string name="margins_info">Állítsa be a margókat a tartalom körül, hogy elkerülje a képernyő kivágásait és lekerekített sarkait</string>
     <string name="max_font_size">Maximális automatikus átméretezés betűméret</string>
     <string name="max_vol_range">"Grafikus mennyiségi mutató tartományban"</string>
     <string name="maximise_columns">Oszlopok méretezése függetlenül.</string>

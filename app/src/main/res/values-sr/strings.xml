@@ -85,6 +85,7 @@
     <string name="bold_chords_headings">Prikažite akorde i naslove podebljano</string>
     <string name="book">Knjiga</string>
     <string name="both">I jedno i drugo</string>
+    <string name="bottom">Dno</string>
     <string name="bridge">Most</string>
     <string name="bridge_background">Pozadina mosta</string>
     <string name="button">Dugme</string>
@@ -364,6 +365,8 @@
     <string name="main_song_display">Prikaz glavne pesme</string>
     <string name="mainfoldername">PESME</string>
     <string name="mandolin">Mandolina</string>
+    <string name="margins">Margine</string>
+    <string name="margins_info">Podesite margine oko sadržaja da biste izbegli isečke na ekranu i zaobljene uglove</string>
     <string name="max_font_size">Najveća moguća veličina fonta za automatsku promenu veličine</string>
     <string name="max_vol_range">Grafički indikator nivoa zvuka</string>
     <string name="maximise_columns">Skala kolona nezavisno.</string>

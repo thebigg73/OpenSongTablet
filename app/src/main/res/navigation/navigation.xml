@@ -259,6 +259,9 @@
                 <action
                     android:id="@+id/action_displayMenuFragment_to_inlineSetFragment"
                     app:destination="@id/inlineSetFragment" />
+                <action
+                    android:id="@+id/action_displayMenuFragment_to_marginsFragment"
+                    app:destination="@id/marginsFragment" />
             </fragment>
 
             <!-- Theme fragment -->
@@ -346,6 +349,15 @@
                 <deepLink
                     android:id="@+id/deepLinkInlineSet"
                     app:uri="@string/deeplink_inlineset" />
+            </fragment>
+            <fragment
+                android:id="@+id/marginsFragment"
+                android:name="com.garethevans.church.opensongtablet.screensetup.MarginsFragment"
+                android:label="settings_margins"
+                tools:layout="@layout/settings_margins">
+                <deepLink
+                    android:id="@+id/deepLinkMargins"
+                    app:uri="@string/deeplink_margins" />
             </fragment>
 
         </navigation>

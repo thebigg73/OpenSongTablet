@@ -85,6 +85,7 @@
     <string name="bold_chords_headings">Zeigen Sie Akkorde und Überschriften fett an</string>
     <string name="book">"Buch"</string>
     <string name="both">Beide</string>
+    <string name="bottom">Unterseite</string>
     <string name="bridge">Zwischenteil</string>
     <string name="bridge_background">"Hintergrund Bridge"</string>
     <string name="button">Taste</string>
@@ -364,6 +365,8 @@
     <string name="main_song_display">Anzeige des Hauptlieds</string>
     <string name="mainfoldername">"MAIN"</string>
     <string name="mandolin">Mandoline</string>
+    <string name="margins">Ränder</string>
+    <string name="margins_info">Passen Sie die Ränder um den Inhalt an, um Bildschirmausschnitte und abgerundete Ecken zu vermeiden</string>
     <string name="max_font_size">Maximale Schriftgröße bei automatischer Skalierung</string>
     <string name="max_vol_range">"Bereich der Lautstärkeanzeige"</string>
     <string name="maximise_columns">Spalten unabhängig skalieren.</string>

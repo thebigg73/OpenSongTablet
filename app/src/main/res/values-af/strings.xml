@@ -85,6 +85,7 @@
     <string name="bold_chords_headings">Vertoon akkoorde en opskrifte in vetdruk</string>
     <string name="book">"Boek"</string>
     <string name="both">Albei</string>
+    <string name="bottom">Onderkant</string>
     <string name="bridge">Brug</string>
     <string name="bridge_background">"Bridge agtergrond"</string>
     <string name="button">Knoppie</string>
@@ -364,6 +365,8 @@
     <string name="main_song_display">Hoofliedjie vertoon</string>
     <string name="mainfoldername">"MAIN"</string>
     <string name="mandolin">Mandolien</string>
+    <string name="margins">Marges</string>
+    <string name="margins_info">Pas die kantlyne rondom die inhoud aan om skermuitknipsels en afgeronde hoeke te vermy</string>
     <string name="max_font_size">Maksimum autoscale lettergrootte</string>
     <string name="max_vol_range">"Grafiese volume aanwyser reeks"</string>
     <string name="maximise_columns">Skaal kolomme onafhanklik af.</string>

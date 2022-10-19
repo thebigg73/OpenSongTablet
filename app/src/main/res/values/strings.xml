@@ -90,6 +90,7 @@
     <string name="bold_chords_headings">Display chords and headings in bold</string>
     <string name="book">Book</string>
     <string name="both">Both</string>
+    <string name="bottom">Bottom</string>
     <string name="bpm" translatable="false">bpm</string>
     <string name="bridge">Bridge</string>
     <string name="bridge_background">Bridge background</string>
@@ -268,6 +269,7 @@
     <string name="deeplink_inlineset" translatable="false">opensongapp://settings/set/inlineset</string>
     <string name="deeplink_kitkat_choose" translatable="false">opensongapp://settings/storage/kitkatchoose</string>
     <string name="deeplink_links" translatable="false">opensongapp://settings/actions/links</string>
+    <string name="deeplink_margins" translatable="false">opensongapp://settings/display/margins</string>
     <string name="deeplink_metronome" translatable="false">opensongapp://settings/actions/metronome</string>
     <string name="deeplink_midi" translatable="false">opensongapp://settings/midi</string>
     <string name="deeplink_move" translatable="false">opensongapp://settings/storage/move</string>
@@ -506,6 +508,8 @@
     <string name="main_song_display">Main song display</string>
     <string name="mainfoldername">MAIN</string>
     <string name="mandolin">Mandolin</string>
+    <string name="margins">Margins</string>
+    <string name="margins_info">Adjust the margins around the content to avoid screen cutouts and rounded corners</string>
     <string name="max_font_size">Maximum autoscale font size</string>
     <string name="max_vol_range">Graphical volume indicator range</string>
     <string name="maximise_columns">Scale columns independently.</string>
@@ -1059,6 +1063,7 @@ Check out the categories in the right hand options menu.
     <string name="website_import_onsongbackup" translatable="false">https://www.opensongapp.com/user-manual/songs/ios-onsong</string>
     <string name="website_inline_set" translatable="false">https://www.opensongapp.com/user-manual/display/inline-set</string>
     <string name="website_latest" translatable="false">https://www.opensongapp.com/latest-updates</string>
+    <string name="website_margins" translatable="false">https://www.opensongapp.com/user-manual/display/margins</string>
     <string name="website_menu_set" translatable="false">https://www.opensongapp.com/user-manual/sets/set-menu</string>
     <string name="website_menu_settings" translatable="false">https://www.opensongapp.com/user-manual/display/menu</string>
     <string name="website_menu_song" translatable="false">https://www.opensongapp.com/user-manual/songs/song-menu</string>

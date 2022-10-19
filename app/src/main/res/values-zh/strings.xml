@@ -85,6 +85,7 @@
     <string name="bold_chords_headings">以粗体显示和弦和标题</string>
     <string name="book">"书"</string>
     <string name="both">两个都</string>
+    <string name="bottom">底部</string>
     <string name="bridge">桥梁</string>
     <string name="bridge_background">"Bridge背景"</string>
     <string name="button">纽扣</string>
@@ -364,6 +365,8 @@
     <string name="main_song_display">主曲显示</string>
     <string name="mainfoldername">"MAIN"</string>
     <string name="mandolin">曼多林</string>
+    <string name="margins">边距</string>
+    <string name="margins_info">调整内容周围的边距以避免屏幕切口和圆角</string>
     <string name="max_font_size">最大的自动缩放字体大小</string>
     <string name="max_vol_range">"图形成交量指标范围"</string>
     <string name="maximise_columns">独立缩放列。</string>

@@ -1159,7 +1159,6 @@ public class NearbyConnections implements NearbyInterface {
     @Override
     public void turnOffNearby() {
         try {
-            Log.d(TAG, "turnOffNearby()");
             Nearby.getConnectionsClient(c).stopAllEndpoints();
         } catch (Exception e) {
             Log.d(TAG, "Can't turn off nearby");

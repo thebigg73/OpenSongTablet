@@ -85,6 +85,7 @@
     <string name="bold_chords_headings">Zobrazit akordy a nadpisy tučně</string>
     <string name="book">"Rezervovat"</string>
     <string name="both">Oba</string>
+    <string name="bottom">Dno</string>
     <string name="bridge">Přechod</string>
     <string name="bridge_background">"Most pozadí"</string>
     <string name="button">Knoflík</string>
@@ -364,6 +365,8 @@
     <string name="main_song_display">Zobrazení hlavní skladby</string>
     <string name="mainfoldername">"HLAVNÍ"</string>
     <string name="mandolin">Mandolína</string>
+    <string name="margins">边距</string>
+    <string name="margins_info">Upravte okraje kolem obsahu, abyste se vyhnuli výřezům na obrazovce a zaobleným rohům</string>
     <string name="max_font_size">Maximální autoscale velikost písma</string>
     <string name="max_vol_range">"Rozsah Grafické objem indikátor"</string>
     <string name="maximise_columns">Měřítko sloupců samostatně.</string>

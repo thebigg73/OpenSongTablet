@@ -1983,8 +1983,6 @@ public class StorageAccess {
             if (!uriExists(logUri)) {
                 lollipopCreateFileForOutputStream(false,logUri,null,"Settings","","fileWriteActivity.txt");
             }
-            float logUriSize = getFileSizeFromUri(logUri);
-            Log.d(TAG,"Writing to logFile (size="+logUriSize+"): "+logText);
             OutputStream outputStream;
             if (getFileSizeFromUri(logUri)>500) {
                 outputStream = c.getContentResolver().openOutputStream(logUri, "wt");

@@ -77,6 +77,14 @@
                 android:hint="@string/set_inline_info" />
             <TableRow style="@style/DividerLine" />
 
+            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                android:id="@+id/margins"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/margins"
+                android:hint="@string/margins_info"/>
+            <TableRow style="@style/DividerLine"/>
+
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </LinearLayout>

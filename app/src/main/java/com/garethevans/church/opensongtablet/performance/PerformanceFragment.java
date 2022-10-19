@@ -311,10 +311,13 @@ public class PerformanceFragment extends Fragment {
         myView.inlineSetList.checkVisibility();
 
         int[] screenSizes = mainActivityInterface.getDisplayMetrics();
-        screenWidth = screenSizes[0] - myView.inlineSetList.getInlineSetWidth();
-        screenHeight = screenSizes[1] - mainActivityInterface.getToolbar().getActionBarHeight(mainActivityInterface.needActionBar());
-        availableWidth = getResources().getDisplayMetrics().widthPixels - myView.inlineSetList.getInlineSetWidth();
-        availableHeight = getResources().getDisplayMetrics().heightPixels - mainActivityInterface.getToolbar().getActionBarHeight(mainActivityInterface.needActionBar());
+        int[] deviceInsets = mainActivityInterface.deviceInsets();
+        int widthMarginsAndPadding = deviceInsets[0] + deviceInsets[1] + deviceInsets[4] + deviceInsets[5];
+        int heightMarginsAndPadding = deviceInsets[2] + deviceInsets[3] + deviceInsets[6] + deviceInsets[7];
+        screenWidth = screenSizes[0] - myView.inlineSetList.getInlineSetWidth() - widthMarginsAndPadding;
+        screenHeight = screenSizes[1] - mainActivityInterface.getToolbar().getActionBarHeight(mainActivityInterface.needActionBar()) - heightMarginsAndPadding;
+        availableWidth = getResources().getDisplayMetrics().widthPixels - myView.inlineSetList.getInlineSetWidth() - widthMarginsAndPadding;
+        availableHeight = getResources().getDisplayMetrics().heightPixels - mainActivityInterface.getToolbar().getActionBarHeight(mainActivityInterface.needActionBar()) - heightMarginsAndPadding;
         widthBeforeScale = 0;
         heightBeforeScale = 0;
 

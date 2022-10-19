@@ -92,39 +92,47 @@ public class FastScroller extends LinearLayout {
 
         @Override
         public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-            if (!handleView.isSelected() && isEnabled()) {
-                setViewPositions(getScrollProportion(recyclerView));
-            }
+            try {
+                if (!handleView.isSelected() && isEnabled()) {
+                    setViewPositions(getScrollProportion(recyclerView));
+                }
 
-            if (swipeRefreshLayout != null && recyclerView.getLayoutManager() != null) {
-                int firstVisibleItem = findFirstVisibleItemPosition(recyclerView.getLayoutManager());
-                int topPosition = recyclerView.getChildCount() == 0 ? 0 : recyclerView.getChildAt(0).getTop();
-                swipeRefreshLayout.setEnabled(firstVisibleItem == 0 && topPosition >= 0);
+                if (swipeRefreshLayout != null && recyclerView.getLayoutManager() != null) {
+                    int firstVisibleItem = findFirstVisibleItemPosition(recyclerView.getLayoutManager());
+                    int topPosition = recyclerView.getChildCount() == 0 ? 0 : recyclerView.getChildAt(0).getTop();
+                    swipeRefreshLayout.setEnabled(firstVisibleItem == 0 && topPosition >= 0);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
 
         @Override
         public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
             super.onScrollStateChanged(recyclerView, newState);
-            if (isEnabled()) {
-                switch (newState) {
-                    case RecyclerView.SCROLL_STATE_DRAGGING:
-                        getHandler().removeCallbacks(scrollbarHider);
-                        cancelAnimation(scrollbarAnimator);
+            try {
+                if (isEnabled()) {
+                    switch (newState) {
+                        case RecyclerView.SCROLL_STATE_DRAGGING:
+                            getHandler().removeCallbacks(scrollbarHider);
+                            cancelAnimation(scrollbarAnimator);
 
-                        if (!isViewVisible(scrollbar)) {
-                            showScrollbar();
-                        }
+                            if (!isViewVisible(scrollbar)) {
+                                showScrollbar();
+                            }
 
-                        break;
+                            break;
 
-                    case RecyclerView.SCROLL_STATE_IDLE:
-                        if (hideScrollbar && !handleView.isSelected()) {
-                            getHandler().postDelayed(scrollbarHider, SCROLLBAR_HIDE_DELAY);
-                        }
+                        case RecyclerView.SCROLL_STATE_IDLE:
+                            if (hideScrollbar && !handleView.isSelected()) {
+                                getHandler().postDelayed(scrollbarHider, SCROLLBAR_HIDE_DELAY);
+                            }
 
-                        break;
+                            break;
+                    }
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     };

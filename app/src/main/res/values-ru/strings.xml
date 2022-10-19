@@ -85,6 +85,7 @@
     <string name="bold_chords_headings">Аккорды и заголовки отображаются жирным шрифтом</string>
     <string name="book">"Книга"</string>
     <string name="both">Оба</string>
+    <string name="bottom">Нижний</string>
     <string name="bridge">Мост</string>
     <string name="bridge_background">"Фон моста"</string>
     <string name="button">Кнопка</string>
@@ -364,6 +365,8 @@
     <string name="main_song_display">Основной дисплей песни</string>
     <string name="mainfoldername">"ГЛАВНАЯ"</string>
     <string name="mandolin">Mандолина</string>
+    <string name="margins">Поля</string>
+    <string name="margins_info">Отрегулируйте поля вокруг содержимого, чтобы избежать вырезов экрана и закругленных углов.</string>
     <string name="max_font_size">Максимальный размер шрифта автомасштабирования</string>
     <string name="max_vol_range">"Размер индикатора громкости"</string>
     <string name="maximise_columns">Масштабировать столбцы независимо.</string>

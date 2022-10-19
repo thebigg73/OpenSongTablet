@@ -85,6 +85,7 @@
     <string name="bold_chords_headings">Exibir acordes e títulos em negrito</string>
     <string name="book">"Livro"</string>
     <string name="both">Ambos</string>
+    <string name="bottom">Fundo</string>
     <string name="bridge">ponte</string>
     <string name="bridge_background">"Fundo Ponte"</string>
     <string name="button">Botão</string>
@@ -364,6 +365,8 @@
     <string name="main_song_display">Exibição da música principal</string>
     <string name="mainfoldername">"PRINCIPAL"</string>
     <string name="mandolin">Mandolim</string>
+    <string name="margins">Margens</string>
+    <string name="margins_info">Ajuste as margens ao redor do conteúdo para evitar recortes de tela e cantos arredondados</string>
     <string name="max_font_size">Font size autoscale Máxima</string>
     <string name="max_vol_range">"Volume de gráfica gama indicador"</string>
     <string name="maximise_columns">Escale colunas independentemente.</string>

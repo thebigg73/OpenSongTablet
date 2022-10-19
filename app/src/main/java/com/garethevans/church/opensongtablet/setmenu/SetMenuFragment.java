@@ -283,4 +283,5 @@ public class SetMenuFragment extends Fragment {
             myView.myRecyclerView.post(() -> llm.scrollToPositionWithOffset(mainActivityInterface.getCurrentSet().getIndexSongInSet() , 0));
         }
     }
+
 }

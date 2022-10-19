@@ -94,6 +94,7 @@
 
     <!--The left song and set menu-->
     <LinearLayout
+        android:id="@+id/songMenuLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="start"

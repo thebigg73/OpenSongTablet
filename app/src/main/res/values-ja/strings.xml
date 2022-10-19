@@ -85,6 +85,7 @@
     <string name="bold_chords_headings">コードと見出しを太字で表示する</string>
     <string name="book">"本"</string>
     <string name="both">両方</string>
+    <string name="bottom">下</string>
     <string name="bridge">ブリッジ</string>
     <string name="bridge_background">"ブリッジの背景"</string>
     <string name="button">ボタン</string>
@@ -364,6 +365,8 @@
     <string name="main_song_display">メインソングディスプレイ</string>
     <string name="mainfoldername">"ホームページ"</string>
     <string name="mandolin">マンドリン</string>
+    <string name="margins">余白</string>
+    <string name="margins_info">画面の切り抜きや角の丸みを避けるために、コンテンツの周囲の余白を調整します</string>
     <string name="max_font_size">最大オートスケールフォントサイズ</string>
     <string name="max_vol_range">"グラフィカル音量インジケータ範囲"</string>
     <string name="maximise_columns">列を個別にスケーリングします。</string>

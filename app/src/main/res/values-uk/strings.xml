@@ -85,6 +85,7 @@
     <string name="bold_chords_headings">Акорди та заголовки відображаються жирним шрифтом</string>
     <string name="book">Книга</string>
     <string name="both">Обидва</string>
+    <string name="bottom">Дно</string>
     <string name="bridge">Міст</string>
     <string name="bridge_background">​​"Фон моста</string>
     <string name="button">Кнопка</string>
@@ -364,6 +365,8 @@
     <string name="main_song_display">Основний дисплей пісні</string>
     <string name="mainfoldername">ГОЛОВНА</string>
     <string name="mandolin">Mандоліна</string>
+    <string name="margins">Поля</string>
+    <string name="margins_info">Відрегулюйте поля навколо вмісту, щоб уникнути вирізів на екрані та закруглених кутів</string>
     <string name="max_font_size">Максимальний розмір шрифту автомасштабирование</string>
     <string name="max_vol_range">Розмір індикатора гучності</string>
     <string name="maximise_columns">Змінити масштаб стовпці незалежно.</string>

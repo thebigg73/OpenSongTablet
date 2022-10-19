@@ -109,6 +109,9 @@ public class MyZoomLayout extends FrameLayout {
     }
 
     private void calculateMaxScrolls() {
+        Log.d(TAG,"songWidth:"+songWidth+"  viewWidth:"+viewWidth);
+        Log.d(TAG,"songHeight:"+songHeight+"  viewHeight:"+viewHeight);
+        Log.d(TAG,"originalSongWidth:"+originalSongWidth+"  originalSongHeight:"+originalSongHeight);
         maxScrollX = Math.max(0,songWidth - viewWidth);
         maxScrollY = Math.max(0,songHeight - viewHeight);
         minScale = Math.min((float)viewWidth/(float)originalSongWidth,(float)viewHeight/(float)originalSongHeight);

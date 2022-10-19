@@ -85,6 +85,7 @@
     <string name="bold_chords_headings">Mostra accordi e intestazioni in grassetto</string>
     <string name="book">"Libro"</string>
     <string name="both">Entrambi</string>
+    <string name="bottom">Parte inferiore</string>
     <string name="bridge">Ponte</string>
     <string name="bridge_background">"Ponte di sfondo"</string>
     <string name="button">Pulsante</string>
@@ -364,6 +365,8 @@
     <string name="main_song_display">Visualizzazione del brano principale</string>
     <string name="mainfoldername">"MAIN"</string>
     <string name="mandolin">Mandolino</string>
+    <string name="margins">Margini</string>
+    <string name="margins_info">Regola i margini attorno al contenuto per evitare ritagli dello schermo e angoli arrotondati</string>
     <string name="max_font_size">Autoscale massima font size</string>
     <string name="max_vol_range">"Gamma indicatore del volume grafica"</string>
     <string name="maximise_columns">Ridimensionare le colonne in modo indipendente.</string>

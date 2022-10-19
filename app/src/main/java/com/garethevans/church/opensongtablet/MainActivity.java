@@ -5,6 +5,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.graphics.Insets;
 import android.hardware.display.DisplayManager;
 import android.net.Uri;
 import android.os.Build;
@@ -17,8 +18,11 @@ import android.view.Display;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.RoundedCorner;
 import android.view.View;
+import android.view.WindowInsets;
 import android.webkit.MimeTypeMap;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -257,7 +261,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private MenuItem settingsButton;
     private Locale locale;
     private Bitmap screenShot;
-    private int softKeyboardHeight = 0;
+    private int softKeyboardHeight = 0, customInsetL, customInsetR, customInsetB;
 
     private Intent fileOpenIntent;
 
@@ -431,6 +435,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         //mediaRouterCallback = new MediaRouterCallback(this);
     }
 
+
     @Override
     public BatteryStatus getBatteryStatus() {
         return batteryStatus;
@@ -440,7 +445,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         setSupportActionBar(myView.myToolbar);
     }
 
-    @Override
+        @Override
     public void showActionBar() {
         boolean contentBehind = myView.myToolbar.contentBehind(settingsOpen);
         moveContentForActionBar(contentBehind);
@@ -450,9 +455,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public void moveContentForActionBar(boolean contentBehind) {
         if (contentBehind) {
-            myView.fragmentView.setPadding(0, 0,0,0);
+            myView.fragmentView.setPadding(customInsetL, 0, customInsetR, customInsetB);
         } else {
-            myView.fragmentView.setPadding(0,myView.myToolbar.getActionBarHeight(true),0,0);
+            myView.fragmentView.setPadding(customInsetL,
+                    myView.myToolbar.getActionBarHeight(true),
+                    customInsetR, customInsetB);
         }
     }
 
@@ -504,6 +511,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private void initialiseStartVariables() {
         themeColors.setThemeName(preferences.getMyPreferenceString("appTheme", "dark"));
         whichMode = preferences.getMyPreferenceString("whichMode", performance);
+
+        // Deal with any inset preferences or cutouts or system bars
+        updateInsetPrefs();
 
         // Song location
         song.setFilename(preferences.getMyPreferenceString("songFilename","Welcome to OpenSongApp"));
@@ -618,6 +628,85 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void updateInsetPrefs() {
+        customInsetL = getPreferences().getMyPreferenceInt("marginLeft",0);
+        customInsetR = getPreferences().getMyPreferenceInt("marginRight",0);
+        //customInsetT = getPreferences().getMyPreferenceInt("marginTop",0);
+        customInsetB = getPreferences().getMyPreferenceInt("marginBottom",0);
+    }
+
+    @Override
+    public int[] deviceInsets() {
+        int[] deviceInsets = new int[8];
+        deviceInsets[4] = customInsetL;
+        deviceInsets[5] = customInsetR;
+        //deviceInsets[6] = customInsetT;
+        deviceInsets[7] = customInsetB;
+        // Get the top-right rounded corner from WindowInsets.
+        final WindowInsets insets;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            insets = getWindow().getDecorView().getRootWindowInsets();
+
+            Insets systemBars = insets.getInsetsIgnoringVisibility(WindowInsets.Type.systemBars());
+            Log.d(TAG, "systemBars: " + systemBars);
+
+            Insets displayCutout = insets.getInsets(WindowInsets.Type.displayCutout());
+            Log.d(TAG, "displayCutout: " + displayCutout);
+
+            int roundedL = 0, roundedR = 0, roundedB = 0;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                RoundedCorner bottomLeft = insets.getRoundedCorner(RoundedCorner.POSITION_BOTTOM_LEFT);
+                RoundedCorner bottomRight = insets.getRoundedCorner(RoundedCorner.POSITION_BOTTOM_RIGHT);
+                if (bottomLeft != null) {
+                    roundedL = bottomLeft.getRadius();
+                    roundedB = roundedL;
+
+                }
+                if (bottomRight != null) {
+                    roundedR = bottomRight.getRadius();
+                    roundedB = Math.max(roundedB, roundedR);
+                }
+            }
+
+            deviceInsets[0] = Math.max(systemBars.left, Math.max(roundedL, displayCutout.left));
+            deviceInsets[1] = Math.max(systemBars.right, Math.max(roundedR, displayCutout.right));
+            //deviceInsets[2] = Math.max(systemBars.top, Math.max(roundedB, displayCutout.top));
+            deviceInsets[3] = Math.max(systemBars.bottom, Math.max(roundedB, displayCutout.bottom));
+
+            FrameLayout.LayoutParams layoutParams1 = (FrameLayout.LayoutParams) myView.fragmentView.getLayoutParams();
+            layoutParams1.leftMargin = deviceInsets[0];
+            layoutParams1.rightMargin = deviceInsets[1];
+            //layoutParams1.topMargin = deviceInsets[2];
+            layoutParams1.bottomMargin = deviceInsets[3];
+            myView.fragmentView.setLayoutParams(layoutParams1);
+
+            DrawerLayout.LayoutParams songMenuLayoutParams = (DrawerLayout.LayoutParams) myView.songMenuLayout.getLayoutParams();
+            songMenuLayoutParams.leftMargin = deviceInsets[0];
+            songMenuLayoutParams.rightMargin = deviceInsets[1];
+            songMenuLayoutParams.topMargin = deviceInsets[2];
+            songMenuLayoutParams.bottomMargin = deviceInsets[3];
+            myView.songMenuLayout.setLayoutParams(songMenuLayoutParams);
+        }
+
+        Log.d(TAG,"settingsOpen:"+settingsOpen);
+        if (settingsOpen) {
+            myView.fragmentView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            myView.drawerLayout.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+        } else {
+            myView.fragmentView.setBackgroundColor(getMyThemeColors().getLyricsBackgroundColor());
+            myView.drawerLayout.setBackgroundColor(getMyThemeColors().getLyricsBackgroundColor());
+        }
+
+        myView.songMenuLayout.setPadding(customInsetL,0,customInsetR,customInsetB);
+        myView.fragmentView.setPadding(customInsetL, 0, customInsetR, customInsetB);
+
+        showActionBar();
+
+        return deviceInsets;
     }
 
     @Override
@@ -859,8 +948,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         }
         if (whichMode.equals(presenter)) {
             navigateToFragment(getString(R.string.deeplink_presenter),0);
+            myView.fragmentView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            myView.drawerLayout.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         } else {
             navigateToFragment(getString(R.string.deeplink_performance),0);
+            myView.fragmentView.setBackgroundColor(getMyThemeColors().getLyricsBackgroundColor());
+            myView.drawerLayout.setBackgroundColor(getMyThemeColors().getLyricsBackgroundColor());
         }
         settingsOpen = false;
         showMenuItems(true);
@@ -1165,9 +1258,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         if (getString(R.string.settings).equals(item.toString())) {
             if (settingsOpen) {
                 settingsOpen = false;
+                myView.fragmentView.setBackgroundColor(getMyThemeColors().getLyricsBackgroundColor());
+                myView.drawerLayout.setBackgroundColor(getMyThemeColors().getLyricsBackgroundColor());
                 navHome();
             } else {
                 navigateToFragment(getString(R.string.deeplink_preferences), 0);
+                myView.fragmentView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                myView.drawerLayout.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                 settingsOpen = true;
                 showMenuItems(false);
             }
@@ -2708,8 +2805,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
+        Log.d(TAG,"windowFocusChanged");
         // Set the fullscreen window flags]
         setWindowFlags(true);
+        deviceInsets();
         if (hasFocus && navController!=null && navController.getCurrentDestination()!=null) {
             if (Objects.requireNonNull(navController.getCurrentDestination()).getId()!=R.id.setStorageLocationFragment) {
                 showActionBar();

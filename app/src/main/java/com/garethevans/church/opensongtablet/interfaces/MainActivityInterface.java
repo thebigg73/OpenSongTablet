@@ -76,6 +76,8 @@ public interface MainActivityInterface {
     void updateSizes(int width, int height);
     int[] getDisplayMetrics();
     float getDisplayDensity();
+    int[] deviceInsets();
+    void updateInsetPrefs();
     void setWindowFlags(boolean immersiveOn);
     Locale getLocale();
     VersionNumber getVersionNumber();

@@ -85,6 +85,7 @@
     <string name="bold_chords_headings">Εμφάνιση χορδών και κεφαλίδων με έντονη γραφή</string>
     <string name="book">"Βιβλίο"</string>
     <string name="both">Και τα δυο</string>
+    <string name="bottom">Κάτω μέρος</string>
     <string name="bridge">"Γέφυρα"</string>
     <string name="bridge_background">"Φόντο γέφυρας"</string>
     <string name="button">Κουμπί</string>
@@ -364,6 +365,8 @@
     <string name="main_song_display">Κύρια προβολή τραγουδιού</string>
     <string name="mainfoldername">"ΚΕΝΤΡΙΚΟ"</string>
     <string name="mandolin">"Μαντολίνο"</string>
+    <string name="margins">Περιθώρια</string>
+    <string name="margins_info">Προσαρμόστε τα περιθώρια γύρω από το περιεχόμενο για να αποφύγετε τις εγκοπές οθόνης και τις στρογγυλεμένες γωνίες</string>
     <string name="max_font_size">"Maximum autoscale font size"</string>
     <string name="max_vol_range">"Graphical volume indicator range"</string>
     <string name="maximise_columns">Κλίμακα στήλες ανεξάρτητα.</string>

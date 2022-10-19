@@ -70,6 +70,7 @@ public class DisplayMenuFragment extends Fragment {
         myView.menuSettings.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.menuSettingsFragment));
         myView.scalingButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.displayScalingFragment));
         myView.inlineSet.setOnClickListener(v -> mainActivityInterface.navigateToFragment(getString(R.string.deeplink_inlineset),0));
+        myView.margins.setOnClickListener(v -> mainActivityInterface.navigateToFragment(getString(R.string.deeplink_margins),0));
     }
 
     @Override
