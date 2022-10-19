@@ -24,6 +24,7 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
 
     // All the helpers we need to access are in the MainActivity
     private final MainActivityInterface mainActivityInterface;
+    private final Context c;
     private final DisplayInterface displayInterface;
     private final ArrayList<StageSectionInfo> sectionInfos;
     private final ArrayList<Float> floatSizes;
@@ -37,6 +38,7 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
 
     public StageSectionAdapter(Context c, MainActivityInterface mainActivityInterface, DisplayInterface displayInterface) {
         this.mainActivityInterface = mainActivityInterface;
+        this.c = c;
         this.displayInterface = displayInterface;
         density = c.getResources().getDisplayMetrics().density;
         maxFontSize = mainActivityInterface.getPreferences().getMyPreferenceFloat("fontSizeMax",50f);
@@ -54,7 +56,7 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
             StageSectionInfo stageSectionInfo = new StageSectionInfo();
 
             float alpha = 1f;
-            if (mainActivityInterface.getMode().equals("Stage")) {
+            if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_stage))) {
                 alpha = alphaoff;
             }
 
@@ -128,7 +130,7 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
             float alpha = sectionInfos.get(position).alpha;
 
             CardView cardView = (CardView) holder.v;
-            if (mainActivityInterface.getMode().equals("Stage") && section == currentSection) {
+            if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_stage)) && section == currentSection) {
                 alpha = 1.0f;
             }
 
@@ -209,7 +211,7 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
         onTouchAction();
 
         try {
-            if (mainActivityInterface.getMode().equals("Stage")) {
+            if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_stage))) {
                 sectionInfos.get(currentSection).alpha = alphaoff;
                 notifyItemChanged(currentSection, alphaChange);
 

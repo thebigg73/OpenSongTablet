@@ -194,7 +194,8 @@ public class ImageChooserBottomSheet extends BottomSheetDialogFragment {
         setSelectedBackgroundHighlight();
 
         // Also, if we are in presenter mode, update the 'Settings' tab previews(
-        if (mainActivityInterface.getMode().equals("Presenter") && fragName.equals("presenterFragmentSettings")) {
+        if (mainActivityInterface.getMode().equals(getString(R.string.mode_presenter)) &&
+                fragName.equals("presenterFragmentSettings")) {
             mainActivityInterface.getPresenterSettings().getImagePreferences();
             mainActivityInterface.updateFragment(fragName,callingFragment,null);
         }

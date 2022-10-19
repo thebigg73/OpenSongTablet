@@ -48,7 +48,7 @@ public class SongSectionsFragment extends Fragment {
         myView = ModePresenterSongSectionsBinding.inflate(inflater,container,false);
 
         // Set up song info layout to only show minimal info in simple format
-        myView.songInfo.setupLayout(mainActivityInterface,true);
+        myView.songInfo.setupLayout(requireContext(),mainActivityInterface,true);
 
         // Set the presentation order
         myView.presentationOrder.setChecked(mainActivityInterface.getPresenterSettings().getUsePresentationOrder());

@@ -88,7 +88,7 @@ public class NearbyConnectionsFragment extends Fragment {
                 mainActivityInterface.getNearbyConnections().hasValidConnections());
 
         // IV - Display relevant options to process nearby Song Section changes and autoscroll
-        if (mainActivityInterface.getMode().equals("Presenter")) {
+        if (mainActivityInterface.getMode().equals(getString(R.string.mode_presenter))) {
             // This will work in Stage and Perfomance Mode
             // As will sections (if using pdf pages)
             myView.bottomSheet.receiveAutoscroll.setEnabled(false);

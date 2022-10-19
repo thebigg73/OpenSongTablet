@@ -49,7 +49,7 @@ public class HighlighterFragment extends Fragment {
         myView.timeToDisplayHighlighter.setValue(timeToDisplayHighlighter);
         myView.timeToDisplayHighlighter.setLabelFormatter(value -> ((int)value)+"s");
         setHintTime(timeToDisplayHighlighter);
-        hideView(myView.edit,mainActivityInterface.getMode().equals("Performance"));
+        hideView(myView.edit,mainActivityInterface.getMode().equals(getString(R.string.mode_performance)));
     }
 
     private void hideView(View view, boolean drawingAutoDisplay) {

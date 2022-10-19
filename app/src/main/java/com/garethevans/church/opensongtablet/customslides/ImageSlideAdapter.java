@@ -72,7 +72,7 @@ public class ImageSlideAdapter  extends RecyclerView.Adapter<ImageSlideViewHolde
             slideInfo.pageNum = x;
             slideInfo.pageNumText = (x+1) + "/" + totalPages;
 
-            if (mainActivityInterface.getMode().equals("Stage")) {
+            if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_stage))) {
                 slideInfo.alpha = 0.4f;
             } else {
                 slideInfo.alpha = 1f;
@@ -149,7 +149,7 @@ public class ImageSlideAdapter  extends RecyclerView.Adapter<ImageSlideViewHolde
         int height = slideInfos.get(position).height;
         float alpha = slideInfos.get(position).alpha;
         CardView cardView = (CardView)holder.v;
-        if (mainActivityInterface.getMode().equals("Stage") && position == currentSection) {
+        if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_stage)) && position == currentSection) {
             alpha = 1.0f;
         }
         cardView.setAlpha(alpha);
@@ -190,7 +190,7 @@ public class ImageSlideAdapter  extends RecyclerView.Adapter<ImageSlideViewHolde
         // Because this is a screen touch, do the necessary UI update (check actionbar/prev/next)
         onTouchAction();
 
-        if (mainActivityInterface.getMode().equals("Stage")) {
+        if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_stage))) {
             slideInfos.get(currentSection).alpha = 0.4f;
             notifyItemChanged(currentSection, alphaChange);
 

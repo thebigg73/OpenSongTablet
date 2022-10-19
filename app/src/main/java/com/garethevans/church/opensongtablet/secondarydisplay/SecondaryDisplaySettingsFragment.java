@@ -123,25 +123,22 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
 
     private void setViews() {
         // These settings can be called from any mode, hide what we don't need
-        switch (mainActivityInterface.getMode()) {
-            case "Performance":
-                myView.backgroundLayout.setVisibility(View.GONE);
-                myView.presoBackgroundAlpha.setVisibility(View.GONE);
-                myView.presoBackgroundDivider.setVisibility(View.GONE);
-                myView.logoLayout.setVisibility(View.GONE);
-                myView.logoSize.setVisibility(View.GONE);
-                myView.logoDivider.setVisibility(View.GONE);
-                myView.contentHorizontalAlign.setVisibility(View.GONE);
-                myView.contentVerticalAlign.setVisibility(View.GONE);
-                myView.infoSizes.setVisibility(View.GONE);
-                myView.blockShadow.setVisibility(View.GONE);
-                myView.blockShadowAlpha.setVisibility(View.GONE);
-                break;
-            case "Stage":
-                myView.logoLayout.setVisibility(View.GONE);
-                myView.logoSize.setVisibility(View.GONE);
-                myView.logoDivider.setVisibility(View.GONE);
-                break;
+        if (mainActivityInterface.getMode().equals(getString(R.string.mode_performance))) {
+            myView.backgroundLayout.setVisibility(View.GONE);
+            myView.presoBackgroundAlpha.setVisibility(View.GONE);
+            myView.presoBackgroundDivider.setVisibility(View.GONE);
+            myView.logoLayout.setVisibility(View.GONE);
+            myView.logoSize.setVisibility(View.GONE);
+            myView.logoDivider.setVisibility(View.GONE);
+            myView.contentHorizontalAlign.setVisibility(View.GONE);
+            myView.contentVerticalAlign.setVisibility(View.GONE);
+            myView.infoSizes.setVisibility(View.GONE);
+            myView.blockShadow.setVisibility(View.GONE);
+            myView.blockShadowAlpha.setVisibility(View.GONE);
+        } else if (mainActivityInterface.getMode().equals(getString(R.string.mode_stage))) {
+            myView.logoLayout.setVisibility(View.GONE);
+            myView.logoSize.setVisibility(View.GONE);
+            myView.logoDivider.setVisibility(View.GONE);
         }
 
         myView.presoBackgroundAlpha.setValue((int)(mainActivityInterface.getPresenterSettings().getPresoBackgroundAlpha()*100));

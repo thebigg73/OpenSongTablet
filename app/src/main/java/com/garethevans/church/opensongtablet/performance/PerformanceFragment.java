@@ -180,7 +180,7 @@ public class PerformanceFragment extends Fragment {
         swipeMinimumDistance = mainActivityInterface.getPreferences().getMyPreferenceInt("swipeMinimumDistance", 250);
         swipeMaxDistanceYError = mainActivityInterface.getPreferences().getMyPreferenceInt("swipeMaxDistanceYError", 200);
         swipeMinimumVelocity = mainActivityInterface.getPreferences().getMyPreferenceInt("swipeMinimumVelocity", 600);
-        if (mainActivityInterface.getMode().equals("Performance")) {
+        if (mainActivityInterface.getMode().equals(getString(R.string.mode_performance))) {
             myView.mypage.setBackgroundColor(mainActivityInterface.getMyThemeColors().getLyricsBackgroundColor());
             myView.waterMark.setVisibility(View.VISIBLE);
         } else {
@@ -500,7 +500,8 @@ public class PerformanceFragment extends Fragment {
     private void setUpHeaderListener() {
         // If we want headers, the header layout isn't null, so we can draw and listen
         // Add the view and wait for the vto return
-        if (mainActivityInterface.getSongSheetTitleLayout() != null && !mainActivityInterface.getMode().equals("Presenter")) {
+        if (mainActivityInterface.getSongSheetTitleLayout() != null &&
+                !mainActivityInterface.getMode().equals(getString(R.string.mode_presenter))) {
 
             // Check the header isn't already attached to a view
             if (mainActivityInterface.getSongSheetTitleLayout().getParent()!=null) {
@@ -583,7 +584,7 @@ public class PerformanceFragment extends Fragment {
             myView.testPane.removeAllViews();
 
             // Decide which mode we are in to determine how the views are rendered
-            if (mainActivityInterface.getMode().equals("Stage")) {
+            if (mainActivityInterface.getMode().equals(getString(R.string.mode_stage))) {
                 // We are in Stage mode so use the recyclerView
                 myView.recyclerView.setVisibility(View.INVISIBLE);
                 myView.pageHolder.setVisibility(View.GONE);
@@ -927,7 +928,7 @@ public class PerformanceFragment extends Fragment {
         if (mainActivityInterface.getSong().getFiletype().equals("PDF") &&
                 Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 pdfPageAdapter.sectionSelected(position);
-        } else if (mainActivityInterface.getMode().equals("Stage")) {
+        } else if (mainActivityInterface.getMode().equals(getString(R.string.mode_stage))) {
             stageSectionAdapter.sectionSelected(position);
         }
     }

@@ -52,7 +52,7 @@ public class SongProjectionInfo extends LinearLayoutCompat {
 
 
     // Adjust the layout depending on what is needed
-    public void setupLayout(MainActivityInterface mainActivityInterface, boolean miniInfo) {
+    public void setupLayout(Context c, MainActivityInterface mainActivityInterface, boolean miniInfo) {
         // Set up the text info bar fonts
         setupFonts(mainActivityInterface);
 
@@ -62,7 +62,7 @@ public class SongProjectionInfo extends LinearLayoutCompat {
             showMiniLogo(false);
             smallText(mainActivityInterface, true);
             castSongInfo.setBackgroundColor(Color.TRANSPARENT);
-        } else if (mainActivityInterface.getMode().equals("Presenter")) {
+        } else if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_presenter))) {
             // The bottom bar for the secondary display in Presenter mode
             showMiniLogo(false);
             smallText(mainActivityInterface, false);

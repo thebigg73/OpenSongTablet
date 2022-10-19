@@ -91,8 +91,8 @@ public class OnScreenInfo extends LinearLayout {
     }
 
     public void dealWithCapo(Context c, MainActivityInterface mainActivityInterface) {
-        capoInfoNeeded = !mainActivityInterface.getMode().equals("Presenter") && mainActivityInterface.
-                getProcessSong().showingCapo(mainActivityInterface.getSong().getCapo());
+        capoInfoNeeded = !mainActivityInterface.getMode().equals(c.getString(R.string.mode_presenter)) &&
+                mainActivityInterface.getProcessSong().showingCapo(mainActivityInterface.getSong().getCapo());
         if (capoInfoNeeded) {
             capoInfo.setText(mainActivityInterface.getChordDisplayProcessing().getCapoPosition());
             capoInfo.setVisibility(View.VISIBLE);

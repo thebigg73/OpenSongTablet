@@ -92,7 +92,7 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
                     int width = page.getWidth();
                     int height = page.getHeight();
                     float scaleFactor;
-                    if (mainActivityInterface.getMode().equals("Stage")) {
+                    if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_stage))) {
                         float x_scale = (float)viewWidth/(float)width;
                         float y_scale = (float)(viewHeight-mainActivityInterface.getToolbar().getActionBarHeight(mainActivityInterface.needActionBar()))/(float)height;
                         scaleFactor = Math.min(x_scale,y_scale);
@@ -114,7 +114,7 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
                     pageInfo.width = (int) (width * scaleFactor);
                     pageInfo.height = (int) itemHeight;
 
-                    if (mainActivityInterface.getMode().equals("Stage")) {
+                    if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_stage))) {
                         pageInfo.alpha = alphaoff;
                     } else {
                         pageInfo.alpha = 1f;
@@ -169,7 +169,7 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
                     holder.v.post(()->{
                         try {
                             float alphaval = pageInfos.get(position).alpha;
-                            if (!mainActivityInterface.getMode().equals("Stage")) {
+                            if (!mainActivityInterface.getMode().equals(c.getString(R.string.mode_stage))) {
                                 alphaval = 1f;
                                 pageInfos.get(position).alpha = 1f;
                             }
@@ -192,7 +192,7 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
         String pagetNumText = pageInfos.get(position).pageNumText;
 
         CardView cardView = (CardView)holder.v;
-        if (mainActivityInterface.getMode().equals("Stage") && position == currentSection) {
+        if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_stage)) && position == currentSection) {
             alpha = 1.0f;
         }
         float finalAlpha = alpha;
@@ -229,7 +229,7 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
 
         cardView.post(()->{
             try {
-                if (mainActivityInterface.getMode().equals("Stage")) {
+                if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_stage))) {
                     cardView.setAlpha(finalAlpha);
                 } else {
                     cardView.setAlpha(1f);
@@ -295,7 +295,7 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
                 onTouchAction();
 
                 // Only do this alpha change in stage mode
-                if (mainActivityInterface.getMode().equals("Stage")) {
+                if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_stage))) {
                     pageInfos.get(currentSection).alpha = alphaoff;
                     notifyItemChanged(currentSection, alphaChange);
 
@@ -305,7 +305,7 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
                 }
 
                 // If stage mode or a pdf, update the presenter and send a nearby payload
-                if (mainActivityInterface.getMode().equals("Stage") ||
+                if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_stage)) ||
                     mainActivityInterface.getSong().getFiletype().equals("PDF")) {
                     // Send and update notification to Performance Fragment via the MainActivity (scrolls to position)
                     displayInterface.performanceShowSection(position);

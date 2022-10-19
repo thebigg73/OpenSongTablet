@@ -1012,7 +1012,7 @@ public class ProcessSong {
                                         str = fixExcessSpaces(str);
                                     }
                                 }
-                                if (presentation || !mainActivityInterface.getMode().equals("Performance")) {
+                                if (presentation || !mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance))) {
                                     str = fixExcessSpaces(str);
                                 }
 
@@ -1032,7 +1032,7 @@ public class ProcessSong {
                             break;
                         default:
                             // Just set the text
-                            if (presentation || !mainActivityInterface.getMode().equals("Performance") ||
+                            if (presentation || !mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) ||
                                     (!multiLineVerseKeepCompact && !multilineSong)) {
                                 str = fixExcessSpaces(str);
                             }
@@ -1151,7 +1151,7 @@ public class ProcessSong {
 
     private String fixMultiLineFormat(String string, boolean presentation) {
         multilineSong = isMultiLineFormatSong(string);
-        if (!mainActivityInterface.getMode().equals("Performance") || presentation ||
+        if (!mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) || presentation ||
                 (!multiLineVerseKeepCompact && multilineSong)) {
             // Reset the available song sections
             // Ok the song is in the multiline format
@@ -1411,7 +1411,7 @@ public class ProcessSong {
             } else if (linetype.equals("lyric")) {
                 // TODO
                 // IV - This will need more complexity depending on mode and if showing chords
-                if ((!mainActivityInterface.getMode().equals("Performance") &&
+                if ((!mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) &&
                         (presentation || trimWordSpacing)) ||
                         (!multilineSong || !multiLineVerseKeepCompact)) {
                     str = fixExcessSpaces(str);
@@ -1490,7 +1490,7 @@ public class ProcessSong {
         // 5. Prepare for section splits: || are relevant to presentation and Stage mode.
         // If sectionSplit is ║ is used to test for further processing later.
         String sectionSplit = "";
-        if (presentation || mainActivityInterface.getMode().equals("Stage")) {
+        if (presentation || mainActivityInterface.getMode().equals(c.getString(R.string.mode_stage))) {
             sectionSplit = "║";
         }
 
@@ -1614,7 +1614,7 @@ public class ProcessSong {
                     linearLayout.setGravity(mainActivityInterface.getPresenterSettings().getPresoLyricsAlign());
                 }
 
-                if (!mainActivityInterface.getMode().equals("Performance") && blockShadow) {
+                if (!mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) && blockShadow) {
                     linearLayout.setBackgroundColor(mainActivityInterface.getMyThemeColors().getPresoShadowColor());
                     linearLayout.setBackgroundColor(getColorWithAlpha(mainActivityInterface.
                             getMyThemeColors().getPresoShadowColor(), blockShadowAlpha));
@@ -1989,7 +1989,7 @@ public class ProcessSong {
         int songSheetTitleHeight = 0;
         if (songSheetView!=null &&
                 mainActivityInterface.getPreferences().getMyPreferenceBoolean("songSheet", false) &&
-                 !mainActivityInterface.getMode().equals("Presenter")) {
+                 !mainActivityInterface.getMode().equals(c.getString(R.string.mode_presenter))) {
             songSheetTitleHeight = mainActivityInterface.getSongSheetTitleLayout().getHeight();
             songSheetView.addView(mainActivityInterface.getSongSheetTitleLayout());
             songSheetView.setVisibility(View.VISIBLE);

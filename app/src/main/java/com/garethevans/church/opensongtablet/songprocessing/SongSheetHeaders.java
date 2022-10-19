@@ -26,7 +26,7 @@ public class SongSheetHeaders {
 
         LinearLayout linearLayout = null;
 
-        if (forPDF || (mainActivityInterface.getMode().equals("Performance") &&
+        if (forPDF || (mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) &&
                 mainActivityInterface.getPreferences().getMyPreferenceBoolean("songSheet",false))) {
 
             linearLayout = new LinearLayout(c);

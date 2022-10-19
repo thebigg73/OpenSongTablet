@@ -4,7 +4,6 @@ package com.garethevans.church.opensongtablet.performance;
 
 import android.content.Context;
 import android.os.Build;
-import android.util.Log;
 import android.view.View;
 
 import com.garethevans.church.opensongtablet.R;
@@ -204,7 +203,7 @@ public class PerformanceGestures {
 
         // Check the recyclerView for images/pdfs
         } else if (recyclerView != null && recyclerView.getVisibility() == View.VISIBLE) {
-            if (mainActivityInterface.getMode().equals("Stage")) {
+            if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_stage))) {
                 int currentPos, finalPos;
                 if (mainActivityInterface.getSong().getFiletype().equals("PDF")) {
                     currentPos = mainActivityInterface.getSong().getPdfPageCurrent();
@@ -234,7 +233,7 @@ public class PerformanceGestures {
     public void scroll(boolean scrollDown) {
         if (myZoomLayout != null && myZoomLayout.getVisibility() == View.VISIBLE) {
             myZoomLayout.animateScrollBy(mainActivityInterface.getGestures().getScrollDistance(), scrollDown);
-        } else if (mainActivityInterface.getMode().equals("Performance") &&
+        } else if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) &&
                 recyclerView != null && recyclerView.getVisibility() == View.VISIBLE) {
             int height = (int)(mainActivityInterface.getGestures().getScrollDistance()*recyclerView.getHeight());
             if (!scrollDown) {
@@ -242,7 +241,7 @@ public class PerformanceGestures {
             }
             recyclerView.smoothScrollBy(0,height);
 
-        } else if (mainActivityInterface.getMode().equals("Stage") &&
+        } else if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_stage)) &&
                 recyclerView != null && recyclerView.getVisibility() == View.VISIBLE) {
             int currentPosition = mainActivityInterface.getSong().getCurrentSection();
             int finalPosition = mainActivityInterface.getSong().getPresoOrderSongSections().size() - 1;

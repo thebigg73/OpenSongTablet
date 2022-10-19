@@ -182,7 +182,7 @@ public class SecondaryDisplay extends Presentation {
         v.setAlpha(0f);
     }
     public void updatePageBackgroundColor() {
-        if (mainActivityInterface.getMode().equals("Presenter")) {
+        if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_presenter))) {
             // In Presenter mode, we set the bottom layer as black (to allow black screen)
             // Any video, image or coloured backgrounds get their own layer above this (set elsewhere)
             myView.castFrameLayout.setBackgroundColor(Color.BLACK);
@@ -270,7 +270,7 @@ public class SecondaryDisplay extends Presentation {
         // If the logo is switched on, then leave it on, otherwise hide it
         if (firstRun) {
             boolean timedHide = true;
-            if (mainActivityInterface.getMode().equals("Presenter")) {
+            if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_presenter))) {
                 // If the user has the logo switched on, so leave it on (no timedHide)
                 if (mainActivityInterface.getPresenterSettings().getLogoOn()) {
                     timedHide = false;
@@ -295,7 +295,7 @@ public class SecondaryDisplay extends Presentation {
                     new Handler().postDelayed(this::showBlackScreen,logoSplashTime);
                 }
 
-            } else if (mainActivityInterface.getMode().equals("Stage")) {
+            } else if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_stage))) {
                 // Prepare the current section 0 ready for the logo hiding after splash
                 new Handler().postDelayed(()-> showSection(0),logoSplashTime);
 
@@ -326,22 +326,16 @@ public class SecondaryDisplay extends Presentation {
     // Set views depending on mode
     public void matchPresentationToMode() {
         // Get the settings that are appropriate.  This is called on first run
-        switch (mainActivityInterface.getMode()) {
-            case "Stage":
-            case "Performance":
-            default:
-                scaleHeadings = mainActivityInterface.getPreferences().getMyPreferenceFloat("scaleHeadings", 0.8f);
-                scaleComments = mainActivityInterface.getPreferences().getMyPreferenceFloat("scaleComments", 0.8f);
-                displayChords = mainActivityInterface.getPreferences().getMyPreferenceBoolean("displayChords", true);
-                boldChordHeading = mainActivityInterface.getPreferences().getMyPreferenceBoolean("boldChordHeading", false);
-                break;
-
-            case "Presenter":
-                scaleHeadings = 0.0f;
-                scaleComments = 0.0f;
-                displayChords = mainActivityInterface.getPreferences().getMyPreferenceBoolean("presoShowChords", false);
-                boldChordHeading = mainActivityInterface.getPreferences().getMyPreferenceBoolean("presoLyricsBold", false);
-                break;
+        if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_presenter))) {
+            scaleHeadings = 0.0f;
+            scaleComments = 0.0f;
+            displayChords = mainActivityInterface.getPreferences().getMyPreferenceBoolean("presoShowChords",false);
+            boldChordHeading = mainActivityInterface.getPreferences().getMyPreferenceBoolean("presoLyricsBold", false);
+        } else {
+            scaleHeadings = mainActivityInterface.getPreferences().getMyPreferenceFloat("scaleHeadings", 0.8f);
+            scaleComments = mainActivityInterface.getPreferences().getMyPreferenceFloat("scaleComments", 0.8f);
+            displayChords = mainActivityInterface.getPreferences().getMyPreferenceBoolean("displayChords", true);
+            boldChordHeading = mainActivityInterface.getPreferences().getMyPreferenceBoolean("boldChordHeading", false);
         }
         infoBarChangeRequired = true;
         boolean forceCastUpdate = false;
@@ -350,7 +344,7 @@ public class SecondaryDisplay extends Presentation {
     private void hideCols2and3() {
         // Only need these in performance mode
         int visiblity = View.GONE;
-        if (mainActivityInterface.getMode().equals("Performance")) {
+        if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance))) {
             visiblity = View.VISIBLE;
         }
         myView.songContent1.getCol1().setVisibility(View.VISIBLE);
@@ -367,7 +361,7 @@ public class SecondaryDisplay extends Presentation {
         // There has been an update to the user's background or logo, so pull them in from preferences
         // (already updated in PresenterSettings)
         // This only runs in PresenterMode!  Performance/Stage Mode reflect the device theme
-        if (mainActivityInterface.getMode().equals("Presenter")) {
+        if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_presenter))) {
             // We can use either a drawable (for a solid colour) or a uri (for an image)
             // Get the current background to fade out and set the background to the next
             //Log.d(TAG,"Fade out: showWhichBackground="+showWhichBackground);
@@ -583,7 +577,7 @@ public class SecondaryDisplay extends Presentation {
         // The time that the info bar is required for
         int untilTimeWait = 20000;
         // If we are in Performance mode, don't do this
-        if (!mainActivityInterface.getMode().equals("Performance")) {
+        if (!mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance))) {
             waitUntilTimer.schedule(waitUntilTimerTask, untilTimeWait);
         }
     }
@@ -605,9 +599,9 @@ public class SecondaryDisplay extends Presentation {
         }
     }
     public void setInfoStyles() {
-        myView.testSongInfo.setupLayout(mainActivityInterface,false);
-        myView.songProjectionInfo1.setupLayout(mainActivityInterface,false);
-        myView.songProjectionInfo2.setupLayout(mainActivityInterface,false);
+        myView.testSongInfo.setupLayout(c,mainActivityInterface,false);
+        myView.songProjectionInfo1.setupLayout(c,mainActivityInterface,false);
+        myView.songProjectionInfo2.setupLayout(c,mainActivityInterface,false);
     }
     public void changeInfoAlignment() {
         myView.songProjectionInfo1.setAlign(mainActivityInterface.getPresenterSettings().getPresoInfoAlign());
@@ -746,7 +740,9 @@ public class SecondaryDisplay extends Presentation {
     }
     private View songInfoShowCheck() {
         // If required (new song loaded and not already showing), show the info bar
-        if ((canShowSong() && infoBarRequireInitial && (mainActivityInterface.getPresenterSettings().getCurrentSection()>-1||mainActivityInterface.getMode().equals("Performance"))) ||
+        if ((canShowSong() && infoBarRequireInitial &&
+                (mainActivityInterface.getPresenterSettings().getCurrentSection()>-1 ||
+                        mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)))) ||
                 isNewSong) {
 
             // Now remove the requirement for an inital view
@@ -816,7 +812,7 @@ public class SecondaryDisplay extends Presentation {
         scaleChords = mainActivityInterface.getPreferences().getMyPreferenceFloat("scaleChords", 0.8f);
     }
     private void setSectionViews() {
-        boolean isPresentation = !mainActivityInterface.getMode().equals("Performance");
+        boolean isPresentation = !mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance));
         secondaryViews = mainActivityInterface.getProcessSong().
                 setSongInLayout(mainActivityInterface.getSong(),
                         false, isPresentation);
@@ -879,7 +875,7 @@ public class SecondaryDisplay extends Presentation {
         // We can now remove the views from the test layout
         myView.testLayout.removeAllViews();
 
-        if (mainActivityInterface.getMode().equals("Performance")) {
+        if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance))) {
             Log.d(TAG, "Perfomance mode - need to show everything");
             showAllSections();
         } else {
@@ -892,8 +888,8 @@ public class SecondaryDisplay extends Presentation {
 
     public void showSection(final int position) {
         // Decide which view to show.  Do nothing if it is already showing
-        boolean stageOk = mainActivityInterface.getMode().equals("Stage");
-        boolean presenterOk = mainActivityInterface.getMode().equals("Presenter") &&
+        boolean stageOk = mainActivityInterface.getMode().equals(c.getString(R.string.mode_stage));
+        boolean presenterOk = mainActivityInterface.getMode().equals(c.getString(R.string.mode_presenter)) &&
                 mainActivityInterface.getPresenterSettings().getSongSectionsAdapter()!=null;
 
         Log.d(TAG,"position="+position+"  getPresenterSettings().getCurrentSection()="+mainActivityInterface.getPresenterSettings().getCurrentSection());
@@ -978,7 +974,7 @@ public class SecondaryDisplay extends Presentation {
         Log.d(TAG,"availableScreenHeight="+availableScreenHeight);
         Log.d(TAG,"modeHeight="+modeHeight);
 
-        boolean need23columns = mainActivityInterface.getMode().equals("Performance");
+        boolean need23columns = mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance));
         if (!myView.songContent1.getIsDisplaying()) {
             float[] f= mainActivityInterface.getProcessSong().addViewsToScreen(
                     need23columns, secondaryViews, secondaryWidths, secondaryHeights, myView.allContent,
@@ -1127,7 +1123,7 @@ public class SecondaryDisplay extends Presentation {
         }
         @Override
         public void onSurfaceTextureAvailable(@NonNull SurfaceTexture surfaceTexture, int width, int height) {
-            if (mainActivityInterface.getMode().equals("Presenter")) {
+            if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_presenter))) {
                 if (which==1) {
                     surface1 = new Surface(surfaceTexture);
                     mediaPlayer1.setSurface(surface1);

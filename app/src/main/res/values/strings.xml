@@ -542,6 +542,9 @@
     <string name="midi_velocity">Velocity</string>
     <string name="min_font_size">Preferred minimum autoscale font size</string>
     <string name="minus_1" translatable="false">-1</string>
+    <string name="mode_performance" translatable="false">Performance</string>
+    <string name="mode_presenter" translatable="false">Presenter</string>
+    <string name="mode_stage" translatable="false">Stage</string>
     <string name="move_from">Move from</string>
     <string name="move_to_folder">Move to folder</string>
     <string name="music">Music</string>

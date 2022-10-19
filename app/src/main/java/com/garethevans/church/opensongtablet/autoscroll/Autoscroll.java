@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.MaterialEditText;
 import com.garethevans.church.opensongtablet.customviews.MyRecyclerView;
 import com.garethevans.church.opensongtablet.customviews.MyZoomLayout;
@@ -175,7 +176,8 @@ public class Autoscroll {
     public void startAutoscroll() {
         // If we are in Performance mode using a normal OpenSong song, we scroll the ZoomLayout
         // If we are in Stage mode, or viewing a pdf, we scroll the RecyclerView
-        usingZoomLayout = mainActivityInterface.getMode().equals("Performance") && mainActivityInterface.getSong().getFiletype().equals("XML");
+        usingZoomLayout = mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) &&
+                mainActivityInterface.getSong().getFiletype().equals("XML");
 
         Log.d(TAG,"usingZoomLayout:"+usingZoomLayout);
         if (usingZoomLayout) {

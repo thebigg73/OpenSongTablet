@@ -565,12 +565,12 @@ public class NearbyConnections implements NearbyInterface {
 
                             } else if (incoming != null && incoming.contains("autoscroll_")) {
                                 // IV - Autoscroll only in Performance mode when user option is selected
-                                if (mainActivityInterface.getMode().equals("Performance") && receiveHostAutoscroll) {
+                                if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) && receiveHostAutoscroll) {
                                     payloadAutoscroll(incoming);
                                 }
                             } else if (incoming != null && incoming.contains(sectionTag)) {
                                 // IV - Section change only in Stage and Presentation mode (or PDF) when user option is selected
-                                if ((!mainActivityInterface.getMode().equals("Performance") ||
+                                if ((!mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) ||
                                         mainActivityInterface.getSong().getFiletype().equals("PDF")) &&
                                         receiveHostSongSections) {
                                     Log.d(TAG,"call payloadSection");
@@ -1107,7 +1107,7 @@ public class NearbyConnections implements NearbyInterface {
         return hostSection;
     }
     private void payloadSection(String incoming) {
-        if (!mainActivityInterface.getMode().equals("Performance") ||
+        if (!mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) ||
                 mainActivityInterface.getSong().getFiletype().equals("PDF")) {
             int mysection = getNearbySection(incoming);
             if (mainActivityInterface.getSong().getCurrentlyLoading()) {
@@ -1139,7 +1139,7 @@ public class NearbyConnections implements NearbyInterface {
     }
     private void payloadAutoscroll(String incoming) {
         // It sends autoscroll startstops as autoscroll_start or autoscroll_stop
-        if (mainActivityInterface.getMode().equals("Performance")) {
+        if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance))) {
             // Adjust only when not already in the correct state
             if (nearbyReturnActionsInterface != null &&
                     !(mainActivityInterface.getAutoscroll().getIsAutoscrolling() == incoming.equals("autoscroll_start"))) {

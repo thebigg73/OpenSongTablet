@@ -64,17 +64,14 @@ public class SettingsCategories extends Fragment {
 
     private void setModeText() {
         String mode;
-        switch (mainActivityInterface.getMode()) {
-            case "Performance":
-            default:
-                mode = getString(R.string.performance_mode);
-                break;
-            case "Stage":
-                mode = getString(R.string.stage_mode);
-                break;
-            case "Presenter":
-                mode = getString(R.string.presenter_mode);
-                break;
+        String getMode = mainActivityInterface.getMode();
+
+        if (getMode.equals(getString(R.string.mode_presenter))) {
+            mode = getString(R.string.presenter_mode);
+        } else if (getMode.equals(getString(R.string.mode_stage))) {
+            mode = getString(R.string.stage_mode);
+        } else {
+            mode = getString(R.string.performance_mode);
         }
         myView.modeButton.setHint(mode);
     }
