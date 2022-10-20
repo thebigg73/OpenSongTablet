@@ -27,9 +27,9 @@ import java.util.List;
 
 public class InlineSetList extends RecyclerView {
 
-    private int width=0;
+    private int width=0, widthPresenter;
     private int selectedItem = -1;
-    private boolean showInline;
+    private boolean showInline, showInlinePresenter;
     private final String TAG = "InlineSetList";
     private InlineSetListAdapter inlineSetListAdapter;
     private MainActivityInterface mainActivityInterface;
@@ -50,6 +50,8 @@ public class InlineSetList extends RecyclerView {
         showInline = mainActivityInterface.getPreferences().getMyPreferenceBoolean("inlineSet",false);
         int screenWidth = mainActivityInterface.getDisplayMetrics()[0];
         width = (int)(mainActivityInterface.getPreferences().getMyPreferenceFloat("inlineSetWidth",0.3f)*screenWidth);
+        showInlinePresenter = mainActivityInterface.getPreferences().getMyPreferenceBoolean("inlineSetPresenter",true);
+        widthPresenter = (int)(mainActivityInterface.getPreferences().getMyPreferenceFloat("inlineSetWidthPresenter", 0.3f)*screenWidth);
         inlineSetListAdapter = new InlineSetListAdapter(c);
         setAdapter(inlineSetListAdapter);
         setVisibility(View.GONE);
@@ -82,11 +84,20 @@ public class InlineSetList extends RecyclerView {
             return 0;
         }
     }
+    public int getInlineSetWidthPresenter() {
+        if (showInlinePresenter && mainActivityInterface.getCurrentSet().getSetItems().size()>0) {
+            return widthPresenter;
+        } else {
+            return 0;
+        }
+    }
 
+    // From the page button
     public void toggleInlineSet() {
         showInline = !showInline;
         checkVisibility();
     }
+
     public void updateInlineSet(boolean showInline, int width) {
         this.showInline = showInline;
         this.width = width;
@@ -306,7 +317,7 @@ public class InlineSetList extends RecyclerView {
     }
     public void updateInlineSetAdded(SetItemInfo setItemInfo) {
         InlineSetItemInfo info = new InlineSetItemInfo();
-        info.item = setList.size();
+        info.item = setList.size()+1;
         info.songtitle = setItemInfo.songtitle;
         info.songfolder = setItemInfo.songfolder;
         info.songkey = setItemInfo.songkey;

@@ -38,6 +38,31 @@
                 app:stepSize="5" />
             <TableRow style="@style/DividerLine"/>
             </LinearLayout>
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                android:id="@+id/showInlineSetPresenter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="@string/set_inline"
+                android:hint="@string/set_inline_info"/>
+            <LinearLayout
+                android:id="@+id/sliderLayoutPresenter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+                    android:id="@+id/widthSliderPresenter"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/width"
+                    android:valueFrom="10"
+                    android:valueTo="95"
+                    android:value="30"
+                    app:stepSize="5" />
+                <TableRow style="@style/DividerLine"/>
+            </LinearLayout>
+
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>

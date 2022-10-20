@@ -310,7 +310,9 @@ public class Preferences extends Activity {
     // hideLyricsBox                   boolean     Should we hide the box around the lyrics (def:false)
     // ignorePlayServicesWarning       boolean     Has the user ticked the box to not show this again (def:false);
     // inlineSet                       boolean     Should we show the inline setlist (def:false)
+    // inlineSetPresenter              boolean     Should we show the inline setlist for Presenter mode (def:true)
     // inlineSetWidth                  float       The width (as a percentage of screen width) of the inline setlist (def:0.3f)
+    // inlineSetWidthPresenter         float       The width (as a percentage of screen width) of the inline setlist for Presenter mode (def:0.3f)
     // language                        String      The locale set in the menu (def:en)
     // largePopups                     boolean     Should the drop down exposed popups be big (def:true)
     // lastUsedVersion                 int         The app version number the last time the app ran (def:0)

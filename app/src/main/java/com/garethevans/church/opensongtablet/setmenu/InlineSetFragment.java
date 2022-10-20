@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -46,36 +47,88 @@ public class InlineSetFragment extends Fragment {
     }
 
     private void setupViews() {
+        String text = getString(R.string.set_inline) + " (" + getString(R.string.performance_mode) +
+                " / " + getString(R.string.stage_mode) + ")";
+        myView.showInlineSet.setText(text);
+        text = getString(R.string.set_inline) + " (" + getString(R.string.presenter_mode) + ")";
+        myView.showInlineSetPresenter.setText(text);
+
         myView.showInlineSet.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("inlineSet",false));
+        myView.showInlineSetPresenter.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("inlineSetPresenter",true));
+
         myView.widthSlider.setLabelFormatter(value -> ((int)value)+"%");
+        myView.widthSliderPresenter.setLabelFormatter(value -> ((int)value)+"%");
+
         int value = (int)(mainActivityInterface.getPreferences().getMyPreferenceFloat("inlineSetWidth",0.3f)*100);
         myView.widthSlider.setValue(value);
         myView.widthSlider.setHint(value+"%");
-        if (myView.showInlineSet.getChecked()) {
-            myView.sliderLayout.setVisibility(View.VISIBLE);
-        } else {
-            myView.sliderLayout.setVisibility(View.GONE);
-        }
+        value = (int)(mainActivityInterface.getPreferences().getMyPreferenceFloat("inlineSetWidthPresenter",0.3f)*100);
+        myView.widthSliderPresenter.setValue(value);
+        myView.widthSliderPresenter.setHint(value+"%");
+
+        checkChanged(null,myView.sliderLayout,myView.showInlineSet.getChecked());
+        checkChanged(null,myView.sliderLayoutPresenter,myView.showInlineSetPresenter.getChecked());
     }
 
     private void setupListeners() {
-        myView.showInlineSet.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            mainActivityInterface.getPreferences().setMyPreferenceBoolean("inlineSet",isChecked);
-            if (isChecked) {
-                myView.sliderLayout.setVisibility(View.VISIBLE);
-            } else {
-                myView.sliderLayout.setVisibility(View.GONE);
-            }
-        });
-        myView.widthSlider.addOnChangeListener((slider, value, fromUser) -> myView.widthSlider.setHint((int)value+"%"));
-        myView.widthSlider.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
-            @Override
-            public void onStartTrackingTouch(@NonNull Slider slider) {}
+        myView.showInlineSet.setOnCheckedChangeListener((buttonView, isChecked) -> checkChanged("inlineSet",myView.sliderLayout,isChecked));
+        myView.showInlineSetPresenter.setOnCheckedChangeListener((buttonView, isChecked) -> checkChanged("inlineSetPresenter",myView.sliderLayoutPresenter,isChecked));
 
-            @Override
-            public void onStopTrackingTouch(@NonNull Slider slider) {
-                mainActivityInterface.getPreferences().setMyPreferenceFloat("inlineSetWidth",myView.widthSlider.getValue()/100f);
+        myView.widthSlider.addOnChangeListener(new MyChangeListener("performance"));
+        myView.widthSliderPresenter.addOnChangeListener(new MyChangeListener("presenter"));
+
+        myView.widthSlider.addOnSliderTouchListener(new MySliderTouchListener("inlineSetWidth"));
+        myView.widthSliderPresenter.addOnSliderTouchListener(new MySliderTouchListener("inlineSetWidthPresenter"));
+    }
+
+    private void checkChanged(String pref, LinearLayout linearLayout, boolean isChecked) {
+        if (pref!=null) {
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean(pref, isChecked);
+        }
+        if (isChecked) {
+            linearLayout.setVisibility(View.VISIBLE);
+        } else {
+            linearLayout.setVisibility(View.GONE);
+        }
+    }
+    private class MyChangeListener implements Slider.OnChangeListener {
+        private final String which;
+        MyChangeListener(String which) {
+            this.which = which;
+        }
+        @Override
+        public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
+            String hint = (int)value + "%";
+            switch (which) {
+                case "performance":
+                default:
+                    myView.widthSlider.setHint(hint);
+                    break;
+                case "presenter":
+                    myView.widthSliderPresenter.setHint(hint);
+                    break;
             }
-        });
+        }
+    }
+    private class MySliderTouchListener implements Slider.OnSliderTouchListener {
+        private final String pref;
+        MySliderTouchListener(String pref) {
+            this.pref = pref;
+        }
+        @Override
+        public void onStartTrackingTouch(@NonNull Slider slider) {}
+
+        @Override
+        public void onStopTrackingTouch(@NonNull Slider slider) {
+            switch (pref) {
+                case "inlineSetWidth":
+                default:
+                    mainActivityInterface.getPreferences().setMyPreferenceFloat("inlineSetWidth", myView.widthSlider.getValue() / 100f);
+                    break;
+                case "inlineSetWidthPresenter":
+                    mainActivityInterface.getPreferences().setMyPreferenceFloat("inlineSetWidthPresenter", myView.widthSliderPresenter.getValue() / 100f);
+                    break;
+            }
+        }
     }
 }
