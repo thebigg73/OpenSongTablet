@@ -2107,9 +2107,9 @@ public class ProcessSong extends Activity {
 
         int linenums = StaticVariables.sectionContents[x].length;
 
-        // Go through each line and add the appropriate lyrics with chords in them
+        // Go through each line
         for (int y = 0; y < linenums; y++) {
-            if (StaticVariables.sectionContents[x][y].length() > 1) {
+            if (StaticVariables.sectionContents[x][y].length() > 0) {
                 switch (StaticVariables.sectionLineTypes[x][y]) {
                     case "heading":
                         // Already added above
@@ -2123,7 +2123,7 @@ public class ProcessSong extends Activity {
                         }
                         break;
                     default:
-                        // If none of the above, it's a lyrics line without leading space
+                        // If none of the above, it's a lyrics line
                         // IV - Same logic as in ProcessSong
                         if (!displayChords) {
                             // IV - Remove (....) comments when Stage or Presentation mode song
