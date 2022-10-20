@@ -1426,10 +1426,14 @@ public class ProcessSong {
 
     public String fixExcessSpaces(String str) {
         if (trimWordSpacing) {
+            // Encode new lines as something else first
+            str = str.replace("\n","___NEWLINE___");
             // This removes multiple spaces and returns single spaces
             str = str.replaceAll("\\s+", " ");
             // Now fix sentences
             str = str.replace(". ", ".  ");
+            // Return new lines
+            str = str.replace("___NEWLINE___","\n");
         }
         return str;
     }

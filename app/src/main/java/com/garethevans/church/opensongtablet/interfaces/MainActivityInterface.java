@@ -79,6 +79,7 @@ public interface MainActivityInterface {
     int[] deviceInsets();
     void updateInsetPrefs();
     void setWindowFlags(boolean immersiveOn);
+    boolean getBootUpCompleted();
     Locale getLocale();
     VersionNumber getVersionNumber();
     String getMode();
@@ -128,7 +129,6 @@ public interface MainActivityInterface {
     void removeSetItem(int currentSetPosition);
     void checkSetMenuItemHighlighted(int setPosition);
     void toggleInlineSet();
-    void updateInlineSet(boolean showInline, float width);
     void updateInlineSetMove(int from, int to);
     void updateInlineSetRemoved(int from);
     void updateInlineSetAdded(SetItemInfo setItemInfo);

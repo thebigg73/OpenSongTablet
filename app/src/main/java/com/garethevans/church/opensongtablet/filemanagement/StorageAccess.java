@@ -666,10 +666,20 @@ public class StorageAccess {
         }
     }
     private float getFileSizeFromUri_SAF(Uri uri) {
-        DocumentFile df = documentFileFromUri(uri, uri.getPath());
-        if (df != null && df.exists()) {
-            return (float) df.length() / (float) 1024;
+        if (uri!=null && uri.getPath()!=null) {
+            try {
+                DocumentFile df = documentFileFromUri(uri, uri.getPath());
+                if (df != null && df.exists()) {
+                    return (float) df.length() / (float) 1024;
+                } else {
+                    return 0;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                return 0;
+            }
         } else {
+            Log.d(TAG, "getFileSizeFromUri called on null uri");
             return 0;
         }
     }
@@ -975,10 +985,15 @@ public class StorageAccess {
     }
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private boolean docContractCreate(Uri uri, String mimeType, String name) {
-        try {
-            return DocumentsContract.createDocument(c.getContentResolver(), uri, mimeType, name) != null;
-        } catch (Exception e) {
-            Log.d(TAG, "Error creating " + name + " at " + uri);
+        if (uri!=null) {
+            try {
+                return DocumentsContract.createDocument(c.getContentResolver(), uri, mimeType, name) != null;
+            } catch (Exception e) {
+                Log.d(TAG, "Error creating " + name + " at " + uri);
+                return false;
+            }
+        } else {
+            Log.d(TAG,"Uri for "+name+" was null");
             return false;
         }
     }
@@ -1980,16 +1995,20 @@ public class StorageAccess {
     public void updateFileActivityLog(String logText) {
         try {
             Uri logUri = getUriForItem("Settings","","fileWriteActivity.txt");
-            if (!uriExists(logUri)) {
-                lollipopCreateFileForOutputStream(false,logUri,null,"Settings","","fileWriteActivity.txt");
-            }
-            OutputStream outputStream;
-            if (getFileSizeFromUri(logUri)>500) {
-                outputStream = c.getContentResolver().openOutputStream(logUri, "wt");
+            if (logUri!=null) {
+                if (!uriExists(logUri)) {
+                    lollipopCreateFileForOutputStream(false, logUri, null, "Settings", "", "fileWriteActivity.txt");
+                }
+                OutputStream outputStream;
+                if (getFileSizeFromUri(logUri) > 500) {
+                    outputStream = c.getContentResolver().openOutputStream(logUri, "wt");
+                } else {
+                    outputStream = c.getContentResolver().openOutputStream(logUri, "wa");
+                }
+                mainActivityInterface.getStorageAccess().writeFileFromString(logText + "\n", outputStream);
             } else {
-                outputStream = c.getContentResolver().openOutputStream(logUri, "wa");
+                Log.d(TAG, "logUri was null");
             }
-            mainActivityInterface.getStorageAccess().writeFileFromString(logText+"\n",outputStream);
         } catch (Exception e) {
             e.printStackTrace();
         }

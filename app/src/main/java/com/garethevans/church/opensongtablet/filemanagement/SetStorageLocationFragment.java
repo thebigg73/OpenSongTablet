@@ -32,6 +32,8 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -62,6 +64,8 @@ public class SetStorageLocationFragment extends Fragment {
     ActivityResultLauncher<String> storagePermission;
 
     private StorageChooseBinding myView;
+    private Timer timer;
+    private TimerTask timerTask;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -73,8 +77,7 @@ public class SetStorageLocationFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
 
         myView = StorageChooseBinding.inflate(inflater, container, false);
-        mainActivityInterface.hideActionBar();
-        // If this is our first time here - all good
+
         // However, if we are just wanting to check/change the storage,
         // we don't want the extra title bar
         if (mainActivityInterface.getWhattodo().equals("storageOk")) {
@@ -85,10 +88,9 @@ public class SetStorageLocationFragment extends Fragment {
             mainActivityInterface.updateToolbarHelp(getString(R.string.website_storage_set));
 
         } else {
-            Log.d(TAG,"Don't want actionbar");
-            myView.headerText.setVisibility(View.VISIBLE);
-            mainActivityInterface.hideActionBar();
-            mainActivityInterface.moveContentForActionBar(true);
+
+            //mainActivityInterface.hideActionBar();
+
         }
 
         // Set up the views
@@ -117,6 +119,7 @@ public class SetStorageLocationFragment extends Fragment {
 
         return myView.getRoot();
     }
+
 
     private void storageShowcase() {
         MaterialShowcaseView.Builder builder = mainActivityInterface.getShowCase().

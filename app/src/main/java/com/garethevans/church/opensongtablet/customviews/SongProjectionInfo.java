@@ -1,6 +1,7 @@
 package com.garethevans.church.opensongtablet.customviews;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.LinearLayoutCompat;
+import androidx.core.widget.TextViewCompat;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
@@ -19,7 +21,7 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 public class SongProjectionInfo extends LinearLayoutCompat {
 
     private final LinearLayout castSongInfo;
-    private final TextView songTitle, songAuthor, songCopyright, songCCLI;
+    private final TextView songTitle, songAuthor, songCopyright, songCCLI, capoIcon;
     private final TextClock textClock;
     private final ImageView miniLogo;
     private int viewHeight = 0;
@@ -39,7 +41,7 @@ public class SongProjectionInfo extends LinearLayoutCompat {
         songCCLI = findViewById(R.id.songCCLI);
         miniLogo = findViewById(R.id.miniLogo);
         textClock = findViewById(R.id.textClock);
-
+        capoIcon = findViewById(R.id.capoInfo);
         castSongInfo.setId(View.generateViewId());
         contentLayout.setId(View.generateViewId());
         songTitle.setId(View.generateViewId());
@@ -48,6 +50,7 @@ public class SongProjectionInfo extends LinearLayoutCompat {
         songCCLI.setId(View.generateViewId());
         miniLogo.setId(View.generateViewId());
         textClock.setId(View.generateViewId());
+        capoIcon.setId(View.generateViewId());
     }
 
 
@@ -88,6 +91,15 @@ public class SongProjectionInfo extends LinearLayoutCompat {
     public void setSongCCLI(String ccli) {
         setText(songCCLI,ccli);
     }
+    public void setCapo(String capo) {
+        if (capo==null) {
+            capoIcon.setText("");
+            capoIcon.setVisibility(View.GONE);
+        } else {
+            capoIcon.setText(capo);
+            capoIcon.setVisibility(View.VISIBLE);
+        }
+    }
     private void setText(TextView textView, String text) {
         if (text==null || text.isEmpty()) {
             textView.setVisibility(View.GONE);
@@ -110,6 +122,10 @@ public class SongProjectionInfo extends LinearLayoutCompat {
         songCopyright.setTypeface(mainActivityInterface.getMyFonts().getPresoInfoFont());
         songCCLI.setTypeface(mainActivityInterface.getMyFonts().getPresoInfoFont());
         textClock.setTypeface(mainActivityInterface.getMyFonts().getPresoInfoFont());
+
+        capoIcon.setTextColor(mainActivityInterface.getMyThemeColors().getPresoInfoFontColor());
+        ColorStateList colorList = ColorStateList.valueOf(mainActivityInterface.getMyThemeColors().getPresoInfoFontColor());
+        TextViewCompat.setCompoundDrawableTintList(capoIcon, colorList);
 
         songTitle.setTextColor(mainActivityInterface.getMyThemeColors().getPresoInfoFontColor());
         songAuthor.setTextColor(mainActivityInterface.getMyThemeColors().getPresoInfoFontColor());
@@ -177,7 +193,7 @@ public class SongProjectionInfo extends LinearLayoutCompat {
 
     private void smallText(MainActivityInterface mainActivityInterface, boolean smallText) {
         this.smallText = smallText;
-
+        capoIcon.setTextSize(22f);
         if (smallText) {
             songTitle.setTextSize(14f);
             songAuthor.setTextSize(12f);

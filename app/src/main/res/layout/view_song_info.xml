@@ -16,6 +16,13 @@
             android:contentDescription="@string/logo"
             android:src="@drawable/logo" />
 
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/capoInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:drawableStart="@drawable/capo"/>
+
         <LinearLayout
             android:id="@+id/contentLayout"
             android:layout_width="0dp"

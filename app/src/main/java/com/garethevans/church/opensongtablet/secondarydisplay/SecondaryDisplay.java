@@ -634,8 +634,15 @@ public class SecondaryDisplay extends Presentation {
             if (author != null && !author.isEmpty()) {
                 author = c.getString(R.string.words_and_music_by) + " " + author;
             }
-
             currentInfoText = title + author + copyright + ccliLine;
+
+
+            String capo = mainActivityInterface.getSong().getCapo();
+            if (!mainActivityInterface.getPresenterSettings().getPresoShowChords() ||
+                    !mainActivityInterface.getProcessSong().showingCapo(capo)) {
+                capo = null;
+            }
+
 
             //Log.d(TAG,"currentInfoText:"+currentInfoText);
 
@@ -644,6 +651,7 @@ public class SecondaryDisplay extends Presentation {
             String finalAuthor = author;
             String finalCopyright = copyright;
             String finalCcli = ccliLine;
+            String finalCapo = capo;
 
             // Remove any old VTO
             if (testSongInfoVTO!=null) {
@@ -678,6 +686,7 @@ public class SecondaryDisplay extends Presentation {
                             myView.songProjectionInfo1.setSongAuthor(finalAuthor);
                             myView.songProjectionInfo1.setSongCopyright(finalCopyright);
                             myView.songProjectionInfo1.setSongCCLI(finalCcli);
+                            myView.songProjectionInfo1.setCapo(finalCapo);
                             myView.songProjectionInfo1.setViewHeight(height);
 
                         } else {
@@ -686,6 +695,7 @@ public class SecondaryDisplay extends Presentation {
                             myView.songProjectionInfo2.setSongAuthor(finalAuthor);
                             myView.songProjectionInfo2.setSongCopyright(finalCopyright);
                             myView.songProjectionInfo2.setSongCCLI(finalCcli);
+                            myView.songProjectionInfo2.setCapo(finalCapo);
                             myView.songProjectionInfo2.setViewHeight(height);
                         }
                         checkSongInfoShowHide();
@@ -705,6 +715,7 @@ public class SecondaryDisplay extends Presentation {
             myView.testSongInfo.setSongAuthor(finalAuthor);
             myView.testSongInfo.setSongCopyright(finalCopyright);
             myView.testSongInfo.setSongCCLI(finalCcli);
+            myView.testSongInfo.setCapo(capo);
             myView.testSongInfo.requestLayout();
         }
     }

@@ -26,5 +26,17 @@ public class SongSectionViewHolder extends RecyclerView.ViewHolder {
         content = itemView.findViewById(R.id.content);
         image = itemView.findViewById(R.id.image);
         edit = itemView.findViewById(R.id.edit);
+        heading.setFocusable(false);
+        heading.setFocusableInTouchMode(false);
+        heading.setClickable(false);
+        content.setFocusable(false);
+        content.setFocusableInTouchMode(false);
+        content.setClickable(false);
+        image.setFocusable(false);
+        image.setFocusableInTouchMode(false);
+        image.setClickable(false);
+        edit.setFocusable(false);
+        edit.setFocusableInTouchMode(false);
+        edit.setClickable(false);
     }
 }

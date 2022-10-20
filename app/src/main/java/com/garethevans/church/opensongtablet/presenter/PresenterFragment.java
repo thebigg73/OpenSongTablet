@@ -255,13 +255,8 @@ public class PresenterFragment extends Fragment {
     }
 
     private void setupListeners() {
-        myView.showLogo.setOnCheckedChangeListener((compoundButton, b) -> {
-            mainActivityInterface.getPresenterSettings().setLogoOn(b);
-            displayInterface.updateDisplay("showLogo");
-        });
-        myView.showLogoSide.setOnCheckedChangeListener((compoundButton, b) -> {
-
-        });
+        myView.showLogo.setOnCheckedChangeListener(new MyCheckChangeListener());
+        myView.showLogoSide.setOnCheckedChangeListener(new MyCheckChangeListener());
         myView.blackScreen.setOnCheckedChangeListener(new MyCheckChangeListener());
         myView.blackScreenSide.setOnCheckedChangeListener(new MyCheckChangeListener());
         myView.blankScreen.setOnCheckedChangeListener(new MyCheckChangeListener());
@@ -319,9 +314,6 @@ public class PresenterFragment extends Fragment {
     // Inline set
     public void toggleInlineSet() {
         myView.inlineSetList.toggleInlineSet();
-    }
-    public void updateInlineSet(boolean show, float width) {
-        myView.inlineSetList.updateInlineSet(show,(int)width*mainActivityInterface.getDisplayMetrics()[0]);
     }
     public void orientationInlineSet(int orientation) {
         myView.inlineSetList.orientationChanged(orientation);

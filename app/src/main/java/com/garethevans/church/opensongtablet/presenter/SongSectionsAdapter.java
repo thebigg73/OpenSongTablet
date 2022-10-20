@@ -96,6 +96,7 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
     }
 
     private String tidyContent(String str) {
+        Log.d(TAG,"str:"+str);
         if (str.contains("____groupline____")) {
             str = str.replace("____groupline____","\n");
         } else {
@@ -115,6 +116,7 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
             }
             newContent.append(line).append("\n");
         }
+        Log.d(TAG,"newContent:"+newContent);
         return newContent.toString();
     }
 
