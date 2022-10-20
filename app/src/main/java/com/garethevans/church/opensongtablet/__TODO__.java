@@ -2,7 +2,6 @@ package com.garethevans.church.opensongtablet;
 
 public class __TODO__ {
 
-
     // Check persistent database import with overwrite on/off
 
     // BUGS FROM LIVE TEST

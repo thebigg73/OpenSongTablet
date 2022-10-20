@@ -15,6 +15,14 @@ public class PresenterAlert extends MaterialTextView {
 
     private int viewHeight = 0;
 
+    public PresenterAlert(@NonNull Context context, @Nullable @org.jetbrains.annotations.Nullable AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+    }
+
+    public PresenterAlert(@NonNull Context context) {
+        super(context);
+    }
+
     public PresenterAlert(@NonNull Context context, @Nullable @org.jetbrains.annotations.Nullable AttributeSet attrs) {
         super(context, attrs);
         setPadding(0,0, 0,0);

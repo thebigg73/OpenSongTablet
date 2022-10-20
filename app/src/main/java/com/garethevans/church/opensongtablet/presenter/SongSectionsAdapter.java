@@ -3,7 +3,6 @@ package com.garethevans.church.opensongtablet.presenter;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.os.Build;
-import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,8 +56,6 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
 
         // Because we could be using presentation order, we need to get a temp song section for the buttons
 
-        Log.d(TAG,"mainActivityInterface.getSong().getPresoOrderSongSections().size()="+mainActivityInterface.getSong().getPresoOrderSongSections().size());
-
         for (int x = 0; x < mainActivityInterface.getSong().getPresoOrderSongSections().size(); x++) {
             // bits[0] = heading, bits[1] = content - heading
             String[] bits = splitHeadingAndContent(mainActivityInterface.getSong().getPresoOrderSongSections().get(x));
@@ -96,7 +93,6 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
     }
 
     private String tidyContent(String str) {
-        Log.d(TAG,"str:"+str);
         if (str.contains("____groupline____")) {
             str = str.replace("____groupline____","\n");
         } else {
@@ -116,7 +112,6 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
             }
             newContent.append(line).append("\n");
         }
-        Log.d(TAG,"newContent:"+newContent);
         return newContent.toString();
     }
 

@@ -357,14 +357,12 @@ public class SecondaryDisplay extends Presentation {
 
     // The screen background
     public void changeBackground() {
-        //Log.d(TAG,"changeBackground()");
         // There has been an update to the user's background or logo, so pull them in from preferences
         // (already updated in PresenterSettings)
         // This only runs in PresenterMode!  Performance/Stage Mode reflect the device theme
         if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_presenter))) {
             // We can use either a drawable (for a solid colour) or a uri (for an image)
             // Get the current background to fade out and set the background to the next
-            //Log.d(TAG,"Fade out: showWhichBackground="+showWhichBackground);
             backgroundToFadeOut = null;
             if (showWhichBackground<2) {
                 backgroundToFadeOut = myView.backgroundImage1;
@@ -405,12 +403,9 @@ public class SecondaryDisplay extends Presentation {
             if (mainActivityInterface.getPresenterSettings().getBackgroundToUse().equals("color") ||
                     (mainActivityInterface.getPresenterSettings().getBackgroundToUse().startsWith("img") && background == null)) {
                 // Use a solid background color
-                //Log.d(TAG,"changeBackground() - solid color");
-                //Log.d(TAG,"invertXY: "+invertXY+ " available width: "+availableScreenWidth);
                 assert backgroundToFadeIn instanceof ImageView;
                 Drawable drawable = ContextCompat.getDrawable(c, R.drawable.simple_rectangle);
                 if (drawable != null) {
-                    //Log.d(TAG,"view width="+backgroundToFadeIn.getLayoutParams().width);
                     GradientDrawable solidColor = (GradientDrawable) drawable.mutate();
                     solidColor.setSize(availableScreenWidth, availableScreenHeight);
                     solidColor.setColor(mainActivityInterface.getPresenterSettings().getBackgroundColor());
@@ -445,7 +440,6 @@ public class SecondaryDisplay extends Presentation {
         }
     }
     private void crossFadeBackgrounds() {
-        //Log.d(TAG,"crossFadeBackgrounds()");
         mainActivityInterface.getCustomAnimation().faderAnimation(backgroundToFadeOut,
                 mainActivityInterface.getPresenterSettings().getPresoTransitionTime(),
                 mainActivityInterface.getPresenterSettings().getPresoBackgroundAlpha(), 0f);
@@ -1166,12 +1160,9 @@ public class SecondaryDisplay extends Presentation {
         } else {
             uri = mainActivityInterface.getPresenterSettings().getBackgroundVideo2();
         }
-        //Log.d(TAG,"uri="+uri);
         String uriString = mainActivityInterface.getStorageAccess().fixUriToLocal(uri);
-        //Log.d(TAG,"uriString:"+uriString);
         uri = mainActivityInterface.getStorageAccess().fixLocalisedUri(uriString);
         if (uri!=null && mainActivityInterface.getStorageAccess().uriExists(uri)) {
-            //Log.d(TAG,"uriExists");
             try {
                 if (showWhichVideo<2) {
                     if (mediaPlayer1 != null) {
@@ -1203,12 +1194,8 @@ public class SecondaryDisplay extends Presentation {
         @Override
         public void onPrepared(MediaPlayer mp) {
             // Play and fade in the video
-            //Log.d(TAG, "mp=" + mp + "  mediapPlayer1=" + mediaPlayer1 + "  mediaPlayer2=" + mediaPlayer2);
-            //Log.d(TAG, "showWhichVideo" + showWhichVideo);
             if (showWhichVideo < 2) {
-                //Log.d(TAG, "mediaPlayer1 starting...");
                 mediaPlayer1.start();
-                //Log.d(TAG, "duration: " + mediaPlayer1.getDuration());
                 new Handler().postDelayed(() -> {
                     if (mediaPlayer2 != null && mediaPlayer2.isPlaying()) {
                         mediaPlayer2.stop();
@@ -1217,7 +1204,6 @@ public class SecondaryDisplay extends Presentation {
                 }, mainActivityInterface.getPresenterSettings().getPresoTransitionTime());
                 showWhichVideo = 2;
             } else {
-                //Log.d(TAG, "mediaPlayer2 starting...");
                 mediaPlayer2.start();
                 new Handler().postDelayed(() -> {
                     if (mediaPlayer1 != null && mediaPlayer1.isPlaying()) {

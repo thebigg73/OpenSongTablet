@@ -78,7 +78,6 @@ public class BootUpFragment extends Fragment {
 
     // Checks made before starting the app
     public void startOrSetUp() {
-        Log.d(TAG,"startOrSetUp");
         if (storageIsCorrectlySet()) {
             startBootProcess();
         } else {

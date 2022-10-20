@@ -660,12 +660,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             insets = getWindow().getDecorView().getRootWindowInsets();
-
             Insets systemBars = insets.getInsetsIgnoringVisibility(WindowInsets.Type.systemBars());
-            Log.d(TAG, "systemBars: " + systemBars);
-
             Insets displayCutout = insets.getInsets(WindowInsets.Type.displayCutout());
-            Log.d(TAG, "displayCutout: " + displayCutout);
 
             int roundedL = 0, roundedR = 0, roundedB = 0;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
@@ -702,7 +698,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             myView.songMenuLayout.setLayoutParams(songMenuLayoutParams);
         }
 
-        Log.d(TAG,"settingsOpen:"+settingsOpen);
         if (settingsOpen) {
             myView.fragmentView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
             myView.drawerLayout.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
@@ -2809,13 +2804,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         }
 
         // Copy the persistent database from app storage to user storage
-        Log.d(TAG,"Persistent database backed up: "+nonOpenSongSQLiteHelper.copyUserDatabase());
+        nonOpenSongSQLiteHelper.copyUserDatabase();
     }
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-        Log.d(TAG,"windowFocusChanged");
         // Set the fullscreen window flags]
         setWindowFlags(true);
         deviceInsets();

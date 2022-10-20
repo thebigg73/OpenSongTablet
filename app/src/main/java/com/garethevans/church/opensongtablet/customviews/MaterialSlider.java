@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -65,7 +64,6 @@ public class MaterialSlider extends LinearLayout {
         }
         setHint(hint.toString());
 
-        Log.d("MaterialSlider","from:"+valueFrom+"  to:"+valueTo+"  step:"+stepSize);
         slider.setValueFrom(valueFrom);
         slider.setValueTo(valueTo);
         slider.setStepSize(stepSize);

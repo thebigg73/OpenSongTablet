@@ -4,7 +4,6 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AnimationUtils;
@@ -51,7 +50,6 @@ public class CustomAnimation {
             // - The alpha should already be 1f (completely faded in), but certainly more than 0;
             boolean fadeOut = !fadeIn && (v.getVisibility()==View.VISIBLE) && v.getAlpha() > 0;
 
-            Log.d(TAG,"start: "+startAlpha+"  endAlpha: "+endAlpha+ "  getVisibility(): "+v.getVisibility()+"  fadeIn: "+fadeIn+"  fadeOut: "+fadeOut);
             // If either of these are true, we can animate, but if not, just move to the final state
 
             if (fadeIn || fadeOut) {

@@ -90,8 +90,6 @@ public class SongSectionsFragment extends Fragment {
     }
 
     public void updatePresentationOrder() {
-        Log.d(TAG,"mainActivityInterface:" + mainActivityInterface);
-        Log.d(TAG,"mainActivityInterface.getSong():" + mainActivityInterface.getSong());
         if (mainActivityInterface.getSong().getPresentationorder()!=null &&
             !mainActivityInterface.getSong().getPresentationorder().isEmpty()) {
             myView.presentationOrder.setHint(mainActivityInterface.getSong().getPresentationorder());
@@ -110,10 +108,7 @@ public class SongSectionsFragment extends Fragment {
     }
 
     public void updateAllButtons() {
-        Log.d(TAG,"updateAllButtons() called");
         if (mainActivityInterface.getPresenterSettings().getSongSectionsAdapter()!=null) {
-
-            Log.d(TAG, "mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().getItemCount()>0: " + (mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().getItemCount() > 0));
             myView.recyclerView.removeAllViews();
         /*mainActivityInterface.setSectionViews(mainActivityInterface.getProcessSong().setSongInLayout(
                 mainActivityInterface.getSong(), false, true));
@@ -134,7 +129,6 @@ public class SongSectionsFragment extends Fragment {
     public void showTutorial(ArrayList<View> viewsToHighlight) {
         // The presenter fragment has sent the main parent views
         // Add these ones and showcase
-        Log.d(TAG,"showTutorial");
         if (myView!=null) {
             viewsToHighlight.add(myView.songInfo);
             viewsToHighlight.add(myView.recyclerView);
