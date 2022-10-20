@@ -81,9 +81,11 @@
         </RelativeLayout>
 
         <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/myAppBarLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:theme="@style/ActionBar">
+            android:theme="@style/ActionBar"
+            android:visibility="gone">
         <com.garethevans.church.opensongtablet.customviews.MyToolbar
             android:id="@+id/myToolbar"
             android:layout_width="match_parent"

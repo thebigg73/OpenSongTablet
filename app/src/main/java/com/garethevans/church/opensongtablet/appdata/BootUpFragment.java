@@ -71,13 +71,6 @@ public class BootUpFragment extends Fragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        //mainActivityInterface.getToolbar().translateAwayActionBar(true);
-    }
-
-
-    @Override
     public void onDestroyView() {
         super.onDestroyView();
         myView = null;
@@ -112,6 +105,7 @@ public class BootUpFragment extends Fragment {
         // Either permission hasn't been granted, or it isn't set properly
         // Switch to the set storage fragment
         mainActivityInterface.setWhattodo("storageBad");
+
         mainActivityInterface.navigateToFragment(getString(R.string.deeplink_set_storage),0);
     }
 
@@ -200,4 +194,6 @@ public class BootUpFragment extends Fragment {
         super.onDestroy();
         myView = null;
     }
+
+
 }

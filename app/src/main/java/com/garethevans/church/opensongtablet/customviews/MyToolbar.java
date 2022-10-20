@@ -365,4 +365,7 @@ public class MyToolbar extends MaterialToolbar {
         super.setOnMenuItemClickListener(listener);
     }
 
+    public boolean isHidden() {
+        return isShown();
+    }
 }

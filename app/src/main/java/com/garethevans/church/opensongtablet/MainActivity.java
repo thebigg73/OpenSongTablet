@@ -167,6 +167,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         DisplayInterface, EditSongFragmentInterface {
 
     private ActivityBinding myView;
+    private boolean bootUpCompleted = false;
 
     // The helpers sorted alphabetically
     private ABCNotation abcNotation;
@@ -507,7 +508,16 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
         // Set up nearby
         setupNearby();
+
+        // Tell the second screen we are ready
+        bootUpCompleted = true;
+        myView.myAppBarLayout.setVisibility(View.VISIBLE);
     }
+    @Override
+    public boolean getBootUpCompleted() {
+        return bootUpCompleted;
+    }
+
     private void initialiseStartVariables() {
         themeColors.setThemeName(preferences.getMyPreferenceString("appTheme", "dark"));
         whichMode = preferences.getMyPreferenceString("whichMode", performance);
@@ -1526,14 +1536,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         }
         loadSong();
     }
-    @Override
-    public void updateInlineSet(boolean show, float width) {
+
+    /*public void updateInlineSet(boolean show, float width) {
         if (performanceValid()) {
             performanceFragment.updateInlineSet(show,width);
         } else if (presenterValid()) {
             presenterFragment.updateInlineSet(show,width);
         }
-    }
+    }*/
     @Override
     public void updateInlineSetMove(int from, int to) {
         if (performanceValid()) {
@@ -2846,7 +2856,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     public void checkDisplays() {
         // This checks for connected displays and adjusts the menu item if connected
         DisplayManager displayManager = (DisplayManager) getSystemService(DISPLAY_SERVICE);
-        if (displayManager != null) {
+        if (bootUpCompleted && displayManager != null) {
             connectedDisplays = displayManager.getDisplays(DisplayManager.DISPLAY_CATEGORY_PRESENTATION);
 
             // If we have changed the number of connected displays, set them up
