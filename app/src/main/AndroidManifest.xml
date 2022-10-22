@@ -74,7 +74,8 @@
         android:vmSafeMode="true"
         tools:ignore="UnusedAttribute"
         android:requestLegacyExternalStorage="false"
-        android:usesCleartextTraffic="true">
+        android:usesCleartextTraffic="true"
+        android:enableOnBackInvokedCallback="true">
 
         <meta-data
             android:name="com.google.mlkit.vision.DEPENDENCIES"

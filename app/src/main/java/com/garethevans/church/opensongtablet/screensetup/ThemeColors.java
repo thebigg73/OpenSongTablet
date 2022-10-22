@@ -499,8 +499,8 @@ public class ThemeColors {
     private final int black = 0xff000000;
     private final int white = 0xffffffff;
     private final int grey = 0xff666666;
-    private final int translucentDark = 0xdd000000;
-    private final int translucentLight = 0xddffffff;
+    private final int translucentDark = 0x66000000;
+    private final int translucentLight = 0x66ffffff;
     private final int lightgrey = 0xff222222;
     private final int vlightgrey = R.color.vlightgrey;
     private final int lightyellow = 0xffddaa00;

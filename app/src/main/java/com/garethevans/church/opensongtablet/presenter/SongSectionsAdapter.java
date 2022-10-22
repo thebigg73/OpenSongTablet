@@ -3,6 +3,7 @@ package com.garethevans.church.opensongtablet.presenter;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.os.Build;
+import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +30,7 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
     private final SongSectionsFragment songSectionsFragment;
     private final int onColor, offColor;
     private int sectionEdited = -1, currentPosition = -1;
+    private String sectionEditedContent, sectionEditedHeader = "";
     private final String colorChange = "color";
     private String newContent;
     private SparseBooleanArray highlightedArray = new SparseBooleanArray();
@@ -198,11 +200,29 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
     private void bottomSheetEdit(int section) {
         // Keep a reference to this section
         sectionEdited = section;
+        Log.d(TAG,"sectionEdited:"+sectionEdited);
+        Log.d(TAG,"content before tweak:"+mainActivityInterface.getSong().getPresoOrderSongSections().get(section));
+        sectionEditedContent = mainActivityInterface.getSong().getPresoOrderSongSections().get(section).replace("____groupline____","\n");
+        Log.d(TAG,"content after tweak:"+sectionEditedContent);
+
+        // Get the current header
+        String[] lines = sectionEditedContent.split("\n");
+        StringBuilder stringBuilder = new StringBuilder();
+        sectionEditedHeader = "";
+        for (String line:lines) {
+            if (line.trim().startsWith("[") && line.trim().endsWith("]")) {
+                sectionEditedHeader = line.trim();
+            } else if (!line.trim().isEmpty()) {
+                stringBuilder.append(line).append("\n");
+            }
+        }
+        sectionEditedContent = stringBuilder.toString();
+
+        Log.d(TAG, "sectionEditedHeader:"+sectionEditedHeader+"\nsectionEditedContent:"+sectionEditedContent);
 
         // Open up the text for this section in a bottom sheet for editing
         TextInputBottomSheet textInputBottomSheet = new TextInputBottomSheet(songSectionsFragment, "SongSectionsFragment",
-                c.getString(R.string.edit_temporary), c.getString(R.string.content), null, null,
-                mainActivityInterface.getSong().getPresoOrderSongSections().get(section).replace("____groupline____","\n"), false);
+                c.getString(R.string.edit_temporary), c.getString(R.string.content), null, null, sectionEditedContent, false);
         textInputBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "textInputBottomSheet");
     }
 
@@ -234,9 +254,14 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
         mainActivityInterface.getPresenterSettings().setCurrentSection(thisPos);
         displayInterface.presenterShowSection(thisPos);
         currentPosition = thisPos;
+
+        // State we've started projection
+        // This method checks that logo, black screen, blank screen are off too
+        mainActivityInterface.getPresenterSettings().setStartedProjection(true);
     }
 
     public void setSectionEditedContent(String content) {
+        Log.d(TAG,"returnedText:"+content);
         if (sectionEdited > -1) {
             try {
                 // Update the song sections
@@ -244,9 +269,17 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
                         mainActivityInterface.getPresenterSettings().getPresoShowChords());
                 mainActivityInterface.getSong().getPresoOrderSongSections().set(sectionEdited, content);
 
-                // Now edit the section card view to match
-                String[] bits = splitHeadingAndContent(content);
+                String newBits;
+                if (sectionEditedHeader.isEmpty()) {
+                    newBits = content;
+                } else {
+                    newBits = sectionEditedHeader + "\n" + content;
+                }
+                String[] bits = splitHeadingAndContent(newBits);
+
                 SongSectionInfo songSectionInfo = new SongSectionInfo();
+                Log.d(TAG,"bits[0]:"+bits[0]);
+                Log.d(TAG,"bits[1]:"+bits[1]);
                 songSectionInfo.heading = bits[0];
                 songSectionInfo.content = bits[1];
                 songSectionInfo.needsImage = !mainActivityInterface.getSong().getFiletype().equals("XML");

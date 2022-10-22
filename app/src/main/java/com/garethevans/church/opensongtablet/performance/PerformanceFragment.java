@@ -208,9 +208,6 @@ public class PerformanceFragment extends Fragment {
     public void toggleInlineSet() {
         myView.inlineSetList.toggleInlineSet();
     }
-    public void updateInlineSet(boolean show, float width) {
-        myView.inlineSetList.updateInlineSet(show,(int)width*screenWidth);
-    }
     public void orientationInlineSet(int orientation) {
         myView.inlineSetList.orientationChanged(orientation);
     }

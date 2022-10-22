@@ -27,7 +27,7 @@ import java.util.List;
 
 public class InlineSetList extends RecyclerView {
 
-    private int width=0, widthPresenter;
+    private int width=0;
     private int selectedItem = -1;
     private boolean showInline, showInlinePresenter;
     private final String TAG = "InlineSetList";
@@ -51,7 +51,6 @@ public class InlineSetList extends RecyclerView {
         int screenWidth = mainActivityInterface.getDisplayMetrics()[0];
         width = (int)(mainActivityInterface.getPreferences().getMyPreferenceFloat("inlineSetWidth",0.3f)*screenWidth);
         showInlinePresenter = mainActivityInterface.getPreferences().getMyPreferenceBoolean("inlineSetPresenter",true);
-        widthPresenter = (int)(mainActivityInterface.getPreferences().getMyPreferenceFloat("inlineSetWidthPresenter", 0.3f)*screenWidth);
         inlineSetListAdapter = new InlineSetListAdapter(c);
         setAdapter(inlineSetListAdapter);
         setVisibility(View.GONE);
@@ -69,7 +68,7 @@ public class InlineSetList extends RecyclerView {
     }
 
     public void checkVisibility() {
-        if (mainActivityInterface.getCurrentSet().getSetItems().size()>0 && showInline) {
+        if (mainActivityInterface.getCurrentSet().getSetItems().size()>0 && needInline()) {
             setVisibility(View.VISIBLE);
             getLayoutParams().width = width;
         } else {
@@ -77,16 +76,13 @@ public class InlineSetList extends RecyclerView {
         }
     }
 
+    private boolean needInline() {
+        return (!mainActivityInterface.getMode().equals(getContext().getString(R.string.mode_presenter)) && showInline) ||
+                (mainActivityInterface.getMode().equals(getContext().getString(R.string.mode_presenter)) && showInlinePresenter);
+    }
     public int getInlineSetWidth() {
         if (showInline && mainActivityInterface.getCurrentSet().getSetItems().size()>0) {
             return width;
-        } else {
-            return 0;
-        }
-    }
-    public int getInlineSetWidthPresenter() {
-        if (showInlinePresenter && mainActivityInterface.getCurrentSet().getSetItems().size()>0) {
-            return widthPresenter;
         } else {
             return 0;
         }
@@ -98,14 +94,8 @@ public class InlineSetList extends RecyclerView {
         checkVisibility();
     }
 
-    public void updateInlineSet(boolean showInline, int width) {
-        this.showInline = showInline;
-        this.width = width;
-        checkVisibility();
-    }
-
     public void prepareSet(){
-        if (showInline) {
+        if (needInline()) {
             if (setList==null) {
                 setList = new ArrayList<>();
             } else {
@@ -124,7 +114,7 @@ public class InlineSetList extends RecyclerView {
         }
     }
 
-    private class InlineSetItemInfo {
+    private static class InlineSetItemInfo {
         public String songtitle;
         public String songfolder;
         public String songkey;

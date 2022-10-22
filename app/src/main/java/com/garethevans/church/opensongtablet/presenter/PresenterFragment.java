@@ -208,6 +208,9 @@ public class PresenterFragment extends Fragment {
             mainActivityInterface.getPresenterSettings().setCurrentSection(-1);
         }
 
+        // State we haven't started the projection (for the song info bar check)
+        mainActivityInterface.getPresenterSettings().setStartedProjection(false);
+
         // Prepare the song content views - doesn't show them though
         displayInterface.updateDisplay("setSongContent");
 

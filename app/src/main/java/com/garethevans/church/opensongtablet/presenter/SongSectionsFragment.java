@@ -2,7 +2,6 @@ package com.garethevans.church.opensongtablet.presenter;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,6 +77,7 @@ public class SongSectionsFragment extends Fragment {
             myView.songInfo.setSongAuthor(mainActivityInterface.getSong().getAuthor());
             myView.songInfo.setSongCopyright(mainActivityInterface.getSong().getCopyright());
             myView.songInfo.setSongCCLI(mainActivityInterface.getSong().getCcli());
+            myView.songInfo.setCapo(null);  // Don't need to show this here
             mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().setSelectedPosition(-1);
             mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().buildSongSections();
             myView.songInfo.setOnLongClickListener(view -> {

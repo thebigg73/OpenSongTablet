@@ -17,7 +17,7 @@ public class PresenterSettings {
     private final Context c;
     private final MainActivityInterface mainActivityInterface;
     private boolean alertOn, logoOn=true, blackscreenOn, blankscreenOn, hideInfoBar, presoShowChords,
-            usePresentationOrder, presoShowClock, presoClock24h, presoClockSeconds;
+            usePresentationOrder, presoShowClock, presoClock24h, presoClockSeconds, startedProjection;
     private Uri logo, backgroundImage1, backgroundImage2, backgroundVideo1, backgroundVideo2;
     private int backgroundColor, presoTransitionTime, presoXMargin, presoYMargin, presoInfoAlign,
         presoLyricsAlign, presoLyricsVAlign, currentSection=-1;
@@ -146,6 +146,11 @@ public class PresenterSettings {
     }
     public void setPresoClockSeconds(boolean presoClockSeconds) {
         this.presoClockSeconds = presoClockSeconds;
+    }
+
+    public void setStartedProjection(boolean clickedOnSection) {
+        // If we have clicked on a section and the logo, blackscreen and blank screen are off
+        startedProjection = clickedOnSection && !logoOn && !blackscreenOn && !blankscreenOn;
     }
 
     // The getters
@@ -339,6 +344,9 @@ public class PresenterSettings {
         setPresoAlertTextSize(mainActivityInterface.getPreferences().getMyPreferenceFloat("presoAlertTextSize", 12f));
     }
 
+    public boolean getStartedProjection() {
+        return startedProjection;
+    }
     private Uri getUriFromString(String uriString, String backupString) {
         Uri uri = null;
         if (uriString!=null && !uriString.isEmpty()) {
