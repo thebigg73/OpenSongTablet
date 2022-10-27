@@ -256,7 +256,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private String whichMode, whattodo, importFilename;
     private final String presenter = "Presenter", performance = "Performance";
     private Uri importUri;
-    private boolean settingsOpen = false, showSetMenu,
+    private boolean settingsOpen = false, showSetMenu, navBarKeepSpace,
             pageButtonActive = true, fullIndexRequired, menuOpen, firstRun=true;
     private final String TAG = "MainActivity";
     private MenuItem settingsButton;
@@ -401,7 +401,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         ocr = new OCR(this);
         makePDF = new MakePDF(this);
         transpose = new Transpose(this);
-        abcNotation = new ABCNotation();
+        abcNotation = new ABCNotation(this);
         song = new Song();
 
         // Loading up songs and the indexing
@@ -642,6 +642,18 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void updateInsetPrefs() {
+        boolean defaultKeepNavSpace = false;
+        try {
+            @SuppressLint("DiscouragedApi") int resourceId = getResources().getIdentifier("config_navBarInteractionMode", "integer", "android");
+            if (resourceId > 0) {
+                if (getResources().getInteger(resourceId) == 2) {
+                    defaultKeepNavSpace = true;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        navBarKeepSpace = getPreferences().getMyPreferenceBoolean("navBarKeepSpace",defaultKeepNavSpace);
         customInsetL = getPreferences().getMyPreferenceInt("marginLeft",0);
         customInsetR = getPreferences().getMyPreferenceInt("marginRight",0);
         //customInsetT = getPreferences().getMyPreferenceInt("marginTop",0);
@@ -678,10 +690,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 }
             }
 
-            deviceInsets[0] = Math.max(systemBars.left, Math.max(roundedL, displayCutout.left));
-            deviceInsets[1] = Math.max(systemBars.right, Math.max(roundedR, displayCutout.right));
-            //deviceInsets[2] = Math.max(systemBars.top, Math.max(roundedB, displayCutout.top));
-            deviceInsets[3] = Math.max(systemBars.bottom, Math.max(roundedB, displayCutout.bottom));
+            if (navBarKeepSpace) {
+                deviceInsets[0] = Math.max(systemBars.left, Math.max(roundedL, displayCutout.left));
+                deviceInsets[1] = Math.max(systemBars.right, Math.max(roundedR, displayCutout.right));
+                //deviceInsets[2] = Math.max(systemBars.top, Math.max(roundedB, displayCutout.top));
+                deviceInsets[3] = Math.max(systemBars.bottom, Math.max(roundedB, displayCutout.bottom));
+            }
 
             FrameLayout.LayoutParams layoutParams1 = (FrameLayout.LayoutParams) myView.fragmentView.getLayoutParams();
             layoutParams1.leftMargin = deviceInsets[0];

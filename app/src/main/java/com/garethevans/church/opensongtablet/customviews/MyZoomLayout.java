@@ -3,7 +3,6 @@ package com.garethevans.church.opensongtablet.customviews;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
@@ -109,9 +108,6 @@ public class MyZoomLayout extends FrameLayout {
     }
 
     private void calculateMaxScrolls() {
-        Log.d(TAG,"songWidth:"+songWidth+"  viewWidth:"+viewWidth);
-        Log.d(TAG,"songHeight:"+songHeight+"  viewHeight:"+viewHeight);
-        Log.d(TAG,"originalSongWidth:"+originalSongWidth+"  originalSongHeight:"+originalSongHeight);
         maxScrollX = Math.max(0,songWidth - viewWidth);
         maxScrollY = Math.max(0,songHeight - viewHeight);
         minScale = Math.min((float)viewWidth/(float)originalSongWidth,(float)viewHeight/(float)originalSongHeight);
@@ -170,7 +166,6 @@ public class MyZoomLayout extends FrameLayout {
     private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
         @Override
         public boolean onScale(ScaleGestureDetector detector) {
-            Log.d(TAG,"onScale()");
             scaleFactor *= detector.getScaleFactor();
             if (scaleFactor > maxScaleFactor) {
                 scaleFactor = maxScaleFactor;

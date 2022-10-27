@@ -1,10 +1,12 @@
 package com.garethevans.church.opensongtablet.screensetup;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -47,6 +49,19 @@ public class MarginsFragment extends Fragment {
         // Set the margins of the nestedScrollView to 100px (programmatically so not dp)
         myView.nestedScrollView.setPadding(100,100,100,100);
 
+        boolean defaultKeepNavSpace = false;
+        try {
+            @SuppressLint("DiscouragedApi") int resourceId = getResources().getIdentifier("config_navBarInteractionMode", "integer", "android");
+            if (resourceId > 0) {
+                if (getResources().getInteger(resourceId) == 2) {
+                    defaultKeepNavSpace = true;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        myView.navBarKeepSpace.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("navBarKeepSpace",defaultKeepNavSpace));
+
         marginLeft = mainActivityInterface.getPreferences().getMyPreferenceInt("marginLeft",0);
         marginRight = mainActivityInterface.getPreferences().getMyPreferenceInt("marginRight",0);
         //marginTop = mainActivityInterface.getPreferences().getMyPreferenceInt("marginTop",0);
@@ -77,6 +92,14 @@ public class MarginsFragment extends Fragment {
         myView.rightMargin.addOnChangeListener(new MySliderChange("marginRight"));
         //myView.topMargin.addOnChangeListener(new MySliderChange("marginTop"));
         myView.bottomMargin.addOnChangeListener(new MySliderChange("marginBottom"));
+        myView.navBarKeepSpace.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                mainActivityInterface.getPreferences().setMyPreferenceBoolean("navBarKeepSpace",isChecked);
+                mainActivityInterface.updateInsetPrefs();
+                mainActivityInterface.deviceInsets();
+            }
+        });
     }
 
     private class MySliderTouch implements Slider.OnSliderTouchListener {

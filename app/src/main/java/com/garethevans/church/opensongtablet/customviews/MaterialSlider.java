@@ -139,14 +139,19 @@ public class MaterialSlider extends LinearLayout {
     }
     public void setHint(String hint) {
         if (hint!=null && !hint.isEmpty()) {
-            if (valueTextView.getVisibility()!=View.VISIBLE) {
-                valueTextView.setVisibility(View.VISIBLE);
-            }
-            valueTextView.setText(hint);
+            valueTextView.post(() -> {
+                if (valueTextView.getVisibility()!=View.VISIBLE) {
+                    valueTextView.setVisibility(View.VISIBLE);
+                }
+                valueTextView.setText(hint);
+            });
+
         } else {
-            if (valueTextView.getVisibility()!=View.GONE) {
-                valueTextView.setVisibility(View.GONE);
-            }
+            valueTextView.post(() -> {
+                if (valueTextView.getVisibility()!=View.GONE) {
+                    valueTextView.setVisibility(View.GONE);
+                }
+            });
         }
     }
     public void setText(String text) {

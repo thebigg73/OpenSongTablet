@@ -15,6 +15,20 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                android:id="@+id/navBarKeepSpace"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/margins_system"
+                android:hint="@string/margins_system_info"/>
+            <TableRow style="@style/DividerLine"/>
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/margins_custom"
+                android:layout_marginTop="16dp"/>
+
             <com.garethevans.church.opensongtablet.customviews.MaterialSlider
                 android:id="@+id/leftMargin"
                 android:layout_width="match_parent"
