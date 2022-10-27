@@ -20,5 +20,9 @@
         android:focusableInTouchMode="false"
         android:padding="16dp"
         android:background="@null"
+        android:inputType="none"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:singleLine="true"
         tools:text="Text"/>
 </com.google.android.material.textfield.TextInputLayout>

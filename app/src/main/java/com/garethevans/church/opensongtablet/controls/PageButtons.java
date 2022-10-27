@@ -6,7 +6,6 @@ package com.garethevans.church.opensongtablet.controls;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.LinearLayout;
 
@@ -148,6 +147,7 @@ public class PageButtons {
         actions.add("metronome");
         actions.add("autoscroll");
         actions.add("link");
+        actions.add("nearby");
         actions.add("chordfingerings");
         actions.add("stickynotes");
         actions.add("pdfpage");
@@ -188,6 +188,7 @@ public class PageButtons {
         text.add(c.getString(R.string.metronome));
         text.add(c.getString(R.string.autoscroll));
         text.add(c.getString(R.string.link));
+        text.add(c.getString(R.string.connections_connect));
         text.add(c.getString(R.string.chord_fingering));
         text.add(c.getString(R.string.song_notes));
         text.add(c.getString(R.string.select_page));
@@ -228,6 +229,7 @@ public class PageButtons {
         shortText.add(c.getString(R.string.start) + " / " + c.getString(R.string.stop));
         shortText.add(c.getString(R.string.start) + " / " + c.getString(R.string.stop));
         shortText.add(c.getString(R.string.open));
+        shortText.add(c.getString(R.string.connections_discover));
         shortText.add(c.getString(R.string.show) + " / " + c.getString(R.string.hide));
         shortText.add(c.getString(R.string.show) + " / " + c.getString(R.string.hide));
         shortText.add(c.getString(R.string.select));
@@ -268,6 +270,7 @@ public class PageButtons {
         longText.add(c.getString(R.string.settings));
         longText.add(c.getString(R.string.settings));
         longText.add("");
+        longText.add(c.getString(R.string.settings));
         longText.add(c.getString(R.string.edit));
         longText.add(c.getString(R.string.edit));
         longText.add("");
@@ -308,6 +311,7 @@ public class PageButtons {
         drawableIds.add(R.drawable.metronome);
         drawableIds.add(R.drawable.autoscroll);
         drawableIds.add(R.drawable.link);
+        drawableIds.add(R.drawable.nearby);
         drawableIds.add(R.drawable.guitar);
         drawableIds.add(R.drawable.note_text);
         drawableIds.add(R.drawable.book);
@@ -521,6 +525,13 @@ public class PageButtons {
                 break;
             case "link":
                 actionInterface.getPerformanceGestures().openLinks();
+                break;
+            case "nearby":
+                if (isLongPress) {
+                    actionInterface.getPerformanceGestures().nearbySettings();
+                } else {
+                    actionInterface.getPerformanceGestures().nearbyDiscover();
+                }
                 break;
             case "chordfingerings":
                 if (isLongPress) {

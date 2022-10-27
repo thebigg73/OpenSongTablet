@@ -1,13 +1,13 @@
 package com.garethevans.church.opensongtablet.customviews;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.os.Handler;
-import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 
@@ -18,16 +18,25 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.textfield.TextInputLayout;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class ExposedDropDown extends TextInputLayout {
 
     private AutoCompleteTextView autoCompleteTextView;
     private TextInputLayout textInputLayout;
+    private final String TAG = "ExposedDropDown";
+    private final Context c;
+    private final int delay = 50;
+    private final boolean largePopups;
+    private ArrayList<String> arrayList = null;
 
+    @SuppressLint("ClickableViewAccessibility")
     public ExposedDropDown(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+        this.c = context;
+        largePopups = ((MainActivityInterface) context).getPreferences().getMyPreferenceBoolean("largePopups",true);
+
         inflate(context, R.layout.view_exposed_dropdown,this);
 
         identifyViews();
@@ -51,6 +60,60 @@ public class ExposedDropDown extends TextInputLayout {
         textInputLayout.setBoxBackgroundMode(TextInputLayout.BOX_BACKGROUND_OUTLINE);
         textInputLayout.setPadding(0,0,0,0);
         a.recycle();
+        autoCompleteTextView.setOnTouchListener(new MyTouchListener());
+        textInputLayout.setEndIconOnClickListener(v -> {
+            autoCompleteTextView.post(() -> {
+            setPopupSize();
+            if (autoCompleteTextView.isPopupShowing()) {
+                autoCompleteTextView.dismissDropDown();
+            } else {
+                autoCompleteTextView.dismissDropDown();
+                // Delay the showing..
+                autoCompleteTextView.postDelayed(() -> {
+                    autoCompleteTextView.showDropDown();
+                    keepPosition();
+                },delay);
+            }
+            });
+        });
+    }
+
+    private class MyTouchListener implements OnTouchListener {
+
+        @SuppressLint("ClickableViewAccessibility")
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            if (event.getAction()==MotionEvent.ACTION_DOWN ||
+            event.getAction()==MotionEvent.ACTION_BUTTON_PRESS) {
+                setPopupSize();
+            } else if (event.getAction()==MotionEvent.ACTION_UP ||
+            event.getAction()==MotionEvent.ACTION_BUTTON_RELEASE) {
+                autoCompleteTextView.post(() -> {
+                    if (autoCompleteTextView.isPopupShowing()) {
+                        autoCompleteTextView.dismissDropDown();
+                    } else {
+                        autoCompleteTextView.dismissDropDown();
+                        // Delay the showing..
+                        autoCompleteTextView.postDelayed(() -> {
+                            autoCompleteTextView.showDropDown();
+                            keepPosition();
+                        },delay);
+                    }
+                });
+            }
+            return true;
+        }
+    }
+
+    private void keepPosition() {
+        Log.d(TAG,"keepPosition()   arrayList:"+arrayList);
+        if (arrayList!=null && arrayList.size()>0) {
+            Log.d(TAG,"arrayList.size():"+arrayList.size());
+            String selectedValue = getText().toString();
+            int position = arrayList.indexOf(selectedValue);
+            Log.d(TAG,"selectedValue:"+selectedValue+"  position:"+position);
+            autoCompleteTextView.setListSelection(arrayList.indexOf(getText().toString()));
+        }
     }
 
     private void identifyViews() {
@@ -91,54 +154,40 @@ public class ExposedDropDown extends TextInputLayout {
         autoCompleteTextView.addTextChangedListener(textWatcher);
     }
 
-    public TextInputLayout getTextInputLayout() {
-        return textInputLayout;
+    public void setArray(String[] stringArray) {
+        arrayList = new ArrayList<>();
+        Collections.addAll(arrayList, stringArray);
     }
 
-    public AutoCompleteTextView getAutoCompleteTextView() {
-        return autoCompleteTextView;
+    public void setArray(ArrayList<String> objects) {
+        arrayList = objects;
     }
 
-    public void setPopupSize(MainActivityInterface mainActivityInterface) {
-        autoCompleteTextView.setOnFocusChangeListener((v, hasFocus) -> {
+    public void setPopupSize() {
+        MainActivityInterface mainActivityInterface = (MainActivityInterface) c;
+        if (largePopups) {
             try {
-                setPopupSize(mainActivityInterface);
+                if (autoCompleteTextView != null) {
+                    // Get the location of the popup position and negatively offset this minus the toolbar height
+                    int[] location = new int[2];
+                    autoCompleteTextView.getLocationOnScreen(location);
+                    int height = mainActivityInterface.getDisplayMetrics()[1] - (mainActivityInterface.getToolbar().getActionBarHeight(false) * 2);
+                    int y = location[1];
+                    autoCompleteTextView.setDropDownVerticalOffset(-y);
+                    autoCompleteTextView.setDropDownHeight(height);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        });
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        executorService.execute(() -> {
-            Handler handler = new Handler(Looper.getMainLooper());
-            handler.post(() -> {
-                boolean largePopups = mainActivityInterface.getPreferences().getMyPreferenceBoolean("largePopups",true);
-                if (largePopups) {
-                    try {
-                        if (autoCompleteTextView!=null) {
-                            // Get the location of the popup position and negatively offset this minus the toolbar height
-                            int[] location = new int[2];
-
-                            autoCompleteTextView.getLocationOnScreen(location);
-                            int y = location[1] + autoCompleteTextView.getHeight() - mainActivityInterface.getToolbar().getActionBarHeight(true);
-                            autoCompleteTextView.setDropDownVerticalOffset(-y);
-
-                            int height = mainActivityInterface.getDisplayMetrics()[1] - (mainActivityInterface.getToolbar().getActionBarHeight(false)*2);
-                            autoCompleteTextView.setDropDownHeight(height);
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    try {
-                        autoCompleteTextView.setDropDownVerticalOffset(-autoCompleteTextView.getHeight());
-                        int newHeight = (int)((float)getContext().getResources().getDimension(R.dimen.exposed_dropdown_height));
-                        autoCompleteTextView.setDropDownHeight(newHeight);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-        });
-
+        } else {
+            try {
+                autoCompleteTextView.setDropDownVerticalOffset(-autoCompleteTextView.getHeight());
+                int newHeight = (int) ((float) getContext().getResources().getDimension(R.dimen.exposed_dropdown_height));
+                autoCompleteTextView.setDropDownHeight(newHeight);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
+
 }

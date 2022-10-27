@@ -70,6 +70,7 @@ public class PageButtonFragment extends Fragment {
         executorService.execute(() -> {
             Handler handler = new Handler(Looper.getMainLooper());
             handler.post(() -> {
+
                 int opacity = (int)(mainActivityInterface.getMyThemeColors().getPageButtonsSplitAlpha()*100);
                 if (opacity<myView.opacity.getValueFrom()) {
                     opacity = (int)myView.opacity.getValueFrom();
@@ -98,6 +99,13 @@ public class PageButtonFragment extends Fragment {
                 addVisibleSwitches();
                 addTextViews();
 
+                // Also set the dropdowns here
+                arrayAdapter = new ExposedDropDownArrayAdapter(requireActivity(), R.layout.view_exposed_dropdown_item, mainActivityInterface.getPageButtons().getPageButtonAvailableText());
+                for (int x=0;x<mainActivityInterface.getPageButtons().getPageButtonNum();x++) {
+                    setTheDropDowns(x);
+                    setTheText(x);
+                }
+
                 // Now iterate through each button and set it up
                 for (int x = 0; x < mainActivityInterface.getPageButtons().getPageButtonNum(); x++) {
                     mainActivityInterface.getPageButtons().setPageButton(myButtons.get(x), x, true);
@@ -110,13 +118,7 @@ public class PageButtonFragment extends Fragment {
                     mySwitches.get(x).setOnCheckedChangeListener((buttonView, isChecked) -> changeVisibilityPreference(finalX, isChecked));
                 }
             });
-            arrayAdapter = new ExposedDropDownArrayAdapter(requireActivity(), R.layout.view_exposed_dropdown_item, mainActivityInterface.getPageButtons().getPageButtonAvailableText());
-            handler.post(() -> {
-                for (int x=0;x<mainActivityInterface.getPageButtons().getPageButtonNum();x++) {
-                    setTheDropDowns(x);
-                    setTheText(x);
-                }
-            });
+
         });
     }
 
@@ -203,9 +205,8 @@ public class PageButtonFragment extends Fragment {
 
     private void setTheDropDowns(int pos) {
         exposedDropDowns.get(pos).setAdapter(arrayAdapter);
-        exposedDropDowns.get(pos).setPopupSize(mainActivityInterface);
+        exposedDropDowns.get(pos).setArray(mainActivityInterface.getPageButtons().getPageButtonAvailableText());
         exposedDropDowns.get(pos).setText(mainActivityInterface.getPageButtons().getPageButtonText(pos));
-        arrayAdapter.keepSelectionPosition(exposedDropDowns.get(pos),mainActivityInterface.getPageButtons().getPageButtonAvailableText());
         exposedDropDowns.get(pos).addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
