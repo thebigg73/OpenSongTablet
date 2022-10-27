@@ -279,8 +279,6 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         if (show) {
             view.post(() -> {
                 view.setVisibility(View.VISIBLE);
-                myView.filters.folderSearch.setPopupSize(mainActivityInterface);
-                myView.filters.keySearch.setPopupSize(mainActivityInterface);
             });
         } else {
             view.post(() -> view.setVisibility(View.GONE));

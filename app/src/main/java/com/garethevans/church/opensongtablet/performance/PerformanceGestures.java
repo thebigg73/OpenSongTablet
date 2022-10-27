@@ -4,6 +4,7 @@ package com.garethevans.church.opensongtablet.performance;
 
 import android.content.Context;
 import android.os.Build;
+import android.os.Handler;
 import android.view.View;
 
 import com.garethevans.church.opensongtablet.R;
@@ -21,6 +22,7 @@ import com.garethevans.church.opensongtablet.pdf.PDFPageBottomSheet;
 import com.garethevans.church.opensongtablet.songmenu.RandomSongBottomSheet;
 import com.garethevans.church.opensongtablet.stage.StageSectionAdapter;
 import com.garethevans.church.opensongtablet.utilities.SoundLevelBottomSheet;
+import com.google.android.material.button.MaterialButton;
 
 public class PerformanceGestures {
 
@@ -350,8 +352,6 @@ public class PerformanceGestures {
 
     // Show the abc notation
     public void showABCNotation() {
-        //MusicScoreBottomSheet musicScoreBottomSheet = new MusicScoreBottomSheet();
-        //musicScoreBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"MusicScoreBottomSheet");
         actionInterface.showAbc(true, false);
     }
 
@@ -401,6 +401,31 @@ public class PerformanceGestures {
     // Open links
     public void openLinks() {
         mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_links),0);
+    }
+
+    // Nearby connections
+    public void nearbySettings() {
+        mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_nearby),0);
+    }
+    public void nearbyDiscover() {
+        // Run a 10 second discovery attempt
+        // Stop advertising/discovering if we were already doing that
+        mainActivityInterface.getNearbyConnections().stopAdvertising();
+        mainActivityInterface.getNearbyConnections().stopDiscovery();
+
+        // Initialise the countdown
+        mainActivityInterface.getNearbyConnections().initialiseCountdown();
+
+        // After a short delay, discover
+        new Handler().postDelayed(() -> {
+            try {
+                mainActivityInterface.getNearbyConnections().startDiscovery();
+                mainActivityInterface.getNearbyConnections().setTimer(false, new MaterialButton(c));
+            } catch (Exception e) {
+                e.printStackTrace();
+                mainActivityInterface.getNearbyConnections().clearTimer();
+            }
+        }, 200);
     }
 
     // PDF page chooser

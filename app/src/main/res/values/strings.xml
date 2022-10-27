@@ -1104,4 +1104,7 @@ Check out the categories in the right hand options menu.
     <string name="youtube" translatable="false">YouTube</string>
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zoom_level">Zoom level</string>
+    <string name="margins_system">System margins</string>
+    <string name="margins_system_info">Leave space for detected device controls (bottom navigation bar and side menus)</string>
+    <string name="margins_custom">Custom additional margins</string>
 </resources>

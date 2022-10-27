@@ -924,9 +924,13 @@ public class StorageAccess {
         return Uri.fromFile(f);
     }
     public InputStream getInputStream(Uri uri) {
-        try {
-            return c.getContentResolver().openInputStream(uri);
-        } catch (Exception e) {
+        if (c!=null && c.getContentResolver()!=null && uri!=null) {
+            try {
+                return c.getContentResolver().openInputStream(uri);
+            } catch (Exception e) {
+                return null;
+            }
+        } else {
             return null;
         }
     }
