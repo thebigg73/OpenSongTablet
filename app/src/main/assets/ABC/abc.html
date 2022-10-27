@@ -36,7 +36,7 @@
 </div>
 <p>
 <div id="bottom" style="display:hidden">
-    <textarea name="abc" id="abc" rows="16"></textarea>
+    <textarea name="abc" id="abc" rows="16" oninput="checkKey()"></textarea>
 </div>
 <script type="text/javascript">
 var s = "";
@@ -61,6 +61,11 @@ function selectionCallback(abcelem) {
     console.log(abcelem);
     var el = document.getElementById("selection");
     el.innerHTML = "<b>selectionCallback parameter:</b><br>" + JSON.stringify(note);
+}
+
+function checkKey() {
+    var myJsString = document.getElementById("abc").value;
+    AndroidApp.checkKey(myJsString);
 }
 
 function getTextVal() {

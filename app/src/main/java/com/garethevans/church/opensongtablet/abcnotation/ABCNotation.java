@@ -1,6 +1,7 @@
 package com.garethevans.church.opensongtablet.abcnotation;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
 import android.view.View;
@@ -10,14 +11,53 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.songprocessing.Song;
+
+import java.util.Locale;
 
 public class ABCNotation {
 
     private final String TAG = "ABCNotation";
 
+    private String songTitle, songKey, songAbc, songTimeSig;
+    private int songAbcTranspose, abcZoom;
+    private float abcPopupWidth;
+    private boolean isPopup, abcAutoTranspose;
+    private final MainActivityInterface mainActivityInterface;
+
+    public ABCNotation(Context c) {
+        mainActivityInterface = (MainActivityInterface) c;
+        abcAutoTranspose = mainActivityInterface.getPreferences().getMyPreferenceBoolean("abcAutoTranspose",true);
+        abcPopupWidth = mainActivityInterface.getPreferences().getMyPreferenceFloat("abcPopupWidth",abcPopupWidth);
+        abcZoom = mainActivityInterface.getPreferences().getMyPreferenceInt("abcZoom",2);
+    }
+
+    // This is set when a song is set for editing or displaying the Abc notation
+    public void prepareSongValues(Song thisSong, boolean isPopup) {
+        this.isPopup = isPopup;
+        songTitle = thisSong.getTitle();
+        songKey = thisSong.getKey();
+        songAbc = thisSong.getAbc();
+        String abcTranspose = thisSong.getAbcTranspose();
+        if (abcTranspose==null || abcTranspose.isEmpty()) {
+            songAbcTranspose = 0;
+        } else {
+            try {
+                songAbcTranspose = Integer.parseInt(abcTranspose);
+            } catch (Exception e) {
+                songAbcTranspose = 0;
+            }
+        }
+        songTimeSig = thisSong.getTimesig();
+        // Check for default abcText
+        getSongAbcOrDefault();
+
+        // If we are autotransposing and have keys set, get the transpose value
+        getABCTransposeFromSongKey();
+    }
+
     @SuppressLint("SetJavaScriptEnabled")
-    public void setWebView(WebView webView, MainActivityInterface mainActivityInterface,
-                           boolean edit) {
+    public void setWebView(WebView webView) {
         webView.post(new Runnable() {
             @Override
             public void run() {
@@ -38,140 +78,261 @@ public class ABCNotation {
                         return super.onConsoleMessage(consoleMessage);
                     }
                 });
-                webView.setWebViewClient(new MyWebViewClient(mainActivityInterface,edit) {
-
-                });
+                webView.setWebViewClient(new MyWebViewClient() {});
                 webView.loadUrl("file:///android_asset/ABC/abc.html");
             }
         });
     }
 
+    // Listener for the webview drawing the abc score
     private class MyWebViewClient extends WebViewClient {
-        MainActivityInterface mainActivityInterface;
-        boolean edit;
-        MyWebViewClient(MainActivityInterface mainActivityInterface, boolean edit) {
-            this.mainActivityInterface = mainActivityInterface;
-            this.edit = edit;
-        }
         @Override
         public void onPageFinished(WebView webView, String url) {
             super.onPageFinished(webView, url);
+            updateContent(webView);
 
-            if (mainActivityInterface.getSong().getAbc().isEmpty()) {
-                updateContent(mainActivityInterface,webView,getSongInfo(mainActivityInterface),edit);
-            } else {
-                updateContent(mainActivityInterface,webView,mainActivityInterface.getSong().getAbc(),edit);
-            }
+            // Set to view only
+            webView.loadUrl("javascript:displayOnly();");
 
-            if (edit) {
-                webView.loadUrl("javascript:displayAndEdit();");
-            } else {
-                webView.loadUrl("javascript:displayOnly();");
-            }
+            // We could have a split view/edit, but prefer just viewing in html
+            // webView.loadUrl("javascript:displayAndEdit();");
         }
     }
 
-    String getSongInfo(MainActivityInterface mainActivityInterface) {
-        String info = "";
-        // Add the song time signature
-        if (mainActivityInterface.getSong().getTimesig().isEmpty()) {
-            info += "M:4/4\n";
-        } else {
-            info += "M:" + mainActivityInterface.getSong().getTimesig() + "\n";
-        }
-        // Add the note length
-        info += "L:1/8\n";
+    // Return the songAbc
+    public void getSongAbcOrDefault() {
+        // This is used to add in default song settings for various Abc properties
+        // Only called if songAbc is empty/null
+        if (songAbc==null || songAbc.isEmpty()) {
 
-        // Add the song key
-        if (mainActivityInterface.getSong().getKey().isEmpty()) {
-            info += "K:C treble %treble or bass clef\n";
-        } else {
-            info += "K: " + mainActivityInterface.getSong().getKey() + " %treble or bass clef\n";
+            // Add a title
+            songAbc = "T:" + songTitle;
+
+            // Add the song time signature
+            if (songTimeSig.isEmpty()) {
+                songAbc += "M:4/4\n";
+            } else {
+                songAbc += "M:" + songTimeSig + "\n";
+            }
+
+            // Add the note length
+            songAbc += "L:1/8\n";
+
+            // Add the song key
+            if (songKey.isEmpty()) {
+                songAbc += "K:C treble %treble or bass clef\n";
+            } else {
+                songAbc += "K: " + songKey + " %treble or bass clef\n";
+            }
+
+            // Add the first measure
+            songAbc += "|";
         }
-        info += "|";
-        return info;
     }
 
-    private void updateContent(MainActivityInterface mainActivityInterface,
-                               WebView webView, String newContent, boolean edit) {
+
+    // Save the edits to the song XML file (and in the database)
+    public void saveAbcContent(MainActivityInterface mainActivityInterface, Song thisSong) {
+        thisSong.setAbc(songAbc);
+        thisSong.setAbcTranspose(songAbcTranspose+"");
+        mainActivityInterface.getSaveSong().updateSong(thisSong);
+    }
+
+
+
+    // Update the output display for the abc score
+    private void updateContent(WebView webView) {
+        String newContent = songAbc;
         try {
-            newContent = Uri.encode(newContent, "UTF-8");
+            // Encode the abc text for passing to the webview
+            newContent = Uri.encode(songAbc,"UTF-8");
         } catch  (Exception e) {
             e.printStackTrace();
         }
 
-        String notation = String.format("#%08X", (mainActivityInterface.getMyThemeColors().getLyricsTextColor()));
-        String page = String.format("#%08X", (mainActivityInterface.getMyThemeColors().getLyricsBackgroundColor()));
+        webView.loadUrl("javascript:setTranspose("+songAbcTranspose+");");
 
-        Log.d(TAG,"notation: "+notation+"   page: "+page);
-        int transpose;
-        try {
-            if (mainActivityInterface.getSong().getAbcTranspose()==null ||
-                    mainActivityInterface.getSong().getAbcTranspose().isEmpty()) {
-                transpose = 0;
-            } else {
-                transpose = Integer.parseInt(mainActivityInterface.getSong().getAbcTranspose());
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            transpose = 0;
-        }
-        webView.loadUrl("javascript:setTranspose("+transpose+");");
-
-        if (edit) {
-            webView.loadUrl("javascript:displayOnly();");
+        if (isPopup) {
             webView.loadUrl("javascript:setWidth("+(int)(mainActivityInterface.getDisplayMetrics()[0] *
                             mainActivityInterface.getPreferences().getMyPreferenceFloat("abcPopupWidth",0.95f))+","+
                     mainActivityInterface.getPreferences().getMyPreferenceInt("abcZoom",2)+");");
         } else {
-            webView.loadUrl("javascript:displayAndEdit();");
             webView.loadUrl("javascript:setWidth("+mainActivityInterface.getDisplayMetrics()[0]+","+
                     mainActivityInterface.getPreferences().getMyPreferenceInt("abcZoom",2)+");");
         }
 
         webView.evaluateJavascript("javascript:updateABC('"+newContent+"');",null);
-
+        webView.loadUrl("javascript:setTranspose(" + songAbcTranspose + ");");
         webView.loadUrl("javascript:initEditor()");
     }
 
-    public void updateTranspose(WebView webView, int transpose) {
+    public void updateZoom(WebView webView) {
         webView.post(() -> {
-            webView.loadUrl("javascript:setTranspose(" + transpose + ");");
+            webView.loadUrl("javascript:setZoom("+abcZoom+");");
             webView.loadUrl("javascript:initEditor()");
         });
     }
 
-    public void updateZoom(WebView webView, int zoom) {
-        webView.post(() -> {
-            webView.loadUrl("javascript:setZoom("+zoom+");");
-            webView.loadUrl("javascript:initEditor()");
-        });
-    }
-
-    public int getABCTransposeFromSongKey(MainActivityInterface mainActivityInterface) {
+    // Using the song key and abc key, decide an automatic transpose value
+    public void getABCTransposeFromSongKey() {
         // This gets the key from existing abc notation (if set)
         // We then compare to the actual song key (if set)
-        // If they are different, set the transpose value
-        String[] abcLines = mainActivityInterface.getSong().getAbc().split("\n");
-        String abcKey = "";
-        int transposeTimes = 0;
-        for (String abcLine:abcLines) {
-            if (abcLine.startsWith("K:")) {
-                abcLine = abcLine.replace("K:","");
-                abcLine = abcLine.replace("min","m");
-                abcKey = abcLine.trim();
+        // If they are different, set the transpose value, if requested
+        if (mainActivityInterface.getPreferences().getMyPreferenceBoolean("abcAutoTranspose", true)) {
+            String[] abcLines = songAbc.split("\n");
+            String abcKey = "";
+            for (String abcLine : abcLines) {
+                if (abcLine.startsWith("K:")) {
+                    abcKey = keybits(abcLine);
+                    if (abcKey != null) {
+                        // This is the actual key line, so stop looking
+                        // We can have multiple key lines (e.g. for clef, etc).
+                        break;
+                    }
+                    // Otherwise, we continue looking!
+                }
+            }
+
+            // If no key was set in the ABC, we assume 'C'
+            if (abcKey==null || abcKey.isEmpty()) {
+                abcKey = "C";
+            }
+
+
+
+            if (!songKey.isEmpty() && !songKey.equals(abcKey)) {
+                songAbcTranspose = mainActivityInterface.getTranspose().getTransposeTimes(
+                        abcKey, songKey);
+
+                // Go for the smallest transpose change, e.g. 10 -> -2
+                if (songAbcTranspose > 6) {
+                    songAbcTranspose = songAbcTranspose - 12;
+                }
+            } else {
+                songAbcTranspose = 0;
+            }
+        }
+    }
+
+
+    // This is used to gradually strip out extra info from the key line
+    private String keybits(String keyline) {
+        // Key lines can have many bits of extra information!!!
+        // Because keylines are case insensitive, make everything lowercase
+        keyline = keyline.toLowerCase(Locale.ROOT);
+
+        keyline = keyline.replace("minor","m");
+        // If the key contains certain bits, we only need stuff up to this point
+        // The key should always be first K: <tone>
+        keyline = substringUpTo(keyline,"maj"); // Major
+        keyline = substringUpTo(keyline,"ion"); // Ionian
+        keyline = substringUpTo(keyline,"mix"); // Mixolydian
+        keyline = substringUpTo(keyline,"aeo"); // Aeolian
+        keyline = substringUpTo(keyline,"dor"); // Dorian
+        keyline = substringUpTo(keyline,"phr"); // Phrygian
+        keyline = substringUpTo(keyline,"lyd"); // Lydian
+        keyline = substringUpTo(keyline,"loc"); // Locrian
+        keyline = substringUpTo(keyline,"clef"); // Clef
+        keyline = substringUpTo(keyline,"bass"); // Bass
+        keyline = substringUpTo(keyline,"bass2"); // Bass
+        keyline = substringUpTo(keyline,"bass3"); // Baritone
+        keyline = substringUpTo(keyline,"tenor"); // Tenor
+        keyline = substringUpTo(keyline,"treble"); // Treble
+        keyline = substringUpTo(keyline,"alto"); // Alto
+        keyline = substringUpTo(keyline,"alto1"); // Soprano
+        keyline = substringUpTo(keyline,"alto2"); // Mezzosoprano
+        keyline = substringUpTo(keyline,"exp"); // Explicit
+        keyline = substringUpTo(keyline,"__"); // Accidental
+        keyline = substringUpTo(keyline,"_"); // Accidental
+        keyline = substringUpTo(keyline,"="); // Accidental
+        keyline = substringUpTo(keyline,"^"); // Accidental
+        keyline = substringUpTo(keyline,"^^"); // Accidental
+        keyline = substringUpTo(keyline,"perc"); // Percussion
+        keyline = substringUpTo(keyline,"staff"); // Staff lines
+        keyline = substringUpTo(keyline,"mid"); // Middle note
+        keyline = substringUpTo(keyline,"tran"); // Transpose
+        keyline = substringUpTo(keyline,"oct"); // Octave
+
+        if (keyline.contains("minor")) {
+            keyline = substringUpTo(keyline,"minor") + "m";
+        }
+
+        keyline = keyline.replace("k:","");
+        keyline = keyline.replace(" ","");
+
+        // Now compare with known keys
+        // Go through in order to look for minors, sharps, flats, naturals in that order
+        String[] keysToCheck = new String[] {"A#m","C#m","D#m","F#m","G#m",
+                "Abm","Bbm","Dbm","Ebm","Gbm",
+                "Am","Bm","Cm","Dm","Em","Fm","Gm",
+                "A#","C#","D#","F#","G#",
+                "Ab","Bb","Db","Eb","Gb",
+                "A","B","C","D","E","F","G"};
+
+        String foundKey = null;
+        for (String s : keysToCheck) {
+            if (keyline.startsWith(s.toLowerCase())) {
+                Log.d(TAG,"found key:"+s);
+                foundKey = s;
                 break;
             }
         }
-        if (!abcKey.isEmpty() && !mainActivityInterface.getSong().getKey().isEmpty() &&
-            !mainActivityInterface.getSong().getKey().equals(abcKey)) {
-            transposeTimes = mainActivityInterface.getTranspose().getTransposeTimes(
-                    abcKey, mainActivityInterface.getSong().getKey());
-            mainActivityInterface.getSong().setAbcTranspose(transposeTimes+"");
-            mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong());
-        }
-
-        return transposeTimes;
+        return foundKey;
     }
 
+    // Gradually strip out useful bits of the set key
+    private String substringUpTo(String string, String lookfor) {
+        Log.d(TAG,"look for '"+lookfor+"' in keyline:"+string);
+        if (string.contains(lookfor)) {
+            string = string.substring(0,string.indexOf(lookfor));
+        }
+        Log.d(TAG,"returning :"+string);
+
+        return string;
+    }
+
+
+    // Tell the webview to update
+    public void updateWebView(WebView webView) {
+        updateContent(webView);
+    }
+
+    // The getters
+    public String getSongAbc() {
+        return songAbc;
+    }
+    public int getSongAbcTranspose() {
+        return songAbcTranspose;
+    }
+    public boolean getAbcAutoTranspose() {
+        return abcAutoTranspose;
+    }
+    public float getAbcPopupWidth() {
+        return abcPopupWidth;
+    }
+    public int getAbcZoom() {
+        return abcZoom;
+    }
+
+    // The setters
+    // Update the string value for the songAbc (due to editing it in the MusicScoreFragment)
+    // This doesn't save to the song, but updates the display
+    public void setSongAbc(String songAbc) {
+        this.songAbc = songAbc;
+    }
+    public void setSongAbcTranspose(int songAbcTranspose) {
+        this.songAbcTranspose = songAbcTranspose;
+    }
+    public void setAbcAutoTranspose(boolean abcAutoTranspose) {
+        this.abcAutoTranspose = abcAutoTranspose;
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean("abcAutoTranspose",abcAutoTranspose);
+    }
+    public void setAbcPopupWidth(float abcPopupWidth) {
+        this.abcPopupWidth = abcPopupWidth;
+        mainActivityInterface.getPreferences().setMyPreferenceFloat("abcPopupWidth",abcPopupWidth);
+    }
+    public void setAbcZoom(int abcZoom) {
+        this.abcZoom = abcZoom;
+        mainActivityInterface.getPreferences().setMyPreferenceInt("abcZoom",abcZoom);
+    }
 }

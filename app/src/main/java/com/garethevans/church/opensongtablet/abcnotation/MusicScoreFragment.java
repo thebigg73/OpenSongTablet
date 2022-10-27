@@ -2,13 +2,14 @@ package com.garethevans.church.opensongtablet.abcnotation;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.webkit.JavascriptInterface;
-import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,7 +25,6 @@ public class MusicScoreFragment extends Fragment {
     private MainActivityInterface mainActivityInterface;
     private SettingsAbcnotationBinding myView;
     private final String TAG = "MusicScoreFragment";
-
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -39,8 +39,8 @@ public class MusicScoreFragment extends Fragment {
 
         requireActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
-        // Check if we have song and abc keys set and adjust the options accordingly
-        checkSongAndABCKey();
+        // Get the song prefs so we can edit before saving
+        mainActivityInterface.getAbcNotation().prepareSongValues(mainActivityInterface.getSong(), false);
 
         // Set up the views
         setViews();
@@ -51,68 +51,71 @@ public class MusicScoreFragment extends Fragment {
         return myView.getRoot();
     }
 
-
     private void setViews() {
-        mainActivityInterface.getAbcNotation().setWebView(myView.abcWebView,mainActivityInterface,
-                true);
+        mainActivityInterface.getAbcNotation().setWebView(myView.abcWebView);
         myView.abcWebView.post(() -> myView.abcWebView.addJavascriptInterface(new JsInterface(), "AndroidApp"));
-        myView.sizeSlider.setValue((int)(100*mainActivityInterface.getPreferences().getMyPreferenceFloat("abcPopupWidth",0.95f)));
+
+        myView.abcText.setText(mainActivityInterface.getAbcNotation().getSongAbc());
+        mainActivityInterface.getProcessSong().editBoxToMultiline(myView.abcText);
+        myView.abcText.setTextSize(18f);
+        mainActivityInterface.getProcessSong().stretchEditBoxToLines(myView.abcText,6);
+
+        myView.sizeSlider.setValue((int)(100*mainActivityInterface.getAbcNotation().getAbcPopupWidth()));
         myView.sizeSlider.setLabelFormatter(value -> ((int)value)+"%");
         myView.sizeSlider.setHint((int)myView.sizeSlider.getValue()+"%");
-        myView.zoomSlider.setValue(mainActivityInterface.getPreferences().getMyPreferenceInt("abcZoom",2));
+
+        myView.zoomSlider.setValue(mainActivityInterface.getAbcNotation().getAbcZoom());
         myView.zoomSlider.setHint((int)myView.zoomSlider.getValue()+"");
         myView.zoomSlider.setLabelFormatter(value -> (int)value+"");
-        myView.transposeSlider.setValue(getTransposeValue());
-        myView.transposeSlider.setHint((int)myView.transposeSlider.getValue()+"");
-        myView.transposeSlider.setLabelFormatter(value -> (int)value+"");
-    }
 
-    private void checkSongAndABCKey() {
-        if (!mainActivityInterface.getSong().getKey().isEmpty() && mainActivityInterface.getSong().getAbc().contains("K:")) {
-            myView.autoTranspose.setVisibility(View.VISIBLE);
-            myView.autoTranspose.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("abcAutoTranspose",true));
-            Log.d(TAG,"both song and abc key set");
-        } else {
-            myView.autoTranspose.setVisibility(View.GONE);
-            myView.autoTranspose.setChecked(false);
-            Log.d(TAG,"one of the keys isn't set");
-        }
-    }
+        myView.autoTranspose.setChecked(mainActivityInterface.getAbcNotation().getAbcAutoTranspose());
 
-    private int getTransposeValue() {
-        int transposeVal = 0;
-        if (myView.autoTranspose.getChecked()) {
-            myView.transposeSlider.setEnabled(false);
-            transposeVal = mainActivityInterface.getAbcNotation().getABCTransposeFromSongKey(mainActivityInterface);
-        } else if (!mainActivityInterface.getSong().getAbcTranspose().isEmpty()) {
-            myView.transposeSlider.setEnabled(true);
-            transposeVal = Integer.parseInt(mainActivityInterface.getSong().getAbcTranspose());
-        } else {
-            myView.transposeSlider.setEnabled(true);
-        }
-        Log.d(TAG,"transposeVal:"+transposeVal);
-        return transposeVal;
+        myView.transposeSlider.setEnabled(!myView.autoTranspose.getChecked());
+        myView.transposeSlider.setValue(mainActivityInterface.getAbcNotation().getSongAbcTranspose());
+        myView.transposeSlider.setHint(showPositiveValue(mainActivityInterface.getAbcNotation().getSongAbcTranspose()));
+        myView.transposeSlider.setLabelFormatter(value -> showPositiveValue((int)value));
     }
 
     private void setListeners() {
         myView.editABC.setOnClickListener(v -> doSave());
         myView.nestedScrollView.setExtendedFabToAnimate(myView.editABC);
-        myView.autoTranspose.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        myView.abcText.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                mainActivityInterface.getPreferences().setMyPreferenceBoolean("abcTransposeAuto",isChecked);
-                if (isChecked) {
-                    int transpVal = getTransposeValue();
-                    myView.transposeSlider.setValue(transpVal);
-                    myView.transposeSlider.setHint(""+transpVal);
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // Update the songAbc
+                mainActivityInterface.getAbcNotation().setSongAbc(s.toString());
+                // If we are autotransposing, figure that out too and update the songAbc
+                if (myView.autoTranspose.getChecked()) {
+                    mainActivityInterface.getAbcNotation().getABCTransposeFromSongKey();
                 }
-                myView.transposeSlider.setEnabled(!isChecked);
-                mainActivityInterface.getAbcNotation().updateTranspose(myView.abcWebView,(int)myView.transposeSlider.getValue());
+                myView.transposeSlider.setValue(mainActivityInterface.getAbcNotation().getSongAbcTranspose());
+                myView.transposeSlider.setHint(showPositiveValue(mainActivityInterface.getAbcNotation().getSongAbcTranspose()));
+                // Update the webview with the new values
+                mainActivityInterface.getAbcNotation().updateWebView(myView.abcWebView);
             }
         });
+
+        myView.autoTranspose.setOnCheckedChangeListener(((buttonView, isChecked) -> {
+            // Update the preference
+            mainActivityInterface.getAbcNotation().setAbcAutoTranspose(isChecked);
+            if (isChecked) {
+                mainActivityInterface.getAbcNotation().getABCTransposeFromSongKey();
+                myView.transposeSlider.setValue(mainActivityInterface.getAbcNotation().getSongAbcTranspose());
+                myView.transposeSlider.setHint(mainActivityInterface.getAbcNotation().getSongAbcTranspose()+"");
+            }
+            myView.transposeSlider.setEnabled(!isChecked);
+        }));
+
         myView.sizeSlider.addOnChangeListener((slider, value, fromUser) -> myView.sizeSlider.setHint((int)value+"%"));
         myView.zoomSlider.addOnChangeListener((slider, value, fromUser) -> myView.zoomSlider.setHint((int)value+""));
-        myView.transposeSlider.addOnChangeListener((slider, value, fromUser) -> myView.transposeSlider.setHint((int)value+""));
+
+        myView.transposeSlider.addOnChangeListener((slider, value, fromUser) -> myView.transposeSlider.setHint(showPositiveValue((int)value)));
         myView.sizeSlider.addOnSliderTouchListener(new MySliderTouchListener("abcPopupWidth"));
         myView.zoomSlider.addOnSliderTouchListener(new MySliderTouchListener("abcZoom"));
         myView.transposeSlider.addOnSliderTouchListener(new MySliderTouchListener("abcTranspose"));
@@ -130,43 +133,64 @@ public class MusicScoreFragment extends Fragment {
         public void onStopTrackingTouch(@NonNull Slider slider) {
             switch (prefName) {
                 case "abcPopupWidth":
-                    mainActivityInterface.getPreferences().setMyPreferenceFloat("abcPopupWidth",myView.sizeSlider.getValue()/100f);
+                    mainActivityInterface.getAbcNotation().setAbcPopupWidth(myView.sizeSlider.getValue()/100f);
                     break;
                 case "abcZoom":
-                    mainActivityInterface.getPreferences().setMyPreferenceInt("abcZoom",(int)myView.zoomSlider.getValue());
-                    mainActivityInterface.getAbcNotation().updateZoom(myView.abcWebView,(int)myView.zoomSlider.getValue());
+                    mainActivityInterface.getAbcNotation().setAbcZoom((int)myView.zoomSlider.getValue());
+                    mainActivityInterface.getAbcNotation().updateZoom(myView.abcWebView);
                     break;
                 case "abcTranspose":
                     // This isn't a preference, but a song specific value
-                    mainActivityInterface.getSong().setAbcTranspose((int)myView.transposeSlider.getValue()+"");
-                    mainActivityInterface.getAbcNotation().updateTranspose(myView.abcWebView,(int)myView.transposeSlider.getValue());
+                    mainActivityInterface.getAbcNotation().setSongAbcTranspose((int)myView.transposeSlider.getValue());
+                    mainActivityInterface.getAbcNotation().updateWebView(myView.abcWebView);
                     break;
             }
         }
     }
 
+    // This bit is triggered from the Save button
     private class JsInterface {
         @JavascriptInterface
         public void receiveString(String myJsString) {
-            Log.d(TAG,"string: "+myJsString);
+            Log.d(TAG, "string: " + myJsString);
             // String received from WebView
-            if (!myJsString.equals(mainActivityInterface.getAbcNotation().getSongInfo(mainActivityInterface))) {
-                // Something has changed
-                mainActivityInterface.getSong().setAbc(myJsString);
-                if (mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong())) {
-                    mainActivityInterface.getShowToast().doIt(getString(R.string.success));
-                } else {
-                    mainActivityInterface.getShowToast().doIt(getString(R.string.error));
-                }
+            //mainActivityInterface.getSong().setAbc(myJsString);
+            /*if (mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong())) {
+                mainActivityInterface.getShowToast().doIt(getString(R.string.success));
+            } else {
+                mainActivityInterface.getShowToast().doIt(getString(R.string.error));
+            }*/
+        }
 
-            }
+
+        @JavascriptInterface
+        public void checkKey(String abcText) {
+            Log.d(TAG,"checkKey called");
+            /*if (myView.autoTranspose.getChecked()) {
+                int val = mainActivityInterface.getAbcNotation().getABCTransposeFromSongKey();
+                Log.d(TAG,"val:"+val);
+                myView.transposeSlider.setValue(val);
+                myView.transposeSlider.setHint((int)myView.transposeSlider.getValue()+"");
+                mainActivityInterface.getAbcNotation().updateTranspose(myView.abcWebView,val);
+            }*/
         }
     }
 
+    private String showPositiveValue(int value) {
+        if (value>0) {
+            return "+" + value;
+        }
+        return "" + value;
+    }
+
     private void doSave() {
+        // Update the abc data
+        mainActivityInterface.getAbcNotation().setSongAbc(myView.abcText.getText().toString());
+        mainActivityInterface.getAbcNotation().setSongAbcTranspose((int)myView.transposeSlider.getValue());
+        mainActivityInterface.getAbcNotation().saveAbcContent(mainActivityInterface,mainActivityInterface.getSong());
         // Try to get the text by activating received string
-        mainActivityInterface.setWhattodo("viewabc");
-        myView.abcWebView.loadUrl("javascript:getTextVal()");
+        //mainActivityInterface.setWhattodo("viewabc");
+        //myView.abcWebView.loadUrl("javascript:getTextVal()");
     }
 
     @Override

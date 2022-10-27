@@ -51,6 +51,7 @@ public class ABCPopup {
 
             // Let's display the popup music score
         } else {
+            mainActivityInterface.getAbcNotation().prepareSongValues(mainActivityInterface.getSong(),true);
             // Set up the views
             getPositionAndSize();
             setupViews();
@@ -76,7 +77,7 @@ public class ABCPopup {
 
         // Check if the user wants to autotranspose the abc to the song key.  If so do it
         if (mainActivityInterface.getPreferences().getMyPreferenceBoolean("abcTransposeAuto",true)) {
-            mainActivityInterface.getAbcNotation().getABCTransposeFromSongKey(mainActivityInterface);
+            mainActivityInterface.getAbcNotation().getABCTransposeFromSongKey();
         }
 
         // The main layout (FloatWindow) is just a custom linearlayout where I've overridden the performclick
@@ -114,8 +115,7 @@ public class ABCPopup {
                 mainActivityInterface.getPreferences().getMyPreferenceFloat("abcPopupWidth",0.95f)),
                 LinearLayout.LayoutParams.WRAP_CONTENT));
         webView.getSettings().setJavaScriptEnabled(true);
-        mainActivityInterface.getAbcNotation().setWebView(webView, mainActivityInterface,
-                    false);
+        mainActivityInterface.getAbcNotation().setWebView(webView);
         floatWindow.addView(webView);
         popupWindow.setContentView(floatWindow);
     }
