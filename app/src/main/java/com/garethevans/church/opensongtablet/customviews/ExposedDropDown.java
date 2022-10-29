@@ -26,16 +26,15 @@ public class ExposedDropDown extends TextInputLayout {
     private AutoCompleteTextView autoCompleteTextView;
     private TextInputLayout textInputLayout;
     private final String TAG = "ExposedDropDown";
-    private final Context c;
+    private Context c;
     private final int delay = 50;
-    private final boolean largePopups;
+    private boolean largePopups;
     private ArrayList<String> arrayList = null;
 
     @SuppressLint("ClickableViewAccessibility")
     public ExposedDropDown(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         this.c = context;
-        largePopups = ((MainActivityInterface) context).getPreferences().getMyPreferenceBoolean("largePopups",true);
 
         inflate(context, R.layout.view_exposed_dropdown,this);
 
@@ -154,12 +153,16 @@ public class ExposedDropDown extends TextInputLayout {
         autoCompleteTextView.addTextChangedListener(textWatcher);
     }
 
-    public void setArray(String[] stringArray) {
+    public void setArray(Context c, String[] stringArray) {
+        this.c = c;
+        largePopups = ((MainActivityInterface) c).getPreferences().getMyPreferenceBoolean("largePopups",true);
         arrayList = new ArrayList<>();
         Collections.addAll(arrayList, stringArray);
     }
 
-    public void setArray(ArrayList<String> objects) {
+    public void setArray(Context c, ArrayList<String> objects) {
+        this.c = c;
+        largePopups = ((MainActivityInterface) c).getPreferences().getMyPreferenceBoolean("largePopups",true);
         arrayList = objects;
     }
 
