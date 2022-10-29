@@ -212,7 +212,7 @@ public class PerformanceFragment extends Fragment {
         myView.inlineSetList.orientationChanged(orientation);
     }
     public void updateInlineSetSet() {
-        //myView.inlineSetList.prepareSet();
+        myView.inlineSetList.prepareSet();
     }
     public void updateInlineSetItem(int position) {
         myView.inlineSetList.updateSelected(position);
