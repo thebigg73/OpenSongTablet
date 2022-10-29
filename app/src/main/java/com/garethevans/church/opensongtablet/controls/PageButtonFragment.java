@@ -205,7 +205,7 @@ public class PageButtonFragment extends Fragment {
 
     private void setTheDropDowns(int pos) {
         exposedDropDowns.get(pos).setAdapter(arrayAdapter);
-        exposedDropDowns.get(pos).setArray(mainActivityInterface.getPageButtons().getPageButtonAvailableText());
+        exposedDropDowns.get(pos).setArray(requireContext(), mainActivityInterface.getPageButtons().getPageButtonAvailableText());
         exposedDropDowns.get(pos).setText(mainActivityInterface.getPageButtons().getPageButtonText(pos));
         exposedDropDowns.get(pos).addTextChangedListener(new TextWatcher() {
             @Override

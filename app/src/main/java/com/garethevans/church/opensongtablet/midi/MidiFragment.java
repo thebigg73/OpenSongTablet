@@ -160,9 +160,9 @@ public class MidiFragment extends Fragment {
         myView.midiController.setAdapter(midiValueAdapter);
         myView.midiValue.setAdapter(midiValueAdapter);
         myView.midiVelocity.setAdapter(midiValueAdapter);
-        myView.midiController.setArray(midiValue);
-        myView.midiValue.setArray(midiValue);
-        myView.midiVelocity.setArray(midiValue);
+        myView.midiController.setArray(requireContext(),midiValue);
+        myView.midiValue.setArray(requireContext(),midiValue);
+        myView.midiVelocity.setArray(requireContext(),midiValue);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)

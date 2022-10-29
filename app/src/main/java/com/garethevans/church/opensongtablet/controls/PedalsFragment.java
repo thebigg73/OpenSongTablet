@@ -182,7 +182,7 @@ public class PedalsFragment extends Fragment {
             currVal = mainActivityInterface.getPedalActions().getPedalLongPressAction(which);
         }
         exposedDropDown.setAdapter(arrayAdapter);
-        exposedDropDown.setArray(actions);
+        exposedDropDown.setArray(requireContext(),actions);
         exposedDropDown.setText(getActionFromActionCode(currVal));
         exposedDropDown.addTextChangedListener(new MyTextWatcher(currVal,which,isShort));
     }
