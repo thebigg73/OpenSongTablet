@@ -1,9 +1,6 @@
 package com.garethevans.church.opensongtablet.export;
 
 import android.app.Activity;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.pdf.PdfDocument;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,8 +10,6 @@ import android.print.PageRange;
 import android.print.PrintAttributes;
 import android.print.PrintDocumentAdapter;
 import android.print.PrintDocumentInfo;
-import android.print.pdf.PrintedPdfDocument;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
 
@@ -33,30 +28,20 @@ public class MultipagePrinterAdapter extends PrintDocumentAdapter {
 
     private final MutableLiveData<Boolean> listen = new MutableLiveData<>();
     private final String TAG = "MutliPagePrint";
-    private Activity activity;
-    private MainActivityInterface mainActivityInterface;
-    private PdfDocument pdfDocument;
-    private String name;
+    private final MainActivityInterface mainActivityInterface;
     private String setName;
     private Uri uri;
     private ArrayList<View> sectionViewsPDF;
     private ArrayList<String> setItemLocations, setItemEntries;
-    private int headerLayoutWidth, headerLayoutHeight, docWidth, docHeight;
-    private int totalPages;
-    private PrintedPdfDocument printedPdfDocument;
+    private int headerLayoutWidth;
+    private int headerLayoutHeight;
     private ExportFragment exportFragment;
-    private Song tempSong;
     private LayoutResultCallback layoutResultCallback;
-    private PrintAttributes printAttributes;
-    private boolean songHeaderDone = false;
-    private boolean songContentDone = false;
     private int currentSetItem;
-    private Song currentSetSong;
 
     // THIS IS USED TO MAKE MULTIPAGE PDF FILES FROM SETS WITH THE SONGS IN ONE PDF
 
     public MultipagePrinterAdapter(Activity activity) {
-        this.activity = activity;
         mainActivityInterface = (MainActivityInterface) activity;
         sectionViewsPDF = new ArrayList<>();
     }
@@ -78,7 +63,6 @@ public class MultipagePrinterAdapter extends PrintDocumentAdapter {
                          Bundle extras) {
         // The user has chosen a printer, orientation, etc that decides a layout
         this.layoutResultCallback = layoutResultCallback;
-        this.printAttributes = printAttributes;
 
         // Respond to cancellation request
         if (cancellationSignal.isCanceled()) {
@@ -90,7 +74,7 @@ public class MultipagePrinterAdapter extends PrintDocumentAdapter {
 
         // Create the first section of the PDF - the set list
         mainActivityInterface.getMakePDF().setIsSetListPrinting(true);
-        tempSong = new Song();
+        Song tempSong = new Song();
         tempSong.setTitle(setName);
         StringBuilder setItems = new StringBuilder();
         for (String setItemEntry:setItemEntries) {
@@ -116,7 +100,6 @@ public class MultipagePrinterAdapter extends PrintDocumentAdapter {
                 exportFragment.getHiddenHeader().getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 headerLayoutWidth = exportFragment.getHiddenHeader().getWidth();
                 headerLayoutHeight = exportFragment.getHiddenHeader().getHeight();
-                Log.d(TAG,"headerSize="+headerLayoutWidth+"x"+headerLayoutHeight);
                 exportFragment.getHiddenHeader().removeAllViews();
                 createOnTheFlySections(thisSong,theSetList);
             }
@@ -173,20 +156,16 @@ public class MultipagePrinterAdapter extends PrintDocumentAdapter {
                     // Now trigger the next step of preparing the pdf from the views created on the fly
                     listen.setValue(true);
 
-                    Log.d(TAG,"add current item to pdf");
-
                     mainActivityInterface.getMakePDF().addCurrentItemToPDF(exportFragment.getSectionViews(),
                             exportFragment.getSectionWidths(),exportFragment.getSectionHeights(),
                             exportFragment.getHeaderLayout(),headerLayoutWidth,
                             headerLayoutHeight);
 
                     if (theSetList) {
-                        Log.d(TAG,"Finished the set list, now moving to songs");
                         // Now we have finished the set list, deal with the content/songs
                         currentSetItem = 0;
                         getSongOrPrintIfDone();
                     } else {
-                        Log.d(TAG,"This song done. Moving to the next song");
                         // Move to the next song
                         currentSetItem++;
                         getSongOrPrintIfDone();
@@ -196,7 +175,6 @@ public class MultipagePrinterAdapter extends PrintDocumentAdapter {
             }
         });
 
-        Log.d(TAG,"sectionViewsPDF.size(): "+sectionViewsPDF.size());
         // Add the section views and this will trigger the VTO
         for (int x=0; x<sectionViewsPDF.size(); x++) {
             exportFragment.getHiddenSections().addView(sectionViewsPDF.get(x));
@@ -204,20 +182,15 @@ public class MultipagePrinterAdapter extends PrintDocumentAdapter {
     }
 
     private void getSongOrPrintIfDone() {
-        Log.d(TAG,"currentSetItem: "+currentSetItem);
-        Log.d(TAG,"setItemEntries.size(): "+setItemEntries.size());
-        Log.d(TAG,"exportSetSongs: "+mainActivityInterface.getPreferences().getMyPreferenceBoolean("exportSetSongs",false));
         if (!mainActivityInterface.getPreferences().getMyPreferenceBoolean("exportSetSongs",false) || currentSetItem==setItemEntries.size()) {
-            Log.d(TAG,"just call print");
             callPrint();
         } else {
             // Initialse the song for processing
-            Log.d(TAG,"setItemLocations.get(currentSetItem):"+setItemLocations.get(currentSetItem));
+            Song currentSetSong;
             if (setItemLocations.get(currentSetItem).contains("../") ||
             setItemLocations.get(currentSetItem).contains("**")) {
                 String s = setItemLocations.get(currentSetItem);
                 s = s.replace("../","**");
-                Log.d(TAG,"s:"+s);
                 // This is a custom file - load it!
                 String[] location = s.split("/");
                 currentSetSong = new Song();
@@ -225,7 +198,6 @@ public class MultipagePrinterAdapter extends PrintDocumentAdapter {
                 currentSetSong.setFilename(location[1]);
                 currentSetSong = mainActivityInterface.getLoadSong().doLoadSongFile(currentSetSong,false);
             } else {
-                Log.d(TAG, "item:" + setItemLocations.get(currentSetItem));
                 if (setItemLocations.get(currentSetItem).contains("/")) {
                     String[] location = setItemLocations.get(currentSetItem).split("/");
                     currentSetSong = mainActivityInterface.getSQLiteHelper().getSpecificSong(location[0], location[1]);
@@ -235,32 +207,26 @@ public class MultipagePrinterAdapter extends PrintDocumentAdapter {
             }
 
             // Now do the header.  Once this is done, it does the content, then moves to the next song
-            Log.d(TAG,"creating the header");
             createOnTheFlyHeader(currentSetSong,false);
         }
     }
 
     private void callPrint() {
-        // TODO
         // Actual PDF document
         if (setName==null) {
             setName = mainActivityInterface.getMakePDF().getExportFilename();
         }
 
         uri = mainActivityInterface.getMakePDF().getPDFFile(setName+".pdf");
-        pdfDocument = mainActivityInterface.getMakePDF().getPdfDocument();
-        printedPdfDocument = new PrintedPdfDocument(activity, printAttributes);
+        PdfDocument pdfDocument = mainActivityInterface.getMakePDF().getPdfDocument();
 
         // Compute the expected number of printed pages
-        totalPages = pdfDocument.getPages().size();
-
-        docWidth = mainActivityInterface.getMakePDF().getDocWidth();
-        docHeight = mainActivityInterface.getMakePDF().getDocHeight();
+        int totalPages = pdfDocument.getPages().size();
 
         if (totalPages > 0) {
             // Return print information to print framework
             PrintDocumentInfo info = new PrintDocumentInfo
-                    .Builder(name + ".pdf")
+                    .Builder(setName + ".pdf")
                     .setContentType(PrintDocumentInfo.CONTENT_TYPE_DOCUMENT)
                     .setPageCount(totalPages)
                     .build();
@@ -276,31 +242,13 @@ public class MultipagePrinterAdapter extends PrintDocumentAdapter {
         }
     }
 
-    private boolean pageInRange(PageRange[] pageRanges, int page) {
-        for (PageRange pageRange : pageRanges) {
-            if ((page >= pageRange.getStart()) &&
-                    (page <= pageRange.getEnd()))
-                return true;
-        }
-        return false;
-    }
-
-    private void drawPage(PdfDocument.Page page, int i) {
-        Paint paint = new Paint();
-        paint.setColor(Color.BLACK);
-        Canvas canvas = page.getCanvas();
-        canvas.drawRect(pdfDocument.getPages().get(i).getContentRect(),paint);
-    }
-
     @Override
     public void onWrite(PageRange[] pages, ParcelFileDescriptor destination,
                         CancellationSignal cancellationSignal, WriteResultCallback callback) {
         // The user has chosen the pages, format and clicked the print button
 
-        try {
-            InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(uri);
-            OutputStream outputStream = new FileOutputStream(destination.getFileDescriptor());
-
+        try (InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(uri);
+             OutputStream outputStream = new FileOutputStream(destination.getFileDescriptor())) {
             byte[] buf=new byte[16384];
             int size;
 
@@ -314,11 +262,9 @@ public class MultipagePrinterAdapter extends PrintDocumentAdapter {
             } else {
                 callback.onWriteFinished(pages);
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
 
 }

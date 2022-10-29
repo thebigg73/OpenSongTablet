@@ -62,7 +62,6 @@ public class InlineSetList extends RecyclerView {
 
     public void orientationChanged(int orientation) {
         int[] metrics = mainActivityInterface.getDisplayMetrics();
-        Log.d(TAG, "screenSize:" + metrics[0] + "x" + metrics[1]);
         int portraitWidth = Math.min(metrics[0], metrics[1]);
         int landscapeWidth = Math.max(metrics[0], metrics[1]);
         if (orientation == Configuration.ORIENTATION_PORTRAIT) {
@@ -70,7 +69,6 @@ public class InlineSetList extends RecyclerView {
         } else {
             width = (int) (mainActivityInterface.getPreferences().getMyPreferenceFloat("inlineSetWidth", 0.3f) * landscapeWidth);
         }
-        Log.d(TAG, "portrait.  screenWidth:" + width);
         checkVisibility();
     }
 
@@ -83,7 +81,6 @@ public class InlineSetList extends RecyclerView {
             }
             setVisibility(View.VISIBLE);
             ViewGroup.LayoutParams lp = getLayoutParams();
-            Log.d(TAG, "trying to set width to: " + width);
             lp.width = width;
             setLayoutParams(lp);
             requestLayout();
@@ -126,7 +123,6 @@ public class InlineSetList extends RecyclerView {
     }
 
     public void prepareSet() {
-        Log.d(TAG, "prepareSet()");
         inlineSetListAdapter.clearSetList();
         selectedItem = -1;
 

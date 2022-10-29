@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.print.PrintManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -158,7 +157,6 @@ public class ExportFragment extends Fragment {
             // Include the songs views
             myView.includeSongs.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("exportSetSongs",true));
             myView.includeSongs.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                Log.d(TAG,"isChecked:"+isChecked);
                 mainActivityInterface.getPreferences().setMyPreferenceBoolean("exportSetSongs",isChecked);
                 showHideSongOptions(isChecked);
             });
@@ -338,7 +336,6 @@ public class ExportFragment extends Fragment {
                         boolean likelyXML = !location[1].contains(".") || location[1].toLowerCase(Locale.ROOT).endsWith(".xml");
                         boolean likelyPDF = location[1].toLowerCase(Locale.ROOT).endsWith(".pdf");
 
-                        Log.d(TAG,"location[0]:"+location[0]+"  locaition[1]:"+location[1]);
                         // If this is a variation, etc. load it.
                         // Otherwise, get from the database
                         Song song;
@@ -423,7 +420,6 @@ public class ExportFragment extends Fragment {
                 }
             }
 
-            Log.d(TAG,"songsProcessed: "+songsProcessed+"  songsToAdd:"+songsToAdd);
             if ((includeSongs && pdf) || setPDF) {
                 // We need to render PDFs which get drawn and added one at a time
                 // From here on we need to be on the UI thread (ouch!)
@@ -456,7 +452,6 @@ public class ExportFragment extends Fragment {
 
     private void renderPDFSongs() {
         mainActivityInterface.getMakePDF().setIsSetListPrinting(false);
-        Log.d(TAG,"songsProcessed="+songsProcessed);
         // Go through the songs if we are adding them as pdfs until we have processed all
         if (!includeSongs || !pdf || songsProcessed==songsToAdd) {
             initiateShare();
@@ -631,7 +626,6 @@ public class ExportFragment extends Fragment {
                 headerLayoutWidth = myView.hiddenHeader.getMeasuredWidth();
                 headerLayoutHeight = myView.hiddenHeader.getMeasuredHeight();
                 myView.hiddenHeader.removeAllViews();
-                Log.d(TAG, "ready to prepare sections");
                 createOnTheFlySections(thisSong, pdfName);
             }
         });
@@ -667,7 +661,6 @@ public class ExportFragment extends Fragment {
                 // The views are ready so lets measure them after clearing this listener
 
                 // If all the views are there, we can start measuring
-                Log.d(TAG,"Have we drawn all?  "+myView.hiddenSections.getChildCount()+"/"+sectionViewsPDF.size());
                 if (myView.hiddenSections.getChildCount()==sectionViewsPDF.size()) {
                     myView.hiddenSections.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                     for (int x=0; x<myView.hiddenSections.getChildCount(); x++) {
@@ -706,7 +699,6 @@ public class ExportFragment extends Fragment {
             }
         });
 
-        Log.d(TAG,"sectionViewsPDF.size(): "+sectionViewsPDF.size());
         // Add the section views and this will trigger the VTO
         for (int x=0; x<sectionViewsPDF.size(); x++) {
             myView.hiddenSections.addView(sectionViewsPDF.get(x));
@@ -731,11 +723,6 @@ public class ExportFragment extends Fragment {
         if (isSet) {
             // Set the variable that will remove gaps from set items on the set list page(s)
             mainActivityInterface.getMakePDF().setIsSetListPrinting(true);
-
-            // For the set, we need a text version of the set
-            Log.d(TAG,"setToExport: "+setToExport);
-            Log.d(TAG,"setData[0]: "+setData[0]);
-            Log.d(TAG,"setData[1]: "+setData[1]);
 
             // This is sent to the MultipagePrinterAdapter class to deal with
             MultipagePrinterAdapter multipagePrinterAdapter = new MultipagePrinterAdapter(requireActivity());

@@ -41,7 +41,6 @@ public class MakePDF {
     }
 
     public void createBlankPDFDoc(String exportFilename, PrintAttributes printAttributes){
-        Log.d(TAG,"exportFilename="+exportFilename);
         this.exportFilename = exportFilename;
         this.printAttributes = printAttributes;
 
@@ -171,36 +170,23 @@ public class MakePDF {
         } else {
             headerScaling = Math.min(maxWidthScaling, maxHeightScaling);
         }
-        Log.d(TAG,"headerHeight="+headerHeight);
         headerWidth = (int) ((float)headerWidth * headerScaling);
         headerHeight = (int) ((float)headerHeight * headerScaling);
 
-        Log.d(TAG,"headerScaling="+headerScaling);
-        Log.d(TAG,"headerHeight="+headerHeight);
-
         // Do any scaling
         scaleThisView(headerLayout, headerWidth, headerHeight, headerScaling);
-
-        Log.d(TAG,"save canvas");
-        Log.d(TAG,"pageCanvas:"+pageCanvas);
-        Log.d(TAG,"pageNum="+pageNum);
 
         pageCanvas = page.getCanvas();
         // Save the canvas, translate for correct write positioning, then restore the canvas state/position
         try {
             pageCanvas.save();
-            Log.d(TAG,"translate canvas");
             pageCanvas.translate(cmToPx(margin_cm), cmToPx(margin_cm));
-            Log.d(TAG,"scale canvas");
             pageCanvas.scale(headerScaling, headerScaling);
-            Log.d(TAG,"draw canvas");
             headerLayout.draw(pageCanvas);
-            Log.d(TAG,"restore canvas");
             pageCanvas.restore();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        Log.d(TAG,"horizontal line");
         // Draw a horizontal line under the heading
         drawHorizontalLine(headerHeight + cmToPx(margin_cm));
         headerHeight = headerHeight + 4;
@@ -291,8 +277,6 @@ public class MakePDF {
 
         // Set our starting positions and sizes
         float ypos = headerHeight + cmToPx(margin_cm);
-        Log.d(TAG,"headerHeight="+headerHeight);
-        Log.d(TAG,"ypos="+ypos);
         int spaceStillAvailable = availableHeight;
 
         // Go through views one at a time
@@ -360,7 +344,6 @@ public class MakePDF {
         try {
             pdfDocument.writeTo(outputStream);
             outputStream.close();
-            Log.d(TAG,"pdfDocument close");
             pdfDocument.close();
         } catch (Exception e) {
             e.printStackTrace();

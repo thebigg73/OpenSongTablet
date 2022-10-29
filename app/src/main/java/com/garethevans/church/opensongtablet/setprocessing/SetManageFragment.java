@@ -8,7 +8,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,7 +76,6 @@ public class SetManageFragment extends Fragment {
 
     private void checkForLoadSpecific() {
         if (mainActivityInterface.getWhattodo().startsWith("loadset:")) {
-            Log.d(TAG, "trying to load a set automatically");
             String lookFor = mainActivityInterface.getWhattodo().replace("loadset:", "");
             chosenSets = chosenSets + "%_%" + lookFor + "%_%";
         }
@@ -275,7 +273,6 @@ public class SetManageFragment extends Fragment {
                 String toFind = bitToRemove + setName;
                 toFind = toFind.replace(getString(R.string.mainfoldername) + "__", "");
                 checkBox.setChecked(chosenSets.contains("%_%" + toFind + "%_%"));
-                Log.d(TAG, "Looking for " + "%_%" + toFind + "%_%" + "   in chosenSets:" + chosenSets);
             }
             String setCategory = myView.setCategory.getText().toString();
             String finalSetName;

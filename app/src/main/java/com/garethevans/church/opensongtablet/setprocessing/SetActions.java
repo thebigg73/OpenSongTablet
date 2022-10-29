@@ -214,7 +214,6 @@ public class SetActions {
         noKeySong.setFilename(thisSong.getFilename());
         noKeySong.setKey("");
         String searchTextNoKeySpecified = getSongForSetWork(noKeySong);
-        //Log.d(TAG,"Trying to search set for: "+searchText+ " or "+searchTextNoKeySpecified);
         int position = mainActivityInterface.getCurrentSet().getSetItems().lastIndexOf(searchText);
         int positionNoKey = mainActivityInterface.getCurrentSet().getSetItems().lastIndexOf(searchTextNoKeySpecified);
         int positionVariation = -1;
@@ -243,10 +242,8 @@ public class SetActions {
             }
             String searchTextAsVariation = getSongForSetWork("**Variation",varFilename,"").replace("******__**$","");
             String searchTextAsKeyChangeVar = getSongForSetWork(varFolder,varFilename,"").replace("******__**$","");
-            //Log.d(TAG,"Finally trying to search set for: "+searchTextAsVariation);
 
             for (int v = 0; v < mainActivityInterface.getCurrentSet().getSetItems().size(); v++) {
-                //Log.d(TAG, "item:" + mainActivityInterface.getCurrentSet().getSetItems().get(v));
                 if (mainActivityInterface.getCurrentSet().getSetItems().get(v).contains(searchTextAsKeyChangeVar) ||
                         mainActivityInterface.getCurrentSet().getSetItems().get(v).contains(searchTextAsVariation)) {
                     positionVariation = v;
@@ -522,7 +519,6 @@ public class SetActions {
         // We receive a song object as it isn't necessarily the one loaded to MainActivity
         Uri uriOriginal = mainActivityInterface.getStorageAccess().getUriForItem("Songs", folder, filename);
 
-        //Log.d(TAG,"uriOriginal="+uriOriginal);
         // Get the uri of the new variation file (Variations/filename)
 
         // IV - When a received song - use the stored received song filename
@@ -600,7 +596,6 @@ public class SetActions {
         } else {
             valueToDecideFrom = "Songs";
         }
-        Log.d(TAG,"valueToDecideFrom: "+valueToDecideFrom);
         return valueToDecideFrom;
     }
 
@@ -686,7 +681,6 @@ public class SetActions {
         } else {
             pathText = " path=\"/\"";
         }
-        Log.d(TAG,"pathText="+pathText);
         sb.append("  <slide_group name=\"")
                 .append(mainActivityInterface.getProcessSong().parseToHTMLEntities(name))
                 .append("\" type=\"song\"")
@@ -1257,7 +1251,6 @@ public class SetActions {
 
         if (tempSong.getFolder().contains(customLocStart + folderVariations)) {
             // The song is encoded in the custom_notes
-            Log.d(TAG, "encoded=" + custom_notes);
             byte[] decodedString = Base64.decode(custom_notes, Base64.DEFAULT);
             String s;
             try {
@@ -1266,7 +1259,6 @@ public class SetActions {
                 s = custom_notes;
                 e.printStackTrace();
             }
-            Log.d(TAG, "decoded=" + s);
 
             mainActivityInterface.getStorageAccess().doStringWriteToFile(tempSong.getFolder().replace(customLocStart,""),tempcache,tempSong.getFilename(),s);
 
