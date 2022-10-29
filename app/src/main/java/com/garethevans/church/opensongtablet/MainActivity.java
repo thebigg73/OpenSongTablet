@@ -1935,6 +1935,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 e.printStackTrace();
             }
         }
+
+        // If we are using the inline set, scroll to this item
+        if (presenterValid()) {
+            presenterFragment.updateInlineSetItem(position);
+        } else if (performanceValid()) {
+            performanceFragment.updateInlineSetItem(position);
+        }
+
         doSongLoad(setFolder, setFilename, true);
     }
 
@@ -2767,35 +2775,40 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
 
-        // Get the language
-        fixLocale.setLocale(this,this);
+        if (bootUpCompleted) {
+            // Get the language
+            fixLocale.setLocale(this, this);
 
-        // Save a variable that we have rotated the screen.
-        // The media player will look for this.  If found, it won't restart when the song loads
-        pad.setOrientationChanged(pad.getCurrentOrientation()!=newConfig.orientation);
-        // If orientation has changed, we need to reload the song to get it resized.
-        // Only do this if we are not in a settings menu though!
-        if (!settingsOpen && pad.getOrientationChanged()) {
-            // Set the current orientation
-            pad.setCurrentOrientation(newConfig.orientation);
-            pageButtons.requestLayout();
-            doSongLoad(song.getFolder(),song.getFilename(),true);
-        }
-        if (!settingsOpen && performanceValid()) {
-            performanceFragment.orientationInlineSet(newConfig.orientation);
-        } else if (!settingsOpen && presenterValid()) {
-            presenterFragment.orientationInlineSet(newConfig.orientation);
+            // Save a variable that we have rotated the screen.
+            // The media player will look for this.  If found, it won't restart when the song loads
+            pad.setOrientationChanged(pad.getCurrentOrientation() != newConfig.orientation);
+            // If orientation has changed, we need to reload the song to get it resized.
+            // Only do this if we are not in a settings menu though!
+            if (!settingsOpen && pad.getOrientationChanged()) {
+                // Set the current orientation
+                pad.setCurrentOrientation(newConfig.orientation);
+                pageButtons.requestLayout();
+                doSongLoad(song.getFolder(), song.getFilename(), true);
+            }
+            if (!settingsOpen && performanceValid()) {
+                performanceFragment.orientationInlineSet(newConfig.orientation);
+            } else if (!settingsOpen && presenterValid()) {
+                presenterFragment.orientationInlineSet(newConfig.orientation);
+            }
+
         }
     }
     @Override
     protected void onResume() {
         super.onResume();
 
-        // Fix the page flags
-        setWindowFlags(true);
+        if (bootUpCompleted) {
+            // Fix the page flags
+            setWindowFlags(true);
 
-        // Check displays
-        checkDisplays();
+            // Check displays
+            checkDisplays();
+        }
     }
 
     @Override

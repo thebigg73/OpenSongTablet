@@ -5,6 +5,7 @@ import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,15 +35,18 @@ public class InlineSetList extends RecyclerView {
     private InlineSetListAdapter inlineSetListAdapter;
     private MainActivityInterface mainActivityInterface;
     private ArrayList<InlineSetItemInfo> setList;
+    private LinearLayoutManager llm;
 
     public InlineSetList(@NonNull Context context) {
         super(context);
-        setLayoutManager(new LinearLayoutManager(context));
+        llm = new LinearLayoutManager(context);
+        setLayoutManager(llm);
     }
 
     public InlineSetList(@NonNull Context context, @Nullable @org.jetbrains.annotations.Nullable AttributeSet attrs) {
         super(context, attrs);
-        setLayoutManager(new LinearLayoutManager(context));
+        llm = new LinearLayoutManager(context);
+        setLayoutManager(llm);
     }
 
     public void initialisePreferences(Context c, MainActivityInterface mainActivityInterface) {
@@ -57,20 +61,27 @@ public class InlineSetList extends RecyclerView {
     }
 
     public void orientationChanged(int orientation) {
-        int screenWidth;
-        if (orientation== Configuration.ORIENTATION_PORTRAIT) {
-            screenWidth = mainActivityInterface.getDisplayMetrics()[0];
+        int[] metrics = mainActivityInterface.getDisplayMetrics();
+        Log.d(TAG,"screenSize:"+metrics[0]+"x"+metrics[1]);
+        int portraitWidth = Math.min(metrics[0], metrics[1]);
+        int landscapeWidth = Math.max(metrics[0], metrics[1]);
+        if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+            width = (int) (mainActivityInterface.getPreferences().getMyPreferenceFloat("inlineSetWidth", 0.3f) * portraitWidth);
         } else {
-            screenWidth = mainActivityInterface.getDisplayMetrics()[1];
+            width = (int) (mainActivityInterface.getPreferences().getMyPreferenceFloat("inlineSetWidth", 0.3f) * landscapeWidth);
         }
-        width = (int)(mainActivityInterface.getPreferences().getMyPreferenceFloat("inlineSetWidth",0.3f)*screenWidth);
+        Log.d(TAG, "portrait.  screenWidth:" + width);
         checkVisibility();
     }
 
     public void checkVisibility() {
         if (mainActivityInterface.getCurrentSet().getSetItems().size()>0 && needInline()) {
             setVisibility(View.VISIBLE);
-            getLayoutParams().width = width;
+            ViewGroup.LayoutParams lp = getLayoutParams();
+            Log.d(TAG,"trying to set width to: "+width);
+            lp.width = width;
+            setLayoutParams(lp);
+            requestLayout();
         } else {
             setVisibility(View.GONE);
         }
@@ -293,11 +304,16 @@ public class InlineSetList extends RecyclerView {
                 updateSelected(getAbsoluteAdapterPosition());
                 mainActivityInterface.loadSongFromSet(getAbsoluteAdapterPosition());
             });
+            v.setOnLongClickListener(v1 -> {
+                scrollToItem(selectedItem);
+                return true;
+            });
         }
     }
 
     public void updateSelected(int selectedItem) {
         inlineSetListAdapter.updateHighlightedItem(selectedItem);
+        scrollToItem(selectedItem);
     }
     public void updateInlineSetMove(int from, int to) {
         inlineSetListAdapter.updateInlineSetMove(from,to);
@@ -315,5 +331,18 @@ public class InlineSetList extends RecyclerView {
     }
     public void initialiseInlineSetItem(int position) {
         inlineSetListAdapter.initialiseInlineSetItem(position);
+    }
+    private void scrollToItem(int position) {
+        this.post(() -> {
+            if (position > -1 &&
+                    position < mainActivityInterface.getCurrentSet().getSetItems().size()) {
+                // Scroll to that item
+                llm.scrollToPositionWithOffset(position, 0);
+            } else if (position == -1 &&
+                    mainActivityInterface.getCurrentSet().getSetItems().size() > 0) {
+                // Scroll to the top
+                llm.scrollToPositionWithOffset(0,0);
+            }
+        });
     }
 }
