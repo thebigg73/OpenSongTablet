@@ -366,7 +366,10 @@
     <string name="mainfoldername">"FŐBB"</string>
     <string name="mandolin">Mandolin</string>
     <string name="margins">Margók</string>
+    <string name="margins_custom">Egyedi kiegészítő margók</string>
     <string name="margins_info">Állítsa be a margókat a tartalom körül, hogy elkerülje a képernyő kivágásait és lekerekített sarkait</string>
+    <string name="margins_system">Rendszer margók</string>
+    <string name="margins_system_info">Hagyjon helyet az észlelt eszközvezérlőknek (alsó navigációs sáv és oldalsó menük)</string>
     <string name="max_font_size">Maximális automatikus átméretezés betűméret</string>
     <string name="max_vol_range">"Grafikus mennyiségi mutató tartományban"</string>
     <string name="maximise_columns">Oszlopok méretezése függetlenül.</string>

@@ -366,7 +366,10 @@
     <string name="mainfoldername">PESME</string>
     <string name="mandolin">Mandolina</string>
     <string name="margins">Margine</string>
+    <string name="margins_custom">Prilagođene dodatne margine</string>
     <string name="margins_info">Podesite margine oko sadržaja da biste izbegli isečke na ekranu i zaobljene uglove</string>
+    <string name="margins_system">Sistemske margine</string>
+    <string name="margins_system_info">Ostavite prostor za detektovane kontrole uređaja (donja traka za navigaciju i bočni meniji)</string>
     <string name="max_font_size">Najveća moguća veličina fonta za automatsku promenu veličine</string>
     <string name="max_vol_range">Grafički indikator nivoa zvuka</string>
     <string name="maximise_columns">Skala kolona nezavisno.</string>

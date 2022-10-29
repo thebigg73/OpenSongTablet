@@ -366,7 +366,10 @@
     <string name="mainfoldername">"MAIN"</string>
     <string name="mandolin">Mandolien</string>
     <string name="margins">Marges</string>
+    <string name="margins_custom">Pasgemaakte bykomende marges</string>
     <string name="margins_info">Pas die kantlyne rondom die inhoud aan om skermuitknipsels en afgeronde hoeke te vermy</string>
+    <string name="margins_system">System margins</string>
+    <string name="margins_system_info">Los spasie vir bespeurde toestelkontroles (onderste navigasiebalk en sykieslyste)</string>
     <string name="max_font_size">Maksimum autoscale lettergrootte</string>
     <string name="max_vol_range">"Grafiese volume aanwyser reeks"</string>
     <string name="maximise_columns">Skaal kolomme onafhanklik af.</string>

@@ -366,7 +366,10 @@
     <string name="mainfoldername">"ΚΕΝΤΡΙΚΟ"</string>
     <string name="mandolin">"Μαντολίνο"</string>
     <string name="margins">Περιθώρια</string>
+    <string name="margins_custom">Προσαρμοσμένα πρόσθετα περιθώρια</string>
     <string name="margins_info">Προσαρμόστε τα περιθώρια γύρω από το περιεχόμενο για να αποφύγετε τις εγκοπές οθόνης και τις στρογγυλεμένες γωνίες</string>
+    <string name="margins_system">Περιθώρια συστήματος</string>
+    <string name="margins_system_info">Αφήστε χώρο για τα στοιχεία ελέγχου συσκευής που εντοπίστηκαν (κάτω γραμμή πλοήγησης και πλευρικά μενού)</string>
     <string name="max_font_size">"Maximum autoscale font size"</string>
     <string name="max_vol_range">"Graphical volume indicator range"</string>
     <string name="maximise_columns">Κλίμακα στήλες ανεξάρτητα.</string>

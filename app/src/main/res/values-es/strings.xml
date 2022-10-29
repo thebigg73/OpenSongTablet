@@ -366,7 +366,10 @@
     <string name="mainfoldername">"PRINCIPAL"</string>
     <string name="mandolin">Mandolina</string>
     <string name="margins">Márgenes</string>
+    <string name="margins_custom">Márgenes adicionales personalizados</string>
     <string name="margins_info">Ajuste los márgenes alrededor del contenido para evitar recortes de pantalla y esquinas redondeadas</string>
+    <string name="margins_system">Márgenes del sistema</string>
+    <string name="margins_system_info">Deje espacio para los controles del dispositivo detectado (barra de navegación inferior y menús laterales)</string>
     <string name="max_font_size">Autoescala Máximo tamaño de la fuente</string>
     <string name="max_vol_range">"Rango indicador de volumen gráfica"</string>
     <string name="maximise_columns">Escala columnas de forma independiente.</string>

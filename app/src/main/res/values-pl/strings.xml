@@ -366,7 +366,10 @@
     <string name="mainfoldername">"GŁÓWNA"</string>
     <string name="mandolin">Mandolina</string>
     <string name="margins">Marże</string>
+    <string name="margins_custom">Niestandardowe dodatkowe marże</string>
     <string name="margins_info">Dostosuj marginesy wokół treści, aby uniknąć wycięcia ekranu i zaokrąglonych rogów</string>
+    <string name="margins_system">Marże systemowe</string>
+    <string name="margins_system_info">Zostaw miejsce na wykryte elementy sterujące urządzenia (dolny pasek nawigacyjny i boczne menu)</string>
     <string name="max_font_size">Maksymalna automatycznego skalowania rozmiar czcionki</string>
     <string name="max_vol_range">"Graficzny wskaźnik głośności Zakres"</string>
     <string name="maximise_columns">Skaluj kolumny niezależnie.</string>

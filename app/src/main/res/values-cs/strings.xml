@@ -366,7 +366,10 @@
     <string name="mainfoldername">"HLAVNÍ"</string>
     <string name="mandolin">Mandolína</string>
     <string name="margins">边距</string>
+    <string name="margins_custom">Vlastní dodatečné okraje</string>
     <string name="margins_info">Upravte okraje kolem obsahu, abyste se vyhnuli výřezům na obrazovce a zaobleným rohům</string>
+    <string name="margins_system">Systémové marže</string>
+    <string name="margins_system_info">Ponechat místo pro ovládací prvky detekovaného zařízení (spodní navigační lišta a boční nabídky)</string>
     <string name="max_font_size">Maximální autoscale velikost písma</string>
     <string name="max_vol_range">"Rozsah Grafické objem indikátor"</string>
     <string name="maximise_columns">Měřítko sloupců samostatně.</string>

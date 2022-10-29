@@ -366,7 +366,10 @@
     <string name="mainfoldername">"MAIN"</string>
     <string name="mandolin">Mandoline</string>
     <string name="margins">Marges</string>
+    <string name="margins_custom">Marges supplémentaires personnalisées</string>
     <string name="margins_info">Ajustez les marges autour du contenu pour éviter les coupures d\'écran et les coins arrondis</string>
+    <string name="margins_system">Marges du système</string>
+    <string name="margins_system_info">Laissez de l\'espace pour les commandes de l\'appareil détecté (barre de navigation inférieure et menus latéraux)</string>
     <string name="max_font_size">Taille maximale de la police pour la mise ne page automatique</string>
     <string name="max_vol_range">"Plage de l\'indicateur de volume graphique"</string>
     <string name="maximise_columns">Échelle des colonnes indépendamment.</string>

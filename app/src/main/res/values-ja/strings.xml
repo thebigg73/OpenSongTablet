@@ -366,7 +366,10 @@
     <string name="mainfoldername">"ホームページ"</string>
     <string name="mandolin">マンドリン</string>
     <string name="margins">余白</string>
+    <string name="margins_custom">カスタム追加マージン</string>
     <string name="margins_info">画面の切り抜きや角の丸みを避けるために、コンテンツの周囲の余白を調整します</string>
+    <string name="margins_system">システムマージン</string>
+    <string name="margins_system_info">検出されたデバイス コントロール (下部のナビゲーション バーとサイド メニュー) 用のスペースを残す</string>
     <string name="max_font_size">最大オートスケールフォントサイズ</string>
     <string name="max_vol_range">"グラフィカル音量インジケータ範囲"</string>
     <string name="maximise_columns">列を個別にスケーリングします。</string>
