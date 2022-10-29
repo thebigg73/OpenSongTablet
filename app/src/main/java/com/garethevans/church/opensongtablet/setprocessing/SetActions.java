@@ -16,6 +16,7 @@ import org.xmlpull.v1.XmlPullParserFactory;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -223,7 +224,6 @@ public class SetActions {
             // Strip out the key
             String varFilename = thisSong.getFilename().replace("_"+thisSong.getKey(),"");
             String varFolder = thisSong.getFolder();
-            //Log.d(TAG,"varFolder: "+varFolder+"  varFilename:"+varFilename);
             if (varFolder.equals("**Variation")) {
                 varFolder = "";
                 // Now decide if we can extract a folder from the remaining filename
@@ -1164,7 +1164,7 @@ public class SetActions {
 
         boolean custom_finished = false;
         while (!custom_finished) {
-            if (xpp.getEventType()==XmlPullParser.START_TAG && !xpp.isEmptyElementTag()) {
+            if (xpp.getEventType() == XmlPullParser.START_TAG && !xpp.isEmptyElementTag()) {
                 switch (xpp.getName()) {
                     case "title":
                         if (xpp.getEventType() == XmlPullParser.START_TAG && !xpp.isEmptyElementTag()) {
@@ -1226,19 +1226,19 @@ public class SetActions {
             custom_text = new StringBuilder(custom_text.toString().replaceFirst("\n---\n", ""));
         }
         if (custom_notes.startsWith("\n---\n")) {
-            custom_notes = custom_notes.replaceFirst("\n---\n","");
+            custom_notes = custom_notes.replaceFirst("\n---\n", "");
         }
 
 
         // Get a new tempSong ready for the info
         // Make sure to safe encode the filename as it might have unsafe characters
         Song tempSong = mainActivityInterface.getProcessSong().initialiseSong(
-                customLocStart+folderSlides, mainActivityInterface.getStorageAccess().safeFilename(custom_title));
+                customLocStart + folderSlides, mainActivityInterface.getStorageAccess().safeFilename(custom_title));
 
         if (custom_name.contains("# " + c.getResources().getString(R.string.note) + " # - ")) {
             // Prepare for a note
             custom_name = custom_name.replace("# " + c.getResources().getString(R.string.note) + " # - ", "");
-            tempSong.setFolder(customLocStart+folderNotes);
+            tempSong.setFolder(customLocStart + folderNotes);
 
         } else if (custom_name.contains("# " + c.getResources().getString(R.string.variation) + " # - ")) {
             // Prepare for a variation
@@ -1254,23 +1254,51 @@ public class SetActions {
         // Make sure to safe encode the filename as it might have unsafe characters
         tempSong.setFilename(mainActivityInterface.getStorageAccess().safeFilename(custom_name));
         tempSong.setTitle(custom_name);
-        tempSong.setLyrics(custom_text.toString());
-        tempSong.setUser1(custom_seconds);
-        tempSong.setUser2(custom_loop);
-        tempSong.setAuthor(custom_subtitle);
-        tempSong.setAka(custom_background);
-        tempSong.setHymnnum(custom_notes);
 
-        // Add the slide to the set
-        mainActivityInterface.getCurrentSet().addSetItem(getSongForSetWork(
-                tempSong.getFolder(), tempSong.getFilename(), ""));
-        mainActivityInterface.getCurrentSet().addSetValues(tempSong.getFolder(),
-                tempSong.getFilename(),"");
+        if (tempSong.getFolder().contains(customLocStart + folderVariations)) {
+            // The song is encoded in the custom_notes
+            Log.d(TAG, "encoded=" + custom_notes);
+            byte[] decodedString = Base64.decode(custom_notes, Base64.DEFAULT);
+            String s;
+            try {
+                s = new String(decodedString, StandardCharsets.UTF_8);
+            } catch (Exception e) {
+                s = custom_notes;
+                e.printStackTrace();
+            }
+            Log.d(TAG, "decoded=" + s);
 
-        // Now create the file in the appropriate location /_cache folder
-        writeTempSlide(
-                tempSong.getFolder().replace(customLocStart,""),tempcache,tempSong);
+            mainActivityInterface.getStorageAccess().doStringWriteToFile(tempSong.getFolder().replace(customLocStart,""),tempcache,tempSong.getFilename(),s);
 
+            // Get the file
+            tempSong = mainActivityInterface.getLoadSong().doLoadSongFile(tempSong,false);
+
+            // Add the slide to the set
+            mainActivityInterface.getCurrentSet().addSetItem(getSongForSetWork(
+                    tempSong.getFolder(), tempSong.getFilename(), tempSong.getKey()));
+            mainActivityInterface.getCurrentSet().addSetValues(tempSong.getFolder(),
+                    tempSong.getFilename(), tempSong.getKey());
+
+        } else {
+            tempSong.setLyrics(custom_text.toString());
+            tempSong.setKey("");
+            tempSong.setUser1(custom_seconds);
+            tempSong.setUser2(custom_loop);
+            tempSong.setAuthor(custom_subtitle);
+            tempSong.setAka(custom_background);
+            tempSong.setHymnnum(custom_notes);
+
+            // Add the slide to the set
+            mainActivityInterface.getCurrentSet().addSetItem(getSongForSetWork(
+                    tempSong.getFolder(), tempSong.getFilename(), ""));
+            mainActivityInterface.getCurrentSet().addSetValues(tempSong.getFolder(),
+                    tempSong.getFilename(), "");
+
+            // Now create the file in the appropriate location /_cache folder
+            writeTempSlide(
+                    tempSong.getFolder().replace(customLocStart, ""), tempcache, tempSong);
+
+        }
     }
 
     private void getImage(XmlPullParser xpp) throws IOException, XmlPullParserException {
