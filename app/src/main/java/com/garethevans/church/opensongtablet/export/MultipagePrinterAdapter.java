@@ -205,16 +205,33 @@ public class MultipagePrinterAdapter extends PrintDocumentAdapter {
 
     private void getSongOrPrintIfDone() {
         Log.d(TAG,"currentSetItem: "+currentSetItem);
+        Log.d(TAG,"setItemEntries.size(): "+setItemEntries.size());
+        Log.d(TAG,"exportSetSongs: "+mainActivityInterface.getPreferences().getMyPreferenceBoolean("exportSetSongs",false));
         if (!mainActivityInterface.getPreferences().getMyPreferenceBoolean("exportSetSongs",false) || currentSetItem==setItemEntries.size()) {
+            Log.d(TAG,"just call print");
             callPrint();
         } else {
             // Initialse the song for processing
-            Log.d(TAG,"item:"+setItemLocations.get(currentSetItem));
-            if (setItemLocations.get(currentSetItem).contains("/")) {
-                String[] location = setItemLocations.get(currentSetItem).split("/");
-                currentSetSong = mainActivityInterface.getSQLiteHelper().getSpecificSong(location[0],location[1]);
+            Log.d(TAG,"setItemLocations.get(currentSetItem):"+setItemLocations.get(currentSetItem));
+            if (setItemLocations.get(currentSetItem).contains("../") ||
+            setItemLocations.get(currentSetItem).contains("**")) {
+                String s = setItemLocations.get(currentSetItem);
+                s = s.replace("../","**");
+                Log.d(TAG,"s:"+s);
+                // This is a custom file - load it!
+                String[] location = s.split("/");
+                currentSetSong = new Song();
+                currentSetSong.setFolder(location[0]);
+                currentSetSong.setFilename(location[1]);
+                currentSetSong = mainActivityInterface.getLoadSong().doLoadSongFile(currentSetSong,false);
             } else {
-                currentSetSong = mainActivityInterface.getSQLiteHelper().getSpecificSong("",setItemLocations.get(currentSetItem));
+                Log.d(TAG, "item:" + setItemLocations.get(currentSetItem));
+                if (setItemLocations.get(currentSetItem).contains("/")) {
+                    String[] location = setItemLocations.get(currentSetItem).split("/");
+                    currentSetSong = mainActivityInterface.getSQLiteHelper().getSpecificSong(location[0], location[1]);
+                } else {
+                    currentSetSong = mainActivityInterface.getSQLiteHelper().getSpecificSong("", setItemLocations.get(currentSetItem));
+                }
             }
 
             // Now do the header.  Once this is done, it does the content, then moves to the next song

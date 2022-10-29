@@ -338,9 +338,22 @@ public class ExportFragment extends Fragment {
                         boolean likelyXML = !location[1].contains(".") || location[1].toLowerCase(Locale.ROOT).endsWith(".xml");
                         boolean likelyPDF = location[1].toLowerCase(Locale.ROOT).endsWith(".pdf");
 
+                        Log.d(TAG,"location[0]:"+location[0]+"  locaition[1]:"+location[1]);
+                        // If this is a variation, etc. load it.
+                        // Otherwise, get from the database
+                        Song song;
+                        Uri thisUri;
+                        if (location[0].contains("../") || location[0].contains("**")) {
+                            song = new Song();
+                            song.setFolder(location[0].replace("../","**"));
+                            song.setFilename(location[1]);
+                            song = mainActivityInterface.getLoadSong().doLoadSongFile(song,false);
+                        } else {
+                            song = mainActivityInterface.getSQLiteHelper().getSpecificSong(location[0], location[1]);
+                        }
+
 
                         // Sharing a song should initiate the CCLI Log of printed (value 6)
-                        Song song = mainActivityInterface.getSQLiteHelper().getSpecificSong(location[0], location[1]);
                         if (mainActivityInterface.getPreferences().getMyPreferenceBoolean("ccliAutomaticLogging",false)) {
                             mainActivityInterface.getCCLILog().addEntry(song,"6");
                         }
@@ -380,7 +393,7 @@ public class ExportFragment extends Fragment {
                             }
                         }
 
-                        // Add chorPro songs
+                        // Add chordPro songs
                         if (chordPro && likelyXML) {
                             // Get the text from the file
                             String content = mainActivityInterface.getPrepareFormats().getSongAsChoPro(song);
@@ -445,7 +458,7 @@ public class ExportFragment extends Fragment {
         mainActivityInterface.getMakePDF().setIsSetListPrinting(false);
         Log.d(TAG,"songsProcessed="+songsProcessed);
         // Go through the songs if we are adding them as pdfs until we have processed all
-        if (!includeSongs || !pdf || songsProcessed==songsToAdd-1) {
+        if (!includeSongs || !pdf || songsProcessed==songsToAdd) {
             initiateShare();
         } else {
             String id = ids[songsProcessed];
@@ -456,11 +469,18 @@ public class ExportFragment extends Fragment {
             if (likelyXML && !songsAlreadyAdded.toString().contains(id+".pdf")) {
                 songsAlreadyAdded.append("\n").append(id);
                 updateProgressText(location[1]+".pdf", songsProcessed + 1, ids.length);
-                Song song = mainActivityInterface.getSQLiteHelper().getSpecificSong(location[0], location[1]);
+                Song song;
+                if (location[0].contains("../") || location[0].contains("**")) {
+                    song = new Song();
+                    song.setFolder(location[0]);
+                    song.setFilename(location[1]);
+                    song = mainActivityInterface.getLoadSong().doLoadSongFile(song,false);
+                } else {
+                    song = mainActivityInterface.getSQLiteHelper().getSpecificSong(location[0], location[1]);
+                }
                 createOnTheFly(song,location[1]+".pdf");
             }
             songsProcessed++;
-
         }
     }
     private void doExportSong() {
