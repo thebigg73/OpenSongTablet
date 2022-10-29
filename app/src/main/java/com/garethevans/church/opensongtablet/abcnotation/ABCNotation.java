@@ -252,6 +252,7 @@ public class ABCNotation {
         keyline = substringUpTo(keyline,"mid"); // Middle note
         keyline = substringUpTo(keyline,"tran"); // Transpose
         keyline = substringUpTo(keyline,"oct"); // Octave
+        keyline = substringUpTo(keyline, "%"); // Comment
 
         if (keyline.contains("minor")) {
             keyline = substringUpTo(keyline,"minor") + "m";
