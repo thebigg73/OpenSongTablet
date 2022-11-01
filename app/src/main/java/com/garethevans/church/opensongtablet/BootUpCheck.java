@@ -334,7 +334,7 @@ public class BootUpCheck extends AppCompatActivity {
         }
     }
     private void checkStoragePermission() {
-        if (Build.VERSION.SDK_INT<Build.VERSION_CODES.R && !permissions.checkForPermission(this,Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+        if (Build.VERSION.SDK_INT<=Build.VERSION_CODES.P && !permissions.checkForPermission(this,Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             storageGranted = false;
             requestStoragePermission();
         } else {
