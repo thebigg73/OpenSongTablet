@@ -147,7 +147,6 @@ public class BootUpCheck extends AppCompatActivity {
 
             // Check for Google Play availability
             if (GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this) != ConnectionResult.SUCCESS) {
-                Log.d("StageMode", "onresume()  Play store isn't installed");
                 installPlayServices();
             }
 
@@ -344,7 +343,6 @@ public class BootUpCheck extends AppCompatActivity {
     }
     private void requestStoragePermission() {
         if (permissions.shouldShowRequestRationale(this,storagePermission)) {
-            Log.d(TAG,"347 shouldShowRequestRationale");
             try {
                 make(findViewById(R.id.page), R.string.storage_rationale,
                         LENGTH_INDEFINITE).setAction(R.string.ok, view -> permissions.requestForPermissions(this,new String[]{storagePermission},101)).show();
@@ -354,8 +352,6 @@ public class BootUpCheck extends AppCompatActivity {
         } else {
             try {
                 // Storage permission has not been granted yet. Request it directly.
-                Log.d(TAG,"357 not granted, so requesting");
-                //requestPermissionLauncher.launch(storagePermission);
                 permissions.requestForPermissions(BootUpCheck.this,new String[]{storagePermission},101);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -364,12 +360,9 @@ public class BootUpCheck extends AppCompatActivity {
     }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        Log.d(TAG,"onPErmissionsResult: requestCode:"+requestCode);
-        Log.d(TAG,"grantResults.length:"+grantResults.length);
         if (requestCode == 101 && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Log.d(TAG,"storageGranted:"+storageGranted);
         } else {
-            Log.d(TAG,"not granted");
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }

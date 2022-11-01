@@ -44,7 +44,6 @@ public class Permissions {
         // Determine if there is an issue with any of the preferences
         boolean granted = hasNearbyPermissions(activity);
 
-        Log.d(TAG,"granted:"+granted);
         // If permission isn't granted - ask
         if (!granted) {
             for (String s:nearbyPermissionsString) {
@@ -63,8 +62,6 @@ public class Permissions {
     }
 
     public void requestForPermissions(Activity activity, String[] permissions, int requestCode) {
-        Log.d(TAG,"Asking for permissions");
-
         ActivityCompat.requestPermissions(activity, permissions, requestCode);
     }
 
