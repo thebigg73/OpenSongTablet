@@ -47,6 +47,8 @@ import lib.folderpicker.FolderPicker;
 public class BootUpCheck extends AppCompatActivity {
 
     // Declare helper classes:
+    private final String TAG = "BootUpCheck";
+    private final String storagePermission = Manifest.permission.WRITE_EXTERNAL_STORAGE;
     private Preferences preferences;
     private StorageAccess storageAccess;
     private Permissions permissions;
@@ -333,7 +335,7 @@ public class BootUpCheck extends AppCompatActivity {
         }
     }
     private void checkStoragePermission() {
-        if (!permissions.checkForPermission(this,Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+        if (Build.VERSION.SDK_INT<Build.VERSION_CODES.R && !permissions.checkForPermission(this,Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             storageGranted = false;
             requestStoragePermission();
         } else {
@@ -341,8 +343,8 @@ public class BootUpCheck extends AppCompatActivity {
         }
     }
     private void requestStoragePermission() {
-        String storagePermission = Manifest.permission.WRITE_EXTERNAL_STORAGE;
         if (permissions.shouldShowRequestRationale(this,storagePermission)) {
+            Log.d(TAG,"347 shouldShowRequestRationale");
             try {
                 make(findViewById(R.id.page), R.string.storage_rationale,
                         LENGTH_INDEFINITE).setAction(R.string.ok, view -> permissions.requestForPermissions(this,new String[]{storagePermission},101)).show();
@@ -352,7 +354,9 @@ public class BootUpCheck extends AppCompatActivity {
         } else {
             try {
                 // Storage permission has not been granted yet. Request it directly.
-                permissions.requestForPermissions(this,new String[]{storagePermission},101);
+                Log.d(TAG,"357 not granted, so requesting");
+                //requestPermissionLauncher.launch(storagePermission);
+                permissions.requestForPermissions(BootUpCheck.this,new String[]{storagePermission},101);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -360,9 +364,12 @@ public class BootUpCheck extends AppCompatActivity {
     }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == 101) {
-            storageGranted = grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED;
+        Log.d(TAG,"onPErmissionsResult: requestCode:"+requestCode);
+        Log.d(TAG,"grantResults.length:"+grantResults.length);
+        if (requestCode == 101 && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Log.d(TAG,"storageGranted:"+storageGranted);
         } else {
+            Log.d(TAG,"not granted");
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
@@ -1028,4 +1035,5 @@ public class BootUpCheck extends AppCompatActivity {
             startActivity(i);
         });
     }
+
 }
