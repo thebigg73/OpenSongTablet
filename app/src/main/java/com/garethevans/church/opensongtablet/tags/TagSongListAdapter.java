@@ -28,12 +28,11 @@ public class TagSongListAdapter extends RecyclerView.Adapter<TagViewHolder> {
     private final MainActivityInterface mainActivityInterface;
     private final RecyclerView recyclerView;
     private String currentTag = null;
+    @SuppressWarnings({"FieldCanBeLocal","unused"})
     private final String TAG = "TagSongListAdapter";
     private SparseBooleanArray checkedArray = new SparseBooleanArray();
-    private final Context c;
     private final int highlightOn, highlightOff;
     TagSongListAdapter(Context c, RecyclerView recyclerView) {
-        this.c = c;
         mainActivityInterface = (MainActivityInterface) c;
         this.recyclerView = recyclerView;
         highlightOff = c.getResources().getColor(R.color.transparent);

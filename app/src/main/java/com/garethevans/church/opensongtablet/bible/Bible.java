@@ -22,6 +22,8 @@ import javax.xml.xpath.XPathFactory;
 
 public class Bible {
 
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
+    private final String TAG = "Bible";
     public Bible(Context c) {
         mainActivityInterface = (MainActivityInterface) c;
     }

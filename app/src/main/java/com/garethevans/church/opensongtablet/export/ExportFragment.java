@@ -339,7 +339,6 @@ public class ExportFragment extends Fragment {
                         // If this is a variation, etc. load it.
                         // Otherwise, get from the database
                         Song song;
-                        Uri thisUri;
                         if (location[0].contains("../") || location[0].contains("**")) {
                             song = new Song();
                             song.setFolder(location[0].replace("../","**"));

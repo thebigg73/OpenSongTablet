@@ -27,6 +27,7 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
     // All the helpers we need to access are in the MainActivity
     private final MainActivityInterface mainActivityInterface;
     private ItemTouchHelper itemTouchHelper;
+    @SuppressWarnings({"FieldCanBeLocal","unused"})
     private final String TAG = "SetListAdapter";
     private final int onColor, offColor;
     private int currentPosition = -1, dragPosition = -1;

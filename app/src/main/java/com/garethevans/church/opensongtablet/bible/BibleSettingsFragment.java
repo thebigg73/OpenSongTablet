@@ -16,6 +16,9 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 public class BibleSettingsFragment extends Fragment {
 
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
+    private final String TAG = "BibleSettingsFrag";
+
     private BibleSettingsBinding myView;
     private MainActivityInterface mainActivityInterface;
 

@@ -237,7 +237,7 @@ public class ChordDisplayProcessing {
                 addFingeringOrNull(chordDirectory.banjo5stringChords(chordFormat, chord));
             } else if (instrument.equals(instruments.get(5))) {
                 // Cavaqhino chords
-                addFingeringOrNull(chordDirectory.ukuleleChords(chordFormat, chord));
+                addFingeringOrNull(chordDirectory.cavaquinhoChords(chordFormat, chord));
             } else if (instrument.equals(instruments.get(6))) {
                 // Piano chords
                 addFingeringOrNull(chordDirectory.pianoChords(chordFormat, chord));

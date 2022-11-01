@@ -44,8 +44,8 @@ public class FastScroller extends LinearLayout {
         NORMAL(R.drawable.fastscroll_bubble, R.dimen.fastscroll_bubble_text_size),
         SMALL(R.drawable.fastscroll_bubble_small, R.dimen.fastscroll_bubble_text_size_small);
 
-        @DrawableRes public int drawableId;
-        @DimenRes public int textSizeId;
+        @DrawableRes public final int drawableId;
+        @DimenRes public final int textSizeId;
 
         Size(@DrawableRes int drawableId, @DimenRes int textSizeId) {
             this.drawableId = drawableId;

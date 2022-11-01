@@ -26,6 +26,7 @@ import java.util.Set;
 public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> implements FastScroller.SectionIndexer {
 
     private final List<Song> songList;
+    @SuppressWarnings({"FieldCanBeLocal","unused"})
     private final String TAG = "SongListAdapter";
     private final MainActivityInterface mainActivityInterface;
     private final SparseBooleanArray checkedArray = new SparseBooleanArray();

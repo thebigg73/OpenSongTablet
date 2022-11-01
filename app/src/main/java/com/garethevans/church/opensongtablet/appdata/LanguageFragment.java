@@ -17,6 +17,8 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 public class LanguageFragment extends Fragment {
 
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
+    private final String TAG = "LanguageFragment";
     private SettingsLanguageBinding myView;
     private MainActivityInterface mainActivityInterface;
     private final String[] languageCodes = new String[] {"af","cs","de","el","en","es","fr","hu","it","ja","pl","pt","ru","sr","sv","zh"};
@@ -67,11 +69,6 @@ public class LanguageFragment extends Fragment {
                     getString(R.string.restart_required), getString(R.string.restart), "restart");
             informationBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "restart");
         });
-        /*try {
-            myView.languageGroup.check(id);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }*/
     }
 
     @Override

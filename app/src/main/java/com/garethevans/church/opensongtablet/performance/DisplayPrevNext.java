@@ -16,6 +16,7 @@ public class DisplayPrevNext {
 
     private final MainActivityInterface mainActivityInterface;
     private final Context c;
+    @SuppressWarnings({"FieldCanBeLocal","unused"})
     private final String TAG = "DisplayPrevNext";
     private final LinearLayout layout;
     private final ExtendedFloatingActionButton prev, next;

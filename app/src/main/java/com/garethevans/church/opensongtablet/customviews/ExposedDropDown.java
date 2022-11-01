@@ -25,6 +25,7 @@ public class ExposedDropDown extends TextInputLayout {
 
     private AutoCompleteTextView autoCompleteTextView;
     private TextInputLayout textInputLayout;
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "ExposedDropDown";
     private Context c;
     private final int delay = 50;

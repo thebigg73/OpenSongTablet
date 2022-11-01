@@ -16,6 +16,8 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 public class AboutAppFragment extends Fragment {
 
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
+    private final String TAG = "AboutAppFragment";
     private SettingsAboutBinding myView;
     private MainActivityInterface mainActivityInterface;
 

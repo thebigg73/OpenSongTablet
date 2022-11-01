@@ -14,6 +14,8 @@ import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 
 public class ShowCase {
 
+    @SuppressWarnings("unused")
+    private final String TAG = "ShowCase";
     public void singleShowCase(Activity c, View target, String dismiss, String info, boolean rect, String id) {
         singleShowCaseBuilder(c,target,dismiss,info,rect,id).build().show(c);
     }
@@ -49,8 +51,8 @@ public class ShowCase {
         return mscb;
     }
 
-    public MaterialShowcaseSequence sequenceShowCase (Activity c, ArrayList<View> targets, ArrayList<String> dismisstexts_ornulls,
-                           ArrayList<String> information, ArrayList<Boolean> rects, String showcaseid) {
+    public void sequenceShowCase (Activity c, ArrayList<View> targets, ArrayList<String> dismisstexts_ornulls,
+                                  ArrayList<String> information, ArrayList<Boolean> rects, String showcaseid) {
         ShowcaseConfig config = new ShowcaseConfig();
         config.setDelay(500); // half second between each showcase view
         config.setRenderOverNavigationBar(true);
@@ -82,10 +84,8 @@ public class ShowCase {
         }
         try {
             sequence.start();
-            return sequence;
         } catch (Exception e) {
             Log.d("ShowCase","Error:"+e);
-            return null;
         }
     }
 }

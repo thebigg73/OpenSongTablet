@@ -158,12 +158,6 @@ public class PresenterFragment extends Fragment {
                     case 1:
                         tab.setText(getString(R.string.extra_settings));
                         break;
-                    /*case 2:
-                        tab.setText(getString(R.string.alert));
-                        break;
-                    case 3:
-                        tab.setText(getString(R.string.settings));
-                        break;*/
                 }
             }).attach();
 
@@ -236,11 +230,14 @@ public class PresenterFragment extends Fragment {
         }
 
         if (mainActivityInterface.getSong().getFiletype().equals("PDF")) {
+            // TODO
             // Get the pages as required
 
         } else if (mainActivityInterface.getSong().getFiletype().equals("IMG")) {
+            // TODO
             // Get the image as required (will be 1 page)
         } else if (mainActivityInterface.getSong().getFolder().contains("Images/")) {
+            // TODO
             // This will be a custom slide with images
         } else {
             // A standard XML file

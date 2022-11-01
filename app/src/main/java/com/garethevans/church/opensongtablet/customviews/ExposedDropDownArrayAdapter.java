@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 public class ExposedDropDownArrayAdapter extends ArrayAdapter<String> {
 
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "ExposedDropDownAdapter";
 
     public ExposedDropDownArrayAdapter(@NonNull Context context, int resource, @NonNull ArrayList<String> objects) {

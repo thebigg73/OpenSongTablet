@@ -28,6 +28,7 @@ public class KitKatFolderChooseFragment extends Fragment {
     private File currentFolder;
     private ArrayList<File> foldersInDirectory;
     private StorageKitkatChooserBinding myView;
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "KitKatChooser";
 
     @Override

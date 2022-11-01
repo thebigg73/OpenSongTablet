@@ -40,6 +40,9 @@ import javax.xml.transform.stream.StreamResult;
 
 public class CCLILog {
 
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
+    private final String TAG = "CCLILog";
+
     private final Context c;
     private final MainActivityInterface mainActivityInterface;
     public CCLILog(Context c) {
@@ -71,7 +74,6 @@ public class CCLILog {
 
     private String thisdate;
     private String thistime;
-    private final String TAG = "CCLILog";
 
     private ArrayList<String> songfile, title, author, copyright, ccli, date, time, action;
 
@@ -80,7 +82,7 @@ public class CCLILog {
         // Check if the log exists or if we need to create it
         Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Settings", "", "ActivityLog.xml");
         if (!mainActivityInterface.getStorageAccess().uriExists(uri)) {
-            Log.d(TAG, "Creating blankXML=" + createBlankXML(uri));
+            Log.d(TAG, "Creating blankXML=" + createBlankXML());
         } else {
             Log.d(TAG, uri + " exists");
         }
@@ -91,7 +93,7 @@ public class CCLILog {
         doTheSaving(thisSong, uri, usageType);
     }
 
-    public boolean createBlankXML(Uri uri) {
+    public boolean createBlankXML() {
         String blankXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                 "<log>\n</log>\n";
 

@@ -46,6 +46,7 @@ public class MyToolbar extends MaterialToolbar {
     private int actionBarHideTime = 1200;
     private float clockTextSize;
     private boolean clock24hFormat, clockOn, hideActionBar, clockSeconds, performanceMode;
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "MyToolbar";
 
     // Set up the view and view items
@@ -311,8 +312,6 @@ public class MyToolbar extends MaterialToolbar {
     // Flash on/off for metronome
     public void doFlash(int colorBar) {
         setBackground(new ColorDrawable(colorBar));
-        //toolbar.setBackgroundDrawable(new ColorDrawable(colorBar));
-        //actionBar.setBackgroundDrawable(new ColorDrawable(colorBar));
     }
 
     // Get the actionbar height - fakes a height of 0 if autohiding

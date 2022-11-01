@@ -13,6 +13,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class CustomAnimation {
 
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "CustomAnimation";
 
     public void faderAnimation(View v, int time, float startAlpha, float endAlpha) {
@@ -26,13 +27,11 @@ public class CustomAnimation {
             int finalVisibility;
             boolean fadeIn = endAlpha>startAlpha;
 
+            v.setAlpha(startAlpha);
+            v.setVisibility(View.VISIBLE);
             if (fadeIn) {
-                v.setAlpha(startAlpha);
-                v.setVisibility(View.VISIBLE);
                 finalVisibility = View.VISIBLE;
             } else {
-                v.setAlpha(startAlpha);
-                v.setVisibility(View.VISIBLE);
                 finalVisibility = View.GONE;
             }
             AnimatorListenerAdapter animatorListenerAdapter;
@@ -43,7 +42,6 @@ public class CustomAnimation {
                     v.setVisibility(finalVisibility);
                 }
             };
-
 
             // For a correct fade out, the view should already be in the faded in state:
             // - The initial visibility should already be VISIBLE

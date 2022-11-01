@@ -27,6 +27,7 @@ import java.util.Collections;
 public class MultipagePrinterAdapter extends PrintDocumentAdapter {
 
     private final MutableLiveData<Boolean> listen = new MutableLiveData<>();
+    @SuppressWarnings({"unused","variablecanbelocal"})
     private final String TAG = "MutliPagePrint";
     private final MainActivityInterface mainActivityInterface;
     private String setName;

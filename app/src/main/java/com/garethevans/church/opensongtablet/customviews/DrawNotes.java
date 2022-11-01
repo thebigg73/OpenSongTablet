@@ -23,7 +23,7 @@ import java.util.ArrayList;
 public class DrawNotes extends View {
 
     // So we can enable/disable the view
-    boolean enabled = true;
+    private boolean enabled = true;
 
     // The inteface to communication with the main activity
     private final SwipeDrawingInterface swipeDrawingInterface;

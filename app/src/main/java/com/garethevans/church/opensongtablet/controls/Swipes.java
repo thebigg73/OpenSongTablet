@@ -6,6 +6,9 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 public class Swipes {
 
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
+    private final String TAG = "Swipes";
+
     private final MainActivityInterface mainActivityInterface;
     private int viewWidth;            // The width of the view on screen
     private int viewHeight;           // The height of the view on screem

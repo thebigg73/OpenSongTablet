@@ -72,7 +72,7 @@ public class ProfileActions {
                         // Now try to guess the type!!!
                         // Assume text
                         type = "string";
-                        if (value.equals("") || value.isEmpty()) {
+                        if (value.isEmpty()) {
                             type = "string";
                         } else if (value.equals("true") || value.equals("false")) {
                             type = "boolean";

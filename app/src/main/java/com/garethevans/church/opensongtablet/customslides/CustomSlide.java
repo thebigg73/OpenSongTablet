@@ -12,6 +12,7 @@ public class CustomSlide {
     // This object holds and deals with any custom slide objects
     private final Context c;
     private final MainActivityInterface mainActivityInterface;
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "CustomSlide";
 
     // Firstly the variables used when on the create slide page

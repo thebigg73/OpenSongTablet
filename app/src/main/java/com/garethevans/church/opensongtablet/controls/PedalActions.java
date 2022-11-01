@@ -31,6 +31,7 @@ public class PedalActions {
     // IV - 'Are you sure?' is displayed and the user must stop, wait and can repeat the action to continue after 2 seconds (an intentional action)
     // IV - After continue there is a 10s grace period where further pedal use is not tested.  Any pedal 'page' or 'scroll' use extends a further 10s grace period.
 
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "PedalActions";
     private final Context c;
     private final MainActivityInterface mainActivityInterface;

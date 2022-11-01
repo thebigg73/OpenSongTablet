@@ -567,7 +567,6 @@ public class LoadSong {
     private String fixXML(Song thisSong, String section, String where) {
         // Error in the xml as this is run from a catch block - tell the user we're trying to fix it!
         mainActivityInterface.getShowToast().doIt(c.getString(R.string.fix));
-        StringBuilder newXML = new StringBuilder();
         String toFix;
 
         // Try to get this section

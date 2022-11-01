@@ -18,6 +18,7 @@ public class ExportActions {
 
     private final Context c;
     private final MainActivityInterface mainActivityInterface;
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "ExportActions";
 
     public ExportActions(Context c) {

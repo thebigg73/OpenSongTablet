@@ -93,6 +93,7 @@ public class ImageSlideAdapter  extends RecyclerView.Adapter<ImageSlideViewHolde
                 BitmapFactory.decodeFileDescriptor(fd.getFileDescriptor(), null, options);
                 width = options.outWidth;
                 height = options.outHeight;
+                fd.close();
             } catch (Exception e) {
                 e.printStackTrace();
                 width = 200;

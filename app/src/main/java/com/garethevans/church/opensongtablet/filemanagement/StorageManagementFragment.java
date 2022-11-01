@@ -27,6 +27,7 @@ import java.util.concurrent.Executors;
 public class StorageManagementFragment extends Fragment {
 
     private StorageFolderDisplayBinding myView;
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "StorageManagement";
     private MainActivityInterface mainActivityInterface;
     private ArrayList<String> infos;

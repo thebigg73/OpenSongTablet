@@ -22,6 +22,9 @@ import java.util.ArrayList;
 
 public class SwipeFragment extends Fragment {
 
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
+    private final String TAG = "SwipeFragment";
+
     private MainActivityInterface mainActivityInterface;
     private SettingsSwipesBinding myView;
 

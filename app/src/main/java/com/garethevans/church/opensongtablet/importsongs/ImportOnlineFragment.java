@@ -450,10 +450,6 @@ public class ImportOnlineFragment extends Fragment {
         }
         showDownloadProgress(false);
 
-        /*for (String lyric:newSong.getLyrics().split("\n")) {
-            Log.d(TAG,"lyric:"+lyric);
-        }*/
-
         setupSaveLayout();
     }
 

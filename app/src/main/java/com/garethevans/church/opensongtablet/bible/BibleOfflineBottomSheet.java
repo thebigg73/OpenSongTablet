@@ -30,6 +30,9 @@ import java.util.concurrent.Executors;
 
 public class BibleOfflineBottomSheet extends BottomSheetDialogFragment {
 
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
+    private final String TAG = "BibleOfflineBottom";
+
     private MainActivityInterface mainActivityInterface;
     private BottomSheetBibleOfflineBinding myView;
     private Bible bible;

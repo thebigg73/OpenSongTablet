@@ -20,6 +20,8 @@ import com.google.android.material.slider.Slider;
 
 public class AutoscrollSettingsFragment extends Fragment {
 
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
+    private final String TAG = "AutoscrollSettings";
     private SettingsAutoscrollBinding myView;
     private MainActivityInterface mainActivityInterface;
 

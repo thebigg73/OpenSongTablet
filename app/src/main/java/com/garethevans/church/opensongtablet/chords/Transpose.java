@@ -13,6 +13,9 @@ import java.util.Locale;
 
 public class Transpose {
 
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
+    private final String TAG = "Transpose";
+
     private ArrayList<String> chordFormatNames, chordFormatAppearances;
     private final Song miniTransposeSong = new Song();
     private final Context c;

@@ -27,6 +27,7 @@ public class NearbyConnectionsFragment extends Fragment {
 
     private SettingsNearbyconnectionsBinding myView;
     private MainActivityInterface mainActivityInterface;
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "NearbyConnectionsFrag";
     private ColorStateList onColor, offColor;
     private BottomSheetBehavior<View> bottomSheetBehavior;

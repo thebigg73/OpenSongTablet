@@ -1035,8 +1035,9 @@ public class NearbyConnections implements NearbyInterface {
                     }
                 }
             } else if (newLocation != null && payload.asFile() != null) { // i.e. we have received the file by choice
-                InputStream inputStream = new FileInputStream(Objects.requireNonNull(payload.asFile()).asParcelFileDescriptor().getFileDescriptor());
-                Uri originalUri = Uri.parse(Objects.requireNonNull(payload.asFile()).asParcelFileDescriptor().getFileDescriptor().toString());
+                ParcelFileDescriptor parcelFileDescriptor = (Objects.requireNonNull(payload.asFile())).asParcelFileDescriptor();
+                InputStream inputStream = new FileInputStream(parcelFileDescriptor.getFileDescriptor());
+                Uri originalUri = Uri.parse(parcelFileDescriptor.getFileDescriptor().toString());
                 OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(newLocation);
                 Log.d(TAG, "receiving File.  Original uri=" + originalUri);
                 Log.d(TAG, "new location = " + newLocation);
@@ -1063,6 +1064,8 @@ public class NearbyConnections implements NearbyInterface {
                         pendingCurrentSection = 0;
                     }
                 }
+                parcelFileDescriptor.close();
+
                 try {
                     Log.d(TAG, "try to remove originalUri");
                     if (mainActivityInterface.getStorageAccess().uriExists(originalUri)) {

@@ -3,7 +3,6 @@ package com.garethevans.church.opensongtablet.setmenu;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +24,7 @@ public class SetMenuBottomSheet extends BottomSheetDialogFragment {
     private BottomSheetMenuSetBinding myView;
     private MainActivityInterface mainActivityInterface;
 
+    @SuppressWarnings({"FieldCanBeLocal","unused"})
     private static final String TAG = "SetMenuBottomSheet";
 
     @Override

@@ -24,6 +24,7 @@ public class SongActionsMenuFragment extends Fragment {
 
     private MainActivityInterface mainActivityInterface;
     private SettingsSongactionsBinding myView;
+    @SuppressWarnings({"FieldCanBeLocal","unused"})
     private final String TAG = "SongActionsMenuFrag";
 
     @Override

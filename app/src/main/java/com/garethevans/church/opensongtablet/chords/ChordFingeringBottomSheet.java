@@ -24,6 +24,9 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 public class ChordFingeringBottomSheet extends BottomSheetDialogFragment {
 
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
+    private final String TAG = "ChordFingeringBottom";
+
     private BottomSheetChordsFingeringBinding myView;
     private MainActivityInterface mainActivityInterface;
 

@@ -7,6 +7,8 @@ import android.view.View;
 import com.garethevans.church.opensongtablet.customviews.MaterialTextView;
 
 public class VersionNumber {
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
+    private final String TAG = "VersionNumber";
 
     private PackageInfo packageInfo;
     private String versionName;

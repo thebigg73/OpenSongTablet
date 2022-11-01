@@ -726,7 +726,8 @@ public class StorageAccess {
         } else {
             try {
                 if (uri != null) {
-                    c.getContentResolver().openInputStream(uri);
+                    InputStream is = c.getContentResolver().openInputStream(uri);
+                    is.close();
                     return true;
                 } else {
                     return false;

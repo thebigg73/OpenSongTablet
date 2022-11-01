@@ -14,6 +14,7 @@ public class WindowFlags {
 
     private final Window w;
     private final WindowInsetsControllerCompat windowInsetsController;
+    @SuppressWarnings({"FieldCanBeLocal","unused"})
     private final String TAG = "WindowFlags";
     private boolean currentImmersive = false;
     private final int insetTypes = WindowInsetsCompat.Type.systemBars() |
@@ -52,50 +53,6 @@ public class WindowFlags {
         } else {
             windowInsetsController.show(insetTypes);
         }
-
-        /*if (immersiveOn!=currentImmersive) {
-            currentImmersive = immersiveOn;
-        }*/
-
-
-
-
-
-        /*w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-
-        int uiOptions = setUiOptions(immersiveOn);
-        if (Build.VERSION.SDK_INT<30) {
-            v.setSystemUiVisibility(uiOptions);
-        }
-
-        if (immersiveOn) {
-            addFlags();
-            hideInsets();
-        } else {
-            showInsets();
-        }
-
-        w.getDecorView().setOnSystemUiVisibilityChangeListener(visibility -> {
-            Log.d(TAG,"visibility="+visibility);
-            Log.d(TAG,"View.SYSTEM_UI_FLAG_VISIBLE="+View.SYSTEM_UI_FLAG_VISIBLE);
-
-            int newuiOptions;
-            if (visibility == 0) {
-                // Do this after a pause
-                new Handler()
-                Log.d(TAG,"Setting fullscreen");
-                hideInsets();
-                newuiOptions= setUiOptions(true);
-            } else {
-                Log.d(TAG,"Leaving fullscreen");
-                showInsets();
-                newuiOptions= setUiOptions(false);
-            }
-            w.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-            if (Build.VERSION.SDK_INT<30) {
-                v.setSystemUiVisibility(newuiOptions);
-            }
-        });*/
     }
 
     private int getUiOptions(boolean immersiveOn) {
@@ -113,34 +70,6 @@ public class WindowFlags {
         }
         return uiOptions;
     }
-
-    /*private void addFlags() {
-        w.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        w.addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-        w.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        w.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE |
-                WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
-    }*/
-
-    /*private void hideInsets() {
-        if (Build.VERSION.SDK_INT>=30) {
-            w.getDecorView().getWindowInsetsController().hide(
-                    WindowInsetsCompat.Type.systemBars());
-        }
-    }*/
-
-    /*private void showInsets() {
-        if (Build.VERSION.SDK_INT>=30) {
-            w.getDecorView().getWindowInsetsController().show(
-                    WindowInsetsCompat.Type.systemBars());
-        } else {
-            if (ViewCompat.getWindowInsetsController(w.getDecorView())!=null) {
-                ViewCompat.getWindowInsetsController(w.getDecorView()).show(
-                        WindowInsetsCompat.Type.systemBars());
-            }
-        }
-    }*/
-
 
     public void forceImmersive() {
         try {

@@ -14,6 +14,7 @@ import com.google.android.gms.common.GoogleApiAvailability;
 public class AppPermissions {
 
     private final Context context;
+    @SuppressWarnings({"FieldCanBeLocal","unused"})
     private final String TAG = "Permissions";
 
     public AppPermissions(Context context) {

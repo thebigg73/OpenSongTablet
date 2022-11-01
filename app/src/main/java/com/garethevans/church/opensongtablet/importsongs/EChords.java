@@ -10,11 +10,6 @@ public class EChords {
 
     public Song processContent(Song song, String webString) {
 
-        /*
-        for (String l:webString.split("\n")) {
-            Log.d(TAG,"fullpage: "+l);
-        }*/
-
         // Get the title
         String title = getSubstring(webString,"<h1>", "</h1>",true);
         title = title.replace("(Chords)","").trim();

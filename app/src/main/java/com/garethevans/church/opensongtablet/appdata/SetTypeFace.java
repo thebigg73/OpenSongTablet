@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class SetTypeFace {
-
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "SetTypeFace";
     private final Context c;
     private final MainActivityInterface mainActivityInterface;

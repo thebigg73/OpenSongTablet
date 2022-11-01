@@ -23,6 +23,7 @@ import java.util.ArrayList;
 
 public class PageButtons {
 
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "PageButtons";
 
     // For the actions

@@ -29,6 +29,7 @@ public class ABCPopup {
 
     private final Context c;
     private final MainActivityInterface mainActivityInterface;
+    @SuppressWarnings("FieldCanBeLocal")
     private final String TAG = "ABCPopup";
 
     public ABCPopup(Context c) {

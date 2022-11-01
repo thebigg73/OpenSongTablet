@@ -9,6 +9,8 @@ import java.util.Locale;
 
 public class FixLocale {
 
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
+    private final String TAG = "FixLocale";
     private Locale userLocale;
 
     public Locale getLocale() {

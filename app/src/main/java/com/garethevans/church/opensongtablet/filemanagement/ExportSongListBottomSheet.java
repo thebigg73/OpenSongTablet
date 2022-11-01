@@ -33,6 +33,7 @@ import java.util.concurrent.Executors;
 
 public class ExportSongListBottomSheet extends BottomSheetDialogFragment {
 
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "ExportSongList";
     private MainActivityInterface mainActivityInterface;
     private BottomSheetExportSongListBinding myView;

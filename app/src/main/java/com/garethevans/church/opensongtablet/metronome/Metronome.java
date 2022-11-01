@@ -27,7 +27,7 @@ public class Metronome {
 
     private final Context c;
     private final MainActivityInterface mainActivityInterface;
-    private Activity activity;  // For run on UI updates
+    private final Activity activity;  // For run on UI updates
     private final String TAG = "Metronome";
     private int beat, beats, divisions, beatTimeLength, beatsRequired, beatsRunningTotal,
             metronomeFlashOnColor, metronomeFlashOffColor, tickClip, tockClip;

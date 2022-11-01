@@ -20,6 +20,9 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 public class InformationBottomSheet extends BottomSheetDialogFragment {
 
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
+    private final String TAG = "InfoBottomSheet";
+
     private MainActivityInterface mainActivityInterface;
 
     private final String title, information, buttonText, deepLink;

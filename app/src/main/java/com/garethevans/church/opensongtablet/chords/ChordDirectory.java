@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet.chords;
 
 public class ChordDirectory {
 
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "ChordDirectory";
 
     private String simplifyChords(int chordFormat, String tempchord) {

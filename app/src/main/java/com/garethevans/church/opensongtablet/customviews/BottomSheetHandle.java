@@ -14,7 +14,7 @@ import com.garethevans.church.opensongtablet.R;
 public class BottomSheetHandle extends FrameLayout {
 
     private final ImageView handle;
-    private boolean isDraggableX;
+    private final boolean isDraggableX;
     private float startX;
     private long startTime;
     float handleWidth, handleX;
@@ -29,10 +29,6 @@ public class BottomSheetHandle extends FrameLayout {
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.BottomSheetHandle);
         isDraggableX = a.getBoolean(R.styleable.BottomSheetHandle_isDraggableX, false);
         a.recycle();
-    }
-
-    public void setDraggableX(boolean isDraggableX) {
-        this.isDraggableX = isDraggableX;
     }
 
     public void setOnClickListener(OnClickListener onClickListener) {

@@ -10,7 +10,8 @@ public class UltimateGuitar {
 
     private final MainActivityInterface mainActivityInterface;
 
-    private final String TAG = "UG";
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
+    private final String TAG = "UltimateGuitar";
 
     // Song is effectively written in <pre> formatting with chords above lyrics.
     // Chord lines will have the chord identifier in them.  That can be removed

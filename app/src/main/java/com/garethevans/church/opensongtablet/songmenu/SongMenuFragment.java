@@ -35,6 +35,7 @@ import java.util.concurrent.Executors;
 
 public class SongMenuFragment extends Fragment implements SongListAdapter.AdapterCallback {
 
+    @SuppressWarnings({"FieldCanBeLocal","unused"})
     private final String TAG = "SongMenuFragment";
     // The helper classes used
     private MenuSongsBinding myView;
@@ -277,9 +278,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
 
     private void showHideRows(View view, boolean show) {
         if (show) {
-            view.post(() -> {
-                view.setVisibility(View.VISIBLE);
-            });
+            view.post(() -> view.setVisibility(View.VISIBLE));
         } else {
             view.post(() -> view.setVisibility(View.GONE));
         }

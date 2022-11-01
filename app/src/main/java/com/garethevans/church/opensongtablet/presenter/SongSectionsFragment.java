@@ -23,6 +23,7 @@ public class SongSectionsFragment extends Fragment {
 
     private MainActivityInterface mainActivityInterface;
     private ModePresenterSongSectionsBinding myView;
+    @SuppressWarnings({"FieldCanBeLocal","unused"})
     private final String TAG = "SongSectionsFragment";
 
     @Override
@@ -110,9 +111,6 @@ public class SongSectionsFragment extends Fragment {
     public void updateAllButtons() {
         if (mainActivityInterface.getPresenterSettings().getSongSectionsAdapter()!=null) {
             myView.recyclerView.removeAllViews();
-        /*mainActivityInterface.setSectionViews(mainActivityInterface.getProcessSong().setSongInLayout(
-                mainActivityInterface.getSong(), false, true));
-        */
             mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().buildSongSections();
             if (mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().getItemCount() > 0) {
                 mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().

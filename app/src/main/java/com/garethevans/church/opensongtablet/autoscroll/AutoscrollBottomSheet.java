@@ -24,6 +24,9 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 public class AutoscrollBottomSheet extends BottomSheetDialogFragment {
 
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
+    private final String TAG = "AutoscrollBottomSheet";
+
     private BottomSheetAutoscrollBinding myView;
     private MainActivityInterface mainActivityInterface;
 

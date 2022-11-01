@@ -30,7 +30,7 @@ public class NestedScrollWithFAB extends NestedScrollView {
 
 
     @Override
-    public boolean onTouchEvent(MotionEvent event) {
+    public boolean onTouchEvent(@NonNull MotionEvent event) {
         if (fab!=null || fab2!=null || fab3!=null ||  extendedFab!=null) {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_SCROLL:

@@ -22,9 +22,15 @@ import java.util.TimerTask;
 public class Autoscroll {
 
     private final String TAG = "Autoscroll";
-    private boolean isAutoscrolling, wasScrolling, autoscrollOK, isPaused = false, showOn = true,
-            autoscrollAutoStart, autoscrollActivated = false, autoscrollUseDefaultTime,
-            onscreenAutoscrollHide, usingZoomLayout;
+    private boolean isAutoscrolling;
+    private boolean autoscrollOK;
+    private boolean isPaused = false;
+    private boolean showOn = true;
+    private boolean autoscrollAutoStart;
+    private boolean autoscrollActivated = false;
+    private boolean autoscrollUseDefaultTime;
+    private boolean onscreenAutoscrollHide;
+    private boolean usingZoomLayout;
     private final Context c;
     private final MainActivityInterface mainActivityInterface;
     private int songDelay, songDuration, displayHeight, songHeight, scrollTime, flashCount,
@@ -51,9 +57,7 @@ public class Autoscroll {
     public void setIsAutoscrolling(boolean isAutoscrolling) {
         this.isAutoscrolling = isAutoscrolling;
     }
-    public void setWasScrolling(boolean wasScrolling) {
-        this.wasScrolling = wasScrolling;
-    }
+
     public void setAutoscrollOK(boolean autoscrollOK) {
         this.autoscrollOK = autoscrollOK;
     }
@@ -107,11 +111,7 @@ public class Autoscroll {
     public int getAutoscrollDefaultSongLength() {
         return autoscrollDefaultSongLength;
     }
-    public void setOnscreenAutoscrollHide(boolean onscreenAutoscrollHide) {
-        this.onscreenAutoscrollHide = onscreenAutoscrollHide;
-        mainActivityInterface.getPreferences().setMyPreferenceBoolean(
-                "onscreenAutoscrollHide",onscreenAutoscrollHide);
-    }
+
     public boolean getOnscreenAutoscrollHide() {
         return onscreenAutoscrollHide;
     }
@@ -363,12 +363,7 @@ public class Autoscroll {
     public boolean getIsAutoscrolling() {
         return isAutoscrolling;
     }
-    public boolean getWasScrolling() {
-        return wasScrolling;
-    }
-    public boolean getAutoscrollOK() {
-        return autoscrollOK;
-    }
+
     public boolean getAutoscrollActivated() {
         return autoscrollActivated;
     }
@@ -408,7 +403,6 @@ public class Autoscroll {
         scrollIncrementScale = 0.75f * scrollIncrementScale;
     }
     private int stringToInt(String string) {
-        int val;
         if (string==null || string.isEmpty()) {
             return 0;
         } else {

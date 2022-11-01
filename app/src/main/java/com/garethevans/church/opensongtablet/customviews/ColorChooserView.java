@@ -55,8 +55,4 @@ public class ColorChooserView extends View {
                 return false;
         }
 
-        public void setHue(float hue) {
-                color[0] = hue;
-                invalidate();
-        }
 }

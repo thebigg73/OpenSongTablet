@@ -40,6 +40,8 @@ public class CustomChordsFragment extends Fragment {
     private ArrayList<Boolean> pianoKeysOn;
     private boolean delete = false;
     private int selectedIndex = 0;
+
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "CustomChordsFrag";
 
     @Override

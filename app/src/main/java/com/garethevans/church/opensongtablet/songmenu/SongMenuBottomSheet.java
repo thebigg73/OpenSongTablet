@@ -21,6 +21,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 public class SongMenuBottomSheet extends BottomSheetDialogFragment {
 
+    @SuppressWarnings({"FieldCanBeLocal","unused"})
     private final String TAG = "SongMenuBottomSheet";
     private BottomSheetMenuSongsBinding myView;
     private MainActivityInterface mainActivityInterface;

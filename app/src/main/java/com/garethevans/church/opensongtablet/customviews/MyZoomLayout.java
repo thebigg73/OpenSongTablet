@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 
 public class MyZoomLayout extends FrameLayout {
 
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "MyZoomLayout";
     boolean isUserTouching = false, isScaling = false, isScrolling = false, isFirstScrollEvent = true;
     private final ScaleGestureDetector scaleDetector;

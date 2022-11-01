@@ -19,6 +19,9 @@ import com.garethevans.church.opensongtablet.preferences.TextInputBottomSheet;
 
 public class SettingsCCLI extends Fragment {
 
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
+    private final String TAG = "SettingsCCLI";
+
     private SettingsCcliBinding myView;
     private MainActivityInterface mainActivityInterface;
 

@@ -16,6 +16,8 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 public class ModeFragment extends Fragment {
 
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
+    private final String TAG = "ModeFragment";
     private MainActivityInterface mainActivityInterface;
     private SettingsModeBinding myView;
 

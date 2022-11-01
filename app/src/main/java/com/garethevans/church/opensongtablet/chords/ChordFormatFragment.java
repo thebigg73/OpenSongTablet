@@ -22,6 +22,9 @@ import java.util.ArrayList;
 
 public class ChordFormatFragment extends Fragment {
 
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
+    private final String TAG = "ChordFormatFrag";
+
     private SettingsChordsFormatBinding myView;
     private ArrayList<String> chordFormats, chordFormatNames;
     private MainActivityInterface mainActivityInterface;

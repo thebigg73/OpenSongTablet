@@ -34,7 +34,7 @@ public class MakePDF {
     private boolean isSetListPrinting = false;
     private boolean showTotalPage = true;
     private String exportFilename;
-    private float maxFontSize = 16f;
+    private final float maxFontSize = 16f;
 
     public MakePDF(Context c) {
         mainActivityInterface = (MainActivityInterface) c;

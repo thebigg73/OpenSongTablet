@@ -26,8 +26,8 @@ import java.util.ArrayList;
 
 public class PrinterAdapter extends PrintDocumentAdapter {
 
-    private Activity activity;
-    private MainActivityInterface mainActivityInterface;
+    private final Activity activity;
+    private final MainActivityInterface mainActivityInterface;
     private PdfDocument pdfDocument;
     private String name;
     private Uri uri;
@@ -102,9 +102,8 @@ public class PrinterAdapter extends PrintDocumentAdapter {
                         CancellationSignal cancellationSignal, WriteResultCallback callback) {
         // The user has chosen the pages, format and clicked the print button
 
-        try {
-            InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(uri);
-            OutputStream outputStream = new FileOutputStream(destination.getFileDescriptor());
+        try (InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(uri);
+                OutputStream outputStream = new FileOutputStream(destination.getFileDescriptor())){
 
             byte[] buf=new byte[16384];
             int size;

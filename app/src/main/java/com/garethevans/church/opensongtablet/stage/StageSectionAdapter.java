@@ -34,6 +34,7 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
     private final String alphaChange = "alpha";
     private final float alphaoff = 0.4f;
     private boolean fakeClick;
+    @SuppressWarnings({"FieldCanBeLocal","unused"})
     private final String TAG = "StageSectionAdapter";
 
     public StageSectionAdapter(Context c, MainActivityInterface mainActivityInterface, DisplayInterface displayInterface) {

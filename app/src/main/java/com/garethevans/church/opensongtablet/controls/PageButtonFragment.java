@@ -43,6 +43,7 @@ public class PageButtonFragment extends Fragment {
     private ArrayList<MaterialTextView> longTexts;
     private SettingsPagebuttonsBinding myView;
     private ExposedDropDownArrayAdapter arrayAdapter;
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "PageButtonFragment";
 
     @Override

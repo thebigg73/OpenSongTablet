@@ -25,6 +25,9 @@ import java.util.concurrent.Executors;
 
 public class GesturesFragment extends Fragment {
 
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
+    private final String TAG = "GesturesFragment";
+
     private SettingsGesturesBinding myView;
     private MainActivityInterface mainActivityInterface;
 

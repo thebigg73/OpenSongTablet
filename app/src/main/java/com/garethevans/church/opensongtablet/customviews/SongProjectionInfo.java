@@ -27,6 +27,7 @@ public class SongProjectionInfo extends LinearLayoutCompat {
     private int viewHeight = 0;
     private boolean smallText, isDisplaying=false;
     private float clockTextSize;
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "SongProjectionInfo";
 
     public SongProjectionInfo(@NonNull Context context, @Nullable @org.jetbrains.annotations.Nullable AttributeSet attrs) {

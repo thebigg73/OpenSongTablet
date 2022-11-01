@@ -9,6 +9,7 @@ public class Boiteachansons {
 
     // Extracts from La boite a chansons
 
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "Boitechansons";
 
     public Song processContent(MainActivityInterface mainActivityInterface, Song newSong, String webString) {

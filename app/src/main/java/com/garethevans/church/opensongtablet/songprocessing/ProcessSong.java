@@ -55,6 +55,7 @@ public class ProcessSong {
     // TODO If the user updates these in the app, check they get updated here as well as the saved preferences!
     private final Context c;
     private final MainActivityInterface mainActivityInterface;
+    @SuppressWarnings({"FieldCanBeLocal","unused"})
     private final String TAG = "ProcessSong";
     private final float defFontSize = 8.0f;
     private boolean addSectionSpace, blockShadow, displayBoldChordsHeadings,

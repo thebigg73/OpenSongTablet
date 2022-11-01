@@ -45,6 +45,7 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
     private int currentSection = 0;
     private final String alphaChange = "alpha";
     private boolean fakeClick;
+    @SuppressWarnings({"FieldCanBeLocal","unused"})
     private final String TAG = "PDFPageAdapter";
 
     public PDFPageAdapter(Context c, MainActivityInterface mainActivityInterface, DisplayInterface displayInterface, int viewWidth, int viewHeight) {

@@ -13,6 +13,7 @@ public class GestureListener extends GestureDetector.SimpleOnGestureListener {
     private final MainActivityInterface mainActivityInterface;
     private final PerformanceGestures performanceGestures;
     private boolean doubleTapping;
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "GestureListener";
 
     public GestureListener(MainActivityInterface mainActivityInterface, PerformanceGestures performanceGestures,
@@ -135,15 +136,4 @@ public class GestureListener extends GestureDetector.SimpleOnGestureListener {
         return false;
     }
 
-    public int getSwipeMinimumDistance() {
-        return swipeMinimumDistance;
-    }
-
-    public int getSwipeMaxDistanceYError() {
-        return swipeMaxDistanceYError;
-    }
-
-    public int getSwipeMinimumVelocity() {
-        return swipeMinimumVelocity;
-    }
 }

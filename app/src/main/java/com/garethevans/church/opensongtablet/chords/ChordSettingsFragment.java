@@ -16,6 +16,9 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 public class ChordSettingsFragment extends DialogFragment {
 
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
+    private final String TAG = "ChordSettingsFrag";
+
     private SettingsChordsBinding myView;
     private MainActivityInterface mainActivityInterface;
 

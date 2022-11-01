@@ -317,7 +317,7 @@ public class MoveContentFragment extends Fragment {
         String dest = myView.folderChoice.getText().toString();
         if (!loc.equals(dest) && !dest.isEmpty() && filesChosen.size() > 0) {
             return true;
-        } else if (filesChosen.size()<=0) {
+        } else if (filesChosen.size() == 0) {
             Snackbar.make(myView.getRoot(), R.string.nothing_selected, Snackbar.LENGTH_LONG).show();
             return false;
         } else {

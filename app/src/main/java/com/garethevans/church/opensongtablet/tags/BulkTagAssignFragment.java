@@ -26,6 +26,7 @@ import java.util.Collections;
 
 public class BulkTagAssignFragment extends Fragment {
 
+    @SuppressWarnings({"FieldCanBeLocal","unused"})
     private final String TAG = "BulkTagAssign";
     private MainActivityInterface mainActivityInterface;
     private SettingsTagManageBinding myView;

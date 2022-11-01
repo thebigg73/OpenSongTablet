@@ -2012,8 +2012,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     break;
 
                 case "ccliDelete":
-                    Uri uri = storageAccess.getUriForItem("Settings","","ActivityLog.xml");
-                    result = ccliLog.createBlankXML(uri);
+                    result = ccliLog.createBlankXML();
                     break;
 
                 case "deleteItem":

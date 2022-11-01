@@ -15,6 +15,7 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 public class MyRecyclerView extends RecyclerView {
 
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "MyRecyclerView";
     private MainActivityInterface mainActivityInterface;
     private boolean isUserTouching;

@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 public class CurrentSet {
 
+    @SuppressWarnings({"FieldCanBeLocal","unused"})
     private final String TAG = "CurrentSet";
     private String initialSetString;
     private String currentSetString;

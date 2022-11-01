@@ -12,6 +12,9 @@ import java.util.ArrayList;
 
 public class Gestures {
 
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
+    private final String TAG = "Gestures";
+
     // This deals with on screen gestures (double tap and long press)
     private final Context c;
     private final MainActivityInterface mainActivityInterface;
@@ -109,9 +112,7 @@ public class Gestures {
         int pos = gestures.indexOf(gesture);
         return gestureDescriptions.get(pos);
     }
-    public int getPositionFromText(String description) {
-        return gestureDescriptions.indexOf(description);
-    }
+
     public String getDoubleTap() {
         return doubleTap;
     }

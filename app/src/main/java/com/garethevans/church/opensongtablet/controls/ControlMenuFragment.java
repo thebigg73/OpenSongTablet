@@ -16,6 +16,9 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 public class ControlMenuFragment extends Fragment {
 
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
+    private final String TAG = "ControlMenuFrag";
+
     private SettingsControlBinding myView;
     private MainActivityInterface mainActivityInterface;
 

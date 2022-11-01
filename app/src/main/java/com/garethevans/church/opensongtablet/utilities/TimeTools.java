@@ -6,6 +6,7 @@ import android.widget.TextClock;
 
 public class TimeTools {
 
+    @SuppressWarnings({"FieldCanBeLocal","unused"})
     private final String TAG = "TimeTools";
 
     public String timeFormatFixer(int secstime) {

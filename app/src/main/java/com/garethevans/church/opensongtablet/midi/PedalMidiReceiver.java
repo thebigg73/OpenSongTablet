@@ -17,11 +17,9 @@ public class PedalMidiReceiver extends MidiReceiver {
     // TODO Test this
     private final Midi midi;
     private final MainActivityInterface mainActivityInterface;
-    private long downTime, upTime;
+    private long downTime;
     private int downByte;
     private final String TAG = "PedalMidiReceiver";
-    private String actionDown;
-    private long actionDownTime;
     private ArrayList<Byte> receivedMessage;
 
     PedalMidiReceiver (Midi midi, MainActivityInterface mainActivityInterface) {
@@ -50,6 +48,7 @@ public class PedalMidiReceiver extends MidiReceiver {
             boolean actionUp = false;
             boolean actionLong = false;
 
+            long upTime;
             if (byte1>=144 && byte1<=159) {
                 if (byte3 > 0) {
                     Log.d(TAG, "Note on channel=" + ((byte1 - 144) + 1));
@@ -63,7 +62,6 @@ public class PedalMidiReceiver extends MidiReceiver {
                     if (upTime - downTime > 1000 && upTime - downTime < 5000) {
                         // If between 1 and 5 secs, it is a long press
                         actionLong = true;
-                        actionUp = false;
                     } else {
                         actionUp = true;
                     }
@@ -72,9 +70,7 @@ public class PedalMidiReceiver extends MidiReceiver {
                 // This is a note off.  Don't need this
                 Log.d(TAG,"Note off channel="+((byte1-128)+1));
                 upTime = System.currentTimeMillis();
-                actionDown = false;
                 actionUp = true;
-                actionLong = false;
             }
 
             String note = midi.getNoteFromInt(byte2);

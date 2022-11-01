@@ -5,7 +5,6 @@ import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,11 +30,12 @@ public class InlineSetList extends RecyclerView {
     private int width = 0;
     private int selectedItem = -1;
     private boolean showInline, showInlinePresenter;
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "InlineSetList";
     private InlineSetListAdapter inlineSetListAdapter;
     private MainActivityInterface mainActivityInterface;
     private ArrayList<InlineSetItemInfo> setList;
-    private LinearLayoutManager llm;
+    private final LinearLayoutManager llm;
 
     public InlineSetList(@NonNull Context context) {
         super(context);

@@ -32,8 +32,6 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -64,8 +62,6 @@ public class SetStorageLocationFragment extends Fragment {
     ActivityResultLauncher<String> storagePermission;
 
     private StorageChooseBinding myView;
-    private Timer timer;
-    private TimerTask timerTask;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -88,7 +84,7 @@ public class SetStorageLocationFragment extends Fragment {
             mainActivityInterface.updateToolbarHelp(getString(R.string.website_storage_set));
 
         } else {
-
+            // TODO still not right!!!
             //mainActivityInterface.hideActionBar();
 
         }

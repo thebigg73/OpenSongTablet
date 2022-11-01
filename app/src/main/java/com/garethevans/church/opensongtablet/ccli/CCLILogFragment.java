@@ -18,6 +18,9 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 public class CCLILogFragment extends Fragment {
 
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
+    private final String TAG = "CCLILogFrag";
+
     private MainActivityInterface mainActivityInterface;
     private SettingsCcliLogBinding myView;
 
