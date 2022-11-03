@@ -8,6 +8,7 @@ import android.os.Build;
 import android.util.Log;
 
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 public class Permissions {
 
@@ -43,7 +44,6 @@ public class Permissions {
         // Determine if there is an issue with any of the preferences
         boolean granted = hasNearbyPermissions(activity);
 
-        Log.d(TAG,"granted:"+granted);
         // If permission isn't granted - ask
         if (!granted) {
             for (String s:nearbyPermissionsString) {
@@ -57,15 +57,16 @@ public class Permissions {
 
     // General checks and requests for permission
     public boolean checkForPermission(Context c, String permission) {
-        return ActivityCompat.checkSelfPermission(c,permission) == PackageManager.PERMISSION_GRANTED;
+        //return ActivityCompat.checkSelfPermission(c,permission) == PackageManager.PERMISSION_GRANTED;
+        return ContextCompat.checkSelfPermission(c,permission) == PackageManager.PERMISSION_GRANTED;
     }
 
     public void requestForPermissions(Activity activity, String[] permissions, int requestCode) {
-        Log.d(TAG,"Asking for permissions");
         ActivityCompat.requestPermissions(activity, permissions, requestCode);
     }
 
     public boolean shouldShowRequestRationale(Activity activity, String permission) {
         return ActivityCompat.shouldShowRequestPermissionRationale(activity,permission);
     }
+
 }
