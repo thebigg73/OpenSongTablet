@@ -30,7 +30,7 @@ public class FullscreenActivity extends AppCompatActivity {
     public static String customimage_time = "";
     public static String customreusabletoload = "";
     public static final String imagetext="";
-    public static boolean customreusable = false, isImageSection = false;
+    public static boolean customreusable = false;
     public static final int checkscroll_time = 1600;
     public static final int delayswipe_time = 800;
 
@@ -111,7 +111,6 @@ public class FullscreenActivity extends AppCompatActivity {
     public static int previousSongIndex;
     public static int nextSongIndex;
     @SuppressLint("StaticFieldLeak")
-    public static SearchViewAdapter sva;
     public static int keyindex;
     public static float autoscroll_pixels = 0.0f, newPosFloat = 0.0f;
     public static long time_start, time_passed = 0;
@@ -123,7 +122,7 @@ public class FullscreenActivity extends AppCompatActivity {
     public static final MediaPlayer mPlayer2 = new MediaPlayer();
     public static boolean mPlayer1Paused = false, mPlayer2Paused = false;
     public static BluetoothAdapter mBluetoothAdapter;
-    public static String mBluetoothName, presenterSendSong="";
+    public static String mBluetoothName;
     static NfcAdapter mNfcAdapter;
     // Drawing stuff
     public static boolean highlightOn, saveHighlight = false;

@@ -1451,7 +1451,8 @@ public class PopUpCustomChordsFragment extends DialogFragment {
             //No instrument set
             StaticVariables.myToastMessage = getResources().getString(R.string.customchords_noinstrument);
             ShowToast.showToast(getContext());
-        } else if (customNameToSave.equals("") || customNameToSave.isEmpty()) {
+        // IV - isEmpty() includes equals("")
+        } else if (customNameToSave.isEmpty()) {
             //No chordname set
             StaticVariables.myToastMessage = getResources().getString(R.string.customchords_nochordname);
             ShowToast.showToast(getContext());

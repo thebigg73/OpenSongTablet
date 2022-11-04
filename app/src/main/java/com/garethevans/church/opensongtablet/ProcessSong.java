@@ -2717,14 +2717,8 @@ public class ProcessSong extends Activity {
                 return null;
             }
 
-            // Open page 0
             PdfRenderer.Page mCurrentPage = null;
             if (mPdfRenderer != null) {
-                // If we have used the move back option from a previous set item (page button, foot pedal, etc.), we should show the last page
-                if (!StaticVariables.showstartofpdf) {
-                    FullscreenActivity.pdfPageCurrent = FullscreenActivity.pdfPageCount - 1;
-                    StaticVariables.showstartofpdf = true;
-                }
                 mCurrentPage = mPdfRenderer.openPage(FullscreenActivity.pdfPageCurrent);
             }
 
@@ -3323,7 +3317,7 @@ public class ProcessSong extends Activity {
             try {
                 i = Integer.parseInt(incoming);
             } catch (Exception e) {
-                i = -1;
+                e.printStackTrace();
             }
         }
         return i;

@@ -110,7 +110,7 @@ class Metronome {
                     // IV - Start the visual metronome with the first beat
                     if (runningBeatCount == 0 && showvisual) {
                         startTime = System.currentTimeMillis();
-                        startstopVisualMetronome(true, metronomeColor, startTime);
+                        startstopVisualMetronome(metronomeColor, startTime);
                     }
                     audioGenerator.writeSound(pan, vol, soundTockArray);
                 } else {
@@ -276,7 +276,7 @@ class Metronome {
         return validMetro;
     }
 
-    static void startstopVisualMetronome(boolean showvisual, int metronomeColor, long startTime) {
+    static void startstopVisualMetronome(int metronomeColor, long startTime) {
         visualMetronome = new VisualMetronomeAsyncTask(metronomeColor, startTime);
         try {
             visualMetronome.executeOnExecutor(METRONOME_THREAD_POOL_EXECUTOR);

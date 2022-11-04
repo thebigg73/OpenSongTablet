@@ -50,7 +50,6 @@ public class PopUpSongCreateFragment extends DialogFragment {
 
     public interface MyInterface {
         void loadSong();
-        void prepareSongMenu();
     }
 
     @Override

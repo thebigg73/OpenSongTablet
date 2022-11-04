@@ -900,8 +900,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         StaticVariables.whichSongFolder = loc_folder;
         preferences.setMyPreferenceString(PresenterMode.this, "songfilename", loc_name);
         preferences.setMyPreferenceString(PresenterMode.this, "whichSongFolder", loc_folder);
-
-
     }
 
     @Override
@@ -1706,25 +1704,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
         // Enable the next set button if we are in set view and index SongInSet is < set size -1
         enabledisableButton(nav_nextsong, StaticVariables.setView && StaticVariables.indexSongInSet > -1 && StaticVariables.indexSongInSet < numsongsinset - 1);
-
-        /*if (FullscreenActivity.songSections!=null && FullscreenActivity.currentSection>=FullscreenActivity.songSections.length) {
-            enabledisableButton(nav_nextsection,false);
-        } else if (FullscreenActivity.songSections!=null){
-            enabledisableButton(nav_nextsection,true);
-        } else {
-            enabledisableButton(nav_nextsection,false);
-        }
-        // Initially disable the set buttons
-        enabledisableButton(nav_prevsong,false);
-        enabledisableButton(nav_nextsong,false);
-
-        if (FullscreenActivity.setView && FullscreenActivity.indexSongInSet>0) {
-            enabledisableButton(nav_prevsong,true);
-        }
-        if (FullscreenActivity.setView && FullscreenActivity.indexSongInSet>=0 &&
-                FullscreenActivity.indexSongInSet<FullscreenActivity.mSetList.length-1) {
-            enabledisableButton(nav_nextsong, true);
-        }*/
     }
 
     @Override
@@ -1787,7 +1766,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         }
     }
 
-    @Override
     public void doMoveSection() {
         switch (StaticVariables.setMoveDirection) {
             case "forward":
@@ -1862,25 +1840,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                 setActions.deleteSet(PresenterMode.this, preferences, storageAccess);
                 refreshAll();
                 break;
-
-            case "wipeallsongs":
-                // Wipe all songs - Getting rid of this!!!!!
-                Log.d(TAG, "Trying wipe songs folder - ignoring");
-                /*storageAccess.wipeFolder(PresenterMode.this, preferences, "Songs", "");
-                // Rebuild the song list
-                storageAccess.listSongs(PresenterMode.this, preferences);
-                listSongFiles.songUrisInFolder(PresenterMode.this, preferences);
-                refreshAll();*/
-                break;
-
-            /*case "resetcolours":
-                // Reset the theme colours
-                PopUpThemeChooserFragment.getDefaultColours();
-                Preferences.savePreferences();
-                refreshAll();
-                FullscreenActivity.whattodo = "changetheme";
-                openFragment();
-                break;*/
         }
     }
 
@@ -2215,7 +2174,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         } else if (requestCode == StaticVariables.REQUEST_PROFILE_SAVE && data!=null && data.getData()!=null) {
             // Saving a profile
             new Thread(() -> {
-                boolean success = profileActions.doSaveProfile(PresenterMode.this,preferences,storageAccess,data.getData());
+                boolean success = profileActions.doSaveProfile(PresenterMode.this, storageAccess,data.getData());
                 if (success) {
                     StaticVariables.myToastMessage = getString(R.string.success);
                 } else {
@@ -2462,10 +2421,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     public void turnOffNearby() {
         nearbyConnections.turnOffNearby();
     }
-    @Override
-    public void doSendPayloadBytes(String infoPayload) {
-        nearbyConnections.doSendPayloadBytes(infoPayload);
-    }
 
     @Override
     public String getUserNickname() {
@@ -2694,13 +2649,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
     @Override
     public boolean onQueryTextSubmit(String newText) {
-        // TODO Not sure if this does anything as FullscreenActivity.sva is never assigned anything!
-        SearchViewItems item = (SearchViewItems) FullscreenActivity.sva.getItem(0);
-        StaticVariables.songfilename = item.getFilename();
-        StaticVariables.whichSongFolder = item.getFolder();
-        StaticVariables.setView = false;
-        StaticVariables.myToastMessage = StaticVariables.songfilename;
-        loadSong();
         return true;
     }
 
@@ -2783,7 +2731,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             }
         }
     }
-    @Override
+
     public void removeSongFromSet(int val) {
         // Vibrate to let the user know something happened
         DoVibrate.vibrate(PresenterMode.this, 50);
@@ -2957,11 +2905,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     @Override
     public boolean onQueryTextChange(String newText) {
         // Replace unwanted symbols
-        newText = processSong.removeUnwantedSymbolsAndSpaces(PresenterMode.this, preferences, newText);
-        // TODO Not sure if this does anything as FullscreenActivity.sva is never assigned anything!
-        if (FullscreenActivity.sva != null) {
-            FullscreenActivity.sva.getFilter().filter(newText);
-        }
+        newText = processSong.removeUnwantedSymbolsAndSpaces(PresenterMode.this,preferences,newText);
         return false;
     }
 
@@ -3970,12 +3914,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                             Log.d(TAG, "onRemoteDisplaySessionEnded()");
                             Log.d(TAG, "castRemoteDisplayLocalService=" + castRemoteDisplayLocalService);
                         }
-
-                        // IV - After a rebase against upstream - cast update makes this not needed and adds onRemoteDisplayMuteStateChanged
-                        //@Override
-                        //public void zza() {
-                        //    Log.d(TAG,"zza()");
-                        //}
 
                         @Override
                         public void onRemoteDisplayMuteStateChanged(boolean b) {

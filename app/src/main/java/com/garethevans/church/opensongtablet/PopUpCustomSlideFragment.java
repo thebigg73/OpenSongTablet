@@ -406,7 +406,8 @@ public class PopUpCustomSlideFragment extends DialogFragment {
         FullscreenActivity.customimage_loop = "" + loopCheckBox.isChecked() + "";
         FullscreenActivity.customimage_time = timeEditText.getText().toString();
         // Check the slide has a title.  If not, use _
-        if (FullscreenActivity.customslide_title == null || FullscreenActivity.customslide_title.equals("") || FullscreenActivity.customslide_title.isEmpty()) {
+        // IV - isEmpty() includes equals("")
+        if (FullscreenActivity.customslide_title == null || FullscreenActivity.customslide_title.isEmpty()) {
             FullscreenActivity.customslide_title = "_";
         }
         // Fix the title to remove / and . to make them safe for file names

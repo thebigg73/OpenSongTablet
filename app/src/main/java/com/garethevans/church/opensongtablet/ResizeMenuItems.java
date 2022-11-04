@@ -30,7 +30,7 @@ class ResizeMenuItems {
 
     */
 
-    void updateTextViewSize(TextView tv, float defaultsize, String type, boolean allCaps) {
+    void updateTextViewSize(TextView tv, float defaultsize, String type) {
         try {
             float size = defaultsize;
             switch (type) {
@@ -54,7 +54,7 @@ class ResizeMenuItems {
         }
     }
 
-    void updatEditTextSize(EditText tv, float defaultsize, String type, boolean allCaps) {
+    void updatEditTextSize(EditText tv, float defaultsize, String type) {
         try {
             float size = defaultsize;
             switch (type) {

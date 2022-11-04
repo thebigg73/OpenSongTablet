@@ -16,7 +16,6 @@ class MenuHandlers {
 
     public interface MyInterface {
         void openMyDrawers(String what);
-        void openFragment();
         void prepareOptionMenu();
         void fixSet();
     }
@@ -76,10 +75,8 @@ class MenuHandlers {
             ViewConfiguration config = ViewConfiguration.get(c);
             if (Build.VERSION.SDK_INT<Build.VERSION_CODES.R) {
                 Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
-                if (menuKeyField != null) {
-                    menuKeyField.setAccessible(true);
-                    menuKeyField.setBoolean(config, false);
-                }
+                menuKeyField.setAccessible(true);
+                menuKeyField.setBoolean(config, false);
             }
         } catch (Exception ex) {
             // Ignore

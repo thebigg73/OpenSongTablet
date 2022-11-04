@@ -192,9 +192,6 @@ class StaticVariables {
     static String metronomeonoff = "off";
     static String pad_filename = "null";
 
-    // PDF stuff
-    static boolean showstartofpdf = true;
-
     // Used for the chord image display
     static String allchords = "", chordnotes = "";
 

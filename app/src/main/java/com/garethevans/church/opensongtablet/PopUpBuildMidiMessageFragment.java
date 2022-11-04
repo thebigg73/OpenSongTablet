@@ -357,7 +357,8 @@ public class PopUpBuildMidiMessageFragment extends DialogFragment {
         // Add what is there already
         String[] bits = StaticVariables.mMidi.trim().split("\n");
         for (String midiMessage : bits) {
-            if (midiMessage != null && !midiMessage.equals("") && !midiMessage.isEmpty() && getActivity() != null) {
+            // IV - isEmpty() includes equals("")
+            if (midiMessage != null && !midiMessage.isEmpty() && getActivity() != null) {
                 // Get a human readable version of the midi code
                 String hr = m.getReadableStringFromHex(midiMessage, getActivity());
                 String message = hr + "\n" + "(" + midiMessage + ")";

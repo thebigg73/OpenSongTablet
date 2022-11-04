@@ -243,10 +243,6 @@ public class DrawNotes extends View {
         //drawingapath = false;
     }
 
-    public void setDrawingSize() {
-        //private boolean drawingapath = false;
-    }
-
     private int getSavedPaintSize(Context c) {
         if (c == null) {
             c = FullscreenActivity.mContext;

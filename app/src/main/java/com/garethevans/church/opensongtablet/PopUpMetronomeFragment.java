@@ -43,7 +43,6 @@ public class PopUpMetronomeFragment extends DialogFragment {
 
     public interface MyInterface {
         void pageButtonAlpha(String s);
-        void openFragment();
         void gesture7();
     }
 

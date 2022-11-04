@@ -40,7 +40,6 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
         this.context = context;
     }
 
-    @Override
     public void updateConnectionsLog() {
         if (StaticVariables.whichOptionMenu.equals("CONNECT") && connectionLog != null) {
             try {
@@ -61,10 +60,7 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
         void rebuildSearchIndex();
         void callIntent(String what, Intent intent);
         void prepareOptionMenu();
-        void removeSongFromSet(int val);
         void splashScreen();
-        void showActionBar();
-        void hideActionBar();
         void useCamera();
         void doDownload(String file);
         void connectHDMI();
@@ -578,7 +574,9 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
                     StaticVariables.whichOptionMenu = "CONNECT";
                     mListener.prepareOptionMenu();
                 } else {
-                    mListener.requestNearbyPermissions();
+                    if (mListener != null) {
+                        mListener.requestNearbyPermissions();
+                    }
                 }
             } else {
                 mListener.installPlayServices();
