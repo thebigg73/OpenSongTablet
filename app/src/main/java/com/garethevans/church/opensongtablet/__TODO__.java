@@ -5,8 +5,6 @@ public class __TODO__ {
     // Check persistent database import with overwrite on/off
 
     // BUGS FROM LIVE TEST
-    // Might want to preserve space for navbar as an option (on by default).
-    // Samsung Tab wastes space, so I'd want that off, whereas on is best for emulator
 
     // SongSelect only recognising Chord pages (not score?)
     // Presenter mode not working with pdf/images

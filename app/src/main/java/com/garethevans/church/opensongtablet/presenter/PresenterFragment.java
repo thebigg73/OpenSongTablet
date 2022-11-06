@@ -168,11 +168,12 @@ public class PresenterFragment extends Fragment {
     }
 
     public void doSongLoad(String folder, String filename) {
-        Log.d(TAG,"doSongLoad() called");
         mainActivityInterface.getSong().setFolder(folder);
         mainActivityInterface.getSong().setFilename(filename);
         mainActivityInterface.setSong(mainActivityInterface.getLoadSong().doLoadSong(
                 mainActivityInterface.getSong(),false));
+
+        mainActivityInterface.closeDrawer(true);
 
         // Because we have loaded the song, figure out any presentation order requirements
         mainActivityInterface.getSong().setPresoOrderSongSections(null);

@@ -237,6 +237,8 @@ public class PerformanceFragment extends Fragment {
     public void doSongLoad(String folder, String filename) {
         // Loading the song is dealt with in this fragment as specific actions are required
 
+        mainActivityInterface.closeDrawer(true);
+
         // Stop any autoscroll if required
         mainActivityInterface.getAutoscroll().stopAutoscroll();
 

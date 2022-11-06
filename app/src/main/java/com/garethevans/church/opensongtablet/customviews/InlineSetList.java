@@ -5,6 +5,7 @@ import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +37,7 @@ public class InlineSetList extends RecyclerView {
     private MainActivityInterface mainActivityInterface;
     private ArrayList<InlineSetItemInfo> setList;
     private final LinearLayoutManager llm;
+    private float textSize = 12;
 
     public InlineSetList(@NonNull Context context) {
         super(context);
@@ -54,6 +56,7 @@ public class InlineSetList extends RecyclerView {
         showInline = mainActivityInterface.getPreferences().getMyPreferenceBoolean("inlineSet", false);
         int screenWidth = mainActivityInterface.getDisplayMetrics()[0];
         width = (int) (mainActivityInterface.getPreferences().getMyPreferenceFloat("inlineSetWidth", 0.3f) * screenWidth);
+        adjustTextSize();
         showInlinePresenter = mainActivityInterface.getPreferences().getMyPreferenceBoolean("inlineSetPresenter", true);
         inlineSetListAdapter = new InlineSetListAdapter(c);
         setAdapter(inlineSetListAdapter);
@@ -230,6 +233,7 @@ public class InlineSetList extends RecyclerView {
             if (si.songkey != null && !si.songkey.isEmpty()) {
                 text = text + " (" + si.songkey + ")";
             }
+            setitemViewHolder.vSongTitle.setTextSize(textSize);
             setitemViewHolder.vSongTitle.setText(text);
         }
 
@@ -328,7 +332,7 @@ public class InlineSetList extends RecyclerView {
             vItem = v.findViewById(R.id.cardview_item);
             vItem.setVisibility(View.GONE);
             vSongTitle = v.findViewById(R.id.cardview_songtitle);
-            vSongTitle.setTextSize(12f);
+            vSongTitle.setTextSize(textSize);
             vSongFolder = v.findViewById(R.id.cardview_folder);
             vSongFolder.setVisibility(View.GONE);
             v.setOnClickListener((view) -> {
@@ -380,5 +384,11 @@ public class InlineSetList extends RecyclerView {
                 llm.scrollToPositionWithOffset(0, 0);
             }
         });
+    }
+
+    private void adjustTextSize() {
+        // Base the text size on the width of the inline set
+        // Minimum size is 12, Maximum is 20
+        Log.d(TAG,"width:"+width);
     }
 }
