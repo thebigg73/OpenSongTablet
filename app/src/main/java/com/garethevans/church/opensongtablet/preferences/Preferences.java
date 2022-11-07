@@ -3,7 +3,6 @@ package com.garethevans.church.opensongtablet.preferences;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 
 public class Preferences extends Activity {
 
@@ -50,7 +49,6 @@ public class Preferences extends Activity {
     }
     public float getMyPreferenceFloat(String prefname, float fallback) {
         // Return a float from saved preferences
-        Log.d(TAG,"prefName:"+prefname);
         if (c!=null && prefname!=null) {
                 sharedPref = c.getSharedPreferences("CurrentPreferences", Context.MODE_PRIVATE);
             try {

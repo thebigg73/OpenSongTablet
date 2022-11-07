@@ -42,6 +42,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
+import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -803,7 +804,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 .build();
         NavigationUI.setupActionBarWithNavController(this,navController,appBarConfiguration);
         NavigationUI.setupWithNavController(myView.myToolbar, navController, appBarConfiguration);
-
+        navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
+            @Override
+            public void onDestinationChanged(@NonNull NavController navController, @NonNull NavDestination navDestination, @org.jetbrains.annotations.Nullable Bundle bundle) {
+                if (navDestination.getId()==R.id.performanceFragment || navDestination.getId()==R.id.presenterFragment) {
+                    showMenuItems(true);
+                }
+            }
+        });
     }
 
     @Override
@@ -975,7 +983,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             myView.drawerLayout.setBackgroundColor(getMyThemeColors().getLyricsBackgroundColor());
         }
         settingsOpen = false;
-        showMenuItems(true);
     }
     @Override
     public void allowNavigationUp(boolean allow) {
@@ -1546,13 +1553,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         loadSong();
     }
 
-    /*public void updateInlineSet(boolean show, float width) {
-        if (performanceValid()) {
-            performanceFragment.updateInlineSet(show,width);
-        } else if (presenterValid()) {
-            presenterFragment.updateInlineSet(show,width);
-        }
-    }*/
     @Override
     public void updateInlineSetMove(int from, int to) {
         if (performanceValid()) {

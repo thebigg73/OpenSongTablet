@@ -132,6 +132,7 @@
                     android:maxWidth="50dp"
                     android:text="99%"
                     android:textColor="#fff"
+                    android:background="@color/transparent"
                     android:textSize="11sp"
                     tools:gravity="center"
                     tools:ignore="HardcodedText,SmallSp" />

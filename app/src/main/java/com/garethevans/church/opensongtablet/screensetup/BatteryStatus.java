@@ -20,6 +20,8 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 public class BatteryStatus extends BroadcastReceiver {
 
     private boolean isCharging;
+    @SuppressWarnings({"FieldCanBeLocal","unused"})
+    private final String TAG = "BatteryStatus";
 
     private float batteryTextSize, charge;
     private int batteryDialThickness;
