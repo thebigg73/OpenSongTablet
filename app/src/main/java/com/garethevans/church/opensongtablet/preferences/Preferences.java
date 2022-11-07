@@ -3,12 +3,15 @@ package com.garethevans.church.opensongtablet.preferences;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 public class Preferences extends Activity {
 
     public Preferences(Context c) {
         this.c = c;
     }
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
+    private final String TAG = "Preferences";
 
     // This is the way that preferences will be stored
     private SharedPreferences sharedPref;
@@ -23,7 +26,11 @@ public class Preferences extends Activity {
         // Return a string from saved preference
         if (c!=null && prefname!=null) {
             sharedPref = c.getSharedPreferences("CurrentPreferences", Context.MODE_PRIVATE);
-            return sharedPref.getString(prefname, fallback);
+            try {
+                return sharedPref.getString(prefname, fallback);
+            } catch (Exception e) {
+                return fallback;
+            }
         } else {
             return fallback;
         }
@@ -35,7 +42,7 @@ public class Preferences extends Activity {
             try {
                 return sharedPref.getInt(prefname, fallback);
             } catch (Exception e) {
-                return (int)sharedPref.getFloat(prefname, fallback);
+                return fallback;
             }
         } else {
             return fallback;
@@ -43,9 +50,14 @@ public class Preferences extends Activity {
     }
     public float getMyPreferenceFloat(String prefname, float fallback) {
         // Return a float from saved preferences
+        Log.d(TAG,"prefName:"+prefname);
         if (c!=null && prefname!=null) {
-            sharedPref = c.getSharedPreferences("CurrentPreferences", Context.MODE_PRIVATE);
-            return sharedPref.getFloat(prefname, fallback);
+                sharedPref = c.getSharedPreferences("CurrentPreferences", Context.MODE_PRIVATE);
+            try {
+                return sharedPref.getFloat(prefname, fallback);
+            } catch (Exception e) {
+                return fallback;
+            }
         } else {
             return fallback;
         }
@@ -54,7 +66,11 @@ public class Preferences extends Activity {
         // Return a boolean from saved preference
         if (c!=null && prefname!=null) {
             sharedPref = c.getSharedPreferences("CurrentPreferences", Context.MODE_PRIVATE);
-            return sharedPref.getBoolean(prefname, fallback);
+            try {
+                return sharedPref.getBoolean(prefname, fallback);
+            } catch (Exception e) {
+                return fallback;
+            }
         } else {
             return fallback;
         }
@@ -302,8 +318,8 @@ public class Preferences extends Activity {
     // fontSizePreso                   float       The non-scale presentation font size (def:14.0f)
     // fontSizePresoMax                float       The maximum autoscaled font size (def:40.0f)
     // fontSticky                      String      The name of the font used for the sticky notes.  From fonts.google.com (def:lato)
-    // gestureScreenDoubleTap          int         The action for double tapping on the song screen (def 2 = edit song - based on menu position)
-    // gestureScreenLongPress          int         The action for long pressing on the song screen (def 3 = add song to set - based on menu position)
+    // gestureDoubleTap                String      The action for double tapping on the song screen (def:editsong)
+    // gestureLongPress                String      The action for long pressing on the song screen (def:addtoset)
     // hideActionBar                   boolean     Should the action bar auto hide (def:false)
     // hideActionBarTime               int         How long should the action bar be visible for before hiding (def:1200)
     // hideInfoBar                     boolean     Should the info bar (Presenter mode only) autohide after initial display + minimum time (def: true)
