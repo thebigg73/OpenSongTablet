@@ -61,7 +61,6 @@ public class PDFExtractBottomSheet extends BottomSheetDialogFragment {
 
         myView.dialogHeader.setClose(this);
         myView.dialogHeader.setWebHelp(mainActivityInterface, getString(R.string.website_ocr));
-        myView.nestedScrollView.setExtendedFabToAnimate(myView.saveSearchable);
 
         // Set up the lyrics
         setupLyrics();

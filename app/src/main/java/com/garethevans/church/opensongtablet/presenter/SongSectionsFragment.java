@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet.presenter;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,13 +16,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.ModePresenterSongSectionsBinding;
+import com.garethevans.church.opensongtablet.interfaces.DisplayInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.pdf.PDFPageAdapter;
 
 import java.util.ArrayList;
 
 public class SongSectionsFragment extends Fragment {
 
     private MainActivityInterface mainActivityInterface;
+    private DisplayInterface displayInterface;
     private ModePresenterSongSectionsBinding myView;
     @SuppressWarnings({"FieldCanBeLocal","unused"})
     private final String TAG = "SongSectionsFragment";
@@ -39,6 +43,7 @@ public class SongSectionsFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mainActivityInterface = (MainActivityInterface) context;
+        displayInterface = (DisplayInterface) context;
     }
 
     @Nullable
@@ -59,9 +64,8 @@ public class SongSectionsFragment extends Fragment {
         });
         updatePresentationOrder();
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireContext());
         myView.recyclerView.setItemAnimator(null);
-        myView.recyclerView.setLayoutManager(linearLayoutManager);
+        myView.recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         myView.recyclerView.setAdapter(mainActivityInterface.getPresenterSettings().getSongSectionsAdapter());
 
         showSongInfo();
@@ -72,21 +76,50 @@ public class SongSectionsFragment extends Fragment {
     }
 
     public void showSongInfo() {
-        if (myView!=null && mainActivityInterface!=null && mainActivityInterface.getPresenterSettings()!=null &&
-        mainActivityInterface.getPresenterSettings().getSongSectionsAdapter()!=null) {
+        myView.songInfo.setCapo(null);  // Don't need to show this here
+        if (mainActivityInterface!=null &&
+                mainActivityInterface.getSong()!=null) {
             myView.songInfo.setSongTitle(mainActivityInterface.getSong().getTitle());
             myView.songInfo.setSongAuthor(mainActivityInterface.getSong().getAuthor());
             myView.songInfo.setSongCopyright(mainActivityInterface.getSong().getCopyright());
             myView.songInfo.setSongCCLI(mainActivityInterface.getSong().getCcli());
-            myView.songInfo.setCapo(null);  // Don't need to show this here
-            mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().setSelectedPosition(-1);
-            mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().buildSongSections();
             myView.songInfo.setOnLongClickListener(view -> {
-                mainActivityInterface.navigateToFragment(getString(R.string.deeplink_edit),0);
+                mainActivityInterface.navigateToFragment(getString(R.string.deeplink_edit), 0);
                 return false;
             });
-            updatePresentationOrder();
-            updateAllButtons();
+            if (mainActivityInterface.getSong().getFiletype().equals("PDF") &&
+                    android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                PDFPageAdapter pdfPageAdapter = new PDFPageAdapter(requireContext(),
+                        mainActivityInterface, displayInterface, 600, 800);
+
+                Log.d(TAG, "pages:" + pdfPageAdapter.getItemCount());
+                mainActivityInterface.getSong().setPdfPageCount(pdfPageAdapter.getItemCount());
+                Log.d(TAG, "heights" + pdfPageAdapter.getHeights());
+
+                myView.recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+                myView.recyclerView.setAdapter(pdfPageAdapter);
+                // TODO
+                // Get the pages as required
+
+            } else if (mainActivityInterface.getSong().getFiletype().equals("IMG")) {
+                // TODO
+                // Get the image as required (will be 1 page)
+            } else if (mainActivityInterface.getSong().getFolder().contains("Images/")) {
+                // TODO
+                // This will be a custom slide with images
+            } else {
+                // Standard XML file
+                myView.recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+                myView.recyclerView.setAdapter(mainActivityInterface.getPresenterSettings().getSongSectionsAdapter());
+
+                if (myView != null && mainActivityInterface != null && mainActivityInterface.getPresenterSettings() != null &&
+                        mainActivityInterface.getPresenterSettings().getSongSectionsAdapter() != null) {
+                    mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().setSelectedPosition(-1);
+                    mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().buildSongSections();
+                    updatePresentationOrder();
+                    updateAllButtons();
+                }
+            }
         }
     }
 

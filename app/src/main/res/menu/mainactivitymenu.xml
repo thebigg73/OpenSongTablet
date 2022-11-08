@@ -7,6 +7,7 @@
         android:icon="@drawable/cast"
         android:orderInCategory="1"
         app:actionViewClass="android.widget.ImageButton"/>
+
     <item android:id="@+id/settings_menu_item"
         android:title="@string/settings"
         android:icon="@drawable/settings"

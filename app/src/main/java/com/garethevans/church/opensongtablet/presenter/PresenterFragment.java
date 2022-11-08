@@ -230,7 +230,14 @@ public class PresenterFragment extends Fragment {
             mainActivityInterface.getSectionViews().clear();
         }
 
-        if (mainActivityInterface.getSong().getFiletype().equals("PDF")) {
+        /*if (mainActivityInterface.getSong().getFiletype().equals("PDF") &&
+                android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                PDFPageAdapter pdfPageAdapter = new PDFPageAdapter(requireContext(),
+                        mainActivityInterface, displayInterface, 600,800);
+
+                Log.d(TAG,"pages:"+pdfPageAdapter.getItemCount());
+                Log.d(TAG,"heights"+pdfPageAdapter.getHeights());
+
             // TODO
             // Get the pages as required
 
@@ -241,10 +248,12 @@ public class PresenterFragment extends Fragment {
             // TODO
             // This will be a custom slide with images
         } else {
-            // A standard XML file
-            mainActivityInterface.setSectionViews(mainActivityInterface.getProcessSong().setSongInLayout(
-                    mainActivityInterface.getSong(), false, true));
-        }
+        }*/
+
+        // Assume for now, we are loading a standard XML file
+        mainActivityInterface.setSectionViews(mainActivityInterface.getProcessSong().setSongInLayout(
+                mainActivityInterface.getSong(), false, true));
+
 
         // Set the load status to the song (used to enable nearby section change listener)
         mainActivityInterface.getSong().setCurrentlyLoading(false);

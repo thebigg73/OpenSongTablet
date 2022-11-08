@@ -6,6 +6,8 @@ import android.graphics.pdf.PdfRenderer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.ParcelFileDescriptor;
+import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +35,7 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
     private final DisplayInterface displayInterface;
     private final Context c;
     private ArrayList<PDFPageItemInfo> pageInfos;
+    private SparseBooleanArray itemHighlighted;
     private ArrayList<Float> floatSizes;
     private final int viewWidth, viewHeight;
     private String pdfFolder, pdfFilename;
@@ -63,6 +66,7 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
         floatHeight = 0;
         pageInfos = new ArrayList<>();
         floatSizes = new ArrayList<>();
+        itemHighlighted = new SparseBooleanArray();
 
         pdfFolder = mainActivityInterface.getSong().getFolder();
         pdfFilename = mainActivityInterface.getSong().getFilename();
@@ -115,15 +119,6 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
                     pageInfo.width = (int) (width * scaleFactor);
                     pageInfo.height = (int) itemHeight;
 
-                    if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_stage))) {
-                        pageInfo.alpha = alphaoff;
-                    } else {
-                        pageInfo.alpha = 1f;
-                    }
-                    if (x==0) {
-                        pageInfo.alpha = 1f;
-                    }
-
                     pageInfos.add(pageInfo);
                     page.close();
 
@@ -169,10 +164,13 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
                     // We want to update the highlight colour to off
                     holder.v.post(()->{
                         try {
-                            float alphaval = pageInfos.get(position).alpha;
-                            if (!mainActivityInterface.getMode().equals(c.getString(R.string.mode_stage))) {
+                            float alphaval = alphaoff;
+                            if (itemHighlighted.get(position,false)) {
                                 alphaval = 1f;
-                                pageInfos.get(position).alpha = 1f;
+                            }
+                            if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance))) {
+                                alphaval = 1f;
+                                //pageInfos.get(position).alpha = 1f;
                             }
                             holder.v.setAlpha(alphaval);
                         } catch (Exception e) {
@@ -189,7 +187,10 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
         int pageNum = pageInfos.get(position).pageNum;
         int width = pageInfos.get(position).width;
         int height = pageInfos.get(position).height;
-        float alpha = pageInfos.get(position).alpha;
+        float alpha = alphaoff;
+        if (itemHighlighted.get(position,false)) {
+            alpha = 1f;
+        }
         String pagetNumText = pageInfos.get(position).pageNumText;
 
         CardView cardView = (CardView)holder.v;
@@ -230,7 +231,7 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
 
         cardView.post(()->{
             try {
-                if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_stage))) {
+                if (!mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance))) {
                     cardView.setAlpha(finalAlpha);
                 } else {
                     cardView.setAlpha(1f);
@@ -295,21 +296,29 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
                 // Because this is a screen touch, do the necessary UI update (check actionbar/prev/next)
                 onTouchAction();
 
-                // Only do this alpha change in stage mode
-                if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_stage))) {
-                    pageInfos.get(currentSection).alpha = alphaoff;
+                // Only do this alpha change if we aren't in Performance mode
+                if (!mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance))) {
+                    itemHighlighted.put(currentSection,false);
+                    //pageInfos.get(currentSection).alpha = alphaoff;
                     notifyItemChanged(currentSection, alphaChange);
 
                     // Now update the newly selected position
-                    pageInfos.get(position).alpha = 1.0f;
+                    //pageInfos.get(position).alpha = 1.0f;
+                    itemHighlighted.put(position,true);
                     notifyItemChanged(position, alphaChange);
                 }
+
+                Log.d(TAG,"position:"+position);
 
                 // If stage mode or a pdf, update the presenter and send a nearby payload
                 if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_stage)) ||
                     mainActivityInterface.getSong().getFiletype().equals("PDF")) {
                     // Send and update notification to Performance Fragment via the MainActivity (scrolls to position)
-                    displayInterface.performanceShowSection(position);
+                    if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_stage))) {
+                        displayInterface.performanceShowSection(position);
+                    } else if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_presenter))) {
+                        displayInterface.presenterShowSection(position);
+                    }
 
                     // Send a nearby notification (the client will ignore if not required or not ready)
                     if (mainActivityInterface.getNearbyConnections().hasValidConnections() &&

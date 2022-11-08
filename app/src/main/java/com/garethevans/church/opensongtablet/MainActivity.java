@@ -42,7 +42,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
-import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -146,6 +145,8 @@ import com.garethevans.church.opensongtablet.sqlite.NonOpenSongSQLiteHelper;
 import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
 import com.garethevans.church.opensongtablet.tags.BulkTagAssignFragment;
 import com.garethevans.church.opensongtablet.utilities.TimeTools;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
@@ -776,6 +777,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                             navController.getCurrentDestination().getNavigatorName(),
                             navHostFragment, null);
                 } else {
+                    settingsOpen = true;
                     super.onBackPressed();
                 }
             } catch (Exception e) {
@@ -804,12 +806,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 .build();
         NavigationUI.setupActionBarWithNavController(this,navController,appBarConfiguration);
         NavigationUI.setupWithNavController(myView.myToolbar, navController, appBarConfiguration);
-        navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
-            @Override
-            public void onDestinationChanged(@NonNull NavController navController, @NonNull NavDestination navDestination, @org.jetbrains.annotations.Nullable Bundle bundle) {
-                if (navDestination.getId()==R.id.performanceFragment || navDestination.getId()==R.id.presenterFragment) {
-                    showMenuItems(true);
-                }
+        navController.addOnDestinationChangedListener((navController, navDestination, bundle) -> {
+            if (navDestination.getId()==R.id.performanceFragment ||
+                    navDestination.getId()==R.id.presenterFragment) {
+                showMenuItems(true);
+                settingsOpen = false;
+            } else if (navDestination.getId()==R.id.actionBarSettingsFragment) {
+                showMenuItems(true);
+                settingsOpen = true;
             }
         });
     }
@@ -993,22 +997,17 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
     private void showMenuItems(boolean show) {
         if (show) {
-            if (screenMirror!=null) {
-                screenMirror.post(() -> screenMirror.setVisibility(View.VISIBLE));
-            }
             myView.myToolbar.post(() -> myView.myToolbar.showClock(true));
             if (batteryStatus!=null) {
                 batteryStatus.showBattery(true);
             }
         } else {
-            if (screenMirror!=null) {
-                screenMirror.post(() -> screenMirror.setVisibility(View.GONE));
-            }
             myView.myToolbar.post(() -> myView.myToolbar.showClock(false));
             if (batteryStatus!=null) {
                 batteryStatus.showBattery(false);
             }
         }
+        updateCastIcon();
     }
     @Override
     public boolean onSupportNavigateUp() {
@@ -2894,22 +2893,26 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
 
     private void updateCastIcon() {
-        if (alertChecks.getIgnorePlayServicesWarning() && screenMirror!=null) {
-            screenMirror.setVisibility(View.GONE);
+        if (screenMirror != null) {
+            if (GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this) != ConnectionResult.SUCCESS) {
+                Log.d(TAG,"No play services, so hide the cast icon");
+                screenMirror.setVisibility(View.GONE);
+            } else if (menuOpen || settingsOpen) {
+                Log.d(TAG,"Settings or menu, so hide the cast icon");
+                screenMirror.setVisibility(View.GONE);
+            } else {
+                Log.d(TAG,"Home page, so show the cast icon");
+                screenMirror.setVisibility(View.VISIBLE);
+            }
 
-        } else if (screenMirror!=null) {
             if (secondaryDisplays != null && connectedDisplays.length > 0) {
                 screenMirror.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.cast_connected));
             } else {
                 screenMirror.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.cast));
             }
-            if (menuOpen) {
-                screenMirror.setVisibility(View.GONE);
-            } else {
-                screenMirror.setVisibility(View.VISIBLE);
-            }
         }
     }
+
 
     private void setupDisplays() {
         // Go through each connected display and create the secondaryDisplay Presentation class
@@ -3025,10 +3028,21 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void presenterShowSection(int position) {
+        int sections;
+        if (song.getFiletype().equals("PDF")) {
+            sections = song.getPdfPageCount();
+        } else if (song.getFiletype().equals("IMG")) {
+            sections = 1;
+        } else {
+            sections = song.getSongSections().size();
+        }
+
+        Log.d(TAG,"sections:"+sections);
+
         if (secondaryDisplays!=null) {
             for (SecondaryDisplay secondaryDisplay : secondaryDisplays) {
                 if (secondaryDisplay != null && secondaryDisplay.isShowing() &&
-                        position < getSong().getSongSections().size()) {
+                        position < sections) {
                     try {
                         secondaryDisplay.showSection(position);
                     } catch (Exception e) {

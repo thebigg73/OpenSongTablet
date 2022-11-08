@@ -99,8 +99,6 @@
             android:id="@+id/batteryholder"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_alignParentTop="true"
-            android:layout_toStartOf="@+id/webHelp"
             android:gravity="center"
             android:maxWidth="48dp"
             android:minWidth="48dp"
@@ -160,10 +158,9 @@
             android:id="@+id/webHelp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
             android:layout_gravity="center_horizontal"
             android:src="@drawable/web"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            android:contentDescription="@string/help" />
     </LinearLayout>
 </com.google.android.material.appbar.MaterialToolbar>

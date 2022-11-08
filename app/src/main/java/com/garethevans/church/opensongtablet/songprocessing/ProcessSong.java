@@ -1367,7 +1367,6 @@ public class ProcessSong {
                 if (!aTempPresOrderArray.equals("")) {
                     for (int a = 0; a < song.getSongSectionHeadings().size(); a++) {
                         if (song.getSongSectionHeadings().get(a).trim().equals(aTempPresOrderArray.trim())) {
-                            //newSections.add(song.getSongSections().get(a));
                             newSections.add(song.getGroupedSections().get(a));
                             newHeaders.add(song.getSongSectionHeadings().get(a));
                         }

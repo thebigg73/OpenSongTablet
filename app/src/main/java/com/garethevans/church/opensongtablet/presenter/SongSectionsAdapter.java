@@ -178,6 +178,8 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
             holder.content.setVisibility(View.GONE);
         }
 
+        Log.d(TAG,"needsImage: "+needsImage);
+
         if (needsImage) {
             holder.image.setVisibility(View.VISIBLE);
             holder.heading.setVisibility(View.GONE);
