@@ -9,6 +9,7 @@ import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import android.annotation.SuppressLint;
 import android.app.Presentation;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.SurfaceTexture;
 import android.graphics.drawable.Drawable;
@@ -45,8 +46,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 // This contains all of the screen mirroring logic (previously PresentationCommon and Presentation)
-// All common preferences are stored in the PresentationSettings class
-// Colors are stored in ThemeColors class
+// All common preferences are stored in the Presentation/PresentationSettings.java class
+// Colors are stored in ScreenSetup/ThemeColors.java class
 
 // TODO TIDY UP
 public class SecondaryDisplay extends Presentation {
@@ -59,6 +60,7 @@ public class SecondaryDisplay extends Presentation {
     private ArrayList<View> secondaryViews;
     private ArrayList<Integer> secondaryWidths, secondaryHeights;
     private DisplayMetrics displayMetrics;
+    private Bitmap bitmap;
 
     // Default variables
     private float scaleChords, scaleHeadings, scaleComments, lineSpacing;
@@ -821,8 +823,6 @@ public class SecondaryDisplay extends Presentation {
         // Decide if this is an XML, PDF or IMG file and proceed accordingly
         if (mainActivityInterface.getSong().getFiletype().equals("XML")) {
             setSectionViews();
-        } else {
-            // TODO deal with PDF and images!
         }
     }
     public void setSongContentPrefs() {
@@ -832,6 +832,7 @@ public class SecondaryDisplay extends Presentation {
         boldChordHeading = mainActivityInterface.getPreferences().getMyPreferenceBoolean("boldChordHeading", false);
         scaleChords = mainActivityInterface.getPreferences().getMyPreferenceFloat("scaleChords", 0.8f);
     }
+
     private void setSectionViews() {
         boolean isPresentation = !mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance));
         secondaryViews = mainActivityInterface.getProcessSong().
@@ -913,24 +914,29 @@ public class SecondaryDisplay extends Presentation {
         boolean presenterOk = mainActivityInterface.getMode().equals(c.getString(R.string.mode_presenter)) &&
                 mainActivityInterface.getPresenterSettings().getSongSectionsAdapter()!=null;
 
-        Log.d(TAG,"position="+position+"  getPresenterSettings().getCurrentSection()="+mainActivityInterface.getPresenterSettings().getCurrentSection());
+        boolean image = mainActivityInterface.getSong().getFiletype().equals("IMG");
+        boolean pdf = mainActivityInterface.getSong().getFiletype().equals("PDF");
+        int viewsAvailable;
+        if (image) {
+            viewsAvailable = 1;
+        } else if (pdf) {
+            viewsAvailable = mainActivityInterface.getSong().getPdfPageCount();
+        } else {
+            viewsAvailable = mainActivityInterface.getSong().getSongSections().size();
+        }
+        Log.d(TAG,"stageOk:"+stageOk+"  presenterOk:"+presenterOk);
+        Log.d(TAG,"position="+position+"  viewsAvailable="+viewsAvailable);
         // TODO need to fix for Stage mode too - getSongSectionsAdapter not initialised
+
         if ((stageOk || presenterOk) && position!=-1) {
             // If we edited the section temporarily, remove this position flag
             if (presenterOk) {
                 mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().setSectionEdited(-1);
             }
             mainActivityInterface.getSong().setCurrentSection(position);
-            if (position >= 0 && position < secondaryViews.size()) {
+            if (position >= 0 && position < viewsAvailable) {
                 // Check the song info status first
                 checkSongInfoShowHide();
-
-                // Remove the view from any parent it might be attached to already (can only have 1)
-                removeViewFromParent(secondaryViews.get(position));
-
-                // Get the size of the view
-                int width = secondaryWidths.get(position);
-                int height = secondaryHeights.get(position);
 
                 // Get the measured height of the song info bar
                 int infoHeight = 0;
@@ -942,42 +948,82 @@ public class SecondaryDisplay extends Presentation {
                 if (infoHeight == 0) {
                     infoHeight = myView.testSongInfo.getViewHeight();
                 }
-
                 Log.d(TAG,"infoHeight="+infoHeight);
                 int alertHeight = myView.alertBar.getViewHeight();
 
-                float max_x = (float) availableScreenWidth / (float) width;
-                float max_y = (float) (availableScreenHeight - infoHeight - alertHeight) / (float) height;
+                if (!pdf && !image) {
+                    // Remove the view from any parent it might be attached to already (can only have 1)
+                    removeViewFromParent(secondaryViews.get(position));
 
-                float best = Math.min(max_x, max_y);
-                if (best > (mainActivityInterface.getPresenterSettings().getFontSizePresoMax() / 14f)) {
-                    best = mainActivityInterface.getPresenterSettings().getFontSizePresoMax() / 14f;
+                    // Get the size of the view
+                    int width = secondaryWidths.get(position);
+                    int height = secondaryHeights.get(position);
+
+                    float max_x = (float) availableScreenWidth / (float) width;
+                    float max_y = (float) (availableScreenHeight - infoHeight - alertHeight) / (float) height;
+
+                    float best = Math.min(max_x, max_y);
+                    if (best > (mainActivityInterface.getPresenterSettings().getFontSizePresoMax() / 14f)) {
+                        best = mainActivityInterface.getPresenterSettings().getFontSizePresoMax() / 14f;
+                    }
+
+                    secondaryViews.get(position).setPivotX(0f);
+                    secondaryViews.get(position).setPivotY(0f);
+                    secondaryViews.get(position).setScaleX(best);
+                    secondaryViews.get(position).setScaleY(best);
+
+                    // We can now prepare the new view and animate in/out the views as long as the logo is off
+                    // and the blank screen isn't on
+                    //Log.d(TAG, "showWhich=" + showWhich + "  canShowSong()=" + canShowSong());
+
+                    // Translate the scaled views based on the alignment
+                    int newWidth = (int) (width * best);
+                    int newHeight = (int) (height * best);
+                    translateView(secondaryViews.get(position), newWidth, newHeight, infoHeight, alertHeight);
                 }
 
-                secondaryViews.get(position).setPivotX(0f);
-                secondaryViews.get(position).setPivotY(0f);
-                secondaryViews.get(position).setScaleX(best);
-                secondaryViews.get(position).setScaleY(best);
+                if (pdf) {
+                    bitmap = mainActivityInterface.getProcessSong().getBitmapFromPDF(mainActivityInterface.getSong().getFolder(),
+                            mainActivityInterface.getSong().getFilename(),position,availableScreenWidth,
+                            availableScreenHeight - infoHeight - alertHeight,"Y");
+                } else if (image) {
+                    bitmap = mainActivityInterface.getProcessSong().getBitmapFromUri(
+                            mainActivityInterface.getStorageAccess().getUriForItem("Songs",
+                                    mainActivityInterface.getSong().getFolder(),
+                                    mainActivityInterface.getSong().getFilename()),
+                                    availableScreenWidth, availableScreenHeight - infoHeight - alertHeight);
+                } else {
+                    bitmap = null;
 
-                // We can now prepare the new view and animate in/out the views as long as the logo is off
-                // and the blank screen isn't on
-                //Log.d(TAG, "showWhich=" + showWhich + "  canShowSong()=" + canShowSong());
+                }
 
-                // Translate the scaled views based on the alignment
-                int newWidth = (int) (width * best);
-                int newHeight = (int) (height * best);
-                translateView(secondaryViews.get(position), newWidth, newHeight, infoHeight, alertHeight);
-
+                Log.d(TAG,"bitmap:"+bitmap);
                 if (!myView.songContent1.getIsDisplaying()) {
                     myView.songContent1.clearViews();
-                    myView.songContent1.getCol1().addView(secondaryViews.get(position));
+                    if (image || pdf) {
+                        myView.songContent1.getCol1().setVisibility(View.GONE);
+                        myView.songContent1.getImageView().setVisibility(View.VISIBLE);
+                        GlideApp.with(c).load(bitmap).into(myView.songContent1.getImageView());
+                    } else {
+                        myView.songContent1.getCol1().setVisibility(View.VISIBLE);
+                        myView.songContent1.getImageView().setVisibility(View.GONE);
+                        myView.songContent1.getCol1().addView(secondaryViews.get(position));
+                    }
                     myView.songContent1.setIsDisplaying(true);
                     myView.songContent2.setIsDisplaying(false);
                     crossFadeContent(myView.songContent2, myView.songContent1);
 
                 } else if (!myView.songContent2.getIsDisplaying()) {
                     myView.songContent2.clearViews();
-                    myView.songContent2.getCol1().addView(secondaryViews.get(position));
+                    if (image || pdf) {
+                        myView.songContent2.getCol1().setVisibility(View.GONE);
+                        myView.songContent2.getImageView().setVisibility(View.VISIBLE);
+                        GlideApp.with(c).load(bitmap).into(myView.songContent2.getImageView());
+                    } else {
+                        myView.songContent2.getCol1().setVisibility(View.VISIBLE);
+                        myView.songContent2.getImageView().setVisibility(View.GONE);
+                        myView.songContent2.getCol1().addView(secondaryViews.get(position));
+                    }
                     myView.songContent1.setIsDisplaying(false);
                     myView.songContent2.setIsDisplaying(true);
                     crossFadeContent(myView.songContent1, myView.songContent2);

@@ -360,11 +360,13 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
             final Map<String, Integer> map = songListAdapter.getAlphaIndex(songsFound);
             Set<String> setString = map.keySet();
             List<String> indexList = new ArrayList<>(setString);
+            float tvSize = mainActivityInterface.getPreferences().getMyPreferenceFloat("songMenuAlphaIndexSize", 14.0f);
+            int i = (int) mainActivityInterface.getPreferences().getMyPreferenceFloat("songMenuAlphaIndexSize", 14.0f) * 2;
+
             for (int p=0; p<indexList.size(); p++) {
                 String index = indexList.get(p);
                 textView = (TextView) View.inflate(getActivity(), R.layout.view_alphabetical_list, null);
-                textView.setTextSize(mainActivityInterface.getPreferences().getMyPreferenceFloat("songMenuAlphaIndexSize", 14.0f));
-                int i = (int) mainActivityInterface.getPreferences().getMyPreferenceFloat("songMenuAlphaIndexSize", 14.0f) * 2;
+                textView.setTextSize(tvSize);
                 textView.setPadding(i, i, i, i);
                 textView.setMinimumWidth(16);
                 textView.setMinimumHeight(16);
