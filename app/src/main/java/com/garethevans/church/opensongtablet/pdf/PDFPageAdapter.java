@@ -316,7 +316,7 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
                     // Send and update notification to Performance Fragment via the MainActivity (scrolls to position)
                     if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_stage))) {
                         displayInterface.performanceShowSection(position);
-                    } else if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_presenter))) {
+                    } else {
                         displayInterface.presenterShowSection(position);
                     }
 

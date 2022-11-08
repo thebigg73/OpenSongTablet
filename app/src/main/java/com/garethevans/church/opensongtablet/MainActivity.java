@@ -3052,6 +3052,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             }
         }
     }
+
     @Override
     public void performanceShowSection(int position) {
         // This gets a section from from the user selecting either a PDF page or a Stage Mode section

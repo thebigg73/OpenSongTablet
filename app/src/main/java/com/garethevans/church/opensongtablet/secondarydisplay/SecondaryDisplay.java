@@ -913,7 +913,6 @@ public class SecondaryDisplay extends Presentation {
         boolean stageOk = mainActivityInterface.getMode().equals(c.getString(R.string.mode_stage));
         boolean presenterOk = mainActivityInterface.getMode().equals(c.getString(R.string.mode_presenter)) &&
                 mainActivityInterface.getPresenterSettings().getSongSectionsAdapter()!=null;
-
         boolean image = mainActivityInterface.getSong().getFiletype().equals("IMG");
         boolean pdf = mainActivityInterface.getSong().getFiletype().equals("PDF");
         int viewsAvailable;
@@ -928,7 +927,7 @@ public class SecondaryDisplay extends Presentation {
         Log.d(TAG,"position="+position+"  viewsAvailable="+viewsAvailable);
         // TODO need to fix for Stage mode too - getSongSectionsAdapter not initialised
 
-        if ((stageOk || presenterOk) && position!=-1) {
+        if ((stageOk || presenterOk || pdf || image) && position!=-1) {
             // If we edited the section temporarily, remove this position flag
             if (presenterOk) {
                 mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().setSectionEdited(-1);
@@ -1002,8 +1001,10 @@ public class SecondaryDisplay extends Presentation {
                     myView.songContent1.clearViews();
                     if (image || pdf) {
                         myView.songContent1.getCol1().setVisibility(View.GONE);
+                        myView.songContent1.getCol2().setVisibility(View.GONE);
+                        myView.songContent1.getCol3().setVisibility(View.GONE);
                         myView.songContent1.getImageView().setVisibility(View.VISIBLE);
-                        GlideApp.with(c).load(bitmap).into(myView.songContent1.getImageView());
+                        GlideApp.with(c).load(bitmap).fitCenter().into(myView.songContent1.getImageView());
                     } else {
                         myView.songContent1.getCol1().setVisibility(View.VISIBLE);
                         myView.songContent1.getImageView().setVisibility(View.GONE);
@@ -1017,8 +1018,10 @@ public class SecondaryDisplay extends Presentation {
                     myView.songContent2.clearViews();
                     if (image || pdf) {
                         myView.songContent2.getCol1().setVisibility(View.GONE);
+                        myView.songContent2.getCol2().setVisibility(View.GONE);
+                        myView.songContent2.getCol3().setVisibility(View.GONE);
                         myView.songContent2.getImageView().setVisibility(View.VISIBLE);
-                        GlideApp.with(c).load(bitmap).into(myView.songContent2.getImageView());
+                        GlideApp.with(c).load(bitmap).fitCenter().into(myView.songContent2.getImageView());
                     } else {
                         myView.songContent2.getCol1().setVisibility(View.VISIBLE);
                         myView.songContent2.getImageView().setVisibility(View.GONE);
