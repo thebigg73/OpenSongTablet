@@ -16,7 +16,6 @@ class MenuHandlers {
 
     public interface MyInterface {
         void openMyDrawers(String what);
-        void openFragment();
         void prepareOptionMenu();
         void fixSet();
     }

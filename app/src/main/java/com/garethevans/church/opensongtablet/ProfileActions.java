@@ -23,7 +23,7 @@ import java.io.OutputStream;
 
 class ProfileActions {
 
-    boolean doSaveProfile(Context c, Preferences preferences, StorageAccess storageAccess, Uri to) {
+    boolean doSaveProfile(Context c, StorageAccess storageAccess, Uri to) {
         boolean result = true;  // Returns true on success.  Catches throw to false
         try {
             // This is used to copy the current preferences xml file to the chosen name / location

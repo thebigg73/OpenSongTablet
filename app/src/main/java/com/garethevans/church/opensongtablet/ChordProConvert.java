@@ -719,6 +719,8 @@ class ChordProConvert {
                 sqLite.setKey(StaticVariables.mKey);
                 sqLiteHelper.updateSong(c,sqLite);
             }
+            // Songs have changed, flag song menu to refresh if it is used
+            FullscreenActivity.needtorefreshsongmenu = true;
         }
     }
 

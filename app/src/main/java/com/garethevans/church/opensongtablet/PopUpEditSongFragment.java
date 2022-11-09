@@ -422,7 +422,6 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
     }
 
     public interface MyInterface {
-        void prepareSongMenu();
         void loadSong();
     }
 

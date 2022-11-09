@@ -3,12 +3,11 @@ package com.garethevans.church.opensongtablet;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Handler;
+import android.widget.TextView;
+
 import androidx.core.provider.FontRequest;
 import androidx.core.provider.FontsContractCompat;
 import androidx.core.provider.FontsContractCompat.FontRequestCallback;
-import android.widget.TextView;
-
-import java.util.ArrayList;
 
 class SetTypeFace {
 
@@ -368,34 +367,4 @@ class SetTypeFace {
                 fontnamechosen, textView);
         FontsContractCompat.requestFont(c, fontRequest, fontRequestCallback, handler);
     }
-
-    ArrayList<String> googleFontsAllowed() {
-        ArrayList<String> f = new ArrayList<>();
-        f.add("Abel");
-        f.add("Actor");
-        f.add("Amiri");
-        f.add("Assistant");
-        f.add("Atma");
-        f.add("Baloo");
-        f.add("Basic");
-        f.add("Comfortaa");
-        f.add("Encode Sans");
-        f.add("Fira Mono");
-        f.add("Gidugu");
-        f.add("Gloria Hallelujah");
-        f.add("Gochi Hand");
-        f.add("Gurajada");
-        f.add("Hind Madurai");
-        f.add("Imprima");
-        f.add("Lato");
-        f.add("Noto Sans");
-        f.add("Paprika");
-        f.add("Roboto");
-        f.add("Roboto Mono");
-        f.add("Ubuntu");
-        f.add("Ubuntu Mono");
-
-        return f;
-    }
-
 }

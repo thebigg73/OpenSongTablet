@@ -237,7 +237,6 @@ public class PopUpSongRenameFragment extends DialogFragment {
 
     public interface MyInterface {
         void loadSong();
-        void prepareSongMenu();
     }
 
     @SuppressLint("StaticFieldLeak")

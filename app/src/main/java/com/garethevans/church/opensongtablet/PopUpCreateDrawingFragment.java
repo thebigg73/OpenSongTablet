@@ -191,8 +191,6 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
         redo_FAB.setOnClickListener(view -> drawView.redo());
         showorhideToolOptions(isgone);
 
-        drawView.setDrawingSize();
-
         PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
         // Add the images after view sizing as some Android distro's need this to scale correctly!
@@ -247,7 +245,7 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
                         val = StaticVariables.highlighterblue;
                         break;
                 }
-                preferences.setMyPreferenceInt(getActivity(),"drawingHighlighterColor",val);
+                preferences.setMyPreferenceInt(getActivity(),"drawingHighlighterColor", val);
                 break;
         }
         setCurrentTool();

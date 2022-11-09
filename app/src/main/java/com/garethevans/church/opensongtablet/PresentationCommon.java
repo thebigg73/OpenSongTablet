@@ -115,7 +115,7 @@ class PresentationCommon {
         // IV - Always runfixbackground
         return true;
     }
-    void changeMargins(Context c, Preferences preferences, RelativeLayout projectedPage_RelativeLayout, int presoInfoColor) {
+    void changeMargins(Context c, Preferences preferences, RelativeLayout projectedPage_RelativeLayout) {
         projectedPage_RelativeLayout.setPadding(preferences.getMyPreferenceInt(c,"presoXMargin",20)+StaticVariables.cast_padding,
                 preferences.getMyPreferenceInt(c,"presoYMargin",10)+StaticVariables.cast_padding,
                 preferences.getMyPreferenceInt(c,"presoXMargin",20)+StaticVariables.cast_padding,
@@ -1245,7 +1245,8 @@ class PresentationCommon {
                             StaticVariables.cast_lyricsBridgeColor,StaticVariables.cast_lyricsTagColor,
                             StaticVariables.cast_lyricsCommentColor,StaticVariables.cast_lyricsCustomColor));
                     box1_3.addView(lyrics1_3);
-                } else if (x >= FullscreenActivity.thirdsplit_section && x < FullscreenActivity.twothirdsplit_section) {
+                // IV - enters else when x is >= FullscreenActivity.thirdsplit_section
+                } else if (x < FullscreenActivity.twothirdsplit_section) {
                     lyrics2_3 = processSong.projectedSectionView(c, x, fontsize2_3,
                             storageAccess, preferences,StaticVariables.cast_lyricsTextColor, StaticVariables.cast_lyricsChordsColor,
                             StaticVariables.cast_lyricsCapoColor,StaticVariables.cast_presoFontColor,StaticVariables.cast_presoShadowColor);
@@ -1257,6 +1258,7 @@ class PresentationCommon {
                             StaticVariables.cast_lyricsBridgeColor,StaticVariables.cast_lyricsTagColor,
                             StaticVariables.cast_lyricsCommentColor,StaticVariables.cast_lyricsCustomColor));
                     box2_3.addView(lyrics2_3);
+                // IV - enters else when x is >= FullscreenActivity.twothirdsplit_section
                 } else {
                     lyrics3_3 = processSong.projectedSectionView(c, x, fontsize3_3,
                             storageAccess, preferences,StaticVariables.cast_lyricsTextColor, StaticVariables.cast_lyricsChordsColor,

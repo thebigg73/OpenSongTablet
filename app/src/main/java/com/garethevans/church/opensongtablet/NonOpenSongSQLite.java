@@ -71,8 +71,6 @@ class NonOpenSongSQLite {
     private String linkother;
     private String presentationorder;
 
-    NonOpenSongSQLite() {}
-
     NonOpenSongSQLite(int id, String songid, String filename, String folder, String title, String author,
                       String copyright, String lyrics, String hymn_num, String ccli, String theme,
                       String alttheme, String user1, String user2, String user3, String key, String aka,

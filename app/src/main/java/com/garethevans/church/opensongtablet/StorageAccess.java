@@ -458,8 +458,8 @@ class StorageAccess {
     void lollipopCreateFileForOutputStream(Context c, Preferences preferences, Uri uri, String mimeType, String folder, String subfolder, String filename) {
         // Only need to do this for Lollipop or later
         if (lollipopOrLater()) {
-            // IV - Delete any existing file (does not touch folder)
-            if (mimeType==null && uriExists(c,uri) && !filename.equals("") && filename!=null) {
+            // IV - Delete any existing file (does not touch folder). filename is always not null.
+            if (mimeType==null && uriExists(c,uri) && !filename.equals("")) {
                 deleteFile_SAF(c, uri);
             }
             if (!uriExists(c, uri)) {
@@ -477,8 +477,8 @@ class StorageAccess {
                             }
                         }
                     } else {
-                        // IV - Delete any existing file (does not touch folder)
-                        if (f.exists() && !filename.equals("") && filename!=null) {
+                        // IV - Delete any existing file (does not touch folder). 'filename' is always not null.
+                        if (f.exists() && !filename.equals("")) {
                             deleteFile_File(uri);
                         }
                         if (!f.createNewFile()) {

@@ -11,18 +11,6 @@ class SearchViewItems {
     private String lyrics;
     //private String hymnnum;
 
-    // TODO Not sure if any of this gets used anymore?
-    SearchViewItems(String filename, String title, String folder, String author, String key, String theme, String lyrics) {
-        this.filename = filename;
-        this.title = title;
-        this.folder = folder;
-        this.author = author;
-        this.key = key;
-        this.theme = theme;
-        this.lyrics = lyrics;
-        //this.hymnnum = hymnnum;
-    }
-
     public String getFilename() {
         return filename;
     }

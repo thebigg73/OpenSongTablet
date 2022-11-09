@@ -463,7 +463,7 @@ public class NearbyConnections implements NearbyInterface {
                     Nearby.getConnectionsClient(context).sendPayload(endpointId, Payload.fromBytes(infoFilePayload.getBytes()));
                     Nearby.getConnectionsClient(context).sendPayload(endpointId, payloadFile);
                     // IV - Check the size.  If it is large then indicate to inform user
-                    if (payloadFile.asFile()!=null && payloadFile.asFile().getSize() > 30000) {
+                    if (Objects.requireNonNull(payloadFile.asFile()).getSize() > 30000) {
                         largePayLoad = true;
                     }
                 }
@@ -471,7 +471,6 @@ public class NearbyConnections implements NearbyInterface {
         }
         return largePayLoad;
     }
-    @Override
     public void doSendPayloadBytes(String infoPayload) {
         if (StaticVariables.isHost) {
             for (String endpointId : connectedEndPoints) {

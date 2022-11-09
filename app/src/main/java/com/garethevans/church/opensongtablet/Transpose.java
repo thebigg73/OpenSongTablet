@@ -553,7 +553,8 @@ class Transpose {
         // This is used to give the user a list starting with blank of either simple fret number or fret number with new capo key
         ArrayList<String> al = new ArrayList<>(Collections.singletonList(""));
 
-        if (key!=null && !key.equals("") && !key.isEmpty()) {
+        // IV - isEmpty() includes equals("")
+        if (key!=null && !key.isEmpty()) {
             for (int i=1; i<=11; i++) al.add(i + " (" + numberToKey(c, preferences, transposeNumber(keyToNumber(key), "-1", i)) + ")");
         } else {
             for (int i=1; i<=11; i++) al.add(i + "");

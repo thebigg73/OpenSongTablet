@@ -225,7 +225,7 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             }
         }
         static void changeMargins() {
-            presentationCommon.changeMargins(c,preferences,projectedPage_RelativeLayout,StaticVariables.cast_presoInfoColor);
+            presentationCommon.changeMargins(c,preferences,projectedPage_RelativeLayout);
         }
         static void fixBackground() {
             presentationCommon.fixBackground(c,preferences,storageAccess,projected_BackgroundImage,projected_SurfaceHolder,projected_SurfaceView);

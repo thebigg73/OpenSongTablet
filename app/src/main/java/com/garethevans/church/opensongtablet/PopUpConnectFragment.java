@@ -72,7 +72,6 @@ public class PopUpConnectFragment extends DialogFragment {
 
         // Initialise the views
         deviceNameEditText = V.findViewById(R.id.deviceNameEditText);
-        deviceNameTextView = V.findViewById(R.id.deviceNameTextView);
         // IV - Changed to DeviceId which is the pref used by getUserNickname()
         deviceNameEditText.setText(preferences.getMyPreferenceString(getContext(), "deviceId", ""));
 

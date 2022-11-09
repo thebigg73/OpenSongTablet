@@ -46,7 +46,7 @@ public class PopUpLyricsSettings extends DialogFragment {
 
     private SwitchCompat songLyricsToggleSwitch, songPresentationOrderSwitch, songLyricsBoxSwitch,
             songTrimSwitch, songSectionSpaceSwitch, trimlinespacing_SwitchCompat;
-    private TextView scaleHeading_TextView, scaleComment_TextView, scaleChords_TextView, scaleHeadingTitle_TextView,
+    private TextView scaleHeading_TextView, scaleComment_TextView, scaleHeadingTitle_TextView,
             scaleCommentTitle_TextView, lineSpacing_TextView, title;
     private SeekBar scaleHeading_SeekBar, scaleComment_SeekBar, lineSpacing_SeekBar;
     private FloatingActionButton closeMe, saveMe;
@@ -133,18 +133,18 @@ public class PopUpLyricsSettings extends DialogFragment {
     private void updateFontSizes() {
         float menuFontSize = preferences.getMyPreferenceFloat(getContext(), "songMenuAlphaIndexSize", 14.0f);
         ResizeMenuItems resizeMenuItems = new ResizeMenuItems();
-        resizeMenuItems.updateTextViewSize(title, menuFontSize, "L", false);
-        resizeMenuItems.updateTextViewSize(songLyricsToggleSwitch, menuFontSize, "", false);
-        resizeMenuItems.updateTextViewSize(songLyricsBoxSwitch, menuFontSize, "", false);
-        resizeMenuItems.updateTextViewSize(songTrimSwitch, menuFontSize, "", false);
-        resizeMenuItems.updateTextViewSize(songSectionSpaceSwitch, menuFontSize, "", false);
-        resizeMenuItems.updateTextViewSize(scaleHeadingTitle_TextView, menuFontSize, "", false);
-        resizeMenuItems.updateTextViewSize(scaleHeading_TextView, menuFontSize, "S", false);
-        resizeMenuItems.updateTextViewSize(scaleCommentTitle_TextView, menuFontSize, "", false);
-        resizeMenuItems.updateTextViewSize(scaleComment_TextView, menuFontSize, "S", false);
-        resizeMenuItems.updateTextViewSize(trimlinespacing_SwitchCompat, menuFontSize, "", false);
-        resizeMenuItems.updateTextViewSize(lineSpacing_TextView, menuFontSize, "S", false);
-        resizeMenuItems.updateTextViewSize(songPresentationOrderSwitch, menuFontSize, "", false);
+        resizeMenuItems.updateTextViewSize(title, menuFontSize, "L");
+        resizeMenuItems.updateTextViewSize(songLyricsToggleSwitch, menuFontSize, "");
+        resizeMenuItems.updateTextViewSize(songLyricsBoxSwitch, menuFontSize, "");
+        resizeMenuItems.updateTextViewSize(songTrimSwitch, menuFontSize, "");
+        resizeMenuItems.updateTextViewSize(songSectionSpaceSwitch, menuFontSize, "");
+        resizeMenuItems.updateTextViewSize(scaleHeadingTitle_TextView, menuFontSize, "");
+        resizeMenuItems.updateTextViewSize(scaleHeading_TextView, menuFontSize, "S");
+        resizeMenuItems.updateTextViewSize(scaleCommentTitle_TextView, menuFontSize, "");
+        resizeMenuItems.updateTextViewSize(scaleComment_TextView, menuFontSize, "S");
+        resizeMenuItems.updateTextViewSize(trimlinespacing_SwitchCompat, menuFontSize, "");
+        resizeMenuItems.updateTextViewSize(lineSpacing_TextView, menuFontSize, "S");
+        resizeMenuItems.updateTextViewSize(songPresentationOrderSwitch, menuFontSize, "");
     }
 
     private void setUpListeners() {
@@ -229,7 +229,7 @@ public class PopUpLyricsSettings extends DialogFragment {
     }
 
     class SaveCheckedState implements CompoundButton.OnCheckedChangeListener {
-        String value;
+        final String value;
         SaveCheckedState(String s) {
             this.value = s;
         }

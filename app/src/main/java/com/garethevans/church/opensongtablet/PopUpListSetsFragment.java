@@ -63,10 +63,7 @@ public class PopUpListSetsFragment extends DialogFragment {
     private Preferences preferences;
 
     public interface MyInterface {
-        void refreshAll();
-
         void openFragment();
-
         void confirmedAction();
     }
 
@@ -736,7 +733,8 @@ public class PopUpListSetsFragment extends DialogFragment {
             String[] tempsets = StaticVariables.setnamechosen.split("%_%");
 
             for (String tempfile : tempsets) {
-                if (tempfile != null && !tempfile.equals("") && !tempfile.isEmpty()) {
+                // IV - isEmpty() includes equals("")
+                if (tempfile != null && !tempfile.isEmpty()) {
                     try {
                         StaticVariables.settoload = tempfile;
                         setActions.loadASet(getContext(), preferences, storageAccess);

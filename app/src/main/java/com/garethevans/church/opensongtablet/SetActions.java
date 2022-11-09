@@ -21,7 +21,6 @@ import java.util.Collections;
 class SetActions {
 
     public interface MyInterface {
-        void doMoveSection();
         void loadSong();
     }
 
