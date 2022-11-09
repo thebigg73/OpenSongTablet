@@ -75,8 +75,10 @@ class MenuHandlers {
             ViewConfiguration config = ViewConfiguration.get(c);
             if (Build.VERSION.SDK_INT<Build.VERSION_CODES.R) {
                 Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
-                menuKeyField.setAccessible(true);
-                menuKeyField.setBoolean(config, false);
+                if (menuKeyField != null) {
+                    menuKeyField.setAccessible(true);
+                    menuKeyField.setBoolean(config, false);
+                }
             }
         } catch (Exception ex) {
             // Ignore
