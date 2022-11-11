@@ -135,7 +135,7 @@
     <string name="connections_discover_stop">Stop discovery</string>
     <string name="connections_failure">Connection failure</string>
     <string name="connections_host">Found host:</string>
-    <string name="connections_log">Connection log (click to clear).  If you have any issues, reset your WiFi and restart the app.</string>
+    <string name="connections_log">Connection log (click to clear).  If you have any issues, reset your Wi-Fi and restart the app.</string>
     <string name="connections_receive_host">Receive host songs</string>
     <string name="connections_searching">Searching…</string>
     <string name="connections_service_start">Start service</string>
@@ -410,7 +410,7 @@
     <string name="nothighenoughapi">You need a newer version of Android for this!</string>
     <string name="notsaved">not saved</string>
     <string name="notset">Not set</string>
-    <string name="nowifidirect">Sorry, this device does not support WiFi direct</string>
+    <string name="nowifidirect">Sorry, this device does not support Wi-Fi direct</string>
     <string name="off">Off</string>
     <string name="ok">OK</string>
     <string name="oldchordformat">Detected current chord format</string>
@@ -767,4 +767,6 @@
     <string name="nearby_large_file">This large song file is being shared</string>
     <string name="midi_delay">Midi delay buffer</string>
     <string name="songs">Songs</string>
+    <string name="location_not_enabled">To connect to devices please turn \'Location\' ON.  If you have a choice of mode, choose a mode that uses Wi-Fi.</string>
+    <string name="location">Location</string>
 </resources>

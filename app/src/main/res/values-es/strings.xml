@@ -98,7 +98,7 @@
     <string name="connections_discover_stop">"Detener el descubrimiento"</string>
     <string name="connections_failure">"Error de conexión"</string>
     <string name="connections_host">"Se encontró host:"</string>
-    <string name="connections_log">"Registro de conexión (haga clic para borrar). Si tiene algún problema, restablezca su WiFi y reinicie la aplicación."</string>
+    <string name="connections_log">Registro de conexión (haga clic para borrar). Si tiene algún problema, restablezca su Wi-Fi y reinicie la aplicación.</string>
     <string name="connections_receive_host">"Recibir canciones de acogida"</string>
     <string name="connections_searching">"Buscando…"</string>
     <string name="connections_service_start">"Comienza el servicio"</string>
@@ -303,7 +303,7 @@
     <string name="nothighenoughapi">"Se necesita una versión más reciente de Android para esto!"</string>
     <string name="notsaved">No guardado</string>
     <string name="notset">"No establecido"</string>
-    <string name="nowifidirect">"Lo sentimos, este dispositivo no admite WiFi directo"</string>
+    <string name="nowifidirect">Lo sentimos, este dispositivo no admite Wi-Fi directo</string>
     <string name="off">"Apagado"</string>
     <string name="ok">"Aceptar"</string>
     <string name="oldchordformat">"Formato acorde actual Detectado"</string>
@@ -535,4 +535,6 @@
     <string name="midi_delay">Búfer de retardo MIDI</string>
     <string name="forum">Ayuda (googlegroups)</string>
     <string name="songs">Canciones</string>
+    <string name="location_not_enabled">Para conectarse a dispositivos, active \'Ubicación\'. Si tiene una opción de modo, elija un modo que use Wi-Fi.</string>
+    <string name="location">Ubicación</string>
 </resources>

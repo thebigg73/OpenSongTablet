@@ -98,7 +98,7 @@
     <string name="connections_discover_stop">"発見を止める"</string>
     <string name="connections_failure">"接続障害"</string>
     <string name="connections_host">"見つかったホスト："</string>
-    <string name="connections_log">"接続ログ（クリックしてクリアする）。何か問題がある場合は、WiFiをリセットしてアプリを再起動してください。"</string>
+    <string name="connections_log">接続ログ（クリックしてクリアする）。何か問題がある場合は、Wi-Fiをリセットしてアプリを再起動してください。</string>
     <string name="connections_receive_host">"ホストソングを受信する"</string>
     <string name="connections_searching">"検索中…"</string>
     <string name="connections_service_start">"サービスを開始する"</string>
@@ -303,7 +303,7 @@
     <string name="nothighenoughapi">"あなたはこのためのAndroidの新しいバージョンが必要です！"</string>
     <string name="notsaved">保存されません</string>
     <string name="notset">"設定されない"</string>
-    <string name="nowifidirect">"申し訳ありませんが、このデバイスはWiFiダイレクトをサポートしていません"</string>
+    <string name="nowifidirect">申し訳ありませんが、このデバイスはWi-Fiダイレクトをサポートしていません</string>
     <string name="off">"オフ"</string>
     <string name="ok">"オーケー (OK)"</string>
     <string name="oldchordformat">"検出された現在の和音フォーマット"</string>
@@ -535,4 +535,6 @@
     <string name="midi_delay">MIDIディレイバッファー</string>
     <string name="forum">ヘルプ (googlegroups)</string>
     <string name="songs">曲</string>
+    <string name="location_not_enabled">デバイスに接続するには、「位置情報」をオンにしてください。モードを選択できる場合は、Wi-Fi を使用するモードを選択します。</string>
+    <string name="location">位置情報</string>
 </resources>

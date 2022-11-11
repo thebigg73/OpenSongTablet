@@ -98,7 +98,7 @@
     <string name="connections_discover_stop">"Sluta upptäckt"</string>
     <string name="connections_failure">"Anslutningsfel"</string>
     <string name="connections_host">"Hittade värd:"</string>
-    <string name="connections_log">"Anslutningslogg (klicka för att rensa). Om du har några problem, återställ WiFi och starta om appen."</string>
+    <string name="connections_log">Anslutningslogg (klicka för att rensa). Om du har några problem, återställ Wi-Fi och starta om appen.</string>
     <string name="connections_receive_host">"Ta emot värdlåt"</string>
     <string name="connections_searching">"Sökande…"</string>
     <string name="connections_service_start">"Starta service"</string>
@@ -303,7 +303,7 @@
     <string name="nothighenoughapi">"Du behöver en nyare version av Android för detta!"</string>
     <string name="notsaved">Ej sparat</string>
     <string name="notset">"Inte inställd"</string>
-    <string name="nowifidirect">"Tyvärr, den här enheten stöder inte WiFi direkt"</string>
+    <string name="nowifidirect">Tyvärr, den här enheten stöder inte Wi-Fi direkt</string>
     <string name="off">"Av"</string>
     <string name="ok">"ok"</string>
     <string name="oldchordformat">"Upptäckt nuvarande ackordformat"</string>
@@ -535,4 +535,6 @@
     <string name="midi_delay">MIDI fördröjningsbuffert</string>
     <string name="forum">Hjälp (googlegroups)</string>
     <string name="songs">Låtar</string>
+    <string name="location_not_enabled">Slå PÅ \'Plats\' för att ansluta till enheter. Om du har ett val av läge, välj ett läge som använder Wi-Fi.</string>
+    <string name="location">Plats</string>
 </resources>

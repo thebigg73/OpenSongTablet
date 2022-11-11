@@ -303,7 +303,7 @@
     <string name="nothighenoughapi">Необхідно оновити версію Android!</string>
     <string name="notsaved">Чи не збережено</string>
     <string name="notset">Не встановлено</string>
-    <string name="nowifidirect">На жаль, цей пристрій не підтримує доступ до WiFi.</string>
+    <string name="nowifidirect">На жаль, цей пристрій не підтримує доступ до Wi-Fi.</string>
     <string name="off">"Вимк"</string>
     <string name="ok">OK</string>
     <string name="oldchordformat">Визначено поточний формат акордів</string>
@@ -535,4 +535,6 @@
     <string name="midi_delay">Буфер затримки MIDI</string>
     <string name="forum">Допомога (googlegroups)</string>
     <string name="songs">Пісні</string>
+    <string name="location_not_enabled">Щоб підключитися до пристроїв, увімкніть «Місцезнаходження». Якщо у вас є вибір режиму, виберіть режим, який використовує Wi-Fi.</string>
+    <string name="location">Місцезнаходження</string>
 </resources>

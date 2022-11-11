@@ -98,7 +98,7 @@
     <string name="connections_discover_stop">"A stop felfedezés"</string>
     <string name="connections_failure">"Csatlakozási hiba"</string>
     <string name="connections_host">"Talált host:"</string>
-    <string name="connections_log">"Connection log (törölje). Ha bármilyen kérdés, állítsa vissza a WiFi, és indítsa újra az alkalmazást."</string>
+    <string name="connections_log">Connection log (törölje). Ha bármilyen kérdés, állítsa vissza a Wi-Fi, és indítsa újra az alkalmazást.</string>
     <string name="connections_receive_host">"Kap host dalok"</string>
     <string name="connections_searching">"Keresés …"</string>
     <string name="connections_service_start">"Kezdés szolgáltatás"</string>
@@ -303,7 +303,7 @@
     <string name="nothighenoughapi">"Szüksége van egy újabb változata Android for this!"</string>
     <string name="notsaved">Nem mentve</string>
     <string name="notset">"Nincs beállítva"</string>
-    <string name="nowifidirect">"Sajnos ez az eszköz nem támogatja a WiFi közvetlen"</string>
+    <string name="nowifidirect">Sajnos ez az eszköz nem támogatja a Wi-Fi közvetlen</string>
     <string name="off">"Ki"</string>
     <string name="ok">"Rendben"</string>
     <string name="oldchordformat">"Észlelt aktuális akkord formátumban"</string>
@@ -535,4 +535,6 @@
     <string name="midi_delay">MIDI késleltetési puffer</string>
     <string name="forum">Segítség (googlegroups)</string>
     <string name="songs">Dalok</string>
+    <string name="location_not_enabled">Az eszközökhöz való csatlakozáshoz kapcsolja BE a „Tartózkodási hely” beállítást. Ha választhat módot, válasszon egy Wi-Fi-t használó módot.</string>
+    <string name="location">Tartózkodási hely</string>
 </resources>

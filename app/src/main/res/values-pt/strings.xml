@@ -303,7 +303,7 @@
     <string name="nothighenoughapi">"Você precisa de uma versão mais recente do Android para isso!"</string>
     <string name="notsaved">Não salvo</string>
     <string name="notset">"Não definido"</string>
-    <string name="nowifidirect">"Desculpe, este dispositivo não suporta WiFi direto"</string>
+    <string name="nowifidirect">Desculpe, este dispositivo não suporta Wi-Fi direto</string>
     <string name="off">"Fora"</string>
     <string name="ok">"OK"</string>
     <string name="oldchordformat">"Formato acorde atual Detectado"</string>
@@ -535,4 +535,6 @@
     <string name="midi_delay">Buffer de atraso MIDI</string>
     <string name="forum">Ajuda (googlegroups)</string>
     <string name="songs">Músicas</string>
+    <string name="location_not_enabled">Para se conectar a dispositivos, ative \'Localização\'. Se você tiver uma opção de modo, escolha um modo que use Wi-Fi.</string>
+    <string name="location">Localização</string>
 </resources>
