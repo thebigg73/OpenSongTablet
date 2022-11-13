@@ -349,10 +349,12 @@
     <string name="link_search_document">Selecione um documento no seu dispositivo. Se você deseja permitir a sincronização entre dispositivos, este arquivo deve ser salvo em algum lugar dentro de sua pasta OpenSong.</string>
     <string name="link_search_web">Procure essa música na internet. Se você encontrar uma página da Web adequada, copie o endereço da Web para a área de transferência, retorne aqui e cole-o na caixa acima.</string>
     <string name="link_search_youtube">Tente encontrar essa música no YouTube. Se você encontrar o item correto, selecione a opção \'Compartilhar\' e copie o link para a área de transferência. Você pode então retornar aqui e colar o link acima.</string>
-    <string name="link_web">"ligação on-line"</string>
+    <string name="link_web">"Ligação on-line"</string>
     <string name="link_youtube">Link do YouTube</string>
     <string name="load">"Carregar"</string>
     <string name="load_reusable">"Coloque um slide reutilizável"</string>
+    <string name="location">Localização</string>
+    <string name="location_not_enabled">Para se conectar a dispositivos, ative \'Localização\'. Se você tiver uma opção de modo, escolha um modo que use Wi-Fi.</string>
     <string name="location_rationale">Esse recurso é necessário para localizar outros dispositivos de rede</string>
     <string name="logo">"Logotipo"</string>
     <string name="logo_info">Alterne entre o logotipo e o conteúdo da música</string>

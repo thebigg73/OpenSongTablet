@@ -210,7 +210,7 @@
     <string name="connections_host_passthrough_info">Allow messages received from other hosts to pass through to connected clients</string>
     <string name="connections_keephostsongs">Keep host songs</string>
     <string name="connections_keephostsongs_info">If you do not already have the host song in your library, the app will copy if for you</string>
-    <string name="connections_log">Connection log (click to clear).  If you have any issues, reset your WiFi and restart the app.</string>
+    <string name="connections_log">Connection log (click to clear).  If you have any issues, reset your Wi-Fi and restart the app.</string>
     <string name="connections_mode">Connection mode</string>
     <string name="connections_mode_cluster">Cluster</string>
     <string name="connections_mode_info">If you have issues connecting devices, try changing the connection mode.  Cluster mode (default) is the most versatile and allows multiple devices to connect to each other allowing switching between host and clients.   Star mode only allows one device to connect to many.  Single mode is to establish a connection between only two devices, but with the best bandwith.   All connecting devices need to be set to the same mode and changing mode will end all current connections.</string>
@@ -302,7 +302,7 @@
     <string name="divisions">Divisions</string>
     <string name="double_tap">Select double tap action</string>
     <string name="download">Download</string>
-    <string name="download_wifi_only">Download over WiFi only</string>
+    <string name="download_wifi_only">Download over Wi-Fi only</string>
     <string name="duplicate">Duplicate</string>
     <string name="duplicate_sections">You have used the same tag multiple times in the song.  This can cause problems when setting the order.</string>
     <string name="duplicate_song">Create a copy of this song</string>
@@ -495,6 +495,8 @@
     <string name="link_youtube">YouTube link</string>
     <string name="load">Load</string>
     <string name="load_reusable">Load a reusable slide</string>
+    <string name="location">Location</string>
+    <string name="location_not_enabled">To connect to devices please turn \'Location\' ON.  If you have a choice of mode, choose a mode that uses Wi-Fi.</string>
     <string name="location_rationale">This feature is required to locate other network devices</string>
     <string name="logo">Logo</string>
     <string name="logo_info">Toggle between the logo and the song content</string>

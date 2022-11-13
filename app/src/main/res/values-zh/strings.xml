@@ -174,7 +174,7 @@
     <string name="connections_host_passthrough_info">允许从其他主机收到的消息传递到连接的客户端</string>
     <string name="connections_keephostsongs">保留主持人的歌曲</string>
     <string name="connections_keephostsongs_info">如果您的资料库中还没有宿主歌曲，该应用程序将为您复制</string>
-    <string name="connections_log">"连接日志（点击清除）。如果您有任何问题，请重置WiFi并重新启动应用程序。"</string>
+    <string name="connections_log">"连接日志（点击清除）。如果您有任何问题，请重置Wi-Fi并重新启动应用程序。"</string>
     <string name="connections_mode">连接方式</string>
     <string name="connections_mode_cluster">簇</string>
     <string name="connections_mode_info">如果您在连接设备时遇到问题，请尝试更改连接模式。 集群模式（默认）是最通用的，它允许多个设备相互连接，从而允许在主机和客户端之间切换。 星型模式只允许一台设备连接多台设备。 单模式是只在两个设备之间建立连接，但带宽最好。 所有连接设备都需要设置为相同的模式，更改模式将结束所有当前连接。</string>
@@ -219,7 +219,7 @@
     <string name="divisions">部门</string>
     <string name="double_tap">"选择双击动作"</string>
     <string name="download">下载</string>
-    <string name="download_wifi_only">仅通过 WiFi 下载</string>
+    <string name="download_wifi_only">仅通过 Wi-Fi 下载</string>
     <string name="duplicate">重复</string>
     <string name="duplicate_sections">您在歌曲中多次使用相同的标签。 这可能会在设置订单时引起问题。</string>
     <string name="duplicate_song">创建这首歌的副本</string>
@@ -353,6 +353,8 @@
     <string name="link_youtube">"YouTube链接"</string>
     <string name="load">"负荷"</string>
     <string name="load_reusable">"装入可重复使用的幻灯片"</string>
+    <string name="location">地点</string>
+    <string name="location_not_enabled">要连接到设备，请打开“位置信息”。如果您可以选择模式，请选择使用 Wi-Fi 的模式。</string>
     <string name="location_rationale">查找其他网络设备需要此功能</string>
     <string name="logo">"商标"</string>
     <string name="logo_info">在徽标和歌曲内容之间切换</string>

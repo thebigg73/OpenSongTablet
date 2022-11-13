@@ -174,7 +174,7 @@
     <string name="connections_host_passthrough_info">Autoriser les messages reçus d\'autres hôtes à être transmis aux clients connectés</string>
     <string name="connections_keephostsongs">Conserver les chansons des hôtes</string>
     <string name="connections_keephostsongs_info">Si vous n\'avez pas déjà la chanson hôte dans votre bibliothèque, l\'application copiera si pour vous</string>
-    <string name="connections_log">"Journal de connexion (cliquez pour effacer). Si vous avez des problèmes, réinitialisez votre WiFi et redémarrez l'application."</string>
+    <string name="connections_log">"Journal de connexion (cliquez pour effacer). Si vous avez des problèmes, réinitialisez votre Wi-Fi et redémarrez l'application."</string>
     <string name="connections_mode">Mode de connexion</string>
     <string name="connections_mode_cluster">Groupe</string>
     <string name="connections_mode_info">Si vous rencontrez des problèmes pour connecter des appareils, essayez de changer le mode de connexion. Le mode cluster (par défaut) est le plus polyvalent et permet à plusieurs appareils de se connecter les uns aux autres, permettant de basculer entre l\'hôte et les clients. Le mode étoile ne permet qu\'à un seul appareil de se connecter à plusieurs. Le mode simple consiste à établir une connexion entre seulement deux appareils, mais avec la meilleure bande passante. Tous les périphériques de connexion doivent être réglés sur le même mode et le changement de mode mettra fin à toutes les connexions en cours.</string>
@@ -353,6 +353,8 @@
     <string name="link_youtube">Lien YouTube</string>
     <string name="load">"Chargez"</string>
     <string name="load_reusable">"Charger une diapositive réutilisables"</string>
+    <string name="location">Emplacement</string>
+    <string name="location_not_enabled">Pour vous connecter à des appareils, veuillez activer la \"localisation\". Si vous avez le choix entre plusieurs modes, choisissez un mode qui utilise le Wi-Fi.</string>
     <string name="location_rationale">Cette fonction est requise pour localiser d\'autres périphériques réseau</string>
     <string name="logo">"Logo"</string>
     <string name="logo_info">Basculer entre le logo et le contenu de la chanson</string>

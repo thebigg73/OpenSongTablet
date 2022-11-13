@@ -353,6 +353,8 @@
     <string name="link_youtube">YouTube посилання</string>
     <string name="load">Завантаження</string>
     <string name="load_reusable">Завантажити слайд</string>
+    <string name="location">Місцезнаходження</string>
+    <string name="location_not_enabled">Щоб підключитися до пристроїв, увімкніть «Місцезнаходження». Якщо у вас є вибір режиму, виберіть режим, який використовує Wi-Fi.</string>
     <string name="location_rationale">Ця функція потрібна для пошуку інших мережевих пристроїв</string>
     <string name="logo">Логотип</string>
     <string name="logo_info">Перемикання між логотипом і вмістом пісні</string>

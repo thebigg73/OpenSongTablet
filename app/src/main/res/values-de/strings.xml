@@ -174,7 +174,7 @@
     <string name="connections_host_passthrough_info">Zulassen, dass von anderen Hosts empfangene Nachrichten an verbundene Clients weitergeleitet werden</string>
     <string name="connections_keephostsongs">Behalten Sie Host-Songs</string>
     <string name="connections_keephostsongs_info">Wenn Sie den Host-Song noch nicht in Ihrer Bibliothek haben, kopiert die App ihn für Sie</string>
-    <string name="connections_log">"Verbindungsprotokoll (zum Löschen klicken). Wenn Sie irgendwelche Probleme haben, setzen Sie Ihr WiFi zurück und starten Sie die App neu."</string>
+    <string name="connections_log">"Verbindungsprotokoll (zum Löschen klicken). Wenn Sie irgendwelche Probleme haben, setzen Sie Ihr Wi-Fi zurück und starten Sie die App neu."</string>
     <string name="connections_mode">Verbindungsmodus</string>
     <string name="connections_mode_cluster">Cluster</string>
     <string name="connections_mode_info">Wenn Sie Probleme beim Verbinden von Geräten haben, versuchen Sie, den Verbindungsmodus zu ändern. Der Cluster-Modus (Standard) ist am vielseitigsten und ermöglicht es mehreren Geräten, sich miteinander zu verbinden, was das Umschalten zwischen Host und Clients ermöglicht. Im Sternmodus kann nur ein Gerät mit vielen verbunden werden. Im Single-Modus wird eine Verbindung zwischen nur zwei Geräten hergestellt, jedoch mit der besten Bandbreite. Alle Verbindungsgeräte müssen auf denselben Modus eingestellt werden, und das Ändern des Modus beendet alle aktuellen Verbindungen.</string>
@@ -219,7 +219,7 @@
     <string name="divisions">Abteilungen</string>
     <string name="double_tap">"Doppeltipp-Aktion wählen"</string>
     <string name="download">Herunterladen</string>
-    <string name="download_wifi_only">Nur über WLAN herunterladen</string>
+    <string name="download_wifi_only">Nur über Wi-Fi herunterladen</string>
     <string name="duplicate">Duplikat</string>
     <string name="duplicate_sections">Sie haben dasselbe Tag mehrmals im Song verwendet. Dies kann zu Problemen beim Einstellen der Reihenfolge führen.</string>
     <string name="duplicate_song">Erstellen Sie eine Kopie dieses Songs</string>
@@ -353,6 +353,8 @@
     <string name="link_youtube">"YouTube-Link"</string>
     <string name="load">"Laden"</string>
     <string name="load_reusable">"Wiederverwendbare Folie laden"</string>
+    <string name="location">Ort</string>
+    <string name="location_not_enabled">Um eine Verbindung zu Geräten herzustellen, schalten Sie bitte „Standort“ ein. Wenn Sie einen Modus auswählen können, wählen Sie einen Modus, der Wi-Fi verwendet.</string>
     <string name="location_rationale">Diese Funktion ist erforderlich, um andere Netzwerkgeräte zu finden</string>
     <string name="logo">"Logo"</string>
     <string name="logo_info">Wechseln Sie zwischen dem Logo und dem Songinhalt</string>

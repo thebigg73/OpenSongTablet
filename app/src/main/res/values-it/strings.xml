@@ -174,7 +174,7 @@
     <string name="connections_host_passthrough_info">Consenti ai messaggi ricevuti da altri host di passare ai client connessi</string>
     <string name="connections_keephostsongs">Mantieni le canzoni host</string>
     <string name="connections_keephostsongs_info">Se non hai già il brano host nella tua libreria, l\'app lo copierà se per te</string>
-    <string name="connections_log">"Registro di connessione (fare clic per cancellare). Se hai problemi, ripristina il tuo WiFi e riavvia l'applicazione."</string>
+    <string name="connections_log">"Registro di connessione (fare clic per cancellare). Se hai problemi, ripristina il tuo Wi-Fi e riavvia l'applicazione."</string>
     <string name="connections_mode">Modalità di connessione</string>
     <string name="connections_mode_cluster">Grappolo</string>
     <string name="connections_mode_info">Se riscontri problemi con la connessione dei dispositivi, prova a cambiare la modalità di connessione. La modalità cluster (impostazione predefinita) è la più versatile e consente a più dispositivi di connettersi tra loro consentendo il passaggio tra host e client. La modalità Star consente a un solo dispositivo di connettersi a molti. La modalità singola consente di stabilire una connessione solo tra due dispositivi, ma con la migliore larghezza di banda. Tutti i dispositivi di connessione devono essere impostati sulla stessa modalità e la modifica della modalità interromperà tutte le connessioni correnti.</string>
@@ -353,6 +353,8 @@
     <string name="link_youtube">Link di YouTube</string>
     <string name="load">"Carico"</string>
     <string name="load_reusable">"Caricare un vetrino riutilizzabile"</string>
+    <string name="location">Posizione</string>
+    <string name="location_not_enabled">Per connetterti ai dispositivi, attiva \"Geolocalizzazione\". Se puoi scegliere la modalità, scegli una modalità che utilizza il Wi-Fi.</string>
     <string name="location_rationale">Questa funzione è necessaria per individuare altri dispositivi di rete</string>
     <string name="logo">"Logo"</string>
     <string name="logo_info">Alterna tra il logo e il contenuto del brano</string>

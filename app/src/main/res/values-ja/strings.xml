@@ -174,7 +174,7 @@
     <string name="connections_host_passthrough_info">他のホストから受信したメッセージが接続されたクライアントに通過できるようにする</string>
     <string name="connections_keephostsongs">ホストの曲を保持する</string>
     <string name="connections_keephostsongs_info">ライブラリにホスト曲がまだない場合は、アプリがコピーします</string>
-    <string name="connections_log">"接続ログ（クリックしてクリアする）。何か問題がある場合は、WiFiをリセットしてアプリを再起動してください。"</string>
+    <string name="connections_log">"接続ログ（クリックしてクリアする）。何か問題がある場合は、Wi-Fiをリセットしてアプリを再起動してください。"</string>
     <string name="connections_mode">接続モード</string>
     <string name="connections_mode_cluster">集まる</string>
     <string name="connections_mode_info">デバイスの接続に問題がある場合は、接続モードを変更してみてください。 クラスタモード（デフォルト）は最も用途が広く、複数のデバイスを相互に接続して、ホストとクライアントを切り替えることができます。 スターモードでは、1つのデバイスのみが多数に接続できます。 シングルモードは、2つのデバイス間のみの接続を確立することですが、最適な帯域幅を使用します。 すべての接続デバイスを同じモードに設定する必要があります。モードを変更すると、現在のすべての接続が終了します。</string>
@@ -219,7 +219,7 @@
     <string name="divisions">部門</string>
     <string name="double_tap">"ダブルタップアクションを選択します"</string>
     <string name="download">ダウンロード</string>
-    <string name="download_wifi_only">WiFi経由でのみダウンロード</string>
+    <string name="download_wifi_only">Wi-Fi経由でのみダウンロード</string>
     <string name="duplicate">複製する</string>
     <string name="duplicate_sections">曲の中で同じタグを複数回使用しました。 これにより、順序を設定するときに問題が発生する可能性があります。</string>
     <string name="duplicate_song">この曲のコピーを作成する</string>
@@ -353,6 +353,8 @@
     <string name="link_youtube">"YouTubeのリンク"</string>
     <string name="load">"積み込む"</string>
     <string name="load_reusable">"再利用可能なスライドをロードします"</string>
+    <string name="location">位置</string>
+    <string name="location_not_enabled">デバイスに接続するには、「位置情報」をオンにしてください。モードを選択できる場合は、Wi-Fi を使用するモードを選択します。</string>
     <string name="location_rationale">この機能は、他のネットワークデバイスを見つけるために必要です</string>
     <string name="logo">"ロゴ"</string>
     <string name="logo_info">ロゴと曲のコンテンツを切り替える</string>

@@ -174,7 +174,7 @@
     <string name="connections_host_passthrough_info">Dozvolite da poruke primljene od drugih hostova prolaze do povezanih klijenata</string>
     <string name="connections_keephostsongs">Zadržite domaćinske pesme</string>
     <string name="connections_keephostsongs_info">Ako već nemate pesmu domaćina u svojoj biblioteci, aplikacija će kopirati ako je za vas</string>
-    <string name="connections_log">Log veze (kliknite da se očisti). Ako imate problema, resetujte WiFi i pokrenite ponovo program</string>
+    <string name="connections_log">Log veze (kliknite da se očisti). Ako imate problema, resetujte Vi-Fi i pokrenite ponovo program</string>
     <string name="connections_mode">Režim veze</string>
     <string name="connections_mode_cluster">Cluster</string>
     <string name="connections_mode_info">Ako imate problema sa povezivanjem uređaja, pokušajte da promenite način povezivanja. Režim klastera (podrazumevano) je najsvestraniji i omogućava višestrukim uređajima da se povežu jedan sa drugim, omogućavajući prebacivanje između hosta i klijenata. Režim zvezdice dozvoljava samo jednom uređaju da se poveže sa mnogima. Jednostruki režim je uspostavljanje veze između samo dva uređaja, ali sa najboljim propusnim opsegom. Svi uređaji za povezivanje moraju biti podešeni na isti režim i promena režima će prekinuti sve trenutne veze.</string>
@@ -219,7 +219,7 @@
     <string name="divisions">Divizije</string>
     <string name="double_tap">Odaberi akciju za dupli tap</string>
     <string name="download">Preuzimanje</string>
-    <string name="download_wifi_only">Preuzmite samo preko ViFi-a</string>
+    <string name="download_wifi_only">Preuzmite samo preko Vi-Fi-a</string>
     <string name="duplicate">Duplikat</string>
     <string name="duplicate_sections">Koristili ste istu oznaku više puta u pesmi. Ovo može izazvati probleme prilikom postavljanja naloga.</string>
     <string name="duplicate_song">Napravite kopiju ove pesme</string>
@@ -353,6 +353,8 @@
     <string name="link_youtube">YouTube veza</string>
     <string name="load">Učitati</string>
     <string name="load_reusable">Učitaj slajd za ponovno korišćenje</string>
+    <string name="location">Lokacija</string>
+    <string name="location_not_enabled">Da biste se povezali sa uređajima, uključite \'Lokacija\'. Ako imate izbor režima, izaberite režim koji koristi Vi-Fi.</string>
     <string name="location_rationale">Ova funkcija je potrebna za pronalaženje drugih mrežnih uređaja</string>
     <string name="logo">Logo</string>
     <string name="logo_info">Prebacivanje između logotipa i sadržaja pesme</string>

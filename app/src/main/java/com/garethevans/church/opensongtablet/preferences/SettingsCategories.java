@@ -113,9 +113,12 @@ public class SettingsCategories extends Fragment {
         myView.setActionsButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null, R.id.set_graph));
         myView.gesturesButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null, R.id.control_graph));
         myView.connectButton.setOnClickListener(v -> {
-            // Check we have the required permissions and if so the launcher navigates to the connect fragment
-            mainActivityInterface.setWhattodo("nearby");
-            nearbyConnectionsPermission.launch(mainActivityInterface.getAppPermissions().getNearbyPermissions());
+            // First check for GPS/Network connectivity required for location
+            if (mainActivityInterface.getAppPermissions().locationEnabled(requireContext(),mainActivityInterface)) {
+                // Check we have the required permissions and if so the launcher navigates to the connect fragment
+                mainActivityInterface.setWhattodo("nearby");
+                nearbyConnectionsPermission.launch(mainActivityInterface.getAppPermissions().getNearbyPermissions());
+            }
         });
         myView.modeButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null, R.id.modeFragment));
         myView.midiButton.setOnClickListener(v -> {

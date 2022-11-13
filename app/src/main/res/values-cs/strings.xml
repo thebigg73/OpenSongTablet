@@ -174,7 +174,7 @@
     <string name="connections_host_passthrough_info">Umožněte zprávám přijatým od jiných hostitelů procházet připojeným klientům</string>
     <string name="connections_keephostsongs">Udržujte hostitelské písně</string>
     <string name="connections_keephostsongs_info">Pokud ještě nemáte hostitelskou skladbu ve své knihovně, aplikace ji zkopíruje</string>
-    <string name="connections_log">"Protokol připojení (klepnutím zrušte). Pokud máte nějaké problémy, obnovte WiFi a restartujte aplikaci."</string>
+    <string name="connections_log">"Protokol připojení (klepnutím zrušte). Pokud máte nějaké problémy, obnovte Wi-Fi a restartujte aplikaci."</string>
     <string name="connections_mode">Režim připojení</string>
     <string name="connections_mode_cluster">Cluster</string>
     <string name="connections_mode_info">Pokud máte problémy s připojením zařízení, zkuste změnit režim připojení. Clusterový režim (výchozí) je nejuniverzálnější a umožňuje vzájemné propojení více zařízení, což umožňuje přepínání mezi hostitelem a klienty. Režim hvězda umožňuje připojení pouze jednoho zařízení k mnoha. Jediný režim je vytvořit spojení pouze mezi dvěma zařízeními, ale s nejlepší šířkou pásma. Všechna připojovaná zařízení musí být nastavena na stejný režim a změna režimu ukončí všechna aktuální připojení.</string>
@@ -219,7 +219,7 @@
     <string name="divisions">Divize</string>
     <string name="double_tap">"Vyberte dvojí akci klepněte na položku"</string>
     <string name="download">Stažení</string>
-    <string name="download_wifi_only">Stahujte pouze přes WiFi</string>
+    <string name="download_wifi_only">Stahujte pouze přes Wi-Fi</string>
     <string name="duplicate">Duplikát</string>
     <string name="duplicate_sections">Stejnou značku jste v písni použili několikrát. To může způsobit problémy při zadávání objednávky.</string>
     <string name="duplicate_song">Vytvořte kopii této písně</string>
@@ -353,6 +353,8 @@
     <string name="link_youtube">Odkaz YouTube</string>
     <string name="load">"Naložit"</string>
     <string name="load_reusable">"Vložte opakovaně použitelný snímek"</string>
+    <string name="location">Umístění</string>
+    <string name="location_not_enabled">Chcete-li se připojit k zařízením, zapněte \'Poloha\'. Pokud máte na výběr režim, vyberte režim, který využívá Wi-Fi.</string>
     <string name="location_rationale">Tato funkce je vyžadována k nalezení dalších síťových zařízení</string>
     <string name="logo">"Logo"</string>
     <string name="logo_info">Přepínání mezi logem a obsahem skladby</string>

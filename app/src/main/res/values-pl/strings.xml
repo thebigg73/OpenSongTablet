@@ -174,7 +174,7 @@
     <string name="connections_host_passthrough_info">Zezwalaj na przekazywanie wiadomości otrzymanych od innych hostów do podłączonych klientów</string>
     <string name="connections_keephostsongs">Zachowaj piosenki gospodarza</string>
     <string name="connections_keephostsongs_info">Jeśli nie masz jeszcze utworu hosta w swojej bibliotece, aplikacja skopiuje, jeśli za Ciebie</string>
-    <string name="connections_log">"Dziennik połączeń (kliknij, aby wyczyścić). W razie jakichkolwiek problemów zresetuj WiFi i zrestartuj aplikację."</string>
+    <string name="connections_log">"Dziennik połączeń (kliknij, aby wyczyścić). W razie jakichkolwiek problemów zresetuj Wi-Fi i zrestartuj aplikację."</string>
     <string name="connections_mode">Tryb połączenia</string>
     <string name="connections_mode_cluster">Grupa</string>
     <string name="connections_mode_info">Jeśli masz problemy z połączeniem urządzeń, spróbuj zmienić tryb połączenia. Tryb klastra (domyślny) jest najbardziej wszechstronny i umożliwia łączenie się ze sobą wielu urządzeń, umożliwiając przełączanie między hostem a klientami. Tryb gwiazdy pozwala tylko jednemu urządzeniu połączyć się z wieloma. Tryb Pojedynczy polega na nawiązaniu połączenia między tylko dwoma urządzeniami, ale z najlepszą przepustowością. Wszystkie urządzenia łączące muszą być ustawione w ten sam tryb, a zmiana trybu spowoduje zakończenie wszystkich bieżących połączeń.</string>
@@ -353,6 +353,8 @@
     <string name="link_youtube">"Link YouTube"</string>
     <string name="load">"Załadować"</string>
     <string name="load_reusable">"Załaduj wielokrotnego użytku slajd"</string>
+    <string name="location">Lokalizacja</string>
+    <string name="location_not_enabled">Aby połączyć się z urządzeniami, włącz „Lokalizacja”. Jeśli masz wybór trybu, wybierz tryb, który korzysta z Wi-Fi.</string>
     <string name="location_rationale">Ta funkcja jest wymagana do lokalizowania innych urządzeń sieciowych</string>
     <string name="logo">"Logo"</string>
     <string name="logo_info">Przełączaj się między logo a treścią utworu</string>

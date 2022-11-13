@@ -174,7 +174,7 @@
     <string name="connections_host_passthrough_info">Engedélyezze a más gazdagépektől kapott üzenetek eljutását a csatlakoztatott ügyfelekhez</string>
     <string name="connections_keephostsongs">Tartsa be a fogadó dalokat</string>
     <string name="connections_keephostsongs_info">Ha még nincs meg a gazdagép dal a könyvtárában, az alkalmazás átmásolja az Ön számára</string>
-    <string name="connections_log">"Connection log (törölje). Ha bármilyen kérdés, állítsa vissza a WiFi, és indítsa újra az alkalmazást."</string>
+    <string name="connections_log">"Connection log (törölje). Ha bármilyen kérdés, állítsa vissza a Wi-Fi, és indítsa újra az alkalmazást."</string>
     <string name="connections_mode">Csatlakozási mód</string>
     <string name="connections_mode_cluster">Fürt</string>
     <string name="connections_mode_info">Ha problémái vannak az eszközök csatlakoztatásával, próbálja megváltoztatni a csatlakozási módot. A fürt mód (alapértelmezett) a legsokoldalúbb, és lehetővé teszi több eszköz egymáshoz való csatlakozását, lehetővé téve a gazdagép és az ügyfelek közötti váltást. A csillag módban csak egy eszköz csatlakozhat több eszközhöz. Az egymódú csak két eszköz között létesít kapcsolatot, de a legjobb sávszélességgel. Az összes csatlakozó eszközt ugyanarra a módra kell állítani, és az üzemmód megváltoztatása az összes jelenlegi kapcsolatot megszakítja.</string>
@@ -219,7 +219,7 @@
     <string name="divisions">Osztályok</string>
     <string name="double_tap">"Válassza ki dupla csap akció"</string>
     <string name="download">Letöltés</string>
-    <string name="download_wifi_only">Letöltés csak WiFi-n keresztül</string>
+    <string name="download_wifi_only">Letöltés csak Wi-Fi-n keresztül</string>
     <string name="duplicate">Másolat</string>
     <string name="duplicate_sections">Többször használtad ugyanazt a címkét a dalban. Ez problémákat okozhat a rendelés beállításakor.</string>
     <string name="duplicate_song">Készítsen másolatot erről a dalról</string>
@@ -353,6 +353,8 @@
     <string name="link_youtube">"YouTube linket"</string>
     <string name="load">"Rak"</string>
     <string name="load_reusable">"Töltsön be egy újrafelhasználható slide"</string>
+    <string name="location">Elhelyezkedés</string>
+    <string name="location_not_enabled">Az eszközökhöz való csatlakozáshoz kapcsolja BE a „Tartózkodási hely” beállítást. Ha választhat módot, válasszon egy Wi-Fi-t használó módot.</string>
     <string name="location_rationale">Ez a szolgáltatás szükséges más hálózati eszközök megkereséséhez</string>
     <string name="logo">Logo</string>
     <string name="logo_info">Váltás a logó és a dal tartalma között</string>

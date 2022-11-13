@@ -174,7 +174,7 @@
     <string name="connections_host_passthrough_info">Tillåt meddelanden som tas emot från andra värdar att passera till anslutna klienter</string>
     <string name="connections_keephostsongs">Håll värdlåtar</string>
     <string name="connections_keephostsongs_info">Om du inte redan har värdlåten i ditt bibliotek, kommer appen att kopiera till dig</string>
-    <string name="connections_log">"Anslutningslogg (klicka för att rensa). Om du har några problem, återställ WiFi och starta om appen."</string>
+    <string name="connections_log">"Anslutningslogg (klicka för att rensa). Om du har några problem, återställ Wi-Fi och starta om appen."</string>
     <string name="connections_mode">Anslutningsläge</string>
     <string name="connections_mode_cluster">Klunga</string>
     <string name="connections_mode_info">Om du har problem med att ansluta enheter, försök att ändra anslutningsläget. Klusterläge (standard) är det mest mångsidiga och tillåter flera enheter att ansluta till varandra vilket gör det möjligt att växla mellan värd och klienter. Stjärnläget tillåter bara en enhet att ansluta till många. Single mode är att upprätta en anslutning mellan endast två enheter, men med den bästa bandbredden. Alla anslutande enheter måste ställas in i samma läge och ändring av läge kommer att avsluta alla nuvarande anslutningar.</string>
@@ -219,7 +219,7 @@
     <string name="divisions">Divisioner</string>
     <string name="double_tap">"Välj dubbelknappsåtgärd"</string>
     <string name="download">Ladda ner</string>
-    <string name="download_wifi_only">Ladda ner endast via WiFi</string>
+    <string name="download_wifi_only">Ladda ner endast via Wi-Fi</string>
     <string name="duplicate">Duplicera</string>
     <string name="duplicate_sections">Du har använt samma tagg flera gånger i låten. Detta kan orsaka problem vid beställning.</string>
     <string name="duplicate_song">Skapa en kopia av den här låten</string>
@@ -353,6 +353,8 @@
     <string name="link_youtube">"YouTube-länk"</string>
     <string name="load">"Ladda"</string>
     <string name="load_reusable">"Ladda en återanvändbar bild"</string>
+    <string name="location">Plats</string>
+    <string name="location_not_enabled">Slå PÅ \'Plats\' för att ansluta till enheter. Om du har ett val av läge, välj ett läge som använder Wi-Fi.</string>
     <string name="location_rationale">Den här funktionen krävs för att hitta andra nätverksenheter</string>
     <string name="logo">"Logotyp"</string>
     <string name="logo_info">Växla mellan logotypen och låtens innehåll</string>

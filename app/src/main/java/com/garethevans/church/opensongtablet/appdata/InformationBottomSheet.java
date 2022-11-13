@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -79,6 +80,12 @@ public class InformationBottomSheet extends BottomSheetDialogFragment {
                     startActivity(intent);
                     android.os.Process.killProcess(android.os.Process.myPid());
                     System.exit(0);
+                });
+            } if (deepLink.equals("appPrefs")) {
+                // Open the app settings to allow the user to check their settings
+                myView.actionButton.setOnClickListener((view) -> {
+                    requireContext().startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                    dismiss();
                 });
             } else {
                 myView.actionButton.setOnClickListener((view) -> {

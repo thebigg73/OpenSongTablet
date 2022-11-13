@@ -174,7 +174,7 @@
     <string name="connections_host_passthrough_info">Επιτρέψτε στα μηνύματα που λαμβάνονται από άλλους κεντρικούς υπολογιστές να περάσουν σε συνδεδεμένους πελάτες</string>
     <string name="connections_keephostsongs">Κρατήστε τα κεντρικά τραγούδια</string>
     <string name="connections_keephostsongs_info">Εάν δεν έχετε ήδη το τραγούδι υποδοχής στη βιβλιοθήκη σας, η εφαρμογή θα αντιγράψει εάν για εσάς</string>
-    <string name="connections_log">"Αρχείο καταγραφής σύνδεσης (κάντε κλικ για διαγραφή). Εάν έχετε οποιαδήποτε προβλήματα, επαναφέρετε το WiFi σας και επανεκκινήστε την εφαρμογή."</string>
+    <string name="connections_log">"Αρχείο καταγραφής σύνδεσης (κάντε κλικ για διαγραφή). Εάν έχετε οποιαδήποτε προβλήματα, επαναφέρετε το Wi-Fi σας και επανεκκινήστε την εφαρμογή."</string>
     <string name="connections_mode">Λειτουργία σύνδεσης</string>
     <string name="connections_mode_cluster">Σύμπλεγμα</string>
     <string name="connections_mode_info">Εάν αντιμετωπίζετε προβλήματα με τη σύνδεση συσκευών, δοκιμάστε να αλλάξετε τη λειτουργία σύνδεσης. Η λειτουργία συμπλέγματος (προεπιλογή) είναι η πιο ευέλικτη και επιτρέπει σε πολλές συσκευές να συνδέονται μεταξύ τους επιτρέποντας την εναλλαγή μεταξύ κεντρικού υπολογιστή και πελάτη. Η λειτουργία αστεριού επιτρέπει μόνο μία συσκευή να συνδέεται με πολλές. Η απλή λειτουργία είναι να δημιουργήσετε μια σύνδεση μεταξύ δύο μόνο συσκευών, αλλά με το καλύτερο εύρος ζώνης. Όλες οι συσκευές σύνδεσης πρέπει να ρυθμιστούν στην ίδια λειτουργία και η αλλαγή της λειτουργίας θα τερματίσει όλες τις τρέχουσες συνδέσεις.</string>
@@ -219,7 +219,7 @@
     <string name="divisions">Τμήματα</string>
     <string name="double_tap">"Select double tap action"</string>
     <string name="download">Κατεβάστε</string>
-    <string name="download_wifi_only">Λήψη μόνο μέσω WiFi</string>
+    <string name="download_wifi_only">Λήψη μόνο μέσω Wi-Fi</string>
     <string name="duplicate">Αντίγραφο</string>
     <string name="duplicate_sections">Έχετε χρησιμοποιήσει την ίδια ετικέτα πολλές φορές στο τραγούδι. Αυτό μπορεί να προκαλέσει προβλήματα κατά τον ορισμό της παραγγελίας.</string>
     <string name="duplicate_song">Δημιουργήστε ένα αντίγραφο αυτού του τραγουδιού</string>
@@ -353,6 +353,8 @@
     <string name="link_youtube">"Σύνδεσμος YouTube"</string>
     <string name="load">"Άνοιγμα"</string>
     <string name="load_reusable">"Load a reusable slide"</string>
+    <string name="location">Τοποθεσία</string>
+    <string name="location_not_enabled">Για να συνδεθείτε σε συσκευές, ενεργοποιήστε την \"Τοποθεσία\". Εάν έχετε επιλογή λειτουργίας, επιλέξτε μια λειτουργία που χρησιμοποιεί Wi-Fi.</string>
     <string name="location_rationale">Αυτή η δυνατότητα απαιτείται για τον εντοπισμό άλλων συσκευών δικτύου</string>
     <string name="logo">"Λογότυπο"</string>
     <string name="logo_info">Κάντε εναλλαγή μεταξύ του λογότυπου και του περιεχομένου του τραγουδιού</string>

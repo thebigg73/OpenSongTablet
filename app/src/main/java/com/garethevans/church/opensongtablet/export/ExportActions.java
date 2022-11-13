@@ -254,6 +254,9 @@ public class ExportActions {
                                         if (title.isEmpty()) {
                                             title = filename;
                                         }
+                                        // IV - Handle comma in name - remove comma with no following space as used in numbers - '10,000 Reasons'
+                                        title  = title.replace(", "," | ").replace(",","");
+
 
                                         if (!custom.isEmpty()) {
                                             custom = " (" + custom + ")";
@@ -262,7 +265,7 @@ public class ExportActions {
                                         //String bittoadd = title + location + custom + author + hymn + ccli + key + "\n";
                                         String bittoadd = title + custom + author + hymn + ccli + key + "\n";
 
-                                        // IV - , (comma) is the delimiter so use within content is replaced with " |" and the the temporary delimeter ¬ replaced with ,
+                                        // IV - , (comma) is the delimiter so use within content is replaced with " |" and then the temporary delimeter ¬ replaced with ,
                                         stringBuilderSet.append(bittoadd.replace(","," |").replace("¬", ",").replace(" |",","));
                                         stringBuilderIDs.append(id).append("\n");
                                     }
