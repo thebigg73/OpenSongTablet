@@ -1025,6 +1025,7 @@ public class NearbyConnections implements NearbyInterface {
             if (movepage) {
                 if (mainActivityInterface.getDisplayPrevNext().getSwipeDirection().equals("L2R")) {
                     // Go back
+                    mainActivityInterface.getDisplayPrevNext().moveToPrev();
                     if (nearbyReturnActionsInterface != null) {
                         nearbyReturnActionsInterface.goToPreviousPage();
                     }

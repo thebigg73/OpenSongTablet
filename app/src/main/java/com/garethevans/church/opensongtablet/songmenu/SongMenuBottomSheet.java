@@ -117,7 +117,6 @@ public class SongMenuBottomSheet extends BottomSheetDialogFragment {
 
     private void addToSet() {
         // For a received song (which is about to become a variation) use the stored received song filename
-        // TODO from IV pull request #136 - UNTESTED
         if (mainActivityInterface.getSong().getFilename().equals("ReceivedSong")) {
             mainActivityInterface.getSong().setFilename(mainActivityInterface.getSong().getTitle());
         }
@@ -132,7 +131,6 @@ public class SongMenuBottomSheet extends BottomSheetDialogFragment {
 
     private void addVariationToSet() {
         // For a received song (which is about to become a variation) use the stored received song filename
-        // TODO from IV pull request #136 - UNTESTED
         if (mainActivityInterface.getSong().getFilename().equals("ReceivedSong")) {
             mainActivityInterface.getSong().setFilename(mainActivityInterface.getSong().getTitle());
         }

@@ -5,7 +5,7 @@ import com.google.android.material.button.MaterialButton;
 public interface NearbyReturnActionsInterface {
     void toggleAutoscroll();
     void selectSection(int i);
-    void prepareSongMenu();
+
     void loadSong();
     void goToPreviousPage();
     void goToNextPage();

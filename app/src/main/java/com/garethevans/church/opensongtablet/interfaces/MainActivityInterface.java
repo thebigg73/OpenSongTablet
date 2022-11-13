@@ -165,6 +165,7 @@ public interface MainActivityInterface {
     BatteryStatus getBatteryStatus();
     void hideActionBar();
     void showActionBar();
+    void removeActionBar(boolean remove);
     void updateToolbar(String what);
     void updateToolbarHelp(String webAddress);
     void updateActionBarSettings(String prefName, float floatval, boolean isvisible);

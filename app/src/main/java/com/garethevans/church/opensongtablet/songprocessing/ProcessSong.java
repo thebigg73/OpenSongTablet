@@ -42,8 +42,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Locale;
 
-// TODO Tidy up
-
 public class ProcessSong {
 
     public ProcessSong(Context c) {
@@ -52,7 +50,6 @@ public class ProcessSong {
     }
 
     // The variables used for repeated song processing
-    // TODO If the user updates these in the app, check they get updated here as well as the saved preferences!
     private final Context c;
     private final MainActivityInterface mainActivityInterface;
     @SuppressWarnings({"FieldCanBeLocal","unused"})
@@ -170,15 +167,6 @@ public class ProcessSong {
         myNEWXML += "</song>";
 
         return myNEWXML;
-    }
-
-    // These are to deal with custom files (scriptures, etc.)
-    public String getLocation(String string) {
-        if (string.startsWith("../")) {
-            return string.replace("../", "");
-        } else {
-            return "Songs";
-        }
     }
 
     // These is used when loading and converting songs (ChordPro, badly formatted XML, etc).
@@ -480,20 +468,6 @@ public class ProcessSong {
         }
         return line;
     }
-
-    /*public String changeSlideHeadings(String s) {
-        if (!mainActivityInterface.getSong().getFolder().contains(c.getString(R.string.slide)) &&
-                !mainActivityInterface.getSong().getFolder().contains(c.getResources().getString(R.string.image)) &&
-                !mainActivityInterface.getSong().getFolder().contains(c.getResources().getString(R.string.note)) &&
-                !mainActivityInterface.getSong().getFolder().contains(c.getResources().getString(R.string.scripture))) {
-            s = s.replace("Slide 1", "[V1]").
-                    replace("Slide 2", "[V2]").
-                    replace("Slide 3", "[V3]").
-                    replace("Slide 4", "[V4]").
-                    replace("Slide 5", "[V5]");
-        }
-        return s;
-    }*/
 
     public String[] getChordPositions(String chord, String lyric) {
         ArrayList<String> chordpositions = new ArrayList<>();
@@ -1409,7 +1383,6 @@ public class ProcessSong {
             if (linetype.equals("chord") && highlightChordColor != 0x00000000) {
                 textView.setText(highlightChords(str, highlightChordColor));
             } else if (linetype.equals("lyric")) {
-                // TODO
                 // IV - This will need more complexity depending on mode and if showing chords
                 if ((!mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) &&
                         (presentation || trimWordSpacing)) ||
@@ -1569,7 +1542,7 @@ public class ProcessSong {
         // First we process the song (could be the loaded song, or a temp song - that's why we take a reference)
         // If this is for a presentation, we've already dealt with it
         if (!presentation) {
-            processSongIntoSections(song, presentation);
+            processSongIntoSections(song, false);
             // We also consider any presentation order that is set
             matchPresentationOrder(song);
         }
@@ -1684,7 +1657,7 @@ public class ProcessSong {
                             } else {
                                 // PDF or presentation
                                 linearLayout.addView(lineText(linetype, line, typeface,
-                                        size, textColor, Color.TRANSPARENT, Color.TRANSPARENT, presentation));
+                                        size, textColor, Color.TRANSPARENT, Color.TRANSPARENT, true));
                             }
                         }
                     }
@@ -1970,8 +1943,6 @@ public class ProcessSong {
         if (songSheetView!=null) {
             clearAndResetLinearLayout(songSheetView, false);
         }
-        //pageHolder.setLayoutParams(new ScrollView.LayoutParams(ScrollView.LayoutParams.WRAP_CONTENT, ScrollView.LayoutParams.WRAP_CONTENT));
-        //songView.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
         clearAndResetLinearLayout(column1, true);
         clearAndResetLinearLayout(column2, true);
         clearAndResetLinearLayout(column3, true);
@@ -2692,7 +2663,7 @@ public class ProcessSong {
         }
     }
 
-    // TODO Not working yet
+    // TODO Not working or implemented yet.  This will allow trimming images/pdfs by whitespace
     public Bitmap trimBitmap(Bitmap bmp) {
         int imgHeight = bmp.getHeight();
         int imgWidth = bmp.getWidth();

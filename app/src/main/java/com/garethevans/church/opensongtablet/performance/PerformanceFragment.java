@@ -694,7 +694,6 @@ public class PerformanceFragment extends Fragment {
 
                         // Try to take a screenshot ready for any highlighter actions that may be called
                         int finalTopPadding = topPadding;
-                        //TODO Multiple columns aren't covered in the width (only based on one column)
                         getScreenshot(myView.pageHolder.getWidth(), myView.pageHolder.getHeight(), finalTopPadding);
                     } catch (Exception e) {
                         e.printStackTrace();

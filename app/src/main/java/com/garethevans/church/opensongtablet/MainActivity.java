@@ -693,8 +693,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             }
 
             if (navBarKeepSpace) {
-                deviceInsets[0] = Math.max(systemBars.left, Math.max(roundedL, displayCutout.left));
-                deviceInsets[1] = Math.max(systemBars.right, Math.max(roundedR, displayCutout.right));
+                // Don't use left/right for now as this includes swipe space which we can draw on...
+                //deviceInsets[0] = Math.max(systemBars.left, Math.max(roundedL, displayCutout.left));
+                //deviceInsets[1] = Math.max(systemBars.right, Math.max(roundedR, displayCutout.right));
                 //deviceInsets[2] = Math.max(systemBars.top, Math.max(roundedB, displayCutout.top));
                 deviceInsets[3] = Math.max(systemBars.bottom, Math.max(roundedB, displayCutout.bottom));
             }
@@ -1139,6 +1140,18 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         if (getSupportActionBar()!=null) {
             getSupportActionBar().hide();
         }
+    }
+
+    @Override
+    public void removeActionBar(boolean remove) {
+        myView.myToolbar.showActionBar(!remove);
+        if (remove) {
+            myView.myAppBarLayout.setVisibility(View.GONE);
+        } else {
+            myView.myAppBarLayout.setVisibility(View.VISIBLE);
+        }
+        moveContentForActionBar(remove);
+        Log.d(TAG,"height:"+myView.myAppBarLayout.getHeight());
     }
 
     @Override
@@ -2684,11 +2697,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
 
     @Override
-    public void prepareSongMenu() {
-        // TODO
-    }
-
-    @Override
     public void loadSong() {
         // If we are not in a settings window, load the song
         // Otherwise it will happen when the user closes the settings fragments
@@ -2699,16 +2707,28 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void goToPreviousPage() {
-        // TODO
+        // TODO - Check this works
         // Received from nearbyAction
-
+        if (song.getFiletype().equals("PDF") && song.getPdfPageCurrent() > 0) {
+            if (presenterValid()) {
+                presenterFragment.selectSection(song.getPdfPageCurrent() - 1);
+            } else if (performanceValid()) {
+                performanceFragment.selectSection(song.getPdfPageCount() - 1);
+            }
+        }
     }
-
     @Override
     public void goToNextPage() {
-        // TODO
+        // TODO - Check this works
         // Received from nearbyAction
-
+        if (song.getFiletype().equals("PDF") && song.getPdfPageCount()>0 &&
+                song.getPdfPageCurrent() < song.getPdfPageCount()-1) {
+            if (presenterValid()) {
+                presenterFragment.selectSection(song.getPdfPageCurrent() + 1);
+            } else if (performanceValid()) {
+                performanceFragment.selectSection(song.getPdfPageCount() + 1);
+            }
+        }
     }
 
     // Sent from bottom sheet and requires an update in calling fragment
@@ -2802,6 +2822,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         super.onResume();
 
         if (bootUpCompleted) {
+            // Set up the action bar
+            setupActionbar();
+
+            // Set up navigation
+            setupNavigation();
+
             // Fix the page flags
             setWindowFlags(true);
 
@@ -2895,13 +2921,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private void updateCastIcon() {
         if (screenMirror != null) {
             if (GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this) != ConnectionResult.SUCCESS) {
-                Log.d(TAG,"No play services, so hide the cast icon");
                 screenMirror.setVisibility(View.GONE);
             } else if (menuOpen || settingsOpen) {
-                Log.d(TAG,"Settings or menu, so hide the cast icon");
                 screenMirror.setVisibility(View.GONE);
             } else {
-                Log.d(TAG,"Home page, so show the cast icon");
                 screenMirror.setVisibility(View.VISIBLE);
             }
 

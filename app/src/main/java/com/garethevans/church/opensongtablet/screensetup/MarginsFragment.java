@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -92,13 +91,10 @@ public class MarginsFragment extends Fragment {
         myView.rightMargin.addOnChangeListener(new MySliderChange("marginRight"));
         //myView.topMargin.addOnChangeListener(new MySliderChange("marginTop"));
         myView.bottomMargin.addOnChangeListener(new MySliderChange("marginBottom"));
-        myView.navBarKeepSpace.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                mainActivityInterface.getPreferences().setMyPreferenceBoolean("navBarKeepSpace",isChecked);
-                mainActivityInterface.updateInsetPrefs();
-                mainActivityInterface.deviceInsets();
-            }
+        myView.navBarKeepSpace.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean("navBarKeepSpace",isChecked);
+            mainActivityInterface.updateInsetPrefs();
+            mainActivityInterface.deviceInsets();
         });
     }
 
