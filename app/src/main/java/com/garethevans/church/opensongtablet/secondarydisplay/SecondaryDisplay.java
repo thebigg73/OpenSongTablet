@@ -981,6 +981,7 @@ public class SecondaryDisplay extends Presentation {
                     translateView(secondaryViews.get(position), newWidth, newHeight, infoHeight, alertHeight);
                 }
 
+                Log.d(TAG,"image:"+image);
                 if (pdf) {
                     bitmap = mainActivityInterface.getProcessSong().getBitmapFromPDF(mainActivityInterface.getSong().getFolder(),
                             mainActivityInterface.getSong().getFilename(),position,availableScreenWidth,
@@ -990,7 +991,7 @@ public class SecondaryDisplay extends Presentation {
                             mainActivityInterface.getStorageAccess().getUriForItem("Songs",
                                     mainActivityInterface.getSong().getFolder(),
                                     mainActivityInterface.getSong().getFilename()),
-                                    availableScreenWidth, availableScreenHeight - infoHeight - alertHeight);
+                                    0, 0);
                 } else {
                     bitmap = null;
 
@@ -1004,7 +1005,7 @@ public class SecondaryDisplay extends Presentation {
                         myView.songContent1.getCol2().setVisibility(View.GONE);
                         myView.songContent1.getCol3().setVisibility(View.GONE);
                         myView.songContent1.getImageView().setVisibility(View.VISIBLE);
-                        GlideApp.with(c).load(bitmap).fitCenter().into(myView.songContent1.getImageView());
+                        GlideApp.with(c).load(bitmap).centerInside().into(myView.songContent1.getImageView());
                     } else {
                         myView.songContent1.getCol1().setVisibility(View.VISIBLE);
                         myView.songContent1.getImageView().setVisibility(View.GONE);
@@ -1021,7 +1022,7 @@ public class SecondaryDisplay extends Presentation {
                         myView.songContent2.getCol2().setVisibility(View.GONE);
                         myView.songContent2.getCol3().setVisibility(View.GONE);
                         myView.songContent2.getImageView().setVisibility(View.VISIBLE);
-                        GlideApp.with(c).load(bitmap).fitCenter().into(myView.songContent2.getImageView());
+                        GlideApp.with(c).load(bitmap).centerInside().into(myView.songContent2.getImageView());
                     } else {
                         myView.songContent2.getCol1().setVisibility(View.VISIBLE);
                         myView.songContent2.getImageView().setVisibility(View.GONE);

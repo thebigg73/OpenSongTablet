@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.customslides.ImageSlideAdapter;
 import com.garethevans.church.opensongtablet.databinding.ModePresenterSongSectionsBinding;
 import com.garethevans.church.opensongtablet.interfaces.DisplayInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
@@ -98,15 +99,18 @@ public class SongSectionsFragment extends Fragment {
 
                 myView.recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
                 myView.recyclerView.setAdapter(pdfPageAdapter);
-                // TODO
-                // Get the pages as required
+
 
             } else if (mainActivityInterface.getSong().getFiletype().equals("IMG")) {
-                // TODO
-                // Get the image as required (will be 1 page)
+                ImageAdapter imageAdapter = new ImageAdapter(requireContext(),this,mainActivityInterface,displayInterface,600,800);
+                myView.recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+                myView.recyclerView.setAdapter(imageAdapter);
+
             } else if (mainActivityInterface.getSong().getFolder().contains("Images/")) {
-                // TODO
-                // This will be a custom slide with images
+                ImageSlideAdapter imageSlideAdapter = new ImageSlideAdapter(requireContext(),mainActivityInterface,displayInterface,600,800);
+                myView.recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+                myView.recyclerView.setAdapter(imageSlideAdapter);
+
             } else {
                 // Standard XML file
                 myView.recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));

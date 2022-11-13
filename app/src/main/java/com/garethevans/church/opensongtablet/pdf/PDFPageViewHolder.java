@@ -12,10 +12,10 @@ import com.google.android.material.textview.MaterialTextView;
 public class PDFPageViewHolder extends RecyclerView.ViewHolder {
 
     MainActivityInterface mainActivityInterface;
-    View v;
-    ImageView pdfPageImage;
-    ImageView pdfPageHighlight;
-    MaterialTextView pdfPageNumText;
+    public View v;
+    public ImageView pdfPageImage;
+    public ImageView pdfPageHighlight;
+    public MaterialTextView pdfPageNumText;
 
     public PDFPageViewHolder(MainActivityInterface mainActivityInterface, View v) {
         super(v);

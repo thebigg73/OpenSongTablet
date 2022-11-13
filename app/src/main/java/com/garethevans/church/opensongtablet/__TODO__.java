@@ -4,6 +4,8 @@ public class __TODO__ {
 
     // Check persistent database import with overwrite on/off
     // Check nearby receive prev/next page for PDF
+    // Check pedal listeners
+    // Fully implement image slides and images in all modes
 
     // BUGS FROM LIVE TEST
 
