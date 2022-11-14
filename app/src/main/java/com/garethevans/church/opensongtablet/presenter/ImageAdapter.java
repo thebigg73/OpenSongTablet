@@ -105,9 +105,7 @@ public class ImageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
         } else {
             // This must be a custom image slide
             // TODO deal with this
-
-
-
+            Log.d(TAG,"custom image slide not dealt with");
 
         }
 

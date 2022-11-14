@@ -3052,7 +3052,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public void presenterShowSection(int position) {
         int sections;
-        if (song.getFiletype().equals("PDF")) {
+        if (song.getFiletype().equals("PDF") || song.getFolder().contains("**Image")) {
             sections = song.getPdfPageCount();
         } else if (song.getFiletype().equals("IMG")) {
             sections = 1;

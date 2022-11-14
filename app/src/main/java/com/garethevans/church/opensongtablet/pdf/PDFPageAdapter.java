@@ -229,6 +229,7 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
             }
         });
 
+        Log.d(TAG,"["+position+"] finalAlpha:"+finalAlpha);
         cardView.post(()->{
             try {
                 if (!mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance))) {
@@ -286,9 +287,9 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
         fakeClick = true;
         sectionSelected(position);
     }
+
     public void sectionSelected(int position) {
         if (pageInfos.size()>position) {
-
             try {
                 // Whatever the previously selected item was, change the alpha to the alphaOff value
                 mainActivityInterface.getSong().setPdfPageCurrent(position);

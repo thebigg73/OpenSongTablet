@@ -29,6 +29,7 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -915,10 +916,11 @@ public class SecondaryDisplay extends Presentation {
                 mainActivityInterface.getPresenterSettings().getSongSectionsAdapter()!=null;
         boolean image = mainActivityInterface.getSong().getFiletype().equals("IMG");
         boolean pdf = mainActivityInterface.getSong().getFiletype().equals("PDF");
+        boolean imageslide = mainActivityInterface.getSong().getFolder().contains("**Image");
         int viewsAvailable;
         if (image) {
             viewsAvailable = 1;
-        } else if (pdf) {
+        } else if (pdf || imageslide) {
             viewsAvailable = mainActivityInterface.getSong().getPdfPageCount();
         } else {
             viewsAvailable = mainActivityInterface.getSong().getSongSections().size();
@@ -927,7 +929,7 @@ public class SecondaryDisplay extends Presentation {
         Log.d(TAG,"position="+position+"  viewsAvailable="+viewsAvailable);
         // TODO need to fix for Stage mode too - getSongSectionsAdapter not initialised
 
-        if ((stageOk || presenterOk || pdf || image) && position!=-1) {
+        if ((stageOk || presenterOk || pdf || image || imageslide) && position!=-1) {
             // If we edited the section temporarily, remove this position flag
             if (presenterOk) {
                 mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().setSectionEdited(-1);
@@ -950,7 +952,7 @@ public class SecondaryDisplay extends Presentation {
                 Log.d(TAG,"infoHeight="+infoHeight);
                 int alertHeight = myView.alertBar.getViewHeight();
 
-                if (!pdf && !image) {
+                if (!pdf && !image && !imageslide) {
                     // Remove the view from any parent it might be attached to already (can only have 1)
                     removeViewFromParent(secondaryViews.get(position));
 
@@ -991,21 +993,46 @@ public class SecondaryDisplay extends Presentation {
                             mainActivityInterface.getStorageAccess().getUriForItem("Songs",
                                     mainActivityInterface.getSong().getFolder(),
                                     mainActivityInterface.getSong().getFilename()),
-                                    0, 0);
+                            0,0);
+                } else if (imageslide) {
+                    Log.d(TAG,"lyrics: "+mainActivityInterface.getSong().getLyrics());
+                    Log.d(TAG,"user1: "+mainActivityInterface.getSong().getUser1());
+                    Log.d(TAG,"user2: "+mainActivityInterface.getSong().getUser2());
+                    Log.d(TAG,"user3: "+mainActivityInterface.getSong().getUser3());
+                    String[] bits = mainActivityInterface.getSong().getUser3().trim().split("\n");
+                    Log.d(TAG,"bits.length:"+bits.length);
+                    if (bits.length>0 && bits.length>position) {
+                        Log.d(TAG,"uri="+bits[position]);
+                        bitmap = mainActivityInterface.getProcessSong().getBitmapFromUri(Uri.parse(bits[position]),0,0);
+                    } else {
+                        Log.d(TAG,"bits.length: "+bits.length + "  position:"+position);
+                        bitmap = null;
+                    }
+
                 } else {
                     bitmap = null;
-
                 }
 
                 Log.d(TAG,"bitmap:"+bitmap);
+
+                if (!image && !pdf && !imageslide &&
+                        secondaryViews!=null && secondaryViews.size()>position &&
+                        secondaryViews.get(position)!=null &&
+                        secondaryViews.get(position).getParent()!=null) {
+                    ((ViewGroup)secondaryViews.get(position).getParent()).removeView(
+                            secondaryViews.get(position));
+                }
+
                 if (!myView.songContent1.getIsDisplaying()) {
                     myView.songContent1.clearViews();
-                    if (image || pdf) {
+                    if (image || pdf || imageslide) {
                         myView.songContent1.getCol1().setVisibility(View.GONE);
                         myView.songContent1.getCol2().setVisibility(View.GONE);
                         myView.songContent1.getCol3().setVisibility(View.GONE);
                         myView.songContent1.getImageView().setVisibility(View.VISIBLE);
-                        GlideApp.with(c).load(bitmap).centerInside().into(myView.songContent1.getImageView());
+                        fixGravity(myView.songContent1.getImageView());
+                        GlideApp.with(c).load(bitmap).fitCenter().into(myView.songContent1.getImageView());
+
                     } else {
                         myView.songContent1.getCol1().setVisibility(View.VISIBLE);
                         myView.songContent1.getImageView().setVisibility(View.GONE);
@@ -1017,12 +1044,14 @@ public class SecondaryDisplay extends Presentation {
 
                 } else if (!myView.songContent2.getIsDisplaying()) {
                     myView.songContent2.clearViews();
-                    if (image || pdf) {
+                    if (image || pdf || imageslide) {
                         myView.songContent2.getCol1().setVisibility(View.GONE);
                         myView.songContent2.getCol2().setVisibility(View.GONE);
                         myView.songContent2.getCol3().setVisibility(View.GONE);
                         myView.songContent2.getImageView().setVisibility(View.VISIBLE);
-                        GlideApp.with(c).load(bitmap).centerInside().into(myView.songContent2.getImageView());
+                        fixGravity(myView.songContent2.getImageView());
+                        GlideApp.with(c).load(bitmap).fitCenter().into(myView.songContent2.getImageView());
+
                     } else {
                         myView.songContent2.getCol1().setVisibility(View.VISIBLE);
                         myView.songContent2.getImageView().setVisibility(View.GONE);
@@ -1034,6 +1063,41 @@ public class SecondaryDisplay extends Presentation {
                 }
             }
         }
+    }
+
+    private void fixGravity(ImageView imageView) {
+        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams)imageView.getLayoutParams();
+        switch (mainActivityInterface.getPresenterSettings().getPresoLyricsAlign()) {
+            case Gravity.START:
+            case Gravity.LEFT:
+                lp.gravity = Gravity.START;
+                break;
+            case Gravity.END:
+            case Gravity.RIGHT:
+                lp.gravity = Gravity.END;
+                break;
+            case Gravity.CENTER:
+            case Gravity.CENTER_HORIZONTAL:
+            default:
+                lp.gravity = Gravity.CENTER_HORIZONTAL;
+                break;
+        }
+        switch (mainActivityInterface.getPresenterSettings().getPresoLyricsVAlign()) {
+            case Gravity.TOP:
+                lp.gravity = Gravity.TOP;
+                break;
+            case Gravity.BOTTOM:
+                lp.gravity = Gravity.BOTTOM;
+                break;
+            case Gravity.CENTER_VERTICAL:
+            case Gravity.CENTER:
+                lp.gravity = Gravity.CENTER_VERTICAL;
+                break;
+        }
+        lp.width = MATCH_PARENT;
+        lp.height = MATCH_PARENT;
+
+        imageView.setLayoutParams(lp);
     }
     private void showAllSections() {
         // Available height needs to remember to leave space for the infobar which is always visible in this mode
@@ -1096,8 +1160,7 @@ public class SecondaryDisplay extends Presentation {
         }
     }
     @SuppressLint("RtlHardcoded")
-    private void translateView(View view, int newWidth, int newHeight, int infoHeight, int alertHeight)
-    {
+    private void translateView(View view, int newWidth, int newHeight, int infoHeight, int alertHeight) {
         switch (mainActivityInterface.getPresenterSettings().getPresoLyricsAlign()) {
             case Gravity.START:
             case Gravity.LEFT:

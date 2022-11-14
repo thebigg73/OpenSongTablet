@@ -72,7 +72,7 @@ public class ImageSlideAdapter  extends RecyclerView.Adapter<ImageSlideViewHolde
             slideInfo.pageNum = x;
             slideInfo.pageNumText = (x+1) + "/" + totalPages;
 
-            if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_stage))) {
+            if (!mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance))) {
                 slideInfo.alpha = 0.4f;
             } else {
                 slideInfo.alpha = 1f;
@@ -155,7 +155,7 @@ public class ImageSlideAdapter  extends RecyclerView.Adapter<ImageSlideViewHolde
         }
         cardView.setAlpha(alpha);
 
-        Uri uri = slideInfos.get(position).uri;
+        Uri uri = getUri(position);
         String pageNumText = slideInfos.get(position).pageNumText;
         holder.imageSlideNumText.setText(pageNumText);
 
@@ -191,25 +191,32 @@ public class ImageSlideAdapter  extends RecyclerView.Adapter<ImageSlideViewHolde
         // Because this is a screen touch, do the necessary UI update (check actionbar/prev/next)
         onTouchAction();
 
-        if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_stage))) {
+        if (!mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance))) {
             slideInfos.get(currentSection).alpha = 0.4f;
             notifyItemChanged(currentSection, alphaChange);
-
-            // Now update the newly selected position
-            if (position >= 0 && position < slideInfos.size()) {
-                mainActivityInterface.getSong().setCurrentSection(position);
-                currentSection = position;
-                slideInfos.get(position).alpha = 1.0f;
-                notifyItemChanged(position, alphaChange);
-            }
         }
 
-        // Send and update notification to Performance Fragment via the MainActivity
-        displayInterface.performanceShowSection(position);
+        // Now update the newly selected position
+        if (position >= 0 && position < slideInfos.size()) {
+            mainActivityInterface.getSong().setCurrentSection(position);
+            currentSection = position;
+            slideInfos.get(position).alpha = 1.0f;
+            notifyItemChanged(position, alphaChange);
+        }
+
+        // Send and update notification to Performance/Presenter Fragment via the MainActivity
+        if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_presenter))) {
+            displayInterface.presenterShowSection(position);
+        } else {
+            displayInterface.performanceShowSection(position);
+        }
     }
 
     public ArrayList<Float> getHeights() {
         return floatSizes;
     }
 
+    public Uri getUri(int position) {
+        return slideInfos.get(position).uri;
+    }
 }

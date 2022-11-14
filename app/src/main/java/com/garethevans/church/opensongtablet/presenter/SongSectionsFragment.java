@@ -88,6 +88,9 @@ public class SongSectionsFragment extends Fragment {
                 mainActivityInterface.navigateToFragment(getString(R.string.deeplink_edit), 0);
                 return false;
             });
+
+            Log.d(TAG,"folder: "+mainActivityInterface.getSong().getFolder());
+
             if (mainActivityInterface.getSong().getFiletype().equals("PDF") &&
                     android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
                 PDFPageAdapter pdfPageAdapter = new PDFPageAdapter(requireContext(),
@@ -106,7 +109,7 @@ public class SongSectionsFragment extends Fragment {
                 myView.recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
                 myView.recyclerView.setAdapter(imageAdapter);
 
-            } else if (mainActivityInterface.getSong().getFolder().contains("Images/")) {
+            } else if (mainActivityInterface.getSong().getFolder().contains("**Images")) {
                 ImageSlideAdapter imageSlideAdapter = new ImageSlideAdapter(requireContext(),mainActivityInterface,displayInterface,600,800);
                 myView.recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
                 myView.recyclerView.setAdapter(imageSlideAdapter);
