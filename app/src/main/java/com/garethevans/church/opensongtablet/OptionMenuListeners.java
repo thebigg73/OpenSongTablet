@@ -573,23 +573,17 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
         menuConnectButton.setOnClickListener(view -> {
             // Check for Google Play availability
             if (GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(c) == ConnectionResult.SUCCESS) {
-                LocationManager lm = (LocationManager)c.getSystemService(Context.LOCATION_SERVICE);
-                boolean gps_enabled = false;
+                // IV - Nearby requires Location services with network access to discover devices
                 boolean network_enabled = false;
                 try {
-                    gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
-                } catch(Exception e) {
-                    Log.d(TAG, "Could not check GPS_PROVIDER is enabled");
-                }
-
-                try {
+                    LocationManager lm = (LocationManager)c.getSystemService(Context.LOCATION_SERVICE);
                     network_enabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
                 } catch(Exception e) {
                     Log.d(TAG, "Could not check NETWORK_PROVIDER is enabled");
                 }
 
-                if(!gps_enabled && !network_enabled) {
-                    // notify user
+                if(!network_enabled) {
+                    // IV - Notify the user
                     AlertDialog.Builder dialog = new AlertDialog.Builder(c)
                             .setTitle(R.string.location)
                             .setIcon(android.R.drawable.ic_dialog_alert)
