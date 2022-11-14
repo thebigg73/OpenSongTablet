@@ -3,6 +3,7 @@ package com.garethevans.church.opensongtablet.appdata;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.garethevans.church.opensongtablet.BuildConfig;
 import com.garethevans.church.opensongtablet.databinding.BottomSheetInformationBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -81,10 +83,18 @@ public class InformationBottomSheet extends BottomSheetDialogFragment {
                     android.os.Process.killProcess(android.os.Process.myPid());
                     System.exit(0);
                 });
-            } if (deepLink.equals("appPrefs")) {
-                // Open the app settings to allow the user to check their settings
+            } else if (deepLink.equals("locPrefs")) {
+                // Open the location settings to allow the user to check their settings
                 myView.actionButton.setOnClickListener((view) -> {
                     requireContext().startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                    dismiss();
+                });
+            } else if (deepLink.equals("appPrefs")) {
+                // Open the app settings to allow the user to check their settings
+                myView.actionButton.setOnClickListener((view) -> {
+                    requireContext().startActivity(new Intent(
+                            android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                            Uri.parse("package:" + BuildConfig.APPLICATION_ID)));
                     dismiss();
                 });
             } else {

@@ -29,26 +29,20 @@ public class AppPermissions {
 
     // Location
     public boolean locationEnabled(Context c, MainActivityInterface mainActivityInterface) {
-        LocationManager lm = (LocationManager)c.getSystemService(Context.LOCATION_SERVICE);
-        boolean gps_enabled = false;
+        // IV - Nearby requires Location services with network access to discover devices
         boolean network_enabled = false;
-        try {
-            gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
-        } catch(Exception e) {
-            Log.d(TAG, "Could not check GPS_PROVIDER is enabled");
-        }
 
         try {
+            LocationManager lm = (LocationManager)c.getSystemService(Context.LOCATION_SERVICE);
             network_enabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
         } catch(Exception e) {
             Log.d(TAG, "Could not check NETWORK_PROVIDER is enabled");
         }
 
-        Log.d(TAG,"gps_enabled:"+gps_enabled+"  network_enabled:"+network_enabled);
-        if (!gps_enabled && !network_enabled) {
+        if (!network_enabled) {
             // notify user
             InformationBottomSheet informationBottomSheet = new InformationBottomSheet(c.getString(R.string.location),
-                    c.getString(R.string.location_not_enabled), c.getString(R.string.settings), "appPrefs");
+                    c.getString(R.string.location_not_enabled), c.getString(R.string.settings), "locPrefs");
             informationBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "InformationBottomSheet");
             return false;
         } else {
@@ -59,11 +53,12 @@ public class AppPermissions {
     // Nearby
     public String[] getNearbyPermissions() {
         if (Build.VERSION.SDK_INT>=33) {
-            return new String[] {Manifest.permission.NEARBY_WIFI_DEVICES};
-        } else if (Build.VERSION.SDK_INT>30) {
+            return new String[] {Manifest.permission.NEARBY_WIFI_DEVICES, Manifest.permission.BLUETOOTH_SCAN,
+            Manifest.permission.BLUETOOTH_ADVERTISE};
+        } else if (Build.VERSION.SDK_INT>=31) {
             return new String[] {Manifest.permission.BLUETOOTH_SCAN, Manifest.permission.BLUETOOTH_ADVERTISE,
                     Manifest.permission.BLUETOOTH_CONNECT, Manifest.permission.ACCESS_FINE_LOCATION};
-        } else if (Build.VERSION.SDK_INT==29 || Build.VERSION.SDK_INT==30) {
+        } else if (Build.VERSION.SDK_INT>=29) {
             return new String[] {Manifest.permission.ACCESS_FINE_LOCATION};
         } else {
             return new String[] {Manifest.permission.ACCESS_COARSE_LOCATION};
@@ -122,6 +117,7 @@ public class AppPermissions {
         if (permissions!=null) {
             for (String permission:permissions) {
                 returnVal = returnVal && checkForPermission(permission);
+                Log.d(TAG,"permission:"+permission+"  returnVal:"+returnVal);
             }
         } else {
             // No additional permissions required

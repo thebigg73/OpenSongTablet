@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.appdata.InformationBottomSheet;
 import com.garethevans.church.opensongtablet.databinding.SettingsCategoriesBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.gms.common.ConnectionResult;
@@ -101,7 +102,10 @@ public class SettingsCategories extends Fragment {
                     mainActivityInterface.getAppPermissions().hasNearbyPermissions()) {
                 mainActivityInterface.navigateToFragment(null, R.id.nearbyConnectionsFragment);
             } else {
-                mainActivityInterface.getShowToast().doIt(getString(R.string.permissions_refused));
+                // notify user
+                InformationBottomSheet informationBottomSheet = new InformationBottomSheet(getString(R.string.location),
+                        getString(R.string.permissions_refused), getString(R.string.settings), "appPrefs");
+                informationBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "InformationBottomSheet");
             }
         });
     }
@@ -113,7 +117,7 @@ public class SettingsCategories extends Fragment {
         myView.setActionsButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null, R.id.set_graph));
         myView.gesturesButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null, R.id.control_graph));
         myView.connectButton.setOnClickListener(v -> {
-            // First check for GPS/Network connectivity required for location
+            // First check for network connectivity required for location
             if (mainActivityInterface.getAppPermissions().locationEnabled(requireContext(),mainActivityInterface)) {
                 // Check we have the required permissions and if so the launcher navigates to the connect fragment
                 mainActivityInterface.setWhattodo("nearby");
