@@ -1,13 +1,16 @@
 package com.garethevans.church.opensongtablet;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,6 +35,7 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
     @SuppressLint("StaticFieldLeak")
     static Button connectionSearch;
 
+    private static final String TAG = "OptionMenuListeners";
     Context context;
 
     public OptionMenuListeners() {}
@@ -45,7 +49,7 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
             try {
                 connectionLog.setText(StaticVariables.connectionLog);
             } catch (Exception e) {
-                Log.d("d", "Connections menu closed");
+                Log.d(TAG, "Connections menu closed");
             }
         }
     }
@@ -569,13 +573,39 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
         menuConnectButton.setOnClickListener(view -> {
             // Check for Google Play availability
             if (GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(c) == ConnectionResult.SUCCESS) {
-                Log.d("d","Success");
-                if (mListener!=null && mListener.hasNearbyPermissions()) {
-                    StaticVariables.whichOptionMenu = "CONNECT";
-                    mListener.prepareOptionMenu();
+                LocationManager lm = (LocationManager)c.getSystemService(Context.LOCATION_SERVICE);
+                boolean gps_enabled = false;
+                boolean network_enabled = false;
+                try {
+                    gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+                } catch(Exception e) {
+                    Log.d(TAG, "Could not check GPS_PROVIDER is enabled");
+                }
+
+                try {
+                    network_enabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+                } catch(Exception e) {
+                    Log.d(TAG, "Could not check NETWORK_PROVIDER is enabled");
+                }
+
+                if(!gps_enabled && !network_enabled) {
+                    // notify user
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(c)
+                            .setTitle(R.string.location)
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .setMessage(c.getString(R.string.location_not_enabled))
+                            .setPositiveButton(c.getString(R.string.location), (paramDialogInterface, paramInt) -> c.startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)))
+                            .setNegativeButton(c.getString(R.string.cancel), null);
+                    dialog.create();
+                    dialog.show();
                 } else {
-                    if (mListener != null) {
-                        mListener.requestNearbyPermissions();
+                    if (mListener!=null && mListener.hasNearbyPermissions()) {
+                        StaticVariables.whichOptionMenu = "CONNECT";
+                        mListener.prepareOptionMenu();
+                    } else {
+                        if (mListener != null) {
+                            mListener.requestNearbyPermissions();
+                        }
                     }
                 }
             } else {
@@ -931,7 +961,7 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
                 if (FullscreenActivity.bmScreen!=null) {
                     mListener.openFragment();
                 } else {
-                    Log.d("OptionMenuListeners", "screenshot is null");
+                    Log.d(TAG, "screenshot is null");
                 }
             }
         });

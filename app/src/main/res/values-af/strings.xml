@@ -98,7 +98,7 @@
     <string name="connections_discover_stop">"Stop ontdekking"</string>
     <string name="connections_failure">"Konneksie mislukking"</string>
     <string name="connections_host">"Gevind gasheer:"</string>
-    <string name="connections_log">"Verbinding log (kliek om te verwyder). As jy enige probleme het, herstel jou WiFi en herbegin die program."</string>
+    <string name="connections_log">Verbinding log (kliek om te verwyder). As jy enige probleme het, herstel jou W-iFi en herbegin die program.</string>
     <string name="connections_receive_host">"Ontvang gasheer liedjies"</string>
     <string name="connections_searching">"Soek …"</string>
     <string name="connections_service_start">"Begin diens"</string>
@@ -303,7 +303,7 @@
     <string name="nothighenoughapi">"Jy moet 'n nuwer weergawe van Android vir hierdie !"</string>
     <string name="notsaved">nie gestoor nie</string>
     <string name="notset">"Nie ingestel"</string>
-    <string name="nowifidirect">"Jammer, hierdie toestel ondersteun nie WiFi direkte nie"</string>
+    <string name="nowifidirect">Jammer, hierdie toestel ondersteun nie Wi-Fi direkte nie</string>
     <string name="off">"Af"</string>
     <string name="ok">"Ok"</string>
     <string name="oldchordformat">"Bespeur huidige koord formaat"</string>
@@ -535,4 +535,6 @@
     <string name="midi_delay">MIDI vertraging buffer</string>
     <string name="forum">Help (googlegroups)</string>
     <string name="songs">Liedjies</string>
+    <string name="location_not_enabled">Skakel asseblief \'Ligging\' AAN om aan toestelle te koppel. As jy \'n keuse van modus het, kies \'n modus wat Wi-Fi gebruik.</string>
+    <string name="location">Ligging</string>
 </resources>

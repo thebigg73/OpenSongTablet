@@ -98,7 +98,7 @@
     <string name="connections_discover_stop">"Zastavte objev"</string>
     <string name="connections_failure">"Selhání připojení"</string>
     <string name="connections_host">"Nalezeno hostitele:"</string>
-    <string name="connections_log">"Protokol připojení (klepnutím zrušte). Pokud máte nějaké problémy, obnovte WiFi a restartujte aplikaci."</string>
+    <string name="connections_log">Protokol připojení (klepnutím zrušte). Pokud máte nějaké problémy, obnovte Wi-Fi a restartujte aplikaci.</string>
     <string name="connections_receive_host">"Přijměte hostující skladby"</string>
     <string name="connections_searching">"Hledání …"</string>
     <string name="connections_service_start">"Spusťte službu"</string>
@@ -303,7 +303,7 @@
     <string name="nothighenoughapi">"Potřebujete novější verzi Androidu pro to !"</string>
     <string name="notsaved">"neuloženo"</string>
     <string name="notset">"Není stanoveno"</string>
-    <string name="nowifidirect">"Je nám líto, ale toto zařízení nepodporuje WiFi přímo"</string>
+    <string name="nowifidirect">Je nám líto, ale toto zařízení nepodporuje Wi-Fi přímo</string>
     <string name="off">"Vypnuto"</string>
     <string name="ok">"Dobrá."</string>
     <string name="oldchordformat">"Zjištěno Současný formát akord"</string>
@@ -535,4 +535,6 @@
     <string name="midi_delay">MIDI delay buffer</string>
     <string name="forum">Help (googlegroups)</string>
     <string name="songs">Písně</string>
+    <string name="location_not_enabled">Chcete-li se připojit k zařízením, zapněte \'Poloha\'. Pokud máte na výběr režim, vyberte režim, který využívá Wi-Fi.</string>
+    <string name="location">Poloha</string>
 </resources>

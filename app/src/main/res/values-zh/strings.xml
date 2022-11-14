@@ -98,7 +98,7 @@
     <string name="connections_discover_stop">"停止发现"</string>
     <string name="connections_failure">"连接失败"</string>
     <string name="connections_host">"找到主机："</string>
-    <string name="connections_log">"连接日志（点击清除）。如果您有任何问题，请重置WiFi并重新启动应用程序。"</string>
+    <string name="connections_log">连接日志（点击清除）。如果您有任何问题，请重置Wi-Fi并重新启动应用程序。</string>
     <string name="connections_receive_host">"接收主播歌曲"</string>
     <string name="connections_searching">"搜索…"</string>
     <string name="connections_service_start">"开始服务"</string>
@@ -303,7 +303,7 @@
     <string name="nothighenoughapi">"你需要的Android这个较新版本！"</string>
     <string name="notsaved">没保存</string>
     <string name="notset">"未设置"</string>
-    <string name="nowifidirect">"对不起，此设备不支持WiFi直接"</string>
+    <string name="nowifidirect">对不起，此设备不支持Wi-Fi直接</string>
     <string name="off">"关闭"</string>
     <string name="ok">"确认"</string>
     <string name="oldchordformat">"检测当前的和弦格式"</string>
@@ -535,4 +535,6 @@
     <string name="midi_delay">MIDI 延迟缓冲器</string>
     <string name="forum">帮助 (googlegroups)</string>
     <string name="songs">歌曲</string>
+    <string name="location_not_enabled">要连接到设备，请打开“位置信息”。如果您可以选择模式，请选择使用 Wi-Fi 的模式。</string>
+    <string name="location">位置信息</string>
 </resources>

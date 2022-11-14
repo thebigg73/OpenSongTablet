@@ -98,7 +98,7 @@
     <string name="connections_discover_stop">"Arrêtez la découverte"</string>
     <string name="connections_failure">"Échec de connexion"</string>
     <string name="connections_host">"Organisateur trouvé:"</string>
-    <string name="connections_log">"Journal de connexion (cliquez pour effacer). Si vous avez des problèmes, réinitialisez votre WiFi et redémarrez l'application."</string>
+    <string name="connections_log">Journal de connexion (cliquez pour effacer). Si vous avez des problèmes, réinitialisez votre Wi-Fi et redémarrez l\'application.</string>
     <string name="connections_receive_host">"Recevoir des chansons d'hôte"</string>
     <string name="connections_searching">"Recherche…"</string>
     <string name="connections_service_start">"Service de démarrage"</string>
@@ -303,7 +303,7 @@
     <string name="nothighenoughapi">"Vous avez besoin d\'une version plus récente d\'Android pour cela!"</string>
     <string name="notsaved">Non enregistré</string>
     <string name="notset">"A définir"</string>
-    <string name="nowifidirect">"Désolé, ce périphérique ne supporte pas WiFi Direct"</string>
+    <string name="nowifidirect">Désolé, ce périphérique ne supporte pas Wi-Fi Direct</string>
     <string name="off">"Non"</string>
     <string name="ok">"Valider"</string>
     <string name="oldchordformat">"Format d\'accords actuel détecté"</string>
@@ -535,4 +535,6 @@
     <string name="midi_delay">Tampon de retard MIDI</string>
     <string name="forum">Aide (googlegroups)</string>
     <string name="songs">Chansons</string>
+    <string name="location_not_enabled">Pour vous connecter à des appareils, veuillez activer la \"localisation\". Si vous avez le choix entre plusieurs modes, choisissez un mode qui utilise le Wi-Fi.</string>
+    <string name="location">Localisation</string>
 </resources>

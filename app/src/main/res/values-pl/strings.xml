@@ -98,7 +98,7 @@
     <string name="connections_discover_stop">"Przestań odkrywać"</string>
     <string name="connections_failure">"Błąd połączenia"</string>
     <string name="connections_host">"Znaleziono hosta:"</string>
-    <string name="connections_log">"Dziennik połączeń (kliknij, aby wyczyścić). W razie jakichkolwiek problemów zresetuj WiFi i zrestartuj aplikację."</string>
+    <string name="connections_log">Dziennik połączeń (kliknij, aby wyczyścić). W razie jakichkolwiek problemów zresetuj Wi-Fi i zrestartuj aplikację.</string>
     <string name="connections_receive_host">"Odbieranie piosenek hostów"</string>
     <string name="connections_searching">"Badawczy…"</string>
     <string name="connections_service_start">"Uruchom usługę"</string>
@@ -303,7 +303,7 @@
     <string name="nothighenoughapi">"Wymagana jest nowsza wersja Androida dla tego !"</string>
     <string name="notsaved">Nie zapisane</string>
     <string name="notset">"Nie ustawiony"</string>
-    <string name="nowifidirect">"Przepraszamy, to urządzenie nie obsługuje WiFi bezpośrednio"</string>
+    <string name="nowifidirect">Przepraszamy, to urządzenie nie obsługuje Wi-Fi bezpośrednio</string>
     <string name="off">"Wył."</string>
     <string name="ok">"Działa prawidłowo "</string>
     <string name="oldchordformat">"Wykryto Format akord prądu"</string>
@@ -535,4 +535,6 @@
     <string name="midi_delay">Bufor opóźnienia MIDI</string>
     <string name="forum">Pomoc (googlegroups)</string>
     <string name="songs">Piosenki</string>
+    <string name="location_not_enabled">Aby połączyć się z urządzeniami, włącz „Lokalizacja”. Jeśli masz wybór trybu, wybierz tryb, który korzysta z Wi-Fi.</string>
+    <string name="location">Lokalizacja</string>
 </resources>

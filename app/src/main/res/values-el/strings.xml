@@ -98,7 +98,7 @@
     <string name="connections_discover_stop">"Σταματήστε την ανακάλυψη"</string>
     <string name="connections_failure">"Αποτυχία σύνδεσης"</string>
     <string name="connections_host">"Βρέθηκε κεντρικός υπολογιστής:"</string>
-    <string name="connections_log">"Αρχείο καταγραφής σύνδεσης (κάντε κλικ για διαγραφή). Εάν έχετε οποιαδήποτε προβλήματα, επαναφέρετε το WiFi σας και επανεκκινήστε την εφαρμογή."</string>
+    <string name="connections_log">Αρχείο καταγραφής σύνδεσης (κάντε κλικ για διαγραφή). Εάν έχετε οποιαδήποτε προβλήματα, επαναφέρετε το Wi-Fi σας και επανεκκινήστε την εφαρμογή.</string>
     <string name="connections_receive_host">"Λήψη τραγουδιών υποδοχής"</string>
     <string name="connections_searching">"Ερευνητικός…"</string>
     <string name="connections_service_start">"Ξεκινήστε την υπηρεσία"</string>
@@ -303,7 +303,7 @@
     <string name="nothighenoughapi">"Χρειάζεται καινούργια έκδοση Android για αυτό!"</string>
     <string name="notsaved">Δεν έχει αποθηκευτεί</string>
     <string name="notset">"Not set"</string>
-    <string name="nowifidirect">"Λυπούμαστε, αυτή η συσκευή δεν υποστηρίζει απευθείας WiFi"</string>
+    <string name="nowifidirect">Λυπούμαστε, αυτή η συσκευή δεν υποστηρίζει απευθείας Wi-Fi</string>
     <string name="off">"Off"</string>
     <string name="ok">"OK"</string>
     <string name="oldchordformat">"Detected current chord format"</string>
@@ -535,4 +535,6 @@
     <string name="midi_delay">Ενδιάμεση μνήμη καθυστέρησης MIDI</string>
     <string name="forum">Βοήθεια (googlegroups)</string>
     <string name="songs">Τραγούδια</string>
+    <string name="location_not_enabled">Για να συνδεθείτε σε συσκευές, ενεργοποιήστε την \"Τοποθεσία\". Εάν έχετε επιλογή λειτουργίας, επιλέξτε μια λειτουργία που χρησιμοποιεί Wi-Fi.</string>
+    <string name="location">Τοποθεσία</string>
 </resources>

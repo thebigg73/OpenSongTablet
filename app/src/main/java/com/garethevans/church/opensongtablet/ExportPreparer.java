@@ -456,7 +456,8 @@ class ExportPreparer {
                                         // Read in the song title, author, copyright, hymnnumber, key
                                         getSongData(c, songuri, storageAccess);
                                     }
-                                    sb.append(song_title);
+                                    // IV - Handle comma in name - remove comma with no following space as used in numbers - '10,000 Reasons'
+                                    sb.append(song_title.replace(", "," | ").replace(",",""));
                                     sb.append("¬ ");
                                     if (!song_author.isEmpty()) {
                                         sb.append(song_author);
@@ -528,7 +529,7 @@ class ExportPreparer {
         }
 
         // Send the settext back to the FullscreenActivity as emailtext
-        // IV - , (comma) is the delimiter so use within content is replaced with " |" and the the temporary delimeter ¬ replaced with ,
+        // IV - , (comma) is the delimiter so use within content is replaced with " |" and then the temporary delimeter ¬ replaced with ,
         FullscreenActivity.emailtext = sb.toString().replace(","," |").replace("¬",",");
         FullscreenActivity.exportsetfilenames = filesinset;
         FullscreenActivity.exportsetfilenames_ost = filesinset_ost;
@@ -542,7 +543,7 @@ class ExportPreparer {
 		song_author = "";
         song_hymnnumber = "";
         song_ccli = "";
-		song_key = "";
+        song_key = "";
 
 
 		// Get inputtream for the song

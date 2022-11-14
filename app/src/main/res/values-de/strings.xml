@@ -98,7 +98,7 @@
     <string name="connections_discover_stop">"Suche beenden"</string>
     <string name="connections_failure">"Verbindungsfehler"</string>
     <string name="connections_host">"Gefundener Host:"</string>
-    <string name="connections_log">"Verbindungsprotokoll (zum Löschen klicken). Wenn Sie irgendwelche Probleme haben, setzen Sie Ihr WiFi zurück und starten Sie die App neu."</string>
+    <string name="connections_log">Verbindungsprotokoll (zum Löschen klicken). Wenn Sie irgendwelche Probleme haben, setzen Sie Ihr Wi-Fi zurück und starten Sie die App neu.</string>
     <string name="connections_receive_host">"Host-Songs empfangen"</string>
     <string name="connections_searching">"Suchen …"</string>
     <string name="connections_service_start">"Dienst starten"</string>
@@ -303,7 +303,7 @@
     <string name="nothighenoughapi">"Sie benötigen eine neuere Android-Version für diese Aktion"</string>
     <string name="notsaved">Nicht gespeichert</string>
     <string name="notset">"Nicht gesetzt"</string>
-    <string name="nowifidirect">"Entschuldigung, dieses Gerät unterstützt WiFi direct nicht"</string>
+    <string name="nowifidirect">Entschuldigung, dieses Gerät unterstützt Wi-Fi direct nicht</string>
     <string name="off">"Aus"</string>
     <string name="ok">"OK"</string>
     <string name="oldchordformat">"Aktuelles Akkord-Format ermitteln"</string>
@@ -535,4 +535,6 @@
     <string name="midi_delay">MIDI-Verzögerungspuffer</string>
     <string name="forum">Aide (googlegroups)</string>
     <string name="songs">Songs</string>
+    <string name="location_not_enabled">Um eine Verbindung zu Geräten herzustellen, schalten Sie bitte „Standort“ ein. Wenn Sie einen Modus auswählen können, wählen Sie einen Modus, der Wi-Fi verwendet.</string>
+    <string name="location">Standort</string>
 </resources>

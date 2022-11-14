@@ -347,12 +347,12 @@
     <string name="my_church">"Uvoz primera crkvenih pesama"</string>
     <string name="navigate">"Brza navigacija"</string>
     <string name="new_category">"Nova kategorija"</string>
-    <string name="nowifidirect">"Izvinite, ovaj uređaj ne podržava WiFi direct"</string>
+    <string name="nowifidirect">Izvinite, ovaj uređaj ne podržava Wi-Fi direct</string>
     <string name="connections_connect">"Povezivanje uređaja"</string>
     <string name="connections_broadcast">"Uređaj za odašiljanje"</string>
     <string name="connections_connected">"Povezan sa"</string>
     <string name="connections_host">"Pronađen domaćin:"</string>
-    <string name="connections_log">"Log veze (kliknite da se očisti). Ako imate problema, resetujte WiFi i pokrenite ponovo program"</string>
+    <string name="connections_log">Log veze (kliknite da se očisti). Ako imate problema, resetujte Wi-Fi i pokrenite ponovo program</string>
     <string name="connections_disconnect">"Odvojite od"</string>
     <string name="connections_discover">"Pronalaženje servisa"</string>
     <string name="connections_discover_stop">"Zaustavljanje pronalaženja"</string>
@@ -535,4 +535,6 @@
     <string name="midi_delay">MIDI bafer kašnjenja</string>
     <string name="forum">Pomoć (googlegroups)</string>
     <string name="songs">Песме</string>
+    <string name="location_not_enabled">Да бисте се повезали са уређајима, укључите „Локација“. Ако имате избор режима, изаберите режим који користи Ви-Фи.</string>
+    <string name="location">Локација</string>
 </resources>
