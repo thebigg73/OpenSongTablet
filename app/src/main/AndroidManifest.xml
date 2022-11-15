@@ -139,16 +139,17 @@
                 <data android:mimeType="text/xml" />
 
                 <!-- The custom filetypes -->
-                <data android:mimeType="*/*" android:pathPattern=".*\\.osb"/>
-                <data android:mimeType="*/*" android:pathPattern=".*\\.osbs"/>
-                <data android:mimeType="*/*" android:pathPattern=".*\\.ost"/>
-                <data android:mimeType="*/*" android:pathPattern=".*\\.osts"/>
-                <data android:mimeType="*/*" android:pathPattern=".*\\.onsong"/>
-                <data android:mimeType="*/*" android:pathPattern=".*\\.backup"/>
-                <data android:mimeType="*/*" android:pathPattern=".*\\.chordpro"/>
-                <data android:mimeType="*/*" android:pathPattern=".*\\.chopro"/>
-                <data android:mimeType="*/*" android:pathPattern=".*\\.cho"/>
-                <data android:mimeType="*/*" android:pathPattern=".*\\.pro"/>
+                <data android:mimeType="*/*"/>
+                <data android:pathPattern=".*\\.osb"/>
+                <data android:pathPattern=".*\\.osbs"/>
+                <data android:pathPattern=".*\\.ost"/>
+                <data android:pathPattern=".*\\.osts"/>
+                <data android:pathPattern=".*\\.onsong"/>
+                <data android:pathPattern=".*\\.backup"/>
+                <data android:pathPattern=".*\\.chordpro"/>
+                <data android:pathPattern=".*\\.chopro"/>
+                <data android:pathPattern=".*\\.cho"/>
+                <data android:pathPattern=".*\\.pro"/>
 
                 <!-- I could include this to allow opening song files with no extensions, however,
                      this would then allow all files to be matched, which would annoy people
