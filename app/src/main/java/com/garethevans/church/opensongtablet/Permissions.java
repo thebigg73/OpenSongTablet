@@ -17,12 +17,13 @@ public class Permissions {
     private String[] nearbyPermissionsString;
     public void setNearbyPermissionsString() {
         if (Build.VERSION.SDK_INT >= 33) {
-            nearbyPermissionsString = new String[]{Manifest.permission.NEARBY_WIFI_DEVICES};
-        } else if (Build.VERSION.SDK_INT > 30) {
+            nearbyPermissionsString = new String[]{Manifest.permission.NEARBY_WIFI_DEVICES, Manifest.permission.BLUETOOTH_SCAN,
+            Manifest.permission.BLUETOOTH_ADVERTISE};
+        } else if (Build.VERSION.SDK_INT >= 31) {
             nearbyPermissionsString = new String[]{Manifest.permission.BLUETOOTH_SCAN,
                     Manifest.permission.BLUETOOTH_ADVERTISE, Manifest.permission.BLUETOOTH_CONNECT,
                     Manifest.permission.ACCESS_FINE_LOCATION};
-        } else if (Build.VERSION.SDK_INT == 29 || Build.VERSION.SDK_INT == 30) {
+        } else if (Build.VERSION.SDK_INT >= 29) {
             nearbyPermissionsString = new String[]{Manifest.permission.ACCESS_FINE_LOCATION};
         } else {
             nearbyPermissionsString = new String[]{Manifest.permission.ACCESS_COARSE_LOCATION};
