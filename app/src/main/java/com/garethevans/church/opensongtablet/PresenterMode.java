@@ -1137,7 +1137,8 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         @Override
         protected String doInBackground(Object... objects) {
             try {
-                if (!permissions.checkForPermission(PresenterMode.this,Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                if (permissions!=null && Build.VERSION.SDK_INT<=Build.VERSION_CODES.P &&
+                        !permissions.checkForPermission(PresenterMode.this,Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                     finish();
                 }
             } catch (Exception e) {
@@ -1674,7 +1675,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
                 LinearLayout row = (LinearLayout) presenter_song_buttonsListView.getChildAt(StaticVariables.currentSection);
                 Button thisbutton = (Button) row.getChildAt(1);
-                thisbutton.performClick();
+                //thisbutton.performClick();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -2253,7 +2254,11 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             } else {
                 String bit = "";
                 try {
-                    bit = String.valueOf(StaticVariables.sectionContents[StaticVariables.currentSection][0]);
+                    if (StaticVariables.sectionContents != null &&
+                            StaticVariables.sectionContents[StaticVariables.currentSection][0] != null &&
+                    StaticVariables.sectionContents.length>0 && StaticVariables.sectionContents[StaticVariables.currentSection].length>0) {
+                        bit = String.valueOf(StaticVariables.sectionContents[StaticVariables.currentSection][0]);
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

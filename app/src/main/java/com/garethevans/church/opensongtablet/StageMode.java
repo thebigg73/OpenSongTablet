@@ -1256,7 +1256,8 @@ public class StageMode extends AppCompatActivity implements
         @Override
         protected String doInBackground(Object... objects) {
             try {
-                if (permissions!=null && !permissions.checkForPermission(StageMode.this,Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                if (permissions!=null && Build.VERSION.SDK_INT<=Build.VERSION_CODES.P &&
+                        !permissions.checkForPermission(StageMode.this,Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                     finish();
                 }
             } catch (Exception e) {
