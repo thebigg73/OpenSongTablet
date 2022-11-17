@@ -775,7 +775,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 int id = Objects.requireNonNull(navController.getCurrentDestination()).getId();
                 if (id == R.id.performanceFragment || id == R.id.presenterFragment || id == R.id.setStorageLocationFragment) {
                     displayAreYouSure("exit", getString(R.string.exit_confirm), null,
-                            navController.getCurrentDestination().getNavigatorName(),
+                            Objects.requireNonNull(navController.getCurrentDestination()).getNavigatorName(),
                             navHostFragment, null);
                 } else {
                     settingsOpen = true;
