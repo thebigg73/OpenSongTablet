@@ -1675,7 +1675,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
                 LinearLayout row = (LinearLayout) presenter_song_buttonsListView.getChildAt(StaticVariables.currentSection);
                 Button thisbutton = (Button) row.getChildAt(1);
-                //thisbutton.performClick();
+                thisbutton.performClick();
             }
         } catch (Exception e) {
             e.printStackTrace();
