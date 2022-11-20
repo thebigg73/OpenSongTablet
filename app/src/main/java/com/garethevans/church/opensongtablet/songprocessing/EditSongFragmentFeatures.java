@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +26,7 @@ public class EditSongFragmentFeatures extends Fragment {
     private MainActivityInterface mainActivityInterface;
     private EditSongFragmentInterface editSongFragmentInterface;
     private String whichLink = "audio";
+    @SuppressWarnings("unused")
     private final String TAG = "EditSongFeatures";
 
     @Override
@@ -76,13 +76,11 @@ public class EditSongFragmentFeatures extends Fragment {
         ExposedDropDownArrayAdapter padArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(),
                 myView.pad, R.layout.view_exposed_dropdown_item, padfiles);
         myView.pad.setAdapter(padArrayAdapter);
-        Log.d(TAG,"padFile="+mainActivityInterface.getTempSong().getPadfile());
         if (mainActivityInterface.getTempSong().getPadfile() == null ||
                 mainActivityInterface.getTempSong().getPadfile().isEmpty()) {
             mainActivityInterface.getTempSong().setPadfile("auto");
         }
         myView.pad.setText(niceTextFromPref(mainActivityInterface.getTempSong().getPadfile()));
-        Log.d(TAG,"padFile="+mainActivityInterface.getTempSong().getPadfile());
 
         // The loop
         if (mainActivityInterface.getTempSong().getPadloop()!=null) {
@@ -231,7 +229,6 @@ public class EditSongFragmentFeatures extends Fragment {
     }
 
     private String niceTextFromPref(String prefText) {
-        Log.d(TAG,"prefText: "+prefText);
         switch (prefText) {
             default:
                 return "";
@@ -330,11 +327,9 @@ public class EditSongFragmentFeatures extends Fragment {
         int mins = Integer.parseInt(minsText);
         int secs = Integer.parseInt(secsText);
         int total = mainActivityInterface.getTimeTools().totalSecs(mins,secs);
-        int[] timeVals = mainActivityInterface.getTimeTools().getMinsSecsFromSecs(total);
         mainActivityInterface.getTempSong().setAutoscrolllength(total+"");
     }
     private String shortText(String niceText) {
-        Log.d(TAG,"niceText="+niceText);
         if (niceText.equals(getString(R.string.off))) {
             return "off";
         } else if (niceText.equals(getString(R.string.link))) {

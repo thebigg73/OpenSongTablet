@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +32,7 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
     private EditSongBinding myView;
     private MainActivityInterface mainActivityInterface;
     private ViewPager2.OnPageChangeCallback callback;
+    @SuppressWarnings("unused")
     private final String TAG = "EditSongFragment";
 
     @Override
@@ -67,7 +67,6 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
         mainActivityInterface.getTempSong().setLyricsUndosPos(0);
         mainActivityInterface.getTempSong().setLyricsUndos(0,mainActivityInterface.getTempSong().getLyrics());
 
-        Log.d(TAG,"songFolder:"+mainActivityInterface.getSong().getFolder()+"  tempSongFolder:"+ mainActivityInterface.getTempSong().getFolder());
         // Initialise views
         setUpTabs();
 
@@ -105,7 +104,6 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
-                Log.d(TAG,"position:"+position);
                 switch (position) {
                     case 0:
                         mainActivityInterface.updateToolbarHelp(getString(R.string.website_edit_song));

@@ -69,7 +69,7 @@ public class EditSongFragmentLyrics extends Fragment {
     }
 
     private void setupValues() {
-        if (!mainActivityInterface.getTempSong().getEditingAsChoPro()) {
+        if (mainActivityInterface.getTempSong()!=null && !mainActivityInterface.getTempSong().getEditingAsChoPro()) {
             mainActivityInterface.getTranspose().checkChordFormat(mainActivityInterface.getTempSong());
         } else {
             String choProLyrics = mainActivityInterface.getTempSong().getLyrics();
@@ -204,19 +204,11 @@ public class EditSongFragmentLyrics extends Fragment {
     public void insertSection() {
         // Try to get the current text position
         String text = myView.lyrics.getText().toString();
-        text = text.substring(0,cursorPos) + "[]\n" + text.substring(cursorPos);
-        myView.lyrics.setText(text);
-        myView.lyrics.setSelection(cursorPos+1);
-    }
-
-    public void changelyricFormat() {
-        if (mainActivityInterface.getPreferences().getMyPreferenceBoolean("editAsChordPro",false)) {
-            myView.lyrics.setText(mainActivityInterface.getConvertChoPro().
-                    fromOpenSongToChordPro(mainActivityInterface.getTempSong().getLyrics()));
-        } else {
-            myView.lyrics.setText(mainActivityInterface.getConvertChoPro().
-                    fromChordProToOpenSong(mainActivityInterface.getTempSong().getLyrics()));
+        if (text.length()>cursorPos && cursorPos!=-1) {
+            text = text.substring(0, cursorPos) + "[]\n" + text.substring(cursorPos);
+            myView.lyrics.setText(text);
         }
+        myView.lyrics.setSelection(cursorPos+1);
     }
 
     public void transpose(String direction) {
