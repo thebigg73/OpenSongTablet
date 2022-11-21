@@ -58,6 +58,7 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
         void openFragment();
         void openMyDrawers(String which);
         void closeMyDrawers(String which);
+        void getBluetoothName();
         void refreshActionBar();
         void loadSong();
         void prepareSongMenu();
@@ -402,9 +403,7 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
                 break;
 
             case "CONNECT":
-                if (mListener!=null && mListener.requestNearbyPermissions()) {
-                    connectOptionListener(v, c, preferences);
-                }
+                connectOptionListener(v, c, preferences);
                 break;
 
             case "MIDI":
@@ -593,17 +592,24 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
                     dialog.create();
                     dialog.show();
                 } else {
-                    if (mListener!=null && mListener.hasNearbyPermissions()) {
-                        StaticVariables.whichOptionMenu = "CONNECT";
-                        mListener.prepareOptionMenu();
-                    } else {
-                        if (mListener != null) {
+                    if (mListener!=null) {
+                        if (!mListener.hasNearbyPermissions()) {
                             mListener.requestNearbyPermissions();
+                            // IV - We force a getBluetoothName next time through
+                            FullscreenActivity.mBluetoothName = null;
+                        } else {
+                            if (FullscreenActivity.mBluetoothName == null) {
+                                mListener.getBluetoothName();
+                            }
+                            StaticVariables.whichOptionMenu = "CONNECT";
+                            mListener.prepareOptionMenu();
                         }
                     }
                 }
             } else {
-                mListener.installPlayServices();
+                if (mListener!=null) {
+                    mListener.installPlayServices();
+                }
             }
         });
         menuModeButton.setOnClickListener(view -> {

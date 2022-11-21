@@ -102,6 +102,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 import lib.folderpicker.FolderPicker;
 
@@ -573,8 +574,6 @@ public class StageMode extends AppCompatActivity implements
             // Set up the Nearby connection service
             permissions = new Permissions();
             permissions.setNearbyPermissionsString();
-            getBluetoothName();
-            nearbyConnections.getUserNickname();
 
             dealWithIntent();
 
@@ -881,30 +880,26 @@ public class StageMode extends AppCompatActivity implements
         });
     }
 
-    private void getBluetoothName() {
+    public void getBluetoothName() {
+        FullscreenActivity.mBluetoothName = null;
         // Only do this if we have the correct permissions
         if (permissions.hasNearbyPermissions(this)) {
             try {
+                if ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) && (!permissions.checkForPermission(this,Manifest.permission.BLUETOOTH_CONNECT))) {
+                    permissions.requestForPermissions(this, new String[]{Manifest.permission.BLUETOOTH_CONNECT}, 488);
+                }
                 if (FullscreenActivity.mBluetoothAdapter == null) {
                     FullscreenActivity.mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
                 }
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                    if (!permissions.checkForPermission(this,Manifest.permission.BLUETOOTH_CONNECT)) {
-                        permissions.requestForPermissions(this, new String[]{Manifest.permission.BLUETOOTH_CONNECT}, 488);
-                        return;
-                    } else {
-                        FullscreenActivity.mBluetoothName = FullscreenActivity.mBluetoothAdapter.getName();
-                    }
-
-                } else {
-                    FullscreenActivity.mBluetoothName = FullscreenActivity.mBluetoothAdapter.getName();
-                }
-                if (FullscreenActivity.mBluetoothName == null) {
-                    FullscreenActivity.mBluetoothName = "Unknown";
-                }
+                FullscreenActivity.mBluetoothName = FullscreenActivity.mBluetoothAdapter.getName();
             } catch (Exception e) {
-                FullscreenActivity.mBluetoothName = "Unknown";
+                e.printStackTrace();
             }
+        }
+        // IV - If we could not get the Bluetooth name, use a random name
+        if (FullscreenActivity.mBluetoothName == null) {
+            FullscreenActivity.mBluetoothName = UUID.randomUUID().toString().substring(0, 8);
+            FullscreenActivity.mBluetoothName = FullscreenActivity.mBluetoothName.toUpperCase(StaticVariables.locale);
         }
     }
 

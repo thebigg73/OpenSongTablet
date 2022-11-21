@@ -34,7 +34,6 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Objects;
-import java.util.UUID;
 
 public class NearbyConnections implements NearbyInterface {
 
@@ -198,21 +197,10 @@ public class NearbyConnections implements NearbyInterface {
     }
 
     public String getUserNickname() {
-        try {
-            if (StaticVariables.deviceName == null || StaticVariables.deviceName.isEmpty() ||
-                    (FullscreenActivity.mBluetoothName != null && FullscreenActivity.mBluetoothName.equals(StaticVariables.deviceName))) {
-                if (FullscreenActivity.mBluetoothName == null || FullscreenActivity.mBluetoothName.equals("Unknown")) {
-                    FullscreenActivity.mBluetoothName = UUID.randomUUID().toString().substring(0, 8);
-                    FullscreenActivity.mBluetoothName = FullscreenActivity.mBluetoothName.toUpperCase(StaticVariables.locale);
-                }
-                StaticVariables.deviceName = preferences.getMyPreferenceString(context, "deviceId", "");
-                // IV - If the user has not set an override name use the Bluetooth name
-                if (StaticVariables.deviceName.isEmpty()) {
-                    StaticVariables.deviceName = FullscreenActivity.mBluetoothName;
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        StaticVariables.deviceName = preferences.getMyPreferenceString(context, "deviceId", "");
+        // IV - If the user has not set a device name use mBluetoothName
+        if (StaticVariables.deviceName.isEmpty()) {
+            StaticVariables.deviceName = FullscreenActivity.mBluetoothName;
         }
         return StaticVariables.deviceName;
     }

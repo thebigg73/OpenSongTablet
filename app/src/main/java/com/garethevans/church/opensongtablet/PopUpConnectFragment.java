@@ -27,6 +27,7 @@ public class PopUpConnectFragment extends DialogFragment {
 
     public interface MyInterface {
         void prepareOptionMenu();
+        String getUserNickname();
     }
 
     private static MyInterface mListener;
@@ -37,7 +38,7 @@ public class PopUpConnectFragment extends DialogFragment {
         super.onAttach(context);
     }
 
-    private TextView title, deviceNameTextView;
+    private TextView title;
     private EditText deviceNameEditText;
     private FloatingActionButton saveMe;
     private Preferences preferences;
@@ -72,16 +73,14 @@ public class PopUpConnectFragment extends DialogFragment {
 
         // Initialise the views
         deviceNameEditText = V.findViewById(R.id.deviceNameEditText);
-        // IV - Changed to DeviceId which is the pref used by getUserNickname()
-        deviceNameEditText.setText(preferences.getMyPreferenceString(getContext(), "deviceId", ""));
+        // IV - Start with the broadcasting device name
+        deviceNameEditText.setText(mListener.getUserNickname());
 
         // Set up save/tick listener
         saveMe.setOnClickListener(view -> {
+            // IV - Allows an empty string which will clear this 'override' preference
             String s = deviceNameEditText.getText().toString().trim();
-            if (s.length() > 0) {
-                preferences.setMyPreferenceString(getContext(), "deviceId", s);
-                StaticVariables.deviceName = s;
-            }
+            preferences.setMyPreferenceString(getContext(), "deviceId", s);
             doSave();
         });
         Dialog dialog = getDialog();
