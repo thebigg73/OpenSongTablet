@@ -138,7 +138,7 @@ public class BootUpFragment extends Fragment {
                         message = getString(R.string.success);
                         updateMessage();
 
-                        mainActivityInterface.setMode(mainActivityInterface.getPreferences().getMyPreferenceString("whichMode", "Performance"));
+                        mainActivityInterface.setMode(mainActivityInterface.getPreferences().getMyPreferenceString("whichMode", getString(R.string.mode_performance)));
 
                         // Increase the boot times for prompting a user to backup their songs
                         int runssincebackup = mainActivityInterface.getPreferences().getMyPreferenceInt("runssincebackup",0);

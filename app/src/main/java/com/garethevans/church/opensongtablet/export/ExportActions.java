@@ -86,17 +86,6 @@ public class ExportActions {
         return location;
     }
 
-    public Uri getActualSongFile(String subfolder, String filename) {
-        return mainActivityInterface.getStorageAccess().getUriForItem("Songs", subfolder, filename);
-    }
-    public Uri getActualSongFile(Song song) {
-        return mainActivityInterface.getStorageAccess().getUriForItem("Songs",
-                song.getFolder(), song.getFilename());
-    }
-    public Uri getActualSetFile(String filename) {
-        return mainActivityInterface.getStorageAccess().getUriForItem("Sets","", filename);
-    }
-
     public ArrayList<String> getListOfSets(String setToExport) {
         String[] bits = setToExport.split("%_%");
         ArrayList<String> setNames = new ArrayList<>();
@@ -185,7 +174,6 @@ public class ExportActions {
                                             xpp.getAttributeValue(null, "type").equals("song")){
                                         String folder;
                                         String filename = stripSlashes(mainActivityInterface.getProcessSong().parseHTML(xpp.getAttributeValue(null, "name")));
-                                        String location = "";
                                         String title = "";
                                         String key = "";
                                         String author = "";
@@ -219,7 +207,6 @@ public class ExportActions {
                                                 // Not stored in the set, so look for the song value
                                                 key = thisSong.getKey();
                                             }
-                                            location = " ["+folder+"/"+filename+"]";
                                             title = thisSong.getTitle();
                                             author = thisSong.getAuthor();
                                             hymn = thisSong.getHymnnum();
@@ -229,12 +216,17 @@ public class ExportActions {
 
                                         key = fixNull(key);
                                         if (!key.isEmpty()) {
-                                            key = "¬ (" + key + ")";
+                                            key = " (" + key + ")";
                                         } else {
                                             key = "";
                                         }
 
-                                        author = "¬ "+fixNull(author);
+                                        author = fixNull(author);
+                                        if (!author.isEmpty()) {
+                                            author = "¬ "+author;
+                                        } else {
+                                            author = "";
+                                        }
 
                                         hymn = fixNull(hymn);
                                         if (!hymn.isEmpty()) {
@@ -254,6 +246,7 @@ public class ExportActions {
                                         if (title.isEmpty()) {
                                             title = filename;
                                         }
+
                                         // IV - Handle comma in name - remove comma with no following space as used in numbers - '10,000 Reasons'
                                         title  = title.replace(", "," | ").replace(",","");
 

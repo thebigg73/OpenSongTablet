@@ -523,6 +523,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private void initialiseStartVariables() {
         themeColors.setThemeName(preferences.getMyPreferenceString("appTheme", "dark"));
         whichMode = preferences.getMyPreferenceString("whichMode", performance);
+        // Fix old mode from old profile
+        if (whichMode.equals("Presentation")) {
+            whichMode = presenter;
+        }
 
         // Deal with any inset preferences or cutouts or system bars
         updateInsetPrefs();
@@ -1980,9 +1984,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         switch (what) {
             case "Performance":
                 performanceFragment = (PerformanceFragment) frag;
+                if (whichMode.equals(getString(R.string.mode_presenter))) {
+                    whichMode = getString(R.string.mode_performance);
+                }
                 break;
             case "Presenter":
                 presenterFragment = (PresenterFragment) frag;
+                whichMode = getString(R.string.mode_presenter);
                 break;
             case "EditSongFragment":
                 editSongFragment = (EditSongFragment) frag;
@@ -2323,6 +2331,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     public ShowToast getShowToast() {
         return showToast;
     }
+
     @Override
     public String getMode() {
         if (whichMode==null) {
@@ -2330,6 +2339,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         }
         return whichMode;
     }
+
     @Override
     public void setMode(String whichMode) {
         this.whichMode = whichMode;

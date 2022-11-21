@@ -8,6 +8,7 @@ import android.graphics.Rect;
 import android.graphics.pdf.PdfDocument;
 import android.net.Uri;
 import android.print.PrintAttributes;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -34,7 +35,6 @@ public class MakePDF {
     private boolean isSetListPrinting = false;
     private boolean showTotalPage = true;
     private String exportFilename;
-    private final float maxFontSize = 16f;
 
     public MakePDF(Context c) {
         mainActivityInterface = (MainActivityInterface) c;
@@ -244,9 +244,9 @@ public class MakePDF {
     private void createFooter() {
         // The OpenSongApp credit.  This is drawn after the rest of the page content has finished
         Rect bounds = new Rect();
-        String string = "Prepared by OpenSongApp (https://www.opensongapp.com)";
+        String string = "Prepared by OpenSongApp (<a href='https://www.opensongapp.com'>https://www.opensongapp.com</a>)";
         footerPaint.getTextBounds(string,0,string.length(),bounds);
-        pageCanvas.drawText(string,cmToPx(margin_cm),docHeight-cmToPx(margin_cm)-cmToPx(footerHeight_cm),footerPaint);
+        pageCanvas.drawText(String.valueOf(Html.fromHtml(string)),cmToPx(margin_cm),docHeight-cmToPx(margin_cm)-cmToPx(footerHeight_cm),footerPaint);
 
         // The page numbering if there is more than 1 page needed
         if (totalPages>1) {

@@ -78,10 +78,10 @@ dependencies {
     implementation 'androidx.multidex:multidex:2.0.1'                                   // Allow splitting of file for older devices
     implementation 'androidx.annotation:annotation:1.5.0'                               // Allows annotations in code
     annotationProcessor 'androidx.annotation:annotation:1.5.0'                          // Allows annotations in code
-    implementation 'org.apache.commons:commons-compress:1.21'                           // For creating and editing compressed files (osb, backup)
-    implementation 'com.github.bumptech.glide:glide:4.13.2'                             // For better setting of images
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.13.2'                     // For better setting of images
-    implementation 'com.github.deano2390:MaterialShowcaseView:1.3.4'                    // To highlight new features in the app
+    implementation 'org.apache.commons:commons-compress:1.22'                           // For creating and editing compressed files (osb, backup)
+    implementation 'com.github.bumptech.glide:glide:4.14.2'                             // For better setting of images
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.14.2'                     // For better setting of images
+    implementation 'com.github.deano2390:MaterialShowcaseView:1.3.7'                    // To highlight new features in the app
 
     // No longer needed?
     //implementation fileTree(include: ['*.jar'], dir: 'libs')                            // To allow local jar files in libs

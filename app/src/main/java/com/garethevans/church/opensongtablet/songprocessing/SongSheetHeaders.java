@@ -12,6 +12,8 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 public class SongSheetHeaders {
 
     private final Context c;
+    @SuppressWarnings("canbelocal")
+    private final String TAG = "SongSheetHeaders";
     private final MainActivityInterface mainActivityInterface;
 
     public SongSheetHeaders(Context c) {

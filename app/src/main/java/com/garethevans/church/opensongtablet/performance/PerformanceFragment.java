@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -496,7 +497,6 @@ public class PerformanceFragment extends Fragment {
         } else {
             mainActivityInterface.setSongSheetTitleLayout(null);
         }
-
         // We now have the views ready, we need to draw them so we can measure them
         // Start with the song sheeet title/header
         // The other views are dealt with after this call
@@ -507,7 +507,6 @@ public class PerformanceFragment extends Fragment {
         // Add the view and wait for the vto return
         if (mainActivityInterface.getSongSheetTitleLayout() != null &&
                 !mainActivityInterface.getMode().equals(getString(R.string.mode_presenter))) {
-
             // Check the header isn't already attached to a view
             if (mainActivityInterface.getSongSheetTitleLayout().getParent()!=null) {
                 ((ViewGroup) mainActivityInterface.getSongSheetTitleLayout().getParent()).removeAllViews();

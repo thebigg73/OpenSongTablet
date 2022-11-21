@@ -12,6 +12,7 @@ import android.print.PrintDocumentAdapter;
 import android.print.PrintDocumentInfo;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.widget.LinearLayout;
 
 import androidx.lifecycle.MutableLiveData;
 
@@ -109,6 +110,10 @@ public class MultipagePrinterAdapter extends PrintDocumentAdapter {
         // Now draw it here for measuring via the VTO
         exportFragment.setHeaderLayoutPDF(mainActivityInterface.getSongSheetHeaders().getSongSheet(thisSong,
                 scaleComments,true));
+        if (exportFragment.getHeaderLayout()==null) {
+            exportFragment.setHeaderLayoutPDF(new LinearLayout(exportFragment.getHiddenHeader().getContext()));
+        }
+
         exportFragment.getHiddenHeader().addView(exportFragment.getHeaderLayout());
     }
 
@@ -183,9 +188,10 @@ public class MultipagePrinterAdapter extends PrintDocumentAdapter {
     }
 
     private void getSongOrPrintIfDone() {
-        if (!mainActivityInterface.getPreferences().getMyPreferenceBoolean("exportSetSongs",false) || currentSetItem==setItemEntries.size()) {
+        if (!mainActivityInterface.getPreferences().getMyPreferenceBoolean("exportSetSongs",false) ||
+                currentSetItem>=setItemEntries.size()) {
             callPrint();
-        } else {
+        } else if (setItemLocations.size()>currentSetItem) {
             // Initialse the song for processing
             Song currentSetSong;
             if (setItemLocations.get(currentSetItem).contains("../") ||
@@ -209,6 +215,9 @@ public class MultipagePrinterAdapter extends PrintDocumentAdapter {
 
             // Now do the header.  Once this is done, it does the content, then moves to the next song
             createOnTheFlyHeader(currentSetSong,false);
+        } else {
+            currentSetItem++;
+            callPrint();
         }
     }
 

@@ -190,19 +190,14 @@ public class ExportFragment extends Fragment {
                 case "PDF":
                     myView.image.setVisibility(View.GONE);
                     myView.pdf.setChecked(true);
-
                     break;
                 case "IMG":
                     myView.image.setChecked(true);
-
                     break;
                 case "XML":
                     // Must be a song!
-                    if (mainActivityInterface.getPreferences().getMyPreferenceBoolean("exportOpenSongApp", true)) {
-                        myView.openSongApp.setChecked(true);
-                    } else {
-                        myView.openSong.setChecked(true);
-                    }
+                    myView.openSongApp.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("exportOpenSongApp", false));
+                    myView.openSong.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("exportDesktop", false));
                     break;
             }
 
@@ -598,10 +593,14 @@ public class ExportFragment extends Fragment {
     private void createOnTheFly(Song thisSong, String pdfName) {
         // Make sure any current headers/sections are wiped
         handler.post(()-> {
-            initialiseViews();
+            try {
+                initialiseViews();
 
-            // Now start preparing the views.  First up the header
-            createOnTheFlyHeader(thisSong, pdfName);
+                // Now start preparing the views.  First up the header
+                createOnTheFlyHeader(thisSong, pdfName);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         });
     }
     private void initialiseViews() {

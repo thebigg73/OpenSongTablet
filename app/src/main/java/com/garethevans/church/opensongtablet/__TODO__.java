@@ -12,11 +12,12 @@ public class __TODO__ {
 
 
     // BUGS FROM LIVE TEST
-
     // SongSelect only recognising Chord pages (not score?)
     // Presenter mode not working with images
 
     // Occasional bugs harder to replicate/solve
     // Crash when fast scrolling to bottom of song list sometimes indexexception (I think when it gets updated after indexing)
 
+    // For future
+    // Exporting sets that aren't loaded in currently can't include custom slides *shows doesn't exists warning
 }
