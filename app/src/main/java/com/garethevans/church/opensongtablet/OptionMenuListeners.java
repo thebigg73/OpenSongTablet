@@ -587,18 +587,31 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
                             .setTitle(R.string.location)
                             .setIcon(android.R.drawable.ic_dialog_alert)
                             .setMessage(c.getString(R.string.location_not_enabled))
-                            .setPositiveButton(c.getString(R.string.location), (paramDialogInterface, paramInt) -> c.startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)))
+                            .setPositiveButton(c.getString(R.string.next), (paramDialogInterface, paramInt) -> c.startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)))
                             .setNegativeButton(c.getString(R.string.cancel), null);
                     dialog.create();
                     dialog.show();
                 } else {
                     if (mListener!=null) {
                         if (!mListener.hasNearbyPermissions()) {
-                            mListener.requestNearbyPermissions();
-                            // IV - We force a getBluetoothName next time through
-                            FullscreenActivity.mBluetoothName = null;
+                            // IV - requestNearbyPermissions has run, as "■" is set, but permissions are not right. We ask the user to set permissions in Apps management.
+                            if (FullscreenActivity.mBluetoothName == "■") {
+                                AlertDialog.Builder dialog = new AlertDialog.Builder(c)
+                                        .setTitle(R.string.connections_connect)
+                                        .setIcon(android.R.drawable.ic_dialog_alert)
+                                        .setMessage(c.getString(R.string.connections_enable))
+                                        .setPositiveButton(c.getString(R.string.next), (paramDialogInterface, paramInt) -> c.startActivity(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,Uri.parse("package:" + c.getPackageName()))))
+                                        .setNegativeButton(c.getString(R.string.cancel), null);
+                                dialog.create();
+                                dialog.show();
+                                mListener.closeMyDrawers("option");
+                            } else {
+                                mListener.requestNearbyPermissions();
+                            }
+                            // IV - We force a getBluetoothName
+                            FullscreenActivity.mBluetoothName = "■";
                         } else {
-                            if (FullscreenActivity.mBluetoothName == null) {
+                            if (FullscreenActivity.mBluetoothName == "■") {
                                 mListener.getBluetoothName();
                             }
                             StaticVariables.whichOptionMenu = "CONNECT";
