@@ -28,6 +28,8 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.Objects;
+
 public class OptionMenuListeners extends AppCompatActivity implements MenuInterface{
 
     @SuppressLint("StaticFieldLeak")
@@ -595,7 +597,7 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
                     if (mListener!=null) {
                         if (!mListener.hasNearbyPermissions()) {
                             // IV - requestNearbyPermissions has run, as "■" is set, but permissions are not right. We ask the user to set permissions in Apps management.
-                            if (FullscreenActivity.mBluetoothName == "■") {
+                            if (Objects.equals(FullscreenActivity.mBluetoothName, "■")) {
                                 AlertDialog.Builder dialog = new AlertDialog.Builder(c)
                                         .setTitle(R.string.connections_connect)
                                         .setIcon(android.R.drawable.ic_dialog_alert)
@@ -611,7 +613,7 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
                             // IV - We force a getBluetoothName
                             FullscreenActivity.mBluetoothName = "■";
                         } else {
-                            if (FullscreenActivity.mBluetoothName == "■") {
+                            if (Objects.equals(FullscreenActivity.mBluetoothName, "■")) {
                                 mListener.getBluetoothName();
                             }
                             StaticVariables.whichOptionMenu = "CONNECT";
