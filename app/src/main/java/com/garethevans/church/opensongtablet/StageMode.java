@@ -102,7 +102,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 
 import lib.folderpicker.FolderPicker;
 
@@ -571,9 +570,10 @@ public class StageMode extends AppCompatActivity implements
                 closeMyDrawers("song");
             });
 
-            // Set up the Nearby connection service
+            // Initialise the Nearby connection service
             permissions = new Permissions();
             permissions.setNearbyPermissionsString();
+            StaticVariables.deviceName = null;
 
             dealWithIntent();
 
@@ -881,6 +881,7 @@ public class StageMode extends AppCompatActivity implements
     }
 
     public void getBluetoothName() {
+        // IV - We return the Bluetooth name or null to indicate unavailable.
         FullscreenActivity.mBluetoothName = null;
         // Only do this if we have the correct permissions
         if (permissions.hasNearbyPermissions(this)) {
@@ -895,11 +896,6 @@ public class StageMode extends AppCompatActivity implements
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }
-        // IV - If we could not get the Bluetooth name, use a random name
-        if (FullscreenActivity.mBluetoothName == null) {
-            FullscreenActivity.mBluetoothName = UUID.randomUUID().toString().substring(0, 8);
-            FullscreenActivity.mBluetoothName = FullscreenActivity.mBluetoothName.toUpperCase(StaticVariables.locale);
         }
     }
 

@@ -60,7 +60,6 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
         void openFragment();
         void openMyDrawers(String which);
         void closeMyDrawers(String which);
-        void getBluetoothName();
         void refreshActionBar();
         void loadSong();
         void prepareSongMenu();
@@ -84,6 +83,8 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
         boolean requestNearbyPermissions();
         boolean hasNearbyPermissions();
         void installPlayServices();
+        void getBluetoothName();
+        String getUserNickname();
     }
 
     private static MyInterface mListener;
@@ -610,11 +611,13 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
                             } else {
                                 mListener.requestNearbyPermissions();
                             }
-                            // IV - We force a getBluetoothName
                             FullscreenActivity.mBluetoothName = "■";
+                            StaticVariables.deviceName = null;
                         } else {
-                            if (Objects.equals(FullscreenActivity.mBluetoothName, "■")) {
+                            // IV - deviceName is null the first time through or after requesting permissions.
+                            if (StaticVariables.deviceName == null) {
                                 mListener.getBluetoothName();
+                                mListener.getUserNickname();
                             }
                             StaticVariables.whichOptionMenu = "CONNECT";
                             mListener.prepareOptionMenu();
@@ -1812,9 +1815,6 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
         LinearLayout hostOptions = v.findViewById(R.id.hostOptions);
         LinearLayout clientOptions = v.findViewById(R.id.clientOptions);
 
-        nearbyInterface.getUserNickname();
-
-        deviceName.setText(StaticVariables.deviceName);
         if (StaticVariables.connectionLog==null || StaticVariables.connectionLog.isEmpty()) {
             StaticVariables.connectionLog = c.getResources().getString(R.string.connections_log) + "\n\n";
         }

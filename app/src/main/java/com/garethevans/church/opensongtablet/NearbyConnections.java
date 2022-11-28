@@ -34,6 +34,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Objects;
+import java.util.UUID;
 
 public class NearbyConnections implements NearbyInterface {
 
@@ -197,10 +198,21 @@ public class NearbyConnections implements NearbyInterface {
     }
 
     public String getUserNickname() {
-        StaticVariables.deviceName = preferences.getMyPreferenceString(context, "deviceId", "");
-        // IV - If the user has not set a device name use mBluetoothName
-        if (StaticVariables.deviceName.isEmpty()) {
-            StaticVariables.deviceName = FullscreenActivity.mBluetoothName;
+        try {
+            // IV - If deviceName is null, determine the current deviceName.
+            if (StaticVariables.deviceName == null) {
+                // IV - If user has set a device id then use, otherwise use Bluetooth name. If no Bluetooth name (should never happen), use a random name.
+                StaticVariables.deviceName = preferences.getMyPreferenceString(context, "deviceId", "");
+                if (StaticVariables.deviceName.isEmpty()) {
+                    if (FullscreenActivity.mBluetoothName != null) {
+                        StaticVariables.deviceName = FullscreenActivity.mBluetoothName;
+                    } else {
+                        StaticVariables.deviceName = UUID.randomUUID().toString().substring(0, 8).toUpperCase(StaticVariables.locale);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return StaticVariables.deviceName;
     }

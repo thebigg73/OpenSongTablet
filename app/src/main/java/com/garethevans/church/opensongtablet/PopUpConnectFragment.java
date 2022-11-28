@@ -73,14 +73,17 @@ public class PopUpConnectFragment extends DialogFragment {
 
         // Initialise the views
         deviceNameEditText = V.findViewById(R.id.deviceNameEditText);
-        // IV - Start with the broadcasting device name
+        // IV - Start with the current name
         deviceNameEditText.setText(mListener.getUserNickname());
 
         // Set up save/tick listener
         saveMe.setOnClickListener(view -> {
-            // IV - Allows an empty string which will clear this 'override' preference
+            // IV - An empty string will clear this 'override' preference
             String s = deviceNameEditText.getText().toString().trim();
             preferences.setMyPreferenceString(getContext(), "deviceId", s);
+            // IV - Set null to have getUserNickname update deviceName
+            StaticVariables.deviceName = null;
+            mListener.getUserNickname();
             doSave();
         });
         Dialog dialog = getDialog();
