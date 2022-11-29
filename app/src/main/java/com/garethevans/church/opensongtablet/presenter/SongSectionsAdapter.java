@@ -247,7 +247,7 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
         }
     }
 
-    private void itemSelected(int thisPos) {
+    public void itemSelected(int thisPos) {
         notifyItemChanged(thisPos);
         highlightedArray.put(currentPosition,false);
         highlightedArray.put(thisPos,true);

@@ -9,7 +9,6 @@ import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.text.method.DigitsKeyListener;
-import android.text.method.KeyListener;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -226,16 +225,8 @@ public class MaterialEditText extends LinearLayout implements View.OnTouchListen
         return editText.getMinLines();
     }
 
-    public int getMaxLines() {
-        return editText.getMaxLines();
-    }
-
     public int getInputType() {
         return editText.getInputType();
-    }
-
-    public int getImeOptions() {
-        return editText.getImeOptions();
     }
 
     public void setInputType(int inputType) {
@@ -262,10 +253,6 @@ public class MaterialEditText extends LinearLayout implements View.OnTouchListen
 
     public void setSelected(boolean selected) {
         editText.setSelected(selected);
-    }
-
-    public void setKeyListener(KeyListener keyListener) {
-        editText.setKeyListener(keyListener);
     }
 
     public void setEnabled(boolean enabled) {
