@@ -99,7 +99,9 @@ public class SongSectionsFragment extends Fragment {
             myView.imageSlideTime.setInputType(InputType.TYPE_CLASS_NUMBER);
             myView.imageSlideLoop.setChecked(mainActivityInterface.getSong().getUser2().equals("true"));
             myView.songInfo.setOnLongClickListener(view -> {
-                mainActivityInterface.navigateToFragment(getString(R.string.deeplink_edit), 0);
+                if (!mainActivityInterface.getSong().getFolder().contains("**Image")) {
+                    mainActivityInterface.navigateToFragment(getString(R.string.deeplink_edit), 0);
+                }
                 return false;
             });
 
