@@ -42,15 +42,15 @@
             android:id="@+id/imageSlideInfo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:visibility="visible">
+            android:visibility="visible"
+            android:layout_marginBottom="8dp">
 
             <com.garethevans.church.opensongtablet.customviews.MaterialEditText
                 android:id="@+id/imageSlideTime"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_gravity="center_vertical"
+                android:layout_gravity="bottom"
                 android:layout_weight="1"
                 android:hint="@string/time_slide_pages" />
 
@@ -58,8 +58,8 @@
                 android:id="@+id/imageSlideStopStart"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="8dp"
+                android:layout_gravity="bottom"
+                android:layout_marginStart="16dp"
                 android:text="@string/start"
                 app:icon="@drawable/play" />
         </LinearLayout>

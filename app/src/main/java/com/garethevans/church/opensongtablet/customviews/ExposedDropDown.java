@@ -61,21 +61,19 @@ public class ExposedDropDown extends TextInputLayout {
         textInputLayout.setPadding(0,0,0,0);
         a.recycle();
         autoCompleteTextView.setOnTouchListener(new MyTouchListener());
-        textInputLayout.setEndIconOnClickListener(v -> {
-            autoCompleteTextView.post(() -> {
-            setPopupSize();
-            if (autoCompleteTextView.isPopupShowing()) {
-                autoCompleteTextView.dismissDropDown();
-            } else {
-                autoCompleteTextView.dismissDropDown();
-                // Delay the showing..
-                autoCompleteTextView.postDelayed(() -> {
-                    autoCompleteTextView.showDropDown();
-                    keepPosition();
-                },delay);
-            }
-            });
-        });
+        textInputLayout.setEndIconOnClickListener(v -> autoCompleteTextView.post(() -> {
+        setPopupSize();
+        if (autoCompleteTextView.isPopupShowing()) {
+            autoCompleteTextView.dismissDropDown();
+        } else {
+            autoCompleteTextView.dismissDropDown();
+            // Delay the showing..
+            autoCompleteTextView.postDelayed(() -> {
+                autoCompleteTextView.showDropDown();
+                keepPosition();
+            },delay);
+        }
+        }));
     }
 
     private class MyTouchListener implements OnTouchListener {
@@ -186,7 +184,7 @@ public class ExposedDropDown extends TextInputLayout {
         } else {
             try {
                 autoCompleteTextView.setDropDownVerticalOffset(-autoCompleteTextView.getHeight());
-                int newHeight = (int) ((float) getContext().getResources().getDimension(R.dimen.exposed_dropdown_height));
+                int newHeight = (int) getContext().getResources().getDimension(R.dimen.exposed_dropdown_height);
                 autoCompleteTextView.setDropDownHeight(newHeight);
             } catch (Exception e) {
                 e.printStackTrace();

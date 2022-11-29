@@ -7,9 +7,7 @@ public class __TODO__ {
     // Check pedal listeners
     // Fully implement image slides and images in all modes
 
-    // Image slides autoadvance and loop in presenter mode (maybe stage mode too?)
     // Alignment of images and slides in secondary dislplay to match lyrics align
-
 
     // BUGS FROM LIVE TEST
     // SongSelect only recognising Chord pages (not score?)

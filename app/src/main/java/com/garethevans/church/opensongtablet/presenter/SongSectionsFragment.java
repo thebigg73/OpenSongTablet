@@ -85,6 +85,8 @@ public class SongSectionsFragment extends Fragment {
 
     public void showSongInfo() {
         myView.songInfo.setCapo(null);  // Don't need to show this here
+        // Clear any existing timers for image slides
+        resetTimer();
         if (mainActivityInterface != null &&
                 mainActivityInterface.getSong() != null) {
             myView.songInfo.setSongTitle(mainActivityInterface.getSong().getTitle());
@@ -104,8 +106,6 @@ public class SongSectionsFragment extends Fragment {
                 }
                 return false;
             });
-
-            Log.d(TAG, "folder: " + mainActivityInterface.getSong().getFolder());
 
             if (mainActivityInterface.getSong().getFiletype().equals("PDF") &&
                     android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
