@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet.presenter;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -94,6 +95,8 @@ public class SongSectionsFragment extends Fragment {
             myView.imageSlideLoop.setVisibility(View.GONE);
             myView.presentationOrder.setVisibility(View.VISIBLE);
             myView.imageSlideTime.setText(mainActivityInterface.getSong().getUser1());
+            myView.imageSlideTime.setDigits("0123456789");
+            myView.imageSlideTime.setInputType(InputType.TYPE_CLASS_NUMBER);
             myView.imageSlideLoop.setChecked(mainActivityInterface.getSong().getUser2().equals("true"));
             myView.songInfo.setOnLongClickListener(view -> {
                 mainActivityInterface.navigateToFragment(getString(R.string.deeplink_edit), 0);
@@ -288,8 +291,10 @@ public class SongSectionsFragment extends Fragment {
                 l = Long.parseLong(myView.imageSlideTime.getText().toString());
             } catch (Exception e) {
                 Log.d(TAG,"Error with slide time");
+                myView.imageSlideTime.setText("5");
             }
             if (l==0) {
+                myView.imageSlideTime.setText("5");
                 l=5;
             }
         }
