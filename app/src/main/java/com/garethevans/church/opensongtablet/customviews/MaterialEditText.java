@@ -15,6 +15,7 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -23,7 +24,7 @@ import com.garethevans.church.opensongtablet.R;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
-public class MaterialEditText extends TextInputLayout implements View.OnTouchListener {
+public class MaterialEditText extends LinearLayout implements View.OnTouchListener {
 
     private final TextInputEditText editText;
     private final TextInputLayout textInputLayout;

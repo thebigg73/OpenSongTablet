@@ -1,7 +1,11 @@
 package com.garethevans.church.opensongtablet.screensetup;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
 import com.garethevans.church.opensongtablet.databinding.SettingsDisplayExtraBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.slider.Slider;
@@ -20,6 +25,9 @@ public class DisplayExtraFragment extends Fragment {
 
     private MainActivityInterface mainActivityInterface;
     private SettingsDisplayExtraBinding myView;
+    private String[] bracketStyles_Names;
+    private int[] bracketStyles_Ints;
+    private final String TAG = "DisplayExtraFrag";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -79,6 +87,34 @@ public class DisplayExtraFragment extends Fragment {
         myView.filterSave.setText(text);
         mainActivityInterface.getProcessSong().editBoxToMultiline(myView.filters);
         mainActivityInterface.getProcessSong().stretchEditBoxToLines(myView.filters,4);
+        bracketStyles_Names = new String[] {getString(R.string.format_text_normal),getString(R.string.format_text_italic),
+        getString(R.string.format_text_bold),getString(R.string.format_text_bolditalic)};
+        bracketStyles_Ints = new int[] {Typeface.NORMAL,Typeface.ITALIC,Typeface.BOLD,Typeface.BOLD_ITALIC};
+        ExposedDropDownArrayAdapter exposedDropDownArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(),myView.bracketsStyle,R.layout.view_exposed_dropdown_item,bracketStyles_Names);
+        myView.bracketsStyle.setAdapter(exposedDropDownArrayAdapter);
+        myView.bracketsStyle.setText(getBracketStringFromValue(mainActivityInterface.getPreferences().getMyPreferenceInt("bracketsStyle",Typeface.NORMAL)));
+    }
+
+    private int getBracketValueFromString(String string) {
+        int value = 0;
+        for (int x=0; x<bracketStyles_Names.length; x++) {
+            if (bracketStyles_Names[x].equals(string)) {
+                value = bracketStyles_Ints[x];
+            }
+        }
+        Log.d(TAG,"string:"+string+"  value:"+value);
+        return value;
+    }
+
+    private String getBracketStringFromValue(int value) {
+        String string = getString(R.string.format_text_normal);
+        for (int x=0; x<bracketStyles_Ints.length; x++) {
+            if (bracketStyles_Ints[x]==value) {
+                string = bracketStyles_Names[x];
+            }
+        }
+        Log.d(TAG,"value:"+value+"  string:"+string);
+        return string;
     }
 
     private boolean getChecked(String prefName, boolean fallback) {
@@ -157,6 +193,20 @@ public class DisplayExtraFragment extends Fragment {
         myView.trimWordSpacing.setOnCheckedChangeListener((buttonView, isChecked) -> {
             updateBooleanPreference("trimWordSpacing",isChecked,null);
             mainActivityInterface.getProcessSong().updateProcessingPreferences();
+        });
+        myView.bracketsStyle.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                int value = getBracketValueFromString(myView.bracketsStyle.getText().toString());
+                mainActivityInterface.getPreferences().setMyPreferenceInt("bracketsStyle",value);
+                mainActivityInterface.getProcessSong().updateProcessingPreferences();
+            }
         });
 
         // TODO Maybe add later?

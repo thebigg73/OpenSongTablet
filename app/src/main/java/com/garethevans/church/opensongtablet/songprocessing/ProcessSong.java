@@ -18,6 +18,7 @@ import android.os.ParcelFileDescriptor;
 import android.text.InputType;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
 import android.text.style.BackgroundColorSpan;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -66,6 +67,9 @@ public class ProcessSong {
     // Stuff for resizing/scaling
     private int padding = 8;
     private String thisAutoScale;
+    private boolean bracketsOpen = false;
+    private int bracketsStyle = Typeface.NORMAL;
+
 
     public static int getColorWithAlpha(int color, float ratio) {
         int alpha = Math.round(Color.alpha(color) * ratio);
@@ -101,6 +105,7 @@ public class ProcessSong {
         scaleChords = mainActivityInterface.getPreferences().getMyPreferenceFloat("scaleChords", 0.8f);
         scaleComments = mainActivityInterface.getPreferences().getMyPreferenceFloat("scaleComments", 0.8f);
         multiLineVerseKeepCompact = mainActivityInterface.getPreferences().getMyPreferenceBoolean("multiLineVerseKeepCompact", false);
+        bracketsStyle = mainActivityInterface.getPreferences().getMyPreferenceInt("bracketsStyle",Typeface.NORMAL);
     }
 
     public boolean showingCapo(String capo) {
@@ -836,6 +841,8 @@ public class ProcessSong {
     }
 
     private String makeSections(String string) {
+        // Reset the spannable brackets here as we are just starting processing
+        bracketsOpen = false;
         string = string.replace("§", "\n____SPLIT____").
                 replace("\n\n\n", "\n \n____SPLIT____").
                 replace("\n \n \n", "\n \n____SPLIT____").
@@ -1000,7 +1007,8 @@ public class ProcessSong {
                                     end = " ";
                                 }
                                 str = start + str.trim() + end;
-                                textView.setText(str);
+                                SpannableStringBuilder spannableString = getSpannableBracketString(str);
+                                textView.setText(spannableString);
                             } else {
                                 textView = null;
                             }
@@ -1011,7 +1019,8 @@ public class ProcessSong {
                                     (!multiLineVerseKeepCompact && !multilineSong)) {
                                 str = fixExcessSpaces(str);
                             }
-                            textView.setText(str);
+                            SpannableStringBuilder spannableString = getSpannableBracketString(str);
+                            textView.setText(spannableString);
                             break;
                     }
                     if (textView!=null) {
@@ -1049,7 +1058,8 @@ public class ProcessSong {
                         str = fixExcessSpaces(str);
                     }
                     str = str.trim();
-                    textView.setText(str);
+                    SpannableStringBuilder spannableString = getSpannableBracketString(str);
+                    textView.setText(spannableString);
                 } else {
                     textView = null;
                 }
@@ -1064,6 +1074,32 @@ public class ProcessSong {
             tableLayout.addView(tableRow);
         }
         return tableLayout;
+    }
+
+    private SpannableStringBuilder getSpannableBracketString(String str) {
+        SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(str);
+        if (bracketsStyle!= Typeface.NORMAL) {
+            try {
+                if (bracketsOpen && !str.contains((")"))) {
+                    // All spannable adjusted
+                    spannableStringBuilder.setSpan(new android.text.style.StyleSpan(bracketsStyle), 0, str.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                } else if (str.contains("(") && str.contains(")") && str.indexOf(")") > str.indexOf("(")) {
+                    // Replace the text inside the brackets as spannable italics
+                    spannableStringBuilder.setSpan(new android.text.style.StyleSpan(bracketsStyle), str.indexOf("("), str.indexOf(")" + 1, str.indexOf("(")), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                } else if (str.contains("(") && !str.contains(")")) {
+                    // Everything after ( is spannable adjusted and mark flag waiting for closing bracket
+                    bracketsOpen = true;
+                    spannableStringBuilder.setSpan(new android.text.style.StyleSpan(bracketsStyle), str.indexOf("("), str.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                } else if (str.contains(")") && !str.contains("(")) {
+                    // Everything up to ) is spannable adjusted and close flag
+                    bracketsOpen = false;
+                    spannableStringBuilder.setSpan(new android.text.style.StyleSpan(bracketsStyle), 0, str.indexOf(")") + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return spannableStringBuilder;
     }
 
     private Spannable highlightChords(String str, int highlightChordColor) {
@@ -1389,9 +1425,12 @@ public class ProcessSong {
                         (!multilineSong || !multiLineVerseKeepCompact)) {
                     str = fixExcessSpaces(str);
                 }
-                textView.setText(str.replaceAll("[|_]", " "));
+                str = str.replaceAll("[|_]", " ");
+                SpannableStringBuilder spannableString = getSpannableBracketString(str);
+                textView.setText(spannableString);
             } else {
-                textView.setText(str);
+                SpannableStringBuilder spannableString = getSpannableBracketString(str);
+                textView.setText(spannableString);
             }
         }
         return textView;

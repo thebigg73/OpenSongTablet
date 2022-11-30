@@ -128,6 +128,14 @@
                 android:layout_marginBottom="8dp"
                 android:text="@string/show_lyrics"
                 android:hint="@string/show_lyrics_info"/>
+
+            <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                android:id="@+id/bracketsStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/format_text_brackets"
+                android:text="@string/format_text_normal"/>
+
             <TableRow style="@style/DividerLine" />
 
             <!--Section trimming and spaces-->
