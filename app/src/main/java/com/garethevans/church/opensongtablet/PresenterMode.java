@@ -412,11 +412,10 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
             // IV - refreshAll call later will perform setupButtons, prepareOptionsMenu and setupSongButtons
 
-            // Set up the Nearby connection service
+            // Initialise the Nearby connection service
             permissions = new Permissions();
             permissions.setNearbyPermissionsString();
-            getBluetoothName();
-            nearbyConnections.getUserNickname();
+            StaticVariables.deviceName = null;
 
             // Initialise the ab info
             adjustABInfo();
@@ -1891,33 +1890,25 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         }
     }
 
-    private void getBluetoothName() {
+    public void getBluetoothName() {
+        // IV - We return the Bluetooth name or null to indicate unavailable.
+        FullscreenActivity.mBluetoothName = null;
         // Only do this if we have the correct permissions
         if (permissions.hasNearbyPermissions(this)) {
             try {
+                if ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) && (!permissions.checkForPermission(this,Manifest.permission.BLUETOOTH_CONNECT))) {
+                    permissions.requestForPermissions(this, new String[]{Manifest.permission.BLUETOOTH_CONNECT}, 488);
+                    return;
+                }
                 if (FullscreenActivity.mBluetoothAdapter == null) {
                     FullscreenActivity.mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
                 }
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                    if (!permissions.checkForPermission(this,Manifest.permission.BLUETOOTH_CONNECT)) {
-                        permissions.requestForPermissions(this, new String[]{Manifest.permission.BLUETOOTH_CONNECT}, 488);
-                        return;
-                    } else {
-                        FullscreenActivity.mBluetoothName = FullscreenActivity.mBluetoothAdapter.getName();
-                    }
-
-                } else {
-                    FullscreenActivity.mBluetoothName = FullscreenActivity.mBluetoothAdapter.getName();
-                }
-                if (FullscreenActivity.mBluetoothName == null) {
-                    FullscreenActivity.mBluetoothName = "Unknown";
-                }
+                FullscreenActivity.mBluetoothName = FullscreenActivity.mBluetoothAdapter.getName();
             } catch (Exception e) {
-                FullscreenActivity.mBluetoothName = "Unknown";
+                e.printStackTrace();
             }
         }
     }
-
 
     // Loading the song
     @Override

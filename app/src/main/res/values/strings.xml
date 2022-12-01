@@ -141,7 +141,7 @@
     <string name="connections_service_start">Start service</string>
     <string name="connections_service_stop">Stop service</string>
     <string name="connections_success">Connection success</string>
-    <string name="connections_enable">Enable nearby connections</string>
+    <string name="connections_enable">Please change this App\'s permissions to allow access to precise \'Location\' and, if listed, \'Nearby devices\'.</string>
     <string name="connections_actashost">Act as host</string>
     <string name="connections_keephostsongs">Keep host songs</string>
     <string name="content">Content</string>

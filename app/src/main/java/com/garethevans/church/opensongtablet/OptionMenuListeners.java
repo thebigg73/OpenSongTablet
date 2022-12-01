@@ -28,6 +28,8 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.Objects;
+
 public class OptionMenuListeners extends AppCompatActivity implements MenuInterface{
 
     @SuppressLint("StaticFieldLeak")
@@ -81,6 +83,8 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
         boolean requestNearbyPermissions();
         boolean hasNearbyPermissions();
         void installPlayServices();
+        void getBluetoothName();
+        String getUserNickname();
     }
 
     private static MyInterface mListener;
@@ -402,9 +406,7 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
                 break;
 
             case "CONNECT":
-                if (mListener!=null && mListener.requestNearbyPermissions()) {
-                    connectOptionListener(v, c, preferences);
-                }
+                connectOptionListener(v, c, preferences);
                 break;
 
             case "MIDI":
@@ -588,22 +590,44 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
                             .setTitle(R.string.location)
                             .setIcon(android.R.drawable.ic_dialog_alert)
                             .setMessage(c.getString(R.string.location_not_enabled))
-                            .setPositiveButton(c.getString(R.string.location), (paramDialogInterface, paramInt) -> c.startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)))
+                            .setPositiveButton(c.getString(R.string.next), (paramDialogInterface, paramInt) -> c.startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)))
                             .setNegativeButton(c.getString(R.string.cancel), null);
                     dialog.create();
                     dialog.show();
                 } else {
-                    if (mListener!=null && mListener.hasNearbyPermissions()) {
-                        StaticVariables.whichOptionMenu = "CONNECT";
-                        mListener.prepareOptionMenu();
-                    } else {
-                        if (mListener != null) {
-                            mListener.requestNearbyPermissions();
+                    if (mListener!=null) {
+                        if (!mListener.hasNearbyPermissions()) {
+                            // IV - requestNearbyPermissions has run, as "■" is set, but permissions are not right. We ask the user to set permissions in Apps management.
+                            if (Objects.equals(FullscreenActivity.mBluetoothName, "■")) {
+                                AlertDialog.Builder dialog = new AlertDialog.Builder(c)
+                                        .setTitle(R.string.connections_connect)
+                                        .setIcon(android.R.drawable.ic_dialog_alert)
+                                        .setMessage(c.getString(R.string.connections_enable))
+                                        .setPositiveButton(c.getString(R.string.next), (paramDialogInterface, paramInt) -> c.startActivity(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,Uri.parse("package:" + c.getPackageName()))))
+                                        .setNegativeButton(c.getString(R.string.cancel), null);
+                                dialog.create();
+                                dialog.show();
+                                mListener.closeMyDrawers("option");
+                            } else {
+                                mListener.requestNearbyPermissions();
+                            }
+                            FullscreenActivity.mBluetoothName = "■";
+                            StaticVariables.deviceName = null;
+                        } else {
+                            // IV - deviceName is null the first time through or after requesting permissions.
+                            if (StaticVariables.deviceName == null) {
+                                mListener.getBluetoothName();
+                                mListener.getUserNickname();
+                            }
+                            StaticVariables.whichOptionMenu = "CONNECT";
+                            mListener.prepareOptionMenu();
                         }
                     }
                 }
             } else {
-                mListener.installPlayServices();
+                if (mListener!=null) {
+                    mListener.installPlayServices();
+                }
             }
         });
         menuModeButton.setOnClickListener(view -> {
@@ -1791,9 +1815,6 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
         LinearLayout hostOptions = v.findViewById(R.id.hostOptions);
         LinearLayout clientOptions = v.findViewById(R.id.clientOptions);
 
-        nearbyInterface.getUserNickname();
-
-        deviceName.setText(StaticVariables.deviceName);
         if (StaticVariables.connectionLog==null || StaticVariables.connectionLog.isEmpty()) {
             StaticVariables.connectionLog = c.getResources().getString(R.string.connections_log) + "\n\n";
         }
