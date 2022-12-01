@@ -30,6 +30,7 @@ public class ExposedDropDown extends TextInputLayout {
     private Context c;
     private final int delay = 50;
     private boolean largePopups;
+    private boolean multiselect = false;
     private ArrayList<String> arrayList = null;
 
     @SuppressLint("ClickableViewAccessibility")
@@ -87,6 +88,7 @@ public class ExposedDropDown extends TextInputLayout {
             } else if (event.getAction()==MotionEvent.ACTION_UP ||
             event.getAction()==MotionEvent.ACTION_BUTTON_RELEASE) {
                 autoCompleteTextView.post(() -> {
+                    Log.d(TAG,"multiselect:"+multiselect);
                     if (autoCompleteTextView.isPopupShowing()) {
                         autoCompleteTextView.dismissDropDown();
                     } else {
@@ -190,6 +192,10 @@ public class ExposedDropDown extends TextInputLayout {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void setMultiselect(boolean multiselect) {
+        this.multiselect = multiselect;
     }
 
 }

@@ -143,7 +143,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                 handler.post(() -> {
                     folderArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(), myView.filters.folderSearch,R.layout.view_exposed_dropdown_item, foundFolders);
                     myView.filters.folderSearch.setAdapter(folderArrayAdapter);
-                    // folderSearchVal = mainActivityInterface.getSong().getFolder();
+                    myView.filters.folderSearch.setMultiselect(true);
                     myView.filters.folderSearch.addTextChangedListener(new MyTextWatcher("folder"));
                     int pos = foundFolders.indexOf(mainActivityInterface.getSong().getFolder());
                     if (pos >= 0) {
@@ -603,9 +603,11 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         }
 
         public void saveVal() {
+            boolean prepareSearch = true;
             switch (what) {
                 case "folder":
                     folderSearchVal = value;
+                    prepareSearch = false;
                     break;
                 case "artist":
                     artistSearchVal = value;
@@ -623,7 +625,9 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                     titleSearchVal = value;
                     break;
             }
-            prepareSearch();
+            if (prepareSearch) {
+                prepareSearch();
+            }
         }
     }
 
