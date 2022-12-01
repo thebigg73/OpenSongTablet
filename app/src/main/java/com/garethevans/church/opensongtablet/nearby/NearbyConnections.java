@@ -1,5 +1,7 @@
 package com.garethevans.church.opensongtablet.nearby;
 
+import android.Manifest;
+import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.net.Uri;
@@ -53,7 +55,7 @@ import java.util.TimerTask;
 public class NearbyConnections implements NearbyInterface {
 
     private final Context c;
-    private final String TAG = "NearbyConnections", sectionTag  = "___section___",
+    private final String TAG = "NearbyConnections", sectionTag = "___section___",
             songTag = "_xx____xx_", endpointSplit = "__",
             serviceId = "com.garethevans.church.opensongtablet";
     private final ArrayList<String> connectedEndpoints, discoveredEndpoints; //  CODE__DeviceName
@@ -91,10 +93,10 @@ public class NearbyConnections implements NearbyInterface {
 
         if (mainActivityInterface != null) {
             try {
-                nearbyHostPassthrough = mainActivityInterface.getPreferences().getMyPreferenceBoolean("nearbyHostPassthrough",true);
+                nearbyHostPassthrough = mainActivityInterface.getPreferences().getMyPreferenceBoolean("nearbyHostPassthrough", true);
                 nearbyHostMenuOnly = mainActivityInterface.getPreferences().getMyPreferenceBoolean("nearbyHostMenuOnly", false);
-                temporaryAdvertise = mainActivityInterface.getPreferences().getMyPreferenceBoolean("temporaryAdvertise",false);
-                String preference = mainActivityInterface.getPreferences().getMyPreferenceString("nearbyStrategy","cluster");
+                temporaryAdvertise = mainActivityInterface.getPreferences().getMyPreferenceBoolean("temporaryAdvertise", false);
+                String preference = mainActivityInterface.getPreferences().getMyPreferenceString("nearbyStrategy", "cluster");
                 switch (preference) {
                     case "cluster":
                     default:
@@ -121,11 +123,27 @@ public class NearbyConnections implements NearbyInterface {
 
     // Our preferences for using Nearby
     public String getUserNickname() {
+        // To get this far, we have the required permissions
+        // A user could have saved their default id in which case use it
+        // If not, use Bluetooth or model in that order
+        String bluetoothName = "";
         String model = android.os.Build.MODEL.trim();
-        // If the user has saved a value for their device name, use that instead
+        try {
+            BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+            if (bluetoothAdapter != null && mainActivityInterface.getAppPermissions().checkForPermission(Manifest.permission.BLUETOOTH_CONNECT)) {
+                bluetoothName = bluetoothAdapter.getName();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        deviceId = mainActivityInterface.getPreferences().getMyPreferenceString("deviceId", bluetoothName);
+        if (deviceId.isEmpty()) {
+            deviceId = model;
+        }
         // Don't need to save the device name unless the user edits it to make it custom
-        return deviceId = mainActivityInterface.getPreferences().getMyPreferenceString("deviceId", model);
+        return deviceId;
     }
+
     public String getDeviceId() {
         return deviceId;
     }

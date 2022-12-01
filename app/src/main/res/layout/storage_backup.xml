@@ -84,6 +84,12 @@
                     android:text="@string/choose_folders"
                     style="@style/largeText"/>
 
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/selectAll"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/select_all"/>
+
                 <LinearLayout
                     android:id="@+id/foundFolders_ListView"
                     android:layout_width="match_parent"

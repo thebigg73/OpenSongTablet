@@ -295,6 +295,11 @@
     <string name="font_choose_list">Escolha uma fonte na lista abaixo</string>
     <string name="font_presentation">"Fonte de apresentação"</string>
     <string name="font_presentation_info">"Fonte de informação de apresentação"</string>
+    <string name="format_text_bold">Audacioso</string>
+    <string name="format_text_bolditalic">Audacioso itálico</string>
+    <string name="format_text_brackets">Formate o texto dos colchetes (…)</string>
+    <string name="format_text_italic">Itálico</string>
+    <string name="format_text_normal">Normal</string>
     <string name="forum">Fórum</string>
     <string name="forum_description">Relate bugs, obtenha ajuda e solicite recursos</string>
     <string name="github_description">Contribuir para o desenvolvimento de aplicativos</string>

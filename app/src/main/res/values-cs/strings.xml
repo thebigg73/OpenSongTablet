@@ -295,6 +295,11 @@
     <string name="font_choose_list">Vyberte písmo ze seznamu níže</string>
     <string name="font_presentation">"Prezentační font"</string>
     <string name="font_presentation_info">"Písmo informací o prezentaci"</string>
+    <string name="format_text_bold">Tučně</string>
+    <string name="format_text_bolditalic">Tučně kurzíva</string>
+    <string name="format_text_brackets">Formátovat text hranatých závorek (…)</string>
+    <string name="format_text_italic">Kurzíva</string>
+    <string name="format_text_normal">Normální</string>
     <string name="forum">Fórum</string>
     <string name="forum_description">Nahlašte chyby, získejte nápovědu a vyžádejte si funkce</string>
     <string name="github_description">Přispějte k vývoji aplikací</string>

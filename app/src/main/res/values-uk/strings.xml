@@ -295,6 +295,11 @@
     <string name="font_choose_list">Виберіть шрифт зі списку нижче</string>
     <string name="font_presentation">Шрифт презентації</string>
     <string name="font_presentation_info">Шрифт інформації про презентацію</string>
+    <string name="format_text_bold">жирний</string>
+    <string name="format_text_bolditalic">жирний Курсив</string>
+    <string name="format_text_brackets">Форматувати текст у дужках (…)</string>
+    <string name="format_text_italic">Курсив</string>
+    <string name="format_text_normal">нормальний</string>
     <string name="forum">Форум</string>
     <string name="forum_description">Повідомляйте про помилки, отримуйте допомогу та запитуйте функції</string>
     <string name="github_description">Допомагайте розробці додатків</string>

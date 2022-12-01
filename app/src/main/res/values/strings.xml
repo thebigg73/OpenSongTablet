@@ -378,6 +378,11 @@
     <string name="font_choose_list">Choose a font from the list below</string>
     <string name="font_presentation">Presentation font</string>
     <string name="font_presentation_info">Presentation information font</string>
+    <string name="format_text_bold">Bold</string>
+    <string name="format_text_bolditalic">Bold italic</string>
+    <string name="format_text_brackets">Format bracket text (…)</string>
+    <string name="format_text_italic">Italic</string>
+    <string name="format_text_normal">Normal</string>
     <string name="forum">Forum</string>
     <string name="forum_description">Report bugs, get help and request features</string>
     <string name="github" translatable="false">GitHub</string>
@@ -1109,9 +1114,4 @@ Check out the categories in the right hand options menu.
     <string name="youtube" translatable="false">YouTube</string>
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zoom_level">Zoom level</string>
-    <string name="format_text_brackets">Format bracket text (...)</string>
-    <string name="format_text_normal">Normal</string>
-    <string name="format_text_italic">Italic</string>
-    <string name="format_text_bold">Bold</string>
-    <string name="format_text_bolditalic">Bold italic</string>
 </resources>

@@ -295,6 +295,11 @@
     <string name="font_choose_list">Выберите шрифт из списка ниже</string>
     <string name="font_presentation">"Шрифт презентации"</string>
     <string name="font_presentation_info">"Шрифт информации о презентации"</string>
+    <string name="format_text_bold">Смелый</string>
+    <string name="format_text_bolditalic">Смелый Курсив</string>
+    <string name="format_text_brackets">Текст в квадратных скобках (…)</string>
+    <string name="format_text_italic">Курсив</string>
+    <string name="format_text_normal">Обычный</string>
     <string name="forum">Форум</string>
     <string name="forum_description">Сообщайте об ошибках, получайте помощь и запрашивайте функции</string>
     <string name="github_description">Участвовать в разработке приложений</string>

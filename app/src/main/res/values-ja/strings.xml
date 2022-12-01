@@ -295,6 +295,11 @@
     <string name="font_choose_list">以下のリストからフォントを選択してください</string>
     <string name="font_presentation">"プレゼンテーションフォント"</string>
     <string name="font_presentation_info">"プレゼンテーション情報フォント"</string>
+    <string name="format_text_bold">大胆な</string>
+    <string name="format_text_bolditalic">大胆な イタリック</string>
+    <string name="format_text_brackets">括弧テキストの書式設定 (…)</string>
+    <string name="format_text_italic">イタリック</string>
+    <string name="format_text_normal">普通</string>
     <string name="forum">フォーラム</string>
     <string name="forum_description">バグを報告し、ヘルプを入手し、機能をリクエストする</string>
     <string name="github_description">アプリ開発に貢献する</string>

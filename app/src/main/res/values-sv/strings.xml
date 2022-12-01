@@ -295,6 +295,11 @@
     <string name="font_choose_list">Välj ett teckensnitt från listan nedan</string>
     <string name="font_presentation">"Presentation typsnitt"</string>
     <string name="font_presentation_info">"Presentation information typsnitt"</string>
+    <string name="format_text_bold">Djärv</string>
+    <string name="format_text_bolditalic">Djärv Kursiv</string>
+    <string name="format_text_brackets">Formatera parentestext (...)</string>
+    <string name="format_text_italic">Kursiv</string>
+    <string name="format_text_normal">Vanligt</string>
     <string name="forum">Forum</string>
     <string name="forum_description">Rapportera fel, få hjälp och begär funktioner</string>
     <string name="github_description">Bidra till apputveckling</string>

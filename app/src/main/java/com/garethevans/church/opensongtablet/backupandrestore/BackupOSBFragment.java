@@ -106,6 +106,14 @@ public class BackupOSBFragment extends Fragment {
         });
 
         myView.nestedScrollView.setExtendedFabToAnimate(myView.createBackupFAB);
+
+        myView.selectAll.setChecked(true);
+        myView.selectAll.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            for (int x=0; x<myView.foundFoldersListView.getChildCount(); x++) {
+                CheckBox checkBox = (CheckBox) myView.foundFoldersListView.getChildAt(x);
+                checkBox.setChecked(isChecked);
+            }
+        });
     }
 
     private String defaultFilename() {

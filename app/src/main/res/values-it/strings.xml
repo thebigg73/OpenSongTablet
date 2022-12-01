@@ -295,6 +295,11 @@
     <string name="font_choose_list">Scegli un carattere dall\'elenco sottostante</string>
     <string name="font_presentation">"Font di presentazione"</string>
     <string name="font_presentation_info">"Font di informazioni di presentazione"</string>
+    <string name="format_text_bold">Grassetto</string>
+    <string name="format_text_bolditalic">Grassetto Corsivo</string>
+    <string name="format_text_brackets">Formatta il testo tra parentesi (…)</string>
+    <string name="format_text_italic">Corsivo</string>
+    <string name="format_text_normal">Normale</string>
     <string name="forum">Forum</string>
     <string name="forum_description">Segnala bug, ottieni aiuto e richiedi funzionalità</string>
     <string name="github_description">Contribuisci allo sviluppo di app</string>

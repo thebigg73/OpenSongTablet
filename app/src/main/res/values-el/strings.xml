@@ -295,6 +295,11 @@
     <string name="font_choose_list">Επιλέξτε μια γραμματοσειρά από την παρακάτω λίστα</string>
     <string name="font_presentation">"Παρουσίαση γραμματοσειράς"</string>
     <string name="font_presentation_info">"Γραμματοσειρά πληροφοριών παρουσίασης"</string>
+    <string name="format_text_bold">Τολμηρός</string>
+    <string name="format_text_bolditalic">Τολμηρός Πλάγια</string>
+    <string name="format_text_brackets">Μορφοποίηση κειμένου παρένθεσης (…)</string>
+    <string name="format_text_italic">Πλάγια</string>
+    <string name="format_text_normal">Κανονικός</string>
     <string name="forum">Δικαστήριο</string>
     <string name="forum_description">Αναφέρετε σφάλματα, λάβετε βοήθεια και ζητήστε λειτουργίες</string>
     <string name="github_description">Συνεισφέρετε στην ανάπτυξη εφαρμογών</string>

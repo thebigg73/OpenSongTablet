@@ -295,6 +295,11 @@
     <string name="font_choose_list">Wybierz czcionkę z poniższej listy</string>
     <string name="font_presentation">"Czcionka prezentacji"</string>
     <string name="font_presentation_info">"Czcionka informacji prezentacji"</string>
+    <string name="format_text_bold">Pogrubienie</string>
+    <string name="format_text_bolditalic">Pogrubienie italski</string>
+    <string name="format_text_brackets">Sformatuj tekst nawiasów (…)</string>
+    <string name="format_text_italic">Italski</string>
+    <string name="format_text_normal">Normalna</string>
     <string name="forum">Forum</string>
     <string name="forum_description">Zgłaszaj błędy, uzyskaj pomoc i poproś o funkcje</string>
     <string name="github_description">Przyczyń się do rozwoju aplikacji</string>

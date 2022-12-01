@@ -295,6 +295,11 @@
     <string name="font_choose_list">Izaberite font sa donje liste</string>
     <string name="font_presentation">Font prikaza</string>
     <string name="font_presentation_info">Font informacija kod prikaza</string>
+    <string name="format_text_bold">Odvažan</string>
+    <string name="format_text_bolditalic">Odvažan Kurziv</string>
+    <string name="format_text_brackets">Oblikujte tekst zagrade (…)</string>
+    <string name="format_text_italic">Kurziv</string>
+    <string name="format_text_normal">Normalno</string>
     <string name="forum">Forum</string>
     <string name="forum_description">Prijavite greške, potražite pomoć i zatražite funkcije</string>
     <string name="github_description">Doprineti razvoju aplikacija</string>

@@ -295,6 +295,11 @@
     <string name="font_choose_list">Válasszon egy betűtípust az alábbi listából</string>
     <string name="font_presentation">"Bemutató font"</string>
     <string name="font_presentation_info">"Bemutató információ font"</string>
+    <string name="format_text_bold">Bátor</string>
+    <string name="format_text_bolditalic">Bátor Dőlt</string>
+    <string name="format_text_brackets">A zárójeles szöveg formázása (…)</string>
+    <string name="format_text_italic">Dőlt</string>
+    <string name="format_text_normal">Normál</string>
     <string name="forum">Fórum</string>
     <string name="forum_description">Jelentse be a hibákat, kérjen segítséget és kérjen funkciókat</string>
     <string name="github_description">Hozzájáruljon az alkalmazások fejlesztéséhez</string>

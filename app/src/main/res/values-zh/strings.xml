@@ -295,6 +295,11 @@
     <string name="font_choose_list">从下面的列表中选择一种字体</string>
     <string name="font_presentation">"演示字体"</string>
     <string name="font_presentation_info">"演示信息字体"</string>
+    <string name="format_text_bold">大胆的</string>
+    <string name="format_text_bolditalic">大胆的 斜体</string>
+    <string name="format_text_brackets">格式括号文本 (...)</string>
+    <string name="format_text_italic">斜体</string>
+    <string name="format_text_normal">普通的</string>
     <string name="forum">论坛</string>
     <string name="forum_description">报告错误、获取帮助和请求功能</string>
     <string name="github_description">为应用程序开发做出贡献</string>

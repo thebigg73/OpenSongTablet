@@ -295,6 +295,11 @@
     <string name="font_choose_list">Kies \'n lettertipe uit die onderstaande lys</string>
     <string name="font_presentation">"Aanbiedings font"</string>
     <string name="font_presentation_info">"Aanbiedingsinligtingskrif"</string>
+    <string name="format_text_bold">Vet</string>
+    <string name="format_text_bolditalic">Vet Kursief</string>
+    <string name="format_text_brackets">Formateer hakie teks (…)</string>
+    <string name="format_text_italic">Kursief</string>
+    <string name="format_text_normal">Normaal</string>
     <string name="forum">Forum</string>
     <string name="forum_description">Rapporteer foute, kry hulp en versoek kenmerke</string>
     <string name="github_description">Dra by tot toepassingsontwikkeling</string>

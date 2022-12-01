@@ -295,6 +295,11 @@
     <string name="font_choose_list">Choisissez une police dans la liste ci-dessous</string>
     <string name="font_presentation">"Police de présentation"</string>
     <string name="font_presentation_info">"Police d'informations de présentation"</string>
+    <string name="format_text_bold">Audacieux</string>
+    <string name="format_text_bolditalic">Audacieux Italique</string>
+    <string name="format_text_brackets">Mettre en forme le texte entre parenthèses (…)</string>
+    <string name="format_text_italic">Italique</string>
+    <string name="format_text_normal">Normal</string>
     <string name="forum">Forum</string>
     <string name="forum_description">Signaler des bugs, obtenir de l\'aide et demander des fonctionnalités</string>
     <string name="github_description">Contribuer au développement de l\'application</string>
