@@ -1898,6 +1898,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             try {
                 if ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) && (!permissions.checkForPermission(this,Manifest.permission.BLUETOOTH_CONNECT))) {
                     permissions.requestForPermissions(this, new String[]{Manifest.permission.BLUETOOTH_CONNECT}, 488);
+                    return;
                 }
                 if (FullscreenActivity.mBluetoothAdapter == null) {
                     FullscreenActivity.mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
