@@ -1078,25 +1078,20 @@ public class ProcessSong {
 
     private SpannableStringBuilder getSpannableBracketString(String str) {
         SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(str);
-        Log.d(TAG,"str:"+str);
         if (bracketsStyle!= Typeface.NORMAL) {
             try {
                 if (bracketsOpen && !str.contains((")"))) {
                     // All spannable adjusted
-                    Log.d(TAG,"all spannable");
                     spannableStringBuilder.setSpan(new android.text.style.StyleSpan(bracketsStyle), 0, str.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 } else if (str.contains("(") && str.contains(")") && str.indexOf(")") > str.indexOf("(")) {
                     // Replace the text inside the brackets as spannable italics
-                    Log.d(TAG,"pair of brackets found");
                     spannableStringBuilder.setSpan(new android.text.style.StyleSpan(bracketsStyle), str.indexOf("("), str.indexOf(")") + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 } else if (str.contains("(") && !str.contains(")")) {
                     // Everything after ( is spannable adjusted and mark flag waiting for closing bracket
-                    Log.d(TAG,"opening bracket only");
                     bracketsOpen = true;
                     spannableStringBuilder.setSpan(new android.text.style.StyleSpan(bracketsStyle), str.indexOf("("), str.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 } else if (str.contains(")") && !str.contains("(")) {
                     // Everything up to ) is spannable adjusted and close flag
-                    Log.d(TAG,"closeable bracket only");
                     bracketsOpen = false;
                     spannableStringBuilder.setSpan(new android.text.style.StyleSpan(bracketsStyle), 0, str.indexOf(")") + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 }
@@ -2213,9 +2208,9 @@ public class ProcessSong {
 
         // Get the actual scale which might be less due to the maxFontSize being exceeded
         float thisScale1 = setScaledView(innerCol1, scaleSize[0], maxFontSize);
-        innerCol1.setLayoutParams(new LinearLayout.LayoutParams((int)(halfwidth),LinearLayout.LayoutParams.WRAP_CONTENT));
+        innerCol1.setLayoutParams(new LinearLayout.LayoutParams(halfwidth,LinearLayout.LayoutParams.WRAP_CONTENT));
         float thisScale2 = setScaledView(innerCol2, scaleSize[1], maxFontSize);
-        innerCol2.setLayoutParams(new LinearLayout.LayoutParams((int)(halfwidth),LinearLayout.LayoutParams.WRAP_CONTENT));
+        innerCol2.setLayoutParams(new LinearLayout.LayoutParams(halfwidth,LinearLayout.LayoutParams.WRAP_CONTENT));
 
         int color;
         for (int i = 0; i < scaleSize[2]; i++) {
