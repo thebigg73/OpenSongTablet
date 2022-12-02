@@ -1078,20 +1078,25 @@ public class ProcessSong {
 
     private SpannableStringBuilder getSpannableBracketString(String str) {
         SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(str);
+        Log.d(TAG,"str:"+str);
         if (bracketsStyle!= Typeface.NORMAL) {
             try {
                 if (bracketsOpen && !str.contains((")"))) {
                     // All spannable adjusted
+                    Log.d(TAG,"all spannable");
                     spannableStringBuilder.setSpan(new android.text.style.StyleSpan(bracketsStyle), 0, str.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 } else if (str.contains("(") && str.contains(")") && str.indexOf(")") > str.indexOf("(")) {
                     // Replace the text inside the brackets as spannable italics
-                    spannableStringBuilder.setSpan(new android.text.style.StyleSpan(bracketsStyle), str.indexOf("("), str.indexOf(")" + 1, str.indexOf("(")), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    Log.d(TAG,"pair of brackets found");
+                    spannableStringBuilder.setSpan(new android.text.style.StyleSpan(bracketsStyle), str.indexOf("("), str.indexOf(")") + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 } else if (str.contains("(") && !str.contains(")")) {
                     // Everything after ( is spannable adjusted and mark flag waiting for closing bracket
+                    Log.d(TAG,"opening bracket only");
                     bracketsOpen = true;
                     spannableStringBuilder.setSpan(new android.text.style.StyleSpan(bracketsStyle), str.indexOf("("), str.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 } else if (str.contains(")") && !str.contains("(")) {
                     // Everything up to ) is spannable adjusted and close flag
+                    Log.d(TAG,"closeable bracket only");
                     bracketsOpen = false;
                     spannableStringBuilder.setSpan(new android.text.style.StyleSpan(bracketsStyle), 0, str.indexOf(")") + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 }
