@@ -172,7 +172,7 @@ public class Metronome {
                 break;
         }
     }
-    private void setSongValues() {
+    public void setSongValues() {
         // First up the tempo
         validTempo = false;
         String t = mainActivityInterface.getSong().getTempo();

@@ -52,6 +52,7 @@ public class MetronomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsMetronomeBinding.inflate(inflater,container,false);
         mainActivityInterface.updateToolbar(getString(R.string.metronome));
+        mainActivityInterface.updateToolbarHelp(getString(R.string.website_metronome));
 
         // Set up the values for the exposeddropdowns
         initialiseDropDowns();

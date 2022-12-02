@@ -1703,6 +1703,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     // Metronome
     @Override
     public void metronomeToggle() {
+        // Get the song values for the metronome if any
+        metronome.setSongValues();
         if (metronome.metronomeValid()) {
             // Toggle the start or stop
             if (!metronome.getIsRunning()) {

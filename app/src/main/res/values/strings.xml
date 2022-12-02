@@ -1077,6 +1077,7 @@ Check out the categories in the right hand options menu.
     <string name="website_menu_set" translatable="false">https://www.opensongapp.com/user-manual/sets/set-menu</string>
     <string name="website_menu_settings" translatable="false">https://www.opensongapp.com/user-manual/display/menu</string>
     <string name="website_menu_song" translatable="false">https://www.opensongapp.com/user-manual/songs/song-menu</string>
+    <string name="website_metronome" translatable="false">https://www.opensongapp.com/user-manual/songs/song-actions/metronome</string>
     <string name="website_midi_connections" translatable="false">https://www.opensongapp.com/user-manual/midi/midi-settings</string>
     <string name="website_midi_song" translatable="false">https://www.opensongapp.com/user-manual/midi/song-midi-messages</string>
     <string name="website_modes" translatable="false">https://www.opensongapp.com/user-guide/the-app-modes</string>
