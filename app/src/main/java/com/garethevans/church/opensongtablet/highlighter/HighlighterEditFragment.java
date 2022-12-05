@@ -22,6 +22,7 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.request.RequestOptions;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.GlideApp;
 import com.garethevans.church.opensongtablet.databinding.SettingsHighlighterEditBinding;
@@ -78,6 +79,7 @@ public class HighlighterEditFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsHighlighterEditBinding.inflate(inflater, container, false);
         mainActivityInterface.updateToolbar(getString(R.string.edit) + " " + getString(R.string.highlight));
+        mainActivityInterface.updateToolbarHelp(getString(R.string.website_highlighter));
 
         // Set up views
         setupViews();
@@ -105,14 +107,15 @@ public class HighlighterEditFragment extends Fragment {
 
         setToolPreferences();
 
-        // Set the drawNotes to be the same height as the image
+        // Set the drawNotes and imageView to be the same height as the image
         ViewTreeObserver imageVTO = myView.glideImage.getViewTreeObserver();
         imageVTO.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
                 // Get the width (match parent) in pixels
-                availableWidth = myView.glideImage.getWidth();
-                availableHeight = myView.glideImage.getHeight();
+                availableWidth = myView.backgroundView.getWidth();
+                availableHeight = myView.backgroundView.getHeight();
+                Log.d(TAG,"available w x h:"+availableWidth+"x"+availableHeight);
                 if (mainActivityInterface.getSong().getFiletype().equals("IMG")) {
                     getImageFile();
 
@@ -125,10 +128,13 @@ public class HighlighterEditFragment extends Fragment {
                 }
 
                 // Sizes and scaling have been figured out, so adjust the size of the song image
+                Log.d(TAG,"scaled w x h:"+scaledWidth+"x"+scaledHeight);
+
                 setImageSize();
 
                 // Put the song image into the view
-                GlideApp.with(myView.glideImage).load(screenShotBitmap).override(scaledWidth, scaledHeight).
+                RequestOptions requestOptions = new RequestOptions().override(scaledWidth,scaledHeight);
+                GlideApp.with(myView.glideImage).load(screenShotBitmap).apply(requestOptions).
                         into(myView.glideImage);
 
                 // Set the original highlighter file if it exists
@@ -148,6 +154,7 @@ public class HighlighterEditFragment extends Fragment {
         int w = mainActivityInterface.getScreenshot().getWidth();
         int h = mainActivityInterface.getScreenshot().getHeight();
 
+        Log.d(TAG,"screenshot: "+w+"x"+h);
         // Get the scale
         setScale(w,h);
 
@@ -184,7 +191,8 @@ public class HighlighterEditFragment extends Fragment {
     private void setScale(int bitmapWidth, int bitmapHeight) {
         float scaledX = (float) availableWidth / (float) bitmapWidth;
         float scaledY = (float) availableHeight / (float) bitmapHeight;
-        float scale = Math.min(scaledX, scaledY);
+        //float scale = Math.min(scaledX, scaledY);
+        float scale = scaledX;
         scaledWidth = (int) (bitmapWidth * scale);
         scaledHeight = (int) (bitmapHeight * scale);
     }

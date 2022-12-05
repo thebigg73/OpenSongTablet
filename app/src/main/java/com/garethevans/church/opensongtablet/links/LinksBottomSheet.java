@@ -115,6 +115,11 @@ public class LinksBottomSheet extends BottomSheetDialogFragment {
             default:
                 myView.dialogHeading.setText(getString(R.string.link_youtube));
                 myView.linkLocation.setText(mainActivityInterface.getSong().getLinkyoutube());
+                if (myView.linkLocation.getText().toString().contains("https://music.youtube.com")) {
+                    myView.youTubeOrMusic.setSliderPos(1);
+                } else {
+                    myView.youTubeOrMusic.setSliderPos(0);
+                }
                 myView.openLink.setImageDrawable(AppCompatResources.getDrawable(requireContext(),R.drawable.youtube));
                 myView.openLink.setOnClickListener(view -> openDocument());
                 myView.searchLink.setHint(getString(R.string.link_search_youtube));

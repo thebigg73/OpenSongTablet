@@ -1070,9 +1070,11 @@ Check out the categories in the right hand options menu.
     <string name="website_foot_pedal" translatable="false">https://www.opensongapp.com/user-manual/controls/foot-pedals</string>
     <string name="website_forum" translatable="false">https://groups.google.com/g/opensongapp</string>
     <string name="website_github" translatable="false">https://github.com/thebigg73/OpenSongTablet</string>
+    <string name="website_highlighter" translatable="false">https://www.opensongapp.com/user-manual/songs/song-actions/highlighter</string>
     <string name="website_import_onsongbackup" translatable="false">https://www.opensongapp.com/user-manual/songs/ios-onsong</string>
     <string name="website_inline_set" translatable="false">https://www.opensongapp.com/user-manual/display/inline-set</string>
     <string name="website_latest" translatable="false">https://www.opensongapp.com/latest-updates</string>
+    <string name="website_link" translatable="false">https://www.opensongapp.com/user-manual/songs/song-actions/link</string>
     <string name="website_margins" translatable="false">https://www.opensongapp.com/user-manual/display/margins</string>
     <string name="website_menu_set" translatable="false">https://www.opensongapp.com/user-manual/sets/set-menu</string>
     <string name="website_menu_settings" translatable="false">https://www.opensongapp.com/user-manual/display/menu</string>
@@ -1081,6 +1083,7 @@ Check out the categories in the right hand options menu.
     <string name="website_midi_connections" translatable="false">https://www.opensongapp.com/user-manual/midi/midi-settings</string>
     <string name="website_midi_song" translatable="false">https://www.opensongapp.com/user-manual/midi/song-midi-messages</string>
     <string name="website_modes" translatable="false">https://www.opensongapp.com/user-guide/the-app-modes</string>
+    <string name="website_music_score" translatable="false">https://www.opensongapp.com/user-manual/songs/song-actions/music-score</string>
     <string name="website_nearby" translatable="false">https://www.opensongapp.com/user-manual/connect-devices</string>
     <string name="website_ocr" translatable="false">https://www.opensongapp.com/user-manual/songs/ocr</string>
     <string name="website_pad" translatable="false">https://www.opensongapp.com/user-manual/songs/song-actions/pads</string>

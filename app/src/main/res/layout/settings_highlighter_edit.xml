@@ -13,7 +13,7 @@
         <ImageView
             android:id="@+id/glideImage"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="100dp"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:contentDescription="@string/image" />
@@ -22,8 +22,7 @@
             android:id="@+id/drawNotes"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:layout_centerHorizontal="true"
-            android:background="@color/transparent" />
+            android:layout_centerHorizontal="true" />
 
         <FrameLayout
             android:id="@+id/dimBackground"

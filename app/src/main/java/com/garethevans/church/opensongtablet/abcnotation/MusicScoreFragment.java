@@ -36,6 +36,7 @@ public class MusicScoreFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsAbcnotationBinding.inflate(inflater, container, false);
         mainActivityInterface.updateToolbar(getString(R.string.music_score));
+        mainActivityInterface.updateToolbarHelp(getString(R.string.website_music_score));
 
         requireActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 

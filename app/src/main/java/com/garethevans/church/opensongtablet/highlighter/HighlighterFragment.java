@@ -31,6 +31,7 @@ public class HighlighterFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsHighlighterBinding.inflate(inflater,container,false);
         mainActivityInterface.updateToolbar(getString(R.string.highlight));
+        mainActivityInterface.updateToolbarHelp(getString(R.string.website_highlighter));
 
         // Set current values
         setupViews();

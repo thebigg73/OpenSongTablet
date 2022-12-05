@@ -10,6 +10,7 @@ import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -24,6 +25,8 @@ public class DrawNotes extends View {
 
     // So we can enable/disable the view
     private boolean enabled = true;
+    @SuppressWarnings("FieldCanBeLocal")
+    private final String TAG = "DrawNotes";
 
     // The inteface to communication with the main activity
     private final SwipeDrawingInterface swipeDrawingInterface;
@@ -124,6 +127,7 @@ public class DrawNotes extends View {
         super.onSizeChanged(w, h, oldw, oldh);
         canvasWidth = w;
         canvasHeight = h;
+        Log.d(TAG,"onSizeChanged:wxh:"+w+"x"+h+"  oldw x oldh:"+oldw+" x "+oldh);
     }
 
     @Override

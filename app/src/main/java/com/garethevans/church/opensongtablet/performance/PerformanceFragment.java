@@ -680,11 +680,12 @@ public class PerformanceFragment extends Fragment {
                 myView.zoomLayout.post(() -> {
                     try {
                         // The new song sizes were sent to the zoomLayout in ProcessSong
-                        // Because we might have padded the view at the top for song sheet header scaling:
                         int topPadding = 0;
-                        if (myView.songSheetTitle.getChildCount() > 0) {
-                            topPadding = myView.songSheetTitle.getHeight();
-                        }
+                        // Because the song header is a different view, don't do this
+                        /*if (myView.songSheetTitle.getChildCount() > 0) {
+                            //topPadding = myView.songSheetTitle.getHeight();
+                            topPadding = 0;
+                        }*/
 
                         myView.pageHolder.setVisibility(View.VISIBLE);
                         myView.pageHolder.startAnimation(animSlideIn);
@@ -692,8 +693,7 @@ public class PerformanceFragment extends Fragment {
                         dealWithStuffAfterReady();
 
                         // Try to take a screenshot ready for any highlighter actions that may be called
-                        int finalTopPadding = topPadding;
-                        getScreenshot(myView.pageHolder.getWidth(), myView.pageHolder.getHeight(), finalTopPadding);
+                        getScreenshot(myView.pageHolder.getWidth(), myView.pageHolder.getHeight()-myView.songSheetTitle.getHeight(), topPadding);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -716,7 +716,9 @@ public class PerformanceFragment extends Fragment {
             mainActivityInterface.getAutoscroll().initialiseSongAutoscroll(heightAfterScale, screenHeight);
 
             // Now deal with the highlighter file
-            dealWithHighlighterFile(widthBeforeScale, heightBeforeScale);
+            if (mainActivityInterface.getMode().equals(getString(R.string.mode_performance))) {
+                dealWithHighlighterFile(widthBeforeScale, heightBeforeScale);
+            }
 
             // Load up the sticky notes if the user wants them
             dealWithStickyNotes(false, false);
@@ -797,10 +799,15 @@ public class PerformanceFragment extends Fragment {
                             ViewGroup.LayoutParams rlp = myView.highlighterView.getLayoutParams();
                             rlp.width = (int)((float)w*scaleFactor);
                             rlp.height = (int)((float)h*scaleFactor);
+                            Log.d(TAG,"w:"+w+"  scaleFactor:"+scaleFactor+"  width:"+rlp.width);
+                            Log.d(TAG,"h:"+h+"  scaleFactor:"+scaleFactor+"  height:"+rlp.height);
+                            Log.d(TAG,"songView.width:"+myView.songView.getMeasuredWidth());
+                            Log.d(TAG,"songView.height:"+myView.songView.getMeasuredHeight());
+
                             myView.highlighterView.setLayoutParams(rlp);
-                            RequestOptions requestOptions = new RequestOptions().centerInside();
+                            RequestOptions requestOptions = new RequestOptions().centerInside().override(rlp.width,rlp.height);
                             GlideApp.with(requireContext()).load(highlighterBitmap).
-                                    apply(requestOptions).override(rlp.width,rlp.height).
+                                    apply(requestOptions).
                                     into(myView.highlighterView);
 
                             myView.highlighterView.setPivotX(0f);
@@ -849,6 +856,7 @@ public class PerformanceFragment extends Fragment {
                 getMyPreferenceString("songAutoScale","W").equals("N")
                 && w!=0 && h!=0) {
             try {
+                Log.d(TAG,"creating bitmap: "+w+"x"+h+"  topPadding:"+topPadding);
                 Bitmap bitmap = Bitmap.createBitmap(w, h+topPadding, Bitmap.Config.ARGB_8888);
                 Canvas canvas = new Canvas(bitmap);
                 if (myView != null) {
@@ -864,10 +872,12 @@ public class PerformanceFragment extends Fragment {
         }
     }
     public void toggleHighlighter() {
-        if (myView.highlighterView.getVisibility()==View.VISIBLE) {
-            myView.highlighterView.setVisibility(View.GONE);
-        } else {
-            myView.highlighterView.setVisibility(View.VISIBLE);
+        if (mainActivityInterface.getMode().equals(getString(R.string.mode_performance))) {
+            if (myView.highlighterView.getVisibility() == View.VISIBLE) {
+                myView.highlighterView.setVisibility(View.GONE);
+            } else {
+                myView.highlighterView.setVisibility(View.VISIBLE);
+            }
         }
     }
     public void dealWithStickyNotes(boolean forceShow, boolean hide) {

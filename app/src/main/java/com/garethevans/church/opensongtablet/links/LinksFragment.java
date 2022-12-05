@@ -31,6 +31,8 @@ public class LinksFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsLinksBinding.inflate(inflater, container, false);
+        mainActivityInterface.updateToolbar(getString(R.string.link));
+        mainActivityInterface.updateToolbarHelp(getString(R.string.website_link));
 
         // Set views
         setupViews();
