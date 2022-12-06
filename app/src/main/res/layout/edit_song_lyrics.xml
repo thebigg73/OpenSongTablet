@@ -33,7 +33,7 @@
                     app:icon="@drawable/ocr"
                     app:iconTint="@color/white" />
 
-                <com.garethevans.church.opensongtablet.customviews.MaterialEditText
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                     android:id="@+id/lyrics"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

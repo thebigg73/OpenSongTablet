@@ -195,6 +195,8 @@
     <string name="create_folder_error">"Hiba történt létrehozása az új mappa !"</string>
     <string name="create_new_song">"Új dal"</string>
     <string name="crossfade_time">Crossfade idő</string>
+    <string name="curly_brackets_hide">Göndör zárójel elrejtése {…}</string>
+    <string name="curly_brackets_hide_info">A göndör zárójelben lévő szöveget csak teljesítményre vonatkozó megjegyzésként kezelje. Ezek elrejtve lesznek a bemutató során.</string>
     <string name="current_location">"Jelenlegi tartózkodási hely"</string>
     <string name="custom">Szabott</string>
     <string name="custom_background">"Egyéni tag háttér"</string>

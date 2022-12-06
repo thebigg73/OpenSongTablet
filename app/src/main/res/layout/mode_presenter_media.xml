@@ -19,7 +19,7 @@
                 android:padding="8dp"
                 android:text="@string/bible" />
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:id="@+id/bibleOffline"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -28,7 +28,7 @@
                 android:text="@string/bible_browse_offline"
                 app:mydrawable="@drawable/bible" />
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:id="@+id/bibleOnline"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -51,7 +51,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/audio_source" />
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:id="@+id/mediaLoaded"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

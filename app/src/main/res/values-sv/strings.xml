@@ -195,6 +195,8 @@
     <string name="create_folder_error">"Det uppstod ett fel vid skapandet av den nya mappen!"</string>
     <string name="create_new_song">"Skapa ny låt"</string>
     <string name="crossfade_time">"Cross-blekna tid"</string>
+    <string name="curly_brackets_hide">Lockigt fäste dölja {…}</string>
+    <string name="curly_brackets_hide_info">Behandla text inom krulliga parenteser endast som prestationsanteckningar. Dessa kommer att döljas under presentationen.</string>
     <string name="current_location">"Nuvarande position"</string>
     <string name="custom">"Beställnings"</string>
     <string name="custom_background">"Anpassad taggbakgrund"</string>
@@ -297,7 +299,7 @@
     <string name="font_presentation_info">"Presentation information typsnitt"</string>
     <string name="format_text_bold">Djärv</string>
     <string name="format_text_bolditalic">Djärv Kursiv</string>
-    <string name="format_text_brackets">Formatera parentestext (...)</string>
+    <string name="format_text_brackets">Formatera parentestext (…)</string>
     <string name="format_text_italic">Kursiv</string>
     <string name="format_text_normal">Vanligt</string>
     <string name="forum">Forum</string>

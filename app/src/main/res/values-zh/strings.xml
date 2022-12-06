@@ -195,6 +195,8 @@
     <string name="create_folder_error">"在建立新的文件夹的错误！"</string>
     <string name="create_new_song">"创建新曲"</string>
     <string name="crossfade_time">交叉淡入淡出的时间</string>
+    <string name="curly_brackets_hide">大括号隐藏 {…}</string>
+    <string name="curly_brackets_hide_info">将大括号内的文本仅视为性能注释。这些将在演示过程中隐藏。</string>
     <string name="current_location">"当前位置"</string>
     <string name="custom">自定义</string>
     <string name="custom_background">"自定义标签的背景"</string>
@@ -297,7 +299,7 @@
     <string name="font_presentation_info">"演示信息字体"</string>
     <string name="format_text_bold">大胆的</string>
     <string name="format_text_bolditalic">大胆的 斜体</string>
-    <string name="format_text_brackets">格式括号文本 (...)</string>
+    <string name="format_text_brackets">格式括号文本 (…)</string>
     <string name="format_text_italic">斜体</string>
     <string name="format_text_normal">普通的</string>
     <string name="forum">论坛</string>

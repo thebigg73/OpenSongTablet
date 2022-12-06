@@ -15,7 +15,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialEditText
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                 android:id="@+id/filename"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -50,7 +50,7 @@
             </LinearLayout>
             <TableRow style="@style/DividerLine" />
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:id="@+id/content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

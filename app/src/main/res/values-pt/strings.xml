@@ -195,6 +195,8 @@
     <string name="create_folder_error">"Houve um erro ao criar a nova pasta !"</string>
     <string name="create_new_song">"Criar uma nova canção"</string>
     <string name="crossfade_time">Tempo crossfade</string>
+    <string name="curly_brackets_hide">Ocultar chaves {…}</string>
+    <string name="curly_brackets_hide_info">Trate o texto dentro de chaves apenas como notas de desempenho. Eles ficarão ocultos durante a apresentação.</string>
     <string name="current_location">"Localização atual"</string>
     <string name="custom">Personalizado</string>
     <string name="custom_background">"Personalizado tag fundo"</string>

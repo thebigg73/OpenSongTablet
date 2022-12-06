@@ -133,8 +133,19 @@
                 android:id="@+id/bracketsStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
                 android:hint="@string/format_text_brackets"
                 android:text="@string/format_text_normal"/>
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                android:id="@+id/curlyBrackets"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/curly_brackets_hide"
+                android:hint="@string/curly_brackets_hide_info"/>
 
             <TableRow style="@style/DividerLine" />
 
@@ -257,7 +268,7 @@
                     android:layout_marginTop="16dp"
                     android:text="@string/filter_entry" />
 
-                <com.garethevans.church.opensongtablet.customviews.MaterialEditText
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                     android:id="@+id/filters"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

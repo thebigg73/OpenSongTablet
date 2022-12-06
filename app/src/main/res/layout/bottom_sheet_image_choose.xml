@@ -33,7 +33,7 @@
                 android:orientation="horizontal"
                 android:padding="16dp">
 
-                <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"

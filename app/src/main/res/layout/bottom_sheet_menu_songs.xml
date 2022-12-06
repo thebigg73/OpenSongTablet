@@ -25,7 +25,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:id="@+id/songTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -120,7 +120,7 @@
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"/>
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:id="@+id/randomSong"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -129,7 +129,7 @@
                 android:text="@string/random_song"
                 app:mydrawable="@drawable/folder_search" />
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:id="@+id/newSongs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -138,7 +138,7 @@
                 android:text="@string/add_songs"
                 app:mydrawable="@drawable/database_import" />
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:id="@+id/rebuildIndex"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -14,7 +14,7 @@
         android:text="@string/edit"
         android:layout_marginBottom="16dp"/>
 
-    <com.garethevans.church.opensongtablet.customviews.MaterialEditText
+    <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
         android:id="@+id/stickyNotes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

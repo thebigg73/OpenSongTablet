@@ -5,7 +5,6 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -93,6 +92,7 @@ public class DisplayExtraFragment extends Fragment {
         ExposedDropDownArrayAdapter exposedDropDownArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(),myView.bracketsStyle,R.layout.view_exposed_dropdown_item,bracketStyles_Names);
         myView.bracketsStyle.setAdapter(exposedDropDownArrayAdapter);
         myView.bracketsStyle.setText(getBracketStringFromValue(mainActivityInterface.getPreferences().getMyPreferenceInt("bracketsStyle",Typeface.NORMAL)));
+        myView.curlyBrackets.setChecked(getChecked("curlyBrackets",true));
     }
 
     private int getBracketValueFromString(String string) {
@@ -102,7 +102,6 @@ public class DisplayExtraFragment extends Fragment {
                 value = bracketStyles_Ints[x];
             }
         }
-        Log.d(TAG,"string:"+string+"  value:"+value);
         return value;
     }
 
@@ -113,7 +112,6 @@ public class DisplayExtraFragment extends Fragment {
                 string = bracketStyles_Names[x];
             }
         }
-        Log.d(TAG,"value:"+value+"  string:"+string);
         return string;
     }
 
@@ -208,7 +206,10 @@ public class DisplayExtraFragment extends Fragment {
                 mainActivityInterface.getProcessSong().updateProcessingPreferences();
             }
         });
-
+        myView.curlyBrackets.setOnCheckedChangeListener(((buttonView, isChecked) -> {
+            updateBooleanPreference("curlyBrackets",isChecked,null);
+            mainActivityInterface.getProcessSong().updateProcessingPreferences();
+        }));
         // TODO Maybe add later?
         /*myView.addSectionBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
             updateBooleanPreference("addSectionBox",isChecked,null);

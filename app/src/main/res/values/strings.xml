@@ -232,6 +232,8 @@
     <string name="create_new_song">Create new song</string>
     <string name="crossfade_time">Cross-fade time</string>
     <string name="csv" translatable="false">CSV</string>
+    <string name="curly_brackets_hide">Curly bracket hide {…}</string>
+    <string name="curly_brackets_hide_info">Treat text inside curly brackets as performance notes only.  These will be hidden during presentation.</string>
     <string name="current_location">Selected location</string>
     <string name="custom">Custom</string>
     <string name="custom_background">Custom tag background</string>

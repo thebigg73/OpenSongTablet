@@ -24,7 +24,7 @@ import com.garethevans.church.opensongtablet.R;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
-public class MaterialEditText extends LinearLayout implements View.OnTouchListener {
+public class MyMaterialEditText extends LinearLayout implements View.OnTouchListener {
 
     private final TextInputEditText editText;
     private final TextInputLayout textInputLayout;
@@ -34,13 +34,13 @@ public class MaterialEditText extends LinearLayout implements View.OnTouchListen
     // For multiline, the number of lines has to be specified (maxLines/lines)
     // The lines has to be greater than 1
 
-    public MaterialEditText(Context context) {
+    public MyMaterialEditText(Context context) {
         super(context);
         editText = new TextInputEditText(context);
         textInputLayout = new TextInputLayout(context);
         restoreState = true;
     }
-    public MaterialEditText(Context context, @Nullable AttributeSet attrs) {
+    public MyMaterialEditText(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         inflate(context, R.layout.view_material_edittext, this);
 

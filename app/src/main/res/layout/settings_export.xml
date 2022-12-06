@@ -187,7 +187,7 @@
         android:focusableInTouchMode="true"
         android:visibility="gone"/>
 
-    <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+    <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
         android:id="@+id/progressText"
         android:focusable="false"
         android:focusableInTouchMode="false"

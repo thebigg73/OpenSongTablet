@@ -28,7 +28,7 @@
                     android:paddingBottom="8dp"
                     android:text="@string/backup_sets" />
 
-                <com.garethevans.church.opensongtablet.customviews.MaterialEditText
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                     android:id="@+id/backupName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

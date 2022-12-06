@@ -6,12 +6,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.customviews.MaterialTextView;
+import com.garethevans.church.opensongtablet.customviews.MyMaterialTextView;
 import com.google.android.material.card.MaterialCardView;
 
 public class TagViewHolder extends RecyclerView.ViewHolder {
 
-    public MaterialTextView songInfo;
+    public MyMaterialTextView songInfo;
     public MaterialCardView cardView;
 
     public TagViewHolder(@NonNull View itemView) {

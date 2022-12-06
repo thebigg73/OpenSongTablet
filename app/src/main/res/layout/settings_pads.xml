@@ -15,7 +15,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:id="@+id/padCurrent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -23,7 +23,7 @@
                 android:hint="@string/actions_current_song" />
             <TableRow style="@style/DividerLine" />
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:id="@+id/padCustom"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -31,7 +31,7 @@
                 android:hint="@string/pad_custom_short" />
             <TableRow style="@style/DividerLine" />
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:id="@+id/padSettings"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

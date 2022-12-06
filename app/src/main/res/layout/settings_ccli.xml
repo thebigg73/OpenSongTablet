@@ -21,7 +21,7 @@
                 android:text="@string/ccli_automatic"/>
             <TableRow style="@style/DividerLine" />
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:id="@+id/ccliChurch"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -29,7 +29,7 @@
                 android:text="@string/ccli_church" />
             <TableRow style="@style/DividerLine" />
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:id="@+id/ccliLicence"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -37,7 +37,7 @@
                 android:text="@string/ccli_licence" />
             <TableRow style="@style/DividerLine" />
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:id="@+id/ccliView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -45,7 +45,7 @@
                 android:text="@string/ccli_view" />
             <TableRow style="@style/DividerLine" />
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:id="@+id/ccliExport"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -53,7 +53,7 @@
                 android:text="@string/export" />
             <TableRow style="@style/DividerLine" />
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:id="@+id/ccliDelete"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

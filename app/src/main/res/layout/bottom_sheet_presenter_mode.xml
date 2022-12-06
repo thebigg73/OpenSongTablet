@@ -66,7 +66,7 @@
                 </androidx.gridlayout.widget.GridLayout>
                 <TableRow style="@style/DividerLine" />
 
-                <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/display_settings"
@@ -74,7 +74,7 @@
                     android:text="@string/connected_display"
                     custom:mydrawable="@drawable/monitor" />
 
-                <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/bible_verse"
@@ -82,7 +82,7 @@
                     android:text="@string/scripture"
                     custom:mydrawable="@drawable/bible" />
 
-                <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/add_custom_slide"
@@ -90,7 +90,7 @@
                     android:text="@string/custom_slide"
                     custom:mydrawable="@drawable/projector_screen" />
 
-                <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/file_chooser"
@@ -98,7 +98,7 @@
                     android:text="@string/audio"
                     custom:mydrawable="@drawable/music_note" />
 
-                <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/file_chooser"
@@ -106,7 +106,7 @@
                     android:text="@string/video"
                     custom:mydrawable="@drawable/video" />
 
-                <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/alert_text"

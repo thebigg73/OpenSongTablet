@@ -20,7 +20,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/pad_custom_info"/>
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialEditText
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                 android:id="@+id/padAb"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -30,7 +30,7 @@
                 android:inputType="none"
                 tools:ignore="HardcodedText" />
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialEditText
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                 android:id="@+id/padA"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -40,7 +40,7 @@
                 android:inputType="none"
                 tools:ignore="HardcodedText" />
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialEditText
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                 android:id="@+id/padBb"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -50,7 +50,7 @@
                 android:inputType="none"
                 tools:ignore="HardcodedText" />
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialEditText
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                 android:id="@+id/padB"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -60,7 +60,7 @@
                 android:inputType="none"
                 tools:ignore="HardcodedText" />
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialEditText
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                 android:id="@+id/padC"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -70,7 +70,7 @@
                 android:inputType="none"
                 tools:ignore="HardcodedText" />
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialEditText
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                 android:id="@+id/padDb"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -80,7 +80,7 @@
                 android:inputType="none"
                 tools:ignore="HardcodedText" />
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialEditText
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                 android:id="@+id/padD"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -90,7 +90,7 @@
                 android:inputType="none"
                 tools:ignore="HardcodedText" />
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialEditText
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                 android:id="@+id/padEb"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -100,7 +100,7 @@
                 android:inputType="none"
                 tools:ignore="HardcodedText" />
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialEditText
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                 android:id="@+id/padE"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -110,7 +110,7 @@
                 android:inputType="none"
                 tools:ignore="HardcodedText" />
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialEditText
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                 android:id="@+id/padF"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -120,7 +120,7 @@
                 android:inputType="none"
                 tools:ignore="HardcodedText" />
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialEditText
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                 android:id="@+id/padGb"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -130,7 +130,7 @@
                 android:inputType="none"
                 tools:ignore="HardcodedText" />
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialEditText
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                 android:id="@+id/padG"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -140,7 +140,7 @@
                 android:inputType="none"
                 tools:ignore="HardcodedText" />
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialEditText
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                 android:id="@+id/padAbm"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -150,7 +150,7 @@
                 android:inputType="none"
                 tools:ignore="HardcodedText" />
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialEditText
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                 android:id="@+id/padAm"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -160,7 +160,7 @@
                 android:inputType="none"
                 tools:ignore="HardcodedText" />
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialEditText
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                 android:id="@+id/padBbm"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -170,7 +170,7 @@
                 android:inputType="none"
                 tools:ignore="HardcodedText" />
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialEditText
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                 android:id="@+id/padBm"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -180,7 +180,7 @@
                 android:inputType="none"
                 tools:ignore="HardcodedText" />
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialEditText
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                 android:id="@+id/padCm"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -190,7 +190,7 @@
                 android:inputType="none"
                 tools:ignore="HardcodedText" />
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialEditText
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                 android:id="@+id/padDbm"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -200,7 +200,7 @@
                 android:inputType="none"
                 tools:ignore="HardcodedText" />
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialEditText
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                 android:id="@+id/padDm"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -210,7 +210,7 @@
                 android:inputType="none"
                 tools:ignore="HardcodedText" />
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialEditText
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                 android:id="@+id/padEbm"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -220,7 +220,7 @@
                 android:inputType="none"
                 tools:ignore="HardcodedText" />
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialEditText
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                 android:id="@+id/padEm"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -230,7 +230,7 @@
                 android:inputType="none"
                 tools:ignore="HardcodedText" />
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialEditText
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                 android:id="@+id/padFm"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -240,7 +240,7 @@
                 android:inputType="none"
                 tools:ignore="HardcodedText" />
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialEditText
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                 android:id="@+id/padGbm"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -250,7 +250,7 @@
                 android:inputType="none"
                 tools:ignore="HardcodedText" />
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialEditText
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                 android:id="@+id/padGm"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -57,7 +57,7 @@
                 android:padding="16dp"
                 android:text="@string/first_run" />
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialEditText
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                 android:id="@+id/progressText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

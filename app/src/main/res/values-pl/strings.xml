@@ -195,6 +195,8 @@
     <string name="create_folder_error">"Wystąpił błąd podczas tworzenia nowego folderu !"</string>
     <string name="create_new_song">"Stwórz nową piosenkę"</string>
     <string name="crossfade_time">to czas przejścia</string>
+    <string name="curly_brackets_hide">Ukryj nawias klamrowy {…}</string>
+    <string name="curly_brackets_hide_info">Traktuj tekst w nawiasach klamrowych tylko jako uwagi dotyczące wydajności. Zostaną one ukryte podczas prezentacji.</string>
     <string name="current_location">"Aktualna lokalizacja"</string>
     <string name="custom">Niestandardowe</string>
     <string name="custom_background">"Niestandardowe tło tag"</string>

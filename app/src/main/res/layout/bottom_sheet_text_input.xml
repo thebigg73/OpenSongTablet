@@ -33,7 +33,7 @@
                     android:layout_marginBottom="16dp"
                     android:visibility="gone" />
 
-                <com.garethevans.church.opensongtablet.customviews.MaterialEditText
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                     android:id="@+id/prefEditText"
                     app:endIconMode="clear_text"
                     android:layout_width="match_parent"

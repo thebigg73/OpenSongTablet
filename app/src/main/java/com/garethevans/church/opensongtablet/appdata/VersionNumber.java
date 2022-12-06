@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.view.View;
 
-import com.garethevans.church.opensongtablet.customviews.MaterialTextView;
+import com.garethevans.church.opensongtablet.customviews.MyMaterialTextView;
 
 public class VersionNumber {
     @SuppressWarnings({"unused","FieldCanBeLocal"})
@@ -45,7 +45,7 @@ public class VersionNumber {
         }
     }
 
-    public void updateMenuVersionNumber(Context c, MaterialTextView showVersion) {
+    public void updateMenuVersionNumber(Context c, MyMaterialTextView showVersion) {
         // Update the app version in the menu
         setupPackage(c);
         if (!versionName.equals("?") && versionCode > 0) {

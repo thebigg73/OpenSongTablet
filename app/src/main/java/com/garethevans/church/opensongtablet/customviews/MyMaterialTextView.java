@@ -19,7 +19,7 @@ import androidx.annotation.Nullable;
 
 import com.garethevans.church.opensongtablet.R;
 
-public class MaterialTextView extends LinearLayout {
+public class MyMaterialTextView extends LinearLayout {
 
     private final TextView textView;
     private final TextView hintView;
@@ -27,7 +27,7 @@ public class MaterialTextView extends LinearLayout {
     private final CheckBox checkBox;
     private final FrameLayout checkBoxHolder;
 
-    public MaterialTextView(Context context, @Nullable AttributeSet attrs) {
+    public MyMaterialTextView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         inflate(context, R.layout.view_material_textview, this);
 

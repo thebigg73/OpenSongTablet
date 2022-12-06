@@ -195,6 +195,8 @@
     <string name="create_folder_error">"Došlo k chybě při vytváření nové složky !"</string>
     <string name="create_new_song">"Vytvořit nový song"</string>
     <string name="crossfade_time">Crossfade čas</string>
+    <string name="curly_brackets_hide">Skrýt složená závorka {…}</string>
+    <string name="curly_brackets_hide_info">Text uvnitř složených závorek považujte pouze za poznámky k výkonu. Ty budou během prezentace skryty.</string>
     <string name="current_location">"Současná pozice"</string>
     <string name="custom">Přizpůsobené</string>
     <string name="custom_background">"Vlastní tag na pozadí"</string>

@@ -23,7 +23,7 @@
                 android:hint="@string/margins_system_info"/>
             <TableRow style="@style/DividerLine"/>
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/margins_custom"

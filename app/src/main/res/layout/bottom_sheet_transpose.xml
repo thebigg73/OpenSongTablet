@@ -60,7 +60,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/chordformat_preferred" />
 
-                <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                     android:id="@+id/warningFormatMatch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -94,7 +94,7 @@
 
                 <TableRow style="@style/DividerLine" />
 
-                <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                     android:id="@+id/chordsFormat"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

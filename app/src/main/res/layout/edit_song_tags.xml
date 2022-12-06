@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialEditText
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                 android:id="@+id/tags"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -32,7 +32,7 @@
                 android:focusable="true"
                 style="@style/DividerLine"/>
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialEditText
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                 android:id="@+id/aka"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -47,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <com.garethevans.church.opensongtablet.customviews.MaterialEditText
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                     android:id="@+id/ccli"
                     android:layout_width="0dp"
                     android:layout_weight="0.5"
@@ -58,7 +58,7 @@
                     app:endIconMode="clear_text"
                     android:hint="@string/ccli"/>
 
-                <com.garethevans.church.opensongtablet.customviews.MaterialEditText
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                     android:id="@+id/user1"
                     android:layout_width="0dp"
                     android:layout_weight="0.5"
@@ -76,7 +76,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <com.garethevans.church.opensongtablet.customviews.MaterialEditText
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                     android:id="@+id/user2"
                     android:layout_width="0dp"
                     android:layout_weight="0.5"
@@ -87,7 +87,7 @@
                     app:endIconMode="clear_text"
                     android:hint="@string/user_2"/>
 
-                <com.garethevans.church.opensongtablet.customviews.MaterialEditText
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                     android:id="@+id/user3"
                     android:layout_width="0dp"
                     android:layout_weight="0.5"
@@ -105,7 +105,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <com.garethevans.church.opensongtablet.customviews.MaterialEditText
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                     android:id="@+id/hymnnum"
                     android:layout_width="0dp"
                     android:layout_weight="0.5"
@@ -116,7 +116,7 @@
                     app:endIconMode="clear_text"
                     android:hint="@string/hymn_number"/>
 
-                <com.garethevans.church.opensongtablet.customviews.MaterialEditText
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                     android:id="@+id/presorder"
                     android:layout_width="0dp"
                     android:layout_weight="0.5"

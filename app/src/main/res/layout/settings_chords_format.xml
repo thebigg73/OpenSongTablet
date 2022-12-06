@@ -54,7 +54,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/pref_key_text"
@@ -167,7 +167,7 @@
                     android:layout_weight="1"
                     android:hint="@string/chord_format" />
 
-                <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                     android:id="@+id/chosenPreferredFormat"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"

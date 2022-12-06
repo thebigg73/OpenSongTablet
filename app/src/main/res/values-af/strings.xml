@@ -195,6 +195,8 @@
     <string name="create_folder_error">"Daar was 'n fout met die skep van die nuwe gids !"</string>
     <string name="create_new_song">"Skep nuwe lied"</string>
     <string name="crossfade_time">Cross tyd</string>
+    <string name="curly_brackets_hide">Krullerige hakie versteek {…}</string>
+    <string name="curly_brackets_hide_info">Behandel teks binne krullerige hakies slegs as prestasienotas. Dit sal tydens aanbieding versteek word.</string>
     <string name="current_location">"Huidige ligging"</string>
     <string name="custom">Persoonlike</string>
     <string name="custom_background">"Custom tag agtergrond"</string>

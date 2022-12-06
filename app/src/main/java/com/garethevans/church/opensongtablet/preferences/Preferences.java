@@ -176,6 +176,7 @@ public class Preferences extends Activity {
     // clockOn                         boolean     Should the clock be shown in the action bar (def:true)
     // clockSeconds                    boolean     Should the actionbar clock include seconds (def:false)
     // clockTextSize                   float       The size of the clock font (def:9.0f)
+    // curlyBrackets                   boolean     Treat text inside curly brackets as performance comments and are hidden during presentation (def:true)
     // custom1_lyricsBackgroundColor   int         The color for the lyrics background in the custom1 theme
     // custom1_lyricsBridgeColor       int         The color for the background for the bridge in the custom1 theme
     // custom1_lyricsCapoColor         int         The color for the capo text in the custom1 theme

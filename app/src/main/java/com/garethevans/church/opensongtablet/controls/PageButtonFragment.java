@@ -20,7 +20,7 @@ import androidx.fragment.app.Fragment;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDown;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
-import com.garethevans.church.opensongtablet.customviews.MaterialTextView;
+import com.garethevans.church.opensongtablet.customviews.MyMaterialTextView;
 import com.garethevans.church.opensongtablet.databinding.SettingsPagebuttonsBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -39,8 +39,8 @@ public class PageButtonFragment extends Fragment {
     private ArrayList<LinearLayout> myLayouts;
     private ArrayList<SwitchCompat> mySwitches;
     private ArrayList<ExposedDropDown> exposedDropDowns;
-    private ArrayList<MaterialTextView> shortTexts;
-    private ArrayList<MaterialTextView> longTexts;
+    private ArrayList<MyMaterialTextView> shortTexts;
+    private ArrayList<MyMaterialTextView> longTexts;
     private SettingsPagebuttonsBinding myView;
     private ExposedDropDownArrayAdapter arrayAdapter;
     @SuppressWarnings({"unused","FieldCanBeLocal"})

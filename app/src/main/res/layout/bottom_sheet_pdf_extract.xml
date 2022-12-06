@@ -55,7 +55,7 @@
                         android:layout_weight="0.4"
                         android:hint="@string/folder" />
 
-                    <com.garethevans.church.opensongtablet.customviews.MaterialEditText
+                    <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                         android:id="@+id/filename"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -66,7 +66,7 @@
                         app:endIconMode="clear_text" />
                 </LinearLayout>
 
-                <com.garethevans.church.opensongtablet.customviews.MaterialEditText
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                     android:id="@+id/extractedText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

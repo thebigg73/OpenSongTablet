@@ -13,7 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.customviews.MaterialTextView;
+import com.garethevans.church.opensongtablet.customviews.MyMaterialTextView;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.interfaces.RecyclerInterface;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -92,7 +92,7 @@ public class PresentationOrderAdapter extends RecyclerView.Adapter<PresentationO
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         // Set item views based on your views and data model
         CardView cardView = holder.cardView;
-        MaterialTextView sectionName = holder.sectionName;
+        MyMaterialTextView sectionName = holder.sectionName;
         String header = currentOrder.get(position);
         sectionName.setText(header);
         String niceheader = mainActivityInterface.getProcessSong().beautifyHeading(header);
@@ -118,7 +118,7 @@ public class PresentationOrderAdapter extends RecyclerView.Adapter<PresentationO
 
     protected static class ViewHolder extends RecyclerView.ViewHolder {
 
-        public MaterialTextView sectionName;
+        public MyMaterialTextView sectionName;
         public CardView cardView;
 
         private ViewHolder(@NonNull View itemView) {

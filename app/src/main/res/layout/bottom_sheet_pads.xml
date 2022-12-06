@@ -67,7 +67,7 @@
                 android:layout_marginBottom="8dp"
                 android:hint="@string/pad_onoroff" />
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialEditText
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                 android:id="@+id/padLinkAudio"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

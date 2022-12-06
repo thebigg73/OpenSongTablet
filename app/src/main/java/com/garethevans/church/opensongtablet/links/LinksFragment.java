@@ -11,7 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.customviews.MaterialTextView;
+import com.garethevans.church.opensongtablet.customviews.MyMaterialTextView;
 import com.garethevans.church.opensongtablet.databinding.SettingsLinksBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
@@ -53,11 +53,11 @@ public class LinksFragment extends Fragment {
 
     }
 
-    private void setCurrentValue(MaterialTextView materialTextView, String songValue) {
+    private void setCurrentValue(MyMaterialTextView myMaterialTextView, String songValue) {
         if (songValue==null || songValue.isEmpty()) {
-            materialTextView.setHint(getString(R.string.link_choose));
+            myMaterialTextView.setHint(getString(R.string.link_choose));
         } else {
-            materialTextView.setHint(songValue);
+            myMaterialTextView.setHint(songValue);
         }
     }
 

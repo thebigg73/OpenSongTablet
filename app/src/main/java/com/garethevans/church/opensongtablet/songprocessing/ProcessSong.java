@@ -35,7 +35,7 @@ import android.widget.TextView;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.appdata.InformationBottomSheet;
-import com.garethevans.church.opensongtablet.customviews.MaterialEditText;
+import com.garethevans.church.opensongtablet.customviews.MyMaterialEditText;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 import java.io.InputStream;
@@ -69,6 +69,7 @@ public class ProcessSong {
     private String thisAutoScale;
     private boolean bracketsOpen = false;
     private int bracketsStyle = Typeface.NORMAL;
+    private boolean curlyBrackets = true;
 
 
     public static int getColorWithAlpha(int color, float ratio) {
@@ -106,6 +107,7 @@ public class ProcessSong {
         scaleComments = mainActivityInterface.getPreferences().getMyPreferenceFloat("scaleComments", 0.8f);
         multiLineVerseKeepCompact = mainActivityInterface.getPreferences().getMyPreferenceBoolean("multiLineVerseKeepCompact", false);
         bracketsStyle = mainActivityInterface.getPreferences().getMyPreferenceInt("bracketsStyle",Typeface.NORMAL);
+        curlyBrackets = mainActivityInterface.getPreferences().getMyPreferenceBoolean("curlyBrackets",true);
     }
 
     public boolean showingCapo(String capo) {
@@ -370,6 +372,7 @@ public class ProcessSong {
     public String determineLineTypes(String string) {
         String type;
         if (string.startsWith("[")) {
+            Log.d(TAG,"heading: "+string);
             type = "heading";
         } else if (string.startsWith(".")) {
             type = "chord";
@@ -543,6 +546,8 @@ public class ProcessSong {
         }
         String myLyrics = song.getLyrics();
 
+        myLyrics = fixCurlyBrackets(myLyrics);
+
         // To replace [<Verse>] with [V] and [<Verse> 1] with [V1]
         String languageverseV = c.getResources().getString(R.string.verse);
         String languageverse_lowercaseV = languageverseV.toLowerCase(locale);
@@ -613,6 +618,15 @@ public class ProcessSong {
                 .replace("[" + languageverseV + " 7]", "[V7]")
                 .replace("[" + languageverseV + " 8]", "[V8]")
                 .replace("[" + languageverseV + " 9]", "[V9]")
+                .replace("[" + languageverseV + "1]", "[V1]")
+                .replace("[" + languageverseV + "2]", "[V2]")
+                .replace("[" + languageverseV + "3]", "[V3]")
+                .replace("[" + languageverseV + "4]", "[V4]")
+                .replace("[" + languageverseV + "5]", "[V5]")
+                .replace("[" + languageverseV + "6]", "[V6]")
+                .replace("[" + languageverseV + "7]", "[V7]")
+                .replace("[" + languageverseV + "8]", "[V8]")
+                .replace("[" + languageverseV + "9]", "[V9]")
                 // Replace [<Chorus>] with [C] and [<Chorus> 1] with [C1]
                 .replace("[" + languagechorus_lowercaseC, "[" + languagechorusC)
                 .replace("[" + languagechorus_uppercaseC, "[" + languagechorusC)
@@ -841,6 +855,7 @@ public class ProcessSong {
     }
 
     private String makeSections(String string) {
+        Log.d(TAG,"string after fixCurly:"+string);
         // Reset the spannable brackets here as we are just starting processing
         bracketsOpen = false;
         string = string.replace("§", "\n____SPLIT____").
@@ -1564,6 +1579,7 @@ public class ProcessSong {
         ArrayList<String> songSections = new ArrayList<>();
         ArrayList<String> groupedSections = new ArrayList<>();
         for (String thisSection : sections) {
+            Log.d(TAG,"thisSection:"+thisSection);
             String thisSectionCleaned = thisSection.replace("____groupline____", "\n");
             if (!thisSection.trim().isEmpty()) {
                 songSections.add(thisSectionCleaned);
@@ -1572,6 +1588,23 @@ public class ProcessSong {
         }
         song.setSongSections(songSections);
         song.setGroupedSections(groupedSections);
+    }
+
+    private String fixCurlyBrackets(String lyrics) {
+        // For IV - replace comments in lyrics from [..] to {..}
+        String[] lines = lyrics.split("\n");
+        StringBuilder stringBuilder = new StringBuilder();
+        for (String line:lines) {
+            Log.d(TAG,"line:"+line);
+            if (line.startsWith(" ")) {
+                // Not a heading line hopefully...
+                Log.d(TAG,"replacing...");
+                line = line.replace("[","{").replace("]","}");
+                Log.d(TAG,"line:"+line);
+            }
+            stringBuilder.append(line).append("\n");
+        }
+        return stringBuilder.toString();
     }
 
     public ArrayList<View> setSongInLayout(Song song, boolean asPDF, boolean presentation) {
@@ -1645,6 +1678,10 @@ public class ProcessSong {
                         // Get the text stylings
                         String linetype = getLineType(line);
 
+                        if (presentation && curlyBrackets) {
+                            line = line.replaceAll("\\{.*?\\}", "");
+                        }
+
                         if (presentation && linetype.equals("heading")) {
                             // Don't need this for the presentation view
                             line = "";
@@ -1663,7 +1700,6 @@ public class ProcessSong {
                                     getLyricsTextColor(), mainActivityInterface.getMyThemeColors().getLyricsChordsColor(),
                                     mainActivityInterface.getMyThemeColors().getLyricsCapoColor());
                         }
-
 
                         if (line.contains("____groupline____")) {
                             // Has lyrics and chords
@@ -1686,6 +1722,9 @@ public class ProcessSong {
                                 linearLayout.addView(tl);
                             }
                         } else {
+                            // Remove any word splits as not required
+                            line = line.replaceAll("\\s+-\\s+", "")
+                                    .replaceAll("\\s{2,}", " ");
                             if (!presentation || !line.isEmpty()) {
                                 TextView tv = lineText(linetype, line, typeface,
                                         size, textColor,
@@ -2891,14 +2930,14 @@ public class ProcessSong {
 
 
     // This bit is for the edit song fragments
-    public void editBoxToMultiline(MaterialEditText editText) {
+    public void editBoxToMultiline(MyMaterialEditText editText) {
         editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
         editText.setImeOptions(EditorInfo.IME_ACTION_NONE);
         editText.setHorizontallyScrolling(true);
         editText.setAutoSizeTextTypeUniformWithConfiguration(8, 18, 1);
     }
 
-    public void stretchEditBoxToLines(MaterialEditText editText, int minLines) {
+    public void stretchEditBoxToLines(MyMaterialEditText editText, int minLines) {
         String[] lines = editText.getText().toString().split("\n");
         int num = lines.length;
         if (num > minLines) {
@@ -2912,7 +2951,7 @@ public class ProcessSong {
         }
     }
 
-    public void splitTextByMaxChars(MaterialEditText editText, String text, int maxChars,
+    public void splitTextByMaxChars(MyMaterialEditText editText, String text, int maxChars,
                                     int maxLines, boolean showVerseNumbers) {
 
         boolean keepGoing = true;

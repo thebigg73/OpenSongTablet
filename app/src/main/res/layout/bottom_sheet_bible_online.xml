@@ -81,7 +81,7 @@
                     android:orientation="vertical"
                     android:visibility="gone">
 
-                    <com.garethevans.church.opensongtablet.customviews.MaterialEditText
+                    <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                         android:id="@+id/searchPhrase"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -90,7 +90,7 @@
                         android:hint="@string/bible_search"
                         android:text="" />
 
-                    <com.garethevans.church.opensongtablet.customviews.MaterialEditText
+                    <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                         android:id="@+id/versionCode"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -128,7 +128,7 @@
                     android:orientation="vertical"
                     android:visibility="visible">
 
-                    <com.garethevans.church.opensongtablet.customviews.MaterialEditText
+                    <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                         android:id="@+id/title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -136,7 +136,7 @@
                         android:layout_marginBottom="8dp"
                         android:hint="@string/bible_verse" />
 
-                    <com.garethevans.church.opensongtablet.customviews.MaterialEditText
+                    <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                         android:id="@+id/translation"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -174,7 +174,7 @@
                         android:valueTo="16"
                         app:stepSize="1" />
 
-                    <com.garethevans.church.opensongtablet.customviews.MaterialEditText
+                    <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                         android:id="@+id/content"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

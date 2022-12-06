@@ -91,7 +91,7 @@
                 </FrameLayout>
             </LinearLayout>
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialEditText
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                 android:id="@+id/hexColor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

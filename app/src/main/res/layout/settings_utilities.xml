@@ -13,7 +13,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:id="@+id/soundMeter"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

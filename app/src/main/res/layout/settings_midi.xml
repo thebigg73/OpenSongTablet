@@ -87,7 +87,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/connections_device_name" />
 
-                <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                     android:id="@+id/connectedDevice"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -206,7 +206,7 @@
                             android:hint="@string/midi_velocity" />
                     </LinearLayout>
 
-                    <com.garethevans.church.opensongtablet.customviews.MaterialEditText
+                    <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                         android:id="@+id/midiCode"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

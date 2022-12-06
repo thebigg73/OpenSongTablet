@@ -14,7 +14,7 @@
         android:orientation="vertical"
         android:visibility="gone">
 
-        <com.garethevans.church.opensongtablet.customviews.MaterialEditText
+        <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
             android:id="@+id/searchPhrase"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -125,7 +125,7 @@
         android:orientation="vertical"
         android:visibility="gone">
 
-        <com.garethevans.church.opensongtablet.customviews.MaterialEditText
+        <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
             android:id="@+id/saveFilename"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

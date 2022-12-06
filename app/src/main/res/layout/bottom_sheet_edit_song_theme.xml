@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <com.garethevans.church.opensongtablet.customviews.MaterialEditText
+        <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
             android:id="@+id/newTag"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

@@ -3,7 +3,7 @@
 
     <!-- This is my main dark theme-->
     <!-- Set the main app theme-->
-    <style name="AppTheme" parent="Theme.Material3.Dark.NoActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.NoActionBar">
         <!-- Font and text settings -->
         <item name="fontFamily">@font/lato</item>
         <item name="android:fontFamily">@font/lato</item>
@@ -64,7 +64,9 @@
         <item name="switchStyle">@style/Switch</item>
         <item name="materialButtonStyle">@style/TextBackgroundButton</item>
         <item name="checkboxStyle">@style/MaterialCheckBox</item>
-
+        <item name="floatingActionButtonStyle">@style/FABShaping</item>
+        <item name="extendedFloatingActionButtonStyle">@style/ExtendedFABShaping</item>
+        
         <!-- New MaterialComponents attributes. -->
         <item name="textAppearanceHeadline1">@style/TextAppearance.MaterialComponents.Headline1</item>
         <item name="textAppearanceHeadline2">@style/TextAppearance.MaterialComponents.Headline2</item>
@@ -86,6 +88,31 @@
 
 
     <!-- Override styles for custom views -->
+
+    <!-- FABs, ExtendedFABs and other small components -->
+    <!-- Once I can ditch API19, I can move to material3 and this does this squaring of buttons automatically -->
+    <style name="FABShaping" parent="Widget.MaterialComponents.FloatingActionButton">
+        <item name="shapeAppearanceOverlay">@style/FABShapingOverlay</item>
+        <item name="materialThemeOverlay">@style/FABColorOverlay</item>
+    </style>
+    <style name="ExtendedFABShaping" parent="Widget.MaterialComponents.ExtendedFloatingActionButton">
+        <item name="shapeAppearanceOverlay">@style/FABShapingOverlay</item>
+        <item name="materialThemeOverlay">@style/FABColorOverlay</item>
+    </style>
+    <style name="FABShapingOverlay" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopLeft">14dp</item>
+        <item name="cornerSizeBottomLeft">14dp</item>
+        <item name="cornerSizeTopRight">14dp</item>
+        <item name="cornerSizeBottomRight">14dp</item>
+    </style>
+    <style name="FABColorOverlay" parent="">
+        <item name="colorSecondary">@color/colorSecondary</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <item name="colorOnSurface">@color/white</item>
+    </style>
+
+
     <!-- Exposed Drop Down (actually an AutoCompleteTextView inside a TextInputLayout) -->
     <style name="ExposedDropDown" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
         <item name="materialThemeOverlay">@style/ExposedMaterialOverlay</item>
@@ -377,7 +404,7 @@
         <item name="strokeColor">@color/colorSecondary</item>
         <item name="android:padding">8dp</item>
     </style>
-    <style name="TextBackgroundButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
+    <style name="TextBackgroundButton" parent="Widget.MaterialComponents.Button">
         <item name="strokeColor">@color/colorSecondary</item>
         <item name="backgroundTint">@color/colorSecondary</item>
         <item name="android:textColor">@color/white</item>

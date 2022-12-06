@@ -14,7 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.customviews.MaterialEditText;
+import com.garethevans.church.opensongtablet.customviews.MyMaterialEditText;
 import com.garethevans.church.opensongtablet.databinding.SettingsPadsCustomBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
@@ -24,7 +24,7 @@ public class CustomPadsFragment extends Fragment {
     private SettingsPadsCustomBinding myView;
     private ActivityResultLauncher<String> activityResultLauncher;
     private final String TAG = "CustomPadsFragment";
-    private MaterialEditText materialEditText;
+    private MyMaterialEditText myMaterialEditText;
     private String prefName, prefValue;
 
     @Override
@@ -64,7 +64,7 @@ public class CustomPadsFragment extends Fragment {
                         text = getString(R.string.pad_auto);
                     }
                     mainActivityInterface.getPreferences().setMyPreferenceString(prefName, prefValue);
-                    materialEditText.setText(text);
+                    myMaterialEditText.setText(text);
                 });
     }
 
@@ -95,23 +95,23 @@ public class CustomPadsFragment extends Fragment {
         setPref(myView.padGm,"customPadGm");
     }
 
-    private void setPref(MaterialEditText materialEditText, String prefName) {
+    private void setPref(MyMaterialEditText myMaterialEditText, String prefName) {
         String pref = mainActivityInterface.getPreferences().getMyPreferenceString(prefName,"");
         if (pref==null || pref.isEmpty() || pref.equals("auto")) {
             pref = getString(R.string.pad_auto);
         }
-        materialEditText.setText(pref);
-        materialEditText.setFocusable(false);
+        myMaterialEditText.setText(pref);
+        myMaterialEditText.setFocusable(false);
         final String prefVal = pref;
-        materialEditText.setOnClickListener(view -> selectFile(materialEditText,prefName,prefVal));
+        myMaterialEditText.setOnClickListener(view -> selectFile(myMaterialEditText,prefName,prefVal));
     }
 
-    private void selectFile(MaterialEditText materialEditText, String prefName, String prefValue) {
+    private void selectFile(MyMaterialEditText myMaterialEditText, String prefName, String prefValue) {
         // Set the value to auto.  If the user cancel, this becomes the new value
-        this.materialEditText = materialEditText;
+        this.myMaterialEditText = myMaterialEditText;
         this.prefName = prefName;
         this.prefValue = prefValue;
-        this.materialEditText.setText(getString(R.string.pad_auto));
+        this.myMaterialEditText.setText(getString(R.string.pad_auto));
         activityResultLauncher.launch("audio/*");
     }
 }

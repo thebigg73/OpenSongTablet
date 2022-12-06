@@ -195,6 +195,8 @@
     <string name="create_folder_error">"新しいフォルダの作成中にエラーが発生しました！"</string>
     <string name="create_new_song">"新規ソングを作成し"</string>
     <string name="crossfade_time">クロスフェード時間</string>
+    <string name="curly_brackets_hide">中括弧非表示 {…}</string>
+    <string name="curly_brackets_hide_info">中括弧内のテキストは、パフォーマンス ノートとしてのみ扱います。これらは、プレゼンテーション中は非表示になります。</string>
     <string name="current_location">"現在位置"</string>
     <string name="custom">カスタマイズされた</string>
     <string name="custom_background">"カスタムタグの背景"</string>
