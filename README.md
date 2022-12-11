@@ -1,7 +1,7 @@
 # OpenSongApp (OpenSong Tablet)
-![splash_logo](https://user-images.githubusercontent.com/7831274/205077332-78850503-279e-400f-b43b-659d93b4e629.png)
 
 Android port of OpenSong (http://www.opensong.org).
+![splash_logo](https://user-images.githubusercontent.com/7831274/206910467-a71b9950-06d0-4849-8455-dec5c12cc44d.png)
 
 Use your mobile device as a portable song book.  Please feel free to help out by forking this repository and improving this app!  Translation improvements and additions are always welcome.
 
