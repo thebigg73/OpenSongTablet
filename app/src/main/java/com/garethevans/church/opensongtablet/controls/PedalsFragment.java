@@ -147,6 +147,7 @@ public class PedalsFragment extends Fragment {
     }
 
     private String charFromInt(int i) {
+        Log.d(TAG,"i:"+i+"  KeyEvent.keyCodeToString("+i+"):"+KeyEvent.keyCodeToString(i));
         if (i == -1 || KeyEvent.keyCodeToString(i) == null) {
             return getString(R.string.is_not_set);
         } else {
@@ -220,6 +221,9 @@ public class PedalsFragment extends Fragment {
         currentMidiCode = mainActivityInterface.getPedalActions().getMidiCode(which);
         buttonCodes[which].setText(getString(R.string.pedal_waiting));
         buttonMidis[which].setText(getString(R.string.pedal_waiting));
+        buttonCodes[which].setFocusable(true);
+        buttonCodes[which].setFocusableInTouchMode(true);
+        buttonCodes[which].requestFocus();
         pageButtonWaiting = new Handler();
         stopListening = () -> {
             buttonCodes[which].setText(charFromInt(currentPedalCode));
@@ -258,15 +262,22 @@ public class PedalsFragment extends Fragment {
     // Key down to register button in this fragment.
     // Key up and long press to detect if this is possible for test
     public void keyDownListener(int keyCode) {
+        Log.d(TAG,"keyDownListener keyCode:"+keyCode + "   currentListening: " + currentListening);
         if (currentListening > 0) {
             // Get a text version of the keyCode
             String pedalText = charFromInt(keyCode);
+
+            Log.d(TAG,"pedalText:"+pedalText);
 
             // Run the common actions for midi and key registrations
             commonEventDown(currentListening, keyCode, pedalText, null);
 
             // Check and remove any other pedals using this code
             removePreviouslySetKey(keyCode);
+
+            // Reset the listening pedal
+            currentListening = 0;
+            pageButtonWaiting.removeCallbacks(stopListening);
         }
     }
 
@@ -284,15 +295,12 @@ public class PedalsFragment extends Fragment {
         downTime = System.currentTimeMillis();
         upTime = downTime;
 
-        // Reset the listening pedal
-        currentListening = 0;
-        pageButtonWaiting.removeCallbacks(stopListening);
-
         // Update the on screen value
         updateButtonText(pedalText, pedalMidi);
 
         // Set the preference
         setPedalPreference(which, pedalCode, pedalMidi);
+
     }
 
     public void commonEventUp() {
@@ -318,6 +326,7 @@ public class PedalsFragment extends Fragment {
         if (keyText == null) {
             keyText = charFromInt(currentPedalCode);
         }
+        Log.d(TAG,"currentListening:"+currentListening+"  currentPedalCode:"+currentPedalCode+"  keyText:"+keyText+"  buttonCodes["+currentListening+"]:"+buttonCodes[currentListening]);
         if (buttonCodes[currentListening] != null) {
             buttonCodes[currentListening].setText(keyText);
         }
@@ -329,8 +338,10 @@ public class PedalsFragment extends Fragment {
     private void removePreviouslySetKey(int keyCode) {
         // Check for any other pedals currently set to this value and remove them.
         for (int x = 1; x <= 8; x++) {
+            Log.d(TAG,"x:"+x+"  currentListening:"+currentListening+"  mainActivityInterface.getPedalActions().getPedalCode("+x+"):"+mainActivityInterface.getPedalActions().getPedalCode(x)+"  keyCode:"+keyCode);
             if (currentListening != x && mainActivityInterface.getPedalActions().getPedalCode(x)==keyCode) {
                 setPedalPreference(x, defKeyCodes[x], null);
+                Log.d(TAG,"reset "+x+" to not set");
                 buttonCodes[x].setText(R.string.is_not_set);
             }
         }
@@ -408,4 +419,6 @@ public class PedalsFragment extends Fragment {
         }
 
     }
+
+
 }
