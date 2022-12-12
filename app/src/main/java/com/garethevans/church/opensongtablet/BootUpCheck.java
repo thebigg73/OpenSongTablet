@@ -237,7 +237,7 @@ public class BootUpCheck extends AppCompatActivity {
         });
         chooseStorageButton.setOnClickListener(v -> chooseStorageLocation());
         readUpdate.setOnClickListener(v -> {
-            String url = "http://www.opensongapp.com/latest-updates";
+            String url = "https://www.opensongapp.com/updates/latest-updates";
             Intent i = new Intent(Intent.ACTION_VIEW);
             i.setData(Uri.parse(url));
             try {
