@@ -31,14 +31,6 @@
             <TableRow style="@style/DividerLine" />
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
-                android:id="@+id/manualButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/user_guide"
-                android:hint="@string/help" />
-            <TableRow style="@style/DividerLine" />
-
-            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:id="@+id/forumButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

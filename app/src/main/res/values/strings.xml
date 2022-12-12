@@ -1079,7 +1079,7 @@ Check out the categories in the right hand options menu.
     <string name="website_highlighter" translatable="false">https://www.opensongapp.com/user-manual/songs/song-actions/highlighter</string>
     <string name="website_import_onsongbackup" translatable="false">https://www.opensongapp.com/user-manual/songs/ios-onsong</string>
     <string name="website_inline_set" translatable="false">https://www.opensongapp.com/user-manual/display/inline-set</string>
-    <string name="website_latest" translatable="false">https://www.opensongapp.com/latest-updates</string>
+    <string name="website_latest" translatable="false">https://www.opensongapp.com/updates/latest-updates</string>
     <string name="website_link" translatable="false">https://www.opensongapp.com/user-manual/songs/song-actions/link</string>
     <string name="website_margins" translatable="false">https://www.opensongapp.com/user-manual/display/margins</string>
     <string name="website_menu_set" translatable="false">https://www.opensongapp.com/user-manual/sets/set-menu</string>
@@ -1095,7 +1095,7 @@ Check out the categories in the right hand options menu.
     <string name="website_pad" translatable="false">https://www.opensongapp.com/user-manual/songs/song-actions/pads</string>
     <string name="website_page_buttons" translatable="false">https://www.opensongapp.com/user-manual/controls/page-buttons</string>
     <string name="website_paypal" translatable="false">https://www.paypal.me/opensongapp</string>
-    <string name="website_play_services_help" translatable="false">https://www.opensongapp.com/user-guide/devices-without-google-play</string>
+    <string name="website_play_services_help" translatable="false">https://www.opensongapp.com/user-manual/devices-without-google-play</string>
     <string name="website_profiles" translatable="false">https://www.opensongapp.com/user-manual/profiles</string>
     <string name="website_rate" translatable="false">https://play.google.com/store/apps/details?id=</string>
     <string name="website_restore" translatable="false">https://www.opensongapp.com/user-manual/songs/restore-from-backup</string>
@@ -1122,7 +1122,6 @@ Check out the categories in the right hand options menu.
     <string name="website_swipe_settings" translatable="false">https://www.opensongapp.com/user-manual/controls/swipe-settings</string>
     <string name="website_tags" translatable="false">https://www.opensongapp.com/user-manual/songs/song-actions/tags</string>
     <string name="website_themes" translatable="false">https://www.opensongapp.com/user-manual/display/themes</string>
-    <string name="website_user_guide" translatable="false">https://www.opensongapp.com/user-guide</string>
     <string name="welcome">Welcome to OpenSongApp</string>
     <string name="width">Width</string>
     <string name="words_and_music_by">Words and music by</string>

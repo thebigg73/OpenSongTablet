@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +27,7 @@ import java.util.ArrayList;
 
 public class PedalsFragment extends Fragment {
 
+    @SuppressWarnings("unused")
     private final String TAG = "PedalsFragment";
     private SettingsPedalBinding myView;
     private MainActivityInterface mainActivityInterface;
@@ -105,11 +105,7 @@ public class PedalsFragment extends Fragment {
     }
 
     private void midiPedalAllowed() {
-        String midiDevice = mainActivityInterface.getMidi().getMidiDeviceName();
-        Log.d(TAG,"midiDevice: "+midiDevice);
-        Log.d(TAG,"getMidiDevice: "+mainActivityInterface.getMidi().getMidiDevice());
-        Log.d(TAG,"getMidiAsPedal: "+mainActivityInterface.getPedalActions().getMidiAsPedal());
-
+        //String midiDevice = mainActivityInterface.getMidi().getMidiDeviceName();
         myView.midiAsPedal.setChecked(mainActivityInterface.getPedalActions().getMidiAsPedal());
         myView.midiAsPedal.setOnCheckedChangeListener((compoundButton, b) -> {
             mainActivityInterface.getPreferences().setMyPreferenceBoolean("midiAsPedal",b);
@@ -147,7 +143,6 @@ public class PedalsFragment extends Fragment {
     }
 
     private String charFromInt(int i) {
-        Log.d(TAG,"i:"+i+"  KeyEvent.keyCodeToString("+i+"):"+KeyEvent.keyCodeToString(i));
         if (i == -1 || KeyEvent.keyCodeToString(i) == null) {
             return getString(R.string.is_not_set);
         } else {
@@ -193,9 +188,7 @@ public class PedalsFragment extends Fragment {
     }
 
     private String getActionFromActionCode(String s) {
-        Log.d(TAG, "s=" + s);
         int val = actionCodes.indexOf(s);
-        Log.d(TAG, "val=" + val);
         if (val > -1 && actions.size() >= val) {
             return actions.get(actionCodes.indexOf(s));
         } else {
@@ -262,12 +255,10 @@ public class PedalsFragment extends Fragment {
     // Key down to register button in this fragment.
     // Key up and long press to detect if this is possible for test
     public void keyDownListener(int keyCode) {
-        Log.d(TAG,"keyDownListener keyCode:"+keyCode + "   currentListening: " + currentListening);
         if (currentListening > 0) {
             // Get a text version of the keyCode
             String pedalText = charFromInt(keyCode);
 
-            Log.d(TAG,"pedalText:"+pedalText);
 
             // Run the common actions for midi and key registrations
             commonEventDown(currentListening, keyCode, pedalText, null);
@@ -326,7 +317,6 @@ public class PedalsFragment extends Fragment {
         if (keyText == null) {
             keyText = charFromInt(currentPedalCode);
         }
-        Log.d(TAG,"currentListening:"+currentListening+"  currentPedalCode:"+currentPedalCode+"  keyText:"+keyText+"  buttonCodes["+currentListening+"]:"+buttonCodes[currentListening]);
         if (buttonCodes[currentListening] != null) {
             buttonCodes[currentListening].setText(keyText);
         }
@@ -338,10 +328,8 @@ public class PedalsFragment extends Fragment {
     private void removePreviouslySetKey(int keyCode) {
         // Check for any other pedals currently set to this value and remove them.
         for (int x = 1; x <= 8; x++) {
-            Log.d(TAG,"x:"+x+"  currentListening:"+currentListening+"  mainActivityInterface.getPedalActions().getPedalCode("+x+"):"+mainActivityInterface.getPedalActions().getPedalCode(x)+"  keyCode:"+keyCode);
             if (currentListening != x && mainActivityInterface.getPedalActions().getPedalCode(x)==keyCode) {
                 setPedalPreference(x, defKeyCodes[x], null);
-                Log.d(TAG,"reset "+x+" to not set");
                 buttonCodes[x].setText(R.string.is_not_set);
             }
         }

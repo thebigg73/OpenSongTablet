@@ -304,27 +304,8 @@ public class BibleGatewayBottomSheet extends BottomSheetDialogFragment {
                 }
                 webString = webString.replace("()","");
 
-
                 // Get rid of html tags
                 webString = mainActivityInterface.getProcessSong().removeHTMLTags(webString);
-
-                /*
-                // Now remove any other html tags
-                keepGoing = true;
-                while (webString.contains("<") && webString.contains(">") && keepGoing) {
-                    trimStart = webString.indexOf("<");
-                    if (trimStart>-1) {
-                        trimEnd = webString.indexOf(">",trimStart);
-                        if (trimEnd>-1) {
-                            trimBit = webString.substring(trimStart,trimEnd)+">";
-                            webString = webString.replace(trimBit,"");
-                        } else {
-                            keepGoing = false;
-                        }
-                    } else {
-                        keepGoing = false;
-                    }
-                }*/
 
                 // Now replace the verse identifiers
                 webString = webString.replace("_STARTOFVERSE_"," {");
