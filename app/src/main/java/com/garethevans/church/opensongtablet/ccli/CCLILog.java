@@ -243,6 +243,32 @@ public class CCLILog {
         action = new ArrayList<>();
     }
 
+    public String getCCLILogAsCSV() {
+        // Create a csv readable version of the ActivityLog
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("\"").append(c.getString(R.string.item)).append("\",");
+        stringBuilder.append("\"").append(c.getString(R.string.title)).append("\",");
+        stringBuilder.append("\"").append(c.getString(R.string.author)).append("\",");
+        stringBuilder.append("\"").append(c.getString(R.string.copyright)).append("\",");
+        stringBuilder.append("\"").append(c.getString(R.string.ccli)).append("\",");
+        stringBuilder.append("\"").append(c.getString(R.string.date)).append("\",");
+        stringBuilder.append("\"").append(c.getString(R.string.time)).append("\",");
+        stringBuilder.append("\"").append(c.getString(R.string.action)).append("\"\n");
+
+        for (int i=0; i<songfile.size(); i++) {
+            stringBuilder.append("\"").append(songfile.get(i)).append("\",");
+            stringBuilder.append("\"").append(title.get(i)).append("\",");
+            stringBuilder.append("\"").append(author.get(i)).append("\",");
+            stringBuilder.append("\"").append(copyright.get(i)).append("\",");
+            stringBuilder.append("\"").append(ccli.get(i)).append("\",");
+            stringBuilder.append("\"").append(date.get(i)).append("\",");
+            stringBuilder.append("\"").append(time.get(i)).append("\",");
+            stringBuilder.append("\"").append(getActionText(action.get(i))).append("\"\n");
+        }
+
+        return stringBuilder.toString();
+    }
+
     public void getCurrentEntries(Uri uri) {
 
         try {

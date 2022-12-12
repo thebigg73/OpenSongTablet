@@ -52,7 +52,7 @@ public class AboutAppFragment extends Fragment {
     private void setListeners() {
         myView.visitWebsite.setOnClickListener(v -> mainActivityInterface.openDocument(getString(R.string.website_address)));
         myView.latestVersion.setOnClickListener(v -> mainActivityInterface.openDocument(getString(R.string.website_latest)));
-        myView.manualButton.setOnClickListener(v -> mainActivityInterface.openDocument(getString(R.string.website_user_guide)));
+        myView.manualButton.setOnClickListener(v -> mainActivityInterface.openDocument(getString(R.string.website_address)));
         myView.forumButton.setOnClickListener(v -> mainActivityInterface.openDocument(getString(R.string.website_forum)));
         myView.rateButton.setOnClickListener(v -> mainActivityInterface.openDocument(getString(R.string.website_rate)+requireActivity().getPackageName()));
         myView.paypalButton.setOnClickListener(v -> mainActivityInterface.openDocument(getString(R.string.website_paypal)));

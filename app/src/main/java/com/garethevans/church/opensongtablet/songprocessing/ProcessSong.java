@@ -372,7 +372,6 @@ public class ProcessSong {
     public String determineLineTypes(String string) {
         String type;
         if (string.startsWith("[")) {
-            Log.d(TAG,"heading: "+string);
             type = "heading";
         } else if (string.startsWith(".")) {
             type = "chord";
@@ -546,7 +545,7 @@ public class ProcessSong {
         }
         String myLyrics = song.getLyrics();
 
-        myLyrics = fixCurlyBrackets(myLyrics);
+        myLyrics = fixSquareBracketComments(myLyrics);
 
         // To replace [<Verse>] with [V] and [<Verse> 1] with [V1]
         String languageverseV = c.getResources().getString(R.string.verse);
@@ -855,7 +854,6 @@ public class ProcessSong {
     }
 
     private String makeSections(String string) {
-        Log.d(TAG,"string after fixCurly:"+string);
         // Reset the spannable brackets here as we are just starting processing
         bracketsOpen = false;
         string = string.replace("§", "\n____SPLIT____").
@@ -1579,7 +1577,6 @@ public class ProcessSong {
         ArrayList<String> songSections = new ArrayList<>();
         ArrayList<String> groupedSections = new ArrayList<>();
         for (String thisSection : sections) {
-            Log.d(TAG,"thisSection:"+thisSection);
             String thisSectionCleaned = thisSection.replace("____groupline____", "\n");
             if (!thisSection.trim().isEmpty()) {
                 songSections.add(thisSectionCleaned);
@@ -1590,17 +1587,15 @@ public class ProcessSong {
         song.setGroupedSections(groupedSections);
     }
 
-    private String fixCurlyBrackets(String lyrics) {
-        // For IV - replace comments in lyrics from [..] to {..}
+    private String fixSquareBracketComments(String lyrics) {
+        // For IV - replace comments in lyrics from [..] to (..)
+        // May cause issues if songs from UG, etc. have spaces before section names
         String[] lines = lyrics.split("\n");
         StringBuilder stringBuilder = new StringBuilder();
         for (String line:lines) {
-            Log.d(TAG,"line:"+line);
             if (line.startsWith(" ")) {
                 // Not a heading line hopefully...
-                Log.d(TAG,"replacing...");
-                line = line.replace("[","{").replace("]","}");
-                Log.d(TAG,"line:"+line);
+                line = line.replace("[","(").replace("]",")");
             }
             stringBuilder.append(line).append("\n");
         }

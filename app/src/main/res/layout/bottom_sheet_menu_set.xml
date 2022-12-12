@@ -31,7 +31,7 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/set_new_info"
                     custom:mydrawable="@drawable/set_edit"
-                    android:padding="16dp"
+                    android:padding="12dp"
                     android:text="@string/set_new" />
 
                 <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
@@ -40,7 +40,7 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/set_manage_info"
                     custom:mydrawable="@drawable/database"
-                    android:padding="16dp"
+                    android:padding="12dp"
                     android:text="@string/set_manage" />
 
                 <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
@@ -49,7 +49,7 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/edit_set_item_info"
                     custom:mydrawable="@drawable/pencil"
-                    android:padding="16dp"
+                    android:padding="12dp"
                     android:text="@string/edit_set_item" />
 
                 <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
@@ -58,7 +58,7 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/bible_verse"
                     custom:mydrawable="@drawable/bible"
-                    android:padding="16dp"
+                    android:padding="12dp"
                     android:text="@string/scripture" />
 
                 <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
@@ -67,7 +67,7 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/add_custom_slide"
                     custom:mydrawable="@drawable/list_bullet"
-                    android:padding="16dp"
+                    android:padding="12dp"
                     android:text="@string/custom_slide" />
 
                 <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
@@ -75,7 +75,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/random_song_info"
-                    android:padding="16dp"
+                    android:padding="12dp"
                     android:text="@string/random_song"
                     custom:mydrawable="@drawable/folder_search" />
 
@@ -85,7 +85,7 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/set_shuffle_info"
                     custom:mydrawable="@drawable/shuffle"
-                    android:padding="16dp"
+                    android:padding="12dp"
                     android:text="@string/set_shuffle" />
 
                 <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
@@ -94,7 +94,7 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/alphabetical_sort"
                     custom:mydrawable="@drawable/sort"
-                    android:padding="16dp"
+                    android:padding="12dp"
                     android:text="@string/set_sort" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>

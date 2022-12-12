@@ -62,6 +62,7 @@ public class BibleOfflineBottomSheet extends BottomSheetDialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = BottomSheetBibleOfflineBinding.inflate(inflater, container, false);
         myView.dialogHeader.setClose(this);
+        myView.dialogHeader.setWebHelp(mainActivityInterface,getString(R.string.website_bible_offline));
 
         myView.nestedScrollView.setExtendedFabToAnimate(myView.addToSet);
 

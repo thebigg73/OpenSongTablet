@@ -53,6 +53,7 @@ public class SetMenuBottomSheet extends BottomSheetDialogFragment {
 
         // Initialise the 'close' floatingactionbutton
         myView.dialogHeading.setClose(this);
+        myView.dialogHeading.setWebHelp(mainActivityInterface,getString(R.string.website_menu_set));
 
         // Check views allowed
         checkViewsAllowed();

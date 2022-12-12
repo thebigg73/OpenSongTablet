@@ -54,6 +54,14 @@
             <TableRow style="@style/DividerLine" />
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                android:id="@+id/ccliExportCSV"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="@string/csv"
+                android:text="@string/export" />
+            <TableRow style="@style/DividerLine" />
+
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:id="@+id/ccliDelete"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

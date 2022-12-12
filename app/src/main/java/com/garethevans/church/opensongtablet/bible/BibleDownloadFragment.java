@@ -56,6 +56,7 @@ public class BibleDownloadFragment extends Fragment {
         myView = BibleDownloadBinding.inflate(inflater, container, false);
 
         mainActivityInterface.updateToolbar(getString(R.string.download));
+        mainActivityInterface.updateToolbarHelp(getString(R.string.website_bible_download));
 
         // Set up helpers
         setupHelpers();

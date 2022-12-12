@@ -58,6 +58,8 @@ public class CustomSlideFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsCustomSlideBinding.inflate(inflater, container, false);
         mainActivityInterface.updateToolbar(getString(R.string.custom_slide));
+        mainActivityInterface.updateToolbarHelp(getString(R.string.website_custom_slide));
+
         myView.nestedScrollView.setExtendedFabToAnimate(myView.addToSet);
 
         // Set up listeners

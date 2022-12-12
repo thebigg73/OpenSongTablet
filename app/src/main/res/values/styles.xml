@@ -109,7 +109,9 @@
     <style name="FABColorOverlay" parent="">
         <item name="colorSecondary">@color/colorSecondary</item>
         <item name="colorOnSecondary">@color/white</item>
-        <item name="colorOnSurface">@color/white</item>
+        <item name="colorOnSurface">@color/colorSecondary</item>
+        <item name="backgroundTint">@color/colorSecondary</item>
+        <item name="textAllCaps">false</item>
     </style>
 
 
@@ -411,6 +413,7 @@
         <item name="android:padding">16dp</item>
         <item name="android:layout_gravity">center</item>
         <item name="shapeAppearanceOverlay">@style/ButtonOverlay</item>
+        <item name="materialThemeOverlay">@style/ButtonThemeOverlay</item>
     </style>
     <style name="ButtonOverlay">
         <item name="cornerFamily">rounded</item>
@@ -418,6 +421,12 @@
         <item name="cornerSizeBottomRight">8dp</item>
         <item name="cornerSizeTopLeft">8dp</item>
         <item name="cornerSizeBottomLeft">8dp</item>
+    </style>
+    <style name="ButtonThemeOverlay" parent="">
+        <item name="colorSecondary">@color/colorSecondary</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <item name="colorOnSurface">@color/colorSecondary</item>
+        <item name="backgroundTint">@color/colorSecondary</item>
     </style>
 
     <style name="LeftButton" parent="TextBackgroundButton">

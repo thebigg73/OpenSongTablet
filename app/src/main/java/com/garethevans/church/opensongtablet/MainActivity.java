@@ -1155,7 +1155,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             myView.myAppBarLayout.setVisibility(View.VISIBLE);
         }
         moveContentForActionBar(remove);
-        Log.d(TAG,"height:"+myView.myAppBarLayout.getHeight());
     }
 
     @Override
@@ -1861,7 +1860,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 navigateToFragment(null,R.id.performanceFragment);
             }
         }
-        Log.d(TAG,"Load song and closeDrawer:"+closeDrawer);
         closeDrawer(closeDrawer);
     }
 
@@ -3071,8 +3069,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         } else {
             sections = song.getSongSections().size();
         }
-
-        Log.d(TAG,"sections:"+sections);
 
         if (secondaryDisplays!=null) {
             for (SecondaryDisplay secondaryDisplay : secondaryDisplays) {

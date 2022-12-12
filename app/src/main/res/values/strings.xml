@@ -1053,6 +1053,9 @@ Check out the categories in the right hand options menu.
     <string name="website_app_mode" translatable="false">https://www.opensongapp.com/user-manual/app-mode</string>
     <string name="website_autoscroll" translatable="false">https://www.opensongapp.com/user-manual/songs/song-actions/autoscroll</string>
     <string name="website_backup" translatable="false">https://www.opensongapp.com/user-manual/songs/opensongapp-backup</string>
+    <string name="website_bible_download" translatable="false">https://www.opensongapp.com/user-manual/sets/bible/download-bible</string>
+    <string name="website_bible_offline" translatable="false">https://www.opensongapp.com/user-manual/sets/bible/search-offline</string>
+    <string name="website_bible_online" translatable="false">https://www.opensongapp.com/user-manual/sets/bible/search-online</string>
     <string name="website_ccli" translatable="false">https://www.opensongapp.com/user-manual/ccli</string>
     <string name="website_chords" translatable="false">https://www.opensongapp.com/user-manual/songs/song-actions/chords/chords</string>
     <string name="website_chords_custom" translatable="false">https://www.opensongapp.com/user-manual/songs/song-actions/chords/custom-chords</string>
@@ -1061,6 +1064,7 @@ Check out the categories in the right hand options menu.
     <string name="website_chords_transpose" translatable="false">https://www.opensongapp.com/user-manual/songs/song-actions/chords/transpose</string>
     <string name="website_connected_display" translatable="false">https://www.opensongapp.com/user-manual/display/casting</string>
     <string name="website_custom_gestures" translatable="false">https://www.opensongapp.com/user-manual/controls/custom-gestures</string>
+    <string name="website_custom_slide" translatable="false">https://www.opensongapp.com/user-manual/sets/custom-slides</string>
     <string name="website_edit_song" translatable="false">https://www.opensongapp.com/user-manual/songs/edit-song</string>
     <string name="website_edit_song_features" translatable="false">https://www.opensongapp.com/user-manual/songs/edit-song#h.kntse37simcb</string>
     <string name="website_edit_song_main" translatable="false">https://www.opensongapp.com/user-manual/songs/edit-song#h.dqecqr6jwgf6</string>
@@ -1096,6 +1100,13 @@ Check out the categories in the right hand options menu.
     <string name="website_rate" translatable="false">https://play.google.com/store/apps/details?id=</string>
     <string name="website_restore" translatable="false">https://www.opensongapp.com/user-manual/songs/restore-from-backup</string>
     <string name="website_scaling" translatable="false">https://www.opensongapp.com/user-manual/display/scaling</string>
+    <string name="website_set_backup" translatable="false">https://www.opensongapp.com/user-manual/sets/backup-sets</string>
+    <string name="website_set_create_new" translatable="false">https://www.opensongapp.com/user-manual/sets/create-a-new-set</string>
+    <string name="website_set_delete" translatable="false">https://www.opensongapp.com/user-manual/sets/delete-set</string>
+    <string name="website_set_load" translatable="false">https://www.opensongapp.com/user-manual/sets/load-set</string>
+    <string name="website_set_rename" translatable="false">https://www.opensongapp.com/user-manual/sets/rename-set</string>
+    <string name="website_set_restore" translatable="false">https://www.opensongapp.com/user-manual/sets/restore-sets</string>
+    <string name="website_set_save" translatable="false">https://www.opensongapp.com/user-manual/sets/save-set</string>
     <string name="website_song_add" translatable="false">https://www.opensongapp.com/user-manual/songs/add-songs</string>
     <string name="website_song_camera" translatable="false">https://www.opensongapp.com/user-manual/songs/camera</string>
     <string name="website_song_display" translatable="false">https://www.opensongapp.com/user-manual/display/song-display</string>

@@ -71,17 +71,21 @@ public class BackupRestoreSetsFragment extends Fragment {
 
         if (mainActivityInterface.getWhattodo().equals("restoresets")) {
             mainActivityInterface.updateToolbar(getString(R.string.restore_sets));
+            mainActivityInterface.updateToolbarHelp(getString(R.string.website_set_restore));
             setupFileChooserListener();
             initialiseLauncher();
             openFilePicker();
         } else if (mainActivityInterface.getWhattodo().equals("intentlaunch")) {
             mainActivityInterface.updateToolbar(getString(R.string.restore_sets));
+            mainActivityInterface.updateToolbarHelp(getString(R.string.website_set_restore));
             backupUri = mainActivityInterface.getImportUri();
             myView.backupName.setText(mainActivityInterface.getImportFilename());
             setupViews();
         } else {
             // Set up views
             setupViews();
+            mainActivityInterface.updateToolbarHelp(getString(R.string.website_set_backup));
+
         }
 
         myView.nestedScrollView.setExtendedFabToAnimate(myView.createBackupFAB);

@@ -110,8 +110,8 @@ public class SetManageFragment extends Fragment {
         // Decide on the views required
         switch (whattodo) {
             case "saveset":
-                mainActivityInterface.updateToolbarHelp("");
                 mainActivityInterface.updateToolbar(getString(R.string.set) + ": " + getString(R.string.save));
+                mainActivityInterface.updateToolbarHelp(getString(R.string.website_set_save));
                 myView.setName.setVisibility(View.VISIBLE);
                 myView.overWrite.setVisibility(View.VISIBLE);
                 myView.setLoadInfo1.setVisibility(View.GONE);
@@ -125,8 +125,8 @@ public class SetManageFragment extends Fragment {
                 break;
 
             case "renameset":
-                mainActivityInterface.updateToolbarHelp("");
                 mainActivityInterface.updateToolbar(getString(R.string.set) + ": " + getString(R.string.rename));
+                mainActivityInterface.updateToolbarHelp(getString(R.string.website_set_rename));
                 myView.setName.setVisibility(View.VISIBLE);
                 myView.overWrite.setVisibility(View.VISIBLE);
                 myView.setLoadInfo1.setVisibility(View.GONE);
@@ -140,8 +140,8 @@ public class SetManageFragment extends Fragment {
                 break;
 
             case "deleteset":
-                mainActivityInterface.updateToolbarHelp("");
                 mainActivityInterface.updateToolbar(getString(R.string.set) + ": " + getString(R.string.delete));
+                mainActivityInterface.updateToolbarHelp(getString(R.string.website_set_delete));
                 myView.setName.setVisibility(View.GONE);
                 myView.overWrite.setVisibility(View.GONE);
                 myView.setLoadInfo1.setVisibility(View.VISIBLE);
@@ -169,8 +169,8 @@ public class SetManageFragment extends Fragment {
 
             case "loadset":
             default:
-                mainActivityInterface.updateToolbarHelp("");
                 mainActivityInterface.updateToolbar(getString(R.string.set) + ": " + getString(R.string.load));
+                mainActivityInterface.updateToolbarHelp(getString(R.string.website_set_load));
                 myView.setName.setVisibility(View.GONE);
                 myView.overWrite.setVisibility(View.GONE);
                 myView.newCategory.setVisibility(View.GONE);

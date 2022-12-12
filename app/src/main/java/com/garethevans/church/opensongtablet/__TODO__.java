@@ -8,6 +8,7 @@ public class __TODO__ {
     // Fully implement image slides and images in all modes
 
     // Alignment of images and slides in secondary dislplay to match lyrics align
+    // Add option of time and loop for custom text slideshow, not just imageslideshow in presenter mode
 
     // BUGS FROM LIVE TEST
     // SongSelect only recognising Chord pages (not score?)

@@ -80,6 +80,7 @@ public class SettingsCCLI extends Fragment {
                 "ccliAutomaticLogging", isChecked));
         myView.ccliView.setOnClickListener(v -> showDialog());
         myView.ccliExport.setOnClickListener(view -> exportLog());
+        myView.ccliExportCSV.setOnClickListener(view -> exportCSVLog());
         myView.ccliDelete.setOnClickListener(v -> mainActivityInterface.displayAreYouSure("ccliDelete",
                 getString(R.string.ccli_reset),null,"SettingsCCLI", this, null));
     }
@@ -93,16 +94,33 @@ public class SettingsCCLI extends Fragment {
     }
 
     private void exportLog() {
-        String message = getString(R.string.app_name) + ": " + getString(R.string.ccli) + "\n";
-        message += getString(R.string.ccli_church) + ": " +
-                mainActivityInterface.getPreferences().getMyPreferenceString("ccliChurchName","") + "\n";
-        message += getString(R.string.ccli_licence) + ": " +
-                mainActivityInterface.getPreferences().getMyPreferenceString("ccliLicence","")+ "\n\n";
         Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Settings","","ActivityLog.xml");
-        Intent intent = mainActivityInterface.getExportActions().setShareIntent(message,"text/xml",uri,null);
+        Intent intent = mainActivityInterface.getExportActions().setShareIntent(basicMessage(),"text/xml",uri,null);
         intent.putExtra(Intent.EXTRA_SUBJECT, "ActivityLog.xml");
         intent.putExtra(Intent.EXTRA_TITLE, "ActivityLog.xml");
         startActivity(Intent.createChooser(intent, "ActivityLog.xml"));
+    }
+
+    private void exportCSVLog() {
+        // Set up the default values
+        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Settings", "", "ActivityLog.xml");
+        mainActivityInterface.getCCLILog().getCurrentEntries(uri);
+
+        if (mainActivityInterface.getStorageAccess().doStringWriteToFile("Export","","ActivityLog.csv",mainActivityInterface.getCCLILog().getCCLILogAsCSV())) {
+            uri = mainActivityInterface.getStorageAccess().getUriForItem("Export","","ActivityLog.csv");
+            Intent intent = mainActivityInterface.getExportActions().setShareIntent(basicMessage(),"text/csv",uri,null);
+            intent.putExtra(Intent.EXTRA_SUBJECT, "ActivityLog.csv");
+            intent.putExtra(Intent.EXTRA_TITLE, "ActivityLog.csv");
+            startActivity(Intent.createChooser(intent, "ActivityLog.csv"));
+        }
+    }
+
+    private String basicMessage() {
+        return getString(R.string.app_name) + ": " + getString(R.string.ccli) + "\n" +
+         getString(R.string.ccli_church) + ": " +
+                mainActivityInterface.getPreferences().getMyPreferenceString("ccliChurchName","") + "\n" +
+        getString(R.string.ccli_licence) + ": " +
+                mainActivityInterface.getPreferences().getMyPreferenceString("ccliLicence","")+ "\n\n";
     }
 
     // Called from MainActivity after TextInputDialogFragment save

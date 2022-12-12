@@ -71,6 +71,7 @@ public class BibleGatewayBottomSheet extends BottomSheetDialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = BottomSheetBibleOnlineBinding.inflate(inflater, container, false);
         myView.dialogHeader.setClose(this);
+        myView.dialogHeader.setWebHelp(mainActivityInterface,getString(R.string.website_bible_online));
 
         // Set up helpers
         setupHelpers();
@@ -232,6 +233,12 @@ public class BibleGatewayBottomSheet extends BottomSheetDialogFragment {
     }
 
     private void grabText() {
+
+        // Show all of the web text
+        String[] lines = webString.split("\n");
+        for (String line:lines) {
+            Log.d(TAG,"line:"+line);
+        }
         // First get the bible verse and version
         int referenceStart = webString.indexOf("<meta name=\"twitter:title\" content=\"");
         Log.d(TAG,"referenceStart:"+referenceStart);
@@ -251,7 +258,8 @@ public class BibleGatewayBottomSheet extends BottomSheetDialogFragment {
         }
 
         //int start = webString.indexOf("<div class=\"passage-text\">");
-        int start = webString.indexOf("<sup class=\"versenum\">");
+        int start = webString.indexOf("<div class=\"passage-content");
+        //int start = webString.indexOf("<sup class=\"versenum\">");
         Log.d(TAG,"start="+start);
         if (start>-1) {
             webString = webString.substring(start);
@@ -259,10 +267,14 @@ public class BibleGatewayBottomSheet extends BottomSheetDialogFragment {
             for (String webline:weblines) {
                 Log.d(TAG,webline);
             }
-            int end = webString.indexOf("</span>");
+            int end = webString.indexOf("</div>",start);
             Log.d(TAG, "end:"+end);
             if (end>-1) {
                 webString = webString.substring(0,end);
+                // Identify the chapter numbering (so we keep)
+                webString = webString.replace("<span class=\"chapternum\">","_STARTOFVERSE_");
+                webString = webString.replace("&nbsp;</span>","_ENDOFVERSE_");
+
                 // Identify the verse numbering (so we keep)
                 webString = webString.replace("<sup class=\"versenum\">","_STARTOFVERSE_");
                 webString = webString.replace("&nbsp;</sup>","_ENDOFVERSE_");
@@ -270,16 +282,16 @@ public class BibleGatewayBottomSheet extends BottomSheetDialogFragment {
                 // For headings, start new lines
                 webString = webString.replace("<h3>","\n\n");
                 webString = webString.replace("</h3>","\n");
-
+                webString = webString.replace("<p>","\n");
                 // Get rid of any other href bracket stuff
                 boolean keepGoing = true;
                 String trimBit;
                 int trimStart;
                 int trimEnd;
-                while (webString.contains("(<a href") && webString.contains("</a>)") && keepGoing) {
-                    trimStart = webString.indexOf("(<a href");
+                while (webString.contains("<a ") && webString.contains("</a>") && keepGoing) {
+                    trimStart = webString.indexOf("<a ");
                     if (trimStart>-1) {
-                        trimEnd = webString.indexOf("</a>)",trimStart);
+                        trimEnd = webString.indexOf("</a>",trimStart);
                         if (trimEnd>-1) {
                             trimBit = webString.substring(trimStart,trimEnd+5);
                             webString = webString.replace(trimBit,"");
@@ -290,7 +302,13 @@ public class BibleGatewayBottomSheet extends BottomSheetDialogFragment {
                         keepGoing = false;
                     }
                 }
+                webString = webString.replace("()","");
 
+
+                // Get rid of html tags
+                webString = mainActivityInterface.getProcessSong().removeHTMLTags(webString);
+
+                /*
                 // Now remove any other html tags
                 keepGoing = true;
                 while (webString.contains("<") && webString.contains(">") && keepGoing) {
@@ -306,7 +324,7 @@ public class BibleGatewayBottomSheet extends BottomSheetDialogFragment {
                     } else {
                         keepGoing = false;
                     }
-                }
+                }*/
 
                 // Now replace the verse identifiers
                 webString = webString.replace("_STARTOFVERSE_"," {");

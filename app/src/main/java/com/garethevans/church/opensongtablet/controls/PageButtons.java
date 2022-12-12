@@ -39,7 +39,6 @@ public class PageButtons {
     private int pageButtonIconColor;
 
     // My buttons in the main activity
-    private FloatingActionButton actionButton;
     private LinearLayout pageButtonsLayout;
     private ArrayList<FloatingActionButton> fabs;
 
@@ -49,6 +48,7 @@ public class PageButtons {
     private ArrayList<String> pageButtonAction, pageButtonText, pageButtonShortText, pageButtonLongText;
     private ArrayList<Drawable> pageButtonDrawable;
     private ArrayList<Boolean> pageButtonVisibility;
+    private FloatingActionButton actionButton;
 
     public PageButtons(Context c) {
         this.c = c;
@@ -106,6 +106,15 @@ public class PageButtons {
         pageButtonColor = mainActivityInterface.getMyThemeColors().getPageButtonsSplitColor();
         pageButtonAlpha = mainActivityInterface.getMyThemeColors().getPageButtonsSplitAlpha();
         pageButtonIconColor = mainActivityInterface.getMyThemeColors().getExtraInfoTextColor();
+        if (actionButton!=null && actionButton.getRotation()==0) {
+            actionButton.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
+        }
+        for (FloatingActionButton fab:fabs) {
+            fab.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
+        }
+        if (pageButtonsLayout!=null) {
+            pageButtonsLayout.setAlpha(pageButtonAlpha);
+        }
     }
 
     public FloatingActionButton getFAB(int x) {
