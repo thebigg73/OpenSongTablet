@@ -1,8 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:installLocation="auto"
-    android:versionCode="219"
-    android:versionName="5.5.9">
+    android:versionCode="220"
+    android:versionName="5.6.0">
 
     <uses-feature
         android:name="android.hardware.touchscreen"
