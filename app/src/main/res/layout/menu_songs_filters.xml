@@ -48,24 +48,65 @@
         android:paddingTop="4dp"
         android:paddingBottom="4dp"/>
 
-    <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
-        android:id="@+id/folderSearch"
+    <LinearLayout
+        android:id="@+id/folderLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+    <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+        android:id="@+id/folderSearch"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:hint="@string/folder"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
         android:paddingTop="4dp"
         android:paddingBottom="4dp"/>
 
-    <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
-        android:id="@+id/tagSearch"
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/manageFolders"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/set_edit"
+            android:contentDescription="@string/new_folder_info"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="16dp"
+            app:useCompatPadding="false"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/tagLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/theme"
+        android:orientation="horizontal">
+
+    <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
+        android:id="@+id/tagSearch"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:hint="@string/tag"
         app:endIconMode="clear_text"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
         android:paddingTop="4dp"
-        android:paddingBottom="4dp"/>
+        android:paddingBottom="4dp"
+        android:layout_gravity="bottom" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/manageTags"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/set_edit"
+            android:contentDescription="@string/tag_song_info"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="16dp"
+            app:useCompatPadding="false"/>
+    </LinearLayout>
 </LinearLayout>

@@ -13,14 +13,34 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="100dp"
+            android:paddingTop="50dp">
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                android:id="@+id/immersiveMode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/immersive_mode"
+                android:hint="@string/immersive_mode_info"
+                android:layout_marginBottom="16dp"/>
 
             <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
                 android:id="@+id/navBarKeepSpace"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/margins_system"
-                android:hint="@string/margins_system_info"/>
+                android:hint="@string/margins_system_info"
+                android:layout_marginBottom="16dp"/>
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                android:id="@+id/ignoreCutouts"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/ignore_cutouts"
+                android:hint="@string/ignore_cutouts_info"/>
+            <TableRow style="@style/DividerLine"/>
+
             <TableRow style="@style/DividerLine"/>
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
@@ -43,6 +63,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/pan_right"
+                android:valueFrom="0"
+                android:valueTo="100"
+                app:stepSize="5"/>
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+                android:id="@+id/topMargin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/top"
                 android:valueFrom="0"
                 android:valueTo="100"
                 app:stepSize="5"/>

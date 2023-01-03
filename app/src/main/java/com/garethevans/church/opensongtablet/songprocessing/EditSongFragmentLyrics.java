@@ -5,7 +5,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +25,7 @@ public class EditSongFragmentLyrics extends Fragment {
     private MainActivityInterface mainActivityInterface;
     private EditSongFragmentInterface editSongFragmentInterface;
     private EditSongLyricsBinding myView;
+    @SuppressWarnings("unused")
     private final String TAG = "EditSongFragmentLyrics";
     private float editTextSize = 11;
     private int cursorPos=0;
@@ -143,7 +143,6 @@ public class EditSongFragmentLyrics extends Fragment {
 
         myView.settingsButton.setOnClickListener(v -> {
             cursorPos = myView.lyrics.getSelectionStart();
-            Log.d(TAG,"cursorPos="+cursorPos);
             LyricsOptionsBottomSheet lyricsOptionsBottomSheet = new LyricsOptionsBottomSheet(this);
             lyricsOptionsBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"LyricsBottomSheet");
         });
@@ -164,10 +163,8 @@ public class EditSongFragmentLyrics extends Fragment {
     private void undoLyrics() {
         // If we can go back, undo the changes
         int lyricsUndosPos = mainActivityInterface.getTempSong().getLyricsUndosPos();
-        Log.d(TAG,"undo: lyricsUndosPos: "+lyricsUndosPos);
         if (lyricsUndosPos>0) {
             lyricsUndosPos = lyricsUndosPos - 1;
-            Log.d(TAG,"undo: lyricsUndosPos: "+lyricsUndosPos);
             mainActivityInterface.getTempSong().setLyricsUndosPos(lyricsUndosPos);
             addUndoStep = false;
             myView.lyrics.setText(mainActivityInterface.getTempSong().getLyricsUndos().get(lyricsUndosPos));
@@ -212,26 +209,74 @@ public class EditSongFragmentLyrics extends Fragment {
     }
 
     public void transpose(String direction) {
-        // If we are editing as choPro, we need to convert to OpenSong first
-        if (mainActivityInterface.getTempSong().getEditingAsChoPro()) {
-            String choProLyrics = mainActivityInterface.getTempSong().getLyrics();
-            // Convert the lyrics to OpenSong
-            mainActivityInterface.getTempSong().setLyrics(mainActivityInterface.getConvertChoPro().fromChordProToOpenSong(choProLyrics));
+        // If nothing is selected, we select the entire song
+        int selectedStart = myView.lyrics.getSelectionStart();
+        int selectedEnd = myView.lyrics.getSelectionEnd();
+        String selectedText;
+        String key = null;
+        if (selectedStart >= 0 && selectedEnd > selectedStart) {
+            selectedText = myView.lyrics.getText().toString().substring(selectedStart,selectedEnd);
+        } else {
+            selectedText = myView.lyrics.getText().toString();
+        }
+        if (selectedText.equals(myView.lyrics.getText().toString())) {
+            // We are transposing everything, so we'll pass the key to update
+            key = mainActivityInterface.getTempSong().getKey();
         }
 
-        // Transpose the OpenSong lyrics
-        mainActivityInterface.getTranspose().doTranspose(mainActivityInterface.getTempSong(),
+        // Get a temp variable as we might need to tweak first
+        // This keeps the original as we will replace that later
+        String processedSelectedText = selectedText;
+
+        // If we are editing as choPro, we need to convert to OpenSong first
+        if (mainActivityInterface.getTempSong().getEditingAsChoPro()) {
+            processedSelectedText = mainActivityInterface.getConvertChoPro().fromChordProToOpenSong(processedSelectedText);
+        }
+
+        // Transpose the OpenSong lyrics using a temp song that only has the important stuff
+        Song transposeSong = new Song();
+        transposeSong.setLyrics(processedSelectedText);
+        transposeSong.setDetectedChordFormat(mainActivityInterface.getTempSong().getDetectedChordFormat());
+        transposeSong.setDesiredChordFormat(mainActivityInterface.getTempSong().getDesiredChordFormat());
+        transposeSong.setKey(key);
+        transposeSong = mainActivityInterface.getTranspose().doTranspose(transposeSong,
                 direction,1,1,1);
+
+        processedSelectedText = transposeSong.getLyrics();
 
         // If we were using ChoPro, convert back
         if (mainActivityInterface.getTempSong().getEditingAsChoPro()) {
-            String choProLyrics =  mainActivityInterface.getConvertChoPro().fromOpenSongToChordPro(
-                    mainActivityInterface.getTempSong().getLyrics());
-            mainActivityInterface.getTempSong().setLyrics(choProLyrics);
+            processedSelectedText =  mainActivityInterface.getConvertChoPro().fromOpenSongToChordPro(
+                    processedSelectedText);
         }
+
+        // Now get the non selected text
+        String textBeforeSelection = "", textAfterSelection = "";
+        if (selectedStart>=0 && selectedEnd>selectedStart) {
+            textBeforeSelection = myView.lyrics.getText().toString().substring(0,selectedStart);
+        }
+        if (selectedStart >= 0 && selectedEnd > selectedStart) {
+            textAfterSelection = myView.lyrics.getText().toString().substring(selectedEnd,myView.lyrics.getText().length());
+            selectedEnd = selectedStart + processedSelectedText.length();
+        }
+
+        String newText = textBeforeSelection + processedSelectedText + textAfterSelection;
+        myView.lyrics.setText(newText);
+        mainActivityInterface.getTempSong().setLyrics(newText);
+        if (key!=null) {
+            mainActivityInterface.getTempSong().setKey(transposeSong.getKey());
+        }
+
+        // Highlight the new text
+        if (selectedStart>=0) {
+            myView.lyrics.setSelection(selectedStart,selectedEnd);
+        }
+
+        addUndoStep = true;
+
         // Don't add this as an undo/redo as it breaks the key
-        addUndoStep = false;
-        myView.lyrics.setText(mainActivityInterface.getTempSong().getLyrics());
+        //addUndoStep = false;
+        //myView.lyrics.setText(mainActivityInterface.getTempSong().getLyrics());
     }
 
     public void convertToOpenSong() {
@@ -257,10 +302,8 @@ public class EditSongFragmentLyrics extends Fragment {
             lyrics = mainActivityInterface.getTempSong().getLyrics();
         }
 
-        Log.d(TAG,"original: "+lyrics);
         // Use the text conversion to fix
         lyrics = mainActivityInterface.getConvertTextSong().convertText(lyrics);
-        Log.d(TAG,"texttidy: "+lyrics);
 
         // Put back (includes undo step)
         if (mainActivityInterface.getTempSong().getEditingAsChoPro()) {
@@ -269,38 +312,5 @@ public class EditSongFragmentLyrics extends Fragment {
         myView.lyrics.setText(lyrics);
         mainActivityInterface.getShowToast().doIt(getString(R.string.success));
     }
-
-
-    // The stuff for the bottom sheet
-
-    /*
-
-
-
-        activeColor = requireContext().getResources().getColor(R.color.colorSecondary);
-        inactiveColor = requireContext().getResources().getColor(R.color.colorPrimary);
-
-
-    if (editAsChoPro) {
-            // Do the conversion
-            // Initially set this to false so it triggers
-            editAsChoPro = false;
-            dealWithEditMode(true);
-            setButtonOn(chordProFormat,true);
-            setButtonOn(openSongFormat,false);
-        } else {
-            setButtonOn(chordProFormat,false);
-            setButtonOn(openSongFormat,true);
-        }
-
-
-    private void setButtonOn(MaterialButton button, boolean on) {
-        if (on) {
-            button.setBackgroundTintList(ColorStateList.valueOf(activeColor));
-        } else {
-            button.setBackgroundTintList(ColorStateList.valueOf(inactiveColor));
-        }
-    }
-     */
 
 }

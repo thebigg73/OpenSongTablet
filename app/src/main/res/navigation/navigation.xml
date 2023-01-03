@@ -150,6 +150,9 @@
                 <action
                     android:id="@+id/action_storageManagementFragment_to_moveContentDialog"
                     app:destination="@id/moveContentFragment" />
+                <deepLink
+                    android:id="@+id/deepLinkManageStorage"
+                    app:uri="@string/deeplink_manage_storage"/>
             </fragment>
 
             <!-- Choose the storage fragment -->

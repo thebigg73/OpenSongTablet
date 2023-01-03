@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:android="http://schemas.android.com/apk/res/android">
+<resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
 
     <!-- This is my main dark theme-->
     <!-- Set the main app theme-->
@@ -45,6 +45,11 @@
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowTranslucentNavigation">true</item>
         <item name="navigationIconTint">@color/white</item>
+        <!--
+        <item name="android:windowFullscreen">true</item>
+        -->
+        <item name="android:windowDrawsSystemBarBackgrounds" tools:targetApi="21">false</item>
+        <item name="android:windowLayoutInDisplayCutoutMode" tools:targetApi="28">shortEdges</item>
 
         <!-- For the default popup like MediaRouter, Nearby permissions -->
         <item name="colorBackgroundFloating">@color/colorSecondary</item>
@@ -306,7 +311,7 @@
         <item name="bottomSheetStyle">@style/AppModalStyle</item>
         <item name="android:windowIsFloating">false</item>
         <item name="expanded">true</item>
-        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowBackground">@color/transparent</item>
         <item name="android:windowAnimationStyle">@style/Animation.MaterialComponents.BottomSheetDialog</item>
         <item name="android:windowCloseOnTouchOutside">true</item>
         <item name="android:backgroundDimEnabled">true</item>

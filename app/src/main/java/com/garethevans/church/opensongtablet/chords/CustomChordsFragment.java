@@ -237,9 +237,9 @@ public class CustomChordsFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable editable) {
                 // Save the chosen instrument as our preference
-                mainActivityInterface.getPreferences().setMyPreferenceString(
-                        "chordInstrument",
-                        mainActivityInterface.getChordDisplayProcessing().getPrefFromInstrument(editable.toString()));
+                String pref = mainActivityInterface.getChordDisplayProcessing().getPrefFromInstrument(editable.toString());
+                mainActivityInterface.getPreferences().setMyPreferenceString("chordInstrument", pref);
+                mainActivityInterface.getMidi().setMidiInstrument(pref);
 
                 // This building part draws and measures
                 // Once measured, the views are shown, not hidden
@@ -310,6 +310,7 @@ public class CustomChordsFragment extends Fragment {
                     null,null,true);
             textInputBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"textInputBottomSheet");
         });
+        myView.playChord.setOnClickListener(v -> mainActivityInterface.getMidi().playMidiNotes(myView.customCode.getHint().toString(),"standard",200,800));
     }
 
     // Simple getters based on the instrument chosen
@@ -581,6 +582,7 @@ public class CustomChordsFragment extends Fragment {
                             getPrefFromInstrument(myView.instrument.getText().toString()) +
                     "_" + myView.chordName.getText().toString();
             myView.customCode.setHint(codeString);
+
             currentCode = codeString;
             canShowSave();
         }

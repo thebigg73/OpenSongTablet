@@ -17,7 +17,7 @@ public class ShowCase {
     @SuppressWarnings("unused")
     private final String TAG = "ShowCase";
     public void singleShowCase(Activity c, View target, String dismiss, String info, boolean rect, String id) {
-        singleShowCaseBuilder(c,target,dismiss,info,rect,id).build().show(c);
+        singleShowCaseBuilder(c,target,dismiss,info,rect,id).setMaskColour(c.getResources().getColor(R.color.showcaseColor)).build().show(c);
     }
 
     public MaterialShowcaseView.Builder getSingleShowCaseBuilderForListener(Activity c, View target,

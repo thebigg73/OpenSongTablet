@@ -22,6 +22,7 @@ import com.garethevans.church.opensongtablet.pdf.PDFPageBottomSheet;
 import com.garethevans.church.opensongtablet.songmenu.RandomSongBottomSheet;
 import com.garethevans.church.opensongtablet.stage.StageSectionAdapter;
 import com.garethevans.church.opensongtablet.utilities.SoundLevelBottomSheet;
+import com.garethevans.church.opensongtablet.utilities.TunerBottomSheet;
 import com.google.android.material.button.MaterialButton;
 
 public class PerformanceGestures {
@@ -342,6 +343,11 @@ public class PerformanceGestures {
         mainActivityInterface.navHome();
     }
 
+    // Show the tuner bottom sheet
+    public void showTuner() {
+        TunerBottomSheet tunerBottomSheet = new TunerBottomSheet();
+        tunerBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "tunerBottomSheet");
+    }
     // Show or hide the lyrics
     public void showLyrics() {
         boolean displayLyrics = mainActivityInterface.getPreferences().getMyPreferenceBoolean("displayLyrics", true);

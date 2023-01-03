@@ -106,7 +106,7 @@ public class ABCNotation {
         if (songAbc==null || songAbc.isEmpty()) {
 
             // Add a title
-            songAbc = "T:" + songTitle;
+            songAbc = "T:" + songTitle + "\n";
 
             // Add the song time signature
             if (songTimeSig.isEmpty()) {

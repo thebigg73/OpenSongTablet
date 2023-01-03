@@ -72,7 +72,7 @@ public class StorageManagementFragment extends Fragment {
                 myView.folderList.invalidate();
                 myView.storageGraph.setVisibility(View.VISIBLE);
                 myView.progressBar.setVisibility(View.GONE);
-                mainActivityInterface.forceImmersive();
+                mainActivityInterface.getWindowFlags().hideKeyboard();
             });
 
             // Prepare the showcase

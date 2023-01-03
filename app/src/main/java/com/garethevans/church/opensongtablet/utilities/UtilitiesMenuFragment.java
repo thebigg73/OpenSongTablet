@@ -43,5 +43,9 @@ public class UtilitiesMenuFragment extends Fragment {
             SoundLevelBottomSheet soundLevelBottomSheet = new SoundLevelBottomSheet();
             soundLevelBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"soundLevelBottomSheet");
         });
+        myView.tuner.setOnClickListener(v -> {
+            TunerBottomSheet tunerBottomSheet = new TunerBottomSheet();
+            tunerBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"tunerBottomSheet");
+        });
     }
 }

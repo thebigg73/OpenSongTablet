@@ -248,52 +248,53 @@
     <string name="customchords_name">Chord name</string>
     <string name="date">Date</string>
     <string name="dec_autoscroll_speed">Decrease Autoscroll Speed</string>
-    <string name="deeplink_abc" translatable="false">opensongapp://settings/actions/abcnotation</string>
-    <string name="deeplink_actionbar" translatable="false">opensongapp://settings/display/actionbar</string>
-    <string name="deeplink_alert" translatable="false">opensongapp://alert</string>
-    <string name="deeplink_backup" translatable="false">opensongapp://settings/storage/backup</string>
-    <string name="deeplink_bible" translatable="false">opensongapp://settings/bible</string>
-    <string name="deeplink_bootup" translatable="false">opensongapp://bootup</string>
-    <string name="deeplink_chords" translatable="false">opensongapp://settings/actions/chords</string>
-    <string name="deeplink_chords_custom" translatable="false">opensongapp://settings/chords/custom</string>
-    <string name="deeplink_chords_settings" translatable="false">opensongapp://settings/chords/settings</string>
-    <string name="deeplink_connected_display" translatable="false">opensongapp://settings/display/connected</string>
-    <string name="deeplink_controls" translatable="false">opensongapp://settings/controls</string>
-    <string name="deeplink_custom_slide" translatable="false">opensongapp://settings/sets/customslide</string>
-    <string name="deeplink_edit" translatable="false">opensongapp://settings/edit</string>
-    <string name="deeplink_export" translatable="false">opensongapp://settings/actions/export</string>
-    <string name="deeplink_fonts" translatable="false">opensongapp://settings/display/fonts</string>
-    <string name="deeplink_gestures" translatable="false">opensongapp://settings/controls/gestures</string>
-    <string name="deeplink_highlighter" translatable="false">opensongapp://songactions/highlighter/edit</string>
-    <string name="deeplink_import" translatable="false">opensongapp://settings/import</string>
-    <string name="deeplink_import_file" translatable="false">opensongapp://settings/import/file</string>
-    <string name="deeplink_import_osb" translatable="false">opensongapp://settings/import/osb</string>
-    <string name="deeplink_inlineset" translatable="false">opensongapp://settings/set/inlineset</string>
-    <string name="deeplink_kitkat_choose" translatable="false">opensongapp://settings/storage/kitkatchoose</string>
-    <string name="deeplink_links" translatable="false">opensongapp://settings/actions/links</string>
-    <string name="deeplink_margins" translatable="false">opensongapp://settings/display/margins</string>
-    <string name="deeplink_metronome" translatable="false">opensongapp://settings/actions/metronome</string>
-    <string name="deeplink_midi" translatable="false">opensongapp://settings/midi</string>
-    <string name="deeplink_move" translatable="false">opensongapp://settings/storage/move</string>
-    <string name="deeplink_nearby" translatable="false">opensongapp://settings/nearby</string>
-    <string name="deeplink_onsong" translatable="false">opensongapp://settings/onsong</string>
-    <string name="deeplink_pads" translatable="false">opensongapp://settings/pads</string>
-    <string name="deeplink_page_buttons" translatable="false">opensongapp://settings/controls/pagebuttons</string>
-    <string name="deeplink_pedals" translatable="false">opensongapp://settings/controls/pedals</string>
-    <string name="deeplink_performance" translatable="false">opensongapp://performance</string>
-    <string name="deeplink_preferences" translatable="false">opensongapp://preferences</string>
-    <string name="deeplink_presenter" translatable="false">opensongapp://presenter</string>
-    <string name="deeplink_profiles" translatable="false">opensongapp://settings/profiles</string>
-    <string name="deeplink_scaling" translatable="false">opensongapp://settings/display/scaling</string>
-    <string name="deeplink_set_storage" translatable="false">opensongapp://settings/storage/setstorage</string>
-    <string name="deeplink_sets" translatable="false">opensongapp://settings/sets</string>
-    <string name="deeplink_sets_backup_restore" translatable="false">opensongapp://settings/sets/backuprestore</string>
-    <string name="deeplink_sets_manage" translatable="false">opensongapp://settings/sets/manage</string>
-    <string name="deeplink_song_actions" translatable="false">opensongapp://settings/actions</string>
-    <string name="deeplink_sticky_notes" translatable="false">opensongapp://settings/actions/stickynotes</string>
-    <string name="deeplink_swipe" translatable="false">opensongapp://settings/controls/swipe</string>
-    <string name="deeplink_tags" translatable="false">opensongapp://settings/actions/tags</string>
-    <string name="deeplink_theme" translatable="false">opensongapp://settings/display/theme</string>
+    <string name="deeplink_abc" translatable="false">https://www.opensongapp.com/?p=settings/actions/abcnotation</string>
+    <string name="deeplink_actionbar" translatable="false">https://www.opensongapp.com/?p=settings/display/actionbar</string>
+    <string name="deeplink_alert" translatable="false">https://www.opensongapp.com/?p=alert</string>
+    <string name="deeplink_backup" translatable="false">https://www.opensongapp.com/?p=settings/storage/backup</string>
+    <string name="deeplink_bible" translatable="false">https://www.opensongapp.com/?p=settings/bible</string>
+    <string name="deeplink_bootup" translatable="false">https://www.opensongapp.com/?p=bootup</string>
+    <string name="deeplink_chords" translatable="false">https://www.opensongapp.com/?p=settings/actions/chords</string>
+    <string name="deeplink_chords_custom" translatable="false">https://www.opensongapp.com/?p=settings/chords/custom</string>
+    <string name="deeplink_chords_settings" translatable="false">https://www.opensongapp.com/?p=settings/chords/settings</string>
+    <string name="deeplink_connected_display" translatable="false">https://www.opensongapp.com/?p=settings/display/connected</string>
+    <string name="deeplink_controls" translatable="false">https://www.opensongapp.com/?p=settings/controls</string>
+    <string name="deeplink_custom_slide" translatable="false">https://www.opensongapp.com/?p=settings/sets/customslide</string>
+    <string name="deeplink_edit" translatable="false">https://www.opensongapp.com/?p=settings/edit</string>
+    <string name="deeplink_export" translatable="false">https://www.opensongapp.com/?p=settings/actions/export</string>
+    <string name="deeplink_fonts" translatable="false">https://www.opensongapp.com/?p=settings/display/fonts</string>
+    <string name="deeplink_gestures" translatable="false">https://www.opensongapp.com/?p=settings/controls/gestures</string>
+    <string name="deeplink_highlighter" translatable="false">https://www.opensongapp.com/?p=songactions/highlighter/edit</string>
+    <string name="deeplink_import" translatable="false">https://www.opensongapp.com/?p=settings/import</string>
+    <string name="deeplink_import_file" translatable="false">https://www.opensongapp.com/?p=settings/import/file</string>
+    <string name="deeplink_import_osb" translatable="false">https://www.opensongapp.com/?p=settings/import/osb</string>
+    <string name="deeplink_inlineset" translatable="false">https://www.opensongapp.com/?p=settings/set/inlineset</string>
+    <string name="deeplink_kitkat_choose" translatable="false">https://www.opensongapp.com/?p=settings/storage/kitkatchoose</string>
+    <string name="deeplink_links" translatable="false">https://www.opensongapp.com/?p=settings/actions/links</string>
+    <string name="deeplink_manage_storage" translatable="false">https://www.opensongapp.com/?p=settings/storage/manage</string>
+    <string name="deeplink_margins" translatable="false">https://www.opensongapp.com/?p=settings/display/margins</string>
+    <string name="deeplink_metronome" translatable="false">https://www.opensongapp.com/?p=settings/actions/metronome</string>
+    <string name="deeplink_midi" translatable="false">https://www.opensongapp.com/?p=settings/midi</string>
+    <string name="deeplink_move" translatable="false">https://www.opensongapp.com/?p=settings/storage/move</string>
+    <string name="deeplink_nearby" translatable="false">https://www.opensongapp.com/?p=settings/nearby</string>
+    <string name="deeplink_onsong" translatable="false">https://www.opensongapp.com/?p=settings/onsong</string>
+    <string name="deeplink_pads" translatable="false">https://www.opensongapp.com/?p=settings/pads</string>
+    <string name="deeplink_page_buttons" translatable="false">https://www.opensongapp.com/?p=settings/controls/pagebuttons</string>
+    <string name="deeplink_pedals" translatable="false">https://www.opensongapp.com/?p=settings/controls/pedals</string>
+    <string name="deeplink_performance" translatable="false">https://www.opensongapp.com/?p=performance</string>
+    <string name="deeplink_preferences" translatable="false">https://www.opensongapp.com/?p=preferences</string>
+    <string name="deeplink_presenter" translatable="false">https://www.opensongapp.com/?p=presenter</string>
+    <string name="deeplink_profiles" translatable="false">https://www.opensongapp.com/?p=settings/profiles</string>
+    <string name="deeplink_scaling" translatable="false">https://www.opensongapp.com/?p=settings/display/scaling</string>
+    <string name="deeplink_set_storage" translatable="false">https://www.opensongapp.com/?p=settings/storage/setstorage</string>
+    <string name="deeplink_sets" translatable="false">https://www.opensongapp.com/?p=settings/sets</string>
+    <string name="deeplink_sets_backup_restore" translatable="false">https://www.opensongapp.com/?p=settings/sets/backuprestore</string>
+    <string name="deeplink_sets_manage" translatable="false">https://www.opensongapp.com/?p=settings/sets/manage</string>
+    <string name="deeplink_song_actions" translatable="false">https://www.opensongapp.com/?p=settings/actions</string>
+    <string name="deeplink_sticky_notes" translatable="false">https://www.opensongapp.com/?p=settings/actions/stickynotes</string>
+    <string name="deeplink_swipe" translatable="false">https://www.opensongapp.com/?p=settings/controls/swipe</string>
+    <string name="deeplink_tags" translatable="false">https://www.opensongapp.com/?p=settings/actions/tags</string>
+    <string name="deeplink_theme" translatable="false">https://www.opensongapp.com/?p=settings/display/theme</string>
     <string name="default_autoscroll">Default autoscroll times</string>
     <string name="delete">Delete</string>
     <string name="delete_folder_info">Delete song subdirectory</string>
@@ -1122,6 +1123,7 @@ Check out the categories in the right hand options menu.
     <string name="website_swipe_settings" translatable="false">https://www.opensongapp.com/user-manual/controls/swipe-settings</string>
     <string name="website_tags" translatable="false">https://www.opensongapp.com/user-manual/songs/song-actions/tags</string>
     <string name="website_themes" translatable="false">https://www.opensongapp.com/user-manual/display/themes</string>
+    <string name="website_tuner" translatable="false">https://www.opensongapp.com/user-manual/utilities/tuner</string>
     <string name="welcome">Welcome to OpenSongApp</string>
     <string name="width">Width</string>
     <string name="words_and_music_by">Words and music by</string>
@@ -1130,4 +1132,12 @@ Check out the categories in the right hand options menu.
     <string name="youtube" translatable="false">YouTube</string>
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zoom_level">Zoom level</string>
+    <string name="top">Top</string>
+    <string name="immersive_mode">Immersive mode</string>
+    <string name="immersive_mode_info">Hide navigation and status bars to use more of your display</string>
+    <string name="ignore_cutouts">Ignore notches</string>
+    <string name="ignore_cutouts_info">If your device has notches (display cutouts), you can force the app to still draw over this space.  Make sure you can still see the menu buttons before you leave this page, otherwise you might not be able to access the app settings!</string>
+    <string name="tuner">Tuner</string>
+    <string name="tuner_info">Help to tune your instrument</string>
+    <string name="listen">Listen</string>
 </resources>

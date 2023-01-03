@@ -8,7 +8,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -51,9 +50,16 @@ public class PerformanceFragment extends Fragment {
     private MainActivityInterface mainActivityInterface;
     private ActionInterface actionInterface;
     private DisplayInterface displayInterface;
-    private int screenWidth, screenHeight, swipeMinimumDistance,
-            swipeMaxDistanceYError, swipeMinimumVelocity, availableWidth, availableHeight,
-            widthBeforeScale, heightBeforeScale, widthAfterScale, heightAfterScale, waitingOnViewsToDraw;
+    private int swipeMinimumDistance;
+    private int swipeMaxDistanceYError;
+    private int swipeMinimumVelocity;
+    private int availableWidth;
+    private int availableHeight;
+    private int widthBeforeScale;
+    private int heightBeforeScale;
+    private int widthAfterScale;
+    private int heightAfterScale;
+    private int waitingOnViewsToDraw;
     private float scaleFactor = 1.0f;
     private ModePerformanceBinding myView;
     private Animation animSlideIn, animSlideOut;
@@ -314,13 +320,13 @@ public class PerformanceFragment extends Fragment {
         myView.inlineSetList.checkVisibility();
 
         int[] screenSizes = mainActivityInterface.getDisplayMetrics();
-        int[] deviceInsets = mainActivityInterface.deviceInsets();
-        int widthMarginsAndPadding = deviceInsets[0] + deviceInsets[1] + deviceInsets[4] + deviceInsets[5];
-        int heightMarginsAndPadding = deviceInsets[2] + deviceInsets[3] + deviceInsets[6] + deviceInsets[7];
-        screenWidth = screenSizes[0] - myView.inlineSetList.getInlineSetWidth() - widthMarginsAndPadding;
-        screenHeight = screenSizes[1] - mainActivityInterface.getToolbar().getActionBarHeight(mainActivityInterface.needActionBar()) - heightMarginsAndPadding;
-        availableWidth = getResources().getDisplayMetrics().widthPixels - myView.inlineSetList.getInlineSetWidth() - widthMarginsAndPadding;
-        availableHeight = getResources().getDisplayMetrics().heightPixels - mainActivityInterface.getToolbar().getActionBarHeight(mainActivityInterface.needActionBar()) - heightMarginsAndPadding;
+        int[] margins = mainActivityInterface.getWindowFlags().getMargins();
+        int screenWidth = screenSizes[0];
+        int screenHeight = screenSizes[1];
+
+        availableWidth = screenWidth - margins[0] - margins[2] - myView.inlineSetList.getInlineSetWidth();
+        availableHeight = screenHeight - margins[1] - margins[3] - mainActivityInterface.getToolbar().getActionBarHeight(mainActivityInterface.needActionBar());
+
         widthBeforeScale = 0;
         heightBeforeScale = 0;
 
@@ -346,8 +352,6 @@ public class PerformanceFragment extends Fragment {
                         android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP)) {
             prepareXMLView();
         }
-
-
     }
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void preparePDFView() {
@@ -367,8 +371,8 @@ public class PerformanceFragment extends Fragment {
                 myView.recyclerView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 heightBeforeScale = pdfPageAdapter.getHeight();
                 heightAfterScale = heightBeforeScale;
-                recyclerLayoutManager.setSizes(pdfPageAdapter.getHeights(), screenHeight);
-                myView.recyclerView.setMaxScrollY(heightAfterScale - screenHeight);
+                recyclerLayoutManager.setSizes(pdfPageAdapter.getHeights(), availableHeight);
+                myView.recyclerView.setMaxScrollY(heightAfterScale - availableHeight);
 
                 // Do the slide in
                 myView.recyclerView.setVisibility(View.VISIBLE);
@@ -398,10 +402,10 @@ public class PerformanceFragment extends Fragment {
         widthBeforeScale = bmp.getWidth();
         heightBeforeScale = bmp.getHeight();
 
-        myView.zoomLayout.setPageSize(screenWidth, screenHeight);
+        myView.zoomLayout.setPageSize(availableWidth, availableHeight);
 
         if (widthBeforeScale>0 && heightBeforeScale>0) {
-            scaleFactor = Math.min((float)screenWidth/(float)widthBeforeScale, (float)screenHeight/(float)heightBeforeScale);
+            scaleFactor = Math.min((float)availableWidth/(float)widthBeforeScale, (float)availableHeight/(float)heightBeforeScale);
         } else {
             scaleFactor = 1f;
         }
@@ -459,8 +463,8 @@ public class PerformanceFragment extends Fragment {
                 myView.recyclerView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 heightBeforeScale = imageSlideAdapter.getHeight();
                 heightAfterScale = heightBeforeScale;
-                recyclerLayoutManager.setSizes(imageSlideAdapter.getHeights(),screenHeight);
-                myView.recyclerView.setMaxScrollY(heightAfterScale - screenHeight);
+                recyclerLayoutManager.setSizes(imageSlideAdapter.getHeights(),availableHeight);
+                myView.recyclerView.setMaxScrollY(heightAfterScale - availableHeight);
 
                 // Slide in
                 myView.recyclerView.setVisibility(View.VISIBLE);
@@ -574,8 +578,8 @@ public class PerformanceFragment extends Fragment {
     private void songIsReadyToDisplay() {
         // Set the page holder to fullscreen for now
         try {
-            myView.pageHolder.getLayoutParams().width = screenWidth;
-            myView.pageHolder.getLayoutParams().height = screenHeight;
+            myView.pageHolder.getLayoutParams().width = availableWidth;
+            myView.pageHolder.getLayoutParams().height = availableHeight;
             myView.songSheetTitle.setVisibility(View.VISIBLE);
 
             // All views have now been drawn, so measure the arraylist views
@@ -604,9 +608,9 @@ public class PerformanceFragment extends Fragment {
                         heightBeforeScale = stageSectionAdapter.getHeight();
                         heightAfterScale = heightBeforeScale;
 
-                        recyclerLayoutManager.setSizes(stageSectionAdapter.getHeights(), screenHeight);
+                        recyclerLayoutManager.setSizes(stageSectionAdapter.getHeights(), availableHeight);
                         myView.recyclerView.setHasFixedSize(false);
-                        myView.recyclerView.setMaxScrollY(heightAfterScale - screenHeight);
+                        myView.recyclerView.setMaxScrollY(heightAfterScale - availableHeight);
 
                         // Slide in
                         myView.recyclerView.setVisibility(View.VISIBLE);
@@ -630,15 +634,15 @@ public class PerformanceFragment extends Fragment {
                 myView.imageView.setVisibility(View.GONE);
                 myView.recyclerView.setVisibility(View.GONE);
 
-                myView.zoomLayout.setPageSize(screenWidth, screenHeight);
-                myView.pageHolder.getLayoutParams().width = screenWidth;
-                myView.pageHolder.getLayoutParams().height = screenHeight;
+                myView.zoomLayout.setPageSize(availableWidth, availableHeight);
+                myView.pageHolder.getLayoutParams().width = availableWidth;
+                myView.pageHolder.getLayoutParams().height = availableHeight;
 
                 float[] scaleInfo = mainActivityInterface.getProcessSong().addViewsToScreen(
                         false, mainActivityInterface.getSectionViews(),
                         mainActivityInterface.getSectionWidths(), mainActivityInterface.getSectionHeights(),
                         myView.pageHolder, myView.songView, myView.songSheetTitle,
-                        screenWidth, screenHeight, myView.songView.getCol1(), myView.songView.getCol2(),
+                        availableWidth, availableHeight, myView.songView.getCol1(), myView.songView.getCol2(),
                         myView.songView.getCol3(), false, getResources().getDisplayMetrics());
 
                 // Determine how many colums are scaled
@@ -657,15 +661,15 @@ public class PerformanceFragment extends Fragment {
                     // 2 columns. [0]=col1scale  [1]=col2scale  [2]=sectionnum for col2  [3]=biggest col height
                     scaleFactor = Math.max(scaleInfo[0],scaleInfo[1]);
                     heightAfterScale = (int)scaleInfo[3];
-                    myView.pageHolder.getLayoutParams().width = screenWidth;
-                    myView.songView.getLayoutParams().width = screenWidth;
+                    myView.pageHolder.getLayoutParams().width = availableWidth;
+                    myView.songView.getLayoutParams().width = availableWidth;
                 }  else if (scaleInfo.length==6) {
                     // 3 columns. [0]=col1scale  [1]=col2scale  [2]=col3scale
                     // [3]=sectionnum for col2  [4]=sectionbum for col3 [5]=biggest col height
                     scaleFactor = Math.max(scaleInfo[0],Math.max(scaleInfo[1],scaleInfo[2]));
                     heightAfterScale = (int)scaleInfo[5];
-                    myView.pageHolder.getLayoutParams().width = screenWidth;
-                    myView.songView.getLayoutParams().width = screenWidth;
+                    myView.pageHolder.getLayoutParams().width = availableWidth;
+                    myView.songView.getLayoutParams().width = availableWidth;
                 }
 
                 heightAfterScale = heightAfterScale + mainActivityInterface.getSongSheetTitleLayout().getHeight();
@@ -681,11 +685,6 @@ public class PerformanceFragment extends Fragment {
                     try {
                         // The new song sizes were sent to the zoomLayout in ProcessSong
                         int topPadding = 0;
-                        // Because the song header is a different view, don't do this
-                        /*if (myView.songSheetTitle.getChildCount() > 0) {
-                            //topPadding = myView.songSheetTitle.getHeight();
-                            topPadding = 0;
-                        }*/
 
                         myView.pageHolder.setVisibility(View.VISIBLE);
                         myView.pageHolder.startAnimation(animSlideIn);
@@ -713,7 +712,7 @@ public class PerformanceFragment extends Fragment {
             mainActivityInterface.getSong().setCurrentlyLoading(false);
 
             // Send the autoscroll information (if required)
-            mainActivityInterface.getAutoscroll().initialiseSongAutoscroll(heightAfterScale, screenHeight);
+            mainActivityInterface.getAutoscroll().initialiseSongAutoscroll(heightAfterScale, availableHeight);
 
             // Now deal with the highlighter file
             if (mainActivityInterface.getMode().equals(getString(R.string.mode_performance))) {
@@ -799,10 +798,6 @@ public class PerformanceFragment extends Fragment {
                             ViewGroup.LayoutParams rlp = myView.highlighterView.getLayoutParams();
                             rlp.width = (int)((float)w*scaleFactor);
                             rlp.height = (int)((float)h*scaleFactor);
-                            Log.d(TAG,"w:"+w+"  scaleFactor:"+scaleFactor+"  width:"+rlp.width);
-                            Log.d(TAG,"h:"+h+"  scaleFactor:"+scaleFactor+"  height:"+rlp.height);
-                            Log.d(TAG,"songView.width:"+myView.songView.getMeasuredWidth());
-                            Log.d(TAG,"songView.height:"+myView.songView.getMeasuredHeight());
 
                             myView.highlighterView.setLayoutParams(rlp);
                             RequestOptions requestOptions = new RequestOptions().centerInside().override(rlp.width,rlp.height);
@@ -856,7 +851,6 @@ public class PerformanceFragment extends Fragment {
                 getMyPreferenceString("songAutoScale","W").equals("N")
                 && w!=0 && h!=0) {
             try {
-                Log.d(TAG,"creating bitmap: "+w+"x"+h+"  topPadding:"+topPadding);
                 Bitmap bitmap = Bitmap.createBitmap(w, h+topPadding, Bitmap.Config.ARGB_8888);
                 Canvas canvas = new Canvas(bitmap);
                 if (myView != null) {

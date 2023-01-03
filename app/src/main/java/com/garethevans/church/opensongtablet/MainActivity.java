@@ -5,7 +5,6 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
-import android.graphics.Insets;
 import android.hardware.display.DisplayManager;
 import android.net.Uri;
 import android.os.Build;
@@ -18,11 +17,9 @@ import android.view.Display;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.RoundedCorner;
 import android.view.View;
-import android.view.WindowInsets;
+import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -154,6 +151,9 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
+import org.billthefarmer.mididriver.MidiDriver;
+import org.billthefarmer.mididriver.ReverbConstants;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -167,6 +167,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         ActionInterface, NearbyInterface, NearbyReturnActionsInterface, DialogReturnInterface,
         MidiAdapterInterface, SwipeDrawingInterface, BatteryStatus.MyInterface,
         DisplayInterface, EditSongFragmentInterface {
+
 
     private ActivityBinding myView;
     private boolean bootUpCompleted = false;
@@ -197,6 +198,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private MakePDF makePDF;
     private Metronome metronome;
     private Midi midi;
+    private MidiDriver midiDriver;
     private NearbyConnections nearbyConnections;
     private NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper;
     private OCR ocr;
@@ -258,13 +260,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private String whichMode, whattodo, importFilename;
     private final String presenter = "Presenter", performance = "Performance";
     private Uri importUri;
-    private boolean settingsOpen = false, showSetMenu, navBarKeepSpace,
+    private boolean settingsOpen = false, showSetMenu,
             pageButtonActive = true, fullIndexRequired, menuOpen, firstRun=true;
     private final String TAG = "MainActivity";
     private MenuItem settingsButton;
     private Locale locale;
     private Bitmap screenShot;
-    private int softKeyboardHeight = 0, customInsetL, customInsetR, customInsetB;
 
     private Intent fileOpenIntent;
 
@@ -272,6 +273,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (savedInstanceState!=null) {
+            bootUpCompleted = savedInstanceState.getBoolean("bootUpCompleted",false);
+        }
 
         WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
 
@@ -289,6 +294,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         // Set up views
         setupViews();
 
+        if (savedInstanceState != null) {
+            getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        }
+
         // Set up the navigation controller
         setupNavigation();
 
@@ -304,7 +313,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         dealWithIntent();
     }
 
-    @SuppressLint("WrongConstant")
     private void dealWithIntent() {
         if (fileOpenIntent!=null && fileOpenIntent.getData()!=null) {
             importUri = fileOpenIntent.getData();
@@ -315,7 +323,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 importFilename = storageAccess.getFileNameFromUri(importUri);
                 if (inputStream!=null) {
                     File tempLoc = new File(getExternalCacheDir(),"Import");
-                    Log.d(TAG,"Create folder:"+tempLoc.mkdirs());
+                    if (!tempLoc.mkdirs()) {
+                        Log.d(TAG,"Error creating folder:"+tempLoc);
+                    }
                     File tempFile = new File(tempLoc,importFilename);
                     FileOutputStream outputStream = new FileOutputStream(tempFile);
                     storageAccess.updateFileActivityLog(TAG+" dealWithIntent CopyFile "+importUri+" to "+tempFile);
@@ -350,18 +360,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private void setupHelpers() {
         storageAccess = new StorageAccess(this);
         preferences = new Preferences(this);
-
-        ViewCompat.setOnApplyWindowInsetsListener(getWindow().getDecorView(), (v, insets) -> {
-            boolean imeVisible = insets.isVisible(WindowInsetsCompat.Type.ime());
-            int height = insets.getInsets(WindowInsetsCompat.Type.ime()).bottom;
-            if (height>0) {
-                softKeyboardHeight = height;
-            }
-            // Moves the view to above the soft keyboard height
-            v.getRootView().setPadding(0,0,0,height);
-            windowFlags.setImmersive(!imeVisible);
-            return insets;
-        });
 
         // The song stuff
         songListBuildIndex = new SongListBuildIndex(this);
@@ -418,6 +416,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         performanceGestures = new PerformanceGestures(this);
         pageButtons = new PageButtons(this);
         midi = new Midi(this);
+        midiDriver = MidiDriver.getInstance();
+        midiDriver.start();
+        midiDriver.setReverb(ReverbConstants.OFF);
+        midiDriver.setVolume(100);
+
         pedalActions = new PedalActions(this);
         pad = new Pad(this, myView.onScreenInfo.getPad());
         autoscroll = new Autoscroll(this,myView.onScreenInfo.getAutoscrollTime(),
@@ -448,7 +451,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         setSupportActionBar(myView.myToolbar);
     }
 
-        @Override
+    @Override
     public void showActionBar() {
         boolean contentBehind = myView.myToolbar.contentBehind(settingsOpen);
         moveContentForActionBar(contentBehind);
@@ -457,17 +460,83 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void moveContentForActionBar(boolean contentBehind) {
+        updateMargins();
         if (contentBehind) {
-            myView.fragmentView.setPadding(customInsetL, 0, customInsetR, customInsetB);
+            myView.fragmentView.setPadding(0, 0, 0, 0);
         } else {
-            myView.fragmentView.setPadding(customInsetL,
-                    myView.myToolbar.getActionBarHeight(true),
-                    customInsetR, customInsetB);
+            int height = myView.myToolbar.getActionBarHeight(false);
+            if (windowFlags.getShowStatusInCutout() ) {
+                height += getWindowFlags().getCurrentTopCutoutHeight();
+            } else if (windowFlags.getShowStatus()) {
+                height += getWindowFlags().getStatusHeight();
+            }
+            myView.fragmentView.setPadding(0, height, 0, 0);
         }
     }
 
+    @Override
+    public void updateMargins() {
+        if (settingsOpen) {
+            myView.fragmentView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            myView.drawerLayout.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+        } else {
+            myView.fragmentView.setBackgroundColor(themeColors.getLyricsBackgroundColor());
+            myView.drawerLayout.setBackgroundColor(themeColors.getLyricsBackgroundColor());
+        }
+
+        int[] margins = windowFlags.getMargins();
+        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) myView.drawerLayout.getLayoutParams();
+        params.setMargins(margins[0], margins[1], margins[2], margins[3]);
+        myView.drawerLayout.setLayoutParams(params);
+
+        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) myView.notchBackground.getLayoutParams();
+        int height = myView.myToolbar.getActionBarHeight(true);
+        if (windowFlags.getShowStatusInCutout()) {
+            height += getWindowFlags().getCurrentTopCutoutHeight();
+        } else if (windowFlags.getShowStatus()) {
+            height += getWindowFlags().getStatusHeight();
+        }
+        layoutParams.height = height;
+        myView.notchBackground.setLayoutParams(layoutParams);
+    }
+
     private void setupViews() {
-        windowFlags = new WindowFlags(this.getWindow());
+        windowFlags = new WindowFlags(this, this.getWindow());
+        ViewCompat.setOnApplyWindowInsetsListener(myView.getRoot(), (v, insets) -> {
+
+            // On first call, we get a reference to the windowinsetscompat
+            // We need this in the windowFlags class, so set it if it is null
+            // Also set the initial screen rotation
+            if (windowFlags.getInsetsCompat()==null) {
+                windowFlags.setInsetsCompat(insets);
+                windowFlags.setCurrentRotation(this.getWindow().getDecorView().getDisplay().getRotation());
+            }
+
+            // If we have opened the soft keyboard we can get the height
+            boolean imeVisible = insets.isVisible(WindowInsetsCompat.Type.ime());
+            if (windowFlags.getSoftKeyboardHeight() == 0 && imeVisible) {
+                windowFlags.setSoftKeyboardHeight(insets.getInsets(WindowInsetsCompat.Type.ime()).bottom);
+            }
+
+            // Moves the view to above the soft keyboard height if required
+            if (imeVisible) {
+                v.getRootView().setPadding(0,0,0,windowFlags.getSoftKeyboardHeight());
+            } else {
+                v.getRootView().setPadding(0, 0, 0, 0);
+            }
+
+            // If the keyboard isn't visible, hide the other flags after a short delay
+            // This makes the mode immersive/sticky
+            if (!imeVisible) {
+                new Handler().postDelayed(() -> {
+                    windowFlags.hideOrShowSystemBars();
+                },1000);
+            }
+
+            return insets;
+
+        });
+
         myView.myToolbar.initialiseToolbar(this,this, getSupportActionBar());
         pageButtons.setMainFABS(
                 myView.actionFAB, myView.pageButtonRight.custom1Button,
@@ -527,9 +596,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         if (whichMode.equals("Presentation")) {
             whichMode = presenter;
         }
-
-        // Deal with any inset preferences or cutouts or system bars
-        updateInsetPrefs();
 
         // Song location
         song.setFilename(preferences.getMyPreferenceString("songFilename","Welcome to OpenSongApp"));
@@ -594,20 +660,19 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     menuOpen = slideOffset>initialVal;
                     decided = true;
                 }
-                // Hide the keyboard by forcing immersive
-                forceImmersive();
+                // Hide the keyboard
+                windowFlags.hideKeyboard();
             }
 
             @Override
             public void onDrawerOpened(@NonNull View drawerView) {
                 menuOpen = true;
                 hideActionButton(true);
-                setWindowFlags(true);
                 if (setSongMenuFragment()) {
                     showTutorial("songsetMenu",null);
                 }
-                // Hide the keyboard by forcing immersive
-                forceImmersive();
+                // Hide the keyboard
+                windowFlags.hideKeyboard();
                 myView.menuTop.versionCode.requestFocus();
             }
 
@@ -617,8 +682,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 if (!whichMode.equals(presenter)) {
                     hideActionButton(myView.drawerLayout.getDrawerLockMode(GravityCompat.START) != DrawerLayout.LOCK_MODE_UNLOCKED);
                 }
-                // Hide the keyboard by forcing immersive
-                windowFlags.forceImmersive();
+                // Hide the keyboard
+                windowFlags.hideKeyboard();
             }
 
             @Override
@@ -627,112 +692,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 resetVals();
             }
         });
-    }
-    @Override
-    public void forceImmersive() {
-        runOnUiThread(() -> windowFlags.forceImmersive());
-    }
-
-    @Override
-    public void setWindowFlags(boolean immersiveOn) {
-        // Fix the page flags
-        if (windowFlags==null) {
-            windowFlags = new WindowFlags(this.getWindow());
-        }
-        try {
-            windowFlags.setImmersive(immersiveOn);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void updateInsetPrefs() {
-        boolean defaultKeepNavSpace = false;
-        try {
-            @SuppressLint("DiscouragedApi") int resourceId = getResources().getIdentifier("config_navBarInteractionMode", "integer", "android");
-            if (resourceId > 0) {
-                if (getResources().getInteger(resourceId) == 2) {
-                    defaultKeepNavSpace = true;
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        navBarKeepSpace = getPreferences().getMyPreferenceBoolean("navBarKeepSpace",defaultKeepNavSpace);
-        customInsetL = getPreferences().getMyPreferenceInt("marginLeft",0);
-        customInsetR = getPreferences().getMyPreferenceInt("marginRight",0);
-        //customInsetT = getPreferences().getMyPreferenceInt("marginTop",0);
-        customInsetB = getPreferences().getMyPreferenceInt("marginBottom",0);
-    }
-
-    @Override
-    public int[] deviceInsets() {
-        int[] deviceInsets = new int[8];
-        deviceInsets[4] = customInsetL;
-        deviceInsets[5] = customInsetR;
-        //deviceInsets[6] = customInsetT;
-        deviceInsets[7] = customInsetB;
-        // Get the top-right rounded corner from WindowInsets.
-        final WindowInsets insets;
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            insets = getWindow().getDecorView().getRootWindowInsets();
-            Insets systemBars = insets.getInsetsIgnoringVisibility(WindowInsets.Type.systemBars());
-            Insets displayCutout = insets.getInsets(WindowInsets.Type.displayCutout());
-
-            int roundedL = 0, roundedR = 0, roundedB = 0;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                RoundedCorner bottomLeft = insets.getRoundedCorner(RoundedCorner.POSITION_BOTTOM_LEFT);
-                RoundedCorner bottomRight = insets.getRoundedCorner(RoundedCorner.POSITION_BOTTOM_RIGHT);
-                if (bottomLeft != null) {
-                    roundedL = bottomLeft.getRadius();
-                    roundedB = roundedL;
-
-                }
-                if (bottomRight != null) {
-                    roundedR = bottomRight.getRadius();
-                    roundedB = Math.max(roundedB, roundedR);
-                }
-            }
-
-            if (navBarKeepSpace) {
-                // Don't use left/right for now as this includes swipe space which we can draw on...
-                //deviceInsets[0] = Math.max(systemBars.left, Math.max(roundedL, displayCutout.left));
-                //deviceInsets[1] = Math.max(systemBars.right, Math.max(roundedR, displayCutout.right));
-                //deviceInsets[2] = Math.max(systemBars.top, Math.max(roundedB, displayCutout.top));
-                deviceInsets[3] = Math.max(systemBars.bottom, Math.max(roundedB, displayCutout.bottom));
-            }
-
-            FrameLayout.LayoutParams layoutParams1 = (FrameLayout.LayoutParams) myView.fragmentView.getLayoutParams();
-            layoutParams1.leftMargin = deviceInsets[0];
-            layoutParams1.rightMargin = deviceInsets[1];
-            //layoutParams1.topMargin = deviceInsets[2];
-            layoutParams1.bottomMargin = deviceInsets[3];
-            myView.fragmentView.setLayoutParams(layoutParams1);
-
-            DrawerLayout.LayoutParams songMenuLayoutParams = (DrawerLayout.LayoutParams) myView.songMenuLayout.getLayoutParams();
-            songMenuLayoutParams.leftMargin = deviceInsets[0];
-            songMenuLayoutParams.rightMargin = deviceInsets[1];
-            songMenuLayoutParams.topMargin = deviceInsets[2];
-            songMenuLayoutParams.bottomMargin = deviceInsets[3];
-            myView.songMenuLayout.setLayoutParams(songMenuLayoutParams);
-        }
-
-        if (settingsOpen) {
-            myView.fragmentView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-            myView.drawerLayout.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-        } else {
-            myView.fragmentView.setBackgroundColor(getMyThemeColors().getLyricsBackgroundColor());
-            myView.drawerLayout.setBackgroundColor(getMyThemeColors().getLyricsBackgroundColor());
-        }
-
-        myView.songMenuLayout.setPadding(customInsetL,0,customInsetR,customInsetB);
-        myView.fragmentView.setPadding(customInsetL, 0, customInsetR, customInsetB);
-
-        showActionBar();
-
-        return deviceInsets;
     }
 
     @Override
@@ -1161,7 +1120,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     public void updateToolbar(String what) {
         // Null titles are for the default song, author, etc.
         // Otherwise a new title is passed as a string (in a settings menu)
-        windowFlags.setImmersive(true);
+        //windowFlags.setImmersive(true);
         myView.myToolbar.setActionBar(what);
         myView.fragmentView.setTop(myView.myToolbar.getActionBarHeight(settingsOpen||menuOpen));
     }
@@ -1359,7 +1318,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             myView.drawerLayout.openDrawer(GravityCompat.START);
             menuOpen = true;
         }
-        forceImmersive();
+        // Hide the keyboard
+        windowFlags.hideKeyboard();
     }
     @Override
     public boolean getMenuOpen() {
@@ -1544,7 +1504,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
     @Override
     public int getSoftKeyboardHeight() {
-        return softKeyboardHeight;
+        return windowFlags.getSoftKeyboardHeight();
     }
     @Override
     public WindowFlags getWindowFlags() {
@@ -1672,6 +1632,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public Midi getMidi() {
         return midi;
+    }
+    @Override
+    public void sendToMidiDriver(byte[] bytes) {
+        if (midiDriver!=null) {
+            midiDriver.write(bytes);
+        }
     }
 
     // Sticky notes
@@ -1981,26 +1947,28 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void registerFragment(Fragment frag, String what) {
-        switch (what) {
-            case "Performance":
-                performanceFragment = (PerformanceFragment) frag;
-                if (whichMode.equals(getString(R.string.mode_presenter))) {
-                    whichMode = getString(R.string.mode_performance);
-                }
-                break;
-            case "Presenter":
-                presenterFragment = (PresenterFragment) frag;
-                whichMode = getString(R.string.mode_presenter);
-                break;
-            case "EditSongFragment":
-                editSongFragment = (EditSongFragment) frag;
-                break;
-            case "NearbyConnectionsFragment":
-                nearbyConnectionsFragment = (NearbyConnectionsFragment) frag;
-                break;
-            case "PedalsFragment":
-                pedalsFragment = (PedalsFragment) frag;
-                break;
+        if (whichMode != null) {
+            switch (what) {
+                case "Performance":
+                    performanceFragment = (PerformanceFragment) frag;
+                    if (whichMode.equals(getString(R.string.mode_presenter))) {
+                        whichMode = getString(R.string.mode_performance);
+                    }
+                    break;
+                case "Presenter":
+                    presenterFragment = (PresenterFragment) frag;
+                    whichMode = getString(R.string.mode_presenter);
+                    break;
+                case "EditSongFragment":
+                    editSongFragment = (EditSongFragment) frag;
+                    break;
+                case "NearbyConnectionsFragment":
+                    nearbyConnectionsFragment = (NearbyConnectionsFragment) frag;
+                    break;
+                case "PedalsFragment":
+                    pedalsFragment = (PedalsFragment) frag;
+                    break;
+            }
         }
     }
 
@@ -2824,25 +2792,49 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             } else if (!settingsOpen && presenterValid()) {
                 presenterFragment.orientationInlineSet(newConfig.orientation);
             }
-
+            windowFlags.setCurrentRotation(this.getWindow().getDecorView().getDisplay().getRotation());
         }
     }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean("bootUpCompleted",bootUpCompleted);
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
+        if (!myView.myToolbar.isShown() && bootUpCompleted) {
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
 
-        if (bootUpCompleted) {
+        } else if (bootUpCompleted) {
             // Set up the action bar
             setupActionbar();
 
             // Set up navigation
             setupNavigation();
 
-            // Fix the page flags
-            setWindowFlags(true);
-
             // Check displays
             checkDisplays();
+
+            // Start the midi driver
+            if (midiDriver!=null) {
+                midiDriver.start();
+            }
+
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        // Stop the midi driver
+        if (midiDriver!=null) {
+            midiDriver.stop();
         }
     }
 
@@ -2852,16 +2844,16 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         // Turn off nearby
         nearbyConnections.turnOffNearby();
         // Stop pad timers
-        if (pad!=null) {
+        if (pad != null) {
             pad.stopTimers(1);
             pad.stopTimers(2);
         }
         // Stop metronome timers
-        if (metronome!=null) {
+        if (metronome != null) {
             metronome.stopTimers(true);
         }
         // Stop autoscroll timers
-        if (autoscroll!=null) {
+        if (autoscroll != null) {
             autoscroll.stopTimers();
         }
 
@@ -2871,10 +2863,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
+        if (hasFocus) {
+            getWindowFlags().hideKeyboard();
+        }
         super.onWindowFocusChanged(hasFocus);
-        // Set the fullscreen window flags]
-        setWindowFlags(true);
-        deviceInsets();
+
         if (hasFocus && navController!=null && navController.getCurrentDestination()!=null) {
             if (Objects.requireNonNull(navController.getCurrentDestination()).getId()!=R.id.setStorageLocationFragment) {
                 showActionBar();

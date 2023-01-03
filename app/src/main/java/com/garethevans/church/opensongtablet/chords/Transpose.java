@@ -295,7 +295,7 @@ public class Transpose {
     }
 
     // This is the chord transpose engine
-    private String transposeString(Song thisSong) {
+    public String transposeString(Song thisSong) {
 
         // Now we have the new key, we can decide if we use flats or not for any notes
         if (thisSong.getKey()!=null) {

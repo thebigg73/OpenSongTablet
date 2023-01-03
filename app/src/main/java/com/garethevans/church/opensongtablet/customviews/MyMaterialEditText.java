@@ -194,6 +194,9 @@ public class MyMaterialEditText extends LinearLayout implements View.OnTouchList
     public int getSelectionStart() {
         return editText.getSelectionStart();
     }
+    public int getSelectionEnd() {
+        return editText.getSelectionEnd();
+    }
 
     public void setSelection(int position) {
         editText.setSelection(position);
@@ -259,6 +262,10 @@ public class MyMaterialEditText extends LinearLayout implements View.OnTouchList
 
     public void setSelected(boolean selected) {
         editText.setSelected(selected);
+    }
+
+    public void setSelection(int start, int end) {
+        editText.setSelection(start,end);
     }
 
     public void setEnabled(boolean enabled) {

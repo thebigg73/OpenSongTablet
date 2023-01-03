@@ -19,7 +19,14 @@
                 android:layout_height="wrap_content"
                 android:text="@string/sound_level_meter"
                 android:hint="@string/sound_level_meter_info" />
+            <TableRow style="@style/DividerLine" />
 
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                android:id="@+id/tuner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/tuner"
+                android:hint="@string/tuner_info" />
             <TableRow style="@style/DividerLine" />
 
         </LinearLayout>

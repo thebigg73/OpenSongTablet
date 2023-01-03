@@ -32,6 +32,7 @@ public class MyToolbar extends MaterialToolbar {
     private Context c;
     private MainActivityInterface mainActivityInterface;
     private ActionBar actionBar;
+    private View v;
     private final RelativeLayout batteryholder;
     private final TextView title;
     private final TextView author;
@@ -65,7 +66,7 @@ public class MyToolbar extends MaterialToolbar {
     }
     public MyToolbar(@NonNull Context context, @Nullable @org.jetbrains.annotations.Nullable AttributeSet attrs) {
         super(context, attrs);
-        View v = inflate(context, R.layout.view_toolbar, this);
+        v = inflate(context, R.layout.view_toolbar, this);
         setIcon = v.findViewById(R.id.setIcon);
         title = v.findViewById(R.id.songtitle_ab);
         key = v.findViewById(R.id.songkey_ab);

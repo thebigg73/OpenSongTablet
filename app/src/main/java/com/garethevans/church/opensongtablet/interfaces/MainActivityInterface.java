@@ -76,9 +76,6 @@ public interface MainActivityInterface {
     void updateSizes(int width, int height);
     int[] getDisplayMetrics();
     float getDisplayDensity();
-    int[] deviceInsets();
-    void updateInsetPrefs();
-    void setWindowFlags(boolean immersiveOn);
     boolean getBootUpCompleted();
     Locale getLocale();
     VersionNumber getVersionNumber();
@@ -216,6 +213,7 @@ public interface MainActivityInterface {
 
     // Midi
     Midi getMidi();
+    void sendToMidiDriver(byte[] bytes);
     void registerMidiAction(boolean actionDown, boolean actionUp, boolean actionLong, String note);
 
     // Database
@@ -242,7 +240,6 @@ public interface MainActivityInterface {
     ShowToast getShowToast();
     String getWhattodo();
     void setWhattodo(String whattodo);
-    void forceImmersive();
     WindowFlags getWindowFlags();
     int getSoftKeyboardHeight();
 
@@ -275,6 +272,7 @@ public interface MainActivityInterface {
     void addSectionSize(int position, int width, int height);
     void setSectionColors(ArrayList<Integer> colors);
     void toggleScale();
+    void updateMargins();
 
     // Song sheet titles
     void setSongSheetTitleLayout(LinearLayout linearLayout);

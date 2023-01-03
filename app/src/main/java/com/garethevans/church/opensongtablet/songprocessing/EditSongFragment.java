@@ -118,7 +118,7 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
                         mainActivityInterface.updateToolbarHelp(getString(R.string.website_edit_song_tag));
                         break;
                 }
-                mainActivityInterface.forceImmersive();
+                mainActivityInterface.getWindowFlags().hideKeyboard();
             }
         };
         myView.viewpager.registerOnPageChangeCallback(callback);

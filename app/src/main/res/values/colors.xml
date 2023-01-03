@@ -11,7 +11,7 @@
     <color name="colorAltPrimary">#232333</color>
 
     <!--Showcase overlay colour-->
-    <color name="showcaseColor">#ee141B22</color>
+    <color name="showcaseColor">#ee232333</color>
 
     <color name="mtrl_textinput_default_box_stroke_color" tools:override="true">#888888</color>
 

@@ -3,7 +3,6 @@ package com.garethevans.church.opensongtablet.chords;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -221,7 +220,6 @@ public class ChordDisplayProcessing {
         for (String chord : chordsInSong) {
             if (instrument.equals(instruments.get(0))) {
                 // Guitar chords
-                Log.d(TAG,"chordFormat: "+chordFormat+"   chord: "+chord);
                 addFingeringOrNull(chordDirectory.guitarChords(chordFormat, chord));
             } else if (instrument.equals(instruments.get(1))) {
                 // Ukelele chords
@@ -294,7 +292,6 @@ public class ChordDisplayProcessing {
                 }
             }
 
-            Log.d(TAG, "chord: " + chordName + "  fretLabel: " + fretLabel);
             // The first bit of chordBits is the fingering.  Get the number of strings
             char[] stringPositions = chordBits[0].toCharArray();
             ArrayList<Integer> stringPosArray = new ArrayList<>();
@@ -367,12 +364,10 @@ public class ChordDisplayProcessing {
                 chordTable.addView(guitarFret, fret + 1);
             }
             chordLayout.addView(chordTable);
-            Log.d(TAG, "chordBits[0]="+chordBits[0]);
             if (chordBits[0].isEmpty() || chordBits[0].equals("xxxxxx") || chordBits[0].equals("xxxxx") || chordBits[0].equals("xxxx")) {
                 // Allow clicking on this view to open a custom chord designer
                 chordLayout.setOnClickListener(view -> {
                     mainActivityInterface.setWhattodo("customChord_"+chordName);
-                    Log.d(TAG, "open custom chord: customChord_"+chordName);
                     mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_chords_custom),0);
                 });
             }
@@ -394,7 +389,6 @@ public class ChordDisplayProcessing {
 
     private TextView getChordName(String chordName) {
         chordName = chordName.replace("$", "");
-        Log.d(TAG,"chordName: "+chordName+"  isValidChord(): "+isValidChord(chordName));
         if (isValidChord(chordName)) {
             chordName = mainActivityInterface.getTranspose().convertToPreferredChord(chordName);
             TextView textView = new TextView(c);

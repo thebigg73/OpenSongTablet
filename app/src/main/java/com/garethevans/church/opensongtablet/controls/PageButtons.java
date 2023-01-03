@@ -159,6 +159,7 @@ public class PageButtons {
         actions.add("link");
         actions.add("nearby");
         actions.add("chordfingerings");
+        actions.add("tuner");
         actions.add("stickynotes");
         actions.add("pdfpage");
         actions.add("highlight");
@@ -200,6 +201,7 @@ public class PageButtons {
         text.add(c.getString(R.string.link));
         text.add(c.getString(R.string.connections_connect));
         text.add(c.getString(R.string.chord_fingering));
+        text.add("Tuner");
         text.add(c.getString(R.string.song_notes));
         text.add(c.getString(R.string.select_page));
         text.add(c.getString(R.string.highlight));
@@ -241,6 +243,7 @@ public class PageButtons {
         shortText.add(c.getString(R.string.open));
         shortText.add(c.getString(R.string.connections_discover));
         shortText.add(c.getString(R.string.show) + " / " + c.getString(R.string.hide));
+        shortText.add(c.getString(R.string.select));
         shortText.add(c.getString(R.string.show) + " / " + c.getString(R.string.hide));
         shortText.add(c.getString(R.string.select));
         shortText.add(c.getString(R.string.show) + " / " + c.getString(R.string.hide));
@@ -282,6 +285,7 @@ public class PageButtons {
         longText.add("");
         longText.add(c.getString(R.string.settings));
         longText.add(c.getString(R.string.edit));
+        longText.add("");
         longText.add(c.getString(R.string.edit));
         longText.add("");
         longText.add(c.getString(R.string.edit));
@@ -323,6 +327,7 @@ public class PageButtons {
         drawableIds.add(R.drawable.link);
         drawableIds.add(R.drawable.nearby);
         drawableIds.add(R.drawable.guitar);
+        drawableIds.add(R.drawable.tuner);
         drawableIds.add(R.drawable.note_text);
         drawableIds.add(R.drawable.book);
         drawableIds.add(R.drawable.highlighter);
@@ -549,6 +554,9 @@ public class PageButtons {
                 } else {
                     actionInterface.getPerformanceGestures().showChordFingerings();
                 }
+                break;
+            case "tuner":
+                actionInterface.getPerformanceGestures().showTuner();
                 break;
             case "stickynotes":
                 if (isLongPress) {

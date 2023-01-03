@@ -128,6 +128,7 @@ public class LyricsOptionsBottomSheet extends BottomSheetDialogFragment {
         });
     }
 
+
     private void setTransposeDetectedFormat() {
         String text = getString(R.string.chordformat_detected) + ": ";
         switch (mainActivityInterface.getTempSong().getDetectedChordFormat()) {

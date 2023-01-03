@@ -6,8 +6,10 @@
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/menuTop"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:minHeight="?attr/actionBarSize"
         android:orientation="horizontal"
         android:padding="12dp">
 
@@ -18,6 +20,7 @@
             android:layout_height="wrap_content"
             android:background="@color/colorAltPrimary"
             android:gravity="end"
+            android:layout_margin="12dp"
             custom:mydrawable="@drawable/arrow_left" />
 
         <ImageView
@@ -25,6 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/web"
+            android:layout_margin="12dp"
             android:contentDescription="@string/help"
             android:layout_gravity="center_vertical"/>
     </LinearLayout>

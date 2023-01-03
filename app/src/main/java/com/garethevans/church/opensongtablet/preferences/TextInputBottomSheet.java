@@ -125,13 +125,13 @@ public class TextInputBottomSheet extends BottomSheetDialogFragment {
     @Override
     public void onDismiss(@NonNull DialogInterface dialog) {
         super.onDismiss(dialog);
-        mainActivityInterface.forceImmersive();
+        mainActivityInterface.getWindowFlags().hideKeyboard();
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        mainActivityInterface.forceImmersive();
+        mainActivityInterface.getWindowFlags().hideKeyboard();
     }
 
     private void setViews() {

@@ -86,10 +86,23 @@
             android:layout_height="wrap_content"
             android:theme="@style/ActionBar"
             android:visibility="gone">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <!-- This bit draws a background for cutouts if required -->
+            <View
+                android:id="@+id/notchBackground"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/colorAltPrimary" />
+
         <com.garethevans.church.opensongtablet.customviews.MyToolbar
             android:id="@+id/myToolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/notchBackground"/>
+            </RelativeLayout>
         </com.google.android.material.appbar.AppBarLayout>
 
     </FrameLayout>
@@ -105,12 +118,21 @@
         android:orientation="vertical"
         android:focusable="true">
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        <!-- This bit draws a background for cutouts if required -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorAltPrimary" />
         <include
             android:id="@+id/menu_top"
             layout="@layout/menu_top"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom" />
+        </RelativeLayout>
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewpager"

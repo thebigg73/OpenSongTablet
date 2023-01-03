@@ -84,7 +84,7 @@ public class BulkTagAssignFragment extends Fragment {
     private void setupListeners() {
         myView.filterButtons.folderButton.setOnClickListener(v -> {
             songListSearchByFolder = !songListSearchByFolder;
-            showHideRows(myView.filters.folderSearch,songListSearchByFolder);
+            showHideRows(myView.filters.folderLayout,songListSearchByFolder);
             fixColor(myView.filterButtons.folderButton,songListSearchByFolder);
         });
         myView.filterButtons.titleButton.setOnClickListener(v -> {
@@ -94,7 +94,7 @@ public class BulkTagAssignFragment extends Fragment {
         });
         myView.filterButtons.tagButton.setOnClickListener(v -> {
             songListSearchByTag = !songListSearchByTag;
-            showHideRows(myView.filters.tagSearch,songListSearchByTag);
+            showHideRows(myView.filters.tagLayout,songListSearchByTag);
             fixColor(myView.filterButtons.tagButton,songListSearchByTag);
         });
         myView.filterButtons.keyButton.setOnClickListener(v -> {
@@ -155,10 +155,13 @@ public class BulkTagAssignFragment extends Fragment {
     }
 
     private void fixFilterRows() {
-        showHideRows(myView.filters.folderSearch, songListSearchByFolder);
+        // Hide the edit folder/tag buttons as not required here
+        myView.filters.manageTags.setVisibility(View.GONE);
+        myView.filters.manageFolders.setVisibility(View.GONE);
+        showHideRows(myView.filters.folderLayout, songListSearchByFolder);
         showHideRows(myView.filters.artistSearch, songListSearchByArtist);
         showHideRows(myView.filters.keySearch, songListSearchByKey);
-        showHideRows(myView.filters.tagSearch, songListSearchByTag);
+        showHideRows(myView.filters.tagLayout, songListSearchByTag);
         showHideRows(myView.filters.filterSearch, songListSearchByFilter);
         showHideRows(myView.filters.titleSearch, songListSearchByTitle);
     }
