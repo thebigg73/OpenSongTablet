@@ -314,10 +314,14 @@
     <string name="highlight">Alat za isticanje</string>
     <string name="highlight_info">Uredite beleške/napomene u markeru</string>
     <string name="hymn_number">Broj himne</string>
+    <string name="ignore_cutouts">Zanemari isečeće</string>
+    <string name="ignore_cutouts_info">Ako uređaj ima rezače (isečci ekrana), možete da naterate aplikaciju da i dalje prevlači preko ovog prostora.  Uverite se da i dalje možete da vidite dugmad menija pre nego što napustite ovu stranicu, jer u suprotnom možda nećete moći da pristupite postavkama aplikacije!</string>
     <string name="ignore_warning">Ignorirajte upozorenje</string>
     <string name="image">Slika</string>
     <string name="image_change">Kliknite na sliku da biste je promenili</string>
     <string name="image_slide">Slajd-šou slika</string>
+    <string name="immersive_mode">Imerzivni režim</string>
+    <string name="immersive_mode_info">Skrivanje trake za navigaciju i statusa da biste koristili veći deo ekrana</string>
     <string name="import_basic">Uvoz</string>
     <string name="import_from_file">Uvezi iz sačuvane datoteke</string>
     <string name="import_main">Uvezite ili kreirajte pesme</string>
@@ -358,6 +362,7 @@
     <string name="link_search_youtube">Pokušajte da pronađete ovu pesmu na Jutjubu. Ako pronađete ispravnu stavku, izaberite opciju \'Deli\', a zatim kopirajte vezu u međuspremnik. Zatim se možete vratiti ovde i nalepiti vezu iznad.</string>
     <string name="link_web">Online veza</string>
     <string name="link_youtube">YouTube veza</string>
+    <string name="listen">Sluљaj</string>
     <string name="load">Učitati</string>
     <string name="load_reusable">Učitaj slajd za ponovno korišćenje</string>
     <string name="location">Lokacija</string>
@@ -724,6 +729,7 @@
     <string name="timer_size">Timer size</string>
     <string name="title">Naslov</string>
     <string name="tool">Oruđe</string>
+    <string name="top">Vrh</string>
     <string name="transpose">Transponovati</string>
     <string name="transpose_capo">Transponovanje promenom kapo praga</string>
     <string name="transpose_capo_info">Zadržite akorde iste, ali promenite položaj kapa</string>
@@ -735,6 +741,8 @@
     <string name="trim_sections_info">Oslobađa se praznih redova posle svakog odeljka da bi povećao veličinu teksta</string>
     <string name="trim_wordspacing">Skratite razmak između reči</string>
     <string name="trim_wordspacing_info">Uklonite višak razmaka između reči</string>
+    <string name="tuner">Tjuner</string>
+    <string name="tuner_info">Pomoć pri štimoc vašeg instrumenta</string>
     <string name="ukulele">Ukulele</string>
     <string name="unknown">Nepoznato</string>
     <string name="update_projector_automatically">Ažurirajte projektor automatski</string>
@@ -765,4 +773,5 @@
     <string name="width">Širina</string>
     <string name="words_and_music_by">Reči i muzika</string>
     <string name="zoom_level">Nivo zumiranja</string>
+    <string name="microphone">Mikrofon</string>
 </resources>

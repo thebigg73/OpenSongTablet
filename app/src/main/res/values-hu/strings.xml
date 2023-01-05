@@ -314,10 +314,14 @@
     <string name="highlight">"Kiemelő"</string>
     <string name="highlight_info">Kiemelő jegyzetek / megjegyzések szerkesztése</string>
     <string name="hymn_number">"Hymn szám"</string>
+    <string name="ignore_cutouts">A kivágások figyelmen kívül hagyása</string>
+    <string name="ignore_cutouts_info">Ha az eszközén vannak bevágások (kivágások a kijelzőn), akkor kényszerítheti az alkalmazást, hogy továbbra is rajzoljon ezen a területen. Mielőtt elhagyja ezt az oldalt, győződjön meg róla, hogy továbbra is látja a menügombokat, ellenkező esetben előfordulhat, hogy nem tudja elérni az alkalmazás beállításait!</string>
     <string name="ignore_warning">Figyelmeztetés figyelmen kívül hagyása</string>
     <string name="image">"Kép"</string>
     <string name="image_change">Kattints a képre a változtatáshoz</string>
     <string name="image_slide">Kép slideshow</string>
+    <string name="immersive_mode">Magával ragadó mód</string>
+    <string name="immersive_mode_info">A navigáció és az állapotsorok elrejtése, hogy többet használhasson a kijelzőből</string>
     <string name="import_basic">Importálás</string>
     <string name="import_from_file">Importálás mentett fájlból</string>
     <string name="import_main">Dalok importálása vagy létrehozása</string>
@@ -358,6 +362,7 @@
     <string name="link_search_youtube">Próbálja meg megtalálni ezt a dalt a YouTube-on. Ha megtalálta a megfelelő elemet, válassza a „Megosztás” lehetőséget, majd másolja a hivatkozást a vágólapra. Ezután visszatérhet ide, és beillesztheti a fenti linket.</string>
     <string name="link_web">"Online kapcsolat"</string>
     <string name="link_youtube">"YouTube linket"</string>
+    <string name="listen">Hallgat</string>
     <string name="load">"Rak"</string>
     <string name="load_reusable">"Töltsön be egy újrafelhasználható slide"</string>
     <string name="location">Elhelyezkedés</string>
@@ -724,6 +729,7 @@
     <string name="timer_size">"Timer mérete"</string>
     <string name="title">Cím</string>
     <string name="tool">Eszköz</string>
+    <string name="top">Top</string>
     <string name="transpose">"Át kell ültetni"</string>
     <string name="transpose_capo">Transzponálás capo fret változással</string>
     <string name="transpose_capo_info">Tartsa az akkordokat ugyanazon, de változtassa meg a capo helyzetét</string>
@@ -735,6 +741,8 @@
     <string name="trim_sections_info">Megszabadul az üres soroktól minden szakasz után a szöveg méretének maximalizálása érdekében</string>
     <string name="trim_wordspacing">Vágja le a szóközt</string>
     <string name="trim_wordspacing_info">Távolítsa el a felesleges szóközöket a szavak között</string>
+    <string name="tuner">Hangoló</string>
+    <string name="tuner_info">Segítség hangszer hangolásában</string>
     <string name="ukulele">Ukulele</string>
     <string name="unknown">Ismeretlen</string>
     <string name="update_projector_automatically">A projektor automatikus frissítése</string>
@@ -765,4 +773,5 @@
     <string name="width">Szélesség</string>
     <string name="words_and_music_by">Szavak és zene</string>
     <string name="zoom_level">Nagyítási szint</string>
+    <string name="microphone">Mikrofon</string>
 </resources>

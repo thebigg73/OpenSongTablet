@@ -314,10 +314,14 @@
     <string name="highlight">"Zvýrazňovač"</string>
     <string name="highlight_info">Upravit poznámky / anotace zvýrazňovače</string>
     <string name="hymn_number">"Číslo Hymn"</string>
+    <string name="ignore_cutouts">Ignorujte výřezy</string>
+    <string name="ignore_cutouts_info">Pokud má vaše zařízení zářezy (výřezy na displeji), můžete aplikaci vynutit, aby přes tento prostor stále kreslila. Než opustíte tuto stránku, ujistěte se, že stále vidíte tlačítka nabídky, jinak se může stát, že nebudete mít přístup k nastavení aplikace!</string>
     <string name="ignore_warning">Ignorovat varování</string>
     <string name="image">"Obraz"</string>
     <string name="image_change">Pro změnu klikněte na obrázek</string>
     <string name="image_slide">"Image slideshow"</string>
+    <string name="immersive_mode">Imerzivní režim</string>
+    <string name="immersive_mode_info">Skryjte navigační a stavové řádky, abyste mohli více využívat svůj displej</string>
     <string name="import_basic">Import</string>
     <string name="import_from_file">Import z uloženého souboru</string>
     <string name="import_main">Importujte nebo vytvářejte skladby</string>
@@ -358,6 +362,7 @@
     <string name="link_search_youtube">Zkuste najít tuto písničku na YouTube. Pokud najdete správnou položku, vyberte možnost \'Sdílet\' a poté zkopírujte odkaz do schránky. Poté se můžete vrátit sem a vložit odkaz výše.</string>
     <string name="link_web">"Online odkaz"</string>
     <string name="link_youtube">Odkaz YouTube</string>
+    <string name="listen">Poslouchat</string>
     <string name="load">"Naložit"</string>
     <string name="load_reusable">"Vložte opakovaně použitelný snímek"</string>
     <string name="location">Umístění</string>
@@ -724,6 +729,7 @@
     <string name="timer_size">"Velikost časovače"</string>
     <string name="title">Nadpis</string>
     <string name="tool">Nástroj</string>
+    <string name="top">Horní</string>
     <string name="transpose">"Transpozice"</string>
     <string name="transpose_capo">Transponujte změnou capo pražce</string>
     <string name="transpose_capo_info">Udržujte akordy stejné, ale změňte polohu kapodastru</string>
@@ -735,6 +741,8 @@
     <string name="trim_sections_info">Zbaví se prázdných řádků za každou částí, aby se maximalizovala velikost textu</string>
     <string name="trim_wordspacing">Ořízněte mezery mezi slovy</string>
     <string name="trim_wordspacing_info">Odstraňte přebytečné mezery mezi slovy</string>
+    <string name="tuner">Tuner</string>
+    <string name="tuner_info">Pomozte vyladit váš nástroj</string>
     <string name="ukulele">Ukulele</string>
     <string name="unknown">Neznámo</string>
     <string name="update_projector_automatically">Aktualizujte projektor automaticky</string>
@@ -765,4 +773,5 @@
     <string name="width">Šířka</string>
     <string name="words_and_music_by">Slova a hudba od</string>
     <string name="zoom_level">Úroveň přiblížení</string>
+    <string name="microphone">Mikrofon</string>
 </resources>

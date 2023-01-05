@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     style="@style/FullscreenBottomSheet"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -84,6 +85,115 @@
                         android:padding="0dp"
                         android:layout_margin="4dp"
                         android:layout_height="wrap_content"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/tuner"
+                    android:layout_width="match_parent"
+                    android:layout_height="96dp"
+                    android:orientation="horizontal"
+                    android:layout_margin="16dp">
+
+                    <ImageView
+                        android:id="@+id/bandFlat4"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="38dp"
+                        android:padding="2dp"
+                        android:layout_gravity="center_vertical"
+                        android:contentDescription="@string/tuner"
+                        android:src="@drawable/tuner_block_off"/>
+
+                    <ImageView
+                        android:id="@+id/bandFlat3"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="42dp"
+                        android:padding="2dp"
+                        android:layout_gravity="center_vertical"
+                        android:contentDescription="@string/tuner"
+                        android:src="@drawable/tuner_block_off"/>
+
+                    <ImageView
+                        android:id="@+id/bandFlat2"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="50dp"
+                        android:padding="2dp"
+                        android:layout_gravity="center_vertical"
+                        android:contentDescription="@string/tuner"
+                        android:src="@drawable/tuner_block_off"/>
+
+                    <ImageView
+                        android:id="@+id/bandFlat1"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="72dp"
+                        android:padding="2dp"
+                        android:layout_gravity="center_vertical"
+                        android:contentDescription="@string/tuner"
+                        android:src="@drawable/tuner_block_off"/>
+
+                    <FrameLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="2"
+                        android:layout_height="96dp"
+                        android:padding="2dp"
+                        android:layout_gravity="center_vertical">
+                    <ImageView
+                        android:id="@+id/bandInTune"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:contentDescription="@string/tuner"
+                        android:layout_gravity="center"
+                        android:src="@drawable/tuner_block_off"/>
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/tunerNote"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:textSize="32sp"
+                            tools:text="A"/>
+                    </FrameLayout>
+                    <ImageView
+                        android:id="@+id/bandSharp1"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="72dp"
+                        android:padding="2dp"
+                        android:layout_gravity="center_vertical"
+                        android:contentDescription="@string/tuner"
+                        android:src="@drawable/tuner_block_off"/>
+
+                    <ImageView
+                        android:id="@+id/bandSharp2"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="50dp"
+                        android:padding="2dp"
+                        android:layout_gravity="center_vertical"
+                        android:contentDescription="@string/tuner"
+                        android:src="@drawable/tuner_block_off"/>
+
+                    <ImageView
+                        android:id="@+id/bandSharp3"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="42dp"
+                        android:padding="2dp"
+                        android:layout_gravity="center_vertical"
+                        android:contentDescription="@string/tuner"
+                        android:src="@drawable/tuner_block_off"/>
+
+                    <ImageView
+                        android:id="@+id/bandSharp4"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="38dp"
+                        android:padding="2dp"
+                        android:layout_gravity="center_vertical"
+                        android:contentDescription="@string/tuner"
+                        android:src="@drawable/tuner_block_off"/>
                 </LinearLayout>
 
                 <include

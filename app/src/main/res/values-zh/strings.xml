@@ -314,10 +314,14 @@
     <string name="highlight">"荧光笔"</string>
     <string name="highlight_info">编辑荧光笔注释/注释</string>
     <string name="hymn_number">"圣诗"</string>
+    <string name="ignore_cutouts">忽略切口</string>
+    <string name="ignore_cutouts_info">如果您的设备有凹口（显示切口），您可以强制应用程序仍然绘制此空间。离开此页面之前，请确保您仍然可以看到菜单按钮，否则您可能无法访问应用程序设置！</string>
     <string name="ignore_warning">忽略警告</string>
     <string name="image">"像"</string>
     <string name="image_change">点击图片进行更改</string>
     <string name="image_slide">"图像幻灯片"</string>
+    <string name="immersive_mode">沉浸式模式</string>
+    <string name="immersive_mode_info">隐藏导航栏和状态栏以使用更多显示</string>
     <string name="import_basic">进口</string>
     <string name="import_from_file">从保存的文件导入</string>
     <string name="import_main">导入或创建歌曲</string>
@@ -358,6 +362,7 @@
     <string name="link_search_youtube">尝试在 YouTube 上找到这首歌。 如果您找到正确的项目，请选择“共享”选项，然后将链接复制到剪贴板。 然后，您可以返回此处并粘贴上面的链接。</string>
     <string name="link_web">"在线链接"</string>
     <string name="link_youtube">"YouTube链接"</string>
+    <string name="listen">听</string>
     <string name="load">"负荷"</string>
     <string name="load_reusable">"装入可重复使用的幻灯片"</string>
     <string name="location">地点</string>
@@ -724,6 +729,7 @@
     <string name="timer_size">"计时器大小"</string>
     <string name="title">"称号"</string>
     <string name="tool">工具</string>
+    <string name="top">最佳</string>
     <string name="transpose">"移调"</string>
     <string name="transpose_capo">通过变调夹改变移调</string>
     <string name="transpose_capo_info">保持和弦不变，但改变变调夹的位置</string>
@@ -735,6 +741,8 @@
     <string name="trim_sections_info">消除每个部分后的空白行以最大化文本大小</string>
     <string name="trim_wordspacing">修剪字间距</string>
     <string name="trim_wordspacing_info">删除单词之间的多余空格</string>
+    <string name="tuner">调谐器</string>
+    <string name="tuner_info">帮助调音你的乐器</string>
     <string name="ukulele">四弦琴</string>
     <string name="unknown">"未知"</string>
     <string name="update_projector_automatically">自动更新投影仪</string>
@@ -765,4 +773,5 @@
     <string name="width">宽度</string>
     <string name="words_and_music_by">文字和音乐</string>
     <string name="zoom_level">缩放级别</string>
+    <string name="microphone">麦克风</string>
 </resources>

@@ -314,10 +314,14 @@
     <string name="highlight">"Evidenziatore"</string>
     <string name="highlight_info">Modifica note/annotazioni dell\'evidenziatore</string>
     <string name="hymn_number">"Numero Hymn"</string>
+    <string name="ignore_cutouts">Ignora i ritagli</string>
+    <string name="ignore_cutouts_info">Se il tuo dispositivo ha delle tacche (ritagli del display), puoi forzare l\'app a disegnare ancora su questo spazio. Assicurati di poter ancora vedere i pulsanti del menu prima di lasciare questa pagina, altrimenti potresti non essere in grado di accedere alle impostazioni dell\'app!</string>
     <string name="ignore_warning">Ignora avviso</string>
     <string name="image">"Immagine"</string>
     <string name="image_change">Clicca sull\'immagine per cambiare</string>
     <string name="image_slide">Immagine presentazione</string>
+    <string name="immersive_mode">Modalità immersiva</string>
+    <string name="immersive_mode_info">Nascondi le barre di navigazione e di stato per utilizzare una parte maggiore del display</string>
     <string name="import_basic">Importare</string>
     <string name="import_from_file">Importa da un file salvato</string>
     <string name="import_main">Importa o crea brani</string>
@@ -358,6 +362,7 @@
     <string name="link_search_youtube">Prova a trovare questa canzone su YouTube. Se trovi l\'elemento corretto, seleziona l\'opzione \"Condividi\" e poi copia il link negli appunti. Puoi quindi tornare qui e incollare il link sopra.</string>
     <string name="link_web">"Link online"</string>
     <string name="link_youtube">Link di YouTube</string>
+    <string name="listen">Ascolta</string>
     <string name="load">"Carico"</string>
     <string name="load_reusable">"Caricare un vetrino riutilizzabile"</string>
     <string name="location">Posizione</string>
@@ -724,6 +729,7 @@
     <string name="timer_size">"Dimensione timer"</string>
     <string name="title">Titolo</string>
     <string name="tool">Attrezzo</string>
+    <string name="top">Superiore</string>
     <string name="transpose">"Trasposizione"</string>
     <string name="transpose_capo">Trasposizione tramite cambio tasto capotasto</string>
     <string name="transpose_capo_info">Mantieni gli accordi uguali, ma cambia la posizione del capotasto</string>
@@ -735,6 +741,8 @@
     <string name="trim_sections_info">Elimina le righe vuote dopo ogni sezione per massimizzare la dimensione del testo</string>
     <string name="trim_wordspacing">Taglia la spaziatura delle parole</string>
     <string name="trim_wordspacing_info">Rimuovi gli spazi in eccesso tra le parole</string>
+    <string name="tuner">Sintonizzatore</string>
+    <string name="tuner_info">Aiuta ad accordare il tuo strumento</string>
     <string name="ukulele">Ukulele</string>
     <string name="unknown">Sconosciuto</string>
     <string name="update_projector_automatically">Aggiorna automaticamente il proiettore</string>
@@ -765,4 +773,5 @@
     <string name="width">Larghezza</string>
     <string name="words_and_music_by">Parole e musica di</string>
     <string name="zoom_level">Livello di zoom</string>
+    <string name="microphone">Microfono</string>
 </resources>

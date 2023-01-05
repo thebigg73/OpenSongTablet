@@ -401,10 +401,14 @@
     <string name="highlight_info">Edit highlighter notes / annotations</string>
     <string name="holychords" translatable="false">HolyChords.com</string>
     <string name="hymn_number">Hymn number</string>
+    <string name="ignore_cutouts">Ignore cutouts</string>
+    <string name="ignore_cutouts_info">If your device has notches (display cutouts), you can force the app to still draw over this space.  Make sure you can still see the menu buttons before you leave this page, otherwise you might not be able to access the app settings!</string>
     <string name="ignore_warning">Ignore warning</string>
     <string name="image">Image</string>
     <string name="image_change">Click on the image to change</string>
     <string name="image_slide">Image slideshow</string>
+    <string name="immersive_mode">Immersive mode</string>
+    <string name="immersive_mode_info">Hide navigation and status bars to use more of your display</string>
     <string name="import_basic">Import</string>
     <string name="import_from_file">Import from a saved file</string>
     <string name="import_main">Import or create songs</string>
@@ -501,6 +505,7 @@
     <string name="link_search_youtube">Try to find this song on YouTube. If you find the correct item, select the \'Share\' option and then copy the link to the clipboard. You can then return here and paste the link above.</string>
     <string name="link_web">Online link</string>
     <string name="link_youtube">YouTube link</string>
+    <string name="listen">Listen</string>
     <string name="load">Load</string>
     <string name="load_reusable">Load a reusable slide</string>
     <string name="location">Location</string>
@@ -902,6 +907,7 @@
     <string name="timer_size">Timer size</string>
     <string name="title">Title</string>
     <string name="tool">Tool</string>
+    <string name="top">Top</string>
     <string name="transpose">Transpose</string>
     <string name="transpose_capo">Transpose by capo fret change</string>
     <string name="transpose_capo_info">Keep the chords the same, but change the position of the capo</string>
@@ -913,6 +919,8 @@
     <string name="trim_sections_info">Gets rid of blank lines after each section to maximise text size</string>
     <string name="trim_wordspacing">Trim word spacing</string>
     <string name="trim_wordspacing_info">Remove excess spaces between words</string>
+    <string name="tuner">Tuner</string>
+    <string name="tuner_info">Help to tune your instrument</string>
     <string name="twitter_user" translatable="false">\@OpenSongApp</string>
     <string name="ukulele">Ukulele</string>
     <string name="ukutabs" translatable="false">UkuTabs.com</string>
@@ -1132,12 +1140,5 @@ Check out the categories in the right hand options menu.
     <string name="youtube" translatable="false">YouTube</string>
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zoom_level">Zoom level</string>
-    <string name="top">Top</string>
-    <string name="immersive_mode">Immersive mode</string>
-    <string name="immersive_mode_info">Hide navigation and status bars to use more of your display</string>
-    <string name="ignore_cutouts">Ignore notches</string>
-    <string name="ignore_cutouts_info">If your device has notches (display cutouts), you can force the app to still draw over this space.  Make sure you can still see the menu buttons before you leave this page, otherwise you might not be able to access the app settings!</string>
-    <string name="tuner">Tuner</string>
-    <string name="tuner_info">Help to tune your instrument</string>
-    <string name="listen">Listen</string>
+    <string name="microphone">Microphone</string>
 </resources>

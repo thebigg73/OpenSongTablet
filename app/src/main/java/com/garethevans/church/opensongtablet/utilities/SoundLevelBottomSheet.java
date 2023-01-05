@@ -1,8 +1,7 @@
 package com.garethevans.church.opensongtablet.utilities;
 
-import static com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_INDEFINITE;
-
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.media.AudioFormat;
@@ -15,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.FrameLayout;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -22,11 +22,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.appdata.InformationBottomSheet;
 import com.garethevans.church.opensongtablet.databinding.BottomSheetSoundLevelMeterBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.slider.Slider;
-import com.google.android.material.snackbar.Snackbar;
 
 public class SoundLevelBottomSheet extends BottomSheetDialogFragment {
 
@@ -57,6 +59,20 @@ public class SoundLevelBottomSheet extends BottomSheetDialogFragment {
         }
     }
 
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        BottomSheetDialog dialog = (BottomSheetDialog) super.onCreateDialog(savedInstanceState);
+        dialog.setOnShowListener(dialog1 -> {
+            FrameLayout bottomSheet = ((BottomSheetDialog) dialog1).findViewById(com.google.android.material.R.id.design_bottom_sheet);
+            if (bottomSheet != null) {
+                BottomSheetBehavior.from(bottomSheet).setState(BottomSheetBehavior.STATE_EXPANDED);
+            }
+        });
+        return dialog;
+    }
+
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -86,8 +102,6 @@ public class SoundLevelBottomSheet extends BottomSheetDialogFragment {
         myView.getRoot().setOnClickListener(v -> {
             if (!mainActivityInterface.getAppPermissions().hasAudioPermissions()) {
                 activityResultLauncher.launch(mainActivityInterface.getAppPermissions().getAudioPermissions());
-            } else {
-                myView.getRoot().setOnClickListener(null);
             }
         });
         myView.resetaverage.setOnClickListener(v -> {
@@ -146,18 +160,11 @@ public class SoundLevelBottomSheet extends BottomSheetDialogFragment {
                     }
                 }
 
-            } else if (shouldShowRequestPermissionRationale(mainActivityInterface.getAppPermissions().getAudioPermissions())) {
-                // Permission hasn't been allowed and we are due to explain why
-                try {
-                    Snackbar.make(myView.dialogHeader, R.string.microphone_rationale,
-                            LENGTH_INDEFINITE).setAction(android.R.string.ok, view -> activityResultLauncher.launch(
-                                    mainActivityInterface.getAppPermissions().getAudioPermissions())).show();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-            } else {
-                mainActivityInterface.getShowToast().doIt(getString(R.string.permissions_refused));
+            } else  {
+            // notify user
+            InformationBottomSheet informationBottomSheet = new InformationBottomSheet(getString(R.string.microphone),
+                    getString(R.string.permissions_refused), getString(R.string.settings), "appPrefs");
+            informationBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "InformationBottomSheet");
             }
         });
         activityResultLauncher.launch(mainActivityInterface.getAppPermissions().getAudioPermissions());

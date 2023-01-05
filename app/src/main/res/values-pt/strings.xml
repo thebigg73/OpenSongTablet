@@ -314,10 +314,14 @@
     <string name="highlight">"Marcador"</string>
     <string name="highlight_info">Editar notas/anotações do marcador</string>
     <string name="hymn_number">"Número Hymn"</string>
+    <string name="ignore_cutouts">Ignorar recortes</string>
+    <string name="ignore_cutouts_info">Se o seu dispositivo tiver entalhes (recortes na tela), você pode forçar o aplicativo a desenhar sobre esse espaço. Certifique-se de que você ainda pode ver os botões do menu antes de sair desta página, caso contrário, você pode não conseguir acessar as configurações do aplicativo!</string>
     <string name="ignore_warning">Ignorar aviso</string>
     <string name="image">Imagem</string>
     <string name="image_change">Clique na imagem para alterar</string>
     <string name="image_slide">Slideshow imagem</string>
+    <string name="immersive_mode">Modo imersivo</string>
+    <string name="immersive_mode_info">Oculte as barras de navegação e status para usar mais a tela</string>
     <string name="import_basic">Importar</string>
     <string name="import_from_file">Importar de um arquivo salvo</string>
     <string name="import_main">Importar ou criar músicas</string>
@@ -358,6 +362,7 @@
     <string name="link_search_youtube">Tente encontrar essa música no YouTube. Se você encontrar o item correto, selecione a opção \'Compartilhar\' e copie o link para a área de transferência. Você pode então retornar aqui e colar o link acima.</string>
     <string name="link_web">"Ligação on-line"</string>
     <string name="link_youtube">Link do YouTube</string>
+    <string name="listen">Ouço</string>
     <string name="load">"Carregar"</string>
     <string name="load_reusable">"Coloque um slide reutilizável"</string>
     <string name="location">Localização</string>
@@ -724,6 +729,7 @@
     <string name="timer_size">"Tamanho do temporizador"</string>
     <string name="title">Título</string>
     <string name="tool">Ferramenta</string>
+    <string name="top">Principal</string>
     <string name="transpose">"Transpor"</string>
     <string name="transpose_capo">Transpor por capo traste change</string>
     <string name="transpose_capo_info">Mantenha os acordes iguais, mas mude a posição do capo</string>
@@ -735,6 +741,8 @@
     <string name="trim_sections_info">Livra-se de linhas em branco após cada seção para maximizar o tamanho do texto</string>
     <string name="trim_wordspacing">Aparar espaçamento entre palavras</string>
     <string name="trim_wordspacing_info">Remova o excesso de espaços entre as palavras</string>
+    <string name="tuner">Sintonizador</string>
+    <string name="tuner_info">Ajuda para afinar seu instrumento</string>
     <string name="ukulele">Ukulele</string>
     <string name="unknown">Desconhecido</string>
     <string name="update_projector_automatically">Atualize o projetor automaticamente</string>
@@ -765,4 +773,5 @@
     <string name="width">Largura</string>
     <string name="words_and_music_by">Palavras e música de</string>
     <string name="zoom_level">Nível de zoom</string>
+    <string name="microphone">Microfone</string>
 </resources>

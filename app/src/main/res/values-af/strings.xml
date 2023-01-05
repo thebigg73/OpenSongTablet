@@ -314,10 +314,14 @@
     <string name="highlight">Highlighter</string>
     <string name="highlight_info">Wysig highlighter notas / aantekeninge</string>
     <string name="hymn_number">"Hymn aantal"</string>
+    <string name="ignore_cutouts">Ignoreer kerwe</string>
+    <string name="ignore_cutouts_info">As jou toestel kepe het (vertoonuitknipsels), kan jy die toepassing dwing om steeds oor hierdie spasie te teken. Maak seker dat jy steeds die kieslysknoppies kan sien voordat jy hierdie bladsy verlaat, anders sal jy dalk nie toegang tot die programinstellings kry nie!</string>
     <string name="ignore_warning">Ignoreer waarskuwing</string>
     <string name="image">"Image"</string>
     <string name="image_change">Klik op die prent om te verander</string>
     <string name="image_slide">"Image skyfievertoning"</string>
+    <string name="immersive_mode">Immersiewe modus</string>
+    <string name="immersive_mode_info">Versteek navigasie- en statusbalke om meer van jou skerm te gebruik</string>
     <string name="import_basic">Invoer</string>
     <string name="import_from_file">Voer in vanaf \'n gestoorde lêer</string>
     <string name="import_main">Voer liedjies in of skep dit</string>
@@ -358,6 +362,7 @@
     <string name="link_search_youtube">Probeer om hierdie liedjie op YouTube te vind. As jy die regte item kry, kies die \'Deel\'-opsie en kopieer dan die skakel na die knipbord. Jy kan dan hierheen terugkeer en die skakel hierbo plak.</string>
     <string name="link_web">"Online skakel"</string>
     <string name="link_youtube">"YouTube-skakel"</string>
+    <string name="listen">Luister</string>
     <string name="load">"Laai"</string>
     <string name="load_reusable">"Laai 'n herbruikbare slide"</string>
     <string name="location">Ligging</string>
@@ -724,6 +729,7 @@
     <string name="timer_size">"Timer grootte"</string>
     <string name="title">Titel</string>
     <string name="tool">Gereedskap</string>
+    <string name="top">Top</string>
     <string name="transpose">"Transponeer"</string>
     <string name="transpose_capo">Transponeer deur capo fret verandering</string>
     <string name="transpose_capo_info">Hou die akkoorde dieselfde, maar verander die posisie van die capo</string>
@@ -735,6 +741,8 @@
     <string name="trim_sections_info">Raak ontslae van leë reëls na elke afdeling om teksgrootte te maksimeer</string>
     <string name="trim_wordspacing">Sny woordspasiëring af</string>
     <string name="trim_wordspacing_info">Verwyder oortollige spasies tussen woorde</string>
+    <string name="tuner">Tuner</string>
+    <string name="tuner_info">Help om jou instrument te stem</string>
     <string name="ukulele">Ukulele</string>
     <string name="unknown">Onbekend</string>
     <string name="update_projector_automatically">Dateer projektor outomaties op</string>
@@ -765,4 +773,5 @@
     <string name="width">Breedte</string>
     <string name="words_and_music_by">Woorde en musiek deur</string>
     <string name="zoom_level">Zoemvlak</string>
+    <string name="microphone">Mikrofoon</string>
 </resources>

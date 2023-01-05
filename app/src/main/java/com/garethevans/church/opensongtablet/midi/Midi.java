@@ -54,7 +54,7 @@ public class Midi {
 
     private int midiDelay;
     private boolean includeBluetoothMidi;
-    private final List<String> notes = Arrays.asList("C0", "C#0", "D0", "D#0", "E0", "F0", "F#0", "G0", "G#0", "A0", "A#0", "B0",
+    public final List<String> notes = Arrays.asList("C0", "C#0", "D0", "D#0", "E0", "F0", "F#0", "G0", "G#0", "A0", "A#0", "B0",
             "C1", "C#1", "D1", "D#1", "E1", "F1", "F#1", "G1", "G#1", "A1", "A#1", "B1",
             "C2", "C#2", "D2", "D#2", "E2", "F2", "F#2", "G2", "G#2", "A2", "A#2", "B2",
             "C3", "C#3", "D3", "D#3", "E3", "F3", "F#3", "G3", "G#3", "A3", "A#3", "B3",
@@ -71,7 +71,7 @@ public class Midi {
     private final List<String> midiCommands = Arrays.asList("NoteOn", "NoteOff", "PC", "CC", "MSB", "LSB");
 
     private final List<String> guitarStringStartNotes = Arrays.asList("E3", "A3", "D4", "G4", "B4", "E5");
-    private final List<String> ukuleleStringStartNotes = Arrays.asList("G4", "C4", "E4", "A4");
+    private final List<String> ukuleleStringStartNotes = Arrays.asList("G5", "C5", "E5", "A5");
     private final List<String> banjo4StringStartNotes = Arrays.asList("D4", "G4", "B4", "D5");
     private final List<String> banjo5StringStartNotes = Arrays.asList("G5", "D4", "G4", "B4", "D5");
     private final List<String> pianoNotesStartNotes = Collections.singletonList("C4");
@@ -586,6 +586,10 @@ public class Midi {
                 break;
         }
         return startNote;
+    }
+
+    public List<String> getNotes() {
+        return notes;
     }
 }
 

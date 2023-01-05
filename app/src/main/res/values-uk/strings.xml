@@ -314,10 +314,14 @@
     <string name="highlight">Маркер</string>
     <string name="highlight_info">Редагувати примітки/анотації маркера</string>
     <string name="hymn_number">Номер Гімну</string>
+    <string name="ignore_cutouts">Ігнорувати вирізи</string>
+    <string name="ignore_cutouts_info">Якщо на вашому пристрої є насічки (вирізи дисплея), ви можете змусити програму все ще малювати цей простір.  Переконайтеся, що ви все ще можете бачити кнопки меню, перш ніж покинути цю сторінку, інакше ви не зможете отримати доступ до налаштувань програми!</string>
     <string name="ignore_warning">Ігнорувати попередження</string>
     <string name="image">Зображення</string>
     <string name="image_change">Натисніть на зображення, щоб змінити</string>
     <string name="image_slide">Зображення слайд</string>
+    <string name="immersive_mode">Імерсивний режим</string>
+    <string name="immersive_mode_info">Приховання навігаційних панелей і рядків стану для більшої кількості дисплея</string>
     <string name="import_basic">Імпорт</string>
     <string name="import_from_file">Імпорт із збереженого файлу</string>
     <string name="import_main">Імпортуйте або створюйте пісні</string>
@@ -358,6 +362,7 @@
     <string name="link_search_youtube">Спробуйте знайти цю пісню на YouTube. Якщо ви знайшли правильний елемент, виберіть опцію «Поділитися», а потім скопіюйте посилання в буфер обміну. Потім ви можете повернутися сюди та вставити посилання вище.</string>
     <string name="link_web">Інтернет посилання</string>
     <string name="link_youtube">YouTube посилання</string>
+    <string name="listen">Слухати</string>
     <string name="load">Завантаження</string>
     <string name="load_reusable">Завантажити слайд</string>
     <string name="location">Місцезнаходження</string>
@@ -724,6 +729,7 @@
     <string name="timer_size">Розмір таймера</string>
     <string name="title">Hазва</string>
     <string name="tool">Інструмент</string>
+    <string name="top">Верх</string>
     <string name="transpose">Транспонування</string>
     <string name="transpose_capo">Транспонування за допомогою зміни ладу капо</string>
     <string name="transpose_capo_info">Збережіть акорди колишніми, але змініть положення капо</string>
@@ -735,6 +741,8 @@
     <string name="trim_sections_info">Позбавляється від порожніх рядків після кожного розділу, щоб збільшити розмір тексту</string>
     <string name="trim_wordspacing">Вирізати інтервали між словами</string>
     <string name="trim_wordspacing_info">Видаляйте зайві пробіли між словами</string>
+    <string name="tuner">Тюнер</string>
+    <string name="tuner_info">Допоможіть налаштувати свій інструмент</string>
     <string name="ukulele">Yкулеле</string>
     <string name="unknown">Hевідомо</string>
     <string name="update_projector_automatically">Оновлюйте проектор автоматично</string>
@@ -765,4 +773,5 @@
     <string name="width">Ширина</string>
     <string name="words_and_music_by">Слова і музика</string>
     <string name="zoom_level">Рівень масштабування</string>
+    <string name="microphone">Мікрофон</string>
 </resources>

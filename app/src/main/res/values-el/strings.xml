@@ -314,10 +314,14 @@
     <string name="highlight">"Υψηλός φωτισμός"</string>
     <string name="highlight_info">Επεξεργασία σημειώσεων / σχολιασμών επισήμανσης</string>
     <string name="hymn_number">"Hymn number"</string>
+    <string name="ignore_cutouts">Αγνοήστε τις αποκοπές</string>
+    <string name="ignore_cutouts_info">Εάν η συσκευή σας έχει εγκοπές (αποκοπή οθόνης), μπορείτε να αναγκάσετε την εφαρμογή να συνεχίσει να τραβήξει πάνω από αυτό το διάστημα. Βεβαιωθείτε ότι εξακολουθείτε να βλέπετε τα κουμπιά μενού προτού φύγετε από αυτήν τη σελίδα, διαφορετικά ενδέχεται να μην έχετε πρόσβαση στις ρυθμίσεις της εφαρμογής!</string>
     <string name="ignore_warning">Αγνοήστε την προειδοποίηση</string>
     <string name="image">"Εικόνα"</string>
     <string name="image_change">Κάντε κλικ στην εικόνα για αλλαγή</string>
     <string name="image_slide">"Image slideshow"</string>
+    <string name="immersive_mode">Καθηλωτική λειτουργία</string>
+    <string name="immersive_mode_info">Απόκρυψη γραμμών πλοήγησης και κατάστασης για να χρησιμοποιήσετε περισσότερο την οθόνη σας</string>
     <string name="import_basic">Εισαγωγή</string>
     <string name="import_from_file">Εισαγωγή από ένα αποθηκευμένο αρχείο</string>
     <string name="import_main">Εισαγωγή ή δημιουργία τραγουδιών</string>
@@ -358,6 +362,7 @@
     <string name="link_search_youtube">Προσπαθήστε να βρείτε αυτό το τραγούδι στο YouTube. Εάν βρείτε το σωστό στοιχείο, επιλέξτε την επιλογή «Κοινή χρήση» και, στη συνέχεια, αντιγράψτε τον σύνδεσμο στο πρόχειρο. Στη συνέχεια, μπορείτε να επιστρέψετε εδώ και να επικολλήσετε τον παραπάνω σύνδεσμο.</string>
     <string name="link_web">"Online link"</string>
     <string name="link_youtube">"Σύνδεσμος YouTube"</string>
+    <string name="listen">Ακούω</string>
     <string name="load">"Άνοιγμα"</string>
     <string name="load_reusable">"Load a reusable slide"</string>
     <string name="location">Τοποθεσία</string>
@@ -724,6 +729,7 @@
     <string name="timer_size">"Χρονικό μέγεθος"</string>
     <string name="title">"Τίτλος"</string>
     <string name="tool">Εργαλείο</string>
+    <string name="top">Μπλουζα</string>
     <string name="transpose">"Αλλαγή τόνου"</string>
     <string name="transpose_capo">Μεταφορά με αλλαγή τάστα capo</string>
     <string name="transpose_capo_info">Κρατήστε τα ακόρντα ίδια, αλλά αλλάξτε τη θέση του capo</string>
@@ -735,6 +741,8 @@
     <string name="trim_sections_info">Απαλλαγείτε από κενές γραμμές μετά από κάθε ενότητα για να μεγιστοποιήσετε το μέγεθος του κειμένου</string>
     <string name="trim_wordspacing">Περικοπή διαστήματος λέξεων</string>
     <string name="trim_wordspacing_info">Αφαιρέστε τα υπερβολικά κενά μεταξύ των λέξεων</string>
+    <string name="tuner">Χορδιστής</string>
+    <string name="tuner_info">Βοηθήστε να κουρδίσετε το όργανό σας</string>
     <string name="ukulele">"Γιουκαλίλι"</string>
     <string name="unknown">"Άγνωστο"</string>
     <string name="update_projector_automatically">Αυτόματη ενημέρωση του προβολέα</string>
@@ -765,4 +773,5 @@
     <string name="width">Πλάτος</string>
     <string name="words_and_music_by">Λέξεις και μουσική από</string>
     <string name="zoom_level">Επίπεδο ζουμ</string>
+    <string name="microphone">Μικρόφωνο</string>
 </resources>

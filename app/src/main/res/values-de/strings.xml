@@ -314,10 +314,14 @@
     <string name="highlight">"Textmarker"</string>
     <string name="highlight_info">Textmarker-Notizen / Anmerkungen bearbeiten</string>
     <string name="hymn_number">"Liederbuch Nummer"</string>
+    <string name="ignore_cutouts">Ausschnitte ignorieren</string>
+    <string name="ignore_cutouts_info">Wenn Ihr Gerät Kerben (Displayausschnitte) hat, können Sie die App zwingen, trotzdem über diesen Bereich zu zeichnen. Stellen Sie sicher, dass Sie die Menüschaltflächen noch sehen können, bevor Sie diese Seite verlassen, da Sie sonst möglicherweise nicht auf die App-Einstellungen zugreifen können!</string>
     <string name="ignore_warning">Warnung ignorieren</string>
     <string name="image">"Bild"</string>
     <string name="image_change">Klicken Sie auf das Bild, um es zu ändern</string>
     <string name="image_slide">"Bilder-Folie"</string>
+    <string name="immersive_mode">Immersiver Modus</string>
+    <string name="immersive_mode_info">Blenden Sie Navigations- und Statusleisten aus, um mehr von Ihrem Display zu nutzen</string>
     <string name="import_basic">Importieren</string>
     <string name="import_from_file">Import aus einer gespeicherten Datei</string>
     <string name="import_main">Songs importieren oder erstellen</string>
@@ -358,6 +362,7 @@
     <string name="link_search_youtube">Versuchen Sie, dieses Lied auf YouTube zu finden. Wenn Sie das richtige Element finden, wählen Sie die Option „Teilen“ und kopieren Sie den Link in die Zwischenablage. Sie können dann hierher zurückkehren und den obigen Link einfügen.</string>
     <string name="link_web">"Online Link"</string>
     <string name="link_youtube">"YouTube-Link"</string>
+    <string name="listen">Hör mal zu</string>
     <string name="load">"Laden"</string>
     <string name="load_reusable">"Wiederverwendbare Folie laden"</string>
     <string name="location">Ort</string>
@@ -724,6 +729,7 @@
     <string name="timer_size">"Timergröße"</string>
     <string name="title">"Titel"</string>
     <string name="tool">Werkzeug</string>
+    <string name="top">Oben</string>
     <string name="transpose">"Transponieren"</string>
     <string name="transpose_capo">Transponieren durch Kapodaster-Bundwechsel</string>
     <string name="transpose_capo_info">Behalten Sie die gleichen Akkorde bei, aber ändern Sie die Position des Kapodasters</string>
@@ -735,6 +741,8 @@
     <string name="trim_sections_info">Beseitigt leere Zeilen nach jedem Abschnitt, um die Textgröße zu maximieren</string>
     <string name="trim_wordspacing">Kürzen Sie den Wortabstand</string>
     <string name="trim_wordspacing_info">Entfernen Sie überschüssige Leerzeichen zwischen Wörtern</string>
+    <string name="tuner">Tuner</string>
+    <string name="tuner_info">Helfen Sie mit, Ihr Instrument zu stimmen</string>
     <string name="ukulele">Ukulele</string>
     <string name="unknown">Unbekannt</string>
     <string name="update_projector_automatically">Projektor automatisch aktualisieren</string>
@@ -765,4 +773,5 @@
     <string name="width">Breite</string>
     <string name="words_and_music_by">Worte und Musik von</string>
     <string name="zoom_level">Zoomstufe</string>
+    <string name="microphone">Mikrofon</string>
 </resources>

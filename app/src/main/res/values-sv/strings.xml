@@ -314,10 +314,14 @@
     <string name="highlight">"Highlighter"</string>
     <string name="highlight_info">Redigera anteckningar/kommentarer med överstrykningspenna</string>
     <string name="hymn_number">"Sångnummer"</string>
+    <string name="ignore_cutouts">Ignorera utklipp</string>
+    <string name="ignore_cutouts_info">Om din enhet har skåror (skärmutskärningar) kan du tvinga appen att fortfarande dra över detta utrymme.  Se till att du fortfarande kan se menyknapparna innan du lämnar den här sidan, annars kanske du inte kan komma åt appinställningarna!</string>
     <string name="ignore_warning">Ignorera varning</string>
     <string name="image">"Bild"</string>
     <string name="image_change">Klicka på bilden för att ändra</string>
     <string name="image_slide">"Bildspel"</string>
+    <string name="immersive_mode">Uppslukande läge</string>
+    <string name="immersive_mode_info">Dölj navigerings- och statusfält för att använda mer av din skärm</string>
     <string name="import_basic">Importera</string>
     <string name="import_from_file">Importera från en sparad fil</string>
     <string name="import_main">Importera eller skapa låtar</string>
@@ -358,6 +362,7 @@
     <string name="link_search_youtube">Försök att hitta den här låten på YouTube. Om du hittar rätt objekt, välj alternativet \'Dela\' och kopiera sedan länken till urklipp. Du kan sedan återvända hit och klistra in länken ovan.</string>
     <string name="link_web">"Online länk"</string>
     <string name="link_youtube">"YouTube-länk"</string>
+    <string name="listen">Lyssna</string>
     <string name="load">"Ladda"</string>
     <string name="load_reusable">"Ladda en återanvändbar bild"</string>
     <string name="location">Plats</string>
@@ -724,6 +729,7 @@
     <string name="timer_size">"Timerns storlek"</string>
     <string name="title">"Titel"</string>
     <string name="tool">Verktyg</string>
+    <string name="top">Topp</string>
     <string name="transpose">Införliva</string>
     <string name="transpose_capo">Transponera med capo fret change</string>
     <string name="transpose_capo_info">Håll ackorden desamma, men ändra positionen för capon</string>
@@ -735,6 +741,8 @@
     <string name="trim_sections_info">Blir av med tomma rader efter varje avsnitt för att maximera textstorleken</string>
     <string name="trim_wordspacing">Trimma ordavstånd</string>
     <string name="trim_wordspacing_info">Ta bort överflödigt mellanslag mellan orden</string>
+    <string name="tuner">Stämmare</string>
+    <string name="tuner_info">Hjälp till att ställa in ditt instrument</string>
     <string name="ukulele">Ukulele</string>
     <string name="unknown">"Okänd"</string>
     <string name="update_projector_automatically">Uppdatera projektorn automatiskt</string>
@@ -765,4 +773,5 @@
     <string name="width">Bredd</string>
     <string name="words_and_music_by">Ord och musik av</string>
     <string name="zoom_level">Zoomnivå</string>
+    <string name="microphone">Mikrofon</string>
 </resources>

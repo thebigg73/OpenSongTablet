@@ -314,10 +314,14 @@
     <string name="highlight">"蛍光ペン"</string>
     <string name="highlight_info">蛍光ペンのメモ/注釈を編集する</string>
     <string name="hymn_number">"賛美歌番号"</string>
+    <string name="ignore_cutouts">カットアウトを無視</string>
+    <string name="ignore_cutouts_info">デバイスにノッチ (ディスプレイ カットアウト) がある場合は、アプリにこのスペースを強制的に描画させることができます。このページを離れる前に、メニュー ボタンが表示されていることを確認してください。そうしないと、アプリの設定にアクセスできなくなる可能性があります。</string>
     <string name="ignore_warning">警告を無視</string>
     <string name="image">"像"</string>
     <string name="image_change">変更するには画像をクリックしてください</string>
     <string name="image_slide">"画像スライドショー"</string>
+    <string name="immersive_mode">没入型モード</string>
+    <string name="immersive_mode_info">ナビゲーションとステータス バーを非表示にして、ディスプレイをより有効に活用する</string>
     <string name="import_basic">輸入</string>
     <string name="import_from_file">保存したファイルからインポートする</string>
     <string name="import_main">曲をインポートまたは作成する</string>
@@ -358,6 +362,7 @@
     <string name="link_search_youtube">YouTubeでこの曲を見つけてみてください。 正しいアイテムが見つかったら、[共有]オプションを選択して、リンクをクリップボードにコピーします。 その後、ここに戻って上のリンクを貼り付けることができます。</string>
     <string name="link_web">"オンラインリンク"</string>
     <string name="link_youtube">"YouTubeのリンク"</string>
+    <string name="listen">聞く</string>
     <string name="load">"積み込む"</string>
     <string name="load_reusable">"再利用可能なスライドをロードします"</string>
     <string name="location">位置</string>
@@ -724,6 +729,7 @@
     <string name="timer_size">"タイマーサイズ"</string>
     <string name="title">"タイトル"</string>
     <string name="tool">道具</string>
+    <string name="top">上</string>
     <string name="transpose">"トランスポーズ"</string>
     <string name="transpose_capo">カポフレットチェンジで移調</string>
     <string name="transpose_capo_info">コードは同じままにしますが、カポの位置を変更します</string>
@@ -735,6 +741,8 @@
     <string name="trim_sections_info">テキストサイズを最大化するために、各セクションの後の空白行を取り除きます</string>
     <string name="trim_wordspacing">単語間隔をトリミングする</string>
     <string name="trim_wordspacing_info">単語間の余分なスペースを削除します</string>
+    <string name="tuner">チューナー</string>
+    <string name="tuner_info">楽器のチューニングをお手伝い</string>
     <string name="ukulele">ウクレレ</string>
     <string name="unknown">"不明"</string>
     <string name="update_projector_automatically">プロジェクターを自動的に更新</string>
@@ -765,4 +773,5 @@
     <string name="width">幅</string>
     <string name="words_and_music_by">言葉と音楽</string>
     <string name="zoom_level">ズームレベル</string>
+    <string name="microphone">マイク</string>
 </resources>

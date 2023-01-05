@@ -1,5 +1,7 @@
 package com.garethevans.church.opensongtablet.utilities;
 
+import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
@@ -11,28 +13,46 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.res.ResourcesCompat;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.appdata.InformationBottomSheet;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
 import com.garethevans.church.opensongtablet.databinding.BottomSheetTunerBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.button.MaterialButton;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import be.tarsos.dsp.AudioDispatcher;
+import be.tarsos.dsp.AudioProcessor;
+import be.tarsos.dsp.io.android.AudioDispatcherFactory;
+import be.tarsos.dsp.pitch.PitchDetectionHandler;
+import be.tarsos.dsp.pitch.PitchProcessor;
 
 public class TunerBottomSheet  extends BottomSheetDialogFragment {
 
     private MainActivityInterface mainActivityInterface;
     private BottomSheetTunerBinding myView;
+    ActivityResultLauncher<String> activityResultLauncher;
+
     @SuppressWarnings("unused,FieldCanBeLocal")
     private final String TAG = "TunerBottomSheet";
+    private ArrayList<Double> midiNoteFrequency;
+    private final float confidence = 0.91f;
+
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -49,6 +69,20 @@ public class TunerBottomSheet  extends BottomSheetDialogFragment {
         }
     }
 
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        BottomSheetDialog dialog = (BottomSheetDialog) super.onCreateDialog(savedInstanceState);
+        dialog.setOnShowListener(dialog1 -> {
+            FrameLayout bottomSheet = ((BottomSheetDialog) dialog1).findViewById(com.google.android.material.R.id.design_bottom_sheet);
+            if (bottomSheet != null) {
+                BottomSheetBehavior.from(bottomSheet).setState(BottomSheetBehavior.STATE_EXPANDED);
+            }
+        });
+        return dialog;
+    }
+
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -63,6 +97,9 @@ public class TunerBottomSheet  extends BottomSheetDialogFragment {
 
         // Set the listeners
         setListeners();
+
+        // Initialise audio (and permisisons)
+        checkPermissions();
 
         return myView.getRoot();
     }
@@ -215,6 +252,12 @@ public class TunerBottomSheet  extends BottomSheetDialogFragment {
         myView.piano.d2.setOnClickListener(new PianoButton("D5"));
         myView.piano.dsharp2.setOnClickListener(new PianoButton("D#5"));
         myView.piano.e2.setOnClickListener(new PianoButton("E5"));
+
+        myView.tuner.setOnClickListener(v -> {
+            if (!mainActivityInterface.getAppPermissions().hasAudioPermissions()) {
+                activityResultLauncher.launch(mainActivityInterface.getAppPermissions().getAudioPermissions());
+            }
+        });
     }
 
     private class PianoButton implements View.OnClickListener {
@@ -241,4 +284,138 @@ public class TunerBottomSheet  extends BottomSheetDialogFragment {
     private String getTuningVariation() {
         return "standard";
     }
+
+    @SuppressLint("MissingPermission") // Checked in getAppPermissions
+    private void checkPermissions() {
+        activityResultLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+            if (isGranted) {
+                initialiseTuner();
+
+            } else {
+                // notify user
+                InformationBottomSheet informationBottomSheet = new InformationBottomSheet(getString(R.string.microphone),
+                        getString(R.string.permissions_refused), getString(R.string.settings), "appPrefs");
+                informationBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "InformationBottomSheet");
+
+            }
+        });
+        activityResultLauncher.launch(mainActivityInterface.getAppPermissions().getAudioPermissions());
+    }
+
+    private void initialiseTuner() {
+        midiNoteFrequency = new ArrayList<>();
+
+        myView.tunerNote.setText("-");
+
+        // Go through each entry from 0 to 127 and calculate the frequency for the note
+        for (int i=0; i<127; i++) {
+            float concertPitch = 440f;
+            double freq = (float)Math.pow(2,((i-69)/12f))* concertPitch;
+            Log.d(TAG,"i:"+i+"  note"+mainActivityInterface.getMidi().getNotes().get(i)+"  freq:"+freq);
+            midiNoteFrequency.add(freq);
+        }
+
+        int SAMPLE_RATE = 44100;
+        int BUFFER_SIZE = 1024 * 16;
+        int OVERLAP = 1024 * 2;
+        AudioDispatcher audioDispatcher = AudioDispatcherFactory.fromDefaultMicrophone(SAMPLE_RATE, BUFFER_SIZE, OVERLAP);
+
+        PitchDetectionHandler pitchDetectionHandler = (pitchDetectionResult, audioEvent) -> {
+            float pitchHz = pitchDetectionResult.getPitch();
+            float probability = pitchDetectionResult.getProbability();
+            boolean isPitched = pitchDetectionResult.isPitched();
+            myView.note0.post(() -> {
+                if (probability > confidence && pitchHz > 50 && pitchHz < 1600 && isPitched) {
+                    checkTheTuning(pitchHz);
+                }
+            });
+        };
+
+        AudioProcessor audioProcessor = new PitchProcessor(PitchProcessor.PitchEstimationAlgorithm.FFT_YIN, SAMPLE_RATE, BUFFER_SIZE, pitchDetectionHandler);
+        audioDispatcher.addAudioProcessor(audioProcessor);
+
+        Thread audioThread = new Thread(audioDispatcher, "Audio Thread");
+        audioThread.start();
+    }
+
+
+    private void checkTheTuning(float pitchHz) {
+        int foundNote = -1;
+
+        // Get the current note cents.  Less than 50 means we know the closest note
+        int currentCents = 100;
+        for (int i = 0; i < midiNoteFrequency.size(); i++) {
+            currentCents = (int) Math.round(1200 * (Math.log(pitchHz / midiNoteFrequency.get(i))));
+
+            if (Math.abs(currentCents) < 50) {
+                // Note detected, so no need to continue the loop
+                foundNote = i;
+                break;
+            }
+        }
+
+        if (foundNote >= 0 && Math.abs(currentCents) < 50) {
+            // We can now update the display
+            boolean isSharp = false, isFlat = false, inTune = false, closeInTune = false;
+            int band;
+            if (Math.abs(currentCents) > 30) {
+                band = 4;
+            } else if (Math.abs(currentCents) > 20) {
+                band = 3;
+            } else if (Math.abs(currentCents) > 10) {
+                band = 2;
+            } else if (Math.abs(currentCents) > 4) {
+                band = 1;
+            } else if (Math.abs(currentCents) > 2) {
+                band = 1;
+                closeInTune = true;
+            } else {
+                band = 0;
+            }
+
+            if (currentCents > 2) {
+                isSharp = true;
+            } else if (currentCents < -2) {
+                isFlat = true;
+            } else {
+                inTune = true;
+            }
+
+            //Log.d(TAG, "band:"+band+"  isFlat:" + isFlat + "  inTune:" + inTune + "  isSharp:" + isSharp+"  currentCents:"+currentCents);
+
+            myView.tunerNote.setText(mainActivityInterface.getMidi().getNotes().get(foundNote).replaceAll("[^a-zA-Z]", ""));
+            setTunerBlocks(myView.bandFlat4, isFlat && band == 4, false);
+            setTunerBlocks(myView.bandFlat3, isFlat && band >= 3, false);
+            setTunerBlocks(myView.bandFlat2, isFlat && band >= 2, false);
+            setTunerBlocks(myView.bandFlat1, isFlat && band >= 1, false);
+            setTunerBlocks(myView.bandInTune, (inTune && band == 0) || closeInTune, true);
+            setTunerBlocks(myView.bandSharp1, isSharp && band >= 1, false);
+            setTunerBlocks(myView.bandSharp2, isSharp && band >= 2, false);
+            setTunerBlocks(myView.bandSharp3, isSharp && band >= 3, false);
+            setTunerBlocks(myView.bandSharp4, isSharp && band == 4, false);
+
+        } else {
+            myView.tunerNote.setText("-");
+            setTunerBlocks(myView.bandFlat4, false, false);
+            setTunerBlocks(myView.bandFlat3, false, false);
+            setTunerBlocks(myView.bandFlat2, false, false);
+            setTunerBlocks(myView.bandFlat1, false, false);
+            setTunerBlocks(myView.bandInTune, false, false);
+            setTunerBlocks(myView.bandSharp1, false, false);
+            setTunerBlocks(myView.bandSharp2, false, false);
+            setTunerBlocks(myView.bandSharp3, false, false);
+            setTunerBlocks(myView.bandSharp4, false, false);
+        }
+    }
+
+    private void setTunerBlocks(ImageView view, boolean isOn, boolean green) {
+        if (green && isOn) {
+            view.setImageDrawable(ResourcesCompat.getDrawable(getResources(),R.drawable.tuner_in_tune,null));
+        } else if (isOn) {
+            view.setImageDrawable(ResourcesCompat.getDrawable(getResources(),R.drawable.tuner_block_on,null));
+        } else {
+            view.setImageDrawable(ResourcesCompat.getDrawable(getResources(),R.drawable.tuner_block_off,null));
+        }
+    }
+
 }
