@@ -117,8 +117,6 @@
     <string name="capo_fret">Capo fret</string>
     <string name="capo_hide">Autohide capo</string>
     <string name="capo_style">Capo fret as numeral</string>
-    <string name="capo_style_number" translatable="false">1,2,3...</string>
-    <string name="capo_style_numeral" translatable="false">I,II,III...</string>
     <string name="cast_namespace" translatable="false">urn:x-cast:com.garethevans.church.opensongtablet</string>
     <string name="category">Category</string>
     <string name="cavaquinho">Cavaquinho</string>
@@ -320,7 +318,6 @@
     <string name="edit_song_variation_temp">This item is transposed in the set.  You have been taken to the original song for editing.</string>
     <string name="edit_temporary">Temporary edit</string>
     <string name="edit_text_size">Edit text size</string>
-    <string name="editpdf">Edit in external PDF program</string>
     <string name="empty">Empty</string>
     <string name="ending">Ending</string>
     <string name="error">Error</string>
@@ -392,14 +389,12 @@
     <string name="github_description">Contribute to app development</string>
     <string name="green">Green</string>
     <string name="guitar">Guitar</string>
-    <string name="hdmi" translatable="false">HDMI</string>
     <string name="heading_scale">Scale heading text</string>
     <string name="help">Help (Online)</string>
     <string name="hex_color_code">Hex color code</string>
     <string name="hide">Hide</string>
     <string name="highlight">Highlighter</string>
     <string name="highlight_info">Edit highlighter notes / annotations</string>
-    <string name="holychords" translatable="false">HolyChords.com</string>
     <string name="hymn_number">Hymn number</string>
     <string name="ignore_cutouts">Ignore cutouts</string>
     <string name="ignore_cutouts_info">If your device has notches (display cutouts), you can force the app to still draw over this space.  Make sure you can still see the menu buttons before you leave this page, otherwise you might not be able to access the app settings!</string>
@@ -510,7 +505,6 @@
     <string name="load_reusable">Load a reusable slide</string>
     <string name="location">Location</string>
     <string name="location_not_enabled">To connect to devices please turn \'Location\' ON.  If you have a choice of mode, choose a mode that uses Wi-Fi.</string>
-    <string name="location_rationale">This feature is required to locate other network devices</string>
     <string name="logo">Logo</string>
     <string name="logo_info">Toggle between the logo and the song content</string>
     <string name="long_press">Long press/hold</string>
@@ -542,7 +536,6 @@
     <string name="metronome">Metronome</string>
     <string name="metronome_duration">Metronome duration (bars)</string>
     <string name="metronome_info">Adjust the metronome settings</string>
-    <string name="microphone_rationale">Microphone / audio recording is required to access the sound level meter.</string>
     <string name="midi" translatable="false">MIDI</string>
     <string name="midi_add">Add command</string>
     <string name="midi_auto">Auto send MIDI</string>
@@ -636,8 +629,6 @@
     <string name="paypal" translatable="false">PayPal</string>
     <string name="paypal_description">Send me a donation if you find the app useful</string>
     <string name="pdf" translatable="false">PDF</string>
-    <string name="pdftotext_extract">Extract text from PDF</string>
-    <string name="pdftotext_found">Text found:</string>
     <string name="pedal">Pedal</string>
     <string name="pedal_avoid_repeat">Show a warning before moving to the next song</string>
     <string name="pedal_avoid_repeat_info">Useful to avoid accidental presses</string>
@@ -668,7 +659,6 @@
     <string name="presentation_order_info">The song presentation order is shown below.  You can drag items to rearrange the order and swipe to remove.</string>
     <string name="presentation_order_use">If presentation order exists for the song, use this to create the display</string>
     <string name="presenter_mode">Presenter mode</string>
-    <string name="presoFontShadow">Presentation font shadow</string>
     <string name="preso_alpha">Background opacity</string>
     <string name="previous">Previous</string>
     <string name="print">Print</string>
@@ -743,7 +733,6 @@
     <string name="select">Select</string>
     <string name="select_all">Select all</string>
     <string name="select_page">Select page</string>
-    <string name="separator" translatable="false"> / </string>
     <string name="service_id" translatable="false">com.garethevans.church.opensongtablet</string>
     <string name="set">Set</string>
     <string name="set_add">Add to set</string>
@@ -809,8 +798,6 @@
     <string name="song_swipe_toggle">Allow swiping between songs</string>
     <string name="song_title">Song title</string>
     <string name="songs">Songs</string>
-    <string name="songs_in_folder">Song folder</string>
-    <string name="songselect" translatable="false">SongSelect</string>
     <string name="songsheet">Songsheet</string>
     <string name="songsheet_info">Displays a title with information about the song</string>
     <string name="sound">Sound</string>
@@ -830,8 +817,6 @@
     <string name="stage_mode_info">Display songs split into sections or as a stage monitor</string>
     <string name="stage_section_max">Max section height (Stage Mode)</string>
     <string name="start">Start</string>
-    <string name="start_stop_autoscroll">Start/stop autoscroll</string>
-    <string name="start_stop_metronome">Start/stop metronome</string>
     <string name="start_stop_pad">Start/stop pad</string>
     <string name="stop">Stop</string>
     <string name="storage">Storage</string>
@@ -843,11 +828,9 @@
     <string name="storage_manage">Manage storage</string>
     <string name="storage_notwritable">Unable to use</string>
     <string name="storage_quicktip">When selecting an OpenSong folder location:\nSELECT ONLY INTERNAL OR SD CARD storage.\nInternal storage is recommended.  This may list as device storage or with your device\'s name.\nWhen selecting you may need to change settings to show all storage.\nOn Android 10+ you should not select the Downloads or Root folder.  If in doubt, choose the \'Documents\' folder.</string>
-    <string name="storage_rationale">Access to your storage is required to read and write songs and sets.</string>
     <string name="storage_reset">Click here to change your storage location (where the root OpenSong folder is located).</string>
     <string name="storage_settings">Manage your storage location and song folders</string>
     <string name="storage_warning">"Please do not select the \'Songs\' folder as your storage location.  You should select the parent \'OpenSong\' folder location instead."</string>
-    <string name="subscription">(Subscription required)</string>
     <string name="success">Success</string>
     <string name="swipe">Swipe settings</string>
     <string name="swipe_allowance">Vertical movement allowed</string>
@@ -861,7 +844,6 @@
     <string name="tag_song">Song tags</string>
     <string name="tag_song_info">Manage song tags to help with song searching</string>
     <string name="tag_to_use">The tag to add or remove from songs</string>
-    <string name="tag_verse">Verse</string>
     <string name="tags_remove_from_songs">This theme tag will be removed from the following songs:</string>
     <string name="tap">Short press/tap</string>
     <string name="tap_tempo">Tap to set tempo</string>
@@ -884,27 +866,9 @@
     <string name="time_seconds">Show seconds</string>
     <string name="time_secs">Seconds</string>
     <string name="time_signature">Time signature</string>
-    <string-array name="time_signatures" translatable="false">
-        <item/>
-        <item>2/2</item>
-        <item>2/4</item>
-        <item>3/2</item>
-        <item>3/4</item>
-        <item>3/8</item>
-        <item>4/4</item>
-        <item>5/4</item>
-        <item>5/8</item>
-        <item>6/4</item>
-        <item>6/8</item>
-        <item>7/4</item>
-        <item>7/8</item>
-        <item>1/4</item>
-    </string-array>
     <string name="time_slide_pages">Time for each slide (s)</string>
     <string name="time_slide_pages_help">Leave blank for manual slideshow</string>
-    <string name="time_zero" translatable="false">0:00</string>
     <string name="timer_learn">Learn autoscroll time</string>
-    <string name="timer_size">Timer size</string>
     <string name="title">Title</string>
     <string name="tool">Tool</string>
     <string name="top">Top</string>
@@ -921,11 +885,8 @@
     <string name="trim_wordspacing_info">Remove excess spaces between words</string>
     <string name="tuner">Tuner</string>
     <string name="tuner_info">Help to tune your instrument</string>
-    <string name="twitter_user" translatable="false">\@OpenSongApp</string>
     <string name="ukulele">Ukulele</string>
-    <string name="ukutabs" translatable="false">UkuTabs.com</string>
     <string name="unknown">Unknown</string>
-    <string name="update_projector_automatically">Update projector automatically</string>
     <string name="use_default">Use default</string>
     <string name="used_by_permision">Used by permission</string>
     <string name="user_1">User 1</string>
@@ -1043,7 +1004,6 @@ Check out the categories in the right hand options menu.
     <string name="utilities">Utilities</string>
     <string name="utilities_info">Other tools for musicians</string>
     <string name="variation">Variation</string>
-    <string name="variation_edit">This item can be edited.  The original will be unaffected.</string>
     <string name="variation_make">Make a set item variation</string>
     <string name="verse">Verse</string>
     <string name="verse_background">Verse background</string>
@@ -1055,7 +1015,6 @@ Check out the categories in the right hand options menu.
     <string name="volume">Volume</string>
     <string name="volume_value">Current volume value</string>
     <string name="wait">Wait....</string>
-    <string name="web_search">Search internet for this song</string>
     <string name="website">Website</string>
     <string name="website_actionbar" translatable="false">https://www.opensongapp.com/user-manual/display/actionbar</string>
     <string name="website_address" translatable="false">https://www.opensongapp.com</string>
@@ -1097,7 +1056,6 @@ Check out the categories in the right hand options menu.
     <string name="website_metronome" translatable="false">https://www.opensongapp.com/user-manual/songs/song-actions/metronome</string>
     <string name="website_midi_connections" translatable="false">https://www.opensongapp.com/user-manual/midi/midi-settings</string>
     <string name="website_midi_song" translatable="false">https://www.opensongapp.com/user-manual/midi/song-midi-messages</string>
-    <string name="website_modes" translatable="false">https://www.opensongapp.com/user-guide/the-app-modes</string>
     <string name="website_music_score" translatable="false">https://www.opensongapp.com/user-manual/songs/song-actions/music-score</string>
     <string name="website_nearby" translatable="false">https://www.opensongapp.com/user-manual/connect-devices</string>
     <string name="website_ocr" translatable="false">https://www.opensongapp.com/user-manual/songs/ocr</string>
@@ -1135,8 +1093,6 @@ Check out the categories in the right hand options menu.
     <string name="welcome">Welcome to OpenSongApp</string>
     <string name="width">Width</string>
     <string name="words_and_music_by">Words and music by</string>
-    <string name="worshipready" translatable="false">WorshipReady.com</string>
-    <string name="worshiptogether" translatable="false">WorshipTogether</string>
     <string name="youtube" translatable="false">YouTube</string>
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zoom_level">Zoom level</string>

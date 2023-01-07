@@ -236,7 +236,6 @@
     <string name="edit_song_variation_temp">Αυτό το στοιχείο μεταφέρεται στο σετ. Έχετε μεταφερθεί στο αρχικό τραγούδι για επεξεργασία.</string>
     <string name="edit_temporary">Προσωρινή επεξεργασία</string>
     <string name="edit_text_size">Επεξεργασία μεγέθους κειμένου</string>
-    <string name="editpdf">"Επεξεργασία σε εξωτερικό πρόγραμμα PDF"</string>
     <string name="empty">Αδειάζω</string>
     <string name="ending">"Κατάληξη"</string>
     <string name="error">"Λάθος"</string>
@@ -367,7 +366,6 @@
     <string name="load_reusable">"Load a reusable slide"</string>
     <string name="location">Τοποθεσία</string>
     <string name="location_not_enabled">Για να συνδεθείτε σε συσκευές, ενεργοποιήστε την \"Τοποθεσία\". Εάν έχετε επιλογή λειτουργίας, επιλέξτε μια λειτουργία που χρησιμοποιεί Wi-Fi.</string>
-    <string name="location_rationale">Αυτή η δυνατότητα απαιτείται για τον εντοπισμό άλλων συσκευών δικτύου</string>
     <string name="logo">"Λογότυπο"</string>
     <string name="logo_info">Κάντε εναλλαγή μεταξύ του λογότυπου και του περιεχομένου του τραγουδιού</string>
     <string name="long_press">"Πατήστε παρατεταμένα"</string>
@@ -398,7 +396,6 @@
     <string name="metronome">"Metronome"</string>
     <string name="metronome_duration">Διάρκεια μετρονόμου (bars)</string>
     <string name="metronome_info">Προσαρμόστε τις ρυθμίσεις του μετρονόμου</string>
-    <string name="microphone_rationale">"Για πρόσβαση στον έλεγχο έντασης ήχου απαιτείται Μικρόφωνο / εγγραφή ήχου."</string>
     <string name="midi_add">"Προσθήκη εντολής"</string>
     <string name="midi_auto">"Αυτόματη αποστολή MIDI"</string>
     <string name="midi_bluetooth">"Συνδέστε τη συσκευή Bluetooth"</string>
@@ -482,8 +479,6 @@
     <string name="panic_stop">Όλη η έξοδος σταμάτησε</string>
     <string name="pause">Παύση</string>
     <string name="paypal_description">Στείλτε μου μια δωρεά εάν βρίσκετε την εφαρμογή χρήσιμη</string>
-    <string name="pdftotext_extract">"Εξαγωγή κειμένου από PDF"</string>
-    <string name="pdftotext_found">"Βρέθηκε κείμενο:"</string>
     <string name="pedal">"Πετάλι"</string>
     <string name="pedal_avoid_repeat">Εμφάνιση προειδοποίησης πριν μεταβείτε στο επόμενο τραγούδι</string>
     <string name="pedal_avoid_repeat_info">Χρήσιμο για την αποφυγή τυχαίων πατημάτων</string>
@@ -513,7 +508,6 @@
     <string name="presentation_order_info">Η σειρά παρουσίασης του τραγουδιού φαίνεται παρακάτω. Μπορείτε να σύρετε στοιχεία για να αναδιατάξετε τη σειρά και να σύρετε για κατάργηση.</string>
     <string name="presentation_order_use">Εάν υπάρχει σειρά παρουσίασης για το τραγούδι, χρησιμοποιήστε το για να δημιουργήσετε την οθόνη</string>
     <string name="presenter_mode">"Λειτουργία προβολής"</string>
-    <string name="presoFontShadow">"Σκιά γραμματοσειράς παρουσίασης"</string>
     <string name="preso_alpha">"Background opacity"</string>
     <string name="previous">Previous</string>
     <string name="print">Τυπώνω</string>
@@ -650,7 +644,6 @@
     <string name="song_swipe_toggle">"Toggle swipe to move between songs on/off"</string>
     <string name="song_title">"Song title"</string>
     <string name="songs">ΜΟΥΣΙΚΑ ΚΟΜΜΑΤΙΑ</string>
-    <string name="songs_in_folder">"Φάκελος τραγουδιού"</string>
     <string name="songsheet">"Τραγούδι"</string>
     <string name="songsheet_info">Εμφανίζει έναν τίτλο με πληροφορίες για το τραγούδι</string>
     <string name="sound">Ήχος</string>
@@ -669,8 +662,6 @@
     <string name="stage_mode_info">Εμφάνιση τραγουδιών χωρισμένα σε τμήματα ή ως οθόνη σκηνής</string>
     <string name="stage_section_max">"Μέγιστο ύψος διατομής (Λειτουργία σκηνής)"</string>
     <string name="start">"Ξεκίνα"</string>
-    <string name="start_stop_autoscroll">"Start/stop autoscroll"</string>
-    <string name="start_stop_metronome">"Start/stop metronome"</string>
     <string name="start_stop_pad">"Start/stop pad"</string>
     <string name="stop">"Σταμάτα"</string>
     <string name="storage">"Αποθηκευτικός χώρος"</string>
@@ -682,11 +673,9 @@
     <string name="storage_manage">"Διαχείρηση αποθήκευσης"</string>
     <string name="storage_notwritable">"Αδυναμία χρήσης"</string>
     <string name="storage_quicktip">Κατά την επιλογή μιας τοποθεσίας:\nΛίστα αποθηκευτικού χώρου χρησιμοποιώντας το μενού (ίσως χρειαστεί να αλλάξετε τις ρυθμίσεις για να εμφανιστεί όλο το χώρο αποθήκευσης).\nΕΠΙΛΕΞΤΕ ΜΟΝΟ εσωτερικό χώρο αποθήκευσης ή κάρτας SD.\nΣυνιστάται εσωτερική αποθήκευση. Αυτό μπορεί να αναφέρεται ως χώρος αποθήκευσης συσκευής ή με το όνομα της συσκευής σας.\nΣε Android 10+ δεν θα πρέπει να επιλέξετε το φάκελο Λήψεις ή Root. Εάν έχετε αμφιβολίες, επιλέξτε το φάκελο «Έγγραφα».</string>
-    <string name="storage_rationale">"Απαιτείται πρόσβαση στον χώρο αποθήκευσης για εγγραφή και ανάγνωση τραγουδιών και σειρών."</string>
     <string name="storage_reset">Κάντε κλικ εδώ για να αλλάξετε τη θέση αποθήκευσης (όπου βρίσκεται ο ριζικός φάκελος OpenSong).</string>
     <string name="storage_settings">Διαχειριστείτε την τοποθεσία αποθήκευσης και τους φακέλους τραγουδιών</string>
     <string name="storage_warning">Μην επιλέξετε το φάκελο \"Τραγούδια\" ως τη θέση αποθήκευσης. Πρέπει να επιλέξετε αντί για τη θέση του γονικού αρχείου \"OpenSong\".</string>
-    <string name="subscription">"(Απαιτείται συνδρομή)"</string>
     <string name="success">"Επιτυχία"</string>
     <string name="swipe">"Ρυθμίστε τις ρυθμίσεις"</string>
     <string name="swipe_allowance">"Η κάθετη κίνηση επιτρέπεται"</string>
@@ -700,7 +689,6 @@
     <string name="tag_song">Ετικέτες τραγουδιών</string>
     <string name="tag_song_info">Διαχειριστείτε ετικέτες τραγουδιών για να βοηθήσετε στην αναζήτηση τραγουδιών</string>
     <string name="tag_to_use">Η ετικέτα για προσθήκη ή αφαίρεση από τραγούδια</string>
-    <string name="tag_verse">"Κουπλέ"</string>
     <string name="tags_remove_from_songs">Αυτή η ετικέτα θέματος θα αφαιρεθεί από τα ακόλουθα τραγούδια:</string>
     <string name="tap">"Πατήστε σύντομα / πατήστε"</string>
     <string name="tap_tempo">"Ακούμπα (Tap) για να εισαχθεί ο ρυθμός"</string>
@@ -726,7 +714,6 @@
     <string name="time_slide_pages">"Time for each slide (s)"</string>
     <string name="time_slide_pages_help">"Leave blank for manual slideshow"</string>
     <string name="timer_learn">"Μάθετε το χρόνο αυτόματης επιλογής"</string>
-    <string name="timer_size">"Χρονικό μέγεθος"</string>
     <string name="title">"Τίτλος"</string>
     <string name="tool">Εργαλείο</string>
     <string name="top">Μπλουζα</string>
@@ -745,7 +732,6 @@
     <string name="tuner_info">Βοηθήστε να κουρδίσετε το όργανό σας</string>
     <string name="ukulele">"Γιουκαλίλι"</string>
     <string name="unknown">"Άγνωστο"</string>
-    <string name="update_projector_automatically">Αυτόματη ενημέρωση του προβολέα</string>
     <string name="use_default">"Χρήση προεπιλογών"</string>
     <string name="used_by_permision">Χρησιμοποιείται με άδεια</string>
     <string name="user_1">"User 1"</string>
@@ -755,7 +741,6 @@
     <string name="utilities">Βοηθητικά προγράμματα</string>
     <string name="utilities_info">Άλλα εργαλεία για μουσικούς</string>
     <string name="variation">"Παραλαγή"</string>
-    <string name="variation_edit">"Αυτό το αντικείμενο μπορεί να τροποποιηθεί. Το αυθεντικό δεν θα επηρεαστεί."</string>
     <string name="variation_make">"Τροποποίηση ενός στοιχείου της σειράς"</string>
     <string name="verse">"Στίχος"</string>
     <string name="verse_background">"Φόντο κουπλέ"</string>
@@ -767,7 +752,6 @@
     <string name="volume">"Volume"</string>
     <string name="volume_value">"Current volume value"</string>
     <string name="wait">"Wait...."</string>
-    <string name="web_search">"Αναζήτηση στο Internet για το τραγούδι"</string>
     <string name="website">Δικτυακός τόπος</string>
     <string name="welcome">Καλώς ήρθατε στο OpenSongApp</string>
     <string name="width">Πλάτος</string>

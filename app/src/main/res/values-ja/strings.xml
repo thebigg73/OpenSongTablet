@@ -236,7 +236,6 @@
     <string name="edit_song_variation_temp">このアイテムはセットで転載されています。編集のために元の曲に移動しました。</string>
     <string name="edit_temporary">一時的な編集</string>
     <string name="edit_text_size">テキストサイズを編集する</string>
-    <string name="editpdf">"外部PDFプログラムで編集"</string>
     <string name="empty">空の</string>
     <string name="ending">"エンディング"</string>
     <string name="error">"エラー"</string>
@@ -367,7 +366,6 @@
     <string name="load_reusable">"再利用可能なスライドをロードします"</string>
     <string name="location">位置</string>
     <string name="location_not_enabled">デバイスに接続するには、「位置情報」をオンにしてください。モードを選択できる場合は、Wi-Fi を使用するモードを選択します。</string>
-    <string name="location_rationale">この機能は、他のネットワークデバイスを見つけるために必要です</string>
     <string name="logo">"ロゴ"</string>
     <string name="logo_info">ロゴと曲のコンテンツを切り替える</string>
     <string name="long_press">"長押し/長押し"</string>
@@ -398,7 +396,6 @@
     <string name="metronome">"メトロノーム"</string>
     <string name="metronome_duration">メトロノームの長さ（バー）</string>
     <string name="metronome_info">メトロノーム設定を調整する</string>
-    <string name="microphone_rationale">"マイク/オーディオ録音はサウンドレベルメーターにアクセスする必要があります。"</string>
     <string name="midi_add">"コマンドを追加"</string>
     <string name="midi_auto">"自動送信MIDI"</string>
     <string name="midi_bluetooth">"Bluetoothデバイスを接続する"</string>
@@ -482,8 +479,6 @@
     <string name="panic_stop">すべての出力が停止しました</string>
     <string name="pause">一時停止</string>
     <string name="paypal_description">アプリが便利だと思ったら寄付を送ってください</string>
-    <string name="pdftotext_extract">"PDFからテキストを抽出する"</string>
-    <string name="pdftotext_found">"見つかったテキスト："</string>
     <string name="pedal">"ペダル"</string>
     <string name="pedal_avoid_repeat">次の曲に移動する前に警告を表示します</string>
     <string name="pedal_avoid_repeat_info">誤って押すのを避けるために便利です</string>
@@ -513,7 +508,6 @@
     <string name="presentation_order_info">曲の発表順序は以下のとおりです。 アイテムをドラッグして順序を並べ替えたり、スワイプして削除したりできます。</string>
     <string name="presentation_order_use">曲の提示順序が存在する場合は、これを使用してディスプレイを作成します</string>
     <string name="presenter_mode">"プレゼンテーションモード"</string>
-    <string name="presoFontShadow">"プレゼンテーションフォントの影"</string>
     <string name="preso_alpha">背景の不透明度</string>
     <string name="previous">"「前」ボタンを設定する"</string>
     <string name="print">印刷する</string>
@@ -650,7 +644,6 @@
     <string name="song_swipe_toggle">"トグルスワイプオフ/上の曲間を移動するには"</string>
     <string name="song_title">"曲のタイトル"</string>
     <string name="songs">曲</string>
-    <string name="songs_in_folder">"ソングフォルダ"</string>
     <string name="songsheet">"ソングシート"</string>
     <string name="songsheet_info">曲に関する情報を含むタイトルを表示します</string>
     <string name="sound">音</string>
@@ -669,8 +662,6 @@
     <string name="stage_mode_info">セクションに分割された曲を表示するか、ステージモニターとして表示します</string>
     <string name="stage_section_max">"セクションの最大高さ（ステージモード）"</string>
     <string name="start">"開始"</string>
-    <string name="start_stop_autoscroll">"開始/自動スクロールを停止する"</string>
-    <string name="start_stop_metronome">"/ストップメトロノームを開始"</string>
     <string name="start_stop_pad">"スタート/ストップ·バックグラウンドミュージック"</string>
     <string name="stop">"停止"</string>
     <string name="storage">"ストレージ"</string>
@@ -682,11 +673,9 @@
     <string name="storage_manage">"収納スペースを管理する"</string>
     <string name="storage_notwritable">"使用できません"</string>
     <string name="storage_quicktip">場所を選択する場合：\nメニューを使用してストレージを一覧表示します（すべてのストレージを表示するには、設定を変更する必要がある場合があります）。\n内部またはSDカードストレージのみを選択してください。\n内部ストレージをお勧めします。これは、デバイスストレージとして、またはデバイスの名前とともに表示される場合があります。\nAndroid 10以降では、ダウンロードまたはルートフォルダーを選択しないでください。疑わしい場合は、「ドキュメント」フォルダを選択してください。</string>
-    <string name="storage_rationale">"ストレージへのアクセスは読み取りおよび曲やセットを書き込むために必要とされます。"</string>
     <string name="storage_reset">ここをクリックして、保存場所（ルートのOpenSongフォルダーがある場所）を変更します。</string>
     <string name="storage_settings">保存場所と曲のフォルダを管理する</string>
     <string name="storage_warning">保存場所として「曲」フォルダを選択しないでください。 代わりに、親の「OpenSong」フォルダーの場所を選択する必要があります。</string>
-    <string name="subscription">"（サブスクリプションが必要）"</string>
     <string name="success">"成功"</string>
     <string name="swipe">"スワイプ設定"</string>
     <string name="swipe_allowance">"垂直移動が許可されている"</string>
@@ -700,7 +689,6 @@
     <string name="tag_song">曲タグ</string>
     <string name="tag_song_info">曲の検索に役立つ曲のタグを管理する</string>
     <string name="tag_to_use">曲に追加または削除するタグ</string>
-    <string name="tag_verse">詩句</string>
     <string name="tags_remove_from_songs">このテーマタグは、次の曲から削除されます。</string>
     <string name="tap">"ショートプレス/タップ"</string>
     <string name="tap_tempo">"テンポを設定するタップ"</string>
@@ -726,7 +714,6 @@
     <string name="time_slide_pages">"各スライドの時間（s）"</string>
     <string name="time_slide_pages_help">"手動スライドショーの空白のまま"</string>
     <string name="timer_learn">"自動スクロールの時間を学ぶ"</string>
-    <string name="timer_size">"タイマーサイズ"</string>
     <string name="title">"タイトル"</string>
     <string name="tool">道具</string>
     <string name="top">上</string>
@@ -745,7 +732,6 @@
     <string name="tuner_info">楽器のチューニングをお手伝い</string>
     <string name="ukulele">ウクレレ</string>
     <string name="unknown">"不明"</string>
-    <string name="update_projector_automatically">プロジェクターを自動的に更新</string>
     <string name="use_default">"デフォルトを使用"</string>
     <string name="used_by_permision">許可を得て使用</string>
     <string name="user_1">"ユーザー1"</string>
@@ -755,7 +741,6 @@
     <string name="utilities">ユーティリティ</string>
     <string name="utilities_info">ミュージシャンのための他のツール</string>
     <string name="variation">"変化"</string>
-    <string name="variation_edit">"この項目は編集することができます。オリジナルは影響を受けません。"</string>
     <string name="variation_make">"設定項目の変動を作ります"</string>
     <string name="verse">"詩"</string>
     <string name="verse_background">"詩の背景"</string>
@@ -767,7 +752,6 @@
     <string name="volume">"ボリューム"</string>
     <string name="volume_value">"現在のボリューム値"</string>
     <string name="wait">"待って...."</string>
-    <string name="web_search">"現在の曲の検索インターネット"</string>
     <string name="website">Webサイト</string>
     <string name="welcome">OpenSongAppへようこそ</string>
     <string name="width">幅</string>

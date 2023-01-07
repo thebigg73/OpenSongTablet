@@ -163,11 +163,20 @@ public class PresenterFragment extends Fragment {
 
             // Show any showcase instructions required
             showTutorial();
+
+            tryToImportIntent();
         });
 
     }
 
+    public void tryToImportIntent() {
+        // We may have opened the app at this fragment by clicking on an openable file
+        // Get the main activity to check and fix backstack to this as home if required
+        mainActivityInterface.dealWithIntent(R.id.presenterFragment);
+    }
+
     public void doSongLoad(String folder, String filename) {
+        myView.viewPager.setCurrentItem(0);
         mainActivityInterface.getSong().setFolder(folder);
         mainActivityInterface.getSong().setFilename(filename);
         mainActivityInterface.setSong(mainActivityInterface.getLoadSong().doLoadSong(
@@ -210,7 +219,15 @@ public class PresenterFragment extends Fragment {
         displayInterface.updateDisplay("setSongContent");
 
         if (songSectionsFragment!=null) {
-            songSectionsFragment.showSongInfo();
+            myView.viewPager.postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    songSectionsFragment.setContext(getContext());
+                    myView.viewPager.setCurrentItem(0);
+                    songSectionsFragment.showSongInfo();
+                }
+            }, 50);
         }
 
         // If we are in a set, send that info to the inline set custom view to see if it should draw

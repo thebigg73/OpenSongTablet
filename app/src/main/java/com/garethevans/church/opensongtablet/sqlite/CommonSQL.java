@@ -165,7 +165,11 @@ public class CommonSQL {
         int row = db.update(SQLite.TABLE_NAME, values, SQLite.COLUMN_SONGID + "=?",
                 new String[]{String.valueOf(thisSong.getSongid())});
         if (row == 0) {
-            db.insert(SQLite.TABLE_NAME, null, values);
+            try {
+                db.insert(SQLite.TABLE_NAME, null, values);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -476,7 +480,7 @@ public class CommonSQL {
         return val>0;
     }
 
-    private void closeCursor(Cursor cursor) {
+    public void closeCursor(Cursor cursor) {
         if (cursor!=null) {
             try {
                 cursor.close();

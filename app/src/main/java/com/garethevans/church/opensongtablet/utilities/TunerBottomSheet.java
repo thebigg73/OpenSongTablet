@@ -53,7 +53,6 @@ public class TunerBottomSheet  extends BottomSheetDialogFragment {
     private ArrayList<Double> midiNoteFrequency;
     private final float confidence = 0.91f;
 
-
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -81,7 +80,6 @@ public class TunerBottomSheet  extends BottomSheetDialogFragment {
         });
         return dialog;
     }
-
 
     @Nullable
     @Override
@@ -338,7 +336,6 @@ public class TunerBottomSheet  extends BottomSheetDialogFragment {
         audioThread.start();
     }
 
-
     private void checkTheTuning(float pitchHz) {
         int foundNote = -1;
 
@@ -364,7 +361,7 @@ public class TunerBottomSheet  extends BottomSheetDialogFragment {
                 band = 3;
             } else if (Math.abs(currentCents) > 10) {
                 band = 2;
-            } else if (Math.abs(currentCents) > 4) {
+            } else if (Math.abs(currentCents) > 5) {
                 band = 1;
             } else if (Math.abs(currentCents) > 2) {
                 band = 1;
@@ -383,7 +380,7 @@ public class TunerBottomSheet  extends BottomSheetDialogFragment {
 
             //Log.d(TAG, "band:"+band+"  isFlat:" + isFlat + "  inTune:" + inTune + "  isSharp:" + isSharp+"  currentCents:"+currentCents);
 
-            myView.tunerNote.setText(mainActivityInterface.getMidi().getNotes().get(foundNote).replaceAll("[^a-zA-Z]", ""));
+            myView.tunerNote.setText(mainActivityInterface.getMidi().getNotes().get(foundNote).replaceAll("[0-9]", ""));
             setTunerBlocks(myView.bandFlat4, isFlat && band == 4, false);
             setTunerBlocks(myView.bandFlat3, isFlat && band >= 3, false);
             setTunerBlocks(myView.bandFlat2, isFlat && band >= 2, false);

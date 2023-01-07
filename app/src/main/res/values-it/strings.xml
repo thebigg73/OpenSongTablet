@@ -236,7 +236,6 @@
     <string name="edit_song_variation_temp">Questo articolo viene trasposto nel set. Sei stato portato alla canzone originale per la modifica.</string>
     <string name="edit_temporary">Modifica temporanea</string>
     <string name="edit_text_size">Modifica la dimensione del testo</string>
-    <string name="editpdf">"Modifica nel programma PDF esterno"</string>
     <string name="empty">Vuoto</string>
     <string name="ending">Fine</string>
     <string name="error">"Errore"</string>
@@ -367,7 +366,6 @@
     <string name="load_reusable">"Caricare un vetrino riutilizzabile"</string>
     <string name="location">Posizione</string>
     <string name="location_not_enabled">Per connetterti ai dispositivi, attiva \"Geolocalizzazione\". Se puoi scegliere la modalità, scegli una modalità che utilizza il Wi-Fi.</string>
-    <string name="location_rationale">Questa funzione è necessaria per individuare altri dispositivi di rete</string>
     <string name="logo">"Logo"</string>
     <string name="logo_info">Alterna tra il logo e il contenuto del brano</string>
     <string name="long_press">"Tenere premuto a lungo"</string>
@@ -398,7 +396,6 @@
     <string name="metronome">"Metronomo"</string>
     <string name="metronome_duration">Metronóm időtartam (sávok)…</string>
     <string name="metronome_info">Regola le impostazioni del metronomo</string>
-    <string name="microphone_rationale">"Registrazione con microfono / audio è necessario per accedere al fonometro."</string>
     <string name="midi_add">"Aggiungi comando"</string>
     <string name="midi_auto">"Auto invia MIDI"</string>
     <string name="midi_bluetooth">"Connetti dispositivo Bluetooth"</string>
@@ -482,8 +479,6 @@
     <string name="panic_stop">Tutta l\'uscita è stata interrotta</string>
     <string name="pause">Pausa</string>
     <string name="paypal_description">Inviami una donazione se trovi utile l\'app</string>
-    <string name="pdftotext_extract">"Estrarre il testo dal PDF"</string>
-    <string name="pdftotext_found">"Testo trovato:"</string>
     <string name="pedal">"Pedale"</string>
     <string name="pedal_avoid_repeat">Mostra un avviso prima di passare al brano successivo</string>
     <string name="pedal_avoid_repeat_info">Utile per evitare pressioni accidentali</string>
@@ -513,7 +508,6 @@
     <string name="presentation_order_info">L\'ordine di presentazione del brano è mostrato di seguito. Puoi trascinare gli elementi per riordinare l\'ordine e scorrere per rimuoverli.</string>
     <string name="presentation_order_use">Se esiste un ordine di presentazione per il brano, utilizzalo per creare il display</string>
     <string name="presenter_mode">"Modalità di presentazione"</string>
-    <string name="presoFontShadow">"Ombra di carattere di presentazione"</string>
     <string name="preso_alpha">Sfondo opacità</string>
     <string name="previous">Indietro</string>
     <string name="print">Stampa</string>
@@ -650,7 +644,6 @@
     <string name="song_swipe_toggle">"Colpo Toggle per spostarsi tra i brani accendere / spegnere"</string>
     <string name="song_title">"Titolo del brano"</string>
     <string name="songs">Canzoni</string>
-    <string name="songs_in_folder">"Cartella di brani"</string>
     <string name="songsheet">"Songsheet"</string>
     <string name="songsheet_info">Visualizza un titolo con informazioni sul brano</string>
     <string name="sound">Suono</string>
@@ -669,8 +662,6 @@
     <string name="stage_mode_info">Visualizza i brani suddivisi in sezioni o come monitor da palco</string>
     <string name="stage_section_max">"Altezza massima della sezione (modalità Stage)"</string>
     <string name="start">"Avvia"</string>
-    <string name="start_stop_autoscroll">"Avviare / fermare autoscroll"</string>
-    <string name="start_stop_metronome">"Avviare / fermare metronomo"</string>
     <string name="start_stop_pad">"Avviare / fermare musica di sottofondo"</string>
     <string name="stop">"Arresta"</string>
     <string name="storage">Immagazzinamento</string>
@@ -682,11 +673,9 @@
     <string name="storage_manage">"Gestire lo spazio di archiviazione"</string>
     <string name="storage_notwritable">"Impossibile utilizzare"</string>
     <string name="storage_quicktip">Quando si seleziona una posizione:\nElenca la memoria utilizzando il menu (potrebbe essere necessario modificare le impostazioni per mostrare tutta la memoria).\nSELEZIONA SOLO MEMORIA INTERNA O SCHEDA SD.\nSi consiglia l\'archiviazione interna. Può essere elencato come memoria del dispositivo o con il nome del dispositivo.\nSu Android 10+ non dovresti selezionare la cartella Download o Root. In caso di dubbio, scegli la cartella \"Documenti\".</string>
-    <string name="storage_rationale">"L\'accesso allo storage è necessario per leggere e scrivere canzoni e set."</string>
     <string name="storage_reset">Fare clic qui per modificare la posizione di archiviazione (dove si trova la cartella principale di OpenSong).</string>
     <string name="storage_settings">Gestisci la tua posizione di archiviazione e le cartelle dei brani</string>
     <string name="storage_warning">Non selezionare la cartella \"Songs\" come posizione di archiviazione. È invece necessario selezionare il percorso della cartella \'OpenSong\' padre.</string>
-    <string name="subscription">"(Abbonamento richiesto)"</string>
     <string name="success">"Successo"</string>
     <string name="swipe">"Scorrimento delle impostazioni"</string>
     <string name="swipe_allowance">"Permesso il movimento verticale"</string>
@@ -700,7 +689,6 @@
     <string name="tag_song">Tag delle canzoni</string>
     <string name="tag_song_info">Gestisci i tag dei brani per facilitare la ricerca dei brani</string>
     <string name="tag_to_use">Il tag da aggiungere o rimuovere dai brani</string>
-    <string name="tag_verse">Strofa</string>
     <string name="tags_remove_from_songs">Questo tag tema verrà rimosso dai seguenti brani:</string>
     <string name="tap">"Pressione breve / tocco"</string>
     <string name="tap_tempo">"Toccare per impostare il tempo"</string>
@@ -726,7 +714,6 @@
     <string name="time_slide_pages">"Tempo per ogni diapositiva (s)"</string>
     <string name="time_slide_pages_help">"Lascia in bianco per presentazione manuale"</string>
     <string name="timer_learn">"Impara il tempo di autoscatto"</string>
-    <string name="timer_size">"Dimensione timer"</string>
     <string name="title">Titolo</string>
     <string name="tool">Attrezzo</string>
     <string name="top">Superiore</string>
@@ -745,7 +732,6 @@
     <string name="tuner_info">Aiuta ad accordare il tuo strumento</string>
     <string name="ukulele">Ukulele</string>
     <string name="unknown">Sconosciuto</string>
-    <string name="update_projector_automatically">Aggiorna automaticamente il proiettore</string>
     <string name="use_default">"Usa predefinito"</string>
     <string name="used_by_permision">Utilizzato su autorizzazione</string>
     <string name="user_1">"Utente 1"</string>
@@ -755,7 +741,6 @@
     <string name="utilities">Utilità</string>
     <string name="utilities_info">Altri strumenti per musicisti</string>
     <string name="variation">"Variazione"</string>
-    <string name="variation_edit">"Questo elemento può essere modificato. L\'originale sarà inalterato."</string>
     <string name="variation_make">"Fare una variazione voce insieme"</string>
     <string name="verse">"Versetto"</string>
     <string name="verse_background">"Verse sfondo"</string>
@@ -767,7 +752,6 @@
     <string name="volume">"Volume"</string>
     <string name="volume_value">"Valore di volume corrente"</string>
     <string name="wait">"Attendere ...."</string>
-    <string name="web_search">"Cerca Internet per la canzone corrente"</string>
     <string name="website">Sito web</string>
     <string name="welcome">Benvenuto in OpenSongApp</string>
     <string name="width">Larghezza</string>

@@ -17,7 +17,7 @@ public class ShowCase {
     @SuppressWarnings("unused")
     private final String TAG = "ShowCase";
     public void singleShowCase(Activity c, View target, String dismiss, String info, boolean rect, String id) {
-        singleShowCaseBuilder(c,target,dismiss,info,rect,id).setMaskColour(c.getResources().getColor(R.color.showcaseColor)).build().show(c);
+        singleShowCaseBuilder(c,target,dismiss,info,rect,id).setMaskColour(c.getResources().getColor(R.color.showcaseColor)).setContentTextColor(c.getResources().getColor(R.color.white)).build().show(c);
     }
 
     public MaterialShowcaseView.Builder getSingleShowCaseBuilderForListener(Activity c, View target,
@@ -34,13 +34,17 @@ public class ShowCase {
             dismisstext_ornull = c.getResources().getString(android.R.string.ok);
         }
 
+        final int COLOR_MASK = c.getResources().getColor(R.color.showcaseColor);
+        final int COLOR_TEXT = c.getResources().getColor(R.color.white);
+
         MaterialShowcaseView.Builder mscb = new MaterialShowcaseView.Builder(c)
                 .setTarget(target)
                 .setDismissText(dismisstext_ornull)
                 .setContentText(information)
                 .setDelay(500) // optional but starting animations immediately in onCreate can make them choppy
                 .renderOverNavigationBar()
-                .setMaskColour(c.getResources().getColor(R.color.showcaseColor))
+                .setMaskColour(COLOR_MASK)
+                .setContentTextColor(COLOR_TEXT)
                 .setDismissOnTouch(true);
         if (id!=null) {
             mscb = mscb.singleUse(id);
@@ -56,6 +60,10 @@ public class ShowCase {
         ShowcaseConfig config = new ShowcaseConfig();
         config.setDelay(500); // half second between each showcase view
         config.setRenderOverNavigationBar(true);
+        final int COLOR_MASK = c.getResources().getColor(R.color.showcaseColor);
+        final int COLOR_TEXT = c.getResources().getColor(R.color.white);
+        config.setMaskColor(COLOR_MASK);
+        config.setContentTextColor(COLOR_TEXT);
         MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(c, showcaseid);
         sequence.setConfig(config);
 

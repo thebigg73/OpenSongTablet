@@ -251,8 +251,8 @@ public class SecondaryDisplay extends Presentation {
 
         // Available size has to take into consideration any padding
 
-        availableScreenWidth = horizontalSize - (2 * mainActivityInterface.getPresenterSettings().getPresoXMargin());
-        availableScreenHeight = verticalSize - (2 * mainActivityInterface.getPresenterSettings().getPresoYMargin());
+        availableScreenWidth = horizontalSize - Math.round((2 * (displayMetrics.density * mainActivityInterface.getPresenterSettings().getPresoXMargin())));
+        availableScreenHeight = verticalSize - Math.round((2 * (displayMetrics.density*mainActivityInterface.getPresenterSettings().getPresoYMargin())));
 
         updateViewSizes(myView.pageHolder);
 
@@ -417,7 +417,7 @@ public class SecondaryDisplay extends Presentation {
             } else if (mainActivityInterface.getPresenterSettings().getBackgroundToUse().startsWith("img")) {
                 // Use a static image
                 assert backgroundToFadeIn instanceof ImageView;
-                if (background.toString().endsWith("ost_bg.png")) {
+                if (background.toString().equals("bg.png")) {
                     Drawable defaultImage = ResourcesCompat.getDrawable(c.getResources(), R.drawable.preso_default_bg, null);
                     GlideApp.with(c).load(defaultImage).apply(requestOptions).into((ImageView) backgroundToFadeIn);
                 } else {
@@ -880,8 +880,8 @@ public class SecondaryDisplay extends Presentation {
             // Calculate the scale factor for each section individually
             // For each meausured view, get the max x and y scale value
             // Check they are less than the max preferred value
-            float max_x = (float) horizontalSize / (float) secondaryWidths.get(x);
-            float max_y = (float) verticalSize / (float) secondaryHeights.get(x);
+            float max_x = (float) availableScreenWidth / (float) secondaryWidths.get(x);
+            float max_y = (float) availableScreenHeight / (float) secondaryHeights.get(x);
             // The text size is 14sp by default.  Compare this to the pref
             float best = Math.min(max_x, max_y);
             if ((best * 14f) > mainActivityInterface.getPresenterSettings().getFontSizePresoMax()) {

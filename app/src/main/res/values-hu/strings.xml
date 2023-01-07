@@ -236,7 +236,6 @@
     <string name="edit_song_variation_temp">Ezt az elemet a készletben transzponáltuk. Az eredeti dalhoz került szerkesztésre.</string>
     <string name="edit_temporary">Ideiglenes szerkesztés</string>
     <string name="edit_text_size">Szövegméret szerkesztése</string>
-    <string name="editpdf">"Szerkesztés külső PDF programban"</string>
     <string name="empty">Üres</string>
     <string name="ending">"Befejező"</string>
     <string name="error">"Hiba"</string>
@@ -367,7 +366,6 @@
     <string name="load_reusable">"Töltsön be egy újrafelhasználható slide"</string>
     <string name="location">Elhelyezkedés</string>
     <string name="location_not_enabled">Az eszközökhöz való csatlakozáshoz kapcsolja BE a „Tartózkodási hely” beállítást. Ha választhat módot, válasszon egy Wi-Fi-t használó módot.</string>
-    <string name="location_rationale">Ez a szolgáltatás szükséges más hálózati eszközök megkereséséhez</string>
     <string name="logo">Logo</string>
     <string name="logo_info">Váltás a logó és a dal tartalma között</string>
     <string name="long_press">"Tartsa hosszan a gombot"</string>
@@ -398,7 +396,6 @@
     <string name="metronome">"Metronóm"</string>
     <string name="metronome_duration">Metronóm időtartam (sávok)</string>
     <string name="metronome_info">Módosítsa a metronóm beállításait</string>
-    <string name="microphone_rationale">"Mikrofon / hangfelvétel eléréséhez szükséges a zajszintmérő."</string>
     <string name="midi_add">"Parancs hozzáadása"</string>
     <string name="midi_auto">"Automatikus MIDI küldése"</string>
     <string name="midi_bluetooth">"Bluetooth-eszköz csatlakoztatása"</string>
@@ -482,8 +479,6 @@
     <string name="panic_stop">Minden kimenet leállt</string>
     <string name="pause">Szünet</string>
     <string name="paypal_description">Ha hasznosnak találja az alkalmazást, küldjön adományt</string>
-    <string name="pdftotext_extract">"Szöveg kivonatolása PDF-ből"</string>
-    <string name="pdftotext_found">"Talált szöveg:"</string>
     <string name="pedal">"Pedál"</string>
     <string name="pedal_avoid_repeat">Figyelmeztetés megjelenítése, mielőtt a következő dalra lépne</string>
     <string name="pedal_avoid_repeat_info">Hasznos a véletlen megnyomások elkerülése érdekében</string>
@@ -513,7 +508,6 @@
     <string name="presentation_order_info">A dal bemutatási sorrendje lent látható. Az elemek húzásával átrendezheti a sorrendet, és húzással távolíthatja el.</string>
     <string name="presentation_order_use">Ha létezik bemutatási sorrend a dalhoz, használja ezt a megjelenítés létrehozásához</string>
     <string name="presenter_mode">"Bemutató üzemmód"</string>
-    <string name="presoFontShadow">"Bemutató font árnyék"</string>
     <string name="preso_alpha">Háttér homályossága</string>
     <string name="previous">Előző</string>
     <string name="print">Nyomtatás</string>
@@ -650,7 +644,6 @@
     <string name="song_swipe_toggle">"Váltás ellop lépni a dalok között be / ki"</string>
     <string name="song_title">"Dal címe"</string>
     <string name="songs">Dalok</string>
-    <string name="songs_in_folder">"Song mappa"</string>
     <string name="songsheet">"Songsheet"</string>
     <string name="songsheet_info">Megjelenít egy címet a dal információival</string>
     <string name="sound">Hang</string>
@@ -669,8 +662,6 @@
     <string name="stage_mode_info">Jelenítse meg a dalokat részekre bontva vagy színpadi monitorként</string>
     <string name="stage_section_max">"Maximális magasság (Stage Mode)"</string>
     <string name="start">"Kezdés"</string>
-    <string name="start_stop_autoscroll">"Kezdeni / megállni autoscroll"</string>
-    <string name="start_stop_metronome">"Kezdeni / megállni metronóm"</string>
     <string name="start_stop_pad">"Kezdeni / megállni pad"</string>
     <string name="stop">"Időzítő megállítása"</string>
     <string name="storage">Tárolás</string>
@@ -682,11 +673,9 @@
     <string name="storage_manage">"Kezelése tárhely"</string>
     <string name="storage_notwritable">"Nem lehet használni"</string>
     <string name="storage_quicktip">Hely kiválasztásakor:\nSorolja fel a tárhelyet a menü segítségével (lehet, hogy módosítania kell a beállításokat az összes tároló megjelenítéséhez).\nKIZÁRÓLAG BELSŐ VAGY SD KÁRTYA tárhelyet válasszon.\nBelső tárolás ajánlott. Ez felsorolható eszközmegőrzőként vagy az eszköz nevével együtt.\nAndroid 10+ rendszeren nem válassza a Letöltések vagy a Gyökér mappát. Ha kétségei vannak, válassza a \'Dokumentumok\' mappát.</string>
-    <string name="storage_rationale">"Hozzáférés a tárolás szükséges írni és olvasni dalok és készletek."</string>
     <string name="storage_reset">Kattintson ide a tárolási hely megváltoztatásához (ahol a gyökér OpenSong mappa található).</string>
     <string name="storage_settings">Kezelje tárolási helyét és dalmappáit</string>
     <string name="storage_warning">Kérjük, ne válassza a \'Dalok\' mappát tárhelyének. Ehelyett inkább a szülő \'OpenSong\' mappát kell kiválasztania.</string>
-    <string name="subscription">"(Előfizetés szükséges)"</string>
     <string name="success">"Siker"</string>
     <string name="swipe">"Swipe beállítások"</string>
     <string name="swipe_allowance">"Függőleges mozgás megengedett"</string>
@@ -700,7 +689,6 @@
     <string name="tag_song">Dalcímkék</string>
     <string name="tag_song_info">Kezelje a dalcímkéket, hogy segítse a dalkeresést</string>
     <string name="tag_to_use">A dalokhoz hozzáadandó vagy onnan eltávolítandó címke</string>
-    <string name="tag_verse">Vers</string>
     <string name="tags_remove_from_songs">Ez a témacímke el lesz távolítva a következő dalokról:</string>
     <string name="tap">"Rövid megnyomás / érintés"</string>
     <string name="tap_tempo">"Érintse meg, hogy a tempó"</string>
@@ -726,7 +714,6 @@
     <string name="time_slide_pages">"Idő az egyes diák (ok)"</string>
     <string name="time_slide_pages_help">"Hagyja üresen a kézi diavetítés"</string>
     <string name="timer_learn">"Ismerje meg az autoscroll idejét"</string>
-    <string name="timer_size">"Timer mérete"</string>
     <string name="title">Cím</string>
     <string name="tool">Eszköz</string>
     <string name="top">Top</string>
@@ -745,7 +732,6 @@
     <string name="tuner_info">Segítség hangszer hangolásában</string>
     <string name="ukulele">Ukulele</string>
     <string name="unknown">Ismeretlen</string>
-    <string name="update_projector_automatically">A projektor automatikus frissítése</string>
     <string name="use_default">"Az alapértelmezett"</string>
     <string name="used_by_permision">Engedély alapján használják</string>
     <string name="user_1">"Felhasználó 1"</string>
@@ -755,7 +741,6 @@
     <string name="utilities">Segédprogramok</string>
     <string name="utilities_info">Egyéb eszközök zenészek számára</string>
     <string name="variation">"Variáció"</string>
-    <string name="variation_edit">"Ez az elem lehet szerkeszteni. Az eredeti nem lesz hatással."</string>
     <string name="variation_make">"Készíts egy sor tételváltozat"</string>
     <string name="verse">Vers</string>
     <string name="verse_background">"Verse háttér"</string>
@@ -767,7 +752,6 @@
     <string name="volume">"Hangerő"</string>
     <string name="volume_value">"Aktuális hangerő értéke"</string>
     <string name="wait">"Várni ...."</string>
-    <string name="web_search">"Keresés Internet aktuális dal"</string>
     <string name="website">Weboldal</string>
     <string name="welcome">Üdvözli az OpenSongApp</string>
     <string name="width">Szélesség</string>

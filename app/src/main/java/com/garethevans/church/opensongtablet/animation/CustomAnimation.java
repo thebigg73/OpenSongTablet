@@ -5,8 +5,8 @@ import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.os.Handler;
 import android.view.View;
-import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AnimationUtils;
+import android.view.animation.LinearInterpolator;
 
 import com.garethevans.church.opensongtablet.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -46,19 +46,23 @@ public class CustomAnimation {
             // For a correct fade out, the view should already be in the faded in state:
             // - The initial visibility should already be VISIBLE
             // - The alpha should already be 1f (completely faded in), but certainly more than 0;
-            boolean fadeOut = !fadeIn && (v.getVisibility()==View.VISIBLE) && v.getAlpha() > 0;
+            boolean fadeOut = (!fadeIn && (v.getVisibility()==View.VISIBLE) && v.getAlpha() > 0) || endAlpha<startAlpha;
 
             // If either of these are true, we can animate, but if not, just move to the final state
 
-            if (fadeIn || fadeOut) {
+            if (fadeIn) {
                 // Good to go - set the initial alpha and visibility to VISIBLE so we see the animation
                 //v.setAlpha(startAlpha);
                 //v.setVisibility(View.VISIBLE);
 
                 // Animate the content view to the end alpha
                 // For fade out, the final step is also to add the listener to change visibility to GONE at the end
-                v.animate().alpha(endAlpha).setDuration(time).setInterpolator(new AccelerateInterpolator()).setListener(animatorListenerAdapter).start();
+                //v.animate().alpha(endAlpha).setDuration(time).setInterpolator(new AccelerateInterpolator()).setListener(animatorListenerAdapter).start();
+                //v.animate().alpha(endAlpha).setDuration(time).setInterpolator(new LinearInterpolator()).setListener(animatorListenerAdapter).start();
+                v.animate().alpha(endAlpha).setDuration(time).setInterpolator(new LinearInterpolator()).setListener(animatorListenerAdapter).start();
 
+            } else if (fadeOut) {
+                v.animate().alpha(endAlpha).setDuration(time/2).setInterpolator(new LinearInterpolator()).setListener(animatorListenerAdapter).start();
             } else {
                 // Just set the alpha and visibility as the end (without animation)
                 v.setAlpha(endAlpha);

@@ -112,10 +112,8 @@
             android:configChanges="orientation|keyboard|keyboardHidden|screenSize|navigation|screenLayout"
             android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustResize"
-            android:launchMode="standard"
+            android:launchMode="singleTop"
             android:theme="@style/AppTheme">
-
-            <!--android:launchMode="singleInstance"-->
 
             <nav-graph android:value="@navigation/navigation" />
 
@@ -133,6 +131,7 @@
                 <data android:scheme="content"/>
                 <data android:host="*"/>
                 <data android:mimeType="application/pdf"/>
+                <data android:mimeType="application/zip"/>
                 <data android:mimeType="image/*"/>
                 <data android:mimeType="text/plain"/>
                 <data android:mimeType="application/text"/>
@@ -143,19 +142,27 @@
                 <!-- The custom filetypes -->
                 <data android:mimeType="*/*"/>
                 <data android:pathPattern=".*\\.osb"/>
+                <data android:pathPattern=".*\\..*\\.osb"/>
+                <data android:pathPattern=".*\\..*\\..*\\.osb"/>
+                <data android:pathPattern=".*\\..*\\..*\\..*\\.osb"/>
                 <data android:pathPattern=".*\\.osbs"/>
                 <data android:pathPattern=".*\\.ost"/>
                 <data android:pathPattern=".*\\.osts"/>
                 <data android:pathPattern=".*\\.onsong"/>
                 <data android:pathPattern=".*\\.backup"/>
+                <data android:pathPattern=".*\\..*\\.backup"/>
+                <data android:pathPattern=".*\\..*\\..*\\.backup"/>
+                <data android:pathPattern=".*\\..*\\..*\\..*\\.backup"/>
                 <data android:pathPattern=".*\\.chordpro"/>
                 <data android:pathPattern=".*\\.chopro"/>
                 <data android:pathPattern=".*\\.cho"/>
                 <data android:pathPattern=".*\\.pro"/>
 
+                <data android:pathPattern=".*"/>
+                <data android:mimeType="*/*"/>
+
                 <!-- I could include this to allow opening song files with no extensions, however,
                      this would then allow all files to be matched, which would annoy people
-                <data android:mimeType="*/*" android:pathPattern=".*"/>
                 -->
 
                 <!-- To allow for email attachments, etc. -->

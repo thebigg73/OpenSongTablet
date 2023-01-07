@@ -101,6 +101,7 @@ public class PedalActions {
         addString("pad_autoscroll_metronome",pad + " & " + c.getString(R.string.autoscroll) + " & " + c.getString(R.string.metronome));
         addString("editsong",c.getString(R.string.edit));
         addString("transpose",c.getString(R.string.transpose));
+        addString("tuner",c.getString(R.string.tuner));
         addString("showchords",c.getString(R.string.show_chords));
         addString("showcapo",c.getString(R.string.show_capo));
         addString("showlyrics",c.getString(R.string.show_lyrics));
@@ -285,6 +286,10 @@ public class PedalActions {
 
             case "transpose":
                 mainActivityInterface.getPerformanceGestures().transpose();
+                break;
+
+            case "tuner":
+                mainActivityInterface.getPerformanceGestures().showTuner();
                 break;
 
             case "showchords":

@@ -236,7 +236,6 @@
     <string name="edit_song_variation_temp">Цей елемент транспонується в наборі. Ви перейшли до оригінальної пісні для редагування.</string>
     <string name="edit_temporary">Тимчасове редагування</string>
     <string name="edit_text_size">Редагувати розмір тексту</string>
-    <string name="editpdf">Змінити PDF в зовнішній програмі</string>
     <string name="empty">Порожній</string>
     <string name="ending">закінчення</string>
     <string name="error">Помилка</string>
@@ -367,7 +366,6 @@
     <string name="load_reusable">Завантажити слайд</string>
     <string name="location">Місцезнаходження</string>
     <string name="location_not_enabled">Щоб підключитися до пристроїв, увімкніть «Місцезнаходження». Якщо у вас є вибір режиму, виберіть режим, який використовує Wi-Fi.</string>
-    <string name="location_rationale">Ця функція потрібна для пошуку інших мережевих пристроїв</string>
     <string name="logo">Логотип</string>
     <string name="logo_info">Перемикання між логотипом і вмістом пісні</string>
     <string name="long_press">Довге натискання/утримання</string>
@@ -398,7 +396,6 @@
     <string name="metronome">Метроном</string>
     <string name="metronome_duration">Тривалість метронома (бари)</string>
     <string name="metronome_info">Налаштуйте параметри метронома</string>
-    <string name="microphone_rationale">Доступ до мікрофону/аудіо для роботи вимірювача рівня</string>
     <string name="midi_add">Додати команду</string>
     <string name="midi_auto">Автоматичне надсилання MIDI</string>
     <string name="midi_bluetooth">Підключити пристрій Bluetooth</string>
@@ -482,8 +479,6 @@
     <string name="panic_stop">Весь вихід зупинено</string>
     <string name="pause">Пауза</string>
     <string name="paypal_description">Надішліть мені пожертву, якщо ви вважаєте додаток корисним</string>
-    <string name="pdftotext_extract">Витяг тексту з PDF</string>
-    <string name="pdftotext_found">Текст знайдений:</string>
     <string name="pedal">Педаль</string>
     <string name="pedal_avoid_repeat">Показувати попередження перед переходом до наступної пісні</string>
     <string name="pedal_avoid_repeat_info">Корисно, щоб уникнути випадкових натискань</string>
@@ -513,7 +508,6 @@
     <string name="presentation_order_info">Порядок презентації пісні наведено нижче. Ви можете перетягнути елементи, щоб змінити порядок, і провести пальцем, щоб видалити.</string>
     <string name="presentation_order_use">Якщо для пісні існує порядок презентації, використовуйте його для створення дисплея</string>
     <string name="presenter_mode">Режим презентації</string>
-    <string name="presoFontShadow">Тінь шрифту презентації</string>
     <string name="preso_alpha">Прозорість фону</string>
     <string name="previous">Попередній</string>
     <string name="print">Роздрукувати</string>
@@ -650,7 +644,6 @@
     <string name="song_swipe_toggle">Вкл./Викл. Перегортання для зміни пісень</string>
     <string name="song_title">Назва пісні</string>
     <string name="songs">пісні</string>
-    <string name="songs_in_folder">Папка з піснями</string>
     <string name="songsheet">Songsheet</string>
     <string name="songsheet_info">Відображає назву з інформацією про пісню</string>
     <string name="sound">Звук</string>
@@ -669,8 +662,6 @@
     <string name="stage_mode_info">Відображайте пісні, розділені на частини або як сценічний монітор</string>
     <string name="stage_section_max">Максимальна висота секції (режим Сцени)</string>
     <string name="start">Пуск</string>
-    <string name="start_stop_autoscroll">Пуск/зупинка  автопрокрутку</string>
-    <string name="start_stop_metronome">Пуск/зупинка метронома</string>
     <string name="start_stop_pad">Пуск/стоп панель</string>
     <string name="stop">Стоп</string>
     <string name="storage">Сховище</string>
@@ -682,11 +673,9 @@
     <string name="storage_manage">Вибір місця зберігання</string>
     <string name="storage_notwritable">Неможливо використовувати</string>
     <string name="storage_quicktip">При виборі місця: \nПеречісліть сховище за допомогою меню (вам може знадобитися змінити налаштування, щоб відобразити всі сховища).\nВИБЕРІТЕ ТІЛЬКИ ВНУТРІШНЮ АБО SD-КАРТУ.\nРекомендуется карту пам\'яті. Це може бути зазначено як сховище пристрою або з ім\'ям вашого пристрою.\nНа Android 10+ не слід вибирати папку «Завантаження» або «Кореневу папку». У разі сумнівів виберіть папку «Документи».</string>
-    <string name="storage_rationale">Доступ до вашого сховища потрібно, для зберігання пісень і списків.</string>
     <string name="storage_reset">Натисніть тут, щоб змінити місце зберігання (де знаходиться коренева папка OpenSong).</string>
     <string name="storage_settings">Керуйте місцем зберігання та папками пісень</string>
     <string name="storage_warning">Будь ласка, не вибирайте папку «Пісні» в якості місця зберігання. Замість цього ви повинні вибрати батьківську папку «OpenSong».</string>
-    <string name="subscription">(Потрібно підписка)</string>
     <string name="success">Yспішно</string>
     <string name="swipe">Налаштування ковзання</string>
     <string name="swipe_allowance">Дозволено вертикальне переміщення</string>
@@ -700,7 +689,6 @@
     <string name="tag_song">Теги пісень</string>
     <string name="tag_song_info">Керуйте тегами пісень, щоб допомогти з пошуком пісень</string>
     <string name="tag_to_use">Тег, який можна додати або видалити з пісень</string>
-    <string name="tag_verse">куплет</string>
     <string name="tags_remove_from_songs">Цей тег теми буде видалено з таких пісень:</string>
     <string name="tap">Коротке натискання/тап</string>
     <string name="tap_tempo">Натисніть, щоб встановити темп</string>
@@ -726,7 +714,6 @@
     <string name="time_slide_pages">Час для кожного слайда</string>
     <string name="time_slide_pages_help">Залиште порожнім для показу слайдів вручну</string>
     <string name="timer_learn">Навчання часу автопрокрутки</string>
-    <string name="timer_size">Розмір таймера</string>
     <string name="title">Hазва</string>
     <string name="tool">Інструмент</string>
     <string name="top">Верх</string>
@@ -745,7 +732,6 @@
     <string name="tuner_info">Допоможіть налаштувати свій інструмент</string>
     <string name="ukulele">Yкулеле</string>
     <string name="unknown">Hевідомо</string>
-    <string name="update_projector_automatically">Оновлюйте проектор автоматично</string>
     <string name="use_default">Використовувати значення за умовчанням</string>
     <string name="used_by_permision">Використовується з дозволу</string>
     <string name="user_1">Користувач 1</string>
@@ -755,7 +741,6 @@
     <string name="utilities">комунальні послуги</string>
     <string name="utilities_info">Інші інструменти для музикантів</string>
     <string name="variation">Bаріація</string>
-    <string name="variation_edit">Ця варіація пісні буде змінена. Зміни не торкнуться оригінал.</string>
     <string name="variation_make">Зробіть варіант предмета набору</string>
     <string name="verse">Kуплет</string>
     <string name="verse_background">Фон куплета</string>
@@ -767,7 +752,6 @@
     <string name="volume">Гучність</string>
     <string name="volume_value">Поточне значення гучності</string>
     <string name="wait">Зачекайте ....</string>
-    <string name="web_search">Шукати в інтернет поточну пісню</string>
     <string name="website">веб-сайт</string>
     <string name="welcome">Ласкаво просимо до OpenSongApp</string>
     <string name="width">Ширина</string>

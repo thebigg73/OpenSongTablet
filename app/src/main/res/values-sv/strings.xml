@@ -236,7 +236,6 @@
     <string name="edit_song_variation_temp">Denna artikel är överförd i uppsättningen. Du har tagits till originallåten för redigering.</string>
     <string name="edit_temporary">Tillfällig redigering</string>
     <string name="edit_text_size">Redigera textstorlek</string>
-    <string name="editpdf">"Redigera i externt PDF-program"</string>
     <string name="empty">Tömma</string>
     <string name="ending">"Slut"</string>
     <string name="error">"Fel"</string>
@@ -367,7 +366,6 @@
     <string name="load_reusable">"Ladda en återanvändbar bild"</string>
     <string name="location">Plats</string>
     <string name="location_not_enabled">Slå PÅ \'Plats\' för att ansluta till enheter. Om du har ett val av läge, välj ett läge som använder Wi-Fi.</string>
-    <string name="location_rationale">Den här funktionen krävs för att hitta andra nätverksenheter</string>
     <string name="logo">"Logotyp"</string>
     <string name="logo_info">Växla mellan logotypen och låtens innehåll</string>
     <string name="long_press">"Långt tryck / håll intryckt"</string>
@@ -398,7 +396,6 @@
     <string name="metronome">"Metronom"</string>
     <string name="metronome_duration">Metronome varaktighet (staplar)</string>
     <string name="metronome_info">Justera metronominställningarna</string>
-    <string name="microphone_rationale">"Mikrofon / ljudinspelning krävs för att komma åt ljudnivåmätaren."</string>
     <string name="midi_add">"Lägg till kommando"</string>
     <string name="midi_auto">"Auto skicka MIDI"</string>
     <string name="midi_bluetooth">"Anslut Bluetooth-enhet"</string>
@@ -482,8 +479,6 @@
     <string name="panic_stop">All utmatning stoppades</string>
     <string name="pause">Paus</string>
     <string name="paypal_description">Skicka mig en donation om du tycker att appen är användbar</string>
-    <string name="pdftotext_extract">"Extrahera text från PDF"</string>
-    <string name="pdftotext_found">"Text hittades:"</string>
     <string name="pedal">"Trampa"</string>
     <string name="pedal_avoid_repeat">Visa en varning innan du går till nästa låt</string>
     <string name="pedal_avoid_repeat_info">Användbart för att undvika oavsiktliga tryckningar</string>
@@ -513,7 +508,6 @@
     <string name="presentation_order_info">Låtpresentationsordningen visas nedan. Du kan dra objekt för att ändra ordningen och svepa för att ta bort.</string>
     <string name="presentation_order_use">Om det finns presentationsordning för låten, använd denna för att skapa displayen</string>
     <string name="presenter_mode">"Presentationsläge"</string>
-    <string name="presoFontShadow">"Presentation font skugga"</string>
     <string name="preso_alpha">"Bakgrundsopacitet"</string>
     <string name="previous">Föregående</string>
     <string name="print">Skriva ut</string>
@@ -650,7 +644,6 @@
     <string name="song_swipe_toggle">"Byt svep för att flytta mellan låtar på / av"</string>
     <string name="song_title">"Sång titel"</string>
     <string name="songs">Låtar</string>
-    <string name="songs_in_folder">"Song mapp"</string>
     <string name="songsheet">"Songsheet"</string>
     <string name="songsheet_info">Visar en titel med information om låten</string>
     <string name="sound">Ljud</string>
@@ -669,8 +662,6 @@
     <string name="stage_mode_info">Visa låtar uppdelade i sektioner eller som scenmonitor</string>
     <string name="stage_section_max">"Max sektionshöjd (scenläge)"</string>
     <string name="start">"Start"</string>
-    <string name="start_stop_autoscroll">"Starta / stoppa autoscroll"</string>
-    <string name="start_stop_metronome">"Starta / stoppa metronomen"</string>
     <string name="start_stop_pad">"Start / stoppplatta"</string>
     <string name="stop">"Sluta"</string>
     <string name="storage">"Lagring"</string>
@@ -682,11 +673,9 @@
     <string name="storage_manage">"Hantera lagring"</string>
     <string name="storage_notwritable">"Kan inte användas"</string>
     <string name="storage_quicktip">När du väljer en plats:\nLista lagring med hjälp av menyn (du kan behöva ändra inställningar för att visa all lagring).\nVÄLJ ENDAST INTERNT ELLER SD-KORT-lagring.\nIntern lagring rekommenderas. Detta kan listas som enhetslagring eller med enhetens namn.\nPå Android 10+ ska du inte välja mappen Nedladdningar eller Rot. Om du är osäker, välj mappen \"Dokument\".</string>
-    <string name="storage_rationale">"Tillgång till din lagring krävs för att läsa och skriva sånger och uppsättningar."</string>
     <string name="storage_reset">Klicka här för att ändra din lagringsplats (där rotmappen för OpenSong finns).</string>
     <string name="storage_settings">Hantera din lagringsplats och låtmappar</string>
     <string name="storage_warning">Välj inte mappen \"Songs\" som din lagringsplats. Du bör i stället välja den överordnade \"OpenSong\" -mappsplatsen.</string>
-    <string name="subscription">"(Prenumeration krävs)"</string>
     <string name="success">"Framgång"</string>
     <string name="swipe">"Rita in inställningar"</string>
     <string name="swipe_allowance">"Vertikal rörelse tillåten"</string>
@@ -700,7 +689,6 @@
     <string name="tag_song">Låttaggar</string>
     <string name="tag_song_info">Hantera låttaggar för att hjälpa till med låtsökning</string>
     <string name="tag_to_use">Taggen att lägga till eller ta bort från låtar</string>
-    <string name="tag_verse">"Vers"</string>
     <string name="tags_remove_from_songs">Den här temataggen kommer att tas bort från följande låtar:</string>
     <string name="tap">"Kort tryck / tryck"</string>
     <string name="tap_tempo">"Tryck för att ställa in tempo"</string>
@@ -726,7 +714,6 @@
     <string name="time_slide_pages">"Tid för varje bild (er)"</string>
     <string name="time_slide_pages_help">"Lämna tomt för manuellt bildspel"</string>
     <string name="timer_learn">"Lär dig autoscroll tid"</string>
-    <string name="timer_size">"Timerns storlek"</string>
     <string name="title">"Titel"</string>
     <string name="tool">Verktyg</string>
     <string name="top">Topp</string>
@@ -745,7 +732,6 @@
     <string name="tuner_info">Hjälp till att ställa in ditt instrument</string>
     <string name="ukulele">Ukulele</string>
     <string name="unknown">"Okänd"</string>
-    <string name="update_projector_automatically">Uppdatera projektorn automatiskt</string>
     <string name="use_default">"Använd standard"</string>
     <string name="used_by_permision">Används med tillstånd</string>
     <string name="user_1">"Användare 1"</string>
@@ -755,7 +741,6 @@
     <string name="utilities">Verktyg</string>
     <string name="utilities_info">Andra verktyg för musiker</string>
     <string name="variation">"Variation"</string>
-    <string name="variation_edit">"Detta objekt kan redigeras. Originalen kommer inte att påverkas."</string>
     <string name="variation_make">"Gör en uppsättning variabler"</string>
     <string name="verse">"Vers"</string>
     <string name="verse_background">"Vers bakgrund"</string>
@@ -767,7 +752,6 @@
     <string name="volume">"Volym"</string>
     <string name="volume_value">"Aktuellt volymvärde"</string>
     <string name="wait">"Vänta...."</string>
-    <string name="web_search">"Sök internet för den här låten"</string>
     <string name="website">Hemsida</string>
     <string name="welcome">Välkommen till OpenSongApp</string>
     <string name="width">Bredd</string>

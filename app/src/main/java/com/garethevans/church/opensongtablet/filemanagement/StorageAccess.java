@@ -276,8 +276,8 @@ public class StorageAccess {
             // Copies the background assets
             AssetManager assetManager = c.getAssets();
             String[] files = new String[2];
-            files[0] = "backgrounds/ost_bg.png";
-            files[1] = "backgrounds/ost_logo.png";
+            files[0] = "backgrounds/OpenSongApp_Background.png";
+            files[1] = "backgrounds/OpenSongApp_Logo.png";
             Uri backgrounds = getUriForItem("Backgrounds", "", "");
 
             DocumentFile df = documentFileFromUri(backgrounds, backgrounds.getPath());
@@ -533,7 +533,7 @@ public class StorageAccess {
     }
     public Uri fixLocalisedUri(String uriString) {
         // This checks for localised filenames first and fixes the Uri
-        if (uriString.equals("ost_logo.png") || uriString.equals("ost_bg.png")) {
+        if (uriString.equals("OpenSongApp_Logo.png") || uriString.equals("OpenSongApp_Background.png")) {
             uriString = "../OpenSong/Backgrounds/" + uriString;
         }
 

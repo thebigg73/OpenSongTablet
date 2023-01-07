@@ -52,6 +52,9 @@
         <action
             android:id="@+id/action_performanceFragment_to_set_menu_graph"
             app:destination="@id/set_menu_graph" />
+        <action
+            android:id="@+id/action_ImportIOS"
+            app:destination="@+id/importIOSFragment" />
     </fragment>
 
     <!-- The presenter fragment -->

@@ -77,7 +77,7 @@ public class AlertInfoBottomSheet extends BottomSheetDialogFragment {
         } else {
             myView.appUpdated.setVisibility(View.VISIBLE);
             myView.showUpdates.setText(mainActivityInterface.getVersionNumber().getFullVersionInfo());
-            myView.showUpdates.setOnClickListener(b -> webLink("http://www.opensongapp.com/latest-updates"));
+            myView.showUpdates.setOnClickListener(b -> webLink(getString(R.string.website_latest)));
 
             // We've seen the warning, so update the preference
             mainActivityInterface.getPreferences().setMyPreferenceInt("lastUsedVersion",

@@ -338,11 +338,6 @@
         <item name="enableEdgeToEdge">true</item>
         <item name="paddingBottomSystemWindowInsets">true</item>
     </style>
-    <style name="RoundedBox" parent="FullscreenBottomSheet">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSizeTopLeft">16dp</item>
-        <item name="cornerSizeTopRight">16dp</item>
-    </style>
 
     <style name="popupWindow">
         <item name="contentPadding">24dp</item>
@@ -358,29 +353,6 @@
         <item name="backgroundTint">@color/colorSecondary</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:padding">16dp</item>
-    </style>
-
-    <style name="CastAppThemeMediaRouter" parent="Widget.MediaRouter.MediaRouteButton">
-        <item name="popupMenuBackground">@drawable/popup_bg</item>
-        <item name="android:popupBackground">@drawable/popup_bg</item>
-        <item name="backgroundColor">@color/colorSecondary</item>
-        <item name="background">@color/colorSecondary</item>
-        <item name="castBackground">@color/colorSecondary</item>
-
-        <item name="materialThemeOverlay">@style/MediaRouterOverlay</item>
-        <item name="colorPrimaryDark">@color/colorAltPrimary</item>
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorAccent">@color/colorAltSecondary</item>
-    </style>
-
-    <style name="MediaRouterOverlay" parent="">
-        <item name="android:popupBackground">@color/colorSecondary</item>
-        <item name="castBackground">@color/colorSecondary</item>
-        <item name="backgroundColor">@color/colorSecondary</item>
-        <item name="background">@color/colorSecondary</item>
-        <item name="colorPrimary">@color/colorAltSecondary</item>
-        <item name="colorOnPrimary">@color/colorAltSecondary</item>
-        <item name="colorOnSurface">@color/colorSecondary</item>
     </style>
 
     <!-- Sliders -->

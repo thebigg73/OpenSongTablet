@@ -190,6 +190,7 @@ public interface MainActivityInterface {
     void updateFragment(String fragName, Fragment callingFragment, ArrayList<String> arguments);
     int getFragmentOpen();
     FragmentManager getMyFragmentManager();
+    void dealWithIntent(int fragmentId);
 
     // Showcase
     ShowCase getShowCase();

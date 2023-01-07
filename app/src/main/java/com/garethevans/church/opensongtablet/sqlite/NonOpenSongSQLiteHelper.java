@@ -183,6 +183,7 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
     public void importDB(String dbToImport, boolean overwrite) {
         // This is from the restore osb fragment to import non-opensongapp database
         SQLiteDatabase currentDB = getDB();
+        addMissingColumns(dbToImport);
         currentDB.execSQL("ATTACH DATABASE '" + dbToImport + "' AS tempDb");
         if (overwrite) {
             currentDB.execSQL("REPLACE INTO main." + SQLite.TABLE_NAME +  " SELECT * FROM tempDb."+ SQLite.TABLE_NAME);
@@ -192,7 +193,11 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
         currentDB.close();
     }
 
+    private void addMissingColumns(String dbPath) {
+        try (SQLiteDatabase tempDB = SQLiteDatabase.openOrCreateDatabase(dbPath, null);) {
+            tempDB.execSQL("ALTER TABLE " + SQLite.TABLE_NAME + " ADD " + SQLite.COLUMN_ABC_TRANSPOSE + " TEXT");
+        };
+    }
+
     // TODO Flush entries that aren't in the filesystem, or alert the user to issues (perhaps asking to update the entry?
-
-
 }

@@ -236,7 +236,6 @@
     <string name="edit_song_variation_temp">Hierdie item word in die stel getransponeer. Jy is na die oorspronklike liedjie geneem vir redigering.</string>
     <string name="edit_temporary">Tydelike wysiging</string>
     <string name="edit_text_size">Wysig teksgrootte</string>
-    <string name="editpdf">"Wysig in eksterne PDF-program"</string>
     <string name="empty">Leeg</string>
     <string name="ending">Eindig</string>
     <string name="error">Fout</string>
@@ -248,7 +247,7 @@
     <string name="export_chordpro">"ChordPro liedjie (.cho)"</string>
     <string name="export_convert_song">OpenSong-geformateerde liedjies kan ook na die volgende formate omgeskakel word</string>
     <string name="export_current_format">Liedjies in hul huidige formaat</string>
-    <string name="export_current_set">Please restart the app to apply the changes</string>
+    <string name="export_current_set">Deel die huidige stel</string>
     <string name="export_current_song">"Deel die huidige liedjie"</string>
     <string name="export_desktop">"Desktop lêer (geen lêer uitbreiding)"</string>
     <string name="export_include_set_songs">Sluit liedjies in wat in die stel geïdentifiseer is</string>
@@ -367,7 +366,6 @@
     <string name="load_reusable">"Laai 'n herbruikbare slide"</string>
     <string name="location">Ligging</string>
     <string name="location_not_enabled">Skakel asseblief \'Ligging\' AAN om aan toestelle te koppel. As jy \'n keuse van modus het, kies \'n modus wat Wi-Fi gebruik.</string>
-    <string name="location_rationale">Hierdie funksie is nodig om ander netwerktoestelle op te spoor</string>
     <string name="logo">Logo</string>
     <string name="logo_info">Wissel tussen die logo en die liedjie-inhoud</string>
     <string name="long_press">"Lang druk / hou"</string>
@@ -398,7 +396,6 @@
     <string name="metronome">"Metronoom"</string>
     <string name="metronome_duration">Metronoomduur (mate)</string>
     <string name="metronome_info">Pas die metronoominstellings aan</string>
-    <string name="microphone_rationale">"Mikrofoon / audio opname is nodig om toegang tot die klank vlak meter."</string>
     <string name="midi_add">"Voeg opdrag by"</string>
     <string name="midi_auto">"Outomaties stuur MIDI"</string>
     <string name="midi_bluetooth">"Koppel Bluetooth-toestel"</string>
@@ -482,8 +479,6 @@
     <string name="panic_stop">Alle uitset het gestop</string>
     <string name="pause">Pouse</string>
     <string name="paypal_description">Stuur vir my \'n skenking as jy die toepassing nuttig vind</string>
-    <string name="pdftotext_extract">"Onttrek teks uit PDF"</string>
-    <string name="pdftotext_found">"Teks gevind:"</string>
     <string name="pedal">"Pedal"</string>
     <string name="pedal_avoid_repeat">Wys \'n waarskuwing voordat jy na die volgende liedjie beweeg</string>
     <string name="pedal_avoid_repeat_info">Nuttig om toevallige druk te vermy</string>
@@ -513,7 +508,6 @@
     <string name="presentation_order_info">Die volgorde van die aanbieding van die liedjie word hieronder getoon. Jy kan items sleep om die volgorde te herrangskik en swiep om te verwyder.</string>
     <string name="presentation_order_use">As aanbiedingsvolgorde vir die liedjie bestaan, gebruik dit om die vertoning te skep</string>
     <string name="presenter_mode">"Aanbieding af"</string>
-    <string name="presoFontShadow">"Aanbiedings font skaduwee"</string>
     <string name="preso_alpha">Agtergrond ondeursigtigheid</string>
     <string name="previous">Vorige</string>
     <string name="print">Druk</string>
@@ -650,7 +644,6 @@
     <string name="song_swipe_toggle">"Toggle krap tussen liedjies op / af te beweeg"</string>
     <string name="song_title">"Song title"</string>
     <string name="songs">Liedjies</string>
-    <string name="songs_in_folder">"Song gids"</string>
     <string name="songsheet">"Songsheet"</string>
     <string name="songsheet_info">Vertoon \'n titel met inligting oor die liedjie</string>
     <string name="sound">Klank</string>
@@ -669,8 +662,6 @@
     <string name="stage_mode_info">Vertoon liedjies wat in afdelings verdeel is of as \'n verhoogmonitor</string>
     <string name="stage_section_max">"Maksimum gedeelte hoogte (stadium modus)"</string>
     <string name="start">"Begin"</string>
-    <string name="start_stop_autoscroll">"Begin / stop autoscroll"</string>
-    <string name="start_stop_metronome">"Begin / stop metronoom"</string>
     <string name="start_stop_pad">"Begin / stop agtergrond musiek"</string>
     <string name="stop">"Stop"</string>
     <string name="storage">Stoor</string>
@@ -682,11 +673,9 @@
     <string name="storage_manage">"Bestuur stoor"</string>
     <string name="storage_notwritable">"Kan nie gebruik nie"</string>
     <string name="storage_quicktip">As u \'n plek kies:\nMaak \'n lys van stoorplek met behulp van die menu (u moet dalk die instellings verander om alle stoorplekke te wys).\nKIES SLEGS INTERNE OF SD-KAART-berging.\nInterne berging word aanbeveel. Dit kan gelys word as toestelberging of met die naam van u toestel.\nOp Android 10+ moet u nie die gids Downloads of Root kies nie. As u twyfel, kies die gids \'Dokumente\'.</string>
-    <string name="storage_rationale">"Toegang tot jou stoor is nodig om te lees en skryf liedjies en stelle."</string>
     <string name="storage_reset">Klik hier om jou stoorplek te verander (waar die wortel OpenSong-lêergids geleë is).</string>
     <string name="storage_settings">Bestuur jou stoorplek en liedjie-vouers</string>
     <string name="storage_warning">Moenie die \'Songs\'-lêergids as u stoorplek kies nie. In plaas daarvan moet u die \'OpenSong\'-lêergidslêer kies.</string>
-    <string name="subscription">"(Subskripsie benodig)"</string>
     <string name="success">Sukses</string>
     <string name="swipe">"Swiep instellings"</string>
     <string name="swipe_allowance">"Vertikale beweging toegelaat"</string>
@@ -700,7 +689,6 @@
     <string name="tag_song">Liedjie tags</string>
     <string name="tag_song_info">Bestuur liedjie-etikette om te help met liedsoektog</string>
     <string name="tag_to_use">Die merker om by te voeg of uit liedjies te verwyder</string>
-    <string name="tag_verse">Vers</string>
     <string name="tags_remove_from_songs">Hierdie temamerker sal van die volgende liedjies verwyder word:</string>
     <string name="tap">"Kort druk / tik"</string>
     <string name="tap_tempo">"Tik tempo stel"</string>
@@ -726,7 +714,6 @@
     <string name="time_slide_pages">"Tyd vir elke skyfie (s)"</string>
     <string name="time_slide_pages_help">"Laat leeg vir die handleiding skyfievertoning"</string>
     <string name="timer_learn">"Leer outoscroll tyd"</string>
-    <string name="timer_size">"Timer grootte"</string>
     <string name="title">Titel</string>
     <string name="tool">Gereedskap</string>
     <string name="top">Top</string>
@@ -745,7 +732,6 @@
     <string name="tuner_info">Help om jou instrument te stem</string>
     <string name="ukulele">Ukulele</string>
     <string name="unknown">Onbekend</string>
-    <string name="update_projector_automatically">Dateer projektor outomaties op</string>
     <string name="use_default">Gebruik verstek</string>
     <string name="used_by_permision">Gebruik met toestemming</string>
     <string name="user_1">"Gebruikers 1"</string>
@@ -755,7 +741,6 @@
     <string name="utilities">Nutsprogramme</string>
     <string name="utilities_info">Ander gereedskap vir musikante</string>
     <string name="variation">Variasie</string>
-    <string name="variation_edit">"Hierdie item kan verander. Die oorspronklike sal nie geraak word nie."</string>
     <string name="variation_make">"Maak \'n stel item variasie"</string>
     <string name="verse">Vers</string>
     <string name="verse_background">"Vers agtergrond"</string>
@@ -767,7 +752,6 @@
     <string name="volume">"Deel"</string>
     <string name="volume_value">"Huidige volume-waarde"</string>
     <string name="wait">"Wag ...."</string>
-    <string name="web_search">"Soek Internet vir die huidige liedjie"</string>
     <string name="website">Webwerf</string>
     <string name="welcome">Welkom by OpenSongApp</string>
     <string name="width">Breedte</string>

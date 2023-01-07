@@ -21,7 +21,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:drawableStart="@drawable/capo"/>
+            android:drawableStart="@drawable/capo"
+            android:visibility="gone"/>
 
         <LinearLayout
             android:id="@+id/contentLayout"

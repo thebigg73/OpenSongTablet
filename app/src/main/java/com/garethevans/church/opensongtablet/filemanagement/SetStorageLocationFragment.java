@@ -85,11 +85,6 @@ public class SetStorageLocationFragment extends Fragment {
 
         } else {
             myView.mainpage.postDelayed(()-> {
-                int height = mainActivityInterface.getToolbar().getActionBarHeight(false);
-                Log.d(TAG,"height:"+height);
-                myView.mainpage.setTranslationY(-height);
-                myView.mainpage.getLayoutParams().height = myView.mainpage.getHeight() + height;
-                myView.mainpage.requestLayout();
                 mainActivityInterface.hideActionBar();
                 mainActivityInterface.removeActionBar(true);
             },50);

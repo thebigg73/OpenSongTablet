@@ -236,7 +236,6 @@
     <string name="edit_song_variation_temp">Tato položka je v sadě transponována. Byli jste převedeni na původní skladbu k úpravě.</string>
     <string name="edit_temporary">Dočasná úprava</string>
     <string name="edit_text_size">Upravit velikost textu</string>
-    <string name="editpdf">"Upravit v externím programu PDF"</string>
     <string name="empty">Prázdný</string>
     <string name="ending">"Konec"</string>
     <string name="error">"Chyba"</string>
@@ -367,7 +366,6 @@
     <string name="load_reusable">"Vložte opakovaně použitelný snímek"</string>
     <string name="location">Umístění</string>
     <string name="location_not_enabled">Chcete-li se připojit k zařízením, zapněte \'Poloha\'. Pokud máte na výběr režim, vyberte režim, který využívá Wi-Fi.</string>
-    <string name="location_rationale">Tato funkce je vyžadována k nalezení dalších síťových zařízení</string>
     <string name="logo">"Logo"</string>
     <string name="logo_info">Přepínání mezi logem a obsahem skladby</string>
     <string name="long_press">"Dlouhým stisknutím / přidržením"</string>
@@ -398,7 +396,6 @@
     <string name="metronome">"Metronom"</string>
     <string name="metronome_duration">Trvání metronomu (bary)</string>
     <string name="metronome_info">Upravte nastavení metronomu</string>
-    <string name="microphone_rationale">"Mikrofon / zvukový záznam je vyžadován pro přístup Zvukoměr."</string>
     <string name="midi_add">"Přidat příkaz"</string>
     <string name="midi_auto">"Automatické odesílání MIDI"</string>
     <string name="midi_bluetooth">"Připojte zařízení Bluetooth"</string>
@@ -482,8 +479,6 @@
     <string name="panic_stop">Veškerý výstup se zastavil</string>
     <string name="pause">Pauza</string>
     <string name="paypal_description">Pošlete mi dar, pokud shledáte aplikaci užitečnou</string>
-    <string name="pdftotext_extract">"Extrahujte text z PDF"</string>
-    <string name="pdftotext_found">"Nalezeno:"</string>
     <string name="pedal">"Pedál"</string>
     <string name="pedal_avoid_repeat">Zobrazit varování před přechodem na další skladbu</string>
     <string name="pedal_avoid_repeat_info">Užitečné, aby se zabránilo náhodnému stisknutí</string>
@@ -513,7 +508,6 @@
     <string name="presentation_order_info">Pořadí prezentace skladeb je uvedeno níže. Přetažením položek můžete změnit pořadí a přejetím prstem odstranit.</string>
     <string name="presentation_order_use">Pokud pro skladbu existuje pořadí prezentace, použijte toto k vytvoření zobrazení</string>
     <string name="presenter_mode">"Režim prezentace"</string>
-    <string name="presoFontShadow">"Prezentace písma stín"</string>
     <string name="preso_alpha">Pozadí neprůhlednost</string>
     <string name="previous">Předchozí</string>
     <string name="print">Tisk</string>
@@ -650,7 +644,6 @@
     <string name="song_swipe_toggle">"Přepnout švihnout pro pohyb mezi skladbami zap / vyp"</string>
     <string name="song_title">"Název skladby"</string>
     <string name="songs">Písně</string>
-    <string name="songs_in_folder">"Složka písní"</string>
     <string name="songsheet">"Songsheet"</string>
     <string name="songsheet_info">Zobrazí název s informacemi o skladbě</string>
     <string name="sound">Zvuk</string>
@@ -669,8 +662,6 @@
     <string name="stage_mode_info">Zobrazte skladby rozdělené do sekcí nebo jako pódiový monitor</string>
     <string name="stage_section_max">"Maximální výška sekce (Režim fáze)"</string>
     <string name="start">"Počátek"</string>
-    <string name="start_stop_autoscroll">"Start / zastavit autoscroll"</string>
-    <string name="start_stop_metronome">"Start / zastavit metronom"</string>
     <string name="start_stop_pad">"Start / zastavit hudba na pozadí"</string>
     <string name="stop">"Zastavení"</string>
     <string name="storage">Skladování</string>
@@ -682,11 +673,9 @@
     <string name="storage_manage">"Správa úložiště"</string>
     <string name="storage_notwritable">"Nelze použít"</string>
     <string name="storage_quicktip">Při výběru umístění:\nSeznam úložiště pomocí nabídky (pro zobrazení celého úložiště bude pravděpodobně nutné změnit nastavení).\nVYBERTE POUZE VNITŘNÍ NEBO SD KARTU.\nDoporučuje se interní úložiště. Může se zobrazit jako úložiště zařízení nebo s názvem vašeho zařízení.\nV systému Android 10+ byste neměli vybírat složku Stahování nebo Kořen. V případě pochybností vyberte složku „Dokumenty“.</string>
-    <string name="storage_rationale">"Přístup k vašim úložiště je nutné číst a psát písně a soubory."</string>
     <string name="storage_reset">Kliknutím sem změníte umístění úložiště (kde se nachází kořenová složka OpenSong).</string>
     <string name="storage_settings">Spravujte své úložiště a složky skladeb</string>
     <string name="storage_warning">Nevyberejte jako místo úložiště složku „Songs“. Místo toho byste měli vybrat umístění nadřazené složky „OpenSong“.</string>
-    <string name="subscription">"(Požadováno předplatné)"</string>
     <string name="success">"Úspěch"</string>
     <string name="swipe">"Přesuňte nastavení"</string>
     <string name="swipe_allowance">"Vertikální pohyb povolen"</string>
@@ -700,7 +689,6 @@
     <string name="tag_song">Tagy písní</string>
     <string name="tag_song_info">Spravujte značky skladeb, které vám pomohou s vyhledáváním skladeb</string>
     <string name="tag_to_use">Značka, kterou chcete přidat nebo odebrat ze skladeb</string>
-    <string name="tag_verse">Sloka</string>
     <string name="tags_remove_from_songs">Tato značka tématu bude odstraněna z následujících skladeb:</string>
     <string name="tap">"Krátkým stisknutím / klepnutím"</string>
     <string name="tap_tempo">"Klepnutím nastavte tempo"</string>
@@ -726,7 +714,6 @@
     <string name="time_slide_pages">"Čas pro každý snímek (y)"</string>
     <string name="time_slide_pages_help">"Nechte prázdné pro ruční prezentaci"</string>
     <string name="timer_learn">"Zjistěte čas autoskládání"</string>
-    <string name="timer_size">"Velikost časovače"</string>
     <string name="title">Nadpis</string>
     <string name="tool">Nástroj</string>
     <string name="top">Horní</string>
@@ -745,7 +732,6 @@
     <string name="tuner_info">Pomozte vyladit váš nástroj</string>
     <string name="ukulele">Ukulele</string>
     <string name="unknown">Neznámo</string>
-    <string name="update_projector_automatically">Aktualizujte projektor automaticky</string>
     <string name="use_default">"Použít výchozí"</string>
     <string name="used_by_permision">Používáno se svolením</string>
     <string name="user_1">"Uživatel 1"</string>
@@ -755,7 +741,6 @@
     <string name="utilities">Utility</string>
     <string name="utilities_info">Další nástroje pro hudebníky</string>
     <string name="variation">Změna</string>
-    <string name="variation_edit">"Tuto položku lze upravovat. Původní bude nedotčena."</string>
     <string name="variation_make">"Udělejte variaci set položek"</string>
     <string name="verse">"Verš"</string>
     <string name="verse_background">"Verš pozadí"</string>
@@ -767,7 +752,6 @@
     <string name="volume">"Hlasitost"</string>
     <string name="volume_value">"Aktuální hodnota objemu"</string>
     <string name="wait">"Počkejte ...."</string>
-    <string name="web_search">"Hledat Internet pro aktuální skladby"</string>
     <string name="website">Webová stránka</string>
     <string name="welcome">Vítejte v OpenSongApp</string>
     <string name="width">Šířka</string>

@@ -387,6 +387,8 @@ public class PageButtons {
                 fallback = "autoscroll";
             } else if (x==4) {
                 fallback = "metronome";
+            } else if (x==5) {
+                fallback = "tuner";
             }
             String action = actionInterface.getPreferences().getMyPreferenceString("pageButton"+(x+1),fallback);
             pageButtonAction.add(action);
@@ -403,8 +405,8 @@ public class PageButtons {
                 pageButtonDrawable.add(ResourcesCompat.getDrawable(c.getResources(),drawableIds.get(0),null));
             }
 
-            // Set the visibility.  By default the first 6 are visible
-            if (x<6) {
+            // Set the visibility.  By default the first 7 are visible
+            if (x<7) {
                 pageButtonVisibility.add(actionInterface.getPreferences().getMyPreferenceBoolean("pageButtonShow" + (x + 1), true));
             } else {
                 pageButtonVisibility.add(actionInterface.getPreferences().getMyPreferenceBoolean("pageButtonShow" + (x + 1), false));

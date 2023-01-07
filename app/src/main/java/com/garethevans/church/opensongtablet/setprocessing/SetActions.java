@@ -28,9 +28,6 @@ import java.util.Locale;
 
 public class SetActions {
 
-    // "$**_" + getSong().getFolder() + "/" + getSong().getFilename() + "_***" + getSong().getKey() + "***_" + "_**$";
-
-    // TODO TIDY UP and check transpose bit works
     private final Context c;
     private final MainActivityInterface mainActivityInterface;
     private final String itemStart = "$**_";

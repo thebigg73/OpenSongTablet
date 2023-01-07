@@ -89,7 +89,7 @@ public class Gestures {
     }
     private void getPreferences() {
         doubleTap = mainActivityInterface.getPreferences().getMyPreferenceString("gestureDoubleTap","editsong");
-        longPress = mainActivityInterface.getPreferences().getMyPreferenceString("gestureLongPress","addtoset");
+        longPress = mainActivityInterface.getPreferences().getMyPreferenceString("gestureLongPress","");
         swipeEnabled = mainActivityInterface.getPreferences().getMyPreferenceBoolean("swipeForSongs",true);
         scrollDistance = mainActivityInterface.getPreferences().getMyPreferenceFloat("scrollDistance", 0.7f);
     }

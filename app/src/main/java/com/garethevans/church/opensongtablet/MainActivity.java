@@ -275,6 +275,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         super.onCreate(savedInstanceState);
 
         if (savedInstanceState!=null) {
+            Log.d(TAG,"savedInstanceState:"+savedInstanceState);
             bootUpCompleted = savedInstanceState.getBoolean("bootUpCompleted",false);
         }
 
@@ -294,35 +295,43 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         // Set up views
         setupViews();
 
-        if (savedInstanceState != null) {
-            getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-        }
-
         // Set up the navigation controller
         setupNavigation();
 
         // Did we receive an intent (user clicked on an openable file)?
         fileOpenIntent = getIntent();
-        dealWithIntent();
+        onNewIntent(fileOpenIntent);
     }
 
     @Override
     protected void onNewIntent (Intent intent) {
+        Log.d(TAG,"onNewIntent");
         super.onNewIntent(intent);
         fileOpenIntent = intent;
-        dealWithIntent();
+        // Send the action to be called from the opening fragment to fix backstack!
+        if (presenterValid()) {
+            presenterFragment.tryToImportIntent();
+        } else if (performanceValid()) {
+            performanceFragment.tryToImportIntent();
+        }
     }
 
-    private void dealWithIntent() {
+    @Override
+    public void dealWithIntent(int navigationId) {
+        Log.d(TAG,"fileOpenIntent:"+fileOpenIntent);
         if (fileOpenIntent!=null && fileOpenIntent.getData()!=null) {
             importUri = fileOpenIntent.getData();
+            Log.d(TAG,"importUri:"+importUri);
+            navController.popBackStack(navigationId,false);
+
             // We need to copy this file to our temp storage for now to have later permission
             InputStream inputStream;
             try {
                 inputStream = getContentResolver().openInputStream(importUri);
                 importFilename = storageAccess.getFileNameFromUri(importUri);
                 if (inputStream!=null) {
-                    File tempLoc = new File(getExternalCacheDir(),"Import");
+                    File tempLoc = new File(getExternalFilesDir("Import"),"Intent");
+
                     if (!tempLoc.mkdirs()) {
                         Log.d(TAG,"Error creating folder:"+tempLoc);
                     }
@@ -331,19 +340,34 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     storageAccess.updateFileActivityLog(TAG+" dealWithIntent CopyFile "+importUri+" to "+tempFile);
                     storageAccess.copyFile(inputStream,outputStream);
                     importUri = Uri.fromFile(tempFile);
+                    String dealingWithIntent = "";
                     if (importFilename.toLowerCase(Locale.ROOT).endsWith(".osb")) {
                         // OpenSongApp backup file
-                        navigateToFragment(getString(R.string.deeplink_import_osb), 0);
+                        Log.d(TAG,"Opening import song backup");
+                        dealingWithIntent = getString(R.string.deeplink_import_osb);
                     } else if (importFilename.toLowerCase(Locale.ROOT).endsWith(".osbs")) {
                         // OpenSongApp sets backup file
                         setWhattodo("intentlaunch");
-                        navigateToFragment(getString(R.string.deeplink_sets_backup_restore), 0);
+                        Log.d(TAG,"Opening import set backup");
+                        dealingWithIntent = getString(R.string.deeplink_sets_backup_restore);
                     } else if (importFilename.toLowerCase(Locale.ROOT).endsWith(".backup")) {
                         // OnSong backup file
-                        navigateToFragment(getString(R.string.deeplink_onsong), 0);
-                    } else {
+                        Log.d(TAG,"Opening import onsong backup");
+                        dealingWithIntent = getString(R.string.deeplink_onsong);
+                    } else if (getStorageAccess().isSpecificFileExtension("image",importFilename)){
                         // Set, song, pdf or image files are initially sent to the import file
-                        navigateToFragment(getString(R.string.deeplink_import_file), 0);
+                        Log.d(TAG,"Opening pdf, etc");
+                        dealingWithIntent = getString(R.string.deeplink_import_file);
+                    } else {
+                        // Can't handle the file, so delete it
+                        getShowToast().doIt(getString(R.string.unknown));
+                        if (tempFile.delete()) {
+                            Log.d(TAG,tempFile+" has been deleted");
+                        }
+                        dealingWithIntent = "";
+                    }
+                    if (dealingWithIntent!=null && !dealingWithIntent.isEmpty()) {
+                        navigateToFragment(dealingWithIntent,0);
                     }
                 }
             } catch (Exception e) {
@@ -352,9 +376,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             if (storageAccess==null) {
                 storageAccess = new StorageAccess(this);
             }
-        } else {
-            Log.d(TAG, "No intent received");
         }
+        fileOpenIntent = null;
     }
 
     private void setupHelpers() {
@@ -806,6 +829,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
     @Override
     public void popTheBackStack(int id, boolean inclusive) {
+        Log.d(TAG,"popTheBackStack("+id+"inclusive");
         navController.popBackStack(id,inclusive);
     }
     @Override
@@ -2859,6 +2883,15 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
         // Copy the persistent database from app storage to user storage
         nonOpenSongSQLiteHelper.copyUserDatabase();
+
+        // Clear out any temporarily copied intent files
+        File tempLoc = new File(getExternalFilesDir("Import"),"Intent");
+        File[] files = tempLoc.listFiles();
+        if (files!=null) {
+            for (File file : files) {
+                Log.d(TAG, "Deleted temp import file " + file + ":" + file.delete());
+            }
+        }
     }
 
     @Override

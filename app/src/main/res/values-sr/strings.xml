@@ -236,7 +236,6 @@
     <string name="edit_song_variation_temp">Ova stavka je transponovana u kompletu. Odvedeni ste na originalnu pesmu radi uređivanja.</string>
     <string name="edit_temporary">Privremena izmena</string>
     <string name="edit_text_size">Uredite veličinu teksta</string>
-    <string name="editpdf">Urediti u spoljnom PDF programu</string>
     <string name="empty">Prazan</string>
     <string name="ending">Završni</string>
     <string name="error">Greška</string>
@@ -367,7 +366,6 @@
     <string name="load_reusable">Učitaj slajd za ponovno korišćenje</string>
     <string name="location">Lokacija</string>
     <string name="location_not_enabled">Da biste se povezali sa uređajima, uključite \'Lokacija\'. Ako imate izbor režima, izaberite režim koji koristi Vi-Fi.</string>
-    <string name="location_rationale">Ova funkcija je potrebna za pronalaženje drugih mrežnih uređaja</string>
     <string name="logo">Logo</string>
     <string name="logo_info">Prebacivanje između logotipa i sadržaja pesme</string>
     <string name="long_press">Dugi pritisak/Držanje</string>
@@ -398,7 +396,6 @@
     <string name="metronome">Metronom</string>
     <string name="metronome_duration">Metronome trajanje (barovi)</string>
     <string name="metronome_info">Podesite podešavanja metronoma</string>
-    <string name="microphone_rationale">Mikrofon / snimanje zvuka je neophodno za pristupanje merenju nivoa zvuka.</string>
     <string name="midi_add">Dodavanje MIDI komande</string>
     <string name="midi_auto">Automatsko slanje MIDI</string>
     <string name="midi_bluetooth">Povezivanje Bluetooth MIDI uređaja</string>
@@ -482,8 +479,6 @@
     <string name="panic_stop">Sav izlaz je zaustavljen</string>
     <string name="pause">Pauza</string>
     <string name="paypal_description">Pošaljite mi donaciju ako smatrate da je aplikacija korisna</string>
-    <string name="pdftotext_extract">Ekstrakt teksta iz PDF-a</string>
-    <string name="pdftotext_found">Pronađeno je tekst:</string>
     <string name="pedal">Pedala</string>
     <string name="pedal_avoid_repeat">Prikaži upozorenje pre prelaska na sledeću pesmu</string>
     <string name="pedal_avoid_repeat_info">Korisno da se izbegne slučajna pritiskanja</string>
@@ -513,7 +508,6 @@
     <string name="presentation_order_info">Redosled prezentacije pesme je prikazan ispod. Možete da prevučete stavke da biste promenili redosled i prevucite da biste ih uklonili.</string>
     <string name="presentation_order_use">Ako postoji redosled prezentacije za pesmu, koristite ovo za kreiranje prikaza</string>
     <string name="presenter_mode">Mod prezentacije</string>
-    <string name="presoFontShadow">Senka fonta prikaza</string>
     <string name="preso_alpha">Neprozirnost pozadine</string>
     <string name="previous">Prethodno</string>
     <string name="print">Print</string>
@@ -650,7 +644,6 @@
     <string name="song_swipe_toggle">Uklj/isklj. swipe za pomeranje između pesama</string>
     <string name="song_title">Ime pesme</string>
     <string name="songs">Pesme</string>
-    <string name="songs_in_folder">Fascikla pesama</string>
     <string name="songsheet">Notni zapis</string>
     <string name="songsheet_info">Prikazuje naslov sa informacijama o pesmi</string>
     <string name="sound">Zvuk</string>
@@ -669,8 +662,6 @@
     <string name="stage_mode_info">Prikažite pesme podeljene u sekcije ili kao monitor bine</string>
     <string name="stage_section_max">Maksimalna visina sekcije (Stage Mode)</string>
     <string name="start">Započni</string>
-    <string name="start_stop_autoscroll">Početak/kraj automatski skrol</string>
-    <string name="start_stop_metronome">Početak/kraj metronom</string>
     <string name="start_stop_pad">Početak/kraj pad</string>
     <string name="stop">Zaustavi</string>
     <string name="storage">Memorija</string>
@@ -682,11 +673,9 @@
     <string name="storage_manage">Rad sa memorijom</string>
     <string name="storage_notwritable">Nije moguć upis</string>
     <string name="storage_quicktip">Када бирате локацију:\nНаведите меморијски простор помоћу менија (можда ћете морати да промените поставке да бисте приказали сву меморију).\nОДАБЕРИТЕ САМО УНУТРАШЊУ ИЛИ СД КАРТИЦУ.\nПрепоручује се интерно складиштење. Ово може бити наведено као складиште уређаја или са именом вашег уређаја.\nНа Андроиду 10+ не би требало да изаберете директоријум Преузимања или Роот. Ако сумњате, изаберите фасциклу „Документи“.</string>
-    <string name="storage_rationale">Pristup Vašoj memoriji je neophodno za čitanje i zapisivanje pesmi i set listi.</string>
     <string name="storage_reset">Kliknite ovde da promenite lokaciju za skladištenje (gde se nalazi osnovni OpenSong folder).</string>
     <string name="storage_settings">Upravljajte svojom lokacijom za skladištenje i folderima pesama</string>
     <string name="storage_warning">Nemojte odabrati direktorijum „Pesme“ kao lokaciju za skladištenje. Umesto toga, trebate odabrati roditeljsku lokaciju „OpenSong“.</string>
-    <string name="subscription">(Potrebna prijava)</string>
     <string name="success">Uspešno</string>
     <string name="swipe">Presavijte postavke</string>
     <string name="swipe_allowance">Dopušteno je vertikalno kretanje</string>
@@ -700,7 +689,6 @@
     <string name="tag_song">Oznake pesama</string>
     <string name="tag_song_info">Upravljajte oznakama pesama da biste pomogli u pretraživanju pesama</string>
     <string name="tag_to_use">Oznaka za dodavanje ili uklanjanje iz pesama</string>
-    <string name="tag_verse">Strofa</string>
     <string name="tags_remove_from_songs">Ova oznaka teme će biti uklonjena iz sledećih pesama:</string>
     <string name="tap">Kratak pritisak/Tap</string>
     <string name="tap_tempo">Tapnuti za određivanje tempa</string>
@@ -726,7 +714,6 @@
     <string name="time_slide_pages">Vreme za svaki slajd (s)</string>
     <string name="time_slide_pages_help">Ostaviti prazno za ručni slajd-šou</string>
     <string name="timer_learn">Saznajte vrijeme automatskog pregleda</string>
-    <string name="timer_size">Timer size</string>
     <string name="title">Naslov</string>
     <string name="tool">Oruđe</string>
     <string name="top">Vrh</string>
@@ -745,7 +732,6 @@
     <string name="tuner_info">Pomoć pri štimoc vašeg instrumenta</string>
     <string name="ukulele">Ukulele</string>
     <string name="unknown">Nepoznato</string>
-    <string name="update_projector_automatically">Ažurirajte projektor automatski</string>
     <string name="use_default">Koristi unapred postavljeno vreme</string>
     <string name="used_by_permision">Koristi se uz dozvolu</string>
     <string name="user_1">Korisnik 1</string>
@@ -755,7 +741,6 @@
     <string name="utilities">Komunalne usluge</string>
     <string name="utilities_info">Drugi alati za muzičare</string>
     <string name="variation">Varijacija</string>
-    <string name="variation_edit">Ovaj predmet može uređivati. Izvorna će biti nepromijenjen.</string>
     <string name="variation_make">Napravite varijaciju set stavke</string>
     <string name="verse">Strofa</string>
     <string name="verse_background">Pozadina strofe</string>
@@ -767,7 +752,6 @@
     <string name="volume">Jačina</string>
     <string name="volume_value">Trenutna jačina zvuka</string>
     <string name="wait">Sačekajte....</string>
-    <string name="web_search">Pretražiti Internet za trenutnu pesmu</string>
     <string name="website">Veb sajt</string>
     <string name="welcome">Dobrodošli u OpenSongApp</string>
     <string name="width">Širina</string>

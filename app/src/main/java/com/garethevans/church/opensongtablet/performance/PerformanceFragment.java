@@ -201,6 +201,11 @@ public class PerformanceFragment extends Fragment {
         myView.inlineSetList.prepareSet();
     }
 
+    public void tryToImportIntent() {
+        // We may have opened the app at this fragment by clicking on an openable file
+        // Get the main activity to check and fix backstack to this as home if required
+        mainActivityInterface.dealWithIntent(R.id.performanceFragment);
+    }
     private void removeViews() {
         try {
             mainActivityInterface.getSongSheetTitleLayout().removeAllViews();
@@ -757,6 +762,10 @@ public class PerformanceFragment extends Fragment {
                     mainActivityInterface.getNearbyConnections().getIsHost()) {
                 mainActivityInterface.getNearbyConnections().sendSongPayload();
             }
+
+            // If we opened the app with and intent/file, check if we need to import
+            tryToImportIntent();
+
         }, getResources().getInteger(R.integer.slide_in_time));
     }
     public void dealWithAbc(boolean forceShow, boolean hide) {

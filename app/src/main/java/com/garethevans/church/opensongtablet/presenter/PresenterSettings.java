@@ -294,11 +294,11 @@ public class PresenterSettings {
     public void getImagePreferences() {
         setLogo(getUriFromString(mainActivityInterface.
                         getPreferences().getMyPreferenceString("customLogo",""),
-                "ost_logo.png"));
+                "OpenSongApp_Logo.png"));
         setLogoSize(mainActivityInterface.getPreferences().getMyPreferenceFloat("customLogoSize",0.5f));
         setBackgroundImage1(getUriFromString(mainActivityInterface.
                         getPreferences().getMyPreferenceString("backgroundImage1",""),
-                "ost_bg.png"));
+                "OpenSongApp_Background.png"));
         setBackgroundImage2(getUriFromString(mainActivityInterface.
                         getPreferences().getMyPreferenceString("backgroundImage2",""),
                 null));
