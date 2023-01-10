@@ -4,6 +4,7 @@
     <string name="abc_transpose_to_song_info">Se uma tecla for definida na música e na notação abc, o aplicativo tentará ajustar a saída da notação abc para corresponder à tecla da música.</string>
     <string name="about">Cerca de</string>
     <string name="about_description">Informações do aplicativo, ajuda, guia do usuário, etc.</string>
+    <string name="accuracy">Precisão</string>
     <string name="action">"Açao"</string>
     <string name="action_button_info">Clique para mostrar ou ocultar os botões da página.\n\nCada um pode ser atribuído às ações da música, como metrônomos, transpor, pads, etc.\nPressionar longamente o botão principal permite alterar as configurações de cada botão.\nO pressionamento longo alguns botões de página realizam ações rápidas, como iniciar / parar / editar</string>
     <string name="action_long_press">Ação adicional de pressão longa</string>
@@ -396,6 +397,7 @@
     <string name="metronome">"Metrónomo"</string>
     <string name="metronome_duration">Duração do metrônomo (barras)</string>
     <string name="metronome_info">Ajuste as configurações do metrônomo</string>
+    <string name="microphone">Microfone</string>
     <string name="midi_add">"Adicionar comando"</string>
     <string name="midi_auto">"MIDI de envio automático"</string>
     <string name="midi_bluetooth">"Conecte o dispositivo Bluetooth"</string>
@@ -757,5 +759,4 @@
     <string name="width">Largura</string>
     <string name="words_and_music_by">Palavras e música de</string>
     <string name="zoom_level">Nível de zoom</string>
-    <string name="microphone">Microfone</string>
 </resources>

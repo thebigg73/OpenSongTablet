@@ -6,7 +6,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +33,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import be.tarsos.dsp.AudioDispatcher;
@@ -48,10 +48,17 @@ public class TunerBottomSheet  extends BottomSheetDialogFragment {
     private BottomSheetTunerBinding myView;
     ActivityResultLauncher<String> activityResultLauncher;
 
+
     @SuppressWarnings("unused,FieldCanBeLocal")
     private final String TAG = "TunerBottomSheet";
     private ArrayList<Double> midiNoteFrequency;
     private final float confidence = 0.91f;
+    private final ArrayList<String> tunings = new ArrayList<>(Arrays.asList("432", "434", "436",
+            "437", "438", "439", "440", "441", "442", "443", "444"));
+    private float concertPitch = 440f;
+    private int centsInTune=2, centsBand1=5, centsBand2=10, centsBand3=20, centsBand4=30;
+    private final ArrayList<String> cents = new ArrayList<>(Arrays.asList("+/- 0 cent","+/- 1 cent",
+            "+/- 2 cent","+/- 3 cent","+/- 4 cent","+/- 5 cent"));
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -103,9 +110,9 @@ public class TunerBottomSheet  extends BottomSheetDialogFragment {
     }
 
     private void setValues() {
-        ExposedDropDownArrayAdapter exposedDropDownArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(),
+        ExposedDropDownArrayAdapter exposedDropDownArrayAdapter1 = new ExposedDropDownArrayAdapter(requireContext(),
                 myView.instrument, R.layout.view_exposed_dropdown_item, mainActivityInterface.getChordDisplayProcessing().getInstruments());
-        myView.instrument.setAdapter(exposedDropDownArrayAdapter);
+        myView.instrument.setAdapter(exposedDropDownArrayAdapter1);
         myView.instrument.setText(instrumentPrefToText());
         myView.instrument.addTextChangedListener(new TextWatcher() {
             @Override
@@ -121,7 +128,117 @@ public class TunerBottomSheet  extends BottomSheetDialogFragment {
             }
         });
 
+        ExposedDropDownArrayAdapter exposedDropDownArrayAdapter2 = new ExposedDropDownArrayAdapter(requireContext(),
+                myView.aHz, R.layout.view_exposed_dropdown_item, tunings);
+        myView.aHz.setAdapter(exposedDropDownArrayAdapter2);
+        concertPitch = (float) mainActivityInterface.getPreferences().getMyPreferenceInt("refAHz",440);
+        myView.aHz.setText((int)concertPitch+"");
+        checkMidiButtons();
+        myView.aHz.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // Get the int value
+                int value = Integer.parseInt(s.toString());
+                mainActivityInterface.getPreferences().setMyPreferenceInt("refAHz",value);
+                concertPitch = (float) value;
+                checkMidiButtons();
+            }
+        });
+
+        ExposedDropDownArrayAdapter exposedDropDownArrayAdapter3 = new ExposedDropDownArrayAdapter(requireContext(),
+                myView.accuracy, R.layout.view_exposed_dropdown_item, cents);
+        myView.accuracy.setAdapter(exposedDropDownArrayAdapter3);
+        int tunerCents = mainActivityInterface.getPreferences().getMyPreferenceInt("tunerCents",2);
+        myView.accuracy.setText("+/- "+tunerCents+" cent");
+        getTunerCents(tunerCents);
+        myView.accuracy.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // Get the int value
+                // Get rid of the text
+                String text = s.toString().replaceAll("[^0-9]","");
+                int value = Integer.parseInt(text);
+                mainActivityInterface.getPreferences().setMyPreferenceInt("tunerCents",value);
+                getTunerCents(value);
+            }
+        });
+
         setUpTuningButtons();
+    }
+
+    private void checkMidiButtons() {
+        // If we are set to 440Hz, the midi notes are fine, if not, disable them
+        myView.note0.setEnabled(concertPitch==440);
+        myView.note1.setEnabled(concertPitch==440);
+        myView.note2.setEnabled(concertPitch==440);
+        myView.note3.setEnabled(concertPitch==440);
+        myView.note4.setEnabled(concertPitch==440);
+        myView.note5.setEnabled(concertPitch==440);
+        if (concertPitch==440) {
+            myView.pianoHolder.setVisibility(View.VISIBLE);
+        } else {
+            myView.pianoHolder.setVisibility(View.GONE);
+        }
+    }
+
+    private void getTunerCents(int tunerCents) {
+        switch (tunerCents) {
+            case 0:
+                centsInTune = 0;
+                centsBand1 = 2;
+                centsBand2 = 5;
+                centsBand3 = 10;
+                centsBand4 = 15;
+                break;
+            case 1:
+                centsInTune = 1;
+                centsBand1 = 3;
+                centsBand2 = 7;
+                centsBand3 = 15;
+                centsBand4 = 20;
+                break;
+            case 2:
+            default:
+                centsInTune = 2;
+                centsBand1 = 5;
+                centsBand2 = 10;
+                centsBand3 = 20;
+                centsBand4 = 30;
+                break;
+            case 3:
+                centsInTune = 3;
+                centsBand1 = 8;
+                centsBand2 = 15;
+                centsBand3 = 25;
+                centsBand4 = 35;
+                break;
+            case 4:
+                centsInTune = 4;
+                centsBand1 = 10;
+                centsBand2 = 20;
+                centsBand3 = 30;
+                centsBand4 = 40;
+                break;
+            case 5:
+                centsInTune = 5;
+                centsBand1 = 12;
+                centsBand2 = 20;
+                centsBand3 = 30;
+                centsBand4 = 40;
+                break;
+        }
     }
 
     private String instrumentPrefToText() {
@@ -274,7 +391,6 @@ public class TunerBottomSheet  extends BottomSheetDialogFragment {
                 ((ImageView) v).setImageDrawable(ResourcesCompat.getDrawable(getResources(),R.drawable.piano_note_white_on,null));
                 v.postDelayed(() -> ((ImageView) v).setImageDrawable(ResourcesCompat.getDrawable(getResources(),R.drawable.piano_note_white,null)),300);
             }
-            Log.d(TAG,"note:"+note);
             mainActivityInterface.getMidi().setUsePianoNotes(true);
             mainActivityInterface.getMidi().playMidiNotes(note,"standard",100,0);
         }
@@ -307,9 +423,7 @@ public class TunerBottomSheet  extends BottomSheetDialogFragment {
 
         // Go through each entry from 0 to 127 and calculate the frequency for the note
         for (int i=0; i<127; i++) {
-            float concertPitch = 440f;
             double freq = (float)Math.pow(2,((i-69)/12f))* concertPitch;
-            Log.d(TAG,"i:"+i+"  note"+mainActivityInterface.getMidi().getNotes().get(i)+"  freq:"+freq);
             midiNoteFrequency.add(freq);
         }
 
@@ -323,7 +437,7 @@ public class TunerBottomSheet  extends BottomSheetDialogFragment {
             float probability = pitchDetectionResult.getProbability();
             boolean isPitched = pitchDetectionResult.isPitched();
             myView.note0.post(() -> {
-                if (probability > confidence && pitchHz > 50 && pitchHz < 1600 && isPitched) {
+                if (probability > confidence && pitchHz > 30 && pitchHz < 2000 && isPitched) {
                     checkTheTuning(pitchHz);
                 }
             });
@@ -355,24 +469,24 @@ public class TunerBottomSheet  extends BottomSheetDialogFragment {
             // We can now update the display
             boolean isSharp = false, isFlat = false, inTune = false, closeInTune = false;
             int band;
-            if (Math.abs(currentCents) > 30) {
+            if (Math.abs(currentCents) > centsBand4) {
                 band = 4;
-            } else if (Math.abs(currentCents) > 20) {
+            } else if (Math.abs(currentCents) > centsBand3) {
                 band = 3;
-            } else if (Math.abs(currentCents) > 10) {
+            } else if (Math.abs(currentCents) > centsBand2) {
                 band = 2;
-            } else if (Math.abs(currentCents) > 5) {
+            } else if (Math.abs(currentCents) > centsBand1) {
                 band = 1;
-            } else if (Math.abs(currentCents) > 2) {
+            } else if (Math.abs(currentCents) > centsInTune) {
                 band = 1;
                 closeInTune = true;
             } else {
                 band = 0;
             }
 
-            if (currentCents > 2) {
+            if (currentCents > centsInTune) {
                 isSharp = true;
-            } else if (currentCents < -2) {
+            } else if (currentCents < -centsInTune) {
                 isFlat = true;
             } else {
                 inTune = true;

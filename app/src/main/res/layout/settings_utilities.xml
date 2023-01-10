@@ -29,6 +29,15 @@
                 android:hint="@string/tuner_info" />
             <TableRow style="@style/DividerLine" />
 
+            <!--<com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                android:id="@+id/googleDriveSync"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Google Drive Sync"
+                android:hint="Synchronise your OpenSong folder with Google Drive" />
+            <TableRow style="@style/DividerLine" />
+-->
+
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </LinearLayout>

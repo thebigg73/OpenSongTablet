@@ -36,7 +36,7 @@ public class ExposedDropDownArrayAdapter extends ArrayAdapter<String> {
         super(context, resource, objects);
         // Because we have passed in a reference to the exposed dropdown, pass across the arraylist
         // This allows the list to show the currently selected item when displaying popup
-        exposedDropDown.setArray(context,objects);
+        exposedDropDown.setArray(context, objects);
     }
 
     @NonNull

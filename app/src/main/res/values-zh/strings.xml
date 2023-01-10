@@ -4,6 +4,7 @@
     <string name="abc_transpose_to_song_info">如果在歌曲和 abc 表示法中设置了键，应用程序将尝试调整 abc 表示法的输出以匹配歌曲键。</string>
     <string name="about">关于</string>
     <string name="about_description">应用信息，帮助，用户指南等</string>
+    <string name="accuracy">准确性</string>
     <string name="action">"行动"</string>
     <string name="action_button_info">单击以显示或隐藏页面按钮。\n\n可以将每个按钮分配给节拍，移调，打击垫等歌曲操作。\n长按主按钮可更改每个按钮的设置。\n长按 一些页面按钮执行快速操作，例如开始/停止/编辑</string>
     <string name="action_long_press">额外的长按动作</string>
@@ -396,6 +397,7 @@
     <string name="metronome">"节拍器"</string>
     <string name="metronome_duration">节拍器持续时间（巴）</string>
     <string name="metronome_info">调整节拍器设置</string>
+    <string name="microphone">麦克风</string>
     <string name="midi_add">"添加命令"</string>
     <string name="midi_auto">"自动发送MIDI"</string>
     <string name="midi_bluetooth">"连接蓝牙设备"</string>
@@ -757,5 +759,4 @@
     <string name="width">宽度</string>
     <string name="words_and_music_by">文字和音乐</string>
     <string name="zoom_level">缩放级别</string>
-    <string name="microphone">麦克风</string>
 </resources>

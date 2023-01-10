@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <resources>
+    <string name="a_hz" translatable="false">A (Hz)</string>
     <string name="abc_transpose_to_song">Auto transpose to song key</string>
     <string name="abc_transpose_to_song_info">If a key is set in the song and in the abc notation, the app will try to adjust the output of the abc notation to match the song key.</string>
     <string name="about">About</string>
     <string name="about_description">App info, help, user guide, etc.</string>
+    <string name="accuracy">Accuracy</string>
     <string name="action">Action</string>
     <string name="action_button_info">Click to show or hide your page buttons.\n\nEach one can be assigned
         to song actions such as metronome, transpose, pads, etc.\nLong pressing on the main button
@@ -536,6 +538,7 @@
     <string name="metronome">Metronome</string>
     <string name="metronome_duration">Metronome duration (bars)</string>
     <string name="metronome_info">Adjust the metronome settings</string>
+    <string name="microphone">Microphone</string>
     <string name="midi" translatable="false">MIDI</string>
     <string name="midi_add">Add command</string>
     <string name="midi_auto">Auto send MIDI</string>
@@ -1096,5 +1099,4 @@ Check out the categories in the right hand options menu.
     <string name="youtube" translatable="false">YouTube</string>
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zoom_level">Zoom level</string>
-    <string name="microphone">Microphone</string>
 </resources>

@@ -48,4 +48,5 @@ public class UtilitiesMenuFragment extends Fragment {
             tunerBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"tunerBottomSheet");
         });
     }
+
 }

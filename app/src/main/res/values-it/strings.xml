@@ -4,6 +4,7 @@
     <string name="abc_transpose_to_song_info">Se una chiave è impostata nella canzone e nella notazione abc, l\'app proverà a regolare l\'output della notazione abc in modo che corrisponda alla chiave della canzone.</string>
     <string name="about">Di</string>
     <string name="about_description">Informazioni sull\'app, aiuto, guida per l\'utente, ecc.</string>
+    <string name="accuracy">Accuratezza</string>
     <string name="action">"Azione"</string>
     <string name="action_button_info">Fai clic per mostrare o nascondere i pulsanti della tua pagina.\n\nOgnuno può essere assegnato ad azioni del brano come metronomi, trasposizione, pad, ecc.\nPremendo a lungo il pulsante principale è possibile modificare le impostazioni di ciascun pulsante.\nPremendo a lungo su alcuni pulsanti di pagina eseguono azioni rapide come avvio / arresto / modifica</string>
     <string name="action_long_press">Azione di pressione prolungata aggiuntiva</string>
@@ -396,6 +397,7 @@
     <string name="metronome">"Metronomo"</string>
     <string name="metronome_duration">Metronóm időtartam (sávok)…</string>
     <string name="metronome_info">Regola le impostazioni del metronomo</string>
+    <string name="microphone">Microfono</string>
     <string name="midi_add">"Aggiungi comando"</string>
     <string name="midi_auto">"Auto invia MIDI"</string>
     <string name="midi_bluetooth">"Connetti dispositivo Bluetooth"</string>
@@ -757,5 +759,4 @@
     <string name="width">Larghezza</string>
     <string name="words_and_music_by">Parole e musica di</string>
     <string name="zoom_level">Livello di zoom</string>
-    <string name="microphone">Microfono</string>
 </resources>

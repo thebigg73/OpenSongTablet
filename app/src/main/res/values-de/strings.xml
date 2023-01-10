@@ -4,6 +4,7 @@
     <string name="abc_transpose_to_song_info">Wenn im Song und in der abc-Notation eine Tonart festgelegt ist, versucht die App, die Ausgabe der abc-Notation an die Tonart des Songs anzupassen.</string>
     <string name="about">Über</string>
     <string name="about_description">App-Informationen, Hilfe, Benutzerhandbuch usw.</string>
+    <string name="accuracy">Genauigkeit</string>
     <string name="action">"Aktion"</string>
     <string name="action_button_info">Klicken Sie hier, um Ihre Seitentasten ein- oder auszublenden.\n\nJede kann Songaktionen wie Metronomen, Transponieren, Pads usw. zugewiesen werden.\nDurch langes Drücken der Haupttaste können Sie die Einstellungen der einzelnen Tasten ändern.\nLange Drücken auf Einige Seitenschaltflächen führen schnelle Aktionen wie Starten / Stoppen / Bearbeiten aus</string>
     <string name="action_long_press">Zusätzliche lange Druckaktion</string>
@@ -396,6 +397,7 @@
     <string name="metronome">"Metronom"</string>
     <string name="metronome_duration">Metronomdauer (Takte)</string>
     <string name="metronome_info">Passen Sie die Metronomeinstellungen an</string>
+    <string name="microphone">Mikrofon</string>
     <string name="midi_add">"MIDI-Befehl hinzufügen"</string>
     <string name="midi_auto">"MIDI automatisch senden"</string>
     <string name="midi_bluetooth">"Bluetooth-Gerät verbinden"</string>
@@ -757,5 +759,4 @@
     <string name="width">Breite</string>
     <string name="words_and_music_by">Worte und Musik von</string>
     <string name="zoom_level">Zoomstufe</string>
-    <string name="microphone">Mikrofon</string>
 </resources>

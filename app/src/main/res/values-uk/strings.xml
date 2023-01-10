@@ -4,6 +4,7 @@
     <string name="abc_transpose_to_song_info">Якщо в пісні та нотації abc встановлено тональність, програма спробує налаштувати вихід нотації abc відповідно до тональності пісні.</string>
     <string name="about">Про</string>
     <string name="about_description">Інформація про програму, довідка, посібник користувача тощо.</string>
+    <string name="accuracy">Точність</string>
     <string name="action">Дія</string>
     <string name="action_button_info">Натисніть, щоб показати або приховати кнопки сторінки.  Кожному можна призначити такі дії пісні, як метроном, транспонування, пэди тощо. Тривале натискання на головну кнопку дозволяє змінити налаштування кожної кнопки. Тривале натискання деяких кнопок сторінки виконує швидкі дії, такі як запуск/зупинка/редагування</string>
     <string name="action_long_press">Додаткова дія довгого натискання</string>
@@ -396,6 +397,7 @@
     <string name="metronome">Метроном</string>
     <string name="metronome_duration">Тривалість метронома (бари)</string>
     <string name="metronome_info">Налаштуйте параметри метронома</string>
+    <string name="microphone">Мікрофон</string>
     <string name="midi_add">Додати команду</string>
     <string name="midi_auto">Автоматичне надсилання MIDI</string>
     <string name="midi_bluetooth">Підключити пристрій Bluetooth</string>
@@ -757,5 +759,4 @@
     <string name="width">Ширина</string>
     <string name="words_and_music_by">Слова і музика</string>
     <string name="zoom_level">Рівень масштабування</string>
-    <string name="microphone">Мікрофон</string>
 </resources>

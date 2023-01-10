@@ -454,6 +454,7 @@ public class Preferences extends Activity {
     // prevInSet                       boolean     Should the previous song in the set be shown (def:false)
     // prevNextSongMenu                boolean     Should previous and next songs be shown when not in a set from song menu (def:false)
     // profileName                     String      The last loaded or saved profile name (def:"")
+    // refAHz                          int         The preferred frequency of A4 in Hz for the tuner (def:440).
     // runswithoutbackup               int         The number of times the app has opened without backup (prompt the user after 10) (def:0)
     // scaleChords                     float       The scale factor for chords relative to the lyrics (def:0.8f)
     // scaleComments                   float       The scale factor for comments relative to the lyrics (def:0.8f)
@@ -516,6 +517,7 @@ public class Preferences extends Activity {
     // trimSections                    boolean     Should whitespace be removed from song sections (def:true)
     // trimLines                       boolean     Should the lines be trimmed (using the lineSpacing) value (def:false)
     // trimWordSpacing                 boolean     Should multiple spaces be trimmed between words (e.g. 'This    is   a    sentence. What   happens?'>'This is a sentence.  What happens?' (def:true)
+    // tunerCents                      int         How many cents the note has to be within to be in tune (def:2)
     // uriTree                         String      A string representation of the user root location (may be the OpenSong folder or its parent) (def:"")
     // uriTreeHome                     String      A string representation of the user home location (The OpenSong folder) (def:"")
     // usePresentationOrder            boolean     Should the song be parsed into the specified presentation order (def:false)

@@ -4,6 +4,7 @@
     <string name="abc_transpose_to_song_info">Если тональность задана в песне и в нотации abc, приложение попытается настроить вывод нотации abc в соответствии с тональностью песни.</string>
     <string name="about">Около</string>
     <string name="about_description">Информация о приложении, справка, руководство пользователя и т. Д.</string>
+    <string name="accuracy">Точность</string>
     <string name="action">Действие</string>
     <string name="action_button_info">Нажмите, чтобы отобразить или скрыть кнопки страницы.\n\nКаждую из них можно назначить действиям в песне, таким как метрономы, транспонирование, пэды и т. Д.\nДлительное нажатие на основную кнопку позволяет изменять настройки каждой кнопки.\nДлительное нажатие на некоторые кнопки страницы выполняют быстрые действия, такие как запуск / остановка / редактирование</string>
     <string name="action_long_press">Дополнительное длительное нажатие</string>
@@ -396,6 +397,7 @@
     <string name="metronome">"Метроном"</string>
     <string name="metronome_duration">Продолжительность метронома (бары)</string>
     <string name="metronome_info">Отрегулируйте настройки метронома</string>
+    <string name="microphone">Микрофон</string>
     <string name="midi_add">"Добавить команду"</string>
     <string name="midi_auto">"Автоматическая отправка MIDI"</string>
     <string name="midi_bluetooth">"Подключить устройство Bluetooth"</string>
@@ -757,5 +759,4 @@
     <string name="width">Ширина</string>
     <string name="words_and_music_by">Слова и музыка</string>
     <string name="zoom_level">Уровень масштабирования</string>
-    <string name="microphone">Микрофон</string>
 </resources>

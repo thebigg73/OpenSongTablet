@@ -87,6 +87,27 @@
                         android:layout_height="wrap_content"/>
                 </LinearLayout>
 
+                <TableRow style="@style/DividerLine"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                        android:id="@+id/aHz"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/a_hz"
+                        android:padding="16dp"/>
+                    <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                        android:id="@+id/accuracy"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/accuracy"
+                        android:padding="16dp"/>
+                </LinearLayout>
+
                 <LinearLayout
                     android:id="@+id/tuner"
                     android:layout_width="match_parent"
@@ -196,13 +217,21 @@
                         android:src="@drawable/tuner_block_off"/>
                 </LinearLayout>
 
-                <include
+                <LinearLayout
+                    android:id="@+id/pianoHolder"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TableRow style="@style/DividerLine"/>
+
+                    <include
                     android:id="@+id/piano"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     layout="@layout/view_chord_piano"
                     android:layout_margin="0dp" />
 
+                </LinearLayout>
             </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>

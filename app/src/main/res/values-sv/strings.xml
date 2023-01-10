@@ -4,6 +4,7 @@
     <string name="abc_transpose_to_song_info">Om en tangent är inställd i låten och i abc-notationen, kommer appen att försöka justera utmatningen av abc-notationen för att matcha sångnyckeln.</string>
     <string name="about">Handla om</string>
     <string name="about_description">Appinfo, hjälp, användarhandbok etc.</string>
+    <string name="accuracy">Noggrannhet</string>
     <string name="action">"Handling"</string>
     <string name="action_button_info">Klicka för att visa eller dölja sidoknapparna.\n\nVar och en kan tilldelas sångåtgärder som metronomer, transponering, kuddar, etc.\nLång tryckning på huvudknappen låter dig ändra inställningarna för varje knapp.\nLång tryckning på vissa sidoknappar utför snabba åtgärder som start / stopp / redigering</string>
     <string name="action_long_press">Ytterligare långa tryckåtgärder</string>
@@ -396,6 +397,7 @@
     <string name="metronome">"Metronom"</string>
     <string name="metronome_duration">Metronome varaktighet (staplar)</string>
     <string name="metronome_info">Justera metronominställningarna</string>
+    <string name="microphone">Mikrofon</string>
     <string name="midi_add">"Lägg till kommando"</string>
     <string name="midi_auto">"Auto skicka MIDI"</string>
     <string name="midi_bluetooth">"Anslut Bluetooth-enhet"</string>
@@ -757,5 +759,4 @@
     <string name="width">Bredd</string>
     <string name="words_and_music_by">Ord och musik av</string>
     <string name="zoom_level">Zoomnivå</string>
-    <string name="microphone">Mikrofon</string>
 </resources>
