@@ -5,6 +5,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.hardware.display.DisplayManager;
 import android.net.Uri;
 import android.os.Build;
@@ -275,7 +276,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         super.onCreate(savedInstanceState);
 
         if (savedInstanceState!=null) {
-            Log.d(TAG,"savedInstanceState:"+savedInstanceState);
             bootUpCompleted = savedInstanceState.getBoolean("bootUpCompleted",false);
         }
 
@@ -305,7 +305,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     protected void onNewIntent (Intent intent) {
-        Log.d(TAG,"onNewIntent");
         super.onNewIntent(intent);
         fileOpenIntent = intent;
         // Send the action to be called from the opening fragment to fix backstack!
@@ -318,7 +317,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void dealWithIntent(int navigationId) {
-        Log.d(TAG,"fileOpenIntent:"+fileOpenIntent);
         if (fileOpenIntent!=null && fileOpenIntent.getData()!=null) {
             importUri = fileOpenIntent.getData();
             Log.d(TAG,"importUri:"+importUri);
@@ -499,28 +497,31 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void updateMargins() {
-        if (settingsOpen) {
-            myView.fragmentView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-            myView.drawerLayout.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-        } else {
-            myView.fragmentView.setBackgroundColor(themeColors.getLyricsBackgroundColor());
-            myView.drawerLayout.setBackgroundColor(themeColors.getLyricsBackgroundColor());
-        }
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.post(() -> {
+            if (settingsOpen) {
+                myView.fragmentView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                myView.drawerLayout.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            } else {
+                myView.fragmentView.setBackgroundColor(themeColors.getLyricsBackgroundColor());
+                myView.drawerLayout.setBackgroundColor(themeColors.getLyricsBackgroundColor());
+            }
 
-        int[] margins = windowFlags.getMargins();
-        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) myView.drawerLayout.getLayoutParams();
-        params.setMargins(margins[0], margins[1], margins[2], margins[3]);
-        myView.drawerLayout.setLayoutParams(params);
+            int[] margins = windowFlags.getMargins();
+            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) myView.drawerLayout.getLayoutParams();
+            params.setMargins(margins[0], margins[1], margins[2], margins[3]);
+            myView.drawerLayout.setLayoutParams(params);
 
-        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) myView.notchBackground.getLayoutParams();
-        int height = myView.myToolbar.getActionBarHeight(true);
-        if (windowFlags.getShowStatusInCutout()) {
-            height += getWindowFlags().getCurrentTopCutoutHeight();
-        } else if (windowFlags.getShowStatus()) {
-            height += getWindowFlags().getStatusHeight();
-        }
-        layoutParams.height = height;
-        myView.notchBackground.setLayoutParams(layoutParams);
+            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) myView.notchBackground.getLayoutParams();
+            int height = myView.myToolbar.getActionBarHeight(true);
+            if (windowFlags.getShowStatusInCutout()) {
+                height += getWindowFlags().getCurrentTopCutoutHeight();
+            } else if (windowFlags.getShowStatus()) {
+                height += getWindowFlags().getStatusHeight();
+            }
+            layoutParams.height = height;
+            myView.notchBackground.setLayoutParams(layoutParams);
+        });
     }
 
     private void setupViews() {
@@ -979,8 +980,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public void allowNavigationUp(boolean allow) {
         if (getSupportActionBar()!=null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(allow);
-            getSupportActionBar().setHomeButtonEnabled(allow);
+            Handler handler = new Handler(Looper.getMainLooper());
+            handler.post(() -> {
+                getSupportActionBar().setDisplayHomeAsUpEnabled(allow);
+                getSupportActionBar().setHomeButtonEnabled(allow);
+            });
         }
     }
     private void showMenuItems(boolean show) {
@@ -2955,20 +2959,26 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
 
     private void updateCastIcon() {
+        int visibility;
         if (screenMirror != null) {
-            if (GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this) != ConnectionResult.SUCCESS) {
-                screenMirror.setVisibility(View.GONE);
-            } else if (menuOpen || settingsOpen) {
-                screenMirror.setVisibility(View.GONE);
+            if (GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this) != ConnectionResult.SUCCESS ||
+                    (menuOpen || settingsOpen)) {
+                visibility = View.GONE;
             } else {
-                screenMirror.setVisibility(View.VISIBLE);
+                visibility = View.VISIBLE;
             }
 
+            Drawable drawable;
             if (secondaryDisplays != null && connectedDisplays.length > 0) {
-                screenMirror.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.cast_connected));
+                drawable = ContextCompat.getDrawable(this, R.drawable.cast_connected);
             } else {
-                screenMirror.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.cast));
+                drawable = ContextCompat.getDrawable(this, R.drawable.cast);
             }
+
+            screenMirror.post(() -> {
+                screenMirror.setImageDrawable(drawable);
+                screenMirror.setVisibility(visibility);
+            });
         }
     }
 

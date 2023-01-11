@@ -1,6 +1,7 @@
 package com.garethevans.church.opensongtablet.sqlite;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
@@ -194,8 +195,12 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
     }
 
     private void addMissingColumns(String dbPath) {
-        try (SQLiteDatabase tempDB = SQLiteDatabase.openOrCreateDatabase(dbPath, null);) {
-            tempDB.execSQL("ALTER TABLE " + SQLite.TABLE_NAME + " ADD " + SQLite.COLUMN_ABC_TRANSPOSE + " TEXT");
+        try (SQLiteDatabase tempDB = SQLiteDatabase.openOrCreateDatabase(dbPath, null)) {
+            Cursor cursor = tempDB.rawQuery("SELECT * FROM " + SQLite.TABLE_NAME + " LIMIT 0", null);
+            if (cursor.getColumnIndex(SQLite.COLUMN_ABC_TRANSPOSE) == -1) {
+                tempDB.execSQL("ALTER TABLE " + SQLite.TABLE_NAME + " ADD " + SQLite.COLUMN_ABC_TRANSPOSE + " TEXT");
+            }
+            cursor.close();
         };
     }
 

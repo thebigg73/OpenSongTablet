@@ -172,22 +172,26 @@ public class SetMenuFragment extends Fragment {
     }
 
     public void updateItem(int position) {
-        String folder = mainActivityInterface.getCurrentSet().getFolder(position);
-        String filename = mainActivityInterface.getCurrentSet().getFilename(position);
-        String key = mainActivityInterface.getCurrentSet().getKey(position);
-        setListAdapter.getSetList().get(position).songfolder = folder.replace("**","../");
-        setListAdapter.getSetList().get(position).songfoldernice = folder;
-        setListAdapter.getSetList().get(position).songfilename = filename;
-        setListAdapter.getSetList().get(position).songtitle = filename;
-        setListAdapter.getSetList().get(position).songkey = key;
+        try {
+            String folder = mainActivityInterface.getCurrentSet().getFolder(position);
+            String filename = mainActivityInterface.getCurrentSet().getFilename(position);
+            String key = mainActivityInterface.getCurrentSet().getKey(position);
+            setListAdapter.getSetList().get(position).songfolder = folder.replace("**", "../");
+            setListAdapter.getSetList().get(position).songfoldernice = folder;
+            setListAdapter.getSetList().get(position).songfilename = filename;
+            setListAdapter.getSetList().get(position).songtitle = filename;
+            setListAdapter.getSetList().get(position).songkey = key;
 
-        // Check for icon
-        setListAdapter.getSetList().get(position).songicon = mainActivityInterface.getSetActions().
-                getIconIdentifier(folder,filename);
+            // Check for icon
+            setListAdapter.getSetList().get(position).songicon = mainActivityInterface.getSetActions().
+                    getIconIdentifier(folder, filename);
 
-        updateSetTitle();
-        setListAdapter.updateHighlightedItem(position);
-        setListAdapter.notifyItemChanged(position);
+            updateSetTitle();
+            setListAdapter.updateHighlightedItem(position);
+            setListAdapter.notifyItemChanged(position);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void updateSetTitle() {

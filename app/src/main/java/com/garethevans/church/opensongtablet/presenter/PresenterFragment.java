@@ -26,7 +26,6 @@ import java.util.ArrayList;
 
 public class PresenterFragment extends Fragment {
 
-    // TODO Make this all work
     private MainActivityInterface mainActivityInterface;
     private DisplayInterface displayInterface;
     private ModePresenterBinding myView;

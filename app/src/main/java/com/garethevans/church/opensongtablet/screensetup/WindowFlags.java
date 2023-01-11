@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Build;
 import android.os.Handler;
+import android.os.Looper;
 import android.view.RoundedCorner;
 import android.view.Surface;
 import android.view.View;
@@ -181,7 +182,8 @@ public class WindowFlags {
 
     public void hideKeyboard() {
         // Delay a few millisecs and then hide
-        new Handler().postDelayed(() -> {
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.postDelayed(() -> {
             windowInsetsController.hide(typeIme);
         },500);
     }
