@@ -9,6 +9,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -43,6 +44,14 @@ public class GesturesFragment extends Fragment {
         myView = SettingsGesturesBinding.inflate(inflater,container,false);
         mainActivityInterface.updateToolbar(getString(R.string.custom_gestures));
         mainActivityInterface.updateToolbarHelp(getString(R.string.website_custom_gestures));
+
+        myView.allowPinchToZoom.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("allowPinchToZoom",true));
+        myView.allowPinchToZoom.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                mainActivityInterface.getPreferences().setMyPreferenceBoolean("allowPinchToZoom",isChecked);
+            }
+        });
 
         // Set dropDowns
         ExecutorService executorService = Executors.newSingleThreadExecutor();

@@ -14,6 +14,15 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                android:id="@+id/allowPinchToZoom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/pinch_to_zoom"
+                android:hint="@string/pinch_to_zoom_info"/>
+
+            <TableRow style="@style/DividerLine"/>
+
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

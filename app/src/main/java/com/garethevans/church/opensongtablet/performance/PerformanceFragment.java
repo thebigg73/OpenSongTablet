@@ -199,6 +199,8 @@ public class PerformanceFragment extends Fragment {
         mainActivityInterface.updateOnScreenInfo("setpreferences");
         myView.inlineSetList.initialisePreferences(requireContext(),mainActivityInterface);
         myView.inlineSetList.prepareSet();
+
+        myView.zoomLayout.setAllowPinchToZoom(mainActivityInterface.getPreferences().getMyPreferenceBoolean("allowPinchToZoom",true));
     }
 
     public void tryToImportIntent() {

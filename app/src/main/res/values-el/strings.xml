@@ -497,6 +497,8 @@
     <string name="persistent_database">Μόνιμη βάση δεδομένων</string>
     <string name="persistent_database_info">Αυτό αποθηκεύει επιπλέον πληροφορίες (κλειδί, σημειώσεις, αυτόματη κύλιση, midi, κ.λπ.) για τραγούδια που δεν είναι OpenSong, όπως αρχεία PDF</string>
     <string name="piano">"Πιάνο"</string>
+    <string name="pinch_to_zoom">Τσίμπημα για ζουμ</string>
+    <string name="pinch_to_zoom_info">Να επιτρέπεται η μεγέθυνση και σμίκρυνση ενός τραγουδιού στη λειτουργία απόδοσης με χρήση της χειρονομίας τσιμπήματος για ζουμ</string>
     <string name="play_services_error">Για να χρησιμοποιήσετε το Google Cast, τις γραμματοσειρές και τις κοντινές συνδέσεις, θα πρέπει να εγκαταστήσετε τις Υπηρεσίες Google Play.</string>
     <string name="play_services_how">Δείξε μου πώς</string>
     <string name="popup_large">Μεγάλα αναδυόμενα παράθυρα</string>

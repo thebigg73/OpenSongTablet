@@ -497,6 +497,8 @@
     <string name="persistent_database">Beständig databas</string>
     <string name="persistent_database_info">Detta lagrar extra information (tangenter, noter, autoscroll, midi, etc.) för låtar som inte är OpenSong, såsom PDF-filer</string>
     <string name="piano">"Piano"</string>
+    <string name="pinch_to_zoom">Nyp för att zooma</string>
+    <string name="pinch_to_zoom_info">Tillåt zoomning in och ut ur en låt i prestandaläge med hjälp av nyp för att zooma gesten</string>
     <string name="play_services_error">För att kunna använda Google Cast, teckensnitt och anslutningar i närheten måste du installera Google Play-tjänster.</string>
     <string name="play_services_how">Visa mig hur</string>
     <string name="popup_large">Stora popup-fönster</string>

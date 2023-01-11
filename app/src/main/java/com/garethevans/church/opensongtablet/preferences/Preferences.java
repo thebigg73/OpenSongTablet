@@ -140,6 +140,7 @@ public class Preferences extends Activity {
     // *NOTYET addSectionSpace         boolean     Should a spacing line be added between sections to improve readability (def:true)
     // airTurnLongPressTime            int         If using airTurnMode, how long should an action_down be held for to simulate longPress (def:1000)
     // airTurnMode                     boolean     Should autorepeat onKeyUp (multiple from keyRepeatCount variable) be converted to longKeyPress actions for AirTurn pedals (def:false)
+    // allowPinchToZoom                boolean     Can the song be pinch zoomed in Performance mode? (def:true)
     // appTheme                        String      The theme to use (dark, light, custom1, custom2) (def:dark)
     // autoscrollAutoStart             boolean     Should autoscroll start on page load (needs to be started manually the first time) (def:false)
     // autoscrollDefaultSongLength     int         The default length of a song to use for autoscroll (def:180)

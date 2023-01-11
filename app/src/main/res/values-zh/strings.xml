@@ -497,6 +497,8 @@
     <string name="persistent_database">持久数据库</string>
     <string name="persistent_database_info">这会存储非 OpenSong 歌曲（如 PDF 文件）的额外信息（键、音符、自动滚动、midi 等）</string>
     <string name="piano">钢琴</string>
+    <string name="pinch_to_zoom">捏合缩放</string>
+    <string name="pinch_to_zoom_info">允许在“表演”模式下使用捏合缩放手势放大和缩小歌曲</string>
     <string name="play_services_error">要使用Google Cast，字体和附近的连接，您需要安装Google Play服务。</string>
     <string name="play_services_how">告诉我如何</string>
     <string name="popup_large">大型弹出窗口</string>

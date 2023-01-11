@@ -497,6 +497,8 @@
     <string name="persistent_database">Aanhoudende databasis</string>
     <string name="persistent_database_info">Dit stoor ekstra inligting (sleutel, notas, outoscroll, midi, ens.) vir nie OpenSong-liedjies soos PDF-lêers</string>
     <string name="piano">Klavier</string>
+    <string name="pinch_to_zoom">Knyp om te zoem</string>
+    <string name="pinch_to_zoom_info">Laat zoem in en uit \'n liedjie in Performance-modus met behulp van die knippie om gebaar in te zoem</string>
     <string name="play_services_error">Om Google Cast, lettertipes en verbindings in die buurt te gebruik, moet u Google Play Services installeer.</string>
     <string name="play_services_how">Wys my hoe</string>
     <string name="popup_large">Groot pop-ups</string>

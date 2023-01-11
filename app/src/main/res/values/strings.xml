@@ -648,6 +648,8 @@
     <string name="persistent_database">Persistent database</string>
     <string name="persistent_database_info">This stores extra information (key, notes, autoscroll, midi, etc.) for non OpenSong songs such as PDF files</string>
     <string name="piano">Piano</string>
+    <string name="pinch_to_zoom">Pinch to zoom</string>
+    <string name="pinch_to_zoom_info">Allow zooming in and out of a song in Performance mode using the pinch to zoom gesture</string>
     <string name="play_services_error">To use Google Cast, Fonts and Nearby Connections, you will need to install Google Play Services.</string>
     <string name="play_services_how">Show me how</string>
     <string name="plus_1" translatable="false">+1</string>

@@ -497,6 +497,8 @@
     <string name="persistent_database">Trwała baza danych</string>
     <string name="persistent_database_info">Przechowuje dodatkowe informacje (klucz, notatki, automatyczne przewijanie, midi itp.) dla utworów innych niż OpenSong, takich jak pliki PDF</string>
     <string name="piano">Pianino</string>
+    <string name="pinch_to_zoom">Uszczypnij, aby powiększyć</string>
+    <string name="pinch_to_zoom_info">Zezwalanie na powiększanie i pomniejszanie utworu w trybie Performance za pomocą gestu powiększania szczypania</string>
     <string name="play_services_error">Aby korzystać z Google Cast, czcionek i pobliskich połączeń, musisz zainstalować usługi Google Play.</string>
     <string name="play_services_how">Pokaż mi jak</string>
     <string name="popup_large">Duże wyskakujące okienka</string>

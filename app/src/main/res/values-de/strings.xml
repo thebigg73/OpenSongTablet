@@ -497,6 +497,8 @@
     <string name="persistent_database">Persistente Datenbank</string>
     <string name="persistent_database_info">Dies speichert zusätzliche Informationen (Tonart, Noten, Autoscroll, Midi usw.) für Nicht-OpenSong-Songs wie PDF-Dateien</string>
     <string name="piano">Klavier</string>
+    <string name="pinch_to_zoom">Zusammendrücken zum Zoomen</string>
+    <string name="pinch_to_zoom_info">Vergrößern und Verkleinern eines Musiktitels im Performance-Modus mit der Geste \"Zusammendrücken zum Zoomen\" zulassen</string>
     <string name="play_services_error">Um Google Cast, Schriftarten und Verbindungen in der Nähe verwenden zu können, müssen Sie Google Play Services installieren.</string>
     <string name="play_services_how">Zeig mir wie</string>
     <string name="popup_large">Große Popups</string>

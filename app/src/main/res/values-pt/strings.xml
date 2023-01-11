@@ -497,6 +497,8 @@
     <string name="persistent_database">Banco de dados persistente</string>
     <string name="persistent_database_info">Isso armazena informações extras (chave, notas, autoscroll, midi, etc.) para músicas não OpenSong, como arquivos PDF</string>
     <string name="piano">Piano</string>
+    <string name="pinch_to_zoom">Beliscar para zoom</string>
+    <string name="pinch_to_zoom_info">Deixe fazer zoom dentro e fora de uma música no modo Performance usando a pitada para zoom gesto</string>
     <string name="play_services_error">Para usar o Google Cast, fontes e conexões próximas, você precisará instalar o Google Play Services.</string>
     <string name="play_services_how">Mostre-me como</string>
     <string name="popup_large">Grandes pop-ups</string>

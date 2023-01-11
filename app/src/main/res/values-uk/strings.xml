@@ -497,6 +497,8 @@
     <string name="persistent_database">Постійна база даних</string>
     <string name="persistent_database_info">Тут зберігається додаткова інформація (клавіша, нотатки, автопрокрутка, міді тощо) для пісень, які не є OpenSong, таких як файли PDF</string>
     <string name="piano">Піаніно</string>
+    <string name="pinch_to_zoom">Зведення для масштабування</string>
+    <string name="pinch_to_zoom_info">Дозволити збільшення та зменшення масштабу пісні в режимі \"Виконання\" за допомогою жесту зведення для масштабування</string>
     <string name="play_services_error">Щоб використовувати Google Cast, Fonts і Nearby Connections, вам необхідно встановити Google Play Services.</string>
     <string name="play_services_how">Показати мені, як</string>
     <string name="popup_large">Великі спливаючі вікна</string>

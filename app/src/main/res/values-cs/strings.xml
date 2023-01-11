@@ -497,6 +497,8 @@
     <string name="persistent_database">Trvalá databáze</string>
     <string name="persistent_database_info">Zde se ukládají další informace (klávesa, poznámky, automatické posouvání, midi atd.) pro skladby bez OpenSong, jako jsou soubory PDF</string>
     <string name="piano">Klavir</string>
+    <string name="pinch_to_zoom">Přiblížení stažením prstů</string>
+    <string name="pinch_to_zoom_info">Povolení přiblížení a oddálení skladby v režimu Výkon pomocí gesta přiblížení stažením prstů</string>
     <string name="play_services_error">Abyste mohli používat Google Cast, písma a připojení v okolí, budete si muset nainstalovat služby Google Play.</string>
     <string name="play_services_how">Ukaž mi jak</string>
     <string name="popup_large">Velká vyskakovací okna</string>

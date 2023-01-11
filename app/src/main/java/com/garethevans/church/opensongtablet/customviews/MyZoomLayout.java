@@ -27,7 +27,7 @@ public class MyZoomLayout extends FrameLayout {
     private final OverScroller overScroller;
     private int viewWidth, viewHeight, maxScrollX, maxScrollY, overShootX, overShootY,
             songWidth, songHeight, originalSongWidth, originalSongHeight;
-    private boolean scrolledToTop, scrolledToBottom, gestureControl;
+    private boolean scrolledToTop, scrolledToBottom, gestureControl, allowPinchToZoom;
     private float maxScaleFactor = 3f;
 
     public MyZoomLayout(Context c, @Nullable AttributeSet attrs, int defStyleAttr) {
@@ -94,6 +94,9 @@ public class MyZoomLayout extends FrameLayout {
         }
     }
 
+    public void setAllowPinchToZoom(boolean allowPinchToZoom) {
+        this.allowPinchToZoom = allowPinchToZoom;
+    }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -167,24 +170,28 @@ public class MyZoomLayout extends FrameLayout {
     private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
         @Override
         public boolean onScale(ScaleGestureDetector detector) {
-            scaleFactor *= detector.getScaleFactor();
-            if (scaleFactor > maxScaleFactor) {
-                scaleFactor = maxScaleFactor;
-            }
-            if (scaleFactor < minScale) {
-                scaleFactor = minScale;
-            }
+            if (allowPinchToZoom) {
+                scaleFactor *= detector.getScaleFactor();
+                if (scaleFactor > maxScaleFactor) {
+                    scaleFactor = maxScaleFactor;
+                }
+                if (scaleFactor < minScale) {
+                    scaleFactor = minScale;
+                }
 
-            scrollTo(0,0);
-            songWidth = (int) (originalSongWidth * scaleFactor);
-            songHeight = (int) (originalSongHeight * scaleFactor);
-            focusX = detector.getFocusX();
-            focusY = detector.getFocusY();
-            isScaling = true;
-            isUserTouching = true;
-            invalidate();
+                scrollTo(0, 0);
+                songWidth = (int) (originalSongWidth * scaleFactor);
+                songHeight = (int) (originalSongHeight * scaleFactor);
+                focusX = detector.getFocusX();
+                focusY = detector.getFocusY();
+                isScaling = true;
+                isUserTouching = true;
+                invalidate();
 
-            return true;
+                return true;
+            } else {
+                return false;
+            }
         }
     }
 

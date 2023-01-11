@@ -497,6 +497,8 @@
     <string name="persistent_database">Perzistentna baza podataka</string>
     <string name="persistent_database_info">Ovo čuva dodatne informacije (taster, beleške, automatsko pomeranje, midi, itd.) za pesme koje nisu OpenSong kao što su PDF datoteke</string>
     <string name="piano">Klavir</string>
+    <string name="pinch_to_zoom">Štipaljka za zumiranje</string>
+    <string name="pinch_to_zoom_info">Dozvoljavanje uvećavanja i umanjivanja pesme u režimu performansi pomoću štipaljke za zumiranje pokreta</string>
     <string name="play_services_error">Da biste koristili Google Cast, fontove i veze u blizini, moraćete da instalirate Google Plai usluge.</string>
     <string name="play_services_how">Pokaži mi kako</string>
     <string name="popup_large">Veliki iskačući prozori</string>

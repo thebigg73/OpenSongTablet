@@ -497,6 +497,8 @@
     <string name="persistent_database">永続データベース</string>
     <string name="persistent_database_info">これにより、PDFファイルなどのOpenSong以外の曲の追加情報（キー、ノート、自動スクロール、midiなど）が保存されます。</string>
     <string name="piano">ピアノ</string>
+    <string name="pinch_to_zoom">ピンチしてズーム</string>
+    <string name="pinch_to_zoom_info">ピンチツーズームジェスチャを使用してパフォーマンスモードで曲のズームインとズームアウトを許可する</string>
     <string name="play_services_error">Google Cast、Fonts、Nearby Connectionsを使用するには、GooglePlayサービスをインストールする必要があります。</string>
     <string name="play_services_how">どうするか教えて</string>
     <string name="popup_large">大きなポップアップ</string>
