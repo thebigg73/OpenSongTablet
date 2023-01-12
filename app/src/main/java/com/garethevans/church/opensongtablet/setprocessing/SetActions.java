@@ -778,7 +778,7 @@ public class SetActions {
                 .append(" # - ")
                 .append(tempSong.getFilename())
                 .append("\"")
-                .append(" type=\"custom\" print=\"true\" seconds=\"\" loop=\"\" transition=\"\">\n")
+                .append(" type=\"custom\" print=\"true\" seconds=\"\" loop=\"\" transition=\"\" prefKey=\""+tempSong.getKey()+"\">\n")
                 .append("    ")
                 .append(emptyTagCheck("title",tempSong.getTitle()))
                 .append("\n    ")
@@ -1146,6 +1146,7 @@ public class SetActions {
         String custom_name = mainActivityInterface.getProcessSong().parseHTML(xpp.getAttributeValue(null, "name"));
         String custom_seconds = mainActivityInterface.getProcessSong().parseHTML(xpp.getAttributeValue(null, "seconds"));
         String custom_loop = mainActivityInterface.getProcessSong().parseHTML(xpp.getAttributeValue(null, "loop"));
+        String custom_key = mainActivityInterface.getProcessSong().parseHTML(xpp.getAttributeValue(null,"prefKey"));
         String custom_title = "";
         String custom_subtitle = "";
         String custom_notes = "";
@@ -1235,6 +1236,7 @@ public class SetActions {
             // Prepare for a variation
             custom_name = custom_name.replace("# " + c.getResources().getString(R.string.variation) + " # - ", "");
             tempSong.setFolder(customLocStart + folderVariations);
+            tempSong.setKey(custom_key);
             tempcache = "";
         }
 
@@ -1270,7 +1272,7 @@ public class SetActions {
 
         } else {
             tempSong.setLyrics(custom_text.toString());
-            tempSong.setKey("");
+            tempSong.setKey(custom_key);
             tempSong.setUser1(custom_seconds);
             tempSong.setUser2(custom_loop);
             tempSong.setAuthor(custom_subtitle);

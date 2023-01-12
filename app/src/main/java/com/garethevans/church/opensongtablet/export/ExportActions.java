@@ -3,6 +3,7 @@ package com.garethevans.church.opensongtablet.export;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
@@ -186,6 +187,8 @@ public class ExportActions {
                                             filename = filename.replace("# " + c.getString(R.string.variation) + " # - ", "");
                                             id = "../Variations/" + filename;
                                             custom = c.getString(R.string.variation);
+                                            key = mainActivityInterface.getProcessSong().parseHTML(xpp.getAttributeValue("", "prefKey"));
+                                            Log.d(TAG,"key for variation filename: "+filename+" is: "+key);
 
                                         } else if (filename.contains("# " + c.getResources().getString(R.string.note) + " # - ")) {
                                             filename = filename.replace("# " + c.getResources().getString(R.string.note) + " # - ", "");

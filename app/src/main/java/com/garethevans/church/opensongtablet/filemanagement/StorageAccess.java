@@ -529,6 +529,8 @@ public class StorageAccess {
         // Remove bad characters from filenames
         filename = filename.replaceAll("[*?<>&!#$+\":{}@\\\\]", " "); // Removes bad characters - leave ' and / though
         filename = filename.replaceAll("\\s{2,}", " ");  // Removes double spaces
+        // Don't allow the name OpenSong
+        filename = filename.replace("OpenSong","Open_Song");
         return filename.trim();  // Returns the trimmed value
     }
     public Uri fixLocalisedUri(String uriString) {

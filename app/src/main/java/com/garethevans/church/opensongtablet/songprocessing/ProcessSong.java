@@ -1718,9 +1718,9 @@ public class ProcessSong {
                             }
                         } else {
                             // Remove any word splits as not required
-                            line = line.replaceAll("\\s+-\\s+", "")
-                                    .replaceAll("\\s{2,}", " ");
-                            if (!presentation || !line.isEmpty()) {
+                            if (!presentation && !asPDF && !line.isEmpty()) {
+                                line = line.replaceAll("\\s+-\\s+", "")
+                                        .replaceAll("\\s{2,}", " ");
                                 TextView tv = lineText(linetype, line, typeface,
                                         size, textColor,
                                         mainActivityInterface.getMyThemeColors().getHighlightHeadingColor(),
