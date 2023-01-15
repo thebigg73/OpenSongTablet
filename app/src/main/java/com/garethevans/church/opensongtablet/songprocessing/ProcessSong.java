@@ -2738,74 +2738,98 @@ public class ProcessSong {
 
     // TODO Not working or implemented yet.  This will allow trimming images/pdfs by whitespace
     public Bitmap trimBitmap(Bitmap bmp) {
-        int imgHeight = bmp.getHeight();
-        int imgWidth = bmp.getWidth();
+        boolean trimMargins = false;
+        if (trimMargins) {
+            // TODO Auto-generated method stub
+            int color = Color.WHITE | Color.TRANSPARENT;
 
-        //TRIM WIDTH - LEFT
-        int startWidth = 0;
-        for (int x = 0; x < imgWidth / 2; x++) {
-            if (startWidth == 0) {
-                for (int y = 0; y < imgHeight/2; y++) {
-                    if (bmp.getPixel(x, y) != Color.TRANSPARENT) {
-                        startWidth = x;
+            long dtMili = System.currentTimeMillis();
+            int MTop = 0, MBot = 0, MLeft = 0, MRight = 0;
+            boolean found1 = false, found2 = false;
+
+            int[] bmpIn = new int[bmp.getWidth() * bmp.getHeight()];
+            int[][] bmpInt = new int[bmp.getWidth()][bmp.getHeight()];
+
+            bmp.getPixels(bmpIn, 0, bmp.getWidth(), 0, 0, bmp.getWidth(),
+                    bmp.getHeight());
+
+            for (int ii = 0, contX = 0, contY = 0; ii < bmpIn.length; ii++) {
+                bmpInt[contX][contY] = bmpIn[ii];
+                contX++;
+                if (contX >= bmp.getWidth()) {
+                    contX = 0;
+                    contY++;
+                    if (contY >= bmp.getHeight()) {
                         break;
                     }
                 }
-            } else {
-                break;
             }
-        }
 
-        //TRIM WIDTH - RIGHT
-        int endWidth = 0;
-        for (int x = imgWidth - 1; x >= imgWidth / 2; x--) {
-            if (endWidth == 0) {
-                for (int y = 0; y < imgHeight/2; y++) {
-                    if (bmp.getPixel(x, y) != Color.TRANSPARENT) {
-                        endWidth = x;
+            for (int hP = 0; hP < bmpInt[0].length && !found2; hP++) {
+                // looking for MTop
+                for (int wP = 0; wP < bmpInt.length && !found2; wP++) {
+                    if (bmpInt[wP][hP] != color) {
+                        Log.e("MTop 2", "Pixel found @" + hP);
+                        MTop = hP;
+                        found2 = true;
                         break;
                     }
                 }
-            } else {
-                break;
             }
-        }
+            found2 = false;
 
-        //TRIM HEIGHT - TOP
-        int startHeight = 0;
-        for(int y = 0; y < imgHeight/2; y++) {
-            if (startHeight == 0) {
-                for (int x = 0; x < imgWidth/2; x++) {
-                    if (bmp.getPixel(x, y) != Color.TRANSPARENT) {
-                        startHeight = y;
+            for (int hP = bmpInt[0].length - 1; hP >= 0 && !found2; hP--) {
+                // looking for MBot
+                for (int wP = 0; wP < bmpInt.length && !found2; wP++) {
+                    if (bmpInt[wP][hP] != color) {
+                        Log.e("MBot 2", "Pixel found @" + hP);
+                        MBot = bmp.getHeight() - hP;
+                        found2 = true;
                         break;
                     }
                 }
-            } else break;
-        }
+            }
+            found2 = false;
 
-        //TRIM HEIGHT - BOTTOM
-        int endHeight = 0;
-        for(int y = imgHeight - 1; y >= imgHeight/2; y--) {
-            if (endHeight == 0 ) {
-                for (int x = 0; x < imgWidth/2; x++) {
-                    if (bmp.getPixel(x, y) != Color.TRANSPARENT) {
-                        endHeight = y;
+            for (int wP = 0; wP < bmpInt.length && !found2; wP++) {
+                // looking for MLeft
+                for (int hP = 0; hP < bmpInt[0].length && !found2; hP++) {
+                    if (bmpInt[wP][hP] != color) {
+                        Log.e("MLeft 2", "Pixel found @" + wP);
+                        MLeft = wP;
+                        found2 = true;
                         break;
                     }
                 }
-            } else break;
-        }
+            }
+            found2 = false;
 
-        Bitmap resizedBitmap = Bitmap.createBitmap(
-                bmp,
-                startWidth,
-                startHeight,
-                endWidth - startWidth,
-                endHeight - startHeight
-        );
-        //bmp.recycle();
-        return resizedBitmap;
+            for (int wP = bmpInt.length - 1; wP >= 0 && !found2; wP--) {
+                // looking for MRight
+                for (int hP = 0; hP < bmpInt[0].length && !found2; hP++) {
+                    if (bmpInt[wP][hP] != color) {
+                        Log.e("MRight 2", "Pixel found @" + wP);
+                        MRight = bmp.getWidth() - wP;
+                        found2 = true;
+                        break;
+                    }
+                }
+            }
+            found2 = false;
+
+            int sizeY = bmp.getHeight() - MBot - MTop, sizeX = bmp.getWidth()
+                    - MRight - MLeft;
+
+            Bitmap bmp2 = Bitmap.createBitmap(bmp, MLeft, MTop, sizeX, sizeY);
+            dtMili = (System.currentTimeMillis() - dtMili);
+            Log.e("Margin   2",
+                    "Time needed " + dtMili + "mSec\nh:" + bmp.getWidth() + "w:"
+                            + bmp.getHeight() + "\narray x:" + bmpInt.length + "y:"
+                            + bmpInt[0].length);
+            return bmp2;
+        } else {
+            return bmp;
+        }
     }
 
 

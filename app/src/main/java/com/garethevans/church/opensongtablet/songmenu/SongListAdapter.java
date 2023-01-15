@@ -325,7 +325,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
 
         int pos = 0;
         for (int x=0; x<keyArray.length; x++) {
-           if (keyArray[x].startsWith(index1)) {
+           if (keyArray[x]!=null && keyArray[x].startsWith(index1)) {
                pos = x;
                break;
            }
@@ -336,8 +336,14 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
     public void changeCheckBox(int pos) {
         if (songList.size()>pos) {
             // Get the current value and change it
-            checkedArray.put(pos,!checkedArray.get(pos));
-            notifyItemChanged(pos, "checkChange");
+            if (checkedArray.size()>pos) {
+                try {
+                    checkedArray.put(pos, !checkedArray.get(pos));
+                    notifyItemChanged(pos, "checkChange");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 }

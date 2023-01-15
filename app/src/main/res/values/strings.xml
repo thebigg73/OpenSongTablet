@@ -158,6 +158,8 @@
     <string name="chordformat_5_name" translatable="false">Nashville</string>
     <string name="chordformat_6" translatable="false">I  II  III  IV  V  VI  VII  VIII  IX  X  XI  XII</string>
     <string name="chordformat_6_name">Numeral</string>
+    <string name="chordformat_7" translatable="false">C  Cis/Des  D  Dis/Es  E  F  Fis/Ges  G  Gis/As  A  Ais/Bes  B</string>
+    <string name="chordformat_7_name" translatable="false">Euro (Bb,B,is,es)</string>
     <string name="chordformat_autochange">Autochange chord format</string>
     <string name="chordformat_autochange_info">If a song uses a different chord format, should the app try to display using preferred setting</string>
     <string name="chordformat_default">Always assume original songs are in my preferred chord format</string>

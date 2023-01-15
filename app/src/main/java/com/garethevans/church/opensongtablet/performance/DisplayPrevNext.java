@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.customviews.MyZoomLayout;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
@@ -19,6 +20,7 @@ public class DisplayPrevNext {
     @SuppressWarnings({"FieldCanBeLocal","unused"})
     private final String TAG = "DisplayPrevNext";
     private final LinearLayout layout;
+    private MyZoomLayout zoomLayout;
     private final ExtendedFloatingActionButton prev, next;
     private boolean showPrev, prevVisible = false;
     private boolean showNext, nextVisible = false;
@@ -50,6 +52,10 @@ public class DisplayPrevNext {
         this.next = next;
         updateShow();
         updateColors();
+    }
+
+    public void setZoomLayout(MyZoomLayout zoomLayout) {
+        this.zoomLayout = zoomLayout;
     }
 
     public void updateShow() {
@@ -186,6 +192,7 @@ public class DisplayPrevNext {
     public void moveToNext() {
         swipeDirection = "R2L";
         if (nextIndex!=-1) {
+            stopFlingScroll();
             doMove(nextIndex);
         } else {
             mainActivityInterface.getShowToast().doIt(c.getString(R.string.last_song));
@@ -194,9 +201,20 @@ public class DisplayPrevNext {
     public void moveToPrev() {
         swipeDirection = "L2R";
         if (prevIndex != -1) {
+            stopFlingScroll();
             doMove(prevIndex);
         } else {
             mainActivityInterface.getShowToast().doIt(c.getString(R.string.first_song));
+        }
+    }
+
+    private void stopFlingScroll() {
+        if (zoomLayout!=null) {
+            try {
+                zoomLayout.stopFlingScroll();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

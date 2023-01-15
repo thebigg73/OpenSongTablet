@@ -41,8 +41,6 @@
                 android:hint="@string/ignore_cutouts_info"/>
             <TableRow style="@style/DividerLine"/>
 
-            <TableRow style="@style/DividerLine"/>
-
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

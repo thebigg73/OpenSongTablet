@@ -176,7 +176,7 @@ public class SetStorageLocationFragment extends Fragment {
             dialog.show(requireActivity().getSupportFragmentManager(),"SetStorageBottomSheet");
         });
         myView.setStorage.setOnClickListener(v -> chooseStorageLocation());
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
             // Hide the previous location button as we can't use it without full manage storage control
             // Don't want the hassle of requesting this.
             myView.findStorage.setVisibility(View.GONE);
@@ -291,7 +291,7 @@ public class SetStorageLocationFragment extends Fragment {
     }
     private void findLocations() {
         // Run in a new thread
-        // This is only for KitKat up to Oreo.  Not allowed for newer versions without
+        // This is only for KitKat.  Not allowed for newer versions without
         // Manage Storage permissions, which is overkill!
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
@@ -325,6 +325,7 @@ public class SetStorageLocationFragment extends Fragment {
                         StringBuilder check = new StringBuilder();
                         // Add the locations to the textview
                         for (int x = 0; x < locations.size(); x++) {
+                            Log.d(TAG,"check:"+check+"  locations.get("+x+"):"+locations.get(x));
                             if (!check.toString().contains("¬" + locations.get(x) + "¬")) {
                                 check.append("¬").append(locations.get(x)).append("¬");
                                 TextView tv = new TextView(requireContext());
@@ -341,35 +342,39 @@ public class SetStorageLocationFragment extends Fragment {
     private void walkFiles(File root) {
 
         if (root!=null && root.exists() && root.isDirectory()) {
+            Log.d(TAG,"root:"+root);
+
             File[] list = root.listFiles();
+            Log.d(TAG,"list: "+list);
             if (list != null) {
                 for (File f : list) {
                     if (f.isDirectory()) {
                         String where = f.getAbsolutePath();
                         String extra;
                         displayWhere(where);
+                        Log.d(TAG,"root:"+root+"  f:"+f);
 
-                         if (!where.contains(".estrongs") && !where.contains("com.ttxapps") && where.endsWith("/OpenSong/Songs")) {
+                        if (!where.contains(".estrongs") && !where.contains("com.ttxapps") && where.endsWith("/OpenSong/Songs")) {
                              int count = mainActivityInterface.getStorageAccess().songCountAtLocation(f);
-                            extra = count + " Songs";
-                            // Found one and it isn't in eStrongs recycle folder or the dropsync temp files!
-                            // IV - Add  a leading ¬ and remove trailing /Songs
-                            where = "¬" + where.substring(0, where.length() - 6);
-                            // IV - For paths identified as Internal storage (more patterns may be needed) remove the parent folder
-                            where = where.
-                                    replace("¬/storage/sdcard0/", "/").
-                                    replace("¬/storage/emulated/0/", "/").
-                                    replace("¬/storage/emulated/legacy/", "/").
-                                    replace("¬/storage/self/primary/", "/");
-                            if (where.startsWith("¬")) {
-                                // IV - Handle other paths as 'External'
-                                where = where.substring(10);
-                                extra = extra + ", " + this.getResources().getString(R.string.storage_ext) + " " + where.substring(0, where.indexOf("/"));
-                                where = where.substring(where.indexOf("/"));
-                            }
-                            where = "(" + extra + "): " + where;
-                            locations.add(where);
-                        }
+                             extra = count + " Songs";
+                             // Found one and it isn't in eStrongs recycle folder or the dropsync temp files!
+                             // IV - Add  a leading ¬ and remove trailing /Songs
+                             where = "¬" + where.substring(0, where.length() - 6);
+                             // IV - For paths identified as Internal storage (more patterns may be needed) remove the parent folder
+                             where = where.
+                                     replace("¬/storage/sdcard0/", "/").
+                                     replace("¬/storage/emulated/0/", "/").
+                                     replace("¬/storage/emulated/legacy/", "/").
+                                     replace("¬/storage/self/primary/", "/");
+                             if (where.startsWith("¬")) {
+                                 // IV - Handle other paths as 'External'
+                                 where = where.substring(10);
+                                 extra = extra + ", " + this.getResources().getString(R.string.storage_ext) + " " + where.substring(0, where.indexOf("/"));
+                                 where = where.substring(where.indexOf("/"));
+                             }
+                             where = "(" + extra + "): " + where;
+                             locations.add(where);
+                         }
                         folder = f;
                         walkFiles(f);
                     }

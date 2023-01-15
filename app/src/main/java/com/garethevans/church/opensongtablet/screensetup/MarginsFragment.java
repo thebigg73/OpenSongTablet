@@ -80,7 +80,6 @@ public class MarginsFragment extends Fragment {
         myView.bottomMargin.addOnChangeListener(new MySliderChange("marginBottom"));
         myView.immersiveMode.setOnCheckedChangeListener((buttonView, isChecked) -> {
             mainActivityInterface.getWindowFlags().setImmersiveMode(isChecked);
-            mainActivityInterface.getWindowFlags().setFlags();
             mainActivityInterface.getWindowFlags().hideOrShowSystemBars();
             mainActivityInterface.getWindowFlags().setMargins();
             mainActivityInterface.updateMargins();
@@ -88,14 +87,12 @@ public class MarginsFragment extends Fragment {
         });
         myView.navBarKeepSpace.setOnCheckedChangeListener((buttonView, isChecked) -> {
             mainActivityInterface.getWindowFlags().setNavBarKeepSpace(isChecked);
-            mainActivityInterface.getWindowFlags().setFlags();
             mainActivityInterface.getWindowFlags().hideOrShowSystemBars();
             mainActivityInterface.getWindowFlags().setMargins();
             mainActivityInterface.updateMargins();
         });
         myView.ignoreCutouts.setOnCheckedChangeListener(((buttonView, isChecked) -> {
             mainActivityInterface.getWindowFlags().setIgnoreCutouts(isChecked);
-            mainActivityInterface.getWindowFlags().setFlags();
             mainActivityInterface.getWindowFlags().hideOrShowSystemBars();
             mainActivityInterface.getWindowFlags().setMargins();
             mainActivityInterface.updateMargins();

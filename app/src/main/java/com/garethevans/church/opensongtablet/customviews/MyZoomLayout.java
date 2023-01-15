@@ -141,6 +141,10 @@ public class MyZoomLayout extends FrameLayout {
         return true;
     }
 
+    public void stopFlingScroll() {
+        maxScrollY = 0;
+    }
+
     @Override
     public boolean performClick() {
         return super.performClick();

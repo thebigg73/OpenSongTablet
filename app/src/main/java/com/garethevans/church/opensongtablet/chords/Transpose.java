@@ -1,6 +1,7 @@
 package com.garethevans.church.opensongtablet.chords;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
@@ -12,6 +13,14 @@ import java.util.Collections;
 import java.util.Locale;
 
 public class Transpose {
+
+    // Chord format 1:  Normal A A#/Bb B C C#/Db
+    // Chord format 2:  Euro   A B H C#/D#
+    // Chord format 3:  Euro   A B H Cis/Des
+    // Chord format 4:  Solf   DO RE MI FA
+    // Chord foramt 5:  Nash   1 2 3 4 5
+    // Chord foramt 6:  Num    I II III IX
+    // Chord format 7:  Euro   A Bb B Cis/Des   - similar to 3, but not using B/H or Bb/B
 
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "Transpose";
@@ -92,6 +101,28 @@ public class Transpose {
             "«├Y┤",     "««├2┤",    "├3┤",      "├5┤",      "«├7┤",     "├8┤",      "├W┤",
             "««├1┤",    "««├3┤",    "««├4┤",    "««├6┤",    "««├8┤",    "««├9┤",    "««├X┤",    "sus", "m"};
 
+    private final String[] fromChords7 =       {"maj7",     "ma7",      "maj9",     "ma9",      "sus",
+            " (ais",    " (bis",   " (cis",    " (dis",    " (eis",    " (fis",    " (gis",
+            " (as",     " (bes",   " (ces",    " (des",    " (es",     " (fes",    " (ges",
+            " (a",      " (b",      " (c",      " (d",      " (e",      " (f",      " (g",
+            " ais",     " bis",     " cis",     " dis",     " eis",     " fis",     " gis",
+            " as",      " bes",     " ces",     " des",     " es",      " fes",     " ges",
+            " a",       " b",       " c",       " d",       " e",       " f",       " g",
+            "Ais",      "Bis",      "Cis",      "Dis",      "Eis",      "Fis",      "Gis",
+            "As",       "Bes",      "Ces",      "Des",      "Es",       "Fes",      "Ges",
+            "A",        "B",        "C",        "D",        "E",        "F",        "G",        "¬us", "¬"};
+
+    private final String[] toChordsNums7 =     {"¬aj7",     "¬a7",      "¬aj9",     "¬a9",      "¬us",
+            " («├2┤m",  " («├4┤m",  " («├5┤m",  " («├7┤m",  " («├9┤m",  " («├W┤m",  " («├Y┤m",
+            " (««├Y┤m", " («««├2┤m"," («├3┤m",  " («├5┤m",  " (««├7┤m", " («├8┤m",  " («├W┤m",
+            " («««├1┤m"," («««├3┤m"," («««├4┤m"," («««├6┤m"," («««├8┤m"," («««├9┤m"," («««├X┤m",
+            " «├2┤m",   " «├4┤m",   " «├5┤m",   " «├7┤m",   " «├9┤m",   " «├W┤m",   " «├Y┤m",
+            " ««├Y┤m",  " «├2┤m",   " «├3┤m",   " «├5┤m",   " ««├7┤m",  " «├8┤m",   " «├W┤m",
+            " «««├1┤m", " «««├3┤m", " «««├4┤m", " «««├6┤m", " «««├8┤m", " «««├9┤m", " «««├X┤m",
+            "├2┤",      "├4┤",      "├5┤",      "├7┤",      "├9┤",      "├W┤",      "├Y┤",
+            "«├Y┤",     "├2┤",      "├3┤",      "├5┤",      "«├7┤",     "├8┤",      "├W┤",
+            "««├1┤",    "««├3┤",    "««├4┤",    "««├6┤",    "««├8┤",    "««├9┤",    "««├X┤",    "sus", "m"};
+
     // Solfeggio (DoReMi) = 4
     // Also handles variations of chord name
     // Solfege variants
@@ -144,7 +175,10 @@ public class Transpose {
     //  A trick! Minors arrive ending ┤m, the m is moved into the number to give numbers for minors. '┤ma' is treated as the start of major and is protected.
     private final String[] fromChordsNumM = "┤ma ┤m ├2m┤ ├5m┤ ├7m┤ ├Wm┤ ├Ym┤ ├1m┤ ├3m┤ ├4m┤ ├6m┤ ├8m┤ ├9m┤ ├Xm┤ ├2┤ ├5┤ ├7┤ ├W┤ ├Y┤ ├1┤ ├3┤ ├4┤ ├6┤ ├8┤ ├9┤ ├X┤ ¬".split(" ");
     private final String[] toSharpChords3 = "┤¬a m┤ »ais »cis »dis »fis »gis »»»a »»»h »»»c »»»d »»»e »»»f »»»g »Ais Cis Dis Fis Gis »»A »»H »»C »»D »»E »»F »»G m".split(" ");
+    private final String[] toSharpChords7 = "┤¬a m┤ »ais »cis »dis »fis »gis »»»a »»»b »»»c »»»d »»»e »»»f »»»g »Ais Cis Dis Fis Gis »»A »»B »»C »»D »»E »»F »»G m".split(" ");
     private final String[] toFlatChords3 =  "┤¬a m┤ »»»b »des »»es »ges »»as »»»a »»»h »»»c »»»d »»»e »»»f »»»g »»B Des »Es Ges »As »»A »»H »»C »»D »»E »»F »»G m".split(" ");
+    private final String[] toFlatChords7 =  "┤¬a m┤ »bes »des »»es »ges »»as »»»a »»»b »»»c »»»d »»»e »»»f »»»g Bes Des »Es Ges »As »»A »»B »»C »»D »»E »»F »»G m".split(" ");
+
     private String[] fromChordNumsNash;
     private String[] fromChordNumsNashType;
     private String[] toNash;
@@ -199,11 +233,14 @@ public class Transpose {
             }
 
             // Change the song format
-            thisSong.setDetectedChordFormat(newChordFormat);
+            thisSong.setDetectedChordFormat(oldChordFormat);
             thisSong.setDesiredChordFormat(newChordFormat);
 
             // Transpose and write the lyrics
             thisSong.setLyrics(transposeString(thisSong));
+
+            // Put in the new chord format
+            thisSong.setDetectedChordFormat(newChordFormat);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -333,6 +370,13 @@ public class Transpose {
                                 line = line.replace(fromChords3[z], toChordsNums3[z]);
                             }
                             break;
+                        case 7:
+                            //Log.d(TAG,"Original line:"+line);
+                            for (int z = 0; z < fromChords7.length; z++) {
+                                line = line.replace(fromChords7[z], toChordsNums7[z]);
+                            }
+                            //Log.d(TAG,"As numbers   :"+line);
+                            break;
                         case 4:
                             for (int z = 0; z < fromChords4.length; z++) {
                                 line = line.replace(fromChords4[z], toChordsNums4[z]);
@@ -348,12 +392,11 @@ public class Transpose {
                             }
                             break;
                     }
-                    //Log.d(TAG,"MIDTRANSPOSE LINE: "+line);
 
                     // If the old format has transposable chords - transpose
-                    if (oldChordFormat < 5) {
+                    if (oldChordFormat < 5 || oldChordFormat == 7) {
                         line = transposeNumber(line, transposeDirection, transposeTimes);
-                        //Log.d(TAG,"MIDTRANSPOSE LINE: "+line);
+                        Log.d(TAG,"MIDTRANSPOSE LINE: "+line);
                     }
                     //Log.d(TAG,"newChordFormat="+newChordFormat);
                     switch (newChordFormat) {
@@ -385,6 +428,17 @@ public class Transpose {
                                     line = line.replace(fromChordsNumM[z], toSharpChords3[z]);
                                 }
                             }
+                            break;
+                        case 7:
+                            // IV - Uses the 'm' array as the target has explicit minors
+                            if (forceFlats) for (int z = 0; z < fromChordsNumM.length; z++) {
+                                line = line.replace(fromChordsNumM[z], toFlatChords7[z]);
+                            } else {
+                                for (int z = 0; z < fromChordsNumM.length; z++) {
+                                    line = line.replace(fromChordsNumM[z], toSharpChords7[z]);
+                                }
+                            }
+                            //Log.d(TAG,"New line      :"+line);
                             break;
                         case 4:
                             if (forceFlats) for (int z = 0; z < fromChordsNum.length; z++) {
@@ -452,9 +506,13 @@ public class Transpose {
         // Rotate the scale the number of times requested
         String replaceNumber = "1·2·3·4·5·6·7·8·9·W·X·Y·";
         if (direction.equals("-1")) {
-            for (int x = 0; x < numtimes; x++) replaceNumber = replaceNumber.substring(22) + replaceNumber.substring(0, 22);
+            for (int x = 0; x < numtimes; x++) {
+                replaceNumber = replaceNumber.substring(22) + replaceNumber.substring(0, 22);
+            }
         } else {
-            for (int x = 0; x < numtimes; x++) replaceNumber = replaceNumber.substring(2) + replaceNumber.substring(0, 2);
+            for (int x = 0; x < numtimes; x++) {
+                replaceNumber = replaceNumber.substring(2) + replaceNumber.substring(0, 2);
+            }
         }
 
         // For the '├y┤' number forma we transpose y only. Replace y┤ with transposed y· and then · with ┤ as this prevents errors.
@@ -700,7 +758,7 @@ public class Transpose {
     private ArrayList<String> quickCapoKey(String key) {
         // This is used to give the user a list starting with blank of either simple fret number or fret number with new capo key
         ArrayList<String> al = new ArrayList<>(Collections.singletonList(""));
-        if (key!=null && !key.equals("") && !key.isEmpty()) {
+        if (key != null && !key.isEmpty()) {
             for (int i=1; i<=11; i++) {
                 al.add(i + " (" + numberToKey(transposeNumber(keyToNumber(key), "-1", i)) + ")");
             }
@@ -727,6 +785,8 @@ public class Transpose {
             int contains_do_count = 0;
             int contains_nash_count = 0;
             int contains_nashnumeral_count = 0;
+            boolean contains_Bb = false;
+
 
             // Process to get chords separated by spaces
             String lyrics = thisSong.getLyrics()
@@ -740,7 +800,19 @@ public class Transpose {
                     // Replace chord delimters/modifiers
                     .replace("|", " ")
                     .replace(":", " ")
-                    .replace("/", " ")
+                    .replace("/", " ");
+
+            // Quickly check for Bb chord before stripping other stuff out
+            String[] BbLines = lyrics.split("¬");
+            for (String l:BbLines) {
+                if (l.startsWith(".") && l.contains("Bb")) {
+                    contains_Bb = true;
+                    break;
+                }
+            }
+
+            // Now finish trimming the lines
+            lyrics = lyrics
                     // Why ' ~'?  We split chords like 'Am7' into 'A ~7' - the ~ stops the number being detected as nashville
                     .replace("m", " ~") // Also hadles majors
                     .replace("sus", " ~") // Removed as conflicts with format 3 tests for chord ending's'
@@ -786,12 +858,6 @@ public class Transpose {
             boolean contains_nash = (contains_nash_count > 4);
             boolean contains_nashnumeral = (contains_nashnumeral_count > 4);
 
-            //Log.d(TAG, "contains_es_is_count="+contains_es_is_count);
-            //Log.d(TAG, "contains_H_count="+contains_H_count);
-            //Log.d(TAG, "contains_do_count="+contains_do_count);
-            //Log.d(TAG, "contains_nash_count="+contains_nash_count);
-            //Log.d(TAG, "contains_nashnumeral_count="+contains_nashnumeral_count);
-
             // Set the chord style detected - Ok so the user chord format may not quite match the song - it might though!
             int formatNum;
 
@@ -799,6 +865,8 @@ public class Transpose {
                 formatNum = 4;
             } else if (contains_H && !contains_es_is) {
                 formatNum = 2;
+            } else if (contains_Bb && !contains_H && contains_es_is) {
+                formatNum = 7;
             } else if (contains_H || contains_es_is) {
                 formatNum = 3;
             } else if (contains_nash) {
@@ -886,9 +954,11 @@ public class Transpose {
             chordFormatNames.add(c.getString(R.string.chordformat_4_name));
             chordFormatNames.add(c.getString(R.string.chordformat_5_name));
             chordFormatNames.add(c.getString(R.string.chordformat_6_name));
+            chordFormatNames.add(c.getString(R.string.chordformat_7_name));
         }
         return chordFormatNames;
     }
+
     public ArrayList<String> getChordFormatAppearances() {
         if (chordFormatAppearances==null) {
             chordFormatAppearances = new ArrayList<>();
@@ -898,6 +968,7 @@ public class Transpose {
             chordFormatAppearances.add(c.getString(R.string.chordformat_4));
             chordFormatAppearances.add(c.getString(R.string.chordformat_5));
             chordFormatAppearances.add(c.getString(R.string.chordformat_6));
+            chordFormatAppearances.add(c.getString(R.string.chordformat_7));
         }
         return chordFormatAppearances;
     }

@@ -47,10 +47,10 @@ public class WindowFlags {
 
     private final Window w;
     private final MainActivityInterface mainActivityInterface;
-    private final WindowInsetsControllerCompat windowInsetsController;
+    private final WindowInsetsControllerCompat windowInsetsControllerCompat;
     private WindowInsetsCompat insetsCompat;
     private DisplayCutoutCompat displayCutoutCompat;
-    private Insets systemGestures, navBars, statusBars;
+    private Insets systemGestures, navBars, statusBars, systemBars;
     @SuppressWarnings({"FieldCanBeLocal", "unused"})
     private final String TAG = "WindowFlags";
     private final float density;
@@ -67,6 +67,7 @@ public class WindowFlags {
             typeNavBars = WindowInsetsCompat.Type.navigationBars(),
             typeIme = WindowInsetsCompat.Type.ime(),
             typeGestures = WindowInsetsCompat.Type.systemGestures(),
+            typeSystemBars = WindowInsetsCompat.Type.systemBars(),
             smallestScreenWidthDp;
 
 
@@ -74,7 +75,10 @@ public class WindowFlags {
     public WindowFlags(Context c, Window w) {
         this.w = w;
         mainActivityInterface = (MainActivityInterface) c;
-        windowInsetsController = WindowCompat.getInsetsController(w, w.getDecorView());
+        windowInsetsControllerCompat = WindowCompat.getInsetsController(w, w.getDecorView());
+
+        // Make edge to edge
+        edgeToEdge();
 
         // Get the display density, smallest width and current orientation
         density = c.getResources().getDisplayMetrics().density;
@@ -110,9 +114,9 @@ public class WindowFlags {
         systemGestures = insetsCompat.getInsetsIgnoringVisibility(typeGestures);
         navBars = insetsCompat.getInsetsIgnoringVisibility(typeNavBars);
         statusBars = insetsCompat.getInsetsIgnoringVisibility(typeStatusBars);
+        systemBars = insetsCompat.getInsetsIgnoringVisibility(typeSystemBars);
 
         // Set the defaults that don't change on rotation/actions
-        setFlags();
         setSystemBarHeights();
         setDeviceCutouts();
         setRoundedCorners();
@@ -131,28 +135,11 @@ public class WindowFlags {
         return insetsCompat;
     }
 
-    // Set the screen as edge to edge and decide if we are hiding the nav bar, etc.
-    // This is only called once the WindowInsetCompat has been set or if changed
-    public void setFlags() {
+    public void edgeToEdge() {
         // This sets the app as edge to edge (better than fullscreen)
         WindowCompat.setDecorFitsSystemWindows(w, false);
         w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
                 WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-        w.addFlags(View.SYSTEM_UI_FLAG_IMMERSIVE);
-        w.addFlags(View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
-
-        // Stop the screensaver kicking in
-        w.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-
-        // Set the method for the soft keyboard/ime
-        w.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE |
-                WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
-
-        // Hide the nav bars for immersive mode (if we don't want to keep the nav bar space),
-        if (immersiveMode && !navBarKeepSpace) {
-            windowInsetsController.setSystemBarsBehavior(WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE);
-            w.addFlags(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
-        }
     }
 
     private void setSystemBarHeights() {
@@ -184,7 +171,7 @@ public class WindowFlags {
         // Delay a few millisecs and then hide
         Handler handler = new Handler(Looper.getMainLooper());
         handler.postDelayed(() -> {
-            windowInsetsController.hide(typeIme);
+            windowInsetsControllerCompat.hide(typeIme);
         },500);
     }
 
@@ -209,15 +196,22 @@ public class WindowFlags {
         showStatusInCutout = currentTopHasCutout && !ignoreCutouts;
 
         if (showStatus || showStatusInCutout) {
-            windowInsetsController.show(typeStatusBars);
+            windowInsetsControllerCompat.show(typeStatusBars);
         } else {
-            windowInsetsController.hide(typeStatusBars);
+            windowInsetsControllerCompat.hide(typeStatusBars);
+            windowInsetsControllerCompat.setSystemBarsBehavior(WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE);
         }
 
         if (showNav) {
-            windowInsetsController.show(typeNavBars);
+            windowInsetsControllerCompat.show(typeNavBars);
         } else {
-            windowInsetsController.hide(typeNavBars);
+            windowInsetsControllerCompat.hide(typeNavBars);
+            windowInsetsControllerCompat.setSystemBarsBehavior(WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE);
+        }
+
+        if (!showNav && !showStatus && !showStatusInCutout) {
+            windowInsetsControllerCompat.hide(typeSystemBars);
+            windowInsetsControllerCompat.setSystemBarsBehavior(WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE);
         }
     }
 

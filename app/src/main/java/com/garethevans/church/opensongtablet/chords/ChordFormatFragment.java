@@ -82,21 +82,8 @@ public class ChordFormatFragment extends Fragment {
         showHideView(myView.autoChange,myView.assumePreferred.getSwitch().isChecked());
         formattouse = mainActivityInterface.getPreferences().getMyPreferenceInt("chordFormat",1);
 
-        chordFormats = new ArrayList<>();
-        chordFormats.add(getString(R.string.chordformat_1));
-        chordFormats.add(getString(R.string.chordformat_2));
-        chordFormats.add(getString(R.string.chordformat_3));
-        chordFormats.add(getString(R.string.chordformat_4));
-        chordFormats.add(getString(R.string.chordformat_5));
-        chordFormats.add(getString(R.string.chordformat_6));
-
-        chordFormatNames = new ArrayList<>();
-        chordFormatNames.add(getString(R.string.chordformat_1_name));
-        chordFormatNames.add(getString(R.string.chordformat_2_name));
-        chordFormatNames.add(getString(R.string.chordformat_3_name));
-        chordFormatNames.add(getString(R.string.chordformat_4_name));
-        chordFormatNames.add(getString(R.string.chordformat_5_name));
-        chordFormatNames.add(getString(R.string.chordformat_6_name));
+        chordFormats = mainActivityInterface.getTranspose().getChordFormatAppearances();
+        chordFormatNames = mainActivityInterface.getTranspose().getChordFormatNames();
 
         ExposedDropDownArrayAdapter formatAdapter = new ExposedDropDownArrayAdapter(requireContext(),
                 myView.choosePreferredFormat,R.layout.view_exposed_dropdown_item,chordFormatNames);
@@ -121,11 +108,14 @@ public class ChordFormatFragment extends Fragment {
         } else if (formattouse==4) {
             setChordPrefText(new String[] {"LAb","SOL#","SIb","LA#","REb", "DO#", "MIb", "RE#", "SOLb","FA#",
                     "LAbm","SOL#m","SIbm","LA#m","REbm","DO#m","MIbm","RE#m","SOLbm","FA#m"});
+        } else if (formattouse==7) {
+            setChordPrefText(new String[]{"As", "Gis", "Bes", "Ais", "Des", "Cis", "Es", "Dis", "Ges", "Fis",
+                    "as", "gis", "bes", "ais", "des", "cis", "es", "dis", "ges", "fis"});
         } else {
             setChordPrefText(new String[] {"Ab", "G#", "Bb","A#", "Db", "C#", "Eb", "D#", "Gb", "F#",
                     "Abm","G#m","Bbm","A#m","Dbm","C#m","Ebm","D#m","Gbm","F#m"});
         }
-        if (formattouse>4) {
+        if (formattouse==5 || formattouse==6) {
             myView.prefSliders.setVisibility(View.GONE);
         } else {
             myView.prefSliders.setVisibility(View.VISIBLE);

@@ -277,6 +277,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
         if (savedInstanceState!=null) {
             bootUpCompleted = savedInstanceState.getBoolean("bootUpCompleted",false);
+            songListBuildIndex.setIndexComplete(savedInstanceState.getBoolean("indexComplete",false));
+            fullIndexRequired = !songListBuildIndex.getIndexComplete();
+            Log.d(TAG,"bootUpCompleted:"+bootUpCompleted+"   fullIndexRequired:"+fullIndexRequired);
         }
 
         WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
@@ -2828,6 +2831,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBoolean("bootUpCompleted",bootUpCompleted);
+        outState.putBoolean("indexComplete",songListBuildIndex.getIndexComplete());
     }
 
     @Override

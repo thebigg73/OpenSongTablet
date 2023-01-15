@@ -210,6 +210,8 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
 
         Bitmap pdfPageBitmap = mainActivityInterface.getProcessSong().getBitmapFromPDF(
                 pdfFolder,pdfFilename,pageNum,width,height,mainActivityInterface.getPreferences().getMyPreferenceString("songAutoScale","W"));
+        // If we want to enable PDF trimming of whitespace
+        //Bitmap newPageBitmap= mainActivityInterface.getProcessSong().trimBitmap(pdfPageBitmap);
         holder.pdfPageImage.post(()-> {
             try {
                 Glide.with(c).load(pdfPageBitmap).override(width, height).into(holder.pdfPageImage);

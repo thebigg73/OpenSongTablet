@@ -171,6 +171,9 @@ public class PerformanceFragment extends Fragment {
             alertInfoBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "AlertInfoBottomSheet");
         }
 
+        // Pass a reference of the zoom layout to the next/prev so we can stop fling scrolls
+        mainActivityInterface.getDisplayPrevNext().setZoomLayout(myView.zoomLayout);
+
         return myView.getRoot();
     }
 
