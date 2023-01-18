@@ -316,6 +316,8 @@
     <string name="hymn_number">"Hymn aantal"</string>
     <string name="ignore_cutouts">Ignoreer kerwe</string>
     <string name="ignore_cutouts_info">As jou toestel kepe het (vertoonuitknipsels), kan jy die toepassing dwing om steeds oor hierdie spasie te teken. Maak seker dat jy steeds die kieslysknoppies kan sien voordat jy hierdie bladsy verlaat, anders sal jy dalk nie toegang tot die programinstellings kry nie!</string>
+    <string name="ignore_rounded_corners">Ignoreer toestel afgeronde hoeke</string>
+    <string name="ignore_rounded_corners_info">Afgeronde skermhoek kan veroorsaak dat teks geknip word. As u afgeronde hoeke ignoreer, sal die app gevra word om die volle breedte / hoogte van die skerm te gebruik (aanbeveel).  U kan altyd die marges hieronder aanpas.</string>
     <string name="ignore_warning">Ignoreer waarskuwing</string>
     <string name="image">"Image"</string>
     <string name="image_change">Klik op die prent om te verander</string>

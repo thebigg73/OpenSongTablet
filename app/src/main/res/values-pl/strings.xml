@@ -316,6 +316,8 @@
     <string name="hymn_number">"Numer hymn"</string>
     <string name="ignore_cutouts">Ignoruj wycięcia</string>
     <string name="ignore_cutouts_info">Jeśli Twoje urządzenie ma wycięcia (wycięcia w wyświetlaczu), możesz wymusić, aby aplikacja nadal rysowała w tym miejscu. Upewnij się, że nadal widzisz przyciski menu, zanim opuścisz tę stronę, w przeciwnym razie możesz nie mieć dostępu do ustawień aplikacji!</string>
+    <string name="ignore_rounded_corners">Ignoruj zaokrąglone rogi urządzenia</string>
+    <string name="ignore_rounded_corners_info">Zaokrąglony róg ekranu może spowodować przycięcie tekstu. Ignorowanie zaokrąglonych rogów spowoduje wyświetlenie prośby aplikacji o użycie szerokości/wysokości pełnego ekranu (zalecane).  Zawsze możesz dostosować marginesy poniżej.</string>
     <string name="ignore_warning">Zignoruj ostrzeżenie</string>
     <string name="image">Obraz</string>
     <string name="image_change">Kliknij na obrazek, aby zmienić</string>

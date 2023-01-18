@@ -321,6 +321,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         prepareSearch();
     }
     public void prepareSearch() {
+        boolean songMenuSortTitles = mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuSortTitles", true);
         getSearchVals();
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
@@ -331,11 +332,14 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                         songListSearchByFolder, songListSearchByArtist, songListSearchByKey,
                         songListSearchByTag, songListSearchByFilter, songListSearchByTitle,
                         folderSearchVal, artistSearchVal, keySearchVal, tagSearchVal,
-                        filterSearchVal, titleSearchVal);
+                        filterSearchVal, titleSearchVal, songMenuSortTitles);
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            handler.post(this::updateSongList);
+            handler.post(() -> {
+                updateSongList();
+                displayIndex();
+            });
         });
     }
 

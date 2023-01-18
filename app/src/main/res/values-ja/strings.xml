@@ -316,6 +316,8 @@
     <string name="hymn_number">"賛美歌番号"</string>
     <string name="ignore_cutouts">カットアウトを無視</string>
     <string name="ignore_cutouts_info">デバイスにノッチ (ディスプレイ カットアウト) がある場合は、アプリにこのスペースを強制的に描画させることができます。このページを離れる前に、メニュー ボタンが表示されていることを確認してください。そうしないと、アプリの設定にアクセスできなくなる可能性があります。</string>
+    <string name="ignore_rounded_corners">デバイスの丸みを帯びた角を無視する</string>
+    <string name="ignore_rounded_corners_info">画面の角が丸くなると、テキストが切り取られることがあります。丸みを帯びた角を無視すると、アプリは全画面の幅/高さを使用するように求められます(推奨)。 以下の余白はいつでも調整できます。</string>
     <string name="ignore_warning">警告を無視</string>
     <string name="image">"像"</string>
     <string name="image_change">変更するには画像をクリックしてください</string>

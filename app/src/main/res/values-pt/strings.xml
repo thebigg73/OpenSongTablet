@@ -316,6 +316,8 @@
     <string name="hymn_number">"Número Hymn"</string>
     <string name="ignore_cutouts">Ignorar recortes</string>
     <string name="ignore_cutouts_info">Se o seu dispositivo tiver entalhes (recortes na tela), você pode forçar o aplicativo a desenhar sobre esse espaço. Certifique-se de que você ainda pode ver os botões do menu antes de sair desta página, caso contrário, você pode não conseguir acessar as configurações do aplicativo!</string>
+    <string name="ignore_rounded_corners">Ignore os cantos arredondados do dispositivo</string>
+    <string name="ignore_rounded_corners_info">O canto arredondado do ecrã pode fazer com que o texto seja cortado. Ignorando os cantos arredondados, pedirá à aplicação que utilize a largura/altura do ecrã completo (recomendado).  Pode sempre ajustar as margens abaixo.</string>
     <string name="ignore_warning">Ignorar aviso</string>
     <string name="image">Imagem</string>
     <string name="image_change">Clique na imagem para alterar</string>

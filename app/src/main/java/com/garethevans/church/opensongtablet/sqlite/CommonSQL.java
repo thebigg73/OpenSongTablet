@@ -220,7 +220,7 @@ public class CommonSQL {
                                       boolean searchByArtist, boolean searchByKey, boolean searchByTag,
                                       boolean searchByFilter, boolean searchByTitle, String folderVal,
                                              String artistVal, String keyVal, String tagVal,
-                                             String filterVal, String titleVal) {
+                                             String filterVal, String titleVal, boolean songMenuSortTitles) {
         ArrayList<Song> songs = new ArrayList<>();
 
         // To avoid SQL injections, we need to build the args
@@ -285,7 +285,7 @@ public class CommonSQL {
         // Select matching folder Query
         // Common strings for searching.  Don't need to grab everything here - we can get the rest later
         String listname = SQLite.COLUMN_FILENAME;
-        if (mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuTitle",true)) {
+        if (songMenuSortTitles) {
             listname = SQLite.COLUMN_TITLE;
         }
 

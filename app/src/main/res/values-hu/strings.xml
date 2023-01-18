@@ -316,6 +316,8 @@
     <string name="hymn_number">"Hymn szám"</string>
     <string name="ignore_cutouts">A kivágások figyelmen kívül hagyása</string>
     <string name="ignore_cutouts_info">Ha az eszközén vannak bevágások (kivágások a kijelzőn), akkor kényszerítheti az alkalmazást, hogy továbbra is rajzoljon ezen a területen. Mielőtt elhagyja ezt az oldalt, győződjön meg róla, hogy továbbra is látja a menügombokat, ellenkező esetben előfordulhat, hogy nem tudja elérni az alkalmazás beállításait!</string>
+    <string name="ignore_rounded_corners">Az eszköz lekerekített sarkainak figyelmen kívül hagyása</string>
+    <string name="ignore_rounded_corners_info">A lekerekített képernyősarok a szöveg levágását okozhatja. A lekerekített sarkok figyelmen kívül hagyása megkéri az alkalmazást, hogy a teljes képernyős szélességet/magasságot használja (ajánlott).  Az alábbi margókat mindig módosíthatja.</string>
     <string name="ignore_warning">Figyelmeztetés figyelmen kívül hagyása</string>
     <string name="image">"Kép"</string>
     <string name="image_change">Kattints a képre a változtatáshoz</string>

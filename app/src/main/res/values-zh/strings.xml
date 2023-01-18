@@ -316,6 +316,8 @@
     <string name="hymn_number">"圣诗"</string>
     <string name="ignore_cutouts">忽略切口</string>
     <string name="ignore_cutouts_info">如果您的设备有凹口（显示切口），您可以强制应用程序仍然绘制此空间。离开此页面之前，请确保您仍然可以看到菜单按钮，否则您可能无法访问应用程序设置！</string>
+    <string name="ignore_rounded_corners">忽略设备圆角</string>
+    <string name="ignore_rounded_corners_info">圆角屏幕角可能会导致文本被剪裁。忽略圆角将要求应用使用全屏宽度/高度（推荐）。 您可以随时调整下面的边距。</string>
     <string name="ignore_warning">忽略警告</string>
     <string name="image">"像"</string>
     <string name="image_change">点击图片进行更改</string>

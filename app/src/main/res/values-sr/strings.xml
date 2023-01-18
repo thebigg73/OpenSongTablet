@@ -316,6 +316,8 @@
     <string name="hymn_number">Broj himne</string>
     <string name="ignore_cutouts">Zanemari isečeće</string>
     <string name="ignore_cutouts_info">Ako uređaj ima rezače (isečci ekrana), možete da naterate aplikaciju da i dalje prevlači preko ovog prostora.  Uverite se da i dalje možete da vidite dugmad menija pre nego što napustite ovu stranicu, jer u suprotnom možda nećete moći da pristupite postavkama aplikacije!</string>
+    <string name="ignore_rounded_corners">Zanemari uglove zaobljenih uređaja</string>
+    <string name="ignore_rounded_corners_info">Ugao zaobljenog ekrana može dovesti do isečevanja teksta. Ignorisanje zaobljenih uglova će zatražiti od aplikacije da koristi širinu/visinu celog ekrana (preporučuje se).  Margine uvek možete podesiti ispod.</string>
     <string name="ignore_warning">Ignorirajte upozorenje</string>
     <string name="image">Slika</string>
     <string name="image_change">Kliknite na sliku da biste je promenili</string>

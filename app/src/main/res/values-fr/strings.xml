@@ -316,6 +316,8 @@
     <string name="hymn_number">"Numéro d\'hymne"</string>
     <string name="ignore_cutouts">Ignorer les découpes</string>
     <string name="ignore_cutouts_info">Si votre appareil a des encoches (découpes d\'affichage), vous pouvez forcer l\'application à continuer à dessiner sur cet espace. Assurez-vous que vous pouvez toujours voir les boutons de menu avant de quitter cette page, sinon vous ne pourrez peut-être pas accéder aux paramètres de l\'application !</string>
+    <string name="ignore_rounded_corners">Ignorer les coins arrondis de l’appareil</string>
+    <string name="ignore_rounded_corners_info">Un coin d’écran arrondi peut entraîner un découpage du texte. Si vous ignorez les coins arrondis, l’application demandera d’utiliser la largeur / hauteur du plein écran (recommandé).  Vous pouvez toujours ajuster les marges ci-dessous.</string>
     <string name="ignore_warning">Ignorer l\'avertissement</string>
     <string name="image">Image</string>
     <string name="image_change">Cliquez sur l\'image pour changer</string>

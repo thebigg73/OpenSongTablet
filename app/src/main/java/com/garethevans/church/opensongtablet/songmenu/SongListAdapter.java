@@ -31,6 +31,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
     private final MainActivityInterface mainActivityInterface;
     private final SparseBooleanArray checkedArray = new SparseBooleanArray();
     private final boolean showChecked;
+    private boolean songMenuSortTitles;
 
     LinkedHashMap<String, Integer> linkedHashMap, linkedHashMap2;
 
@@ -46,6 +47,8 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
         }
         this.showChecked = mainActivityInterface.getPreferences().
                 getMyPreferenceBoolean("songMenuSetTicksShow", true);
+
+        songMenuSortTitles = mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuSortTitles", true);
     }
 
     @Override
@@ -122,7 +125,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
                 Song song = songList.get(i);
                 String filename = song.getFilename();
                 String displayname;
-                if (!song.getTitle().isEmpty() && mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuSortTitles", true)) {
+                if (!song.getTitle().isEmpty() && songMenuSortTitles) {
                     displayname = song.getTitle();
                 } else {
                     displayname = song.getFilename();
@@ -292,11 +295,19 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
             for (int i = 0; i < songlist.size(); i++) {
                 String index = "";  // First letter
                 String index2 = ""; // First 2 letters
-                if (songlist.get(i) != null && songlist.get(i).getTitle() != null && !songlist.get(i).getTitle().isEmpty()) {
+                if (songMenuSortTitles && songlist.get(i) != null && songlist.get(i).getTitle() != null && !songlist.get(i).getTitle().isEmpty()) {
                     String title = songlist.get(i).getTitle().toUpperCase(mainActivityInterface.getLocale());
                     index = title.substring(0,1);
                     if (title.length()>1) {
                         index2 = title.substring(0,2);
+                    } else {
+                        index2 = index;
+                    }
+                } else if (songlist.get(i) != null && songlist.get(i).getFilename() != null && !songlist.get(i).getFilename().isEmpty()) {
+                    String filename = songlist.get(i).getFilename().toUpperCase(mainActivityInterface.getLocale());
+                    index = filename.substring(0,1);
+                    if (filename.length()>1) {
+                        index2 = filename.substring(0,2);
                     } else {
                         index2 = index;
                     }

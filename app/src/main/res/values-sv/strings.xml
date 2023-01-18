@@ -316,6 +316,8 @@
     <string name="hymn_number">"Sångnummer"</string>
     <string name="ignore_cutouts">Ignorera utklipp</string>
     <string name="ignore_cutouts_info">Om din enhet har skåror (skärmutskärningar) kan du tvinga appen att fortfarande dra över detta utrymme.  Se till att du fortfarande kan se menyknapparna innan du lämnar den här sidan, annars kanske du inte kan komma åt appinställningarna!</string>
+    <string name="ignore_rounded_corners">Ignorera enhetens rundade hörn</string>
+    <string name="ignore_rounded_corners_info">Rundat skärmhörn kan göra att text klipps bort. Om du ignorerar rundade hörn kommer appen att be om att använda helskärmsbredden / höjden (rekommenderas).  Du kan alltid justera marginalerna nedan.</string>
     <string name="ignore_warning">Ignorera varning</string>
     <string name="image">"Bild"</string>
     <string name="image_change">Klicka på bilden för att ändra</string>

@@ -316,6 +316,8 @@
     <string name="hymn_number">"Numero Hymn"</string>
     <string name="ignore_cutouts">Ignora i ritagli</string>
     <string name="ignore_cutouts_info">Se il tuo dispositivo ha delle tacche (ritagli del display), puoi forzare l\'app a disegnare ancora su questo spazio. Assicurati di poter ancora vedere i pulsanti del menu prima di lasciare questa pagina, altrimenti potresti non essere in grado di accedere alle impostazioni dell\'app!</string>
+    <string name="ignore_rounded_corners">Ignora gli angoli arrotondati del dispositivo</string>
+    <string name="ignore_rounded_corners_info">L\'angolo arrotondato dello schermo può causare il ritaglio del testo. Ignorando gli angoli arrotondati, verrà richiesto all\'app di utilizzare la larghezza / altezza a schermo intero (consigliata).  Puoi sempre regolare i margini sottostanti.</string>
     <string name="ignore_warning">Ignora avviso</string>
     <string name="image">"Immagine"</string>
     <string name="image_change">Clicca sull\'immagine per cambiare</string>

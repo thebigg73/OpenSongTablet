@@ -148,7 +148,8 @@ public class TagSongListAdapter extends RecyclerView.Adapter<TagViewHolder> {
                 getSongsByFilters(songListSearchByFolder, songListSearchByArtist,
                         songListSearchByKey, songListSearchByTag, songListSearchByFilter,
                         songListSearchByTitle, folderSearchVal, artistSearchVal, keySearchVal,
-                        tagSearchVal, filterSearchVal, titleSearchVal);
+                        tagSearchVal, filterSearchVal, titleSearchVal,
+                        mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuSortTitles",true));
 
         // Fix the checkedArray
         checkedArray = new SparseBooleanArray();

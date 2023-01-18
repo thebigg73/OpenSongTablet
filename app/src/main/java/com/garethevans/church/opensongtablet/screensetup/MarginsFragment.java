@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -43,10 +44,20 @@ public class MarginsFragment extends Fragment {
     }
 
     private void setupViews() {
-        // Set the margins of the nestedScrollView to 100px (programmatically so not dp)
-        //myView.nestedScrollView.setPadding(0,0,0,0);
-
         myView.ignoreCutouts.setChecked(mainActivityInterface.getWindowFlags().getIgnoreCutouts());
+        myView.ignoreRoundedCorners.setChecked(mainActivityInterface.getWindowFlags().getIgnoreRoundedCorners());
+
+        if (mainActivityInterface.getWindowFlags().getHasRoundedCorners()) {
+            myView.ignoreRoundedCorners.setVisibility(View.VISIBLE);
+        } else {
+            myView.ignoreRoundedCorners.setVisibility(View.GONE);
+        }
+
+        if (mainActivityInterface.getWindowFlags().getHasCutouts()) {
+            myView.ignoreCutouts.setVisibility(View.VISIBLE);
+        } else {
+            myView.ignoreCutouts.setVisibility(View.GONE);
+        }
 
         myView.navBarKeepSpace.setChecked(mainActivityInterface.getWindowFlags().getNavBarKeepSpace());
 
@@ -97,6 +108,15 @@ public class MarginsFragment extends Fragment {
             mainActivityInterface.getWindowFlags().setMargins();
             mainActivityInterface.updateMargins();
         }));
+        myView.ignoreRoundedCorners.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                mainActivityInterface.getWindowFlags().setIgnoreRoundedCorners(isChecked);
+                mainActivityInterface.getWindowFlags().hideOrShowSystemBars();
+                mainActivityInterface.getWindowFlags().setMargins();
+                mainActivityInterface.updateMargins();
+            }
+        });
     }
 
     private class MySliderTouch implements Slider.OnSliderTouchListener {

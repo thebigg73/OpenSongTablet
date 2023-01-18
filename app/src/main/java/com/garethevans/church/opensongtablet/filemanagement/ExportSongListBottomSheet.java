@@ -197,7 +197,8 @@ public class ExportSongListBottomSheet extends BottomSheetDialogFragment {
                     ArrayList<Song> songs = mainActivityInterface.getSQLiteHelper().
                             getSongsByFilters(true, false, false,
                                     false, false, false, folder,
-                                    null, null, null, null, null);
+                                    null, null, null, null, null,
+                                    mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuSortTitles",true));
                     songContentsTextPDF.append("[").append(folder).append("]\n");
                     for (Song song : songs) {
                         String songFilename = song.getFilename();

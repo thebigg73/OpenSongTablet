@@ -316,6 +316,8 @@
     <string name="hymn_number">"Número Himno"</string>
     <string name="ignore_cutouts">Omitir recortes</string>
     <string name="ignore_cutouts_info">Si su dispositivo tiene muescas (recortes de pantalla), puede forzar a la aplicación a dibujar sobre este espacio.  Asegúrese de que aún puede ver los botones de menú antes de salir de esta página, de lo contrario, es posible que no pueda acceder a la configuración de la aplicación.</string>
+    <string name="ignore_rounded_corners">Ignorar esquinas redondeadas del dispositivo</string>
+    <string name="ignore_rounded_corners_info">La esquina redondeada de la pantalla puede hacer que se recorte el texto. Al ignorar las esquinas redondeadas, la aplicación usará el ancho/alto de pantalla completa (recomendado).  Siempre puede ajustar los márgenes a continuación.</string>
     <string name="ignore_warning">Ignorar advertencia</string>
     <string name="image">Imagen</string>
     <string name="image_change">Click en la imagen para cambiar</string>

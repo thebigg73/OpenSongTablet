@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.RoundedCorner;
 import android.view.Surface;
 import android.view.View;
@@ -61,7 +62,7 @@ public class WindowFlags {
     private String navBarPosition = "b";
     private int[] totalMargins = new int[4];
     private boolean immersiveMode, ignoreCutouts, navBarKeepSpace,
-            showStatus, showStatusInCutout, showNav, currentTopHasCutout,
+            showStatus, showStatusInCutout, showNav, currentTopHasCutout, ignoreRoundedCorners,
             isNavAtBottom;
     private final int typeStatusBars = WindowInsetsCompat.Type.statusBars(),
             typeNavBars = WindowInsetsCompat.Type.navigationBars(),
@@ -103,6 +104,7 @@ public class WindowFlags {
         customMarginBottom = mainActivityInterface.getPreferences().getMyPreferenceInt("marginBottom", 0);
         immersiveMode = mainActivityInterface.getPreferences().getMyPreferenceBoolean("immersiveMode", true);
         ignoreCutouts = mainActivityInterface.getPreferences().getMyPreferenceBoolean("ignoreCutouts", false);
+        ignoreRoundedCorners = mainActivityInterface.getPreferences().getMyPreferenceBoolean("ignoreRoundedCorners",true);
     }
 
     // Initialise the WindowInsetsCompat from MainActivity (once it is ready)
@@ -253,6 +255,13 @@ public class WindowFlags {
                     break;
             }
 
+            Log.d(TAG,"statusHeight:"+statusHeight);
+            Log.d(TAG,"navHeight:"+navHeight);
+            Log.d(TAG,"cutoutTop:"+cutoutTop);
+            Log.d(TAG,"cutoutLeft:"+cutoutLeft);
+            Log.d(TAG,"cutoutRight:"+cutoutRight);
+            Log.d(TAG,"cutoutBottom:"+cutoutBottom);
+
             if (statusHeight == cutoutTop) {
                 // Likely the statusBar has been stretched to match the cutoutTop height
                 statusHeight = (int) (24f * density);
@@ -293,6 +302,17 @@ public class WindowFlags {
                 roundedBottom = Math.max(roundedBottom, bottomRight.getRadius());
             }
         }
+
+        roundedLeft = (int)(roundedLeft - (roundedLeft * Math.sin(Math.toRadians(45))));
+        roundedRight = (int)(roundedRight - (roundedRight*Math.sin(Math.toRadians(45))));
+        roundedTop = (int)(roundedTop - (roundedTop*Math.sin(Math.toRadians(45))));
+        roundedBottom = (int)(roundedBottom - (roundedBottom*Math.sin(Math.toRadians(45))));
+
+        Log.d(TAG,"roundedLeft:"+roundedLeft);
+        Log.d(TAG,"roundedRight:"+roundedRight);
+        Log.d(TAG,"roundedTop:"+roundedTop);
+        Log.d(TAG,"roundedBottom:"+roundedBottom);
+
     }
 
     private void setCurrentTopHasCutout() {
@@ -457,47 +477,65 @@ public class WindowFlags {
     public void setMargins() {
         int marginL, marginR, marginT, marginB;
         int cutoutL, cutoutR, cutoutT, cutoutB;
+        int roundL, roundR, roundT, roundB;
+
+        if (mainActivityInterface.getPreferences().getMyPreferenceBoolean("ignoreRoundedCorners",true)) {
+            roundL = 0;
+            roundR = 0;
+            roundB = 0;
+            roundT = 0;
+        } else {
+            roundL = roundedLeft;
+            roundR = roundedRight;
+            roundB = roundedBottom;
+            roundT = roundedTop;
+        }
+
+        if (getHasCutouts() && !ignoreCutouts) {
+            // The status bar deals with the top rounded corner
+            roundedTop = 0;
+        }
 
         switch (currentRotation) {
             case 0: // 0 degrees.
             default:
-                marginL = customMarginLeft + roundedLeft;
+                marginL = customMarginLeft + roundL;
                 cutoutL = cutoutLeft;
-                marginR = customMarginRight + roundedRight;
+                marginR = customMarginRight + roundR;
                 cutoutR = cutoutRight;
-                marginT = customMarginTop + roundedTop;
+                marginT = customMarginTop + roundT;
                 cutoutT = cutoutTop;
-                marginB = customMarginBottom + roundedBottom; // + nav;
+                marginB = customMarginBottom + roundB; // + nav;
                 cutoutB = cutoutBottom;
                 break;
             case 1: // 270 degrees (one step anticlockwise)
-                marginL = customMarginTop + roundedTop;
+                marginL = customMarginTop + roundT;
                 cutoutL = cutoutTop;
-                marginR = customMarginBottom + roundedBottom; // + nav;
+                marginR = customMarginBottom + roundB; // + nav;
                 cutoutR = cutoutBottom;
-                marginT = customMarginRight + roundedRight;
+                marginT = customMarginRight + roundR;
                 cutoutT = cutoutRight;
-                marginB = customMarginLeft + roundedLeft;
+                marginB = customMarginLeft + roundL;
                 cutoutB = cutoutLeft;
                 break;
             case 2: // 180 degrees (two steps anticlockwise/clockwise)
-                marginL = customMarginRight + roundedRight;
+                marginL = customMarginRight + roundR;
                 cutoutL = cutoutRight;
-                marginR = customMarginLeft + roundedLeft;
+                marginR = customMarginLeft + roundL;
                 cutoutR = cutoutLeft;
-                marginT = customMarginBottom + roundedBottom;
+                marginT = customMarginBottom + roundB;
                 cutoutT = cutoutBottom;
-                marginB = customMarginTop + roundedTop; // + nav;
+                marginB = customMarginTop + roundT; // + nav;
                 cutoutB = cutoutTop;
                 break;
             case 3: // 90 degrees (three steps anticlockwise or 1 step clockwise)
-                marginL = customMarginBottom + roundedBottom; // + nav;
+                marginL = customMarginBottom + roundB; // + nav;
                 cutoutL = cutoutBottom;
-                marginR = customMarginTop + roundedTop;
+                marginR = customMarginTop + roundT;
                 cutoutR = cutoutTop;
-                marginT = customMarginLeft + roundedLeft;
+                marginT = customMarginLeft + roundL;
                 cutoutT = cutoutLeft;
-                marginB = customMarginRight + roundedRight;
+                marginB = customMarginRight + roundR;
                 cutoutB = cutoutRight;
                 break;
         }
@@ -535,4 +573,16 @@ public class WindowFlags {
         return totalMargins;
     }
 
+    public boolean getHasRoundedCorners() {
+        return roundedLeft>0 || roundedRight>0 || roundedBottom>0 || roundedTop>0;
+    }
+
+    public boolean getIgnoreRoundedCorners() {
+        return ignoreRoundedCorners;
+    }
+
+    public void setIgnoreRoundedCorners(boolean ignoreRoundedCorners) {
+        this.ignoreRoundedCorners = ignoreRoundedCorners;
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean("ignoreRoundedCorners",ignoreRoundedCorners);
+    }
 }

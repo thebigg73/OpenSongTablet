@@ -316,6 +316,8 @@
     <string name="hymn_number">"Číslo Hymn"</string>
     <string name="ignore_cutouts">Ignorujte výřezy</string>
     <string name="ignore_cutouts_info">Pokud má vaše zařízení zářezy (výřezy na displeji), můžete aplikaci vynutit, aby přes tento prostor stále kreslila. Než opustíte tuto stránku, ujistěte se, že stále vidíte tlačítka nabídky, jinak se může stát, že nebudete mít přístup k nastavení aplikace!</string>
+    <string name="ignore_rounded_corners">Ignorovat zaoblené rohy zařízení</string>
+    <string name="ignore_rounded_corners_info">Zaoblený roh obrazovky může způsobit oříznutí textu. Ignorováním zaoblených rohů požádáte aplikaci, aby použila šířku/výšku celé obrazovky (doporučeno).  Níže uvedené okraje můžete kdykoli upravit.</string>
     <string name="ignore_warning">Ignorovat varování</string>
     <string name="image">"Obraz"</string>
     <string name="image_change">Pro změnu klikněte na obrázek</string>

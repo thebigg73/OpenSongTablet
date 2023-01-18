@@ -151,7 +151,7 @@
     <string name="chordformat_2" translatable="false">C  C#/Db  D  D#/Eb  E  F  F#/Gb  G  G#/Ab  A  A#/B  H</string>
     <string name="chordformat_2_name" translatable="false">Euro (B,H)</string>
     <string name="chordformat_3" translatable="false">C  Cis/Des  D  Dis/Es  E  F  Fis/Ges  G  Gis/As  A  Ais/B  H</string>
-    <string name="chordformat_3_name" translatable="false">Euro (B,H,is,es)</string>
+    <string name="chordformat_3_name" translatable="false">Euro (B,H,-is,-es)</string>
     <string name="chordformat_4" translatable="false">DO  DO#/REb  RE  RE#/MIb  MI  FA  FA#/SOLb  SOL  SOL#/LAb  LA  LA#/SIb  SI</string>
     <string name="chordformat_4_name" translatable="false">Solfège</string>
     <string name="chordformat_5" translatable="false">1  2  3  4  5  6  7  8  9  10  11  12</string>
@@ -159,7 +159,7 @@
     <string name="chordformat_6" translatable="false">I  II  III  IV  V  VI  VII  VIII  IX  X  XI  XII</string>
     <string name="chordformat_6_name">Numeral</string>
     <string name="chordformat_7" translatable="false">C  Cis/Des  D  Dis/Es  E  F  Fis/Ges  G  Gis/As  A  Ais/Bes  B</string>
-    <string name="chordformat_7_name" translatable="false">Euro (Bb,B,is,es)</string>
+    <string name="chordformat_7_name" translatable="false">Euro (-is,-es)</string>
     <string name="chordformat_autochange">Autochange chord format</string>
     <string name="chordformat_autochange_info">If a song uses a different chord format, should the app try to display using preferred setting</string>
     <string name="chordformat_default">Always assume original songs are in my preferred chord format</string>
@@ -402,6 +402,8 @@
     <string name="hymn_number">Hymn number</string>
     <string name="ignore_cutouts">Ignore cutouts</string>
     <string name="ignore_cutouts_info">If your device has notches (display cutouts), you can force the app to still draw over this space.  Make sure you can still see the menu buttons before you leave this page, otherwise you might not be able to access the app settings!</string>
+    <string name="ignore_rounded_corners">Ignore device rounded corners</string>
+    <string name="ignore_rounded_corners_info">Rounded screen corner can cause text to be clipped. Ignoring rounded corners will ask the app to use the full screen width/height (recommended).  You can always adjust the margins below.</string>
     <string name="ignore_warning">Ignore warning</string>
     <string name="image">Image</string>
     <string name="image_change">Click on the image to change</string>

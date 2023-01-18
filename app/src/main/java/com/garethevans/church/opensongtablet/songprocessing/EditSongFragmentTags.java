@@ -182,7 +182,8 @@ public class EditSongFragmentTags extends Fragment {
                     false, false,
                     false, true, false, false,
                     null, null,
-                    null, tagToRemove, null, null);
+                    null, tagToRemove, null, null,
+                    mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuSortTitles",true));
             for (Song thisSong : songs) {
                 thisSong = mainActivityInterface.getSQLiteHelper().getSpecificSong(
                         thisSong.getFolder(), thisSong.getFilename());

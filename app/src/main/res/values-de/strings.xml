@@ -316,6 +316,8 @@
     <string name="hymn_number">"Liederbuch Nummer"</string>
     <string name="ignore_cutouts">Ausschnitte ignorieren</string>
     <string name="ignore_cutouts_info">Wenn Ihr Gerät Kerben (Displayausschnitte) hat, können Sie die App zwingen, trotzdem über diesen Bereich zu zeichnen. Stellen Sie sicher, dass Sie die Menüschaltflächen noch sehen können, bevor Sie diese Seite verlassen, da Sie sonst möglicherweise nicht auf die App-Einstellungen zugreifen können!</string>
+    <string name="ignore_rounded_corners">Abgerundete Ecken des Geräts ignorieren</string>
+    <string name="ignore_rounded_corners_info">Eine abgerundete Bildschirmecke kann dazu führen, dass Text abgeschnitten wird. Wenn Sie abgerundete Ecken ignorieren, wird die App aufgefordert, die volle Bildschirmbreite/-höhe zu verwenden (empfohlen).  Sie können die Ränder unten jederzeit anpassen.</string>
     <string name="ignore_warning">Warnung ignorieren</string>
     <string name="image">"Bild"</string>
     <string name="image_change">Klicken Sie auf das Bild, um es zu ändern</string>

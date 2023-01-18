@@ -38,7 +38,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/ignore_cutouts"
-                android:hint="@string/ignore_cutouts_info"/>
+                android:hint="@string/ignore_cutouts_info"
+                android:layout_marginBottom="16dp"/>
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                android:id="@+id/ignoreRoundedCorners"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/ignore_rounded_corners"
+                android:hint="@string/ignore_rounded_corners_info"/>
+
             <TableRow style="@style/DividerLine"/>
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView

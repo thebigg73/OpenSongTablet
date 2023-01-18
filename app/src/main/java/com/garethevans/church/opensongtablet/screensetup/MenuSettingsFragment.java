@@ -92,7 +92,10 @@ public class MenuSettingsFragment extends Fragment {
             }
         });
         myView.songAlphabeticalSize.addOnChangeListener((slider, value, fromUser) -> myView.songAlphabeticalSize.setHint(value+"sp"));
-        myView.songMenuOrder.addOnChangeListener((slider, value, fromUser) -> mainActivityInterface.getPreferences().setMyPreferenceBoolean("songMenuSortTitles",value==1));
+        myView.songMenuOrder.addOnChangeListener((slider, value, fromUser) -> {
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean("songMenuSortTitles",value==1);
+            mainActivityInterface.updateSongMenu("",null, null);
+        });
         myView.largePopups.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getPreferences().setMyPreferenceBoolean("largePopups",isChecked));
     }
 
