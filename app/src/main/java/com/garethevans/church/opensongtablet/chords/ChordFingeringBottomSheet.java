@@ -166,16 +166,20 @@ public class ChordFingeringBottomSheet extends BottomSheetDialogFragment {
                 chordLayout = mainActivityInterface.getChordDisplayProcessing().getChordDiagramPiano(getLayoutInflater(),
                         mainActivityInterface.getChordDisplayProcessing().getChordsInSong().get(i), mainActivityInterface.getChordDisplayProcessing().getFingerings().get(i));
                 String thisChordCode = mainActivityInterface.getChordDisplayProcessing().getFingerings().get(i);
-                chordLayout.setOnClickListener(v -> {
-                    mainActivityInterface.getMidi().playMidiNotes(thisChordCode,"standard", 50,0);
-                });
+                if (chordLayout!=null) {
+                    chordLayout.setOnClickListener(v -> {
+                        mainActivityInterface.getMidi().playMidiNotes(thisChordCode, "standard", 50, 0);
+                    });
+                }
             } else {
                 chordLayout = mainActivityInterface.getChordDisplayProcessing().getChordDiagram(getLayoutInflater(),
                         mainActivityInterface.getChordDisplayProcessing().getChordsInSong().get(i), mainActivityInterface.getChordDisplayProcessing().getFingerings().get(i));
                 String thisChordCode = mainActivityInterface.getChordDisplayProcessing().getFingerings().get(i);
-                chordLayout.setOnClickListener(v -> {
-                    mainActivityInterface.getMidi().playMidiNotes(thisChordCode,"standard", 200,0);
-                });
+                if (chordLayout!=null) {
+                    chordLayout.setOnClickListener(v -> {
+                        mainActivityInterface.getMidi().playMidiNotes(thisChordCode, "standard", 200, 0);
+                    });
+                }
             }
 
             if (chordLayout!=null) {

@@ -84,15 +84,19 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     private void initialiseRecyclerView() {
         myView.songListRecyclerView.removeAllViews();
         myView.songmenualpha.sideIndex.removeAllViews();
-        songListLayoutManager = new LinearLayoutManager(requireContext());
-        songListLayoutManager.setOrientation(RecyclerView.VERTICAL);
-        myView.songListRecyclerView.setLayoutManager(songListLayoutManager);
-        myView.songListRecyclerView.setHasFixedSize(false);
-        myView.songListRecyclerView.setOnClickListener(null);
-        List<Song> blank = new ArrayList<>();
-        songListAdapter = new SongListAdapter(requireContext(), blank,
-                SongMenuFragment.this);
-        myView.songListRecyclerView.setAdapter(songListAdapter);
+        try {
+            songListLayoutManager = new LinearLayoutManager(requireContext());
+            songListLayoutManager.setOrientation(RecyclerView.VERTICAL);
+            myView.songListRecyclerView.setLayoutManager(songListLayoutManager);
+            myView.songListRecyclerView.setHasFixedSize(false);
+            myView.songListRecyclerView.setOnClickListener(null);
+            List<Song> blank = new ArrayList<>();
+            songListAdapter = new SongListAdapter(requireContext(), blank,
+                    SongMenuFragment.this);
+            myView.songListRecyclerView.setAdapter(songListAdapter);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void setValues(Song song) {

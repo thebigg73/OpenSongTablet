@@ -3,4 +3,6 @@
 # see https://code.google.com/p/android/issues/detail?id=78377
 -keep class * extends androidx.fragment.app.Fragment{}
 -keep class org.apache.commons.compress.* { *; }
+-keepattributes SourceFile,LineNumberTable
+-renamesourcefileattribute SourceFile
 -dontwarn org.apache.commons.compress.*
