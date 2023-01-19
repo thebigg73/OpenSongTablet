@@ -40,7 +40,7 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
     private final int viewWidth, viewHeight;
     private String pdfFolder, pdfFilename;
     private Uri pdfUri;
-    private int totalPages;
+    private int totalPages, inlineSetWidth;
     private float floatHeight;
     private final float alphaoff = 0.4f;
     private final String scaleType;
@@ -51,7 +51,8 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
     @SuppressWarnings({"FieldCanBeLocal","unused"})
     private final String TAG = "PDFPageAdapter";
 
-    public PDFPageAdapter(Context c, MainActivityInterface mainActivityInterface, DisplayInterface displayInterface, int viewWidth, int viewHeight) {
+    public PDFPageAdapter(Context c, MainActivityInterface mainActivityInterface,
+                          DisplayInterface displayInterface, int viewWidth, int viewHeight, int inlineSetWidth) {
         this.c = c;
         this.mainActivityInterface = mainActivityInterface;
         this.displayInterface = displayInterface;
@@ -59,6 +60,7 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
         this.viewHeight = viewHeight;
         scaleType = mainActivityInterface.getPreferences().getMyPreferenceString("songAutoScale","W");
         density = c.getResources().getDisplayMetrics().density;
+        this.inlineSetWidth = inlineSetWidth;
         setSongInfo();
     }
 
@@ -98,14 +100,14 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
                     int height = page.getHeight();
                     float scaleFactor;
                     if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_stage))) {
-                        float x_scale = (float)viewWidth/(float)width;
+                        float x_scale = (float)(viewWidth-inlineSetWidth)/(float)width;
                         float y_scale = (float)(viewHeight-mainActivityInterface.getToolbar().getActionBarHeight(mainActivityInterface.needActionBar()))/(float)height;
                         scaleFactor = Math.min(x_scale,y_scale);
                     } else {
                         if (scaleType.equals("Y") && width > 0 && height > 0) {
-                            scaleFactor = Math.min((float) viewWidth / (float) width, (float) viewHeight / (float) height);
+                            scaleFactor = Math.min((float) (viewWidth-inlineSetWidth) / (float) width, (float) viewHeight / (float) height);
                         } else if (scaleType.equals("W")) {
-                            scaleFactor = (float) viewWidth / (float) width;
+                            scaleFactor = (float) (viewWidth-inlineSetWidth) / (float) width;
                         } else {
                             scaleFactor = 1f;
                         }

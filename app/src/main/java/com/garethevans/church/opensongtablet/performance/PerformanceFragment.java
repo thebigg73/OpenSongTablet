@@ -373,7 +373,7 @@ public class PerformanceFragment extends Fragment {
         myView.zoomLayout.setVisibility(View.GONE);
 
         pdfPageAdapter = new PDFPageAdapter(requireContext(), mainActivityInterface, displayInterface,
-                availableWidth, availableHeight);
+                availableWidth, availableHeight, myView.inlineSetList.getInlineSetWidth());
 
         myView.recyclerView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
@@ -382,6 +382,7 @@ public class PerformanceFragment extends Fragment {
                 heightBeforeScale = pdfPageAdapter.getHeight();
                 heightAfterScale = heightBeforeScale;
                 recyclerLayoutManager.setSizes(pdfPageAdapter.getHeights(), availableHeight);
+                myView.recyclerView.setPadding(myView.inlineSetList.getInlineSetWidth(),0,0,0);
                 myView.recyclerView.setMaxScrollY(heightAfterScale - availableHeight);
 
                 // Do the slide in
@@ -608,7 +609,8 @@ public class PerformanceFragment extends Fragment {
                 myView.pageHolder.setVisibility(View.GONE);
                 myView.songView.setVisibility(View.GONE);
                 myView.zoomLayout.setVisibility(View.GONE);
-                stageSectionAdapter = new StageSectionAdapter(requireContext(), mainActivityInterface, displayInterface);
+                stageSectionAdapter = new StageSectionAdapter(requireContext(), mainActivityInterface,
+                        displayInterface, myView.inlineSetList.getInlineSetWidth());
 
                 myView.recyclerView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                     @Override
@@ -621,6 +623,7 @@ public class PerformanceFragment extends Fragment {
                         recyclerLayoutManager.setSizes(stageSectionAdapter.getHeights(), availableHeight);
                         myView.recyclerView.setHasFixedSize(false);
                         myView.recyclerView.setMaxScrollY(heightAfterScale - availableHeight);
+                        myView.recyclerView.setPadding(myView.inlineSetList.getInlineSetWidth(),0,0,0);
 
                         // Slide in
                         myView.recyclerView.setVisibility(View.VISIBLE);

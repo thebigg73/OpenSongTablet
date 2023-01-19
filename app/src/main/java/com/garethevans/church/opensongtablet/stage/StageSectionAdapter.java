@@ -37,7 +37,8 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
     @SuppressWarnings({"FieldCanBeLocal","unused"})
     private final String TAG = "StageSectionAdapter";
 
-    public StageSectionAdapter(Context c, MainActivityInterface mainActivityInterface, DisplayInterface displayInterface) {
+    public StageSectionAdapter(Context c, MainActivityInterface mainActivityInterface,
+                               DisplayInterface displayInterface, int inlineSetWidth) {
         this.mainActivityInterface = mainActivityInterface;
         this.c = c;
         this.displayInterface = displayInterface;
@@ -46,10 +47,10 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
         stageModeScale = mainActivityInterface.getPreferences().getMyPreferenceFloat("stageModeScale",0.8f);
         sectionInfos = new ArrayList<>();
         floatSizes = new ArrayList<>();
-        setSongInfo();
+        setSongInfo(inlineSetWidth);
     }
 
-    private void setSongInfo() {
+    private void setSongInfo(int inlineSetWidth) {
         // Prepare the info for each section
         floatHeight = 0;
 
@@ -64,7 +65,7 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
             int sectionWidth = mainActivityInterface.getSectionWidths().get(x);
             int sectionHeight = mainActivityInterface.getSectionHeights().get(x);
 
-            float x_scale = (float)(mainActivityInterface.getDisplayMetrics()[0]-16)/(float)sectionWidth;
+            float x_scale = (float)(mainActivityInterface.getDisplayMetrics()[0]-16-inlineSetWidth)/(float)sectionWidth;
             float y_scale = (float)(mainActivityInterface.getDisplayMetrics()[1]-mainActivityInterface.getToolbar().getActionBarHeight(mainActivityInterface.needActionBar()))*stageModeScale/(float)sectionHeight;
             float scale = Math.min(x_scale,y_scale);
             // Check the scale isn't bigger than the maximum font size

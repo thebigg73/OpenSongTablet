@@ -115,7 +115,7 @@ public class SongSectionsFragment extends Fragment {
                 if (mainActivityInterface.getSong().getFiletype().equals("PDF") &&
                         android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
                     PDFPageAdapter pdfPageAdapter = new PDFPageAdapter(requireContext(),
-                            mainActivityInterface, displayInterface, 600, 800);
+                            mainActivityInterface, displayInterface, 600, 800,0);
 
                     //Log.d(TAG, "pages:" + pdfPageAdapter.getItemCount());
                     mainActivityInterface.getSong().setPdfPageCount(pdfPageAdapter.getItemCount());
