@@ -77,7 +77,7 @@ public class SetStorageLocationFragment extends Fragment {
         // However, if we are just wanting to check/change the storage,
         // we don't want the extra title bar
         if (mainActivityInterface.getWhattodo().equals("storageOk")) {
-            mainActivityInterface.moveContentForActionBar(false);
+            mainActivityInterface.updateMargins();
             mainActivityInterface.showActionBar();
             mainActivityInterface.setWhattodo("");
             myView.headerText.setVisibility(View.GONE);
@@ -141,19 +141,22 @@ public class SetStorageLocationFragment extends Fragment {
     }
 
     private void webHelpShowcase() {
-        MaterialShowcaseView.Builder builder = mainActivityInterface.getShowCase().
-                getSingleShowCaseBuilderForListener(requireActivity(),myView.webHelp,
-                        null,getString(R.string.help),false,"webHelp");
-        builder.setListener(new IShowcaseListener() {
-            @Override
-            public void onShowcaseDisplayed(MaterialShowcaseView showcaseView) {}
+        if (getActivity()!=null) {
+            MaterialShowcaseView.Builder builder = mainActivityInterface.getShowCase().
+                    getSingleShowCaseBuilderForListener(requireActivity(), myView.webHelp,
+                            null, getString(R.string.help), false, "webHelp");
+            builder.setListener(new IShowcaseListener() {
+                @Override
+                public void onShowcaseDisplayed(MaterialShowcaseView showcaseView) {
+                }
 
-            @Override
-            public void onShowcaseDismissed(MaterialShowcaseView showcaseView) {
-                startShowcase();
-            }
-        });
-        builder.build().show(requireActivity());
+                @Override
+                public void onShowcaseDismissed(MaterialShowcaseView showcaseView) {
+                    startShowcase();
+                }
+            });
+            builder.build().show(requireActivity());
+        }
     }
 
     private void initialiseViews() {

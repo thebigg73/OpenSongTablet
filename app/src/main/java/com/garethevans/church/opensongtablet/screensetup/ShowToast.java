@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,16 +16,20 @@ import com.google.android.material.textview.MaterialTextView;
 public class ShowToast {
 
     private final View anchor;
+    private final String TAG = "ShowToast";
     private final PopupWindow popupWindow;
     private final MaterialTextView textToast;
+    private Handler handlerShow;
+    private Handler handlerHide;
+    private Runnable runnableShow;
     private long messageEndTime = 0;
-    private final Runnable hidePopupRunnable = new Runnable() {
+    private Runnable runnableHide = new Runnable() {
         @Override
         public void run() {
             try {
                 popupWindow.dismiss();
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.d(TAG,"Couldn't dismiss popupWindow");
             }
         }
     };
@@ -42,7 +47,6 @@ public class ShowToast {
 
     public void doIt(final String message) {
         try {
-
             if (message != null && !message.isEmpty()) {
                 // Toasts with custom layouts are deprecated and look ugly!
                 // Use a more customisable popup window
@@ -58,22 +62,35 @@ public class ShowToast {
                     delayTime = messageEndTime - currTime + 500;
                 }
 
-                Runnable showRunnable = () -> {
+                runnableShow = () -> {
                     if (textToast!=null && popupWindow!=null) {
                         try {
                             textToast.setText(message);
                             popupWindow.showAtLocation(anchor, Gravity.CENTER, 0, 0);
                             messageEndTime = System.currentTimeMillis() + 2000;
-                            new Handler().postDelayed(hidePopupRunnable, 2000);
+                            handlerHide = new Handler(Looper.getMainLooper());
+                            handlerHide.postDelayed(runnableHide, 2000);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
                 };
-                new Handler(Looper.getMainLooper()).postDelayed(showRunnable, delayTime);
+                handlerShow = new Handler(Looper.getMainLooper());
+                handlerShow.postDelayed(runnableShow, delayTime);
             }
         } catch(Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void kill() {
+        if (handlerShow!=null) {
+            handlerShow.removeCallbacks(runnableShow);
+        }
+        runnableShow = null;
+        if (handlerHide!=null) {
+            handlerHide.removeCallbacks(runnableHide);
+        }
+        runnableHide = null;
     }
 }

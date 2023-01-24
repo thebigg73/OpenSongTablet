@@ -166,7 +166,6 @@ public interface MainActivityInterface {
     void updateToolbar(String what);
     void updateToolbarHelp(String webAddress);
     void updateActionBarSettings(String prefName, float floatval, boolean isvisible);
-    void moveContentForActionBar(boolean contentBehind);
     boolean needActionBar();
     void allowNavigationUp(boolean allow);
 

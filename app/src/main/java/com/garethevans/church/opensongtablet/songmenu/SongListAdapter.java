@@ -248,8 +248,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
                             }
                         }
                     }
-                    mainActivityInterface.getCurrentSet().setCurrentSetString(mainActivityInterface.getSetActions().getSetAsPreferenceString());
-                    mainActivityInterface.getPreferences().setMyPreferenceString("setCurrent", mainActivityInterface.getCurrentSet().getCurrentSetString());
+                    mainActivityInterface.getCurrentSet().setSetCurrent(mainActivityInterface.getSetActions().getSetAsPreferenceString());
                 });
             }
         } catch (Exception e) {

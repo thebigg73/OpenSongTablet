@@ -3,9 +3,15 @@ package com.garethevans.church.opensongtablet.setprocessing;
 // This is the (current) set object
 // All actions related to building/processing are in the SetActions class
 
-import android.util.Log;
+import android.content.Context;
+import android.view.View;
+import android.widget.ImageView;
 
+import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.customviews.MyMaterialTextView;
+import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
 import java.util.ArrayList;
 
@@ -13,14 +19,27 @@ public class CurrentSet {
 
     @SuppressWarnings({"FieldCanBeLocal","unused"})
     private final String TAG = "CurrentSet";
-    private String initialSetString;
-    private String currentSetString;
     private ArrayList<String> setItems = new ArrayList<>();      // The set item $**_folder/filename_***key***__**$ or $**_**{customsfolder}/filename_******__**$
     private ArrayList<String> setFolders = new ArrayList<>();    // The folder only
     private ArrayList<String> setFilenames = new ArrayList<>();  // The filename only
     private ArrayList<String> setKeys = new ArrayList<>();       // The key only
     private int indexSongInSet;
-    private String setName;
+    private String setCurrent, setCurrentBeforeEdits, setCurrentLastName;
+    private ImageView asteriskView;
+    private MyMaterialTextView setTitleView;
+    private ExtendedFloatingActionButton saveButtonView;
+    private final MainActivityInterface mainActivityInterface;
+    private final String currentSetText, notSavedText, setTitleText;
+
+    public CurrentSet(Context c) {
+        mainActivityInterface = (MainActivityInterface) c;
+        currentSetText = c.getResources().getString(R.string.set_current);
+        notSavedText = "(" + c.getString(R.string.not_saved) + ")";
+        setTitleText = c.getString(R.string.set_name) + ": ";
+        loadCurrentSet();
+        loadSetCurrentBeforeEdits();
+        loadSetCurrentLastName();
+    }
 
     // The current set is a combination of array lists
     // They are built on app start by parsing the set string from preferences
@@ -31,11 +50,10 @@ public class CurrentSet {
             setItems = null;
         }
         setItems = new ArrayList<>();
-        currentSetString = "";
-        initialSetString = "";
-        setName = "";
+
         indexSongInSet = -1;
         initialiseTheSpecifics();
+        updateSetTitleView();
     }
     public void initialiseTheSpecifics() {
         // Kept separate as when shuffling, we only call this not the initialiseTheSet()
@@ -54,6 +72,45 @@ public class CurrentSet {
             setKeys = null;
         }
         setKeys = new ArrayList<>();
+    }
+
+
+    // The current set (a string of each item)
+    public void loadCurrentSet() {
+        setCurrent = mainActivityInterface.getPreferences().getMyPreferenceString("setCurrent","");
+    }
+    public void setSetCurrent(String setCurrent) {
+        // Keep a reference
+        this.setCurrent = setCurrent;
+        // Save the user preference
+        mainActivityInterface.getPreferences().setMyPreferenceString("setCurrent", setCurrent);
+        // Check if we need to update the set menu title
+        updateSetTitleView();
+    }
+    public String getSetCurrent() {
+        return setCurrent;
+    }
+
+    // The last loaded set before any changes.  Used for comparison to signify changes
+    public void loadSetCurrentBeforeEdits() {
+        setCurrentBeforeEdits = mainActivityInterface.getPreferences().getMyPreferenceString("setCurrentBeforeEdits","");
+    }
+    public void setSetCurrentBeforeEdits(String setCurrentBeforeEdits) {
+        this.setCurrentBeforeEdits = setCurrentBeforeEdits;
+        mainActivityInterface.getPreferences().setMyPreferenceString("setCurrentBeforeEdits",setCurrentBeforeEdits);
+    }
+
+    // The set name for the most recently loaded/created set
+    // An empty name is a new current set that hasn't been saved
+    public void loadSetCurrentLastName() {
+        setCurrentLastName = mainActivityInterface.getPreferences().getMyPreferenceString("setCurrentLastName","");
+    }
+    public void setSetCurrentLastName(String setCurrentLastName) {
+        this.setCurrentLastName = setCurrentLastName;
+        mainActivityInterface.getPreferences().setMyPreferenceString("setCurrentLastName",setCurrentLastName);
+    }
+    public String getSetCurrentLastName() {
+        return setCurrentLastName;
     }
 
     // Add items to the set
@@ -134,27 +191,7 @@ public class CurrentSet {
         setKeys.set(position, value);
     }
 
-    // Decide if we are viewing a set
-    public boolean getInSet(Song song) {
-        return setFilenames.contains(song.getFilename()) && setFilenames.indexOf(song.getFilename())==
-                setFolders.indexOf(song.getFolder());
-    }
-
-    // Set and get the initial and current set string (as saved in preferences)
-    // These can be compared to show if a save is required due to changes
-    public void setInitialSetString(String initialSetString) {
-        this.initialSetString = initialSetString;
-    }
-    public void setCurrentSetString(String currentSetString) {
-        this.currentSetString = currentSetString;
-    }
-    public String getInitialSetString() {
-        return initialSetString;
-    }
-    public String getCurrentSetString() {
-        return currentSetString;
-    }
-
+    // Get array of set items as song objects
     public ArrayList<Song> getSetSongObject() {
         // This is called for random song where we need a array of songs to choose
         ArrayList<Song> songsInSet = new ArrayList<>();
@@ -168,11 +205,6 @@ public class CurrentSet {
         return songsInSet;
     }
 
-    public void updateSetItem(int position, String item) {
-        setItems.set(position,item);
-    }
-
-
     public int getIndexSongInSet() {
         return indexSongInSet;
     }
@@ -185,15 +217,9 @@ public class CurrentSet {
     public ArrayList<String> getSetKeys() {
         return setKeys;
     }
-    public String getSetName() {
-        return setName;
-    }
 
     public void addToCurrentSetString(String item) {
-        currentSetString = currentSetString + item;
-    }
-    public void setSetItems(ArrayList<String> setItems) {
-        this.setItems = setItems;
+        setCurrent = setCurrent + item;
     }
     public void addToCurrentSet(int position, String item, String folder, String filename, String key) {
         setItems.add(position,item);
@@ -206,7 +232,6 @@ public class CurrentSet {
             // Don't know, so look for it
             pos = setItems.indexOf(item);
         }
-        Log.d(TAG,"removeFromCurrentSet().  pos="+pos);
 
         if (pos!=-1) {
             setItems.remove(pos);
@@ -215,22 +240,53 @@ public class CurrentSet {
             setKeys.remove(pos);
         }
     }
-    public void setSetFolders(ArrayList<String> setFolders) {
-        this.setFolders = setFolders;
-    }
-
-    public void setSetFilenames(ArrayList<String> setFilenames) {
-        this.setFilenames = setFilenames;
-    }
 
     public void setIndexSongInSet(int indexSongInSet) {
         this.indexSongInSet = indexSongInSet;
     }
-    public void setSetName(String setName) {
-        this.setName = setName;
-    }
-    public void setSetKeys(ArrayList<String> setKeys) {
-        this.setKeys = setKeys;
-    }
 
+    // Update the title in the set menu (add asterisk for changes)
+    public void initialiseSetTitleViews(ImageView asteriskView,
+                                        MyMaterialTextView setTitleView,
+                                        ExtendedFloatingActionButton saveButtonView) {
+        this.asteriskView = asteriskView;
+        this.setTitleView = setTitleView;
+        this.saveButtonView = saveButtonView;
+        asteriskView.setPadding(0,8,0,0);
+    }
+    public void updateSetTitleView() {
+        String changedOrEmpty = "";
+        if (asteriskView!=null) {
+            if (!setCurrent.equals(setCurrentBeforeEdits)) {
+                asteriskView.post(() -> asteriskView.setVisibility(View.VISIBLE));
+                changedOrEmpty += notSavedText;
+            } else {
+                asteriskView.post(() -> asteriskView.setVisibility(View.GONE));
+            }
+        }
+        if (setTitleView!=null) {
+            String title;
+            String changed = changedOrEmpty;
+            if (setCurrentLastName == null || setCurrentLastName.isEmpty()) {
+                title = currentSetText;
+            } else {
+                title = setTitleText + setCurrentLastName;
+            }
+            setTitleView.post(() -> {
+                setTitleView.setText(title);
+                if (changed.isEmpty()) {
+                    setTitleView.setHint(null);
+                } else {
+                    setTitleView.setHint(changed);
+                }
+            });
+        }
+        if (saveButtonView!=null) {
+            if (changedOrEmpty.isEmpty()) {
+                saveButtonView.post(() -> saveButtonView.setVisibility(View.GONE));
+            } else {
+                saveButtonView.post(() -> saveButtonView.setVisibility(View.VISIBLE));
+            }
+        }
+    }
 }

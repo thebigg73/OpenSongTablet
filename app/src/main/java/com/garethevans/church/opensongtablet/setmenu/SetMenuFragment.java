@@ -1,6 +1,7 @@
 package com.garethevans.church.opensongtablet.setmenu;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -18,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.FastScroller;
 import com.garethevans.church.opensongtablet.databinding.MenuSetsBinding;
+import com.garethevans.church.opensongtablet.filemanagement.AreYouSureBottomSheet;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 import java.util.ArrayList;
@@ -45,9 +48,21 @@ public class SetMenuFragment extends Fragment {
                              Bundle savedInstanceState) {
         myView = MenuSetsBinding.inflate(inflater, container, false);
 
+        // Load up current set details by initialising them in the CurrentSet class
+        // They can be called up or saved in that class
+        mainActivityInterface.getCurrentSet().loadCurrentSet();
+        mainActivityInterface.getCurrentSet().loadSetCurrentBeforeEdits();
+        mainActivityInterface.getCurrentSet().loadSetCurrentBeforeEdits();
+
+        // Initialise the set title by passing reference to the views
+        mainActivityInterface.getCurrentSet().initialiseSetTitleViews(myView.setTitle.getImageView(),myView.setTitle, myView.saveSetButton);
+
         myView.myRecyclerView.setVisibility(View.GONE);
         myView.progressBar.setVisibility(View.VISIBLE);
-
+        if (getContext()!=null) {
+            myView.setTitle.setImageView(ContextCompat.getDrawable(getContext(), R.drawable.asterisk), Color.WHITE);
+            myView.setTitle.getImageView().setVisibility(View.GONE);
+        }
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             Handler handler = new Handler(Looper.getMainLooper());
@@ -56,7 +71,7 @@ public class SetMenuFragment extends Fragment {
                 setupAdapter();
                 buildList();
                 setListeners();
-                updateSetTitle();
+                mainActivityInterface.getCurrentSet().updateSetTitleView();
                 scrollToItem();
             });
         });
@@ -85,6 +100,21 @@ public class SetMenuFragment extends Fragment {
     }
 
     private void setListeners() {
+        myView.saveSetButton.post(() -> {
+            myView.saveSetButton.setOnClickListener(v -> {
+                String currentSetName = mainActivityInterface.getCurrentSet().getSetCurrentLastName();
+                if (currentSetName==null || currentSetName.isEmpty()) {
+                    // We need the user to give the set a name
+                    mainActivityInterface.setWhattodo("saveset");
+                    mainActivityInterface.navigateToFragment(getString(R.string.deeplink_sets_manage),0);
+                } else {
+                    // Prompt the user to confirm overwriting the original
+                    String message = getString(R.string.save_changes) + ": " + currentSetName + "\n\n" + getString(R.string.overwrite);
+                    AreYouSureBottomSheet areYouSureBottomSheet = new AreYouSureBottomSheet("saveset",message,null,"SetMenuFragment",SetMenuFragment.this,null);
+                    areYouSureBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"areYouSure");
+                }
+            });
+        });
         myView.setMasterFAB.post(() -> myView.setMasterFAB.setOnClickListener(v -> {
             SetMenuBottomSheet setMenuBottomSheet = new SetMenuBottomSheet();
             setMenuBottomSheet.show(requireActivity().getSupportFragmentManager(), "setMenuBottomSheet");
@@ -150,7 +180,7 @@ public class SetMenuFragment extends Fragment {
             // This also deals with notifying changes
             setListAdapter.updateSetList(new ArrayList<>());
             buildList();
-            updateSetTitle();
+            mainActivityInterface.getCurrentSet().updateSetTitleView();
         });
     }
 
@@ -186,7 +216,7 @@ public class SetMenuFragment extends Fragment {
             setListAdapter.getSetList().get(position).songicon = mainActivityInterface.getSetActions().
                     getIconIdentifier(folder, filename);
 
-            updateSetTitle();
+            mainActivityInterface.getCurrentSet().updateSetTitleView();
             setListAdapter.updateHighlightedItem(position);
             setListAdapter.notifyItemChanged(position);
         } catch (Exception e) {
@@ -194,15 +224,9 @@ public class SetMenuFragment extends Fragment {
         }
     }
 
-    public void updateSetTitle() {
-        // Save the changes
-        String titletext = requireContext().getResources().getString(R.string.set) + ": " + mainActivityInterface.getSetActions().currentSetNameForMenu();
-        myView.setTitle.post(() -> myView.setTitle.setText(titletext));
-    }
-
     public void addSetItem(int currentSetPosition) {
         setListAdapter.itemAdded(makeSetItem(currentSetPosition));
-        updateSetTitle();
+        mainActivityInterface.getCurrentSet().updateSetTitleView();
     }
 
     public void runSetShowcase() {
@@ -219,7 +243,7 @@ public class SetMenuFragment extends Fragment {
     // Called from clicking on checkboxes in song menu (via MainActivity)
     public void removeSetItem(int currentSetPosition) {
         setListAdapter.itemRemoved(currentSetPosition);
-        updateSetTitle();
+        mainActivityInterface.getCurrentSet().updateSetTitleView();
     }
     private SetItemInfo makeSetItem(int i) {
         SetItemInfo si = new SetItemInfo();

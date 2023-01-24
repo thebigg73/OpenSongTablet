@@ -63,6 +63,12 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     }
 
     @Override
+    public void onDetach() {
+        super.onDetach();
+        mainActivityInterface = null;
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
@@ -84,18 +90,20 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     private void initialiseRecyclerView() {
         myView.songListRecyclerView.removeAllViews();
         myView.songmenualpha.sideIndex.removeAllViews();
-        try {
-            songListLayoutManager = new LinearLayoutManager(requireContext());
-            songListLayoutManager.setOrientation(RecyclerView.VERTICAL);
-            myView.songListRecyclerView.setLayoutManager(songListLayoutManager);
-            myView.songListRecyclerView.setHasFixedSize(false);
-            myView.songListRecyclerView.setOnClickListener(null);
-            List<Song> blank = new ArrayList<>();
-            songListAdapter = new SongListAdapter(requireContext(), blank,
-                    SongMenuFragment.this);
-            myView.songListRecyclerView.setAdapter(songListAdapter);
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (getContext()!=null) {
+            try {
+                songListLayoutManager = new LinearLayoutManager(requireContext());
+                songListLayoutManager.setOrientation(RecyclerView.VERTICAL);
+                myView.songListRecyclerView.setLayoutManager(songListLayoutManager);
+                myView.songListRecyclerView.setHasFixedSize(false);
+                myView.songListRecyclerView.setOnClickListener(null);
+                List<Song> blank = new ArrayList<>();
+                songListAdapter = new SongListAdapter(requireContext(), blank,
+                        SongMenuFragment.this);
+                myView.songListRecyclerView.setAdapter(songListAdapter);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -123,19 +131,21 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             Handler handler = new Handler(Looper.getMainLooper());
-            try {
-                keyArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(),
-                        myView.filters.keySearch,R.layout.view_exposed_dropdown_item, getResources().getStringArray(R.array.key_choice));
-                handler.post(() -> {
-                    myView.filters.keySearch.setAdapter(keyArrayAdapter);
-                    myView.filters.keySearch.addTextChangedListener(new MyTextWatcher("key"));
-                    myView.filters.artistSearch.addTextChangedListener(new MyTextWatcher("artist"));
-                    myView.filters.tagSearch.addTextChangedListener(new MyTextWatcher("tag"));
-                    myView.filters.filterSearch.addTextChangedListener(new MyTextWatcher("filter"));
-                    myView.filters.titleSearch.addTextChangedListener(new MyTextWatcher("title"));
-                });
-            } catch (Exception e) {
-                e.printStackTrace();
+            if (getContext()!=null) {
+                try {
+                    keyArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(),
+                            myView.filters.keySearch, R.layout.view_exposed_dropdown_item, getResources().getStringArray(R.array.key_choice));
+                    handler.post(() -> {
+                        myView.filters.keySearch.setAdapter(keyArrayAdapter);
+                        myView.filters.keySearch.addTextChangedListener(new MyTextWatcher("key"));
+                        myView.filters.artistSearch.addTextChangedListener(new MyTextWatcher("artist"));
+                        myView.filters.tagSearch.addTextChangedListener(new MyTextWatcher("tag"));
+                        myView.filters.filterSearch.addTextChangedListener(new MyTextWatcher("filter"));
+                        myView.filters.titleSearch.addTextChangedListener(new MyTextWatcher("title"));
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
@@ -145,9 +155,9 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         executorService.execute(() -> {
             Handler handler = new Handler(Looper.getMainLooper());
             foundFolders = mainActivityInterface.getSQLiteHelper().getFolders();
-            if (getActivity()!=null) {
+            if (getContext()!=null) {
                 handler.post(() -> {
-                    folderArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(), myView.filters.folderSearch,R.layout.view_exposed_dropdown_item, foundFolders);
+                    folderArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(), myView.filters.folderSearch, R.layout.view_exposed_dropdown_item, foundFolders);
                     myView.filters.folderSearch.setAdapter(folderArrayAdapter);
                     myView.filters.folderSearch.setMultiselect(true);
                     myView.filters.folderSearch.addTextChangedListener(new MyTextWatcher("folder"));
@@ -155,6 +165,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                     if (pos >= 0) {
                         myView.filters.folderSearch.setText(foundFolders.get(pos));
                     }
+
                 });
             }
         });
@@ -364,85 +375,93 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     }
 
     public void updateSongList() {
-        try {
-            myView.songListRecyclerView.removeAllViews();
-            myView.songmenualpha.sideIndex.removeAllViews();
-            myView.songListRecyclerView.setOnClickListener(null);
-            songListAdapter = new SongListAdapter(requireContext(),
-                    songsFound, SongMenuFragment.this);
-            myView.songListRecyclerView.setAdapter(songListAdapter);
-            myView.songListRecyclerView.setFastScrollEnabled(true);
-            displayIndex();
-            myView.progressBar.setVisibility(View.GONE);
-            buttonsEnabled(true);
-            // Update the filter row values
-            //setFolders();
-        } catch (Exception e) {
-            Log.d(TAG,"The app closed before the menu was finished");
+        if (getContext()!=null) {
+            try {
+                myView.songListRecyclerView.removeAllViews();
+                myView.songmenualpha.sideIndex.removeAllViews();
+                myView.songListRecyclerView.setOnClickListener(null);
+                songListAdapter = new SongListAdapter(requireContext(),
+                        songsFound, SongMenuFragment.this);
+                myView.songListRecyclerView.setAdapter(songListAdapter);
+                myView.songListRecyclerView.setFastScrollEnabled(true);
+                displayIndex();
+                myView.progressBar.setVisibility(View.GONE);
+                buttonsEnabled(true);
+                // Update the filter row values
+                //setFolders();
+            } catch (Exception e) {
+                Log.d(TAG, "The app closed before the menu was finished");
+            }
         }
     }
 
     private void displayIndex() {
-        try {
-            myView.songmenualpha.sideIndex.removeAllViews();
-            TextView textView;
-            final Map<String, Integer> map = songListAdapter.getAlphaIndex(songsFound);
-            Set<String> setString = map.keySet();
-            List<String> indexList = new ArrayList<>(setString);
-            float tvSize = mainActivityInterface.getPreferences().getMyPreferenceFloat("songMenuAlphaIndexSize", 14.0f);
-            int i = (int) mainActivityInterface.getPreferences().getMyPreferenceFloat("songMenuAlphaIndexSize", 14.0f) * 2;
+        if (mainActivityInterface!=null) {
+            try {
+                myView.songmenualpha.sideIndex.removeAllViews();
+                TextView textView;
+                final Map<String, Integer> map = songListAdapter.getAlphaIndex(songsFound);
+                Set<String> setString = map.keySet();
+                List<String> indexList = new ArrayList<>(setString);
+                float tvSize = mainActivityInterface.getPreferences().getMyPreferenceFloat("songMenuAlphaIndexSize", 14.0f);
+                int i = (int) mainActivityInterface.getPreferences().getMyPreferenceFloat("songMenuAlphaIndexSize", 14.0f) * 2;
 
-            for (int p=0; p<indexList.size(); p++) {
-                String index = indexList.get(p);
-                textView = (TextView) View.inflate(getActivity(), R.layout.view_alphabetical_list, null);
-                textView.setTextSize(tvSize);
-                textView.setPadding(i, i, i, i);
-                textView.setMinimumWidth(16);
-                textView.setMinimumHeight(16);
-                textView.setText(index);
-                int finalP = p;
-                textView.setOnClickListener(view -> {
-                    TextView selectedIndex = (TextView) view;
-                    try {
-                        if (selectedIndex.getText() != null &&
-                                songListLayoutManager != null) {
-                            String myval = selectedIndex.getText().toString();
+                for (int p = 0; p < indexList.size(); p++) {
+                    String index = indexList.get(p);
+                    if (getActivity() != null) {
+                        textView = (TextView) View.inflate(getActivity(), R.layout.view_alphabetical_list, null);
+                        if (textView != null) {
+                            textView.setTextSize(tvSize);
+                            textView.setPadding(i, i, i, i);
+                            textView.setMinimumWidth(16);
+                            textView.setMinimumHeight(16);
+                            textView.setText(index);
+                            int finalP = p;
+                            textView.setOnClickListener(view -> {
+                                TextView selectedIndex = (TextView) view;
+                                try {
+                                    if (selectedIndex.getText() != null &&
+                                            songListLayoutManager != null) {
+                                        String myval = selectedIndex.getText().toString();
 
-                            if (!map.isEmpty()) {
-                                Integer obj = map.get(myval);
-                                if (obj != null) {
-                                    songListLayoutManager.scrollToPositionWithOffset(obj, 0);
+                                        if (!map.isEmpty()) {
+                                            Integer obj = map.get(myval);
+                                            if (obj != null) {
+                                                songListLayoutManager.scrollToPositionWithOffset(obj, 0);
+                                            }
+                                        }
+                                        alphaSelected = index;
+                                        alphalistposition = finalP;
+                                        if (mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuAlphaIndexLevel2", false)) {
+                                            displayIndex2();
+                                        }
+                                        mainActivityInterface.getWindowFlags().hideKeyboard();
+                                    }
+                                } catch (Exception e) {
+                                    e.printStackTrace();
                                 }
-                            }
-                            alphaSelected = index;
-                            alphalistposition = finalP;
-                            if (mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuAlphaIndexLevel2",false)) {
-                                displayIndex2();
-                            }
-                            mainActivityInterface.getWindowFlags().hideKeyboard();
+                            });
+                            myView.songmenualpha.sideIndex.addView(textView);
                         }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                });
-                myView.songmenualpha.sideIndex.addView(textView);
-            }
-            changeAlphabeticalVisibility(mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuAlphaIndexShow", true));
-
-            myView.songmenualpha.sideIndex.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                @Override
-                public void onGlobalLayout() {
-                    myView.songmenualpha.sideIndex.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                    if (myView.songmenualpha.sideIndex.getChildCount()>alphalistposition && myView.songmenualpha.sideIndex.getChildAt(alphalistposition)!=null) {
-                        myView.songmenualpha.indexScrollview.scrollTo(0, myView.songmenualpha.sideIndex.getChildAt(alphalistposition).getTop());
-                    } else {
-                        myView.songmenualpha.indexScrollview.scrollTo(0,0);
                     }
                 }
-            });
+                changeAlphabeticalVisibility(mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuAlphaIndexShow", true));
 
-        } catch (Exception e) {
-            e.printStackTrace();
+                myView.songmenualpha.sideIndex.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        myView.songmenualpha.sideIndex.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                        if (myView.songmenualpha.sideIndex.getChildCount() > alphalistposition && myView.songmenualpha.sideIndex.getChildAt(alphalistposition) != null) {
+                            myView.songmenualpha.indexScrollview.scrollTo(0, myView.songmenualpha.sideIndex.getChildAt(alphalistposition).getTop());
+                        } else {
+                            myView.songmenualpha.indexScrollview.scrollTo(0, 0);
+                        }
+                    }
+                });
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -540,33 +559,35 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     }
 
     public void updateSongMenu(Song song) {
-        // Set values
-        setValues(song);
+        if (getContext()!=null) {
+            // Set values
+            setValues(song);
 
-        // Get folders
-        setFolders();
+            // Get folders
+            setFolders();
 
-        // Set up the spinners
-        setUpExposedDropDowns();
+            // Set up the spinners
+            setUpExposedDropDowns();
 
-        // Set up page buttons
-        setListeners();
+            // Set up page buttons
+            setListeners();
 
-        // Prepare the song menu (includes a call to update the prepareSearch
-        fixButtons();
+            // Prepare the song menu (includes a call to update the prepareSearch
+            fixButtons();
 
-        if (songListAdapter!=null) {
-            ExecutorService executorService = Executors.newSingleThreadExecutor();
-            executorService.execute(() -> {
-                Handler handler = new Handler(Looper.getMainLooper());
-                handler.post(() -> {
-                    try {
-                        songListAdapter.notifyItemRangeChanged(0, songListAdapter.getItemCount());
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+            if (songListAdapter != null) {
+                ExecutorService executorService = Executors.newSingleThreadExecutor();
+                executorService.execute(() -> {
+                    Handler handler = new Handler(Looper.getMainLooper());
+                    handler.post(() -> {
+                        try {
+                            songListAdapter.notifyItemRangeChanged(0, songListAdapter.getItemCount());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    });
                 });
-            });
+            }
         }
     }
 

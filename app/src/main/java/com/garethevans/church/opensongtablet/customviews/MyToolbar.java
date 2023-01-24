@@ -44,9 +44,10 @@ public class MyToolbar extends MaterialToolbar {
     private final com.google.android.material.textview.MaterialTextView batterycharge;
     private Handler delayActionBarHide;
     private Runnable hideActionBarRunnable;
-    private int actionBarHideTime = 1200;
+    private int actionBarHideTime = 1200, additionalTopPadding = 0;
     private float clockTextSize;
-    private boolean clock24hFormat, clockOn, hideActionBar, clockSeconds, performanceMode;
+    private boolean clock24hFormat, clockOn, hideActionBar, clockSeconds, performanceMode,
+            menuOpen;
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "MyToolbar";
 
@@ -142,10 +143,12 @@ public class MyToolbar extends MaterialToolbar {
     }
 
     // If we have chosen to autohide the actionbar
-    public boolean contentBehind(boolean menuOpen) {
+    public void setMenuOpen(boolean menuOpen) {
+        this.menuOpen = menuOpen;
+    }
+    public boolean getContentBehind() {
         return (hideActionBar && performanceMode && !menuOpen);
     }
-
     public void setHideActionBar(boolean hideActionBar) {
         this.hideActionBar = hideActionBar;
     }
@@ -329,6 +332,13 @@ public class MyToolbar extends MaterialToolbar {
         }
     }
 
+    public void setAdditionalTopPadding(int additionalTopPadding) {
+        this.additionalTopPadding = additionalTopPadding;
+    }
+    public int getAdditionalTopPadding() {
+        return additionalTopPadding;
+    }
+
     public void updateClock() {
         mainActivityInterface.getTimeTools().setFormat(clock,clockTextSize,
                 clockOn, clock24hFormat, clockSeconds);
@@ -368,4 +378,5 @@ public class MyToolbar extends MaterialToolbar {
     public boolean isHidden() {
         return isShown();
     }
+
 }

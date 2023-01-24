@@ -149,7 +149,7 @@ public class BootUpFragment extends Fragment {
                             mainActivityInterface.initialiseActivity();
                             mainActivityInterface.navHome();
                             mainActivityInterface.showActionBar();
-                            mainActivityInterface.moveContentForActionBar(false);
+                            mainActivityInterface.updateMargins();
                         });
 
                     } else {

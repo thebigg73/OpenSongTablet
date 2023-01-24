@@ -4,17 +4,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/setTitle"
+    <LinearLayout
+        android:id="@+id/titleLayout"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+    <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+        android:id="@+id/setTitle"
+        android:layout_width="0dp"
+        android:layout_weight="1"
         android:layout_height="wrap_content"
         android:textSize="14sp"
         android:padding="16dp" />
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/saveSetButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:icon="@drawable/save"
+            android:text="@string/save"
+            android:padding="16dp"
+            android:layout_margin="8dp"/>
+    </LinearLayout>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/setTitle">
+        android:layout_below="@+id/titleLayout">
 
         <FrameLayout
             android:layout_width="match_parent"

@@ -5,7 +5,6 @@ import android.content.Context;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.RoundedCorner;
 import android.view.Surface;
 import android.view.View;
@@ -56,8 +55,11 @@ public class WindowFlags {
     private final String TAG = "WindowFlags";
     private final float density;
     private int customMarginLeft, customMarginRight, customMarginBottom, customMarginTop,
-            statusHeight = 0, navHeight = 0, roundedLeft = 0, roundedRight = 0, roundedBottom = 0, roundedTop = 0,
-            navLeft, navRight, currentRotation, firstBootRotation, cutoutTop, cutoutBottom,
+            statusHeight = 0, navHeight = 0,
+            roundedLeft = 0, roundedRight = 0, roundedBottom = 0, roundedTop = 0,
+            marginToolbarLeft = 0, marginToolbarRight = 0,
+            navLeft, navRight,
+            currentRotation, firstBootRotation, cutoutTop, cutoutBottom, currentRoundedTop = 0,
             cutoutLeft, cutoutRight, softKeyboardHeight = 0, currentTopCutoutHeight = 0;
     private String navBarPosition = "b";
     private int[] totalMargins = new int[4];
@@ -105,6 +107,8 @@ public class WindowFlags {
         immersiveMode = mainActivityInterface.getPreferences().getMyPreferenceBoolean("immersiveMode", true);
         ignoreCutouts = mainActivityInterface.getPreferences().getMyPreferenceBoolean("ignoreCutouts", false);
         ignoreRoundedCorners = mainActivityInterface.getPreferences().getMyPreferenceBoolean("ignoreRoundedCorners",true);
+        marginToolbarLeft = mainActivityInterface.getPreferences().getMyPreferenceInt("marginToolbarLeft",0);
+        marginToolbarLeft = mainActivityInterface.getPreferences().getMyPreferenceInt("marginToolbarRight",0);
     }
 
     // Initialise the WindowInsetsCompat from MainActivity (once it is ready)
@@ -255,13 +259,6 @@ public class WindowFlags {
                     break;
             }
 
-            Log.d(TAG,"statusHeight:"+statusHeight);
-            Log.d(TAG,"navHeight:"+navHeight);
-            Log.d(TAG,"cutoutTop:"+cutoutTop);
-            Log.d(TAG,"cutoutLeft:"+cutoutLeft);
-            Log.d(TAG,"cutoutRight:"+cutoutRight);
-            Log.d(TAG,"cutoutBottom:"+cutoutBottom);
-
             if (statusHeight == cutoutTop) {
                 // Likely the statusBar has been stretched to match the cutoutTop height
                 statusHeight = (int) (24f * density);
@@ -308,13 +305,11 @@ public class WindowFlags {
         roundedTop = (int)(roundedTop - (roundedTop*Math.sin(Math.toRadians(45))));
         roundedBottom = (int)(roundedBottom - (roundedBottom*Math.sin(Math.toRadians(45))));
 
-        Log.d(TAG,"roundedLeft:"+roundedLeft);
-        Log.d(TAG,"roundedRight:"+roundedRight);
-        Log.d(TAG,"roundedTop:"+roundedTop);
-        Log.d(TAG,"roundedBottom:"+roundedBottom);
-
     }
 
+    public int getCurrentRoundedTop() {
+        return currentRoundedTop;
+    }
     private void setCurrentTopHasCutout() {
         // We have already decided where the cutouts are (actual T, B, L, R)
         // These were calculated from the firstBootRotation when insets were calculated
@@ -324,21 +319,25 @@ public class WindowFlags {
             default:
                 currentTopHasCutout = cutoutTop > 0;
                 currentTopCutoutHeight = cutoutTop;
+                currentRoundedTop = roundedTop;
                 break;
 
             case 1:
                 currentTopHasCutout = cutoutLeft > 0;
                 currentTopCutoutHeight = cutoutLeft;
+                currentRoundedTop = roundedLeft;
                 break;
 
             case 2:
                 currentTopHasCutout = cutoutBottom > 0;
                 currentTopCutoutHeight = cutoutBottom;
+                currentRoundedTop = roundedBottom;
                 break;
 
             case 3:
                 currentTopHasCutout = cutoutRight > 0;
                 currentTopCutoutHeight = cutoutRight;
+                currentRoundedTop = roundedRight;
                 break;
         }
     }
@@ -470,6 +469,24 @@ public class WindowFlags {
         }
     }
 
+    public int getMarginToolbarLeft() {
+        return marginToolbarLeft;
+    }
+    public void setMarginToolbarLeft(int marginToolbarLeft, boolean doSave) {
+        this.marginToolbarLeft = marginToolbarLeft;
+        if (doSave) {
+            mainActivityInterface.getPreferences().setMyPreferenceInt("marginToolbarLeft", marginToolbarLeft);
+        }
+    }
+    public int getMarginToolbarRight() {
+        return marginToolbarRight;
+    }
+    public void setMarginToolbarRight(int marginToolbarRight, boolean doSave) {
+        this.marginToolbarRight = marginToolbarRight;
+        if (doSave) {
+            mainActivityInterface.getPreferences().setMyPreferenceInt("marginToolbarRight", marginToolbarRight);
+        }
+    }
 
     // Get the margins to adjust the drawerlayout
     // The margins are based on the current rotation which might be non-default!
@@ -493,7 +510,8 @@ public class WindowFlags {
 
         if (getHasCutouts() && !ignoreCutouts) {
             // The status bar deals with the top rounded corner
-            roundedTop = 0;
+            //roundedTop = 0;
+            roundT = 0;
         }
 
         switch (currentRotation) {

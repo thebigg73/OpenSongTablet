@@ -4,8 +4,10 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_below="@id/myToolbar"
     android:clipChildren="false"
     android:clipToPadding="false"
+    android:background="@color/colorAltPrimary"
     android:keepScreenOn="true">
 
     <FrameLayout
@@ -88,22 +90,12 @@
             android:theme="@style/ActionBar"
             android:visibility="gone">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <!-- This bit draws a background for cutouts if required -->
-            <View
-                android:id="@+id/notchBackground"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="@color/colorAltPrimary" />
-
         <com.garethevans.church.opensongtablet.customviews.MyToolbar
             android:id="@+id/myToolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/notchBackground"/>
-            </RelativeLayout>
+            android:layout_gravity="bottom"/>
+
         </com.google.android.material.appbar.AppBarLayout>
 
     </FrameLayout>
@@ -140,4 +132,5 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </LinearLayout>
+
 </androidx.drawerlayout.widget.DrawerLayout>

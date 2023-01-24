@@ -212,15 +212,17 @@ public class PerformanceFragment extends Fragment {
         mainActivityInterface.dealWithIntent(R.id.performanceFragment);
     }
     private void removeViews() {
-        try {
-            mainActivityInterface.getSongSheetTitleLayout().removeAllViews();
-            myView.songView.clearViews();
-            myView.testPane.removeAllViews();
-            myView.recyclerView.removeAllViews();
-            myView.imageView.setImageDrawable(null);
-            mainActivityInterface.setSectionViews(null);
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (myView!=null) {
+            try {
+                mainActivityInterface.getSongSheetTitleLayout().removeAllViews();
+                myView.songView.clearViews();
+                myView.testPane.removeAllViews();
+                myView.recyclerView.removeAllViews();
+                myView.imageView.setImageDrawable(null);
+                mainActivityInterface.setSectionViews(null);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
     public void toggleInlineSet() {
@@ -312,55 +314,57 @@ public class PerformanceFragment extends Fragment {
         }
     }
     private void prepareSongViews() {
-        // This is called on the UI thread above via the handler from mainLooper()
-        // Reset the song views
-        mainActivityInterface.setSectionViews(null);
-        waitingOnViewsToDraw = 0;
+        if (myView!=null) {
+            // This is called on the UI thread above via the handler from mainLooper()
+            // Reset the song views
+            mainActivityInterface.setSectionViews(null);
+            waitingOnViewsToDraw = 0;
 
-        // Reset the song sheet titles and views
-        removeViews();
+            // Reset the song sheet titles and views
+            removeViews();
 
-        // Set the default color
-        myView.pageHolder.setBackgroundColor(mainActivityInterface.getMyThemeColors().getLyricsBackgroundColor());
+            // Set the default color
+            myView.pageHolder.setBackgroundColor(mainActivityInterface.getMyThemeColors().getLyricsBackgroundColor());
 
-        // Update the toolbar with the song (null).  This also sets the positionInSet in SetActions
-        mainActivityInterface.updateToolbar(null);
+            // Update the toolbar with the song (null).  This also sets the positionInSet in SetActions
+            mainActivityInterface.updateToolbar(null);
 
-        // If we are in a set, send that info to the inline set custom view to see if it should draw
-        myView.inlineSetList.checkVisibility();
+            // If we are in a set, send that info to the inline set custom view to see if it should draw
+            myView.inlineSetList.checkVisibility();
 
-        int[] screenSizes = mainActivityInterface.getDisplayMetrics();
-        int[] margins = mainActivityInterface.getWindowFlags().getMargins();
-        int screenWidth = screenSizes[0];
-        int screenHeight = screenSizes[1];
+            int[] screenSizes = mainActivityInterface.getDisplayMetrics();
+            int[] margins = mainActivityInterface.getWindowFlags().getMargins();
+            int screenWidth = screenSizes[0];
+            int screenHeight = screenSizes[1];
 
-        availableWidth = screenWidth - margins[0] - margins[2] - myView.inlineSetList.getInlineSetWidth();
-        availableHeight = screenHeight - margins[1] - margins[3] - mainActivityInterface.getToolbar().getActionBarHeight(mainActivityInterface.needActionBar());
+            availableWidth = screenWidth - margins[0] - margins[2] - myView.inlineSetList.getInlineSetWidth();
+            availableHeight = screenHeight - margins[1] - margins[3] - mainActivityInterface.getToolbar().getActionBarHeight(mainActivityInterface.needActionBar());
 
-        widthBeforeScale = 0;
-        heightBeforeScale = 0;
+            widthBeforeScale = 0;
+            heightBeforeScale = 0;
 
-        // Depending on what we are doing, create the content.
-        // Options are
-        // - PDF        PDF file. Use the recyclerView (not inside zoomLayout).  All sizes from image representations of pages
-        // - IMG        Image file.  Use the imageView (inside pageHolder, inside zoomLayout).  All sizes from the bitmap file.
-        // - **Image    Custom image slide (multiple images).  Same as PDF
-        // - XML        OpenSong song.  Views need to be drawn and measured. Stage mode uses recyclerView, Performance, the pageHolder
+            // Depending on what we are doing, create the content.
+            // Options are
+            // - PDF        PDF file. Use the recyclerView (not inside zoomLayout).  All sizes from image representations of pages
+            // - IMG        Image file.  Use the imageView (inside pageHolder, inside zoomLayout).  All sizes from the bitmap file.
+            // - **Image    Custom image slide (multiple images).  Same as PDF
+            // - XML        OpenSong song.  Views need to be drawn and measured. Stage mode uses recyclerView, Performance, the pageHolder
 
-        if (mainActivityInterface.getSong().getFiletype().equals("PDF") &&
-                android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-            preparePDFView();
+            if (mainActivityInterface.getSong().getFiletype().equals("PDF") &&
+                    android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                preparePDFView();
 
-        } else if (mainActivityInterface.getSong().getFiletype().equals("IMG")) {
-            prepareIMGView();
+            } else if (mainActivityInterface.getSong().getFiletype().equals("IMG")) {
+                prepareIMGView();
 
-        } else if (mainActivityInterface.getSong().getFolder().contains("**Image")) {
-            prepareSlideImageView();
+            } else if (mainActivityInterface.getSong().getFolder().contains("**Image")) {
+                prepareSlideImageView();
 
-        } else if (mainActivityInterface.getSong().getFiletype().equals("XML") ||
-                (mainActivityInterface.getSong().getFiletype().equals("PDF") &&
-                        android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP)) {
-            prepareXMLView();
+            } else if (mainActivityInterface.getSong().getFiletype().equals("XML") ||
+                    (mainActivityInterface.getSong().getFiletype().equals("PDF") &&
+                            android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP)) {
+                prepareXMLView();
+            }
         }
     }
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -531,13 +535,19 @@ public class PerformanceFragment extends Fragment {
             vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override
                 public void onGlobalLayout() {
-                    try {
-                        myView.testPane.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    setUpTestViewListener();
+                    if (myView!=null) {
+                        try {
+                            myView.testPane.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
 
+                        try {
+                            setUpTestViewListener();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
                 }
             });
 
@@ -945,6 +955,12 @@ public class PerformanceFragment extends Fragment {
         myView.recyclerView.smoothScrollTo(requireContext(),recyclerLayoutManager,position);
         mainActivityInterface.getPresenterSettings().setCurrentSection(position);
         displayInterface.updateDisplay("showSection");
+    }
+
+    public void scrollToTop() {
+        myView.recyclerView.smoothScrollTo(requireContext(),recyclerLayoutManager,0);
+        myView.zoomLayout.scrollTo(0,0);
+        mainActivityInterface.updateMargins();
     }
 
     // If a nearby host initiated a section change

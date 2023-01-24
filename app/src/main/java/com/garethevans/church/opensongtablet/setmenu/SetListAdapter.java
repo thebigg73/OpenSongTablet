@@ -150,11 +150,8 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
         // Add to the new position
         mainActivityInterface.getCurrentSet().addToCurrentSet(toPosition, thisSetItem, thisFolder, thisFilename, thisKey);
 
-        // Update the set string
-        mainActivityInterface.getCurrentSet().setCurrentSetString(mainActivityInterface.getSetActions().getSetAsPreferenceString());
-
-        // Save the preference
-        mainActivityInterface.getPreferences().setMyPreferenceString("setCurrent", mainActivityInterface.getCurrentSet().getCurrentSetString());
+        // Update the set string and save it
+        mainActivityInterface.getCurrentSet().setSetCurrent(mainActivityInterface.getSetActions().getSetAsPreferenceString());
 
         setList.get(fromPosition).songitem = (toPosition + 1) + ".";
         setList.get(toPosition).songitem = (fromPosition + 1) + ".";
@@ -187,11 +184,8 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
             Song songRemoved = mainActivityInterface.getSQLiteHelper().getSpecificSong(
                     setList.get(fromPosition).songfolder, setList.get(fromPosition).songfilename);
 
-            // Update the set string
-            mainActivityInterface.getCurrentSet().setCurrentSetString(mainActivityInterface.getSetActions().getSetAsPreferenceString());
-
-            // Save the preference
-            mainActivityInterface.getPreferences().setMyPreferenceString("setCurrent", mainActivityInterface.getCurrentSet().getCurrentSetString());
+            // Update the set string and save it
+            mainActivityInterface.getCurrentSet().setSetCurrent(mainActivityInterface.getSetActions().getSetAsPreferenceString());
 
             // Remove the item from the set list and notify the adapter of changes
             itemRemoved(fromPosition);
@@ -216,7 +210,7 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
     @Override
     public void onContentChanged(int position) {
         notifyItemChanged(position);
-        Log.d(TAG, "CHANGES: setCurrent:" + mainActivityInterface.getCurrentSet().getCurrentSetString());
+        Log.d(TAG, "CHANGES: setCurrent:" + mainActivityInterface.getCurrentSet().getSetCurrent());
     }
 
     public void updateHighlightedItem(int position) {

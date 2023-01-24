@@ -10,8 +10,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="?attr/actionBarSize"
-        android:orientation="horizontal"
-        android:padding="12dp">
+        android:layout_gravity="center_vertical"
+        android:paddingTop="4dp"
+        android:orientation="horizontal">
 
         <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
             android:id="@+id/versionCode"
@@ -20,7 +21,8 @@
             android:layout_height="wrap_content"
             android:background="@color/colorAltPrimary"
             android:gravity="end"
-            android:layout_margin="12dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
             custom:mydrawable="@drawable/arrow_left" />
 
         <ImageView
@@ -28,7 +30,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/web"
-            android:layout_margin="12dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
             android:contentDescription="@string/help"
             android:layout_gravity="center_vertical"/>
     </LinearLayout>

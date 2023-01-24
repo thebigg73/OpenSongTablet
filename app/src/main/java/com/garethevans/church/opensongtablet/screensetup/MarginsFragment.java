@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,6 +18,8 @@ import com.google.android.material.slider.Slider;
 public class MarginsFragment extends Fragment {
 
     private MainActivityInterface mainActivityInterface;
+    @SuppressWarnings("unused")
+    private final String TAG = "MarginsFragment";
     private SettingsMarginsBinding myView;
 
     @Override
@@ -46,45 +47,42 @@ public class MarginsFragment extends Fragment {
     private void setupViews() {
         myView.ignoreCutouts.setChecked(mainActivityInterface.getWindowFlags().getIgnoreCutouts());
         myView.ignoreRoundedCorners.setChecked(mainActivityInterface.getWindowFlags().getIgnoreRoundedCorners());
-
-        if (mainActivityInterface.getWindowFlags().getHasRoundedCorners()) {
-            myView.ignoreRoundedCorners.setVisibility(View.VISIBLE);
-        } else {
-            myView.ignoreRoundedCorners.setVisibility(View.GONE);
-        }
-
-        if (mainActivityInterface.getWindowFlags().getHasCutouts()) {
-            myView.ignoreCutouts.setVisibility(View.VISIBLE);
-        } else {
-            myView.ignoreCutouts.setVisibility(View.GONE);
-        }
-
         myView.navBarKeepSpace.setChecked(mainActivityInterface.getWindowFlags().getNavBarKeepSpace());
-
         myView.immersiveMode.setChecked(mainActivityInterface.getWindowFlags().getImmersiveMode());
-        checkVisibilityChange();
 
+        myView.actionbarLeft.setValue(mainActivityInterface.getWindowFlags().getMarginToolbarLeft());
+        myView.actionbarRight.setValue(mainActivityInterface.getWindowFlags().getMarginToolbarRight());
         myView.leftMargin.setValue(mainActivityInterface.getWindowFlags().getCustomMarginLeft());
         myView.rightMargin.setValue(mainActivityInterface.getWindowFlags().getCustomMarginRight());
         myView.topMargin.setValue(mainActivityInterface.getWindowFlags().getCustomMarginTop());
         myView.bottomMargin.setValue(mainActivityInterface.getWindowFlags().getCustomMarginBottom());
 
+        myView.actionbarLeft.setLabelFormatter(value -> (int) value + " px");
+        myView.actionbarRight.setLabelFormatter(value -> (int) value + " px");
         myView.leftMargin.setLabelFormatter(value -> (int) value + " px");
         myView.rightMargin.setLabelFormatter(value -> (int) value + " px");
         myView.topMargin.setLabelFormatter(value -> (int) value + " px");
         myView.bottomMargin.setLabelFormatter(value -> (int) value + " px");
 
-        myView.leftMargin.setHint((int) mainActivityInterface.getWindowFlags().getCustomMarginLeft() + " px");
-        myView.rightMargin.setHint((int) mainActivityInterface.getWindowFlags().getCustomMarginRight() + " px");
-        myView.topMargin.setHint((int) mainActivityInterface.getWindowFlags().getCustomMarginTop() + " px");
-        myView.bottomMargin.setHint((int) mainActivityInterface.getWindowFlags().getCustomMarginBottom() + " px");
+        myView.actionbarLeft.setHint(mainActivityInterface.getWindowFlags().getMarginToolbarLeft() + "px");
+        myView.actionbarRight.setHint(mainActivityInterface.getWindowFlags().getMarginToolbarRight() + "px");
+        myView.leftMargin.setHint(mainActivityInterface.getWindowFlags().getCustomMarginLeft() + " px");
+        myView.rightMargin.setHint(mainActivityInterface.getWindowFlags().getCustomMarginRight() + " px");
+        myView.topMargin.setHint(mainActivityInterface.getWindowFlags().getCustomMarginTop() + " px");
+        myView.bottomMargin.setHint(mainActivityInterface.getWindowFlags().getCustomMarginBottom() + " px");
+
+        checkVisibilityChange();
     }
 
     private void setupListeners() {
+        myView.actionbarLeft.addOnSliderTouchListener(new MySliderTouch("marginToolbarLeft"));
+        myView.actionbarRight.addOnSliderTouchListener(new MySliderTouch("marginToolbarRight"));
         myView.leftMargin.addOnSliderTouchListener(new MySliderTouch("marginLeft"));
         myView.rightMargin.addOnSliderTouchListener(new MySliderTouch("marginRight"));
         myView.topMargin.addOnSliderTouchListener(new MySliderTouch("marginTop"));
         myView.bottomMargin.addOnSliderTouchListener(new MySliderTouch("marginBottom"));
+        myView.actionbarLeft.addOnChangeListener(new MySliderChange("marginToolbarLeft"));
+        myView.actionbarRight.addOnChangeListener(new MySliderChange("marginToolbarRight"));
         myView.leftMargin.addOnChangeListener(new MySliderChange("marginLeft"));
         myView.rightMargin.addOnChangeListener(new MySliderChange("marginRight"));
         myView.topMargin.addOnChangeListener(new MySliderChange("marginTop"));
@@ -106,16 +104,22 @@ public class MarginsFragment extends Fragment {
             mainActivityInterface.getWindowFlags().setIgnoreCutouts(isChecked);
             mainActivityInterface.getWindowFlags().hideOrShowSystemBars();
             mainActivityInterface.getWindowFlags().setMargins();
-            mainActivityInterface.updateMargins();
-        }));
-        myView.ignoreRoundedCorners.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                mainActivityInterface.getWindowFlags().setIgnoreRoundedCorners(isChecked);
-                mainActivityInterface.getWindowFlags().hideOrShowSystemBars();
-                mainActivityInterface.getWindowFlags().setMargins();
+            myView.ignoreCutouts.postDelayed(() -> {
+                // Need a delay so this works properly due to hiding/showing animation of the bars
+                // First pass for quick animation
                 mainActivityInterface.updateMargins();
-            }
+            },500);
+            myView.ignoreCutouts.postDelayed(() -> {
+                // Need a delay so this works properly due to hiding/showing animation of the bars
+                // Second pass incase the first was too early
+                mainActivityInterface.updateMargins();
+            },1000);
+        }));
+        myView.ignoreRoundedCorners.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            mainActivityInterface.getWindowFlags().setIgnoreRoundedCorners(isChecked);
+            mainActivityInterface.getWindowFlags().hideOrShowSystemBars();
+            mainActivityInterface.getWindowFlags().setMargins();
+            mainActivityInterface.updateMargins();
         });
     }
 
@@ -136,6 +140,12 @@ public class MarginsFragment extends Fragment {
             int val = (int) slider.getValue();
 
             switch (pref) {
+                case "marginToolbarLeft":
+                    mainActivityInterface.getWindowFlags().setMarginToolbarLeft(val, true);
+                    break;
+                case "marginToolbarRight":
+                    mainActivityInterface.getWindowFlags().setMarginToolbarRight(val, true);
+                    break;
                 case "marginLeft":
                     mainActivityInterface.getWindowFlags().setCustomMarginLeft(val, true);
                     break;
@@ -167,6 +177,14 @@ public class MarginsFragment extends Fragment {
             int val = (int)value;
 
             switch (pref) {
+                case "marginToolbarLeft":
+                    myView.actionbarLeft.setHint(hint);
+                    mainActivityInterface.getWindowFlags().setMarginToolbarLeft(val,false);
+                    break;
+                case "marginToolbarRight":
+                    myView.actionbarRight.setHint(hint);
+                    mainActivityInterface.getWindowFlags().setMarginToolbarRight(val,false);
+                    break;
                 case "marginLeft":
                     myView.leftMargin.setHint(hint);
                     mainActivityInterface.getWindowFlags().setCustomMarginLeft(val,false);
@@ -190,15 +208,32 @@ public class MarginsFragment extends Fragment {
         }
     }
 
+
     private void checkVisibilityChange() {
         if (mainActivityInterface.getWindowFlags().getImmersiveMode()) {
             myView.navBarKeepSpace.setVisibility(View.VISIBLE);
-            if (mainActivityInterface.getWindowFlags().getHasCutouts()) {
-                myView.ignoreCutouts.setVisibility(View.VISIBLE);
-            }
         } else {
             myView.navBarKeepSpace.setVisibility(View.GONE);
+        }
+
+        if (mainActivityInterface.getWindowFlags().getHasCutouts()) {
+            myView.ignoreCutouts.setVisibility(View.VISIBLE);
+        }
+
+        if (mainActivityInterface.getWindowFlags().getHasRoundedCorners()) {
+            myView.ignoreRoundedCorners.setVisibility(View.VISIBLE);
+        } else {
+            myView.ignoreRoundedCorners.setVisibility(View.GONE);
+        }
+
+        if (mainActivityInterface.getWindowFlags().getHasCutouts()) {
+            myView.ignoreCutouts.setVisibility(View.VISIBLE);
+            myView.actionbarLeft.setVisibility(View.VISIBLE);
+            myView.actionbarRight.setVisibility(View.VISIBLE);
+        } else {
             myView.ignoreCutouts.setVisibility(View.GONE);
+            myView.actionbarLeft.setVisibility(View.GONE);
+            myView.actionbarRight.setVisibility(View.GONE);
         }
     }
 }

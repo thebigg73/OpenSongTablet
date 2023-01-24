@@ -146,8 +146,7 @@ public class CustomSlide {
             mainActivityInterface.getCurrentSet().addSetValues("**" + folder, file, key);
             mainActivityInterface.addSetItem(mainActivityInterface.getCurrentSet().getSetItems().size()-1);
 
-            mainActivityInterface.getCurrentSet().setCurrentSetString(mainActivityInterface.getSetActions().getSetAsPreferenceString());
-            mainActivityInterface.getPreferences().setMyPreferenceString("setCurrent", mainActivityInterface.getCurrentSet().getCurrentSetString());
+            mainActivityInterface.getCurrentSet().setSetCurrent(mainActivityInterface.getSetActions().getSetAsPreferenceString());
 
             // Update the set menu
             //mainActivityInterface.updateSetList();

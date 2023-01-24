@@ -156,7 +156,9 @@ public class SongMenuBottomSheet extends BottomSheetDialogFragment {
         mainActivityInterface.getCurrentSet().addToCurrentSetString(songforsetwork);
         mainActivityInterface.getCurrentSet().addSetItem(songforsetwork);
         mainActivityInterface.getCurrentSet().addSetValues(mainActivityInterface.getSong());
+        mainActivityInterface.getCurrentSet().setSetCurrent(mainActivityInterface.getSetActions().getSetAsPreferenceString());
         mainActivityInterface.updateSongList();
+        mainActivityInterface.updateSetList();
     }
 
     private void alertSuccess(String message) {

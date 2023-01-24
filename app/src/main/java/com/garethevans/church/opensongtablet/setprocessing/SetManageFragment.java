@@ -95,9 +95,9 @@ public class SetManageFragment extends Fragment {
 
         // Get the current set
         String category = getString(R.string.mainfoldername);
-        String setname = mainActivityInterface.getCurrentSet().getSetName();
-        if (mainActivityInterface.getCurrentSet().getSetName().contains("__")) {
-            String[] bits = mainActivityInterface.getCurrentSet().getSetName().split("__");
+        String setname = mainActivityInterface.getCurrentSet().getSetCurrentLastName();
+        if (setname.contains("__")) {
+            String[] bits = setname.split("__");
             if (bits.length > 0) {
                 category = bits[0];
                 setname = bits[1];
@@ -365,9 +365,10 @@ public class SetManageFragment extends Fragment {
                 if (mainActivityInterface.getStorageAccess().writeFileFromString(
                         setXML, outputStream)) {
                     // Update the last loaded set now it is saved.
-                    mainActivityInterface.getPreferences().setMyPreferenceString(
-                            "setCurrentBeforeEdits",
-                            mainActivityInterface.getCurrentSet().getCurrentSetString());
+                    mainActivityInterface.getCurrentSet().setSetCurrentBeforeEdits(
+                            mainActivityInterface.getCurrentSet().getSetCurrent());
+                    mainActivityInterface.getCurrentSet().setSetCurrentLastName(setName);
+                    mainActivityInterface.getCurrentSet().updateSetTitleView();
                     mainActivityInterface.getShowToast().doIt(getString(R.string.set_current) + " - " +
                             getString(R.string.success));
                 } else {

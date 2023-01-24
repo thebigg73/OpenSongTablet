@@ -356,6 +356,8 @@ public class Preferences extends Activity {
     // light_highlightChordColor       int         The color to highlight chords (i.e. background). (def:tranparent/0x00000000)
     // light_highlightHeadingColor     int         The color to highlight headings (i.e. background). (def:tranparent/0x00000000)
     // lineSpacing                     float       The line spacing trim value to use (def:0.1f)
+    // marginToolbarLeft               int         Any additional padding to the left of the actionbar content (def:0)
+    // marginToolbarRight              int         Any additional padding to the right of the actionbar content (def:0)
     // menuSize                        int         The width of the side menus (min 100 max 400) (def:250)
     // metronomeAutoStart              boolean     Should the metronome autostart with song (after manually starting first time) (def:false)
     // metronomeLength                 int         Number of bars the metronome stays on for (0=indefinitely) (def:0)

@@ -55,7 +55,7 @@ public class SetActions {
     // Convert between the currentSet string in preferences and the arrayLists
     public void preferenceStringToArrays() {
         // Initialise the set arraylists
-        initialiseTheSet();
+        mainActivityInterface.getCurrentSet().initialiseTheSet();
 
         // Split the set string in preferences into an arraylist for each item
         buildSetItemArray();
@@ -64,22 +64,21 @@ public class SetActions {
         buildSetArraysFromItems();
     }
 
-    public void initialiseTheSet() {
-        mainActivityInterface.getCurrentSet().initialiseTheSet();
-    }
     private void buildSetItemArray() {
         // Sets may or may not have the preferred key embedded in them (old sets before V6 will not)
         // $**_folder1/song1_**$$**_folder2/song2_**A**__**$
 
-        // Get the current set and the last edited version
-        String currentSet = mainActivityInterface.getPreferences().getMyPreferenceString("setCurrent","");
-        String beforeEdit = mainActivityInterface.getPreferences().getMyPreferenceString("setCurrentBeforeEdits","");
-        String setName = mainActivityInterface.getPreferences().getMyPreferenceString("setCurrentLastName", "");
+        // Get the current set and the last edited version.
+        // These are stored as variables in the CurrentSet class in this process
+        mainActivityInterface.getCurrentSet().loadCurrentSet();
+        mainActivityInterface.getCurrentSet().loadSetCurrentBeforeEdits();
+        mainActivityInterface.getCurrentSet().loadSetCurrentLastName();
 
-        // Set the initial set strings (so we can look for changes later for saving)
-        mainActivityInterface.getCurrentSet().setCurrentSetString(currentSet);
-        mainActivityInterface.getCurrentSet().setInitialSetString(beforeEdit);
-        mainActivityInterface.getCurrentSet().setSetName(setName);
+        // Look for changes and update the set title in the set menu
+        mainActivityInterface.getCurrentSet().updateSetTitleView();
+
+        // Get the currentSet string back from the CurrentSet class for processing
+        String currentSet = mainActivityInterface.getCurrentSet().getSetCurrent();
 
         // Now split the set string into individual entries
         currentSet = currentSet.replace(itemEnd+itemStart,"\n");
@@ -312,8 +311,7 @@ public class SetActions {
 
         // Now build the modified set string for comparision for saving
         String setCurrent = getSetAsPreferenceString();
-        mainActivityInterface.getCurrentSet().setCurrentSetString(setCurrent);
-        mainActivityInterface.getPreferences().setMyPreferenceString("setCurrent",setCurrent);
+        mainActivityInterface.getCurrentSet().setSetCurrent(setCurrent);
         indexSongInSet(mainActivityInterface.getSong());
         mainActivityInterface.getDisplayPrevNext().setPrevNext();
     }
@@ -357,38 +355,13 @@ public class SetActions {
         // This saves the set to user preferences for loading in next time
         // Not to be confused with exporting/saving the set as a file
         String setString = getSetAsPreferenceString();
-        mainActivityInterface.getPreferences().setMyPreferenceString("setCurrent", setString);
-        mainActivityInterface.getPreferences().setMyPreferenceString("setCurrentBeforeEdits", setString);
-        mainActivityInterface.getCurrentSet().setCurrentSetString(setString);
-        mainActivityInterface.getCurrentSet().setInitialSetString(setString);
+        mainActivityInterface.getCurrentSet().setSetCurrent(setString);
+        mainActivityInterface.getCurrentSet().setSetCurrentBeforeEdits(setString);
         mainActivityInterface.updateSetList();
         mainActivityInterface.updateSongList();
         // TODO Check references for set name that gets saved.  Especially if we have merged sets.
     }
 
-    public String currentSetNameForMenu() {
-        // This decides on the set name to display as a title
-        // If it is a new set (unsaved), it will be called 'current (unsaved)'
-        // If it is a non-modified loaded set, it will be called 'set name'
-        // If it is a modified, unsaved, loaded set, it will be called 'set name (unsaved)'
-        // Unsaved sets will be stored in the setCurrent preference though
-
-        String title;
-        String lastSetName = mainActivityInterface.getPreferences().getMyPreferenceString("setCurrentLastName","");
-        mainActivityInterface.getCurrentSet().setSetName(lastSetName);
-
-        if (lastSetName == null || lastSetName.equals("")) {
-            title = c.getString(R.string.set_current);
-        } else {
-            title = lastSetName.replace(setCategorySeparator, "/");
-            if (mainActivityInterface.getCurrentSet().getInitialSetString()!=null &&
-                    mainActivityInterface.getCurrentSet().getInitialSetString().equals(
-                    mainActivityInterface.getCurrentSet().getCurrentSetString())) {
-                title += " (" + c.getString(R.string.not_saved) + ")";
-            }
-        }
-        return title;
-    }
 
     public String niceCustomLocationFromFolder(String folderLocation) {
         // This gives a nice output for the folderLocation for viewing
@@ -500,8 +473,7 @@ public class SetActions {
         // Temporary variations keep the original song folder in the currentSet.getFolder() variable, but change in the song.getFolder()
 
         // The set may have been edited and then the user clicks on a song, so save the set to preferences first
-        mainActivityInterface.getPreferences().setMyPreferenceString("setCurrent",
-                mainActivityInterface.getCurrentSet().getCurrentSetString());
+        mainActivityInterface.getCurrentSet().setSetCurrent(mainActivityInterface.getCurrentSet().getSetCurrent());
 
         // Get the current set item values
         String filename = mainActivityInterface.getCurrentSet().getFilename(position);
@@ -545,8 +517,7 @@ public class SetActions {
         mainActivityInterface.getCurrentSet().setFolder(position, folder);
         mainActivityInterface.getCurrentSet().setFilename(position, filename);
         mainActivityInterface.getCurrentSet().setKey(position,key);
-        mainActivityInterface.getCurrentSet().setCurrentSetString(mainActivityInterface.getSetActions().getSetAsPreferenceString());
-        Log.d(TAG,"newSet: "+mainActivityInterface.getCurrentSet().getCurrentSetString());
+        mainActivityInterface.getCurrentSet().setSetCurrent(mainActivityInterface.getSetActions().getSetAsPreferenceString());
     }
 
     public int getItemIcon(String valueToDecideFrom) {
@@ -602,7 +573,8 @@ public class SetActions {
         // The starting of the xml file
         stringBuilder.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n").
                 append("<set name=\"").
-                append(mainActivityInterface.getProcessSong().parseToHTMLEntities(mainActivityInterface.getCurrentSet().getSetName())).
+                append(mainActivityInterface.getProcessSong().parseToHTMLEntities(
+                        mainActivityInterface.getCurrentSet().getSetCurrentLastName())).
                 append("\">\n  <slide_groups>\n");
 
         // Now go through each set entry and build the appropriate xml

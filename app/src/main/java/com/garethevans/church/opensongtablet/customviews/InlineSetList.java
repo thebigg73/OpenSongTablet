@@ -389,6 +389,7 @@ public class InlineSetList extends RecyclerView {
     private void adjustTextSize() {
         // Base the text size on the width of the inline set
         // Minimum size is 12, Maximum is 20
+        // TODO
         Log.d(TAG,"width:"+width);
     }
 }

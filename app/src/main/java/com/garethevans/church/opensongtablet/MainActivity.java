@@ -19,7 +19,6 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -277,6 +276,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
         if (savedInstanceState!=null) {
             bootUpCompleted = savedInstanceState.getBoolean("bootUpCompleted",false);
+            if (songListBuildIndex==null) {
+                songListBuildIndex = new SongListBuildIndex(this);
+            }
             songListBuildIndex.setIndexComplete(savedInstanceState.getBoolean("indexComplete",false));
             fullIndexRequired = !songListBuildIndex.getIndexComplete();
             Log.d(TAG,"bootUpCompleted:"+bootUpCompleted+"   fullIndexRequired:"+fullIndexRequired);
@@ -308,7 +310,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     protected void onNewIntent (Intent intent) {
-        super.onNewIntent(intent);
         fileOpenIntent = intent;
         // Send the action to be called from the opening fragment to fix backstack!
         if (presenterValid()) {
@@ -316,6 +317,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         } else if (performanceValid()) {
             performanceFragment.tryToImportIntent();
         }
+        super.onNewIntent(intent);
     }
 
     @Override
@@ -361,7 +363,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         dealingWithIntent = getString(R.string.deeplink_import_file);
                     } else {
                         // Can't handle the file, so delete it
-                        getShowToast().doIt(getString(R.string.unknown));
+                        if (showToast!=null) {
+                            showToast.doIt(getString(R.string.unknown));
+                        }
                         if (tempFile.delete()) {
                             Log.d(TAG,tempFile+" has been deleted");
                         }
@@ -385,8 +389,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         storageAccess = new StorageAccess(this);
         preferences = new Preferences(this);
 
-        // The song stuff
-        songListBuildIndex = new SongListBuildIndex(this);
+        // The song stuff may have been initialised in savedInstanceState
+        if (songListBuildIndex==null) {
+            songListBuildIndex = new SongListBuildIndex(this);
+        }
 
         // The screen display stuff
         customAnimation = new CustomAnimation();
@@ -433,7 +439,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         saveSong = new SaveSong(this);
 
         // Sets
-        currentSet = new CurrentSet();
+        currentSet = new CurrentSet(this);
         setActions = new SetActions(this);
 
         // Song actions/features
@@ -477,54 +483,67 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void showActionBar() {
-        boolean contentBehind = myView.myToolbar.contentBehind(settingsOpen);
-        moveContentForActionBar(contentBehind);
         myView.myToolbar.showActionBar(settingsOpen);
-    }
-
-    @Override
-    public void moveContentForActionBar(boolean contentBehind) {
         updateMargins();
-        if (contentBehind) {
-            myView.fragmentView.setPadding(0, 0, 0, 0);
-        } else {
-            int height = myView.myToolbar.getActionBarHeight(false);
-            if (windowFlags.getShowStatusInCutout() ) {
-                height += getWindowFlags().getCurrentTopCutoutHeight();
-            } else if (windowFlags.getShowStatus()) {
-                height += getWindowFlags().getStatusHeight();
-            }
-            myView.fragmentView.setPadding(0, height, 0, 0);
-        }
     }
 
     @Override
     public void updateMargins() {
-        Handler handler = new Handler(Looper.getMainLooper());
-        handler.post(() -> {
-            if (settingsOpen) {
-                myView.fragmentView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                myView.drawerLayout.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-            } else {
-                myView.fragmentView.setBackgroundColor(themeColors.getLyricsBackgroundColor());
-                myView.drawerLayout.setBackgroundColor(themeColors.getLyricsBackgroundColor());
-            }
+            Handler handler = new Handler(Looper.getMainLooper());
+            handler.post(() -> {
+                if (settingsOpen) {
+                    myView.fragmentView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                } else {
+                    myView.fragmentView.setBackgroundColor(themeColors.getLyricsBackgroundColor());
+                }
 
-            int[] margins = windowFlags.getMargins();
-            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) myView.drawerLayout.getLayoutParams();
-            params.setMargins(margins[0], margins[1], margins[2], margins[3]);
-            myView.drawerLayout.setLayoutParams(params);
+                // Get the user margins (additional)
+                int[] margins = windowFlags.getMargins();
 
-            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) myView.notchBackground.getLayoutParams();
-            int height = myView.myToolbar.getActionBarHeight(true);
-            if (windowFlags.getShowStatusInCutout()) {
-                height += getWindowFlags().getCurrentTopCutoutHeight();
-            } else if (windowFlags.getShowStatus()) {
-                height += getWindowFlags().getStatusHeight();
-            }
-            layoutParams.height = height;
-            myView.notchBackground.setLayoutParams(layoutParams);
-        });
+                // Work out top padding for status bar if shown
+                int additionalTop = 0;
+                if (!windowFlags.getImmersiveMode()) {
+                    additionalTop += Math.max(windowFlags.getCurrentTopCutoutHeight(), windowFlags.getStatusHeight());
+                } else if (windowFlags.getShowStatusInCutout() && !windowFlags.getIgnoreCutouts()) {
+                    int topCutout = windowFlags.getCurrentTopCutoutHeight();
+                    int status = windowFlags.getStatusHeight();
+                    if (topCutout > 0) {
+                        topCutout = Math.max(topCutout, status);
+                    }
+                    additionalTop += topCutout;
+                } else if (windowFlags.getShowStatus()) {
+                    additionalTop += windowFlags.getStatusHeight();
+                }
+
+                // Now work out any rounded corner inserts
+                if (windowFlags.getHasRoundedCorners() && !windowFlags.getIgnoreRoundedCorners()) {
+                    additionalTop += windowFlags.getCurrentRoundedTop();
+                }
+
+                // Set the toolbar paddings
+                if (myView!=null) {
+                    myView.myToolbar.setAdditionalTopPadding(additionalTop);
+                    myView.myToolbar.setPadding(margins[0] + windowFlags.getMarginToolbarLeft(),
+                            margins[1] + additionalTop,
+                            margins[2] + windowFlags.getMarginToolbarRight(),
+                            0);
+                }
+                // Now set the paddings to the content page, the song menu and the page button
+                // If we are showing the status in the cutout
+                int statusPadding = 0;
+                int topPadding = myView.myToolbar.getActionBarHeight(settingsOpen && !myView.myToolbar.getHideActionBar());
+
+                if (windowFlags.getShowStatusInCutout() && !windowFlags.getIgnoreCutouts()) {
+                    statusPadding += windowFlags.getCurrentTopCutoutHeight();
+                } else if (windowFlags.getShowStatus()) {
+                    statusPadding += windowFlags.getStatusHeight();
+                }
+
+                if (myView!=null) {
+                    myView.fragmentView.setPadding(margins[0], topPadding, margins[2], margins[3]);
+                    myView.songMenuLayout.setPadding(margins[0], statusPadding, 0, margins[3]);
+                }
+            });
     }
 
     private void setupViews() {
@@ -559,9 +578,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     windowFlags.hideOrShowSystemBars();
                 },1000);
             }
-
             return insets;
-
         });
 
         myView.myToolbar.initialiseToolbar(this,this, getSupportActionBar());
@@ -833,7 +850,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
     @Override
     public void popTheBackStack(int id, boolean inclusive) {
-        Log.d(TAG,"popTheBackStack("+id+"inclusive");
         navController.popBackStack(id,inclusive);
     }
     @Override
@@ -972,11 +988,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         if (whichMode.equals(presenter)) {
             navigateToFragment(getString(R.string.deeplink_presenter),0);
             myView.fragmentView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-            myView.drawerLayout.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         } else {
             navigateToFragment(getString(R.string.deeplink_performance),0);
             myView.fragmentView.setBackgroundColor(getMyThemeColors().getLyricsBackgroundColor());
-            myView.drawerLayout.setBackgroundColor(getMyThemeColors().getLyricsBackgroundColor());
         }
         settingsOpen = false;
     }
@@ -1144,7 +1158,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         } else {
             myView.myAppBarLayout.setVisibility(View.VISIBLE);
         }
-        moveContentForActionBar(remove);
+        updateMargins();
     }
 
     @Override
@@ -1290,12 +1304,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             if (settingsOpen) {
                 settingsOpen = false;
                 myView.fragmentView.setBackgroundColor(getMyThemeColors().getLyricsBackgroundColor());
-                myView.drawerLayout.setBackgroundColor(getMyThemeColors().getLyricsBackgroundColor());
                 navHome();
             } else {
                 navigateToFragment(getString(R.string.deeplink_preferences), 0);
                 myView.fragmentView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                myView.drawerLayout.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                 settingsOpen = true;
                 showMenuItems(false);
             }
@@ -2070,12 +2082,29 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 case "newSet":
                     // Clear the current set
                     currentSet.initialiseTheSet();
+                    currentSet.setSetCurrent("");
+                    currentSet.setSetCurrentBeforeEdits("");
+                    currentSet.setSetCurrentLastName("");
                     preferences.setMyPreferenceString("setCurrent", "");
                     preferences.setMyPreferenceString("setCurrentLastName", "");
                     // Untick song menu items
                     updateSongList();
                     updateFragment("set_updateView",null,null);
                     result = true;
+                    break;
+
+                case "saveset":
+                    // Overwriting the last loaded set with the current one via bottom sheet
+                    // This is only called if we are editing a previously saved set
+                    String xml = setActions.createSetXML();
+                    String setString = setActions.getSetAsPreferenceString();
+                    result = storageAccess.doStringWriteToFile("Sets","",currentSet.getSetCurrentLastName(),xml);
+                    if (result) {
+                        // Update the last edited version (current set already has this)
+                        currentSet.setSetCurrentBeforeEdits(setString);
+                    }
+                    // Update the set title
+                    currentSet.updateSetTitleView();
                     break;
 
                 case "removeThemeTag":
@@ -2157,13 +2186,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void updateSetTitle() {
-        if (setMenuFragment!=null) {
-            try {
-                setMenuFragment.updateSetTitle();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+        currentSet.updateSetTitleView();
     }
 
     @Override
@@ -2220,12 +2243,15 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public void fullIndex() {
         if (fullIndexRequired) {
+            if (showToast==null) {
+                showToast = new ShowToast(this,myView.getRoot());
+            }
             showToast.doIt(getString(R.string.search_index_start));
             ExecutorService executorService = Executors.newSingleThreadExecutor();
             executorService.execute(() -> {
                 Handler handler = new Handler(Looper.getMainLooper());
                 String outcome = songListBuildIndex.fullIndex(songMenuFragment.getProgressText());
-                if (songMenuFragment!=null) {
+                if (songMenuFragment!=null && !songMenuFragment.isDetached()) {
                     try {
                         songMenuFragment.updateSongMenu(song);
                     } catch (Exception e) {
@@ -2233,7 +2259,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     }
                 }
                 handler.post(() -> {
-                    if (!outcome.isEmpty()) {
+                    if (showToast!=null && !outcome.isEmpty()) {
                         showToast.doIt(outcome.trim());
                     }
                     updateFragment("set_updateKeys",null,null);
@@ -2804,45 +2830,50 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         super.onConfigurationChanged(newConfig);
 
         if (bootUpCompleted) {
-            // Get the language
-            fixLocale.setLocale(this, this);
+            try {
+                // Get the language
+                fixLocale.setLocale(this, this);
 
-            // Save a variable that we have rotated the screen.
-            // The media player will look for this.  If found, it won't restart when the song loads
-            pad.setOrientationChanged(pad.getCurrentOrientation() != newConfig.orientation);
-            // If orientation has changed, we need to reload the song to get it resized.
-            // Only do this if we are not in a settings menu though!
-            if (!settingsOpen && pad.getOrientationChanged()) {
-                // Set the current orientation
-                pad.setCurrentOrientation(newConfig.orientation);
-                pageButtons.requestLayout();
-                doSongLoad(song.getFolder(), song.getFilename(), true);
+                // Save a variable that we have rotated the screen.
+                // The media player will look for this.  If found, it won't restart when the song loads
+                pad.setOrientationChanged(pad.getCurrentOrientation() != newConfig.orientation);
+                // If orientation has changed, we need to reload the song to get it resized.
+                // Only do this if we are not in a settings menu though!
+                if (!settingsOpen && pad.getOrientationChanged()) {
+                    // Set the current orientation
+                    pad.setCurrentOrientation(newConfig.orientation);
+                    pageButtons.requestLayout();
+                    doSongLoad(song.getFolder(), song.getFilename(), true);
+                }
+                if (!settingsOpen && performanceValid()) {
+                    performanceFragment.orientationInlineSet(newConfig.orientation);
+                    performanceFragment.scrollToTop();
+                } else if (!settingsOpen && presenterValid()) {
+                    presenterFragment.orientationInlineSet(newConfig.orientation);
+                }
+                windowFlags.setCurrentRotation(this.getWindow().getDecorView().getDisplay().getRotation());
+                updateMargins();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            if (!settingsOpen && performanceValid()) {
-                performanceFragment.orientationInlineSet(newConfig.orientation);
-            } else if (!settingsOpen && presenterValid()) {
-                presenterFragment.orientationInlineSet(newConfig.orientation);
-            }
-            windowFlags.setCurrentRotation(this.getWindow().getDecorView().getDisplay().getRotation());
         }
     }
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
         outState.putBoolean("bootUpCompleted",bootUpCompleted);
         outState.putBoolean("indexComplete",songListBuildIndex.getIndexComplete());
+        super.onSaveInstanceState(outState);
     }
 
     @Override
     protected void onResume() {
-        super.onResume();
-        if (!myView.myToolbar.isShown() && bootUpCompleted) {
+        if (myView!=null && !myView.myToolbar.isShown() && bootUpCompleted) {
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
 
-        } else if (bootUpCompleted) {
+        } else if (bootUpCompleted && myView!=null) {
             // Set up the action bar
             setupActionbar();
 
@@ -2853,26 +2884,24 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             checkDisplays();
 
             // Start the midi driver
-            if (midiDriver!=null) {
+            if (midiDriver != null) {
                 midiDriver.start();
             }
-
         }
+        super.onResume();
     }
 
     @Override
     protected void onPause() {
-        super.onPause();
-
         // Stop the midi driver
         if (midiDriver!=null) {
             midiDriver.stop();
         }
+        super.onPause();
     }
 
     @Override
     protected void onStop() {
-        super.onStop();
         // Turn off nearby
         nearbyConnections.turnOffNearby();
         // Stop pad timers
@@ -2900,6 +2929,20 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 Log.d(TAG, "Deleted temp import file " + file + ":" + file.delete());
             }
         }
+
+        if (showToast!=null) {
+            showToast.kill();
+            showToast = null;
+        }
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (showToast!=null) {
+            showToast.kill();
+        }
+        super.onDestroy();
     }
 
     @Override
