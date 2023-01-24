@@ -876,7 +876,7 @@ public class SetActions {
         return sb;
     }
 
-    public void loadSets(ArrayList<Uri> setsToLoad) {
+    public void loadSets(ArrayList<Uri> setsToLoad, String setName) {
         // This is called via a new thread in the manage sets fragment
         // We can append multiple sets together
         // If the set loaded has a song has a key specified with it, we compare with our key
@@ -896,6 +896,9 @@ public class SetActions {
         // Initialise the arrays that will hold the loaded information
         mainActivityInterface.getCurrentSet().initialiseTheSet();
 
+        // Prepare the set name
+        mainActivityInterface.getCurrentSet().setSetCurrentLastName(setName);
+
         // Now users can load multiple sets and merge them, we need to load each one it turn
         for (Uri setToLoad:setsToLoad) {
             // Pass each uri to the set extraction function and let it populate the arrays
@@ -905,6 +908,8 @@ public class SetActions {
         // Now we have the entire set contents, save it to our preferences
         saveTheSet();
 
+        // Now update the view
+        mainActivityInterface.getCurrentSet().updateSetTitleView();
     }
 
     private void extractSetFile(Uri uri) {

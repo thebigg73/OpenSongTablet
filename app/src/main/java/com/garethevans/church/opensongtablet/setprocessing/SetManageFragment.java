@@ -464,8 +464,8 @@ public class SetManageFragment extends Fragment {
         myView.progressBar.setVisibility(View.VISIBLE);
         // Initialise the current set
         mainActivityInterface.getCurrentSet().initialiseTheSet();
-        mainActivityInterface.getPreferences().setMyPreferenceString("setCurrent", "");
-        mainActivityInterface.getPreferences().setMyPreferenceString("setCurrentBeforeEdits", "");
+        mainActivityInterface.getCurrentSet().setSetCurrent("");
+        mainActivityInterface.getCurrentSet().setSetCurrentBeforeEdits("");
 
         // Because we can import multiple sets, we need to get them into an array
         ArrayList<Uri> setUris = new ArrayList<>();
@@ -473,6 +473,7 @@ public class SetManageFragment extends Fragment {
 
         // Split the sets chosen up into individual sets and get their uris
         String[] setBits = chosenSets.split("%_%");
+
         for (String setBit : setBits) {
             if (setBit != null && !setBit.isEmpty()) {
                 Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Sets", "", setBit);
@@ -485,18 +486,19 @@ public class SetManageFragment extends Fragment {
         if (setName.startsWith("_")) {
             setName = setName.replaceFirst("_", "");
         }
-        mainActivityInterface.getPreferences().setMyPreferenceString(
-                "setCurrentLastName", setName);
+        mainActivityInterface.getCurrentSet().setSetCurrentLastName(setName);
 
         ExecutorService executorService = Executors.newSingleThreadExecutor();
+        String finalSetName = setName;
         executorService.execute(() -> {
             Handler handler = new Handler(Looper.getMainLooper());
             // Empty the cache directories as new sets can have custom items
-            mainActivityInterface.getSetActions().loadSets(setUris);
+            mainActivityInterface.getSetActions().loadSets(setUris, finalSetName);
             // Import ended
             handler.post(() -> {
                 myView.progressBar.setVisibility(View.GONE);
                 mainActivityInterface.navHome();
+                mainActivityInterface.getCurrentSet().updateSetTitleView();
                 mainActivityInterface.chooseMenu(true);
             });
         });

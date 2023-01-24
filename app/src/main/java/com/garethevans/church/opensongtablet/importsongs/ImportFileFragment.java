@@ -351,7 +351,7 @@ public class ImportFileFragment extends Fragment {
             Log.d(TAG, "copy: " + mainActivityInterface.getStorageAccess().copyFile(inputStream, outputStream));
             ArrayList<Uri> thisSet = new ArrayList<>();
             thisSet.add(copyTo);
-            mainActivityInterface.getSetActions().loadSets(thisSet);
+            mainActivityInterface.getSetActions().loadSets(thisSet,newSetName);
             mainActivityInterface.navHome();
             mainActivityInterface.chooseMenu(true);
         } catch (Exception e) {

@@ -265,15 +265,32 @@ public class CurrentSet {
             }
         }
         if (setTitleView!=null) {
-            String title;
+            String title = "";
+            // Adjust for set category
+            if (setCurrentLastName.contains("__")) {
+                String[] setBits = setCurrentLastName.split("__");
+                if (setBits.length>0) {
+                    title += "(" + setBits[0] + ") ";
+                }
+                if (setBits.length>1) {
+                    title += setBits[1];
+                } else {
+                    title = setCurrentLastName;
+                }
+            } else {
+                title = setCurrentLastName;
+            }
+
             String changed = changedOrEmpty;
             if (setCurrentLastName == null || setCurrentLastName.isEmpty()) {
                 title = currentSetText;
             } else {
-                title = setTitleText + setCurrentLastName;
+                title = setTitleText + title;
             }
+            String finalTitle = title;
+
             setTitleView.post(() -> {
-                setTitleView.setText(title);
+                setTitleView.setText(finalTitle);
                 if (changed.isEmpty()) {
                     setTitleView.setHint(null);
                 } else {
