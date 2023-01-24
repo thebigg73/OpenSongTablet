@@ -12,6 +12,8 @@
     <string name="actionbar_autohide">Αυτόματη απόκρυψη της γραμμής ενεργειών</string>
     <string name="actionbar_display">Γραμμή δράσης</string>
     <string name="actionbar_info">Αλλάξτε την εμφάνιση των πληροφοριών στη γραμμή ενεργειών</string>
+    <string name="actionbar_left">Αριστερή γραμμή ενεργειών</string>
+    <string name="actionbar_right">Δεξιά γραμμή ενεργειών</string>
     <string name="actions">"Ενέργειες"</string>
     <string name="actions_current_song">Ενέργειες για το τρέχον τραγούδι</string>
     <string name="add_custom_slide">"Add custom slide to set"</string>

@@ -12,6 +12,8 @@
     <string name="actionbar_autohide">Automaticky skrýt panel akcí</string>
     <string name="actionbar_display">Panel akcí</string>
     <string name="actionbar_info">Verander die voorkoms van die inligting in die aksiebalk</string>
+    <string name="actionbar_left">Panel akcí vlevo</string>
+    <string name="actionbar_right">Panel akcí vpravo</string>
     <string name="actions">Akce</string>
     <string name="actions_current_song">Akce pro aktuální skladbu</string>
     <string name="add_custom_slide">Přidejte vlastní snímek, který chcete nastavit</string>

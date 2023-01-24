@@ -12,6 +12,8 @@
     <string name="actionbar_autohide">自动隐藏操作栏</string>
     <string name="actionbar_display">操作栏</string>
     <string name="actionbar_info">更改操作栏中信息的外观</string>
+    <string name="actionbar_left">左侧操作栏</string>
+    <string name="actionbar_right">操作栏右侧</string>
     <string name="actions">行动</string>
     <string name="actions_current_song">当前歌曲的操作</string>
     <string name="add_custom_slide">添加自定义幻灯片进行设置</string>

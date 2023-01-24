@@ -12,6 +12,8 @@
     <string name="actionbar_autohide">Automatycznie ukryj pasek akcji</string>
     <string name="actionbar_display">Pasek działań</string>
     <string name="actionbar_info">Zmień wygląd informacji na pasku działań</string>
+    <string name="actionbar_left">Pasek akcji w lewo</string>
+    <string name="actionbar_right">Pasek akcji po prawej stronie</string>
     <string name="actions">Akcje</string>
     <string name="actions_current_song">Działania dla bieżącego utworu</string>
     <string name="add_custom_slide">"Dodaj slajdów / notatka"</string>

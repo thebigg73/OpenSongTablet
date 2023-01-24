@@ -12,6 +12,8 @@
     <string name="actionbar_autohide">Automatski sakrijte traku sa radnjama</string>
     <string name="actionbar_display">Actionbar</string>
     <string name="actionbar_info">Promenite izgled informacija na traci sa radnjama</string>
+    <string name="actionbar_left">Traka radnji levo</string>
+    <string name="actionbar_right">Traka sa radnjama desno</string>
     <string name="actions">Akcije</string>
     <string name="actions_current_song">Radnje za trenutnu pesmu</string>
     <string name="add_custom_slide">Dodati prilagođeni slajd na set listu</string>

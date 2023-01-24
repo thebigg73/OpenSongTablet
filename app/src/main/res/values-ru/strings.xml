@@ -12,6 +12,8 @@
     <string name="actionbar_autohide">Автоматически скрывать панель действий</string>
     <string name="actionbar_display">Панель действий</string>
     <string name="actionbar_info">Изменить внешний вид информации на панели действий</string>
+    <string name="actionbar_left">Панель действий слева</string>
+    <string name="actionbar_right">Панель действий справа</string>
     <string name="actions">Действия</string>
     <string name="actions_current_song">Действия для текущей песни</string>
     <string name="add_custom_slide">"Добавить слайд пользователя (с содержимым)"</string>

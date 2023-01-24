@@ -12,6 +12,8 @@
     <string name="actionbar_autohide">Aktionsleiste automatisch ausblenden</string>
     <string name="actionbar_display">Aktionsleiste</string>
     <string name="actionbar_info">Ändern Sie das Erscheinungsbild der Informationen in der Aktionsleiste</string>
+    <string name="actionbar_left">Aktionsleiste links</string>
+    <string name="actionbar_right">Aktionsleiste rechts</string>
     <string name="actions">Aktionen</string>
     <string name="actions_current_song">Aktionen für den aktuellen Song</string>
     <string name="add_custom_slide">"Folie / Notiz"</string>

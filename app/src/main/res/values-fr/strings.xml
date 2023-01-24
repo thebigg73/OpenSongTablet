@@ -12,6 +12,8 @@
     <string name="actionbar_autohide">Masquer automatiquement la barre d\'action</string>
     <string name="actionbar_display">Barre d\'action</string>
     <string name="actionbar_info">Modifier l\'apparence des informations dans la barre d\'action</string>
+    <string name="actionbar_left">Barre d’actions gauche</string>
+    <string name="actionbar_right">Barre d’actions droite</string>
     <string name="actions">Un appui long sur le bouton principal vous permet de modifier les paramètres de chaque bouton.</string>
     <string name="actions_current_song">Actions pour la chanson en cours</string>
     <string name="add_custom_slide">Ajouter une diapositive personnalisée à définir</string>

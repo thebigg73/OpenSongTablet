@@ -12,6 +12,8 @@
     <string name="actionbar_autohide">Dölj åtgärdsfältet automatiskt</string>
     <string name="actionbar_display">Åtgärdsfältet</string>
     <string name="actionbar_info">Ändra utseendet på informationen i åtgärdsfältet</string>
+    <string name="actionbar_left">Åtgärdsfältet till vänster</string>
+    <string name="actionbar_right">Åtgärdsfältet till höger</string>
     <string name="actions">"Handlingar"</string>
     <string name="actions_current_song">Åtgärder för aktuell låt</string>
     <string name="add_custom_slide">"Lägg till anpassad bild för att ställa in"</string>

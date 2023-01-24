@@ -12,6 +12,8 @@
     <string name="actionbar_autohide">Versteek aksiebalk outomaties</string>
     <string name="actionbar_display">Aksiebalk</string>
     <string name="actionbar_info">Verander die voorkoms van die inligting in die aksiebalk</string>
+    <string name="actionbar_left">Aksiebalk links</string>
+    <string name="actionbar_right">Aksie balk reg</string>
     <string name="actions">Aksies</string>
     <string name="actions_current_song">Aksies vir huidige liedjie</string>
     <string name="add_custom_slide">Voeg gepaste skyfie by om in te stel</string>

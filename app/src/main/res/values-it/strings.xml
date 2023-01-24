@@ -12,6 +12,8 @@
     <string name="actionbar_autohide">Nascondi automaticamente la barra delle azioni</string>
     <string name="actionbar_display">Barra dell\'azione</string>
     <string name="actionbar_info">Modifica l\'aspetto delle informazioni nella barra delle azioni</string>
+    <string name="actionbar_left">Barra delle azioni sinistra</string>
+    <string name="actionbar_right">Barra delle azioni destra</string>
     <string name="actions">Azioni</string>
     <string name="actions_current_song">Azioni per il brano corrente</string>
     <string name="add_custom_slide">"Aggiungi diapositiva / note"</string>

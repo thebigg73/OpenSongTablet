@@ -12,6 +12,8 @@
     <string name="actionbar_autohide">Műveletsáv automatikus elrejtése</string>
     <string name="actionbar_display">Actionbar</string>
     <string name="actionbar_info">Módosítsa az információ megjelenését a műveletsoron</string>
+    <string name="actionbar_left">Bal oldali műveletsáv</string>
+    <string name="actionbar_right">Műveletsáv jobb</string>
     <string name="actions">Hozzászólások</string>
     <string name="actions_current_song">Műveletek az aktuális dalhoz</string>
     <string name="add_custom_slide">"Add slide / megjegyzés"</string>

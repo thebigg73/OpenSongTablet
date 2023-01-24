@@ -12,6 +12,8 @@
     <string name="actionbar_autohide">アクションバーを自動的に非表示</string>
     <string name="actionbar_display">アクションバー</string>
     <string name="actionbar_info">アクションバーの情報の外観を変更する</string>
+    <string name="actionbar_left">アクションバー左</string>
+    <string name="actionbar_right">アクションバーの右</string>
     <string name="actions">アクション</string>
     <string name="actions_current_song">現在の曲のアクション</string>
     <string name="add_custom_slide">"スライド/メモを追加"</string>

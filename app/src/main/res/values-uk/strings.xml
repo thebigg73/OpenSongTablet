@@ -12,6 +12,8 @@
     <string name="actionbar_autohide">Автоматично приховати панель дій</string>
     <string name="actionbar_display">Панель дій</string>
     <string name="actionbar_info">Змініть вигляд інформації на панелі дій</string>
+    <string name="actionbar_left">Рядок дій ліворуч</string>
+    <string name="actionbar_right">Рядок дій праворуч</string>
     <string name="actions">Дії</string>
     <string name="actions_current_song">Дії для поточної пісні</string>
     <string name="add_custom_slide">Додати слайд користувача (з вмістом)</string>
