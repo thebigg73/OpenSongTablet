@@ -787,6 +787,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
     @Override
     public void onBackPressed() {
+        Log.d(TAG,"onBackPressed()");
         if (navController!=null && navController.getCurrentDestination()!=null) {
             try {
                 int id = Objects.requireNonNull(navController.getCurrentDestination()).getId();

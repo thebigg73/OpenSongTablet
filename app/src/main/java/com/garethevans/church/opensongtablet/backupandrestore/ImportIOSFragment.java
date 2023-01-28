@@ -67,14 +67,6 @@ public class ImportIOSFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         myView = SettingsImportIosBinding.inflate(inflater, container, false);
 
-        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
-            @Override
-            public void handleOnBackPressed() {
-                // Handle the back button event
-                Log.d(TAG,"backpressedcalled");
-            }
-        };
-        requireActivity().getOnBackPressedDispatcher().addCallback(requireActivity(), callback);
 
         // Update the title
         mainActivityInterface.updateToolbar(getString(R.string.onsong_import));
