@@ -108,7 +108,7 @@ public class WindowFlags {
         ignoreCutouts = mainActivityInterface.getPreferences().getMyPreferenceBoolean("ignoreCutouts", false);
         ignoreRoundedCorners = mainActivityInterface.getPreferences().getMyPreferenceBoolean("ignoreRoundedCorners",true);
         marginToolbarLeft = mainActivityInterface.getPreferences().getMyPreferenceInt("marginToolbarLeft",0);
-        marginToolbarLeft = mainActivityInterface.getPreferences().getMyPreferenceInt("marginToolbarRight",0);
+        marginToolbarRight = mainActivityInterface.getPreferences().getMyPreferenceInt("marginToolbarRight",0);
     }
 
     // Initialise the WindowInsetsCompat from MainActivity (once it is ready)

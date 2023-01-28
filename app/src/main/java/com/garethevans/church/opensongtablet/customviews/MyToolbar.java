@@ -319,8 +319,8 @@ public class MyToolbar extends MaterialToolbar {
     }
 
     // Get the actionbar height - fakes a height of 0 if autohiding
-    public int getActionBarHeight(boolean menuOpen) {
-        if (hideActionBar && performanceMode && !menuOpen) {
+    public int getActionBarHeight(boolean forceShown) {
+        if (hideActionBar && performanceMode && !forceShown) {
             return 0;
         } else {
             if (getHeight()==0) {

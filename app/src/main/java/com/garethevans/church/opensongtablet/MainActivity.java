@@ -146,8 +146,6 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
-import com.google.android.material.snackbar.BaseTransientBottomBar;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
@@ -167,7 +165,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         ActionInterface, NearbyInterface, NearbyReturnActionsInterface, DialogReturnInterface,
         MidiAdapterInterface, SwipeDrawingInterface, BatteryStatus.MyInterface,
         DisplayInterface, EditSongFragmentInterface {
-
 
     private ActivityBinding myView;
     private boolean bootUpCompleted = false;
@@ -256,7 +253,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private ArrayList<Boolean> rects;
     private ArrayList<View> sectionViews;
     private LinearLayout songSheetTitleLayout;
-    private ArrayList<Integer> sectionWidths, sectionHeights, songSheetTitleLayoutSize, sectionColors;
+    private ArrayList<Integer> sectionWidths, sectionHeights, sectionColors;
     private String whichMode, whattodo, importFilename;
     private final String presenter = "Presenter", performance = "Performance";
     private Uri importUri;
@@ -343,7 +340,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     storageAccess.updateFileActivityLog(TAG+" dealWithIntent CopyFile "+importUri+" to "+tempFile);
                     storageAccess.copyFile(inputStream,outputStream);
                     importUri = Uri.fromFile(tempFile);
-                    String dealingWithIntent = "";
+                    String dealingWithIntent;
                     if (importFilename.toLowerCase(Locale.ROOT).endsWith(".osb")) {
                         // OpenSongApp backup file
                         Log.d(TAG,"Opening import song backup");
@@ -531,20 +528,39 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 // Now set the paddings to the content page, the song menu and the page button
                 // If we are showing the status in the cutout
                 int statusPadding = 0;
-                int topPadding = myView.myToolbar.getActionBarHeight(settingsOpen && !myView.myToolbar.getHideActionBar());
-
+                int topPadding = 0;
+                if (myView!=null) {
+                    if (settingsOpen) {
+                        topPadding = myView.myToolbar.getActionBarHeight(true);
+                    } else {
+                        topPadding = myView.myToolbar.getActionBarHeight(!myView.myToolbar.getHideActionBar());
+                    }
+                }
                 if (windowFlags.getShowStatusInCutout() && !windowFlags.getIgnoreCutouts()) {
                     statusPadding += windowFlags.getCurrentTopCutoutHeight();
                 } else if (windowFlags.getShowStatus()) {
                     statusPadding += windowFlags.getStatusHeight();
                 }
 
+                if (topPadding==0 && windowFlags.getShowStatusInCutout() && windowFlags.getCurrentTopCutoutHeight()>0) {
+                    // We need to add in the statusBar
+                    topPadding += statusPadding;
+                }
+
+                int bottomOfToolbar = myView.myAppBarLayout.getBottom();
+                if (myView.myToolbar.getHideActionBar()) {
+                    bottomOfToolbar = 0;
+                }
+
                 if (myView!=null) {
-                    myView.fragmentView.setPadding(margins[0], topPadding, margins[2], margins[3]);
+                    myView.fragmentView.setPadding(margins[0], Math.max(topPadding,bottomOfToolbar), margins[2], margins[3]);
                     myView.songMenuLayout.setPadding(margins[0], statusPadding, 0, margins[3]);
+                    myView.songMenuLayout.findViewById(R.id.menu_top).setPadding(windowFlags.getMarginToolbarLeft(),0,0,0);
                 }
             });
     }
+
+
 
     private void setupViews() {
         windowFlags = new WindowFlags(this, this.getWindow());
@@ -574,9 +590,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             // If the keyboard isn't visible, hide the other flags after a short delay
             // This makes the mode immersive/sticky
             if (!imeVisible) {
-                new Handler().postDelayed(() -> {
-                    windowFlags.hideOrShowSystemBars();
-                },1000);
+                new Handler().postDelayed(() -> windowFlags.hideOrShowSystemBars(),1000);
             }
             return insets;
         });
@@ -627,10 +641,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         // Tell the second screen we are ready
         bootUpCompleted = true;
         myView.myAppBarLayout.setVisibility(View.VISIBLE);
-    }
-    @Override
-    public boolean getBootUpCompleted() {
-        return bootUpCompleted;
     }
 
     private void initialiseStartVariables() {
@@ -1334,10 +1344,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     // The drawers and actionbars
     @Override
-    public DrawerLayout getDrawer() {
-        return myView.drawerLayout;
-    }
-    @Override
     public void lockDrawer(boolean lock) {
         // This is done whenever we have a settings window open
         if (myView != null) {
@@ -1372,6 +1378,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     public boolean getSettingsOpen() {
         return settingsOpen;
     }
+
     @Override
     public boolean needActionBar() {
         return menuOpen||settingsOpen;
@@ -1545,10 +1552,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             return new ArrayList<>();
         }
     }
-    @Override
-    public int getSoftKeyboardHeight() {
-        return windowFlags.getSoftKeyboardHeight();
-    }
+
     @Override
     public WindowFlags getWindowFlags() {
         return windowFlags;
@@ -1982,11 +1986,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         }
     }
 
-    @Override
-    public void updateKeyAndLyrics(Song song) {
-        // This is called from the transpose class once it has done its work on the edit song fragment
-        //editSongFragmentMain.updateKeyAndLyrics(song);
-    }
 
     @Override
     public void registerFragment(Fragment frag, String what) {
@@ -2227,19 +2226,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
 
 
-
-
-    @Override
-    public void installPlayServices() {
-        Snackbar.make(myView.drawerLayout, R.string.play_services_error,
-                BaseTransientBottomBar.LENGTH_LONG).setAction(R.string.play_services_how, v -> {
-            Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.website_play_services_help)));
-            startActivity(i);
-        }).show();
-    }
-
-
-
     @Override
     public void fullIndex() {
         if (fullIndexRequired) {
@@ -2473,12 +2459,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
 
     @Override
-    public int getFragmentOpen() {
-        return getSupportFragmentManager().getFragments().get(getSupportFragmentManager().getFragments().size()-1).getId();
-    }
-
-
-    @Override
     public void setScreenshot(Bitmap bitmap) {
         screenShot = Bitmap.createBitmap(bitmap);
         bitmap.recycle();
@@ -2649,7 +2629,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         if (linearLayout==null) {
             // Remove the views
             songSheetTitleLayout.removeAllViews();
-            songSheetTitleLayoutSize = new ArrayList<>();
         } else {
             songSheetTitleLayout.addView(linearLayout);
         }
@@ -2672,11 +2651,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public SongSheetHeaders getSongSheetHeaders() {
         return songSheetHeaders;
-    }
-
-    @Override
-    public ArrayList<Integer> getSongSheetTitleLayoutSize() {
-        return songSheetTitleLayoutSize;
     }
 
     @Override
@@ -2861,9 +2835,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
         outState.putBoolean("bootUpCompleted",bootUpCompleted);
         outState.putBoolean("indexComplete",songListBuildIndex.getIndexComplete());
-        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -2934,6 +2908,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             showToast.kill();
             showToast = null;
         }
+
         super.onStop();
     }
 

@@ -101,6 +101,7 @@ public class SettingsCategories extends Fragment {
             if (mainActivityInterface.getAppPermissions().hasGooglePlay() &&
                     mainActivityInterface.getAppPermissions().hasNearbyPermissions()) {
                 mainActivityInterface.navigateToFragment(null, R.id.nearbyConnectionsFragment);
+
             } else {
                 // notify user
                 InformationBottomSheet informationBottomSheet = new InformationBottomSheet(getString(R.string.location),
@@ -118,11 +119,18 @@ public class SettingsCategories extends Fragment {
         myView.gesturesButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null, R.id.control_graph));
         myView.connectButton.setOnClickListener(v -> {
             // First check for network connectivity required for location
-            if (mainActivityInterface.getAppPermissions().locationEnabled(requireContext(),mainActivityInterface)) {
+            // Actually this is causing issues for some users!
+            // The LocationManager class first needs fine/coarse location permissions to run and we haven't asked yet!
+            /*if (mainActivityInterface.getAppPermissions().locationEnabled(requireContext(),mainActivityInterface)) {
                 // Check we have the required permissions and if so the launcher navigates to the connect fragment
                 mainActivityInterface.setWhattodo("nearby");
                 nearbyConnectionsPermission.launch(mainActivityInterface.getAppPermissions().getNearbyPermissions());
-            }
+            }*/
+            // Check we have the required permissions and if so the launcher navigates to the connect fragment
+            mainActivityInterface.setWhattodo("nearby");
+            nearbyConnectionsPermission.launch(mainActivityInterface.getAppPermissions().getNearbyPermissions());
+            mainActivityInterface.getStorageAccess().updateFileActivityLog(mainActivityInterface.getAppPermissions().getPermissionsLog());
+            mainActivityInterface.getAppPermissions().resetPermissionsLog();
         });
         myView.modeButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null, R.id.modeFragment));
         myView.midiButton.setOnClickListener(v -> {

@@ -14,14 +14,11 @@ public interface ActionInterface {
     void showSticky(boolean forceShow, boolean hide);
     void showAbc(boolean forceShow, boolean hide);
     void toggleHighlighter();
-    void chooseMenu(boolean showSetMenu);
     void onBackPressed();
     void metronomeToggle();
     FragmentManager getMyFragmentManager();
     CurrentSet getCurrentSet();
     Song getSong();
-    boolean playPad();
     Autoscroll getAutoscroll();
-    void toggleAutoscroll();
     PerformanceGestures getPerformanceGestures();
 }

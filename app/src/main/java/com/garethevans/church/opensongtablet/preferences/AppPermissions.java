@@ -19,8 +19,9 @@ import com.google.android.gms.common.GoogleApiAvailability;
 public class AppPermissions {
 
     private final Context context;
-    @SuppressWarnings({"FieldCanBeLocal","unused"})
+    @SuppressWarnings({"FieldCanBeLocal", "unused"})
     private final String TAG = "Permissions";
+    private String permissionsLog = "";
 
     public AppPermissions(Context context) {
         // This class is used to keep all the permissions in the same place
@@ -33,9 +34,10 @@ public class AppPermissions {
         boolean network_enabled = false;
 
         try {
-            LocationManager lm = (LocationManager)c.getSystemService(Context.LOCATION_SERVICE);
+            LocationManager lm = (LocationManager) c.getSystemService(Context.LOCATION_SERVICE);
+            Log.d(TAG,"lm:"+lm+"   providers:"+lm.getAllProviders());
             network_enabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-        } catch(Exception e) {
+        } catch (Exception e) {
             Log.d(TAG, "Could not check NETWORK_PROVIDER is enabled");
         }
 
@@ -52,34 +54,55 @@ public class AppPermissions {
 
     // Nearby
     public String[] getNearbyPermissions() {
-        if (Build.VERSION.SDK_INT>=33) {
-            return new String[] {Manifest.permission.NEARBY_WIFI_DEVICES, Manifest.permission.BLUETOOTH_SCAN,
-            Manifest.permission.BLUETOOTH_ADVERTISE, Manifest.permission.BLUETOOTH_CONNECT};
-        } else if (Build.VERSION.SDK_INT>=31) {
-            return new String[] {Manifest.permission.BLUETOOTH_SCAN, Manifest.permission.BLUETOOTH_ADVERTISE,
-                    Manifest.permission.BLUETOOTH_CONNECT, Manifest.permission.ACCESS_FINE_LOCATION};
-        } else if (Build.VERSION.SDK_INT>=29) {
-            return new String[] {Manifest.permission.ACCESS_FINE_LOCATION};
-        } else {
-            return new String[] {Manifest.permission.ACCESS_COARSE_LOCATION};
+        if (Build.VERSION.SDK_INT >= 33) { //
+            return new String[]{Manifest.permission.NEARBY_WIFI_DEVICES,
+                    Manifest.permission.BLUETOOTH_SCAN,
+                    Manifest.permission.BLUETOOTH_ADVERTISE,
+                    Manifest.permission.BLUETOOTH_CONNECT,
+                    Manifest.permission.ACCESS_WIFI_STATE,
+                    Manifest.permission.CHANGE_WIFI_STATE};
+        } else if (Build.VERSION.SDK_INT >= 31) { // Android S / 12
+            return new String[]{Manifest.permission.BLUETOOTH_SCAN,
+                    Manifest.permission.BLUETOOTH_ADVERTISE,
+                    Manifest.permission.BLUETOOTH_CONNECT,
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.ACCESS_WIFI_STATE,
+                    Manifest.permission.CHANGE_WIFI_STATE};
+        } else if (Build.VERSION.SDK_INT >= 29) { // Android Q / 10
+            return new String[]{Manifest.permission.BLUETOOTH,
+                    Manifest.permission.BLUETOOTH_ADMIN,
+                    Manifest.permission.ACCESS_WIFI_STATE,
+                    Manifest.permission.CHANGE_WIFI_STATE,
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION};
+        } else { // Older versions!
+            return new String[]{Manifest.permission.BLUETOOTH,
+                    Manifest.permission.BLUETOOTH_ADMIN,
+                    Manifest.permission.ACCESS_WIFI_STATE,
+                    Manifest.permission.CHANGE_WIFI_STATE,
+                    Manifest.permission.ACCESS_COARSE_LOCATION};
         }
     }
+
     public boolean hasGooglePlay() {
         return GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(context) == ConnectionResult.SUCCESS;
     }
+
     public boolean hasNearbyPermissions() {
         return checkForPermissions(getNearbyPermissions());
     }
 
     // MIDI
     public String[] getMidiScanPermissions() {
-        if (Build.VERSION.SDK_INT>30) {
-            return new String[] {Manifest.permission.BLUETOOTH_SCAN, Manifest.permission.BLUETOOTH_CONNECT,
+        if (Build.VERSION.SDK_INT > 30) {
+            return new String[]{Manifest.permission.BLUETOOTH_SCAN, Manifest.permission.BLUETOOTH_CONNECT,
                     Manifest.permission.BLUETOOTH_SCAN, Manifest.permission.ACCESS_FINE_LOCATION};
         } else {
             return null;
         }
     }
+
     public boolean hasMidiScanPermissions() {
         return checkForPermissions(getMidiScanPermissions());
     }
@@ -88,6 +111,7 @@ public class AppPermissions {
     public String getAudioPermissions() {
         return Manifest.permission.RECORD_AUDIO;
     }
+
     public boolean hasAudioPermissions() {
         return checkForPermission(getAudioPermissions());
     }
@@ -96,34 +120,51 @@ public class AppPermissions {
     public String getStoragePermissions() {
         return Manifest.permission.WRITE_EXTERNAL_STORAGE;
     }
+
     public boolean hasStoragePermissions() {
-        return Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP || checkForPermission(getStoragePermissions());
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP || checkForPermission(getStoragePermissions());
     }
 
     // CAMERA
     public String getCameraPermissions() {
         return Manifest.permission.CAMERA;
     }
+
     public boolean hasCameraPermission() {
         return checkForPermission(getCameraPermissions());
     }
 
     // GENERAL CHECK
     public boolean checkForPermission(String permission) {
-        return ActivityCompat.checkSelfPermission(context,permission) == PackageManager.PERMISSION_GRANTED;
+        boolean granted = ActivityCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED;
+        permissionsLog += "permission: " + permission + "   granted:" + granted + "\n";
+        return granted;
     }
+
     public boolean checkForPermissions(String[] permissions) {
         boolean returnVal = true;
-        if (permissions!=null) {
-            for (String permission:permissions) {
-                returnVal = returnVal && checkForPermission(permission);
-                Log.d(TAG,"permission:"+permission+"  returnVal:"+returnVal);
+        StringBuilder stringBuilder = new StringBuilder();
+        if (permissions != null) {
+            for (String permission : permissions) {
+                boolean thisPermission = checkForPermission(permission);
+                stringBuilder.append("permission: ").append(permission).append("   granted:").append(thisPermission).append("\n");
+                returnVal = returnVal && thisPermission;
+                Log.d(TAG, "permission:" + permission + "  returnVal:" + returnVal);
             }
         } else {
             // No additional permissions required
             return true;
         }
+        permissionsLog += stringBuilder;
         return returnVal;
+    }
+
+    public String getPermissionsLog() {
+        return permissionsLog;
+    }
+
+    public void resetPermissionsLog() {
+        permissionsLog = "";
     }
 
 }

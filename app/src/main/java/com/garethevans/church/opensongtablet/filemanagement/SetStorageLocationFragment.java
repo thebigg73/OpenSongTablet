@@ -87,7 +87,7 @@ public class SetStorageLocationFragment extends Fragment {
             myView.mainpage.postDelayed(()-> {
                 mainActivityInterface.hideActionBar();
                 mainActivityInterface.removeActionBar(true);
-            },50);
+            },500);
         }
 
         // Set up the views
@@ -161,8 +161,10 @@ public class SetStorageLocationFragment extends Fragment {
 
     private void initialiseViews() {
         // Lock the menu and hide the actionbar and action button
-        mainActivityInterface.lockDrawer(true);
-        mainActivityInterface.hideActionButton(true);
+        if (mainActivityInterface.getSettingsOpen()) {
+            mainActivityInterface.lockDrawer(true);
+            mainActivityInterface.hideActionButton(true);
+        }
 
         //mainActivityInterface.getAppActionBar().translateAwayActionBar(true);
         //myView.getRoot().setTranslationY(-mainActivityInterface.getAppActionBar().getActionBarHeight());

@@ -5,7 +5,6 @@ import android.net.Uri;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -76,7 +75,7 @@ public interface MainActivityInterface {
     void updateSizes(int width, int height);
     int[] getDisplayMetrics();
     float getDisplayDensity();
-    boolean getBootUpCompleted();
+
     Locale getLocale();
     VersionNumber getVersionNumber();
     String getMode();
@@ -100,7 +99,6 @@ public interface MainActivityInterface {
     SaveSong getSaveSong();
     void setSong(Song song);
     void setTempSong(Song tempSong);
-    void updateKeyAndLyrics(Song song);
 
     // Capo
     void dealWithCapo();
@@ -132,7 +130,6 @@ public interface MainActivityInterface {
     void initialiseInlineSetItem(int position);
 
     // Menus
-    DrawerLayout getDrawer();
     void lockDrawer(boolean lock);
     void closeDrawer(boolean close);
     void moveToSongInSongMenu();
@@ -187,7 +184,6 @@ public interface MainActivityInterface {
     void popTheBackStack(int id, boolean inclusive);
     void registerFragment(Fragment frag, String what);
     void updateFragment(String fragName, Fragment callingFragment, ArrayList<String> arguments);
-    int getFragmentOpen();
     FragmentManager getMyFragmentManager();
     void dealWithIntent(int fragmentId);
 
@@ -227,7 +223,6 @@ public interface MainActivityInterface {
     void isWebConnected(Fragment fragment, int fragId, boolean isConnected);
     void songSelectDownloadPDF(Fragment fragment, int fragId, Uri uri);
     void openDocument(String location);
-    void installPlayServices();
 
     // General tools
     CustomAnimation getCustomAnimation();
@@ -241,7 +236,6 @@ public interface MainActivityInterface {
     String getWhattodo();
     void setWhattodo(String whattodo);
     WindowFlags getWindowFlags();
-    int getSoftKeyboardHeight();
 
     // CCLI
     CCLILog getCCLILog();
@@ -278,7 +272,6 @@ public interface MainActivityInterface {
     void setSongSheetTitleLayout(LinearLayout linearLayout);
     LinearLayout getSongSheetTitleLayout();
     SongSheetHeaders getSongSheetHeaders();
-    ArrayList<Integer> getSongSheetTitleLayoutSize();
 
     // Song processing
     ConvertChoPro getConvertChoPro();

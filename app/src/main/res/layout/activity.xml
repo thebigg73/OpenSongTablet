@@ -4,10 +4,9 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_below="@id/myToolbar"
+    android:background="@color/colorAltPrimary"
     android:clipChildren="false"
     android:clipToPadding="false"
-    android:background="@color/colorAltPrimary"
     android:keepScreenOn="true">
 
     <FrameLayout
@@ -17,13 +16,29 @@
         android:clipChildren="false"
         android:clipToPadding="false">
 
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/myAppBarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/ActionBar"
+            android:visibility="gone">
+
+            <com.garethevans.church.opensongtablet.customviews.MyToolbar
+                android:id="@+id/myToolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom" />
+
+        </com.google.android.material.appbar.AppBarLayout>
+
         <!--The main fragments get loaded up here-->
         <RelativeLayout
             android:id="@+id/fragmentView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipChildren="false"
-            android:clipToPadding="false">
+            android:clipToPadding="false"
+            app:layout_constraintTop_toBottomOf="@id/myAppBarLayout">
 
             <androidx.fragment.app.FragmentContainerView
                 android:id="@+id/nav_host_fragment"
@@ -42,10 +57,10 @@
                 android:id="@+id/onScreenInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
                 android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"/>
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp" />
 
             <!-- The page buttons -->
             <include
@@ -59,18 +74,18 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="16dp"
-                android:clipChildren="true"/>
+                android:clipChildren="true" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/actionFAB"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_margin="8dp"
                 android:contentDescription="@string/action"
                 android:src="@drawable/plus"
-                android:layout_margin="8dp"
-                app:useCompatPadding="false"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentBottom="true" />
+                app:useCompatPadding="false" />
 
             <!-- The previous and next info -->
             <include
@@ -83,21 +98,6 @@
                 android:layout_toStartOf="@+id/actionFAB" />
         </RelativeLayout>
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/myAppBarLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:theme="@style/ActionBar"
-            android:visibility="gone">
-
-        <com.garethevans.church.opensongtablet.customviews.MyToolbar
-            android:id="@+id/myToolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"/>
-
-        </com.google.android.material.appbar.AppBarLayout>
-
     </FrameLayout>
 
     <!--The left song and set menu-->
@@ -108,23 +108,24 @@
         android:layout_gravity="start"
         android:background="@color/colorAltPrimary"
         android:clickable="true"
-        android:orientation="vertical"
-        android:focusable="true">
+        android:focusable="true"
+        android:orientation="vertical">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-        <!-- This bit draws a background for cutouts if required -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorAltPrimary" />
-        <include
-            android:id="@+id/menu_top"
-            layout="@layout/menu_top"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom" />
+            <!-- This bit draws a background for cutouts if required -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/colorAltPrimary" />
+
+            <include
+                android:id="@+id/menu_top"
+                layout="@layout/menu_top"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom" />
         </RelativeLayout>
 
         <androidx.viewpager2.widget.ViewPager2
