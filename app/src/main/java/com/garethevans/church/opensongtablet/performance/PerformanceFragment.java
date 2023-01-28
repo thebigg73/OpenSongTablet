@@ -844,10 +844,12 @@ public class PerformanceFragment extends Fragment {
                             }
                         } else {
                             myView.highlighterView.post(() -> {
-                                try {
-                                    myView.highlighterView.setVisibility(View.GONE);
-                                } catch (Exception e) {
-                                    e.printStackTrace();
+                                if (myView!=null) {
+                                    try {
+                                        myView.highlighterView.setVisibility(View.GONE);
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
                                 }
                             });
                         }

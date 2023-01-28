@@ -146,29 +146,52 @@
                 <data android:pathPattern=".*\\..*\\..*\\.osb"/>
                 <data android:pathPattern=".*\\..*\\..*\\..*\\.osb"/>
                 <data android:pathPattern=".*\\.osbs"/>
+                <data android:pathPattern=".*\\..*\\.osbs"/>
+                <data android:pathPattern=".*\\..*\\..*\\.osbs"/>
+                <data android:pathPattern=".*\\..*\\..*\\..*\\.osbs"/>
                 <data android:pathPattern=".*\\.ost"/>
+                <data android:pathPattern=".*\\..*\\.ost"/>
+                <data android:pathPattern=".*\\..*\\..*\\.ost"/>
+                <data android:pathPattern=".*\\..*\\..*\\..*\\.ost"/>
                 <data android:pathPattern=".*\\.osts"/>
+                <data android:pathPattern=".*\\..*\\.osts"/>
+                <data android:pathPattern=".*\\..*\\..*\\.osts"/>
+                <data android:pathPattern=".*\\..*\\..*\\..*\\.osts"/>
                 <data android:pathPattern=".*\\.onsong"/>
+                <data android:pathPattern=".*\\..*\\.onsong"/>
+                <data android:pathPattern=".*\\..*\\..*\\.onsong"/>
+                <data android:pathPattern=".*\\..*\\..*\\..*\\.onsong"/>
                 <data android:pathPattern=".*\\.backup"/>
                 <data android:pathPattern=".*\\..*\\.backup"/>
                 <data android:pathPattern=".*\\..*\\..*\\.backup"/>
                 <data android:pathPattern=".*\\..*\\..*\\..*\\.backup"/>
                 <data android:pathPattern=".*\\.chordpro"/>
+                <data android:pathPattern=".*\\..*\\.chordpro"/>
+                <data android:pathPattern=".*\\..*\\..*\\.chordpro"/>
+                <data android:pathPattern=".*\\..*\\..*\\..*\\.chordpro"/>
                 <data android:pathPattern=".*\\.chopro"/>
+                <data android:pathPattern=".*\\..*\\.chopro"/>
+                <data android:pathPattern=".*\\..*\\..*\\.chopro"/>
+                <data android:pathPattern=".*\\..*\\..*\\..*\\.chopro"/>
                 <data android:pathPattern=".*\\.cho"/>
+                <data android:pathPattern=".*\\..*\\.cho"/>
+                <data android:pathPattern=".*\\..*\\..*\\.cho"/>
+                <data android:pathPattern=".*\\..*\\..*\\..*\\.cho"/>
                 <data android:pathPattern=".*\\.pro"/>
-
-                <data android:pathPattern=".*"/>
-                <data android:mimeType="*/*"/>
+                <data android:pathPattern=".*\\..*\\.pro"/>
+                <data android:pathPattern=".*\\..*\\..*\\.pro"/>
+                <data android:pathPattern=".*\\..*\\..*\\..*\\.pro"/>
 
                 <!-- I could include this to allow opening song files with no extensions, however,
                      this would then allow all files to be matched, which would annoy people
+                <data android:pathPattern=".*"/>
+                <data android:mimeType="*/*"/>
                 -->
 
                 <!-- To allow for email attachments, etc. -->
                 <data android:mimeType="application/octet-stream"/>
-
             </intent-filter>
+
         </activity>
 
  <!--ATTENTION: This was auto-generated to add Google Play services to your project for
