@@ -2847,13 +2847,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     protected void onResume() {
-        Log.d(TAG,"onResume() called.   myView="+myView+"   bootUpCompleted:"+bootUpCompleted);
         if (myView==null) {
+            // Something is wrong - restart the app
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
 
         } else if (bootUpCompleted) {
+            // Just check the actionbar and navigation work
             // Set up the action bar
             setupActionbar();
 
