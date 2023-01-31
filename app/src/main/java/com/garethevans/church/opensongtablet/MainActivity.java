@@ -271,6 +271,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Log.d(TAG,"onCreate() called.   savedInstanceState:"+savedInstanceState+"    myView="+myView+"   bootUpCompleted:"+bootUpCompleted);
+
         if (savedInstanceState!=null) {
             bootUpCompleted = savedInstanceState.getBoolean("bootUpCompleted",false);
             if (songListBuildIndex==null) {
@@ -525,6 +527,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                             margins[2] + windowFlags.getMarginToolbarRight(),
                             0);
                 }
+
                 // Now set the paddings to the content page, the song menu and the page button
                 // If we are showing the status in the cutout
                 int statusPadding = 0;
@@ -544,10 +547,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
                 if (topPadding==0 && windowFlags.getShowStatusInCutout() && windowFlags.getCurrentTopCutoutHeight()>0) {
                     // We need to add in the statusBar
-                    topPadding += statusPadding;
+                    topPadding += statusPadding + margins[1];
                 }
 
-                int bottomOfToolbar = myView.myAppBarLayout.getBottom();
+                int bottomOfToolbar = myView.myAppBarLayout.getBottom() + 1;
                 if (myView.myToolbar.getHideActionBar()) {
                     bottomOfToolbar = 0;
                 }
@@ -2836,19 +2839,21 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
+        Log.d(TAG,"onSaveInstanceState()");
         outState.putBoolean("bootUpCompleted",bootUpCompleted);
         outState.putBoolean("indexComplete",songListBuildIndex.getIndexComplete());
+        super.onSaveInstanceState(outState);
     }
 
     @Override
     protected void onResume() {
-        if (myView!=null && !myView.myToolbar.isShown() && bootUpCompleted) {
+        Log.d(TAG,"onResume() called.   myView="+myView+"   bootUpCompleted:"+bootUpCompleted);
+        if (myView==null) {
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
 
-        } else if (bootUpCompleted && myView!=null) {
+        } else if (bootUpCompleted) {
             // Set up the action bar
             setupActionbar();
 

@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet.screensetup;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -138,27 +139,37 @@ public class MarginsFragment extends Fragment {
         @Override
         public void onStopTrackingTouch(@NonNull Slider slider) {
             int val = (int) slider.getValue();
+            String hint = ((int)val + " px");
 
+            Log.d(TAG,"saving: "+val);
             switch (pref) {
                 case "marginToolbarLeft":
+                    myView.actionbarLeft.setHint(hint);
                     mainActivityInterface.getWindowFlags().setMarginToolbarLeft(val, true);
                     break;
                 case "marginToolbarRight":
+                    myView.actionbarRight.setHint(hint);
                     mainActivityInterface.getWindowFlags().setMarginToolbarRight(val, true);
                     break;
                 case "marginLeft":
+                    myView.leftMargin.setHint(hint);
                     mainActivityInterface.getWindowFlags().setCustomMarginLeft(val, true);
                     break;
                 case "marginRight":
+                    myView.rightMargin.setHint(hint);
                     mainActivityInterface.getWindowFlags().setCustomMarginRight(val, true);
                     break;
                 case "marginBottom":
+                    myView.bottomMargin.setHint(hint);
                     mainActivityInterface.getWindowFlags().setCustomMarginBottom(val, true);
                     break;
                 case "marginTop":
+                    myView.topMargin.setHint(hint);
                     mainActivityInterface.getWindowFlags().setCustomMarginTop(val, true);
                     break;
             }
+            mainActivityInterface.getWindowFlags().setMargins();
+            mainActivityInterface.updateMargins();
         }
     }
 

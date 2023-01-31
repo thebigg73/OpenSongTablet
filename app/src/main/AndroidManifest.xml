@@ -112,7 +112,7 @@
             android:configChanges="orientation|keyboard|keyboardHidden|screenSize|navigation|screenLayout"
             android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustResize"
-            android:launchMode="standard"
+            android:launchMode="singleInstance"
             android:theme="@style/AppTheme">
 
             <nav-graph android:value="@navigation/navigation" />
