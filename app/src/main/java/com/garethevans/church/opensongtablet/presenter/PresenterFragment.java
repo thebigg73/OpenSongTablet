@@ -17,6 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.appdata.AlertInfoBottomSheet;
 import com.garethevans.church.opensongtablet.databinding.ModePresenterBinding;
 import com.garethevans.church.opensongtablet.interfaces.DisplayInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
@@ -110,6 +111,13 @@ public class PresenterFragment extends Fragment {
             displayInterface.checkDisplays();
             displayInterface.updateDisplay("changeBackground");
             mainActivityInterface.setFirstRun(false);
+        }
+
+        // Check if we need to show an alert
+        if (mainActivityInterface.getAlertChecks().showPlayServicesAlert() ||
+                mainActivityInterface.getAlertChecks().showBackup() || mainActivityInterface.getAlertChecks().showUpdateInfo()) {
+            AlertInfoBottomSheet alertInfoBottomSheet = new AlertInfoBottomSheet();
+            alertInfoBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "AlertInfoBottomSheet");
         }
 
         return myView.getRoot();
