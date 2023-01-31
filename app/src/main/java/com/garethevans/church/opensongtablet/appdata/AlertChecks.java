@@ -39,6 +39,7 @@ public class AlertChecks {
 
         // Decide if the current app version is newer than the previous version.
         // If so, we want the user to be notified of changed.  The prefs are updated when the button is clicked
+
         return !alreadySeen && currentVersion > lastUsedVersion;
     }
 

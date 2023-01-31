@@ -2130,10 +2130,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     allowToast = false;
                     break;
             }
-            if (allowToast && result) {
+            if (allowToast && result && showToast!=null && getResources()!=null) {
                 // Don't show toast for exit, but other successful actions
                 showToast.doIt(getString(R.string.success));
-            } else if (allowToast){
+            } else if (allowToast && showToast!=null && getResources()!=null){
                 showToast.doIt(getString(R.string.error));
             }
         }

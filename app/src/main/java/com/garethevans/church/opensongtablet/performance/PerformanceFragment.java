@@ -422,8 +422,13 @@ public class PerformanceFragment extends Fragment {
         Bitmap bmp = mainActivityInterface.getProcessSong().getSongBitmap(mainActivityInterface.getSong().getFolder(),
                 mainActivityInterface.getSong().getFilename());
 
-        widthBeforeScale = bmp.getWidth();
-        heightBeforeScale = bmp.getHeight();
+        if (bmp!=null) {
+            widthBeforeScale = bmp.getWidth();
+            heightBeforeScale = bmp.getHeight();
+        } else {
+            widthBeforeScale = 1;
+            heightBeforeScale = 1;
+        }
 
         myView.zoomLayout.setPageSize(availableWidth, availableHeight);
 

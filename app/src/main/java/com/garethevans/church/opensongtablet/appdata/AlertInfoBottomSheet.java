@@ -71,10 +71,7 @@ public class AlertInfoBottomSheet extends BottomSheetDialogFragment {
     private void whatAlerts() {
         // This decides which alerts are appropriate
         // Check for app updates
-        boolean updateInfo = mainActivityInterface.getAlertChecks().showUpdateInfo();
-        if (!updateInfo) {
-            myView.appUpdated.setVisibility(View.GONE);
-        } else {
+        if (mainActivityInterface.getAlertChecks().showUpdateInfo()) {
             myView.appUpdated.setVisibility(View.VISIBLE);
             myView.showUpdates.setText(mainActivityInterface.getVersionNumber().getFullVersionInfo());
             myView.showUpdates.setOnClickListener(b -> webLink(getString(R.string.website_latest)));
@@ -82,6 +79,9 @@ public class AlertInfoBottomSheet extends BottomSheetDialogFragment {
             // We've seen the warning, so update the preference
             mainActivityInterface.getPreferences().setMyPreferenceInt("lastUsedVersion",
                     mainActivityInterface.getVersionNumber().getVersionCode());
+
+        } else {
+            myView.appUpdated.setVisibility(View.GONE);
         }
 
         // Check for backup status
@@ -111,6 +111,7 @@ public class AlertInfoBottomSheet extends BottomSheetDialogFragment {
         } else {
             myView.playServices.setVisibility(View.GONE);
         }
+        mainActivityInterface.getAlertChecks().setAlreadySeen(true);
     }
 
     private void webLink(String link) {
