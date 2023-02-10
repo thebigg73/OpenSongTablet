@@ -96,7 +96,6 @@ public class ExposedDropDown extends TextInputLayout {
             } else if (event.getAction()==MotionEvent.ACTION_UP ||
             event.getAction()==MotionEvent.ACTION_BUTTON_RELEASE) {
                 autoCompleteTextView.post(() -> {
-                    Log.d(TAG,"multiselect:"+multiselect);
                     if (autoCompleteTextView.isPopupShowing()) {
                         autoCompleteTextView.dismissDropDown();
                     } else {
@@ -114,12 +113,9 @@ public class ExposedDropDown extends TextInputLayout {
     }
 
     private void keepPosition() {
-        Log.d(TAG,"keepPosition()   arrayList:"+arrayList);
         if (arrayList!=null && arrayList.size()>0) {
-            Log.d(TAG,"arrayList.size():"+arrayList.size());
             String selectedValue = getText().toString();
             int position = arrayList.indexOf(selectedValue);
-            Log.d(TAG,"selectedValue:"+selectedValue+"  position:"+position);
             autoCompleteTextView.setListSelection(arrayList.indexOf(getText().toString()));
         }
     }

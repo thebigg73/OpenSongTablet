@@ -192,6 +192,7 @@ public class BootUpFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         myView = null;
+        mainActivityInterface.registerFragment(null,"BootUpFragment");
     }
 
 

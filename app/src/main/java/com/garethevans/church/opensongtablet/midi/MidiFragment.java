@@ -765,5 +765,6 @@ public class MidiFragment extends Fragment {
                 Log.d(TAG, "Scanner unable to be stopped (maybe already stopped!)");
             }
         }
+        mainActivityInterface.registerFragment(null, "MidiFragment");
     }
 }

@@ -470,4 +470,10 @@ public class NearbyConnectionsFragment extends Fragment {
         materialButton.post(() -> materialButton.setText(text));
         mainActivityInterface.getNearbyConnections().doCountdown();
     }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mainActivityInterface.registerFragment(null, "NearbyConnectionsFragment");
+    }
 }

@@ -73,6 +73,7 @@ public class PresenterFragment extends Fragment {
 
         // Register this fragment
         mainActivityInterface.registerFragment(this,"Presenter");
+        mainActivityInterface.updateFragment("updateSongMenuSortTitles",this,null);
 
         // Hide the main page buttons
         mainActivityInterface.lockDrawer(false);

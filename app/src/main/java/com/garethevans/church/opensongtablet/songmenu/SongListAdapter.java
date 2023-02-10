@@ -2,7 +2,6 @@ package com.garethevans.church.opensongtablet.songmenu;
 
 import android.content.Context;
 import android.os.Build;
-import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -70,7 +69,6 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
         void onItemLongClicked(int position, String folder, String filename, String key);
     }
 
-
     public void initialiseCheckedArray(CurrentSet currentSet) {
         for (int i = 0; i < songList.size(); i++) {
             String filename = songList.get(i).getFilename();
@@ -105,7 +103,6 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
             for (Object payload : payloads) {
                 if (payload.equals("checkChange")) {
                     // We want to update the checkbox
-                    Log.d(TAG,"do checkChange on: "+ holder.itemTitle.getText());
                     holder.itemChecked.post(()->{
                         try {
                             holder.itemChecked.setChecked(checkedArray.get(position));
@@ -188,8 +185,6 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
                 final String setentryalt1 = mainActivityInterface.getSetActions().getSongForSetWork(itemFolder, itemFilename, null);
                 final String setentryalt2 = mainActivityInterface.getSetActions().getSongForSetWork(itemFolder, itemFilename, "");
                 final String setentry = mainActivityInterface.getSetActions().getSongForSetWork(itemFolder, itemFilename, itemKey).replace("***null***","******");
-                Log.d(TAG,"setentry:"+setentry+"  setentryalt1"+setentryalt1+"  setentryalt2:"+setentryalt2);
-
 
                 songItemViewHolder.itemCard.setOnClickListener(v -> {
                     song.setFilename(itemFilename);
@@ -352,11 +347,14 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
                 try {
                     checkedArray.put(pos, !checkedArray.get(pos));
                     notifyItemChanged(pos, "checkChange");
-                    Log.d(TAG,"checkChange at "+pos);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         }
+    }
+
+    public void updateSongMenuSortTitles(boolean songMenuSortTitles) {
+        this.songMenuSortTitles = songMenuSortTitles;
     }
 }

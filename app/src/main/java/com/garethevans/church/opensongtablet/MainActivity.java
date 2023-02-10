@@ -984,6 +984,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     if (performanceValid()) {
                         performanceFragment.toggleScale();
                     }
+                    break;
+
+                case "updateSongMenuSortTitles":
+                    if (songMenuFragment!=null) {
+                        songMenuFragment.updateSongMenuSortTitles();
+                    }
+                    break;
 
             }
         }
@@ -1997,12 +2004,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             switch (what) {
                 case "Performance":
                     performanceFragment = (PerformanceFragment) frag;
+                    presenterFragment = null;
                     if (whichMode.equals(getString(R.string.mode_presenter))) {
                         whichMode = getString(R.string.mode_performance);
                     }
                     break;
                 case "Presenter":
                     presenterFragment = (PresenterFragment) frag;
+                    performanceFragment = null;
                     whichMode = getString(R.string.mode_presenter);
                     break;
                 case "EditSongFragment":

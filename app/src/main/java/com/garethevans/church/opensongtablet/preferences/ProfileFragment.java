@@ -121,4 +121,10 @@ public class ProfileFragment extends Fragment {
         NavHostFragment.findNavController(this)
                 .navigate(Uri.parse(getString(R.string.deeplink_set_storage)),navOptions);
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mainActivityInterface.registerFragment(null,"ProfileFragment");
+    }
 }

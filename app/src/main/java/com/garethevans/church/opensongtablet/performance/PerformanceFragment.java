@@ -117,6 +117,7 @@ public class PerformanceFragment extends Fragment {
 
         // Register this fragment
         mainActivityInterface.registerFragment(this,"Performance");
+        mainActivityInterface.updateFragment("updateSongMenuSortTitles",this,null);
 
         // Initialise the helper classes that do the heavy lifting
         initialiseHelpers();

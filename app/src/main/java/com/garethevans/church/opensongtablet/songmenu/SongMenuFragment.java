@@ -683,4 +683,11 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         return myView.progressText;
     }
 
+    public void updateSongMenuSortTitles() {
+        if (songListAdapter!=null) {
+            songListAdapter.updateSongMenuSortTitles(mainActivityInterface.getPreferences().
+                    getMyPreferenceBoolean("songMenuSortTitles",true));
+        }
+    }
+
 }
