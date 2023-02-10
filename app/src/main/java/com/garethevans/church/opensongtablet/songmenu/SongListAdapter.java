@@ -76,7 +76,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
             String filename = songList.get(i).getFilename();
             String folder = songList.get(i).getFolder();
             String key = songList.get(i).getKey();
-            String item = mainActivityInterface.getSetActions().getSongForSetWork(folder,filename,key);
+            String item = mainActivityInterface.getSetActions().getSongForSetWork(folder,filename,key).replace("***null***","******");
             String itemalt1 = mainActivityInterface.getSetActions().getSongForSetWork(folder,filename,"");
             String itemalt2 = mainActivityInterface.getSetActions().getSongForSetWork(folder,filename,null);
 
@@ -187,7 +187,9 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
                 final String itemKey = key;
                 final String setentryalt1 = mainActivityInterface.getSetActions().getSongForSetWork(itemFolder, itemFilename, null);
                 final String setentryalt2 = mainActivityInterface.getSetActions().getSongForSetWork(itemFolder, itemFilename, "");
-                final String setentry = mainActivityInterface.getSetActions().getSongForSetWork(itemFolder, itemFilename, itemKey);
+                final String setentry = mainActivityInterface.getSetActions().getSongForSetWork(itemFolder, itemFilename, itemKey).replace("***null***","******");
+                Log.d(TAG,"setentry:"+setentry+"  setentryalt1"+setentryalt1+"  setentryalt2:"+setentryalt2);
+
 
                 songItemViewHolder.itemCard.setOnClickListener(v -> {
                     song.setFilename(itemFilename);
@@ -350,6 +352,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
                 try {
                     checkedArray.put(pos, !checkedArray.get(pos));
                     notifyItemChanged(pos, "checkChange");
+                    Log.d(TAG,"checkChange at "+pos);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

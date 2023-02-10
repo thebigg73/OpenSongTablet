@@ -203,6 +203,7 @@ public class SetActions {
     }
 
     public int indexSongInSet(Song thisSong) {
+        Log.d(TAG,"indexSongInSet() called:"+thisSong.getFilename());
         // Because set items can be stored with or without a specified key, we search for both
         String searchText = getSongForSetWork(thisSong);
         Song noKeySong = new Song();
@@ -249,11 +250,13 @@ public class SetActions {
 
         // If we have a current set index position and it matches this song, use the existing position
         int currentSetPosition = mainActivityInterface.getCurrentSet().getIndexSongInSet();
+        Log.d(TAG,"currentSetPosition:"+currentSetPosition);
         if (currentSetPosition>-1 && mainActivityInterface.getCurrentSet().getSetItems().size()>currentSetPosition) {
             String currSetItem = mainActivityInterface.getCurrentSet().getSetItems().get(currentSetPosition);
-            if (currSetItem.equals(searchText)) {
+            // If the song index isn't complete, or this is a pdf, the key text may be null rather than empty, check both
+            if (currSetItem.equals(searchText)||currSetItem.equals(searchText.replace("***null***","******"))) {
                 position = currentSetPosition;
-            } else if (currSetItem.equals(searchTextNoKeySpecified)) {
+            } else if (currSetItem.equals(searchTextNoKeySpecified) || currSetItem.equals(searchTextNoKeySpecified.replace("***null***","******"))) {
                 positionNoKey = currentSetPosition;
             }
         }
@@ -261,7 +264,9 @@ public class SetActions {
             position = positionVariation;
         }
 
+        Log.d(TAG,"position:"+position);
         if (position>-1) {
+            Log.d(TAG,"positionInSet:"+position);
             // If a key was specified in the set and it matches this song, go to that position in the set
             positionInSet = position;
             return position;
@@ -272,6 +277,7 @@ public class SetActions {
             // stay out of the set view by returning -1 for the found position.
             // Or simply, the song just isn't in the set
             positionInSet = positionNoKey;
+            Log.d(TAG,"positionInSet:"+positionNoKey);
             return positionNoKey;
         }
     }

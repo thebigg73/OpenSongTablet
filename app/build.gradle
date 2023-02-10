@@ -67,12 +67,12 @@ dependencies {
     implementation 'com.google.android.gms:play-services-cast:21.2.0'                   // For casting obviously!
     implementation 'com.google.android.gms:play-services-cast-framework:21.2.0'         // For casting obviously!
     implementation 'androidx.mediarouter:mediarouter:1.3.1'                             // For casting obviously!
-    implementation 'com.google.android.gms:play-services-nearby:18.3.0'                 // For Google Nearby Connect devices
+    implementation 'com.google.android.gms:play-services-nearby:18.4.0'                 // For Google Nearby Connect devices
     implementation 'com.google.android.gms:play-services-mlkit-text-recognition:18.0.2' // For OCR text recognition (PDF/Camera)
     implementation 'androidx.recyclerview:recyclerview-selection:1.1.0'                 // RecyclerView (obviously)
     implementation 'androidx.recyclerview:recyclerview:1.2.1'                           // RecyclerView (obviously)
     implementation 'androidx.gridlayout:gridlayout:1.0.0'                               // GridLayout (obviously)
-    implementation 'androidx.appcompat:appcompat:1.6.0'                                 // Allows access to app: features for older devices
+    implementation 'androidx.appcompat:appcompat:1.6.1'                                 // Allows access to app: features for older devices
     implementation 'androidx.cardview:cardview:1.0.0'                                   // Cardview for recycler list items
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'                   // Constraint layouts with FAB
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'                      // Lifecycle for fragment control

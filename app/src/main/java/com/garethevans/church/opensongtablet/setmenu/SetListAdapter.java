@@ -177,6 +177,7 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
     @Override
     public void onItemSwiped(int fromPosition) {
         // Check the setList matches the current set!
+        Log.d(TAG,"onItemSwiped "+fromPosition);
         try {
             // Remove the item from the current set
             mainActivityInterface.getCurrentSet().removeFromCurrentSet(fromPosition, null);
@@ -202,6 +203,7 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
 
     @Override
     public void onItemClicked(MainActivityInterface mainActivityInterface, int position) {
+        Log.d(TAG,"position:"+position);
         updateHighlightedItem(position);
         mainActivityInterface.initialiseInlineSetItem(position);
         mainActivityInterface.loadSongFromSet(position);

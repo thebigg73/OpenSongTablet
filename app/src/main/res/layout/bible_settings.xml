@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/DefaultView"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -18,7 +19,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/bible_download_for_offline"
-                android:text="@string/download" />
+                android:text="@string/download"
+                app:size="large"/>
             <TableRow style="@style/DividerLine" />
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
@@ -26,7 +28,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/bible_browse_offline"
-                android:text="@string/bible_browse" />
+                android:text="@string/bible_browse"
+                app:size="large"/>
             <TableRow style="@style/DividerLine" />
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
@@ -34,7 +37,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/search_biblegateway"
-                android:text="@string/bible_browse" />
+                android:text="@string/bible_browse"
+                app:size="large"/>
             <TableRow style="@style/DividerLine" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

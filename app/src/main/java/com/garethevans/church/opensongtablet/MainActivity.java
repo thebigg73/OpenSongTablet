@@ -2344,6 +2344,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public ShowToast getShowToast() {
+        if (showToast==null) {
+            showToast = new ShowToast(this,myView.getRoot());
+        }
         return showToast;
     }
 

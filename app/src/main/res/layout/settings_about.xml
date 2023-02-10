@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     style="@style/DefaultView"
@@ -19,7 +20,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/website"
-                android:hint="@string/website_address" />
+                android:hint="@string/website_address"
+                app:size="large"/>
             <TableRow style="@style/DividerLine" />
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
@@ -27,7 +29,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/latest_updates"
-                android:hint="@string/app_name" />
+                android:hint="@string/app_name"
+                app:size="large"/>
             <TableRow style="@style/DividerLine" />
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
@@ -35,7 +38,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/forum"
-                android:hint="@string/forum_description" />
+                android:hint="@string/forum_description"
+                app:size="large"/>
             <TableRow style="@style/DividerLine" />
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
@@ -43,7 +47,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/rate"
-                android:hint="@string/rate_description" />
+                android:hint="@string/rate_description"
+                app:size="large"/>
             <TableRow style="@style/DividerLine" />
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
@@ -51,7 +56,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/language"
-                android:hint="@string/language" />
+                android:hint="@string/language"
+                app:size="large"/>
             <TableRow style="@style/DividerLine" />
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
@@ -59,7 +65,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/github"
-                android:hint="@string/github_description" />
+                android:hint="@string/github_description"
+                app:size="large"/>
             <TableRow style="@style/DividerLine" />
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
@@ -67,7 +74,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/paypal"
-                android:hint="@string/paypal_description" />
+                android:hint="@string/paypal_description"
+                app:size="large"/>
             <TableRow style="@style/DividerLine" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

@@ -32,6 +32,7 @@ public class ExposedDropDown extends TextInputLayout {
     private boolean largePopups;
     private boolean multiselect = false;
     private ArrayList<String> arrayList = null;
+    private final float xxlarge, xlarge, large, medium, small, xsmall;
 
     @SuppressLint("ClickableViewAccessibility")
     public ExposedDropDown(@NonNull Context context, @Nullable AttributeSet attrs) {
@@ -39,6 +40,13 @@ public class ExposedDropDown extends TextInputLayout {
         this.c = context;
 
         inflate(context, R.layout.view_exposed_dropdown,this);
+
+        xxlarge = context.getResources().getDimension(R.dimen.text_xxlarge);
+        xlarge = context.getResources().getDimension(R.dimen.text_xlarge);
+        large = context.getResources().getDimension(R.dimen.text_large);
+        medium = context.getResources().getDimension(R.dimen.text_medium);
+        small = context.getResources().getDimension(R.dimen.text_small);
+        xsmall = context.getResources().getDimension(R.dimen.text_xsmall);
 
         identifyViews();
 

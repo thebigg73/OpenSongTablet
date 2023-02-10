@@ -18,10 +18,19 @@ public class MaterialRadioButtonItem extends LinearLayout {
     private final MaterialRadioButton radioButton;
     private final MaterialTextView textView;
     private final MaterialTextView hintView;
+    private final float xxlarge, xlarge, large, medium, small, xsmall;
 
     public MaterialRadioButtonItem(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         inflate(context, R.layout.view_material_radiobutton,this);
+
+        xxlarge = context.getResources().getDimension(R.dimen.text_xxlarge);
+        xlarge = context.getResources().getDimension(R.dimen.text_xlarge);
+        large = context.getResources().getDimension(R.dimen.text_large);
+        medium = context.getResources().getDimension(R.dimen.text_medium);
+        small = context.getResources().getDimension(R.dimen.text_small);
+        xsmall = context.getResources().getDimension(R.dimen.text_xsmall);
+
         radioButton = findViewById(R.id.radioButton);
         textView = findViewById(R.id.textView);
         hintView = findViewById(R.id.hintView);

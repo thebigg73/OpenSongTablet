@@ -6,12 +6,14 @@
         <attr name="mydrawable" format="reference" />
         <attr name="showCheckMark" format="boolean"/>
         <attr name="showCheckBox" format="boolean" />
+        <attr name="size" format="string" />
     </declare-styleable>
 
     <declare-styleable name="MaterialRadioButtonItem">
         <attr name="android:text" format="string"/>
         <attr name="android:hint" format="string"/>
         <attr name="android:checked" format="boolean"/>
+        <attr name="size" />
     </declare-styleable>
 
     <declare-styleable name="MaterialEditText">
@@ -29,6 +31,7 @@
         <attr name="suffixText" />
         <attr name="helperText" />
         <attr name="android:layout_gravity" />
+        <attr name="size" />
     </declare-styleable>
 
     <declare-styleable name="MaterialSlider">
@@ -42,12 +45,14 @@
         <attr name="trackHeight" format="dimension"/>
         <attr name="thumbColor" format="color"/>
         <attr name="thumbRadius" format="dimension"/>
+        <attr name="size" />
     </declare-styleable>
 
     <declare-styleable name="MaterialSwitch">
         <attr name="android:text"/>
         <attr name="android:hint"/>
         <attr name="smallText" format="boolean"/>
+        <attr name="size" />
     </declare-styleable>
 
     <declare-styleable name="BottomSheetHandle">
@@ -59,6 +64,7 @@
         <attr name="textRight" format="string"/>
         <attr name="value" format="integer"/>
         <attr name="heading" format="string"/>
+        <attr name="size" />
     </declare-styleable>
 
     <declare-styleable name="TextThreeSlider">
@@ -70,6 +76,7 @@
         <attr name="drawableL" format="reference"/>
         <attr name="drawableR" format="reference"/>
         <attr name="drawableC" format="reference"/>
+        <attr name="size" />
     </declare-styleable>
 
     <declare-styleable name="DialogHeader">
@@ -83,6 +90,7 @@
     <declare-styleable name="ExposedDropDown">
         <attr name="android:text" format="string"/>
         <attr name="android:hint" format="string"/>
+        <attr name="size" />
     </declare-styleable>
 
     <declare-styleable name="FastScroller">

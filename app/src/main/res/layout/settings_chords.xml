@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/DefaultView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -19,7 +20,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="@string/chord_fingering"
-                android:text="@string/chords" />
+                android:text="@string/chords"
+                app:size="large"/>
             <TableRow style="@style/DividerLine" />
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
@@ -27,7 +29,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="@string/custom_chords_info"
-                android:text="@string/custom_chords" />
+                android:text="@string/custom_chords"
+                app:size="large"/>
             <TableRow style="@style/DividerLine" />
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
@@ -35,7 +38,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="@string/transpose_info"
-                android:text="@string/transpose" />
+                android:text="@string/transpose"
+                app:size="large"/>
             <TableRow style="@style/DividerLine" />
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
@@ -43,7 +47,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="@string/pref_key_text"
-                android:text="@string/chord_settings" />
+                android:text="@string/chord_settings"
+                app:size="large"/>
             <TableRow style="@style/DividerLine" />
 
         </LinearLayout>

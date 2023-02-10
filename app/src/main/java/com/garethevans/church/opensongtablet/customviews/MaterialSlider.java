@@ -19,9 +19,18 @@ public class MaterialSlider extends LinearLayout {
     private final Slider slider;
     private final TextView titleTextView, valueTextView;
     private final float stepSize;
+    private final float xxlarge, xlarge, large, medium, small, xsmall;
+
     public MaterialSlider(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         inflate(context, R.layout.view_material_slider, this);
+
+        xxlarge = context.getResources().getDimension(R.dimen.text_xxlarge);
+        xlarge = context.getResources().getDimension(R.dimen.text_xlarge);
+        large = context.getResources().getDimension(R.dimen.text_large);
+        medium = context.getResources().getDimension(R.dimen.text_medium);
+        small = context.getResources().getDimension(R.dimen.text_small);
+        xsmall = context.getResources().getDimension(R.dimen.text_xsmall);
 
         int[] set = new int[]{android.R.attr.text,
                 android.R.attr.hint,

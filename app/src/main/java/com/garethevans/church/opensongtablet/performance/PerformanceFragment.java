@@ -245,7 +245,11 @@ public class PerformanceFragment extends Fragment {
         }
     }
     public void updateInlineSetItem(int position) {
-        myView.inlineSetList.updateSelected(position);
+        try {
+            myView.inlineSetList.updateSelected(position);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     public void updateInlineSetMove(int from, int to) {
         myView.inlineSetList.updateInlineSetMove(from,to);

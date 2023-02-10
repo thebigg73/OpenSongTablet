@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/DefaultView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -19,9 +20,9 @@
                 android:id="@+id/performanceMode"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
                 android:text="@string/performance_mode"
-                android:hint="@string/performance_mode_info" />
+                android:hint="@string/performance_mode_info"
+                app:size="large"/>
             <TableRow style="@style/DividerLine" />
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
@@ -29,7 +30,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/stage_mode"
-                android:hint="@string/stage_mode_info" />
+                android:hint="@string/stage_mode_info"
+                app:size="large"/>
             <TableRow style="@style/DividerLine" />
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
@@ -37,7 +39,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/presenter_mode"
-                android:hint="@string/presentation_mode_info" />
+                android:hint="@string/presentation_mode_info"
+                app:size="large"/>
             <TableRow style="@style/DividerLine" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

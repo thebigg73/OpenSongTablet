@@ -29,6 +29,7 @@ public class MyMaterialEditText extends LinearLayout implements View.OnTouchList
     private final TextInputEditText editText;
     private final TextInputLayout textInputLayout;
     private final boolean restoreState;
+    private final float xxlarge, xlarge, large, medium, small, xsmall;
 
     // By default this is a single line edit text
     // For multiline, the number of lines has to be specified (maxLines/lines)
@@ -39,10 +40,24 @@ public class MyMaterialEditText extends LinearLayout implements View.OnTouchList
         editText = new TextInputEditText(context);
         textInputLayout = new TextInputLayout(context);
         restoreState = true;
+
+        xxlarge = context.getResources().getDimension(R.dimen.text_xxlarge);
+        xlarge = context.getResources().getDimension(R.dimen.text_xlarge);
+        large = context.getResources().getDimension(R.dimen.text_large);
+        medium = context.getResources().getDimension(R.dimen.text_medium);
+        small = context.getResources().getDimension(R.dimen.text_small);
+        xsmall = context.getResources().getDimension(R.dimen.text_xsmall);
     }
     public MyMaterialEditText(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         inflate(context, R.layout.view_material_edittext, this);
+
+        xxlarge = context.getResources().getDimension(R.dimen.text_xxlarge);
+        xlarge = context.getResources().getDimension(R.dimen.text_xlarge);
+        large = context.getResources().getDimension(R.dimen.text_large);
+        medium = context.getResources().getDimension(R.dimen.text_medium);
+        small = context.getResources().getDimension(R.dimen.text_small);
+        xsmall = context.getResources().getDimension(R.dimen.text_xsmall);
 
         int[] set = new int[]{android.R.attr.text,
                 android.R.attr.hint,

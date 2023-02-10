@@ -79,7 +79,6 @@ public class SettingsCCLI extends Fragment {
         myView.ccliAutomatic.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getPreferences().setMyPreferenceBoolean(
                 "ccliAutomaticLogging", isChecked));
         myView.ccliView.setOnClickListener(v -> showDialog());
-        myView.ccliExport.setOnClickListener(view -> exportLog());
         myView.ccliExportCSV.setOnClickListener(view -> exportCSVLog());
         myView.ccliDelete.setOnClickListener(v -> mainActivityInterface.displayAreYouSure("ccliDelete",
                 getString(R.string.ccli_reset),null,"SettingsCCLI", this, null));
@@ -91,14 +90,6 @@ public class SettingsCCLI extends Fragment {
 
     private void showDialog() {
         mainActivityInterface.navigateToFragment(null,R.id.settingsCCLILog);
-    }
-
-    private void exportLog() {
-        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Settings","","ActivityLog.xml");
-        Intent intent = mainActivityInterface.getExportActions().setShareIntent(basicMessage(),"text/xml",uri,null);
-        intent.putExtra(Intent.EXTRA_SUBJECT, "ActivityLog.xml");
-        intent.putExtra(Intent.EXTRA_TITLE, "ActivityLog.xml");
-        startActivity(Intent.createChooser(intent, "ActivityLog.xml"));
     }
 
     private void exportCSVLog() {

@@ -2,11 +2,14 @@ package com.garethevans.church.opensongtablet.export;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.print.PrintManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +26,7 @@ import com.garethevans.church.opensongtablet.databinding.SettingsExportBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.concurrent.ExecutorService;
@@ -42,11 +46,12 @@ public class ExportFragment extends Fragment {
     private String setToExport = null, exportType, shareTitle, textContent, setContent;
     private boolean openSong = false, currentFormat = false, openSongApp = false, pdf = false, image = false,
             chordPro = false, onsong = false, text = false, setPDF = false, openSongSet = false,
-            openSongAppSet = false, includeSongs = false, textSet = false, isPrint;
+            setPNG = false, openSongAppSet = false, includeSongs = false, textSet = false, isPrint;
     private String[] location, setData, ids;
     private StringBuilder songsAlreadyAdded;
     private Handler handler;
     private float scaleComments;
+    private Bitmap setPNGHeader, setPNGContent;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -118,6 +123,7 @@ public class ExportFragment extends Fragment {
         myView.openSongAppSet.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("exportOpenSongAppSet",false));
         myView.openSongSet.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("exportOpenSongSet",true));
         myView.textSet.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("exportOpenSongTextSet",false));
+        myView.setPNG.setChecked(false);
 
         // Set the defaults for song export
         myView.currentFormat.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("exportCurrentFormat",true));
@@ -133,7 +139,7 @@ public class ExportFragment extends Fragment {
         myView.openSongAppSet.setOnCheckedChangeListener(new MyCheckChanged("exportOpenSongAppSet"));
         myView.openSongSet.setOnCheckedChangeListener(new MyCheckChanged("exportOpenSongSet"));
         myView.textSet.setOnCheckedChangeListener(new MyCheckChanged("exportOpenSongTextSet"));
-
+        myView.setPNG.setOnCheckedChangeListener(new MyCheckChanged("exportSetPNG"));
         myView.currentFormat.setOnCheckedChangeListener(new MyCheckChanged("exportCurrentFormat"));
         myView.pdf.setOnCheckedChangeListener(new MyCheckChanged("exportPDF"));
         myView.openSongApp.setOnCheckedChangeListener(new MyCheckChanged("exportOpenSongApp"));
@@ -239,6 +245,7 @@ public class ExportFragment extends Fragment {
         openSongAppSet = myView.openSongAppSet.isChecked();
         textSet = myView.textSet.isChecked();
         includeSongs = myView.includeSongs.isChecked();
+        setPNG = myView.setPNG.isChecked();
 
         // Songs
         pdf = myView.pdf.isChecked();
@@ -413,8 +420,7 @@ public class ExportFragment extends Fragment {
                     }
                 }
             }
-
-            if ((includeSongs && pdf) || setPDF) {
+            if ((includeSongs && pdf) || setPDF || setPNG) {
                 // We need to render PDFs which get drawn and added one at a time
                 // From here on we need to be on the UI thread (ouch!)
                 handler.post(this::renderPDFSet);
@@ -428,7 +434,7 @@ public class ExportFragment extends Fragment {
     private void renderPDFSet() {
         songsProcessed = 0;
 
-        if (setPDF) {
+        if (setPDF || setPNG) {
             mainActivityInterface.getMakePDF().setIsSetListPrinting(true);
             Song tempSong = new Song();
             tempSong.setTitle(setToExport);
@@ -586,6 +592,7 @@ public class ExportFragment extends Fragment {
             myView.shareButton.show();
             myView.print.setEnabled(true);
             myView.print.show();
+            uris = new ArrayList<>();
         });
     }
 
@@ -613,6 +620,8 @@ public class ExportFragment extends Fragment {
     }
 
     public void createOnTheFlyHeader(Song thisSong, String pdfName) {
+        Log.d(TAG,"setPNG:"+setPNG+"  pdfName:"+pdfName+"   ==   Set "+setToExport+".pdf");
+
         // Get the song sheet header
         // Once this has drawn, move to the next stage of the song sections
 
@@ -623,7 +632,9 @@ public class ExportFragment extends Fragment {
                 myView.hiddenHeader.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 headerLayoutWidth = myView.hiddenHeader.getMeasuredWidth();
                 headerLayoutHeight = myView.hiddenHeader.getMeasuredHeight();
-                myView.hiddenHeader.removeAllViews();
+                if (!pdfName.equals(getString(R.string.set) +" " +setToExport+".pdf") && !setPNG) {
+                    myView.hiddenHeader.removeAllViews();
+                }
                 createOnTheFlySections(thisSong, pdfName);
             }
         });
@@ -657,17 +668,54 @@ public class ExportFragment extends Fragment {
             @Override
             public void onGlobalLayout() {
                 // The views are ready so lets measure them after clearing this listener
-
                 // If all the views are there, we can start measuring
                 if (myView.hiddenSections.getChildCount()==sectionViewsPDF.size()) {
                     myView.hiddenSections.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    int maxWidth = 0;
                     for (int x=0; x<myView.hiddenSections.getChildCount(); x++) {
                         View view = myView.hiddenSections.getChildAt(x);
                         int width = view.getMeasuredWidth();
                         int height = view.getMeasuredHeight();
                         sectionViewWidthsPDF.add(width);
                         sectionViewHeightsPDF.add(height);
+                        if (width>maxWidth) {
+                            maxWidth = width;
+                        }
                     }
+
+                    boolean isSetFile = pdfName.equals(getString(R.string.set) +" " +setToExport+".pdf");
+
+                    Log.d(TAG,"setPNG:"+setPNG+"  pdfName:"+pdfName+"   ==   Set "+setToExport+".pdf");
+                    // If we are exporting a setPNG and this is the set, take a bitmap!
+                    if (isSetFile && setPNG) {
+                        try {
+                            // The header should still be in place
+                            // Now take a bitmap of the layout
+                            setPNGContent = Bitmap.createBitmap(maxWidth, myView.previewLayout.getHeight(), Bitmap.Config.ARGB_8888);
+                            Canvas canvas = new Canvas(setPNGContent);
+                            myView.previewLayout.draw(canvas);
+                            Log.d(TAG, "bitmap  width:" + setPNGContent.getWidth() + "  height:" + setPNGContent.getHeight());
+                            Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Export","",pdfName.replace(".pdf",".png"));
+                            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true,uri,null,"Export","",pdfName.replace(".pdf",".png"));
+                            OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(uri);
+                            mainActivityInterface.getStorageAccess().writeImage(outputStream,setPNGContent);
+                            if (uris==null) {
+                                uris = new ArrayList<>();
+                            }
+                            uris.add(uri);
+                            // Remove the header
+                            myView.hiddenHeader.removeAllViews();
+
+                            // Check the bitmap is released/cleared
+                            if (setPNGContent!=null) {
+                                setPNGContent.recycle();
+                            }
+
+                        } catch (OutOfMemoryError | Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
                     // Now detach from this view (can only be shown in one layout)
                     myView.hiddenSections.removeAllViews();
 
@@ -679,13 +727,19 @@ public class ExportFragment extends Fragment {
                         mimeTypes = new ArrayList<>();
                     }
 
-                    uris.add(mainActivityInterface.getMakePDF().createTextPDF(
-                            sectionViewsPDF, sectionViewWidthsPDF,
-                            sectionViewHeightsPDF, headerLayoutPDF,
-                            headerLayoutWidth, headerLayoutHeight,
-                            pdfName, null));
-                    if (!mimeTypes.contains("application/pdf")) {
-                        mimeTypes.add("application/pdf");
+                    // If we wanted a pdf (rather than png), add it
+
+                    Log.d(TAG,"setPDF:"+setPDF+"  isSetFile:"+isSetFile);
+
+                    if (setPDF || !isSetFile) {
+                        uris.add(mainActivityInterface.getMakePDF().createTextPDF(
+                                sectionViewsPDF, sectionViewWidthsPDF,
+                                sectionViewHeightsPDF, headerLayoutPDF,
+                                headerLayoutWidth, headerLayoutHeight,
+                                pdfName, null));
+                        if (!mimeTypes.contains("application/pdf")) {
+                            mimeTypes.add("application/pdf");
+                        }
                     }
                     if (isPrint) {
                         // We have exported a song as a print layout

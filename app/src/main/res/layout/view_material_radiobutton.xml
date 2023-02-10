@@ -36,7 +36,7 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/hintView"
-            android:textSize="16sp"
+            android:textSize="@dimen/text_small"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="0dp"

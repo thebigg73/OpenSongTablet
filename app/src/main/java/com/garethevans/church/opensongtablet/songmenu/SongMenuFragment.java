@@ -368,6 +368,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                 break;
             }
         }
+        Log.d(TAG,"pos:"+pos);
         if (pos>-1) {
             // Update the checklist in the adapter
             songListAdapter.changeCheckBox(pos);

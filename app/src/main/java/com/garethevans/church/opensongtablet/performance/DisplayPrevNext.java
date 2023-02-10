@@ -3,6 +3,7 @@ package com.garethevans.church.opensongtablet.performance;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.net.Uri;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -154,6 +155,7 @@ public class DisplayPrevNext {
                 moveNextInMenu = false;
             }
         }
+        Log.d(TAG,"setPosition:"+setPosition+"  nextIndex:"+nextIndex+"  prevIndex:"+prevIndex+"  moveNextInMenu:"+moveNextInMenu+"  movePrevInMenu:"+movePrevInMenu);
     }
 
     private String getTextForButton(int position) {

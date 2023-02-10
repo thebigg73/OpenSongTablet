@@ -45,4 +45,16 @@
     <integer name="slide_in_time">200</integer>
 
     <dimen name="exposed_dropdown_height">200dp</dimen>
+
+    <!-- For the text -->
+    <dimen name="text_menu_title">16sp</dimen>
+    <dimen name="text_menu_subtitle">14sp</dimen>
+
+    <dimen name="text_xxlarge">20.0sp</dimen>
+    <dimen name="text_xlarge">18.0sp</dimen>
+    <dimen name="text_large">16.0sp</dimen>
+    <dimen name="text_medium">14.0sp</dimen>
+    <dimen name="text_small">12.0sp</dimen>
+    <dimen name="text_xsmall">10.0sp</dimen>
+
 </resources>

@@ -13,7 +13,7 @@
         <item name="colorControlActivated">@color/colorSecondary</item>
         <item name="colorControlNormal">@color/white</item>
         <item name="colorControlHighlight">@color/colorSecondary</item>
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">14sp</item>
         <item name="android:textColorHighlight">@color/colorSecondary</item>
 
         <!-- Default colors -->
@@ -235,11 +235,12 @@
     <!--For the song and set menu -->
     <style name="cardView_Title" parent="AppTheme">
         <item name="android:textAppearance">?attr/textAppearanceBody1</item>
-        <!--<item name="android:textSize">18sp</item>-->
+        <item name="android:textSize">@dimen/text_medium</item>
     </style>
     <style name="cardView_Subtitle" parent="AppTheme">
         <item name="android:textAppearance">?attr/textAppearanceBody2</item>
-        <item name="android:textSize">12sp</item>
+        <item name="android:textSize">@dimen/text_xsmall</item>
+
     </style>
     <style name="setItem" parent="@style/Widget.MaterialComponents.CardView">
         <item name="contentPadding">4dp</item>
@@ -438,7 +439,7 @@
     </style>
     <style name="largeText" parent="AppTheme">
         <item name="android:textStyle">bold</item>
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">@dimen/text_xlarge</item>
     </style>
 
     <style name="helperText">

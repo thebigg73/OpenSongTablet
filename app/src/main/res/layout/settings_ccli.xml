@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/DefaultView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -14,11 +15,12 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <com.google.android.material.switchmaterial.SwitchMaterial
+            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
                 android:id="@+id/ccliAutomatic"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/ccli_automatic"/>
+                android:text="@string/ccli_automatic"
+                app:size="large"/>
             <TableRow style="@style/DividerLine" />
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
@@ -26,7 +28,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="@string/ccli_church"
-                android:text="@string/ccli_church" />
+                android:text="@string/ccli_church"
+                app:size="large"/>
             <TableRow style="@style/DividerLine" />
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
@@ -34,7 +37,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/ccli_licence"
-                android:text="@string/ccli_licence" />
+                android:text="@string/ccli_licence"
+                app:size="large" />
             <TableRow style="@style/DividerLine" />
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
@@ -42,15 +46,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="@string/ccli_log"
-                android:text="@string/ccli_view" />
-            <TableRow style="@style/DividerLine" />
-
-            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
-                android:id="@+id/ccliExport"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:hint="@string/ccli_export"
-                android:text="@string/export" />
+                android:text="@string/ccli_view"
+                app:size="large" />
             <TableRow style="@style/DividerLine" />
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
@@ -58,7 +55,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="@string/csv"
-                android:text="@string/export" />
+                android:text="@string/export"
+                app:size="large" />
             <TableRow style="@style/DividerLine" />
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
@@ -66,7 +64,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="@string/ccli_reset"
-                android:text="@string/delete" />
+                android:text="@string/delete"
+                app:size="large" />
             <TableRow style="@style/DividerLine" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

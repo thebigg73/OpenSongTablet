@@ -8,6 +8,7 @@ import android.graphics.PorterDuffColorFilter;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.FrameLayout;
@@ -26,10 +27,18 @@ public class MyMaterialTextView extends LinearLayout {
     private final ImageView checkMark, imageView;
     private final CheckBox checkBox;
     private final FrameLayout checkBoxHolder;
+    private final float xxlarge, xlarge, large, medium, small, xsmall;
 
     public MyMaterialTextView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         inflate(context, R.layout.view_material_textview, this);
+
+        xxlarge = context.getResources().getDimension(R.dimen.text_xxlarge);
+        xlarge = context.getResources().getDimension(R.dimen.text_xlarge);
+        large = context.getResources().getDimension(R.dimen.text_large);
+        medium = context.getResources().getDimension(R.dimen.text_medium);
+        small = context.getResources().getDimension(R.dimen.text_small);
+        xsmall = context.getResources().getDimension(R.dimen.text_xsmall);
 
         textView = findViewById(R.id.textView);
         hintView = findViewById(R.id.hintView);
@@ -52,6 +61,12 @@ public class MyMaterialTextView extends LinearLayout {
         Drawable drawable = a.getDrawable(R.styleable.MaterialTextView_mydrawable);
         boolean isChecked = a.getBoolean(R.styleable.MaterialTextView_showCheckMark,false);
         boolean isCheckBox = a.getBoolean(R.styleable.MaterialTextView_showCheckBox, false);
+        String size = a.getString(R.styleable.MaterialTextView_size);
+        if (size==null) {
+            size = "medium";
+        }
+        setSize(size);
+
         String mainText = typedArray.getString(0);
         textView.setText(mainText);
 
@@ -82,8 +97,41 @@ public class MyMaterialTextView extends LinearLayout {
     public void setHintMonospace() {
         hintView.post(() -> {
             hintView.setTypeface(Typeface.MONOSPACE);
-            hintView.setTextSize(14f);
         });
+    }
+
+    public void setSize(String size) {
+        float textSize, hintSize;
+
+        switch(size) {
+            case "xxlarge":
+                textSize = xxlarge;
+                hintSize = xlarge;
+                break;
+            case "xlarge":
+                textSize = xlarge;
+                hintSize = large;
+                break;
+            case "large":
+                textSize = large;
+                hintSize = medium;
+                break;
+            case "medium":
+            default:
+                textSize = medium;
+                hintSize = small;
+                break;
+            case "small":
+                textSize = small;
+                hintSize = xsmall;
+                break;
+            case "xsmall":
+                textSize = xsmall;
+                hintSize = xsmall-1;
+                break;
+        }
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_PX,textSize);
+        hintView.setTextSize(TypedValue.COMPLEX_UNIT_PX,hintSize);
     }
 
     public void setHintColor(int color) {
