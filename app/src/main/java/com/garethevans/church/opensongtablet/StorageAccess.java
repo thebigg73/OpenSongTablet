@@ -835,7 +835,11 @@ class StorageAccess {
                     String bit = "";
                     for (String s : bits) {
                         parentUri = getUriForItem(c, preferences, folder, bit, "");
-                        docContractCreate(c, parentUri, mimeType, s);
+                        Uri newUri = parentUri;
+                        newUri.buildUpon().appendPath(s);
+                        if (!uriExists(c, newUri)) {
+                            docContractCreate(c, parentUri, mimeType, s);
+                        }
                         bit = bit + "/" + s;
                     }
                 }
