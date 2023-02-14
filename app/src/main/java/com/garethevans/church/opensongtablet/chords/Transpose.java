@@ -1,7 +1,6 @@
 package com.garethevans.church.opensongtablet.chords;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
@@ -396,7 +395,7 @@ public class Transpose {
                     // If the old format has transposable chords - transpose
                     if (oldChordFormat < 5 || oldChordFormat == 7) {
                         line = transposeNumber(line, transposeDirection, transposeTimes);
-                        Log.d(TAG,"MIDTRANSPOSE LINE: "+line);
+                        //Log.d(TAG,"MIDTRANSPOSE LINE: "+line);
                     }
                     //Log.d(TAG,"newChordFormat="+newChordFormat);
                     switch (newChordFormat) {
@@ -832,7 +831,6 @@ public class Transpose {
                     // Case is needed as lowercase chords denotes minor chords for format 3
                     // Not required for format 5 (Nashville numbers)
                     for (String chordInLine : chordsInLine) {
-                        //Log.d(TAG,"chordInLine: "+chordInLine);
                         chordInLineLC = chordInLine.toLowerCase(Locale.ROOT);
                         if (Arrays.asList(format6Identifiers).contains(chordInLineLC)) {
                             contains_nashnumeral_count++;

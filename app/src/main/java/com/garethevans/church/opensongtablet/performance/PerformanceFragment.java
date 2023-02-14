@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -259,7 +260,11 @@ public class PerformanceFragment extends Fragment {
         myView.inlineSetList.updateInlineSetRemoved(from);
     }
     public void updateInlineSetAdded(SetItemInfo setItemInfo) {
-        myView.inlineSetList.updateInlineSetAdded(setItemInfo);
+        try {
+            myView.inlineSetList.updateInlineSetAdded(setItemInfo);
+        } catch (Exception e) {
+            Log.d(TAG,"Couldn't update inline set - might just not be shown currently");
+        }
     }
     public void initialiseInlineSetItem(int position) {
         myView.inlineSetList.initialiseInlineSetItem(position);

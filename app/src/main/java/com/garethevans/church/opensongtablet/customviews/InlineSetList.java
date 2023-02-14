@@ -5,7 +5,6 @@ import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -389,7 +388,6 @@ public class InlineSetList extends RecyclerView {
     private void adjustTextSize() {
         // Base the text size on the width of the inline set
         // Minimum size is 12, Maximum is 20
-        // TODO
-        Log.d(TAG,"width:"+width);
+        textSize = mainActivityInterface.getPreferences().getMyPreferenceFloat("songMenuAlphaIndexSize",14f) - 2;
     }
 }

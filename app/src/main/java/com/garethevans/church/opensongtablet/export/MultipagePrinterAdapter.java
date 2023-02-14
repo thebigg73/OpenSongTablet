@@ -10,6 +10,7 @@ import android.print.PageRange;
 import android.print.PrintAttributes;
 import android.print.PrintDocumentAdapter;
 import android.print.PrintDocumentInfo;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
@@ -34,7 +35,7 @@ public class MultipagePrinterAdapter extends PrintDocumentAdapter {
     private String setName;
     private Uri uri;
     private ArrayList<View> sectionViewsPDF;
-    private ArrayList<String> setItemLocations, setItemEntries;
+    private ArrayList<String> setItemLocations, setItemEntries, setItemKeys;
     private int headerLayoutWidth;
     private int headerLayoutHeight;
     private ExportFragment exportFragment;
@@ -48,13 +49,16 @@ public class MultipagePrinterAdapter extends PrintDocumentAdapter {
         sectionViewsPDF = new ArrayList<>();
     }
 
-    public void updateSetList(ExportFragment exportFragment, String setName, String setList, String setEntries) {
+    public void updateSetList(ExportFragment exportFragment, String setName, String setList, String setEntries, String setKeys) {
         String[] sil = setList.split("\n");
         String[] sie = setEntries.split("\n");
+        String[] sik = setKeys.split("\n");
         setItemLocations = new ArrayList<>();
         setItemEntries = new ArrayList<>();
+        setItemKeys = new ArrayList<>();
         Collections.addAll(setItemLocations, sil);
         Collections.addAll(setItemEntries, sie);
+        Collections.addAll(setItemKeys, sik);
         this.setName = setName;
         this.exportFragment = exportFragment;
     }
@@ -188,10 +192,12 @@ public class MultipagePrinterAdapter extends PrintDocumentAdapter {
     }
 
     private void getSongOrPrintIfDone() {
-        if (!mainActivityInterface.getPreferences().getMyPreferenceBoolean("exportSetSongs",false) ||
+        Log.d(TAG,"getSongOrPrintIfDone()  exportSetSongs:"+mainActivityInterface.getPreferences().getMyPreferenceBoolean("exportSetSongs",false)+
+                "    currentSetItem:"+currentSetItem+"    setItemEntries.size():"+setItemEntries.size());
+        if (!mainActivityInterface.getPreferences().getMyPreferenceBoolean("exportSetSongs",true) ||
                 currentSetItem>=setItemEntries.size()) {
             callPrint();
-        } else if (setItemLocations.size()>currentSetItem) {
+        } else if (setItemLocations.size()>currentSetItem && !setItemLocations.get(currentSetItem).equals("ignore")) {
             // Initialse the song for processing
             Song currentSetSong;
             if (setItemLocations.get(currentSetItem).contains("../") ||
@@ -201,8 +207,10 @@ public class MultipagePrinterAdapter extends PrintDocumentAdapter {
                 // This is a custom file - load it!
                 String[] location = s.split("/");
                 currentSetSong = new Song();
-                currentSetSong.setFolder(location[0]);
+                //currentSetSong.setFolder(location[0]);
+                currentSetSong.setFolder("../Export");
                 currentSetSong.setFilename(location[1]);
+                Log.d(TAG,"loading song at :"+currentSetSong.getFolder()+"/"+currentSetSong.getFilename());
                 currentSetSong = mainActivityInterface.getLoadSong().doLoadSongFile(currentSetSong,false);
             } else {
                 if (setItemLocations.get(currentSetItem).contains("/")) {
@@ -213,8 +221,19 @@ public class MultipagePrinterAdapter extends PrintDocumentAdapter {
                 }
             }
 
+            // If we have transposed this song in the set on the fly, match the key here
+            if (!setItemKeys.get(currentSetItem).equals("ignore") && !setItemKeys.get(currentSetItem).trim().isEmpty() && currentSetSong.getKey()!=null && !currentSetSong.getKey().isEmpty() &&
+                    !setItemKeys.get(currentSetItem).trim().equals(currentSetSong.getKey())) {
+                int transposeTimes = mainActivityInterface.getTranspose().getTransposeTimes(currentSetSong.getKey(),setItemKeys.get(currentSetItem).trim());
+                mainActivityInterface.getTranspose().checkChordFormat(currentSetSong);
+                currentSetSong = mainActivityInterface.getTranspose().doTranspose(currentSetSong,"+1",transposeTimes,currentSetSong.getDetectedChordFormat(),currentSetSong.getDesiredChordFormat());
+            }
+
             // Now do the header.  Once this is done, it does the content, then moves to the next song
             createOnTheFlyHeader(currentSetSong,false);
+        } else if (setItemLocations.size()>currentSetItem && setItemLocations.get(currentSetItem).equals("ignore")) {
+            currentSetItem++;
+            getSongOrPrintIfDone();
         } else {
             currentSetItem++;
             callPrint();

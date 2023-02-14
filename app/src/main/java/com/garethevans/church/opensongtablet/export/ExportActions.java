@@ -119,9 +119,10 @@ public class ExportActions {
 
 
     public String[] parseSets(ArrayList<String> setNames) {
-        String[] setData = new String[2];
+        String[] setData = new String[3];
         setData[0] = ""; // The ids of any songs
         setData[1] = ""; // A text line for display/email/etc.
+        setData[2] = ""; // A note of specified keys
 
         for (String setName:setNames) {
             String[] thisSet = setParser(setName);
@@ -131,20 +132,25 @@ public class ExportActions {
             if (!thisSet[1].trim().isEmpty()) {
                 setData[1] = setData[1] + thisSet[1].trim() + "\n";
             }
+            if (!thisSet[2].trim().isEmpty()) {
+                setData[2] = setData[2] + thisSet[2].trim() + "\n";
+            }
         }
 
         // Trim
         setData[0] = setData[0].trim();
         setData[1] = setData[1].trim();
+        setData[2] = setData[2].trim();
         return setData;
     }
 
     private String[] setParser(String setName) {
         // bits[0] will be the song ids split by new line
         // bits[1] will be a text version of the set list
-        String[] bits = new String[2];
+        String[] bits = new String[3];
         StringBuilder stringBuilderIDs = new StringBuilder();
         StringBuilder stringBuilderSet = new StringBuilder();
+        StringBuilder stringBuilderKey = new StringBuilder();
 
         // First up, load the set
         Uri setUri = mainActivityInterface.getStorageAccess().getUriForItem("Sets","",setName);
@@ -164,6 +170,7 @@ public class ExportActions {
                     if (eventType == XmlPullParser.START_TAG) {
                         if (xpp.getName().equals("slide_group")) {
                             // Look for the type attribute and see what type of slide it is
+                            Log.d(TAG,"type:"+xpp.getAttributeValue(null, "type"));
                             switch (xpp.getAttributeValue(null, "type")) {
                                 case "song":
                                 case "custom":
@@ -172,6 +179,7 @@ public class ExportActions {
                                             c.getResources().getString(R.string.variation) + " # - ") ||
                                             xpp.getAttributeValue(null, "name").contains("# " +
                                                     c.getResources().getString(R.string.note) + " # - ") ||
+                                            xpp.getAttributeValue(null, "type").equals("custom") ||
                                             xpp.getAttributeValue(null, "type").equals("song")){
                                         String folder;
                                         String filename = stripSlashes(mainActivityInterface.getProcessSong().parseHTML(xpp.getAttributeValue(null, "name")));
@@ -194,6 +202,11 @@ public class ExportActions {
                                             filename = filename.replace("# " + c.getResources().getString(R.string.note) + " # - ", "");
                                             id = "../Notes/" + filename;
                                             custom = c.getString(R.string.note);
+
+                                        } else if (xpp.getAttributeValue(null, "type").equals("custom")) {
+                                            // This is likely custom slides
+                                            id = "../Slides/" + filename;
+                                            custom = c.getString(R.string.slide);
 
                                         } else {
                                             // This is a song, which should be in the database
@@ -264,6 +277,11 @@ public class ExportActions {
                                         // IV - , (comma) is the delimiter so use within content is replaced with " |" and then the temporary delimeter ¬ replaced with ,
                                         stringBuilderSet.append(bittoadd.replace(","," |").replace("¬", ",").replace(" |",","));
                                         stringBuilderIDs.append(id).append("\n");
+                                        String keyText = key.replace("(","").replace(")","").trim();
+                                        if (keyText.isEmpty()) {
+                                            keyText = "ignore";
+                                        }
+                                        stringBuilderKey.append(keyText).append("\n");
                                     }
                                     break;
                                 case "scripture":
@@ -294,12 +312,16 @@ public class ExportActions {
                                     }
 
                                     stringBuilderSet.append(scripture_title).append(scripture_translation).append("¬ ¬ ¬ ¬\n");
+                                    stringBuilderIDs.append("ignore\n");
+                                    stringBuilderKey.append("ignore\n");
                                     break;
 
                                 case "image":
                                     // Get the Image(s)
                                     String filename = stripSlashes(mainActivityInterface.getProcessSong().parseHTML(xpp.getAttributeValue(null, "name")));
                                     stringBuilderSet.append(filename).append("\n");
+                                    stringBuilderIDs.append("ignore\n");
+                                    stringBuilderKey.append("ignore\n");
                                     break;
                             }
                         }
@@ -311,8 +333,9 @@ public class ExportActions {
             e.printStackTrace();
         }
 
-        bits[0] = stringBuilderIDs.toString();
-        bits[1] = stringBuilderSet.toString();
+        bits[0] = stringBuilderIDs.toString().trim();
+        bits[1] = stringBuilderSet.toString().trim();
+        bits[2] = stringBuilderKey.toString().trim();
 
         return bits;
     }

@@ -172,7 +172,7 @@ public class ProcessSong {
             myNEWXML += "  " + extraStuff + "\n";
         }
         myNEWXML += "</song>";
-
+        thisSong.setSongXML(myNEWXML);
         return myNEWXML;
     }
 
@@ -1730,7 +1730,7 @@ public class ProcessSong {
                             } else {
                                 // PDF or presentation
                                 linearLayout.addView(lineText(linetype, line, typeface,
-                                        size, textColor, Color.TRANSPARENT, Color.TRANSPARENT, true));
+                                        size, textColor, Color.TRANSPARENT, Color.TRANSPARENT, presentation));
                             }
                         }
                     }

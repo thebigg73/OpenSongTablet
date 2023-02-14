@@ -13,6 +13,7 @@ import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Base64;
 import android.view.LayoutInflater;
@@ -94,6 +95,8 @@ public class CustomSlideFragment extends Fragment {
         myView.title.setText(mainActivityInterface.getCustomSlide().getCreateTitle());
         myView.addReusable.setChecked(mainActivityInterface.getCustomSlide().getCreateReusable());
         myView.content.setText(mainActivityInterface.getCustomSlide().getCreateContent());
+        myView.time.setDigits("0123456789");
+        myView.time.setInputType(InputType.TYPE_CLASS_NUMBER);
     }
 
     private void setupListeners() {

@@ -157,10 +157,24 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
                 mainActivityInterface.getTempSong().setLyrics(lyrics);
                 mainActivityInterface.getTempSong().setEditingAsChoPro(false);
             }
-            if (mainActivityInterface.getSaveSong().doSave(mainActivityInterface.getTempSong())) {
+
+            // For a new song, check we have a folder/filename set
+            boolean oktoproceed = true;
+            if (mainActivityInterface.getTempSong().getFilename()==null || mainActivityInterface.getTempSong().getFilename().isEmpty()) {
+                mainActivityInterface.getShowToast().doIt(getString(R.string.not_saved_filename));
+                oktoproceed = false;
+            } else if (mainActivityInterface.getTempSong().getFolder()==null || mainActivityInterface.getTempSong().getFolder().isEmpty()) {
+                mainActivityInterface.getShowToast().doIt(getString(R.string.not_saved_folder));
+                oktoproceed = false;
+            } else if (mainActivityInterface.getTempSong().getTitle()==null || mainActivityInterface.getTempSong().getTitle().isEmpty()) {
+                // Ok to proceed, but copy the filename into the empty title
+                mainActivityInterface.getTempSong().setTitle(mainActivityInterface.getTempSong().getFilename());
+            }
+
+            if (oktoproceed && mainActivityInterface.getSaveSong().doSave(mainActivityInterface.getTempSong())) {
                 // If successful, go back to the home page.  Otherwise stay here and await user decision from toast
                 handler.post(() -> mainActivityInterface.navHome());
-            } else {
+            } else if (oktoproceed) {
                 handler.post(() -> mainActivityInterface.getShowToast().doIt(requireContext().getString(R.string.not_saved)));
             }
         });

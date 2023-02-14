@@ -47,7 +47,7 @@ public class ExportFragment extends Fragment {
     private boolean openSong = false, currentFormat = false, openSongApp = false, pdf = false, image = false,
             chordPro = false, onsong = false, text = false, setPDF = false, openSongSet = false,
             setPNG = false, openSongAppSet = false, includeSongs = false, textSet = false, isPrint;
-    private String[] location, setData, ids;
+    private String[] location, setData, ids, setKeys;
     private StringBuilder songsAlreadyAdded;
     private Handler handler;
     private float scaleComments;
@@ -69,6 +69,9 @@ public class ExportFragment extends Fragment {
         mainActivityInterface.getProcessSong().updateProcessingPreferences();
         scaleComments = mainActivityInterface.getPreferences().getMyPreferenceFloat("scaleComments",0.8f);
 
+        // Empty the export folder
+        mainActivityInterface.getStorageAccess().wipeFolder("Export","");
+
         // If we are exporting a song, we do this once, if not, we do it for each song in the set
         if (mainActivityInterface.getWhattodo().startsWith("exportset:")) {
             setToExport = mainActivityInterface.getWhattodo().replace("exportset:", "").replace("%_%","");
@@ -76,6 +79,10 @@ public class ExportFragment extends Fragment {
             setData = mainActivityInterface.getExportActions().parseSets(setNames);
             textContent = setData[1];
             setContent = setData[1];
+            Log.d(TAG,"setData[0]:"+setData[0]);
+            Log.d(TAG,"setData[1]:"+setData[1]);
+            Log.d(TAG,"setData[2]:"+setData[2]);
+
         } else {
             setContent = null;
         }
@@ -283,6 +290,7 @@ public class ExportFragment extends Fragment {
         executorService.execute(() -> {
             handler = new Handler(Looper.getMainLooper());
 
+            // Load in the sets
             // First up add the simple set files that don't require drawing pdfs
             // Add the .osts file
             if (openSongAppSet) {
@@ -294,9 +302,16 @@ public class ExportFragment extends Fragment {
             }
 
             // Add the desktop set file (no extension)
+            ArrayList<Uri> setFiles = mainActivityInterface.getExportActions().addOpenSongSetsToUris(setNames);
+
+            // Go through the set and create any custom slides required (variations, slides, etc).
+            for (Uri setFile:setFiles) {
+                mainActivityInterface.getSetActions().extractSetFile(setFile,true);
+            }
+
             if (openSongSet) {
                 // Just add the actual set file(s) (no extension)
-                uris.addAll(mainActivityInterface.getExportActions().addOpenSongSetsToUris(setNames));
+                uris.addAll(setFiles);
                 if (!mimeTypes.contains("text/xml")) {
                     mimeTypes.add("text/xml");
                 }
@@ -320,6 +335,8 @@ public class ExportFragment extends Fragment {
 
             // Now we go through the songs if we want to include them (not pdf rendered yet though)
             ids = setData[0].split("\n");
+            setKeys = setData[2].split("\n");
+
             if (includeSongs) {
                 songsAlreadyAdded = new StringBuilder();
                 songsToAdd = ids.length;
@@ -327,6 +344,8 @@ public class ExportFragment extends Fragment {
 
                 for (int x=0; x<songsToAdd; x++) {
                     String id = ids[x];
+                    Log.d(TAG,"id:"+id);
+
                     // Only add if we don't already have it (as we may have multiple references to
                     // songs in sets, especially is we have selected more than one set)
                     location = mainActivityInterface.getExportActions().getFolderAndFile(id);
@@ -344,12 +363,33 @@ public class ExportFragment extends Fragment {
                         if (location[0].contains("../") || location[0].contains("**")) {
                             song = new Song();
                             song.setFolder(location[0].replace("../","**"));
+                            song.setFolder("../Export");
                             song.setFilename(location[1]);
                             song = mainActivityInterface.getLoadSong().doLoadSongFile(song,false);
+                            Log.d(TAG,"song:"+song.getFolder()+"/"+song.getFilename()+"  lyrics:"+song.getLyrics());
                         } else {
                             song = mainActivityInterface.getSQLiteHelper().getSpecificSong(location[0], location[1]);
                         }
 
+                        // If we have transposed this song in the set on the fly, match the key here
+                        boolean useTransposed = false;
+                        if (!setKeys[x].equals("ignore") && !setKeys[x].trim().isEmpty() && song.getKey()!=null && !song.getKey().isEmpty() &&
+                                !setKeys[x].trim().equals(song.getKey())) {
+                            int transposeTimes = mainActivityInterface.getTranspose().getTransposeTimes(song.getKey(),setKeys[x].trim());
+                            mainActivityInterface.getTranspose().checkChordFormat(song);
+                            song = mainActivityInterface.getTranspose().doTranspose(song,"+1",transposeTimes,song.getDetectedChordFormat(),song.getDesiredChordFormat());
+                            song.setFilename(song.getFilename()+"__"+setKeys[x]);
+                            Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Export", "",song.getFilename());
+                            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true,uri,null,"Export","",song.getFilename());
+                            mainActivityInterface.getProcessSong().getXML(song);
+                            mainActivityInterface.getStorageAccess().doStringWriteToFile("Export","",song.getFilename(),song.getSongXML());
+                            uris.add(uri);
+                            Log.d(TAG,"adding "+uri);
+                            if (!mimeTypes.contains("text/xml")) {
+                                mimeTypes.add("text/xml");
+                            }
+                            useTransposed = true;
+                        }
 
                         // Sharing a song should initiate the CCLI Log of printed (value 6)
                         if (mainActivityInterface.getPreferences().getMyPreferenceBoolean("ccliAutomaticLogging",false)) {
@@ -357,7 +397,7 @@ public class ExportFragment extends Fragment {
                         }
 
                         // Deal with the currentFormat option first, or PDF for PDF songs
-                        if (currentFormat || (pdf && likelyPDF)) {
+                        if (!id.equals("ignore") && (currentFormat && !useTransposed) || (pdf && likelyPDF)) {
                             // Just get a uri for the song
                             uris.add(mainActivityInterface.getStorageAccess().getUriForItem("Songs", location[0], location[1]));
                             if (openSong && !mimeTypes.contains("text/xml")) {
@@ -368,18 +408,24 @@ public class ExportFragment extends Fragment {
                         }
 
                         // Add OpenSongApp files
-                        if (openSongApp && likelyXML) {
+                        if (!id.equals("ignore") && openSongApp && likelyXML) {
                             mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" doExportSet CopyFromTo Songs/"+location[0]+"/"+location[1]+" to Export/"+location[1]+".ost");
-                            uris.add(mainActivityInterface.getStorageAccess().copyFromTo(
-                                    "Songs", location[0], location[1],
-                                    "Export", "", location[1] + ".ost"));
+                            if (useTransposed) {
+                                uris.add(mainActivityInterface.getStorageAccess().copyFromTo(
+                                        "Export", "",song.getFilename(),
+                                        "Export", "", song.getFilename() + ".ost"));
+                            } else {
+                                uris.add(mainActivityInterface.getStorageAccess().copyFromTo(
+                                        "Songs", location[0], location[1],
+                                        "Export", "", location[1] + ".ost"));
+                            }
                             if (!mimeTypes.contains("text/xml")) {
                                 mimeTypes.add("text/xml");
                             }
                         }
 
                         // Add onSong files
-                        if (onsong && likelyXML) {
+                        if (!id.equals("ignore") && onsong && likelyXML) {
                             // Get the text from the file
                             String content = mainActivityInterface.getPrepareFormats().getSongAsOnSong(song);
                             mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" doExportSet doStringWriteToFile Export/"+location[1]+".onsong with: "+content);
@@ -392,7 +438,7 @@ public class ExportFragment extends Fragment {
                         }
 
                         // Add chordPro songs
-                        if (chordPro && likelyXML) {
+                        if (!id.equals("ignore") && chordPro && likelyXML) {
                             // Get the text from the file
                             String content = mainActivityInterface.getPrepareFormats().getSongAsChoPro(song);
                             mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" doExportSet doStringWriteToFile Export/"+location[1]+".cho with: "+content);
@@ -405,7 +451,7 @@ public class ExportFragment extends Fragment {
                         }
 
                         // Add text songs
-                        if (text && likelyXML) {
+                        if (!id.equals("ignore") && text && likelyXML) {
                             // Get the text from the file
                             String content = mainActivityInterface.getPrepareFormats().getSongAsText(song);
                             mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" doExportSet doStringWriteToFile Export/"+location[1]+".txt with: "+content);
@@ -453,27 +499,43 @@ public class ExportFragment extends Fragment {
     private void renderPDFSongs() {
         mainActivityInterface.getMakePDF().setIsSetListPrinting(false);
         // Go through the songs if we are adding them as pdfs until we have processed all
-        if (!includeSongs || !pdf || songsProcessed==songsToAdd) {
+        if (songsProcessed>=ids.length || !includeSongs || !pdf || songsProcessed==songsToAdd) {
             initiateShare();
         } else {
             String id = ids[songsProcessed];
+            String key = setKeys[songsProcessed];
             location = mainActivityInterface.getExportActions().getFolderAndFile(id);
+            Log.d(TAG,"location:"+location+"  id:"+id+"  key:"+key);
             boolean likelyXML = !location[1].contains(".") || location[1].toLowerCase(Locale.ROOT).endsWith(".xml");
 
             // Only add if we haven't already added it
-            if (likelyXML && !songsAlreadyAdded.toString().contains(id+".pdf")) {
+            Log.d(TAG,"id:"+id);
+            if (likelyXML && !songsAlreadyAdded.toString().contains(id+".pdf") && !id.equals("ignore")) {
                 songsAlreadyAdded.append("\n").append(id);
                 updateProgressText(location[1]+".pdf", songsProcessed + 1, ids.length);
                 Song song;
                 if (location[0].contains("../") || location[0].contains("**")) {
                     song = new Song();
-                    song.setFolder(location[0]);
+                    //song.setFolder(location[0]);
+                    song.setFolder("../Export");
                     song.setFilename(location[1]);
                     song = mainActivityInterface.getLoadSong().doLoadSongFile(song,false);
                 } else {
                     song = mainActivityInterface.getSQLiteHelper().getSpecificSong(location[0], location[1]);
+                    // If we have transposed this song in the set on the fly, match the key here
+                    if (!key.isEmpty() && song.getKey()!=null && !song.getKey().isEmpty() &&
+                            !key.equals(song.getKey())) {
+                        int transposeTimes = mainActivityInterface.getTranspose().getTransposeTimes(song.getKey(),key);
+                        mainActivityInterface.getTranspose().checkChordFormat(song);
+                        song = mainActivityInterface.getTranspose().doTranspose(song,"+1",transposeTimes,song.getDetectedChordFormat(),song.getDesiredChordFormat());
+                        song.setFilename(song.getFilename()+"__"+key);
+                        location[1] = location[1]+"__"+key;
+                    }
                 }
                 createOnTheFly(song,location[1]+".pdf");
+            } else if (id.equals("ignore")) {
+                songsProcessed++;
+                renderPDFSongs();
             }
             songsProcessed++;
         }
@@ -573,6 +635,9 @@ public class ExportFragment extends Fragment {
     }
 
     private void initiateShare() {
+        for (Uri uri:uris) {
+            Log.d(TAG,"sharing:"+uri);
+        }
         Intent intent = mainActivityInterface.getExportActions().setShareIntent(textContent,"*/*",null,uris);
         intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
         intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name) + " " +
@@ -776,9 +841,15 @@ public class ExportFragment extends Fragment {
             // Set the variable that will remove gaps from set items on the set list page(s)
             mainActivityInterface.getMakePDF().setIsSetListPrinting(true);
 
+            // Go through the sets and create any custom slides required (variations, slides, etc).
+            ArrayList<Uri> setFiles = mainActivityInterface.getExportActions().addOpenSongSetsToUris(setNames);
+            for (Uri setFile:setFiles) {
+                mainActivityInterface.getSetActions().extractSetFile(setFile,true);
+            }
+
             // This is sent to the MultipagePrinterAdapter class to deal with
             MultipagePrinterAdapter multipagePrinterAdapter = new MultipagePrinterAdapter(requireActivity());
-            multipagePrinterAdapter.updateSetList(this,setToExport,setData[0],setData[1]);
+            multipagePrinterAdapter.updateSetList(this,setToExport,setData[0],setData[1],setData[2]);
             mainActivityInterface.getMakePDF().setPreferedAttributes();
             printManager.print(jobName, multipagePrinterAdapter,mainActivityInterface.getMakePDF().getPrintAttributes());
 

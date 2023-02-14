@@ -1,7 +1,6 @@
 package com.garethevans.church.opensongtablet.appdata;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.gms.common.ConnectionResult;
@@ -24,7 +23,6 @@ public class AlertChecks {
     public boolean showPlayServicesAlert() {
         boolean hasPlayServices = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(c) == ConnectionResult.SUCCESS;
         boolean dontNeed = hasPlayServices || ignorePlayServicesWarning || alreadySeen;
-        Log.d(TAG,"dontNeed:"+dontNeed);
         return !dontNeed;
     }
 

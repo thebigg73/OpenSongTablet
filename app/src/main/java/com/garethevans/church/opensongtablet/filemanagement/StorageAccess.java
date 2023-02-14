@@ -1660,7 +1660,7 @@ public class StorageAccess {
         Uri uri = getUriForItem(folder,subfolder,null);
         if (uriExists(uri)) {
             if (lollipopOrLater()) {
-                wipeFolder_SAF(uri);
+                wipeFolder_SAF(uri,folder,subfolder);
             } else {
                 File f = new File(uri.getPath());
                 wipeFolder_File(f);
@@ -1676,13 +1676,22 @@ public class StorageAccess {
         }
     }
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public void wipeFolder_SAF(Uri uri) {
+    public void wipeFolder_SAF(Uri uri, String folder, String subfolder) {
         // Get a contract for the desired folder
         Uri desiredUri = DocumentsContract.buildDocumentUriUsingTree(uriTreeHome,DocumentsContract.getDocumentId(uri));
         try {
             DocumentsContract.deleteDocument(c.getContentResolver(), desiredUri);
         } catch (Exception e) {
             e.printStackTrace();
+        }
+        // Now make the folder again
+        Uri folderUri = getUriForItem_SAF(folder,"","");
+        if (!uriExists_SAF(folderUri)) {
+            createFolder_SAF(uriTreeHome,folder,false);
+        }
+        if (subfolder!=null && !subfolder.isEmpty()) {
+            Uri subfolderUri = getUriForItem_SAF(folder,subfolder,"");
+            createFolder_SAF(folderUri,subfolder,false);
         }
     }
     public boolean createFolder(String currentDir, String currentSubDir, String newFolder, boolean showToast) {

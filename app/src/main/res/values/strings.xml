@@ -1108,4 +1108,6 @@ Check out the categories in the right hand options menu.
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zoom_level">Zoom level</string>
     <string name="export_image">Image (.png)</string>
+    <string name="not_saved_filename">Please enter a filename for your song</string>
+    <string name="not_saved_folder">Please select a folder for your song</string>
 </resources>
