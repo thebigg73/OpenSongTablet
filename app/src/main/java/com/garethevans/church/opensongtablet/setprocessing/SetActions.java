@@ -1234,12 +1234,10 @@ public class SetActions {
             custom_text = new StringBuilder(custom_notes);
         }
 
-        Log.d(TAG,"custom_notes:"+custom_notes);
         // Make sure to safe encode the filename as it might have unsafe characters
         tempSong.setFilename(mainActivityInterface.getStorageAccess().safeFilename(custom_name));
         tempSong.setTitle(custom_name);
 
-        Log.d(TAG,"Getting custom "+tempSong.getFolder()+"/"+tempSong.getFilename());
         if (tempSong.getFolder().contains(customLocStart + folderVariations) ||
             tempSong.getFolder().contains(customLocBasic + folderVariations)) {
             // The song is encoded in the custom_notes
@@ -1252,14 +1250,11 @@ public class SetActions {
                 e.printStackTrace();
             }
 
-            Log.d(TAG,"s:"+s);
             if (asExport) {
                 mainActivityInterface.getStorageAccess().doStringWriteToFile(folderExport,"",tempSong.getFilename(),s);
 
             } else {
                 mainActivityInterface.getStorageAccess().doStringWriteToFile(tempSong.getFolder().replace(customLocStart, ""), tempcache, tempSong.getFilename(), s);
-
-                Log.d(TAG,"creating file "+tempSong.getFolder().replace(customLocStart,"")+"/"+tempcache+"/"+tempSong.getFilename());
 
                 // Get the file
                 tempSong = mainActivityInterface.getLoadSong().doLoadSongFile(tempSong, false);
