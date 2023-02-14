@@ -31,6 +31,8 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
     private final SparseBooleanArray checkedArray = new SparseBooleanArray();
     private final boolean showChecked;
     private boolean songMenuSortTitles;
+    private final float titleSize;
+    private final float subtitleSize;
 
     LinkedHashMap<String, Integer> linkedHashMap, linkedHashMap2;
 
@@ -48,6 +50,9 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
                 getMyPreferenceBoolean("songMenuSetTicksShow", true);
 
         songMenuSortTitles = mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuSortTitles", true);
+        // Make the title text the same as the alphaIndex size
+        titleSize = mainActivityInterface.getPreferences().getMyPreferenceFloat("songMenuAlphaIndexSize",14f);
+        subtitleSize = titleSize - 2f;
     }
 
     @Override
@@ -154,8 +159,11 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
                 }
 
                 // Set the display name
+                songItemViewHolder.itemTitle.setTextSize(titleSize);
                 songItemViewHolder.itemTitle.setText(displayname);
 
+
+                songItemViewHolder.itemAuthor.setTextSize(subtitleSize);
                 // Set the author if present
                 if (author.isEmpty()) {
                     songItemViewHolder.itemAuthor.setVisibility(View.GONE);
@@ -167,6 +175,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
                 }
 
                 // Set the path
+                songItemViewHolder.itemFolderNamePair.setTextSize(subtitleSize);
                 songItemViewHolder.itemFolderNamePair.setText(folderNamePair);
 
                 // Set the checkbox if the song is in the set

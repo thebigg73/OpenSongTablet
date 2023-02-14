@@ -69,9 +69,12 @@ public class EditSongFragmentLyrics extends Fragment {
     }
 
     private void setupValues() {
+        if (mainActivityInterface.getTempSong()==null) {
+            mainActivityInterface.setTempSong(mainActivityInterface.getSong());
+        }
         if (mainActivityInterface.getTempSong()!=null && !mainActivityInterface.getTempSong().getEditingAsChoPro()) {
             mainActivityInterface.getTranspose().checkChordFormat(mainActivityInterface.getTempSong());
-        } else {
+        } else if (mainActivityInterface.getTempSong()!=null) {
             String choProLyrics = mainActivityInterface.getTempSong().getLyrics();
             // Convert to OpenSong to detect the chord format
             String openSongLyrics = mainActivityInterface.getConvertChoPro().fromChordProToOpenSong(choProLyrics);

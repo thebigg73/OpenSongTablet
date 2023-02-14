@@ -1449,7 +1449,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     private boolean setSongMenuFragment() {
         runOnUiThread(() -> {
-            if (songMenuFragment!=null) {
+            if (songMenuFragment!=null && viewPager!=null) {
                 if (showSetMenu) {
                     viewPager.setCurrentItem(1);
                 } else {
@@ -1470,15 +1470,23 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             Handler handler = new Handler(Looper.getMainLooper());
-            handler.post(() -> showToast.doIt(getString(R.string.search_index_start)));
-            songListBuildIndex.setIndexComplete(false);
-            songListBuildIndex.fullIndex(songMenuFragment.getProgressText());
+            try {
+                handler.post(() -> showToast.doIt(getString(R.string.search_index_start)));
+                songListBuildIndex.setIndexComplete(false);
+                songListBuildIndex.fullIndex(songMenuFragment.getProgressText());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             handler.post(() -> {
-                songListBuildIndex.setIndexRequired(false);
-                songListBuildIndex.setIndexComplete(true);
-                showToast.doIt(getString(R.string.search_index_end));
-                updateSongMenu(song);
-                updateFragment("set_updateKeys", null, null);
+                try {
+                    songListBuildIndex.setIndexRequired(false);
+                    songListBuildIndex.setIndexComplete(true);
+                    showToast.doIt(getString(R.string.search_index_end));
+                    updateSongMenu(song);
+                    updateFragment("set_updateKeys", null, null);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             });
         });
     }

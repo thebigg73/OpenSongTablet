@@ -33,6 +33,8 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
     private int currentPosition = -1, dragPosition = -1;
     private ArrayList<SetItemInfo> setList;
     private final SparseBooleanArray highlightedArray = new SparseBooleanArray();
+    private final float titleSize;
+    private final float subtitleSize;
 
     public void setTouchHelper(ItemTouchHelper itemTouchHelper) {
         this.itemTouchHelper = itemTouchHelper;
@@ -42,6 +44,9 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
         this.mainActivityInterface = (MainActivityInterface) context;
         onColor = context.getResources().getColor(R.color.colorSecondary);
         offColor = context.getResources().getColor(R.color.colorAltPrimary);
+        // Make the title text the same as the alphaIndex size
+        titleSize = mainActivityInterface.getPreferences().getMyPreferenceFloat("songMenuAlphaIndexSize",14f);
+        subtitleSize = titleSize - 2f;
     }
 
     public void updateSetList(ArrayList<SetItemInfo> setItemInfos) {
@@ -113,12 +118,15 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
             setColor(setitemViewHolder, offColor);
         }
 
+        setitemViewHolder.vItem.setTextSize(titleSize);
         setitemViewHolder.vItem.setText(si.songitem);
         String newfoldername = si.songfoldernice;
         if (newfoldername != null && newfoldername.startsWith("**")) {
             newfoldername = newfoldername.replace("**", "");
         }
+        setitemViewHolder.vSongTitle.setTextSize(titleSize);
         setitemViewHolder.vSongTitle.setText(titlesongname);
+        setitemViewHolder.vSongFolder.setTextSize(subtitleSize);
         setitemViewHolder.vSongFolder.setText(newfoldername);
         int icon = mainActivityInterface.getSetActions().getItemIcon(si.songicon);
 
