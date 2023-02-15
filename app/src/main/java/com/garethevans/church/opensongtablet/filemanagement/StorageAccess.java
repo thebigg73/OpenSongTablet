@@ -1306,15 +1306,40 @@ public class StorageAccess {
             parentUri = getUriForItem(folder, subfolder, "");
 
             // Only create if it doesn't exist
-            if (!uriExists(uritest)) {
+            /*if (!uriExists(uritest)) {
                 if (!docContractCreate(parentUri, mimeType, foldertocreate)) {
                     // Error (likely parent directory doesn't exist
+                    boolean created = false;
                     // Go through each folder and create the ones we need starting
                     String[] bits = subfolder.split("/");
                     String bit = "";
                     for (String s : bits) {
                         parentUri = getUriForItem(folder, bit, "");
                         docContractCreate(parentUri, mimeType, s);
+                        bit = bit + "/" + s;
+                    }
+                }
+            }*/
+
+            // Only create if it doesn't exist
+            // From #187 Millerthegorilla
+            if (!uriExists(uritest)) {
+                boolean created = false;
+                if (uriExists(parentUri)) {
+                    created = docContractCreate(parentUri, mimeType, foldertocreate);
+                }
+                if (!created) {
+                    // Error (likely parent directory doesn't exist
+                    // Go through each folder and create the ones we need starting
+                    String[] bits = subfolder.split("/");
+                    String bit = "";
+                    for (String s : bits) {
+                        parentUri = getUriForItem(folder, bit, "");
+                        Uri newUri = parentUri;
+                        newUri.buildUpon().appendPath(s).build();
+                        if (!uriExists(newUri)) {
+                            docContractCreate(parentUri, mimeType, s);
+                        }
                         bit = bit + "/" + s;
                     }
                 }
@@ -1616,9 +1641,15 @@ public class StorageAccess {
         // Work out what the new uri should be
         Uri newUri;
         // Get rid of the old last folder and replace it
+        Log.d(TAG,"oldsubfolder:"+oldsubfolder);
         if (oldsubfolder.contains("/")) {
             oldsubfolder = oldsubfolder.substring(0,oldsubfolder.lastIndexOf("/"));
+        } else {
+            // Just the one subfolder (no sub-sub folders)
+            oldsubfolder = "";
         }
+        Log.d(TAG,"oldsubfolder:"+oldsubfolder);
+
         if (oldsubfolder.isEmpty()) {
             newUri = getUriForItem("Songs", newsubfolder, "");
         } else {
@@ -1636,6 +1667,7 @@ public class StorageAccess {
             }
             try {
                 Uri renamed = DocumentsContract.renameDocument(c.getContentResolver(), oldUri, newsubfolder);
+                Log.d(TAG,"renamed:"+renamed+"  newUri:"+newUri);
                 if (renamed!=null && renamed.equals(newUri)) {
                     message = c.getString(R.string.success);
                 } else {

@@ -161,6 +161,8 @@ public class PrepareFormats {
         // IV - remove empty comments
         string = string.replaceAll("\\Q{c:}\\E\n", "");
 
+        // Do final OnSong conversions
+        string = mainActivityInterface.getConvertOnSong().finalFixOnSong(string);
         return string;
     }
     private String replaceNulls(String start, String end, String s) {

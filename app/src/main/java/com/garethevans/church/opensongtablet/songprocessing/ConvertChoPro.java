@@ -11,6 +11,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 public class ConvertChoPro {
 
@@ -837,7 +838,9 @@ public class ConvertChoPro {
             String nextLine;
             thisLine = lines[y].replaceAll("\\s+$", "");
 
-            switch (mainActivityInterface.getProcessSong().howToProcessLines(y, linenums, thislinetype, nextlinetype, previouslinetype)) {
+            String howToProcess = mainActivityInterface.getProcessSong().howToProcessLines(y, linenums, thislinetype, nextlinetype, previouslinetype);
+            Log.d(TAG,"howToProcess:"+howToProcess+"  thisLine:"+thisLine);
+            switch (howToProcess) {
                 // If this is a chord line followed by a lyric line.
                 case "chord_then_lyric":
                     // IV - We have a next line - make lines the same length.
@@ -883,9 +886,11 @@ public class ConvertChoPro {
                     for (int w = 0; w < lyrics_returned.length; w++) {
                         String chord_to_add = "";
                         if (w<chords_returned.length) {
-                            if (chords_returned[w] != null && !chords_returned[w].trim().equals("")) {
+                            Log.d(TAG,"chords_returned["+w+"]:"+chords_returned[w]);
+                            if (chords_returned[w] != null && !chords_returned[w].trim().equals("") ) {
                                 if (chords_returned[w].trim().startsWith(".") || chords_returned[w].trim().startsWith(":")) {
-                                    chord_to_add = chords_returned[w];
+                                    chord_to_add = "[" + chords_returned[w].trim().replace(".","").replace(":","")+"]";
+
                                 } else {
                                     chord_to_add = "[" + chords_returned[w].trim() + "]";
                                 }
@@ -921,7 +926,12 @@ public class ConvertChoPro {
                 case "heading":
                     // If this is a chorus, deal with it appropriately
                     // Add the heading as a comment with hash
-                    if (thisLine.startsWith("[C")) {
+                    // For check purposes strip out numbers and shorten chorus to C
+                    String testLine = thisLine.replaceAll("[ 0-9]", "").toLowerCase(Locale.ROOT);
+                    testLine = testLine.replace(c.getString(R.string.chorus).toLowerCase(),"c");
+                    testLine = testLine.replace("chorus","c");
+                    Log.d(TAG,"thisLine:"+thisLine+"  testLine:"+testLine);
+                    if (testLine.startsWith("[c]")) {
                         dealingwithchorus = true;
                         newlyrics.append("{soc}\n#").append(thisLine);
                     } else {

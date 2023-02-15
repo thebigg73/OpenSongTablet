@@ -407,7 +407,7 @@ public class ProcessSong {
             case "chord":
                 if (linenum < totallines - 1 && (nextlinetype.equals("lyric") || nextlinetype.equals("comment"))) {
                     what = "chord_then_lyric";
-                } else if (totallines == 1 || nextlinetype.equals("") || nextlinetype.equals("chord")) {
+                } else if (totallines == 1 || nextlinetype.equals("") || nextlinetype.equals("chord") || nextlinetype.equals("heading")) {
                     what = "chord_only";
                 }
                 break;
@@ -956,6 +956,15 @@ public class ProcessSong {
                 lines[t] = " " + lines[t].substring(1);
             } else {
                 lastlinetype = linetype;
+            }
+
+            // Headings with just a comment missed this out
+            // Also comments followed by headings
+            if (linetype.equals("heading") & lines[t].startsWith("[")) {
+                lines[t] = beautifyHeading(lines[t]);
+            }
+            if (linetype.equals("comment") & lines[t].startsWith(";")) {
+                lines[t] = trimOutLineIdentifiers(linetype, lines[t]);
             }
 
             Typeface typeface = getTypeface(presentation, linetype);

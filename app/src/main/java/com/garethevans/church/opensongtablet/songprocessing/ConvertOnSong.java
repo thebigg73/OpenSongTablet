@@ -3,6 +3,7 @@ package com.garethevans.church.opensongtablet.songprocessing;
 import android.content.Context;
 import android.net.Uri;
 
+import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 public class ConvertOnSong {
@@ -32,10 +33,12 @@ public class ConvertOnSong {
     private String songSubFolder;
     private String[] lines;
     private StringBuilder parsedLines;
+    private final String string_chorus;
 
     public ConvertOnSong(Context c) {
         // Declare the variables;
         mainActivityInterface = (MainActivityInterface) c;
+        string_chorus = c.getString(R.string.chorus);
     }
 
     public Song convertTextToTags(Uri uri, Song thisSong) {
@@ -358,4 +361,41 @@ public class ConvertOnSong {
         thisSong.setTheme(theme.trim());
     }
 
+    public String finalFixOnSong(String onSongText) {
+        // A final few fixes to convert ChordPro formatting to OnSong formatting
+        // OnSong wants #[C] to be removed as it should have {soc}...{eoc}
+        // Verses, etc shouldn't be as #[V1] but as Verse 1:
+
+        // Split into lines
+        onSongText = onSongText.replace("[(","([");
+        onSongText = onSongText.replace(")]","])");
+        String[] lines = onSongText.split("\n");
+        StringBuilder stringBuilder = new StringBuilder();
+        String[] chorusIdentifiers = new String[] {"[C]","[C1]","[C2]","[C3]","[C4]","[C5]","[C6]",
+                "[C7]","[C8]","[C9]", string_chorus,"Chorus"};
+        for (String line:lines) {
+            if (line.startsWith("#[")) {
+                // Check for chorus identifier and remove it if found
+                for (String chorusIdentifier:chorusIdentifiers) {
+                    if (line.contains(chorusIdentifier)) {
+                        // Ignore this line
+                        line = "";
+                        break;
+                    }
+                }
+
+                line = line.replace("#","");
+                // Beautify remaining tags
+                line = mainActivityInterface.getProcessSong().beautifyHeading(line);
+                if (!line.isEmpty()) {
+                    line = line.trim() + ":";
+                    stringBuilder.append(line).append("\n");
+                }
+            } else {
+                // Add this line back to the string builder as it is
+                stringBuilder.append(line).append("\n");
+            }
+        }
+        return stringBuilder.toString();
+    }
 }

@@ -149,6 +149,16 @@ public class ImportOSBFragment extends Fragment {
         myView.foundFoldersListView.removeAllViews();
         myView.includeHighlighter.setVisibility(View.GONE);
         myView.includePersistentDB.setVisibility(View.GONE);
+
+        myView.selectAll.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            // If we select all, scroll throught the found folders and select them
+            // Otherwise, unselect them all
+            if (myView.foundFoldersListView.getChildCount()>0) {
+                for (int i=0; i<myView.foundFoldersListView.getChildCount(); i++) {
+                    ((CheckBox)myView.foundFoldersListView.getChildAt(i)).setChecked(isChecked);
+                }
+            }
+        });
     }
 
     private void findFolders() {

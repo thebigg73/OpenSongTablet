@@ -54,7 +54,10 @@ public class LoadSong {
         // We will add to this song and then return it to the MainActivity object
         if (!mainActivityInterface.getSongListBuildIndex().getIndexComplete() ||
                 mainActivityInterface.getSongListBuildIndex().getCurrentlyIndexing() ||
-                thisSong.getFolder().contains("**") || thisSong.getFolder().startsWith("../")) {
+                thisSong.getFolder().contains("**") || thisSong.getFolder().startsWith("../") ||
+                thisSong.getFilename().endsWith(".txt") || thisSong.getFilename().endsWith(".onsong") ||
+                thisSong.getFilename().endsWith(".cho") ||
+                thisSong.getFiletype().equals("TXT") || thisSong.getFiletype().equals("CHO") || thisSong.getFiletype().equals("iOS")) {
             // This is set to true once the index is completed, so we either haven't finished indexing
             // or this is a custom slide/note as identified by the folder (which aren't indexed)
             return doLoadSongFile(thisSong, indexing);
@@ -138,6 +141,9 @@ public class LoadSong {
                     }
                 }
 
+                if (thisSong.getFilename().equals("test.txt")) {
+                    Log.d(TAG,"test.txt   filetype:"+thisSong.getFiletype());
+                }
                 if (thisSong.getFiletype().equals("iOS")) {
                     // 3.  Run the OnSongConvert script (which converts then resaves)
                     mainActivityInterface.getConvertOnSong().convertTextToTags(uri, thisSong);
@@ -152,6 +158,27 @@ public class LoadSong {
                     // 4.  Run the ChordProConvert script (which converts then resaves)
                     thisSong = mainActivityInterface.getConvertChoPro().convertTextToTags(uri, thisSong);
 
+                    // Now read in the proper OpenSong xml file
+                    try {
+                        readFileAsXML(thisSong, where, uri, "UTF-8");
+                    } catch (Exception e) {
+                        Log.d(TAG, "Error performing grabOpenSongXML()");
+                    }
+                } else if (thisSong.getFiletype().equals("TXT")) {
+                    // 5.  Run the text convert script
+                    thisSong.setLyrics(mainActivityInterface.getConvertTextSong().convertText(thisSong.getLyrics()));
+                    // Save the new song
+                    String oldname = thisSong.getFilename();
+                    String newname = oldname.replace(".txt","");
+                    thisSong.setTitle(newname);
+                    thisSong.setFilename(newname);
+                    Uri olduri = uri;
+                    uri = mainActivityInterface.getStorageAccess().getUriForItem(where,thisSong.getFolder(),newname);
+                    mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(false,uri,null,where,thisSong.getFolder(),newname);
+                    String newSongContent = mainActivityInterface.getProcessSong().getXML(thisSong);
+                    if (mainActivityInterface.getStorageAccess().doStringWriteToFile(where,thisSong.getFolder(),newname,thisSong.getSongXML())) {
+                        mainActivityInterface.getStorageAccess().deleteFile(olduri);
+                    }
                     // Now read in the proper OpenSong xml file
                     try {
                         readFileAsXML(thisSong, where, uri, "UTF-8");

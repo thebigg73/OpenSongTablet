@@ -499,6 +499,16 @@ public class ExportFragment extends Fragment {
     private void renderPDFSongs() {
         mainActivityInterface.getMakePDF().setIsSetListPrinting(false);
         // Go through the songs if we are adding them as pdfs until we have processed all
+        Log.d(TAG,"songsProcessed:"+songsProcessed);
+        if (ids==null) {
+            ids = new String[1];
+        }
+        Log.d(TAG,"ids.length:"+ids.length);
+        Log.d(TAG,"includeSongs:"+includeSongs);
+        Log.d(TAG,"pdf:"+pdf);
+        Log.d(TAG,"songsToAdd:"+songsToAdd);
+
+
         if (songsProcessed>=ids.length || !includeSongs || !pdf || songsProcessed==songsToAdd) {
             initiateShare();
         } else {
