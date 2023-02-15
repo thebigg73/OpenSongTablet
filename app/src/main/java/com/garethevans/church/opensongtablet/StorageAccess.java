@@ -891,9 +891,6 @@ class StorageAccess {
                     String bit = "";
                     for (String s : bits) {
                         parentUri = getUriForItem(c, preferences, folder, bit, "");
-                        String songsFolder = stringForFile(c,preferences,"Songs");
-                        Uri newUri = parentUri.buildUpon().appendPath(s).build();
-                        File exists = new File(newUri.getPath());
                         if (mimeType == null && uriExists(c, parentUri)) {
                             docContractCreate(c, parentUri, DocumentsContract.Document.MIME_TYPE_DIR, s);
                         }
