@@ -828,16 +828,19 @@ class StorageAccess {
 
             // Only create if it doesn't exist
             if (!uriExists(c, uritest)) {
-                if (!docContractCreate(c, parentUri, mimeType, foldertocreate)) {
-                    // Error (likely parent directory doesn't exist
+                boolean created = false;
+                if(mimeType == null || uriExists(c, parentUri)) {
+                    created = docContractCreate(c, parentUri, mimeType, foldertocreate);
+                }
+                if (!created) { // Error (likely parent directory doesn't exist
                     // Go through each folder and create the ones we need starting
                     String[] bits = subfolder.split("/");
                     String bit = "";
                     for (String s : bits) {
                         parentUri = getUriForItem(c, preferences, folder, bit, "");
                         Uri newUri = parentUri;
-                        newUri.buildUpon().appendPath(s);
-                        if (!uriExists(c, newUri)) {
+                        newUri.buildUpon().appendPath(s).build();
+                        if (mimeType == null || !uriExists(c, newUri)) {
                             docContractCreate(c, parentUri, mimeType, s);
                         }
                         bit = bit + "/" + s;
@@ -876,22 +879,33 @@ class StorageAccess {
             if (folder.isEmpty() && completesubfolder.isEmpty()) {
                 // A temp file in the root folder
                 docContractCreate(c,uriTreeHome,null,filename);
-
             } else if (!uriExists(c, uritest)) {
-
-                if (!docContractCreate(c, parentUri, mimeType, completefilename)) {
+                boolean created = false;
+                if(mimeType == null || uriExists(c, parentUri)) {
+                    created = docContractCreate(c, parentUri, mimeType, completefilename);
+                }
+                if (!created) {
                     // Error (likely parent directory doesn't exist)
                     // Go through each folder and create the ones we need starting at the 'folder'
                     String[] bits = completesubfolder.split("/");
                     String bit = "";
                     for (String s : bits) {
                         parentUri = getUriForItem(c, preferences, folder, bit, "");
-                        docContractCreate(c, parentUri, DocumentsContract.Document.MIME_TYPE_DIR, s);
+                        String songsFolder = stringForFile(c,preferences,"Songs");
+                        Uri newUri = parentUri.buildUpon().appendPath(s).build();
+                        File exists = new File(newUri.getPath());
+                        if (mimeType == null && uriExists(c, parentUri)) {
+                            docContractCreate(c, parentUri, DocumentsContract.Document.MIME_TYPE_DIR, s);
+                        }
                         bit = bit + "/" + s;
                     }
                     // Try again!
                     parentUri = getUriForItem(c, preferences, folder, completesubfolder, "");
-                    return docContractCreate(c, parentUri, mimeType, completefilename);
+                    if(mimeType == null || uriExists(c, parentUri)) {
+                        return docContractCreate(c, parentUri, mimeType, completefilename);
+                    } else {
+                        return false;
+                    }
                 }
             }
         }
@@ -1506,6 +1520,7 @@ class StorageAccess {
         }
         return isvalid;
     }
+
     boolean determineFileTypeByExtension() {
         // Determines if we can load song as text, image or pdf
         String file_ext = StaticVariables.songfilename;
