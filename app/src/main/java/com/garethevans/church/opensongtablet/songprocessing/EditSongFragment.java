@@ -89,6 +89,14 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
             mainActivityInterface.setWhattodo("");
             informationBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"Information");
         }
+
+        // Clear the back stack to the root editSongFragment (otherwise it includes the tabs)
+        try {
+            mainActivityInterface.popTheBackStack(R.id.editSongFragment, false);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         return myView.getRoot();
 
     }
