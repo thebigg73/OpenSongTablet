@@ -253,6 +253,7 @@
     <string name="export_current_set">Μοιραστείτε το τρέχον σύνολο</string>
     <string name="export_current_song">"Share the current song"</string>
     <string name="export_desktop">"Επιφάνεια εργασίας (χωρίς επέκταση αρχείου)"</string>
+    <string name="export_image">Εικόνα (.png)</string>
     <string name="export_include_set_songs">Συμπεριλάβετε τραγούδια που προσδιορίζονται στο σετ</string>
     <string name="export_onsong">"OnSong τραγούδι (.ong)"</string>
     <string name="export_ost">"Τραγούδι OpenSongApp (.ost)"</string>
@@ -443,6 +444,8 @@
     <string name="not_allowed">"Αυτή η λειτουργία δεν επιτρέπεται για αυτό το αντικείμενο"</string>
     <string name="not_available">Μη διαθέσιμος</string>
     <string name="not_saved">Δεν έχει αποθηκευτεί</string>
+    <string name="not_saved_filename">Εισαγάγετε ένα όνομα αρχείου για το τραγούδι σας</string>
+    <string name="not_saved_folder">Επιλέξτε ένα φάκελο για το τραγούδι σας</string>
     <string name="note">"Σημείωση"</string>
     <string name="nothing_selected">Τίποτα επιλεγμένο</string>
     <string name="off">Off</string>

@@ -253,6 +253,7 @@
     <string name="export_current_set">Compartir el conjunto actual</string>
     <string name="export_current_song">"Comparte la canción actual"</string>
     <string name="export_desktop">"Archivo de escritorio (sin extensión de archivo)"</string>
+    <string name="export_image">Imagen (.png)</string>
     <string name="export_include_set_songs">Incluir canciones identificadas en el set</string>
     <string name="export_onsong">"Canción OnSong (.ong)"</string>
     <string name="export_ost">"Canción de OpenSongApp (.ost)"</string>
@@ -443,6 +444,8 @@
     <string name="not_allowed">"Esta función no está permitido para este artículo"</string>
     <string name="not_available">No disponible</string>
     <string name="not_saved">No guardado</string>
+    <string name="not_saved_filename">Introduce un nombre de archivo para tu canción.</string>
+    <string name="not_saved_folder">Selecciona una carpeta para tu canción.</string>
     <string name="note">"Nota"</string>
     <string name="nothing_selected">Nada seleccionado</string>
     <string name="off">"Apagado"</string>

@@ -253,6 +253,7 @@
     <string name="export_current_set">Ossza meg az aktuális készletet</string>
     <string name="export_current_song">"Ossza meg az aktuális zeneszám"</string>
     <string name="export_desktop">"Asztali fájl (nincs fájlkiterjesztés)"</string>
+    <string name="export_image">Kép (.png)</string>
     <string name="export_include_set_songs">Tartalmazza a készletben azonosított dalokat</string>
     <string name="export_onsong">"OnSong dal (.onsong)"</string>
     <string name="export_ost">"OpenSongApp dal (ost)"</string>
@@ -443,6 +444,8 @@
     <string name="not_allowed">"Ez a funkció nem engedélyezett ehhez a termékhez"</string>
     <string name="not_available">Nem elérhető</string>
     <string name="not_saved">Nem mentve</string>
+    <string name="not_saved_filename">Kérjük, adjon meg egy fájlnevet a dalhoz</string>
+    <string name="not_saved_folder">Kérjük, válasszon mappát a dalhoz</string>
     <string name="note">"Hangjegy"</string>
     <string name="nothing_selected">Semmi nincs kiválasztva</string>
     <string name="off">Ki</string>

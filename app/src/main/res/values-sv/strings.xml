@@ -253,6 +253,7 @@
     <string name="export_current_set">Dela den aktuella uppsättningen</string>
     <string name="export_current_song">"Dela den aktuella låten"</string>
     <string name="export_desktop">"Skrivbordsfil (ingen filtillägg)"</string>
+    <string name="export_image">Bild (.png)</string>
     <string name="export_include_set_songs">Inkludera låtar som identifierats i uppsättningen</string>
     <string name="export_onsong">"OnSong Song (.onsong)"</string>
     <string name="export_ost">"OpenSongApp-låt (.ost)"</string>
@@ -443,6 +444,8 @@
     <string name="not_allowed">"Den här funktionen är inte tillåten för det här objektet"</string>
     <string name="not_available">Inte tillgänglig</string>
     <string name="not_saved">Ej sparat</string>
+    <string name="not_saved_filename">Ange ett filnamn för din låt</string>
+    <string name="not_saved_folder">Välj en mapp för din låt</string>
     <string name="note">"Notera"</string>
     <string name="nothing_selected">Inget valt</string>
     <string name="off">Av</string>

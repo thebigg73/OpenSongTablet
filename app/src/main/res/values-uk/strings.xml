@@ -253,6 +253,7 @@
     <string name="export_current_set">Поділіться поточним набором</string>
     <string name="export_current_song">Поділиться поточної піснею</string>
     <string name="export_desktop">Файл настільної версії Open Song (без розширення)</string>
+    <string name="export_image">Зображення (.png)</string>
     <string name="export_include_set_songs">Включіть пісні, визначені в наборі</string>
     <string name="export_onsong">Файл в форматі OnSong (.ongong)</string>
     <string name="export_ost">Файл в форматі OpenSongApp (.ost)</string>
@@ -443,6 +444,8 @@
     <string name="not_allowed">Ця функція недоступна</string>
     <string name="not_available">Недоступний</string>
     <string name="not_saved">Чи не збережено</string>
+    <string name="not_saved_filename">Введіть назву файлу для вашої пісні</string>
+    <string name="not_saved_folder">Виберіть папку для вашої пісні</string>
     <string name="note">Зберегти</string>
     <string name="nothing_selected">Нічого не вибрано</string>
     <string name="off">Вимк</string>

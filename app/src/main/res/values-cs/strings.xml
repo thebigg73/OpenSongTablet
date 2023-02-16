@@ -253,6 +253,7 @@
     <string name="export_current_set">Sdílejte aktuální sadu</string>
     <string name="export_current_song">"Podělte se o aktuální skladbu"</string>
     <string name="export_desktop">"Soubor plochy (bez přípony souboru)"</string>
+    <string name="export_image">Obrázek (.png)</string>
     <string name="export_include_set_songs">Zahrňte skladby identifikované v sadě</string>
     <string name="export_onsong">"OnSong píseň (.ong)"</string>
     <string name="export_ost">"OpenSongApp song (.ost)"</string>
@@ -443,6 +444,8 @@
     <string name="not_allowed">"Tato funkce není povolena pro tuto položku"</string>
     <string name="not_available">Není dostupný</string>
     <string name="not_saved">"neuloženo"</string>
+    <string name="not_saved_filename">Zadejte název souboru pro vaši skladbu</string>
+    <string name="not_saved_folder">Vyberte prosím složku pro vaši skladbu</string>
     <string name="note">"Poznámka"</string>
     <string name="nothing_selected">Není vybráno nic</string>
     <string name="off">Vypnuto</string>

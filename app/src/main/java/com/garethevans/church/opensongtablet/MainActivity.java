@@ -28,7 +28,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.GravityCompat;
@@ -271,8 +270,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Log.d(TAG,"onCreate() called.   savedInstanceState:"+savedInstanceState+"    myView="+myView+"   bootUpCompleted:"+bootUpCompleted);
-
         if (savedInstanceState!=null) {
             bootUpCompleted = savedInstanceState.getBoolean("bootUpCompleted",false);
             if (songListBuildIndex==null) {
@@ -285,7 +282,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
         WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
 
-        supportRequestWindowFeature(AppCompatDelegate.FEATURE_ACTION_MODE_OVERLAY);
+        //supportRequestWindowFeature(AppCompatDelegate.FEATURE_ACTION_MODE_OVERLAY);
 
         myView = ActivityBinding.inflate(getLayoutInflater());
         setContentView(myView.getRoot());
@@ -552,7 +549,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
                 int bottomOfToolbar = myView.myAppBarLayout.getBottom() + 1;
                 if (myView.myToolbar.getHideActionBar()) {
-                    bottomOfToolbar = 0;
+                    if (windowFlags.getShowStatus()) {
+                        bottomOfToolbar = windowFlags.getStatusHeight();
+                    } else if (windowFlags.getShowStatusInCutout()) {
+                        bottomOfToolbar = windowFlags.getCurrentTopCutoutHeight();
+                    } else {
+                        bottomOfToolbar = 0;
+                    }
                 }
 
                 if (myView!=null) {

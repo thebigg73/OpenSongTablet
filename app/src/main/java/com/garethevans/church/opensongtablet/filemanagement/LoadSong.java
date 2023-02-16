@@ -455,7 +455,7 @@ public class LoadSong {
                         thisSong.setFiletype("XML");
 
                     } catch (Exception e) {
-                        Log.d(TAG,"Not an straightforward xml file");
+                        Log.d(TAG,"Not an straightforward xml file: "+thisSong.getFolder()+"/"+thisSong.getFilename()+"  filetype:"+thisSong.getFilename());
                         e.printStackTrace();
                         if (thisSong.getFiletype().equals("XML")) {
                             // This was an XML file and it wasn't a simple issue
@@ -493,7 +493,12 @@ public class LoadSong {
 
     public void resetSongsToFix() {
         if (songsToFix!=null) {
+            if (songsToFix.size()>0) {
+                // We need to rebuild the song index as we fixed stuff!
+                mainActivityInterface.indexSongs();
+            }
             songsToFix.clear();
+
         }
         songsToFix = null;
     }
@@ -501,23 +506,45 @@ public class LoadSong {
     public void fixSongs() {
         if (songsToFix!=null && songsToFix.size()>0) {
             for (Song thisSong:songsToFix) {
+                Log.d(TAG,"songToFix:"+thisSong.getFolder()+"/"+thisSong.getFilename()+"  "+thisSong.getFiletype());
                 mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" Fix Songs/"+thisSong.getFolder()+"/"+thisSong.getFilename()+"  deleteOld=true");
                 Uri thisSongUri = mainActivityInterface.getStorageAccess().getUriForItem("Songs",thisSong.getFolder(),thisSong.getFilename());
                 InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(thisSongUri);
                 String content = mainActivityInterface.getStorageAccess().readTextFileToString(inputStream);
+                boolean success = false;
                 try {
                     inputStream.close();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+                // Corrupted XML files with </song> before the end
                 if (content.contains("</song>") && (content.indexOf("</song>") + 7) < content.length()) {
                     content = content.substring(0, content.indexOf("</song>")) + "</song>";
                     mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" fixSongs doStringWriteToFile Songs/"+thisSong.getFolder()+"/"+thisSong.getFilename()+" with: "+content);
-                    boolean success = mainActivityInterface.getStorageAccess().doStringWriteToFile(
+                    success = mainActivityInterface.getStorageAccess().doStringWriteToFile(
                             "Songs", thisSong.getFolder(), thisSong.getFilename(), content);
-                   Log.d(TAG,"fixSong: "+success);
+                    Log.d(TAG,"fixSong: "+success);
+
+                } else if (thisSong.getFiletype().equals("XML") || thisSong.getFiletype().equals("TXT")) {
+                    thisSong.setLyrics(content);
+                    String oldname = thisSong.getFilename();
+                    Uri oldUri = mainActivityInterface.getStorageAccess().getUriForItem("Songs",thisSong.getFolder(),thisSong.getFilename());
+                    String newname = oldname.replace(".txt","");
+                    thisSong.setFilename(newname);
+                    thisSong.setTitle(newname);
+                    String xml = mainActivityInterface.getProcessSong().getXML(thisSong);
+                    success = mainActivityInterface.getStorageAccess().doStringWriteToFile(
+                            "Songs", thisSong.getFolder(), newname, xml);
+                    if (success && !newname.equals(oldname)) {
+                        // Remove the obsolete file
+                        mainActivityInterface.getStorageAccess().deleteFile(oldUri);
+                    }
                 }
 
+                Log.d(TAG,"fixSong: "+success);
+                if (success) {
+                    mainActivityInterface.getSQLiteHelper().updateSong(thisSong);
+                }
             }
         }
         resetSongsToFix();

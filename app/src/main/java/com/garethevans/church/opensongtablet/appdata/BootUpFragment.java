@@ -104,8 +104,9 @@ public class BootUpFragment extends Fragment {
         // Either permission hasn't been granted, or it isn't set properly
         // Switch to the set storage fragment
         mainActivityInterface.setWhattodo("storageBad");
-
-        mainActivityInterface.navigateToFragment(getString(R.string.deeplink_set_storage),0);
+        if (getContext()!=null) {
+            mainActivityInterface.navigateToFragment(getString(R.string.deeplink_set_storage), 0);
+        }
     }
 
     private void startBootProcess() {
@@ -115,7 +116,11 @@ public class BootUpFragment extends Fragment {
             executorService.execute(() -> {
                 Handler handler = new Handler(Looper.getMainLooper());
                     // Tell the user we're initialising the storage
-                    message = getString(R.string.processing) + ": " + getString(R.string.storage);
+                    if (getContext()!=null) {
+                        message = getString(R.string.processing) + ": " + getString(R.string.storage);
+                    } else {
+                        message = "Processing: Storage";
+                    }
                     mainActivityInterface.getSongListBuildIndex().setIndexRequired(true);
                     updateMessage();
 
@@ -129,13 +134,21 @@ public class BootUpFragment extends Fragment {
 
                     if (foldersok) {
                         // Build the basic song index by scanning the songs and creating a songIDs file
-                        message = getString(R.string.processing) + "\n" + getString(R.string.wait);
+                        if (getContext()!=null) {
+                            message = getString(R.string.processing) + "\n" + getString(R.string.wait);
+                        } else {
+                            message = "Processing\nWait....";
+                        }
                         updateMessage();
 
                         mainActivityInterface.quickSongMenuBuild();
 
                         // Finished indexing
-                        message = getString(R.string.success);
+                        if (getContext()!=null) {
+                            message = getString(R.string.success);
+                        } else {
+                            message = "Success";
+                        }
                         updateMessage();
 
                         mainActivityInterface.setMode(mainActivityInterface.getPreferences().getMyPreferenceString("whichMode", getString(R.string.mode_performance)));
@@ -174,14 +187,23 @@ public class BootUpFragment extends Fragment {
 
     // Get the last used folder/filename or reset if it didn't load
     private void setFolderAndSong() {
+        String mainfoldername;
+        String welcome;
+        if (getContext()!=null) {
+            mainfoldername = getString(R.string.mainfoldername);
+            welcome = getString(R.string.welcome);
+        } else {
+            mainfoldername = "MAIN";
+            welcome = "Welcome to OpenSongApp";
+        }
         mainActivityInterface.getSong().setFolder(mainActivityInterface.getPreferences().getMyPreferenceString("songFolder",
-                getString(R.string.mainfoldername)));
+                mainfoldername));
 
         mainActivityInterface.getSong().setFilename(mainActivityInterface.getPreferences().getMyPreferenceString("songFilename",
-                getString(R.string.welcome)));
+                welcome));
 
         if (!mainActivityInterface.getPreferences().getMyPreferenceBoolean("songLoadSuccess",false)) {
-            mainActivityInterface.getSong().setFolder(getString(R.string.mainfoldername));
+            mainActivityInterface.getSong().setFolder(mainfoldername);
             mainActivityInterface.getPreferences().setMyPreferenceString("songFolder",mainActivityInterface.getSong().getFolder());
             mainActivityInterface.getSong().setFilename("Welcome to OpenSongApp");
             mainActivityInterface.getPreferences().setMyPreferenceString("songFilename","Welcome to OpenSongApp");

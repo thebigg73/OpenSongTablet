@@ -95,7 +95,10 @@ public class AppPermissions {
 
     // MIDI
     public String[] getMidiScanPermissions() {
-        if (Build.VERSION.SDK_INT > 30) {
+        if (Build.VERSION.SDK_INT >= 33) {
+            return new String[]{Manifest.permission.BLUETOOTH_SCAN, Manifest.permission.BLUETOOTH_CONNECT,
+                    Manifest.permission.BLUETOOTH_SCAN};
+        } else if (Build.VERSION.SDK_INT > 30) {
             return new String[]{Manifest.permission.BLUETOOTH_SCAN, Manifest.permission.BLUETOOTH_CONNECT,
                     Manifest.permission.BLUETOOTH_SCAN, Manifest.permission.ACCESS_FINE_LOCATION};
         } else {

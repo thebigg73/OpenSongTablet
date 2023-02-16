@@ -253,6 +253,7 @@
     <string name="export_current_set">現在のセットを共有する</string>
     <string name="export_current_song">"現在の曲を共有する"</string>
     <string name="export_desktop">"デスクトップファイル（ファイル拡張子なし）"</string>
+    <string name="export_image">画像 (.png)</string>
     <string name="export_include_set_songs">セットで識別された曲を含める</string>
     <string name="export_onsong">"OnSongの歌（韻）"</string>
     <string name="export_ost">"OpenSongAppの歌（.ost）"</string>
@@ -443,6 +444,8 @@
     <string name="not_allowed">"この関数は、この項目のため許可されていません"</string>
     <string name="not_available">利用不可</string>
     <string name="not_saved">保存されません</string>
+    <string name="not_saved_filename">曲のファイル名を入力してください</string>
+    <string name="not_saved_folder">曲のフォルダを選択してください</string>
     <string name="note">"注意"</string>
     <string name="nothing_selected">何も選択されていません</string>
     <string name="off">"オフ"</string>

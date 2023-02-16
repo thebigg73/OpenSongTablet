@@ -993,6 +993,7 @@ public class StorageAccess {
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private boolean docContractCreate(Uri uri, String mimeType, String name) {
         if (uri!=null) {
+            Log.d(TAG,"name:"+name+"  mimeType:"+mimeType+"   at uri:"+uri);
             try {
                 return DocumentsContract.createDocument(c.getContentResolver(), uri, mimeType, name) != null;
             } catch (Exception e) {
@@ -1379,19 +1380,30 @@ public class StorageAccess {
 
             } else if (!uriExists(uritest)) {
 
-                if (!docContractCreate(parentUri, mimeType, completefilename)) {
+                boolean created = false;
+                if(mimeType == null || uriExists(parentUri)) {
+                    created = docContractCreate(parentUri, mimeType, completefilename);
+                }
+
+                if (!created) {
                     // Error (likely parent directory doesn't exist)
                     // Go through each folder and create the ones we need starting at the 'folder'
                     String[] bits = completesubfolder.split("/");
                     String bit = "";
                     for (String s : bits) {
                         parentUri = getUriForItem(folder, bit, "");
-                        docContractCreate(parentUri, DocumentsContract.Document.MIME_TYPE_DIR, s);
+                        if (mimeType == null && uriExists(parentUri)) {
+                            docContractCreate(parentUri, DocumentsContract.Document.MIME_TYPE_DIR, s);
+                        }
                         bit = bit + "/" + s;
                     }
                     // Try again!
                     parentUri = getUriForItem(folder, completesubfolder, "");
-                    return docContractCreate(parentUri, mimeType, completefilename);
+                    if(mimeType == null || uriExists(parentUri)) {
+                        return docContractCreate(parentUri, mimeType, completefilename);
+                    } else {
+                        return false;
+                    }
                 }
             }
         }

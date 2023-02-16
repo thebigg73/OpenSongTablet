@@ -363,11 +363,32 @@ public class ImportOSBFragment extends Fragment {
                     }
                 });
                 if (alive) {
-                    mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" doImport createFile Songs/"+folder);
-                    mainActivityInterface.getStorageAccess().createFile(DocumentsContract.Document.MIME_TYPE_DIR,
-                            "Songs", folder, "");
+                    // Because the folder could have subdirectories, we need to start at the beginning
+                    ArrayList<String> allBits = new ArrayList();
+                    if (folder.contains("/")) {
+                        String[] bits = folder.split("/");
+                        StringBuilder stringBuilder = new StringBuilder();
+                        for (String bit:bits) {
+                            stringBuilder.append(bit);
+                            allBits.add(stringBuilder.toString());
+                            stringBuilder.append("/");
+                        }
+                    } else {
+                        allBits.add(folder);
+                    }
+                    for (String folderBit:allBits) {
+                        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Songs",folderBit,"");
+                        Log.d(TAG,"folder uri:"+uri);
+                        if (!mainActivityInterface.getStorageAccess().uriExists(uri)) {
+                            Log.d(TAG,"Doesn't exist, so make it");
+                            mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG + " doImport createFile Songs/" + folderBit);
+                            mainActivityInterface.getStorageAccess().createFile(DocumentsContract.Document.MIME_TYPE_DIR,
+                                "Songs", folderBit, "");
+                        }
+                    }
                 }
             }
+
 
             // Now deal with the zip entries
             try {
@@ -530,6 +551,8 @@ public class ImportOSBFragment extends Fragment {
                         mainActivityInterface.navHome();
                     });
                 }
+
+
 
             } catch (Exception e) {
                 // Likely the user navigated away before the process completed

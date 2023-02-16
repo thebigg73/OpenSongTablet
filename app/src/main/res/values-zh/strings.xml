@@ -253,6 +253,7 @@
     <string name="export_current_set">共享当前集</string>
     <string name="export_current_song">"分享当前歌曲"</string>
     <string name="export_desktop">"桌面文件（无文件扩展名）"</string>
+    <string name="export_image">图片（.png）</string>
     <string name="export_include_set_songs">包括在集合中识别的歌曲</string>
     <string name="export_onsong">"安松歌（.onsong）"</string>
     <string name="export_ost">"OpenSongApp歌曲（.ost）"</string>
@@ -443,6 +444,8 @@
     <string name="not_allowed">"此功能是不允许此项目"</string>
     <string name="not_available">无法使用</string>
     <string name="not_saved">没保存</string>
+    <string name="not_saved_filename">请为您的歌曲输入文件名</string>
+    <string name="not_saved_folder">请为您的歌曲选择一个文件夹</string>
     <string name="note">"注意"</string>
     <string name="nothing_selected">未选择任何内容</string>
     <string name="off">"关闭"</string>

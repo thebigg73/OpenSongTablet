@@ -31,8 +31,8 @@ android {
         targetSdkVersion 33
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
-        versionCode 329
-        versionName '6.0.0_beta4'
+        versionCode 330
+        versionName '6.0.0_beta5'
     }
 
     buildscript {

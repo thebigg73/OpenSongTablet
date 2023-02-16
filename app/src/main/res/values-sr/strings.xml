@@ -253,6 +253,7 @@
     <string name="export_current_set">Podelite trenutni skup</string>
     <string name="export_current_song">Podeliti trenutnu pesmu</string>
     <string name="export_desktop">Desktop file (no file extension)</string>
+    <string name="export_image">Slika (.png)</string>
     <string name="export_include_set_songs">Uključite pesme identifikovane u kompletu</string>
     <string name="export_onsong">OnSong song (.onsong)</string>
     <string name="export_ost">OpenSongApp song (.ost)</string>
@@ -443,6 +444,8 @@
     <string name="not_allowed">Ta funkcija nije dozvoljena za ovu stavku</string>
     <string name="not_available">Nije dostupno</string>
     <string name="not_saved">Nije spremljeno</string>
+    <string name="not_saved_filename">Unesite naziv datoteke za svoju pesmu</string>
+    <string name="not_saved_folder">Izaberite fasciklu za svoju pesmu</string>
     <string name="note">Beleška</string>
     <string name="nothing_selected">Ništa nije izabrano</string>
     <string name="off">Isklj</string>
