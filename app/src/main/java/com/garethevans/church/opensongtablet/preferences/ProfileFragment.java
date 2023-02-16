@@ -39,8 +39,10 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsProfilesBinding.inflate(inflater,container,false);
 
-        mainActivityInterface.updateToolbar(getString(R.string.profile));
-        mainActivityInterface.updateToolbarHelp(getString(R.string.website_profiles));
+        if (getContext()!=null) {
+            mainActivityInterface.updateToolbar(getString(R.string.profile));
+            mainActivityInterface.updateToolbarHelp(getString(R.string.website_profiles));
+        }
 
         // Setup helpers
         setupHelpers();
@@ -75,9 +77,9 @@ public class ProfileFragment extends Fragment {
                 }
             }
         }
-        if (success) {
+        if (success && getContext()!=null) {
             mainActivityInterface.getShowToast().doIt(getString(R.string.success));
-        } else {
+        } else if (getContext()!=null){
             mainActivityInterface.getShowToast().doIt(getString(R.string.error));
         }
     }
@@ -114,12 +116,14 @@ public class ProfileFragment extends Fragment {
 
     private void resetPreferences() {
         // Reset the preferences and start again
-        mainActivityInterface.getProfileActions().resetPreferences();
-        NavOptions navOptions = new NavOptions.Builder()
-                .setPopUpTo(R.id.setStorageLocationFragment, true)
-                .build();
-        NavHostFragment.findNavController(this)
-                .navigate(Uri.parse(getString(R.string.deeplink_set_storage)),navOptions);
+        if (getContext()!=null) {
+            mainActivityInterface.getProfileActions().resetPreferences();
+            NavOptions navOptions = new NavOptions.Builder()
+                    .setPopUpTo(R.id.setStorageLocationFragment, true)
+                    .build();
+            NavHostFragment.findNavController(this)
+                    .navigate(Uri.parse(getString(R.string.deeplink_set_storage)), navOptions);
+        }
     }
 
     @Override
