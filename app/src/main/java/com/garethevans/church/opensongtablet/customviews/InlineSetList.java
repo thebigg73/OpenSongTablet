@@ -120,8 +120,14 @@ public class InlineSetList extends RecyclerView {
 
     // From the page button
     public void toggleInlineSet() {
-        showInline = !showInline;
+        // Change the current value and save
+        setInlineSet(!showInline);
         checkVisibility();
+    }
+
+    public void setInlineSet(boolean showInline) {
+        this.showInline = showInline;
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean("inlineSet", showInline);
     }
 
     public void prepareSet() {
