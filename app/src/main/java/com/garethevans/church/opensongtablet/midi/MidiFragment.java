@@ -58,7 +58,7 @@ public class MidiFragment extends Fragment {
     private final Runnable runnable = this::displayCurrentDevice;
 
     private BluetoothLeScanner bluetoothLeScanner;
-    private MidiDeviceInfo[] usbDevices;
+    private MidiDeviceInfo[] usbMidiDevices;
     private ArrayList<BluetoothDevice> bluetoothDevices;
     private ArrayList<String> usbNames, usbManufact, midiCommand, midiChannel,
             midiNote, midiValue;
@@ -181,6 +181,7 @@ public class MidiFragment extends Fragment {
     private void setValues() {
         displayCurrentDevice();
         myView.enableBluetooth.setChecked(allowBluetoothSearch(mainActivityInterface.getMidi().getIncludeBluetoothMidi()));
+        myView.autoSendBluetooth.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("midiSendAuto",false));
         myView.midiCommand.setText(midiCommand.get(2));     // Default to program change
         myView.midiChannel.setText(midiChannel.get(0));     // Default to 0->1
         myView.midiNote.setText(midiNote.get(60));          // Default to C5 (used instead of midiProgram)
@@ -277,7 +278,7 @@ public class MidiFragment extends Fragment {
         myView.searchDevices.setOnClickListener(v -> startScan());
         myView.testMidiDevice.setOnClickListener(v -> sendTestNote());
         myView.disconnectMidiDevice.setOnClickListener(v -> disconnectDevices());
-        myView.autoSendBluetooth.setOnCheckedChangeListener(((buttonView, isChecked) -> mainActivityInterface.getPreferences().setMyPreferenceBoolean("midiSendAuto", false)));
+        myView.autoSendBluetooth.setOnCheckedChangeListener(((buttonView, isChecked) -> mainActivityInterface.getPreferences().setMyPreferenceBoolean("midiSendAuto", isChecked)));
         myView.midiAsPedal.setOnCheckedChangeListener(((buttonView, isChecked) -> {
             mainActivityInterface.getPreferences().setMyPreferenceBoolean("midiAsPedal", isChecked);
             mainActivityInterface.getPedalActions().setMidiAsPedal(isChecked);
@@ -345,10 +346,14 @@ public class MidiFragment extends Fragment {
     private void startScanUSB() {
 
         if (mainActivityInterface.getMidi().getMidiManager() != null) {
-            usbDevices = mainActivityInterface.getMidi().getMidiManager().getDevices();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                usbMidiDevices = mainActivityInterface.getMidi().getMidiManager().getDevicesForTransport(MidiManager.TRANSPORT_MIDI_BYTE_STREAM).toArray(new MidiDeviceInfo[0]);
+            } else {
+                usbMidiDevices = mainActivityInterface.getMidi().getMidiManager().getDevices();
+            }
             usbNames = new ArrayList<>();
             usbManufact = new ArrayList<>();
-            for (MidiDeviceInfo md : usbDevices) {
+            for (MidiDeviceInfo md : usbMidiDevices) {
                 String manuf = getString(R.string.unknown);
                 String device = getString(R.string.unknown);
                 try {
@@ -368,6 +373,7 @@ public class MidiFragment extends Fragment {
                     usbManufact.add(getString(R.string.unknown));
                 }
             }
+
             myView.progressBar.setVisibility(View.GONE);
             myView.searchDevices.setEnabled(true);
             myView.foundDevicesLayout.setVisibility(View.VISIBLE);
@@ -489,7 +495,7 @@ public class MidiFragment extends Fragment {
             if (bluetoothscan) {
                 size = bluetoothDevices.size();
             } else {
-                size = usbDevices.length;
+                size = usbMidiDevices.length;
             }
 
             if (size > 0) {
@@ -506,10 +512,14 @@ public class MidiFragment extends Fragment {
                 LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                 llp.setMargins(12, 12, 12, 12);
                 textView.setLayoutParams(llp);
-                if (!mainActivityInterface.getAppPermissions().hasMidiScanPermissions()) {
+                if (bluetoothscan && !mainActivityInterface.getAppPermissions().hasMidiScanPermissions()) {
                     midiScanPermissions.launch(mainActivityInterface.getAppPermissions().getMidiScanPermissions());
                 } else {
-                    textView.setText(bluetoothDevices.get(x).getName());
+                    if (bluetoothscan) {
+                        textView.setText(bluetoothDevices.get(x).getName());
+                    } else {
+                        textView.setText(usbNames.get(x));
+                    }
                     textView.setTextSize(18.0f);
                     textView.setPadding(24, 24, 24, 24);
                     int finalX = x;
@@ -534,10 +544,10 @@ public class MidiFragment extends Fragment {
                                 selected.postDelayed(runnable, 1000);
                             }, null);
                         } else if (mainActivityInterface.getMidi().getMidiManager()!=null) {
-                            mainActivityInterface.getMidi().getMidiManager().openDevice(usbDevices[finalX], device -> {
-                                mainActivityInterface.getMidi().setMidiDevice(device);
-                                setupDevice(device);
-                                selected.postDelayed(runnable, 1000);
+                            mainActivityInterface.getMidi().getMidiManager().openDevice(usbMidiDevices[finalX], device -> {
+                                    mainActivityInterface.getMidi().setMidiDevice(device);
+                                    setupDevice(device);
+                                    selected.postDelayed(runnable, 1000);
                             }, null);
                         }
                     });
@@ -661,7 +671,6 @@ public class MidiFragment extends Fragment {
         mainActivityInterface.getMidi().disconnectDevice();
         displayCurrentDevice();
     }
-
 
     // Deal with creating midi messages
     @RequiresApi(api = Build.VERSION_CODES.M)

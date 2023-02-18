@@ -1,0 +1,20 @@
+{
+  "version": 3,
+  "artifactType": {
+    "type": "APK",
+    "kind": "Directory"
+  },
+  "applicationId": "com.garethevans.church.opensongtablet",
+  "variantName": "debug",
+  "elements": [
+    {
+      "type": "SINGLE",
+      "filters": [],
+      "attributes": [],
+      "versionCode": 331,
+      "versionName": "6.0.0_beta6",
+      "outputFile": "app-debug.apk"
+    }
+  ],
+  "elementType": "File"
+}

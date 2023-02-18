@@ -30,14 +30,14 @@ public class Midi {
     private final Context c;
     private final MainActivityInterface mainActivityInterface;
     private PedalMidiReceiver pedalMidiReceiver;
-    @SuppressWarnings("FieldCanBeLocal")
+    @SuppressWarnings({"FieldCanBeLocal","unused"})
     private final String TAG = "Midi";
 
     // Initialise
     public Midi(Context c) {
         this.c = c;
         mainActivityInterface = (MainActivityInterface) c;
-        midiDelay = mainActivityInterface.getPreferences().getMyPreferenceInt("midiDelay", 100);
+        setMidiDelay(mainActivityInterface.getPreferences().getMyPreferenceInt("midiDelay", 100));
     }
 
     private ArrayList<String> songMidiMessages = new ArrayList<>();
@@ -143,7 +143,6 @@ public class Midi {
         this.includeBluetoothMidi = includeBluetoothMidi;
     }
 
-    @SuppressWarnings("unused")
     public void setMidiDelay(int midiDelay) {
         this.midiDelay = midiDelay;
     }
@@ -267,6 +266,21 @@ public class Midi {
         // Send midi from the arrayList
         if (position >= 0 && position < songMidiMessages.size()) {
             sendMidi(returnBytesFromHexText(songMidiMessages.get(position)));
+        }
+    }
+
+    public void sendSongMessages() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
+                songMidiMessages!=null && songMidiMessages.size()>0) {
+            for (int position = 0; position < songMidiMessages.size(); position++) {
+                int finalPosition = position;
+                new Handler().postDelayed(() -> {
+                    if (songMidiMessages.get(finalPosition)!=null &&
+                            !songMidiMessages.get(finalPosition).isEmpty()) {
+                        sendMidi(finalPosition);
+                    }
+                }, (long) midiDelay *position);
+            }
         }
     }
 
@@ -454,7 +468,7 @@ public class Midi {
 
     private int getIntFromHexString(String s) {
         int i = 0;
-        if (s != null) {
+        if (s != null && !s.isEmpty()) {
             try {
                 i = Integer.parseInt(s, 16);
             } catch (Exception e) {

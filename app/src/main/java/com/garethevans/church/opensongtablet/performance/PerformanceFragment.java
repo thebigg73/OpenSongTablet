@@ -788,7 +788,10 @@ public class PerformanceFragment extends Fragment {
             mainActivityInterface.getPad().autoStartPad();
 
             // Update any midi commands (if any)
-            mainActivityInterface.getMidi().buildSongMidiMessages();
+            if (mainActivityInterface.getPreferences().getMyPreferenceBoolean("midiSendAuto",false)) {
+                mainActivityInterface.getMidi().buildSongMidiMessages();
+                mainActivityInterface.getMidi().sendSongMessages();
+            }
 
             // Deal with capo information (if required)
             mainActivityInterface.dealWithCapo();

@@ -993,7 +993,6 @@ public class StorageAccess {
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private boolean docContractCreate(Uri uri, String mimeType, String name) {
         if (uri!=null) {
-            Log.d(TAG,"name:"+name+"  mimeType:"+mimeType+"   at uri:"+uri);
             try {
                 return DocumentsContract.createDocument(c.getContentResolver(), uri, mimeType, name) != null;
             } catch (Exception e) {
