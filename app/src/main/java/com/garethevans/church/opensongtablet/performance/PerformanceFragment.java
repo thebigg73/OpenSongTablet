@@ -213,7 +213,9 @@ public class PerformanceFragment extends Fragment {
         myView.inlineSetList.initialisePreferences(requireContext(),mainActivityInterface);
         myView.inlineSetList.prepareSet();
 
-        myView.zoomLayout.setAllowPinchToZoom(mainActivityInterface.getPreferences().getMyPreferenceBoolean("allowPinchToZoom",true));
+        boolean allowPinchToZoom = mainActivityInterface.getPreferences().getMyPreferenceBoolean("allowPinchToZoom",true);
+        myView.zoomLayout.setAllowPinchToZoom(allowPinchToZoom);
+        myView.recyclerView.setAllowPinchToZoom(allowPinchToZoom);
     }
 
     public void tryToImportIntent() {
@@ -357,6 +359,16 @@ public class PerformanceFragment extends Fragment {
 
             availableWidth = screenWidth - margins[0] - margins[2] - myView.inlineSetList.getInlineSetWidth();
             availableHeight = screenHeight - margins[1] - margins[3] - mainActivityInterface.getToolbar().getActionBarHeight(mainActivityInterface.needActionBar());
+
+            int[] viewPadding = mainActivityInterface.getViewMargins();
+            //Log.d(TAG,"LEFT margins[0]:"+margins[0]+"   viewPadding:"+viewPadding[0]);
+            //Log.d(TAG,"RIGHT margins[2]:"+margins[2]+"   viewPadding:"+viewPadding[1]);
+            //Log.d(TAG,"TOP margins[0]+actionbar:"+(margins[1]+mainActivityInterface.getToolbar().getActionBarHeight(mainActivityInterface.needActionBar()))+"   viewPadding:"+viewPadding[2]);
+            //Log.d(TAG,"BOTTOM margins[0]:"+margins[3]+"   viewPadding:"+viewPadding[3]);
+
+            // TODO FOR FRANK TEST - DELETE IF THIS DOESN'T WORK!
+            availableWidth = screenWidth - viewPadding[0] - viewPadding[1] - myView.inlineSetList.getInlineSetWidth();
+            availableHeight = screenHeight - viewPadding[2] - viewPadding[3];
 
             widthBeforeScale = 0;
             heightBeforeScale = 0;
@@ -970,7 +982,13 @@ public class PerformanceFragment extends Fragment {
     }
 
     public void toggleScale() {
-        myView.zoomLayout.toggleScale();
+        if (myView.recyclerView.getVisibility()==View.VISIBLE) {
+            // Resets the zoom
+            myView.recyclerView.toggleScale();
+        } else {
+            // Toggles between different zooms
+            myView.zoomLayout.toggleScale();
+        }
     }
 
     public void updateSizes(int width, int height) {

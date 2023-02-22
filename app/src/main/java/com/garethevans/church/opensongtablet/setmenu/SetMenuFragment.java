@@ -48,6 +48,8 @@ public class SetMenuFragment extends Fragment {
                              Bundle savedInstanceState) {
         myView = MenuSetsBinding.inflate(inflater, container, false);
 
+        mainActivityInterface.registerFragment(this,"SetMenuFragment");
+
         // Load up current set details by initialising them in the CurrentSet class
         // They can be called up or saved in that class
         mainActivityInterface.getCurrentSet().loadCurrentSet();
@@ -202,25 +204,27 @@ public class SetMenuFragment extends Fragment {
     }
 
     public void updateItem(int position) {
-        try {
-            String folder = mainActivityInterface.getCurrentSet().getFolder(position);
-            String filename = mainActivityInterface.getCurrentSet().getFilename(position);
-            String key = mainActivityInterface.getCurrentSet().getKey(position);
-            setListAdapter.getSetList().get(position).songfolder = folder.replace("**", "../");
-            setListAdapter.getSetList().get(position).songfoldernice = folder;
-            setListAdapter.getSetList().get(position).songfilename = filename;
-            setListAdapter.getSetList().get(position).songtitle = filename;
-            setListAdapter.getSetList().get(position).songkey = key;
+        if (position>=0) {
+            try {
+                String folder = mainActivityInterface.getCurrentSet().getFolder(position);
+                String filename = mainActivityInterface.getCurrentSet().getFilename(position);
+                String key = mainActivityInterface.getCurrentSet().getKey(position);
+                setListAdapter.getSetList().get(position).songfolder = folder.replace("**", "../");
+                setListAdapter.getSetList().get(position).songfoldernice = folder;
+                setListAdapter.getSetList().get(position).songfilename = filename;
+                setListAdapter.getSetList().get(position).songtitle = filename;
+                setListAdapter.getSetList().get(position).songkey = key;
 
-            // Check for icon
-            setListAdapter.getSetList().get(position).songicon = mainActivityInterface.getSetActions().
-                    getIconIdentifier(folder, filename);
+                // Check for icon
+                setListAdapter.getSetList().get(position).songicon = mainActivityInterface.getSetActions().
+                        getIconIdentifier(folder, filename);
 
-            mainActivityInterface.getCurrentSet().updateSetTitleView();
-            setListAdapter.updateHighlightedItem(position);
-            setListAdapter.notifyItemChanged(position);
-        } catch (Exception e) {
-            e.printStackTrace();
+                mainActivityInterface.getCurrentSet().updateSetTitleView();
+                setListAdapter.updateHighlightedItem(position);
+                setListAdapter.notifyItemChanged(position);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

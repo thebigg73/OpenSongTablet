@@ -7,9 +7,10 @@ import android.content.Context;
 
 import com.garethevans.church.opensongtablet.R;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Song {
+public class Song implements Serializable {
 
     // The holders
     private int id;

@@ -53,6 +53,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     private ArrayList<String> foundFolders;
     private int alphalistposition = -1;
     private String alphaSelected = "";
+    private boolean songMenuSortTitles;
 
     private MainActivityInterface mainActivityInterface;
 
@@ -68,6 +69,10 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         mainActivityInterface = null;
     }
 
+    public void setContext(Context c) {
+        mainActivityInterface = (MainActivityInterface) c;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,6 +83,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                              Bundle savedInstanceState) {
         myView = MenuSongsBinding.inflate(inflater, container, false);
 
+        mainActivityInterface.registerFragment(this,"SongMenuFragment");
         // Initialise views
         initialiseRecyclerView();
 
@@ -336,7 +342,8 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         prepareSearch();
     }
     public void prepareSearch() {
-        boolean songMenuSortTitles = mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuSortTitles", true);
+        Log.d(TAG,"mainActivityInterface:"+mainActivityInterface);
+        songMenuSortTitles = mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuSortTitles", true);
         getSearchVals();
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
@@ -614,10 +621,33 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     }
 
     public int getPositionInSongMenu(Song song) {
-        return songListAdapter.getPositionOfSong(song);
+        Log.d(TAG,"song:"+song);
+        if (song!=null && songListAdapter!=null) {
+            return songListAdapter.getPositionOfSong(song);
+        } else {
+            return -1;
+        }
     }
 
     public ArrayList<Song> getSongsFound() {
+        if (songsFound==null) {
+            try {
+                songsFound = mainActivityInterface.getSQLiteHelper().getSongsByFilters(
+                        songListSearchByFolder, songListSearchByArtist, songListSearchByKey,
+                        songListSearchByTag, songListSearchByFilter, songListSearchByTitle,
+                        folderSearchVal, artistSearchVal, keySearchVal, tagSearchVal,
+                        filterSearchVal, titleSearchVal, songMenuSortTitles);
+            } catch (Exception e) {
+                songsFound = new ArrayList<>();
+                e.printStackTrace();
+            }
+        }
+        return songsFound;
+    }
+    public void setSongsFound(ArrayList<Song> songsFound) {
+        this.songsFound = songsFound;
+    }
+    public ArrayList<Song> getSongs() {
         return songsFound;
     }
 
