@@ -14,6 +14,7 @@ public class ThemeColors {
     private String themeName;
 
     // Set the colours from preferences
+    private boolean invertPDF;
     private int lyricsTextColor;
     private int lyricsBackgroundColor;
     private int lyricsCapoColor;
@@ -51,6 +52,12 @@ public class ThemeColors {
     // Set the values with updates
     public void setThemeName(String themeName) {
         this.themeName = themeName;
+    }
+    public void setInvertPDF(boolean invertPDF) {
+        String theme = mainActivityInterface.getPreferences().getMyPreferenceString("appTheme","dark");
+        theme = theme + "_";
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean(theme+"invertPDF", invertPDF);
+        this.invertPDF = invertPDF;
     }
     public void setLyricsTextColor(int i) {
         this.lyricsTextColor = i;
@@ -128,6 +135,9 @@ public class ThemeColors {
     // Get the values
     public String getThemeName() {
         return themeName;
+    }
+    public boolean getInvertPDF() {
+        return invertPDF;
     }
     public int getLyricsTextColor() {
         return lyricsTextColor;
@@ -262,6 +272,7 @@ public class ThemeColors {
         // Others are theme specific
         switch(theme) {
             case "dark_":
+                mainActivityInterface.getPreferences().setMyPreferenceBoolean(theme+"invertPDF",          true);
                 mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"lyricsTextColor",        white);
                 mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"lyricsBackgroundColor",  black);
                 mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"lyricsVerseColor",       black);
@@ -276,6 +287,7 @@ public class ThemeColors {
                 break;
 
             case "light_":
+                mainActivityInterface.getPreferences().setMyPreferenceBoolean(theme+"invertPDF",          false);
                 mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"lyricsTextColor",        black);
                 mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"lyricsBackgroundColor",  white);
                 mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"lyricsVerseColor",       white);
@@ -290,6 +302,7 @@ public class ThemeColors {
                 break;
 
             case "custom1_":
+                mainActivityInterface.getPreferences().setMyPreferenceBoolean(theme+"invertPDF",          true);
                 mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"lyricsTextColor",        white);
                 mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"lyricsBackgroundColor",  black);
                 mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"lyricsVerseColor",       black);
@@ -304,6 +317,7 @@ public class ThemeColors {
                 break;
 
             case "custom2_":
+                mainActivityInterface.getPreferences().setMyPreferenceBoolean(theme+"invertPDF",          false);
                 mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"lyricsTextColor",        black);
                 mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"lyricsBackgroundColor",  white);
                 mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"lyricsVerseColor",       white);
@@ -321,6 +335,7 @@ public class ThemeColors {
 
     }
     private void setThemeDark() {
+        setInvertPDF(mainActivityInterface.getPreferences().getMyPreferenceBoolean("dark_invertPDF",             true));
         setMetronomeColor(mainActivityInterface.getPreferences().getMyPreferenceInt("dark_metronomeColor",               darkishred));
         setPageButtonsColor(mainActivityInterface.getPreferences().getMyPreferenceInt("dark_pageButtonsColor",           pageButtonColor));
         setStickyTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt("dark_stickyTextColor",             black));
@@ -347,6 +362,7 @@ public class ThemeColors {
         setHighlightHeadingColor(mainActivityInterface.getPreferences().getMyPreferenceInt("dark_highlightHeadingColor", transparent));
     }
     private void setThemeLight() {
+        setInvertPDF(mainActivityInterface.getPreferences().getMyPreferenceBoolean("light_invertPDF",             false));
         setMetronomeColor(mainActivityInterface.getPreferences().getMyPreferenceInt("light_metronomeColor",               darkishred));
         setPageButtonsColor(mainActivityInterface.getPreferences().getMyPreferenceInt("light_pageButtonsColor",           pageButtonColor));
         setStickyTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt("light_stickyTextColor",             black));
@@ -373,6 +389,7 @@ public class ThemeColors {
         setHighlightHeadingColor(mainActivityInterface.getPreferences().getMyPreferenceInt("light_highlightHeadingColor", transparent));
     }
     private void setThemeCustom1() {
+        setInvertPDF(mainActivityInterface.getPreferences().getMyPreferenceBoolean("custom1_invertPDF",           true));
         setMetronomeColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom1_metronomeColor",             darkishred));
         setPageButtonsColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom1_pageButtonsColor",         pageButtonColor));
         setStickyTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom1_stickyTextColor",           black));
@@ -400,6 +417,7 @@ public class ThemeColors {
 
     }
     private void setThemeCustom2() {
+        setInvertPDF(mainActivityInterface.getPreferences().getMyPreferenceBoolean("custom2_invertPDF",           false));
         setMetronomeColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_metronomeColor",             darkishred));
         setPageButtonsColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_pageButtonsColor",         pageButtonColor));
         setStickyTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_stickyTextColor",           black));

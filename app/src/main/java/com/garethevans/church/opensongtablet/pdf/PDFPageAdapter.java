@@ -233,7 +233,6 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
             }
         });
 
-        Log.d(TAG,"["+position+"] finalAlpha:"+finalAlpha);
         cardView.post(()->{
             try {
                 if (!mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance))) {

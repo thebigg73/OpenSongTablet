@@ -236,19 +236,23 @@ public class PresenterFragment extends Fragment {
         displayInterface.updateDisplay("setSongContent");
 
         if (songSectionsFragment!=null) {
-            myView.viewPager.postDelayed(new Runnable() {
-
-                @Override
-                public void run() {
-                    songSectionsFragment.setContext(getContext());
-                    myView.viewPager.setCurrentItem(0);
-                    songSectionsFragment.showSongInfo();
-                }
+            myView.viewPager.postDelayed(() -> {
+                songSectionsFragment.setContext(getContext());
+                myView.viewPager.setCurrentItem(0);
+                songSectionsFragment.showSongInfo();
             }, 50);
         }
 
         // If we are in a set, send that info to the inline set custom view to see if it should draw
         myView.inlineSetList.checkVisibility();
+
+        // If a song has MIDI messages and we're intent on sending it automatically, do that
+        // The MIDI class checks for valid connections
+        // Update any midi commands (if any)
+        if (mainActivityInterface.getPreferences().getMyPreferenceBoolean("midiSendAuto",false)) {
+            mainActivityInterface.getMidi().buildSongMidiMessages();
+            mainActivityInterface.getMidi().sendSongMessages();
+        }
     }
 
     private void getPreferences() {

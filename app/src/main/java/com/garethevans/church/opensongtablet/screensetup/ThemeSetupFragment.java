@@ -7,6 +7,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -110,6 +111,8 @@ public class ThemeSetupFragment extends Fragment {
     }
 
     public void updateButtons() {
+        myView.invertPDF.setChecked(mainActivityInterface.getMyThemeColors().getInvertPDF());
+
         myView.pageButton.setColor(mainActivityInterface.getMyThemeColors().getLyricsBackgroundColor());
         myView.lyricsButton.setColor(mainActivityInterface.getMyThemeColors().getLyricsTextColor());
         myView.chordsButton.setColor(mainActivityInterface.getMyThemeColors().getLyricsChordsColor());
@@ -140,6 +143,12 @@ public class ThemeSetupFragment extends Fragment {
     }
 
     private void setListeners() {
+        myView.invertPDF.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                mainActivityInterface.getMyThemeColors().setInvertPDF(isChecked);
+            }
+        });
         myView.lyricsButton.setOnClickListener(v-> chooseColor("lyricsTextColor"));
         myView.presoButton.setOnClickListener(v-> chooseColor("presoFontColor"));
         myView.presoChordButton.setOnClickListener(v-> chooseColor("presoChordColor"));

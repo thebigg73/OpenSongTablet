@@ -271,6 +271,7 @@
     <string name="deeplink_highlighter" translatable="false">https://www.opensongapp.com/?p=songactions/highlighter/edit</string>
     <string name="deeplink_import" translatable="false">https://www.opensongapp.com/?p=settings/import</string>
     <string name="deeplink_import_file" translatable="false">https://www.opensongapp.com/?p=settings/import/file</string>
+    <string name="deeplink_import_online" translatable="false">https://www.opensongapp.com/?p=settings/import/online</string>
     <string name="deeplink_import_osb" translatable="false">https://www.opensongapp.com/?p=settings/import/osb</string>
     <string name="deeplink_inlineset" translatable="false">https://www.opensongapp.com/?p=settings/set/inlineset</string>
     <string name="deeplink_kitkat_choose" translatable="false">https://www.opensongapp.com/?p=settings/storage/kitkatchoose</string>
@@ -1110,4 +1111,6 @@ Check out the categories in the right hand options menu.
     <string name="youtube" translatable="false">YouTube</string>
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zoom_level">Zoom level</string>
+    <string name="invert_PDF">Invert PDF colours</string>
+    <string name="invert_PDF_info">Most PDF documents have a light background and dark text.  Inverting the colours will make this have a dark background and light text similar to a dark or night theme.</string>
 </resources>

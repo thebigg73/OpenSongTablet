@@ -1,9 +1,11 @@
 package com.garethevans.church.opensongtablet.customviews;
 
 import android.content.Context;
+import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.animation.LinearInterpolator;
 
 import androidx.annotation.NonNull;
@@ -23,7 +25,23 @@ public class MyRecyclerView extends RecyclerView {
     private boolean scrolledToBottom=false;
     private int maxScrollY;
     private GestureDetector gestureDetector;
+    private final ScaleGestureDetector mScaleDetector;
     private float floatScrollPos;
+
+    // For pinch to zoom hopefully
+    private float mScaleFactor = 1.f;
+    private float maxWidth = 0.0f;
+    private float maxHeight = 0.0f;
+    private float mLastTouchX;
+    private float mLastTouchY;
+    private float mPosX;
+    private float mPosY;
+    private float width;
+    private float height;
+    private int mActivePointerId;
+    private boolean allowPinchToZoom;
+    private boolean gestureControl;
+
 
     private final LinearInterpolator linearInterpolator = new LinearInterpolator();
     private final ScrollListener scrollListener;
@@ -42,6 +60,7 @@ public class MyRecyclerView extends RecyclerView {
         setClipToPadding(false);
         setItemAnimator(null);
         floatScrollPos = 0;
+        mScaleDetector = new ScaleGestureDetector(getContext(), new ScaleListener());
     }
 
     public MyRecyclerView(@NonNull Context context, @Nullable @org.jetbrains.annotations.Nullable AttributeSet attrs) {
@@ -53,6 +72,11 @@ public class MyRecyclerView extends RecyclerView {
         setOverScrollMode(OVER_SCROLL_ALWAYS);
         setClipChildren(false);
         floatScrollPos = 0;
+        mScaleDetector = new ScaleGestureDetector(getContext(), new ScaleListener());
+    }
+
+    public void setAllowPinchToZoom(boolean allowPinchToZoom) {
+        this.allowPinchToZoom = allowPinchToZoom;
     }
 
     public void initialiseRecyclerView(MainActivityInterface mainActivityInterface) {
@@ -166,11 +190,87 @@ public class MyRecyclerView extends RecyclerView {
 
         @Override
         public boolean onInterceptTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
-            if (e.getAction() == MotionEvent.ACTION_DOWN || e.getAction() == MotionEvent.ACTION_BUTTON_PRESS) {
-                isUserTouching = true;
-            } else if (e.getAction() == MotionEvent.ACTION_UP || e.getAction() == MotionEvent.ACTION_BUTTON_RELEASE || e.getAction() == MotionEvent.ACTION_CANCEL) {
-                isUserTouching = false;
+
+            final int action = e.getAction();
+            if (allowPinchToZoom) {
+                mScaleDetector.onTouchEvent(e);
             }
+            float x;
+            float y;
+            int pointerIndex, pointerId;
+
+            int INVALID_POINTER_ID = -1;
+            switch (action & MotionEvent.ACTION_MASK) {
+                case (MotionEvent.ACTION_DOWN):
+                    isUserTouching = true;
+                    x = e.getX();
+                    y = e.getY();
+                    mLastTouchX = x;
+                    mLastTouchY = y;
+                    mActivePointerId = e.getPointerId(0);
+                    break;
+
+                case (MotionEvent.ACTION_MOVE):
+                    isUserTouching = true;
+                    pointerIndex = (action & MotionEvent.ACTION_POINTER_INDEX_MASK)
+                        >> MotionEvent.ACTION_POINTER_INDEX_SHIFT;
+                    x = e.getX(pointerIndex);
+                    y = e.getY(pointerIndex);
+                    final float dx = x - mLastTouchX;
+                    final float dy = y - mLastTouchY;
+
+                    mPosX += dx;
+                    mPosY += dy;
+
+                    if (mPosX > 0.0f) {
+                        mPosX = 0.0f;
+                    } else if (mPosX < maxWidth) {
+                        mPosX = maxWidth;
+                    }
+
+                    if (mPosY > 0.0f) {
+                        mPosY = 0.0f;
+                    } else if (mPosY < maxHeight) {
+                        mPosY = maxHeight;
+                    }
+
+                    mLastTouchX = x;
+                    mLastTouchY = y;
+
+                    invalidate();
+                    break;
+
+                case (MotionEvent.ACTION_BUTTON_PRESS):
+                    isUserTouching = true;
+                    break;
+
+                case (MotionEvent.ACTION_UP):
+                    isUserTouching = false;
+                    pointerIndex = (action & MotionEvent.ACTION_POINTER_INDEX_MASK) >> MotionEvent.ACTION_POINTER_INDEX_SHIFT;
+                    pointerId = e.getPointerId(pointerIndex);
+                    if (pointerId == mActivePointerId) {
+                        final int newPointerIndex = pointerIndex == 0 ? 1 : 0;
+                        if (newPointerIndex!=1) {
+                            mLastTouchX = e.getX(newPointerIndex);
+                            mLastTouchY = e.getY(newPointerIndex);
+                            mActivePointerId = e.getPointerId(newPointerIndex);
+                        }
+                    }
+                    break;
+
+                case (MotionEvent.ACTION_CANCEL):
+                case (MotionEvent.ACTION_BUTTON_RELEASE):
+                    isUserTouching = false;
+                    mActivePointerId = INVALID_POINTER_ID;
+                    break;
+
+            }
+
+//            if (e.getAction() == MotionEvent.ACTION_DOWN || e.getAction() == MotionEvent.ACTION_BUTTON_PRESS) {
+//                isUserTouching = true;
+//            } else if (e.getAction() == MotionEvent.ACTION_UP || e.getAction() == MotionEvent.ACTION_BUTTON_RELEASE || e.getAction() == MotionEvent.ACTION_CANCEL) {
+//                isUserTouching = false;
+//            }
 
             // Deal with performance mode gestures
             if (gestureDetector!=null) {
@@ -178,6 +278,65 @@ public class MyRecyclerView extends RecyclerView {
             } else {
                 return super.onInterceptTouchEvent(rv, e);
             }
+        }
+    }
+
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        width = MeasureSpec.getSize(widthMeasureSpec);
+        height = MeasureSpec.getSize(heightMeasureSpec);
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+    }
+
+    private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
+        @Override
+        public boolean onScale(ScaleGestureDetector detector) {
+            mScaleFactor *= detector.getScaleFactor();
+            mScaleFactor = Math.max(1.0f, Math.min(mScaleFactor, 3.0f));
+            maxWidth = width - (width * mScaleFactor);
+            maxHeight = height - (height * mScaleFactor);
+            invalidate();
+            return true;
+        }
+    }
+
+    @Override
+    public void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+        canvas.save();
+        canvas.translate(mPosX, mPosY);
+        canvas.scale(mScaleFactor, mScaleFactor);
+        canvas.restore();
+    }
+
+    @Override
+    protected void dispatchDraw(@NonNull Canvas canvas) {
+        canvas.save();
+        if (mScaleFactor == 1.0f) {
+            mPosX = 0.0f;
+            mPosY = 0.0f;
+        }
+        canvas.translate(mPosX, mPosY);
+        canvas.scale(mScaleFactor, mScaleFactor);
+        super.dispatchDraw(canvas);
+        canvas.restore();
+        invalidate();
+    }
+
+    public void toggleScale() {
+        if (!gestureControl) {
+            isUserTouching = false;
+            gestureControl = true;
+            scrollTo(0,0);
+            // Set a timer to enable it again
+            postDelayed(() -> gestureControl = false,600);
+            // This is called from a gesture or page button
+            // It toggles between current zoom and zoom off
+            mScaleFactor = 1.0f;
+            mPosX = 0;
+            mPosY = 0;
+            invalidate();
         }
     }
 }

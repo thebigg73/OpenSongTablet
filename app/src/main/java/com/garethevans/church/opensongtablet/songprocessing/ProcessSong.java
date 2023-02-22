@@ -7,6 +7,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
@@ -972,7 +974,7 @@ public class ProcessSong {
             int color = getFontColor(linetype, lyricColor, chordColor, capoColor);
             int startpos = 0;
             for (int endpos : pos) {
-                if (endpos != 0) {
+                if (endpos != 0 && endpos>startpos && endpos<lines[t].length()) {
                     TextView textView = newTextView(linetype, typeface, size, color);
                     String str = lines[t].substring(startpos, endpos);
                     if (startpos == 0) {
@@ -2700,6 +2702,9 @@ public class ProcessSong {
                 if (pdfSize.get(0) > allowedWidth) {
                     bmpheight = (int) (xscale * (float) pdfSize.get(1));
                     bmpwidth = allowedWidth;
+                } else {
+                    bmpheight = pdfSize.get(1);
+                    bmpwidth = pdfSize.get(0);
                 }
                 break;
         }
@@ -2713,6 +2718,33 @@ public class ProcessSong {
         sizes.add(bmpwidth);
         sizes.add(bmpheight);
         return sizes;
+    }
+
+    public Bitmap invertBitmap (Bitmap src) {
+        int height = src.getHeight();
+        int width = src.getWidth();
+
+        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        Paint paint = new Paint();
+
+        ColorMatrix matrixGrayscale = new ColorMatrix();
+        matrixGrayscale.setSaturation(0);
+
+        ColorMatrix matrixInvert = new ColorMatrix();
+        matrixInvert.set(new float[] {
+                        -1.0f, 0.0f, 0.0f, 0.0f, 255.0f,
+                        0.0f, -1.0f, 0.0f, 0.0f, 255.0f,
+                        0.0f, 0.0f, -1.0f, 0.0f, 255.0f,
+                        0.0f, 0.0f, 0.0f, 1.0f, 0.0f
+                });
+        matrixInvert.preConcat(matrixGrayscale);
+
+        ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrixInvert);
+        paint.setColorFilter(filter);
+
+        canvas.drawBitmap(src, 0, 0, paint);
+        return bitmap;
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -2738,7 +2770,12 @@ public class ProcessSong {
                 e.printStackTrace();
             }
 
-            return bitmap;
+            if (mainActivityInterface.getMyThemeColors().getInvertPDF()) {
+                return invertBitmap(bitmap);
+            } else {
+                return bitmap;
+            }
+
         } catch (OutOfMemoryError | Exception e) {
             e.printStackTrace();
             return null;

@@ -167,6 +167,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     private ActivityBinding myView;
     private boolean bootUpCompleted = false;
+    private boolean rebooted = false;
+
+    private ArrayList<Song> songsFound;
 
     // The helpers sorted alphabetically
     private ABCNotation abcNotation;
@@ -232,6 +235,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     // Other views/listeners/helpers
     private WindowFlags windowFlags;
     private BatteryStatus batteryStatus;
+    private ViewPagerAdapter viewPagerAdapter;
     private SongMenuFragment songMenuFragment;
     private SetMenuFragment setMenuFragment;
     private PerformanceFragment performanceFragment;
@@ -270,28 +274,47 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
+
         if (savedInstanceState!=null) {
             bootUpCompleted = savedInstanceState.getBoolean("bootUpCompleted",false);
+            rebooted = true;
             if (songListBuildIndex==null) {
+                Log.d(TAG,"creating songListBuildIndex");
                 songListBuildIndex = new SongListBuildIndex(this);
+                fullIndexRequired = true;
             }
+
             songListBuildIndex.setIndexComplete(savedInstanceState.getBoolean("indexComplete",false));
             fullIndexRequired = !songListBuildIndex.getIndexComplete();
             Log.d(TAG,"bootUpCompleted:"+bootUpCompleted+"   fullIndexRequired:"+fullIndexRequired);
+
+
+        } else {
+            rebooted = false;
         }
 
-        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
+        // Did we receive an intent (user clicked on an openable file)?
+        fileOpenIntent = getIntent();
+        onNewIntent(fileOpenIntent);
 
         //supportRequestWindowFeature(AppCompatDelegate.FEATURE_ACTION_MODE_OVERLAY);
 
-        myView = ActivityBinding.inflate(getLayoutInflater());
-        setContentView(myView.getRoot());
+        Log.d(TAG,"myView:"+myView);
+        Log.d(TAG,"storageAccess:"+storageAccess);
+        Log.d(TAG,"savedInstanceState:"+savedInstanceState);
 
-        // Initialise helpers (the ones needed to start - others are set up later)
-        setupHelpers();
+        if (myView==null) {
+            myView = ActivityBinding.inflate(getLayoutInflater());
+        }
+
+        setContentView(myView.getRoot());
 
         // Set up the action bar
         setupActionbar();
+
+        // Initialise helpers (the ones needed to start - others are set up later)
+        setupHelpers();
 
         // Set up views
         setupViews();
@@ -299,9 +322,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         // Set up the navigation controller
         setupNavigation();
 
-        // Did we receive an intent (user clicked on an openable file)?
-        fileOpenIntent = getIntent();
-        onNewIntent(fileOpenIntent);
+        initialiseActivity();
+
     }
 
     @Override
@@ -382,89 +404,94 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
 
     private void setupHelpers() {
-        storageAccess = new StorageAccess(this);
-        preferences = new Preferences(this);
+        // The get methods check for null and if so, create new instances
+        getStorageAccess();
+        getPreferences();
 
         // The song stuff may have been initialised in savedInstanceState
-        if (songListBuildIndex==null) {
-            songListBuildIndex = new SongListBuildIndex(this);
-        }
+        songListBuildIndex = getSongListBuildIndex();
+
 
         // The screen display stuff
-        customAnimation = new CustomAnimation();
-        showCase = new ShowCase();
-        showToast = new ShowToast(this,myView.fragmentView);
+        customAnimation = getCustomAnimation();
+        showCase = getShowCase();
+        getShowToast();
+
 
         // The app setup
-        versionNumber = new VersionNumber();
-        fixLocale = new FixLocale();
-        checkInternet = new CheckInternet();
-        nearbyConnections = new NearbyConnections(this);
-        customAnimation = new CustomAnimation();
-        webDownload = new WebDownload();
-        alertChecks = new AlertChecks(this);
+        versionNumber = getVersionNumber();
+
+        getFixLocale();
+        locale = fixLocale.getLocale();
+
+        checkInternet = getCheckInternet();
+        getNearbyConnections();
+        webDownload = getWebDownload();
+        alertChecks = getAlertChecks();
+        alertChecks.setAlreadySeen(rebooted);
 
         // For user preferences
-        setTypeFace = new SetTypeFace(this);
-        themeColors = new ThemeColors(this);
-        profileActions = new ProfileActions(this);
-        appPermissions = new AppPermissions(this);
+        setTypeFace = getMyFonts();
+        themeColors = getMyThemeColors();
+        profileActions = getProfileActions();
+        appPermissions = getAppPermissions();
 
         // The databases
-        sqLiteHelper = new SQLiteHelper(this);
-        nonOpenSongSQLiteHelper = new NonOpenSongSQLiteHelper(this);
-        commonSQL = new CommonSQL(this);
+        sqLiteHelper = getSQLiteHelper();
+        nonOpenSongSQLiteHelper = getNonOpenSongSQLiteHelper();
+        commonSQL = getCommonSQL();
 
         // Converting song formats and processing song content
-        chordDisplayProcessing = new ChordDisplayProcessing(this);
-        chordDirectory = new ChordDirectory();
-        convertChoPro = new ConvertChoPro(this);
-        convertOnSong = new ConvertOnSong(this);
-        convertTextSong = new ConvertTextSong(this);
-        processSong = new ProcessSong(this);
-        prepareFormats = new PrepareFormats(this);
-        songSheetHeaders = new SongSheetHeaders(this);
-        ocr = new OCR(this);
-        makePDF = new MakePDF(this);
-        transpose = new Transpose(this);
-        abcNotation = new ABCNotation(this);
-        song = new Song();
+        chordDisplayProcessing = getChordDisplayProcessing();
+        chordDirectory = getChordDirectory();
+        convertChoPro = getConvertChoPro();
+        convertOnSong = getConvertOnSong();
+        convertTextSong = getConvertTextSong();
+        processSong = getProcessSong();
+        prepareFormats = getPrepareFormats();
+        songSheetHeaders = getSongSheetHeaders();
+        ocr = getOCR();
+        makePDF = getMakePDF();
+        transpose = getTranspose();
+        abcNotation = getAbcNotation();
+        song = getSong();
 
         // Loading up songs and the indexing
-        loadSong = new LoadSong(this);
-        saveSong = new SaveSong(this);
+        loadSong = getLoadSong();
+        saveSong = getSaveSong();
 
         // Sets
-        currentSet = new CurrentSet(this);
-        setActions = new SetActions(this);
+        currentSet = getCurrentSet();
+        setActions = getSetActions();
 
         // Song actions/features
-        performanceGestures = new PerformanceGestures(this);
-        pageButtons = new PageButtons(this);
-        midi = new Midi(this);
-        midiDriver = MidiDriver.getInstance();
-        midiDriver.start();
-        midiDriver.setReverb(ReverbConstants.OFF);
-        midiDriver.setVolume(100);
+        performanceGestures = getPerformanceGestures();
+        pageButtons = getPageButtons();
+        midi = getMidi();
+        try {
+            midiDriver = MidiDriver.getInstance();
+            midiDriver.start();
+            midiDriver.setReverb(ReverbConstants.OFF);
+            midiDriver.setVolume(100);
+        } catch (OutOfMemoryError | Exception e) {
+            e.printStackTrace();
+        }
 
-        pedalActions = new PedalActions(this);
-        pad = new Pad(this, myView.onScreenInfo.getPad());
-        autoscroll = new Autoscroll(this,myView.onScreenInfo.getAutoscrollTime(),
-                myView.onScreenInfo.getAutoscrollTotalTime(),myView.onScreenInfo.getAutoscroll());
-        metronome = new Metronome(this);
-        gestures = new Gestures(this);
-        swipes = new Swipes(this);
-        timeTools = new TimeTools();
-        displayPrevNext = new DisplayPrevNext(this,myView.nextPrevInfo.nextPrevInfoLayout,
-                myView.nextPrevInfo.prevButton, myView.nextPrevInfo.nextButton);
+        pedalActions = getPedalActions();
+        pad = getPad();
+        autoscroll = getAutoscroll();
+        metronome = getMetronome();
+        gestures = getGestures();
+        swipes = getSwipes();
+        timeTools = getTimeTools();
+        displayPrevNext = getDisplayPrevNext();
 
         // Other file actions
-        ccliLog = new CCLILog(this);
-        exportActions = new ExportActions(this);
-        bible = new Bible(this);
-        customSlide = new CustomSlide(this);
-        presenterSettings = new PresenterSettings(this);
-        //mediaRouterCallback = new MediaRouterCallback(this);
+        ccliLog = getCCLILog();
+        exportActions = getExportActions();
+        bible = getBible();
+        customSlide = getCustomSlide();
+        presenterSettings = getPresenterSettings();
     }
 
 
@@ -565,6 +592,15 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 }
             });
     }
+
+    public int[] getViewMargins() {
+        int left = myView.fragmentView.getPaddingLeft();
+        int right = myView.fragmentView.getPaddingRight();
+        int top = myView.fragmentView.getPaddingTop();
+        int bottom = myView.fragmentView.getPaddingBottom();
+        return new int[] {left,right,top,bottom};
+    }
+
 
 
 
@@ -680,7 +716,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 pageButtonActive = false;
                 // Reenable the page button after the animation time
                 Handler h = new Handler();
-                h.postDelayed(() -> pageButtonActive = true,getPageButtons().getAnimationTime());
+                h.postDelayed(() -> pageButtonActive = true,pageButtons.getAnimationTime());
                 animatePageButtons();
             }
         });
@@ -1014,7 +1050,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             myView.fragmentView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         } else {
             navigateToFragment(getString(R.string.deeplink_performance),0);
-            myView.fragmentView.setBackgroundColor(getMyThemeColors().getLyricsBackgroundColor());
+            myView.fragmentView.setBackgroundColor(themeColors.getLyricsBackgroundColor());
         }
         settingsOpen = false;
     }
@@ -1074,10 +1110,16 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public NearbyConnections getNearbyConnections(MainActivityInterface mainActivityInterface) {
         // Return a reference to nearbyConnections
+        if (nearbyConnections==null) {
+            nearbyConnections = new NearbyConnections(this);
+        }
         return nearbyConnections;
     }
     @Override
     public NearbyConnections getNearbyConnections() {
+        if (nearbyConnections==null) {
+            nearbyConnections = new NearbyConnections(this);
+        }
         return nearbyConnections;
     }
 
@@ -1327,7 +1369,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         if (getString(R.string.settings).equals(item.toString())) {
             if (settingsOpen) {
                 settingsOpen = false;
-                myView.fragmentView.setBackgroundColor(getMyThemeColors().getLyricsBackgroundColor());
+                myView.fragmentView.setBackgroundColor(themeColors.getLyricsBackgroundColor());
                 navHome();
             } else {
                 navigateToFragment(getString(R.string.deeplink_preferences), 0);
@@ -1414,10 +1456,23 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     // The song and set menu
     private void setUpSongMenuTabs() {
-        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), this.getLifecycle());
-        viewPagerAdapter.createFragment(0);
-        songMenuFragment = (SongMenuFragment) viewPagerAdapter.menuFragments[0];
-        setMenuFragment = (SetMenuFragment) viewPagerAdapter.createFragment(1);
+        if (viewPagerAdapter == null) {
+            Log.d(TAG,"creating viewpagerAdapter");
+
+            viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), this.getLifecycle());
+            viewPagerAdapter.createFragment(0);
+        } else {
+            Log.d(TAG,"viewPagerAdapter already exists");
+        }
+        if (songMenuFragment == null) {
+            Log.d(TAG,"creating songMenuFragment");
+            songMenuFragment = (SongMenuFragment) viewPagerAdapter.menuFragments[0];
+        } else {
+            Log.d(TAG,"songMenuFragment already exists");
+        }
+        if (setMenuFragment == null) {
+            setMenuFragment = (SetMenuFragment) viewPagerAdapter.createFragment(1);
+        }
         viewPager = myView.viewpager;
         viewPager.setAdapter(viewPagerAdapter);
         viewPager.setOffscreenPageLimit(1);
@@ -1428,11 +1483,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             switch (position) {
                 case 0:
                     tab.setText(getString(R.string.song));
-                    tab.setIcon(ResourcesCompat.getDrawable(getResources(),R.drawable.music_note,null));
+                    tab.setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.music_note, null));
                     break;
                 case 1:
                     tab.setText(getString(R.string.set));
-                    tab.setIcon(ResourcesCompat.getDrawable(getResources(),R.drawable.list_number,null));
+                    tab.setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.list_number, null));
                     break;
             }
         }).attach();
@@ -1444,6 +1499,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             }
         });
         myView.menuTop.versionCode.setOnClickListener(v -> closeDrawer(true));
+
     }
     @Override
     public boolean getShowSetMenu() {
@@ -1516,7 +1572,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             if (songMenuFragment!=null) {
                 songMenuFragment.changeAlphabeticalLayout();
             }
+        } else if (rebooted && bootUpCompleted) {
+            // We have resumed from stale state, build the index but from the database
+            songMenuFragment.prepareSearch();
+            Log.d(TAG,"prepareSearch()");
+
         } else {
+
             // This is a full rebuild
             // If sent called from another fragment the fragName and callingFragment are used to run an update listener
             songListBuildIndex.setIndexComplete(false);
@@ -1553,6 +1615,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
     @Override
     public int getPositionOfSongInMenu() {
+        Log.d(TAG,"songMenuFragment:"+songMenuFragment);
         if (songMenuFragment!=null) {
             return songMenuFragment.getPositionInSongMenu(song);
         } else {
@@ -1561,7 +1624,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
     @Override
     public Song getSongInMenu(int position) {
+        Log.d(TAG,"position:"+position+"  songMenuFragment:"+songMenuFragment+"  getSongsFound:"+songMenuFragment.getSongsFound());
         if (position>-1 && songMenuFragment!=null && songMenuFragment.getSongsFound()!=null && songMenuFragment.getSongsFound().size()>position) {
+            Log.d(TAG, "getSongsFound:"+songMenuFragment.getSongsFound());
             return songMenuFragment.getSongsFound().get(position);
         }
         return song;
@@ -1643,7 +1708,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         }
         pageButtons.updateColors();
         pageButtons.setPageButton(myView.actionFAB, -1, false);
-        for (int x=0; x<getPageButtons().getPageButtonNum(); x++) {
+        for (int x=0; x<pageButtons.getPageButtonNum(); x++) {
             pageButtons.setPageButton(pageButtons.getFAB(x), x, false);
         }
     }
@@ -1651,14 +1716,23 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     // Databases
     @Override
     public SQLiteHelper getSQLiteHelper() {
+        if (sqLiteHelper==null) {
+            sqLiteHelper = new SQLiteHelper(this);
+        }
         return sqLiteHelper;
     }
     @Override
     public NonOpenSongSQLiteHelper getNonOpenSongSQLiteHelper() {
+        if (nonOpenSongSQLiteHelper==null) {
+            nonOpenSongSQLiteHelper = new NonOpenSongSQLiteHelper(this);
+        }
         return nonOpenSongSQLiteHelper;
     }
     @Override
     public CommonSQL getCommonSQL() {
+        if (commonSQL==null) {
+            commonSQL = new CommonSQL(this);
+        }
         return commonSQL;
     }
 
@@ -1700,6 +1774,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
     @Override
     public Midi getMidi() {
+        if (midi==null) {
+            midi = new Midi(this);
+        }
         return midi;
     }
     @Override
@@ -1756,6 +1833,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     // CCLI
     @Override
     public CCLILog getCCLILog() {
+        if (ccliLog==null) {
+            ccliLog = new CCLILog(this);
+        }
         return ccliLog;
     }
 
@@ -1793,54 +1873,93 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     // The getters for references to the helper classes also needed in fragments
     @Override
     public StorageAccess getStorageAccess() {
+        if (storageAccess==null) {
+            storageAccess = new StorageAccess(this);
+        }
         return storageAccess;
     }
     @Override
     public Preferences getPreferences() {
+        if (preferences==null) {
+            preferences = new Preferences(this);
+        }
         return preferences;
     }
     @Override
     public AppPermissions getAppPermissions() {
+        if (appPermissions==null) {
+            appPermissions = new AppPermissions(this);
+        }
         return appPermissions;
     }
     @Override
     public SetTypeFace getMyFonts() {
+        if (setTypeFace==null) {
+            setTypeFace = new SetTypeFace(this);
+        }
         return setTypeFace;
     }
     @Override
     public ThemeColors getMyThemeColors() {
+        if (themeColors==null) {
+            themeColors = new ThemeColors(this);
+        }
         return themeColors;
     }
     @Override
     public ExportActions getExportActions() {
+        if (exportActions==null) {
+            exportActions = new ExportActions(this);
+        }
         return exportActions;
     }
     @Override
     public ChordDisplayProcessing getChordDisplayProcessing() {
+        if (chordDisplayProcessing==null) {
+            chordDisplayProcessing = new ChordDisplayProcessing(this);
+        }
         return chordDisplayProcessing;
     }
     @Override
     public ChordDirectory getChordDirectory() {
+        if (chordDirectory==null) {
+            chordDirectory = new ChordDirectory();
+        }
         return chordDirectory;
     }
     @Override
     public ConvertChoPro getConvertChoPro() {
+        if (convertChoPro==null) {
+            convertChoPro = new ConvertChoPro(this);
+        }
         return convertChoPro;
     }
     @Override
     public ConvertOnSong getConvertOnSong() {
+        if (convertOnSong==null) {
+            convertOnSong = new ConvertOnSong(this);
+        }
         return convertOnSong;
     }
     @Override
     public ConvertTextSong getConvertTextSong() {
+        if (convertTextSong==null) {
+            convertTextSong = new ConvertTextSong(this);
+        }
         return convertTextSong;
     }
     @Override
     public ProcessSong getProcessSong() {
+        if (processSong==null) {
+            processSong = new ProcessSong(this);
+        }
         return processSong;
     }
     @Override
     public Song getSong() {
+        if (song==null) {
+            song = new Song();
+        }
         return song;
     }
     @Override
@@ -1853,14 +1972,24 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
     @Override
     public PrepareFormats getPrepareFormats() {
+        if (prepareFormats==null) {
+            prepareFormats = new PrepareFormats(this);
+        }
         return prepareFormats;
     }
     @Override
     public TimeTools getTimeTools() {
+        if (timeTools==null) {
+            timeTools = new TimeTools();
+        }
         return timeTools;
     }
     @Override
     public DisplayPrevNext getDisplayPrevNext() {
+        if (displayPrevNext==null) {
+            displayPrevNext = new DisplayPrevNext(this,myView.nextPrevInfo.nextPrevInfoLayout,
+                    myView.nextPrevInfo.prevButton, myView.nextPrevInfo.nextButton);
+        }
         return displayPrevNext;
     }
     @Override
@@ -1869,14 +1998,23 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
     @Override
     public Bible getBible() {
+        if (bible==null) {
+            bible = new Bible(this);
+        }
         return bible;
     }
     @Override
     public CustomSlide getCustomSlide() {
+        if (customSlide==null) {
+            customSlide = new CustomSlide(this);
+        }
         return customSlide;
     }
     @Override
     public PresenterSettings getPresenterSettings() {
+        if (presenterSettings==null) {
+            presenterSettings = new PresenterSettings(this);
+        }
         return presenterSettings;
     }
 
@@ -2033,6 +2171,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     break;
                 case "PedalsFragment":
                     pedalsFragment = (PedalsFragment) frag;
+                    break;
+                case "SongMenuFragment":
+                    songMenuFragment = (SongMenuFragment) frag;
+                    break;
+                case "SetMenuFragment":
+                    setMenuFragment = (SetMenuFragment) frag;
                     break;
             }
         }
@@ -2230,6 +2374,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public Pad getPad() {
+        if (pad==null) {
+            pad = new Pad(this, myView.onScreenInfo.getPad());
+        }
         return pad;
     }
     @Override
@@ -2327,16 +2474,25 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public PedalActions getPedalActions() {
+        if (pedalActions==null) {
+            pedalActions = new PedalActions(this);
+        }
         return pedalActions;
     }
 
     @Override
     public Gestures getGestures() {
+        if (gestures==null) {
+            gestures = new Gestures(this);
+        }
         return gestures;
     }
 
     @Override
     public PerformanceGestures getPerformanceGestures() {
+        if (performanceGestures==null) {
+            performanceGestures = new PerformanceGestures(this);
+        }
         return performanceGestures;
     }
 
@@ -2359,6 +2515,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public WebDownload getWebDownload() {
+        if (webDownload==null) {
+            webDownload = new WebDownload();
+        }
         return webDownload;
     }
 
@@ -2384,6 +2543,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
 
 
+    private void getFixLocale() {
+        if (fixLocale==null) {
+            fixLocale = new FixLocale();
+        }
+    }
     @Override
     public Locale getLocale() {
         if (locale==null) {
@@ -2395,18 +2559,30 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public CurrentSet getCurrentSet() {
+        if (currentSet==null) {
+            currentSet = new CurrentSet(this);
+        }
         return currentSet;
     }
     @Override
     public SetActions getSetActions() {
+        if (setActions==null) {
+            setActions = new SetActions(this);
+        }
         return setActions;
     }
     @Override
     public LoadSong getLoadSong() {
+        if (loadSong==null) {
+            loadSong = new LoadSong(this);
+        }
         return loadSong;
     }
     @Override
     public SaveSong getSaveSong() {
+        if (saveSong==null) {
+            saveSong = new SaveSong(this);
+        }
         return saveSong;
     }
 
@@ -2425,11 +2601,18 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public PageButtons getPageButtons() {
+        if (pageButtons==null) {
+            pageButtons = new PageButtons(this);
+        }
         return pageButtons;
     }
 
     @Override
     public Autoscroll getAutoscroll() {
+        if (autoscroll==null) {
+            autoscroll = new Autoscroll(this,myView.onScreenInfo.getAutoscrollTime(),
+                    myView.onScreenInfo.getAutoscrollTotalTime(),myView.onScreenInfo.getAutoscroll());
+        }
         return autoscroll;
     }
 
@@ -2437,16 +2620,25 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public Metronome getMetronome() {
+        if (metronome==null) {
+            metronome = new Metronome(this);
+        }
         return metronome;
     }
 
     @Override
     public SongListBuildIndex getSongListBuildIndex() {
+        if (songListBuildIndex==null) {
+            songListBuildIndex = new SongListBuildIndex(this);
+        }
         return songListBuildIndex;
     }
 
     @Override
     public CustomAnimation getCustomAnimation() {
+        if (customAnimation==null) {
+            customAnimation = new CustomAnimation();
+        }
         return customAnimation;
     }
 
@@ -2457,22 +2649,37 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public ShowCase getShowCase() {
+        if (showCase==null) {
+            showCase = new ShowCase();
+        }
         return showCase;
     }
     @Override
     public OCR getOCR() {
+        if (ocr==null) {
+            ocr = new OCR(this);
+        }
         return ocr;
     }
     @Override
     public MakePDF getMakePDF() {
+        if (makePDF==null) {
+            makePDF = new MakePDF(this);
+        }
         return makePDF;
     }
     @Override
     public VersionNumber getVersionNumber() {
+        if (versionNumber==null) {
+            versionNumber = new VersionNumber();
+        }
         return versionNumber;
     }
     @Override
     public Transpose getTranspose() {
+        if (transpose==null) {
+            transpose = new Transpose(this);
+        }
         return transpose;
     }
     @Override
@@ -2482,6 +2689,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public Swipes getSwipes() {
+        if (swipes==null) {
+            swipes = new Swipes(this);
+        }
         return swipes;
     }
 
@@ -2498,11 +2708,17 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public ABCNotation getAbcNotation() {
+        if (abcNotation==null) {
+            abcNotation = new ABCNotation(this);
+        }
         return abcNotation;
     }
 
     @Override
     public AlertChecks getAlertChecks() {
+        if (alertChecks==null) {
+            alertChecks = new AlertChecks(this);
+        }
         return alertChecks;
     }
 
@@ -2518,11 +2734,17 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public ProfileActions getProfileActions() {
+        if (profileActions==null) {
+            profileActions = new ProfileActions(this);
+        }
         return profileActions;
     }
 
     @Override
     public CheckInternet getCheckInternet() {
+        if (checkInternet==null) {
+            checkInternet = new CheckInternet();
+        }
         return checkInternet;
     }
 
@@ -2677,6 +2899,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public SongSheetHeaders getSongSheetHeaders() {
+        if (songSheetHeaders==null) {
+            songSheetHeaders = new SongSheetHeaders(this);
+        }
         return songSheetHeaders;
     }
 
@@ -2863,6 +3088,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         Log.d(TAG,"onSaveInstanceState()");
+        songsFound = songMenuFragment.getSongs();
         outState.putBoolean("bootUpCompleted",bootUpCompleted);
         outState.putBoolean("indexComplete",songListBuildIndex.getIndexComplete());
         super.onSaveInstanceState(outState);
@@ -3094,7 +3320,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                                 secondaryDisplay.setSongContent();
                                 break;
                             case "showSection":
-                                secondaryDisplay.showSection(getPresenterSettings().getCurrentSection());
+                                secondaryDisplay.showSection(presenterSettings.getCurrentSection());
                                 break;
                             case "editView":
                                 secondaryDisplay.editView();
@@ -3127,7 +3353,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                                 secondaryDisplay.changeLogo();
                                 break;
                             case "showLogo":
-                                secondaryDisplay.showLogo(getPresenterSettings().getLogoOn(), false);
+                                secondaryDisplay.showLogo(presenterSettings.getLogoOn(), false);
                                 break;
 
                             // Black and blank screen
