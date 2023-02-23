@@ -187,6 +187,8 @@ public class PageButtons {
         actions.add("midi");
         actions.add("bible");
         actions.add("soundlevel");
+        actions.add("import");
+        actions.add("invertpdf");
         actions.add("exit");
     }
     private void prepareAvailableButtonText() {
@@ -229,6 +231,8 @@ public class PageButtons {
         text.add(c.getString(R.string.midi));
         text.add(c.getString(R.string.bible_verse));
         text.add(c.getString(R.string.sound_level_meter));
+        text.add(c.getString(R.string.import_basic));
+        text.add(c.getString(R.string.invert_PDF));
         text.add(c.getString(R.string.exit));
     }
     private void prepareShortActionText() {
@@ -271,6 +275,8 @@ public class PageButtons {
         shortText.add(c.getString(R.string.midi_send));
         shortText.add(c.getString(R.string.search));
         shortText.add(c.getString(R.string.show) + " / " + c.getString(R.string.hide));
+        shortText.add(c.getString(R.string.online_services));
+        shortText.add(c.getString(R.string.select));
         shortText.add(c.getString(R.string.exit) + " " + c.getString(R.string.app_name));
     }
     private void prepareLongActionText() {
@@ -312,6 +318,8 @@ public class PageButtons {
         longText.add("");
         longText.add(c.getString(R.string.settings));
         longText.add("");
+        longText.add("");
+        longText.add(c.getString(R.string.import_main));
         longText.add("");
         longText.add("");
     }
@@ -355,6 +363,8 @@ public class PageButtons {
         drawableIds.add(R.drawable.midi);
         drawableIds.add(R.drawable.bible);
         drawableIds.add(R.drawable.sound_level);
+        drawableIds.add(R.drawable.database_import);
+        drawableIds.add(R.drawable.invert_colors);
         drawableIds.add(R.drawable.exit);
     }
 
@@ -667,6 +677,16 @@ public class PageButtons {
                 break;
             case "soundlevel":
                 actionInterface.getPerformanceGestures().soundLevel();
+                break;
+            case "import":
+                if (isLongPress) {
+                    actionInterface.getPerformanceGestures().addSongs();
+                } else {
+                    actionInterface.getPerformanceGestures().onlineImport();
+                }
+                break;
+            case "invertpdf":
+                actionInterface.getPerformanceGestures().invertPDF();
                 break;
             case "exit":
                 actionInterface.getPerformanceGestures().onBackPressed();

@@ -178,6 +178,7 @@ public class Preferences extends Activity {
     // clockSeconds                    boolean     Should the actionbar clock include seconds (def:false)
     // clockTextSize                   float       The size of the clock font (def:9.0f)
     // curlyBrackets                   boolean     Treat text inside curly brackets as performance comments and are hidden during presentation (def:true)
+    // custom1_invertPDF               boolean     Should the PDF colours be inverted (def:true)
     // custom1_lyricsBackgroundColor   int         The color for the lyrics background in the custom1 theme
     // custom1_lyricsBridgeColor       int         The color for the background for the bridge in the custom1 theme
     // custom1_lyricsCapoColor         int         The color for the capo text in the custom1 theme
@@ -202,6 +203,7 @@ public class Preferences extends Activity {
     // custom1_extraInfoBgColor        int         The color for the extra info background in the custom1 theme
     // custom1_highlightChordColor     int         The color to highlight chords (i.e. background). (def:tranparent/0x00000000)
     // custom1_highlightHeadingColor   int         The color to highlight headings (i.e. background). (def:tranparent/0x00000000)
+    // custom2_invertPDF               boolean     Should the PDF colours be inverted (def:false)
     // custom2_lyricsBackgroundColor   int         The color for the lyrics background in the custom2 theme
     // custom2_lyricsBridgeColor       int         The color for the background for the bridge in the custom2 theme
     // custom2_lyricsCapoColor         int         The color for the capo text in the custom2 theme
@@ -252,6 +254,7 @@ public class Preferences extends Activity {
     // customPadFm                     String      Custom pad uri for the key specified
     // customPadGbm                    String      Custom pad uri for the key specified
     // customPadGm                     String      Custom pad uri for the key specified
+    // dark_invertPDF                  boolean     Should the PDF colours be inverted (def:true)
     // dark_lyricsBackgroundColor      int         The color for the lyrics background in the dark theme
     // dark_lyricsBridgeColor          int         The color for the background for the bridge in the dark theme
     // dark_lyricsCapoColor            int         The color for the capo text in the dark theme
@@ -331,6 +334,7 @@ public class Preferences extends Activity {
     // language                        String      The locale set in the menu (def:en)
     // largePopups                     boolean     Should the drop down exposed popups be big (def:true)
     // lastUsedVersion                 int         The app version number the last time the app ran (def:0)
+    // light_invertPDF                 boolean     Should the PDF colours be inverted (def:false)
     // light_lyricsBackgroundColor     int         The color for the lyrics background in the light theme
     // light_lyricsBridgeColor         int         The color for the background for the bridge in the light theme
     // light_lyricsCapoColor           int         The color for the capo text in the light theme

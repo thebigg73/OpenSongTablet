@@ -721,11 +721,16 @@
                         android:id="@+id/deepLinkImportOSB"
                         app:uri="@string/deeplink_import_osb"/>
                 </fragment>
+
                 <fragment
                     android:id="@+id/importOnlineFragment"
                     android:name="com.garethevans.church.opensongtablet.importsongs.ImportOnlineFragment"
                     android:label="ImportOnlineFragment"
-                    tools:layout="@layout/settings_import_online"/>
+                    tools:layout="@layout/settings_import_online">
+                    <deepLink
+                        android:id="@+id/deepLinkImportOnline"
+                        app:uri="@string/deeplink_import_online"/>
+                </fragment>
                 <fragment
                     android:id="@+id/importFileFragment"
                     android:name="com.garethevans.church.opensongtablet.importsongs.ImportFileFragment"

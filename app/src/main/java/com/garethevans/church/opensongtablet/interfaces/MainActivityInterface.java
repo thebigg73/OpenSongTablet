@@ -268,6 +268,7 @@ public interface MainActivityInterface {
     void setSectionColors(ArrayList<Integer> colors);
     void toggleScale();
     void updateMargins();
+    int[] getViewMargins();
 
     // Song sheet titles
     void setSongSheetTitleLayout(LinearLayout linearLayout);

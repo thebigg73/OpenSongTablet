@@ -504,6 +504,18 @@ public class PerformanceGestures {
         actionInterface.onBackPressed();
     }
 
+    // Import online song or files
+    public void onlineImport() {
+        mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_import_online),0);
+    }
+    public void addSongs() {
+        mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_import),0);
+    }
+
+    public void invertPDF() {
+        mainActivityInterface.getMyThemeColors().setInvertPDF(!mainActivityInterface.getMyThemeColors().getInvertPDF());
+        mainActivityInterface.navHome();
+    }
 
     // The checks
     private boolean ifPDFAndAllowed() {

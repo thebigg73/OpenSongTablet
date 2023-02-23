@@ -92,7 +92,8 @@
                 app:backgroundTint="@color/colorSecondary"
                 android:padding="16dp"
                 android:gravity="center_vertical"
-                android:drawableStart="@drawable/timer" />
+                android:drawableStart="@drawable/timer"
+                android:visibility="gone"/>
         </FrameLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
