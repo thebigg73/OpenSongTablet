@@ -17,8 +17,8 @@ public class Transpose {
     // Chord format 2:  Euro   A B H C#/D#
     // Chord format 3:  Euro   A B H Cis/Des
     // Chord format 4:  Solf   DO RE MI FA
-    // Chord foramt 5:  Nash   1 2 3 4 5
-    // Chord foramt 6:  Num    I II III IX
+    // Chord format 5:  Nash   1 2 3 4 5
+    // Chord format 6:  Num    I II III IX
     // Chord format 7:  Euro   A Bb B Cis/Des   - similar to 3, but not using B/H or Bb/B
 
     @SuppressWarnings({"unused","FieldCanBeLocal"})
@@ -40,8 +40,8 @@ public class Transpose {
     // On transpose Cb -> B, B# -> C, Fb -> E,  E# -> F
     //
     // A 'number' format ├y┤ is used - y is the 'position in key' as above and ├ and ┤ are start and end markers
-    // A 'number' must end ┤ except where a format has explicit minors where is will end ┤m
-    // « and » before an item indicate a need to later consider a remove or add of a space after a chord
+    // A 'number' must end ┤ except where a format has explicit minors where it will end ┤m
+    // « and » before an item indicates a need to later consider a remove or add of a space after a chord
     //
     // Transpose example:  Format 1 to Format 3 Capo 1
     //   Line starts in 1 Standard                        - ???    Fm    ???
@@ -51,12 +51,12 @@ public class Transpose {
     //   '«««' is processed to remove 3 following spaces  - ???    Solbm ???
     //   In effect Solbm overwrites Fm and 3 spaces
     //
-    // Replaces occur in order, with this used to perform logic.
-    // Example protect logic: Replace "maj7" to "¬aj7" to stop the m being treated as a minor, is followed by replace "¬" with "m" to restore it.
-    // Example variation handling logic: replace 'TI' with "SI, "Ti" with "SI" and "ti" with "SI" is followed by replace of "SI' with chord number "«├3┤"
+    // Replaces occur in order, with this order a necessary part of the logic.
+    // Example 'protect' logic: Replace "maj7" to "¬aj7" to stop the m being treated as a minor, is followed by replace "¬" with "m" to restore it.
+    // Example 'variation handling' logic: replace 'TI' with "SI, "Ti" with "SI" and "ti" with "SI" is followed by replace of "SI' with chord number "«├3┤"
     // Three variants "TI", "Ti" and "ti" are therefore handled the same as SI.
 
-    // Chord to number: 'majors' and sus interfere so are protected
+    // Chord to number: majors and sustain forms interfere so have 'protect' logic
 
     // Standard chord formatting = 1
     private final String [] fromChords1 =      {"maj7",  "ma7",   "maj9",  "ma9",
@@ -201,9 +201,9 @@ public class Transpose {
     private int transposeTimes;
 
     private final String[] format2Identifiers = new String[]{"h"};
-    // Format 3 has lowecase minors. 'b' is 'flat', "h" is dealt with separatly so both not tested
+    // * Format 3 has lowercase minors. 'b' is 'flat', "h" is dealt with separately, so both are not tested
     // is/es identifiers are dealt with as 'chord ends with s' later in the logic
-    private final String[] format3Identifiers = new String[]{"a","c","d","e,","f","g"}; // Format 3 has lowecase minors. 'b' is 'flat', "h" is dealt with separatly so both not tested
+    private final String[] format3Identifiers = new String[]{"a","c","d","e,","f","g"}; // See *
     private final String[] format4Identifiers = new String[]{"do","dó","re","ré","mi","fa","fá","sol","la","lá", "si","ti"};
     private final String[] format5Identifiers = new String[]{"1","2","3","4","5","6","7"};
     private final String[] format6Identifiers = new String[]{"i","ii","ii","iii","iii","iv","iv","v","vi","vii"};
@@ -226,7 +226,7 @@ public class Transpose {
 
         try {
             String originalkey = thisSong.getKey();
-            // Update the key to the newly tranposed version
+            // Update the key to the newly transposed version
             if (originalkey != null && !originalkey.isEmpty()) {
                 thisSong.setKey(numberToKey(transposeNumber(keyToNumber(originalkey), transposeDirection, transposeTimes)));
             }
@@ -514,7 +514,7 @@ public class Transpose {
             }
         }
 
-        // For the '├y┤' number forma we transpose y only. Replace y┤ with transposed y· and then · with ┤ as this prevents errors.
+        // For the '├y┤' number format we transpose y only. Replace y┤ with transposed y· and then · with ┤ as this prevents errors.
         return string
                 .replace("1┤", replaceNumber.substring(0, 2))
                 .replace("2┤", replaceNumber.substring(2, 4))
@@ -723,10 +723,6 @@ public class Transpose {
         }
     }
 
-
-
-
-
     String capoTranspose() {
         // StageMode sets FullscreenActivity.capokey to "" in loadSong(), first call after sets for new song
         if (capoKey.equals("")) {
@@ -738,7 +734,7 @@ public class Transpose {
             capoForceFlats = keyUsesFlats(capoKey);
         }
 
-        // If not showing Capo chords then 'tranpose' Capo 0 to display preferred chords
+        // If not showing Capo chords then 'transpose' Capo 0 to display preferred chords
         if (!mainActivityInterface.getPreferences().getMyPreferenceBoolean("displayCapoChords", true)) {
             transposeTimes = 0;
         } else {
@@ -813,7 +809,7 @@ public class Transpose {
             // Now finish trimming the lines
             lyrics = lyrics
                     // Why ' ~'?  We split chords like 'Am7' into 'A ~7' - the ~ stops the number being detected as nashville
-                    .replace("m", " ~") // Also hadles majors
+                    .replace("m", " ~") // Also handles majors
                     .replace("sus", " ~") // Removed as conflicts with format 3 tests for chord ending's'
                     .replace("b", " ~")
                     .replace("#", " ~")
@@ -883,7 +879,6 @@ public class Transpose {
         }
     }
 
-
     public String convertToPreferredChord(String chord) {
         // Changes Ab/G# to user's preference.  This sends out to another function which checks minor and major
         chord = swapToPrefChords("Ab","G#", chord, false);
@@ -893,6 +888,7 @@ public class Transpose {
         chord = swapToPrefChords("Gb","F#", chord, false);
         return chord;
     }
+
     private String swapToPrefChords(String flatOption, String sharpOption, String chord,
                                     boolean defaultFlatMinor) {
 
@@ -914,7 +910,6 @@ public class Transpose {
         return chord;
     }
 
-
     // For dealing with songs loaded from sets (checking key with current song)
     public int getTransposeTimes(String from, String to) {
         int startPos = -1;
@@ -923,7 +918,7 @@ public class Transpose {
         from = from.replace("m","");
         to = to.replace("m","");
         // Go through the keys until the start position is found
-        // The keep going and find the end position
+        // Then keep going and find the end position
         for (int x=0; x<keyText.length; x++) {
             if (startPos<0 && keyText[x].equals(from)) {
                 startPos = keyNum[x];
@@ -940,7 +935,6 @@ public class Transpose {
             return 0;
         }
     }
-
 
     // Commonly used array for chord format names and display values
     public ArrayList<String> getChordFormatNames() {

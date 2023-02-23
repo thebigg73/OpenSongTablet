@@ -205,7 +205,6 @@ public class PresenterFragment extends Fragment {
         mainActivityInterface.getSong().setPresoOrderSongSections(null);
         mainActivityInterface.getProcessSong().processSongIntoSections(
                 mainActivityInterface.getSong(), true);
-        mainActivityInterface.getProcessSong().matchPresentationOrder(mainActivityInterface.getSong());
 
         // Get the song views
         getSongViews();
@@ -236,14 +235,10 @@ public class PresenterFragment extends Fragment {
         displayInterface.updateDisplay("setSongContent");
 
         if (songSectionsFragment!=null) {
-            myView.viewPager.postDelayed(new Runnable() {
-
-                @Override
-                public void run() {
-                    songSectionsFragment.setContext(getContext());
-                    myView.viewPager.setCurrentItem(0);
-                    songSectionsFragment.showSongInfo();
-                }
+            myView.viewPager.postDelayed(() -> {
+                songSectionsFragment.setContext(getContext());
+                myView.viewPager.setCurrentItem(0);
+                songSectionsFragment.showSongInfo();
             }, 50);
         }
 

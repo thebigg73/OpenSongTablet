@@ -812,24 +812,23 @@ public class ProcessSong {
         while (i < lines.length) {
             if (lines[i].startsWith(".") && displayChords) {
                 // This is a chord line = this needs to be part of a group
-                sb.append("\n").append(lines[i]);
+                sb.append("\n").append(lines[i]).append("____groupline____");
                 // If the next line is a lyric or comment add this to the group and stop there
                 int nl = i + 1;
                 boolean stillworking = true;
                 if (shouldNextLineBeAdded(nl, lines, true)) {
-                    sb.append("____groupline____").append(fixWordStretch(lines[nl]));
+                    sb.append(fixWordStretch(lines[nl])).append("____groupline____");
                     while (stillworking) {
                         // Keep going for multiple lines to be added
                         if (shouldNextLineBeAdded(nl + 1, lines, false)) {
                             i = nl;
                             nl++;
-                            sb.append("____groupline____").append(fixWordStretch(lines[nl]));
+                            sb.append(fixWordStretch(lines[nl])).append("____groupline____");
                         } else {
                             i++;
                             stillworking = false;
                         }
                     }
-                    // IV - Removed 'While the next line is still a chordline add this line' as breaks highlighting
                 }
             } else if (!lines[i].startsWith(".") && !displayChords) {
                 // Tidy it up
@@ -846,39 +845,11 @@ public class ProcessSong {
 
     private boolean shouldNextLineBeAdded(int nl, String[] lines, boolean incnormallyricline) {
         if (incnormallyricline) {
-            return (nl < lines.length && (lines[nl].startsWith(" ") || lines[nl].startsWith(";") ||
+            return (nl < lines.length && (lines[nl].startsWith(" ") && !lines[nl].trim().isEmpty() || lines[nl].startsWith(";") ||
                     lines[nl].matches("^[0-9].*$")));
         } else {
             return (nl < lines.length && (lines[nl].matches("^[0-9].*$")));
         }
-    }
-
-    private String makeSections(String string) {
-        // Reset the spannable brackets here as we are just starting processing
-        bracketsOpen = false;
-        string = string.replace("§", "\n____SPLIT____").
-                replace("\n\n\n", "\n \n____SPLIT____").
-                replace("\n \n \n", "\n \n____SPLIT____").
-                replace("\n\n", "\n \n____SPLIT____").
-                replace("\n \n", "\n \n____SPLIT____").
-                replace("\n[", "\n____SPLIT____[").
-                replace("\n [", "\n____SPLIT____[").
-                replace("\n[", "\n____SPLIT____[").
-                replace("____SPLIT________SPLIT____", "____SPLIT____");
-        if (string.trim().startsWith("____SPLIT____")) {
-            string = string.replaceFirst(" ____SPLIT____", "");
-            while (string.startsWith("\n") || string.startsWith(" ")) {
-                if (string.startsWith(" ")) {
-                    string = string.replaceFirst(" ", "");
-                } else {
-                    string = string.replaceFirst("\n", "");
-                }
-            }
-        }
-        if (string.startsWith("____SPLIT____")) {
-            string = string.replaceFirst("____SPLIT____", "");
-        }
-        return string;
     }
 
     private TableLayout groupTable(String string, int lyricColor, int chordColor, int capoColor,
@@ -900,13 +871,17 @@ public class ProcessSong {
         String[] lines = string.split("____groupline____");
 
         // Line 0 is the chord line (or capo line).  All other lines need to be at least this size
-        // Make it 1 char bigger to identify the end of it
-        lines[0] += " ";
         if (lineIsChordForMultiline(lines)) {
             lines[0] = ". " + lines[0].substring(1);
         }
 
-        int minlength = lines[0].length();
+        int minlength = 0;
+        for (int i = 0; i < lines.length; i++) {
+            minlength = Math.max(minlength, lines[i].length());
+        }
+        // Make it 1 char bigger so the algorithm identifies end chords
+        minlength = minlength + 1;
+
         for (int i = 0; i < lines.length; i++) {
             int length = lines[i].length();
             if (length < minlength) {
@@ -1020,15 +995,6 @@ public class ProcessSong {
                                     str = fixExcessSpaces(str);
                                 }
 
-                                String start = "";
-                                String end = "";
-                                if (str.startsWith(" ") && !str.trim().startsWith("-")) {
-                                    start = " ";
-                                }
-                                if (str.endsWith(" ") && !str.trim().endsWith("-")) {
-                                    end = " ";
-                                }
-                                str = start + str.trim() + end;
                                 SpannableStringBuilder spannableString = getSpannableBracketString(str);
                                 textView.setText(spannableString);
                             } else {
@@ -1079,7 +1045,7 @@ public class ProcessSong {
                     if (trimWordSpacing) {
                         str = fixExcessSpaces(str);
                     }
-                    str = str.trim();
+                    // IV - We do not trim str as it can need to start with spaces
                     SpannableStringBuilder spannableString = getSpannableBracketString(str);
                     textView.setText(spannableString);
                 } else {
@@ -1516,29 +1482,26 @@ public class ProcessSong {
         // 2. Check for multiline verse formatting e.g. [V] 1. 2. etc.
         lyrics = fixMultiLineFormat(lyrics, presentation);
 
-        // 3. Go through the song lyrics and get any section headers.  These get added to the song object
-        song.setSongSectionHeadings(getSectionHeadings(lyrics));
-
-        // 4. Prepare for line splits: | are relevant to Presenter mode only without chord display
+        // 3. Prepare for line splits: | are relevant to Presenter mode only without chord display
         String lineSplit = " ";
         if (presentation && !mainActivityInterface.getPresenterSettings().getPresoShowChords()) {
             lineSplit = "\n";
         }
 
-        // 5. Prepare for section splits: || are relevant to presentation and Stage mode.
+        // 4. Prepare for section splits: || are relevant to presentation and Stage mode.
         // If sectionSplit is ║ is used to test for further processing later.
         String sectionSplit = "";
         if (presentation || mainActivityInterface.getMode().equals(c.getString(R.string.mode_stage))) {
             sectionSplit = "║";
         }
 
-        // 6. Prepare for double new line:  We split at \n\n but not for scripture
+        // 5. Prepare for double new line:  We split at \n\n but not for scripture
         String doubleNewlineSplit = "\n\n";
         if (!mainActivityInterface.getSong().getFolder().contains(c.getResources().getString(R.string.scripture))) {
             doubleNewlineSplit = "§";
         }
 
-        // 7. Process || and | split markers on lyric lines
+        // 6. Process ||, | and split markers on lyric lines
         // Add a trailing ¶ to force a split behaviour that copes with a trailing new line!
         StringBuilder stringBuilder = new StringBuilder();
         for (String line : (lyrics + "¶").split("\n")) {
@@ -1552,48 +1515,125 @@ public class ProcessSong {
             // Add it back up
             stringBuilder.append(line);
         }
-        lyrics = stringBuilder.toString()
+
+        lyrics = stringBuilder.substring(1).replace("¶", "")
                 .replace("-!!", "")
                 // --- Process new section markers
                 .replace("\n ---", "\n[]")
                 .replace("\n---", "\n[]")
-                .substring(1).replace("¶", "")
-                // Prevent empty lines
+                // --- Handle empty lines
                 .replace("\n\n", doubleNewlineSplit)
                 .replace("\n[", "§[")
                 .replace("§\n", "§")
                 .replace("\n§", "§")
                 .replace("§ §", "§")
+                .replace("§§", "§")
+                // --- Add \n§ at section split points
+                .replace("§", "\n§")
+                .replace("\n\n\n", "\n \n§")
+                .replace("\n \n \n", "\n \n§")
+                .replace("\n\n", "\n \n§")
+                .replace("\n \n", "\n \n§")
+                .replace("\n [", "\n§[")
                 .replace("§§", "§");
-        //.split("§");
 
-        // Next up we go through the lyrics and group lines that should be in a table for alignment purposes
+        if (lyrics.trim().startsWith("§")) {
+            lyrics = lyrics.replaceFirst(" §", "");
+            while (lyrics.startsWith("\n") || lyrics.startsWith(" ")) {
+                if (lyrics.startsWith(" ")) {
+                    lyrics = lyrics.replaceFirst(" ", "");
+                } else {
+                    lyrics = lyrics.replaceFirst("\n", "");
+                }
+            }
+        }
+        if (lyrics.startsWith("§")) {
+            lyrics = lyrics.replaceFirst("§", "");
+        }
+
+        // 7. Handle null sections (ignore) and || splits
+        String[] sections = lyrics.split("§");
+        ArrayList<String> songSections = new ArrayList<>();
+        String[] thissection;
+
+        for (int x = 0; x < sections.length; x++) {
+            if (sections[x] != null) {
+                if (sectionSplit.equals("║") && sections[x].contains("║")) {
+                    thissection = sections[x].split("\n");
+                    // Start from line 1 as line 0 cannot have a chord line above
+                    for (int line = 1; line < thissection.length; line++) {
+                        // If || splits chords we need to move chords after the split into their correct section
+                        if (thissection[line].contains("║") && thissection[line - 1].startsWith(".")) {
+                            int chordssplitpoint = thissection[line].indexOf("║");
+                            if ((chordssplitpoint + 2) < thissection[line - 1].length()) {
+                                thissection[line] = thissection[line].replace("║", "║." + thissection[line - 1].substring(chordssplitpoint + 2) + "\n");
+                                thissection[line - 1] = thissection[line - 1].substring(0, chordssplitpoint);
+                            }
+                        }
+                    }
+
+                    // Put the section back together
+                    sections[x] = "";
+                    for (String line : thissection) {
+                        sections[x] += line + "\n";
+                    }
+                    // Add to the array, split by the section split
+                    Collections.addAll(songSections, sections[x].split("║"));
+
+                } else {
+                    // Add to the array
+                    songSections.add(sections[x]);
+                }
+            }
+        }
+
+        // IV - Pack up as lyric string.  Carry forward the sectionHeader.
+        StringBuilder fixedlyrics = new StringBuilder();
+        String sectionHeader = "";
+
+        for (int x = 0; x < songSections.size(); x++) {
+            if (songSections.get(x).startsWith("[")) {
+                sectionHeader = songSections.get(x).substring(0,songSections.get(x).indexOf("]") + 1);
+                fixedlyrics.append(songSections.get(x)).append("§");
+            } else {
+                fixedlyrics.append(sectionHeader + songSections.get(x)).append("§");
+            }
+        }
+
+        lyrics = fixedlyrics.toString();
+
+        // 8. Go through the lyrics and get section headers and add to the song object
+        song.setSongSectionHeadings(getSectionHeadings(lyrics));
+
+        // 9. Go through the lyrics and group lines that should be in a table for alignment purposes
         if (presentation) {
             lyrics = makeGroups(lyrics, mainActivityInterface.getPresenterSettings().getPresoShowChords());
         } else {
             lyrics = makeGroups(lyrics, displayChords);
         }
 
-        // Next we generate the split points for sections
-        lyrics = makeSections(lyrics);
-
-        // Split into sections and process each separately
-        String[] sections = lyrics.split("____SPLIT____");
-
-        // Build the songSections for later recall
+        // 10. Build the songSections for later recall
         // The song sections are not the views (which can have sections repeated using presentationOrder
         // The grouped sections are used for alignments
-        ArrayList<String> songSections = new ArrayList<>();
+
+        songSections = new ArrayList<>();
         ArrayList<String> groupedSections = new ArrayList<>();
-        for (String thisSection : sections) {
-            String thisSectionCleaned = thisSection.replace("____groupline____", "\n");
-            if (!thisSection.trim().isEmpty()) {
-                songSections.add(thisSectionCleaned);
+
+        for (String thisSection : lyrics.split("§")) {
+            if ((thisSection != null) && !thisSection.trim().isEmpty()) {
                 groupedSections.add(thisSection);
+                songSections.add(thisSection.replace("____groupline____", "\n"));
             }
         }
+
         song.setSongSections(songSections);
         song.setGroupedSections(groupedSections);
+
+        // 11. Put into presentation order when required
+        matchPresentationOrder(song);
+
+        // Reset the spannable brackets here as we are just starting processing
+        bracketsOpen = false;
     }
 
     private String fixSquareBracketComments(String lyrics) {
@@ -1619,8 +1659,6 @@ public class ProcessSong {
         // If this is for a presentation, we've already dealt with it
         if (!presentation) {
             processSongIntoSections(song, false);
-            // We also consider any presentation order that is set
-            matchPresentationOrder(song);
         }
 
         //
@@ -1679,67 +1717,70 @@ public class ProcessSong {
                     String[] lines = section.split("\n");
                     for (int l=0; l<lines.length; l++) {
                         String line = lines[l];
-                        // Get the text stylings
-                        String linetype = getLineType(line);
+                        // IV - Do not process an empty group line
+                        if (!line.equals("____groupline____")) {
+                            // Get the text stylings
+                            String linetype = getLineType(line);
 
-                        if (presentation && curlyBrackets) {
-                            line = line.replaceAll("\\{.*?\\}", "");
-                        }
-
-                        if (presentation && linetype.equals("heading")) {
-                            // Don't need this for the presentation view
-                            line = "";
-                        }
-                        backgroundColor = overallBackgroundColor;
-                        if (!asPDF && !presentation && (linetype.equals("heading") || linetype.equals("comment") || linetype.equals("tab"))) {
-                            backgroundColor = getBGColor(line);
-                            if (l==0) {
-                                overallBackgroundColor = backgroundColor;
+                            if (presentation && curlyBrackets) {
+                                line = line.replaceAll("\\{.*?\\}", "");
                             }
-                        }
-                        Typeface typeface = getTypeface(presentation, linetype);
-                        float size = getFontSize(linetype);
-                        if (!asPDF && !presentation) {
-                            textColor = getFontColor(linetype, mainActivityInterface.getMyThemeColors().
-                                    getLyricsTextColor(), mainActivityInterface.getMyThemeColors().getLyricsChordsColor(),
-                                    mainActivityInterface.getMyThemeColors().getLyricsCapoColor());
-                        }
 
-                        if (line.contains("____groupline____")) {
-                            // Has lyrics and chords
-                            if (asPDF) {
-                                linearLayout.addView(groupTable(line, Color.BLACK, Color.BLACK,
-                                        Color.BLACK, Color.TRANSPARENT, false));
-                            } else if (presentation) {
-                                linearLayout.addView(groupTable(line,
-                                        mainActivityInterface.getMyThemeColors().getPresoFontColor(),
-                                        mainActivityInterface.getMyThemeColors().getPresoChordColor(),
-                                        mainActivityInterface.getMyThemeColors().getLyricsCapoColor(),
-                                        mainActivityInterface.getMyThemeColors().getHighlightChordColor(), true));
-                            } else {
-                                TableLayout tl = groupTable(line,
-                                        mainActivityInterface.getMyThemeColors().getLyricsTextColor(),
-                                        mainActivityInterface.getMyThemeColors().getLyricsChordsColor(),
-                                        mainActivityInterface.getMyThemeColors().getLyricsCapoColor(),
-                                        mainActivityInterface.getMyThemeColors().getHighlightChordColor(), false);
-                                tl.setBackgroundColor(backgroundColor);
-                                linearLayout.addView(tl);
+                            if (presentation && linetype.equals("heading")) {
+                                // Don't need this for the presentation view
+                                line = "";
                             }
-                        } else {
-                            // Remove any word splits as not required
-                            if (!presentation && !asPDF && !line.isEmpty()) {
-                                line = line.replaceAll("\\s+-\\s+", "")
-                                        .replaceAll("\\s{2,}", " ");
-                                TextView tv = lineText(linetype, line, typeface,
-                                        size, textColor,
-                                        mainActivityInterface.getMyThemeColors().getHighlightHeadingColor(),
-                                        mainActivityInterface.getMyThemeColors().getHighlightChordColor(), presentation);
-                                tv.setBackgroundColor(backgroundColor);
-                                linearLayout.addView(tv);
+                            backgroundColor = overallBackgroundColor;
+                            if (!asPDF && !presentation && (linetype.equals("heading") || linetype.equals("comment") || linetype.equals("tab"))) {
+                                backgroundColor = getBGColor(line);
+                                if (l==0) {
+                                    overallBackgroundColor = backgroundColor;
+                                }
+                            }
+                            Typeface typeface = getTypeface(presentation, linetype);
+                            float size = getFontSize(linetype);
+                            if (!asPDF && !presentation) {
+                                textColor = getFontColor(linetype, mainActivityInterface.getMyThemeColors().
+                                        getLyricsTextColor(), mainActivityInterface.getMyThemeColors().getLyricsChordsColor(),
+                                        mainActivityInterface.getMyThemeColors().getLyricsCapoColor());
+                            }
+
+                            if (line.contains("____groupline____")) {
+                                // Has lyrics and chords
+                                if (asPDF) {
+                                    linearLayout.addView(groupTable(line, Color.BLACK, Color.BLACK,
+                                            Color.BLACK, Color.TRANSPARENT, false));
+                                } else if (presentation) {
+                                    linearLayout.addView(groupTable(line,
+                                            mainActivityInterface.getMyThemeColors().getPresoFontColor(),
+                                            mainActivityInterface.getMyThemeColors().getPresoChordColor(),
+                                            mainActivityInterface.getMyThemeColors().getLyricsCapoColor(),
+                                            mainActivityInterface.getMyThemeColors().getHighlightChordColor(), true));
+                                } else {
+                                    TableLayout tl = groupTable(line,
+                                            mainActivityInterface.getMyThemeColors().getLyricsTextColor(),
+                                            mainActivityInterface.getMyThemeColors().getLyricsChordsColor(),
+                                            mainActivityInterface.getMyThemeColors().getLyricsCapoColor(),
+                                            mainActivityInterface.getMyThemeColors().getHighlightChordColor(), false);
+                                    tl.setBackgroundColor(backgroundColor);
+                                    linearLayout.addView(tl);
+                                }
                             } else {
-                                // PDF or presentation
-                                linearLayout.addView(lineText(linetype, line, typeface,
-                                        size, textColor, Color.TRANSPARENT, Color.TRANSPARENT, presentation));
+                                // Remove any word splits as not required
+                                if (!presentation && !asPDF && !line.isEmpty()) {
+                                    line = line.replaceAll("\\s+-\\s+", "")
+                                            .replaceAll("\\s{2,}", " ");
+                                    TextView tv = lineText(linetype, line, typeface,
+                                            size, textColor,
+                                            mainActivityInterface.getMyThemeColors().getHighlightHeadingColor(),
+                                            mainActivityInterface.getMyThemeColors().getHighlightChordColor(), presentation);
+                                    tv.setBackgroundColor(backgroundColor);
+                                    linearLayout.addView(tv);
+                                } else {
+                                    // PDF or presentation
+                                    linearLayout.addView(lineText(linetype, line, typeface,
+                                            size, textColor, Color.TRANSPARENT, Color.TRANSPARENT, presentation));
+                                }
                             }
                         }
                     }

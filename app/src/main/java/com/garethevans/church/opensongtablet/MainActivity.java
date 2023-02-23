@@ -960,7 +960,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 case "presenterFragmentSongSections":
                     if (presenterValid()) {
                         processSong.processSongIntoSections(song,true);
-                        processSong.matchPresentationOrder(song);
                         presenterFragment.getSongViews();
                         presenterFragment.updateButtons();
                     }
