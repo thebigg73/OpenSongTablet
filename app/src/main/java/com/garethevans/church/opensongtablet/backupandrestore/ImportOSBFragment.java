@@ -364,7 +364,7 @@ public class ImportOSBFragment extends Fragment {
                 });
                 if (alive) {
                     // Because the folder could have subdirectories, we need to start at the beginning
-                    ArrayList<String> allBits = new ArrayList();
+                    ArrayList<String> allBits = new ArrayList<>();
                     if (folder.contains("/")) {
                         String[] bits = folder.split("/");
                         StringBuilder stringBuilder = new StringBuilder();
