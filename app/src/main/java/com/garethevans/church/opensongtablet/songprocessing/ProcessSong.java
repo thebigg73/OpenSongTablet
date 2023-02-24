@@ -58,11 +58,21 @@ public class ProcessSong {
     @SuppressWarnings({"FieldCanBeLocal","unused"})
     private final String TAG = "ProcessSong";
     private final float defFontSize = 8.0f;
-    private boolean addSectionSpace, blockShadow, displayBoldChordsHeadings,
-            displayChords, displayLyrics, displayCapoChords, displayCapoAndNativeChords,
-            trimWordSpacing, songAutoScaleColumnMaximise, songAutoScaleOverrideFull,
-            songAutoScaleOverrideWidth, trimLines, trimSections, multiLineVerseKeepCompact,
-            addSectionBox, multilineSong;
+    private boolean addSectionSpace;
+    private boolean blockShadow;
+    private boolean displayBoldChordsHeadings;
+    private boolean displayChords;
+    private boolean displayLyrics;
+    private boolean displayCapoChords;
+    private boolean displayCapoAndNativeChords;
+    private boolean trimWordSpacing;
+    private boolean songAutoScaleColumnMaximise;
+    private boolean songAutoScaleOverrideFull;
+    private boolean songAutoScaleOverrideWidth;
+    private boolean trimLines;
+    private boolean trimSections;
+    private boolean multiLineVerseKeepCompact;
+    private boolean multilineSong;
     private float fontSize, fontSizeMax, fontSizeMin, blockShadowAlpha,
             lineSpacing, scaleHeadings, scaleChords, scaleComments;
     private String songAutoScale;
@@ -99,7 +109,7 @@ public class ProcessSong {
         trimLines = mainActivityInterface.getPreferences().getMyPreferenceBoolean("trimLines", true);
         trimSections = mainActivityInterface.getPreferences().getMyPreferenceBoolean("trimSections", true);
         trimWordSpacing = mainActivityInterface.getPreferences().getMyPreferenceBoolean("trimWordSpacing", true);
-        addSectionBox = mainActivityInterface.getPreferences().getMyPreferenceBoolean("addSectionBox",false);
+        boolean addSectionBox = mainActivityInterface.getPreferences().getMyPreferenceBoolean("addSectionBox", false);
         fontSize = mainActivityInterface.getPreferences().getMyPreferenceFloat("fontSize", 20f);
         fontSizeMax = mainActivityInterface.getPreferences().getMyPreferenceFloat("fontSizeMax", 50f);
         fontSizeMin = mainActivityInterface.getPreferences().getMyPreferenceFloat("fontSizeMin", 8f);
@@ -878,8 +888,8 @@ public class ProcessSong {
         }
 
         int minlength = 0;
-        for (int i = 0; i < lines.length; i++) {
-            minlength = Math.max(minlength, lines[i].length());
+        for (String line : lines) {
+            minlength = Math.max(minlength, line.length());
         }
         // Make it 1 char bigger so the algorithm identifies end chords
         minlength = minlength + 1;
@@ -1595,10 +1605,10 @@ public class ProcessSong {
 
         for (int x = 0; x < songSections.size(); x++) {
             if (songSections.get(x).startsWith("[")) {
-                sectionHeader = songSections.get(x).substring(0,songSections.get(x).indexOf("]") + 1);
+                sectionHeader = "\n" + songSections.get(x).substring(0,songSections.get(x).indexOf("]") + 1);
                 fixedlyrics.append(songSections.get(x)).append("§");
             } else {
-                fixedlyrics.append(sectionHeader + songSections.get(x)).append("§");
+                fixedlyrics.append(sectionHeader).append(songSections.get(x)).append("§");
             }
         }
 
