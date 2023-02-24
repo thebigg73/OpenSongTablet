@@ -996,7 +996,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 case "presenterFragmentSongSections":
                     if (presenterValid()) {
                         processSong.processSongIntoSections(song,true);
-                        processSong.matchPresentationOrder(song);
+                        // TODO Check this #188 for IVA removed this
+                        //processSong.matchPresentationOrder(song);
                         presenterFragment.getSongViews();
                         presenterFragment.updateButtons();
                     }

@@ -1200,7 +1200,8 @@ public class SecondaryDisplay extends Presentation {
         Log.d(TAG,"new lyrics:"+lyrics);
         tempSong.setLyrics(lyrics);
         mainActivityInterface.getProcessSong().processSongIntoSections(tempSong,true);
-        mainActivityInterface.getProcessSong().matchPresentationOrder(tempSong);
+        // TODO Check this #188 for IVA removed this
+        //mainActivityInterface.getProcessSong().matchPresentationOrder(tempSong);
         try {
             View newView = mainActivityInterface.getProcessSong().setSongInLayout(tempSong, false, true).get(0);
             // Replace the old view with this one once it has been measured etc.

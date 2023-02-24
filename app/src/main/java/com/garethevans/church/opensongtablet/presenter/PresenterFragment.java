@@ -205,7 +205,8 @@ public class PresenterFragment extends Fragment {
         mainActivityInterface.getSong().setPresoOrderSongSections(null);
         mainActivityInterface.getProcessSong().processSongIntoSections(
                 mainActivityInterface.getSong(), true);
-        mainActivityInterface.getProcessSong().matchPresentationOrder(mainActivityInterface.getSong());
+        // TODO Check this #188 for IVA removed this
+        //mainActivityInterface.getProcessSong().matchPresentationOrder(mainActivityInterface.getSong());
 
         // Get the song views
         getSongViews();
