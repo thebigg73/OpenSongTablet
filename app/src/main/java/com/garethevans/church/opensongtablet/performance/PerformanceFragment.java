@@ -282,7 +282,7 @@ public class PerformanceFragment extends Fragment {
         mainActivityInterface.getAutoscroll().stopAutoscroll();
 
         // During the load song call, the song is cleared
-        // However ii first extracts the folder and filename we've just set
+        // However it first extracts the folder and filename we've just set
         mainActivityInterface.getSong().setFolder(folder);
         mainActivityInterface.getSong().setFilename((filename));
 
