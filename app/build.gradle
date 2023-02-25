@@ -99,4 +99,15 @@ dependencies {
 
     // To include jar libraries
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    // Updates to material alpha and other dependencies using kotlin can cause errors
+    // if they point to different libraries.
+    constraints {
+        implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.0") {
+            because("kotlin-stdlib-jdk7 is now a part of kotlin-stdlib")
+        }
+        implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.0") {
+            because("kotlin-stdlib-jdk8 is now a part of kotlin-stdlib")
+        }
+    }
 }
