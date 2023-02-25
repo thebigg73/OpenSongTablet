@@ -81,9 +81,7 @@ public class SecondaryDisplay extends Presentation {
     private boolean isNewSong;
     private String currentInfoText;
     private boolean waitForVideo;
-    private boolean infoBarChangeRequired;
-    private boolean infoBarRequiredTime=false;
-    private boolean infoBarRequireInitial=true;
+    private boolean infoBarRequired=false;
     private boolean trimLines;
     private boolean trimSections;
     private boolean addSectionSpace;
@@ -197,7 +195,7 @@ public class SecondaryDisplay extends Presentation {
         }
     }
     private boolean canShowSong() {
-        // Determines if we are allows to fade in content (no logo or blankscreen)
+        // Determines if we are allowed to fade in content (no logo or blankscreen)
         return !mainActivityInterface.getPresenterSettings().getLogoOn() &&
                 !mainActivityInterface.getPresenterSettings().getBlankscreenOn() &&
                 !mainActivityInterface.getPresenterSettings().getBlackscreenOn();
@@ -330,8 +328,7 @@ public class SecondaryDisplay extends Presentation {
     public void matchPresentationToMode() {
         // Get the settings that are appropriate.  This is called on first run
         if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_presenter))) {
-            scaleHeadings = 0.0f;
-            scaleComments = 0.0f;
+            // IV - Note that the Heading, Comment and tab are ignored in song load
             displayChords = mainActivityInterface.getPreferences().getMyPreferenceBoolean("presoShowChords",false);
             boldChordHeading = mainActivityInterface.getPreferences().getMyPreferenceBoolean("presoLyricsBold", false);
         } else {
@@ -340,7 +337,7 @@ public class SecondaryDisplay extends Presentation {
             displayChords = mainActivityInterface.getPreferences().getMyPreferenceBoolean("displayChords", true);
             boldChordHeading = mainActivityInterface.getPreferences().getMyPreferenceBoolean("boldChordHeading", false);
         }
-        infoBarChangeRequired = true;
+        infoBarRequired = true;
         boolean forceCastUpdate = false;
         hideCols2and3();
     }
@@ -533,7 +530,7 @@ public class SecondaryDisplay extends Presentation {
             }
 
             // If we are fading out, or fading in but should show the info bar, do it
-            if (start>end || infoBarRequireInitial || infoBarRequiredTime) {
+            if (start>end || infoBarRequired) {
                 Log.d(TAG,"start: "+start+"  end: "+end);
                 if (myView.songProjectionInfo1.getIsDisplaying()) {
                     Log.d(TAG,"songProjectionInfo1");
@@ -562,22 +559,22 @@ public class SecondaryDisplay extends Presentation {
     // - The first time a song is displayed
     // - For at least the untilWaitTime has elapsed since first presented
     private void setupTimers() {
-        infoBarRequiredTime = true;
+        infoBarRequired = true;
         cancelInfoTimers();
         waitUntilTimer = new Timer();
         waitUntilTimerTask = new TimerTask() {
             @Override
             public void run() {
-                // Switch off the requirement for the infoBarRequiredTime and cancel the timer
+                // Switch off infoBarRequired and cancel the timer
                 if (mainActivityInterface.getPresenterSettings().getHideInfoBar()) {
-                    infoBarRequiredTime = false;
+                    infoBarRequired = false;
                     try {
                         waitUntilTimer.cancel();
                         waitUntilTimerTask.cancel();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    Log.d(TAG, "timer over - infoBarRequiredTime=" + infoBarRequiredTime);
+                    Log.d(TAG, "timer over - infoBarRequired=" + infoBarRequired);
                 }
             }
         };
@@ -631,10 +628,11 @@ public class SecondaryDisplay extends Presentation {
                         c.getString(R.string.ccli_licence) + " " + mainActivityInterface.
                         getPresenterSettings().getCcliLicence();
             }
-            String ccli = mainActivityInterface.getSong().getCcli();
-            if (ccli != null && !ccli.isEmpty()) {
-                ccliLine += ".  " + c.getString(R.string.song) + " #" + ccli;
-            }
+            // IV - Song number is not specified for display by CCLI - less is more!
+            //String ccli = mainActivityInterface.getSong().getCcli();
+            //if (ccli != null && !ccli.isEmpty()) {
+            //    ccliLine += ".  " + c.getString(R.string.song) + " #" + ccli;
+            // }
             String copyright = mainActivityInterface.getSong().getCopyright();
             if (copyright != null && !copyright.isEmpty() && !copyright.contains("©")) {
                 copyright = "©" + copyright;
@@ -695,7 +693,11 @@ public class SecondaryDisplay extends Presentation {
                             myView.songProjectionInfo1.setSongAuthor(finalAuthor);
                             myView.songProjectionInfo1.setSongCopyright(finalCopyright);
                             myView.songProjectionInfo1.setSongCCLI(finalCcli);
-                            myView.songProjectionInfo1.setCapo(finalCapo);
+                            if (!mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance))) {
+                                myView.songProjectionInfo1.setCapo(finalCapo);
+                            } else {
+                                myView.songProjectionInfo1.setCapo(null);
+                            }
                             myView.songProjectionInfo1.setViewHeight(height);
 
                         } else {
@@ -704,10 +706,13 @@ public class SecondaryDisplay extends Presentation {
                             myView.songProjectionInfo2.setSongAuthor(finalAuthor);
                             myView.songProjectionInfo2.setSongCopyright(finalCopyright);
                             myView.songProjectionInfo2.setSongCCLI(finalCcli);
-                            myView.songProjectionInfo2.setCapo(finalCapo);
+                            if (!mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance))) {
+                                myView.songProjectionInfo2.setCapo(finalCapo);
+                            } else {
+                                myView.songProjectionInfo2.setCapo(null);
+                            }
                             myView.songProjectionInfo2.setViewHeight(height);
                         }
-                        checkSongInfoShowHide();
                         myView.testSongInfo.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                         myView.testSongInfo.getViewTreeObserver().removeOnGlobalLayoutListener(testSongInfoVTO);
                     }
@@ -729,24 +734,25 @@ public class SecondaryDisplay extends Presentation {
         }
     }
     public void initialiseInfoBarRequired() {
-        // This sets the info bar as being required for first time shown
-        // Once we fade in a section for the first time, we swap these booleans and start the timer
-        infoBarRequireInitial = true;
-        infoBarRequiredTime = false;
+        infoBarRequired = true;
     }
     public void checkSongInfoShowHide() {
         View infoToHide = songInfoHideCheck();
-        if (songInfoChanged()) {
-            isNewSong = false;
-            // Get the info to show, this also changes the isDisplaying() property of both
-            View infoToShow = songInfoShowCheck();
-            crossFadeContent(infoToHide, infoToShow);
+        if (infoBarRequired) {
+            if (songInfoChanged()) {
+                isNewSong = false;
+                // Get the info to show, this also changes the isDisplaying() property of both
+                View infoToShow = songInfoShowCheck();
+                crossFadeContent(infoToHide, infoToShow);
+            }
+        } else {
+                crossFadeContent(infoToHide, null);
         }
     }
     private View songInfoHideCheck() {
         // Fade out can only happen if we no longer require the song info bar
         // Or we have changed the song
-        if ((!infoBarRequireInitial && !infoBarRequiredTime) || isNewSong) {
+        if ((!infoBarRequired) || isNewSong) {
             if (myView.songProjectionInfo1.getIsDisplaying()) {
                 return myView.songProjectionInfo1;
             } else if (myView.songProjectionInfo2.getIsDisplaying()) {
@@ -760,17 +766,16 @@ public class SecondaryDisplay extends Presentation {
     }
     private View songInfoShowCheck() {
         // If required (new song loaded and not already showing), show the info bar
-        if ((canShowSong() && infoBarRequireInitial &&
-                (mainActivityInterface.getPresenterSettings().getCurrentSection()>-1 ||
-                        mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)))) ||
-                isNewSong) {
+        if ((canShowSong() &&
+                (isNewSong ||
+                        mainActivityInterface.getPresenterSettings().getCurrentSection()>-1 ||
+                        mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance))))) {
 
-            // Now remove the requirement for an inital view
-            infoBarRequireInitial = false;
-
-            // Set a timer required though for minimum display time
-            Log.d(TAG,"set timer for hide");
-            setupTimers();
+            // If the hide option is active set a timer to do the hide
+            if (mainActivityInterface.getPresenterSettings().getHideInfoBar()) {
+                Log.d(TAG, "set timer for hide");
+                setupTimers();
+            }
 
             if (!myView.songProjectionInfo1.getIsDisplaying()) {
                 myView.songProjectionInfo1.setIsDisplaying(true);
@@ -910,158 +915,162 @@ public class SecondaryDisplay extends Presentation {
     }
 
     public void showSection(final int position) {
-        // Decide which view to show.  Do nothing if it is already showing
-        boolean stageOk = mainActivityInterface.getMode().equals(c.getString(R.string.mode_stage));
-        boolean presenterOk = mainActivityInterface.getMode().equals(c.getString(R.string.mode_presenter)) &&
-                mainActivityInterface.getPresenterSettings().getSongSectionsAdapter()!=null;
-        boolean image = mainActivityInterface.getSong().getFiletype().equals("IMG");
-        boolean pdf = mainActivityInterface.getSong().getFiletype().equals("PDF");
-        boolean imageslide = mainActivityInterface.getSong().getFolder().contains("**Image");
-        int viewsAvailable;
-        if (image) {
-            viewsAvailable = 1;
-        } else if (pdf || imageslide) {
-            viewsAvailable = mainActivityInterface.getSong().getPdfPageCount();
-        } else {
-            viewsAvailable = mainActivityInterface.getSong().getSongSections().size();
-        }
-        Log.d(TAG,"stageOk:"+stageOk+"  presenterOk:"+presenterOk);
-        Log.d(TAG,"position="+position+"  viewsAvailable="+viewsAvailable);
-        // TODO need to fix for Stage mode too - getSongSectionsAdapter not initialised
-
-        if ((stageOk || presenterOk || pdf || image || imageslide) && position!=-1) {
-            // If we edited the section temporarily, remove this position flag
-            if (presenterOk) {
-                mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().setSectionEdited(-1);
+        try {
+            // Decide which view to show.  Do nothing if it is already showing
+            boolean stageOk = mainActivityInterface.getMode().equals(c.getString(R.string.mode_stage));
+            boolean presenterOk = mainActivityInterface.getMode().equals(c.getString(R.string.mode_presenter)) &&
+                    mainActivityInterface.getPresenterSettings().getSongSectionsAdapter()!=null;
+            boolean image = mainActivityInterface.getSong().getFiletype().equals("IMG");
+            boolean pdf = mainActivityInterface.getSong().getFiletype().equals("PDF");
+            boolean imageslide = mainActivityInterface.getSong().getFolder().contains("**Image");
+            int viewsAvailable;
+            if (image) {
+                viewsAvailable = 1;
+            } else if (pdf || imageslide) {
+                viewsAvailable = mainActivityInterface.getSong().getPdfPageCount();
+            } else {
+                viewsAvailable = mainActivityInterface.getSong().getPresoOrderSongSections().size();
             }
-            mainActivityInterface.getSong().setCurrentSection(position);
-            if (position >= 0 && position < viewsAvailable) {
-                // Check the song info status first
-                checkSongInfoShowHide();
+            Log.d(TAG,"stageOk:"+stageOk+"  presenterOk:"+presenterOk);
+            Log.d(TAG,"position="+position+"  viewsAvailable="+viewsAvailable);
+            // TODO need to fix for Stage mode too - getSongSectionsAdapter not initialised
 
-                // Get the measured height of the song info bar
-                int infoHeight = 0;
-                if (myView.songProjectionInfo1.getIsDisplaying()) {
-                    infoHeight = myView.songProjectionInfo1.getViewHeight();
-                } else if (myView.songProjectionInfo2.getIsDisplaying()) {
-                    infoHeight = myView.songProjectionInfo2.getViewHeight();
+            if ((stageOk || presenterOk || pdf || image || imageslide) && position!=-1) {
+                // If we edited the section temporarily, remove this position flag
+                if (presenterOk) {
+                    mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().setSectionEdited(-1);
                 }
-                if (infoHeight == 0) {
-                    infoHeight = myView.testSongInfo.getViewHeight();
-                }
-                Log.d(TAG,"infoHeight="+infoHeight);
-                int alertHeight = myView.alertBar.getViewHeight();
+                mainActivityInterface.getSong().setCurrentSection(position);
+                if (position >= 0 && position < viewsAvailable) {
+                    // Check the song info status first
+                    checkSongInfoShowHide();
 
-                if (!pdf && !image && !imageslide) {
-                    // Remove the view from any parent it might be attached to already (can only have 1)
-                    removeViewFromParent(secondaryViews.get(position));
+                    // Get the measured height of the song info bar
+                    int infoHeight = 0;
+                    if (myView.songProjectionInfo1.getIsDisplaying()) {
+                        infoHeight = myView.songProjectionInfo1.getViewHeight();
+                    } else if (myView.songProjectionInfo2.getIsDisplaying()) {
+                        infoHeight = myView.songProjectionInfo2.getViewHeight();
+                    }
+                    if (infoHeight == 0) {
+                        infoHeight = myView.testSongInfo.getViewHeight();
+                    }
+                    Log.d(TAG,"infoHeight="+infoHeight);
+                    int alertHeight = myView.alertBar.getViewHeight();
 
-                    // Get the size of the view
-                    int width = secondaryWidths.get(position);
-                    int height = secondaryHeights.get(position);
+                    if (!pdf && !image && !imageslide) {
+                        // Remove the view from any parent it might be attached to already (can only have 1)
+                            removeViewFromParent(secondaryViews.get(position));
 
-                    float max_x = (float) availableScreenWidth / (float) width;
-                    float max_y = (float) (availableScreenHeight - infoHeight - alertHeight) / (float) height;
+                        // Get the size of the view
+                        int width = secondaryWidths.get(position);
+                        int height = secondaryHeights.get(position);
 
-                    float best = Math.min(max_x, max_y);
-                    if (best > (mainActivityInterface.getPresenterSettings().getFontSizePresoMax() / 14f)) {
-                        best = mainActivityInterface.getPresenterSettings().getFontSizePresoMax() / 14f;
+                        float max_x = (float) availableScreenWidth / (float) width;
+                        float max_y = (float) (availableScreenHeight - infoHeight - alertHeight) / (float) height;
+
+                        float best = Math.min(max_x, max_y);
+                        if (best > (mainActivityInterface.getPresenterSettings().getFontSizePresoMax() / 14f)) {
+                            best = mainActivityInterface.getPresenterSettings().getFontSizePresoMax() / 14f;
+                        }
+
+                        secondaryViews.get(position).setPivotX(0f);
+                        secondaryViews.get(position).setPivotY(0f);
+                        secondaryViews.get(position).setScaleX(best);
+                        secondaryViews.get(position).setScaleY(best);
+
+                        // We can now prepare the new view and animate in/out the views as long as the logo is off
+                        // and the blank screen isn't on
+                        //Log.d(TAG, "showWhich=" + showWhich + "  canShowSong()=" + canShowSong());
+
+                        // Translate the scaled views based on the alignment
+                        int newWidth = (int) (width * best);
+                        int newHeight = (int) (height * best);
+                        translateView(secondaryViews.get(position), newWidth, newHeight, infoHeight, alertHeight);
                     }
 
-                    secondaryViews.get(position).setPivotX(0f);
-                    secondaryViews.get(position).setPivotY(0f);
-                    secondaryViews.get(position).setScaleX(best);
-                    secondaryViews.get(position).setScaleY(best);
+                    Log.d(TAG,"image:"+image);
+                    if (pdf) {
+                        bitmap = mainActivityInterface.getProcessSong().getBitmapFromPDF(mainActivityInterface.getSong().getFolder(),
+                                mainActivityInterface.getSong().getFilename(),position,availableScreenWidth,
+                                availableScreenHeight - infoHeight - alertHeight,"Y");
+                    } else if (image) {
+                        bitmap = mainActivityInterface.getProcessSong().getBitmapFromUri(
+                                mainActivityInterface.getStorageAccess().getUriForItem("Songs",
+                                        mainActivityInterface.getSong().getFolder(),
+                                        mainActivityInterface.getSong().getFilename()),
+                                0,0);
+                    } else if (imageslide) {
+                        Log.d(TAG,"lyrics: "+mainActivityInterface.getSong().getLyrics());
+                        Log.d(TAG,"user1: "+mainActivityInterface.getSong().getUser1());
+                        Log.d(TAG,"user2: "+mainActivityInterface.getSong().getUser2());
+                        Log.d(TAG,"user3: "+mainActivityInterface.getSong().getUser3());
+                        String[] bits = mainActivityInterface.getSong().getUser3().trim().split("\n");
+                        Log.d(TAG,"bits.length:"+bits.length);
+                        if (bits.length>0 && bits.length>position) {
+                            Log.d(TAG,"uri="+bits[position]);
+                            bitmap = mainActivityInterface.getProcessSong().getBitmapFromUri(Uri.parse(bits[position]),0,0);
+                        } else {
+                            Log.d(TAG,"bits.length: "+bits.length + "  position:"+position);
+                            bitmap = null;
+                        }
 
-                    // We can now prepare the new view and animate in/out the views as long as the logo is off
-                    // and the blank screen isn't on
-                    //Log.d(TAG, "showWhich=" + showWhich + "  canShowSong()=" + canShowSong());
-
-                    // Translate the scaled views based on the alignment
-                    int newWidth = (int) (width * best);
-                    int newHeight = (int) (height * best);
-                    translateView(secondaryViews.get(position), newWidth, newHeight, infoHeight, alertHeight);
-                }
-
-                Log.d(TAG,"image:"+image);
-                if (pdf) {
-                    bitmap = mainActivityInterface.getProcessSong().getBitmapFromPDF(mainActivityInterface.getSong().getFolder(),
-                            mainActivityInterface.getSong().getFilename(),position,availableScreenWidth,
-                            availableScreenHeight - infoHeight - alertHeight,"Y");
-                } else if (image) {
-                    bitmap = mainActivityInterface.getProcessSong().getBitmapFromUri(
-                            mainActivityInterface.getStorageAccess().getUriForItem("Songs",
-                                    mainActivityInterface.getSong().getFolder(),
-                                    mainActivityInterface.getSong().getFilename()),
-                            0,0);
-                } else if (imageslide) {
-                    Log.d(TAG,"lyrics: "+mainActivityInterface.getSong().getLyrics());
-                    Log.d(TAG,"user1: "+mainActivityInterface.getSong().getUser1());
-                    Log.d(TAG,"user2: "+mainActivityInterface.getSong().getUser2());
-                    Log.d(TAG,"user3: "+mainActivityInterface.getSong().getUser3());
-                    String[] bits = mainActivityInterface.getSong().getUser3().trim().split("\n");
-                    Log.d(TAG,"bits.length:"+bits.length);
-                    if (bits.length>0 && bits.length>position) {
-                        Log.d(TAG,"uri="+bits[position]);
-                        bitmap = mainActivityInterface.getProcessSong().getBitmapFromUri(Uri.parse(bits[position]),0,0);
                     } else {
-                        Log.d(TAG,"bits.length: "+bits.length + "  position:"+position);
                         bitmap = null;
                     }
 
-                } else {
-                    bitmap = null;
-                }
+                    Log.d(TAG,"bitmap:"+bitmap);
 
-                Log.d(TAG,"bitmap:"+bitmap);
-
-                if (!image && !pdf && !imageslide &&
-                        secondaryViews!=null && secondaryViews.size()>position &&
-                        secondaryViews.get(position)!=null &&
-                        secondaryViews.get(position).getParent()!=null) {
-                    ((ViewGroup)secondaryViews.get(position).getParent()).removeView(
-                            secondaryViews.get(position));
-                }
-
-                if (!myView.songContent1.getIsDisplaying()) {
-                    myView.songContent1.clearViews();
-                    if (image || pdf || imageslide) {
-                        myView.songContent1.getCol1().setVisibility(View.GONE);
-                        myView.songContent1.getCol2().setVisibility(View.GONE);
-                        myView.songContent1.getCol3().setVisibility(View.GONE);
-                        myView.songContent1.getImageView().setVisibility(View.VISIBLE);
-                        fixGravity(myView.songContent1.getImageView());
-                        GlideApp.with(c).load(bitmap).fitCenter().into(myView.songContent1.getImageView());
-
-                    } else {
-                        myView.songContent1.getCol1().setVisibility(View.VISIBLE);
-                        myView.songContent1.getImageView().setVisibility(View.GONE);
-                        myView.songContent1.getCol1().addView(secondaryViews.get(position));
+                    if (!image && !pdf && !imageslide &&
+                            secondaryViews!=null && secondaryViews.size()>position &&
+                            secondaryViews.get(position)!=null &&
+                            secondaryViews.get(position).getParent()!=null) {
+                        ((ViewGroup)secondaryViews.get(position).getParent()).removeView(
+                                secondaryViews.get(position));
                     }
-                    myView.songContent1.setIsDisplaying(true);
-                    myView.songContent2.setIsDisplaying(false);
-                    crossFadeContent(myView.songContent2, myView.songContent1);
 
-                } else if (!myView.songContent2.getIsDisplaying()) {
-                    myView.songContent2.clearViews();
-                    if (image || pdf || imageslide) {
-                        myView.songContent2.getCol1().setVisibility(View.GONE);
-                        myView.songContent2.getCol2().setVisibility(View.GONE);
-                        myView.songContent2.getCol3().setVisibility(View.GONE);
-                        myView.songContent2.getImageView().setVisibility(View.VISIBLE);
-                        fixGravity(myView.songContent2.getImageView());
-                        GlideApp.with(c).load(bitmap).fitCenter().into(myView.songContent2.getImageView());
+                    if (!myView.songContent1.getIsDisplaying()) {
+                        myView.songContent1.clearViews();
+                        if (image || pdf || imageslide) {
+                            myView.songContent1.getCol1().setVisibility(View.GONE);
+                            myView.songContent1.getCol2().setVisibility(View.GONE);
+                            myView.songContent1.getCol3().setVisibility(View.GONE);
+                            myView.songContent1.getImageView().setVisibility(View.VISIBLE);
+                            fixGravity(myView.songContent1.getImageView());
+                            GlideApp.with(c).load(bitmap).fitCenter().into(myView.songContent1.getImageView());
 
-                    } else {
-                        myView.songContent2.getCol1().setVisibility(View.VISIBLE);
-                        myView.songContent2.getImageView().setVisibility(View.GONE);
-                        myView.songContent2.getCol1().addView(secondaryViews.get(position));
+                        } else {
+                            myView.songContent1.getCol1().setVisibility(View.VISIBLE);
+                            myView.songContent1.getImageView().setVisibility(View.GONE);
+                            myView.songContent1.getCol1().addView(secondaryViews.get(position));
+                        }
+                        myView.songContent1.setIsDisplaying(true);
+                        myView.songContent2.setIsDisplaying(false);
+                        crossFadeContent(myView.songContent2, myView.songContent1);
+
+                    } else if (!myView.songContent2.getIsDisplaying()) {
+                        myView.songContent2.clearViews();
+                        if (image || pdf || imageslide) {
+                            myView.songContent2.getCol1().setVisibility(View.GONE);
+                            myView.songContent2.getCol2().setVisibility(View.GONE);
+                            myView.songContent2.getCol3().setVisibility(View.GONE);
+                            myView.songContent2.getImageView().setVisibility(View.VISIBLE);
+                            fixGravity(myView.songContent2.getImageView());
+                            GlideApp.with(c).load(bitmap).fitCenter().into(myView.songContent2.getImageView());
+
+                        } else {
+                            myView.songContent2.getCol1().setVisibility(View.VISIBLE);
+                            myView.songContent2.getImageView().setVisibility(View.GONE);
+                            myView.songContent2.getCol1().addView(secondaryViews.get(position));
+                        }
+                        myView.songContent1.setIsDisplaying(false);
+                        myView.songContent2.setIsDisplaying(true);
+                        crossFadeContent(myView.songContent1, myView.songContent2);
                     }
-                    myView.songContent1.setIsDisplaying(false);
-                    myView.songContent2.setIsDisplaying(true);
-                    crossFadeContent(myView.songContent1, myView.songContent2);
                 }
             }
+        } catch (Exception e) {
+            Log.d(TAG, "No song section at this point.");
         }
     }
 

@@ -852,7 +852,7 @@ public class NearbyConnections implements NearbyInterface {
             totalSections = mainActivityInterface.getSong().getPdfPageCount();
         } else {
             onSectionAlready = mainActivityInterface.getSong().getCurrentSection() == mysection;
-            totalSections = mainActivityInterface.getSong().getSongSections().size();
+            totalSections = mainActivityInterface.getSong().getPresoOrderSongSections().size();
         }
         Log.d(TAG,"doSectionChange().  onSectionAlready="+onSectionAlready);
         Log.d(TAG,"totalSections="+totalSections+"  mysection="+mysection);

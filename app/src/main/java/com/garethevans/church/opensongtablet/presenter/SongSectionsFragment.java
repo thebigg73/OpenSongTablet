@@ -61,7 +61,7 @@ public class SongSectionsFragment extends Fragment {
         myView = ModePresenterSongSectionsBinding.inflate(inflater, container, false);
 
         // Set up song info layout to only show minimal info in simple format
-        myView.songInfo.setupLayout(requireContext(), mainActivityInterface, true);
+        myView.songInfo.setupLayout(requireContext(), mainActivityInterface, false);
 
         // Set the presentation order
         myView.presentationOrder.setChecked(mainActivityInterface.getPresenterSettings().getUsePresentationOrder());
@@ -92,7 +92,7 @@ public class SongSectionsFragment extends Fragment {
                     mainActivityInterface.getSong() != null) {
                 myView.songInfo.setSongTitle(mainActivityInterface.getSong().getTitle());
                 myView.songInfo.setSongAuthor(mainActivityInterface.getSong().getAuthor());
-                myView.songInfo.setSongCopyright(mainActivityInterface.getSong().getCopyright());
+                myView.songInfo.setSongCopyright("©" + mainActivityInterface.getSong().getCopyright());
                 myView.songInfo.setSongCCLI(mainActivityInterface.getSong().getCcli());
                 myView.imageSlideInfo.setVisibility(View.GONE);
                 myView.imageSlideLoop.setVisibility(View.GONE);

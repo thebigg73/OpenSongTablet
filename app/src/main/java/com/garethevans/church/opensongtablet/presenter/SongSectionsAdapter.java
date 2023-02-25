@@ -275,7 +275,7 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
                 if (sectionEditedHeader.isEmpty()) {
                     newBits = content;
                 } else {
-                    newBits = sectionEditedHeader + "\n" + content;
+                    newBits = "[" + sectionEditedHeader + "]\n" + content;
                 }
                 String[] bits = splitHeadingAndContent(newBits);
 

@@ -3380,7 +3380,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         } else if (song.getFiletype().equals("IMG")) {
             sections = 1;
         } else {
-            sections = song.getSongSections().size();
+            sections = song.getPresoOrderSongSections().size();
         }
 
         if (secondaryDisplays!=null) {

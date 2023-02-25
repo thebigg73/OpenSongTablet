@@ -259,9 +259,13 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
                 mainActivityInterface.getPresenterSettings().setPresoShowChords(b);
                 mainActivityInterface.updateFragment("presenterFragmentSongSections",null,null);
                 displayInterface.updateDisplay("setSongContent");
-                if (mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().getItemCount()>0) {
-                    mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().notifyItemRangeChanged(0,
-                            mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().getItemCount());
+                try {
+                    if (mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().getItemCount() > 0) {
+                        mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().notifyItemRangeChanged(0,
+                                mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().getItemCount());
+                    }
+                } catch (Exception e) {
+                        Log.d(TAG, "No song section adapter at this point.");
                 }
         });
         myView.contentHorizontalAlign.addOnSliderTouchListener(new SliderTouchListener("presoLyricsAlign"));

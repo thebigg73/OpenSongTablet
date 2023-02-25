@@ -66,13 +66,13 @@ public class SongProjectionInfo extends LinearLayoutCompat {
             showMiniLogo(false);
             smallText(mainActivityInterface, true);
             castSongInfo.setBackgroundColor(Color.TRANSPARENT);
-        } else if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_presenter))) {
-            // The bottom bar for the secondary display in Presenter mode
+        } else if (!mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance))) {
+            // The bottom bar for the secondary display in Stage and Presenter mode
             showMiniLogo(false);
             smallText(mainActivityInterface, false);
             castSongInfo.setBackgroundColor(mainActivityInterface.getMyThemeColors().getPresoShadowColor());
         } else {
-            // Performance / Stage mode
+            // Performance
             showMiniLogo(true);
             smallText(mainActivityInterface, true);
             castSongInfo.setBackgroundColor(Color.TRANSPARENT);
@@ -93,7 +93,7 @@ public class SongProjectionInfo extends LinearLayoutCompat {
         setText(songCCLI,ccli);
     }
     public void setCapo(String capo) {
-        if (capo==null) {
+        if (capo==null || capo.isEmpty()) {
             capoIcon.setText("");
             capoIcon.setVisibility(View.GONE);
         } else {

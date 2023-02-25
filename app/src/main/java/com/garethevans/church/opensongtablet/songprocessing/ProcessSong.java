@@ -842,17 +842,21 @@ public class ProcessSong {
                         }
                     }
                 }
-            } else if (!lines[i].startsWith(".") && !displayChords) {
-                // Tidy it up
-                lines[i] = lines[i].trim().replace("_", "");
-                lines[i] = " " + lines[i];
-                sb.append("\n").append(lines[i]);
+            } else if (lines[i].startsWith(" ") && !displayChords) {
+                // IV - Remove typical word splits, white space and trim - beautify!
+                // IV - Similar logic is used in other places - if changed find and make changes to all
+                lines[i] = lines[i].replaceAll("_", "")
+                        .replaceAll("\\s+-\\s+", "")
+                        .replaceAll("\\s{2,}", " ")
+                        .trim();
+                sb.append("\n ").append(lines[i]);
             } else if (displayLyrics && !lines[i].startsWith(".")) {
                 sb.append("\n").append(fixWordStretch(lines[i]));
             }
             i++;
         }
-        return sb.toString();
+        // IV - Content is added with leading \n, the first needs to be removed
+        return sb.toString().replaceFirst("\n","");
     }
 
     private boolean shouldNextLineBeAdded(int nl, String[] lines, boolean incnormallyricline) {
@@ -1550,7 +1554,7 @@ public class ProcessSong {
                 .replace("§§", "§");
 
         if (lyrics.trim().startsWith("§")) {
-            lyrics = lyrics.replaceFirst(" §", "");
+            lyrics = lyrics.replaceFirst("§", "");
             while (lyrics.startsWith("\n") || lyrics.startsWith(" ")) {
                 if (lyrics.startsWith(" ")) {
                     lyrics = lyrics.replaceFirst(" ", "");
@@ -1604,15 +1608,17 @@ public class ProcessSong {
         String sectionHeader = "";
 
         for (int x = 0; x < songSections.size(); x++) {
+            fixedlyrics.append("\n§");
             if (songSections.get(x).startsWith("[")) {
-                sectionHeader = "\n" + songSections.get(x).substring(0,songSections.get(x).indexOf("]") + 1);
-                fixedlyrics.append(songSections.get(x)).append("§");
+                sectionHeader = songSections.get(x).substring(0,songSections.get(x).indexOf("]") + 1);
+                fixedlyrics.append(songSections.get(x));
             } else {
-                fixedlyrics.append(sectionHeader).append(songSections.get(x)).append("§");
+                fixedlyrics.append(sectionHeader).append(songSections.get(x));
             }
         }
 
-        lyrics = fixedlyrics.toString();
+        // IV - Content is added with leading \n§, the first needs to be removed
+        lyrics = fixedlyrics.toString().replaceFirst("\n§","");
 
         // 8. Go through the lyrics and get section headers and add to the song object
         song.setSongSectionHeadings(getSectionHeadings(lyrics));
@@ -1631,7 +1637,7 @@ public class ProcessSong {
         songSections = new ArrayList<>();
         ArrayList<String> groupedSections = new ArrayList<>();
 
-        for (String thisSection : lyrics.split("§")) {
+        for (String thisSection : lyrics.split("\n§")) {
             if ((thisSection != null) && !thisSection.trim().isEmpty()) {
                 groupedSections.add(thisSection);
                 songSections.add(thisSection.replace("____groupline____", "\n"));
@@ -1668,12 +1674,8 @@ public class ProcessSong {
         ArrayList<Integer> sectionColors = new ArrayList<>();
 
         // First we process the song (could be the loaded song, or a temp song - that's why we take a reference)
-        // If this is for a presentation, we've already dealt with it
-        if (!presentation) {
-            processSongIntoSections(song, false);
-        }
+        processSongIntoSections(song, presentation);
 
-        //
         if (asPDF && mainActivityInterface.getMakePDF().getIsSetListPrinting()) {
             // This is the set list PDF print.  Items are split by empty section headers []
             // We need to now remove those and trim the section content otherwise the PDF has gaps between lines
@@ -1706,7 +1708,8 @@ public class ProcessSong {
             String section = song.getPresoOrderSongSections().get(sect);
             if (!section.isEmpty()) {
                 if (trimSections) {
-                    section = section.trim();
+                    // IV - End trim only as a section may start with a lyric line and have no header
+                    section = ("¬" + section).trim().replace("¬","");
                 }
                 if (!presentation && addSectionSpace && !mainActivityInterface.getMakePDF().getIsSetListPrinting() &&
                         sect != (song.getPresoOrderSongSections().size() - 1)) { // Don't do for last section
@@ -1734,13 +1737,13 @@ public class ProcessSong {
                             // Get the text stylings
                             String linetype = getLineType(line);
 
-                            if (presentation && curlyBrackets) {
-                                line = line.replaceAll("\\{.*?\\}", "");
-                            }
-
-                            if (presentation && linetype.equals("heading")) {
-                                // Don't need this for the presentation view
-                                line = "";
+                            if (presentation && !mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance))) {
+                                if (linetype.equals("heading") || linetype.equals("comment") || linetype.equals("tab")) {
+                                    // Do not use these lines with the second screen
+                                    continue;
+                                } else if (curlyBrackets) {
+                                    line = line.replaceAll("\\{.*?\\}", "");
+                                }
                             }
                             backgroundColor = overallBackgroundColor;
                             if (!asPDF && !presentation && (linetype.equals("heading") || linetype.equals("comment") || linetype.equals("tab"))) {
@@ -1780,8 +1783,14 @@ public class ProcessSong {
                             } else {
                                 // Remove any word splits as not required
                                 if (!presentation && !asPDF && !line.isEmpty()) {
-                                    line = line.replaceAll("\\s+-\\s+", "")
-                                            .replaceAll("\\s{2,}", " ");
+                                    // IV - Remove typical word splits, white space and trim - beautify!
+                                    // IV - Similar logic is used in other places - if changed find and make changes to all
+                                    if (!displayChords) {
+                                        line = line.replaceAll("_", "")
+                                                .replaceAll("\\s+-\\s+", "")
+                                                .replaceAll("\\s{2,}", " ")
+                                                .trim();
+                                    }
                                     TextView tv = lineText(linetype, line, typeface,
                                             size, textColor,
                                             mainActivityInterface.getMyThemeColors().getHighlightHeadingColor(),
@@ -1790,6 +1799,14 @@ public class ProcessSong {
                                     linearLayout.addView(tv);
                                 } else {
                                     // PDF or presentation
+                                    // IV - Remove typical word splits, white space and trim - beautify!
+                                    // IV - Similar logic is used in other places - if changed find and make changes to all
+                                    if (!displayChords) {
+                                        line = line.replaceAll("_", "")
+                                                .replaceAll("\\s+-\\s+", "")
+                                                .replaceAll("\\s{2,}", " ")
+                                                .trim();
+                                    }
                                     linearLayout.addView(lineText(linetype, line, typeface,
                                             size, textColor, Color.TRANSPARENT, Color.TRANSPARENT, presentation));
                                 }
