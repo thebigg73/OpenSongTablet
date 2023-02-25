@@ -1554,7 +1554,7 @@ public class ProcessSong {
                 .replace("§§", "§");
 
         if (lyrics.trim().startsWith("§")) {
-            lyrics = lyrics.replaceFirst("§", "");
+            lyrics = lyrics.replaceFirst(" §", "");
             while (lyrics.startsWith("\n") || lyrics.startsWith(" ")) {
                 if (lyrics.startsWith(" ")) {
                     lyrics = lyrics.replaceFirst(" ", "");
