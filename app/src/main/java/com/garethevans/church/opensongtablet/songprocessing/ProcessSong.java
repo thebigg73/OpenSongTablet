@@ -1532,7 +1532,7 @@ public class ProcessSong {
             stringBuilder.append(line);
         }
 
-        lyrics = stringBuilder.substring(1).replace("¶", "")
+        lyrics = stringBuilder.toString()
                 .replace("-!!", "")
                 // --- Process new section markers
                 .replace("\n ---", "\n[]")
@@ -1543,29 +1543,19 @@ public class ProcessSong {
                 .replace("§\n", "§")
                 .replace("\n§", "§")
                 .replace("§ §", "§")
+                // --- Ensure \n§ at section splits
                 .replace("§§", "§")
-                // --- Add \n§ at section split points
                 .replace("§", "\n§")
+                // --- Tidy section end newlines
                 .replace("\n\n\n", "\n \n§")
                 .replace("\n \n \n", "\n \n§")
                 .replace("\n\n", "\n \n§")
                 .replace("\n \n", "\n \n§")
                 .replace("\n [", "\n§[")
-                .replace("§§", "§");
-
-        if (lyrics.trim().startsWith("§")) {
-            lyrics = lyrics.replaceFirst(" §", "");
-            while (lyrics.startsWith("\n") || lyrics.startsWith(" ")) {
-                if (lyrics.startsWith(" ")) {
-                    lyrics = lyrics.replaceFirst(" ", "");
-                } else {
-                    lyrics = lyrics.replaceFirst("\n", "");
-                }
-            }
-        }
-        if (lyrics.startsWith("§")) {
-            lyrics = lyrics.replaceFirst("§", "");
-        }
+                // --- Because we trail with ¶, this removes the added leading \n as part of removing leading white space
+                .trim()
+                // --- Now remove trailing ¶
+                .replace("¶","");
 
         // 7. Handle null sections (ignore) and || splits
         String[] sections = lyrics.split("§");
@@ -1637,6 +1627,7 @@ public class ProcessSong {
         songSections = new ArrayList<>();
         ArrayList<String> groupedSections = new ArrayList<>();
 
+        // IV - This ignores empty sections
         for (String thisSection : lyrics.split("\n§")) {
             if ((thisSection != null) && !thisSection.trim().isEmpty()) {
                 groupedSections.add(thisSection);
