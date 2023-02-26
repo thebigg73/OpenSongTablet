@@ -342,7 +342,6 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         prepareSearch();
     }
     public void prepareSearch() {
-        Log.d(TAG,"mainActivityInterface:"+mainActivityInterface);
         songMenuSortTitles = mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuSortTitles", true);
         getSearchVals();
         ExecutorService executorService = Executors.newSingleThreadExecutor();
@@ -375,7 +374,6 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                 break;
             }
         }
-        Log.d(TAG,"pos:"+pos);
         if (pos>-1) {
             // Update the checklist in the adapter
             songListAdapter.changeCheckBox(pos);
@@ -621,7 +619,6 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     }
 
     public int getPositionInSongMenu(Song song) {
-        Log.d(TAG,"song:"+song);
         if (song!=null && songListAdapter!=null) {
             return songListAdapter.getPositionOfSong(song);
         } else {

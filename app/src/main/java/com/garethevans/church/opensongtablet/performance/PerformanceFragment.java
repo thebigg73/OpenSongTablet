@@ -62,6 +62,7 @@ public class PerformanceFragment extends Fragment {
     private int widthAfterScale;
     private int heightAfterScale;
     private int waitingOnViewsToDraw;
+    private boolean processingTestView;
     private float scaleFactor = 1.0f;
     private ModePerformanceBinding myView;
     private Animation animSlideIn, animSlideOut;
@@ -353,12 +354,12 @@ public class PerformanceFragment extends Fragment {
             myView.inlineSetList.checkVisibility();
 
             int[] screenSizes = mainActivityInterface.getDisplayMetrics();
-            int[] margins = mainActivityInterface.getWindowFlags().getMargins();
+            //int[] margins = mainActivityInterface.getWindowFlags().getMargins();
             int screenWidth = screenSizes[0];
             int screenHeight = screenSizes[1];
 
-            availableWidth = screenWidth - margins[0] - margins[2] - myView.inlineSetList.getInlineSetWidth();
-            availableHeight = screenHeight - margins[1] - margins[3] - mainActivityInterface.getToolbar().getActionBarHeight(mainActivityInterface.needActionBar());
+            //availableWidth = screenWidth - margins[0] - margins[2] - myView.inlineSetList.getInlineSetWidth();
+            //availableHeight = screenHeight - margins[1] - margins[3] - mainActivityInterface.getToolbar().getActionBarHeight(mainActivityInterface.needActionBar());
 
             int[] viewPadding = mainActivityInterface.getViewMargins();
             //Log.d(TAG,"LEFT margins[0]:"+margins[0]+"   viewPadding:"+viewPadding[0]);
@@ -532,6 +533,7 @@ public class PerformanceFragment extends Fragment {
 
     }
     private void prepareXMLView() {
+        Log.d(TAG,"536 Getting here");
         // If we are old Android and can't show a pdf, tell the user
         if (mainActivityInterface.getSong().getFiletype().equals("PDF") &&
                 android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP) {
@@ -557,6 +559,7 @@ public class PerformanceFragment extends Fragment {
         setUpHeaderListener();
     }
     private void setUpHeaderListener() {
+        Log.d(TAG,"561 Getting here");
         // If we want headers, the header layout isn't null, so we can draw and listen
         // Add the view and wait for the vto return
         if (mainActivityInterface.getSongSheetTitleLayout() != null &&
@@ -565,19 +568,16 @@ public class PerformanceFragment extends Fragment {
             if (mainActivityInterface.getSongSheetTitleLayout().getParent()!=null) {
                 ((ViewGroup) mainActivityInterface.getSongSheetTitleLayout().getParent()).removeAllViews();
             }
+            myView.testPaneHeader.removeAllViews();
 
-            ViewTreeObserver vto = myView.testPane.getViewTreeObserver();
+            ViewTreeObserver vto = myView.testPaneHeader.getViewTreeObserver();
             vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override
                 public void onGlobalLayout() {
+
                     if (myView!=null) {
                         try {
-                            myView.testPane.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-
-                        try {
+                            myView.testPaneHeader.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                             setUpTestViewListener();
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -587,7 +587,7 @@ public class PerformanceFragment extends Fragment {
             });
 
             try {
-                myView.testPane.addView(mainActivityInterface.getSongSheetTitleLayout());
+                myView.testPaneHeader.addView(mainActivityInterface.getSongSheetTitleLayout());
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -605,6 +605,10 @@ public class PerformanceFragment extends Fragment {
         // Add the views and wait for the vto of each to finish
         myView.songView.clearViews();
         myView.testPane.removeAllViews();
+
+        for (String section:mainActivityInterface.getSong().getSongSections()) {
+            Log.d(TAG,"section:"+section);
+        }
 
         for (View view : mainActivityInterface.getSectionViews()) {
             if (view.getParent()!=null) {
@@ -628,9 +632,11 @@ public class PerformanceFragment extends Fragment {
                     }
                 }
             });
+
             myView.testPane.addView(view);
         }
     }
+
     private void songIsReadyToDisplay() {
         // Set the page holder to fullscreen for now
         try {
@@ -640,9 +646,10 @@ public class PerformanceFragment extends Fragment {
 
             // All views have now been drawn, so measure the arraylist views
             for (int x = 0; x < mainActivityInterface.getSectionViews().size(); x++) {
-                int width = mainActivityInterface.getSectionViews().get(x).getWidth();
-                int height = mainActivityInterface.getSectionViews().get(x).getHeight();
+                int width = mainActivityInterface.getSectionViews().get(x).getMeasuredWidth();
+                int height = mainActivityInterface.getSectionViews().get(x).getMeasuredHeight();
                 mainActivityInterface.addSectionSize(x, width, height);
+                Log.d(TAG,"Measuring "+x+": "+width+"x"+height);
             }
 
             myView.testPane.removeAllViews();
@@ -681,7 +688,7 @@ public class PerformanceFragment extends Fragment {
 
                     }
                 });
-                myView.recyclerView.setAdapter(stageSectionAdapter);
+                myView.recyclerView.post(() -> myView.recyclerView.setAdapter(stageSectionAdapter));
 
 
             } else {
@@ -821,6 +828,9 @@ public class PerformanceFragment extends Fragment {
 
             // If we opened the app with and intent/file, check if we need to import
             tryToImportIntent();
+
+            // Release the processing lock
+            processingTestView = false;
 
         }, getResources().getInteger(R.integer.slide_in_time));
     }

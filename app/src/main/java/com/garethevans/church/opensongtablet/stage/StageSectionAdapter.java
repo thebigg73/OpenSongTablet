@@ -4,6 +4,7 @@ package com.garethevans.church.opensongtablet.stage;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -82,6 +83,7 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
             stageSectionInfo.scale = scale;
             stageSectionInfo.alpha = alpha;
             sectionInfos.add(stageSectionInfo);
+            Log.d(TAG,"section "+x+": "+sectionWidth+"x"+sectionHeight+"  x_scale:"+x_scale+"  y_scale:"+y_scale+"  scale:"+scale);
         }
     }
 
@@ -95,6 +97,7 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull StageViewHolder holder, int position, @NonNull List<Object> payloads) {
+        final int pos = position;
         if (payloads.isEmpty()) {
             super.onBindViewHolder(holder, position, payloads);
         } else {
@@ -104,9 +107,10 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
                     // We want to update the highlight colour to off
                     holder.v.post(()->{
                         try {
-                            holder.v.setAlpha(sectionInfos.get(position).alpha);
-                            float scale = sectionInfos.get(position).scale;
-                            holder.v.getLayoutParams().height = (int) (sectionInfos.get(position).height * scale);
+                            holder.v.setAlpha(sectionInfos.get(pos).alpha);
+                            float scale = sectionInfos.get(pos).scale;
+                            holder.v.getLayoutParams().height = (int) (sectionInfos.get(pos).height * scale);
+                            //holder.sectionView.getLayoutParams().height = (int) (sectionInfos.get(position).height * scale);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -118,18 +122,19 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull StageViewHolder holder, int position) {
-        if (position<sectionInfos.size()) {
-            View v = mainActivityInterface.getSectionViews().get(position);
+        final int pos = position;
+        if (pos<sectionInfos.size()) {
+            View v = mainActivityInterface.getSectionViews().get(pos);
 
             if (v.getParent()!=null) {
                 ((ViewGroup)v.getParent()).removeView(v);
             }
 
-            int section = sectionInfos.get(position).section;
-            int width = sectionInfos.get(position).width;
-            int height = sectionInfos.get(position).height;
-            float scale = sectionInfos.get(position).scale;
-            float alpha = sectionInfos.get(position).alpha;
+            int section = sectionInfos.get(pos).section;
+            int width = sectionInfos.get(pos).width;
+            int height = sectionInfos.get(pos).height;
+            float scale = sectionInfos.get(pos).scale;
+            float alpha = sectionInfos.get(pos).alpha;
 
             CardView cardView = (CardView) holder.v;
             if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_stage)) && section == currentSection) {
@@ -171,7 +176,7 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
                         if (fakeClick) {
                             fakeClick = false;
                         } else {
-                            sectionSelected(position);
+                            sectionSelected(pos);
                         }
                     });
                     cardView.setOnLongClickListener(view -> {
