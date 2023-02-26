@@ -1543,8 +1543,8 @@ public class ProcessSong {
                 .replace("§\n", "§")
                 .replace("\n§", "§")
                 .replace("§ §", "§")
+                .replace("§§", "§") // Needed
                 // --- Ensure \n§ at section splits
-                .replace("§§", "§")
                 .replace("§", "\n§")
                 // --- Tidy section end newlines
                 .replace("\n\n\n", "\n \n§")
@@ -1552,6 +1552,7 @@ public class ProcessSong {
                 .replace("\n\n", "\n \n§")
                 .replace("\n \n", "\n \n§")
                 .replace("\n [", "\n§[")
+                .replace("§§", "§") // Needed again
                 // --- Because we trail with ¶, this removes the added leading \n as part of removing leading white space
                 .trim()
                 // --- Now remove trailing ¶
