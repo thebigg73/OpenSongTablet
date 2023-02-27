@@ -61,7 +61,6 @@ public class PerformanceFragment extends Fragment {
     private int heightBeforeScale;
     private int widthAfterScale;
     private int heightAfterScale;
-    private int waitingOnViewsToDraw;
     private boolean processingTestView;
     private float scaleFactor = 1.0f;
     private ModePerformanceBinding myView;
@@ -275,48 +274,53 @@ public class PerformanceFragment extends Fragment {
 
     // This stuff loads the song and prepares the views
     public void doSongLoad(String folder, String filename) {
-        // Loading the song is dealt with in this fragment as specific actions are required
-
         mainActivityInterface.closeDrawer(true);
 
-        // Stop any autoscroll if required
-        mainActivityInterface.getAutoscroll().stopAutoscroll();
+        // Make sure we only do this once (reset at the end of 'dealwithstuffafterready')
+        if (!processingTestView) {
+            processingTestView = true;
+            // Loading the song is dealt with in this fragment as specific actions are required
+            Log.d(TAG, "doSongLoad()");
 
-        // During the load song call, the song is cleared
-        // However it first extracts the folder and filename we've just set
-        mainActivityInterface.getSong().setFolder(folder);
-        mainActivityInterface.getSong().setFilename((filename));
+            // Stop any autoscroll if required
+            mainActivityInterface.getAutoscroll().stopAutoscroll();
 
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        executorService.execute(() -> {
-            Handler handler = new Handler(Looper.getMainLooper());
+            // During the load song call, the song is cleared
+            // However it first extracts the folder and filename we've just set
+            mainActivityInterface.getSong().setFolder(folder);
+            mainActivityInterface.getSong().setFilename((filename));
 
-            // Prepare the slide out and in animations based on swipe direction
-            setupSlideOut();
-            setupSlideIn();
+            ExecutorService executorService = Executors.newSingleThreadExecutor();
+            executorService.execute(() -> {
+                Handler handler = new Handler(Looper.getMainLooper());
 
-            // Remove any sticky notes
-            actionInterface.showSticky(false,true);
+                // Prepare the slide out and in animations based on swipe direction
+                setupSlideOut();
+                setupSlideIn();
 
-            // Now reset the song object (doesn't change what's already drawn on the screen)
-            mainActivityInterface.setSong(mainActivityInterface.getLoadSong().doLoadSong(
-                    mainActivityInterface.getSong(),false));
+                // Remove any sticky notes
+                actionInterface.showSticky(false, true);
 
-            mainActivityInterface.moveToSongInSongMenu();
+                // Now reset the song object (doesn't change what's already drawn on the screen)
+                mainActivityInterface.setSong(mainActivityInterface.getLoadSong().doLoadSong(
+                        mainActivityInterface.getSong(), false));
 
-            // Now slide out the song and after a delay start the next bit of the processing
-            myView.recyclerView.post(() -> {
-                if (myView.recyclerView.getVisibility() == View.VISIBLE) {
-                    myView.recyclerView.startAnimation(animSlideOut);
-                }
+                mainActivityInterface.moveToSongInSongMenu();
+
+                // Now slide out the song and after a delay start the next bit of the processing
+                myView.recyclerView.post(() -> {
+                    if (myView.recyclerView.getVisibility() == View.VISIBLE) {
+                        myView.recyclerView.startAnimation(animSlideOut);
+                    }
+                });
+                myView.pageHolder.post(() -> {
+                    if (myView.pageHolder.getVisibility() == View.VISIBLE) {
+                        myView.pageHolder.startAnimation(animSlideOut);
+                    }
+                });
+                handler.postDelayed(this::prepareSongViews, requireContext().getResources().getInteger(R.integer.slide_out_time));
             });
-            myView.pageHolder.post(() -> {
-                if (myView.pageHolder.getVisibility()==View.VISIBLE) {
-                    myView.pageHolder.startAnimation(animSlideOut);
-                }
-            });
-            handler.postDelayed(this::prepareSongViews,requireContext().getResources().getInteger(R.integer.slide_out_time));
-        });
+        }
     }
     private void setupSlideOut() {
         // Set up the type of animate in
@@ -339,7 +343,6 @@ public class PerformanceFragment extends Fragment {
             // This is called on the UI thread above via the handler from mainLooper()
             // Reset the song views
             mainActivityInterface.setSectionViews(null);
-            waitingOnViewsToDraw = 0;
 
             // Reset the song sheet titles and views
             removeViews();
@@ -533,7 +536,6 @@ public class PerformanceFragment extends Fragment {
 
     }
     private void prepareXMLView() {
-        Log.d(TAG,"536 Getting here");
         // If we are old Android and can't show a pdf, tell the user
         if (mainActivityInterface.getSong().getFiletype().equals("PDF") &&
                 android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP) {
@@ -556,10 +558,12 @@ public class PerformanceFragment extends Fragment {
         // We now have the views ready, we need to draw them so we can measure them
         // Start with the song sheeet title/header
         // The other views are dealt with after this call
-        setUpHeaderListener();
+
+        // Run this as a post to the root view - otherwise views aren't necessarily fully ready for drawing
+        myView.getRoot().post(this::setUpHeaderListener);
     }
+
     private void setUpHeaderListener() {
-        Log.d(TAG,"561 Getting here");
         // If we want headers, the header layout isn't null, so we can draw and listen
         // Add the view and wait for the vto return
         if (mainActivityInterface.getSongSheetTitleLayout() != null &&
@@ -570,26 +574,20 @@ public class PerformanceFragment extends Fragment {
             }
             myView.testPaneHeader.removeAllViews();
 
-            ViewTreeObserver vto = myView.testPaneHeader.getViewTreeObserver();
-            vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                @Override
-                public void onGlobalLayout() {
-
-                    if (myView!=null) {
-                        try {
-                            myView.testPaneHeader.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                            setUpTestViewListener();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+            mainActivityInterface.getSongSheetTitleLayout().post(() -> {
+                if (myView!=null) {
+                    try {
+                        setUpTestViewListener();
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             });
-
             try {
                 myView.testPaneHeader.addView(mainActivityInterface.getSongSheetTitleLayout());
             } catch (Exception e) {
                 e.printStackTrace();
+                setUpTestViewListener();
             }
 
         } else {
@@ -600,39 +598,42 @@ public class PerformanceFragment extends Fragment {
 
     private void setUpTestViewListener() {
         myView.testPane.removeAllViews();
-        waitingOnViewsToDraw = mainActivityInterface.getSectionViews().size();
 
         // Add the views and wait for the vto of each to finish
         myView.songView.clearViews();
         myView.testPane.removeAllViews();
 
-        for (String section:mainActivityInterface.getSong().getSongSections()) {
-            Log.d(TAG,"section:"+section);
-        }
+        // We will only proceed once all of the views show true as being drawn
+        boolean[] viewsDrawn = new boolean[mainActivityInterface.getSectionViews().size()];
 
-        for (View view : mainActivityInterface.getSectionViews()) {
+        for (int v=0; v<mainActivityInterface.getSectionViews().size(); v++) {
+            final int viewNum = v;
+            final View view = mainActivityInterface.getSectionViews().get(viewNum);
+
+            // If views are attached to a parent, remove it from the parent
             if (view.getParent()!=null) {
                 // Still attached - remove it
                 ((ViewGroup)view.getParent()).removeView(view);
             }
-            view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                @Override
-                public void onGlobalLayout() {
-                    view.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                    // In case rogue calls get fired, only proceed if we should
-                    if (waitingOnViewsToDraw>0) {
-                        waitingOnViewsToDraw --;
-                        if (waitingOnViewsToDraw==0) {
-                            // This was the last item, so move on
-                            songIsReadyToDisplay();
-                            waitingOnViewsToDraw = 0;
-                        }
-                    } else {
-                        waitingOnViewsToDraw = 0;
+
+            // Set a post listener for the view
+            view.post(() -> {
+                viewsDrawn[viewNum] = true;
+                // Check if the array is only true
+                boolean isReady = true;
+                for (boolean thisBoolean : viewsDrawn) {
+                    if (!thisBoolean) {
+                        // Not ready
+                        isReady = false;
+                        break;
                     }
+                }
+                if (isReady) {
+                    songIsReadyToDisplay();
                 }
             });
 
+            // Add the view.  The post above gets called once drawn
             myView.testPane.addView(view);
         }
     }
@@ -646,10 +647,10 @@ public class PerformanceFragment extends Fragment {
 
             // All views have now been drawn, so measure the arraylist views
             for (int x = 0; x < mainActivityInterface.getSectionViews().size(); x++) {
-                int width = mainActivityInterface.getSectionViews().get(x).getMeasuredWidth();
-                int height = mainActivityInterface.getSectionViews().get(x).getMeasuredHeight();
+                int width = mainActivityInterface.getSectionViews().get(x).getWidth();
+                int height = mainActivityInterface.getSectionViews().get(x).getHeight();
                 mainActivityInterface.addSectionSize(x, width, height);
-                Log.d(TAG,"Measuring "+x+": "+width+"x"+height);
+                Log.d(TAG,"Measuring "+x+": "+width+"x"+height+"\n"+mainActivityInterface.getSong().getPresoOrderSongSections().get(x));
             }
 
             myView.testPane.removeAllViews();
@@ -830,6 +831,7 @@ public class PerformanceFragment extends Fragment {
             tryToImportIntent();
 
             // Release the processing lock
+            Log.d(TAG,"releasing processing lock");
             processingTestView = false;
 
         }, getResources().getInteger(R.integer.slide_in_time));

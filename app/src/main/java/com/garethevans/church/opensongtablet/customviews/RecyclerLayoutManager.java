@@ -1,7 +1,6 @@
 package com.garethevans.church.opensongtablet.customviews;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -27,7 +26,6 @@ public class RecyclerLayoutManager extends LinearLayoutManager {
         childSizes = new ArrayList<>();
         for (float val:floatSizes) {
             total += val;
-            Log.d(TAG,"childSize: "+val+ "  total:"+total);
             childSizes.add((int)val);
         }
         size = (int)total;
