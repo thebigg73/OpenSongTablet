@@ -317,7 +317,7 @@ public class PerformanceFragment extends Fragment {
                         myView.pageHolder.startAnimation(animSlideOut);
                     }
                 });
-                handler.postDelayed(this::prepareSongViews, 50 + requireContext().getResources().getInteger(R.integer.slide_out_time));
+                handler.postDelayed(this::prepareSongViews,  50 + requireContext().getResources().getInteger(R.integer.slide_out_time));
             });
         }
     }
