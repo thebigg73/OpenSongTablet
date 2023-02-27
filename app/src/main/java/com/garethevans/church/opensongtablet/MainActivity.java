@@ -280,14 +280,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             bootUpCompleted = savedInstanceState.getBoolean("bootUpCompleted",false);
             rebooted = true;
             if (songListBuildIndex==null) {
-                Log.d(TAG,"creating songListBuildIndex");
                 songListBuildIndex = new SongListBuildIndex(this);
                 fullIndexRequired = true;
             }
 
             songListBuildIndex.setIndexComplete(savedInstanceState.getBoolean("indexComplete",false));
             fullIndexRequired = !songListBuildIndex.getIndexComplete();
-            Log.d(TAG,"bootUpCompleted:"+bootUpCompleted+"   fullIndexRequired:"+fullIndexRequired);
 
 
         } else {
@@ -299,10 +297,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         onNewIntent(fileOpenIntent);
 
         //supportRequestWindowFeature(AppCompatDelegate.FEATURE_ACTION_MODE_OVERLAY);
-
-        Log.d(TAG,"myView:"+myView);
-        Log.d(TAG,"storageAccess:"+storageAccess);
-        Log.d(TAG,"savedInstanceState:"+savedInstanceState);
 
         if (myView==null) {
             myView = ActivityBinding.inflate(getLayoutInflater());
@@ -342,7 +336,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     public void dealWithIntent(int navigationId) {
         if (fileOpenIntent!=null && fileOpenIntent.getData()!=null) {
             importUri = fileOpenIntent.getData();
-            Log.d(TAG,"importUri:"+importUri);
             navController.popBackStack(navigationId,false);
 
             // We need to copy this file to our temp storage for now to have later permission
@@ -829,7 +822,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
     @Override
     public void onBackPressed() {
-        Log.d(TAG,"onBackPressed()");
         if (navController!=null && navController.getCurrentDestination()!=null) {
             try {
                 int id = Objects.requireNonNull(navController.getCurrentDestination()).getId();
@@ -1424,6 +1416,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             myView.drawerLayout.openDrawer(GravityCompat.START);
             menuOpen = true;
         }
+        Log.d(TAG,"closing drawer:"+close);
         // Hide the keyboard
         windowFlags.hideKeyboard();
     }
@@ -1458,18 +1451,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     // The song and set menu
     private void setUpSongMenuTabs() {
         if (viewPagerAdapter == null) {
-            Log.d(TAG,"creating viewpagerAdapter");
-
             viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), this.getLifecycle());
             viewPagerAdapter.createFragment(0);
-        } else {
-            Log.d(TAG,"viewPagerAdapter already exists");
         }
         if (songMenuFragment == null) {
-            Log.d(TAG,"creating songMenuFragment");
             songMenuFragment = (SongMenuFragment) viewPagerAdapter.menuFragments[0];
-        } else {
-            Log.d(TAG,"songMenuFragment already exists");
         }
         if (setMenuFragment == null) {
             setMenuFragment = (SetMenuFragment) viewPagerAdapter.createFragment(1);
@@ -1576,7 +1562,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         } else if (rebooted && bootUpCompleted) {
             // We have resumed from stale state, build the index but from the database
             songMenuFragment.prepareSearch();
-            Log.d(TAG,"prepareSearch()");
 
         } else {
 
@@ -1616,7 +1601,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
     @Override
     public int getPositionOfSongInMenu() {
-        Log.d(TAG,"songMenuFragment:"+songMenuFragment);
         if (songMenuFragment!=null) {
             return songMenuFragment.getPositionInSongMenu(song);
         } else {
@@ -1625,9 +1609,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
     @Override
     public Song getSongInMenu(int position) {
-        Log.d(TAG,"position:"+position+"  songMenuFragment:"+songMenuFragment+"  getSongsFound:"+songMenuFragment.getSongsFound());
         if (position>-1 && songMenuFragment!=null && songMenuFragment.getSongsFound()!=null && songMenuFragment.getSongsFound().size()>position) {
-            Log.d(TAG, "getSongsFound:"+songMenuFragment.getSongsFound());
             return songMenuFragment.getSongsFound().get(position);
         }
         return song;
@@ -2856,14 +2838,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void addSectionSize(int position, int width, int height) {
-        if (sectionWidths==null) {
+        if (sectionWidths == null) {
             sectionWidths = new ArrayList<>();
         }
-        if (sectionHeights==null) {
+        if (sectionHeights == null) {
             sectionHeights = new ArrayList<>();
         }
-        sectionWidths.add(position,width);
-        sectionHeights.add(position,height);
+        sectionWidths.add(position, width);
+        sectionHeights.add(position, height);
     }
 
     @Override
@@ -3088,7 +3070,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
-        Log.d(TAG,"onSaveInstanceState()");
         songsFound = songMenuFragment.getSongs();
         outState.putBoolean("bootUpCompleted",bootUpCompleted);
         outState.putBoolean("indexComplete",songListBuildIndex.getIndexComplete());

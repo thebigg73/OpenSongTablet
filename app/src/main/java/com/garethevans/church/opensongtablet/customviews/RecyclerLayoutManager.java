@@ -14,6 +14,8 @@ public class RecyclerLayoutManager extends LinearLayoutManager {
     private ArrayList<Integer> childSizes = new ArrayList<>();
     private int size;
     private int screenSize;
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
+    private final String TAG = "RecyclerLayoutMan";
 
     public RecyclerLayoutManager(Context context) {
         super(context);
