@@ -41,26 +41,31 @@
                 android:id="@+id/songTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:includeFontPadding="false"/>
+                android:includeFontPadding="false" />
+
             <TextView
                 android:id="@+id/songAuthor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:includeFontPadding="false"/>
+                android:includeFontPadding="false" />
+
             <TextView
                 android:id="@+id/songCopyright"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:includeFontPadding="false"/>
+                android:includeFontPadding="false" />
+
             <TextView
                 android:id="@+id/songCCLI"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:includeFontPadding="false"/>
+                android:includeFontPadding="false" />
+
             <TextClock
                 android:id="@+id/textClock"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:includeFontPadding="false"/>
+                android:includeFontPadding="false" />
+
         </LinearLayout>
 </LinearLayout>
