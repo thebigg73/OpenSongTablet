@@ -280,7 +280,6 @@ public class PerformanceFragment extends Fragment {
         if (!processingTestView) {
             processingTestView = true;
             // Loading the song is dealt with in this fragment as specific actions are required
-            Log.d(TAG, "doSongLoad()");
 
             // Stop any autoscroll if required
             mainActivityInterface.getAutoscroll().stopAutoscroll();
@@ -318,7 +317,7 @@ public class PerformanceFragment extends Fragment {
                         myView.pageHolder.startAnimation(animSlideOut);
                     }
                 });
-                handler.postDelayed(this::prepareSongViews, requireContext().getResources().getInteger(R.integer.slide_out_time));
+                handler.postDelayed(this::prepareSongViews, 50 + requireContext().getResources().getInteger(R.integer.slide_out_time));
             });
         }
     }
@@ -650,7 +649,6 @@ public class PerformanceFragment extends Fragment {
                 int width = mainActivityInterface.getSectionViews().get(x).getWidth();
                 int height = mainActivityInterface.getSectionViews().get(x).getHeight();
                 mainActivityInterface.addSectionSize(x, width, height);
-                Log.d(TAG,"Measuring "+x+": "+width+"x"+height+"\n"+mainActivityInterface.getSong().getPresoOrderSongSections().get(x));
             }
 
             myView.testPane.removeAllViews();
