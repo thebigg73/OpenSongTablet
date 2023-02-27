@@ -177,8 +177,8 @@ public class PerformanceFragment extends Fragment {
         // Check if we need to show an alert
         if (mainActivityInterface.getAlertChecks().showPlayServicesAlert() ||
         mainActivityInterface.getAlertChecks().showBackup() || mainActivityInterface.getAlertChecks().showUpdateInfo()) {
-            AlertInfoBottomSheet alertInfoBottomSheet = new AlertInfoBottomSheet();
-            alertInfoBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "AlertInfoBottomSheet");
+                    AlertInfoBottomSheet alertInfoBottomSheet = new AlertInfoBottomSheet();
+                    alertInfoBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "AlertInfoBottomSheet");
         }
 
         // Pass a reference of the zoom layout to the next/prev so we can stop fling scrolls
