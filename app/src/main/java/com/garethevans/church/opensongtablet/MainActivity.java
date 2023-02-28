@@ -147,10 +147,6 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-
-import org.billthefarmer.mididriver.MidiDriver;
-import org.billthefarmer.mididriver.ReverbConstants;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -197,7 +193,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private MakePDF makePDF;
     private Metronome metronome;
     private Midi midi;
-    private MidiDriver midiDriver;
     private NearbyConnections nearbyConnections;
     private NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper;
     private OCR ocr;
@@ -272,21 +267,21 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     // Set up the activity
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
 
         WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
 
-        if (savedInstanceState!=null) {
-            bootUpCompleted = savedInstanceState.getBoolean("bootUpCompleted",false);
+        if (savedInstanceState != null) {
+            bootUpCompleted = savedInstanceState.getBoolean("bootUpCompleted", false);
             rebooted = true;
-            if (songListBuildIndex==null) {
+            if (songListBuildIndex == null) {
                 songListBuildIndex = new SongListBuildIndex(this);
                 fullIndexRequired = true;
             }
 
-            songListBuildIndex.setIndexComplete(savedInstanceState.getBoolean("indexComplete",false));
+            songListBuildIndex.setIndexComplete(savedInstanceState.getBoolean("indexComplete", false));
             fullIndexRequired = !songListBuildIndex.getIndexComplete();
-
 
         } else {
             rebooted = false;
@@ -298,7 +293,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
         //supportRequestWindowFeature(AppCompatDelegate.FEATURE_ACTION_MODE_OVERLAY);
 
-        if (myView==null) {
+        if (myView == null) {
             myView = ActivityBinding.inflate(getLayoutInflater());
         }
 
@@ -313,8 +308,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         // Set up views
         setupViews();
 
+
         // Set up the navigation controller
         setupNavigation();
+
 
         initialiseActivity();
 
@@ -461,15 +458,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         performanceGestures = getPerformanceGestures();
         pageButtons = getPageButtons();
         midi = getMidi();
-        try {
-            midiDriver = MidiDriver.getInstance();
-            midiDriver.start();
-            midiDriver.setReverb(ReverbConstants.OFF);
-            midiDriver.setVolume(100);
-        } catch (OutOfMemoryError | Exception e) {
-            e.printStackTrace();
-        }
-
         pedalActions = getPedalActions();
         pad = getPad();
         autoscroll = getAutoscroll();
@@ -1760,12 +1748,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             midi = new Midi(this);
         }
         return midi;
-    }
-    @Override
-    public void sendToMidiDriver(byte[] bytes) {
-        if (midiDriver!=null) {
-            midiDriver.write(bytes);
-        }
     }
 
     // Sticky notes
@@ -3069,10 +3051,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
-        songsFound = songMenuFragment.getSongs();
+        //songsFound = songMenuFragment.getSongs();
         outState.putBoolean("bootUpCompleted",bootUpCompleted);
         outState.putBoolean("indexComplete",songListBuildIndex.getIndexComplete());
         super.onSaveInstanceState(outState);
+        Log.d(TAG,"bootupcompleted:"+bootUpCompleted);
+        Log.d(TAG,"indexComplete:"+songListBuildIndex.getIndexComplete());
     }
 
     @Override
@@ -3094,20 +3078,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             // Check displays
             checkDisplays();
 
-            // Start the midi driver
-            if (midiDriver != null) {
-                midiDriver.start();
-            }
         }
         super.onResume();
     }
 
     @Override
     protected void onPause() {
-        // Stop the midi driver
-        if (midiDriver!=null) {
-            midiDriver.stop();
-        }
         super.onPause();
     }
 

@@ -88,17 +88,19 @@ public class SetMenuFragment extends Fragment {
     }
 
     private void setupAdapter() {
-        setListAdapter = new SetListAdapter(requireContext());
-        ItemTouchHelper.Callback callback = new SetListItemTouchHelper(setListAdapter);
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
-        setListAdapter.setTouchHelper(itemTouchHelper);
-        llm = new LinearLayoutManager(requireContext());
-        llm.setOrientation(RecyclerView.VERTICAL);
-        myView.myRecyclerView.post(() -> {
-            myView.myRecyclerView.setLayoutManager(llm);
-            myView.myRecyclerView.setAdapter(setListAdapter);
-            itemTouchHelper.attachToRecyclerView(myView.myRecyclerView);
-        });
+        if (getContext()!=null) {
+            setListAdapter = new SetListAdapter(requireContext());
+            ItemTouchHelper.Callback callback = new SetListItemTouchHelper(setListAdapter);
+            ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
+            setListAdapter.setTouchHelper(itemTouchHelper);
+            llm = new LinearLayoutManager(requireContext());
+            llm.setOrientation(RecyclerView.VERTICAL);
+            myView.myRecyclerView.post(() -> {
+                myView.myRecyclerView.setLayoutManager(llm);
+                myView.myRecyclerView.setAdapter(setListAdapter);
+                itemTouchHelper.attachToRecyclerView(myView.myRecyclerView);
+            });
+        }
     }
 
     private void setListeners() {

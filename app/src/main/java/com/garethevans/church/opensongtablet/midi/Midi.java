@@ -1,21 +1,24 @@
 package com.garethevans.church.opensongtablet.midi;
 
 import android.content.Context;
+import android.media.MediaPlayer;
 import android.media.midi.MidiDevice;
 import android.media.midi.MidiInputPort;
 import android.media.midi.MidiManager;
 import android.media.midi.MidiOutputPort;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
-import org.billthefarmer.mididriver.GeneralMidiConstants;
-
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,6 +35,7 @@ public class Midi {
     private PedalMidiReceiver pedalMidiReceiver;
     @SuppressWarnings({"FieldCanBeLocal","unused"})
     private final String TAG = "Midi";
+    private MediaPlayer midiMediaPlayer;
 
     // Initialise
     public Midi(Context c) {
@@ -50,7 +54,13 @@ public class Midi {
     private String instrumentLetter;
     private boolean usePianoNotes;
     private ArrayList<String> midiNotesOnArray, midiNotesOffArray;
+    private final String allOff = "7F B0 7B 00 ";
     private long noteOnDelta, noteOffDelta;
+
+    private final String midiFileHeader = "4D 54 68 64 00 00 00 06 00 01 00 01 00 80 ";
+    //                                                                            80 = 128 ticks (hex)
+    private final String midiFileTrackHeader = "4D 54 72 6B 00 00 00 "; // Need to add count of note data + track out of 4!
+    private final String midiFileTrackOut = "00 FF 2F 00";
 
     private int midiDelay;
     private boolean includeBluetoothMidi;
@@ -308,8 +318,8 @@ public class Midi {
         if (midiInstrument==0 || usePianoNotes) {
             if (usePianoNotes) {
                 // Add the instrument program change
-                midiNotesOnArray.add(buildMidiString("PC", 0, GeneralMidiConstants.ACOUSTIC_GRAND_PIANO, GeneralMidiConstants.ACOUSTIC_GRAND_PIANO));
-                midiNotesOffArray.add(buildMidiString("PC", 0, GeneralMidiConstants.ACOUSTIC_GRAND_PIANO, GeneralMidiConstants.ACOUSTIC_GRAND_PIANO));
+                midiNotesOnArray.add(buildMidiString("PC", 0, 0, 0));
+                midiNotesOffArray.add(buildMidiString("PC", 0, 0, 0));
                 usePianoNotes = false;
             }
             // Piano notes are different
@@ -357,7 +367,7 @@ public class Midi {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             Handler handler = new Handler(Looper.getMainLooper());
-            for (int i = 0; i < midiNotesOnArray.size(); i++) {
+            /*for (int i = 0; i < midiNotesOnArray.size(); i++) {
                 String thisOnMessage = midiNotesOnArray.get(i);
                 handler.postDelayed(() -> mainActivityInterface.sendToMidiDriver(returnBytesFromHexText(thisOnMessage)), noteOnDelta);
                 noteOnDelta += timeBetweenNotes;
@@ -371,8 +381,12 @@ public class Midi {
                         noteOffDelta += 100;
                     }
                 }, turnOffNoteTime);
-            }
+            }*/
+
+            // Write the midi file and play it
+            handler.post(this::createMidiFile);
         });
+
 
     }
 
@@ -382,26 +396,26 @@ public class Midi {
         switch (instrument) {
             case "g":
             default:
-                midiInstrument = GeneralMidiConstants.ACOUSTIC_GUITAR_STEEL;
+                midiInstrument = 25;
                 break;
 
             case "p":
-                midiInstrument = GeneralMidiConstants.ACOUSTIC_GRAND_PIANO;
+                midiInstrument = 0;
                 break;
 
             case "u":
             case "m":
             case "c":
-                midiInstrument = GeneralMidiConstants.ACOUSTIC_GUITAR_NYLON;
+                midiInstrument = 24;
                 break;
 
             case "b":
             case "B":
-                midiInstrument = GeneralMidiConstants.BANJO;
+                midiInstrument = 105;
                 break;
         }
         String programChange = buildMidiString("PC", 0, midiInstrument, midiInstrument);
-        mainActivityInterface.sendToMidiDriver(returnBytesFromHexText(programChange));
+        //mainActivityInterface.sendToMidiDriver(returnBytesFromHexText(programChange));
     }
 
     String buildMidiString(String action, int channel, int byte2, int byte3) {
@@ -604,6 +618,108 @@ public class Midi {
 
     public List<String> getNotes() {
         return notes;
+    }
+
+    public void createMidiFile() {
+        // Create a temporary midi file
+        File midiFile = new File(c.getExternalFilesDir("Midi"),"midiFile.mid");
+        try (FileOutputStream fileOutputStream = new FileOutputStream(midiFile,false)){
+            // Build the hex pair code
+            String hexPairCode = "";
+
+            // Append the header
+            hexPairCode += midiFileHeader;
+
+            // Get the number of bytes needed for the midi events(4 per item) + tempo(6) + notesOff(4) + file out(4)
+            //int count = (midiNotesOnArray.size()*4)+ 4 + 4;
+
+            // Now build the events
+            String timeHex = null;
+            int countTime = 0;
+            StringBuilder stringBuilder = new StringBuilder();
+            for (String onCommand:midiNotesOnArray) {
+                onCommand = onCommand.replace("0x","");
+                Log.d(TAG,"onCommand:"+onCommand+"  length:"+onCommand.length());
+                if (onCommand.length()==5) {
+                    // Control change
+                    timeHex = "00 ";
+                } else {
+                    if (countTime>0) {
+                        timeHex = "40 ";
+                    } else {
+                        timeHex = "00 ";
+                    }
+                    countTime ++;
+                }
+                stringBuilder.append(timeHex).append(onCommand).append(" ");
+            }
+            String events = stringBuilder.toString();
+            String tempoHex = getTempoByteString(120);
+
+            int numEvents = (events+tempoHex+allOff+midiFileTrackOut).split(" ").length;
+            String countHex = String.format("%02X", (0xFF & numEvents)) + " ";
+
+            hexPairCode += midiFileTrackHeader + countHex;
+            hexPairCode += tempoHex;
+            hexPairCode += stringBuilder.toString();
+
+            // Add a final all off
+            hexPairCode += allOff;
+
+            // Add the track out
+            hexPairCode += midiFileTrackOut;
+
+            // Write the bytes
+            fileOutputStream.write(returnBytesFromHexText(hexPairCode.trim()));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (midiMediaPlayer!=null) {
+            midiMediaPlayer.release();
+            midiMediaPlayer = null;
+        }
+
+        midiMediaPlayer = new MediaPlayer();
+
+        midiMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                midiMediaPlayer.release();
+                midiMediaPlayer = null;
+            }
+        });
+        midiMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                midiMediaPlayer.start();
+            }
+        });
+        Uri uri = Uri.fromFile(midiFile);
+        try {
+            midiMediaPlayer.setDataSource(c,uri);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        midiMediaPlayer.prepareAsync();
+    }
+
+    public String getTempoByteString(int bpm) {
+        // bpm = beats per minute
+        // For midi tempo, we need to convert to microseconds per quarter note
+        // 120 bpm =  in 1 minute        = 120 quarter notes
+        //            in 60 secs         = 120 quarter notes
+        //            in 60/120 secs     = 1 quarter note
+        //            in (60/120)*100000 = 1 quarter note
+        int mspqn = (int) ((60f/(float)bpm) * 1000000);
+        String hexVal = String.format("%06X", mspqn);
+        String pair1 = hexVal.substring(0,2);
+        String pair2 = hexVal.substring(2,4);
+        String pair3 = hexVal.substring(4,6);
+        // 00 at start for timestamp 0, FF 51 03 is tempo identifier hex code
+        hexVal = "00 FF 51 03 " + pair1+" "+pair2+" "+pair3+" ";
+        return hexVal;
     }
 }
 

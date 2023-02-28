@@ -210,7 +210,6 @@ public interface MainActivityInterface {
 
     // Midi
     Midi getMidi();
-    void sendToMidiDriver(byte[] bytes);
     void registerMidiAction(boolean actionDown, boolean actionUp, boolean actionLong, String note);
 
     // Database
