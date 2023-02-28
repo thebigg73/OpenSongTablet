@@ -1416,7 +1416,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             myView.drawerLayout.openDrawer(GravityCompat.START);
             menuOpen = true;
         }
-        Log.d(TAG,"closing drawer:"+close);
         // Hide the keyboard
         windowFlags.hideKeyboard();
     }

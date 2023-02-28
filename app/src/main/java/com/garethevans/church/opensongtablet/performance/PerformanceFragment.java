@@ -356,14 +356,17 @@ public class PerformanceFragment extends Fragment {
             myView.inlineSetList.checkVisibility();
 
             int[] screenSizes = mainActivityInterface.getDisplayMetrics();
+            // TODO May get rid of this once Frank lets me know
             //int[] margins = mainActivityInterface.getWindowFlags().getMargins();
             int screenWidth = screenSizes[0];
             int screenHeight = screenSizes[1];
 
+            // TODO May get rid of this once Frank lets me know
             //availableWidth = screenWidth - margins[0] - margins[2] - myView.inlineSetList.getInlineSetWidth();
             //availableHeight = screenHeight - margins[1] - margins[3] - mainActivityInterface.getToolbar().getActionBarHeight(mainActivityInterface.needActionBar());
 
             int[] viewPadding = mainActivityInterface.getViewMargins();
+            // TODO May get rid of this once Frank lets me know
             //Log.d(TAG,"LEFT margins[0]:"+margins[0]+"   viewPadding:"+viewPadding[0]);
             //Log.d(TAG,"RIGHT margins[2]:"+margins[2]+"   viewPadding:"+viewPadding[1]);
             //Log.d(TAG,"TOP margins[0]+actionbar:"+(margins[1]+mainActivityInterface.getToolbar().getActionBarHeight(mainActivityInterface.needActionBar()))+"   viewPadding:"+viewPadding[2]);
@@ -829,7 +832,6 @@ public class PerformanceFragment extends Fragment {
             tryToImportIntent();
 
             // Release the processing lock
-            Log.d(TAG,"releasing processing lock");
             processingTestView = false;
 
         }, getResources().getInteger(R.integer.slide_in_time));
@@ -1007,8 +1009,10 @@ public class PerformanceFragment extends Fragment {
 
     // Received from MainActivity after a user clicked on a pdf page or a Stage Mode section
     public void performanceShowSection(int position) {
-        // Scroll the recyclerView to the position
-        myView.recyclerView.smoothScrollTo(requireContext(),recyclerLayoutManager,position);
+        // Scroll the recyclerView to the position as long as we aren't in an autoscroll
+        if (!mainActivityInterface.getAutoscroll().getIsAutoscrolling()) {
+            myView.recyclerView.smoothScrollTo(requireContext(), recyclerLayoutManager, position);
+        }
         mainActivityInterface.getPresenterSettings().setCurrentSection(position);
         displayInterface.updateDisplay("showSection");
     }
