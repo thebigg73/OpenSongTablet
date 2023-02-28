@@ -140,13 +140,6 @@ public class MyRecyclerView extends RecyclerView {
         };
         smoothScroller.setTargetPosition(position);
         layoutManager.startSmoothScroll(smoothScroller);
-        postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                //smoothScrollBy(0,-200);
-            }
-        },200);
-
     }
 
 
