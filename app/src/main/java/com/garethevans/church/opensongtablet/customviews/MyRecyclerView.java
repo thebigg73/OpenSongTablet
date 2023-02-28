@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 public class MyRecyclerView extends RecyclerView {
@@ -129,7 +130,11 @@ public class MyRecyclerView extends RecyclerView {
         smoothScroller = new LinearSmoothScroller(c) {
             @Override
             protected int getVerticalSnapPreference() {
-                return LinearSmoothScroller.SNAP_TO_END;
+                if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_stage))) {
+                    return LinearSmoothScroller.SNAP_TO_END;
+                } else {
+                    return LinearSmoothScroller.SNAP_TO_START;
+                }
             }
 
             @Override

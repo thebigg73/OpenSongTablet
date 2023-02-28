@@ -17,6 +17,25 @@ public class Drummer {
     private final String TAG = "Drummer";
     private String bpm_string, bpm_hex, timesig_string, timesig_hex;
     private int bpm_int;
+    // Drum voices recognised
+    private final int bass_drum = 35;
+    private final int rim_shot = 37;
+    private final int snare_drum = 38;
+    private final int low_floor_tom = 41;
+    private final int high_floor_tom = 43;
+    private final int low_tom = 45;
+    private final int low_mid_tom = 47;
+    private final int high_mid_tom = 48;
+    private final int high_tom = 50;
+    private final int hat_closed = 42;
+    private final int hat_pedal = 44;
+    private final int hat_open = 46;
+    private final int crash_1 = 49;
+    private final int crash_2 = 57;
+    private final int ride_1 = 51;
+    private final int ride_2 = 59;
+    private final int ride_bell = 53;
+    private final int splash = 55;
 
     public Drummer(Context c) {
         this.c = c;
@@ -53,4 +72,7 @@ public class Drummer {
         Log.d(TAG,"timesig_string:"+timesig_string+"  timesig_hex:"+timesig_hex);
     }
 
+    private String instrumentHex(int keyNum) {
+        return String.format("%02X",keyNum);
+    }
 }

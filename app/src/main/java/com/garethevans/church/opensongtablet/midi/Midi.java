@@ -10,7 +10,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
@@ -364,6 +363,8 @@ public class Midi {
             }
         }
         // Now we have the midi information as a string arraylist, convert the strings to the byte array
+        // This was originally done via the MidiDriver / billthefarmer library
+        // However this was causing crashes on 64 bit devices, so changed
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             Handler handler = new Handler(Looper.getMainLooper());
@@ -414,7 +415,7 @@ public class Midi {
                 midiInstrument = 105;
                 break;
         }
-        String programChange = buildMidiString("PC", 0, midiInstrument, midiInstrument);
+        //String programChange = buildMidiString("PC", 0, midiInstrument, midiInstrument);
         //mainActivityInterface.sendToMidiDriver(returnBytesFromHexText(programChange));
     }
 
@@ -634,12 +635,11 @@ public class Midi {
             //int count = (midiNotesOnArray.size()*4)+ 4 + 4;
 
             // Now build the events
-            String timeHex = null;
+            String timeHex;
             int countTime = 0;
             StringBuilder stringBuilder = new StringBuilder();
             for (String onCommand:midiNotesOnArray) {
                 onCommand = onCommand.replace("0x","");
-                Log.d(TAG,"onCommand:"+onCommand+"  length:"+onCommand.length());
                 if (onCommand.length()==5) {
                     // Control change
                     timeHex = "00 ";
@@ -683,19 +683,11 @@ public class Midi {
 
         midiMediaPlayer = new MediaPlayer();
 
-        midiMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mp) {
-                midiMediaPlayer.release();
-                midiMediaPlayer = null;
-            }
+        midiMediaPlayer.setOnCompletionListener(mp -> {
+            midiMediaPlayer.release();
+            midiMediaPlayer = null;
         });
-        midiMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(MediaPlayer mp) {
-                midiMediaPlayer.start();
-            }
-        });
+        midiMediaPlayer.setOnPreparedListener(mp -> midiMediaPlayer.start());
         Uri uri = Uri.fromFile(midiFile);
         try {
             midiMediaPlayer.setDataSource(c,uri);
@@ -769,6 +761,22 @@ public class Midi {
         // Add midi clock info
         timeSigHex += "24 08 ";
         return timeSigHex;
+    }
+
+    public String getMidiFileHeader() {
+        return midiFileHeader;
+    }
+
+    public String getMidiFileTrackHeader() {
+        return midiFileTrackHeader;
+    }
+
+    public String getMidiFileTrackOut() {
+        return midiFileTrackOut;
+    }
+
+    public String getAllOff() {
+        return allOff;
     }
 }
 
