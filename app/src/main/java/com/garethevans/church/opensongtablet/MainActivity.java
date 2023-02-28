@@ -94,6 +94,7 @@ import com.garethevans.church.opensongtablet.interfaces.NearbyReturnActionsInter
 import com.garethevans.church.opensongtablet.interfaces.SwipeDrawingInterface;
 import com.garethevans.church.opensongtablet.links.LinksFragment;
 import com.garethevans.church.opensongtablet.metronome.Metronome;
+import com.garethevans.church.opensongtablet.midi.Drummer;
 import com.garethevans.church.opensongtablet.midi.Midi;
 import com.garethevans.church.opensongtablet.midi.MidiFragment;
 import com.garethevans.church.opensongtablet.nearby.NearbyConnections;
@@ -147,6 +148,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -186,6 +188,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private CustomSlide customSlide;
     private DisplayPrevNext displayPrevNext;
     private DrawNotes drawNotes;
+    private Drummer drummer;
     private ExportActions exportActions;
     private FixLocale fixLocale;
     private Gestures gestures;
@@ -458,6 +461,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         performanceGestures = getPerformanceGestures();
         pageButtons = getPageButtons();
         midi = getMidi();
+        drummer = getDrummer();
         pedalActions = getPedalActions();
         pad = getPad();
         autoscroll = getAutoscroll();
@@ -1748,6 +1752,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             midi = new Midi(this);
         }
         return midi;
+    }
+
+    @Override
+    public Drummer getDrummer() {
+        if (drummer==null) {
+            drummer = new Drummer(this);
+        }
+        return drummer;
     }
 
     // Sticky notes

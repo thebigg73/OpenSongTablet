@@ -3,6 +3,7 @@ package com.garethevans.church.opensongtablet.customviews;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
@@ -79,6 +80,9 @@ public class MyRecyclerView extends RecyclerView {
         this.allowPinchToZoom = allowPinchToZoom;
     }
 
+    public void setSectionScrollSize(int availableHeight, int maxSectionSize) {
+
+    }
     public void initialiseRecyclerView(MainActivityInterface mainActivityInterface) {
         this.mainActivityInterface = mainActivityInterface;
     }
@@ -125,11 +129,24 @@ public class MyRecyclerView extends RecyclerView {
         smoothScroller = new LinearSmoothScroller(c) {
             @Override
             protected int getVerticalSnapPreference() {
-                return LinearSmoothScroller.SNAP_TO_START;
+                return LinearSmoothScroller.SNAP_TO_END;
             }
+
+            @Override
+            protected float calculateSpeedPerPixel(DisplayMetrics displayMetrics) {
+                return 100f / displayMetrics.densityDpi;
+            }
+
         };
         smoothScroller.setTargetPosition(position);
         layoutManager.startSmoothScroll(smoothScroller);
+        postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                //smoothScrollBy(0,-200);
+            }
+        },200);
+
     }
 
 
