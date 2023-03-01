@@ -814,9 +814,6 @@ public class PerformanceFragment extends Fragment {
                 mainActivityInterface.getMidi().sendSongMessages();
             }
 
-            // Update the drummer settings for this song
-            mainActivityInterface.getDrummer().setupSongValues();
-
             // Deal with capo information (if required)
             mainActivityInterface.dealWithCapo();
 

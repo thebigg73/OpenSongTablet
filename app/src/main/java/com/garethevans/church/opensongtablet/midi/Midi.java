@@ -457,7 +457,7 @@ public class Midi {
         return s;
     }
 
-    byte[] returnBytesFromHexText(String lineofhextext) {
+    public byte[] returnBytesFromHexText(String lineofhextext) {
         /*
         This function can be called for each line of hex text stored with the song (each line is a command)
         Split the line into an array split by spaces
@@ -734,7 +734,8 @@ public class Midi {
         and eight notated 32nd-notes per quarter-note.
          */
 
-        String timeSigHex = "FF 58 04 ";
+        // 00 at start for timestamp 0, FF 58 04 is time sig identifier hex code
+        String timeSigHex = "00 FF 58 04 ";
 
         // Get the numerator and denominator
         String[] sigBits = timeSig.split("/");
