@@ -2,9 +2,6 @@ package com.garethevans.church.opensongtablet;
 
 public class __TODO__ {
 
-    // Swiping away an item in the set doesn't untick it from the song menu?
-
-
     // Check persistent database import with overwrite on/off
     // Check nearby receive prev/next page for PDF
     // Fully implement image slides and images in all modes
