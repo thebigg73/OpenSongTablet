@@ -1495,6 +1495,9 @@ public class ProcessSong {
         // 1. Get a temporary version of the lyrics (as we are going to process them)
         String lyrics = song.getLyrics();
 
+        // Display any encoded html entities properly
+        lyrics = parseHTML(lyrics);
+
         // 2. Check for multiline verse formatting e.g. [V] 1. 2. etc.
         lyrics = fixMultiLineFormat(lyrics, presentation);
 

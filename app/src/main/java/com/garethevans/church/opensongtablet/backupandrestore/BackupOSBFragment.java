@@ -46,6 +46,8 @@ public class BackupOSBFragment extends Fragment {
     private ArrayList<String> checkedFolders;
     private boolean error = false;
     private boolean alive = true;
+    private String string_backup="", string_backup_info="", string_website_backup="", string_export="",
+            string_processing="", string_mainfoldername="", string_error="";
     boolean wantHighlighter, wantPersistentDB;
 
     private ExecutorService executorService;
@@ -60,12 +62,26 @@ public class BackupOSBFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = StorageBackupBinding.inflate(inflater,container,false);
-        mainActivityInterface.updateToolbar(getString(R.string.backup));
-        mainActivityInterface.updateToolbarHelp(getString(R.string.website_backup));
+        mainActivityInterface.updateToolbar(string_backup);
+        mainActivityInterface.updateToolbarHelp(string_website_backup);
 
+        setupStrings();
         setupViews();
 
         return myView.getRoot();
+    }
+
+    private void setupStrings() {
+        // To avoid context being null due to user cancelling async task
+        if (getContext()!=null) {
+            string_backup = getString(R.string.backup);
+            string_backup_info = getString(R.string.backup_info);
+            string_website_backup = getString(R.string.website_backup);
+            string_export = getString(R.string.export);
+            string_processing = getString(R.string.processing);
+            string_mainfoldername = getString(R.string.mainfoldername);
+            string_error = getString(R.string.error);
+        }
     }
 
     private void setupViews() {
@@ -94,8 +110,10 @@ public class BackupOSBFragment extends Fragment {
                     myView.foundFoldersListView.addView(checkBox);
                 }
 
-                myView.createBackupFAB.setText(getString(R.string.export));
-                myView.createBackupFAB.setIcon(ContextCompat.getDrawable(requireContext(),R.drawable.database_export));
+                myView.createBackupFAB.setText(string_export);
+                if (getContext()!=null) {
+                    myView.createBackupFAB.setIcon(ContextCompat.getDrawable(requireContext(), R.drawable.database_export));
+                }
                 myView.createBackupFAB.setOnClickListener(v -> doSave());
 
                 // Set the persistent database to backup by default
@@ -193,7 +211,7 @@ public class BackupOSBFragment extends Fragment {
             if (wantPersistentDB) {
                 // Copy the current appDB to the userDB (the one in Settings)
                 handler.post(() -> {
-                    String message = getString(R.string.processing) + ": " + SQLite.NON_OS_DATABASE_NAME;
+                    String message = string_processing + ": " + SQLite.NON_OS_DATABASE_NAME;
                     myView.progressText.setText(message);
                 });
                 Log.d(TAG,"DB copied: "+mainActivityInterface.getNonOpenSongSQLiteHelper().
@@ -231,7 +249,7 @@ public class BackupOSBFragment extends Fragment {
                                 // Get the uri for this item
                                 fileUriToCopy = mainActivityInterface.getStorageAccess().getUriForItem("Songs", thisFolder, thisFile);
                                 inputStream = mainActivityInterface.getStorageAccess().getInputStream(fileUriToCopy);
-                                if (thisFolder.equals(getString(R.string.mainfoldername)) || thisFolder.equals("MAIN")) {
+                                if (thisFolder.equals(string_mainfoldername) || thisFolder.equals("MAIN")) {
                                     ze = new ZipEntry(thisFile);
                                 } else {
                                     ze = new ZipEntry(thisFolder + "/" + thisFile);
@@ -239,7 +257,7 @@ public class BackupOSBFragment extends Fragment {
                                 if (zipOutputStream != null) {
                                     // Update the screen
                                     handler.post(() -> {
-                                        String message = getString(R.string.processing) + ": " + file;
+                                        String message = string_processing + ": " + file;
                                         myView.progressText.setText(message);
                                     });
                                     try {
@@ -287,7 +305,7 @@ public class BackupOSBFragment extends Fragment {
                                     if (zipOutputStream != null) {
                                         // Update the screen
                                         handler.post(() -> {
-                                            String message = getString(R.string.processing) + ": " + file;
+                                            String message = string_processing + ": " + file;
                                             myView.progressText.setText(message);
                                         });
                                         try {
@@ -329,7 +347,7 @@ public class BackupOSBFragment extends Fragment {
                     if (alive) {
                         myView.progressBar.setVisibility(View.GONE);
                         if (error) {
-                            String message = getString(R.string.processing) + ": " + getString(R.string.error);
+                            String message = string_processing + ": " + string_error;
                             myView.progressText.setText(message);
 
                         } else {
@@ -351,7 +369,7 @@ public class BackupOSBFragment extends Fragment {
         mainActivityInterface.getPreferences().setMyPreferenceInt("runssincebackup",0);
 
         Intent intent = mainActivityInterface.getExportActions().exportBackup(uri,backupFilename);
-        startActivity(Intent.createChooser(intent,getString(R.string.backup_info)));
+        startActivity(Intent.createChooser(intent,string_backup_info));
     }
 
     @Override
