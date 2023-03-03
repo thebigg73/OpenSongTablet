@@ -498,7 +498,8 @@ public class ProcessSong {
         boolean prevlyricempty = true;
 
         for (int x = 1; x < (chord.length()); x++) {
-            thischordcharempty = chord.startsWith(" ", x);
+            // IV - The first chord char is considered empty
+            thischordcharempty = chord.startsWith(" ", x) || x == 1;
             prevlyriccharempty = lyric.startsWith(" ", x - 1);
             prevlyricempty = prevlyricempty && prevlyriccharempty;
 
