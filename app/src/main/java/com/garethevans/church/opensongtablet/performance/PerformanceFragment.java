@@ -784,6 +784,10 @@ public class PerformanceFragment extends Fragment {
         // Set the previous/next if we want to
         mainActivityInterface.getDisplayPrevNext().setPrevNext();
 
+        // Release the processing lock
+        Log.d(TAG,"releasing processing lock");
+        processingTestView = false;
+
         // Run this only when the user has stopped on a song after 2s.
         // This is important for pad use - the pad will not change while the user rapidly changes songs.
         // This is important for rapid song - we only run autoscroll, metronome etc. for the last song.
@@ -844,10 +848,6 @@ public class PerformanceFragment extends Fragment {
 
         // If we opened the app with and intent/file, check if we need to import
         tryToImportIntent();
-
-        // Release the processing lock
-        Log.d(TAG,"releasing processing lock");
-        processingTestView = false;
 
         mainActivityInterface.updateOnScreenInfo("showhide");
     }
