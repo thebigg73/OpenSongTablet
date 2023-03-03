@@ -33,6 +33,7 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
     private final float maxFontSize, density, stageModeScale;
     private final String alphaChange = "alpha";
     private final float alphaoff = 0.4f;
+    private int availableWidth, availableHeight;
     private boolean fakeClick;
     @SuppressWarnings({"FieldCanBeLocal","unused"})
     private final String TAG = "StageSectionAdapter";
@@ -42,18 +43,28 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
         this.mainActivityInterface = mainActivityInterface;
         this.c = c;
         this.displayInterface = displayInterface;
-        density = c.getResources().getDisplayMetrics().density;
+        //density = c.getResources().getDisplayMetrics().density;
         maxFontSize = mainActivityInterface.getPreferences().getMyPreferenceFloat("fontSizeMax",50f);
         stageModeScale = mainActivityInterface.getPreferences().getMyPreferenceFloat("stageModeScale",0.8f);
         sectionInfos = new ArrayList<>();
         floatSizes = new ArrayList<>();
         setSongInfo(inlineSetWidth);
+        int[] metrics = mainActivityInterface.getDisplayMetrics();
+        availableWidth = metrics[0];
+        availableHeight = metrics[1];
+        density = metrics[2];
     }
 
     private void setSongInfo(int inlineSetWidth) {
         // Prepare the info for each section
         floatHeight = 0;
 
+        if (availableWidth==0) {
+            availableWidth = mainActivityInterface.getDisplayMetrics()[0];
+        }
+        if (availableHeight==0) {
+            availableHeight = mainActivityInterface.getDisplayMetrics()[1];
+        }
         for (int x=0; x<mainActivityInterface.getSectionViews().size(); x++) {
             StageSectionInfo stageSectionInfo = new StageSectionInfo();
 
@@ -65,8 +76,8 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
             int sectionWidth = mainActivityInterface.getSectionWidths().get(x);
             int sectionHeight = mainActivityInterface.getSectionHeights().get(x);
 
-            float x_scale = (float)(mainActivityInterface.getDisplayMetrics()[0]-16-inlineSetWidth)/(float)sectionWidth;
-            float y_scale = (float)(mainActivityInterface.getDisplayMetrics()[1]-mainActivityInterface.getToolbar().getActionBarHeight(mainActivityInterface.needActionBar()))*stageModeScale/(float)sectionHeight;
+            float x_scale = (float)(availableWidth-16-inlineSetWidth)/(float)sectionWidth;
+            float y_scale = (float)(availableHeight-mainActivityInterface.getToolbar().getActionBarHeight(mainActivityInterface.needActionBar()))*stageModeScale/(float)sectionHeight;
             float scale = Math.min(x_scale,y_scale);
             // Check the scale isn't bigger than the maximum font size
             scale = Math.min(scale,(maxFontSize/14f));
@@ -95,6 +106,7 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull StageViewHolder holder, int position, @NonNull List<Object> payloads) {
+        final int pos = position;
         if (payloads.isEmpty()) {
             super.onBindViewHolder(holder, position, payloads);
         } else {
@@ -104,9 +116,12 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
                     // We want to update the highlight colour to off
                     holder.v.post(()->{
                         try {
-                            holder.v.setAlpha(sectionInfos.get(position).alpha);
-                            float scale = sectionInfos.get(position).scale;
-                            holder.v.getLayoutParams().height = (int) (sectionInfos.get(position).height * scale);
+                            holder.v.setAlpha(sectionInfos.get(pos).alpha);
+                            float scale = sectionInfos.get(pos).scale;
+                            //holder.v.getLayoutParams().width = availableWidth;
+                            holder.sectionView.getLayoutParams().width = availableWidth;
+                            //holder.v.getLayoutParams().height = (int) (sectionInfos.get(pos).height * scale);
+                            holder.sectionView.getLayoutParams().height = (int) (sectionInfos.get(position).height * scale);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -118,18 +133,19 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull StageViewHolder holder, int position) {
-        if (position<sectionInfos.size()) {
-            View v = mainActivityInterface.getSectionViews().get(position);
+        final int pos = position;
+        if (pos<sectionInfos.size()) {
+            View v = mainActivityInterface.getSectionViews().get(pos);
 
             if (v.getParent()!=null) {
                 ((ViewGroup)v.getParent()).removeView(v);
             }
 
-            int section = sectionInfos.get(position).section;
-            int width = sectionInfos.get(position).width;
-            int height = sectionInfos.get(position).height;
-            float scale = sectionInfos.get(position).scale;
-            float alpha = sectionInfos.get(position).alpha;
+            int section = sectionInfos.get(pos).section;
+            int width = sectionInfos.get(pos).width;
+            int height = sectionInfos.get(pos).height;
+            float scale = sectionInfos.get(pos).scale;
+            float alpha = sectionInfos.get(pos).alpha;
 
             CardView cardView = (CardView) holder.v;
             if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_stage)) && section == currentSection) {
@@ -148,7 +164,9 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
             // Update the views post to ensure drawing is ready
             holder.sectionView.post(()-> {
                 try {
+                    holder.v.getLayoutParams().width = availableWidth;
                     holder.sectionView.getLayoutParams().width = (int) (width * scale);
+                    holder.v.getLayoutParams().height = (int) (height * scale);
                     holder.sectionView.getLayoutParams().height = (int) (height * scale);
                     if (v.getParent()!=null) {
                         ((ViewGroup)v.getParent()).removeView(v);
@@ -171,7 +189,7 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
                         if (fakeClick) {
                             fakeClick = false;
                         } else {
-                            sectionSelected(position);
+                            sectionSelected(pos);
                         }
                     });
                     cardView.setOnLongClickListener(view -> {
