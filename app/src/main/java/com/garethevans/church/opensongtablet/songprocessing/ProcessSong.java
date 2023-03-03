@@ -1560,6 +1560,7 @@ public class ProcessSong {
                 .trim()
                 // --- Now remove trailing ¶
                 .replace("¶","");
+Log.d(TAG,"lyrics:"+lyrics);
 
         // 7. Handle null sections (ignore) and || splits
         String[] sections = lyrics.split("§");
@@ -1595,19 +1596,24 @@ public class ProcessSong {
                     songSections.add(sections[x]);
                 }
             }
+            Log.d(TAG,"sections["+x+"]:"+sections[x]);
         }
 
         // IV - Pack up as lyric string.  Carry forward the sectionHeader.
         StringBuilder fixedlyrics = new StringBuilder();
         String sectionHeader = "";
 
+        // GE reverted change
         for (int x = 0; x < songSections.size(); x++) {
             fixedlyrics.append("\n§");
             if (songSections.get(x).startsWith("[")) {
                 sectionHeader = songSections.get(x).substring(0,songSections.get(x).indexOf("]") + 1);
                 fixedlyrics.append(songSections.get(x));
             } else {
-                fixedlyrics.append(sectionHeader).append(songSections.get(x));
+                // GE NOT SURE THAT THIS IS USEFUL.  A separate section with or without a section
+                // shouldn't take the previous section label.  If it did, it would need the "\n" first
+                //fixedlyrics.append(sectionHeader).append("\n").append(songSections.get(x));
+                fixedlyrics.append(songSections.get(x));
             }
         }
 
