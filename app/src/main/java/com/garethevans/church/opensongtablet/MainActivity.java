@@ -273,6 +273,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
         super.onCreate(savedInstanceState);
 
+        prepareStrings();
+
         WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
 
         if (savedInstanceState != null) {

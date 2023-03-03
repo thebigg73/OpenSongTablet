@@ -872,7 +872,7 @@ public class ProcessSong {
                                    int highlightChordColor, boolean presentation) {
         TableLayout tableLayout = newTableLayout();
 
-        // If we have a capo and want to show capo chords, duplicate and tranpose the chord line
+        // If we have a capo and want to show capo chords, duplicate and transpose the chord line
         String capoText = mainActivityInterface.getSong().getCapo();
         boolean hasCapo = capoText!=null && !capoText.isEmpty();
         if (hasCapo && (displayCapoChords || displayCapoAndNativeChords)) {
@@ -1560,7 +1560,6 @@ public class ProcessSong {
                 .trim()
                 // --- Now remove trailing ¶
                 .replace("¶","");
-Log.d(TAG,"lyrics:"+lyrics);
 
         // 7. Handle null sections (ignore) and || splits
         String[] sections = lyrics.split("§");
@@ -1596,7 +1595,6 @@ Log.d(TAG,"lyrics:"+lyrics);
                     songSections.add(sections[x]);
                 }
             }
-            Log.d(TAG,"sections["+x+"]:"+sections[x]);
         }
 
         // IV - Pack up as lyric string.  Carry forward the sectionHeader.
@@ -1607,13 +1605,15 @@ Log.d(TAG,"lyrics:"+lyrics);
         for (int x = 0; x < songSections.size(); x++) {
             fixedlyrics.append("\n§");
             if (songSections.get(x).startsWith("[")) {
-                sectionHeader = songSections.get(x).substring(0,songSections.get(x).indexOf("]") + 1);
+                // IV - Store the header.  Use an empty header in performance mode.
+                if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance))) {
+                    sectionHeader = "[]";
+                } else {
+                    sectionHeader = songSections.get(x).substring(0,songSections.get(x).indexOf("]") + 1);
+                }
                 fixedlyrics.append(songSections.get(x));
             } else {
-                // GE NOT SURE THAT THIS IS USEFUL.  A separate section with or without a section
-                // shouldn't take the previous section label.  If it did, it would need the "\n" first
-                //fixedlyrics.append(sectionHeader).append("\n").append(songSections.get(x));
-                fixedlyrics.append(songSections.get(x));
+                fixedlyrics.append(sectionHeader).append("\n").append(("¬"+ songSections.get(x)).replace("¬\n","").replace("¬",""));
             }
         }
 
