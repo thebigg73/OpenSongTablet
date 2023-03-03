@@ -1733,8 +1733,8 @@ public class ProcessSong {
                     String[] lines = section.split("\n");
                     for (int l=0; l<lines.length; l++) {
                         String line = lines[l];
-                        // IV - Do not process an empty group line
-                        if (!line.equals("____groupline____")) {
+                        // IV - Do not process an empty group line or empty header line
+                        if (!line.equals("____groupline____") && !line.equals("[]")) {
                             // Get the text stylings
                             String linetype = getLineType(line);
 
@@ -1782,7 +1782,6 @@ public class ProcessSong {
                                     linearLayout.addView(tl);
                                 }
                             } else {
-                                // Remove any word splits as not required
                                 if (!presentation && !asPDF && !line.isEmpty()) {
                                     // IV - Remove typical word splits, white space and trim - beautify!
                                     // IV - Similar logic is used in other places - if changed find and make changes to all
