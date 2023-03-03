@@ -94,6 +94,7 @@ import com.garethevans.church.opensongtablet.interfaces.NearbyReturnActionsInter
 import com.garethevans.church.opensongtablet.interfaces.SwipeDrawingInterface;
 import com.garethevans.church.opensongtablet.links.LinksFragment;
 import com.garethevans.church.opensongtablet.metronome.Metronome;
+import com.garethevans.church.opensongtablet.drummer.Drummer;
 import com.garethevans.church.opensongtablet.midi.Midi;
 import com.garethevans.church.opensongtablet.midi.MidiFragment;
 import com.garethevans.church.opensongtablet.nearby.NearbyConnections;
@@ -148,9 +149,6 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
-import org.billthefarmer.mididriver.MidiDriver;
-import org.billthefarmer.mididriver.ReverbConstants;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -190,6 +188,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private CustomSlide customSlide;
     private DisplayPrevNext displayPrevNext;
     private DrawNotes drawNotes;
+    private Drummer drummer;
     private ExportActions exportActions;
     private FixLocale fixLocale;
     private Gestures gestures;
@@ -197,7 +196,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private MakePDF makePDF;
     private Metronome metronome;
     private Midi midi;
-    private MidiDriver midiDriver;
     private NearbyConnections nearbyConnections;
     private NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper;
     private OCR ocr;
@@ -272,21 +270,23 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     // Set up the activity
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+
+        prepareStrings();
 
         WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
 
-        if (savedInstanceState!=null) {
-            bootUpCompleted = savedInstanceState.getBoolean("bootUpCompleted",false);
+        if (savedInstanceState != null) {
+            bootUpCompleted = savedInstanceState.getBoolean("bootUpCompleted", false);
             rebooted = true;
-            if (songListBuildIndex==null) {
+            if (songListBuildIndex == null) {
                 songListBuildIndex = new SongListBuildIndex(this);
                 fullIndexRequired = true;
             }
 
-            songListBuildIndex.setIndexComplete(savedInstanceState.getBoolean("indexComplete",false));
+            songListBuildIndex.setIndexComplete(savedInstanceState.getBoolean("indexComplete", false));
             fullIndexRequired = !songListBuildIndex.getIndexComplete();
-
 
         } else {
             rebooted = false;
@@ -298,7 +298,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
         //supportRequestWindowFeature(AppCompatDelegate.FEATURE_ACTION_MODE_OVERLAY);
 
-        if (myView==null) {
+        if (myView == null) {
             myView = ActivityBinding.inflate(getLayoutInflater());
         }
 
@@ -313,13 +313,74 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         // Set up views
         setupViews();
 
+
         // Set up the navigation controller
         setupNavigation();
+
 
         initialiseActivity();
 
     }
 
+    private String deeplink_import_osb="", deeplink_sets_backup_restore="", deeplink_onsong="",
+            deeplink_import_file="", unknown="", mainfoldername="MAIN", deeplink_page_buttons="",
+            website_menu_set="", website_menu_song="", exit_confirm="", storage_change="",
+            error="", deeplink_presenter="", deeplink_performance="", extra_settings="",
+            action_button_info="", song_sections="", logo_info="", blank_screen_info="",
+            black_screen_info="", project_panic="", song_title="", long_press="", edit_song="",
+            song_sections_project="", menu_song_info="", menu_set_info="", add_songs="",
+            song_actions="", settings="", deeplink_preferences="", song_string="", set_string="",
+            search_index_start="", search_index_end="", deeplink_metronome="", variation="",
+            mode_presenter="", mode_performance="", success="", okay="", pad_playback_info="",
+            no_suitable_application="";
+    private void prepareStrings() {
+        // To avoid null context for long tasks throwing error when getting strings
+        if (getApplicationContext()!=null) {
+            deeplink_import_osb = getString(R.string.deeplink_import_osb);
+            deeplink_sets_backup_restore = getString(R.string.deeplink_sets_backup_restore);
+            deeplink_onsong = getString(R.string.deeplink_onsong);
+            deeplink_import_file = getString(R.string.deeplink_import_file);
+            unknown = getString(R.string.unknown);
+            mainfoldername = getString(R.string.mainfoldername);
+            deeplink_page_buttons = getString(R.string.deeplink_page_buttons);
+            website_menu_set = getString(R.string.website_menu_set);
+            website_menu_song = getString(R.string.website_menu_song);
+            exit_confirm = getString(R.string.exit_confirm);
+            storage_change = getString(R.string.storage_change);
+            error = getString(R.string.error);
+            deeplink_presenter = getString(R.string.deeplink_presenter);
+            deeplink_performance = getString(R.string.deeplink_performance);
+            extra_settings = getString(R.string.extra_settings);
+            action_button_info = getString(R.string.action_button_info);
+            song_sections = getString(R.string.song_sections);
+            logo_info = getString(R.string.logo_info);
+            blank_screen_info = getString(R.string.blank_screen_info);
+            black_screen_info = getString(R.string.black_screen_info);
+            project_panic = getString(R.string.project_panic);
+            song_title = getString(R.string.song_title);
+            long_press = getString(R.string.long_press);
+            edit_song = getString(R.string.edit_song);
+            song_sections_project = getString(R.string.song_sections_project);
+            menu_song_info = getString(R.string.menu_song_info);
+            menu_set_info = getString(R.string.menu_set_info);
+            add_songs = getString(R.string.add_songs);
+            song_actions = getString(R.string.song_actions);
+            settings = getString(R.string.settings);
+            deeplink_preferences = getString(R.string.deeplink_preferences);
+            song_string = getString(R.string.song);
+            set_string = getString(R.string.set);
+            search_index_start = getString(R.string.search_index_start);
+            search_index_end = getString(R.string.search_index_end);
+            deeplink_metronome = getString(R.string.deeplink_metronome);
+            variation = getString(R.string.variation);
+            mode_presenter = getString(R.string.mode_presenter);
+            mode_performance = getString(R.string.mode_performance);
+            success = getString(R.string.success);
+            okay = getString(R.string.okay);
+            pad_playback_info = getString(R.string.pad_playback_info);
+            no_suitable_application = getString(R.string.no_suitable_application);
+        }
+    }
     @Override
     protected void onNewIntent (Intent intent) {
         fileOpenIntent = intent;
@@ -358,24 +419,24 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     if (importFilename.toLowerCase(Locale.ROOT).endsWith(".osb")) {
                         // OpenSongApp backup file
                         Log.d(TAG,"Opening import song backup");
-                        dealingWithIntent = getString(R.string.deeplink_import_osb);
+                        dealingWithIntent = deeplink_import_osb;
                     } else if (importFilename.toLowerCase(Locale.ROOT).endsWith(".osbs")) {
                         // OpenSongApp sets backup file
                         setWhattodo("intentlaunch");
                         Log.d(TAG,"Opening import set backup");
-                        dealingWithIntent = getString(R.string.deeplink_sets_backup_restore);
+                        dealingWithIntent = deeplink_sets_backup_restore;
                     } else if (importFilename.toLowerCase(Locale.ROOT).endsWith(".backup")) {
                         // OnSong backup file
                         Log.d(TAG,"Opening import onsong backup");
-                        dealingWithIntent = getString(R.string.deeplink_onsong);
+                        dealingWithIntent = deeplink_onsong;
                     } else if (getStorageAccess().isSpecificFileExtension("image",importFilename)){
                         // Set, song, pdf or image files are initially sent to the import file
                         Log.d(TAG,"Opening pdf, etc");
-                        dealingWithIntent = getString(R.string.deeplink_import_file);
+                        dealingWithIntent = deeplink_import_file;
                     } else {
                         // Can't handle the file, so delete it
                         if (showToast!=null) {
-                            showToast.doIt(getString(R.string.unknown));
+                            showToast.doIt(unknown);
                         }
                         if (tempFile.delete()) {
                             Log.d(TAG,tempFile+" has been deleted");
@@ -461,15 +522,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         performanceGestures = getPerformanceGestures();
         pageButtons = getPageButtons();
         midi = getMidi();
-        try {
-            midiDriver = MidiDriver.getInstance();
-            midiDriver.start();
-            midiDriver.setReverb(ReverbConstants.OFF);
-            midiDriver.setVolume(100);
-        } catch (OutOfMemoryError | Exception e) {
-            e.printStackTrace();
-        }
-
+        drummer = getDrummer();
         pedalActions = getPedalActions();
         pad = getPad();
         autoscroll = getAutoscroll();
@@ -688,7 +741,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
         // Song location
         song.setFilename(preferences.getMyPreferenceString("songFilename","Welcome to OpenSongApp"));
-        song.setFolder(preferences.getMyPreferenceString("songFolder", getString(R.string.mainfoldername)));
+        song.setFolder(preferences.getMyPreferenceString("songFolder", mainfoldername));
 
         // Set dealt with elsewhere
         setActions.preferenceStringToArrays();
@@ -714,16 +767,16 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             }
         });
         myView.actionFAB.setOnLongClickListener(view -> {
-            navigateToFragment(getString(R.string.deeplink_page_buttons),0);
+            navigateToFragment(deeplink_page_buttons,0);
             return true;
         });
 
         // The menu help
         myView.menuTop.menuHelp.setOnClickListener(v -> {
             if (showSetMenu) {
-                openDocument(getString(R.string.website_menu_set));
+                openDocument(website_menu_set);
             } else {
-                openDocument(getString(R.string.website_menu_song));
+                openDocument(website_menu_song);
             }
         });
         myView.drawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
@@ -826,7 +879,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             try {
                 int id = Objects.requireNonNull(navController.getCurrentDestination()).getId();
                 if (id == R.id.performanceFragment || id == R.id.presenterFragment || id == R.id.setStorageLocationFragment) {
-                    displayAreYouSure("exit", getString(R.string.exit_confirm), null,
+                    displayAreYouSure("exit", exit_confirm, null,
                             Objects.requireNonNull(navController.getCurrentDestination()).getNavigatorName(),
                             navHostFragment, null);
                 } else {
@@ -888,7 +941,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 e.printStackTrace();
             }
         });
-        if (id != R.id.setStorageLocationFragment && deepLink!=null && deepLink.equals(getString(R.string.storage_change))) {
+        if (id != R.id.setStorageLocationFragment && deepLink!=null && deepLink.equals(storage_change)) {
             settingsOpen = true;
         }
         showActionBar();
@@ -918,7 +971,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         if (storageAccess.doStringWriteToFile("Songs",song.getFolder(), song.getFilename(),newSongText)) {
                             navigateToFragment(null,R.id.editSongFragment);
                         } else {
-                            showToast.doIt(getString(R.string.error));
+                            showToast.doIt(error);
                         }
                     }
                     break;
@@ -1039,10 +1092,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             navController.popBackStack(Objects.requireNonNull(navController.getCurrentDestination()).getId(), true);
         }
         if (whichMode.equals(presenter)) {
-            navigateToFragment(getString(R.string.deeplink_presenter),0);
+            navigateToFragment(deeplink_presenter,0);
             myView.fragmentView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         } else {
-            navigateToFragment(getString(R.string.deeplink_performance),0);
+            navigateToFragment(deeplink_performance,0);
             myView.fragmentView.setBackgroundColor(themeColors.getLyricsBackgroundColor());
         }
         settingsOpen = false;
@@ -1270,11 +1323,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 }
 
                 targets.add(findViewById(R.id.menuSettings));
-                infos.add(getString(R.string.extra_settings));
+                infos.add(extra_settings);
                 rects.add(false);
                 rects.add(false);
                 targets.add(myView.actionFAB);
-                infos.add(getString(R.string.action_button_info));
+                infos.add(action_button_info);
                 rects.add(false);
                 break;
 
@@ -1295,31 +1348,31 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     }
                 }
                 targets.add(findViewById(R.id.menuSettings));
-                infos.add(getString(R.string.extra_settings));
+                infos.add(extra_settings);
                 rects.add(false);
                 rects.add(false);
                 // This relies on views having been sent
                 if (viewsToHighlight!=null && viewsToHighlight.size()>6) {
                     targets.add(viewsToHighlight.get(0));
-                    infos.add(getString(R.string.song_sections));
+                    infos.add(song_sections);
                     rects.add(true);
                     targets.add(viewsToHighlight.get(1));
-                    infos.add(getString(R.string.logo_info));
+                    infos.add(logo_info);
                     rects.add(true);
                     targets.add(viewsToHighlight.get(2));
-                    infos.add(getString(R.string.blank_screen_info));
+                    infos.add(blank_screen_info);
                     rects.add(true);
                     targets.add(viewsToHighlight.get(3));
-                    infos.add(getString(R.string.black_screen_info));
+                    infos.add(black_screen_info);
                     rects.add(true);
                     targets.add(viewsToHighlight.get(4));
-                    infos.add(getString(R.string.project_panic));
+                    infos.add(project_panic);
                     rects.add(true);
                     targets.add(viewsToHighlight.get(5));
-                    infos.add(getString(R.string.song_title)+"\n"+getString(R.string.long_press)+" = "+getString(R.string.edit_song));
+                    infos.add(song_title+"\n"+long_press+" = "+edit_song);
                     rects.add(true);
                     targets.add(viewsToHighlight.get(6));
-                    infos.add(getString(R.string.song_sections_project));
+                    infos.add(song_sections_project);
                     rects.add(true);
                 }
                 break;
@@ -1330,9 +1383,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 targets.add(Objects.requireNonNull(myView.menuTop.tabs.getTabAt(0)).view);
                 targets.add(Objects.requireNonNull(myView.menuTop.tabs.getTabAt(1)).view);
                 targets.add(Objects.requireNonNull(myView.viewpager.findViewById(R.id.actionFAB)));
-                infos.add(getString(R.string.menu_song_info));
-                infos.add(getString(R.string.menu_set_info));
-                infos.add(getString(R.string.add_songs) + " / " + getString(R.string.song_actions));
+                infos.add(menu_song_info);
+                infos.add(menu_set_info);
+                infos.add(add_songs + " / " + song_actions);
                 rects.add(true);
                 rects.add(true);
                 rects.add(false);
@@ -1359,13 +1412,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (getString(R.string.settings).equals(item.toString())) {
+        if (settings.equals(item.toString())) {
             if (settingsOpen) {
                 settingsOpen = false;
                 myView.fragmentView.setBackgroundColor(themeColors.getLyricsBackgroundColor());
                 navHome();
             } else {
-                navigateToFragment(getString(R.string.deeplink_preferences), 0);
+                navigateToFragment(deeplink_preferences, 0);
                 myView.fragmentView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                 settingsOpen = true;
                 showMenuItems(false);
@@ -1416,7 +1469,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             myView.drawerLayout.openDrawer(GravityCompat.START);
             menuOpen = true;
         }
-        Log.d(TAG,"closing drawer:"+close);
         // Hide the keyboard
         windowFlags.hideKeyboard();
     }
@@ -1469,11 +1521,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
             switch (position) {
                 case 0:
-                    tab.setText(getString(R.string.song));
+                    tab.setText(song_string);
                     tab.setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.music_note, null));
                     break;
                 case 1:
-                    tab.setText(getString(R.string.set));
+                    tab.setText(set_string);
                     tab.setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.list_number, null));
                     break;
             }
@@ -1517,7 +1569,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         executorService.execute(() -> {
             Handler handler = new Handler(Looper.getMainLooper());
             try {
-                handler.post(() -> showToast.doIt(getString(R.string.search_index_start)));
+                handler.post(() -> showToast.doIt(search_index_start));
                 songListBuildIndex.setIndexComplete(false);
                 songListBuildIndex.fullIndex(songMenuFragment.getProgressText());
             } catch (Exception e) {
@@ -1527,7 +1579,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 try {
                     songListBuildIndex.setIndexRequired(false);
                     songListBuildIndex.setIndexComplete(true);
-                    showToast.doIt(getString(R.string.search_index_end));
+                    showToast.doIt(search_index_end);
                     updateSongMenu(song);
                     updateFragment("set_updateKeys", null, null);
                 } catch (Exception e) {
@@ -1762,11 +1814,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         }
         return midi;
     }
+
     @Override
-    public void sendToMidiDriver(byte[] bytes) {
-        if (midiDriver!=null) {
-            midiDriver.write(bytes);
+    public Drummer getDrummer() {
+        if (drummer==null) {
+            drummer = new Drummer(this);
         }
+        return drummer;
     }
 
     // Sticky notes
@@ -1808,7 +1862,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             }
         } else {
             // Open up the metronome settings
-            navigateToFragment(getString(R.string.deeplink_metronome),0);
+            navigateToFragment(deeplink_metronome,0);
         }
     }
 
@@ -2059,7 +2113,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             String newFilename;
             if (!setFolder.contains("**")) {
                 // Not a variation already, so we'll make it one with the set key
-                newFolder = "**" + getString(R.string.variation);
+                newFolder = "**" + variation;
                 newFilename = setFolder.replace("/","_") + "_" + setFilename + "_" + setKey;
                 newFilename = newFilename.replace("__","_");
                 //newFilename = setFilename + "_" + setKey;
@@ -2137,14 +2191,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 case "Performance":
                     performanceFragment = (PerformanceFragment) frag;
                     presenterFragment = null;
-                    if (whichMode.equals(getString(R.string.mode_presenter))) {
-                        whichMode = getString(R.string.mode_performance);
+                    if (whichMode.equals(mode_presenter)) {
+                        whichMode = mode_performance;
                     }
                     break;
                 case "Presenter":
                     presenterFragment = (PresenterFragment) frag;
                     performanceFragment = null;
-                    whichMode = getString(R.string.mode_presenter);
+                    whichMode = mode_presenter;
                     break;
                 case "EditSongFragment":
                     editSongFragment = (EditSongFragment) frag;
@@ -2188,7 +2242,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     sqLiteHelper.deleteSong(song.getFolder(),song.getFilename());
                     // Set the welcome song
                     song.setFilename("Welcome to OpenSongApp");
-                    song.setFolder(getString(R.string.mainfoldername));
+                    song.setFolder(mainfoldername);
                     updateSongMenu(song);
                     navHome();
                     break;
@@ -2282,9 +2336,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             }
             if (allowToast && result && showToast!=null && getResources()!=null) {
                 // Don't show toast for exit, but other successful actions
-                showToast.doIt(getString(R.string.success));
+                showToast.doIt(success);
             } else if (allowToast && showToast!=null && getResources()!=null){
-                showToast.doIt(getString(R.string.error));
+                showToast.doIt(error);
             }
         }
     }
@@ -2371,7 +2425,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         } else {
             pad.startPad();
             // Showcase if required
-            showCase.singleShowCase(this,myView.onScreenInfo.getPad(),getString(R.string.okay),getString(R.string.pad_playback_info),true,"padPlayback");
+            showCase.singleShowCase(this,myView.onScreenInfo.getPad(),okay,pad_playback_info,true,"padPlayback");
             return true;
         }
     }
@@ -2386,7 +2440,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             if (showToast==null) {
                 showToast = new ShowToast(this,myView.getRoot());
             }
-            showToast.doIt(getString(R.string.search_index_start));
+            showToast.doIt(search_index_start);
             ExecutorService executorService = Executors.newSingleThreadExecutor();
             executorService.execute(() -> {
                 Handler handler = new Handler(Looper.getMainLooper());
@@ -2788,7 +2842,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 startActivity(intent);
             } catch (ActivityNotFoundException nf) {
                 // No suitable application to open the document
-                showToast.doIt(getString(R.string.no_suitable_application));
+                showToast.doIt(no_suitable_application);
                 nf.printStackTrace();
 
             } catch (Exception e) {
@@ -3070,10 +3124,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
-        songsFound = songMenuFragment.getSongs();
+        //songsFound = songMenuFragment.getSongs();
         outState.putBoolean("bootUpCompleted",bootUpCompleted);
         outState.putBoolean("indexComplete",songListBuildIndex.getIndexComplete());
         super.onSaveInstanceState(outState);
+        Log.d(TAG,"bootupcompleted:"+bootUpCompleted);
+        Log.d(TAG,"indexComplete:"+songListBuildIndex.getIndexComplete());
     }
 
     @Override
@@ -3095,20 +3151,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             // Check displays
             checkDisplays();
 
-            // Start the midi driver
-            if (midiDriver != null) {
-                midiDriver.start();
-            }
         }
         super.onResume();
     }
 
     @Override
     protected void onPause() {
-        // Stop the midi driver
-        if (midiDriver!=null) {
-            midiDriver.stop();
-        }
         super.onPause();
     }
 

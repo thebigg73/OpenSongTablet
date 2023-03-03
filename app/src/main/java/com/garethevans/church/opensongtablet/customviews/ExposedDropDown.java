@@ -6,7 +6,6 @@ import android.content.res.TypedArray;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
@@ -114,8 +113,6 @@ public class ExposedDropDown extends TextInputLayout {
 
     private void keepPosition() {
         if (arrayList!=null && arrayList.size()>0) {
-            String selectedValue = getText().toString();
-            int position = arrayList.indexOf(selectedValue);
             autoCompleteTextView.setListSelection(arrayList.indexOf(getText().toString()));
         }
     }
@@ -172,10 +169,15 @@ public class ExposedDropDown extends TextInputLayout {
     }
 
     public void setPopupSize() {
-        MainActivityInterface mainActivityInterface = (MainActivityInterface) c;
-        if (largePopups) {
-            try {
-                if (autoCompleteTextView != null) {
+        MainActivityInterface mainActivityInterface = null;
+        try {
+            mainActivityInterface = (MainActivityInterface) c;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (autoCompleteTextView != null) {
+            if (largePopups && mainActivityInterface != null) {
+                try {
                     // Get the location of the popup position and negatively offset this minus the toolbar height
                     int[] location = new int[2];
                     autoCompleteTextView.getLocationOnScreen(location);
@@ -183,17 +185,17 @@ public class ExposedDropDown extends TextInputLayout {
                     int y = location[1];
                     autoCompleteTextView.setDropDownVerticalOffset(-y);
                     autoCompleteTextView.setDropDownHeight(height);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else {
-            try {
-                autoCompleteTextView.setDropDownVerticalOffset(-autoCompleteTextView.getHeight());
-                int newHeight = (int) getContext().getResources().getDimension(R.dimen.exposed_dropdown_height);
-                autoCompleteTextView.setDropDownHeight(newHeight);
-            } catch (Exception e) {
-                e.printStackTrace();
+            } else {
+                try {
+                    autoCompleteTextView.setDropDownVerticalOffset(-autoCompleteTextView.getHeight());
+                    int newHeight = (int) getContext().getResources().getDimension(R.dimen.exposed_dropdown_height);
+                    autoCompleteTextView.setDropDownHeight(newHeight);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
     }

@@ -38,7 +38,7 @@
     </LinearLayout>
 
     <androidx.core.widget.NestedScrollView
-        android:id="@+id/scrollView"
+        android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/startApp"
@@ -58,7 +58,7 @@
                 android:text="@string/first_run" />
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
-                android:id="@+id/progressText"
+                android:id="@+id/chosenLocation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/current_location"

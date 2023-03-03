@@ -113,19 +113,20 @@ public class MetronomeFragment extends Fragment {
         myView.songTempo.setHint(tempoBpm);
 
         // Set the adapters
-        ExposedDropDownArrayAdapter tickAdapter = new ExposedDropDownArrayAdapter(requireContext(), myView.tickSound, R.layout.view_exposed_dropdown_item, soundNames);
-        ExposedDropDownArrayAdapter tockAdapter = new ExposedDropDownArrayAdapter(requireContext(), myView.tockSound, R.layout.view_exposed_dropdown_item, soundNames);
-        ExposedDropDownArrayAdapter signatureBeatAdapter = new ExposedDropDownArrayAdapter(requireContext(), myView.signatureBeats, R.layout.view_exposed_dropdown_item, signatureBeats);
-        ExposedDropDownArrayAdapter signatureDivisionAdapter = new ExposedDropDownArrayAdapter(requireContext(), myView.signatureDivisions, R.layout.view_exposed_dropdown_item, signatureDivisions);
-        ExposedDropDownArrayAdapter tempoAdapter = new ExposedDropDownArrayAdapter(requireContext(), myView.songTempo, R.layout.view_exposed_dropdown_item, tempos);
+        if (getContext()!=null) {
+            ExposedDropDownArrayAdapter tickAdapter = new ExposedDropDownArrayAdapter(requireContext(), myView.tickSound, R.layout.view_exposed_dropdown_item, soundNames);
+            ExposedDropDownArrayAdapter tockAdapter = new ExposedDropDownArrayAdapter(requireContext(), myView.tockSound, R.layout.view_exposed_dropdown_item, soundNames);
+            ExposedDropDownArrayAdapter signatureBeatAdapter = new ExposedDropDownArrayAdapter(requireContext(), myView.signatureBeats, R.layout.view_exposed_dropdown_item, signatureBeats);
+            ExposedDropDownArrayAdapter signatureDivisionAdapter = new ExposedDropDownArrayAdapter(requireContext(), myView.signatureDivisions, R.layout.view_exposed_dropdown_item, signatureDivisions);
+            ExposedDropDownArrayAdapter tempoAdapter = new ExposedDropDownArrayAdapter(requireContext(), myView.songTempo, R.layout.view_exposed_dropdown_item, tempos);
 
-        // Add them to the views
-        myView.signatureBeats.setAdapter(signatureBeatAdapter);
-        myView.signatureDivisions.setAdapter(signatureDivisionAdapter);
-        myView.songTempo.setAdapter(tempoAdapter);
-        myView.tickSound.setAdapter(tickAdapter);
-        myView.tockSound.setAdapter(tockAdapter);
-
+            // Add them to the views
+            myView.signatureBeats.setAdapter(signatureBeatAdapter);
+            myView.signatureDivisions.setAdapter(signatureDivisionAdapter);
+            myView.songTempo.setAdapter(tempoAdapter);
+            myView.tickSound.setAdapter(tickAdapter);
+            myView.tockSound.setAdapter(tockAdapter);
+        }
     }
 
     private void addSoundItem(String filename, String description) {
@@ -298,14 +299,14 @@ public class MetronomeFragment extends Fragment {
     }
 
     private void setStartStopIcon(boolean isRunning) {
-        if (isRunning) {
+        if (isRunning && getContext()!=null) {
             // Set the icon to stop
             try {
                 myView.startStopButton.post(() -> myView.startStopButton.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.stop)));
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        } else {
+        } else if (getContext()!=null) {
             // Set the icon to play
             try {
                 myView.startStopButton.post(() -> myView.startStopButton.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.play)));

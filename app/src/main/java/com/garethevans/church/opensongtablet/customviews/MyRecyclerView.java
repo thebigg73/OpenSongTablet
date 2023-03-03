@@ -3,6 +3,7 @@ package com.garethevans.church.opensongtablet.customviews;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
@@ -13,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 public class MyRecyclerView extends RecyclerView {
@@ -79,6 +81,9 @@ public class MyRecyclerView extends RecyclerView {
         this.allowPinchToZoom = allowPinchToZoom;
     }
 
+    public void setSectionScrollSize(int availableHeight, int maxSectionSize) {
+
+    }
     public void initialiseRecyclerView(MainActivityInterface mainActivityInterface) {
         this.mainActivityInterface = mainActivityInterface;
     }
@@ -125,8 +130,18 @@ public class MyRecyclerView extends RecyclerView {
         smoothScroller = new LinearSmoothScroller(c) {
             @Override
             protected int getVerticalSnapPreference() {
-                return LinearSmoothScroller.SNAP_TO_START;
+                if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_stage))) {
+                    return LinearSmoothScroller.SNAP_TO_END;
+                } else {
+                    return LinearSmoothScroller.SNAP_TO_START;
+                }
             }
+
+            @Override
+            protected float calculateSpeedPerPixel(DisplayMetrics displayMetrics) {
+                return 100f / displayMetrics.densityDpi;
+            }
+
         };
         smoothScroller.setTargetPosition(position);
         layoutManager.startSmoothScroll(smoothScroller);

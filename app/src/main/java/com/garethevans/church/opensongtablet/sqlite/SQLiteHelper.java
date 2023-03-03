@@ -3,6 +3,7 @@ package com.garethevans.church.opensongtablet.sqlite;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
@@ -17,6 +18,8 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 3;
     private final Context c;
     private final MainActivityInterface mainActivityInterface;
+    @SuppressWarnings("FieldCanBeLocal")
+    private final String TAG = "SQLiteHelper";
 
     public SQLiteHelper(Context c) {
         // Don't create the database here as we don't want to recreate on each call.
@@ -128,7 +131,8 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         try (SQLiteDatabase db = getDB()) {
             return mainActivityInterface.getCommonSQL().getFolders(db);
         } catch (OutOfMemoryError | Exception e) {
-            e.printStackTrace();
+            Log.d(TAG,"SQLite error - likely DB doesn't exist yet");
+            //e.printStackTrace();
             return new ArrayList<>();
         }
     }
@@ -164,7 +168,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
                    searchByArtist, searchByKey, searchByTag, searchByFilter, searchByTitle,
                     folderVal, artistVal, keyVal, tagVal, filterVal, titleVal, songMenuSortTitles);
         } catch (OutOfMemoryError | Exception e) {
-            e.printStackTrace();
+            Log.d(TAG,"Table doesn't exist");
             return new ArrayList<>();
         }
     }

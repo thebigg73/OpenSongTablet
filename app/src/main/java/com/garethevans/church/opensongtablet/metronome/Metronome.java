@@ -76,8 +76,10 @@ public class Metronome {
         stopTimers(false);
 
         // Clean up the soundPool
-        soundPool.release();
-        soundPool = null;
+        if (soundPool!=null) {
+            soundPool.release();
+            soundPool = null;
+        }
     }
 
     // Set up the metronome values (tempo, time signature, user preferences, etc)

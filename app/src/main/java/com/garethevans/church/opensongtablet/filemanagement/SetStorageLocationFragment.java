@@ -169,10 +169,10 @@ public class SetStorageLocationFragment extends Fragment {
         //mainActivityInterface.getAppActionBar().translateAwayActionBar(true);
         //myView.getRoot().setTranslationY(-mainActivityInterface.getAppActionBar().getActionBarHeight());
         // Set up the storage location currently set in an edit box that acts like a button only
-        myView.progressText.setFocusable(false);
-        myView.progressText.setClickable(true);
-        myView.progressText.setMaxLines(4);
-        myView.progressText.setOnClickListener(t -> myView.setStorage.performClick());
+        myView.chosenLocation.setFocusable(false);
+        myView.chosenLocation.setClickable(true);
+        myView.chosenLocation.setMaxLines(4);
+        myView.chosenLocation.setOnClickListener(t -> myView.setStorage.performClick());
 
         // Set the listeners for the buttons
         myView.webHelp.setOnClickListener(v -> mainActivityInterface.openDocument(getString(R.string.website_storage_set)));
@@ -255,7 +255,7 @@ public class SetStorageLocationFragment extends Fragment {
 
     private void warningCheck() {
         // If the user tries to set the app storage to OpenSong/Songs/ warn them!
-        if (myView.progressText.getText().toString().contains("OpenSong/Songs/")) {
+        if (myView.chosenLocation.getText().toString().contains("OpenSong/Songs/")) {
             Snackbar snackbar = make(requireActivity().findViewById(R.id.drawer_layout), R.string.storage_warning,
                     LENGTH_INDEFINITE).setAction(android.R.string.ok, view -> {
             });
@@ -533,11 +533,11 @@ public class SetStorageLocationFragment extends Fragment {
         if (uriTreeHome==null) {
             uriTree = null;
             saveUriLocation();
-            myView.progressText.setText("");
+            myView.chosenLocation.setText("");
         } else {
             String[] niceLocation = mainActivityInterface.getStorageAccess().niceUriTree(uriTreeHome);
             String outputText = niceLocation[1] + "\n" + niceLocation[0];
-            myView.progressText.setText(outputText);
+            myView.chosenLocation.setText(outputText);
             warningCheck();
             checkStatus();
         }

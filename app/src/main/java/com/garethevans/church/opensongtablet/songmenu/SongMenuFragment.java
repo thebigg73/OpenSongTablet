@@ -163,15 +163,16 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
             foundFolders = mainActivityInterface.getSQLiteHelper().getFolders();
             if (getContext()!=null) {
                 handler.post(() -> {
-                    folderArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(), myView.filters.folderSearch, R.layout.view_exposed_dropdown_item, foundFolders);
-                    myView.filters.folderSearch.setAdapter(folderArrayAdapter);
-                    myView.filters.folderSearch.setMultiselect(true);
-                    myView.filters.folderSearch.addTextChangedListener(new MyTextWatcher("folder"));
-                    int pos = foundFolders.indexOf(mainActivityInterface.getSong().getFolder());
-                    if (pos >= 0) {
-                        myView.filters.folderSearch.setText(foundFolders.get(pos));
+                    if (getContext()!=null) {
+                        folderArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(), myView.filters.folderSearch, R.layout.view_exposed_dropdown_item, foundFolders);
+                        myView.filters.folderSearch.setAdapter(folderArrayAdapter);
+                        myView.filters.folderSearch.setMultiselect(true);
+                        myView.filters.folderSearch.addTextChangedListener(new MyTextWatcher("folder"));
+                        int pos = foundFolders.indexOf(mainActivityInterface.getSong().getFolder());
+                        if (pos >= 0) {
+                            myView.filters.folderSearch.setText(foundFolders.get(pos));
+                        }
                     }
-
                 });
             }
         });

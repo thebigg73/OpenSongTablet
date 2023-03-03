@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet.songmenu;
 
 import android.content.Context;
 import android.os.Build;
+import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -352,13 +353,11 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
     public void changeCheckBox(int pos) {
         if (songList.size()>pos) {
             // Get the current value and change it
-            if (checkedArray.size()>pos) {
-                try {
-                    checkedArray.put(pos, !checkedArray.get(pos));
-                    notifyItemChanged(pos, "checkChange");
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+            try {
+                checkedArray.put(pos, !checkedArray.get(pos));
+                notifyItemChanged(pos, "checkChange");
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }

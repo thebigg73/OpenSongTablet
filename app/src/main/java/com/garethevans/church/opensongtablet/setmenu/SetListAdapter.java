@@ -3,7 +3,6 @@ package com.garethevans.church.opensongtablet.setmenu;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.os.Build;
-import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -185,7 +184,6 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
     @Override
     public void onItemSwiped(int fromPosition) {
         // Check the setList matches the current set!
-        Log.d(TAG,"onItemSwiped "+fromPosition);
         try {
             // Remove the item from the current set
             mainActivityInterface.getCurrentSet().removeFromCurrentSet(fromPosition, null);
@@ -211,7 +209,6 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
 
     @Override
     public void onItemClicked(MainActivityInterface mainActivityInterface, int position) {
-        Log.d(TAG,"position:"+position);
         updateHighlightedItem(position);
         mainActivityInterface.initialiseInlineSetItem(position);
         mainActivityInterface.loadSongFromSet(position);
@@ -220,7 +217,6 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
     @Override
     public void onContentChanged(int position) {
         notifyItemChanged(position);
-        Log.d(TAG, "CHANGES: setCurrent:" + mainActivityInterface.getCurrentSet().getSetCurrent());
     }
 
     public void updateHighlightedItem(int position) {
