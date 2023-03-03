@@ -1601,7 +1601,6 @@ public class ProcessSong {
         StringBuilder fixedlyrics = new StringBuilder();
         String sectionHeader = "";
 
-        // GE reverted change
         for (int x = 0; x < songSections.size(); x++) {
             fixedlyrics.append("\n§");
             if (songSections.get(x).startsWith("[")) {
