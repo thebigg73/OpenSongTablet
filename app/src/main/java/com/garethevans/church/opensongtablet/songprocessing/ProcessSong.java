@@ -872,7 +872,7 @@ public class ProcessSong {
                                    int highlightChordColor, boolean presentation) {
         TableLayout tableLayout = newTableLayout();
 
-        // If we have a capo and want to show capo chords, duplicate and tranpose the chord line
+        // If we have a capo and want to show capo chords, duplicate and transpose the chord line
         String capoText = mainActivityInterface.getSong().getCapo();
         boolean hasCapo = capoText!=null && !capoText.isEmpty();
         if (hasCapo && (displayCapoChords || displayCapoAndNativeChords)) {
@@ -1601,10 +1601,15 @@ public class ProcessSong {
         for (int x = 0; x < songSections.size(); x++) {
             fixedlyrics.append("\n§");
             if (songSections.get(x).startsWith("[")) {
-                sectionHeader = songSections.get(x).substring(0,songSections.get(x).indexOf("]") + 1);
+                // IV - Store the header.  Use an empty header in performance mode.
+                if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance))) {
+                    sectionHeader = "[]";
+                } else {
+                    sectionHeader = songSections.get(x).substring(0,songSections.get(x).indexOf("]") + 1);
+                }
                 fixedlyrics.append(songSections.get(x));
             } else {
-                fixedlyrics.append(sectionHeader).append(songSections.get(x));
+                fixedlyrics.append(sectionHeader).append("\n").append(("¬"+ songSections.get(x)).replace("¬\n","").replace("¬",""));
             }
         }
 
@@ -1724,8 +1729,8 @@ public class ProcessSong {
                     String[] lines = section.split("\n");
                     for (int l=0; l<lines.length; l++) {
                         String line = lines[l];
-                        // IV - Do not process an empty group line
-                        if (!line.equals("____groupline____")) {
+                        // IV - Do not process an empty group line or empty header line
+                        if (!line.equals("____groupline____") && !line.equals("[]")) {
                             // Get the text stylings
                             String linetype = getLineType(line);
 
@@ -1773,7 +1778,6 @@ public class ProcessSong {
                                     linearLayout.addView(tl);
                                 }
                             } else {
-                                // Remove any word splits as not required
                                 if (!presentation && !asPDF && !line.isEmpty()) {
                                     // IV - Remove typical word splits, white space and trim - beautify!
                                     // IV - Similar logic is used in other places - if changed find and make changes to all
