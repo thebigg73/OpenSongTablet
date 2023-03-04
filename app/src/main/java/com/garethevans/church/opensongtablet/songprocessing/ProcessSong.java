@@ -499,7 +499,7 @@ public class ProcessSong {
 
         for (int x = 1; x < (chord.length()); x++) {
             // IV - The first chord char is considered empty
-            thischordcharempty = chord.startsWith(" ", x) || x == 1;
+            thischordcharempty = chord.startsWith(" ", x);
             prevlyriccharempty = lyric.startsWith(" ", x - 1);
             prevlyricempty = prevlyricempty && prevlyriccharempty;
 
@@ -1037,41 +1037,67 @@ public class ProcessSong {
             // Add the final position
             TextView textView = newTextView(linetype, typeface, size, color);
             String str = lines[t].substring(startpos);
-            if (str.startsWith(".")) {
-                str = str.replaceFirst(".", "");
+            // IV - Code must be the same as above
+            if (startpos == 0) {
+                str = trimOutLineIdentifiers(linetype, str);
             }
-            if (str.startsWith("˄")) {
-                str = str.replaceFirst("˄", "");
-            }
-            if (linetype.equals("chord") && displayChords && (!hasCapo || displayCapoAndNativeChords || !displayCapoChords)) {
-                if (highlightChordColor != 0x00000000) {
-                    textView.setText(highlightChords(str, highlightChordColor));
-                } else {
-                    textView.setText(str);
-                }
-            } else if (linetype.equals("capoline") && displayChords && (hasCapo || displayCapoChords || displayCapoAndNativeChords)) {
-                if (highlightChordColor != 0x00000000) {
-                    textView.setText(highlightChords(str, highlightChordColor));
-                } else {
-                    textView.setText(str);
-                }
-            } else if (linetype.equals("lyric")) {
-                if (displayLyrics) {
-                    str = str.replace("_","");
-                    str = str.replaceAll("[|]"," ");
-                    if (trimWordSpacing) {
+            // If this is a chord line that either has highlighting, or needs to to include capo chords
+            // We process separately, otherwise it is handled in the last default 'else'
+            switch (linetype) {
+                case "chord":
+                    // Only show this if we want chords and if there is a capo, we want both capo and native
+                    if (displayChords && (!hasCapo || displayCapoAndNativeChords || !displayCapoChords)) {
+                        if (highlightChordColor != 0x00000000) {
+                            textView.setText(new SpannableString(highlightChords(str,
+                                    highlightChordColor)));
+                        } else {
+                            textView.setText(str);
+                        }
+                    } else {
+                        textView = null;
+                    }
+                    break;
+                case "capoline":
+                    // Only show this if we want chords and if there is a capo and showcapo
+                    if (displayChords && hasCapo && (displayCapoChords || displayCapoAndNativeChords)) {
+                        if (highlightChordColor != 0x00000000) {
+                            textView.setText(new SpannableString(highlightChords(str,
+                                    highlightChordColor)));
+                        } else {
+                            textView.setText(str);
+                        }
+                    } else {
+                        textView = null;
+                    }
+                    break;
+                case "lyric":
+                    if (displayLyrics) {
+                        str = str.replace("_", "");
+                        str = str.replaceAll("[|]", " ");
+                        if (trimWordSpacing) {
+                            if (!multiLineVerseKeepCompact && !multilineSong) {
+                                str = fixExcessSpaces(str);
+                            }
+                        }
+                        if (presentation || !mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance))) {
+                            str = fixExcessSpaces(str);
+                        }
+
+                        SpannableStringBuilder spannableString = getSpannableBracketString(str);
+                        textView.setText(spannableString);
+                    } else {
+                        textView = null;
+                    }
+                    break;
+                default:
+                    // Just set the text
+                    if (presentation || !mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) ||
+                            (!multiLineVerseKeepCompact && !multilineSong)) {
                         str = fixExcessSpaces(str);
                     }
-                    // IV - We do not trim str as it can need to start with spaces
                     SpannableStringBuilder spannableString = getSpannableBracketString(str);
                     textView.setText(spannableString);
-                } else {
-                    textView = null;
-                }
-            } else if (linetype.equals("chord") || linetype.equals("chordline")) {
-                textView = null;
-            } else {
-                textView.setText(str.trim());
+                    break;
             }
             if (textView!=null) {
                 tableRow.addView(textView);
