@@ -106,21 +106,24 @@ public class Pad {
     public boolean isAutoPad() {
         String padFile = mainActivityInterface.getSong().getPadfile();
         String key = mainActivityInterface.getSong().getKey();
-        return (padFile.isEmpty() || padFile.equals("auto") || padFile.equals(c.getString(R.string.pad_auto))) &&
+        return (padFile == null || padFile.isEmpty() || padFile.equals("auto") || padFile.equals(c.getString(R.string.pad_auto))) &&
                 key!=null && !key.isEmpty();
     }
 
     public boolean isCustomAutoPad() {
         String key = mainActivityInterface.getSong().getKey();
-        String customPad = mainActivityInterface.getPreferences().getMyPreferenceString("customPad"+keyToFlat(key),"");
+        String customPad = "";
+        if (key!=null && !key.isEmpty()) {
+            customPad = mainActivityInterface.getPreferences().getMyPreferenceString("customPad" + keyToFlat(key), "");
+        }
         return isAutoPad() && customPad!=null && !customPad.isEmpty();
     }
 
     public boolean isLinkAudio() {
         String padFile = mainActivityInterface.getSong().getPadfile();
         String linkAudio = mainActivityInterface.getSong().getLinkaudio();
-        return (padFile.equals("link") || padFile.equals(c.getString(R.string.link_audio))) &&
-                linkAudio!=null && !linkAudio.isEmpty();
+        return ((padFile != null && padFile.equals("link")) || (padFile !=null && padFile.equals(c.getString(R.string.link_audio))) &&
+                linkAudio!=null && !linkAudio.isEmpty());
     }
 
     public Uri getPadUri() {
@@ -157,7 +160,8 @@ public class Pad {
 
         // Decide if the pad is valid
         boolean padValid = (assetFileDescriptor!=null || isPadValid(padUri)) &&
-                !mainActivityInterface.getSong().getPadfile().equals("off");
+                (mainActivityInterface.getSong().getPadfile() !=null &&
+                        !mainActivityInterface.getSong().getPadfile().equals("off"));
 
         // Prepare any error message
         if (!padValid) {
@@ -167,7 +171,8 @@ public class Pad {
                 mainActivityInterface.getShowToast().doIt(c.getString(R.string.pad_file_error));
             } else if (isLinkAudio()) {
                 mainActivityInterface.getShowToast().doIt(c.getString(R.string.pad_custom_pad_error));
-            } else if (mainActivityInterface.getSong().getPadfile().equals("off")) {
+            } else if (mainActivityInterface.getSong().getPadfile() !=null &&
+                    mainActivityInterface.getSong().getPadfile().equals("off")) {
                 mainActivityInterface.getShowToast().doIt(c.getString(R.string.pad_off));
             }
             stopPadPlay();
