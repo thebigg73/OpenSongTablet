@@ -1,6 +1,5 @@
 package com.garethevans.church.opensongtablet.pads;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.AssetFileDescriptor;
 import android.graphics.Color;
@@ -23,7 +22,6 @@ public class Pad {
     private final String TAG = "Pad";
     public boolean orientationChanged;
     public boolean pad1Pause, pad2Pause;
-    public float pad1FadeVolume, pad2FadeVolume;
     public int padInQuickFade;
     private final Context c;
     private final MainActivityInterface mainActivityInterface;
@@ -57,20 +55,17 @@ public class Pad {
     public void startPad() {
         Log.d("TAG","managePads StartPad");
         // IV - managePads will fade all running pads
-        // If padsActivated is true then it will start the new pad when a pad player is free
+        // managePads will start the new pad if/when a pad player is free
         padsActivated = true;
         managePads();
     }
 
     public void stopPad() {
         Log.d(TAG,"managePads StopPad");
-        // IV - managePads will fade all running pads
         padsActivated = false;
+        // IV - managePads fades all running pads
         managePads();
-        // IV - Configure padPlayTimer for stopping
-        padTime.setText("");
-        padTotalTime.setVisibility(View.GONE);
-        padTotalTime.setText("Stopping");
+        stopPadPlay();
     }
 
     private void stopAndReset(int padNum) {
@@ -149,84 +144,119 @@ public class Pad {
     }
 
     private void loadAndStart(int padNum) {
-        try {
-            Uri padUri = getPadUri();
+        Uri padUri = getPadUri();
 
-            // If the padUri is null, we likely need a default autopad assuming the key is set
-            AssetFileDescriptor assetFileDescriptor = null;
-            if (padUri==null && !mainActivityInterface.getSong().getKey().isEmpty()) {
-                assetFileDescriptor = getAssetPad(mainActivityInterface.getSong().getKey());
+        // If the padUri is null, we likely need a default autopad assuming the key is set
+        AssetFileDescriptor assetFileDescriptor = null;
+        if (padUri==null && !mainActivityInterface.getSong().getKey().isEmpty()) {
+            assetFileDescriptor = getAssetPad(mainActivityInterface.getSong().getKey());
+        }
+
+        // Decide if pad should loop
+        boolean padLoop = mainActivityInterface.getSong().getPadloop().equals("true");
+
+        // Decide if the pad is valid
+        boolean padValid = (assetFileDescriptor!=null || isPadValid(padUri)) &&
+                !mainActivityInterface.getSong().getPadfile().equals("off");
+
+        // Prepare any error message
+        if (!padValid) {
+            if (mainActivityInterface.getSong().getKey().isEmpty()) {
+                mainActivityInterface.getShowToast().doIt(c.getString(R.string.pad_key_error));
+            } else if (isCustomAutoPad()) {
+                mainActivityInterface.getShowToast().doIt(c.getString(R.string.pad_file_error));
+            } else if (isLinkAudio()) {
+                mainActivityInterface.getShowToast().doIt(c.getString(R.string.pad_custom_pad_error));
+            } else if (mainActivityInterface.getSong().getPadfile().equals("off")) {
+                mainActivityInterface.getShowToast().doIt(c.getString(R.string.pad_off));
             }
+            stopPadPlay();
+        }
 
-            // Decide if pad should loop
-            boolean padLoop = mainActivityInterface.getSong().getPadloop().equals("true");
-
-            // Decide if the pad is valid
-            boolean padValid = (assetFileDescriptor!=null || isPadValid(padUri)) &&
-                    !mainActivityInterface.getSong().getPadfile().equals("off");
-
-            // Prepare any error message
-            if (!padValid) {
-                if (mainActivityInterface.getSong().getKey().isEmpty()) {
-                    mainActivityInterface.getShowToast().doIt(c.getString(R.string.pad_key_error));
-                } else if (isCustomAutoPad()) {
-                    mainActivityInterface.getShowToast().doIt(c.getString(R.string.pad_file_error));
-                } else if (isLinkAudio()) {
-                    mainActivityInterface.getShowToast().doIt(c.getString(R.string.pad_custom_pad_error));
-                } else if (mainActivityInterface.getSong().getPadfile().equals("off")) {
-                    mainActivityInterface.getShowToast().doIt(c.getString(R.string.pad_off));
-                }
-            }
-
-            if (padValid) {
-                switch (padNum) {
-                    case 1:
-                        pad1 = new MediaPlayer();
-                        pad1.setOnCompletionListener(mediaPlayer -> stopAndReset(1));
-                        pad1.setOnPreparedListener(mediaPlayer -> doPlay(1));
-                        if (assetFileDescriptor != null) {
+        if (padValid) {
+            switch (padNum) {
+                case 1:
+                    pad1 = new MediaPlayer();
+                    pad1.setOnCompletionListener(mediaPlayer -> {
+                        stopAndReset(1);
+                        stopPadPlay();
+                    });
+                    pad1.setOnPreparedListener(mediaPlayer -> doPlay(1));
+                    if (assetFileDescriptor != null) {
+                        try {
                             pad1.setDataSource(assetFileDescriptor.getFileDescriptor(),
                                     assetFileDescriptor.getStartOffset(),
                                     assetFileDescriptor.getLength());
                             assetFileDescriptor.close();
-                        } else if (padUri != null) {
-                            pad1.setDataSource(c, padUri);
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
-                        pad1.setLooping(padLoop);
-                        pad1.prepareAsync();
-                        break;
-                    case 2:
-                        pad2 = new MediaPlayer();
-                        pad2.setOnCompletionListener(mediaPlayer -> stopAndReset(2));
-                        pad2.setOnPreparedListener(mediaPlayer -> doPlay(2));
-                        if (assetFileDescriptor != null) {
+                    } else if (padUri != null) {
+                        try {
+                            pad1.setDataSource(c, padUri);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    pad1.setLooping(padLoop);
+                    pad1.prepareAsync();
+                    pad1.setOnErrorListener((mp, what, extra) -> {
+                        // IV - Could not prepare pad - try again!
+                        Log.d(TAG, "managePads pad1 Fail in prepare of MediaPlayer! Try again.");
+                        if (padsActivated) {
+                            stopAndReset(1);
+                            loadAndStart(1);
+                        }
+                        return false;
+                    });
+                    break;
+                case 2:
+                    pad2 = new MediaPlayer();
+                    pad2.setOnCompletionListener(mediaPlayer -> {
+                        stopAndReset(2);
+                        stopPadPlay();
+                    });
+                    pad2.setOnPreparedListener(mediaPlayer -> doPlay(2));
+                    if (assetFileDescriptor != null) {
+                        try {
                             pad2.setDataSource(assetFileDescriptor.getFileDescriptor(),
                                     assetFileDescriptor.getStartOffset(),
                                     assetFileDescriptor.getLength());
                             assetFileDescriptor.close();
-                        } else if (padUri != null) {
-                            pad2.setDataSource(c, padUri);
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
-                        pad2.setLooping(padLoop);
-                        pad2.prepareAsync();
-                        break;
-                }
+                    } else if (padUri != null) {
+                        try {
+                            pad2.setDataSource(c, padUri);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    pad2.setLooping(padLoop);
+                    pad2.prepareAsync();
+                    pad2.setOnErrorListener((mp, what, extra) -> {
+                        // IV - Could not prepare pad - try again!
+                        Log.d(TAG, "managePads pad2 Fail in prepare of MediaPlayer! Try again.");
+                        if (padsActivated) {
+                            stopAndReset(2);
+                            loadAndStart(2);
+                        }
+                        return false;
+                    });
+                    break;
             }
-        } catch (Exception e) {
-            Log.d(TAG, "managePad Failed to start pad!");
-            e.printStackTrace();
         }
     }
     private void managePads() {
         Log.d(TAG, "managePads ------");
+        Log.d(TAG, "managePads padActivated " + padsActivated);
         Log.d(TAG, "managePads pad1 is active '" + (pad1 != null) + "'. pad1 is fading '" + pad1Fading + "'.");
         Log.d(TAG, "managePads pad2 is active '" + (pad2 != null) + "'. pad2 is fading '" + pad2Fading + "'.");
-        Log.d(TAG, "managePads padActivated " + padsActivated);
 
-        // Fade any running pads
+        // IV - Fade any running pads
         if ((pad1 != null) || (pad2 != null)) {
             final int fadeTime = mainActivityInterface.getPreferences().getMyPreferenceInt("padCrossFadeTime", 8000);
-            int thisfadetime;
 
             if (pad1 != null && !pad1Fading) {
                 Log.d(TAG, "managePads Pad1 Fading");
@@ -253,7 +283,7 @@ public class Pad {
                     public void run() {
                         pad1FadeTimerHandler.post(() -> {
                             if (!(pad1VolL == 0 && pad1VolR == 0)) {
-                                // IV - Needed here
+                                // IV - When fading
                                 pad1Fading = true;
                                 if (padInQuickFade == 1) {
                                     Log.d(TAG, "managePads Pad1 Quick fade initiated");
@@ -264,15 +294,16 @@ public class Pad {
                                 pad1VolR = newVol(pad1VolR, pad1VolDrop);
                                 setVolume(1, pad1VolL, pad1VolR);
                             } else {
+                                // IV - When faded
                                 stopAndReset(1);
                                 pad1Fading = false;
                                 Log.d(TAG, "managePads Pad1 Stopped " + padInQuickFade + " " + padsActivated);
                                 if (padInQuickFade == -1) {
-                                    padInQuickFade = 0;
                                     if (padsActivated) {
                                         Log.d(TAG, "managePads Pad1 start requested after quick fade");
                                         loadAndStart(1);
                                     }
+                                    padInQuickFade = 0;
                                 }
                                 Log.d(TAG,"managePads Pad1 endFadeTimer called");
                                 new Handler().post(() -> endFadeTimer(1));
@@ -314,9 +345,8 @@ public class Pad {
                     @Override
                     public void run() {
                         pad2FadeTimerHandler.post(() -> {
-                            // IV - If fading
                             if (!(pad2VolL == 0 && pad2VolR == 0f)) {
-                                // IV - Needed here
+                                // IV - When fading
                                 pad2Fading = true;
                                 if (padInQuickFade == 2) {
                                     Log.d(TAG, "managePads pad2 Quick fade initiated");
@@ -326,17 +356,17 @@ public class Pad {
                                 pad2VolL = newVol(pad2VolL, pad2VolDrop);
                                 pad2VolR = newVol(pad2VolR, pad2VolDrop);
                                 setVolume(2, pad2VolL, pad2VolR);
-                            // IV - When faded
                             } else {
+                                // IV - When faded
                                 stopAndReset(2);
                                 pad2Fading = false;
                                 Log.d(TAG, "managePads pad2 Stopped " + padInQuickFade + " " + padsActivated);
                                 if (padInQuickFade == -2) {
-                                    padInQuickFade = 0;
                                     if (padsActivated) {
                                         Log.d(TAG, "managePads pad2 start requested after quick fade");
                                         loadAndStart(2);
                                     }
+                                    padInQuickFade = 0;
                                 }
                                 Log.d(TAG,"managePads pad2 endFadeTimer called");
                                 new Handler().post(() -> endFadeTimer(2));
@@ -355,7 +385,7 @@ public class Pad {
             }
         }
 
-        // If both pads are fading set the quietest one to 'quick fade'
+        // IV - If both pads are fading set the quietest one to 'quick fade'
         if (pad1Fading && pad2Fading) {
             padInQuickFade = 1 + (Math.max(pad1VolL, pad1VolR) > Math.max(pad2VolL, pad2VolR) ? 1 : 0);
         }
@@ -442,91 +472,78 @@ public class Pad {
             return currVol;
         }
     }
-    @SuppressLint("SetTextI18n")
     private void doPlay(int padNum) {
-        try {
-            Log.d(TAG,"doPlay Pad" + padNum);
-            switch (padNum) {
-                case 1:
-                    padLength = (int)(pad1.getDuration()/1000f);
-                    pad1Fading = false;
-                    pad1Pause = false;
-                    pad1.start();
-                    break;
-                case 2:
-                    padLength = (int)(pad2.getDuration()/1000f);
-                    pad2Fading = false;
-                    pad2Pause = false;
-                    pad2.start();
-                    break;
-            }
-            pad.setOnClickListener(v -> playStopOrPause(padNum));
-            pad.setOnLongClickListener(v -> longClick(padNum));
-
-            // IV - We setup the on-screen timer display
-            padTime.setText("0:00");
-            padTotalTime.setText(" / " + mainActivityInterface.getTimeTools().timeFormatFixer(padLength));
-            padTotalTime.setVisibility(View.VISIBLE);
-            pad.setVisibility(View.VISIBLE);
-
-            // IV - Schedule a new timer when the timer not already running
-            if (padPlayTimerTask == null) {
-                padPlayTimerTask = new TimerTask() {
-                    @Override
-                    public void run() {
-                        padPlayTimerHandler.post(() -> {
-                            // IV - If stopping
-                            if (padTotalTime.getText().equals("Stopping")) {
-                                if ((pad1 == null || !pad1.isPlaying()) && (pad2 == null || !pad2.isPlaying())) {
-                                    stopPadPlayTimer();
-                                }
-                            } else {
-                                // IV - A pad should be active - if not start one!
-                                if (pad1 == null && pad2 == null) {
-                                    Log.d(TAG, "Pad cross fade fail! Requesting pad start.");
-                                    startPad();
-                                }
-
-                                // IV - If paused
-                                if (pad1Pause || pad2Pause) {
-                                    padTime.setText(padPauseTime);
-                                    if (padTime.getCurrentTextColor() == Color.TRANSPARENT) {
-                                        padTime.setTextColor(Color.WHITE);
-                                    } else {
-                                        padTime.setTextColor(Color.TRANSPARENT);
-                                    }
-                                // IV - If running normally
-                                } else {
-                                    String text = "0:00";
-                                    try {
-                                        if (pad1 != null && pad1.isPlaying() && !pad1Fading) {
-                                            text = mainActivityInterface.getTimeTools().timeFormatFixer((int) (pad1.getCurrentPosition() / 1000f));
-                                        }
-                                    } catch (Exception e) {
-                                        // Nothing to do
-                                    }
-                                    try {
-                                        if (pad2 != null && pad2.isPlaying() && !pad2Fading) {
-                                            text = mainActivityInterface.getTimeTools().timeFormatFixer((int) (pad2.getCurrentPosition() / 1000f));
-                                        }
-                                    } catch (Exception e) {
-                                        // Nothing to do
-                                    }
-                                    padTime.setText(text);
-                                    padTime.setTextColor(Color.WHITE);
-                                }
-                            }
-                        });
-                    }
-                };
-                padPlayTimer = new Timer();
-                padPlayTimer.scheduleAtFixedRate(padPlayTimerTask, 1000, 1000);
-            }
-            mainActivityInterface.updateOnScreenInfo("showhide");
-        } catch (Exception e) {
-            e.printStackTrace();
+        Log.d(TAG,"managePads doPlay Pad" + padNum);
+        switch (padNum) {
+            case 1:
+                pad1Fading = false;
+                pad1Pause = false;
+                pad1.start();
+                padLength = (int)(pad1.getDuration()/1000f);
+                break;
+            case 2:
+                pad2Fading = false;
+                pad2Pause = false;
+                pad2.start();
+                padLength = (int)(pad2.getDuration()/1000f);
+                break;
         }
+        Log.d(TAG,"managePads padLength " + padLength);
+        pad.setOnClickListener(v -> playStopOrPause(padNum));
+        pad.setOnLongClickListener(v -> longClick(padNum));
+
+        // IV - We setup the on-screen timer display
+        padTime.setText("0:00");
+        padTotalTime.setText(" / " + mainActivityInterface.getTimeTools().timeFormatFixer(padLength));
+        padTotalTime.setVisibility(View.VISIBLE);
+        pad.setVisibility(View.VISIBLE);
+
+        // IV - Schedule a new timer when the timer not already running
+        if (padPlayTimerTask == null) {
+            padPlayTimerTask = new TimerTask() {
+                @Override
+                public void run() {
+                    padPlayTimerHandler.post(() -> {
+                        // IV - If stopping
+                        if (padTotalTime.getText().equals("Stopping")) {
+                            if ((pad1 == null || !pad1.isPlaying()) && (pad2 == null || !pad2.isPlaying())) {
+                                stopPadPlayTimer();
+                            }
+                        } else {
+                            // IV - If paused
+                            if (pad1Pause || pad2Pause) {
+                                padTime.setText(padPauseTime);
+                                if (padTime.getCurrentTextColor() == Color.TRANSPARENT) {
+                                    padTime.setTextColor(Color.WHITE);
+                                } else {
+                                    padTime.setTextColor(Color.TRANSPARENT);
+                                }
+                                // IV - If running normally
+                            } else {
+                                String text = "0:00";
+                                try {
+                                    if (pad1 != null && pad1.isPlaying() && !pad1Fading) {
+                                        text = mainActivityInterface.getTimeTools().timeFormatFixer((int) (pad1.getCurrentPosition() / 1000f));
+                                    }
+                                    if (pad2 != null && pad2.isPlaying() && !pad2Fading) {
+                                        text = mainActivityInterface.getTimeTools().timeFormatFixer((int) (pad2.getCurrentPosition() / 1000f));
+                                    }
+                                } catch (Exception e) {
+                                    // Nothing to do
+                                }
+                                padTime.setText(text);
+                                padTime.setTextColor(Color.WHITE);
+                            }
+                        }
+                    });
+                }
+            };
+            padPlayTimer = new Timer();
+            padPlayTimer.scheduleAtFixedRate(padPlayTimerTask, 1000, 1000);
+        }
+        mainActivityInterface.updateOnScreenInfo("showhide");
     }
+
     // Get info about the pads
     public boolean isPadPlaying() {
         return (pad1!=null && pad1.isPlaying() && !pad1Fading) || (pad2!=null && pad2.isPlaying() && !pad2Fading);
@@ -544,11 +561,11 @@ public class Pad {
     private void playStopOrPause(int padNum) {
         switch (padNum) {
             case 1:
-                pad1Pause = false;
                 if (pad1!=null && pad1.isPlaying() && pad1Fading) {
                     // Just stop the pad
                     stopAndReset(1);
                     padsActivated = false;
+                    pad1Pause = false;
                 } else if (pad1!=null && pad1.isPlaying() && !pad1Fading) {
                     // Pause the pad
                     pad1.pause();
@@ -556,6 +573,7 @@ public class Pad {
                     padPauseTime = padTime.getText();
                 } else if (pad1!=null && !pad1Fading) {
                     pad1.start();
+                    pad1Pause = false;
                 }
                 break;
             case 2:
@@ -564,6 +582,7 @@ public class Pad {
                     // Just stop the pad
                     stopAndReset(2);
                     padsActivated = false;
+                    pad1Pause = false;
                 } else if (pad2!=null && pad2.isPlaying() && !pad2Fading) {
                     // Pause the pad
                     pad2.pause();
@@ -571,6 +590,7 @@ public class Pad {
                     padPauseTime = padTime.getText();
                 } else if (pad2!=null && !pad2Fading) {
                     pad2.start();
+                    pad1Pause = false;
                 }
                 break;
         }
@@ -616,5 +636,12 @@ public class Pad {
         padTime.setText("");
         padTotalTime.setText("");
         pad.setVisibility(View.GONE);
+    }
+    
+    private void stopPadPlay() {
+        // IV - Configure padPlayTimer for stopping
+        padTime.setText("");
+        padTotalTime.setVisibility(View.GONE);
+        padTotalTime.setText("Stopping");
     }
 }
