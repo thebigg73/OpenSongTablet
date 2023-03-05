@@ -105,25 +105,36 @@ public class Pad {
 
     public boolean isAutoPad() {
         String padFile = mainActivityInterface.getSong().getPadfile();
+        if (padFile == null) {
+            padFile = "";
+        }
         String key = mainActivityInterface.getSong().getKey();
-        return (padFile == null || padFile.isEmpty() || padFile.equals("auto") || padFile.equals(c.getString(R.string.pad_auto))) &&
-                key!=null && !key.isEmpty();
+        if (key == null) {
+            key = "";
+        }
+        return (padFile.isEmpty() || padFile.equals("auto") || padFile.equals(c.getString(R.string.pad_auto))) && !key.isEmpty();
     }
 
     public boolean isCustomAutoPad() {
         String key = mainActivityInterface.getSong().getKey();
+        if (key == null) {
+            key = "";
+        }
         String customPad = "";
-        if (key!=null && !key.isEmpty()) {
-            customPad = mainActivityInterface.getPreferences().getMyPreferenceString("customPad" + keyToFlat(key), "");
+        if (!key.isEmpty()) {
+            customPad = mainActivityInterface.getPreferences().getMyPreferenceString("customPad" + keyToFlat(key) ,"");
         }
         return isAutoPad() && customPad!=null && !customPad.isEmpty();
     }
 
     public boolean isLinkAudio() {
         String padFile = mainActivityInterface.getSong().getPadfile();
+        if (padFile == null) {
+            padFile = "";
+        }
         String linkAudio = mainActivityInterface.getSong().getLinkaudio();
-        return ((padFile != null && padFile.equals("link")) || (padFile !=null && padFile.equals(c.getString(R.string.link_audio))) &&
-                linkAudio!=null && !linkAudio.isEmpty());
+        return (padFile.equals("link") || padFile.equals(c.getString(R.string.link_audio))) &&
+                linkAudio!=null && !linkAudio.isEmpty();
     }
 
     public Uri getPadUri() {
@@ -148,11 +159,19 @@ public class Pad {
 
     private void loadAndStart(int padNum) {
         Uri padUri = getPadUri();
+        String padFile = mainActivityInterface.getSong().getPadfile();
+        if (padFile == null) {
+            padFile = "";
+        }
+        String key = mainActivityInterface.getSong().getKey();
+        if (key == null) {
+            key = "";
+        }
 
         // If the padUri is null, we likely need a default autopad assuming the key is set
         AssetFileDescriptor assetFileDescriptor = null;
-        if (padUri==null && !mainActivityInterface.getSong().getKey().isEmpty()) {
-            assetFileDescriptor = getAssetPad(mainActivityInterface.getSong().getKey());
+        if (padUri==null && !key.isEmpty()) {
+            assetFileDescriptor = getAssetPad(key);
         }
 
         // Decide if pad should loop
@@ -160,19 +179,17 @@ public class Pad {
 
         // Decide if the pad is valid
         boolean padValid = (assetFileDescriptor!=null || isPadValid(padUri)) &&
-                (mainActivityInterface.getSong().getPadfile() !=null &&
-                        !mainActivityInterface.getSong().getPadfile().equals("off"));
+                !padFile.equals("off");
 
         // Prepare any error message
         if (!padValid) {
-            if (mainActivityInterface.getSong().getKey().isEmpty()) {
+            if (key.isEmpty()) {
                 mainActivityInterface.getShowToast().doIt(c.getString(R.string.pad_key_error));
             } else if (isCustomAutoPad()) {
                 mainActivityInterface.getShowToast().doIt(c.getString(R.string.pad_file_error));
             } else if (isLinkAudio()) {
                 mainActivityInterface.getShowToast().doIt(c.getString(R.string.pad_custom_pad_error));
-            } else if (mainActivityInterface.getSong().getPadfile() !=null &&
-                    mainActivityInterface.getSong().getPadfile().equals("off")) {
+            } else if (padFile.equals("off")) {
                 mainActivityInterface.getShowToast().doIt(c.getString(R.string.pad_off));
             }
             stopPadPlay();
