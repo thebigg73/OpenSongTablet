@@ -420,11 +420,6 @@ public class Pad {
         }
 
         Log.d(TAG, ("managePads Pad" + padInQuickFade + " Quick fading").replace("Pad0 Quick f","No Quick f").replace("-",""));
-
-        // IV - If both pads are fading and we are not already quick fading, set the quietest one to 'quick fade'
-        // if (pad1FadeTimerTask != null && pad2FadeTimerTask != null && padInQuickFade == 0) {
-        //    padInQuickFade = (Math.max(pad1VolL, pad1VolR) < Math.max(pad2VolL, pad2VolR) ? 1 : 2);
-        //}
     }
 
     private AssetFileDescriptor getAssetPad(String key) {
@@ -607,7 +602,7 @@ public class Pad {
                     padPauseTime = padTime.getText();
                 } else if (pad2!=null && pad2FadeTimerTask == null) {
                     pad2.start();
-                    pad1Pause = false;
+                    pad2Pause = false;
                 }
                 break;
         }
