@@ -3166,8 +3166,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         nearbyConnections.turnOffNearby();
         // Stop pad timers
         if (pad != null) {
-            pad.stopTimers(1);
-            pad.stopTimers(2);
+            pad.stopPad();
         }
         // Stop metronome timers
         if (metronome != null) {

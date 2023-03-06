@@ -70,6 +70,8 @@ public class PerformanceFragment extends Fragment {
     private ImageSlideAdapter imageSlideAdapter;
     private StageSectionAdapter stageSectionAdapter;
     private RecyclerLayoutManager recyclerLayoutManager;
+    private final Handler dealWithExtraStuffOnceSettledHandler = new Handler();
+    private final Runnable dealWithExtraStuffOnceSettledRunnable = this::dealWithExtraStuffOnceSettled;
 
     // Attaching and destroying
     @Override
@@ -303,6 +305,9 @@ public class PerformanceFragment extends Fragment {
                 // Now reset the song object (doesn't change what's already drawn on the screen)
                 mainActivityInterface.setSong(mainActivityInterface.getLoadSong().doLoadSong(
                         mainActivityInterface.getSong(), false));
+
+                // Remove capo
+                mainActivityInterface.updateOnScreenInfo("capoHide");
 
                 mainActivityInterface.moveToSongInSongMenu();
 
@@ -773,68 +778,78 @@ public class PerformanceFragment extends Fragment {
 
     // This stuff deals with running song action stuff
     private void dealWithStuffAfterReady() {
-        // Run this after the animate in delay to stop animation jitter
-        new Handler().postDelayed(() -> {
-            // Set the load status to the song (used to enable nearby section change listener)
-            mainActivityInterface.getSong().setCurrentlyLoading(false);
+         // Set the load status to the song (used to enable nearby section change listener)
+        mainActivityInterface.getSong().setCurrentlyLoading(false);
 
-            // Send the autoscroll information (if required)
-            mainActivityInterface.getAutoscroll().initialiseSongAutoscroll(heightAfterScale, availableHeight);
+        // Set the previous/next if we want to
+        mainActivityInterface.getDisplayPrevNext().setPrevNext();
 
-            // Now deal with the highlighter file
-            if (mainActivityInterface.getMode().equals(getString(R.string.mode_performance))) {
-                dealWithHighlighterFile(widthBeforeScale, heightBeforeScale);
-            }
+        // Release the processing lock
+        Log.d(TAG,"releasing processing lock");
+        processingTestView = false;
 
-            // Load up the sticky notes if the user wants them
-            dealWithStickyNotes(false, false);
+        // Run this only when the user has stopped on a song after 2s.
+        // This is important for pad use - the pad will not change while the user rapidly changes songs.
+        // This is important for rapid song - we only run autoscroll, metronome etc. for the last song.
+        // For pads, once settled on a song the user has 2s grace to prep to play the song before cross fade.
+        // A good time to change capo
+        dealWithExtraStuffOnceSettledHandler.removeCallbacks((dealWithExtraStuffOnceSettledRunnable));
+        dealWithExtraStuffOnceSettledHandler.postDelayed(dealWithExtraStuffOnceSettledRunnable, 2000);
+    }
 
-            // IV - Consume any later pending client section change received from Host (-ve value)
-            if (mainActivityInterface.getNearbyConnections().hasValidConnections() &&
-                    !mainActivityInterface.getNearbyConnections().getIsHost() &&
-                    mainActivityInterface.getNearbyConnections().getWaitingForSectionChange()) {
-                int pendingSection = mainActivityInterface.getNearbyConnections().getPendingCurrentSection();
+    private void dealWithExtraStuffOnceSettled() {
+        // Send the autoscroll information (if required)
+        mainActivityInterface.getAutoscroll().initialiseSongAutoscroll(heightAfterScale, availableHeight);
 
-                // Reset the flags to off
-                mainActivityInterface.getNearbyConnections().setWaitingForSectionChange(false);
-                mainActivityInterface.getNearbyConnections().setPendingCurrentSection(-1);
+        // Deal with capo information (if required)
+        mainActivityInterface.updateOnScreenInfo("capoShow");
+        mainActivityInterface.dealWithCapo();
 
-                mainActivityInterface.getNearbyConnections().doSectionChange(pendingSection);
-            }
+        // Now deal with the highlighter file
+        if (mainActivityInterface.getMode().equals(getString(R.string.mode_performance))) {
+            dealWithHighlighterFile(widthBeforeScale, heightBeforeScale);
+        }
 
-            // Set the previous/next if we want to
-            mainActivityInterface.getDisplayPrevNext().setPrevNext();
+        // Load up the sticky notes if the user wants them
+        dealWithStickyNotes(false, false);
 
-            // Start the pad (if the pads are activated and the pad is valid)
-            mainActivityInterface.getPad().autoStartPad();
+        // IV - Consume any later pending client section change received from Host (-ve value)
+        if (mainActivityInterface.getNearbyConnections().hasValidConnections() &&
+                !mainActivityInterface.getNearbyConnections().getIsHost() &&
+                mainActivityInterface.getNearbyConnections().getWaitingForSectionChange()) {
+            int pendingSection = mainActivityInterface.getNearbyConnections().getPendingCurrentSection();
 
-            // Update any midi commands (if any)
-            if (mainActivityInterface.getPreferences().getMyPreferenceBoolean("midiSendAuto",false)) {
-                mainActivityInterface.getMidi().buildSongMidiMessages();
-                mainActivityInterface.getMidi().sendSongMessages();
-            }
+            // Reset the flags to off
+            mainActivityInterface.getNearbyConnections().setWaitingForSectionChange(false);
+            mainActivityInterface.getNearbyConnections().setPendingCurrentSection(-1);
 
-            // Deal with capo information (if required)
-            mainActivityInterface.dealWithCapo();
+            mainActivityInterface.getNearbyConnections().doSectionChange(pendingSection);
+        }
 
-            // Update the secondary display (if present)
-            displayInterface.updateDisplay("newSongLoaded");
-            displayInterface.updateDisplay("setSongInfo");
-            displayInterface.updateDisplay("setSongContent");
+        // Start the pad (if the pads are activated and the pad is valid)
+        mainActivityInterface.getPad().autoStartPad();
 
-            // Send a call to nearby devices to process the song at their end
-            if (mainActivityInterface.getNearbyConnections().hasValidConnections() &&
-                    mainActivityInterface.getNearbyConnections().getIsHost()) {
-                mainActivityInterface.getNearbyConnections().sendSongPayload();
-            }
+        // Update any midi commands (if any)
+        if (mainActivityInterface.getPreferences().getMyPreferenceBoolean("midiSendAuto",false)) {
+            mainActivityInterface.getMidi().buildSongMidiMessages();
+            mainActivityInterface.getMidi().sendSongMessages();
+        }
 
-            // If we opened the app with and intent/file, check if we need to import
-            tryToImportIntent();
+        // Update the secondary display (if present)
+        displayInterface.updateDisplay("newSongLoaded");
+        displayInterface.updateDisplay("setSongInfo");
+        displayInterface.updateDisplay("setSongContent");
 
-            // Release the processing lock
-            processingTestView = false;
+        // Send a call to nearby devices to process the song at their end
+        if (mainActivityInterface.getNearbyConnections().hasValidConnections() &&
+                mainActivityInterface.getNearbyConnections().getIsHost()) {
+            mainActivityInterface.getNearbyConnections().sendSongPayload();
+        }
 
-        }, getResources().getInteger(R.integer.slide_in_time));
+        // If we opened the app with and intent/file, check if we need to import
+        tryToImportIntent();
+
+        mainActivityInterface.updateOnScreenInfo("showhide");
     }
     public void dealWithAbc(boolean forceShow, boolean hide) {
         if (hide) {
