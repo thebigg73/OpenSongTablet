@@ -62,10 +62,11 @@ public class BackupOSBFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = StorageBackupBinding.inflate(inflater,container,false);
+        setupStrings();
+
         mainActivityInterface.updateToolbar(string_backup);
         mainActivityInterface.updateToolbarHelp(string_website_backup);
 
-        setupStrings();
         setupViews();
 
         return myView.getRoot();

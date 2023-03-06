@@ -7,6 +7,7 @@ import android.util.DisplayMetrics;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
+import android.view.View;
 import android.view.animation.LinearInterpolator;
 
 import androidx.annotation.NonNull;
@@ -43,6 +44,7 @@ public class MyRecyclerView extends RecyclerView {
     private int mActivePointerId;
     private boolean allowPinchToZoom;
     private boolean gestureControl;
+    private int currentPosition = 0;
 
 
     private final LinearInterpolator linearInterpolator = new LinearInterpolator();
@@ -144,6 +146,11 @@ public class MyRecyclerView extends RecyclerView {
 
         };
         smoothScroller.setTargetPosition(position);
+        View v = layoutManager.getChildAt(position);
+
+        //Log.d(TAG,"scrollY:"+getAdapter().get+"  v top:"+v.getTop()+"  height:"+v.getHeight());
+        currentPosition = position;
+        //smoothScrollBy(0,500);
         layoutManager.startSmoothScroll(smoothScroller);
     }
 

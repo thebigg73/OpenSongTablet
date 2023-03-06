@@ -85,9 +85,11 @@ public class MyZoomLayout extends FrameLayout {
             getChildAt(0).setTranslationY(0);
             getChildAt(0).setPivotX(0);
             getChildAt(0).setPivotY(0);
-            getChildAt(0).setScaleX(scaleFactor);
-            getChildAt(0).setScaleY(scaleFactor);
-            canvas.scale(scaleFactor, scaleFactor, focusX, focusY);
+            if(scaleFactor>Float.NEGATIVE_INFINITY && scaleFactor<Float.POSITIVE_INFINITY) {
+                getChildAt(0).setScaleX(scaleFactor);
+                getChildAt(0).setScaleY(scaleFactor);
+                canvas.scale(scaleFactor, scaleFactor, focusX, focusY);
+            }
             calculateMaxScrolls();
             isScaling = false;
             canvas.restore();

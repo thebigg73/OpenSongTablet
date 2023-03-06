@@ -73,6 +73,8 @@ public class PerformanceFragment extends Fragment {
     private final Handler dealWithExtraStuffOnceSettledHandler = new Handler();
     private final Runnable dealWithExtraStuffOnceSettledRunnable = this::dealWithExtraStuffOnceSettled;
 
+    private String mainfoldername="", mode_performance="", mode_presenter="", mode_stage="", not_allowed="";
+
     // Attaching and destroying
     @Override
     public void onAttach(@NonNull Context context) {
@@ -117,6 +119,7 @@ public class PerformanceFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
 
         myView = ModePerformanceBinding.inflate(inflater, container, false);
+        prepareStrings();
 
         // Register this fragment
         mainActivityInterface.registerFragment(this,"Performance");
@@ -173,7 +176,7 @@ public class PerformanceFragment extends Fragment {
 
         removeViews();
 
-        doSongLoad(mainActivityInterface.getPreferences().getMyPreferenceString("songFolder",getString(R.string.mainfoldername)),
+        doSongLoad(mainActivityInterface.getPreferences().getMyPreferenceString("songFolder",mainfoldername),
                 mainActivityInterface.getPreferences().getMyPreferenceString("songFilename","Welcome to OpenSongApp"));
 
         // Check if we need to show an alert
@@ -187,6 +190,16 @@ public class PerformanceFragment extends Fragment {
         mainActivityInterface.getDisplayPrevNext().setZoomLayout(myView.zoomLayout);
 
         return myView.getRoot();
+    }
+
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            mainfoldername = getString(R.string.mainfoldername);
+            mode_performance = getString(R.string.mode_performance);
+            mode_presenter = getString(R.string.mode_presenter);
+            mode_stage = getString(R.string.mode_stage);
+            not_allowed = getString(R.string.not_allowed);
+        }
     }
 
     // Getting the preferences and helpers ready
@@ -203,7 +216,7 @@ public class PerformanceFragment extends Fragment {
         swipeMinimumDistance = mainActivityInterface.getPreferences().getMyPreferenceInt("swipeMinimumDistance", 250);
         swipeMaxDistanceYError = mainActivityInterface.getPreferences().getMyPreferenceInt("swipeMaxDistanceYError", 200);
         swipeMinimumVelocity = mainActivityInterface.getPreferences().getMyPreferenceInt("swipeMinimumVelocity", 600);
-        if (mainActivityInterface.getMode().equals(getString(R.string.mode_performance))) {
+        if (mainActivityInterface.getMode().equals(mode_performance)) {
             myView.mypage.setBackgroundColor(mainActivityInterface.getMyThemeColors().getLyricsBackgroundColor());
             myView.waterMark.setVisibility(View.VISIBLE);
         } else {
@@ -546,7 +559,7 @@ public class PerformanceFragment extends Fragment {
         // If we are old Android and can't show a pdf, tell the user
         if (mainActivityInterface.getSong().getFiletype().equals("PDF") &&
                 android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP) {
-            mainActivityInterface.getShowToast().doIt(getString(R.string.not_allowed));
+            mainActivityInterface.getShowToast().doIt(not_allowed);
         }
 
         mainActivityInterface.setSectionViews(null);
@@ -574,7 +587,7 @@ public class PerformanceFragment extends Fragment {
         // If we want headers, the header layout isn't null, so we can draw and listen
         // Add the view and wait for the vto return
         if (mainActivityInterface.getSongSheetTitleLayout() != null &&
-                !mainActivityInterface.getMode().equals(getString(R.string.mode_presenter))) {
+                !mainActivityInterface.getMode().equals(mode_presenter)) {
             // Check the header isn't already attached to a view
             if (mainActivityInterface.getSongSheetTitleLayout().getParent()!=null) {
                 ((ViewGroup) mainActivityInterface.getSongSheetTitleLayout().getParent()).removeAllViews();
@@ -604,44 +617,46 @@ public class PerformanceFragment extends Fragment {
     }
 
     private void setUpTestViewListener() {
-        myView.testPane.removeAllViews();
+        if (myView!=null) {
+            myView.testPane.removeAllViews();
 
-        // Add the views and wait for the vto of each to finish
-        myView.songView.clearViews();
-        myView.testPane.removeAllViews();
+            // Add the views and wait for the vto of each to finish
+            myView.songView.clearViews();
+            myView.testPane.removeAllViews();
 
-        // We will only proceed once all of the views show true as being drawn
-        boolean[] viewsDrawn = new boolean[mainActivityInterface.getSectionViews().size()];
+            // We will only proceed once all of the views show true as being drawn
+            boolean[] viewsDrawn = new boolean[mainActivityInterface.getSectionViews().size()];
 
-        for (int v=0; v<mainActivityInterface.getSectionViews().size(); v++) {
-            final int viewNum = v;
-            final View view = mainActivityInterface.getSectionViews().get(viewNum);
+            for (int v = 0; v < mainActivityInterface.getSectionViews().size(); v++) {
+                final int viewNum = v;
+                final View view = mainActivityInterface.getSectionViews().get(viewNum);
 
-            // If views are attached to a parent, remove it from the parent
-            if (view.getParent()!=null) {
-                // Still attached - remove it
-                ((ViewGroup)view.getParent()).removeView(view);
-            }
+                // If views are attached to a parent, remove it from the parent
+                if (view.getParent() != null) {
+                    // Still attached - remove it
+                    ((ViewGroup) view.getParent()).removeView(view);
+                }
 
-            // Set a post listener for the view
-            view.post(() -> {
-                viewsDrawn[viewNum] = true;
-                // Check if the array is only true
-                boolean isReady = true;
-                for (boolean thisBoolean : viewsDrawn) {
-                    if (!thisBoolean) {
-                        // Not ready
-                        isReady = false;
-                        break;
+                // Set a post listener for the view
+                view.post(() -> {
+                    viewsDrawn[viewNum] = true;
+                    // Check if the array is only true
+                    boolean isReady = true;
+                    for (boolean thisBoolean : viewsDrawn) {
+                        if (!thisBoolean) {
+                            // Not ready
+                            isReady = false;
+                            break;
+                        }
                     }
-                }
-                if (isReady) {
-                    songIsReadyToDisplay();
-                }
-            });
+                    if (isReady) {
+                        songIsReadyToDisplay();
+                    }
+                });
 
-            // Add the view.  The post above gets called once drawn
-            myView.testPane.addView(view);
+                // Add the view.  The post above gets called once drawn
+                myView.testPane.addView(view);
+            }
         }
     }
 
@@ -662,7 +677,7 @@ public class PerformanceFragment extends Fragment {
             myView.testPane.removeAllViews();
 
             // Decide which mode we are in to determine how the views are rendered
-            if (mainActivityInterface.getMode().equals(getString(R.string.mode_stage))) {
+            if (mainActivityInterface.getMode().equals(mode_stage)) {
                 // We are in Stage mode so use the recyclerView
                 myView.recyclerView.setVisibility(View.INVISIBLE);
                 myView.pageHolder.setVisibility(View.GONE);
@@ -806,7 +821,7 @@ public class PerformanceFragment extends Fragment {
         mainActivityInterface.dealWithCapo();
 
         // Now deal with the highlighter file
-        if (mainActivityInterface.getMode().equals(getString(R.string.mode_performance))) {
+        if (mainActivityInterface.getMode().equals(mode_performance)) {
             dealWithHighlighterFile(widthBeforeScale, heightBeforeScale);
         }
 
@@ -960,7 +975,7 @@ public class PerformanceFragment extends Fragment {
         }
     }
     public void toggleHighlighter() {
-        if (mainActivityInterface.getMode().equals(getString(R.string.mode_performance))) {
+        if (mainActivityInterface.getMode().equals(mode_performance)) {
             if (myView.highlighterView.getVisibility() == View.VISIBLE) {
                 myView.highlighterView.setVisibility(View.GONE);
             } else {
@@ -1026,6 +1041,7 @@ public class PerformanceFragment extends Fragment {
     public void performanceShowSection(int position) {
         // Scroll the recyclerView to the position as long as we aren't in an autoscroll
         if (!mainActivityInterface.getAutoscroll().getIsAutoscrolling()) {
+            //myView.recyclerView.smoothScrollBy(0,500);
             myView.recyclerView.smoothScrollTo(requireContext(), recyclerLayoutManager, position);
         }
         mainActivityInterface.getPresenterSettings().setCurrentSection(position);
@@ -1043,7 +1059,7 @@ public class PerformanceFragment extends Fragment {
         if (mainActivityInterface.getSong().getFiletype().equals("PDF") &&
                 Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 pdfPageAdapter.sectionSelected(position);
-        } else if (mainActivityInterface.getMode().equals(getString(R.string.mode_stage))) {
+        } else if (mainActivityInterface.getMode().equals(mode_stage)) {
             stageSectionAdapter.sectionSelected(position);
         }
     }

@@ -167,8 +167,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private boolean bootUpCompleted = false;
     private boolean rebooted = false;
 
-    private ArrayList<Song> songsFound;
-
     // The helpers sorted alphabetically
     private ABCNotation abcNotation;
     private AlertChecks alertChecks;

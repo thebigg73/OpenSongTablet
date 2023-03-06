@@ -250,6 +250,7 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
             }
             currentSection = position;
 
+
             // Send and update notification to Performance Fragment via the MainActivity
             displayInterface.performanceShowSection(position);
         } catch (Exception e) {

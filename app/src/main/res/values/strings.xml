@@ -1113,4 +1113,5 @@ Check out the categories in the right hand options menu.
     <string name="zoom_level">Zoom level</string>
     <string name="invert_PDF">Invert PDF colours</string>
     <string name="invert_PDF_info">Most PDF documents have a light background and dark text.  Inverting the colours will make this have a dark background and light text similar to a dark or night theme.</string>
+    <string name="stopping">Stopping</string>
 </resources>

@@ -381,35 +381,40 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
             editFileRequired = true;
 
             // If we are in a set (position>-1)
-            if (position>-1 && mainActivityInterface.getCurrentSet().getSetKeys().size()>position) {
+            if (position>-1 && mainActivityInterface.getCurrentSet().getSetKeys()!=null && mainActivityInterface.getCurrentSet().getSetKeys().size()>position) {
                 // Transpose the key in the set.
                 // This deals with normal songs and songs that are already had temp key changes from the set list
-                mainActivityInterface.getCurrentSet().setKey(position, newKey);
-                Log.d(TAG,"setFolder:"+setFolder+"  songFolder:"+songFolder+"  position:"+position);
+                try {
+                    mainActivityInterface.getCurrentSet().setKey(position, newKey);
+                    Log.d(TAG, "setFolder:" + setFolder + "  songFolder:" + songFolder + "  position:" + position);
 
-                if (songFolder.equals("**Variation") && !setFolder.contains("**Variation")){
-                    // This song is already a temp variation that is transposed
-                    // We need to call the original file
-                    mainActivityInterface.getSong().setFolder(setFolder);
-                    mainActivityInterface.getSong().setFilename(setFilename);
-                    mainActivityInterface.getLoadSong().doLoadSong(mainActivityInterface.getSong(),false);
-                }
-                if (!setFolder.contains("**Variation") && !transposeSet && !transposeVariation) {
-                    // If this is a normal song and want to actually transpose it normally, transpose and resave
-                    mainActivityInterface.getSong().setFolder(setFolder);
-                    mainActivityInterface.getTranspose().doTranspose(mainActivityInterface.getSong(),
-                            transposeDirection, transposeTimes, fromFormat, toFormat);
-                    mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong());
+                    if (songFolder.equals("**Variation") && !setFolder.contains("**Variation")) {
+                        // This song is already a temp variation that is transposed
+                        // We need to call the original file
+                        mainActivityInterface.getSong().setFolder(setFolder);
+                        mainActivityInterface.getSong().setFilename(setFilename);
+                        mainActivityInterface.getLoadSong().doLoadSong(mainActivityInterface.getSong(), false);
+                    }
+                    if (!setFolder.contains("**Variation") && !transposeSet && !transposeVariation) {
+                        // If this is a normal song and want to actually transpose it normally, transpose and resave
+                        mainActivityInterface.getSong().setFolder(setFolder);
+                        mainActivityInterface.getTranspose().doTranspose(mainActivityInterface.getSong(),
+                                transposeDirection, transposeTimes, fromFormat, toFormat);
+                        mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong());
 
-                } else if (!setFolder.contains("**Variation") && transposeVariation) {
-                    // If this is a normal song, but want to convert to a variation
-                    mainActivityInterface.getSetActions().makeVariation(position);
+                    } else if (!setFolder.contains("**Variation") && transposeVariation) {
+                        // If this is a normal song, but want to convert to a variation
+                        mainActivityInterface.getSetActions().makeVariation(position);
 
-                } else if (setFolder.contains("Variation")) {
-                    // This song was already a variation (no option to transposeSet or transposeVariation)
-                    mainActivityInterface.getTranspose().doTranspose(mainActivityInterface.getSong(),
-                            transposeDirection, transposeTimes, fromFormat, toFormat);
-                    mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong());
+                    } else if (setFolder.contains("Variation")) {
+                        // This song was already a variation (no option to transposeSet or transposeVariation)
+                        mainActivityInterface.getTranspose().doTranspose(mainActivityInterface.getSong(),
+                                transposeDirection, transposeTimes, fromFormat, toFormat);
+                        mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong());
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    mainActivityInterface.getStorageAccess().updateFileActivityLog(e.toString());
                 }
 
                 // If this is a normal song, but we want to just transpose in the set list,
@@ -417,53 +422,67 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
 
                 // Update the set list/menu
                 handler.post(() -> {
-                    mainActivityInterface.getSetActions().saveTheSet();
-                    mainActivityInterface.updateSetList();
-                    if (position>-1) {
-                        mainActivityInterface.loadSongFromSet(position);
+                    try {
+                        mainActivityInterface.getSetActions().saveTheSet();
+                        mainActivityInterface.updateSetList();
+                        if (position > -1) {
+                            mainActivityInterface.loadSongFromSet(position);
+                        }
+                        dismiss();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        mainActivityInterface.getStorageAccess().updateFileActivityLog(e.toString());
                     }
-                    dismiss();
                 });
 
             } else {
                 // Not in a set
                 // If requested transpose the capo fret number
+                try {
+                    String newFilename = mainActivityInterface.getSong().getFilename() + " (" + string_CopyOf + ")";
+                    String newTitle = mainActivityInterface.getSong().getTitle() + " (" + string_CopyOf + ")";
+                    String newCapo = String.valueOf(((Integer.parseInt("0" + mainActivityInterface.getSong().getCapo()) + 12 +
+                            (transposeTimes * Integer.parseInt(transposeDirection))) % 12));
+                    if (newCapo.equals("0")) {
+                        newCapo = "";
+                    }
 
-                String newFilename = mainActivityInterface.getSong().getFilename()+" ("+string_CopyOf+")";
-                String newTitle = mainActivityInterface.getSong().getTitle()+" ("+string_CopyOf+")";
-                String newCapo = String.valueOf(((Integer.parseInt("0" + mainActivityInterface.getSong().getCapo()) + 12 +
-                        (transposeTimes * Integer.parseInt(transposeDirection))) % 12));
-                if (newCapo.equals("0")) {
-                    newCapo = "";
-                }
+                    // All options require transpose
+                    mainActivityInterface.getTranspose().doTranspose(mainActivityInterface.getSong(),
+                            transposeDirection, transposeTimes, fromFormat, toFormat);
 
-                // All options require transpose
-                mainActivityInterface.getTranspose().doTranspose(mainActivityInterface.getSong(),
-                        transposeDirection, transposeTimes, fromFormat, toFormat);
+                    if (transposeCapo) {
+                        mainActivityInterface.getSong().setCapo(newCapo);
+                    }
 
-                if (transposeCapo) {
-                    mainActivityInterface.getSong().setCapo(newCapo);
-                }
+                    if (transposeCopy) {
+                        // Make a copy of the song that is transposed (leaving the original untouched)
+                        mainActivityInterface.getSong().setFilename(newFilename);
+                        mainActivityInterface.getSong().setTitle(newTitle);
+                        mainActivityInterface.getSQLiteHelper().createSong(songFolder, newFilename);
+                        mainActivityInterface.getSaveSong().doSave(mainActivityInterface.getSong());
 
-                if (transposeCopy) {
-                    // Make a copy of the song that is transposed (leaving the original untouched)
-                    mainActivityInterface.getSong().setFilename(newFilename);
-                    mainActivityInterface.getSong().setTitle(newTitle);
-                    mainActivityInterface.getSQLiteHelper().createSong(songFolder,newFilename);
-                    mainActivityInterface.getSaveSong().doSave(mainActivityInterface.getSong());
-
-                } else {
-                    // Just update the song and be done with it!
-                    mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong());
+                    } else {
+                        // Just update the song and be done with it!
+                        mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong());
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    mainActivityInterface.getStorageAccess().updateFileActivityLog(e.toString());
                 }
 
                 // Update the song menu and load the song again
                 handler.post(() -> {
-                    mainActivityInterface.updateSongMenu(mainActivityInterface.getSong());
-                    mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong());
-                    mainActivityInterface.doSongLoad(mainActivityInterface.getSong().getFolder(),
-                            mainActivityInterface.getSong().getFilename(), true);
-                    dismiss();
+                    try {
+                        mainActivityInterface.updateSongMenu(mainActivityInterface.getSong());
+                        mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong());
+                        mainActivityInterface.doSongLoad(mainActivityInterface.getSong().getFolder(),
+                                mainActivityInterface.getSong().getFilename(), true);
+                        dismiss();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        mainActivityInterface.getStorageAccess().updateFileActivityLog(e.toString());
+                    }
                 });
             }
         });

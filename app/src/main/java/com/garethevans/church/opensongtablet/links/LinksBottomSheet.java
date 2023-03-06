@@ -228,6 +228,9 @@ public class LinksBottomSheet extends BottomSheetDialogFragment {
         }
         if (mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong())) {
             mainActivityInterface.getShowToast().doIt(getString(R.string.success));
+            Log.d(TAG,"Success");
+        } else {
+            mainActivityInterface.getShowToast().doIt(getString(R.string.error));
         }
         mainActivityInterface.updateFragment(fragName, callingFragment, null);
     }
