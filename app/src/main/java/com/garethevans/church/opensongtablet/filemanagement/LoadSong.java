@@ -636,7 +636,7 @@ public class LoadSong {
                 String newExtracted  = origExtracted.replace("<","&lt;");
                 newExtracted = newExtracted.replace(">","&gt;");
 
-                toFix = toFix.replace(origExtracted,newExtracted);
+                toFix = toFix.replace(origExtracted,newExtracted).replace("<>","");
 
                 // Now save the song again (output stream is closed in the write file method)
                 OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(uri);

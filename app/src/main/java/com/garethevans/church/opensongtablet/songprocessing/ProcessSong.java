@@ -1911,6 +1911,8 @@ public class ProcessSong {
             return mainActivityInterface.getMyThemeColors().getLyricsTagColor();
         } else if (beautifyHeading(line).contains(c.getString(R.string.custom))) {
             return mainActivityInterface.getMyThemeColors().getLyricsCustomColor();
+        } else if (line.contains("[") && line.contains("]")) {
+            return mainActivityInterface.getMyThemeColors().getLyricsCustomColor();
         } else {
             return mainActivityInterface.getMyThemeColors().getLyricsVerseColor();
         }
@@ -2057,6 +2059,7 @@ public class ProcessSong {
     private int howManyColumnsAreBest(float col1, float[] col2, float[] col3, String autoScale,
                                       float fontSizeMin, boolean songAutoScaleOverrideFull,
                                       boolean need23ColumnCheck) {
+
         // There's a few things to consider here.  Firstly, if scaling is off, best is 1 column.
         // If we are overriding full scale to width only, or 1 col to off, best is 1 column.
         if (!need23ColumnCheck && (autoScale.equals("N") || autoScale.equals("W"))) {
@@ -2076,6 +2079,7 @@ public class ProcessSong {
                     best = 3;
                 }
             }
+
             // Default font size is 14sp when drawing. If scaling takes this below the min font Size, override back to 1 column
             if (best == 2) {
                 if (col2[2] == 0) {
@@ -2098,6 +2102,7 @@ public class ProcessSong {
                     return 1;
                 }
             }
+
             return best;
         }
     }
@@ -2184,7 +2189,8 @@ public class ProcessSong {
                     }
                 }
                 return setOneColumn(sectionViews, column1, column2, column3, currentWidth,
-                        currentHeight, scaleSize_1col, fontSizeMax, songSheetTitleHeight, presentation);
+                        currentHeight, scaleSize_1col, fontSizeMax, songSheetTitleHeight, presentation,
+                        screenWidth,-1);
 
             case 2:
                 return setTwoColumns(sectionViews, column1, column2, column3,
@@ -2213,7 +2219,7 @@ public class ProcessSong {
     private float[] setOneColumn(ArrayList<View> sectionViews, LinearLayout column1,
                                  LinearLayout column2, LinearLayout column3, int currentWidth,
                                  int currentHeight, float[] scaleSize, float maxFontSize,
-                                 int songSheetTitleHeight, boolean presentation) {
+                                 int songSheetTitleHeight, boolean presentation, int maxWidth, int maxHeight) {
         // Hide all columns for now
         columnVisibility(column1, column2, column3, false, false, false);
 
