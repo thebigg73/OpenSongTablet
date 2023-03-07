@@ -351,7 +351,8 @@ public class Midi {
             // Now convert these fret numbers to actual notes and add to the array
             List<String> startNotes = getStartNotes(tuning);
             for (int i = 0; i < chordNotes.length; i++) {
-                if (chordNotes[i]!=null && !chordNotes[i].isEmpty() && !chordNotes[i].equals("x")) {
+                if (chordNotes[i]!=null && !chordNotes[i].isEmpty() && !chordNotes[i].equals("x") &&
+                startNotes!=null && startNotes.size()>i) {
                     int fretNum = Integer.parseInt(chordNotes[i]);
                     String openStringNote = startNotes.get(i);
 
@@ -387,8 +388,6 @@ public class Midi {
             // Write the midi file and play it
             handler.post(this::createMidiFile);
         });
-
-
     }
 
     public void setMidiInstrument(String instrument) {

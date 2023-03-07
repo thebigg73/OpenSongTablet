@@ -259,7 +259,9 @@ public class BackupOSBFragment extends Fragment {
                                     // Update the screen
                                     handler.post(() -> {
                                         String message = string_processing + ": " + file;
-                                        myView.progressText.setText(message);
+                                        if (myView!=null) {
+                                            myView.progressText.setText(message);
+                                        }
                                     });
                                     try {
                                         zipOutputStream.putNextEntry(ze);

@@ -732,7 +732,7 @@ public class PerformanceFragment extends Fragment {
                         availableWidth, availableHeight, myView.songView.getCol1(), myView.songView.getCol2(),
                         myView.songView.getCol3(), false, getResources().getDisplayMetrics());
 
-                // Determine how many colums are scaled
+                // Determine how many columns are scaled
                 heightAfterScale = 0;
                 if (scaleInfo.length==2) {
                     // 1 column.  [0]=scaleSize, [1]=scaled height
@@ -747,7 +747,7 @@ public class PerformanceFragment extends Fragment {
                 } else if (scaleInfo.length==4) {
                     // 2 columns. [0]=col1scale  [1]=col2scale  [2]=sectionnum for col2  [3]=biggest col height
                     scaleFactor = Math.max(scaleInfo[0],scaleInfo[1]);
-                    heightAfterScale = (int)scaleInfo[3];
+                    heightAfterScale = (int)(scaleInfo[3]);
                     myView.pageHolder.getLayoutParams().width = availableWidth;
                     myView.songView.getLayoutParams().width = availableWidth;
                 }  else if (scaleInfo.length==6) {
@@ -800,7 +800,6 @@ public class PerformanceFragment extends Fragment {
         mainActivityInterface.getDisplayPrevNext().setPrevNext();
 
         // Release the processing lock
-        Log.d(TAG,"releasing processing lock");
         processingTestView = false;
 
         // Run this only when the user has stopped on a song after 2s.

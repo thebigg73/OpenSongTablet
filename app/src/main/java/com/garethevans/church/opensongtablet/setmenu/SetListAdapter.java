@@ -145,40 +145,44 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
 
     @Override
     public void onItemMoved(int fromPosition, int toPosition) {
-        dragPosition = toPosition;
-        String thisFolder = setList.get(fromPosition).songfolder;
-        String thisFilename = setList.get(fromPosition).songfilename;
-        String thisKey = setList.get(fromPosition).songkey;
-        String thisSetItem = mainActivityInterface.getCurrentSet().getItem(fromPosition);
+        if (setList!=null && setList.size()>fromPosition && setList.size()>toPosition &&
+                mainActivityInterface.getCurrentSet().getSetItems()!=null &&
+                mainActivityInterface.getCurrentSet().getSetItems().size()>fromPosition) {
+            dragPosition = toPosition;
+            String thisFolder = setList.get(fromPosition).songfolder;
+            String thisFilename = setList.get(fromPosition).songfilename;
+            String thisKey = setList.get(fromPosition).songkey;
+            String thisSetItem = mainActivityInterface.getCurrentSet().getItem(fromPosition);
 
-        // Remove from this position
-        mainActivityInterface.getCurrentSet().removeFromCurrentSet(fromPosition, null);
+            // Remove from this position
+            mainActivityInterface.getCurrentSet().removeFromCurrentSet(fromPosition, null);
 
-        // Add to the new position
-        mainActivityInterface.getCurrentSet().addToCurrentSet(toPosition, thisSetItem, thisFolder, thisFilename, thisKey);
+            // Add to the new position
+            mainActivityInterface.getCurrentSet().addToCurrentSet(toPosition, thisSetItem, thisFolder, thisFilename, thisKey);
 
-        // Update the set string and save it
-        mainActivityInterface.getCurrentSet().setSetCurrent(mainActivityInterface.getSetActions().getSetAsPreferenceString());
+            // Update the set string and save it
+            mainActivityInterface.getCurrentSet().setSetCurrent(mainActivityInterface.getSetActions().getSetAsPreferenceString());
 
-        setList.get(fromPosition).songitem = (toPosition + 1) + ".";
-        setList.get(toPosition).songitem = (fromPosition + 1) + ".";
-        SetItemInfo thisItem = setList.get(fromPosition);
-        setList.remove(fromPosition);
-        setList.add(toPosition, thisItem);
+            setList.get(fromPosition).songitem = (toPosition + 1) + ".";
+            setList.get(toPosition).songitem = (fromPosition + 1) + ".";
+            SetItemInfo thisItem = setList.get(fromPosition);
+            setList.remove(fromPosition);
+            setList.add(toPosition, thisItem);
 
-        boolean from_highlighted = highlightedArray.get(fromPosition, false);
-        boolean to_highlighted = highlightedArray.get(toPosition, false);
-        highlightedArray.put(fromPosition, to_highlighted);
-        highlightedArray.put(toPosition, from_highlighted);
-        notifyItemChanged(fromPosition);
-        notifyItemChanged(toPosition);
-        notifyItemMoved(fromPosition, toPosition);
+            boolean from_highlighted = highlightedArray.get(fromPosition, false);
+            boolean to_highlighted = highlightedArray.get(toPosition, false);
+            highlightedArray.put(fromPosition, to_highlighted);
+            highlightedArray.put(toPosition, from_highlighted);
+            notifyItemChanged(fromPosition);
+            notifyItemChanged(toPosition);
+            notifyItemMoved(fromPosition, toPosition);
 
-        mainActivityInterface.updateInlineSetMove(fromPosition, toPosition);
+            mainActivityInterface.updateInlineSetMove(fromPosition, toPosition);
 
-        // Update the title
-        mainActivityInterface.updateSetTitle();
-        updateSetPrevNext();
+            // Update the title
+            mainActivityInterface.updateSetTitle();
+            updateSetPrevNext();
+        }
     }
 
     @Override
