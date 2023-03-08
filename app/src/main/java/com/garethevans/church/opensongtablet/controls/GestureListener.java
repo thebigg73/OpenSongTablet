@@ -101,6 +101,9 @@ public class GestureListener extends GestureDetector.SimpleOnGestureListener {
                 performanceGestures.toggleMetronome();
                 performanceGestures.toggleAutoscroll();
                 break;
+            case "share_song":
+                performanceGestures.shareSong();
+                break;
             default:
                 return false;
         }

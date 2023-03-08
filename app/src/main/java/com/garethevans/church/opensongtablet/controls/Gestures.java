@@ -57,6 +57,7 @@ public class Gestures {
         gestures.add("autoscroll_metronome");
         gestures.add("metronome_pad");
         gestures.add("autoscroll_metronome_pad");
+        gestures.add("share_song");
     }
     private void setGestureDescriptions() {
         // Set up the dropdown options
@@ -86,6 +87,7 @@ public class Gestures {
         gestureDescriptions.add(autoscroll + " + " + metronome + startstop);
         gestureDescriptions.add(metronome + " + " + pad + startstop);
         gestureDescriptions.add(autoscroll + " + " + metronome + " + " + pad + startstop);
+        gestureDescriptions.add(c.getString(R.string.export)+" ("+c.getString(R.string.song)+")");
     }
     private void getPreferences() {
         doubleTap = mainActivityInterface.getPreferences().getMyPreferenceString("gestureDoubleTap","editsong");

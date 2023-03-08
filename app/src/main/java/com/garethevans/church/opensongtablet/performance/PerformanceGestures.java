@@ -517,6 +517,11 @@ public class PerformanceGestures {
         mainActivityInterface.navHome();
     }
 
+    public void shareSong() {
+        mainActivityInterface.setWhattodo("exportSong");
+        mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_export),0);
+    }
+
     // The checks
     private boolean ifPDFAndAllowed() {
         if (mainActivityInterface.getSong().getFiletype().equals("PDF")) {

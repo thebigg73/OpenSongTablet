@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.print.PrintManager;
 import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,10 +43,15 @@ public class ExportFragment extends Fragment {
     private ArrayList<View> sectionViewsPDF = new ArrayList<>();
     private ArrayList<Integer> sectionViewWidthsPDF = new ArrayList<>(), sectionViewHeightsPDF = new ArrayList<>();
     private LinearLayout headerLayoutPDF;
+    private String pngName;
+    private int viewsToProcess;
+    private int totalWidth = 0;
+    private int totalHeight = 0;
+    private SparseBooleanArray sparseSectionsDrawn;
     private int headerLayoutWidth, headerLayoutHeight, songsToAdd, songsProcessed;
     private String setToExport = null, exportType, shareTitle, textContent, setContent;
     private boolean openSong = false, currentFormat = false, openSongApp = false, pdf = false, image = false,
-            chordPro = false, onsong = false, text = false, setPDF = false, openSongSet = false,
+            png = false, chordPro = false, onsong = false, text = false, setPDF = false, openSongSet = false,
             setPNG = false, openSongAppSet = false, includeSongs = false, textSet = false, isPrint;
     private String[] location, setData, ids, setKeys;
     private StringBuilder songsAlreadyAdded;
@@ -135,6 +141,7 @@ public class ExportFragment extends Fragment {
         // Set the defaults for song export
         myView.currentFormat.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("exportCurrentFormat",true));
         myView.pdf.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("exportPDF",false));
+        myView.image.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("exportPNG",false));
         myView.openSongApp.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("exportOpenSongApp",false));
         myView.openSong.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("exportDesktop",false));
         myView.onSong.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("exportOnSong",false));
@@ -149,6 +156,7 @@ public class ExportFragment extends Fragment {
         myView.setPNG.setOnCheckedChangeListener(new MyCheckChanged("exportSetPNG"));
         myView.currentFormat.setOnCheckedChangeListener(new MyCheckChanged("exportCurrentFormat"));
         myView.pdf.setOnCheckedChangeListener(new MyCheckChanged("exportPDF"));
+        myView.image.setOnCheckedChangeListener(new MyCheckChanged("exportPNG"));
         myView.openSongApp.setOnCheckedChangeListener(new MyCheckChanged("exportOpenSongApp"));
         myView.openSong.setOnCheckedChangeListener(new MyCheckChanged("exportDesktop"));
         myView.onSong.setOnCheckedChangeListener(new MyCheckChanged("exportOnSong"));
@@ -177,6 +185,7 @@ public class ExportFragment extends Fragment {
 
             // If we are exporting songs, hide the ones not allowed for sets
             myView.image.setVisibility(View.GONE);
+            myView.image.setChecked(false);
 
             // Now show the set view
             myView.setOptionsLayout.setVisibility(View.VISIBLE);
@@ -196,7 +205,7 @@ public class ExportFragment extends Fragment {
                 myView.openSongApp.setVisibility(View.GONE);
                 myView.text.setVisibility(View.GONE);
             } else {
-                myView.image.setVisibility(View.GONE);
+                //myView.image.setVisibility(View.GONE);
             }
 
             switch (mainActivityInterface.getSong().getFiletype()) {
@@ -511,6 +520,7 @@ public class ExportFragment extends Fragment {
 
         if (songsProcessed>=ids.length || !includeSongs || !pdf || songsProcessed==songsToAdd) {
             initiateShare();
+
         } else {
             String id = ids[songsProcessed];
             String key = setKeys[songsProcessed];
@@ -634,7 +644,11 @@ public class ExportFragment extends Fragment {
                 }
             }
 
-            if (pdf && isXML) {
+            // If we are exporting an XML song as an image, it gets converted to a pdf first then
+            // Put back as an image and then screenshotted!
+            png = image && isXML;
+
+            if ((pdf && isXML) || png) {
                 // Create PDF song on the fly and only initiate share once done
                 createOnTheFly(mainActivityInterface.getSong(),mainActivityInterface.getSong().getFilename()+".pdf");
             } else {
@@ -692,6 +706,7 @@ public class ExportFragment extends Fragment {
         sectionViewWidthsPDF = new ArrayList<>();
         sectionViewHeightsPDF = new ArrayList<>();
         headerLayoutPDF = new LinearLayout(requireContext());
+        sparseSectionsDrawn = new SparseBooleanArray();
     }
 
     public void createOnTheFlyHeader(Song thisSong, String pdfName) {
@@ -707,7 +722,7 @@ public class ExportFragment extends Fragment {
                 myView.hiddenHeader.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 headerLayoutWidth = myView.hiddenHeader.getMeasuredWidth();
                 headerLayoutHeight = myView.hiddenHeader.getMeasuredHeight();
-                if (!pdfName.equals(getString(R.string.set) +" " +setToExport+".pdf") && !setPNG) {
+                if (!pdfName.equals(getString(R.string.set) +" " +setToExport+".pdf") && !setPNG && !png) {
                     myView.hiddenHeader.removeAllViews();
                 }
                 createOnTheFlySections(thisSong, pdfName);
@@ -791,9 +806,6 @@ public class ExportFragment extends Fragment {
                         }
                     }
 
-                    // Now detach from this view (can only be shown in one layout)
-                    myView.hiddenSections.removeAllViews();
-
                     // Now trigger the next step of preparing the pdf from the views created on the fly
                     if (uris==null) {
                         uris = new ArrayList<>();
@@ -802,18 +814,44 @@ public class ExportFragment extends Fragment {
                         mimeTypes = new ArrayList<>();
                     }
 
-                    // If we wanted a pdf (rather than png), add it
+                    if (png) {
+                        // Now take a bitmap of the layout
+                        myView.previewLayout.setVisibility(View.VISIBLE);
+                        setPNGContent = Bitmap.createBitmap(myView.previewLayout.getWidth()*2, myView.previewLayout.getHeight()*2, Bitmap.Config.ARGB_8888);
+                        Canvas canvas = new Canvas(setPNGContent);
+                        myView.previewLayout.draw(canvas);
+                        pngName = pdfName.replace(".pdf",".png");
+                        Log.d(TAG, "pngName:" + pngName + "  bitmap  width:" + setPNGContent.getWidth() + "  height:" + setPNGContent.getHeight());
+                        Log.d(TAG,"children:"+myView.previewLayout.getChildCount());
+                        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Export", "", pngName);
+                        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, uri, null, "Export", "", pngName);
+                        OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(uri);
+                        mainActivityInterface.getStorageAccess().writeImage(outputStream, setPNGContent);
+                        uris.add(uri);
+                        myView.previewLayout.setVisibility(View.INVISIBLE);
+                        myView.hiddenHeader.removeAllViews();
+                    }
 
+                    // Now detach from this view (can only be shown in one layout)
+                    myView.hiddenSections.removeAllViews();
+
+                    // If we wanted a pdf (rather than png), add it
                     Log.d(TAG,"setPDF:"+setPDF+"  isSetFile:"+isSetFile);
 
-                    if (setPDF || !isSetFile) {
+                    if (setPDF || (!isSetFile && !png)) {
                         uris.add(mainActivityInterface.getMakePDF().createTextPDF(
                                 sectionViewsPDF, sectionViewWidthsPDF,
                                 sectionViewHeightsPDF, headerLayoutPDF,
                                 headerLayoutWidth, headerLayoutHeight,
                                 pdfName, null));
-                        if (!mimeTypes.contains("application/pdf")) {
-                            mimeTypes.add("application/pdf");
+
+                        if (!pdf) {
+                            // Remove that uri as it was only created for an image screenshot
+                            uris.remove(uris.size()-1);
+                        } else {
+                            if (!mimeTypes.contains("application/pdf")) {
+                                mimeTypes.add("application/pdf");
+                            }
                         }
                     }
                     if (isPrint) {

@@ -29,14 +29,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
+
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.appdata.InformationBottomSheet;
+import com.garethevans.church.opensongtablet.customviews.GlideApp;
 import com.garethevans.church.opensongtablet.customviews.MyMaterialEditText;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
@@ -3239,4 +3243,50 @@ public class ProcessSong {
         return filenameOk && lyricsOk && folderOk;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    public ArrayList<ImageView> getPDFAsImageViews(Context c, Uri pdfUri) {
+        ArrayList<ImageView> imageViews = new ArrayList<>();
+
+        if (mainActivityInterface.getStorageAccess().uriExists(pdfUri)) {
+            int totalPages;
+            ParcelFileDescriptor parcelFileDescriptor = mainActivityInterface.getProcessSong().getPDFParcelFileDescriptor(pdfUri);
+            PdfRenderer pdfRenderer = mainActivityInterface.getProcessSong().getPDFRenderer(parcelFileDescriptor);
+            if (pdfRenderer != null) {
+                totalPages = pdfRenderer.getPageCount();
+            } else {
+                totalPages = 0;
+            }
+
+            if (pdfRenderer != null) {
+                for (int x = 0; x < totalPages; x++) {
+                    ImageView imageView = new ImageView(c);
+                    PdfRenderer.Page page = pdfRenderer.openPage(x);
+                    int width = page.getWidth();
+                    int height = page.getHeight();
+                    imageView.setLayoutParams(new LinearLayout.LayoutParams(width,height));
+
+                    Log.d(TAG,"page "+x+"  "+width+"x"+height);
+                    Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+                    page.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY);
+
+                    GlideApp.with(c).load(bitmap).override(width,height).into(imageView);
+                    imageViews.add(imageView);
+
+                    page.close();
+                }
+            }
+
+            try {
+                if (pdfRenderer != null) {
+                    pdfRenderer.close();
+                }
+                if (parcelFileDescriptor != null) {
+                    parcelFileDescriptor.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return imageViews;
+    }
 }

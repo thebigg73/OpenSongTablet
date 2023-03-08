@@ -307,6 +307,7 @@ public class Preferences extends Activity {
     // exportOnSong                    boolean     Should we export .onsong file (def:false)
     // exportImage                     boolean     Should we export .png file (def:false)
     // exportPDF                       boolean     Should we export .pdf file (def:false)
+    // exportPNG                       boolean     Should we export .png file (def:false)
     // exportSetPDF                    boolean     Should we export the set as .pdf file (def:false)
     // filterSections                  boolean     Should we enable filter by section tags (def:false)
     // filterShow                      boolean     If filtering should only show current filters rather than hide (def:false)

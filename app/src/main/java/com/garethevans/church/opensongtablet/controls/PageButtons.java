@@ -164,6 +164,7 @@ public class PageButtons {
         actions.add("pdfpage");
         actions.add("highlight");
         actions.add("editsong");
+        actions.add("share_song");
         actions.add("addtoset");
         actions.add("togglescale");
         actions.add("scrolldown");
@@ -208,6 +209,7 @@ public class PageButtons {
         text.add(c.getString(R.string.select_page));
         text.add(c.getString(R.string.highlight));
         text.add(c.getString(R.string.edit) + " " + c.getString(R.string.song));
+        text.add(c.getString(R.string.export)+" ("+c.getString(R.string.song)+")");
         text.add(c.getString(R.string.add_song_to_set));
         text.add(c.getString(R.string.scale_auto));
         text.add(c.getString(R.string.scroll_down));
@@ -252,6 +254,7 @@ public class PageButtons {
         shortText.add(c.getString(R.string.select));
         shortText.add(c.getString(R.string.show) + " / " + c.getString(R.string.hide));
         shortText.add(c.getString(R.string.open));
+        shortText.add(c.getString(R.string.select));
         shortText.add(c.getString(R.string.set_add));
         shortText.add(c.getString(R.string.scale_style));
         shortText.add(c.getString(R.string.select));
@@ -295,6 +298,7 @@ public class PageButtons {
         longText.add(c.getString(R.string.edit));
         longText.add("");
         longText.add(c.getString(R.string.edit));
+        longText.add("");
         longText.add("");
         longText.add(c.getString(R.string.variation_make));
         longText.add(c.getString(R.string.scaling_info));
@@ -340,6 +344,7 @@ public class PageButtons {
         drawableIds.add(R.drawable.book);
         drawableIds.add(R.drawable.highlighter);
         drawableIds.add(R.drawable.set_edit);
+        drawableIds.add(R.drawable.share);
         drawableIds.add(R.drawable.set_add);
         drawableIds.add(R.drawable.stretch);
         drawableIds.add(R.drawable.arrow_down);
@@ -589,6 +594,9 @@ public class PageButtons {
                 break;
             case "editsong":
                 actionInterface.getPerformanceGestures().editSong();
+                break;
+            case "share_song":
+                actionInterface.getPerformanceGestures().shareSong();
                 break;
             case "addtoset":
                 if (isLongPress) {

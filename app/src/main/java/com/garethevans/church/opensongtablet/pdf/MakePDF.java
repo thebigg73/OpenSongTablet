@@ -24,6 +24,7 @@ public class MakePDF {
     private final float margin_cm = 1.5f;           // 1.5cm
     private final float footerHeight_cm = 0.6f;     // 0.
     private final int linePos = 12;
+    private final float maxScaling = 1f; // 14sp
     private int headerHeight, headerWidth, docWidth, docHeight, availableHeight, pageNum=1, totalPages=1;
     private Paint linePaint, footerPaint;
     private PdfDocument pdfDocument;
@@ -170,6 +171,10 @@ public class MakePDF {
         } else {
             headerScaling = Math.min(maxWidthScaling, maxHeightScaling);
         }
+
+        // To avoid text being too large, make sure the scaling doesn't exceed 1.8
+        headerScaling = Math.min(headerScaling,maxScaling);
+
         headerWidth = (int) ((float)headerWidth * headerScaling);
         headerHeight = (int) ((float)headerHeight * headerScaling);
 
@@ -216,10 +221,8 @@ public class MakePDF {
         // Firstly scale to the max width available
         sectionScaling = (float)availableWidth /(float)maxWidth;
 
-        // If it is bigger than 1.2, it will look silly, so set this as max
-        if (sectionScaling > 1.2f) {
-            sectionScaling = 1.2f;
-        }
+        // If it is bigger than maxScaling, it will look silly, so set this as max
+        sectionScaling = Math.min(sectionScaling,maxScaling);
 
         // Now check how this affects the height of the views
         // We only reduce the scaling if the section heights are too big
