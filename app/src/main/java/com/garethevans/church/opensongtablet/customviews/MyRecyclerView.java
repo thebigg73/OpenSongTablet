@@ -2,23 +2,22 @@ package com.garethevans.church.opensongtablet.customviews;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.PointF;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
-import android.view.View;
 import android.view.animation.LinearInterpolator;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
-public class MyRecyclerView extends RecyclerView {
+import java.util.ArrayList;
+
+public class MyRecyclerView extends RecyclerView  implements RecyclerView.SmoothScroller.ScrollVectorProvider{
 
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "MyRecyclerView";
@@ -44,14 +43,11 @@ public class MyRecyclerView extends RecyclerView {
     private int mActivePointerId;
     private boolean allowPinchToZoom;
     private boolean gestureControl;
-    private int currentPosition = 0;
 
 
     private final LinearInterpolator linearInterpolator = new LinearInterpolator();
     private final ScrollListener scrollListener;
     private final ItemTouchListener itemTouchListener;
-
-    RecyclerView.SmoothScroller smoothScroller;
 
     public MyRecyclerView(@NonNull Context context) {
         super(context);
@@ -83,9 +79,6 @@ public class MyRecyclerView extends RecyclerView {
         this.allowPinchToZoom = allowPinchToZoom;
     }
 
-    public void setSectionScrollSize(int availableHeight, int maxSectionSize) {
-
-    }
     public void initialiseRecyclerView(MainActivityInterface mainActivityInterface) {
         this.mainActivityInterface = mainActivityInterface;
     }
@@ -128,32 +121,36 @@ public class MyRecyclerView extends RecyclerView {
         }
     }
 
-    public void smoothScrollTo(Context c, LayoutManager layoutManager, int position) {
-        smoothScroller = new LinearSmoothScroller(c) {
-            @Override
-            protected int getVerticalSnapPreference() {
-                if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_stage))) {
-                    return LinearSmoothScroller.SNAP_TO_END;
-                } else {
-                    return LinearSmoothScroller.SNAP_TO_START;
-                }
+    public void doSmoothScrollTo(RecyclerLayoutManager recyclerLayoutManager, int position) {
+        try {
+            // Try to work out scrolling amount
+            // Get the top of each view by taking running total of the heights
+            // e.g. child 1 is at the height of child 0
+            // Child 2 is at the height of child 0 + child 1
+            int rollingTotal = 0;
+            ArrayList<Integer> yPositions = new ArrayList<>();
+            for (int y : recyclerLayoutManager.getChildSizes()) {
+                //Log.d(TAG,"rollingTotal:"+rollingTotal);
+                yPositions.add(rollingTotal);
+                rollingTotal += y;
             }
 
-            @Override
-            protected float calculateSpeedPerPixel(DisplayMetrics displayMetrics) {
-                return 100f / displayMetrics.densityDpi;
-            }
+            // Work out the space to try to leave above the view
+            int viewHeight = recyclerLayoutManager.getChildSizes().get(position);
+            int spaceAbove = (int) (0.5f * (getHeight() - viewHeight));
 
-        };
-        smoothScroller.setTargetPosition(position);
-        View v = layoutManager.getChildAt(position);
+            // Get the current scroll position, the position we need to get to and how far this is
+            int currScroll = recyclerLayoutManager.getScrollY();
+            int scrollToY = yPositions.get(position);
+            int scrollAmount = scrollToY - currScroll - spaceAbove;
 
-        //Log.d(TAG,"scrollY:"+getAdapter().get+"  v top:"+v.getTop()+"  height:"+v.getHeight());
-        currentPosition = position;
-        //smoothScrollBy(0,500);
-        layoutManager.startSmoothScroll(smoothScroller);
+            // Do the scrolling
+            smoothScrollBy(0, scrollAmount);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
-
 
     public void setMaxScrollY(int maxScrollY) {
         this.maxScrollY = maxScrollY;
@@ -169,6 +166,13 @@ public class MyRecyclerView extends RecyclerView {
 
     public void setGestureDetector(GestureDetector gestureDetector) {
         this.gestureDetector = gestureDetector;
+    }
+
+    @Nullable
+    @org.jetbrains.annotations.Nullable
+    @Override
+    public PointF computeScrollVectorForPosition(int targetPosition) {
+        return null;
     }
 
     private class ScrollListener extends RecyclerView.OnScrollListener {
@@ -361,4 +365,6 @@ public class MyRecyclerView extends RecyclerView {
             invalidate();
         }
     }
+
+
 }

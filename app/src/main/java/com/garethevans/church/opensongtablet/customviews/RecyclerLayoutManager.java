@@ -1,6 +1,7 @@
 package com.garethevans.church.opensongtablet.customviews;
 
 import android.content.Context;
+import android.graphics.PointF;
 import android.view.View;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -12,7 +13,7 @@ public class RecyclerLayoutManager extends LinearLayoutManager {
 
     // map of child adapter position to its height.
     private ArrayList<Integer> childSizes = new ArrayList<>();
-    private int size;
+    private int size, scrolledY;
     private int screenSize;
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "RecyclerLayoutMan";
@@ -50,15 +51,27 @@ public class RecyclerLayoutManager extends LinearLayoutManager {
             View firstChild = getChildAt(0);
             if (firstChild!=null) {
                 int firstChildPosition = getPosition(firstChild);
-                int scrolledY = (int)-firstChild.getY();
+                scrolledY = (int)-firstChild.getY();
                 for (int i=0;i<firstChildPosition;i++) {
                     if (i<childSizes.size()) {
                         scrolledY += childSizes.get(i);
                     }
                 }
-                return scrolledY;
             }
         }
         return 0;
+    }
+
+    public ArrayList<Integer> getChildSizes() {
+        return childSizes;
+    }
+
+    public int getScrollY() {
+        return scrolledY;
+    }
+
+    @Override
+    public PointF computeScrollVectorForPosition(int targetPosition) {
+        return super.computeScrollVectorForPosition(targetPosition);
     }
 }

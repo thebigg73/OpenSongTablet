@@ -1041,14 +1041,14 @@ public class PerformanceFragment extends Fragment {
         // Scroll the recyclerView to the position as long as we aren't in an autoscroll
         if (!mainActivityInterface.getAutoscroll().getIsAutoscrolling()) {
             //myView.recyclerView.smoothScrollBy(0,500);
-            myView.recyclerView.smoothScrollTo(requireContext(), recyclerLayoutManager, position);
+            myView.recyclerView.doSmoothScrollTo(recyclerLayoutManager, position);
         }
         mainActivityInterface.getPresenterSettings().setCurrentSection(position);
         displayInterface.updateDisplay("showSection");
     }
 
     public void scrollToTop() {
-        myView.recyclerView.smoothScrollTo(requireContext(),recyclerLayoutManager,0);
+        myView.recyclerView.doSmoothScrollTo(recyclerLayoutManager,0);
         myView.zoomLayout.scrollTo(0,0);
         mainActivityInterface.updateMargins();
     }
