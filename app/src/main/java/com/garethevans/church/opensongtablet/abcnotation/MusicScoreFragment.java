@@ -25,6 +25,7 @@ public class MusicScoreFragment extends Fragment {
     private MainActivityInterface mainActivityInterface;
     private SettingsAbcnotationBinding myView;
     private final String TAG = "MusicScoreFragment";
+    private String music_score="", website_music_score="";
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -35,8 +36,9 @@ public class MusicScoreFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsAbcnotationBinding.inflate(inflater, container, false);
-        mainActivityInterface.updateToolbar(getString(R.string.music_score));
-        mainActivityInterface.updateToolbarHelp(getString(R.string.website_music_score));
+        prepareStrings();
+        mainActivityInterface.updateToolbar(music_score);
+        mainActivityInterface.updateToolbarHelp(website_music_score);
 
         requireActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
@@ -52,6 +54,12 @@ public class MusicScoreFragment extends Fragment {
         return myView.getRoot();
     }
 
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            music_score = getString(R.string.music_score);
+            website_music_score = getString(R.string.website_music_score);
+        }
+    }
     private void setViews() {
         mainActivityInterface.getAbcNotation().setWebView(myView.abcWebView);
         myView.abcWebView.post(() -> myView.abcWebView.addJavascriptInterface(new JsInterface(), "AndroidApp"));
@@ -154,26 +162,12 @@ public class MusicScoreFragment extends Fragment {
         @JavascriptInterface
         public void receiveString(String myJsString) {
             Log.d(TAG, "string: " + myJsString);
-            // String received from WebView
-            //mainActivityInterface.getSong().setAbc(myJsString);
-            /*if (mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong())) {
-                mainActivityInterface.getShowToast().doIt(getString(R.string.success));
-            } else {
-                mainActivityInterface.getShowToast().doIt(getString(R.string.error));
-            }*/
         }
 
 
         @JavascriptInterface
         public void checkKey(String abcText) {
             Log.d(TAG,"checkKey called");
-            /*if (myView.autoTranspose.getChecked()) {
-                int val = mainActivityInterface.getAbcNotation().getABCTransposeFromSongKey();
-                Log.d(TAG,"val:"+val);
-                myView.transposeSlider.setValue(val);
-                myView.transposeSlider.setHint((int)myView.transposeSlider.getValue()+"");
-                mainActivityInterface.getAbcNotation().updateTranspose(myView.abcWebView,val);
-            }*/
         }
     }
 
@@ -189,9 +183,6 @@ public class MusicScoreFragment extends Fragment {
         mainActivityInterface.getAbcNotation().setSongAbc(myView.abcText.getText().toString());
         mainActivityInterface.getAbcNotation().setSongAbcTranspose((int)myView.transposeSlider.getValue());
         mainActivityInterface.getAbcNotation().saveAbcContent(mainActivityInterface,mainActivityInterface.getSong());
-        // Try to get the text by activating received string
-        //mainActivityInterface.setWhattodo("viewabc");
-        //myView.abcWebView.loadUrl("javascript:getTextVal()");
     }
 
     @Override

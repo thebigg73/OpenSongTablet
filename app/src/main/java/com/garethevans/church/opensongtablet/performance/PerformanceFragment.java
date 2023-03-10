@@ -289,54 +289,60 @@ public class PerformanceFragment extends Fragment {
 
     // This stuff loads the song and prepares the views
     public void doSongLoad(String folder, String filename) {
-        mainActivityInterface.closeDrawer(true);
+        try {
+            mainActivityInterface.closeDrawer(true);
 
-        // Make sure we only do this once (reset at the end of 'dealwithstuffafterready')
-        if (!processingTestView) {
-            processingTestView = true;
-            // Loading the song is dealt with in this fragment as specific actions are required
+            // Make sure we only do this once (reset at the end of 'dealwithstuffafterready')
+            if (!processingTestView) {
+                processingTestView = true;
+                // Loading the song is dealt with in this fragment as specific actions are required
 
-            // Stop any autoscroll if required
-            mainActivityInterface.getAutoscroll().stopAutoscroll();
+                // Stop any autoscroll if required
+                boolean autoScrollActivated = mainActivityInterface.getAutoscroll().getAutoscrollActivated();
+                mainActivityInterface.getAutoscroll().stopAutoscroll();
+                mainActivityInterface.getAutoscroll().setAutoscrollActivated(autoScrollActivated);
 
-            // During the load song call, the song is cleared
-            // However it first extracts the folder and filename we've just set
-            mainActivityInterface.getSong().setFolder(folder);
-            mainActivityInterface.getSong().setFilename((filename));
+                // During the load song call, the song is cleared
+                // However it first extracts the folder and filename we've just set
+                mainActivityInterface.getSong().setFolder(folder);
+                mainActivityInterface.getSong().setFilename((filename));
 
-            ExecutorService executorService = Executors.newSingleThreadExecutor();
-            executorService.execute(() -> {
-                Handler handler = new Handler(Looper.getMainLooper());
+                ExecutorService executorService = Executors.newSingleThreadExecutor();
+                executorService.execute(() -> {
+                    Handler handler = new Handler(Looper.getMainLooper());
 
-                // Prepare the slide out and in animations based on swipe direction
-                setupSlideOut();
-                setupSlideIn();
+                    // Prepare the slide out and in animations based on swipe direction
+                    setupSlideOut();
+                    setupSlideIn();
 
-                // Remove any sticky notes
-                actionInterface.showSticky(false, true);
+                    // Remove any sticky notes
+                    actionInterface.showSticky(false, true);
 
-                // Now reset the song object (doesn't change what's already drawn on the screen)
-                mainActivityInterface.setSong(mainActivityInterface.getLoadSong().doLoadSong(
-                        mainActivityInterface.getSong(), false));
+                    // Now reset the song object (doesn't change what's already drawn on the screen)
+                    mainActivityInterface.setSong(mainActivityInterface.getLoadSong().doLoadSong(
+                            mainActivityInterface.getSong(), false));
 
-                // Remove capo
-                mainActivityInterface.updateOnScreenInfo("capoHide");
+                    // Remove capo
+                    mainActivityInterface.updateOnScreenInfo("capoHide");
 
-                mainActivityInterface.moveToSongInSongMenu();
+                    mainActivityInterface.moveToSongInSongMenu();
 
-                // Now slide out the song and after a delay start the next bit of the processing
-                myView.recyclerView.post(() -> {
-                    if (myView.recyclerView.getVisibility() == View.VISIBLE) {
-                        myView.recyclerView.startAnimation(animSlideOut);
-                    }
+                    // Now slide out the song and after a delay start the next bit of the processing
+                    myView.recyclerView.post(() -> {
+                        if (myView.recyclerView.getVisibility() == View.VISIBLE) {
+                            myView.recyclerView.startAnimation(animSlideOut);
+                        }
+                    });
+                    myView.pageHolder.post(() -> {
+                        if (myView.pageHolder.getVisibility() == View.VISIBLE) {
+                            myView.pageHolder.startAnimation(animSlideOut);
+                        }
+                    });
+                    handler.postDelayed(this::prepareSongViews, 50 + requireContext().getResources().getInteger(R.integer.slide_out_time));
                 });
-                myView.pageHolder.post(() -> {
-                    if (myView.pageHolder.getVisibility() == View.VISIBLE) {
-                        myView.pageHolder.startAnimation(animSlideOut);
-                    }
-                });
-                handler.postDelayed(this::prepareSongViews, 50 + requireContext().getResources().getInteger(R.integer.slide_out_time));
-            });
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
     private void setupSlideOut() {
@@ -814,6 +820,9 @@ public class PerformanceFragment extends Fragment {
     private void dealWithExtraStuffOnceSettled() {
         // Send the autoscroll information (if required)
         mainActivityInterface.getAutoscroll().initialiseSongAutoscroll(heightAfterScale, availableHeight);
+        if (mainActivityInterface.getAutoscroll().getShouldAutostart()) {
+            mainActivityInterface.getAutoscroll().startAutoscroll();
+        }
 
         // Deal with capo information (if required)
         mainActivityInterface.updateOnScreenInfo("capoShow");
@@ -913,8 +922,6 @@ public class PerformanceFragment extends Fragment {
 
                             myView.highlighterView.setPivotX(0f);
                             myView.highlighterView.setPivotY(0f);
-                            //myView.highlighterView.setScaleX(scaleFactor);
-                            //myView.highlighterView.setScaleY(scaleFactor);
 
                             // Hide after a certain length of time
                             int timetohide = mainActivityInterface.getPreferences().getMyPreferenceInt("timeToDisplayHighlighter", 0);

@@ -10,7 +10,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.print.PrintManager;
 import android.util.Log;
-import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,10 +43,6 @@ public class ExportFragment extends Fragment {
     private ArrayList<Integer> sectionViewWidthsPDF = new ArrayList<>(), sectionViewHeightsPDF = new ArrayList<>();
     private LinearLayout headerLayoutPDF;
     private String pngName;
-    private int viewsToProcess;
-    private int totalWidth = 0;
-    private int totalHeight = 0;
-    private SparseBooleanArray sparseSectionsDrawn;
     private int headerLayoutWidth, headerLayoutHeight, songsToAdd, songsProcessed;
     private String setToExport = null, exportType, shareTitle, textContent, setContent;
     private boolean openSong = false, currentFormat = false, openSongApp = false, pdf = false, image = false,
@@ -57,7 +52,7 @@ public class ExportFragment extends Fragment {
     private StringBuilder songsAlreadyAdded;
     private Handler handler;
     private float scaleComments;
-    private Bitmap setPNGHeader, setPNGContent;
+    private Bitmap setPNGContent;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -204,8 +199,6 @@ public class ExportFragment extends Fragment {
                 myView.openSong.setVisibility(View.GONE);
                 myView.openSongApp.setVisibility(View.GONE);
                 myView.text.setVisibility(View.GONE);
-            } else {
-                //myView.image.setVisibility(View.GONE);
             }
 
             switch (mainActivityInterface.getSong().getFiletype()) {
@@ -525,7 +518,6 @@ public class ExportFragment extends Fragment {
             String id = ids[songsProcessed];
             String key = setKeys[songsProcessed];
             location = mainActivityInterface.getExportActions().getFolderAndFile(id);
-            Log.d(TAG,"location:"+location+"  id:"+id+"  key:"+key);
             boolean likelyXML = !location[1].contains(".") || location[1].toLowerCase(Locale.ROOT).endsWith(".xml");
 
             // Only add if we haven't already added it
@@ -706,7 +698,6 @@ public class ExportFragment extends Fragment {
         sectionViewWidthsPDF = new ArrayList<>();
         sectionViewHeightsPDF = new ArrayList<>();
         headerLayoutPDF = new LinearLayout(requireContext());
-        sparseSectionsDrawn = new SparseBooleanArray();
     }
 
     public void createOnTheFlyHeader(Song thisSong, String pdfName) {

@@ -255,6 +255,7 @@
     <string name="deeplink_abc" translatable="false">https://www.opensongapp.com/?p=settings/actions/abcnotation</string>
     <string name="deeplink_actionbar" translatable="false">https://www.opensongapp.com/?p=settings/display/actionbar</string>
     <string name="deeplink_alert" translatable="false">https://www.opensongapp.com/?p=alert</string>
+    <string name="deeplink_autoscroll_settings" translatable="false">https://www.opensongapp.com/?p=settings/autoscroll</string>
     <string name="deeplink_backup" translatable="false">https://www.opensongapp.com/?p=settings/storage/backup</string>
     <string name="deeplink_bible" translatable="false">https://www.opensongapp.com/?p=settings/bible</string>
     <string name="deeplink_bootup" translatable="false">https://www.opensongapp.com/?p=bootup</string>

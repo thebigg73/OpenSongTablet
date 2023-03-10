@@ -47,7 +47,7 @@ public class ABCPopup {
                 e.printStackTrace();
             }
             // If no score notes exist for the song, navigate to the edit score fragment
-        } else if (mainActivityInterface.getSong().getAbc().isEmpty()) {
+        } else if (mainActivityInterface.getSong().getAbc()==null || mainActivityInterface.getSong().getAbc().isEmpty()) {
             mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_abc),0);
 
             // Let's display the popup music score

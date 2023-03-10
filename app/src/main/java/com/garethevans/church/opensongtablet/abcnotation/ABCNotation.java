@@ -109,7 +109,7 @@ public class ABCNotation {
             songAbc = "T:" + songTitle + "\n";
 
             // Add the song time signature
-            if (songTimeSig.isEmpty()) {
+            if (songTimeSig==null || songTimeSig.isEmpty()) {
                 songAbc += "M:4/4\n";
             } else {
                 songAbc += "M:" + songTimeSig + "\n";

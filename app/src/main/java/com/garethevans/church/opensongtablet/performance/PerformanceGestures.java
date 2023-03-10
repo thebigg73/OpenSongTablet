@@ -29,6 +29,7 @@ public class PerformanceGestures {
 
     private final Context c;
     private final MainActivityInterface mainActivityInterface;
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "PerformanceGestures";
     private final ActionInterface actionInterface;
     private MyZoomLayout myZoomLayout;
@@ -77,7 +78,7 @@ public class PerformanceGestures {
 
     // Edit song
     public void editSong() {
-        if (mainActivityInterface.getProcessSong().isValidSong(mainActivityInterface.getSong())) {
+        if (mainActivityInterface!=null && mainActivityInterface.getProcessSong().isValidSong(mainActivityInterface.getSong())) {
             // The song is a valid XML file
             // If this is in a set and it is a temp variation, we need to edit the original instead
             int positionInSet = mainActivityInterface.getCurrentSet().getIndexSongInSet();
