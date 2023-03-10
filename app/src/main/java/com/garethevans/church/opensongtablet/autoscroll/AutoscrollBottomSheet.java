@@ -29,6 +29,8 @@ public class AutoscrollBottomSheet extends BottomSheetDialogFragment {
 
     private BottomSheetAutoscrollBinding myView;
     private MainActivityInterface mainActivityInterface;
+    private String deeplink_autoscroll_settings="", website_autoscroll="", default_autoscroll="",
+            autoscroll_delay="", ask="", stop="", start="";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -54,7 +56,10 @@ public class AutoscrollBottomSheet extends BottomSheetDialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = BottomSheetAutoscrollBinding.inflate(inflater, container, false);
         myView.dialogHeading.setClose(this);
-        myView.dialogHeading.setWebHelp(mainActivityInterface,getString(R.string.website_autoscroll));
+
+        getStrings();
+
+        myView.dialogHeading.setWebHelp(mainActivityInterface,website_autoscroll);
 
         // Set up the views
         setupViews();
@@ -69,6 +74,17 @@ public class AutoscrollBottomSheet extends BottomSheetDialogFragment {
         return myView.getRoot();
     }
 
+    private void getStrings() {
+        if (getContext()!=null) {
+            deeplink_autoscroll_settings = getString(R.string.deeplink_autoscroll_settings);
+            website_autoscroll = getString(R.string.website_autoscroll);
+            default_autoscroll = getString(R.string.default_autoscroll);
+            autoscroll_delay = getString(R.string.autoscroll_delay);
+            ask = getString(R.string.ask);
+            stop = getString(R.string.stop);
+            start = getString(R.string.start);
+        }
+    }
     private void setupViews() {
         int[] songTimes = mainActivityInterface.getTimeTools().getMinsSecsFromSecs(getStringToInt(mainActivityInterface.getSong().getAutoscrolllength()));
         myView.durationMins.setText(""+songTimes[0]);
@@ -84,11 +100,11 @@ public class AutoscrollBottomSheet extends BottomSheetDialogFragment {
 
         // Set the defaults
         int[] defTimes = mainActivityInterface.getTimeTools().getMinsSecsFromSecs(mainActivityInterface.getAutoscroll().getAutoscrollDefaultSongLength());
-        String hint = getString(R.string.default_autoscroll) + " " + defTimes[0] + "m " +
-                defTimes[1] + "s (" + getString(R.string.autoscroll_delay) + " " +
+        String hint = default_autoscroll + " " + defTimes[0] + "m " +
+                defTimes[1] + "s (" + autoscroll_delay + " " +
                 mainActivityInterface.getAutoscroll().getAutoscrollDefaultSongPreDelay() + "s)";
         if (!mainActivityInterface.getAutoscroll().getAutoscrollUseDefaultTime()) {
-            hint = getString(R.string.ask);
+            hint = ask;
         }
         myView.usingDefault.setHint(hint);
 
@@ -107,6 +123,10 @@ public class AutoscrollBottomSheet extends BottomSheetDialogFragment {
         myView.delay.addTextChangedListener(new MyTextWatcher());
         myView.durationMins.addTextChangedListener(new MyTextWatcher());
         myView.durationSecs.addTextChangedListener(new MyTextWatcher());
+        myView.autoscrollSettings.setOnClickListener(v -> {
+            mainActivityInterface.navigateToFragment(deeplink_autoscroll_settings,0);
+            dismiss();
+        });
     }
 
     private int getStringToInt(String string) {
@@ -136,10 +156,10 @@ public class AutoscrollBottomSheet extends BottomSheetDialogFragment {
     private void setStartStop() {
         if (mainActivityInterface.getAutoscroll().getIsAutoscrolling()) {
             myView.startStopAutoscroll.setIcon(ContextCompat.getDrawable(requireContext(), R.drawable.stop));
-            myView.startStopAutoscroll.setText(getString(R.string.stop));
+            myView.startStopAutoscroll.setText(stop);
         } else {
             myView.startStopAutoscroll.setIcon(ContextCompat.getDrawable(requireContext(), R.drawable.play));
-            myView.startStopAutoscroll.setText(getString(R.string.start));
+            myView.startStopAutoscroll.setText(start);
         }
     }
     private class MyTextWatcher implements TextWatcher {

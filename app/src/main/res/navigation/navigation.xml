@@ -756,7 +756,10 @@
                 android:id="@+id/autoscrollSettingsFragment"
                 android:name="com.garethevans.church.opensongtablet.autoscroll.AutoscrollSettingsFragment"
                 android:label="AutoscrollSettings"
-                tools:layout="@layout/settings_autoscroll"/>
+                tools:layout="@layout/settings_autoscroll">
+                <deepLink android:id="@+id/deepLinkAutoscroll"
+                    app:uri="@string/deeplink_autoscroll_settings"/>
+            </fragment>
             <fragment
                 android:id="@+id/bulkTagAssignFragment"
                 android:name="com.garethevans.church.opensongtablet.tags.BulkTagAssignFragment"

@@ -93,6 +93,12 @@
                 android:layout_height="wrap_content"
                 android:text="@string/autoscroll_link_audio" />
 
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/autoscrollSettings"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/settings"/>
+
             <!-- TODO Bring this back if I decide it is used enough -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/learnAutoscroll"
