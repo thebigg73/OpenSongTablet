@@ -38,7 +38,8 @@ public class PedalsFragment extends Fragment {
 
     private boolean longPressCapable = false;
     private long downTime, upTime;
-    private String currentMidiCode;
+    private String currentMidiCode, pedal_string="", website_foot_pedal_string="", midi_pedal_string="",
+            pedal_midi_warning_string="", is_not_set_string="", pedal_waiting_string="";
     private int currentListening;
     private int currentPedalCode;
     private int[] defKeyCodes;
@@ -61,8 +62,10 @@ public class PedalsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsPedalBinding.inflate(inflater, container, false);
 
-        mainActivityInterface.updateToolbar(getString(R.string.pedal));
-        mainActivityInterface.updateToolbarHelp(getString(R.string.website_foot_pedal));
+        prepareStrings();
+
+        mainActivityInterface.updateToolbar(pedal_string);
+        mainActivityInterface.updateToolbarHelp(website_foot_pedal_string);
 
         // Register this fragment
         mainActivityInterface.registerFragment(this,"PedalsFragment");
@@ -97,6 +100,16 @@ public class PedalsFragment extends Fragment {
         return myView.getRoot();
     }
 
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            pedal_string = getString(R.string.pedal);
+            website_foot_pedal_string = getString(R.string.website_foot_pedal);
+            midi_pedal_string = getString(R.string.midi_pedal);
+            pedal_midi_warning_string = getString(R.string.pedal_midi_warning);
+            is_not_set_string = getString(R.string.is_not_set);
+            pedal_waiting_string = getString(R.string.pedal_waiting);
+        }
+    }
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -114,11 +127,11 @@ public class PedalsFragment extends Fragment {
         });
         if (mainActivityInterface.getMidi() != null && mainActivityInterface.getMidi().getMidiDevice() != null &&
                 mainActivityInterface.getPedalActions().getMidiAsPedal()) {
-            String message = getString(R.string.midi_pedal) + ": " +
+            String message = midi_pedal_string + ": " +
                     mainActivityInterface.getMidi().getMidiDeviceName();
             myView.midiAsPedal.setHint(message);
         } else {
-            myView.midiAsPedal.setHint(getString(R.string.pedal_midi_warning));
+            myView.midiAsPedal.setHint(pedal_midi_warning_string);
         }
     }
 
@@ -144,7 +157,7 @@ public class PedalsFragment extends Fragment {
 
     private String charFromInt(int i) {
         if (i == -1 || KeyEvent.keyCodeToString(i) == null) {
-            return getString(R.string.is_not_set);
+            return is_not_set_string;
         } else {
             return KeyEvent.keyCodeToString(i);
         }
@@ -158,7 +171,9 @@ public class PedalsFragment extends Fragment {
     }
 
     private void setupDropDowns() {
-        arrayAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.view_exposed_dropdown_item, actions);
+        if (getContext()!=null) {
+            arrayAdapter = new ExposedDropDownArrayAdapter(getContext(), R.layout.view_exposed_dropdown_item, actions);
+        }
         for (int s = 1; s <= 8; s++) {
             doDropDowns(s, true);
         }
@@ -178,7 +193,9 @@ public class PedalsFragment extends Fragment {
             currVal = mainActivityInterface.getPedalActions().getPedalLongPressAction(which);
         }
         exposedDropDown.setAdapter(arrayAdapter);
-        exposedDropDown.setArray(requireContext(),actions);
+        if (getContext()!=null) {
+            exposedDropDown.setArray(getContext(), actions);
+        }
         exposedDropDown.setText(getActionFromActionCode(currVal));
         exposedDropDown.addTextChangedListener(new MyTextWatcher(currVal,which,isShort));
     }
@@ -212,8 +229,8 @@ public class PedalsFragment extends Fragment {
         currentListening = which;
         currentPedalCode = mainActivityInterface.getPedalActions().getPedalCode(which);
         currentMidiCode = mainActivityInterface.getPedalActions().getMidiCode(which);
-        buttonCodes[which].setText(getString(R.string.pedal_waiting));
-        buttonMidis[which].setText(getString(R.string.pedal_waiting));
+        buttonCodes[which].setText(pedal_waiting_string);
+        buttonMidis[which].setText(pedal_waiting_string);
         buttonCodes[which].setFocusable(true);
         buttonCodes[which].setFocusableInTouchMode(true);
         buttonCodes[which].requestFocus();

@@ -22,6 +22,8 @@ public class LanguageFragment extends Fragment {
     private SettingsLanguageBinding myView;
     private MainActivityInterface mainActivityInterface;
     private final String[] languageCodes = new String[] {"af","cs","de","el","en","es","fr","hu","it","ja","pl","pt","ru","sr","sv","zh"};
+    private String language="", restart="", restart_required="";
+    private String[] languages = new String[]{};
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -34,8 +36,10 @@ public class LanguageFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsLanguageBinding.inflate(inflater, container, false);
 
+        prepareStrings();
+
         // Update the toolbar
-        mainActivityInterface.updateToolbar(getString(R.string.language));
+        mainActivityInterface.updateToolbar(language);
 
         // Build the radio group
         buildRadioGroup();
@@ -43,10 +47,17 @@ public class LanguageFragment extends Fragment {
         return myView.getRoot();
     }
 
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            language = getString(R.string.language);
+            languages = getResources().getStringArray(R.array.languagelist);
+            restart = getString(R.string.restart);
+            restart_required = getString(R.string.restart_required);
+        }
+    }
     private void buildRadioGroup() {
         String languageCode = mainActivityInterface.getPreferences().getMyPreferenceString("language", "en");
-        String[] languages = requireContext().getResources().getStringArray(R.array.languagelist);
-        int id = -1;
+        int id;
         for (int x=0; x<languages.length; x++) {
             RadioButton radioButton = new RadioButton(getContext());
             radioButton.setText(languages[x].toUpperCase());
@@ -65,8 +76,8 @@ public class LanguageFragment extends Fragment {
             RadioButton button = myView.languageGroup.findViewById(checkedId);
             String tag = button.getTag().toString();
             mainActivityInterface.getPreferences().setMyPreferenceString("language", tag);
-            InformationBottomSheet informationBottomSheet = new InformationBottomSheet(getString(R.string.restart),
-                    getString(R.string.restart_required), getString(R.string.restart), "restart");
+            InformationBottomSheet informationBottomSheet = new InformationBottomSheet(restart,
+                    restart_required, restart, "restart");
             informationBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "restart");
         });
     }

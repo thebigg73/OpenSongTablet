@@ -21,6 +21,9 @@ public class SettingsCCLI extends Fragment {
 
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "SettingsCCLI";
+    private String ccli_string="", website_ccli_string="", is_not_set_string="",
+            ccli_church_string="", ccli_licence_string="", ccli_reset_string="",
+            app_name_string="";
 
     private SettingsCcliBinding myView;
     private MainActivityInterface mainActivityInterface;
@@ -38,8 +41,10 @@ public class SettingsCCLI extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         myView = SettingsCcliBinding.inflate(inflater, container, false);
 
-        mainActivityInterface.updateToolbar(getString(R.string.ccli));
-        mainActivityInterface.updateToolbarHelp(getString(R.string.website_ccli));
+        prepareStrings();
+
+        mainActivityInterface.updateToolbar(ccli_string);
+        mainActivityInterface.updateToolbarHelp(website_ccli_string);
 
         // Set current Values
         setCurrentValues();
@@ -50,11 +55,22 @@ public class SettingsCCLI extends Fragment {
         return myView.getRoot();
     }
 
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            ccli_string = getString(R.string.ccli);
+            website_ccli_string = getString(R.string.website_ccli);
+            is_not_set_string = getString(R.string.is_not_set);
+            ccli_church_string = getString(R.string.ccli_church);
+            ccli_licence_string = getString(R.string.ccli_licence);
+            ccli_reset_string = getString(R.string.ccli_reset);
+            app_name_string = getString(R.string.app_name);
+        }
+    }
 
     private void setCurrentValues() {
         myView.ccliAutomatic.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("ccliAutomaticLogging", false));
 
-        String notSet = getString(R.string.is_not_set);
+        String notSet = is_not_set_string;
         String ccliChurchName = mainActivityInterface.getPreferences().getMyPreferenceString("ccliChurchName","");
         String ccliLicence = mainActivityInterface.getPreferences().getMyPreferenceString("ccliLicence","");
         if (ccliChurchName.isEmpty()) {
@@ -69,11 +85,11 @@ public class SettingsCCLI extends Fragment {
 
     private void setListeners() {
         myView.ccliChurch.setOnClickListener(v -> showDialog(new TextInputBottomSheet(this,
-                "SettingsCCLI", getString(R.string.ccli_church), getString(R.string.ccli_church),null,
+                "SettingsCCLI", ccli_church_string, ccli_church_string,null,
                 "ccliChurchName", mainActivityInterface.getPreferences().getMyPreferenceString(
                 "ccliChurchName", ""),true)));
         myView.ccliLicence.setOnClickListener(v -> showDialog(new TextInputBottomSheet(this,
-                "SettingsCCLI", getString(R.string.ccli_licence), getString(R.string.ccli_licence),null,
+                "SettingsCCLI", ccli_licence_string, ccli_licence_string, null,
                 "ccliLicence", mainActivityInterface.getPreferences().getMyPreferenceString(
                 "ccliLicence", ""),true)));
         myView.ccliAutomatic.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getPreferences().setMyPreferenceBoolean(
@@ -81,11 +97,13 @@ public class SettingsCCLI extends Fragment {
         myView.ccliView.setOnClickListener(v -> showDialog());
         myView.ccliExportCSV.setOnClickListener(view -> exportCSVLog());
         myView.ccliDelete.setOnClickListener(v -> mainActivityInterface.displayAreYouSure("ccliDelete",
-                getString(R.string.ccli_reset),null,"SettingsCCLI", this, null));
+                ccli_reset_string,null,"SettingsCCLI", this, null));
     }
 
     private void showDialog(TextInputBottomSheet dialogFragment) {
-        dialogFragment.show(requireActivity().getSupportFragmentManager(), "textInputFragment");
+        if (getActivity()!=null) {
+            dialogFragment.show(getActivity().getSupportFragmentManager(), "textInputFragment");
+        }
     }
 
     private void showDialog() {
@@ -107,10 +125,10 @@ public class SettingsCCLI extends Fragment {
     }
 
     private String basicMessage() {
-        return getString(R.string.app_name) + ": " + getString(R.string.ccli) + "\n" +
-         getString(R.string.ccli_church) + ": " +
+        return app_name_string + ": " + ccli_string + "\n" +
+         ccli_church_string + ": " +
                 mainActivityInterface.getPreferences().getMyPreferenceString("ccliChurchName","") + "\n" +
-        getString(R.string.ccli_licence) + ": " +
+        ccli_licence_string + ": " +
                 mainActivityInterface.getPreferences().getMyPreferenceString("ccliLicence","")+ "\n\n";
     }
 

@@ -43,6 +43,8 @@ public class BibleDownloadFragment extends Fragment {
     private ArrayList<String> bibles_EN, bibles_EN_URL;
     private CheckInternet checkInternet;
     private WebDownload webDownload;
+    private String success_string="", download_string="", website_bible_download_string,
+        error_string="", requires_internet_string="";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -55,8 +57,10 @@ public class BibleDownloadFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = BibleDownloadBinding.inflate(inflater, container, false);
 
-        mainActivityInterface.updateToolbar(getString(R.string.download));
-        mainActivityInterface.updateToolbarHelp(getString(R.string.website_bible_download));
+        prepareStrings();
+
+        mainActivityInterface.updateToolbar(download_string);
+        mainActivityInterface.updateToolbarHelp(website_bible_download_string);
 
         // Set up helpers
         setupHelpers();
@@ -70,6 +74,15 @@ public class BibleDownloadFragment extends Fragment {
         return myView.getRoot();
     }
 
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            success_string = getString(R.string.success);
+            download_string = getString(R.string.download);
+            website_bible_download_string = getString(R.string.website_bible_download);
+            error_string = getString(R.string.error);
+            requires_internet_string = getString(R.string.requires_internet);
+        }
+    }
     private void setupHelpers() {
         checkInternet = new CheckInternet();
         webDownload = new WebDownload();
@@ -94,9 +107,11 @@ public class BibleDownloadFragment extends Fragment {
         bibles_EN_URL.add("http://www.opensong.org/bible-modules/AMP.zip");
         bibles_EN_URL.add("http://www.opensong.org/bible-modules/MSG.zip");
 
-        ExposedDropDownArrayAdapter exposedDropDownArrayAdapter = new ExposedDropDownArrayAdapter(
-                requireContext(),myView.translation, R.layout.view_exposed_dropdown_item,bibles_EN);
-        myView.translation.setAdapter(exposedDropDownArrayAdapter);
+        if (getContext()!=null) {
+            ExposedDropDownArrayAdapter exposedDropDownArrayAdapter = new ExposedDropDownArrayAdapter(
+                    getContext(), myView.translation, R.layout.view_exposed_dropdown_item, bibles_EN);
+            myView.translation.setAdapter(exposedDropDownArrayAdapter);
+        }
         myView.translation.setText("Contemporary English Version");
     }
 
@@ -110,7 +125,7 @@ public class BibleDownloadFragment extends Fragment {
 
     private void doDownload() {
         // Only proceed if a valid connection
-        if (checkInternet.isNetworkConnected(requireContext(),mainActivityInterface)) {
+        if (getContext()!=null && checkInternet.isNetworkConnected(getContext(),mainActivityInterface)) {
             Log.d(TAG,"Connected!");
             progressBar(true);
             // Run this in a new Thread
@@ -126,14 +141,14 @@ public class BibleDownloadFragment extends Fragment {
                     if (position > -1) {
                         String url = bibles_EN_URL.get(position);
                         String name = bibles_EN_URL.get(position).substring(bibles_EN_URL.get(position).lastIndexOf("/") + 1);
-                        String[] downloadInfo = webDownload.doDownload(requireContext(), url, name);
+                        String[] downloadInfo = webDownload.doDownload(getContext(), url, name);
                         if (downloadInfo[1] != null) {
                             Uri uri = Uri.parse(downloadInfo[1]);
                             // Now we need to extract the xmm file from the zip file
                             if (extractBibleZipFile(uri)) {
-                                handler.post(() -> mainActivityInterface.getShowToast().doIt(getString(R.string.success)));
+                                handler.post(() -> mainActivityInterface.getShowToast().doIt(success_string));
                             } else {
-                                handler.post(() -> mainActivityInterface.getShowToast().doIt(getString(R.string.error)));
+                                handler.post(() -> mainActivityInterface.getShowToast().doIt(error_string));
                             }
                         } else {
                             handler.post(() -> mainActivityInterface.getShowToast().doIt(downloadInfo[0]));
@@ -145,7 +160,7 @@ public class BibleDownloadFragment extends Fragment {
                 }
                 });
         } else {
-            mainActivityInterface.getShowToast().doIt(getString(R.string.requires_internet));
+            mainActivityInterface.getShowToast().doIt(requires_internet_string);
             progressBar(false);
         }
     }

@@ -40,7 +40,7 @@ public class KitKatFolderChooseFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        myView = StorageKitkatChooserBinding.inflate(inflater,container,false);
+        myView = StorageKitkatChooserBinding.inflate(inflater, container, false);
 
         // Prepare the gridview with the available folders
         getFoldersInDirectory(Environment.getExternalStorageDirectory().toString(),Environment.getExternalStorageDirectory().toString());
@@ -115,7 +115,9 @@ public class KitKatFolderChooseFragment extends Fragment {
             mainActivityInterface.setWhattodo("kitkat:"+currentFolder.getPath());
 
             // Open the storage location fragment and write it there
-            mainActivityInterface.navigateToFragment(getString(R.string.deeplink_set_storage),0);
+            if (getContext()!=null) {
+                mainActivityInterface.navigateToFragment(getString(R.string.deeplink_set_storage), 0);
+            }
         });
     }
 }

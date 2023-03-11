@@ -31,7 +31,10 @@ public class BulkTagAssignFragment extends Fragment {
     private MainActivityInterface mainActivityInterface;
     private SettingsTagManageBinding myView;
     private String folderSearchVal = "", artistSearchVal = "", keySearchVal = "", tagSearchVal = "",
-            filterSearchVal = "", titleSearchVal = "", thisTag = "";
+            filterSearchVal = "", titleSearchVal = "", thisTag = "", tag_song_string="",
+            website_tags_string="", new_category_string="", tag_string="", filter_songs_string="",
+            tag_to_use_string="", tag_new_string="", tag_search_string="";
+    private String[] key_choice_string={};
     private boolean songListSearchByFolder, songListSearchByArtist, songListSearchByKey,
             songListSearchByTag, songListSearchByFilter, songListSearchByTitle, showForThisTag;
     private TagSongListAdapter tagSongListAdapter;
@@ -50,8 +53,10 @@ public class BulkTagAssignFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         myView = SettingsTagManageBinding.inflate(inflater, container, false);
 
-        mainActivityInterface.updateToolbar(getString(R.string.tag_song));
-        mainActivityInterface.updateToolbarHelp(getString(R.string.website_tags));
+        prepareStrings();
+
+        mainActivityInterface.updateToolbar(tag_song_string);
+        mainActivityInterface.updateToolbarHelp(website_tags_string);
 
         setupViews();
 
@@ -63,6 +68,19 @@ public class BulkTagAssignFragment extends Fragment {
         return myView.getRoot();
     }
 
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            tag_song_string = getString(R.string.tag_song);
+            website_tags_string = getString(R.string.website_tags);
+            new_category_string = getString(R.string.new_category);
+            tag_string = getString(R.string.tag);
+            key_choice_string = getResources().getStringArray(R.array.key_choice);
+            filter_songs_string = getString(R.string.filter_songs);
+            tag_to_use_string = getString(R.string.tag_to_use);
+            tag_new_string = getString(R.string.tag_new);
+            tag_search_string = getString(R.string.tag_search);
+        }
+    }
     private void setupViews() {
         // Initialise the recyclerview
         initialiseRecyclerView();
@@ -137,7 +155,7 @@ public class BulkTagAssignFragment extends Fragment {
         });
         myView.addNewTag.setOnClickListener(v -> {
             TextInputBottomSheet textInputBottomSheet = new TextInputBottomSheet(this,
-                    "BulkTagAssignFragment", getString(R.string.new_category),getString(R.string.tag),
+                    "BulkTagAssignFragment", new_category_string,tag_string,
                     null,null,null,true);
             textInputBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"textInputBottomSheet");
         });
@@ -145,13 +163,15 @@ public class BulkTagAssignFragment extends Fragment {
 
     private void initialiseRecyclerView() {
         myView.songList.removeAllViews();
-        LinearLayoutManager songListLayoutManager = new LinearLayoutManager(requireContext());
-        songListLayoutManager.setOrientation(RecyclerView.VERTICAL);
-        myView.songList.setLayoutManager(songListLayoutManager);
-        myView.songList.setHasFixedSize(false);
-        myView.songList.setOnClickListener(null);
-        tagSongListAdapter = new TagSongListAdapter(requireContext(),myView.songList);
-        myView.songList.setAdapter(tagSongListAdapter);
+        if (getContext()!=null) {
+            LinearLayoutManager songListLayoutManager = new LinearLayoutManager(getContext());
+            songListLayoutManager.setOrientation(RecyclerView.VERTICAL);
+            myView.songList.setLayoutManager(songListLayoutManager);
+            myView.songList.setHasFixedSize(false);
+            myView.songList.setOnClickListener(null);
+            tagSongListAdapter = new TagSongListAdapter(getContext(), myView.songList);
+            myView.songList.setAdapter(tagSongListAdapter);
+        }
     }
 
     private void fixFilterRows() {
@@ -197,10 +217,12 @@ public class BulkTagAssignFragment extends Fragment {
     }
 
     private void setupDropdowns() {
-        ExposedDropDownArrayAdapter keyArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(),myView.filters.keySearch,R.layout.view_exposed_dropdown_item, getResources().getStringArray(R.array.key_choice));
-        ExposedDropDownArrayAdapter folderArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(),myView.filters.folderSearch,R.layout.view_exposed_dropdown_item, mainActivityInterface.getSQLiteHelper().getFolders());
-        myView.filters.keySearch.setAdapter(keyArrayAdapter);
-        myView.filters.folderSearch.setAdapter(folderArrayAdapter);
+        if (getContext()!=null) {
+            ExposedDropDownArrayAdapter keyArrayAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.filters.keySearch, R.layout.view_exposed_dropdown_item, key_choice_string);
+            ExposedDropDownArrayAdapter folderArrayAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.filters.folderSearch, R.layout.view_exposed_dropdown_item, mainActivityInterface.getSQLiteHelper().getFolders());
+            myView.filters.keySearch.setAdapter(keyArrayAdapter);
+            myView.filters.folderSearch.setAdapter(folderArrayAdapter);
+        }
     }
 
     private void setupTagsToAddRemove() {
@@ -215,27 +237,30 @@ public class BulkTagAssignFragment extends Fragment {
         }
         Collections.sort(values);
 
-        ExposedDropDownArrayAdapter tagArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(), myView.thisTag, R.layout.view_exposed_dropdown_item, values);
-        myView.thisTag.setAdapter(tagArrayAdapter);
+        if (getContext()!=null) {
+            ExposedDropDownArrayAdapter tagArrayAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.thisTag, R.layout.view_exposed_dropdown_item, values);
+            myView.thisTag.setAdapter(tagArrayAdapter);
+        }
         myView.thisTag.setText(thisTag);
     }
 
     private void setupShowcase() {
-        ArrayList<View> targets = new ArrayList<>();
-        targets.add(myView.filterButtons.getRoot());
-        targets.add(myView.thisTag);
-        targets.add(myView.addNewTag);
-        targets.add(myView.searchThisTag);
+        if (getActivity()!=null) {
+            ArrayList<View> targets = new ArrayList<>();
+            targets.add(myView.filterButtons.getRoot());
+            targets.add(myView.thisTag);
+            targets.add(myView.addNewTag);
+            targets.add(myView.searchThisTag);
 
-        ArrayList<String> infos = new ArrayList<>();
-        infos.add(getString(R.string.filter_songs));
-        infos.add(getString(R.string.tag_to_use));
-        infos.add(getString(R.string.tag_new));
-        infos.add(getString(R.string.tag_search));
+            ArrayList<String> infos = new ArrayList<>();
+            infos.add(filter_songs_string);
+            infos.add(tag_to_use_string);
+            infos.add(tag_new_string);
+            infos.add(tag_search_string);
 
-
-        mainActivityInterface.getShowCase().sequenceShowCase(requireActivity(),targets,null,
-                infos,null,"bulkTagAssign");
+            mainActivityInterface.getShowCase().sequenceShowCase(getActivity(), targets, null,
+                    infos, null, "bulkTagAssign");
+        }
     }
     private void prepareResults() {
         tagSongListAdapter.updateSongsFound(myView.thisTag.getText().toString(),

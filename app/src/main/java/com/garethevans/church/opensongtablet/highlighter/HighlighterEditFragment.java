@@ -65,6 +65,9 @@ public class HighlighterEditFragment extends Fragment {
     private final int highlighterYellow = 0x66ffff00;
     private int currentColor;
     private int currentSize;
+    private String edit_string="", highlight_string="", website_highlighter_string="",
+            portrait_string="", landscape_string="", delete_string="", success_string="",
+            not_saved_string="", cancel_string="", error_string="";
 
     private BottomSheetBehavior<View> bottomSheetBehavior;
 
@@ -78,8 +81,11 @@ public class HighlighterEditFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsHighlighterEditBinding.inflate(inflater, container, false);
-        mainActivityInterface.updateToolbar(getString(R.string.edit) + " " + getString(R.string.highlight));
-        mainActivityInterface.updateToolbarHelp(getString(R.string.website_highlighter));
+
+        prepareStrings();
+
+        mainActivityInterface.updateToolbar(edit_string + " " + highlight_string);
+        mainActivityInterface.updateToolbarHelp(website_highlighter_string);
 
         // Set up views
         setupViews();
@@ -90,16 +96,32 @@ public class HighlighterEditFragment extends Fragment {
         return myView.getRoot();
     }
 
-    private void setupViews() {
-        buttonActive = ContextCompat.getColor(requireContext(), R.color.colorSecondary);
-        buttonInactive = ContextCompat.getColor(requireContext(), R.color.colorAltPrimary);
-        whiteCheck = ContextCompat.getDrawable(requireContext(), R.drawable.check);
-        if (whiteCheck != null) {
-            whiteCheck.mutate();
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            edit_string = getString(R.string.edit);
+            highlight_string = getString(R.string.highlight);
+            website_highlighter_string = getString(R.string.website_highlighter);
+            portrait_string = getString(R.string.portrait);
+            landscape_string = getString(R.string.landscape);
+            delete_string = getString(R.string.delete);
+            success_string = getString(R.string.success);
+            not_saved_string = getString(R.string.not_saved);
+            cancel_string = getString(R.string.cancel);
+            error_string = getString(R.string.error);
         }
-        blackCheck = ContextCompat.getDrawable(requireContext(), R.drawable.check);
-        if (blackCheck != null) {
-            blackCheck.setColorFilter(Color.BLACK, PorterDuff.Mode.SRC_IN);
+    }
+    private void setupViews() {
+        if (getContext()!=null) {
+            buttonActive = ContextCompat.getColor(getContext(), R.color.colorSecondary);
+            buttonInactive = ContextCompat.getColor(getContext(), R.color.colorAltPrimary);
+            whiteCheck = ContextCompat.getDrawable(getContext(), R.drawable.check);
+            if (whiteCheck != null) {
+                whiteCheck.mutate();
+            }
+            blackCheck = ContextCompat.getDrawable(getContext(), R.drawable.check);
+            if (blackCheck != null) {
+                blackCheck.setColorFilter(Color.BLACK, PorterDuff.Mode.SRC_IN);
+            }
         }
 
         mainActivityInterface.setDrawNotes(myView.drawNotes);
@@ -190,11 +212,8 @@ public class HighlighterEditFragment extends Fragment {
 
     private void setScale(int bitmapWidth, int bitmapHeight) {
         float scaledX = (float) availableWidth / (float) bitmapWidth;
-        float scaledY = (float) availableHeight / (float) bitmapHeight;
-        //float scale = Math.min(scaledX, scaledY);
-        float scale = scaledX;
-        scaledWidth = (int) (bitmapWidth * scale);
-        scaledHeight = (int) (bitmapHeight * scale);
+        scaledWidth = (int) (bitmapWidth * scaledX);
+        scaledHeight = (int) (bitmapHeight * scaledX);
     }
 
     private void setImageSize() {
@@ -434,33 +453,35 @@ public class HighlighterEditFragment extends Fragment {
     private void delete() {
         // Prompt the user for an 'Are you sure'
         String orientation;
-        if (requireContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-            orientation = getString(R.string.portrait);
+        if (getContext() == null || getContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            orientation = portrait_string;
         } else {
-            orientation = getString(R.string.landscape);
+            orientation = landscape_string;
         }
-        AreYouSureBottomSheet areYouSureBottomSheet = new AreYouSureBottomSheet("deleteHighlighter",
-                getString(R.string.delete) + " " + getString(R.string.highlight) + " (" + orientation + ")", null,
-                "highlighterEditFragment", this, mainActivityInterface.getSong());
-        areYouSureBottomSheet.show(requireActivity().getSupportFragmentManager(), "are_you_sure");
+        if (getActivity() != null) {
+            AreYouSureBottomSheet areYouSureBottomSheet = new AreYouSureBottomSheet("deleteHighlighter",
+                    delete_string + " " + highlight_string + " (" + orientation + ")", null,
+                    "highlighterEditFragment", this, mainActivityInterface.getSong());
+            areYouSureBottomSheet.show(getActivity().getSupportFragmentManager(), "are_you_sure");
+        }
     }
 
     public void doDelete(boolean confirmed) {
-        if (confirmed) {
+        if (confirmed && getContext()!=null) {
             // Set the original highlighter file if it exists
             Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Highlighter", "",
-                    mainActivityInterface.getProcessSong().getHighlighterFilename(mainActivityInterface.getSong(), requireContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT));
+                    mainActivityInterface.getProcessSong().getHighlighterFilename(mainActivityInterface.getSong(), getContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT));
             mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" doDelete deleteFile "+uri);
             if (mainActivityInterface.getStorageAccess().deleteFile(uri)) {
-                mainActivityInterface.getShowToast().doIt(getString(R.string.success));
+                mainActivityInterface.getShowToast().doIt(success_string);
             } else {
-                mainActivityInterface.getShowToast().doIt(getString(R.string.not_saved));
+                mainActivityInterface.getShowToast().doIt(not_saved_string);
             }
             mainActivityInterface.getDrawNotes().delete();
             checkUndos();
             checkRedos();
         } else {
-            mainActivityInterface.getShowToast().doIt(getString(R.string.cancel));
+            mainActivityInterface.getShowToast().doIt(cancel_string);
         }
     }
 
@@ -492,39 +513,41 @@ public class HighlighterEditFragment extends Fragment {
 
     private void saveFile() {
         // Get the bitmap of the drawNotes in a new thread
-        int orientation = requireContext().getResources().getConfiguration().orientation;
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        executorService.execute(() -> {
-            Handler handler = new Handler(Looper.getMainLooper());
-            String hname = mainActivityInterface.getProcessSong().getHighlighterFilename(mainActivityInterface.getSong(), orientation == Configuration.ORIENTATION_PORTRAIT);
-            highlighterUri = mainActivityInterface.getStorageAccess().getUriForItem("Highlighter", "", hname);
-            // Check the uri exists for the outputstream to be valid
-            mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" Create Highlighter/"+hname+"  deleteOld=false");
-            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(
-                    false, highlighterUri, null, "Highlighter", "", hname);
+        if (getContext()!=null) {
+            int orientation = getContext().getResources().getConfiguration().orientation;
+            ExecutorService executorService = Executors.newSingleThreadExecutor();
+            executorService.execute(() -> {
+                Handler handler = new Handler(Looper.getMainLooper());
+                String hname = mainActivityInterface.getProcessSong().getHighlighterFilename(mainActivityInterface.getSong(), orientation == Configuration.ORIENTATION_PORTRAIT);
+                highlighterUri = mainActivityInterface.getStorageAccess().getUriForItem("Highlighter", "", hname);
+                // Check the uri exists for the outputstream to be valid
+                mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG + " Create Highlighter/" + hname + "  deleteOld=false");
+                mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(
+                        false, highlighterUri, null, "Highlighter", "", hname);
 
-            handler.post(() -> {
-                mainActivityInterface.getDrawNotes().setDrawingCacheEnabled(true);
-                try {
-                    highlighterBitmap = mainActivityInterface.getDrawNotes().getDrawingCache();
-                } catch (Exception e) {
-                    Log.d(TAG, "Error extracting the drawing");
-                } catch (OutOfMemoryError e) {
-                    Log.d(TAG, "Out of memory trying to get the drawing");
-                }
-                if (highlighterUri != null && highlighterBitmap != null) {
-                    Log.d(TAG, "newUri=" + highlighterUri);
-                    Log.d(TAG, "bitmap=" + highlighterBitmap);
-                    OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(highlighterUri);
-                    Log.d(TAG, "outputStream=" + outputStream);
-                    mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" saveFile writeImage "+highlighterUri);
-                    mainActivityInterface.getStorageAccess().writeImage(outputStream, highlighterBitmap);
-                    mainActivityInterface.getShowToast().doIt(getString(R.string.success));
-                } else {
-                    mainActivityInterface.getShowToast().doIt(getString(R.string.error));
-                }
+                handler.post(() -> {
+                    mainActivityInterface.getDrawNotes().setDrawingCacheEnabled(true);
+                    try {
+                        highlighterBitmap = mainActivityInterface.getDrawNotes().getDrawingCache();
+                    } catch (Exception e) {
+                        Log.d(TAG, "Error extracting the drawing");
+                    } catch (OutOfMemoryError e) {
+                        Log.d(TAG, "Out of memory trying to get the drawing");
+                    }
+                    if (highlighterUri != null && highlighterBitmap != null) {
+                        Log.d(TAG, "newUri=" + highlighterUri);
+                        Log.d(TAG, "bitmap=" + highlighterBitmap);
+                        OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(highlighterUri);
+                        Log.d(TAG, "outputStream=" + outputStream);
+                        mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG + " saveFile writeImage " + highlighterUri);
+                        mainActivityInterface.getStorageAccess().writeImage(outputStream, highlighterBitmap);
+                        mainActivityInterface.getShowToast().doIt(success_string);
+                    } else {
+                        mainActivityInterface.getShowToast().doIt(error_string);
+                    }
+                });
             });
-        });
+        }
     }
 
     @Override

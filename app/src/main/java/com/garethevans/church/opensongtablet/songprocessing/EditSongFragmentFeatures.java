@@ -25,9 +25,12 @@ public class EditSongFragmentFeatures extends Fragment {
     private EditSongFeaturesBinding myView;
     private MainActivityInterface mainActivityInterface;
     private EditSongFragmentInterface editSongFragmentInterface;
-    private String whichLink = "audio";
+    private String whichLink = "audio", pad_auto_string="", link_audio_string="", off_string="",
+            tempo_string="", bpm_string="", link_youtube_string="", link_web_string="",
+            link_file_string="", custom_string="", link_string="";
     @SuppressWarnings("unused")
     private final String TAG = "EditSongFeatures";
+    private String[] key_choice_string={};
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -41,6 +44,8 @@ public class EditSongFragmentFeatures extends Fragment {
                              Bundle savedInstanceState) {
         myView = EditSongFeaturesBinding.inflate(inflater, container, false);
 
+        prepareStrings();
+
         // Set up the values
         setupValues();
 
@@ -50,11 +55,28 @@ public class EditSongFragmentFeatures extends Fragment {
         return myView.getRoot();
     }
 
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            key_choice_string = getResources().getStringArray(R.array.key_choice);
+            pad_auto_string = getString(R.string.pad_auto);
+            link_audio_string = getString(R.string.link_audio);
+            off_string = getString(R.string.off);
+            tempo_string = getString(R.string.tempo);
+            bpm_string = getString(R.string.bpm);
+            link_youtube_string = getString(R.string.link_youtube);
+            link_web_string = getString(R.string.link_web);
+            link_file_string = getString(R.string.link_file);
+            custom_string = getString(R.string.custom);
+            link_string = getString(R.string.link);
+        }
+    }
     private void setupValues() {
         // The key
-        ExposedDropDownArrayAdapter keyArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(),
-                myView.key, R.layout.view_exposed_dropdown_item, getResources().getStringArray(R.array.key_choice));
-        myView.key.setAdapter(keyArrayAdapter);
+        if (getContext()!=null) {
+            ExposedDropDownArrayAdapter keyArrayAdapter = new ExposedDropDownArrayAdapter(getContext(),
+                    myView.key, R.layout.view_exposed_dropdown_item, key_choice_string);
+            myView.key.setAdapter(keyArrayAdapter);
+        }
         myView.key.setText(mainActivityInterface.getTempSong().getKey());
 
         // The capo
@@ -63,19 +85,23 @@ public class EditSongFragmentFeatures extends Fragment {
         for (int x = 1; x < 12; x++) {
             capos.add(x + "");
         }
-        ExposedDropDownArrayAdapter capoArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(),
-                myView.capo, R.layout.view_exposed_dropdown_item, capos);
-        myView.capo.setAdapter(capoArrayAdapter);
+        if (getContext()!=null) {
+            ExposedDropDownArrayAdapter capoArrayAdapter = new ExposedDropDownArrayAdapter(getContext(),
+                    myView.capo, R.layout.view_exposed_dropdown_item, capos);
+            myView.capo.setAdapter(capoArrayAdapter);
+        }
         myView.capo.setText(mainActivityInterface.getTempSong().getCapo());
 
         // The pad file
         ArrayList<String> padfiles = new ArrayList<>();
-        padfiles.add(getString(R.string.pad_auto));
-        padfiles.add(getString(R.string.link_audio));
-        padfiles.add(getString(R.string.off));
-        ExposedDropDownArrayAdapter padArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(),
-                myView.pad, R.layout.view_exposed_dropdown_item, padfiles);
-        myView.pad.setAdapter(padArrayAdapter);
+        padfiles.add(pad_auto_string);
+        padfiles.add(link_audio_string);
+        padfiles.add(off_string);
+        if (getContext()!=null) {
+            ExposedDropDownArrayAdapter padArrayAdapter = new ExposedDropDownArrayAdapter(getContext(),
+                    myView.pad, R.layout.view_exposed_dropdown_item, padfiles);
+            myView.pad.setAdapter(padArrayAdapter);
+        }
         if (mainActivityInterface.getTempSong().getPadfile() == null ||
                 mainActivityInterface.getTempSong().getPadfile().isEmpty()) {
             mainActivityInterface.getTempSong().setPadfile("auto");
@@ -95,10 +121,12 @@ public class EditSongFragmentFeatures extends Fragment {
         for (int x = 40; x < 300; x++) {
             tempos.add(x + "");
         }
-        ExposedDropDownArrayAdapter tempoArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(),
-                myView.tempo, R.layout.view_exposed_dropdown_item, tempos);
-        myView.tempo.setAdapter(tempoArrayAdapter);
-        myView.tempo.setHint(getString(R.string.tempo) + " ("+getString(R.string.bpm)+")");
+        if (getContext()!=null) {
+            ExposedDropDownArrayAdapter tempoArrayAdapter = new ExposedDropDownArrayAdapter(getContext(),
+                    myView.tempo, R.layout.view_exposed_dropdown_item, tempos);
+            myView.tempo.setAdapter(tempoArrayAdapter);
+        }
+        myView.tempo.setHint(tempo_string + " ("+bpm_string+")");
         myView.tempo.setText(mainActivityInterface.getTempSong().getTempo());
         mainActivityInterface.getMetronome().initialiseTapTempo(myView.tapTempo,myView.timesig,null,null,myView.tempo);
 
@@ -111,9 +139,11 @@ public class EditSongFragmentFeatures extends Fragment {
                 }
             }
         }
-        ExposedDropDownArrayAdapter timesigArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(),
-                myView.timesig, R.layout.view_exposed_dropdown_item, timesigs);
-        myView.timesig.setAdapter(timesigArrayAdapter);
+        if (getContext()!=null) {
+            ExposedDropDownArrayAdapter timesigArrayAdapter = new ExposedDropDownArrayAdapter(getContext(),
+                    myView.timesig, R.layout.view_exposed_dropdown_item, timesigs);
+            myView.timesig.setAdapter(timesigArrayAdapter);
+        }
         myView.timesig.setText(mainActivityInterface.getTempSong().getTimesig());
 
         // Duration and delay
@@ -143,14 +173,16 @@ public class EditSongFragmentFeatures extends Fragment {
 
         // The links
         ArrayList<String> linkOptions = new ArrayList<>();
-        linkOptions.add(getString(R.string.link_audio));
-        linkOptions.add(getString(R.string.link_youtube));
-        linkOptions.add(getString(R.string.link_web));
-        linkOptions.add(getString(R.string.link_file));
-        ExposedDropDownArrayAdapter linkArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(),
-                myView.linkType, R.layout.view_exposed_dropdown_item, linkOptions);
-        myView.linkType.setAdapter(linkArrayAdapter);
-        myView.linkType.setText(getString(R.string.link_audio));
+        linkOptions.add(link_audio_string);
+        linkOptions.add(link_youtube_string);
+        linkOptions.add(link_web_string);
+        linkOptions.add(link_file_string);
+        if (getContext()!=null) {
+            ExposedDropDownArrayAdapter linkArrayAdapter = new ExposedDropDownArrayAdapter(getContext(),
+                    myView.linkType, R.layout.view_exposed_dropdown_item, linkOptions);
+            myView.linkType.setAdapter(linkArrayAdapter);
+        }
+        myView.linkType.setText(link_audio_string);
         setLink();
 
         // Resize the bottom padding to the soft keyboard height or half the screen height for the soft keyboard (workaround)
@@ -233,11 +265,11 @@ public class EditSongFragmentFeatures extends Fragment {
             default:
                 return "";
             case "auto":
-                return getString(R.string.pad_auto);
+                return pad_auto_string;
             case "link":
-                return getString(R.string.link_audio);
+                return link_audio_string;
             case "custom":
-                return getString(R.string.custom);
+                return custom_string;
         }
     }
 
@@ -290,13 +322,13 @@ public class EditSongFragmentFeatures extends Fragment {
                     mainActivityInterface.getTempSong().setCustomChords(editable.toString());
                     break;
                 case "linktype":
-                    if (editable.toString().equals(getString(R.string.link_audio))) {
+                    if (editable.toString().equals(link_audio_string)) {
                         whichLink = "audio";
-                    } else if (editable.toString().equals(getString(R.string.link_youtube))) {
+                    } else if (editable.toString().equals(link_youtube_string)) {
                         whichLink = "youtube";
-                    } else if (editable.toString().equals(getString(R.string.link_web))) {
+                    } else if (editable.toString().equals(link_web_string)) {
                         whichLink = "web";
-                    } else if (editable.toString().equals(getString(R.string.link_file))) {
+                    } else if (editable.toString().equals(link_file_string)) {
                         whichLink = "other";
                     }
                     setLink();
@@ -330,11 +362,11 @@ public class EditSongFragmentFeatures extends Fragment {
         mainActivityInterface.getTempSong().setAutoscrolllength(total+"");
     }
     private String shortText(String niceText) {
-        if (niceText.equals(getString(R.string.off))) {
+        if (niceText.equals(off_string)) {
             return "off";
-        } else if (niceText.equals(getString(R.string.link))) {
+        } else if (niceText.equals(link_string)) {
             return "link";
-        } else if (niceText.equals(getString(R.string.pad_auto))) {
+        } else if (niceText.equals(pad_auto_string)) {
             return "auto";
         } else {
             return "";

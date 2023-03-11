@@ -35,6 +35,7 @@ public class ChordDisplayProcessing {
         mainActivityInterface = (MainActivityInterface) c;
         initialiseArrays();
     }
+
     public void initialiseArrays() {
         chordsInSong = new ArrayList<>();
         fingerings   = new ArrayList<>();
@@ -313,7 +314,6 @@ public class ChordDisplayProcessing {
 
             // Now go through the frets and build the chords
             for (int fret = 0; fret < maxFrets; fret++) {
-                //GuitarFret guitarFret = new GuitarFret(requireContext(),null);
                 if (fret == 0) {
                     // We should show the string markers (x, o or "")
                     TextView spacer = new TextView(c);

@@ -33,7 +33,9 @@ public class StorageManagementFragment extends Fragment {
     private ArrayList<String> infos;
     private ArrayList<View> views = new ArrayList<>();
     private ArrayList<Boolean> rects = new ArrayList<>();
-    private String currentSubDir;
+    private String currentSubDir, storage_manage_string="", website_storage_overview_string="",
+            root_string="", songs_string="", mainfoldername_string="", storage_reset_string="",
+            storage_main_string="";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -45,8 +47,10 @@ public class StorageManagementFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = StorageFolderDisplayBinding.inflate(inflater, container, false);
 
-        mainActivityInterface.updateToolbar(getString(R.string.storage_manage));
-        mainActivityInterface.updateToolbarHelp(getString(R.string.website_storage_overview));
+        prepareStrings();
+
+        mainActivityInterface.updateToolbar(storage_manage_string);
+        mainActivityInterface.updateToolbarHelp(website_storage_overview_string);
 
         // Do this as separate tasks in a new thread
         setUpThread();
@@ -54,16 +58,27 @@ public class StorageManagementFragment extends Fragment {
         return myView.getRoot();
     }
 
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            storage_manage_string = getString(R.string.storage_manage);
+            website_storage_overview_string = getString(R.string.website_storage_overview);
+            root_string = getString(R.string.root);
+            songs_string = getString(R.string.songs);
+            mainfoldername_string = getString(R.string.mainfoldername);
+            storage_reset_string = getString(R.string.storage_reset);
+            storage_main_string = getString(R.string.storage_main);
+        }
+    }
     private void setUpThread() {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             Handler handler = new Handler(Looper.getMainLooper());
             handler.post(() -> {
                 myView.progressBar.setVisibility(View.VISIBLE);
-                String text = "OpenSong\n("+getString(R.string.root)+")";
+                String text = "OpenSong\n("+root_string+")";
                 myView.rootFolder.setText(text);
                 myView.rootFolder.setOnClickListener(v -> showActionDialog(true,false,""));
-                text = getString(R.string.songs)+"\n("+getString(R.string.mainfoldername)+")";
+                text = songs_string+"\n("+mainfoldername_string+")";
                 myView.mainFolder.setText(text);
                 myView.mainFolder.setOnClickListener(v -> showActionDialog(false,true,""));
                 // Now look for subfolders
@@ -79,7 +94,9 @@ public class StorageManagementFragment extends Fragment {
             initialiseShowcaseArrays();
             handler.post(() -> {
                 prepareShowcaseViews();
-                mainActivityInterface.getShowCase().sequenceShowCase(requireActivity(),views,null,infos,rects,"storageManagement");
+                if (getActivity()!=null) {
+                    mainActivityInterface.getShowCase().sequenceShowCase(getActivity(), views, null, infos, rects, "storageManagement");
+                }
             });
         });
     }
@@ -87,26 +104,28 @@ public class StorageManagementFragment extends Fragment {
     private void createNodes() {
         ArrayList<String> availableFolders = getFoldersFromFile();
 
-        for (String folder: availableFolders) {
-            TextView textView = new TextView(requireContext());
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            lp.setMargins(24,0,24,24);
-            lp.gravity = Gravity.CENTER_HORIZONTAL;
-            textView.setLayoutParams(lp);
-            textView.setText(folder);
-            textView.setGravity(Gravity.CENTER_HORIZONTAL);
-            textView.setPadding(48,48,48,48);
-            textView.setBackgroundColor(getResources().getColor(R.color.blue));
-            textView.setOnClickListener(v -> showActionDialog(false,false,folder));
-            myView.folderList.addView(textView);
-        }
-        if (availableFolders.size()>0) {
-            myView.subFolderArrow.setVisibility(View.VISIBLE);
-            myView.folderList.setVisibility(View.VISIBLE);
+        if (getContext()!=null) {
+            for (String folder : availableFolders) {
+                TextView textView = new TextView(getContext());
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                lp.setMargins(24, 0, 24, 24);
+                lp.gravity = Gravity.CENTER_HORIZONTAL;
+                textView.setLayoutParams(lp);
+                textView.setText(folder);
+                textView.setGravity(Gravity.CENTER_HORIZONTAL);
+                textView.setPadding(48, 48, 48, 48);
+                textView.setBackgroundColor(getResources().getColor(R.color.blue));
+                textView.setOnClickListener(v -> showActionDialog(false, false, folder));
+                myView.folderList.addView(textView);
+            }
+            if (availableFolders.size() > 0) {
+                myView.subFolderArrow.setVisibility(View.VISIBLE);
+                myView.folderList.setVisibility(View.VISIBLE);
 
-        } else {
-            myView.subFolderArrow.setVisibility(View.GONE);
-            myView.folderList.setVisibility(View.GONE);
+            } else {
+                myView.subFolderArrow.setVisibility(View.GONE);
+                myView.folderList.setVisibility(View.GONE);
+            }
         }
     }
 
@@ -115,9 +134,9 @@ public class StorageManagementFragment extends Fragment {
         views = new ArrayList<>();
         infos = new ArrayList<>();
         rects = new ArrayList<>();
-        infos.add(getString(R.string.storage_reset));
+        infos.add(storage_reset_string);
         rects.add(true);
-        infos.add(getString(R.string.storage_main));
+        infos.add(storage_main_string);
         rects.add(true);
     }
 
@@ -128,8 +147,10 @@ public class StorageManagementFragment extends Fragment {
 
     private void showActionDialog(boolean root, boolean songs, String folder) {
         currentSubDir = folder;
-        FolderManagementBottomSheet dialogFragment = new FolderManagementBottomSheet(this,root,songs,folder);
-        dialogFragment.show(requireActivity().getSupportFragmentManager(),"folderManagementDialog");
+        if (getActivity() != null) {
+            FolderManagementBottomSheet dialogFragment = new FolderManagementBottomSheet(this, root, songs, folder);
+            dialogFragment.show(getActivity().getSupportFragmentManager(), "folderManagementDialog");
+        }
     }
 
     public void updateFragment() {
@@ -176,7 +197,7 @@ public class StorageManagementFragment extends Fragment {
     private String getNewSubfolder(String newFolder) {
         String folder = "";
         if (currentSubDir != null && !currentSubDir.isEmpty()
-                && !currentSubDir.equals(getString(R.string.mainfoldername))) {
+                && !currentSubDir.equals(mainfoldername_string)) {
             folder += currentSubDir + "/";
         } else {
             folder += newFolder;

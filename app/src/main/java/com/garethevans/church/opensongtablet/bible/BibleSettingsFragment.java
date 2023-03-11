@@ -33,7 +33,9 @@ public class BibleSettingsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = BibleSettingsBinding.inflate(inflater, container, false);
 
-        mainActivityInterface.updateToolbar(getString(R.string.bible));
+        if (getContext()!=null) {
+            mainActivityInterface.updateToolbar(getString(R.string.bible));
+        }
 
         // Set up listeners
         setupListeners();

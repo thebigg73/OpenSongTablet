@@ -44,7 +44,13 @@ public class SetManageFragment extends Fragment {
     private String renameSetName;
     private String renameSetCategory;
     private Uri oldSetUri, newSetUri;
-    private String newSetFilename;
+    private String newSetFilename, mainfoldername_string="", set_current_string="", set_string="",
+            save_string="", website_set_save_string="", rename_string="", delete_string="",
+            website_set_rename_string="", website_set_delete_string="", export_string="",
+            website_export_set_string="", set_saved_not_current_string="", load_string="",
+            website_set_load_string="", new_category_string="", file_exists_string="",
+            success_string="", error_string="", deeplink_export_string="",
+            search_index_wait_string="";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -56,6 +62,8 @@ public class SetManageFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsSetsManageBinding.inflate(inflater, container, false);
+
+        prepareStrings();
 
         whattodo = mainActivityInterface.getWhattodo();
 
@@ -74,6 +82,30 @@ public class SetManageFragment extends Fragment {
         return myView.getRoot();
     }
 
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            mainfoldername_string = getString(R.string.mainfoldername);
+            set_current_string = getString(R.string.set_current);
+            set_string = getString(R.string.set);
+            save_string = getString(R.string.save);
+            website_set_save_string = getString(R.string.website_set_save);
+            rename_string = getString(R.string.rename);
+            website_set_rename_string = getString(R.string.website_set_rename);
+            delete_string = getString(R.string.delete);
+            website_set_delete_string = getString(R.string.website_set_delete);
+            export_string = getString(R.string.export);
+            website_export_set_string = getString(R.string.website_export_set);
+            set_saved_not_current_string = getString(R.string.set_saved_not_current);
+            load_string = getString(R.string.load);
+            website_set_load_string = getString(R.string.website_set_load);
+            new_category_string = getString(R.string.new_category);
+            file_exists_string = getString(R.string.file_exists);
+            success_string = getString(R.string.success);
+            error_string = getString(R.string.error);
+            deeplink_export_string = getString(R.string.deeplink_export);
+            search_index_wait_string = getString(R.string.search_index_wait);
+        }
+    }
     private void checkForLoadSpecific() {
         if (mainActivityInterface.getWhattodo().startsWith("loadset:")) {
             String lookFor = mainActivityInterface.getWhattodo().replace("loadset:", "");
@@ -94,7 +126,7 @@ public class SetManageFragment extends Fragment {
         }
 
         // Get the current set
-        String category = getString(R.string.mainfoldername);
+        String category = mainfoldername_string;
         String setname = mainActivityInterface.getCurrentSet().getSetCurrentLastName();
         if (setname.contains("__")) {
             String[] bits = setname.split("__");
@@ -103,15 +135,15 @@ public class SetManageFragment extends Fragment {
                 setname = bits[1];
             }
         }
-        if (setname.equals(getString(R.string.set_current))) {
+        if (setname.equals(set_current_string)) {
             setname = "";
         }
 
         // Decide on the views required
         switch (whattodo) {
             case "saveset":
-                mainActivityInterface.updateToolbar(getString(R.string.set) + ": " + getString(R.string.save));
-                mainActivityInterface.updateToolbarHelp(getString(R.string.website_set_save));
+                mainActivityInterface.updateToolbar(set_string + ": " + save_string);
+                mainActivityInterface.updateToolbarHelp(website_set_save_string);
                 myView.setName.setVisibility(View.VISIBLE);
                 myView.overWrite.setVisibility(View.VISIBLE);
                 myView.setLoadInfo1.setVisibility(View.GONE);
@@ -119,14 +151,16 @@ public class SetManageFragment extends Fragment {
                 myView.setName.setText(setname);
                 myView.newCategory.setVisibility(View.VISIBLE);
                 myView.setCategory.setText(category);
-                myView.loadorsaveButton.setText(getString(R.string.save));
-                myView.loadorsaveButton.setIcon(ContextCompat.getDrawable(requireContext(), R.drawable.save));
+                myView.loadorsaveButton.setText(save_string);
+                if (getContext()!=null) {
+                    myView.loadorsaveButton.setIcon(ContextCompat.getDrawable(getContext(), R.drawable.save));
+                }
                 myView.loadorsaveButton.setOnClickListener(v -> saveSet());
                 break;
 
             case "renameset":
-                mainActivityInterface.updateToolbar(getString(R.string.set) + ": " + getString(R.string.rename));
-                mainActivityInterface.updateToolbarHelp(getString(R.string.website_set_rename));
+                mainActivityInterface.updateToolbar(set_string + ": " + rename_string);
+                mainActivityInterface.updateToolbarHelp(website_set_rename_string);
                 myView.setName.setVisibility(View.VISIBLE);
                 myView.overWrite.setVisibility(View.VISIBLE);
                 myView.setLoadInfo1.setVisibility(View.GONE);
@@ -134,59 +168,69 @@ public class SetManageFragment extends Fragment {
                 myView.setName.setText(setname);
                 myView.newCategory.setVisibility(View.VISIBLE);
                 myView.setCategory.setText(category);
-                myView.loadorsaveButton.setText(getString(R.string.rename));
-                myView.loadorsaveButton.setIcon(ContextCompat.getDrawable(requireContext(), R.drawable.save));
+                myView.loadorsaveButton.setText(rename_string);
+                if (getContext()!=null) {
+                    myView.loadorsaveButton.setIcon(ContextCompat.getDrawable(getContext(), R.drawable.save));
+                }
                 myView.loadorsaveButton.setOnClickListener(v -> renameSet());
                 break;
 
             case "deleteset":
-                mainActivityInterface.updateToolbar(getString(R.string.set) + ": " + getString(R.string.delete));
-                mainActivityInterface.updateToolbarHelp(getString(R.string.website_set_delete));
+                mainActivityInterface.updateToolbar(set_string + ": " + delete_string);
+                mainActivityInterface.updateToolbarHelp(website_set_delete_string);
                 myView.setName.setVisibility(View.GONE);
                 myView.overWrite.setVisibility(View.GONE);
                 myView.setLoadInfo1.setVisibility(View.VISIBLE);
                 myView.setLoadInfo2.setVisibility(View.GONE);
                 myView.newCategory.setVisibility(View.GONE);
                 myView.setCategory.setVisibility(View.VISIBLE);
-                myView.loadorsaveButton.setText(getString(R.string.delete));
-                myView.loadorsaveButton.setIcon(ContextCompat.getDrawable(requireContext(), R.drawable.delete));
+                myView.loadorsaveButton.setText(delete_string);
+                if (getContext()!=null) {
+                    myView.loadorsaveButton.setIcon(ContextCompat.getDrawable(getContext(), R.drawable.delete));
+                }
                 myView.loadorsaveButton.setOnClickListener(v -> deleteSet());
                 break;
 
             case "exportset":
-                mainActivityInterface.updateToolbar(getString(R.string.set) + ": " + getString(R.string.export));
-                mainActivityInterface.updateToolbarHelp(getString(R.string.website_export_set));
+                mainActivityInterface.updateToolbar(set_string + ": " + export_string);
+                mainActivityInterface.updateToolbarHelp(website_export_set_string);
                 myView.setName.setVisibility(View.GONE);
                 myView.overWrite.setVisibility(View.GONE);
                 myView.newCategory.setVisibility(View.GONE);
                 myView.setLoadInfo1.setVisibility(View.VISIBLE);
                 myView.setLoadInfo2.setVisibility(View.VISIBLE);
-                myView.setLoadInfo2.setText(getString(R.string.set_saved_not_current));
-                myView.loadorsaveButton.setText(getString(R.string.export));
-                myView.loadorsaveButton.setIcon(ContextCompat.getDrawable(requireContext(), R.drawable.share));
+                myView.setLoadInfo2.setText(set_saved_not_current_string);
+                myView.loadorsaveButton.setText(export_string);
+                if (getContext()!=null) {
+                    myView.loadorsaveButton.setIcon(ContextCompat.getDrawable(getContext(), R.drawable.share));
+                }
                 myView.loadorsaveButton.setOnClickListener(v -> exportSet());
                 break;
 
             case "loadset":
             default:
-                mainActivityInterface.updateToolbar(getString(R.string.set) + ": " + getString(R.string.load));
-                mainActivityInterface.updateToolbarHelp(getString(R.string.website_set_load));
+                mainActivityInterface.updateToolbar(set_string + ": " + load_string);
+                mainActivityInterface.updateToolbarHelp(website_set_load_string);
                 myView.setName.setVisibility(View.GONE);
                 myView.overWrite.setVisibility(View.GONE);
                 myView.newCategory.setVisibility(View.GONE);
                 myView.setLoadInfo1.setVisibility(View.VISIBLE);
                 myView.setLoadInfo2.setVisibility(View.VISIBLE);
-                myView.loadorsaveButton.setText(getString(R.string.load));
-                myView.loadorsaveButton.setIcon(ContextCompat.getDrawable(requireContext(), R.drawable.save));
+                myView.loadorsaveButton.setText(load_string);
+                if (getContext()!=null) {
+                    myView.loadorsaveButton.setIcon(ContextCompat.getDrawable(getContext(), R.drawable.save));
+                }
                 myView.loadorsaveButton.setOnClickListener(v -> loadSet());
                 break;
         }
     }
 
     private void setListener() {
-        ExposedDropDownArrayAdapter exposedDropDownArrayAdapter = new ExposedDropDownArrayAdapter(
-                requireContext(), myView.setCategory, R.layout.view_exposed_dropdown_item, categories);
-        myView.setCategory.setAdapter(exposedDropDownArrayAdapter);
+        if (getContext()!=null) {
+            ExposedDropDownArrayAdapter exposedDropDownArrayAdapter = new ExposedDropDownArrayAdapter(
+                    getContext(), myView.setCategory, R.layout.view_exposed_dropdown_item, categories);
+            myView.setCategory.setAdapter(exposedDropDownArrayAdapter);
+        }
         myView.setCategory.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -203,10 +247,12 @@ public class SetManageFragment extends Fragment {
         });
         myView.newCategory.setOnClickListener(v -> {
             // Open up the Bottomsheet dialog fragment and get the name
-            TextInputBottomSheet textInputBottomSheet = new TextInputBottomSheet(this,
-                    "SetManageFragment", getString(R.string.new_category),
-                    getString(R.string.new_category), null, null, null, true);
-            textInputBottomSheet.show(requireActivity().getSupportFragmentManager(), "TextInputBottomSheet");
+            if (getActivity() != null) {
+                TextInputBottomSheet textInputBottomSheet = new TextInputBottomSheet(this,
+                        "SetManageFragment", new_category_string,
+                        new_category_string, null, null, null, true);
+                textInputBottomSheet.show(getActivity().getSupportFragmentManager(), "TextInputBottomSheet");
+            }
         });
 
         myView.nestedScrollView.setExtendedFabToAnimate(myView.loadorsaveButton);
@@ -226,11 +272,13 @@ public class SetManageFragment extends Fragment {
 
     private void listCategories() {
         categories = mainActivityInterface.getSetActions().getCategories(allSets);
-        categoriesAdapter = new ExposedDropDownArrayAdapter(requireContext(), myView.setCategory,
-                R.layout.view_exposed_dropdown_item, categories);
-        myView.setCategory.setAdapter(categoriesAdapter);
+        if (getContext()!=null) {
+            categoriesAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.setCategory,
+                    R.layout.view_exposed_dropdown_item, categories);
+            myView.setCategory.setAdapter(categoriesAdapter);
+        }
         myView.setCategory.setText(mainActivityInterface.getPreferences().getMyPreferenceString(
-                "whichSetCategory", requireContext().getString(R.string.mainfoldername)));
+                "whichSetCategory", mainfoldername_string));
         myView.setCategory.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -261,59 +309,61 @@ public class SetManageFragment extends Fragment {
         // It will also get MAIN, but it won't matter as it just replaces it
         String bitToRemove = myView.setCategory.getText().toString() + "__";
 
-        for (String setName : availableSets) {
-            @SuppressLint("InflateParams") CheckBox checkBox = (CheckBox) LayoutInflater.from(requireContext()).inflate(R.layout.view_checkbox_list_item, null);
-            checkBox.setTag(setName.replace("__","/"));
-            setName = setName.replace(bitToRemove, "");
-            checkBox.setText(setName);
-            if (whattodo.equals("saveset") || whattodo.equals("renameset")) {
-                checkBox.setButtonDrawable(null);
-                checkBox.setAlpha(0.6f);
-            } else {
-                String toFind = bitToRemove + setName;
-                toFind = toFind.replace(getString(R.string.mainfoldername) + "__", "");
-                checkBox.setChecked(chosenSets.contains("%_%" + toFind + "%_%"));
-            }
-            String setCategory = myView.setCategory.getText().toString();
-            String finalSetName;
-            if (setCategory.equals(getString(R.string.mainfoldername))) {
-                finalSetName = setName;
-            } else {
-                finalSetName = setCategory + "__" + setName;
-            }
-            if (!whattodo.equals("renameset") && !whattodo.equals("saveset")) {
-                checkBox.setOnCheckedChangeListener((compoundButton, b) -> {
-                    if (!whattodo.equals("renameset")) {
-                        if (b && !chosenSets.contains("%_%" + finalSetName + "%_%")) {
-                            chosenSets = chosenSets + "%_%" + finalSetName + "%_%";
-                        } else if (!b) {
-                            chosenSets = chosenSets.replace("%_%" + finalSetName + "%_%", "");
+        if (getContext()!=null) {
+            for (String setName : availableSets) {
+                @SuppressLint("InflateParams") CheckBox checkBox = (CheckBox) LayoutInflater.from(getContext()).inflate(R.layout.view_checkbox_list_item, null);
+                checkBox.setTag(setName.replace("__", "/"));
+                setName = setName.replace(bitToRemove, "");
+                checkBox.setText(setName);
+                if (whattodo.equals("saveset") || whattodo.equals("renameset")) {
+                    checkBox.setButtonDrawable(null);
+                    checkBox.setAlpha(0.6f);
+                } else {
+                    String toFind = bitToRemove + setName;
+                    toFind = toFind.replace(mainfoldername_string + "__", "");
+                    checkBox.setChecked(chosenSets.contains("%_%" + toFind + "%_%"));
+                }
+                String setCategory = myView.setCategory.getText().toString();
+                String finalSetName;
+                if (setCategory.equals(mainfoldername_string)) {
+                    finalSetName = setName;
+                } else {
+                    finalSetName = setCategory + "__" + setName;
+                }
+                if (!whattodo.equals("renameset") && !whattodo.equals("saveset")) {
+                    checkBox.setOnCheckedChangeListener((compoundButton, b) -> {
+                        if (!whattodo.equals("renameset")) {
+                            if (b && !chosenSets.contains("%_%" + finalSetName + "%_%")) {
+                                chosenSets = chosenSets + "%_%" + finalSetName + "%_%";
+                            } else if (!b) {
+                                chosenSets = chosenSets.replace("%_%" + finalSetName + "%_%", "");
+                            }
                         }
-                    }
-                });
-            }
-            if (whattodo.equals("renameset") || whattodo.equals("saveset")) {
-                checkBox.setAlpha(0.6f);
-                checkBox.setOnClickListener(view -> {
-                    String text = view.getTag().toString();
-                    if (text.contains("/")) {
-                        String[] bits = text.split("/");
-                        if (bits.length>1) {
-                            renameSetCategory = bits[0];
-                            renameSetName = bits[1];
-                            newSetFilename = renameSetCategory + "__" + renameSetName;
+                    });
+                }
+                if (whattodo.equals("renameset") || whattodo.equals("saveset")) {
+                    checkBox.setAlpha(0.6f);
+                    checkBox.setOnClickListener(view -> {
+                        String text = view.getTag().toString();
+                        if (text.contains("/")) {
+                            String[] bits = text.split("/");
+                            if (bits.length > 1) {
+                                renameSetCategory = bits[0];
+                                renameSetName = bits[1];
+                                newSetFilename = renameSetCategory + "__" + renameSetName;
+                            }
+                        } else {
+                            renameSetCategory = mainfoldername_string;
+                            renameSetName = text;
+                            newSetFilename = text;
                         }
-                    } else {
-                        renameSetCategory = getString(R.string.mainfoldername);
-                        renameSetName = text;
-                        newSetFilename = text;
-                    }
-                    myView.setName.setText(renameSetName);
-                    myView.setCategory.setText(renameSetCategory);
-                    updateCheckList(text);
-                });
+                        myView.setName.setText(renameSetName);
+                        myView.setCategory.setText(renameSetCategory);
+                        updateCheckList(text);
+                    });
+                }
+                myView.setLists.addView(checkBox);
             }
-            myView.setLists.addView(checkBox);
         }
     }
 
@@ -332,7 +382,7 @@ public class SetManageFragment extends Fragment {
     private void saveSet() {
         // Get the set category
         String category = myView.setCategory.getText().toString();
-        if (category.equals(getString(R.string.mainfoldername))) {
+        if (category.equals(mainfoldername_string)) {
             category = "";
         } else {
             category = category + "__";
@@ -352,7 +402,7 @@ public class SetManageFragment extends Fragment {
             if (mainActivityInterface.getStorageAccess().uriExists(uri) &&
                     !myView.overWrite.isChecked()) {
                 mainActivityInterface.getShowToast().doIt(
-                        getString(R.string.file_exists));
+                        file_exists_string);
             } else {
                 mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" saveSet Create Sets/"+setName+" deleteOld=true");
                 mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, uri, null,
@@ -369,10 +419,10 @@ public class SetManageFragment extends Fragment {
                             mainActivityInterface.getCurrentSet().getSetCurrent());
                     mainActivityInterface.getCurrentSet().setSetCurrentLastName(setName);
                     mainActivityInterface.getCurrentSet().updateSetTitleView();
-                    mainActivityInterface.getShowToast().doIt(getString(R.string.set_current) + " - " +
-                            getString(R.string.success));
+                    mainActivityInterface.getShowToast().doIt(set_current_string + " - " +
+                            success_string);
                 } else {
-                    mainActivityInterface.getShowToast().doIt(getString(R.string.error));
+                    mainActivityInterface.getShowToast().doIt(error_string);
                 }
             }
         }
@@ -399,9 +449,9 @@ public class SetManageFragment extends Fragment {
             }
         }
         if (success) {
-            mainActivityInterface.getShowToast().doIt(getString(R.string.success));
+            mainActivityInterface.getShowToast().doIt(success_string);
         } else {
-            mainActivityInterface.getShowToast().doIt(getString(R.string.error));
+            mainActivityInterface.getShowToast().doIt(error_string);
         }
 
         // Hide the progress bar
@@ -413,9 +463,9 @@ public class SetManageFragment extends Fragment {
     private void renameSet() {
         String oldSetText;
         String oldSetFilename;
-        if (renameSetCategory == null || renameSetCategory.isEmpty() || renameSetCategory.equals(getString(R.string.mainfoldername))) {
+        if (renameSetCategory == null || renameSetCategory.isEmpty() || renameSetCategory.equals(mainfoldername_string)) {
             oldSetFilename = renameSetName;
-            oldSetText = getString(R.string.mainfoldername) + "/" + renameSetName;
+            oldSetText = mainfoldername_string + "/" + renameSetName;
         } else {
             oldSetFilename = renameSetCategory + "__" + renameSetName;
             oldSetText = renameSetCategory + "/" + renameSetName;
@@ -426,9 +476,9 @@ public class SetManageFragment extends Fragment {
         Editable mynam = myView.setName.getText();
         if (mycat!=null && !mycat.toString().isEmpty() && mynam!=null && !mynam.toString().isEmpty()) {
             String newSetText;
-            if (mycat.toString().isEmpty() || mycat.toString().equals(getString(R.string.mainfoldername))) {
+            if (mycat.toString().isEmpty() || mycat.toString().equals(mainfoldername_string)) {
                 newSetFilename = mynam.toString();
-                newSetText = getString(R.string.mainfoldername) + "/" + mynam;
+                newSetText = mainfoldername_string + "/" + mynam;
             } else {
                 newSetFilename = mycat + "__" + mynam;
                 newSetText = mycat + "/" + mynam;
@@ -437,10 +487,10 @@ public class SetManageFragment extends Fragment {
 
             boolean exists = mainActivityInterface.getStorageAccess().uriExists(newSetUri);
             if (exists && !myView.overWrite.isChecked()) {
-                mainActivityInterface.getShowToast().doIt(getString(R.string.file_exists));
+                mainActivityInterface.getShowToast().doIt(file_exists_string);
             } else {
                 AreYouSureBottomSheet areYouSureBottomSheet = new AreYouSureBottomSheet("renameSet",
-                        getString(R.string.rename)+":\n"+ oldSetText +" > "+ newSetText,null,
+                        rename_string+":\n"+ oldSetText +" > "+ newSetText,null,
                         "setManageFragment", this, null);
                 areYouSureBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"AreYouSureFragment");
             }
@@ -453,9 +503,9 @@ public class SetManageFragment extends Fragment {
         if (mainActivityInterface.getSongListBuildIndex().getIndexComplete()) {
             // Set the "whattodo" to let the export fragment know we are exporting a set
             mainActivityInterface.setWhattodo("exportset:" + chosenSets);
-            mainActivityInterface.navigateToFragment(getString(R.string.deeplink_export), 0);
+            mainActivityInterface.navigateToFragment(deeplink_export_string, 0);
         } else {
-            mainActivityInterface.getShowToast().doIt(getString(R.string.search_index_wait));
+            mainActivityInterface.getShowToast().doIt(search_index_wait_string);
         }
     }
 
@@ -512,9 +562,9 @@ public class SetManageFragment extends Fragment {
         if (!categories.contains(value)) {
             categories.add(value);
             // Sort them (remove main, sort, then readd main to the top)
-            categories.remove(getString(R.string.mainfoldername));
+            categories.remove(mainfoldername_string);
             Collections.sort(categories);
-            categories.add(0, getString(R.string.mainfoldername));
+            categories.add(0, mainfoldername_string);
             categoriesAdapter.notifyDataSetChanged();
         }
         myView.setCategory.setText(value);

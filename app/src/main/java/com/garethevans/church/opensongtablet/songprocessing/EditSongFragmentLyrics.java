@@ -30,34 +30,21 @@ public class EditSongFragmentLyrics extends Fragment {
     private float editTextSize = 11;
     private int cursorPos=0;
     private boolean addUndoStep = true;
+    private String success_string="";
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mainActivityInterface = (MainActivityInterface) context;
         editSongFragmentInterface = (EditSongFragmentInterface) context;
-        // Hide the keyboard
-        //mainActivityInterface.getSoftKeyboard().hideKeyboard(requireActivity());
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // Hide the keyboard
-        //mainActivityInterface.getSoftKeyboard().hideKeyboard(requireActivity());
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        // Hide the keyboard
-        //mainActivityInterface.getSoftKeyboard().hideKeyboard(requireActivity());
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = EditSongLyricsBinding.inflate(inflater, container, false);
+
+        prepareStrings();
 
         // Put the values in
         setupValues();
@@ -68,6 +55,11 @@ public class EditSongFragmentLyrics extends Fragment {
         return myView.getRoot();
     }
 
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            success_string = getString(R.string.success);
+        }
+    }
     private void setupValues() {
         if (mainActivityInterface.getTempSong()==null) {
             mainActivityInterface.setTempSong(mainActivityInterface.getSong());
@@ -313,7 +305,7 @@ public class EditSongFragmentLyrics extends Fragment {
             lyrics = mainActivityInterface.getConvertChoPro().fromOpenSongToChordPro(lyrics);
         }
         myView.lyrics.setText(lyrics);
-        mainActivityInterface.getShowToast().doIt(getString(R.string.success));
+        mainActivityInterface.getShowToast().doIt(success_string);
     }
 
 }

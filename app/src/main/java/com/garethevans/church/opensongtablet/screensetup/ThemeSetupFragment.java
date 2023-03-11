@@ -7,7 +7,6 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,7 +24,9 @@ public class ThemeSetupFragment extends Fragment {
     private MainActivityInterface mainActivityInterface;
     private SettingsThemeBinding myView;
 
-    private String myTheme;
+    private String myTheme, theme_string="", website_themes_string="", presenter_mode_string="",
+            stage_mode_string="", theme_dark_string="", theme_light_string="",
+            theme_custom1_string="", theme_custom2_string="", reset_colours_string="";
     private ArrayList<String> themes;
 
     @Override
@@ -38,10 +39,12 @@ public class ThemeSetupFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsThemeBinding.inflate(inflater,container,false);
 
-        mainActivityInterface.updateToolbar(getString(R.string.theme));
-        mainActivityInterface.updateToolbarHelp(getString(R.string.website_themes));
+        prepareStrings();
 
-        String text = getString(R.string.presenter_mode) + " / " + getString(R.string.stage_mode);
+        mainActivityInterface.updateToolbar(theme_string);
+        mainActivityInterface.updateToolbarHelp(website_themes_string);
+
+        String text = presenter_mode_string + " / " + stage_mode_string;
         myView.presenterStageMode.setText(text);
 
         // Initialise the themes
@@ -53,14 +56,30 @@ public class ThemeSetupFragment extends Fragment {
         return myView.getRoot();
     }
 
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            theme_string = getString(R.string.theme);
+            website_themes_string = getString(R.string.website_themes);
+            presenter_mode_string = getString(R.string.presenter_mode);
+            stage_mode_string = getString(R.string.stage_mode);
+            theme_dark_string = getString(R.string.theme_dark);
+            theme_light_string = getString(R.string.theme_light);
+            theme_custom1_string = getString(R.string.theme_custom1);
+            theme_custom2_string = getString(R.string.theme_custom2);
+            reset_colours_string = getString(R.string.reset_colours);
+        }
+    }
     private void setUpTheme() {
         themes = new ArrayList<>();
-        themes.add(getString(R.string.theme_dark));
-        themes.add(getString(R.string.theme_light));
-        themes.add(getString(R.string.theme_custom1));
-        themes.add(getString(R.string.theme_custom2));
+        themes.add(theme_dark_string);
+        themes.add(theme_light_string);
+        themes.add(theme_custom1_string);
+        themes.add(theme_custom2_string);
 
-        ExposedDropDownArrayAdapter arrayAdapter = new ExposedDropDownArrayAdapter(requireContext(),myView.themeName,R.layout.view_exposed_dropdown_item,themes);
+        ExposedDropDownArrayAdapter arrayAdapter = null;
+        if (getContext()!=null) {
+            arrayAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.themeName, R.layout.view_exposed_dropdown_item, themes);
+        }
         myTheme = mainActivityInterface.getPreferences().getMyPreferenceString("appTheme","dark");
         switch (myTheme) {
             case "dark":
@@ -143,12 +162,7 @@ public class ThemeSetupFragment extends Fragment {
     }
 
     private void setListeners() {
-        myView.invertPDF.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                mainActivityInterface.getMyThemeColors().setInvertPDF(isChecked);
-            }
-        });
+        myView.invertPDF.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getMyThemeColors().setInvertPDF(isChecked));
         myView.lyricsButton.setOnClickListener(v-> chooseColor("lyricsTextColor"));
         myView.presoButton.setOnClickListener(v-> chooseColor("presoFontColor"));
         myView.presoChordButton.setOnClickListener(v-> chooseColor("presoChordColor"));
@@ -173,7 +187,7 @@ public class ThemeSetupFragment extends Fragment {
         myView.extrabackgroundButton.setOnClickListener(v-> chooseColor("extraInfoBgColor"));
         myView.presoAlertButton.setOnClickListener(v -> chooseColor("presoAlertColor"));
         myView.presoShadowButton.setOnClickListener(v -> chooseColor("presoShadowColor"));
-        myView.resetTheme.setOnClickListener(v -> mainActivityInterface.displayAreYouSure("resetColors",myView.themeName.getText().toString() + ": "+getString(R.string.reset_colours),null,"themeSetupFragment",this,null));
+        myView.resetTheme.setOnClickListener(v -> mainActivityInterface.displayAreYouSure("resetColors",myView.themeName.getText().toString() + ": "+reset_colours_string,null,"themeSetupFragment",this,null));
     }
 
     private void chooseColor(String which) {

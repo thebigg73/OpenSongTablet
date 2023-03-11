@@ -30,6 +30,7 @@ public class ChordFormatFragment extends Fragment {
     private MainActivityInterface mainActivityInterface;
     private int formattouse;
     private boolean usepreferred;
+    private String chord_settings_string="", website_chords_settings_string="";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -42,8 +43,10 @@ public class ChordFormatFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsChordsFormatBinding.inflate(inflater,container,false);
 
-        mainActivityInterface.updateToolbar(getString(R.string.chord_settings));
-        mainActivityInterface.updateToolbarHelp(getString(R.string.website_chords_settings));
+        prepareStrings();
+
+        mainActivityInterface.updateToolbar(chord_settings_string);
+        mainActivityInterface.updateToolbarHelp(website_chords_settings_string);
 
         // Set the initial values
         setValues();
@@ -54,6 +57,12 @@ public class ChordFormatFragment extends Fragment {
         return myView.getRoot();
     }
 
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            chord_settings_string = getString(R.string.chord_settings);
+            website_chords_settings_string = getString(R.string.website_chords_settings);
+        }
+    }
     private void setValues() {
         myView.displayChords.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean(
                 "displayChords", true));
@@ -85,9 +94,11 @@ public class ChordFormatFragment extends Fragment {
         chordFormats = mainActivityInterface.getTranspose().getChordFormatAppearances();
         chordFormatNames = mainActivityInterface.getTranspose().getChordFormatNames();
 
-        ExposedDropDownArrayAdapter formatAdapter = new ExposedDropDownArrayAdapter(requireContext(),
-                myView.choosePreferredFormat,R.layout.view_exposed_dropdown_item,chordFormatNames);
-        myView.choosePreferredFormat.setAdapter(formatAdapter);
+        if (getContext()!=null) {
+            ExposedDropDownArrayAdapter formatAdapter = new ExposedDropDownArrayAdapter(getContext(),
+                    myView.choosePreferredFormat, R.layout.view_exposed_dropdown_item, chordFormatNames);
+            myView.choosePreferredFormat.setAdapter(formatAdapter);
+        }
         myView.choosePreferredFormat.setText(chordFormatNames.get(formattouse-1));
         myView.chosenPreferredFormat.setText(null);
         myView.chosenPreferredFormat.setHint(chordFormats.get(formattouse-1));

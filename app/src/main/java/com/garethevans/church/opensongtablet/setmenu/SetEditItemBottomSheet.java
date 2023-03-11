@@ -38,6 +38,9 @@ public class SetEditItemBottomSheet extends BottomSheetDialogFragment {
     private int setPosition = 0;
     private View selectedCard;
     ExposedDropDownArrayAdapter keyAdapter, folderAdapter, filenameAdapter;
+    private String edit_set_item_string="", note_string="", variation_string="", scripture_string="",
+            slide_string="";
+    private String[] key_choice_string = {};
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -65,7 +68,9 @@ public class SetEditItemBottomSheet extends BottomSheetDialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = BottomSheetSetitemeditBinding.inflate(inflater, container, false);
 
-        myView.dialogHeading.setText(getString(R.string.edit_set_item));
+        prepareStrings();
+
+        myView.dialogHeading.setText(edit_set_item_string);
 
         // Initialise the 'close' floatingactionbutton
         myView.dialogHeading.setClose(this);
@@ -84,22 +89,39 @@ public class SetEditItemBottomSheet extends BottomSheetDialogFragment {
         return myView.getRoot();
     }
 
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            edit_set_item_string = getString(R.string.edit_set_item);
+            key_choice_string = getResources().getStringArray(R.array.key_choice);
+            note_string = getString(R.string.note);
+            variation_string = getString(R.string.variation);
+            scripture_string = getString(R.string.scripture);
+            slide_string = getString(R.string.slide);
+        }
+    }
+
     private void setupExposedDropdowns() {
-        keyAdapter = new ExposedDropDownArrayAdapter(requireContext(),myView.editKey,R.layout.view_exposed_dropdown_item,getResources().getStringArray(R.array.key_choice));
+        if (getContext()!=null) {
+            keyAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.editKey, R.layout.view_exposed_dropdown_item, key_choice_string);
+        }
         myView.editKey.setAdapter(keyAdapter);
         myView.editKey.setText(mainActivityInterface.getCurrentSet().getKey(0));
 
         ArrayList<String> folders = mainActivityInterface.getSQLiteHelper().getFolders();
-        folders.add("**"+getString(R.string.note));
-        folders.add("**"+getString(R.string.variation));
-        folders.add("**"+getString(R.string.scripture));
-        folders.add("**"+getString(R.string.slide));
-        folderAdapter = new ExposedDropDownArrayAdapter(requireContext(), myView.editFolder,R.layout.view_exposed_dropdown_item, folders);
+        folders.add("**"+note_string);
+        folders.add("**"+variation_string);
+        folders.add("**"+scripture_string);
+        folders.add("**"+slide_string);
+        if (getContext()!=null) {
+            folderAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.editFolder, R.layout.view_exposed_dropdown_item, folders);
+        }
         myView.editFolder.setAdapter(folderAdapter);
         myView.editFolder.setText(mainActivityInterface.getCurrentSet().getFolder(0));
 
         filenames = new ArrayList<>();
-        filenameAdapter = new ExposedDropDownArrayAdapter(requireContext(), myView.editFilename, R.layout.view_exposed_dropdown_item,filenames);
+        if (getContext()!=null) {
+            filenameAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.editFilename, R.layout.view_exposed_dropdown_item, filenames);
+        }
         myView.editFilename.setAdapter(filenameAdapter);
         updateFilesInFolder(mainActivityInterface.getCurrentSet().getFolder(0));
 
@@ -123,7 +145,9 @@ public class SetEditItemBottomSheet extends BottomSheetDialogFragment {
         String[] foldersFromNice = mainActivityInterface.getStorageAccess().getActualFoldersFromNice(folder);
         Log.d(TAG,"folderNames: "+foldersFromNice[0]+" / "+foldersFromNice[1]);
         filenames = mainActivityInterface.getStorageAccess().listFilesInFolder(foldersFromNice[0],foldersFromNice[1]);
-        filenameAdapter = new ExposedDropDownArrayAdapter(requireContext(),myView.editFilename,R.layout.view_exposed_dropdown_item,filenames);
+        if (getContext()!=null) {
+            filenameAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.editFilename, R.layout.view_exposed_dropdown_item, filenames);
+        }
         myView.editFilename.setAdapter(filenameAdapter);
         myView.editFilename.setText(mainActivityInterface.getCurrentSet().getFilename(setPosition));
     }
@@ -193,7 +217,7 @@ public class SetEditItemBottomSheet extends BottomSheetDialogFragment {
             // Make the variation file which also updates the set references
             mainActivityInterface.getSetActions().makeVariation(setPosition);
             // Update the matching card
-            newFolder = "**"+getString(R.string.variation);
+            newFolder = "**"+variation_string;
 
         } else {
             // Delete the variation file and put the original folder back?

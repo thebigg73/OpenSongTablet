@@ -52,7 +52,12 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     private LinearLayoutManager songListLayoutManager;
     private ArrayList<String> foundFolders;
     private int alphalistposition = -1;
-    private String alphaSelected = "";
+    private String alphaSelected = "", filter_by_folder_string="", filter_by_dropdown_string="",
+            new_folder_info_string="", filter_by_artist_string="", filter_by_edit_string="",
+            filter_by_key_string="", filter_by_tag_string="", tag_song_info_string="",
+            filter_by_this_value_string="", filter_by_title_string="", deeplink_tags_string="",
+            deeplink_manage_storage_string="";
+    private String[] key_choice_string={};
     private boolean songMenuSortTitles;
 
     private MainActivityInterface mainActivityInterface;
@@ -69,10 +74,6 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         mainActivityInterface = null;
     }
 
-    public void setContext(Context c) {
-        mainActivityInterface = (MainActivityInterface) c;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,6 +83,8 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         myView = MenuSongsBinding.inflate(inflater, container, false);
+
+        prepareStrings();
 
         mainActivityInterface.registerFragment(this,"SongMenuFragment");
         // Initialise views
@@ -93,18 +96,36 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         return myView.getRoot();
     }
 
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            key_choice_string = getResources().getStringArray(R.array.key_choice);
+            filter_by_folder_string = getString(R.string.filter_by_folder);
+            filter_by_dropdown_string = getString(R.string.filter_by_dropdown);
+            new_folder_info_string = getString(R.string.new_folder_info);
+            filter_by_artist_string = getString(R.string.filter_by_artist);
+            filter_by_edit_string = getString(R.string.filter_by_edit);
+            filter_by_key_string = getString(R.string.filter_by_key);
+            filter_by_tag_string = getString(R.string.filter_by_tag);
+            tag_song_info_string = getString(R.string.tag_song_info);
+            filter_by_this_value_string = getString(R.string.filter_by_this_value);
+            filter_by_title_string = getString(R.string.filter_by_title);
+            deeplink_manage_storage_string = getString(R.string.deeplink_manage_storage);
+            deeplink_tags_string = getString(R.string.deeplink_tags);
+        }
+    }
+
     private void initialiseRecyclerView() {
         myView.songListRecyclerView.removeAllViews();
         myView.songmenualpha.sideIndex.removeAllViews();
         if (getContext()!=null) {
             try {
-                songListLayoutManager = new LinearLayoutManager(requireContext());
+                songListLayoutManager = new LinearLayoutManager(getContext());
                 songListLayoutManager.setOrientation(RecyclerView.VERTICAL);
                 myView.songListRecyclerView.setLayoutManager(songListLayoutManager);
                 myView.songListRecyclerView.setHasFixedSize(false);
                 myView.songListRecyclerView.setOnClickListener(null);
                 List<Song> blank = new ArrayList<>();
-                songListAdapter = new SongListAdapter(requireContext(), blank,
+                songListAdapter = new SongListAdapter(getContext(), blank,
                         SongMenuFragment.this);
                 myView.songListRecyclerView.setAdapter(songListAdapter);
             } catch (Exception e) {
@@ -139,8 +160,8 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
             Handler handler = new Handler(Looper.getMainLooper());
             if (getContext()!=null) {
                 try {
-                    keyArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(),
-                            myView.filters.keySearch, R.layout.view_exposed_dropdown_item, getResources().getStringArray(R.array.key_choice));
+                    keyArrayAdapter = new ExposedDropDownArrayAdapter(getContext(),
+                            myView.filters.keySearch, R.layout.view_exposed_dropdown_item, key_choice_string);
                     handler.post(() -> {
                         myView.filters.keySearch.setAdapter(keyArrayAdapter);
                         myView.filters.keySearch.addTextChangedListener(new MyTextWatcher("key"));
@@ -164,7 +185,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
             if (getContext()!=null) {
                 handler.post(() -> {
                     if (getContext()!=null) {
-                        folderArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(), myView.filters.folderSearch, R.layout.view_exposed_dropdown_item, foundFolders);
+                        folderArrayAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.filters.folderSearch, R.layout.view_exposed_dropdown_item, foundFolders);
                         myView.filters.folderSearch.setAdapter(folderArrayAdapter);
                         myView.filters.folderSearch.setMultiselect(true);
                         myView.filters.folderSearch.addTextChangedListener(new MyTextWatcher("folder"));
@@ -240,9 +261,9 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
             showHideRows(myView.filters.folderLayout, songListSearchByFolder);
             if (songListSearchByFolder) {
                 runShowCaseSequence(new View[] {myView.filterButtons.folderButton, myView.filters.folderSearch, myView.filters.manageFolders},
-                        new String[] {getString(R.string.filter_by_folder),
-                        getString(R.string.filter_by_dropdown),
-                        getString(R.string.new_folder_info)},
+                        new String[] {filter_by_folder_string,
+                                filter_by_dropdown_string,
+                                new_folder_info_string},
                         new Boolean[] {true, true, true}, "myView.filters.folderSearch");
             }
         });
@@ -253,8 +274,8 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
             showHideRows(myView.filters.artistSearch, songListSearchByArtist);
             if (songListSearchByArtist) {
                 runShowCaseSequence(new View[] {myView.filterButtons.artistButton, myView.filters.artistSearch},
-                        new String[] {getString(R.string.filter_by_artist),
-                        getString(R.string.filter_by_edit)},
+                        new String[] {filter_by_artist_string,
+                                filter_by_edit_string},
                         new Boolean[]{true, true}, "myView.filters.artistSearch");
             }
         });
@@ -265,8 +286,8 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
             showHideRows(myView.filters.keySearch, songListSearchByKey);
             if (songListSearchByKey) {
                 runShowCaseSequence(new View[] {myView.filterButtons.keyButton, myView.filters.keySearch},
-                        new String[] {getString(R.string.filter_by_key),
-                        getString(R.string.filter_by_dropdown)},
+                        new String[] {filter_by_key_string,
+                                filter_by_dropdown_string},
                         new Boolean[]{true, true}, "myView.filters.keySearch");
             }
         });
@@ -277,8 +298,8 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
             showHideRows(myView.filters.tagLayout, songListSearchByTag);
             if (songListSearchByTag) {
                 runShowCaseSequence(new View[] {myView.filterButtons.tagButton, myView.filters.tagSearch, myView.filters.manageTags},
-                        new String[] {getString(R.string.filter_by_tag),
-                        getString(R.string.filter_by_edit), getString(R.string.tag_song_info)},
+                        new String[] {filter_by_tag_string,
+                                filter_by_edit_string, tag_song_info_string},
                         new Boolean[] {true, true, true}, "myView.filters.tagSearch");
             }
         });
@@ -289,8 +310,8 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
             showHideRows(myView.filters.filterSearch, songListSearchByFilter);
             if (songListSearchByFilter) {
                 runShowCaseSequence(new View[] {myView.filterButtons.filterButton, myView.filters.filterSearch},
-                        new String[] {getString(R.string.filter_by_this_value),
-                        getString(R.string.filter_by_edit)},
+                        new String[] {filter_by_this_value_string,
+                                filter_by_edit_string},
                         new Boolean[] {true, true}, "myView.filters.filterSearch");
             }
         });
@@ -301,13 +322,13 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
             showHideRows(myView.filters.titleSearch, songListSearchByTitle);
             if (songListSearchByTitle) {
                 runShowCaseSequence(new View[] {myView.filterButtons.titleButton, myView.filters.titleSearch},
-                        new String[] {getString(R.string.filter_by_title),
-                        getString(R.string.filter_by_edit)},
+                        new String[] {filter_by_title_string,
+                                filter_by_edit_string},
                         new Boolean[] {true, true}, "myView.filters.titleSearch");
             }
         });
-        myView.filters.manageFolders.setOnClickListener(v -> mainActivityInterface.navigateToFragment(getString(R.string.deeplink_manage_storage),0));
-        myView.filters.manageTags.setOnClickListener(v -> mainActivityInterface.navigateToFragment(getString(R.string.deeplink_tags),0));
+        myView.filters.manageFolders.setOnClickListener(v -> mainActivityInterface.navigateToFragment(deeplink_manage_storage_string,0));
+        myView.filters.manageTags.setOnClickListener(v -> mainActivityInterface.navigateToFragment(deeplink_tags_string,0));
     }
 
     private void showActionDialog() {
@@ -387,7 +408,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                 myView.songListRecyclerView.removeAllViews();
                 myView.songmenualpha.sideIndex.removeAllViews();
                 myView.songListRecyclerView.setOnClickListener(null);
-                songListAdapter = new SongListAdapter(requireContext(),
+                songListAdapter = new SongListAdapter(getContext(),
                         songsFound, SongMenuFragment.this);
                 myView.songListRecyclerView.setAdapter(songListAdapter);
                 myView.songListRecyclerView.setFastScrollEnabled(true);
@@ -559,10 +580,12 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     }
 
     public void runShowCaseSequence(View[] views, String[] information, Boolean[] rectangles, String id) {
-        ArrayList<View> targets = new ArrayList<>(Arrays.asList(views));
-        ArrayList<String> infos = new ArrayList<>(Arrays.asList(information));
-        ArrayList<Boolean> rects = new ArrayList<>(Arrays.asList(rectangles));
-        mainActivityInterface.getShowCase().sequenceShowCase(requireActivity(), targets, null, infos, rects, id);
+        if (getActivity() != null) {
+            ArrayList<View> targets = new ArrayList<>(Arrays.asList(views));
+            ArrayList<String> infos = new ArrayList<>(Arrays.asList(information));
+            ArrayList<Boolean> rects = new ArrayList<>(Arrays.asList(rectangles));
+            mainActivityInterface.getShowCase().sequenceShowCase(getActivity(), targets, null, infos, rects, id);
+        }
     }
 
     public void updateSongMenu(Song song) {

@@ -47,6 +47,8 @@ public class CustomSlideFragment extends Fragment {
     private SettingsCustomSlideBinding myView;
     private MainActivityInterface mainActivityInterface;
     private ActivityResultLauncher<Intent> addImagesLauncher;
+    private String custom_slide_string="", website_custom_slide_string="", load_reusable_string="",
+            file_chooser_string="";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -58,8 +60,11 @@ public class CustomSlideFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsCustomSlideBinding.inflate(inflater, container, false);
-        mainActivityInterface.updateToolbar(getString(R.string.custom_slide));
-        mainActivityInterface.updateToolbarHelp(getString(R.string.website_custom_slide));
+
+        prepareStrings();
+
+        mainActivityInterface.updateToolbar(custom_slide_string);
+        mainActivityInterface.updateToolbarHelp(website_custom_slide_string);
 
         myView.nestedScrollView.setExtendedFabToAnimate(myView.addToSet);
 
@@ -76,6 +81,14 @@ public class CustomSlideFragment extends Fragment {
         return myView.getRoot();
     }
 
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            custom_slide_string = getString(R.string.custom_slide);
+            website_custom_slide_string = getString(R.string.website_custom_slide);
+            load_reusable_string = getString(R.string.load_reusable);
+            file_chooser_string = getString(R.string.file_chooser);
+        }
+    }
     private void setupViews() {
         mainActivityInterface.getProcessSong().editBoxToMultiline(myView.content);
         mainActivityInterface.getProcessSong().stretchEditBoxToLines(myView.content,8);
@@ -166,8 +179,8 @@ public class CustomSlideFragment extends Fragment {
                         // If this is a localised (i.e. inside OpenSong folder), we don't need to take the permissions
                         // There is a limit of 128-512 permissions allowed (depending on Android version).
                         String localisedUri = mainActivityInterface.getStorageAccess().fixUriToLocal(contentUri);
-                        if (!localisedUri.contains("../OpenSong/")) {
-                            ContentResolver resolver = requireActivity().getContentResolver();
+                        if (!localisedUri.contains("../OpenSong/") && getActivity()!=null) {
+                            ContentResolver resolver = getActivity().getContentResolver();
                             resolver.takePersistableUriPermission(contentUri, data.getFlags()
                                     & Intent.FLAG_GRANT_READ_URI_PERMISSION);
                         }
@@ -276,8 +289,10 @@ public class CustomSlideFragment extends Fragment {
                     uri = mainActivityInterface.getStorageAccess().fixLocalisedUri(uri.getPath());
                 }
                 if (!mainActivityInterface.getStorageAccess().uriExists(uri)) {
-                    Drawable notfound = ContextCompat.getDrawable(requireContext(),R.drawable.warning);
-                    thumbnail.setImageDrawable(notfound);
+                    if (getContext()!=null) {
+                        Drawable notfound = ContextCompat.getDrawable(getContext(), R.drawable.warning);
+                        thumbnail.setImageDrawable(notfound);
+                    }
                 } else {
                     InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(uri);
                     ThumbImage = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeStream(inputStream), dpToPx(200), dpToPx(150));
@@ -326,7 +341,7 @@ public class CustomSlideFragment extends Fragment {
         String folder = getFolderFromType();
         ArrayList<String> filesFound = mainActivityInterface.getStorageAccess().listFilesInFolder(folder,"");
         Collections.sort(filesFound);
-        TextInputBottomSheet textInputBottomSheet = new TextInputBottomSheet(this,"CustomSlideFragment",getString(R.string.load_reusable),getString(R.string.file_chooser),null,null,"",filesFound);
+        TextInputBottomSheet textInputBottomSheet = new TextInputBottomSheet(this,"CustomSlideFragment",load_reusable_string,file_chooser_string,null,null,"",filesFound);
         textInputBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"textInputBottomSheet");
     }
 

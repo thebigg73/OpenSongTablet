@@ -66,7 +66,7 @@ public class AreYouSureBottomSheet extends BottomSheetDialogFragment {
         // Initialise the 'close' floatingactionbutton
         myView.dialogHeading.setClose(this);
 
-        if (what.equals("newSet")) {
+        if (what.equals("newSet") && getContext()!=null) {
             myView.dialogHeading.setWebHelp(mainActivityInterface,getString(R.string.website_set_create_new));
         }
         myView.action.setText(textToShow);

@@ -30,6 +30,7 @@ public class SwipeFragment extends Fragment {
 
     // For simulated swipe animation
     private float startX, startY, newX, newY;
+    private String swipe_string="", website_swipe_settings_string="";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -41,18 +42,31 @@ public class SwipeFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsSwipesBinding.inflate(inflater, container, false);
-        mainActivityInterface.updateToolbar(getString(R.string.swipe));
-        mainActivityInterface.updateToolbarHelp(getString(R.string.website_swipe_settings));
+
+        prepareStrings();
+
+        mainActivityInterface.updateToolbar(swipe_string);
+        mainActivityInterface.updateToolbarHelp(website_swipe_settings_string);
 
         // register this fragement
         mainActivityInterface.registerFragment(this, "SwipeFragment");
 
         // setup the views
-        new Thread(() -> requireActivity().runOnUiThread(this::setupViews)).start();
+        new Thread(() -> {
+            if (getActivity()!=null) {
+                getActivity().runOnUiThread(this::setupViews);
+            }
+        }).start();
 
         return myView.getRoot();
     }
 
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            swipe_string = getString(R.string.swipe);
+            website_swipe_settings_string = getString(R.string.website_swipe_settings);
+        }
+    }
     @Override
     public void onDestroyView() {
         super.onDestroyView();

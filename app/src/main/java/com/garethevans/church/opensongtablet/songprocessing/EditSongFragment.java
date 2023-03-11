@@ -34,6 +34,12 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
     private ViewPager2.OnPageChangeCallback callback;
     @SuppressWarnings("unused")
     private final String TAG = "EditSongFragment";
+    private String edit_string="", website_edit_song_string="", information_string="", okay_string="",
+            edit_song_variation_temp_string="", edit_song_variation_string="",
+            website_edit_song_main_string="", website_edit_song_features_string="",
+            website_edit_song_tag_string="", lyrics_string="", mainfoldername_string="",
+            song_features_string="", tag_string="", not_saved_filename_string="",
+            not_saved_folder_string="", not_saved_string="";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -58,9 +64,11 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
                              Bundle savedInstanceState) {
         myView = EditSongBinding.inflate(inflater, container, false);
 
+        prepareStrings();
+
         // Update the toolbar
-        mainActivityInterface.updateToolbar(getResources().getString(R.string.edit));
-        mainActivityInterface.updateToolbarHelp(getString(R.string.website_edit_song));
+        mainActivityInterface.updateToolbar(edit_string);
+        mainActivityInterface.updateToolbarHelp(website_edit_song_string);
 
         // Set up the updated song (a copy of the current song for editing)
         mainActivityInterface.setTempSong(new Song(mainActivityInterface.getSong()));
@@ -77,12 +85,12 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
         InformationBottomSheet informationBottomSheet = null;
         if (mainActivityInterface.getWhattodo()!=null &&
                 mainActivityInterface.getWhattodo().equals("editTempVariation")) {
-            informationBottomSheet = new InformationBottomSheet(getString(R.string.information),
-                    getString(R.string.edit_song_variation_temp),getString(R.string.okay),null);
+            informationBottomSheet = new InformationBottomSheet(information_string,
+                    edit_song_variation_temp_string,okay_string,null);
         } else if (mainActivityInterface.getWhattodo()!=null &&
                 mainActivityInterface.getWhattodo().equals("editActualVariation")) {
-            informationBottomSheet = new InformationBottomSheet(getString(R.string.information),
-                    getString(R.string.edit_song_variation),getString(R.string.okay),null);
+            informationBottomSheet = new InformationBottomSheet(information_string,
+                    edit_song_variation_string,okay_string,null);
         }
 
         if (informationBottomSheet!=null) {
@@ -101,52 +109,74 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
 
     }
 
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            edit_string = getString(R.string.edit);
+            website_edit_song_string = getString(R.string.website_edit_song);
+            information_string = getString(R.string.information);
+            okay_string = getString(R.string.okay);
+            edit_song_variation_temp_string = getString(R.string.edit_song_variation_temp);
+            edit_song_variation_string = getString(R.string.edit_song_variation);
+            website_edit_song_main_string = getString(R.string.website_edit_song_main);
+            website_edit_song_features_string = getString(R.string.website_edit_song_features);
+            website_edit_song_tag_string = getString(R.string.website_edit_song_tag);
+            lyrics_string = getString(R.string.lyrics);
+            mainfoldername_string = getString(R.string.mainfoldername);
+            song_features_string = getString(R.string.song_features);
+            tag_string = getString(R.string.tag);
+            not_saved_filename_string = getString(R.string.not_saved_filename);
+            not_saved_folder_string = getString(R.string.not_saved_folder);
+            not_saved_string = getString(R.string.not_saved);
+        }
+    }
     private void setUpTabs() {
-        EditSongViewPagerAdapter adapter = new EditSongViewPagerAdapter(requireActivity().getSupportFragmentManager(),
-                requireActivity().getLifecycle());
-        adapter.createFragment(0);
+        if (getActivity()!=null) {
+            EditSongViewPagerAdapter adapter = new EditSongViewPagerAdapter(getActivity().getSupportFragmentManager(),
+                    getActivity().getLifecycle());
+            adapter.createFragment(0);
 
-        myView.viewpager.setAdapter(adapter);
-        myView.viewpager.setOffscreenPageLimit(1);
-        callback = new ViewPager2.OnPageChangeCallback() {
-            @Override
-            public void onPageSelected(int position) {
-                super.onPageSelected(position);
+            myView.viewpager.setAdapter(adapter);
+            myView.viewpager.setOffscreenPageLimit(1);
+            callback = new ViewPager2.OnPageChangeCallback() {
+                @Override
+                public void onPageSelected(int position) {
+                    super.onPageSelected(position);
+                    switch (position) {
+                        case 0:
+                            mainActivityInterface.updateToolbarHelp(website_edit_song_string);
+                            break;
+                        case 1:
+                            mainActivityInterface.updateToolbarHelp(website_edit_song_main_string);
+                            break;
+                        case 2:
+                            mainActivityInterface.updateToolbarHelp(website_edit_song_features_string);
+                            break;
+                        case 3:
+                            mainActivityInterface.updateToolbarHelp(website_edit_song_tag_string);
+                            break;
+                    }
+                    mainActivityInterface.getWindowFlags().hideKeyboard();
+                }
+            };
+            myView.viewpager.registerOnPageChangeCallback(callback);
+            new TabLayoutMediator(myView.tabButtons, myView.viewpager, (tab, position) -> {
                 switch (position) {
                     case 0:
-                        mainActivityInterface.updateToolbarHelp(getString(R.string.website_edit_song));
+                    default:
+                        tab.setText(lyrics_string);
                         break;
                     case 1:
-                        mainActivityInterface.updateToolbarHelp(getString(R.string.website_edit_song_main));
+                        tab.setText(mainfoldername_string);
                         break;
                     case 2:
-                        mainActivityInterface.updateToolbarHelp(getString(R.string.website_edit_song_features));
+                        tab.setText(song_features_string);
                         break;
                     case 3:
-                        mainActivityInterface.updateToolbarHelp(getString(R.string.website_edit_song_tag));
+                        tab.setText(tag_string);
                         break;
                 }
-                mainActivityInterface.getWindowFlags().hideKeyboard();
-            }
-        };
-        myView.viewpager.registerOnPageChangeCallback(callback);
-        new TabLayoutMediator(myView.tabButtons, myView.viewpager, (tab, position) -> {
-            switch (position) {
-                case 0:
-                default:
-                    tab.setText(getString(R.string.lyrics));
-                    break;
-                case 1:
-                    tab.setText(getString(R.string.mainfoldername));
-                    break;
-                case 2:
-                    tab.setText(getString(R.string.song_features));
-                    break;
-                case 3:
-                    tab.setText(getString(R.string.tag));
-                    break;
-            }
-        }).attach();
+            }).attach();
+        }
     }
 
     public void enableSwipe(boolean canSwipe) {
@@ -169,10 +199,10 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
             // For a new song, check we have a folder/filename set
             boolean oktoproceed = true;
             if (mainActivityInterface.getTempSong().getFilename()==null || mainActivityInterface.getTempSong().getFilename().isEmpty()) {
-                mainActivityInterface.getShowToast().doIt(getString(R.string.not_saved_filename));
+                mainActivityInterface.getShowToast().doIt(not_saved_filename_string);
                 oktoproceed = false;
             } else if (mainActivityInterface.getTempSong().getFolder()==null || mainActivityInterface.getTempSong().getFolder().isEmpty()) {
-                mainActivityInterface.getShowToast().doIt(getString(R.string.not_saved_folder));
+                mainActivityInterface.getShowToast().doIt(not_saved_folder_string);
                 oktoproceed = false;
             } else if (mainActivityInterface.getTempSong().getTitle()==null || mainActivityInterface.getTempSong().getTitle().isEmpty()) {
                 // Ok to proceed, but copy the filename into the empty title
@@ -183,7 +213,7 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
                 // If successful, go back to the home page.  Otherwise stay here and await user decision from toast
                 handler.post(() -> mainActivityInterface.navHome());
             } else if (oktoproceed) {
-                handler.post(() -> mainActivityInterface.getShowToast().doIt(requireContext().getString(R.string.not_saved)));
+                handler.post(() -> mainActivityInterface.getShowToast().doIt(not_saved_string));
             }
         });
     }

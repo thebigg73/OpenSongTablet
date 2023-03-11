@@ -35,9 +35,9 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
     private MainActivityInterface mainActivityInterface;
     private int fromFormat, toFormat, prefFormat, transposeTimes, position;
     private String originalKey, newKey, setFolder, songFolder, setFilename;
-    private String string_Key, string_Transpose, string_WebsiteChordsTranspose,
-        string_ChordFormatPreferredInfo, string_DeeplinkChordSettings, string_CopyOf,
-        string_Standard, string_DetectedAppearance;
+    private String string_Key="", string_Transpose="", string_WebsiteChordsTranspose="",
+        string_ChordFormatPreferredInfo="", string_DeeplinkChordSettings="", string_CopyOf="",
+        string_Standard="", string_DetectedAppearance="";
 
     public TransposeBottomSheet(boolean editSong) {
         // This is called from the EditSongFragment.  Receive temp lyrics and key
@@ -209,10 +209,10 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
 
     private void buildChordFormatOptions() {
         if (getContext()!=null && mainActivityInterface.getTranspose().getChordFormatNames().size()>0) {
-            ExposedDropDownArrayAdapter exposedDropDownArrayAdapterFrom = new ExposedDropDownArrayAdapter(requireContext(),
+            ExposedDropDownArrayAdapter exposedDropDownArrayAdapterFrom = new ExposedDropDownArrayAdapter(getContext(),
                     myView.chordFormatFrom, R.layout.view_exposed_dropdown_item,
                     mainActivityInterface.getTranspose().getChordFormatNames());
-            ExposedDropDownArrayAdapter exposedDropDownArrayAdapterTo = new ExposedDropDownArrayAdapter(requireContext(),
+            ExposedDropDownArrayAdapter exposedDropDownArrayAdapterTo = new ExposedDropDownArrayAdapter(getContext(),
                     myView.chordFormatTo, R.layout.view_exposed_dropdown_item,
                     mainActivityInterface.getTranspose().getChordFormatNames());
             myView.chordFormatFrom.setAdapter(exposedDropDownArrayAdapterFrom);

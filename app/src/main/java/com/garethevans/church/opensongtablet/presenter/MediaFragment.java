@@ -27,10 +27,12 @@ public class MediaFragment extends Fragment {
 
     // TODO GET THIS WORKING
 
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "MediaFragment";
     private MainActivityInterface mainActivityInterface;
     private ModePresenterMediaBinding myView;
-    private String padKey, padFile, linkYouTube, linkAudio, mediaHint;
+    private String padKey, padFile, linkYouTube, linkAudio, mediaHint, pad_auto_string="",
+            link_audio_string="", link_youtube_string="", file_chooser_string="";
     private Uri padUri;
     ArrayList<String> audioSources;
 
@@ -46,6 +48,8 @@ public class MediaFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         myView = ModePresenterMediaBinding.inflate(inflater, container, false);
 
+        prepareStrings();
+
         onSongLoad();
 
         initialiseDropdowns();
@@ -54,6 +58,14 @@ public class MediaFragment extends Fragment {
         return myView.getRoot();
     }
 
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            pad_auto_string = getString(R.string.pad_auto);
+            link_audio_string = getString(R.string.link_audio);
+            link_youtube_string = getString(R.string.link_youtube);
+            file_chooser_string = getString(R.string.file_chooser);
+        }
+    }
     @Override
     public void onResume() {
         super.onResume();
@@ -62,13 +74,15 @@ public class MediaFragment extends Fragment {
 
     private void initialiseDropdowns() {
         audioSources = new ArrayList<>();
-        audioSources.add(getString(R.string.pad_auto));
-        audioSources.add(getString(R.string.link_audio));
-        audioSources.add(getString(R.string.link_youtube));
-        audioSources.add(getString(R.string.file_chooser));
-        ExposedDropDownArrayAdapter exposedDropDownArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(),
-                myView.audioSource, R.layout.view_exposed_dropdown_item, audioSources);
-        myView.audioSource.setAdapter(exposedDropDownArrayAdapter);
+        audioSources.add(pad_auto_string);
+        audioSources.add(link_audio_string);
+        audioSources.add(link_youtube_string);
+        audioSources.add(file_chooser_string);
+        if (getContext()!=null) {
+            ExposedDropDownArrayAdapter exposedDropDownArrayAdapter = new ExposedDropDownArrayAdapter(getContext(),
+                    myView.audioSource, R.layout.view_exposed_dropdown_item, audioSources);
+            myView.audioSource.setAdapter(exposedDropDownArrayAdapter);
+        }
         myView.audioSource.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }

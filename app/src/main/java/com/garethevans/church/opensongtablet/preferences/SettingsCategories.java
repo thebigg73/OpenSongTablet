@@ -26,7 +26,10 @@ public class SettingsCategories extends Fragment {
     private SettingsCategoriesBinding myView;
     private MainActivityInterface mainActivityInterface;
     ActivityResultLauncher<String[]> nearbyConnectionsPermission;
-
+    private String settings_string="", mode_presenter_string="", presenter_mode_string="",
+            mode_stage_string="", stage_mode_string="", performance_mode_string="",
+            play_services_error_string="", midi_description_string="", not_available_string="",
+            location_string="", permissions_refused_string="";
     @Override
     public void onAttach(@NonNull Context context) {
         mainActivityInterface = (MainActivityInterface) context;
@@ -39,7 +42,10 @@ public class SettingsCategories extends Fragment {
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         myView = SettingsCategoriesBinding.inflate(inflater, container, false);
-        mainActivityInterface.updateToolbar(getString(R.string.settings));
+
+        prepareStrings();
+
+        mainActivityInterface.updateToolbar(settings_string);
 
         // Hide the features not available to this device
         hideUnavailable();
@@ -56,23 +62,43 @@ public class SettingsCategories extends Fragment {
         return myView.getRoot();
     }
 
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            settings_string = getString(R.string.settings);
+            mode_presenter_string = getString(R.string.mode_presenter);
+            presenter_mode_string = getString(R.string.presenter_mode);
+            mode_stage_string = getString(R.string.mode_stage);
+            stage_mode_string = getString(R.string.stage_mode);
+            performance_mode_string = getString(R.string.performance_mode);
+            play_services_error_string = getString(R.string.play_services_error);
+            midi_description_string = getString(R.string.midi_description);
+            not_available_string = getString(R.string.not_available);
+            location_string = getString(R.string.location);
+            permissions_refused_string = getString(R.string.permissions_refused);
+        }
+    }
     private void hideUnavailable() {
         // If the user doesn't have Google API availability, they can't use the connect feature
-        setPlayEnabled(GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(requireContext()) == ConnectionResult.SUCCESS);
-        // If they don't have midi functionality, remove this
-        setMidiEnabled(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && requireContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_MIDI));
+        if (getContext()!=null) {
+            setPlayEnabled(GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(getContext()) == ConnectionResult.SUCCESS);
+            // If they don't have midi functionality, remove this
+            setMidiEnabled(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && getContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_MIDI));
+        } else {
+            setPlayEnabled(false);
+            setMidiEnabled(false);
+        }
     }
 
     private void setModeText() {
         String mode;
         String getMode = mainActivityInterface.getMode();
 
-        if (getMode.equals(getString(R.string.mode_presenter))) {
-            mode = getString(R.string.presenter_mode);
-        } else if (getMode.equals(getString(R.string.mode_stage))) {
-            mode = getString(R.string.stage_mode);
+        if (getMode.equals(mode_presenter_string)) {
+            mode = presenter_mode_string;
+        } else if (getMode.equals(mode_stage_string)) {
+            mode = stage_mode_string;
         } else {
-            mode = getString(R.string.performance_mode);
+            mode = performance_mode_string;
         }
         myView.modeButton.setHint(mode);
     }
@@ -81,16 +107,16 @@ public class SettingsCategories extends Fragment {
         myView.connectButton.setEnabled(enabled);
         myView.connectLine.setEnabled(enabled);
         if (!enabled) {
-            myView.connectButton.setHint(getString(R.string.play_services_error));
+            myView.connectButton.setHint(play_services_error_string);
         }
     }
 
     private void setMidiEnabled(boolean enabled) {
         String message;
         if (enabled) {
-            message = getString(R.string.midi_description);
+            message = midi_description_string;
         } else {
-            message = getString(R.string.not_available);
+            message = not_available_string;
         }
         myView.midiButton.setEnabled(enabled);
         myView.midiButton.setHint(message);
@@ -104,8 +130,8 @@ public class SettingsCategories extends Fragment {
 
             } else {
                 // notify user
-                InformationBottomSheet informationBottomSheet = new InformationBottomSheet(getString(R.string.location),
-                        getString(R.string.permissions_refused), getString(R.string.settings), "appPrefs");
+                InformationBottomSheet informationBottomSheet = new InformationBottomSheet(location_string,
+                        permissions_refused_string, settings_string, "appPrefs");
                 informationBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "InformationBottomSheet");
             }
         });
@@ -118,14 +144,6 @@ public class SettingsCategories extends Fragment {
         myView.setActionsButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null, R.id.set_graph));
         myView.gesturesButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null, R.id.control_graph));
         myView.connectButton.setOnClickListener(v -> {
-            // First check for network connectivity required for location
-            // Actually this is causing issues for some users!
-            // The LocationManager class first needs fine/coarse location permissions to run and we haven't asked yet!
-            /*if (mainActivityInterface.getAppPermissions().locationEnabled(requireContext(),mainActivityInterface)) {
-                // Check we have the required permissions and if so the launcher navigates to the connect fragment
-                mainActivityInterface.setWhattodo("nearby");
-                nearbyConnectionsPermission.launch(mainActivityInterface.getAppPermissions().getNearbyPermissions());
-            }*/
             // Check we have the required permissions and if so the launcher navigates to the connect fragment
             mainActivityInterface.setWhattodo("nearby");
             nearbyConnectionsPermission.launch(mainActivityInterface.getAppPermissions().getNearbyPermissions());

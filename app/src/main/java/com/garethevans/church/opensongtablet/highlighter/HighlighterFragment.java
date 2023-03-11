@@ -19,6 +19,8 @@ public class HighlighterFragment extends Fragment {
 
     private MainActivityInterface mainActivityInterface;
     private SettingsHighlighterBinding myView;
+    private String highlight_string="", website_highlighter_string="", mode_performance_string="",
+            on_string="";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -30,8 +32,11 @@ public class HighlighterFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsHighlighterBinding.inflate(inflater,container,false);
-        mainActivityInterface.updateToolbar(getString(R.string.highlight));
-        mainActivityInterface.updateToolbarHelp(getString(R.string.website_highlighter));
+
+        prepareStrings();
+
+        mainActivityInterface.updateToolbar(highlight_string);
+        mainActivityInterface.updateToolbarHelp(website_highlighter_string);
 
         // Set current values
         setupViews();
@@ -42,6 +47,14 @@ public class HighlighterFragment extends Fragment {
         return myView.getRoot();
     }
 
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            highlight_string = getString(R.string.highlight);
+            website_highlighter_string = getString(R.string.website_highlighter);
+            mode_performance_string = getString(R.string.mode_performance);
+            on_string = getString(R.string.on);
+        }
+    }
     private void setupViews() {
         boolean drawingAutoDisplay = mainActivityInterface.getPreferences().getMyPreferenceBoolean("drawingAutoDisplay",true);
         myView.autoShowHighlight.setChecked(drawingAutoDisplay);
@@ -50,7 +63,7 @@ public class HighlighterFragment extends Fragment {
         myView.timeToDisplayHighlighter.setValue(timeToDisplayHighlighter);
         myView.timeToDisplayHighlighter.setLabelFormatter(value -> ((int)value)+"s");
         setHintTime(timeToDisplayHighlighter);
-        hideView(myView.edit,mainActivityInterface.getMode().equals(getString(R.string.mode_performance)));
+        hideView(myView.edit,mainActivityInterface.getMode().equals(mode_performance_string));
     }
 
     private void hideView(View view, boolean drawingAutoDisplay) {
@@ -63,7 +76,7 @@ public class HighlighterFragment extends Fragment {
     private void setHintTime(int timeToDisplayHighlighter) {
         String s;
         if (timeToDisplayHighlighter == 0) {
-            s = getString(R.string.on);
+            s = on_string;
         } else {
             s = timeToDisplayHighlighter + "s";
         }

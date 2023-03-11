@@ -26,7 +26,11 @@ public class DisplayExtraFragment extends Fragment {
     private SettingsDisplayExtraBinding myView;
     private String[] bracketStyles_Names;
     private int[] bracketStyles_Ints;
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "DisplayExtraFrag";
+    private String song_display_string="", website_song_display_string="", save_string="",
+            filters_string="", format_text_normal_string="", format_text_italic_string="",
+            format_text_bold_string="", format_text_bolditalic_string="";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -38,10 +42,15 @@ public class DisplayExtraFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsDisplayExtraBinding.inflate(inflater,container,false);
-        requireActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
-        mainActivityInterface.updateToolbar(getString(R.string.song_display));
-        mainActivityInterface.updateToolbarHelp(getString(R.string.website_song_display));
+        prepareStrings();
+
+        if (getActivity()!=null) {
+            getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        }
+
+        mainActivityInterface.updateToolbar(song_display_string);
+        mainActivityInterface.updateToolbarHelp(website_song_display_string);
 
 
         // Set up views
@@ -53,6 +62,18 @@ public class DisplayExtraFragment extends Fragment {
         return myView.getRoot();
     }
 
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            song_display_string = getString(R.string.song_display);
+            website_song_display_string = getString(R.string.website_song_display);
+            save_string = getString(R.string.save);
+            filters_string = getString(R.string.filters);
+            format_text_normal_string = getString(R.string.format_text_normal);
+            format_text_italic_string = getString(R.string.format_text_italic);
+            format_text_bold_string = getString(R.string.format_text_bold);
+            format_text_bolditalic_string = getString(R.string.format_text_bolditalic);
+        }
+    }
     private void setViews() {
         // Set the checkboxes
         myView.songSheet.setChecked(getChecked("songSheet",false));
@@ -82,15 +103,17 @@ public class DisplayExtraFragment extends Fragment {
         myView.filterSwitch.setChecked(getChecked("filterSections",false));
         visibilityByBoolean(myView.filterLayout,myView.filterSwitch.getChecked());
         myView.filterShow.setChecked(getChecked("filterShow",false));
-        String text = getString(R.string.save) + " (" + getString(R.string.filters) + ")";
+        String text = save_string + " (" + filters_string + ")";
         myView.filterSave.setText(text);
         mainActivityInterface.getProcessSong().editBoxToMultiline(myView.filters);
         mainActivityInterface.getProcessSong().stretchEditBoxToLines(myView.filters,4);
-        bracketStyles_Names = new String[] {getString(R.string.format_text_normal),getString(R.string.format_text_italic),
-        getString(R.string.format_text_bold),getString(R.string.format_text_bolditalic)};
+        bracketStyles_Names = new String[] {format_text_normal_string,format_text_italic_string,
+                format_text_bold_string,format_text_bolditalic_string};
         bracketStyles_Ints = new int[] {Typeface.NORMAL,Typeface.ITALIC,Typeface.BOLD,Typeface.BOLD_ITALIC};
-        ExposedDropDownArrayAdapter exposedDropDownArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(),myView.bracketsStyle,R.layout.view_exposed_dropdown_item,bracketStyles_Names);
-        myView.bracketsStyle.setAdapter(exposedDropDownArrayAdapter);
+        if (getContext()!=null) {
+            ExposedDropDownArrayAdapter exposedDropDownArrayAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.bracketsStyle, R.layout.view_exposed_dropdown_item, bracketStyles_Names);
+            myView.bracketsStyle.setAdapter(exposedDropDownArrayAdapter);
+        }
         myView.bracketsStyle.setText(getBracketStringFromValue(mainActivityInterface.getPreferences().getMyPreferenceInt("bracketsStyle",Typeface.NORMAL)));
         myView.curlyBrackets.setChecked(getChecked("curlyBrackets",true));
     }
@@ -106,7 +129,7 @@ public class DisplayExtraFragment extends Fragment {
     }
 
     private String getBracketStringFromValue(int value) {
-        String string = getString(R.string.format_text_normal);
+        String string = format_text_normal_string;
         for (int x=0; x<bracketStyles_Ints.length; x++) {
             if (bracketStyles_Ints[x]==value) {
                 string = bracketStyles_Names[x];

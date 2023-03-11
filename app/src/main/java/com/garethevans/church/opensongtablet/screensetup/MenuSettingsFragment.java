@@ -31,8 +31,10 @@ public class MenuSettingsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsMenuBinding.inflate(inflater,container,false);
 
-        mainActivityInterface.updateToolbar(getString(R.string.menu_settings));
-        mainActivityInterface.updateToolbarHelp(getString(R.string.website_menu_settings));
+        if (getContext()!=null) {
+            mainActivityInterface.updateToolbar(getString(R.string.menu_settings));
+            mainActivityInterface.updateToolbarHelp(getString(R.string.website_menu_settings));
+        }
 
         // Deal with the views
         setupViews();

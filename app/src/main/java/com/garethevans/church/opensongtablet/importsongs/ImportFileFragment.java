@@ -44,7 +44,8 @@ public class ImportFileFragment extends Fragment {
     private boolean isIMGorPDF;
     private String basename, requiredExtension, setcategory, newSetName;
     private Uri tempFile, copyTo;
-    private String originalFolder, originalFilename;
+    private String originalFolder, originalFilename, import_from_file_string="", error_string="",
+            mainfoldername_string="", overwrite_string="", filename_string="", file_exists_string="";
     private ExposedDropDownArrayAdapter exposedDropDownArrayAdapter;
 
     @Override
@@ -59,7 +60,9 @@ public class ImportFileFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         myView = SettingsImportFileBinding.inflate(inflater,container,false);
 
-        mainActivityInterface.updateToolbar(getString(R.string.import_from_file));
+        prepareStrings();
+
+        mainActivityInterface.updateToolbar(import_from_file_string);
         myView.nestedScrollView.setExtendedFabToAnimate(myView.importButton);
 
         // Get a note of the original folder/filename
@@ -78,7 +81,7 @@ public class ImportFileFragment extends Fragment {
             Handler handler = new Handler(Looper.getMainLooper());
             // Get the available folders and base name
             basename = mainActivityInterface.getImportFilename().replaceAll("\\.[^.]*$", "");
-            setcategory = getString(R.string.mainfoldername);
+            setcategory = mainfoldername_string;
             if (mainActivityInterface.getImportFilename().endsWith(".osts")) {
                 // This is actually a set
                 folders = mainActivityInterface.getSetActions().getCategories(mainActivityInterface.getSetActions().getAllSets());
@@ -103,11 +106,13 @@ public class ImportFileFragment extends Fragment {
 
             // Set up the folder exposed dropdown
             handler.post(() -> {
-                        exposedDropDownArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(), myView.folder, R.layout.view_exposed_dropdown_item, folders);
-                        myView.folder.setAdapter(exposedDropDownArrayAdapter);
-                        // Default to the current folder
-                        myView.folder.setText(mainActivityInterface.getSong().getFolder());
-                    });
+                if (getContext()!=null) {
+                    exposedDropDownArrayAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.folder, R.layout.view_exposed_dropdown_item, folders);
+                    myView.folder.setAdapter(exposedDropDownArrayAdapter);
+                }
+                // Default to the current folder
+                myView.folder.setText(mainActivityInterface.getSong().getFolder());
+            });
             // Try to read in the song using the import information.  This copies to the Variations/_cache folder
             if (mainActivityInterface.getImportFilename().endsWith(".osts")) {
                 readInSetFile();
@@ -131,6 +136,17 @@ public class ImportFileFragment extends Fragment {
         });
 
         return myView.getRoot();
+    }
+
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            import_from_file_string = getString(R.string.import_from_file);
+            mainfoldername_string = getString(R.string.mainfoldername);
+            overwrite_string = getString(R.string.overwrite);
+            filename_string = getString(R.string.filename);
+            error_string = getString(R.string.error);
+            file_exists_string = getString(R.string.file_exists);
+        }
     }
 
     private void readInSetFile() {
@@ -174,14 +190,14 @@ public class ImportFileFragment extends Fragment {
 
         mainActivityInterface.getStorageAccess().copyFile(inputStream,outputStream);
 
-        if (isIMGorPDF) {
+        if (isIMGorPDF && getContext()!=null) {
             if (mainActivityInterface.getImportFilename().toLowerCase(Locale.ROOT).endsWith(".pdf")) {
                 // Load in a preview if the version of Android is high enough
                 Bitmap bmp = mainActivityInterface.getProcessSong().getBitmapFromPDF(null,null,1,200,200,"N");
-                myView.imageView.post(()->GlideApp.with(requireContext()).load(bmp).into(myView.imageView));
+                myView.imageView.post(()->GlideApp.with(getContext()).load(bmp).into(myView.imageView));
                 newSong.setFiletype("PDF");
             } else {
-                myView.imageView.post(()->GlideApp.with(requireContext()).load(mainActivityInterface.getImportUri()).into(myView.imageView));
+                myView.imageView.post(()->GlideApp.with(getContext()).load(mainActivityInterface.getImportUri()).into(myView.imageView));
                 newSong.setFiletype("IMG");
             }
         } else {
@@ -246,7 +262,7 @@ public class ImportFileFragment extends Fragment {
             // Import the set if it doesn't already exist and filename isn't empty
             String folderprefix = "";
             if (!myView.folder.getText().toString().isEmpty() &&
-                !myView.folder.getText().toString().equals(getString(R.string.mainfoldername))) {
+                !myView.folder.getText().toString().equals(mainfoldername_string)) {
                 folderprefix = myView.folder.getText().toString() + "__";
             }
             String filename = myView.filename.getText().toString();
@@ -256,13 +272,13 @@ public class ImportFileFragment extends Fragment {
                         newSetName);
                 if (mainActivityInterface.getStorageAccess().uriExists(copyTo)) {
                     AreYouSureBottomSheet areYouSureBottomSheet = new AreYouSureBottomSheet("importSetIntent",
-                            getString(R.string.overwrite), null, "ImportFileFragment_Set", this, null);
+                            overwrite_string, null, "ImportFileFragment_Set", this, null);
                     areYouSureBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "AreYouSure");
                 } else {
                     finishImportSet();
                 }
             } else {
-                mainActivityInterface.getShowToast().doIt(getString(R.string.filename)+" "+getString(R.string.error));
+                mainActivityInterface.getShowToast().doIt(filename_string+" "+error_string);
             }
 
 
@@ -270,7 +286,7 @@ public class ImportFileFragment extends Fragment {
             // Only proceed if song doesn't exist or we have checked the overwrite button
             if (checkIfFileExists() && !myView.overwrite.isChecked()) {
                 // Don't proceed
-                mainActivityInterface.getShowToast().doIt(getString(R.string.file_exists));
+                mainActivityInterface.getShowToast().doIt(file_exists_string);
             } else {
                 // Create the new song location
                 String folder = myView.folder.getText().toString();
@@ -331,32 +347,34 @@ public class ImportFileFragment extends Fragment {
                     mainActivityInterface.updateSongList();
                     mainActivityInterface.navHome();
                 } else {
-                    mainActivityInterface.getShowToast().doIt(getString(R.string.error));
+                    mainActivityInterface.getShowToast().doIt(error_string);
                 }
             }
         }
     }
 
     public void finishImportSet() {
-        try {
-            // Copy the file
-            File tempLoc = new File(requireActivity().getExternalCacheDir(), "Import");
-            Log.d(TAG, "Create folder:" + tempLoc.mkdirs());
-            File tempFile = new File(tempLoc, mainActivityInterface.getImportFilename());
-            InputStream inputStream = new FileInputStream(tempFile);
-            mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" Finish import  Sets/"+newSetName+"  deleteOld=true");
-            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, copyTo, null, "Sets", "", newSetName);
-            OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(copyTo);
-            mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" finishImportSet copyFile from "+tempFile+" to Sets/" + newSetName);
-            Log.d(TAG, "copy: " + mainActivityInterface.getStorageAccess().copyFile(inputStream, outputStream));
-            ArrayList<Uri> thisSet = new ArrayList<>();
-            thisSet.add(copyTo);
-            mainActivityInterface.getSetActions().loadSets(thisSet,newSetName);
-            mainActivityInterface.navHome();
-            mainActivityInterface.chooseMenu(true);
-        } catch (Exception e) {
-            e.printStackTrace();
-            mainActivityInterface.getShowToast().doIt(getString(R.string.error));
+        if (getActivity()!=null) {
+            try {
+                // Copy the file
+                File tempLoc = new File(getActivity().getExternalCacheDir(), "Import");
+                Log.d(TAG, "Create folder:" + tempLoc.mkdirs());
+                File tempFile = new File(tempLoc, mainActivityInterface.getImportFilename());
+                InputStream inputStream = new FileInputStream(tempFile);
+                mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG + " Finish import  Sets/" + newSetName + "  deleteOld=true");
+                mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, copyTo, null, "Sets", "", newSetName);
+                OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(copyTo);
+                mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG + " finishImportSet copyFile from " + tempFile + " to Sets/" + newSetName);
+                Log.d(TAG, "copy: " + mainActivityInterface.getStorageAccess().copyFile(inputStream, outputStream));
+                ArrayList<Uri> thisSet = new ArrayList<>();
+                thisSet.add(copyTo);
+                mainActivityInterface.getSetActions().loadSets(thisSet, newSetName);
+                mainActivityInterface.navHome();
+                mainActivityInterface.chooseMenu(true);
+            } catch (Exception e) {
+                e.printStackTrace();
+                mainActivityInterface.getShowToast().doIt(error_string);
+            }
         }
     }
 

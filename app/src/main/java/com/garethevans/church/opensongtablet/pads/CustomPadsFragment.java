@@ -25,7 +25,8 @@ public class CustomPadsFragment extends Fragment {
     private ActivityResultLauncher<String> activityResultLauncher;
     private final String TAG = "CustomPadsFragment";
     private MyMaterialEditText myMaterialEditText;
-    private String prefName, prefValue;
+    private String prefName, prefValue, pad_string="", custom_string="", website_pad_string="",
+            pad_auto_string="";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -38,8 +39,10 @@ public class CustomPadsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsPadsCustomBinding.inflate(inflater, container, false);
 
-        mainActivityInterface.updateToolbar(getString(R.string.pad) + " (" + getString(R.string.custom) + ")");
-        mainActivityInterface.updateToolbarHelp(getString(R.string.website_pad));
+        prepareStrings();
+
+        mainActivityInterface.updateToolbar(pad_string + " (" + custom_string + ")");
+        mainActivityInterface.updateToolbarHelp(website_pad_string);
 
         // Set up the file launcher listener
         setupLauncher();
@@ -48,6 +51,15 @@ public class CustomPadsFragment extends Fragment {
         setupPadOptions();
 
         return myView.getRoot();
+    }
+
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            pad_string = getString(R.string.pad);
+            custom_string = getString(R.string.custom);
+            website_pad_string = getString(R.string.website_pad);
+            pad_auto_string = getString(R.string.pad_auto);
+        }
     }
 
     private void setupLauncher() {
@@ -61,7 +73,7 @@ public class CustomPadsFragment extends Fragment {
                         text = prefValue;
                     } else {
                         prefValue = "";
-                        text = getString(R.string.pad_auto);
+                        text = pad_auto_string;
                     }
                     mainActivityInterface.getPreferences().setMyPreferenceString(prefName, prefValue);
                     myMaterialEditText.setText(text);
@@ -98,7 +110,7 @@ public class CustomPadsFragment extends Fragment {
     private void setPref(MyMaterialEditText myMaterialEditText, String prefName) {
         String pref = mainActivityInterface.getPreferences().getMyPreferenceString(prefName,"");
         if (pref==null || pref.isEmpty() || pref.equals("auto")) {
-            pref = getString(R.string.pad_auto);
+            pref = pad_auto_string;
         }
         myMaterialEditText.setText(pref);
         myMaterialEditText.setFocusable(false);
@@ -111,7 +123,7 @@ public class CustomPadsFragment extends Fragment {
         this.myMaterialEditText = myMaterialEditText;
         this.prefName = prefName;
         this.prefValue = prefValue;
-        this.myMaterialEditText.setText(getString(R.string.pad_auto));
+        this.myMaterialEditText.setText(pad_auto_string);
         activityResultLauncher.launch("audio/*");
     }
 }

@@ -57,7 +57,9 @@ public class SetStorageLocationFragment extends Fragment {
     private ArrayList<String> locations;
     private File folder;
     private final String TAG = "SetStorageLocFrag";
-
+    private String website_storage_set_string="", storage_reset_string="", start_string="",
+            help_string="", existing_found_string="", storage_ext_string="", mainfoldername_string="",
+            deeplink_bootup_string="", storage_notwritable_string="";
     ActivityResultLauncher<Intent> folderChooser;
     ActivityResultLauncher<String> storagePermission;
 
@@ -74,6 +76,8 @@ public class SetStorageLocationFragment extends Fragment {
 
         myView = StorageChooseBinding.inflate(inflater, container, false);
 
+        prepareStrings();
+
         // However, if we are just wanting to check/change the storage,
         // we don't want the extra title bar
         if (mainActivityInterface.getWhattodo().equals("storageOk")) {
@@ -81,7 +85,7 @@ public class SetStorageLocationFragment extends Fragment {
             mainActivityInterface.showActionBar();
             mainActivityInterface.setWhattodo("");
             myView.headerText.setVisibility(View.GONE);
-            mainActivityInterface.updateToolbarHelp(getString(R.string.website_storage_set));
+            mainActivityInterface.updateToolbarHelp(website_storage_set_string);
 
         } else {
             myView.mainpage.postDelayed(()-> {
@@ -117,34 +121,49 @@ public class SetStorageLocationFragment extends Fragment {
         return myView.getRoot();
     }
 
-
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            website_storage_set_string = getString(R.string.website_storage_set);
+            storage_reset_string = getString(R.string.storage_reset);
+            start_string = getString(R.string.start);
+            help_string = getString(R.string.help);
+            existing_found_string = getString(R.string.existing_found);
+            storage_ext_string = getString(R.string.storage_ext);
+            mainfoldername_string = getString(R.string.mainfoldername);
+            deeplink_bootup_string = getString(R.string.deeplink_bootup);
+            storage_notwritable_string = getString(R.string.storage_notwritable);
+        }
+    }
     private void storageShowcase() {
-        MaterialShowcaseView.Builder builder = mainActivityInterface.getShowCase().
-                getSingleShowCaseBuilderForListener(requireActivity(),myView.setStorage,
-                        null,getString(R.string.storage_reset),true,"storageReset");
-        builder.setListener(new IShowcaseListener() {
-            @Override
-            public void onShowcaseDisplayed(MaterialShowcaseView showcaseView) {}
+        if (getActivity()!=null) {
+            MaterialShowcaseView.Builder builder = mainActivityInterface.getShowCase().
+                    getSingleShowCaseBuilderForListener(getActivity(), myView.setStorage,
+                            null, storage_reset_string, true, "storageReset");
+            builder.setListener(new IShowcaseListener() {
+                @Override
+                public void onShowcaseDisplayed(MaterialShowcaseView showcaseView) {
+                }
 
-            @Override
-            public void onShowcaseDismissed(MaterialShowcaseView showcaseView) {
-                webHelpShowcase();
-            }
-        });
-        builder.build().show(requireActivity());
+                @Override
+                public void onShowcaseDismissed(MaterialShowcaseView showcaseView) {
+                    webHelpShowcase();
+                }
+            });
+            builder.build().show(getActivity());
+        }
     }
     private void startShowcase() {
-        if (myView.startApp.getVisibility()==View.VISIBLE) {
-            mainActivityInterface.getShowCase().singleShowCase(requireActivity(), myView.startApp,
-                    null, getString(R.string.start), true, "startApp");
+        if (myView.startApp.getVisibility()==View.VISIBLE && getActivity()!=null) {
+            mainActivityInterface.getShowCase().singleShowCase(getActivity(), myView.startApp,
+                    null, start_string, true, "startApp");
         }
     }
 
     private void webHelpShowcase() {
         if (getActivity()!=null) {
             MaterialShowcaseView.Builder builder = mainActivityInterface.getShowCase().
-                    getSingleShowCaseBuilderForListener(requireActivity(), myView.webHelp,
-                            null, getString(R.string.help), false, "webHelp");
+                    getSingleShowCaseBuilderForListener(getActivity(), myView.webHelp,
+                            null, help_string, false, "webHelp");
             builder.setListener(new IShowcaseListener() {
                 @Override
                 public void onShowcaseDisplayed(MaterialShowcaseView showcaseView) {
@@ -155,7 +174,7 @@ public class SetStorageLocationFragment extends Fragment {
                     startShowcase();
                 }
             });
-            builder.build().show(requireActivity());
+            builder.build().show(getActivity());
         }
     }
 
@@ -175,10 +194,12 @@ public class SetStorageLocationFragment extends Fragment {
         myView.chosenLocation.setOnClickListener(t -> myView.setStorage.performClick());
 
         // Set the listeners for the buttons
-        myView.webHelp.setOnClickListener(v -> mainActivityInterface.openDocument(getString(R.string.website_storage_set)));
+        myView.webHelp.setOnClickListener(v -> mainActivityInterface.openDocument(website_storage_set_string));
         myView.infoButton.setOnClickListener(v -> {
-            BottomSheetDialogFragment dialog = new SetStorageBottomSheet();
-            dialog.show(requireActivity().getSupportFragmentManager(),"SetStorageBottomSheet");
+            if (getActivity()!=null) {
+                BottomSheetDialogFragment dialog = new SetStorageBottomSheet();
+                dialog.show(getActivity().getSupportFragmentManager(), "SetStorageBottomSheet");
+            }
         });
         myView.setStorage.setOnClickListener(v -> chooseStorageLocation());
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
@@ -255,8 +276,8 @@ public class SetStorageLocationFragment extends Fragment {
 
     private void warningCheck() {
         // If the user tries to set the app storage to OpenSong/Songs/ warn them!
-        if (myView.chosenLocation.getText().toString().contains("OpenSong/Songs/")) {
-            Snackbar snackbar = make(requireActivity().findViewById(R.id.drawer_layout), R.string.storage_warning,
+        if (myView.chosenLocation.getText().toString().contains("OpenSong/Songs/") && getActivity()!=null) {
+            Snackbar snackbar = make(getActivity().findViewById(R.id.drawer_layout), R.string.storage_warning,
                     LENGTH_INDEFINITE).setAction(android.R.string.ok, view -> {
             });
             View snackbarView = snackbar.getView();
@@ -323,19 +344,21 @@ public class SetStorageLocationFragment extends Fragment {
                         myView.previousStorageLocations.removeAllViews();
                     } else {
                         myView.previousStorageHeading.setVisibility(View.GONE);
-                        myView.previousStorageTextView.setText(getString(R.string.existing_found));
+                        myView.previousStorageTextView.setText(existing_found_string);
                         myView.previousStorageTextView.setVisibility(View.VISIBLE);
                         myView.previousStorageLocations.setVisibility(View.VISIBLE);
                         myView.previousStorageLocations.removeAllViews();
                         StringBuilder check = new StringBuilder();
                         // Add the locations to the textview
-                        for (int x = 0; x < locations.size(); x++) {
-                            Log.d(TAG,"check:"+check+"  locations.get("+x+"):"+locations.get(x));
-                            if (!check.toString().contains("¬" + locations.get(x) + "¬")) {
-                                check.append("¬").append(locations.get(x)).append("¬");
-                                TextView tv = new TextView(requireContext());
-                                tv.setText(locations.get(x));
-                                myView.previousStorageLocations.addView(tv);
+                        if (getContext()!=null) {
+                            for (int x = 0; x < locations.size(); x++) {
+                                Log.d(TAG, "check:" + check + "  locations.get(" + x + "):" + locations.get(x));
+                                if (!check.toString().contains("¬" + locations.get(x) + "¬")) {
+                                    check.append("¬").append(locations.get(x)).append("¬");
+                                    TextView tv = new TextView(getContext());
+                                    tv.setText(locations.get(x));
+                                    myView.previousStorageLocations.addView(tv);
+                                }
                             }
                         }
                     }
@@ -350,7 +373,6 @@ public class SetStorageLocationFragment extends Fragment {
             Log.d(TAG,"root:"+root);
 
             File[] list = root.listFiles();
-            Log.d(TAG,"list: "+list);
             if (list != null) {
                 for (File f : list) {
                     if (f.isDirectory()) {
@@ -374,7 +396,7 @@ public class SetStorageLocationFragment extends Fragment {
                              if (where.startsWith("¬")) {
                                  // IV - Handle other paths as 'External'
                                  where = where.substring(10);
-                                 extra = extra + ", " + this.getResources().getString(R.string.storage_ext) + " " + where.substring(0, where.indexOf("/"));
+                                 extra = extra + ", " + storage_ext_string + " " + where.substring(0, where.indexOf("/"));
                                  where = where.substring(where.indexOf("/"));
                              }
                              where = "(" + extra + "): " + where;
@@ -402,9 +424,9 @@ public class SetStorageLocationFragment extends Fragment {
             startShowcase();
             myView.setStorage.clearAnimation();
             // After an attempt to change storage, set to show Welcome song
-            mainActivityInterface.getSong().setFolder(getString(R.string.mainfoldername));
+            mainActivityInterface.getSong().setFolder(mainfoldername_string);
             mainActivityInterface.getSong().setFilename("Welcome to OpenSongApp");
-            mainActivityInterface.getPreferences().setMyPreferenceString("songFolder",getString(R.string.mainfoldername));
+            mainActivityInterface.getPreferences().setMyPreferenceString("songFolder",mainfoldername_string);
             mainActivityInterface.getPreferences().setMyPreferenceString("songFilename","Welcome to OpenSongApp");
 
         } else {
@@ -428,11 +450,13 @@ public class SetStorageLocationFragment extends Fragment {
         }
     }
     private void goToSongs() {
-        mainActivityInterface.navigateToFragment(getString(R.string.deeplink_bootup),0);
+        mainActivityInterface.navigateToFragment(deeplink_bootup_string,0);
     }
     private void pulseButton(View v) {
-        CustomAnimation ca = new CustomAnimation();
-        ca.pulse(requireActivity(), v);
+        if (getActivity()!=null) {
+            CustomAnimation ca = new CustomAnimation();
+            ca.pulse(getActivity(), v);
+        }
     }
 
     // Below are some checks that will be called to see if we are good to go
@@ -459,7 +483,7 @@ public class SetStorageLocationFragment extends Fragment {
     private void notWriteable() {
         uriTree = null;
         uriTreeHome = null;
-        mainActivityInterface.getShowToast().doIt(getString(R.string.storage_notwritable));
+        mainActivityInterface.getShowToast().doIt(storage_notwritable_string);
         showStorageLocation();
     }
 
@@ -513,8 +537,8 @@ public class SetStorageLocationFragment extends Fragment {
         } else {
             uriTree = null;
         }
-        if (uriTree != null) {
-            requireActivity().getContentResolver().takePersistableUriPermission(uriTree,
+        if (uriTree != null && getActivity()!=null) {
+            getActivity().getContentResolver().takePersistableUriPermission(uriTree,
                     Intent.FLAG_GRANT_READ_URI_PERMISSION |
                             Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
         }

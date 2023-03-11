@@ -47,26 +47,18 @@ public class ImportOSBFragment extends Fragment {
     private MainActivityInterface mainActivityInterface;
     private StorageBackupBinding myView;
     private final String TAG = "ImportOSBFragment";
-
-    private String importFilename;
+    private String importFilename, message, import_basic="", website_restore="", unknown="",
+            import_osb="", processing="", mainfoldername="", error_string="", songs_string="",
+            folder_string="", connections_searching="";
     private Uri importUri;
-    private ArrayList<String> foundFolders;
-    private ArrayList<String> checkedFolders;
-    private ArrayList<String> allZipItems;
-    private boolean error, hasPersistentDB, hasHighlighterNotes;
-
+    private ArrayList<String> foundFolders, checkedFolders, allZipItems;
+    private boolean error, hasPersistentDB, hasHighlighterNotes, alive = true, canoverwrite;
     private ExecutorService executorService;
-    private boolean alive = true;
-
     private InputStream inputStream;
     private ZipInputStream zipInputStream;
     private ZipEntry ze;
     private OutputStream outputStream;
-    private int zipContents;
-    private int zipProgress;
-    private int item;
-    private String message;
-    private boolean canoverwrite;
+    private int zipContents, zipProgress, item;
     private File tempDBFile;
 
     private ActivityResultLauncher<Intent> activityResultLauncher;
@@ -81,8 +73,11 @@ public class ImportOSBFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = StorageBackupBinding.inflate(inflater,container,false);
-        mainActivityInterface.updateToolbar(getString(R.string.import_basic));
-        mainActivityInterface.updateToolbarHelp(getString(R.string.website_restore));
+
+        prepareStrings();
+
+        mainActivityInterface.updateToolbar(import_basic);
+        mainActivityInterface.updateToolbarHelp(website_restore);
 
         myView.nestedScrollView.setExtendedFabToAnimate(myView.createBackupFAB);
 
@@ -92,6 +87,20 @@ public class ImportOSBFragment extends Fragment {
         return myView.getRoot();
     }
 
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            import_basic = getString(R.string.import_basic);
+            website_restore = getString(R.string.website_restore);
+            unknown = getString(R.string.unknown);
+            import_osb = getString(R.string.import_osb);
+            processing = getString(R.string.processing);
+            mainfoldername = getString(R.string.mainfoldername);
+            error_string = getString(R.string.error);
+            songs_string = getString(R.string.songs);
+            folder_string = getString(R.string.folder);
+            connections_searching = getString(R.string.connections_searching);
+        }
+    }
     private void setupHelpers() {
         // Initialise the launcher
         initialiseLauncher();
@@ -125,8 +134,8 @@ public class ImportOSBFragment extends Fragment {
                             setupValues();
                             findFolders();
                         } else {
-                            myView.backupName.setText(getString(R.string.unknown));
-                            myView.progressText.setText(getString(R.string.unknown));
+                            myView.backupName.setText(unknown);
+                            myView.progressText.setText(unknown);
                             importUri = null;
                             foundFolders = null;
                             myView.foundFoldersListView.removeAllViews();
@@ -141,7 +150,7 @@ public class ImportOSBFragment extends Fragment {
     }
 
     private void setupValues() {
-        myView.importTitle.setText(getString(R.string.import_osb));
+        myView.importTitle.setText(import_osb);
         myView.backupName.setText(importFilename);
         myView.backupName.setEnabled(true);
         myView.backupName.setFocusable(false);
@@ -176,7 +185,7 @@ public class ImportOSBFragment extends Fragment {
                if (alive) {
                    myView.progressBar.setVisibility(View.VISIBLE);
                    myView.progressText.setVisibility(View.VISIBLE);
-                   myView.progressText.setText(getString(R.string.processing));
+                   myView.progressText.setText(processing);
                }
             });
 
@@ -188,7 +197,7 @@ public class ImportOSBFragment extends Fragment {
                 // Add the main folder
                 foundFolders = new ArrayList<>();
                 if (alive) {
-                    foundFolders.add(getString(R.string.mainfoldername));
+                    foundFolders.add(mainfoldername);
                 }
 
                 // Look for directories
@@ -197,7 +206,7 @@ public class ImportOSBFragment extends Fragment {
                         allZipItems.add(ze.getName());
                     } else {
                         if (alive) {
-                            allZipItems.add(getString(R.string.mainfoldername) + "/" + ze.getName());
+                            allZipItems.add(mainfoldername + "/" + ze.getName());
                         }
                     }
                     if (ze.isDirectory() || ze.getName().contains("/")) {
@@ -237,9 +246,9 @@ public class ImportOSBFragment extends Fragment {
 
             handler.post(() -> {
                 if (error && alive) {
-                    myView.progressText.setText(getString(R.string.error));
+                    myView.progressText.setText(error_string);
                 } else if (alive) {
-                    message = getString(R.string.songs) + ": " + zipContents;
+                    message = songs_string + ": " + zipContents;
                     myView.progressText.setText(message);
 
                     // Update the found folders
@@ -258,7 +267,7 @@ public class ImportOSBFragment extends Fragment {
                             myView.foundFoldersListView.addView(checkBox);
                             checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
                                 int songs = getCurrentSongs();
-                                message = getString(R.string.songs) + ": " + songs;
+                                message = songs_string + ": " + songs;
                                 myView.progressText.setText(message);
                             });
                         }
@@ -297,7 +306,7 @@ public class ImportOSBFragment extends Fragment {
                 if (item.contains("/")) {
                     item = item.substring(0,item.lastIndexOf("/"));
                 } else {
-                    item = getString(R.string.mainfoldername);
+                    item = mainfoldername;
                 }
                 for (String checked:checkedFolders) {
                     if (checked.equals(item)) {
@@ -358,7 +367,7 @@ public class ImportOSBFragment extends Fragment {
             for (String folder : checkedFolders) {
                 handler.post(() -> {
                     if (alive) {
-                        message = getString(R.string.folder) + ": " + folder;
+                        message = folder_string + ": " + folder;
                         myView.progressText.setText(message);
                     }
                 });
@@ -414,7 +423,7 @@ public class ImportOSBFragment extends Fragment {
                             } else {
                                 file_uri = mainActivityInterface.getStorageAccess().getUriForItem("Songs", "", ze.getName());
                                 if (alive) {
-                                    filefolder = getString(R.string.mainfoldername);
+                                    filefolder = mainfoldername;
                                 }
                             }
                             if (ze.getName().contains("/")) {
@@ -440,7 +449,7 @@ public class ImportOSBFragment extends Fragment {
                                     name = ze.getName();
                                 }
                                 if (alive) {
-                                    message = getString(R.string.processing) + " (" + zipProgress + "/" + zipContents + "):\n" + name;
+                                    message = processing + " (" + zipProgress + "/" + zipContents + "):\n" + name;
                                     myView.progressText.setText(message);
                                 }
                             });
@@ -500,13 +509,13 @@ public class ImportOSBFragment extends Fragment {
                             if (error) {
                                 error = false;
                                 if (alive) {
-                                    handler.post(() -> myView.progressText.setText(getString(R.string.error)));
+                                    handler.post(() -> myView.progressText.setText(error_string));
                                 }
                             }
                         } else {
                             if (alive) {
                                 handler.post(() -> {
-                                    message = getString(R.string.connections_searching) + " (" + item + "/" + allZipItems.size() + ")";
+                                    message = connections_searching + " (" + item + "/" + allZipItems.size() + ")";
                                     myView.progressText.setText(message);
                                 });
                             }
@@ -552,15 +561,13 @@ public class ImportOSBFragment extends Fragment {
                     });
                 }
 
-
-
             } catch (Exception e) {
                 // Likely the user navigated away before the process completed
                 e.printStackTrace();
                 mainActivityInterface.allowNavigationUp(true);
                 if (getContext()!=null && alive) {
                     handler.post(() -> {
-                        myView.progressText.setText(getString(R.string.error));
+                        myView.progressText.setText(error_string);
                         myView.progressBar.setVisibility(View.GONE);
                         myView.createBackupFAB.setEnabled(true);
                     });

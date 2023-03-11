@@ -62,7 +62,7 @@ public class BackupOSBFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = StorageBackupBinding.inflate(inflater,container,false);
-        setupStrings();
+        prepareStrings();
 
         mainActivityInterface.updateToolbar(string_backup);
         mainActivityInterface.updateToolbarHelp(string_website_backup);
@@ -72,7 +72,7 @@ public class BackupOSBFragment extends Fragment {
         return myView.getRoot();
     }
 
-    private void setupStrings() {
+    private void prepareStrings() {
         // To avoid context being null due to user cancelling async task
         if (getContext()!=null) {
             string_backup = getString(R.string.backup);
@@ -113,7 +113,7 @@ public class BackupOSBFragment extends Fragment {
 
                 myView.createBackupFAB.setText(string_export);
                 if (getContext()!=null) {
-                    myView.createBackupFAB.setIcon(ContextCompat.getDrawable(requireContext(), R.drawable.database_export));
+                    myView.createBackupFAB.setIcon(ContextCompat.getDrawable(getContext(), R.drawable.database_export));
                 }
                 myView.createBackupFAB.setOnClickListener(v -> doSave());
 

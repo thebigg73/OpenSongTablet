@@ -21,6 +21,7 @@ public class ChordSettingsFragment extends DialogFragment {
 
     private SettingsChordsBinding myView;
     private MainActivityInterface mainActivityInterface;
+    private String chords_string="", website_chords_string="";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -33,8 +34,10 @@ public class ChordSettingsFragment extends DialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsChordsBinding.inflate(inflater,container,false);
 
-        mainActivityInterface.updateToolbar(getString(R.string.chords));
-        mainActivityInterface.updateToolbarHelp(getString(R.string.website_chords));
+        prepareStrings();
+
+        mainActivityInterface.updateToolbar(chords_string);
+        mainActivityInterface.updateToolbarHelp(website_chords_string);
 
         // Set up listeners
         setupListeners();
@@ -42,17 +45,28 @@ public class ChordSettingsFragment extends DialogFragment {
         return myView.getRoot();
     }
 
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            chords_string = getString(R.string.chords);
+            website_chords_string = getString(R.string.website_chords);
+        }
+    }
+
     private void setupListeners() {
         myView.chordsView.setOnClickListener(v -> {
-            mainActivityInterface.navHome();
-            ChordFingeringBottomSheet chordFingeringBottomSheet = new ChordFingeringBottomSheet();
-            chordFingeringBottomSheet.show(requireActivity().getSupportFragmentManager(),"ChordFingeringBottomSheet");
+            if (getActivity()!=null) {
+                mainActivityInterface.navHome();
+                ChordFingeringBottomSheet chordFingeringBottomSheet = new ChordFingeringBottomSheet();
+                chordFingeringBottomSheet.show(getActivity().getSupportFragmentManager(), "ChordFingeringBottomSheet");
+            }
         });
         myView.chordsCustom.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null, R.id.customChordsFragment));
         myView.chordsFormat.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null, R.id.chordFormatFragment));
         myView.chordsTranspose.setOnClickListener(v -> {
-            TransposeBottomSheet transposeBottomSheet = new TransposeBottomSheet();
-            transposeBottomSheet.show(requireActivity().getSupportFragmentManager(),"TransposeBottomSheet");
+            if (getActivity()!=null) {
+                TransposeBottomSheet transposeBottomSheet = new TransposeBottomSheet();
+                transposeBottomSheet.show(getActivity().getSupportFragmentManager(), "TransposeBottomSheet");
+            }
         });
     }
 }

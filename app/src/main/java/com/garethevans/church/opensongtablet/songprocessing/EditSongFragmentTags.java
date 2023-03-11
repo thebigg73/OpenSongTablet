@@ -26,6 +26,7 @@ public class EditSongFragmentTags extends Fragment {
     private EditSongTagsBinding myView;
     private TagsBottomSheet tagsBottomSheet;
     private PresentationOrderBottomSheet presentationOrderBottomSheet;
+    private String search_index_wait_string="";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -39,6 +40,8 @@ public class EditSongFragmentTags extends Fragment {
                              Bundle savedInstanceState) {
         myView = EditSongTagsBinding.inflate(inflater, container, false);
 
+        prepareStrings();
+
         // Set up the current values
         setupValues();
 
@@ -48,6 +51,11 @@ public class EditSongFragmentTags extends Fragment {
         return myView.getRoot();
     }
 
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            search_index_wait_string = getString(R.string.search_index_wait);
+        }
+    }
     private void setupValues() {
         tagsBottomSheet = new TagsBottomSheet(this,"EditSongFragmentTags");
         presentationOrderBottomSheet = new PresentationOrderBottomSheet(this, "EditSongFragmentTags");
@@ -72,17 +80,17 @@ public class EditSongFragmentTags extends Fragment {
         myView.tags.setOnClickListener(v -> {
             // Only allow if indexing is complete
             if (mainActivityInterface.getSongListBuildIndex().getIndexComplete()) {
-                if (!tagsBottomSheet.isAdded()) {
-                    tagsBottomSheet.show(requireActivity().getSupportFragmentManager(), "ThemesBottomSheet");
+                if (!tagsBottomSheet.isAdded() && getActivity()!=null) {
+                    tagsBottomSheet.show(getActivity().getSupportFragmentManager(), "ThemesBottomSheet");
                 }
             } else {
-                mainActivityInterface.getShowToast().doIt(getString(R.string.search_index_wait));
+                mainActivityInterface.getShowToast().doIt(search_index_wait_string);
             }
 
         });
         myView.presorder.setOnClickListener(v -> {
-            if (!presentationOrderBottomSheet.isAdded()) {
-                presentationOrderBottomSheet.show(requireActivity().getSupportFragmentManager(), "PresentationOrderBottomSheet");
+            if (!presentationOrderBottomSheet.isAdded() && getActivity()!=null) {
+                presentationOrderBottomSheet.show(getActivity().getSupportFragmentManager(), "PresentationOrderBottomSheet");
             }
         });
         myView.tags.addTextChangedListener(new MyTextWatcher("tags"));

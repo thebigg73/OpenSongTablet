@@ -38,6 +38,10 @@ public class PadsBottomSheet extends BottomSheetDialogFragment {
     private final String TAG = "PadsBottomSheet";
     ActivityResultLauncher<Intent> activityResultLauncher;
     private boolean padPlaying;
+    private String website_pad_string="", pad_auto_string="", link_audio_string="", off_string="",
+            link_error_string="", stop_string="", start_string="", deeplink_pads_string="",
+            panic_stop_string="";
+    private String[] key_choice_string = {};
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -63,8 +67,10 @@ public class PadsBottomSheet extends BottomSheetDialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = BottomSheetPadsBinding.inflate(inflater, container, false);
 
+        prepareStrings();
+
         myView.dialogHeading.setClose(this);
-        myView.dialogHeading.setWebHelp(mainActivityInterface,getString(R.string.website_pad));
+        myView.dialogHeading.setWebHelp(mainActivityInterface,website_pad_string);
 
         // Set up values
         setupValues();
@@ -81,24 +87,42 @@ public class PadsBottomSheet extends BottomSheetDialogFragment {
         return myView.getRoot();
     }
 
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            website_pad_string = getString(R.string.website_pad);
+            key_choice_string = getResources().getStringArray(R.array.key_choice);
+            pad_auto_string = getString(R.string.pad_auto);
+            link_audio_string = getString(R.string.link_audio);
+            off_string = getString(R.string.off);
+            link_error_string = getString(R.string.link_error);
+            stop_string = getString(R.string.stop);
+            start_string = getString(R.string.start);
+            deeplink_pads_string = getString(R.string.deeplink_pads);
+            panic_stop_string = getString(R.string.panic_stop);
+        }
+    }
     private void setupValues() {
         // The key
-        ExposedDropDownArrayAdapter keyArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(),
-                myView.padKey, R.layout.view_exposed_dropdown_item, getResources().getStringArray(R.array.key_choice));
-        myView.padKey.setAdapter(keyArrayAdapter);
+        if (getContext()!=null) {
+            ExposedDropDownArrayAdapter keyArrayAdapter = new ExposedDropDownArrayAdapter(getContext(),
+                    myView.padKey, R.layout.view_exposed_dropdown_item, key_choice_string);
+            myView.padKey.setAdapter(keyArrayAdapter);
+        }
         myView.padKey.setText(mainActivityInterface.getSong().getKey());
 
         // The pad file
         ArrayList<String> padfiles = new ArrayList<>();
-        padfiles.add(getString(R.string.pad_auto));
-        padfiles.add(getString(R.string.link_audio));
-        padfiles.add(getString(R.string.off));
-        ExposedDropDownArrayAdapter padArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(),
-                myView.padType, R.layout.view_exposed_dropdown_item, padfiles);
-        myView.padType.setAdapter(padArrayAdapter);
+        padfiles.add(pad_auto_string);
+        padfiles.add(link_audio_string);
+        padfiles.add(off_string);
+        if (getContext()!=null) {
+            ExposedDropDownArrayAdapter padArrayAdapter = new ExposedDropDownArrayAdapter(getContext(),
+                    myView.padType, R.layout.view_exposed_dropdown_item, padfiles);
+            myView.padType.setAdapter(padArrayAdapter);
+        }
         if (mainActivityInterface.getSong().getPadfile() == null ||
                 mainActivityInterface.getSong().getPadfile().isEmpty() ||
-        mainActivityInterface.getSong().getPadfile().equals(getString(R.string.pad_auto))) {
+        mainActivityInterface.getSong().getPadfile().equals(pad_auto_string)) {
             mainActivityInterface.getSong().setPadfile("auto");
         }
         myView.padType.setText(niceTextFromPref(mainActivityInterface.getSong().getPadfile()));
@@ -125,15 +149,15 @@ public class PadsBottomSheet extends BottomSheetDialogFragment {
                         // If this is a localised (i.e. inside OpenSong folder), we don't need to take the permissions
                         // There is a limit of 128-512 permissions allowed (depending on Android version).
                         String localisedUri = mainActivityInterface.getStorageAccess().fixUriToLocal(contentUri);
-                        if (!localisedUri.contains("../OpenSong/")) {
-                            ContentResolver resolver = requireActivity().getContentResolver();
+                        if (!localisedUri.contains("../OpenSong/") && getActivity()!=null) {
+                            ContentResolver resolver = getActivity().getContentResolver();
                             resolver.takePersistableUriPermission(contentUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
                         }
                         myView.padLinkAudio.setText(mainActivityInterface.getStorageAccess().fixUriToLocal(contentUri));
                     }
                 } catch (Exception e) {
                     // Link threw an error (likely invalid)
-                    mainActivityInterface.getShowToast().doIt(getString(R.string.link_error));
+                    mainActivityInterface.getShowToast().doIt(link_error_string);
                     myView.padLinkAudio.requestFocus();
                     e.printStackTrace();
                 }
@@ -147,8 +171,10 @@ public class PadsBottomSheet extends BottomSheetDialogFragment {
             if (padPlaying) {
                 // The action is to stop
                 Log.d(TAG, "Set stop icon");
-                myView.startStopPad.setIcon(ResourcesCompat.getDrawable(requireContext().getResources(), R.drawable.stop, requireContext().getTheme()));
-                myView.startStopPad.setText(getString(R.string.stop));
+                if (getContext()!=null) {
+                    myView.startStopPad.setIcon(ResourcesCompat.getDrawable(getContext().getResources(), R.drawable.stop, getContext().getTheme()));
+                }
+                myView.startStopPad.setText(stop_string);
                 myView.startStopPad.setOnClickListener(v -> {
                     padPlaying = false;
                     mainActivityInterface.getPad().stopPad();
@@ -163,8 +189,10 @@ public class PadsBottomSheet extends BottomSheetDialogFragment {
             } else {
                 // The action is to play
                 Log.d(TAG, "Set start icon");
-                myView.startStopPad.setIcon(ResourcesCompat.getDrawable(requireContext().getResources(), R.drawable.play, requireContext().getTheme()));
-                myView.startStopPad.setText(getString(R.string.start));
+                if (getContext()!=null) {
+                    myView.startStopPad.setIcon(ResourcesCompat.getDrawable(getContext().getResources(), R.drawable.play, getContext().getTheme()));
+                }
+                myView.startStopPad.setText(start_string);
                 myView.startStopPad.setOnClickListener(v -> {
                     padPlaying = true;
                     mainActivityInterface.getPad().startPad();
@@ -191,13 +219,13 @@ public class PadsBottomSheet extends BottomSheetDialogFragment {
             mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong());
         });
         myView.padSettings.setOnClickListener(view -> {
-            mainActivityInterface.navigateToFragment(getString(R.string.deeplink_pads),0);
+            mainActivityInterface.navigateToFragment(deeplink_pads_string,0);
             dismiss();
         });
         myView.padPanic.setOnClickListener(v -> {
             padPlaying = false;
             mainActivityInterface.getPad().panicStop();
-            mainActivityInterface.getShowToast().doIt(getString(R.string.panic_stop));
+            mainActivityInterface.getShowToast().doIt(panic_stop_string);
             updateStartStopButton();
         });
         myView.padLinkAudio.setOnClickListener(v -> {
@@ -211,7 +239,7 @@ public class PadsBottomSheet extends BottomSheetDialogFragment {
     }
 
     private void showOrHideLink() {
-        if (myView.padType.getText()!=null && myView.padType.getText().toString().equals(getString(R.string.link_audio))) {
+        if (myView.padType.getText()!=null && myView.padType.getText().toString().equals(link_audio_string)) {
             myView.padLinkAudio.setVisibility(View.VISIBLE);
         } else {
             myView.padLinkAudio.setVisibility(View.GONE);
@@ -255,18 +283,18 @@ public class PadsBottomSheet extends BottomSheetDialogFragment {
         switch (padfile) {
             case "auto":
             default:
-                return getString(R.string.pad_auto);
+                return pad_auto_string;
             case "link":
-                return getString(R.string.link_audio);
+                return link_audio_string;
             case "off":
-                return getString(R.string.off);
+                return off_string;
         }
     }
 
     private String prefFromNiceText(String text) {
-        if (text.equals(getString(R.string.link_audio))) {
+        if (text.equals(link_audio_string)) {
             return "link";
-        } else if (text.equals(getString(R.string.off))) {
+        } else if (text.equals(off_string)) {
             return "off";
         } else {
             return "auto";

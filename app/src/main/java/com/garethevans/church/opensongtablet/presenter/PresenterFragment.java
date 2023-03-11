@@ -37,6 +37,8 @@ public class PresenterFragment extends Fragment {
     private AdvancedFragment advancedFragment;
     private final String TAG = "PresenterFragment";
     private boolean landscape;
+    private String presenter_mode_string="", mainfoldername_string="", song_string="",
+            extra_settings_string="";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -50,8 +52,9 @@ public class PresenterFragment extends Fragment {
                 mainActivityInterface.onBackPressed();
             }
         };
-        requireActivity().getOnBackPressedDispatcher().addCallback(this, onBackPressedCallback);
-
+        if (getActivity()!=null) {
+            getActivity().getOnBackPressedDispatcher().addCallback(this, onBackPressedCallback);
+        }
     }
 
     @Override
@@ -65,7 +68,10 @@ public class PresenterFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         myView = ModePresenterBinding.inflate(inflater,container,false);
-        mainActivityInterface.updateToolbar(getString(R.string.presenter_mode));
+
+        prepareStrings();
+
+        mainActivityInterface.updateToolbar(presenter_mode_string);
 
         // Get the orientation
         landscape = this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
@@ -86,14 +92,16 @@ public class PresenterFragment extends Fragment {
         getPreferences();
 
         // Initialise the inline set
-        myView.inlineSetList.initialisePreferences(requireContext(),mainActivityInterface);
+        if (getContext()!=null) {
+            myView.inlineSetList.initialisePreferences(getContext(), mainActivityInterface);
+        }
         myView.inlineSetList.prepareSet();
 
         // Set up the the pager
         setupPager();
 
         // Load the song
-        doSongLoad(mainActivityInterface.getPreferences().getMyPreferenceString("songFolder",getString(R.string.mainfoldername)),
+        doSongLoad(mainActivityInterface.getPreferences().getMyPreferenceString("songFolder",mainfoldername_string),
                 mainActivityInterface.getPreferences().getMyPreferenceString("songFilename","Welcome to OpenSongApp"));
 
         // Prepare the song menu (will be called again after indexing from the main activity index songs)
@@ -124,6 +132,14 @@ public class PresenterFragment extends Fragment {
         return myView.getRoot();
     }
 
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            presenter_mode_string = getString(R.string.presenter_mode);
+            mainfoldername_string = getString(R.string.mainfoldername);
+            song_string = getString(R.string.song);
+            extra_settings_string = getString(R.string.extra_settings);
+        }
+    }
     @Override
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
@@ -162,18 +178,20 @@ public class PresenterFragment extends Fragment {
             advancedFragment = (AdvancedFragment) pageAdapter.createFragment(1);
             //settingsFragment = (SettingsFragment) pageAdapter.createFragment(3);
 
-            mainActivityInterface.getPresenterSettings().setSongSectionsAdapter(
-                    new SongSectionsAdapter(requireContext(),mainActivityInterface,
-                            songSectionsFragment,displayInterface));
+            if (getContext()!=null) {
+                mainActivityInterface.getPresenterSettings().setSongSectionsAdapter(
+                        new SongSectionsAdapter(getContext(), mainActivityInterface,
+                                songSectionsFragment, displayInterface));
+            }
 
             myView.viewPager.setAdapter(pageAdapter);
             new TabLayoutMediator(myView.presenterTabs, myView.viewPager, (tab, position) -> {
                 switch (position) {
                     case 0:
-                        tab.setText(getString(R.string.song));
+                        tab.setText(song_string);
                         break;
                     case 1:
-                        tab.setText(getString(R.string.extra_settings));
+                        tab.setText(extra_settings_string);
                         break;
                 }
             }).attach();
@@ -268,26 +286,6 @@ public class PresenterFragment extends Fragment {
         } else {
             mainActivityInterface.getSectionViews().clear();
         }
-
-        /*if (mainActivityInterface.getSong().getFiletype().equals("PDF") &&
-                android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-                PDFPageAdapter pdfPageAdapter = new PDFPageAdapter(requireContext(),
-                        mainActivityInterface, displayInterface, 600,800);
-
-                Log.d(TAG,"pages:"+pdfPageAdapter.getItemCount());
-                Log.d(TAG,"heights"+pdfPageAdapter.getHeights());
-
-            // TODO
-            // Get the pages as required
-
-        } else if (mainActivityInterface.getSong().getFiletype().equals("IMG")) {
-            // TODO
-            // Get the image as required (will be 1 page)
-        } else if (mainActivityInterface.getSong().getFolder().contains("Images/")) {
-            // TODO
-            // This will be a custom slide with images
-        } else {
-        }*/
 
         // Assume for now, we are loading a standard XML file
         mainActivityInterface.setSectionViews(mainActivityInterface.getProcessSong().setSongInLayout(

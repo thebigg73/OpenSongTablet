@@ -36,7 +36,8 @@ public class BibleOfflineBottomSheet extends BottomSheetDialogFragment {
     private MainActivityInterface mainActivityInterface;
     private BottomSheetBibleOfflineBinding myView;
     private Bible bible;
-    private String bibleText = "";
+    private String bibleText = "", website_bible_offline_string="", scripture_string="",
+            added_to_set_string="", mode_presenter_string;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -61,8 +62,11 @@ public class BibleOfflineBottomSheet extends BottomSheetDialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = BottomSheetBibleOfflineBinding.inflate(inflater, container, false);
+
+        prepareStrings();
+
         myView.dialogHeader.setClose(this);
-        myView.dialogHeader.setWebHelp(mainActivityInterface,getString(R.string.website_bible_offline));
+        myView.dialogHeader.setWebHelp(mainActivityInterface,website_bible_offline_string);
 
         myView.nestedScrollView.setExtendedFabToAnimate(myView.addToSet);
 
@@ -83,6 +87,14 @@ public class BibleOfflineBottomSheet extends BottomSheetDialogFragment {
         return myView.getRoot();
     }
 
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            website_bible_offline_string = getString(R.string.website_bible_offline);
+            scripture_string = getString(R.string.scripture);
+            added_to_set_string = getString(R.string.added_to_set);
+            mode_presenter_string = getString(R.string.mode_presenter);
+        }
+    }
     private void setupHelpers() {
         bible = mainActivityInterface.getBible();
     }
@@ -142,8 +154,8 @@ public class BibleOfflineBottomSheet extends BottomSheetDialogFragment {
             // Add to the set
             mainActivityInterface.getCustomSlide().buildCustomSlide(scripture);
             mainActivityInterface.getCustomSlide().addItemToSet(false);
-            mainActivityInterface.getShowToast().doIt(getString(R.string.scripture)+" "+getString(R.string.added_to_set));
-            if (!mainActivityInterface.getMode().equals(getString(R.string.mode_presenter))) {
+            mainActivityInterface.getShowToast().doIt(scripture_string+" "+added_to_set_string);
+            if (!mainActivityInterface.getMode().equals(mode_presenter_string)) {
                 mainActivityInterface.navHome();
             }
             dismiss();
@@ -300,8 +312,10 @@ public class BibleOfflineBottomSheet extends BottomSheetDialogFragment {
 
     private void updateExposedDropDown(ExposedDropDown exposedDropDown, ArrayList<String> values, String defaultValue) {
         exposedDropDown.setAdapter(null);
-        ExposedDropDownArrayAdapter exposedDropDownArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(), exposedDropDown, R.layout.view_exposed_dropdown_item, values);
-        exposedDropDown.setAdapter(exposedDropDownArrayAdapter);
+        if (getContext()!=null) {
+            ExposedDropDownArrayAdapter exposedDropDownArrayAdapter = new ExposedDropDownArrayAdapter(getContext(), exposedDropDown, R.layout.view_exposed_dropdown_item, values);
+            exposedDropDown.setAdapter(exposedDropDownArrayAdapter);
+        }
         if (defaultValue!=null && !defaultValue.isEmpty()) {
             exposedDropDown.setText(defaultValue);
         }

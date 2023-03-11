@@ -9,7 +9,6 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -31,6 +30,7 @@ public class GesturesFragment extends Fragment {
 
     private SettingsGesturesBinding myView;
     private MainActivityInterface mainActivityInterface;
+    private String custom_gestures_string="", website_custom_gestures_string="";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -42,16 +42,14 @@ public class GesturesFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsGesturesBinding.inflate(inflater,container,false);
-        mainActivityInterface.updateToolbar(getString(R.string.custom_gestures));
-        mainActivityInterface.updateToolbarHelp(getString(R.string.website_custom_gestures));
+
+        prepareStrings();
+
+        mainActivityInterface.updateToolbar(custom_gestures_string);
+        mainActivityInterface.updateToolbarHelp(website_custom_gestures_string);
 
         myView.allowPinchToZoom.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("allowPinchToZoom",true));
-        myView.allowPinchToZoom.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                mainActivityInterface.getPreferences().setMyPreferenceBoolean("allowPinchToZoom",isChecked);
-            }
-        });
+        myView.allowPinchToZoom.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getPreferences().setMyPreferenceBoolean("allowPinchToZoom",isChecked));
 
         // Set dropDowns
         ExecutorService executorService = Executors.newSingleThreadExecutor();
@@ -63,13 +61,22 @@ public class GesturesFragment extends Fragment {
         return myView.getRoot();
     }
 
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            custom_gestures_string = getString(R.string.custom_gestures);
+            website_custom_gestures_string = getString(R.string.website_custom_gestures);
+        }
+    }
+
     private void setupDropDowns() {
         // Get the arrays for the dropdowns
         ArrayList<String> availableDescriptions = mainActivityInterface.getGestures().getGestureDescriptions();
-        ExposedDropDownArrayAdapter descriptionsAdapter1 = new ExposedDropDownArrayAdapter(requireContext(), myView.doubleTap, R.layout.view_exposed_dropdown_item, availableDescriptions);
-        ExposedDropDownArrayAdapter descriptionsAdapter2 = new ExposedDropDownArrayAdapter(requireContext(), myView.longPress, R.layout.view_exposed_dropdown_item, availableDescriptions);
-        myView.doubleTap.setAdapter(descriptionsAdapter1);
-        myView.longPress.setAdapter(descriptionsAdapter2);
+        if (getContext()!=null) {
+            ExposedDropDownArrayAdapter descriptionsAdapter1 = new ExposedDropDownArrayAdapter(getContext(), myView.doubleTap, R.layout.view_exposed_dropdown_item, availableDescriptions);
+            ExposedDropDownArrayAdapter descriptionsAdapter2 = new ExposedDropDownArrayAdapter(getContext(), myView.longPress, R.layout.view_exposed_dropdown_item, availableDescriptions);
+            myView.doubleTap.setAdapter(descriptionsAdapter1);
+            myView.longPress.setAdapter(descriptionsAdapter2);
+        }
 
         // Set the initial values
         myView.doubleTap.setText(mainActivityInterface.getGestures().getDescriptionFromGesture(mainActivityInterface.getGestures().getDoubleTap()));

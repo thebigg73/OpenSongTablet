@@ -26,7 +26,7 @@ public class EditSongFragmentMain extends Fragment  {
     private EditSongMainBinding myView;
     private MainActivityInterface mainActivityInterface;
     private EditSongFragmentInterface editSongFragmentInterface;
-    private String newFolder;
+    private String newFolder, new_folder_add_string="", new_folder_string="", new_folder_name_string="";
     private TextInputBottomSheet textInputBottomSheet;
     private ArrayList<String> folders;
     ExposedDropDownArrayAdapter arrayAdapter;
@@ -43,6 +43,8 @@ public class EditSongFragmentMain extends Fragment  {
 
         myView = EditSongMainBinding.inflate(inflater, container, false);
 
+        prepareStrings();
+
         // Initialise the views
         setupValues();
 
@@ -52,6 +54,13 @@ public class EditSongFragmentMain extends Fragment  {
         return myView.getRoot();
     }
 
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            new_folder_add_string = getString(R.string.new_folder_add);
+            new_folder_string = getString(R.string.new_folder);
+            new_folder_name_string = getString(R.string.new_folder_name);
+        }
+    }
     // Initialise the views
     private void setupValues() {
         myView.title.setText(mainActivityInterface.getTempSong().getTitle());
@@ -62,12 +71,14 @@ public class EditSongFragmentMain extends Fragment  {
         mainActivityInterface.getProcessSong().stretchEditBoxToLines(myView.songNotes,5);
         myView.filename.setText(mainActivityInterface.getTempSong().getFilename());
         folders = mainActivityInterface.getSQLiteHelper().getFolders();
-        newFolder = "+ " + getString(R.string.new_folder_add);
+        newFolder = "+ " + new_folder_add_string;
         folders.add(newFolder);
-        arrayAdapter = new ExposedDropDownArrayAdapter(requireContext(), myView.folder, R.layout.view_exposed_dropdown_item, folders);
-        myView.folder.setAdapter(arrayAdapter);
+        if (getContext()!=null) {
+            arrayAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.folder, R.layout.view_exposed_dropdown_item, folders);
+            myView.folder.setAdapter(arrayAdapter);
+        }
         myView.folder.setText(mainActivityInterface.getTempSong().getFolder());
-        textInputBottomSheet = new TextInputBottomSheet(this,"EditSongFragmentMain",getString(R.string.new_folder),getString(R.string.new_folder_name),null,"","",true);
+        textInputBottomSheet = new TextInputBottomSheet(this,"EditSongFragmentMain",new_folder_string,new_folder_name_string,null,"","",true);
 
         // Resize the bottom padding to the soft keyboard height or half the screen height for the soft keyboard (workaround)
         mainActivityInterface.getWindowFlags().adjustViewPadding(mainActivityInterface,myView.resizeForKeyboardLayout);
@@ -111,9 +122,9 @@ public class EditSongFragmentMain extends Fragment  {
 
         @Override
         public void afterTextChanged(Editable s) {
-            if (what.equals("folder") && value.equals(newFolder)) {
+            if (what.equals("folder") && value.equals(newFolder) && getActivity()!=null) {
                 myView.folder.setText(mainActivityInterface.getTempSong().getFolder());
-                textInputBottomSheet.show(requireActivity().getSupportFragmentManager(),
+                textInputBottomSheet.show(getActivity().getSupportFragmentManager(),
                         "TextInputBottomSheet");
             } else {
                 updateTempSong();

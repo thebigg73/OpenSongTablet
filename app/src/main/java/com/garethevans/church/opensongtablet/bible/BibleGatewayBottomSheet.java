@@ -44,7 +44,8 @@ public class BibleGatewayBottomSheet extends BottomSheetDialogFragment {
     private CheckInternet checkInternet;
     private Bible bible;
     private final String TAG = "BibleGateway";
-    private String webString;
+    private String webString, website_bible_online_string="", scripture_string="",
+            added_to_set_string="", mode_presenter_string="";
 
 
     @Override
@@ -71,7 +72,10 @@ public class BibleGatewayBottomSheet extends BottomSheetDialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = BottomSheetBibleOnlineBinding.inflate(inflater, container, false);
         myView.dialogHeader.setClose(this);
-        myView.dialogHeader.setWebHelp(mainActivityInterface,getString(R.string.website_bible_online));
+
+        prepareStrings();
+
+        myView.dialogHeader.setWebHelp(mainActivityInterface,website_bible_online_string);
 
         // Set up helpers
         setupHelpers();
@@ -88,6 +92,14 @@ public class BibleGatewayBottomSheet extends BottomSheetDialogFragment {
         return myView.getRoot();
     }
 
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            website_bible_online_string = getString(R.string.website_bible_online);
+            scripture_string = getString(R.string.scripture);
+            added_to_set_string = getString(R.string.added_to_set);
+            mode_presenter_string = getString(R.string.mode_presenter);
+        }
+    }
     private void setupHelpers() {
         checkInternet = mainActivityInterface.getCheckInternet();
         bible = mainActivityInterface.getBible();
@@ -147,8 +159,8 @@ public class BibleGatewayBottomSheet extends BottomSheetDialogFragment {
             // Add to the set
             mainActivityInterface.getCustomSlide().buildCustomSlide(scripture);
             mainActivityInterface.getCustomSlide().addItemToSet(false);
-            mainActivityInterface.getShowToast().doIt(getString(R.string.scripture)+" "+getString(R.string.added_to_set));
-            if (!mainActivityInterface.getMode().equals(getString(R.string.mode_presenter))) {
+            mainActivityInterface.getShowToast().doIt(scripture_string+" "+added_to_set_string);
+            if (!mainActivityInterface.getMode().equals(mode_presenter_string)) {
                 mainActivityInterface.navHome();
             }
             dismiss();
@@ -175,7 +187,9 @@ public class BibleGatewayBottomSheet extends BottomSheetDialogFragment {
     }
 
     private void doSearch() {
-        Log.d(TAG,"isNetworkConnected:"+checkInternet.isNetworkConnected(requireContext(),mainActivityInterface));
+        if (getContext()!=null) {
+            Log.d(TAG, "isNetworkConnected:" + checkInternet.isNetworkConnected(getContext(), mainActivityInterface));
+        }
         // Get the search text
         String searchText = "";
         String versionCode = "";

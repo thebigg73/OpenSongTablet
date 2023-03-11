@@ -25,7 +25,7 @@ public class Autoscroll {
 
     private final Context c;
     private final MainActivityInterface mainActivityInterface;
-    private final String TAG = "Autoscroll";
+    private final String TAG = "Autoscroll", mode_performance;
     private boolean isAutoscrolling, autoscrollOK, isPaused = false, showOn = true, alreadyFiguredOut,
             autoscrollAutoStart, autoscrollActivated = false, autoscrollUseDefaultTime,
             onscreenAutoscrollHide, usingZoomLayout;
@@ -50,6 +50,7 @@ public class Autoscroll {
         this.autoscrollView = autoscrollView;
         this.autoscrollTimeText = autoscrollTimeText;
         this.autoscrollTotalTimeText = autoscrollTotalTimeText;
+        mode_performance = c.getString(R.string.mode_performance);
     }
     public void setupAutoscrollPreferences() {
         autoscrollAutoStart = mainActivityInterface.getPreferences().getMyPreferenceBoolean(
@@ -362,7 +363,7 @@ public class Autoscroll {
 
         // If we are in Performance mode using a normal OpenSong song, we scroll the ZoomLayout
         // If we are in Stage mode, or viewing a pdf, we scroll the RecyclerView
-        usingZoomLayout = mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) &&
+        usingZoomLayout = mainActivityInterface.getMode().equals(mode_performance) &&
                 mainActivityInterface.getSong().getFiletype().equals("XML");
 
         if (usingZoomLayout) {

@@ -32,8 +32,10 @@ public class PadSettingsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsPadsBinding.inflate(inflater, container, false);
 
-        mainActivityInterface.updateToolbar(getString(R.string.pad));
-        mainActivityInterface.updateToolbarHelp(getString(R.string.website_pad));
+        if (getContext()!=null) {
+            mainActivityInterface.updateToolbar(getString(R.string.pad));
+            mainActivityInterface.updateToolbarHelp(getString(R.string.website_pad));
+        }
         setListeners();
 
         return myView.getRoot();
@@ -43,8 +45,10 @@ public class PadSettingsFragment extends Fragment {
         myView.padCurrent.setOnClickListener(v -> {
             // Nav home then open the pad bottom sheet
             mainActivityInterface.navHome();
-            PadsBottomSheet padsBottomSheet = new PadsBottomSheet();
-            padsBottomSheet.show(requireActivity().getSupportFragmentManager(),"padsBottomSheet");
+            if (getActivity()!=null) {
+                PadsBottomSheet padsBottomSheet = new PadsBottomSheet();
+                padsBottomSheet.show(getActivity().getSupportFragmentManager(), "padsBottomSheet");
+            }
         });
         myView.padCustom.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null, R.id.customPadsFragment));
         myView.padSettings.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null, R.id.padDefaultsFragment));
@@ -60,10 +64,12 @@ public class PadSettingsFragment extends Fragment {
     }
 
     private void changePlayIcon() {
-        if (padPlaying) {
-            myView.startStopButton.setImageDrawable(ResourcesCompat.getDrawable(requireContext().getResources(),R.drawable.stop,null));
-        } else {
-            myView.startStopButton.setImageDrawable(ResourcesCompat.getDrawable(requireContext().getResources(),R.drawable.play,null));
+        if (getContext()!=null) {
+            if (padPlaying) {
+                myView.startStopButton.setImageDrawable(ResourcesCompat.getDrawable(getContext().getResources(), R.drawable.stop, null));
+            } else {
+                myView.startStopButton.setImageDrawable(ResourcesCompat.getDrawable(getContext().getResources(), R.drawable.play, null));
+            }
         }
     }
 }

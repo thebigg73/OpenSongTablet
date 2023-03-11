@@ -21,6 +21,8 @@ public class InlineSetFragment extends Fragment {
 
     private MainActivityInterface mainActivityInterface;
     private SettingsSetsInlineBinding myView;
+    private String set_inline_string="", website_inline_set_string="", performance_mode_string="",
+            stage_mode_string="", presenter_mode_string="";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -34,8 +36,10 @@ public class InlineSetFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         myView = SettingsSetsInlineBinding.inflate(inflater,container,false);
 
-        mainActivityInterface.updateToolbar(getString(R.string.set_inline));
-        mainActivityInterface.updateToolbarHelp(getString(R.string.website_inline_set));
+        prepareStrings();
+
+        mainActivityInterface.updateToolbar(set_inline_string);
+        mainActivityInterface.updateToolbarHelp(website_inline_set_string);
 
         // Set up the views
         setupViews();
@@ -46,11 +50,20 @@ public class InlineSetFragment extends Fragment {
         return myView.getRoot();
     }
 
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            set_inline_string = getString(R.string.set_inline);
+            website_inline_set_string = getString(R.string.website_inline_set);
+            performance_mode_string = getString(R.string.performance_mode);
+            stage_mode_string = getString(R.string.stage_mode);
+            presenter_mode_string = getString(R.string.presenter_mode);
+        }
+    }
     private void setupViews() {
-        String text = getString(R.string.set_inline) + " (" + getString(R.string.performance_mode) +
-                " / " + getString(R.string.stage_mode) + ")";
+        String text = set_inline_string + " (" + performance_mode_string +
+                " / " + stage_mode_string + ")";
         myView.showInlineSet.setText(text);
-        text = getString(R.string.set_inline) + " (" + getString(R.string.presenter_mode) + ")";
+        text = set_inline_string + " (" + presenter_mode_string + ")";
         myView.showInlineSetPresenter.setText(text);
 
         myView.showInlineSet.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("inlineSet",false));

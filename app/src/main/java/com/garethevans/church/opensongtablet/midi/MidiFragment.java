@@ -66,6 +66,9 @@ public class MidiFragment extends Fragment {
     private MidiMessagesAdapter midiMessagesAdapter;
     private LinearLayoutManager llm;
     ActivityResultLauncher<String[]> midiScanPermissions;
+    private String midi_string="", website_midi_connections_string="", permissions_refused_string="",
+            note_string="", on_string="", off_string="", midi_program_string="", okay_string="",
+            midi_controller_string="", unknown_string="", error_string="", midi_error_string="";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -79,8 +82,10 @@ public class MidiFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsMidiBinding.inflate(inflater, container, false);
 
-        mainActivityInterface.updateToolbar(getString(R.string.midi));
-        mainActivityInterface.updateToolbarHelp(getString(R.string.website_midi_connections));
+        prepareStrings();
+
+        mainActivityInterface.updateToolbar(midi_string);
+        mainActivityInterface.updateToolbarHelp(website_midi_connections_string);
 
         // Register this fragment with the main activity to deal with listeners
         mainActivityInterface.registerFragment(this, "MidiFragment");
@@ -114,12 +119,28 @@ public class MidiFragment extends Fragment {
         return myView.getRoot();
     }
 
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            midi_string = getString(R.string.midi);
+            website_midi_connections_string = getString(R.string.website_midi_connections);
+            permissions_refused_string = getString(R.string.permissions_refused);
+            note_string = getString(R.string.note);
+            on_string = getString(R.string.on);
+            off_string = getString(R.string.off);
+            midi_program_string = getString(R.string.midi_program);
+            midi_controller_string = getString(R.string.midi_controller);
+            unknown_string = getString(R.string.unknown);
+            error_string = getString(R.string.error);
+            okay_string = getString(R.string.okay);
+            midi_error_string = getString(R.string.midi_error);
+        }
+    }
     private void setPermissions() {
         midiScanPermissions = registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), isGranted -> {
             Log.d(TAG,"Permissions: "+isGranted);
             myView.enableBluetooth.setChecked(mainActivityInterface.getAppPermissions().hasMidiScanPermissions());
             if (!mainActivityInterface.getAppPermissions().hasMidiScanPermissions()) {
-                mainActivityInterface.getShowToast().doIt(getString(R.string.permissions_refused));
+                mainActivityInterface.getShowToast().doIt(permissions_refused_string);
             }
         });
     }
@@ -127,14 +148,16 @@ public class MidiFragment extends Fragment {
     // Set the values in the field
     private void setUpMidiCommands() {
         midiCommand = new ArrayList<>();
-        midiCommand.add(getString(R.string.note) + " " + getString(R.string.on));
-        midiCommand.add(getString(R.string.note) + " " + getString(R.string.off));
-        midiCommand.add(getString(R.string.midi_program));
-        midiCommand.add(getString(R.string.midi_controller));
+        midiCommand.add(note_string + " " + on_string);
+        midiCommand.add(note_string + " " + off_string);
+        midiCommand.add(midi_program_string);
+        midiCommand.add(midi_controller_string);
         midiCommand.add("MSB");
         midiCommand.add("LSB");
-        ExposedDropDownArrayAdapter midiCommandAdapter = new ExposedDropDownArrayAdapter(requireContext(), myView.midiCommand, R.layout.view_exposed_dropdown_item, midiCommand);
-        myView.midiCommand.setAdapter(midiCommandAdapter);
+        if (getContext()!=null) {
+            ExposedDropDownArrayAdapter midiCommandAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.midiCommand, R.layout.view_exposed_dropdown_item, midiCommand);
+            myView.midiCommand.setAdapter(midiCommandAdapter);
+        }
     }
 
     private void setUpMidiChannels() {
@@ -145,8 +168,10 @@ public class MidiFragment extends Fragment {
             midiChannel.add("" + i);
             i++;
         }
-        ExposedDropDownArrayAdapter midiChannelAdpter = new ExposedDropDownArrayAdapter(requireContext(), myView.midiChannel, R.layout.view_exposed_dropdown_item, midiChannel);
-        myView.midiChannel.setAdapter(midiChannelAdpter);
+        if (getContext()!=null) {
+            ExposedDropDownArrayAdapter midiChannelAdpter = new ExposedDropDownArrayAdapter(getContext(), myView.midiChannel, R.layout.view_exposed_dropdown_item, midiChannel);
+            myView.midiChannel.setAdapter(midiChannelAdpter);
+        }
     }
 
     private void setUpMidiValues() {
@@ -156,13 +181,15 @@ public class MidiFragment extends Fragment {
             midiValue.add("" + i);
             i++;
         }
-        ExposedDropDownArrayAdapter midiValueAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.view_exposed_dropdown_item, midiValue);
-        myView.midiController.setAdapter(midiValueAdapter);
-        myView.midiValue.setAdapter(midiValueAdapter);
-        myView.midiVelocity.setAdapter(midiValueAdapter);
-        myView.midiController.setArray(requireContext(),midiValue);
-        myView.midiValue.setArray(requireContext(),midiValue);
-        myView.midiVelocity.setArray(requireContext(),midiValue);
+        if (getContext()!=null) {
+            ExposedDropDownArrayAdapter midiValueAdapter = new ExposedDropDownArrayAdapter(getContext(), R.layout.view_exposed_dropdown_item, midiValue);
+            myView.midiController.setAdapter(midiValueAdapter);
+            myView.midiValue.setAdapter(midiValueAdapter);
+            myView.midiVelocity.setAdapter(midiValueAdapter);
+            myView.midiController.setArray(getContext(), midiValue);
+            myView.midiValue.setArray(getContext(), midiValue);
+            myView.midiVelocity.setArray(getContext(), midiValue);
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -174,8 +201,10 @@ public class MidiFragment extends Fragment {
             midiNote.add(mainActivityInterface.getMidi().getNoteFromInt(i));
             i++;
         }
-        ExposedDropDownArrayAdapter midiNoteAdapter = new ExposedDropDownArrayAdapter(requireContext(), myView.midiNote, R.layout.view_exposed_dropdown_item, midiNote);
-        myView.midiNote.setAdapter(midiNoteAdapter);
+        if (getContext()!=null) {
+            ExposedDropDownArrayAdapter midiNoteAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.midiNote, R.layout.view_exposed_dropdown_item, midiNote);
+            myView.midiNote.setAdapter(midiNoteAdapter);
+        }
     }
 
     private void setValues() {
@@ -217,7 +246,7 @@ public class MidiFragment extends Fragment {
         if (midiCommand.indexOf(myView.midiCommand.getText().toString()) < 2) {
             // Note on or off
             // Note on needs the velocity, note off doesn't
-            setVisibilites(true, false, false, !myView.midiCommand.getText().toString().contains(getString(R.string.off)));
+            setVisibilites(true, false, false, !myView.midiCommand.getText().toString().contains(off_string));
 
         } else if (initialise || midiCommand.indexOf(myView.midiCommand.getText().toString()) == 2) {
             // Program change
@@ -267,7 +296,10 @@ public class MidiFragment extends Fragment {
             }
             if (isChecked && mainActivityInterface.getAppPermissions().hasMidiScanPermissions()) {
                 // Get scanner.  This is only allowed for Marshmallow or later
-                BluetoothManager bluetoothManager = (BluetoothManager) requireActivity().getSystemService(Context.BLUETOOTH_SERVICE);
+                BluetoothManager bluetoothManager = null;
+                if (getActivity()!=null) {
+                    bluetoothManager = (BluetoothManager) getActivity().getSystemService(Context.BLUETOOTH_SERVICE);
+                }
                 if (bluetoothManager != null) {
                     BluetoothAdapter bluetoothAdapter = bluetoothManager.getAdapter();
                     bluetoothLeScanner = bluetoothAdapter.getBluetoothLeScanner();
@@ -330,15 +362,17 @@ public class MidiFragment extends Fragment {
     // Scan for devices (USB or Bluetooth)
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void startScan() {
-        // Try to initialise the midi manager
-        mainActivityInterface.getMidi().setMidiManager((MidiManager) requireActivity().getSystemService(Context.MIDI_SERVICE));
-        myView.searchProgressLayout.setVisibility(View.VISIBLE);
-        myView.progressBar.setVisibility(View.VISIBLE);
-        if (mainActivityInterface.getMidi().getIncludeBluetoothMidi() &&
-            mainActivityInterface.getAppPermissions().hasMidiScanPermissions()) {
-            startScanBluetooth();
-        } else {
-            startScanUSB();
+        if (getActivity()!=null) {
+            // Try to initialise the midi manager
+            mainActivityInterface.getMidi().setMidiManager((MidiManager) getActivity().getSystemService(Context.MIDI_SERVICE));
+            myView.searchProgressLayout.setVisibility(View.VISIBLE);
+            myView.progressBar.setVisibility(View.VISIBLE);
+            if (mainActivityInterface.getMidi().getIncludeBluetoothMidi() &&
+                    mainActivityInterface.getAppPermissions().hasMidiScanPermissions()) {
+                startScanBluetooth();
+            } else {
+                startScanUSB();
+            }
         }
     }
 
@@ -354,8 +388,8 @@ public class MidiFragment extends Fragment {
             usbNames = new ArrayList<>();
             usbManufact = new ArrayList<>();
             for (MidiDeviceInfo md : usbMidiDevices) {
-                String manuf = getString(R.string.unknown);
-                String device = getString(R.string.unknown);
+                String manuf = unknown_string;
+                String device = unknown_string;
                 try {
                     device = md.getProperties().getString(MidiDeviceInfo.PROPERTY_NAME);
                     manuf = md.getProperties().getString(MidiDeviceInfo.PROPERTY_MANUFACTURER);
@@ -365,12 +399,12 @@ public class MidiFragment extends Fragment {
                 if (device != null) {
                     usbNames.add(device);
                 } else {
-                    usbNames.add(getString(R.string.unknown));
+                    usbNames.add(unknown_string);
                 }
                 if (manuf != null) {
                     usbManufact.add(manuf);
                 } else {
-                    usbManufact.add(getString(R.string.unknown));
+                    usbManufact.add(unknown_string);
                 }
             }
 
@@ -423,7 +457,7 @@ public class MidiFragment extends Fragment {
         } else if (bluetoothLeScanner != null) {
             bluetoothLeScanner.startScan(scanFilters, scanSettings, scanCallback);
         } else {
-            mainActivityInterface.getShowToast().doIt(getString(R.string.error));
+            mainActivityInterface.getShowToast().doIt(error_string);
         }
 
     }
@@ -485,77 +519,79 @@ public class MidiFragment extends Fragment {
     @SuppressLint("MissingPermission")
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void updateDevices(boolean bluetoothscan) {
-        try {
-            myView.enableBluetooth.setEnabled(true);
+        if (getActivity()!=null) {
+            try {
+                myView.enableBluetooth.setEnabled(true);
 
-            // Clear the found devices
-            myView.foundDevicesLayout.removeAllViews();
+                // Clear the found devices
+                myView.foundDevicesLayout.removeAllViews();
 
-            int size;
-            if (bluetoothscan) {
-                size = bluetoothDevices.size();
-            } else {
-                size = usbMidiDevices.length;
-            }
-
-            if (size > 0) {
-                myView.devicesText.setVisibility(View.VISIBLE);
-            } else {
-                myView.devicesText.setVisibility(View.GONE);
-            }
-
-            // For each device, add a new text view
-            for (int x = 0; x < size; x++) {
-                TextView textView = new TextView(getContext());
-                textView.setTextColor(Color.BLACK);
-                textView.setBackgroundColor(Color.LTGRAY);
-                LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                llp.setMargins(12, 12, 12, 12);
-                textView.setLayoutParams(llp);
-                if (bluetoothscan && !mainActivityInterface.getAppPermissions().hasMidiScanPermissions()) {
-                    midiScanPermissions.launch(mainActivityInterface.getAppPermissions().getMidiScanPermissions());
+                int size;
+                if (bluetoothscan) {
+                    size = bluetoothDevices.size();
                 } else {
-                    if (bluetoothscan) {
-                        textView.setText(bluetoothDevices.get(x).getName());
+                    size = usbMidiDevices.length;
+                }
+
+                if (size > 0) {
+                    myView.devicesText.setVisibility(View.VISIBLE);
+                } else {
+                    myView.devicesText.setVisibility(View.GONE);
+                }
+
+                // For each device, add a new text view
+                for (int x = 0; x < size; x++) {
+                    TextView textView = new TextView(getContext());
+                    textView.setTextColor(Color.BLACK);
+                    textView.setBackgroundColor(Color.LTGRAY);
+                    LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                    llp.setMargins(12, 12, 12, 12);
+                    textView.setLayoutParams(llp);
+                    if (bluetoothscan && !mainActivityInterface.getAppPermissions().hasMidiScanPermissions()) {
+                        midiScanPermissions.launch(mainActivityInterface.getAppPermissions().getMidiScanPermissions());
                     } else {
-                        textView.setText(usbNames.get(x));
-                    }
-                    textView.setTextSize(18.0f);
-                    textView.setPadding(24, 24, 24, 24);
-                    int finalX = x;
-                    textView.setOnClickListener(v -> {
-                        // Disconnect any other devices
-                        mainActivityInterface.getMidi().disconnectDevice();
-                        // Set the new details
-
                         if (bluetoothscan) {
-                            mainActivityInterface.getMidi().setMidiDeviceName(bluetoothDevices.get(finalX).getName());
-                            mainActivityInterface.getMidi().setMidiDeviceAddress(bluetoothDevices.get(finalX).getAddress());
+                            textView.setText(bluetoothDevices.get(x).getName());
                         } else {
-                            mainActivityInterface.getMidi().setMidiDeviceName(usbNames.get(finalX));
-                            mainActivityInterface.getMidi().setMidiDeviceAddress(usbManufact.get(finalX));
+                            textView.setText(usbNames.get(x));
                         }
-                        mainActivityInterface.getMidi().setMidiManager((MidiManager) requireActivity().getSystemService(Context.MIDI_SERVICE));
+                        textView.setTextSize(18.0f);
+                        textView.setPadding(24, 24, 24, 24);
+                        int finalX = x;
+                        textView.setOnClickListener(v -> {
+                            // Disconnect any other devices
+                            mainActivityInterface.getMidi().disconnectDevice();
+                            // Set the new details
 
-                        if (bluetoothscan && mainActivityInterface.getMidi().getMidiManager() != null) {
-                            mainActivityInterface.getMidi().getMidiManager().openBluetoothDevice(bluetoothDevices.get(finalX), device -> {
-                                mainActivityInterface.getMidi().setMidiDevice(device);
-                                setupDevice(device);
-                                selected.postDelayed(runnable, 1000);
-                            }, null);
-                        } else if (mainActivityInterface.getMidi().getMidiManager()!=null) {
-                            mainActivityInterface.getMidi().getMidiManager().openDevice(usbMidiDevices[finalX], device -> {
+                            if (bluetoothscan) {
+                                mainActivityInterface.getMidi().setMidiDeviceName(bluetoothDevices.get(finalX).getName());
+                                mainActivityInterface.getMidi().setMidiDeviceAddress(bluetoothDevices.get(finalX).getAddress());
+                            } else {
+                                mainActivityInterface.getMidi().setMidiDeviceName(usbNames.get(finalX));
+                                mainActivityInterface.getMidi().setMidiDeviceAddress(usbManufact.get(finalX));
+                            }
+                            mainActivityInterface.getMidi().setMidiManager((MidiManager) getActivity().getSystemService(Context.MIDI_SERVICE));
+
+                            if (bluetoothscan && mainActivityInterface.getMidi().getMidiManager() != null) {
+                                mainActivityInterface.getMidi().getMidiManager().openBluetoothDevice(bluetoothDevices.get(finalX), device -> {
                                     mainActivityInterface.getMidi().setMidiDevice(device);
                                     setupDevice(device);
                                     selected.postDelayed(runnable, 1000);
-                            }, null);
-                        }
-                    });
-                    myView.foundDevicesLayout.addView(textView);
+                                }, null);
+                            } else if (mainActivityInterface.getMidi().getMidiManager() != null) {
+                                mainActivityInterface.getMidi().getMidiManager().openDevice(usbMidiDevices[finalX], device -> {
+                                    mainActivityInterface.getMidi().setMidiDevice(device);
+                                    setupDevice(device);
+                                    selected.postDelayed(runnable, 1000);
+                                }, null);
+                            }
+                        });
+                        myView.foundDevicesLayout.addView(textView);
+                    }
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
@@ -594,14 +630,14 @@ public class MidiFragment extends Fragment {
             new Handler().postDelayed(() -> mainActivityInterface.getMidi().sendMidi(buffer4off),500+(midiDelay*8L));
 
             if (sent) {
-                mainActivityInterface.getShowToast().doIt(getString(R.string.okay));
+                mainActivityInterface.getShowToast().doIt(okay_string);
             } else {
-                mainActivityInterface.getShowToast().doIt(getString(R.string.error));
+                mainActivityInterface.getShowToast().doIt(error_string);
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-            mainActivityInterface.getShowToast().doIt(getString(R.string.error));
+            mainActivityInterface.getShowToast().doIt(error_string);
 
         }
     }
@@ -617,9 +653,9 @@ public class MidiFragment extends Fragment {
             e.printStackTrace();
         }
         if (!success) {
-            mainActivityInterface.getShowToast().doIt(getString(R.string.midi_error));
+            mainActivityInterface.getShowToast().doIt(midi_error_string);
         } else {
-            mainActivityInterface.getShowToast().doIt(getString(R.string.okay));
+            mainActivityInterface.getShowToast().doIt(okay_string);
         }
     }
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -728,17 +764,19 @@ public class MidiFragment extends Fragment {
 
     // Process song midi messages
     private void setupAdapter() {
-        midiMessagesAdapter = new MidiMessagesAdapter(requireContext());
-        ItemTouchHelper.Callback callback = new MidiItemTouchHelper(midiMessagesAdapter);
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
-        midiMessagesAdapter.setTouchHelper(itemTouchHelper);
-        llm = new LinearLayoutManager(requireContext());
-        llm.setOrientation(RecyclerView.VERTICAL);
-        myView.recyclerView.post(() -> {
-            myView.recyclerView.setLayoutManager(llm);
-            myView.recyclerView.setAdapter(midiMessagesAdapter);
-            itemTouchHelper.attachToRecyclerView(myView.recyclerView);
-        });
+        if (getContext()!=null) {
+            midiMessagesAdapter = new MidiMessagesAdapter(getContext());
+            ItemTouchHelper.Callback callback = new MidiItemTouchHelper(midiMessagesAdapter);
+            ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
+            midiMessagesAdapter.setTouchHelper(itemTouchHelper);
+            llm = new LinearLayoutManager(getContext());
+            llm.setOrientation(RecyclerView.VERTICAL);
+            myView.recyclerView.post(() -> {
+                myView.recyclerView.setLayoutManager(llm);
+                myView.recyclerView.setAdapter(midiMessagesAdapter);
+                itemTouchHelper.attachToRecyclerView(myView.recyclerView);
+            });
+        }
     }
     private void buildList() {
         midiInfos = new ArrayList<>();

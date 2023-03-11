@@ -31,7 +31,9 @@ public class UtilitiesMenuFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         myView = SettingsUtilitiesBinding.inflate(inflater,container,false);
 
-        mainActivityInterface.updateToolbar(getString(R.string.utilities));
+        if (getContext()!=null) {
+            mainActivityInterface.updateToolbar(getString(R.string.utilities));
+        }
         // Set up listeners
         setupListeners();
 

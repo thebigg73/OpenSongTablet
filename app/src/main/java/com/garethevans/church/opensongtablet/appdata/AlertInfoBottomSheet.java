@@ -34,6 +34,8 @@ public class AlertInfoBottomSheet extends BottomSheetDialogFragment {
     private MainActivityInterface mainActivityInterface;
     private BottomSheetAlertInfoBinding myView;
     private final String TAG = "AlertInfoBottomSheet";
+    private String website_latest="", promptbackup="", deeplink_backup="",
+            website_play_services_help="";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -59,6 +61,8 @@ public class AlertInfoBottomSheet extends BottomSheetDialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = BottomSheetAlertInfoBinding.inflate(inflater,container,false);
 
+        prepareStrings();
+
         // Show/hide the appropriate alerts
         whatAlerts();
 
@@ -68,13 +72,22 @@ public class AlertInfoBottomSheet extends BottomSheetDialogFragment {
         return myView.getRoot();
     }
 
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            website_latest = getString(R.string.website_latest);
+            promptbackup = getString(R.string.promptbackup);
+            deeplink_backup = getString(R.string.deeplink_backup);
+            website_play_services_help = getString(R.string.website_play_services_help);
+        }
+    }
+
     private void whatAlerts() {
         // This decides which alerts are appropriate
         // Check for app updates
         if (mainActivityInterface.getAlertChecks().showUpdateInfo()) {
             myView.appUpdated.setVisibility(View.VISIBLE);
             myView.showUpdates.setText(mainActivityInterface.getVersionNumber().getFullVersionInfo());
-            myView.showUpdates.setOnClickListener(b -> webLink(getString(R.string.website_latest)));
+            myView.showUpdates.setOnClickListener(b -> webLink(website_latest));
 
             // We've seen the warning, so update the preference
             mainActivityInterface.getPreferences().setMyPreferenceInt("lastUsedVersion",
@@ -87,12 +100,12 @@ public class AlertInfoBottomSheet extends BottomSheetDialogFragment {
         // Check for backup status
         if (mainActivityInterface.getAlertChecks().showBackup()) {
             myView.timeToBackup.setVisibility(View.VISIBLE);
-            String s = requireContext().getString(R.string.promptbackup).
+            String s = promptbackup.
                     replace("10","" +
                             mainActivityInterface.getPreferences().getMyPreferenceInt("runssincebackup", 0));
             myView.backupDescription.setText(s);
             myView.backupNowButton.setOnClickListener(v -> {
-                mainActivityInterface.navigateToFragment(getString(R.string.deeplink_backup),0);
+                mainActivityInterface.navigateToFragment(deeplink_backup,0);
                 dismiss();
             });
         } else {
@@ -103,7 +116,7 @@ public class AlertInfoBottomSheet extends BottomSheetDialogFragment {
         if (mainActivityInterface.getAlertChecks().showPlayServicesAlert()) {
             Log.d(TAG, "onresume()  Play store isn't installed");
             myView.playServices.setVisibility(View.VISIBLE);
-            myView.playServicesInfo.setOnClickListener(b -> webLink(getString(R.string.website_play_services_help)));
+            myView.playServicesInfo.setOnClickListener(b -> webLink(website_play_services_help));
             myView.ignorePlayServices.setOnClickListener(b -> {
                 mainActivityInterface.getAlertChecks().setIgnorePlayServicesWarning(true);
                 myView.playServices.setVisibility(View.GONE);

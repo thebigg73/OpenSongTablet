@@ -32,6 +32,13 @@ public class NearbyConnectionsFragment extends Fragment {
     private ColorStateList onColor, offColor;
     private BottomSheetBehavior<View> bottomSheetBehavior;
     private boolean advancedShown;
+    private String connections_connect_string="", website_nearby_string="", mode_presenter_string="",
+            connections_device_name_string="", edit_string="", connections_off_string="",
+            connections_actashost_info_string="", connections_actasclient_info_string="",
+            connections_advanced_string="", connections_connected_devices_info_string="",
+            connections_advertise_info_string="", connections_discover_info_string="",
+            connections_discover_string="", connections_advertise_string="",
+            connections_advertising_string="", connections_searching_string="";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -45,8 +52,10 @@ public class NearbyConnectionsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsNearbyconnectionsBinding.inflate(inflater, container, false);
 
-        mainActivityInterface.updateToolbar(getString(R.string.connections_connect));
-        mainActivityInterface.updateToolbarHelp(getString(R.string.website_nearby));
+        prepareStrings();
+
+        mainActivityInterface.updateToolbar(connections_connect_string);
+        mainActivityInterface.updateToolbarHelp(website_nearby_string);
 
         onColor = ColorStateList.valueOf(getResources().getColor(R.color.colorSecondary));
         offColor = ColorStateList.valueOf(getResources().getColor(R.color.colorAltPrimary));
@@ -69,6 +78,26 @@ public class NearbyConnectionsFragment extends Fragment {
         return myView.getRoot();
     }
 
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            connections_connect_string = getString(R.string.connections_connect);
+            website_nearby_string = getString(R.string.website_nearby);
+            mode_presenter_string = getString(R.string.mode_presenter);
+            connections_device_name_string = getString(R.string.connections_device_name);
+            edit_string = getString(R.string.edit);
+            connections_off_string = getString(R.string.connections_off);
+            connections_actashost_info_string = getString(R.string.connections_actashost_info);
+            connections_actasclient_info_string = getString(R.string.connections_actasclient_info);
+            connections_advanced_string = getString(R.string.connections_advanced);
+            connections_connected_devices_info_string = getString(R.string.connections_connected_devices_info);
+            connections_advertise_info_string = getString(R.string.connections_advertise_info);
+            connections_discover_info_string = getString(R.string.connections_discover_info);
+            connections_discover_string = getString(R.string.connections_discover);
+            connections_advertise_string = getString(R.string.connections_advertise);
+            connections_advertising_string = getString(R.string.connections_advertising);
+            connections_searching_string = getString(R.string.connections_searching);
+        }
+    }
     private void setHelpers() {
         mainActivityInterface.registerFragment(this, "NearbyConnectionsFragment");
     }
@@ -89,7 +118,7 @@ public class NearbyConnectionsFragment extends Fragment {
                 mainActivityInterface.getNearbyConnections().hasValidConnections());
 
         // IV - Display relevant options to process nearby Song Section changes and autoscroll
-        if (mainActivityInterface.getMode().equals(getString(R.string.mode_presenter))) {
+        if (mainActivityInterface.getMode().equals(mode_presenter_string)) {
             // This will work in Stage and Perfomance Mode
             // As will sections (if using pdf pages)
             myView.bottomSheet.receiveAutoscroll.setEnabled(false);
@@ -126,42 +155,46 @@ public class NearbyConnectionsFragment extends Fragment {
     }
 
     private void showcase1() {
-        ArrayList<View> targets = new ArrayList<>();
-        targets.add(myView.deviceButton);
-        targets.add(myView.off);
-        targets.add(myView.host);
-        targets.add(myView.client);
-        targets.add(myView.bottomSheet.bottomSheetTab);
-        ArrayList<String> infos = new ArrayList<>();
-        infos.add(getString(R.string.connections_device_name)+"\n"+getString(R.string.edit));
-        infos.add(getString(R.string.connections_off));
-        infos.add(getString(R.string.connections_actashost_info));
-        infos.add(getString(R.string.connections_actasclient_info));
-        infos.add(getString(R.string.connections_advanced));
-        ArrayList<Boolean> rects = new ArrayList<>();
-        rects.add(true);
-        rects.add(true);
-        rects.add(true);
-        rects.add(true);
-        rects.add(true);
-        mainActivityInterface.getShowCase().sequenceShowCase(requireActivity(),
-                targets,null,infos,rects,"connectionsShowCase");
+        if (getActivity()!=null) {
+            ArrayList<View> targets = new ArrayList<>();
+            targets.add(myView.deviceButton);
+            targets.add(myView.off);
+            targets.add(myView.host);
+            targets.add(myView.client);
+            targets.add(myView.bottomSheet.bottomSheetTab);
+            ArrayList<String> infos = new ArrayList<>();
+            infos.add(connections_device_name_string + "\n" + edit_string);
+            infos.add(connections_off_string);
+            infos.add(connections_actashost_info_string);
+            infos.add(connections_actasclient_info_string);
+            infos.add(connections_advanced_string);
+            ArrayList<Boolean> rects = new ArrayList<>();
+            rects.add(true);
+            rects.add(true);
+            rects.add(true);
+            rects.add(true);
+            rects.add(true);
+            mainActivityInterface.getShowCase().sequenceShowCase(getActivity(),
+                    targets, null, infos, rects, "connectionsShowCase");
+        }
     }
     private void showcase2() {
-        ArrayList<View> targets = new ArrayList<>();
-        targets.add(myView.connectedTo);
-        targets.add(myView.advertiseButton);
-        targets.add(myView.discoverButton);
-        ArrayList<String> infos = new ArrayList<>();
-        infos.add(getString(R.string.connections_connected_devices_info));
-        infos.add(getString(R.string.connections_advertise_info));
-        infos.add(getString(R.string.connections_discover_info));
-        ArrayList<Boolean> rects = new ArrayList<>();
-        rects.add(true);
-        rects.add(true);
-        rects.add(true);
-        mainActivityInterface.getShowCase().sequenceShowCase(requireActivity(),
-                targets,null,infos,rects,"connectionsShowCase2");
+        if (getActivity()!=null) {
+            ArrayList<View> targets = new ArrayList<>();
+            targets.add(myView.connectedTo);
+            targets.add(myView.advertiseButton);
+            targets.add(myView.discoverButton);
+            ArrayList<String> infos = new ArrayList<>();
+            infos.add(connections_connected_devices_info_string);
+            infos.add(connections_advertise_info_string);
+            infos.add(connections_discover_info_string);
+            ArrayList<Boolean> rects = new ArrayList<>();
+            rects.add(true);
+            rects.add(true);
+            rects.add(true);
+            mainActivityInterface.getShowCase().sequenceShowCase(getActivity(),
+                    targets, null, infos, rects, "connectionsShowCase2");
+        }
     }
 
     private void bottomSheetBar() {
@@ -426,10 +459,12 @@ public class NearbyConnectionsFragment extends Fragment {
         myView.bottomSheet.receiveAutoscroll.setChecked(true);
     }
     private void textInputDialog() {
-        TextInputBottomSheet dialogFragment = new TextInputBottomSheet(this,
-                "NearbyConnectionsFragment", getString(R.string.connections_device_name), getString(R.string.connections_device_name),null,
-                "deviceId", mainActivityInterface.getNearbyConnections().getDeviceId(),true);
-        dialogFragment.show(requireActivity().getSupportFragmentManager(), "textInputFragment");
+        if (getActivity()!=null) {
+            TextInputBottomSheet dialogFragment = new TextInputBottomSheet(this,
+                    "NearbyConnectionsFragment", connections_device_name_string, connections_device_name_string, null,
+                    "deviceId", mainActivityInterface.getNearbyConnections().getDeviceId(), true);
+            dialogFragment.show(getActivity().getSupportFragmentManager(), "textInputFragment");
+        }
     }
 
     // Called from MainActivity after TextInputDialogFragment save
@@ -448,13 +483,13 @@ public class NearbyConnectionsFragment extends Fragment {
         myView.discoverButton.post(() -> {
             myView.discoverButton.setEnabled(true);
             myView.discoverButton.setBackgroundTintList(offColor);
-            myView.discoverButton.setText(getString(R.string.connections_discover));
+            myView.discoverButton.setText(connections_discover_string);
             myView.discoverButton.setOnClickListener(view -> doDiscoverAction());
         });
         myView.advertiseButton.post(() -> {
             myView.advertiseButton.setEnabled(true);
             myView.advertiseButton.setBackgroundTintList(offColor);
-            myView.advertiseButton.setText(getString(R.string.connections_advertise));
+            myView.advertiseButton.setText(connections_advertise_string);
             myView.advertiseButton.setOnClickListener(view -> doAdvertiseAction());
         });
     }
@@ -463,9 +498,9 @@ public class NearbyConnectionsFragment extends Fragment {
     public void updateCountdownText(boolean advertise, MaterialButton materialButton) {
         String text;
         if (advertise) {
-            text = getString(R.string.connections_advertising) + "\n" + mainActivityInterface.getNearbyConnections().getCountdown();
+            text = connections_advertising_string + "\n" + mainActivityInterface.getNearbyConnections().getCountdown();
         } else {
-            text = getString(R.string.connections_searching) + "\n" + mainActivityInterface.getNearbyConnections().getCountdown();
+            text = connections_searching_string + "\n" + mainActivityInterface.getNearbyConnections().getCountdown();
         }
         materialButton.post(() -> materialButton.setText(text));
         mainActivityInterface.getNearbyConnections().doCountdown();

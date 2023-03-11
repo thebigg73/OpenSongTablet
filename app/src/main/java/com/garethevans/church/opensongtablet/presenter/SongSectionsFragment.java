@@ -37,11 +37,15 @@ public class SongSectionsFragment extends Fragment {
     private Timer timer;
     private TimerTask timerTask;
     private ImageSlideAdapter imageSlideAdapter;
+    private String deeplink_edit_string="", start_string="", is_not_set_string="", stop_string="";
 
     @Override
     public void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Window w = requireActivity().getWindow();
+        Window w = null;
+        if (getActivity()!=null) {
+            w = getActivity().getWindow();
+        }
         if (w != null) {
             w.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         }
@@ -57,11 +61,17 @@ public class SongSectionsFragment extends Fragment {
     @Nullable
     @org.jetbrains.annotations.Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable @org.jetbrains.annotations.Nullable ViewGroup container,
+                             @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         myView = ModePresenterSongSectionsBinding.inflate(inflater, container, false);
 
+        prepareStrings();
+
         // Set up song info layout to only show minimal info in simple format
-        myView.songInfo.setupLayout(requireContext(), mainActivityInterface, false);
+        if (getContext()!=null) {
+            myView.songInfo.setupLayout(getContext(), mainActivityInterface, false);
+        }
 
         // Set the presentation order
         myView.presentationOrder.setChecked(mainActivityInterface.getPresenterSettings().getUsePresentationOrder());
@@ -73,7 +83,9 @@ public class SongSectionsFragment extends Fragment {
         updatePresentationOrder();
 
         myView.recyclerView.setItemAnimator(null);
-        myView.recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+        if (getContext()!=null) {
+            myView.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        }
         myView.recyclerView.setAdapter(mainActivityInterface.getPresenterSettings().getSongSectionsAdapter());
 
         showSongInfo();
@@ -83,6 +95,14 @@ public class SongSectionsFragment extends Fragment {
         return myView.getRoot();
     }
 
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            deeplink_edit_string = getString(R.string.deeplink_edit);
+            start_string = getString(R.string.start);
+            is_not_set_string = getString(R.string.is_not_set);
+            stop_string = getString(R.string.stop);
+        }
+    }
     public void showSongInfo() {
         if (myView!=null) {
             myView.songInfo.setCapo(null);  // Don't need to show this here
@@ -107,43 +127,43 @@ public class SongSectionsFragment extends Fragment {
                 myView.imageSlideLoop.setChecked(loop);
                 myView.songInfo.setOnLongClickListener(view -> {
                     if (!mainActivityInterface.getSong().getFolder().contains("**Image")) {
-                        mainActivityInterface.navigateToFragment(getString(R.string.deeplink_edit), 0);
+                        mainActivityInterface.navigateToFragment(deeplink_edit_string, 0);
                     }
                     return false;
                 });
 
-                if (mainActivityInterface.getSong().getFiletype().equals("PDF") &&
+                if (getContext()!=null && mainActivityInterface.getSong().getFiletype().equals("PDF") &&
                         android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-                    PDFPageAdapter pdfPageAdapter = new PDFPageAdapter(requireContext(),
+                    PDFPageAdapter pdfPageAdapter = new PDFPageAdapter(getContext(),
                             mainActivityInterface, displayInterface, 600, 800,0);
 
                     //Log.d(TAG, "pages:" + pdfPageAdapter.getItemCount());
                     mainActivityInterface.getSong().setPdfPageCount(pdfPageAdapter.getItemCount());
                     //Log.d(TAG, "heights" + pdfPageAdapter.getHeights());
 
-                    myView.recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+                    myView.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                     myView.recyclerView.setAdapter(pdfPageAdapter);
 
 
-                } else if (mainActivityInterface.getSong().getFiletype().equals("IMG")) {
-                    ImageAdapter imageAdapter = new ImageAdapter(requireContext(), this, mainActivityInterface, displayInterface, 600, 800);
-                    myView.recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+                } else if (getContext()!=null && mainActivityInterface.getSong().getFiletype().equals("IMG")) {
+                    ImageAdapter imageAdapter = new ImageAdapter(getContext(), this, mainActivityInterface, displayInterface, 600, 800);
+                    myView.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                     myView.recyclerView.setAdapter(imageAdapter);
 
-                } else if (mainActivityInterface.getSong().getFolder().contains("**Images")) {
+                } else if (getContext()!=null && mainActivityInterface.getSong().getFolder().contains("**Images")) {
                     // TODO what happens if nearby device sends the song?
-                    imageSlideAdapter = new ImageSlideAdapter(requireContext(), mainActivityInterface, displayInterface, 600, 800);
-                    myView.recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+                    imageSlideAdapter = new ImageSlideAdapter(getContext(), mainActivityInterface, displayInterface, 600, 800);
+                    myView.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                     myView.recyclerView.setAdapter(imageSlideAdapter);
                     myView.imageSlideInfo.setVisibility(View.VISIBLE);
                     myView.imageSlideLoop.setVisibility(View.VISIBLE);
                     myView.presentationOrder.setVisibility(View.GONE);
-                    myView.imageSlideStopStart.setText(getString(R.string.start));
+                    myView.imageSlideStopStart.setText(start_string);
                     myView.imageSlideStopStart.setOnClickListener(new StartStopListener(true));
 
-                } else {
+                } else if (getContext()!=null) {
                     // Standard XML file
-                    myView.recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+                    myView.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                     myView.recyclerView.setAdapter(mainActivityInterface.getPresenterSettings().getSongSectionsAdapter());
 
                     if (myView != null && mainActivityInterface != null && mainActivityInterface.getPresenterSettings() != null &&
@@ -170,7 +190,7 @@ public class SongSectionsFragment extends Fragment {
                 !mainActivityInterface.getSong().getPresentationorder().isEmpty()) {
             myView.presentationOrder.setHint(mainActivityInterface.getSong().getPresentationorder());
         } else {
-            myView.presentationOrder.setHint(getString(R.string.is_not_set));
+            myView.presentationOrder.setHint(is_not_set_string);
         }
     }
 
@@ -216,7 +236,7 @@ public class SongSectionsFragment extends Fragment {
         mainActivityInterface.getSong().setPdfPageCurrent(0);
         imageSlideAdapter.sectionSelected(mainActivityInterface.getSong().getPdfPageCurrent());
 
-        myView.imageSlideStopStart.setText(getString(R.string.stop));
+        myView.imageSlideStopStart.setText(stop_string);
         myView.imageSlideStopStart.setIcon(ResourcesCompat.getDrawable(getResources(),R.drawable.stop,null));
         myView.imageSlideStopStart.setOnClickListener(new StartStopListener(false));
         long delay = getSlideTime()*1000;
@@ -252,7 +272,7 @@ public class SongSectionsFragment extends Fragment {
                     } else {
                         // Just stop
                         myView.imageSlideStopStart.post(() -> {
-                            myView.imageSlideStopStart.setText(getString(R.string.start));
+                            myView.imageSlideStopStart.setText(start_string);
                             myView.imageSlideStopStart.setIcon(ResourcesCompat.getDrawable(getResources(),R.drawable.play,null));
                             myView.imageSlideStopStart.setOnClickListener(new StartStopListener(false));
                         });
@@ -276,7 +296,7 @@ public class SongSectionsFragment extends Fragment {
 
     private void doStop() {
         resetTimer();
-        myView.imageSlideStopStart.setText(getString(R.string.start));
+        myView.imageSlideStopStart.setText(start_string);
         myView.imageSlideStopStart.setOnClickListener(new StartStopListener(true));
         myView.imageSlideStopStart.setIcon(ResourcesCompat.getDrawable(getResources(),R.drawable.play,null));
     }

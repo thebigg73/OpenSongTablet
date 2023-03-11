@@ -42,9 +42,10 @@ public class ExportFragment extends Fragment {
     private ArrayList<View> sectionViewsPDF = new ArrayList<>();
     private ArrayList<Integer> sectionViewWidthsPDF = new ArrayList<>(), sectionViewHeightsPDF = new ArrayList<>();
     private LinearLayout headerLayoutPDF;
-    private String pngName;
     private int headerLayoutWidth, headerLayoutHeight, songsToAdd, songsProcessed;
-    private String setToExport = null, exportType, shareTitle, textContent, setContent;
+    private String setToExport = null, exportType, shareTitle, textContent, setContent, pngName,
+            export_string="", website_export_set_string="", website_export_song_string="",
+            set_string="", song_string="", app_name_string="";
     private boolean openSong = false, currentFormat = false, openSongApp = false, pdf = false, image = false,
             png = false, chordPro = false, onsong = false, text = false, setPDF = false, openSongSet = false,
             setPNG = false, openSongAppSet = false, includeSongs = false, textSet = false, isPrint;
@@ -65,7 +66,9 @@ public class ExportFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsExportBinding.inflate(inflater,container,false);
 
-        mainActivityInterface.updateToolbar(getString(R.string.export));
+        prepareStrings();
+
+        mainActivityInterface.updateToolbar(export_string);
 
         mainActivityInterface.getProcessSong().updateProcessingPreferences();
         scaleComments = mainActivityInterface.getPreferences().getMyPreferenceFloat("scaleComments",0.8f);
@@ -123,6 +126,17 @@ public class ExportFragment extends Fragment {
         return myView.getRoot();
     }
 
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            export_string = getString(R.string.export);
+            website_export_set_string = getString(R.string.website_export_set);
+            website_export_song_string = getString(R.string.website_export_song);
+            set_string = getString(R.string.set);
+            song_string = getString(R.string.song);
+            app_name_string = getString(R.string.app_name);
+        }
+    }
+
     private void showUsable() {
         // By default everything is hidden.  Only make the correct ones visible
 
@@ -164,7 +178,7 @@ public class ExportFragment extends Fragment {
 
         // Check if we are exporting a set
         if (mainActivityInterface.getWhattodo().startsWith("exportset:")) {
-            mainActivityInterface.updateToolbarHelp(getString(R.string.website_export_set));
+            mainActivityInterface.updateToolbarHelp(website_export_set_string);
 
             myView.setExportInfo.setVisibility(View.VISIBLE);
             myView.currentFormat.setVisibility(View.VISIBLE);
@@ -187,7 +201,7 @@ public class ExportFragment extends Fragment {
 
         } else {
             // Hide the options based on the song format
-            mainActivityInterface.updateToolbarHelp(getString(R.string.website_export_song));
+            mainActivityInterface.updateToolbarHelp(website_export_song_string);
             myView.setExportInfo.setVisibility(View.GONE);
             myView.currentFormat.setVisibility(View.GONE);
 
@@ -276,11 +290,11 @@ public class ExportFragment extends Fragment {
 
         // Deal with set exporting
         if (mainActivityInterface.getWhattodo().startsWith("exportset:")) {
-            exportType = getString(R.string.set);
+            exportType = set_string;
             shareTitle = setToExport;
             doExportSet();
         } else {
-            exportType = getString(R.string.song);
+            exportType = song_string;
             shareTitle = mainActivityInterface.getSong().getFilename();
             doExportSong();
         }
@@ -492,7 +506,7 @@ public class ExportFragment extends Fragment {
                 setItems.append(setItemEntry).append("\n[]\n");
             }
             tempSong.setLyrics(setItems.toString());
-            createOnTheFly(tempSong,getString(R.string.set) +" " +setToExport+".pdf");
+            createOnTheFly(tempSong,set_string +" " +setToExport+".pdf");
         } else {
             renderPDFSongs();
         }
@@ -656,7 +670,7 @@ public class ExportFragment extends Fragment {
         }
         Intent intent = mainActivityInterface.getExportActions().setShareIntent(textContent,"*/*",null,uris);
         intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
-        intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name) + " " +
+        intent.putExtra(Intent.EXTRA_SUBJECT, app_name_string + " " +
                 exportType + ": " + shareTitle);
         if (setContent!=null) {
             intent.putExtra(Intent.EXTRA_TEXT, setContent);
@@ -697,7 +711,9 @@ public class ExportFragment extends Fragment {
         sectionViewsPDF = new ArrayList<>();
         sectionViewWidthsPDF = new ArrayList<>();
         sectionViewHeightsPDF = new ArrayList<>();
-        headerLayoutPDF = new LinearLayout(requireContext());
+        if (getContext()!=null) {
+            headerLayoutPDF = new LinearLayout(getContext());
+        }
     }
 
     public void createOnTheFlyHeader(Song thisSong, String pdfName) {
@@ -713,7 +729,7 @@ public class ExportFragment extends Fragment {
                 myView.hiddenHeader.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 headerLayoutWidth = myView.hiddenHeader.getMeasuredWidth();
                 headerLayoutHeight = myView.hiddenHeader.getMeasuredHeight();
-                if (!pdfName.equals(getString(R.string.set) +" " +setToExport+".pdf") && !setPNG && !png) {
+                if (!pdfName.equals(set_string +" " +setToExport+".pdf") && !setPNG && !png) {
                     myView.hiddenHeader.removeAllViews();
                 }
                 createOnTheFlySections(thisSong, pdfName);
@@ -764,7 +780,7 @@ public class ExportFragment extends Fragment {
                         }
                     }
 
-                    boolean isSetFile = pdfName.equals(getString(R.string.set) +" " +setToExport+".pdf");
+                    boolean isSetFile = pdfName.equals(set_string +" " +setToExport+".pdf");
 
                     Log.d(TAG,"setPNG:"+setPNG+"  pdfName:"+pdfName+"   ==   Set "+setToExport+".pdf");
                     // If we are exporting a setPNG and this is the set, take a bitmap!
@@ -868,36 +884,38 @@ public class ExportFragment extends Fragment {
 
     private void doPrint(boolean isSet) {
         // Get a PrintManager instance
-        PrintManager printManager = (PrintManager) requireActivity().getSystemService(Context.PRINT_SERVICE);
+        if (getActivity()!=null) {
+            PrintManager printManager = (PrintManager) getActivity().getSystemService(Context.PRINT_SERVICE);
 
-        // Set job name, which will be displayed in the print queue
-        String jobName = requireActivity().getString(R.string.app_name) + " Document";
+            // Set job name, which will be displayed in the print queue
+            String jobName = app_name_string + " Document";
 
-        // Start a print job, passing in a PrintDocumentAdapter implementation
-        // to handle the generation of a print document
+            // Start a print job, passing in a PrintDocumentAdapter implementation
+            // to handle the generation of a print document
 
-        if (isSet) {
-            // Set the variable that will remove gaps from set items on the set list page(s)
-            mainActivityInterface.getMakePDF().setIsSetListPrinting(true);
+            if (isSet) {
+                // Set the variable that will remove gaps from set items on the set list page(s)
+                mainActivityInterface.getMakePDF().setIsSetListPrinting(true);
 
-            // Go through the sets and create any custom slides required (variations, slides, etc).
-            ArrayList<Uri> setFiles = mainActivityInterface.getExportActions().addOpenSongSetsToUris(setNames);
-            for (Uri setFile:setFiles) {
-                mainActivityInterface.getSetActions().extractSetFile(setFile,true);
+                // Go through the sets and create any custom slides required (variations, slides, etc).
+                ArrayList<Uri> setFiles = mainActivityInterface.getExportActions().addOpenSongSetsToUris(setNames);
+                for (Uri setFile : setFiles) {
+                    mainActivityInterface.getSetActions().extractSetFile(setFile, true);
+                }
+
+                // This is sent to the MultipagePrinterAdapter class to deal with
+                MultipagePrinterAdapter multipagePrinterAdapter = new MultipagePrinterAdapter(getActivity());
+                multipagePrinterAdapter.updateSetList(this, setToExport, setData[0], setData[1], setData[2]);
+                mainActivityInterface.getMakePDF().setPreferedAttributes();
+                printManager.print(jobName, multipagePrinterAdapter, mainActivityInterface.getMakePDF().getPrintAttributes());
+
+            } else {
+                PrinterAdapter printerAdapter = new PrinterAdapter(getActivity());
+                printerAdapter.updateSections(sectionViewsPDF, sectionViewWidthsPDF, sectionViewHeightsPDF,
+                        headerLayoutPDF, headerLayoutWidth, headerLayoutHeight, song_string);
+                mainActivityInterface.getMakePDF().setPreferedAttributes();
+                printManager.print(jobName, printerAdapter, mainActivityInterface.getMakePDF().getPrintAttributes());
             }
-
-            // This is sent to the MultipagePrinterAdapter class to deal with
-            MultipagePrinterAdapter multipagePrinterAdapter = new MultipagePrinterAdapter(requireActivity());
-            multipagePrinterAdapter.updateSetList(this,setToExport,setData[0],setData[1],setData[2]);
-            mainActivityInterface.getMakePDF().setPreferedAttributes();
-            printManager.print(jobName, multipagePrinterAdapter,mainActivityInterface.getMakePDF().getPrintAttributes());
-
-        } else {
-            PrinterAdapter printerAdapter = new PrinterAdapter(requireActivity());
-            printerAdapter.updateSections(sectionViewsPDF, sectionViewWidthsPDF, sectionViewHeightsPDF,
-                    headerLayoutPDF, headerLayoutWidth, headerLayoutHeight, getString(R.string.song));
-            mainActivityInterface.getMakePDF().setPreferedAttributes();
-            printManager.print(jobName, printerAdapter, mainActivityInterface.getMakePDF().getPrintAttributes());
         }
     }
 

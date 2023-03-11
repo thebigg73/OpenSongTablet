@@ -56,7 +56,9 @@ public class RandomSongBottomSheet extends BottomSheetDialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = BottomSheetRandomSongBinding.inflate(inflater,container,false);
 
-        myView.dialogHeader.setText(getString(R.string.random_song));
+        if (getContext()!=null) {
+            myView.dialogHeader.setText(getString(R.string.random_song));
+        }
         myView.dialogHeader.setClose(this);
 
         // Get a random song

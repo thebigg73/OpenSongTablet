@@ -31,6 +31,8 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
     private MainActivityInterface mainActivityInterface;
     private DisplayInterface displayInterface;
     private SettingsDisplayConnectedBinding myView;
+    private String connected_display_string="", website_connected_display_string="",
+            mode_performance_string="", mode_stage_string="";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -45,8 +47,10 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         myView = SettingsDisplayConnectedBinding.inflate(inflater,container,false);
 
-        mainActivityInterface.updateToolbar(getString(R.string.connected_display));
-        mainActivityInterface.updateToolbarHelp(getString(R.string.website_connected_display));
+        prepareStrings();
+
+        mainActivityInterface.updateToolbar(connected_display_string);
+        mainActivityInterface.updateToolbarHelp(website_connected_display_string);
 
         // Update the currently chosen logo and backgrounds
         mainActivityInterface.getPresenterSettings().getAllPreferences();
@@ -63,67 +67,81 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
         return myView.getRoot();
     }
 
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            connected_display_string = getString(R.string.connected_display);
+            website_connected_display_string = getString(R.string.website_connected_display);
+            mode_performance_string = getString(R.string.mode_performance);
+            mode_stage_string = getString(R.string.mode_stage);
+        }
+    }
     public void updateLogo() {
         Log.d(TAG,"updateLogo()");
-        // Get the current logo and preview in the button
-        RequestOptions options = new RequestOptions().override(128, 72).centerInside();
-        GlideApp.with(requireContext()).load(mainActivityInterface.getPresenterSettings().getLogo()).apply(options).into(myView.currentLogo);
-        myView.logoSize.setValue(100*mainActivityInterface.getPresenterSettings().getLogoSize());
+        if (getContext()!=null) {
+            // Get the current logo and preview in the button
+            RequestOptions options = new RequestOptions().override(128, 72).centerInside();
+            GlideApp.with(getContext()).load(mainActivityInterface.getPresenterSettings().getLogo()).apply(options).into(myView.currentLogo);
+            myView.logoSize.setValue(100 * mainActivityInterface.getPresenterSettings().getLogoSize());
+        }
     }
 
     public void updateBackground() {
         // Get the current backgrounds and update the chosen one into the button
         // Do this for the info background preview too
-        RequestOptions options = new RequestOptions().override(136, 72).centerCrop();
-        switch (mainActivityInterface.getPresenterSettings().getBackgroundToUse()) {
-            case "img1":
-                GlideApp.with(requireContext()).load(mainActivityInterface.getPresenterSettings().getBackgroundImage1()).apply(options).into(myView.currentBackground);
-                GlideApp.with(requireContext()).load(mainActivityInterface.getPresenterSettings().getBackgroundImage1()).apply(options).into(myView.infoBackgroundColor);
-                myView.videoBackgroundIcon.hide();
-                Log.d(TAG,"should update to img1");
-                break;
-            case "img2":
-                GlideApp.with(requireContext()).load(mainActivityInterface.getPresenterSettings().getBackgroundImage2()).apply(options).into(myView.currentBackground);
-                GlideApp.with(requireContext()).load(mainActivityInterface.getPresenterSettings().getBackgroundImage2()).apply(options).into(myView.infoBackgroundColor);
-                myView.videoBackgroundIcon.hide();
-                break;
-            case "vid1":
-                GlideApp.with(requireContext()).load(mainActivityInterface.getPresenterSettings().getBackgroundVideo1()).apply(options).into(myView.currentBackground);
-                GlideApp.with(requireContext()).load(mainActivityInterface.getPresenterSettings().getBackgroundVideo1()).apply(options).into(myView.infoBackgroundColor);
-                myView.videoBackgroundIcon.show();
-                break;
-            case "vid2":
-                GlideApp.with(requireContext()).load(mainActivityInterface.getPresenterSettings().getBackgroundVideo2()).apply(options).into(myView.currentBackground);
-                GlideApp.with(requireContext()).load(mainActivityInterface.getPresenterSettings().getBackgroundVideo2()).apply(options).into(myView.infoBackgroundColor);
-                myView.videoBackgroundIcon.show();
-                break;
-            case "color":
-                Drawable drawable = ContextCompat.getDrawable(requireContext(),R.drawable.simple_rectangle);
-                if (drawable!=null) {
-                    GradientDrawable gradientDrawable = (GradientDrawable) drawable.mutate();
-                    gradientDrawable.setColor(mainActivityInterface.getPresenterSettings().getBackgroundColor());
-                    GlideApp.with(requireContext()).load(gradientDrawable).apply(options).into(myView.currentBackground);
-                    GlideApp.with(requireContext()).load(gradientDrawable).apply(options).into(myView.infoBackgroundColor);
-                }
-                myView.videoBackgroundIcon.hide();
+        if (getContext()!=null) {
+            RequestOptions options = new RequestOptions().override(136, 72).centerCrop();
+            switch (mainActivityInterface.getPresenterSettings().getBackgroundToUse()) {
+                case "img1":
+                    GlideApp.with(getContext()).load(mainActivityInterface.getPresenterSettings().getBackgroundImage1()).apply(options).into(myView.currentBackground);
+                    GlideApp.with(getContext()).load(mainActivityInterface.getPresenterSettings().getBackgroundImage1()).apply(options).into(myView.infoBackgroundColor);
+                    myView.videoBackgroundIcon.hide();
+                    Log.d(TAG, "should update to img1");
+                    break;
+                case "img2":
+                    GlideApp.with(getContext()).load(mainActivityInterface.getPresenterSettings().getBackgroundImage2()).apply(options).into(myView.currentBackground);
+                    GlideApp.with(getContext()).load(mainActivityInterface.getPresenterSettings().getBackgroundImage2()).apply(options).into(myView.infoBackgroundColor);
+                    myView.videoBackgroundIcon.hide();
+                    break;
+                case "vid1":
+                    GlideApp.with(getContext()).load(mainActivityInterface.getPresenterSettings().getBackgroundVideo1()).apply(options).into(myView.currentBackground);
+                    GlideApp.with(getContext()).load(mainActivityInterface.getPresenterSettings().getBackgroundVideo1()).apply(options).into(myView.infoBackgroundColor);
+                    myView.videoBackgroundIcon.show();
+                    break;
+                case "vid2":
+                    GlideApp.with(getContext()).load(mainActivityInterface.getPresenterSettings().getBackgroundVideo2()).apply(options).into(myView.currentBackground);
+                    GlideApp.with(getContext()).load(mainActivityInterface.getPresenterSettings().getBackgroundVideo2()).apply(options).into(myView.infoBackgroundColor);
+                    myView.videoBackgroundIcon.show();
+                    break;
+                case "color":
+                    Drawable drawable = ContextCompat.getDrawable(getContext(), R.drawable.simple_rectangle);
+                    if (drawable != null) {
+                        GradientDrawable gradientDrawable = (GradientDrawable) drawable.mutate();
+                        gradientDrawable.setColor(mainActivityInterface.getPresenterSettings().getBackgroundColor());
+                        GlideApp.with(getContext()).load(gradientDrawable).apply(options).into(myView.currentBackground);
+                        GlideApp.with(getContext()).load(gradientDrawable).apply(options).into(myView.infoBackgroundColor);
+                    }
+                    myView.videoBackgroundIcon.hide();
+            }
         }
     }
 
     public void updateInfoBackground() {
         // Update the info bar background colour
-        RequestOptions options = new RequestOptions().override(128, 72).centerInside();
-        Drawable drawable = ContextCompat.getDrawable(requireContext(),R.drawable.simple_rectangle);
-        if (drawable!=null) {
-            GradientDrawable gradientDrawable = (GradientDrawable) drawable.mutate();
-            gradientDrawable.setColor(mainActivityInterface.getMyThemeColors().getPresoShadowColor());
-            GlideApp.with(requireContext()).load(gradientDrawable).apply(options).into(myView.infoBackgroundColor);
+        if (getContext()!=null) {
+            RequestOptions options = new RequestOptions().override(128, 72).centerInside();
+            Drawable drawable = ContextCompat.getDrawable(getContext(), R.drawable.simple_rectangle);
+            if (drawable != null) {
+                GradientDrawable gradientDrawable = (GradientDrawable) drawable.mutate();
+                gradientDrawable.setColor(mainActivityInterface.getMyThemeColors().getPresoShadowColor());
+                GlideApp.with(getContext()).load(gradientDrawable).apply(options).into(myView.infoBackgroundColor);
+            }
         }
     }
 
 
     private void setViews() {
         // These settings can be called from any mode, hide what we don't need
-        if (mainActivityInterface.getMode().equals(getString(R.string.mode_performance))) {
+        if (mainActivityInterface.getMode().equals(mode_performance_string)) {
             myView.backgroundLayout.setVisibility(View.GONE);
             myView.presoBackgroundAlpha.setVisibility(View.GONE);
             myView.presoBackgroundDivider.setVisibility(View.GONE);
@@ -135,7 +153,7 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
             myView.infoSizes.setVisibility(View.GONE);
             myView.blockShadow.setVisibility(View.GONE);
             myView.blockShadowAlpha.setVisibility(View.GONE);
-        } else if (mainActivityInterface.getMode().equals(getString(R.string.mode_stage))) {
+        } else if (mainActivityInterface.getMode().equals(mode_stage_string)) {
             myView.logoLayout.setVisibility(View.GONE);
             myView.logoSize.setVisibility(View.GONE);
             myView.logoDivider.setVisibility(View.GONE);

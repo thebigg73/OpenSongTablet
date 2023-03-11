@@ -20,6 +20,7 @@ public class LinksFragment extends Fragment {
     private SettingsLinksBinding myView;
     private MainActivityInterface mainActivityInterface;
     private LinksBottomSheet linksBottomSheet;
+    private String link_string="", website_link_string="", link_choose_string="";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -31,8 +32,11 @@ public class LinksFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsLinksBinding.inflate(inflater, container, false);
-        mainActivityInterface.updateToolbar(getString(R.string.link));
-        mainActivityInterface.updateToolbarHelp(getString(R.string.website_link));
+
+        prepareStrings();
+
+        mainActivityInterface.updateToolbar(link_string);
+        mainActivityInterface.updateToolbarHelp(website_link_string);
 
         // Set views
         setupViews();
@@ -43,6 +47,13 @@ public class LinksFragment extends Fragment {
         return myView.getRoot();
     }
 
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            link_string = getString(R.string.link);
+            website_link_string = getString(R.string.website_link);
+            link_choose_string = getString(R.string.link_choose);
+        }
+    }
     // Make public as can also be called as an update from the MainActivity
     public void setupViews() {
         linksBottomSheet = new LinksBottomSheet("linksFragment",this);
@@ -55,7 +66,7 @@ public class LinksFragment extends Fragment {
 
     private void setCurrentValue(MyMaterialTextView myMaterialTextView, String songValue) {
         if (songValue==null || songValue.isEmpty()) {
-            myMaterialTextView.setHint(getString(R.string.link_choose));
+            myMaterialTextView.setHint(link_choose_string);
         } else {
             myMaterialTextView.setHint(songValue);
         }
@@ -69,8 +80,10 @@ public class LinksFragment extends Fragment {
     }
 
     private void openBottomSheet(String what) {
-        mainActivityInterface.setWhattodo(what);
-        linksBottomSheet.show(requireActivity().getSupportFragmentManager(),"linksBottomSheet");
+        if (getActivity() != null) {
+            mainActivityInterface.setWhattodo(what);
+            linksBottomSheet.show(getActivity().getSupportFragmentManager(), "linksBottomSheet");
+        }
     }
 
 }

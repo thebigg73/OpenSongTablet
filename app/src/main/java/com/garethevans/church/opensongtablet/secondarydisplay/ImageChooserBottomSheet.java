@@ -41,9 +41,11 @@ public class ImageChooserBottomSheet extends BottomSheetDialogFragment {
     private BottomSheetImageChooseBinding myView;
     private MainActivityInterface mainActivityInterface;
     private DisplayInterface displayInterface;
-    private String pickThis;
+    private String pickThis, mode_presenter_string="";
     private final Fragment callingFragment;
     private final String fragName;
+    private int colorSelected, colorUnselected;
+
 
     public ImageChooserBottomSheet(Fragment callingFragment, String fragName) {
         // Get a reference to the fragment that requested the image chooser so we can send update
@@ -77,6 +79,8 @@ public class ImageChooserBottomSheet extends BottomSheetDialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         myView = BottomSheetImageChooseBinding.inflate(inflater,container,false);
 
+        prepareStrings();
+
         myView.dialogHeading.setClose(this);
 
         // Update our preferences in case they have changed
@@ -99,20 +103,30 @@ public class ImageChooserBottomSheet extends BottomSheetDialogFragment {
         return myView.getRoot();
     }
 
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            mode_presenter_string = getString(R.string.mode_presenter);
+            colorSelected = ContextCompat.getColor(getContext(),R.color.colorSecondary);
+            colorUnselected = Color.TRANSPARENT;
+
+        }
+    }
     private void updatePreview(ImageView view, Uri uri, boolean isColor) {
-        RequestOptions options = new RequestOptions().override(128, 72).centerInside();
-        if (isColor) {
-            Drawable drawable = ContextCompat.getDrawable(requireContext(),R.drawable.simple_rectangle);
-            if (drawable!=null) {
-                GradientDrawable gradientDrawable = (GradientDrawable) drawable.mutate();
-                gradientDrawable.setColor(mainActivityInterface.getPresenterSettings().getBackgroundColor());
-                GlideApp.with(requireContext()).load(gradientDrawable).apply(options).into(view);
-            }
-        } else {
-            if (uri==null) {
-                GlideApp.with(requireContext()).load(ContextCompat.getDrawable(requireContext(),R.drawable.image)).apply(options).into(view);
+        if (getContext()!=null) {
+            RequestOptions options = new RequestOptions().override(128, 72).centerInside();
+            if (isColor) {
+                Drawable drawable = ContextCompat.getDrawable(getContext(), R.drawable.simple_rectangle);
+                if (drawable != null) {
+                    GradientDrawable gradientDrawable = (GradientDrawable) drawable.mutate();
+                    gradientDrawable.setColor(mainActivityInterface.getPresenterSettings().getBackgroundColor());
+                    GlideApp.with(getContext()).load(gradientDrawable).apply(options).into(view);
+                }
             } else {
-                GlideApp.with(requireContext()).load(uri).apply(options).into(view);
+                if (uri == null) {
+                    GlideApp.with(getContext()).load(ContextCompat.getDrawable(getContext(), R.drawable.image)).apply(options).into(view);
+                } else {
+                    GlideApp.with(getContext()).load(uri).apply(options).into(view);
+                }
             }
         }
     }
@@ -194,7 +208,7 @@ public class ImageChooserBottomSheet extends BottomSheetDialogFragment {
         setSelectedBackgroundHighlight();
 
         // Also, if we are in presenter mode, update the 'Settings' tab previews(
-        if (mainActivityInterface.getMode().equals(getString(R.string.mode_presenter)) &&
+        if (mainActivityInterface.getMode().equals(mode_presenter_string) &&
                 fragName.equals("presenterFragmentSettings")) {
             mainActivityInterface.getPresenterSettings().getImagePreferences();
             mainActivityInterface.updateFragment(fragName,callingFragment,null);
@@ -204,8 +218,10 @@ public class ImageChooserBottomSheet extends BottomSheetDialogFragment {
     }
 
     private void setSelectedBackgroundHighlight() {
-        int colorSelected = ContextCompat.getColor(requireContext(),R.color.colorSecondary);
-        int colorUnselected = Color.TRANSPARENT;
+        if (getContext()!=null) {
+            colorSelected = ContextCompat.getColor(getContext(), R.color.colorSecondary);
+        }
+        colorUnselected = Color.TRANSPARENT;
         myView.colorBackground.setBackgroundColor(colorUnselected);
         myView.image1Background.setBackgroundColor(colorUnselected);
         myView.image2Background.setBackgroundColor(colorUnselected);
@@ -244,9 +260,9 @@ public class ImageChooserBottomSheet extends BottomSheetDialogFragment {
                             Uri uri = intent.getData();
                             if (uri!=null) {
                                 // Get permissions!
-                                if (!mainActivityInterface.getStorageAccess().fixUriToLocal(uri).startsWith("../OpenSong/")) {
+                                if (getContext()!=null && !mainActivityInterface.getStorageAccess().fixUriToLocal(uri).startsWith("../OpenSong/")) {
                                     // Only need to take permission if it isn't in the OpenSong folder
-                                    requireContext().getContentResolver().takePersistableUriPermission(
+                                    getContext().getContentResolver().takePersistableUriPermission(
                                             uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
                                 }
 

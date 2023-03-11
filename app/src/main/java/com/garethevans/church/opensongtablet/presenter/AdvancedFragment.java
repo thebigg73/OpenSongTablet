@@ -53,7 +53,11 @@ public class AdvancedFragment extends Fragment {
     }
 
     private void setListeners() {
-        myView.displaySettings.setOnClickListener(view -> mainActivityInterface.navigateToFragment(getString(R.string.deeplink_connected_display),0));
+        myView.displaySettings.setOnClickListener(view -> {
+            if (getContext()!=null) {
+                mainActivityInterface.navigateToFragment(getString(R.string.deeplink_connected_display),0);
+            }
+        });
         myView.alertText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }

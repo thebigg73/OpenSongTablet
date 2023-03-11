@@ -41,7 +41,8 @@ public class ImportOptionsFragment extends Fragment {
     private ActivityResultLauncher<Uri> takePhoto;
     private int whichFileType;
     private Uri uri;
-    private String cameraFilename;
+    private String cameraFilename, import_main_string="", deeplink_edit_string="",
+            deeplink_import_osb_string="", network_error_string="";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -54,7 +55,9 @@ public class ImportOptionsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsImportBinding.inflate(inflater,container,false);
 
-        mainActivityInterface.updateToolbar(getString(R.string.import_main));
+        prepareStrings();
+
+        mainActivityInterface.updateToolbar(import_main_string);
 
         // Set up launcher
         setupLauncher();
@@ -65,6 +68,14 @@ public class ImportOptionsFragment extends Fragment {
         return myView.getRoot();
     }
 
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            import_main_string = getString(R.string.import_main);
+            deeplink_edit_string = getString(R.string.deeplink_edit);
+            deeplink_import_osb_string = getString(R.string.deeplink_import_osb);
+            network_error_string = getString(R.string.network_error);
+        }
+    }
     private void setupLauncher() {
         // Initialise the launchers
         activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
@@ -148,7 +159,7 @@ public class ImportOptionsFragment extends Fragment {
     private void setListeners() {
         myView.createSong.setOnClickListener(v -> {
             mainActivityInterface.setSong(new Song());
-            mainActivityInterface.navigateToFragment(getString(R.string.deeplink_edit),0);
+            mainActivityInterface.navigateToFragment(deeplink_edit_string,0);
         });
         myView.importFile.setOnClickListener(v -> selectFile(mainActivityInterface.getPreferences().getFinalInt("REQUEST_FILE_CHOOSER"),validFiles));
         myView.importOSB.setOnClickListener(v -> selectFile(mainActivityInterface.getPreferences().getFinalInt("REQUEST_OSB_FILE"),validBackups));
@@ -182,10 +193,10 @@ public class ImportOptionsFragment extends Fragment {
 
     public void isConnected(boolean isConnected) {
         if (isConnected) {
-            mainActivityInterface.navigateToFragment(getString(R.string.deeplink_import_osb),0);
+            mainActivityInterface.navigateToFragment(deeplink_import_osb_string,0);
         } else {
             mainActivityInterface.setWhattodo("");
-            mainActivityInterface.getShowToast().doIt(getString(R.string.network_error));
+            mainActivityInterface.getShowToast().doIt(network_error_string);
         }
     }
     @Override

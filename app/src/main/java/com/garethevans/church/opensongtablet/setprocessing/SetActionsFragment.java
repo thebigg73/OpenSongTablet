@@ -28,6 +28,8 @@ public class SetActionsFragment extends Fragment {
     private MainActivityInterface mainActivityInterface;
     private ActivityResultLauncher<Intent> activityResultLauncher;
     private final String TAG = "SetActionsFragment";
+    private String set_manage_string="", set_new_string="", deeplink_sets_manage_string="",
+            file_type_string="", unknown_string="";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -40,11 +42,13 @@ public class SetActionsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         SettingsSetsBinding myView = SettingsSetsBinding.inflate(inflater, container, false);
 
-        mainActivityInterface.updateToolbar(getString(R.string.set_manage));
+        prepareStrings();
+
+        mainActivityInterface.updateToolbar(set_manage_string);
 
         initialiseLauncher();
 
-        myView.createSet.setOnClickListener(v -> mainActivityInterface.displayAreYouSure("newSet",getString(R.string.set_new),null,"SetActionsFragment",this,null));
+        myView.createSet.setOnClickListener(v -> mainActivityInterface.displayAreYouSure("newSet",set_new_string,null,"SetActionsFragment",this,null));
         myView.loadSet.setOnClickListener(v -> {
             mainActivityInterface.setWhattodo("loadset");
             mainActivityInterface.navigateToFragment(null,R.id.setManageFragment);
@@ -86,6 +90,16 @@ public class SetActionsFragment extends Fragment {
         return myView.getRoot();
     }
 
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            set_manage_string = getString(R.string.set_manage);
+            set_new_string = getString(R.string.set_new);
+            deeplink_sets_manage_string = getString(R.string.deeplink_sets_manage);
+            file_type_string = getString(R.string.file_type);
+            unknown_string = getString(R.string.unknown);
+        }
+    }
+
     private void initialiseLauncher() {
         // Initialise the launcher
         activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
@@ -114,9 +128,9 @@ public class SetActionsFragment extends Fragment {
                             mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" copyPDF copyFile from "+contentUri+" to Sets/"+importFilename);
                             mainActivityInterface.getStorageAccess().copyFile(inputStream, outputStream);
                             mainActivityInterface.setWhattodo("loadset:"+importFilename);
-                            mainActivityInterface.navigateToFragment(getString(R.string.deeplink_sets_manage), 0);
+                            mainActivityInterface.navigateToFragment(deeplink_sets_manage_string, 0);
                         } else {
-                            mainActivityInterface.getShowToast().doIt(getString(R.string.file_type)+" "+getString(R.string.unknown));
+                            mainActivityInterface.getShowToast().doIt(file_type_string+" "+unknown_string);
                         }
                     }
                 } catch (Exception e) {

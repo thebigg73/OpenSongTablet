@@ -16,7 +16,6 @@ import androidx.fragment.app.Fragment;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.SettingsAutoscrollBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.google.android.material.slider.Slider;
 
 public class AutoscrollSettingsFragment extends Fragment {
 
@@ -24,6 +23,7 @@ public class AutoscrollSettingsFragment extends Fragment {
     private final String TAG = "AutoscrollSettings";
     private SettingsAutoscrollBinding myView;
     private MainActivityInterface mainActivityInterface;
+    private String autoscroll="", website_autoscroll="";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -37,8 +37,10 @@ public class AutoscrollSettingsFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         myView = SettingsAutoscrollBinding.inflate(inflater, container, false);
 
-        mainActivityInterface.updateToolbar(getString(R.string.autoscroll));
-        mainActivityInterface.updateToolbarHelp(getString(R.string.website_autoscroll));
+        prepareStrings();
+
+        mainActivityInterface.updateToolbar(autoscroll);
+        mainActivityInterface.updateToolbarHelp(website_autoscroll);
         // Set up the views
         setupViews();
 
@@ -48,6 +50,12 @@ public class AutoscrollSettingsFragment extends Fragment {
         return myView.getRoot();
     }
 
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            autoscroll = getString(R.string.autoscroll);
+            website_autoscroll = getString(R.string.website_autoscroll);
+        }
+    }
     private void setupViews() {
         // Get the defaults from the autoscroll class which controls the preferences
         int[] defTimes = mainActivityInterface.getTimeTools().getMinsSecsFromSecs(
@@ -105,15 +113,10 @@ public class AutoscrollSettingsFragment extends Fragment {
         myView.defaultMins.addTextChangedListener(new MyTextWatcher("defaultMins"));
         myView.defaultSecs.addTextChangedListener(new MyTextWatcher("defaultSecs"));
         myView.defaultDelay.addTextChangedListener(new MyTextWatcher("defaultDelay"));
-        myView.autostartAutoscroll.setOnCheckedChangeListener((compoundButton, b) -> {
-            mainActivityInterface.getAutoscroll().setAutoscrollAutoStart(b);
-        });
-        myView.defaultOrAsk.addOnChangeListener(new Slider.OnChangeListener() {
-            @Override
-            public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
-                boolean defaultVal = value==0;
-                mainActivityInterface.getAutoscroll().setAutoscrollUseDefaultTime(defaultVal);
-            }
+        myView.autostartAutoscroll.setOnCheckedChangeListener((compoundButton, b) -> mainActivityInterface.getAutoscroll().setAutoscrollAutoStart(b));
+        myView.defaultOrAsk.addOnChangeListener((slider, value, fromUser) -> {
+            boolean defaultVal = value==0;
+            mainActivityInterface.getAutoscroll().setAutoscrollUseDefaultTime(defaultVal);
         });
 
         // TODO may reinstate these
@@ -199,24 +202,4 @@ public class AutoscrollSettingsFragment extends Fragment {
             return Integer.parseInt(string);
         }
     }
-
-    /*
-    private void learnAutoscroll() {
-        // This sends an action to the performance mode to start the process
-    }
-
-    private void startStopAutoscroll() {
-        if (mainActivityInterface.getAutoscroll().getIsAutoscrolling()) {
-            mainActivityInterface.getAutoscroll().stopAutoscroll();
-            myView.startStopAutoscroll.setImageDrawable(ContextCompat.getDrawable(requireContext(),
-                    R.drawable.play));
-        } else {
-            mainActivityInterface.getAutoscroll().startAutoscroll();
-            myView.startStopAutoscroll.setImageDrawable(ContextCompat.getDrawable(requireContext(),
-                    R.drawable.stop));
-        }
-    }
-
-     */
-
 }

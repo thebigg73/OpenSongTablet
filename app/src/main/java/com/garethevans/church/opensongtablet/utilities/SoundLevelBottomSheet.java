@@ -43,6 +43,8 @@ public class SoundLevelBottomSheet extends BottomSheetDialogFragment {
     private final Runnable r = this::sampleSound;
     private Handler audioRecordHandler;
     ActivityResultLauncher<String> activityResultLauncher;
+    private String volume_string="", website_sound_level_meter_string="", microphone_string="",
+            permissions_refused_string="", settings_string="";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -53,7 +55,10 @@ public class SoundLevelBottomSheet extends BottomSheetDialogFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Window w = requireActivity().getWindow();
+        Window w = null;
+        if (getActivity()!=null) {
+            w = getActivity().getWindow();
+        }
         if (w != null) {
             w.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         }
@@ -78,9 +83,11 @@ public class SoundLevelBottomSheet extends BottomSheetDialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = BottomSheetSoundLevelMeterBinding.inflate(inflater, container, false);
 
-        myView.dialogHeader.setText(getString(R.string.volume));
+        prepareString();
+
+        myView.dialogHeader.setText(volume_string);
         myView.dialogHeader.setClose(this);
-        myView.dialogHeader.setWebHelp(mainActivityInterface, getString(R.string.website_sound_level_meter));
+        myView.dialogHeader.setWebHelp(mainActivityInterface, website_sound_level_meter_string);
 
         // Set the values
         setValues();
@@ -94,6 +101,15 @@ public class SoundLevelBottomSheet extends BottomSheetDialogFragment {
         return myView.getRoot();
     }
 
+    private void prepareString() {
+        if (getContext()!=null) {
+            volume_string = getString(R.string.volume);
+            website_sound_level_meter_string = getString(R.string.website_sound_level_meter);
+            microphone_string = getString(R.string.microphone);
+            permissions_refused_string = getString(R.string.permissions_refused);
+            settings_string = getString(R.string.settings);
+        }
+    }
     private void setValues() {
         changeRange(mainActivityInterface.getPreferences().getMyPreferenceInt("soundMeterRange", 400));
     }
@@ -162,8 +178,8 @@ public class SoundLevelBottomSheet extends BottomSheetDialogFragment {
 
             } else  {
             // notify user
-            InformationBottomSheet informationBottomSheet = new InformationBottomSheet(getString(R.string.microphone),
-                    getString(R.string.permissions_refused), getString(R.string.settings), "appPrefs");
+            InformationBottomSheet informationBottomSheet = new InformationBottomSheet(microphone_string,
+                    permissions_refused_string, settings_string, "appPrefs");
             informationBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "InformationBottomSheet");
             }
         });

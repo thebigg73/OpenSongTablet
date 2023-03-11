@@ -20,6 +20,8 @@ public class StickyNotesFragment extends Fragment {
 
     SettingsStickynotesBinding myView;
     MainActivityInterface mainActivityInterface;
+    private String song_notes_string="", on_string="", success_string="", error_string="",
+            error_song_not_saved_string="";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -31,7 +33,10 @@ public class StickyNotesFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsStickynotesBinding.inflate(inflater,container,false);
-        mainActivityInterface.updateToolbar(getString(R.string.song_notes));
+
+        prepareStrings();
+
+        mainActivityInterface.updateToolbar(song_notes_string);
 
         // Set up the views
         setupViews();
@@ -40,6 +45,16 @@ public class StickyNotesFragment extends Fragment {
         setupListeners();
 
         return myView.getRoot();
+    }
+
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            song_notes_string = getString(R.string.song_notes);
+            on_string = getString(R.string.on);
+            success_string = getString(R.string.success);
+            error_song_not_saved_string = getString(R.string.error_song_not_saved);
+            error_string = getString(R.string.error);
+        }
     }
 
     private void setupViews() {
@@ -65,7 +80,7 @@ public class StickyNotesFragment extends Fragment {
     private void setTimeHint(int time) {
         String val = "s";
         if (time==0) {
-            val = getString(R.string.on);
+            val = on_string;
         } else {
             val = time + val;
         }
@@ -83,12 +98,12 @@ public class StickyNotesFragment extends Fragment {
             if (myView.stickyNotes.getText()!=null) {
                 mainActivityInterface.getSong().setNotes(myView.stickyNotes.getText().toString());
                 if (mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong())) {
-                    mainActivityInterface.getShowToast().doIt(getString(R.string.success));
+                    mainActivityInterface.getShowToast().doIt(success_string);
                 } else {
-                    mainActivityInterface.getShowToast().doIt(getString(R.string.error_song_not_saved));
+                    mainActivityInterface.getShowToast().doIt(error_song_not_saved_string);
                 }
             } else {
-                mainActivityInterface.getShowToast().doIt(getString(R.string.error));
+                mainActivityInterface.getShowToast().doIt(error_string);
             }
         });
         myView.alphaSlider.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {

@@ -59,6 +59,8 @@ public class TunerBottomSheet  extends BottomSheetDialogFragment {
     private int centsInTune=2, centsBand1=5, centsBand2=10, centsBand3=20, centsBand4=30;
     private final ArrayList<String> cents = new ArrayList<>(Arrays.asList("+/- 0 cent","+/- 1 cent",
             "+/- 2 cent","+/- 3 cent","+/- 4 cent","+/- 5 cent"));
+    private String tuner_string="", website_tuner_string="", microphone_string="",
+            permissions_refused_string="", settings_string="";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -69,7 +71,10 @@ public class TunerBottomSheet  extends BottomSheetDialogFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Window w = requireActivity().getWindow();
+        Window w = null;
+        if (getActivity()!=null) {
+            w = getActivity().getWindow();
+        }
         if (w != null) {
             w.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         }
@@ -93,9 +98,11 @@ public class TunerBottomSheet  extends BottomSheetDialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = BottomSheetTunerBinding.inflate(inflater, container, false);
 
-        myView.dialogHeader.setText(getString(R.string.tuner));
+        prepareStrings();
+
+        myView.dialogHeader.setText(tuner_string);
         myView.dialogHeader.setClose(this);
-        myView.dialogHeader.setWebHelp(mainActivityInterface, getString(R.string.website_tuner));
+        myView.dialogHeader.setWebHelp(mainActivityInterface, website_tuner_string);
 
         // Set the values
         setValues();
@@ -109,10 +116,21 @@ public class TunerBottomSheet  extends BottomSheetDialogFragment {
         return myView.getRoot();
     }
 
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            tuner_string = getString(R.string.tuner);
+            website_tuner_string = getString(R.string.website_tuner);
+            microphone_string = getString(R.string.microphone);
+            permissions_refused_string = getString(R.string.permissions_refused);
+            settings_string = getString(R.string.settings);
+        }
+    }
     private void setValues() {
-        ExposedDropDownArrayAdapter exposedDropDownArrayAdapter1 = new ExposedDropDownArrayAdapter(requireContext(),
-                myView.instrument, R.layout.view_exposed_dropdown_item, mainActivityInterface.getChordDisplayProcessing().getInstruments());
-        myView.instrument.setAdapter(exposedDropDownArrayAdapter1);
+        if (getContext()!=null) {
+            ExposedDropDownArrayAdapter exposedDropDownArrayAdapter1 = new ExposedDropDownArrayAdapter(getContext(),
+                    myView.instrument, R.layout.view_exposed_dropdown_item, mainActivityInterface.getChordDisplayProcessing().getInstruments());
+            myView.instrument.setAdapter(exposedDropDownArrayAdapter1);
+        }
         myView.instrument.setText(instrumentPrefToText());
         myView.instrument.addTextChangedListener(new TextWatcher() {
             @Override
@@ -128,9 +146,11 @@ public class TunerBottomSheet  extends BottomSheetDialogFragment {
             }
         });
 
-        ExposedDropDownArrayAdapter exposedDropDownArrayAdapter2 = new ExposedDropDownArrayAdapter(requireContext(),
-                myView.aHz, R.layout.view_exposed_dropdown_item, tunings);
-        myView.aHz.setAdapter(exposedDropDownArrayAdapter2);
+        if (getContext()!=null) {
+            ExposedDropDownArrayAdapter exposedDropDownArrayAdapter2 = new ExposedDropDownArrayAdapter(getContext(),
+                    myView.aHz, R.layout.view_exposed_dropdown_item, tunings);
+            myView.aHz.setAdapter(exposedDropDownArrayAdapter2);
+        }
         concertPitch = (float) mainActivityInterface.getPreferences().getMyPreferenceInt("refAHz",440);
         myView.aHz.setText((int)concertPitch+"");
         checkMidiButtons();
@@ -151,9 +171,11 @@ public class TunerBottomSheet  extends BottomSheetDialogFragment {
             }
         });
 
-        ExposedDropDownArrayAdapter exposedDropDownArrayAdapter3 = new ExposedDropDownArrayAdapter(requireContext(),
-                myView.accuracy, R.layout.view_exposed_dropdown_item, cents);
-        myView.accuracy.setAdapter(exposedDropDownArrayAdapter3);
+        if (getContext()!=null) {
+            ExposedDropDownArrayAdapter exposedDropDownArrayAdapter3 = new ExposedDropDownArrayAdapter(getContext(),
+                    myView.accuracy, R.layout.view_exposed_dropdown_item, cents);
+            myView.accuracy.setAdapter(exposedDropDownArrayAdapter3);
+        }
         int tunerCents = mainActivityInterface.getPreferences().getMyPreferenceInt("tunerCents",2);
         myView.accuracy.setText("+/- "+tunerCents+" cent");
         getTunerCents(tunerCents);
@@ -407,8 +429,8 @@ public class TunerBottomSheet  extends BottomSheetDialogFragment {
 
             } else {
                 // notify user
-                InformationBottomSheet informationBottomSheet = new InformationBottomSheet(getString(R.string.microphone),
-                        getString(R.string.permissions_refused), getString(R.string.settings), "appPrefs");
+                InformationBottomSheet informationBottomSheet = new InformationBottomSheet(microphone_string,
+                        permissions_refused_string, settings_string, "appPrefs");
                 informationBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "InformationBottomSheet");
 
             }

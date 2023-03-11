@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -51,7 +50,8 @@ public class ImportIOSFragment extends Fragment {
     private boolean alive = true;
     private boolean allowOverwrite;
     private final String[] excludedFiles = new String[] {".sqlite3","Media","OnSong.preferences",".doc"};
-    private String items, folder;
+    private String items, folder, onsong_import="", website_import_onsongbackup="", songs_string,
+            error="", processing="", success="", error_song_not_saved="", file_exists="";
     private StringBuilder errorFiles, notOverwritten;
     private File onsongdbfile;
 
@@ -67,10 +67,11 @@ public class ImportIOSFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         myView = SettingsImportIosBinding.inflate(inflater, container, false);
 
+        prepareStrings();
 
         // Update the title
-        mainActivityInterface.updateToolbar(getString(R.string.onsong_import));
-        mainActivityInterface.updateToolbarHelp(getString(R.string.website_import_onsongbackup));
+        mainActivityInterface.updateToolbar(onsong_import);
+        mainActivityInterface.updateToolbarHelp(website_import_onsongbackup);
 
         myView.filename.setText(mainActivityInterface.getImportFilename());
 
@@ -88,15 +89,29 @@ public class ImportIOSFragment extends Fragment {
         return myView.getRoot();
     }
 
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            onsong_import = getString(R.string.onsong_import);
+            website_import_onsongbackup = getString(R.string.website_import_onsongbackup);
+            songs_string = getString(R.string.songs);
+            error = getString(R.string.error);
+            processing = getString(R.string.processing);
+            success = getString(R.string.success);
+            error_song_not_saved = getString(R.string.error_song_not_saved);
+            file_exists = getString(R.string.file_exists);
+        }
+    }
     private void getFolders() {
         ArrayList<String> folders = mainActivityInterface.getSQLiteHelper().getFolders();
         if (!folders.contains("OnSong")) {
             folders.add("OnSong");
             Collections.sort(folders);
         }
-        ExposedDropDownArrayAdapter exposedDropDownArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(),
-                myView.folder,R.layout.view_exposed_dropdown_item, folders);
-        myView.folder.setAdapter(exposedDropDownArrayAdapter);
+        if (getContext()!=null) {
+            ExposedDropDownArrayAdapter exposedDropDownArrayAdapter = new ExposedDropDownArrayAdapter(getContext(),
+                    myView.folder, R.layout.view_exposed_dropdown_item, folders);
+            myView.folder.setAdapter(exposedDropDownArrayAdapter);
+        }
         myView.folder.setText("OnSong");
     }
 
@@ -149,41 +164,45 @@ public class ImportIOSFragment extends Fragment {
                     }
                 }
                 if (ze.getName().equals("OnSong.sqlite3") || ze.getName().equals("OnSong.Backup.sqlite3")) {
-                    File loc = new File(requireContext().getExternalFilesDir("OnSong"),"Database");
-                    if (!loc.mkdirs()) {
-                        Log.d(TAG, "Database file already exists - ok");
-                    }
-                    onsongdbfile = new File(loc,"OnSong.sqlite3");
-                    OutputStream outputStream = new FileOutputStream(onsongdbfile);
-                    final BufferedOutputStream bout = new BufferedOutputStream(outputStream);
-                    try {
-                        while ((countSQL = zipInputStream.read(buffer)) != -1) {
-                            bout.write(buffer, 0, countSQL);
+                    File loc;
+                    if (getContext()!=null) {
+                        loc = new File(getContext().getExternalFilesDir("OnSong"), "Database");
+
+                        if (!loc.mkdirs()) {
+                            Log.d(TAG, "Database file already exists - ok");
                         }
-                        bout.flush();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    } finally {
+                        onsongdbfile = new File(loc, "OnSong.sqlite3");
+                        OutputStream outputStream = new FileOutputStream(onsongdbfile);
+                        final BufferedOutputStream bout = new BufferedOutputStream(outputStream);
                         try {
-                            bout.close();
+                            while ((countSQL = zipInputStream.read(buffer)) != -1) {
+                                bout.write(buffer, 0, countSQL);
+                            }
+                            bout.flush();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        } finally {
+                            try {
+                                bout.close();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        SQLiteDatabase sqLiteDatabase = SQLiteDatabase.openOrCreateDatabase(onsongdbfile, null);
+                        String query = "SELECT title FROM Song";
+                        Cursor cursor;
+
+                        try {
+                            cursor = sqLiteDatabase.rawQuery(query, null);
+                            countSQL = cursor.getCount();
+                            cursor.close();
+
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
+
+                        sqLiteDatabase.close();
                     }
-                    SQLiteDatabase sqLiteDatabase = SQLiteDatabase.openOrCreateDatabase(onsongdbfile, null);
-                    String query = "SELECT title FROM Song";
-                    Cursor cursor;
-
-                    try {
-                        cursor = sqLiteDatabase.rawQuery(query, null);
-                        countSQL = cursor.getCount();
-                        cursor.close();
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-                    sqLiteDatabase.close();
                 } else if (!isExcluded) {
                     allZipItems.add(ze.getName());
                 }
@@ -197,9 +216,9 @@ public class ImportIOSFragment extends Fragment {
                 totalSongs = zipContents + countSQL;
             }
             if (totalSongs>0) {
-                items = getString(R.string.songs)+ ": " + totalSongs;
+                items = songs_string+ ": " + totalSongs;
             } else {
-                items = getString(R.string.error);
+                items = error;
             }
 
         } catch (Exception e) {
@@ -271,7 +290,7 @@ public class ImportIOSFragment extends Fragment {
                                     name = ze.getName();
                                 }
                                 if (alive) {
-                                    String message = getString(R.string.processing) + " (" + zipProgress + "/" + totalSongs + "):\n" + name;
+                                    String message = processing + " (" + zipProgress + "/" + totalSongs + "):\n" + name;
                                     myView.progressText.setText(message);
                                 }
                             });
@@ -316,7 +335,7 @@ public class ImportIOSFragment extends Fragment {
                                 String file = newSong.getFilename();
                                 handler.post(() -> {
                                     try {
-                                        String message = getString(R.string.processing) + " (" + zipProgress + "/" + totalSongs + "):\n" + file;
+                                        String message = processing + " (" + zipProgress + "/" + totalSongs + "):\n" + file;
                                         myView.progressText.setText(message);
                                     } catch (Exception e) {
                                         e.printStackTrace();
@@ -370,13 +389,13 @@ public class ImportIOSFragment extends Fragment {
 
             if (alive) {
                 handler.post(() -> {
-                    String message  = getString(R.string.songs)+ ": " + totalSongs;
-                    message += "\n\n" + getString(R.string.success) + ": " + filesCopied + " / " + totalSongs;
+                    String message  = songs_string+ ": " + totalSongs;
+                    message += "\n\n" + success + ": " + filesCopied + " / " + totalSongs;
                     if (!errorFiles.toString().trim().isEmpty()) {
-                        message += "\n" + getString(R.string.error_song_not_saved) + ": \n" + errorFiles.toString().trim();
+                        message += "\n" + error_song_not_saved + ": \n" + errorFiles.toString().trim();
                     }
                     if (!notOverwritten.toString().trim().isEmpty()) {
-                        message += "\n\n" + getString(R.string.file_exists) + ": \n" + notOverwritten.toString().trim();
+                        message += "\n\n" + file_exists + ": \n" + notOverwritten.toString().trim();
                     }
                     setupViews(false);
                     myView.progressEndMessage.setHint(message);
@@ -389,7 +408,7 @@ public class ImportIOSFragment extends Fragment {
                 if (alive) {
                     try {
                         mainActivityInterface.updateSongList();
-                        mainActivityInterface.getShowToast().doIt(getString(R.string.success));
+                        mainActivityInterface.getShowToast().doIt(success);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

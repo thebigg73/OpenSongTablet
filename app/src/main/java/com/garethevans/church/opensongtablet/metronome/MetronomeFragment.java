@@ -40,6 +40,10 @@ public class MetronomeFragment extends Fragment {
     private Runnable tapTempoRunnableCheck, tapTempoRunnableReset;
     private long old_time = 0L;
     private int total_calc_bpm = 0, total_counts = 0;
+    private String metronome_string="", website_metronome_string="", sound_low_string="",
+            sound_high_string="", sound_bass_drum_string="", sound_bell_string, sound_click_string="",
+            sound_digital_string="", sound_hihat_string="", sound_stick_string="", tap_tempo_string="",
+            sound_wood_string="", tempo_string="", bpm_string="", on_string="", reset_string="";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -51,8 +55,11 @@ public class MetronomeFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsMetronomeBinding.inflate(inflater,container,false);
-        mainActivityInterface.updateToolbar(getString(R.string.metronome));
-        mainActivityInterface.updateToolbarHelp(getString(R.string.website_metronome));
+
+        prepareStrings();
+
+        mainActivityInterface.updateToolbar(metronome_string);
+        mainActivityInterface.updateToolbarHelp(website_metronome_string);
 
         // Set up the values for the exposeddropdowns
         initialiseDropDowns();
@@ -66,28 +73,49 @@ public class MetronomeFragment extends Fragment {
         return myView.getRoot();
     }
 
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            metronome_string = getString(R.string.metronome);
+            website_metronome_string = getString(R.string.website_metronome);
+            sound_low_string = getString(R.string.sound_low);
+            sound_high_string = getString(R.string.sound_high);
+            sound_bass_drum_string = getString(R.string.sound_bass_drum);
+            sound_bell_string = getString(R.string.sound_bell);
+            sound_click_string = getString(R.string.sound_click);
+            sound_digital_string = getString(R.string.sound_digital);
+            sound_hihat_string = getString(R.string.sound_hihat);
+            sound_stick_string = getString(R.string.sound_stick);
+            sound_wood_string = getString(R.string.sound_wood);
+            tempo_string = getString(R.string.tempo);
+            bpm_string = getString(R.string.bpm);
+            on_string = getString(R.string.on);
+            reset_string = getString(R.string.reset);
+            tap_tempo_string = getString(R.string.tap_tempo);
+        }
+    }
+
     private void initialiseDropDowns() {
         // Get the available sounds by filename and description
         soundFiles = new ArrayList<>();
         soundNames = new ArrayList<>();
-        String low = getString(R.string.sound_low);
-        String high = getString(R.string.sound_high);
+        String low = sound_low_string;
+        String high = sound_high_string;
         addSoundItem("","");
-        addSoundItem("bass_drum",getString(R.string.sound_bass_drum));
-        addSoundItem("bell_high", getString(R.string.sound_bell)+" ("+high+")");
-        addSoundItem("bell_low", getString(R.string.sound_bell)+" ("+low+")");
-        addSoundItem("click_1_high", getString(R.string.sound_click)+" 1 ("+high+")");
-        addSoundItem("click_1_low", getString(R.string.sound_click)+" 1 ("+low+")");
-        addSoundItem("click_2_high", getString(R.string.sound_click)+" 2 ("+high+")");
-        addSoundItem("click_2_low", getString(R.string.sound_click)+" 2 ("+low+")");
-        addSoundItem("digital_high", getString(R.string.sound_digital)+" ("+high+")");
-        addSoundItem("digital_low", getString(R.string.sound_digital)+" ("+low+")");
-        addSoundItem("hat_high", getString(R.string.sound_hihat)+" ("+high+")");
-        addSoundItem("hat_low", getString(R.string.sound_hihat)+" ("+low+")");
-        addSoundItem("stick_high", getString(R.string.sound_stick)+" ("+high+")");
-        addSoundItem("stick_low", getString(R.string.sound_stick)+" ("+low+")");
-        addSoundItem("wood_high", getString(R.string.sound_wood)+" ("+high+")");
-        addSoundItem("wood_low", getString(R.string.sound_wood)+" ("+low+")");
+        addSoundItem("bass_drum",sound_bass_drum_string);
+        addSoundItem("bell_high", sound_bell_string+" ("+high+")");
+        addSoundItem("bell_low", sound_bell_string+" ("+low+")");
+        addSoundItem("click_1_high", sound_click_string+" 1 ("+high+")");
+        addSoundItem("click_1_low", sound_click_string+" 1 ("+low+")");
+        addSoundItem("click_2_high", sound_click_string+" 2 ("+high+")");
+        addSoundItem("click_2_low", sound_click_string+" 2 ("+low+")");
+        addSoundItem("digital_high", sound_digital_string+" ("+high+")");
+        addSoundItem("digital_low", sound_digital_string+" ("+low+")");
+        addSoundItem("hat_high", sound_hihat_string+" ("+high+")");
+        addSoundItem("hat_low", sound_hihat_string+" ("+low+")");
+        addSoundItem("stick_high", sound_stick_string+" ("+high+")");
+        addSoundItem("stick_low", sound_stick_string+" ("+low+")");
+        addSoundItem("wood_high", sound_wood_string+" ("+high+")");
+        addSoundItem("wood_low", sound_wood_string+" ("+low+")");
 
         // Get the timesignatures
         ArrayList<String> signatureBeats = new ArrayList<>();
@@ -108,17 +136,17 @@ public class MetronomeFragment extends Fragment {
         for (int x=40; x<300; x++) {
             tempos.add(""+x);
         }
-        String tempoBpm = getString(R.string.tempo) + " (" + getString(R.string.bpm) + ")";
+        String tempoBpm = tempo_string + " (" + bpm_string + ")";
         myView.songTempo.setText(tempoBpm);
         myView.songTempo.setHint(tempoBpm);
 
         // Set the adapters
         if (getContext()!=null) {
-            ExposedDropDownArrayAdapter tickAdapter = new ExposedDropDownArrayAdapter(requireContext(), myView.tickSound, R.layout.view_exposed_dropdown_item, soundNames);
-            ExposedDropDownArrayAdapter tockAdapter = new ExposedDropDownArrayAdapter(requireContext(), myView.tockSound, R.layout.view_exposed_dropdown_item, soundNames);
-            ExposedDropDownArrayAdapter signatureBeatAdapter = new ExposedDropDownArrayAdapter(requireContext(), myView.signatureBeats, R.layout.view_exposed_dropdown_item, signatureBeats);
-            ExposedDropDownArrayAdapter signatureDivisionAdapter = new ExposedDropDownArrayAdapter(requireContext(), myView.signatureDivisions, R.layout.view_exposed_dropdown_item, signatureDivisions);
-            ExposedDropDownArrayAdapter tempoAdapter = new ExposedDropDownArrayAdapter(requireContext(), myView.songTempo, R.layout.view_exposed_dropdown_item, tempos);
+            ExposedDropDownArrayAdapter tickAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.tickSound, R.layout.view_exposed_dropdown_item, soundNames);
+            ExposedDropDownArrayAdapter tockAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.tockSound, R.layout.view_exposed_dropdown_item, soundNames);
+            ExposedDropDownArrayAdapter signatureBeatAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.signatureBeats, R.layout.view_exposed_dropdown_item, signatureBeats);
+            ExposedDropDownArrayAdapter signatureDivisionAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.signatureDivisions, R.layout.view_exposed_dropdown_item, signatureDivisions);
+            ExposedDropDownArrayAdapter tempoAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.songTempo, R.layout.view_exposed_dropdown_item, tempos);
 
             // Add them to the views
             myView.signatureBeats.setAdapter(signatureBeatAdapter);
@@ -190,7 +218,7 @@ public class MetronomeFragment extends Fragment {
 
     private String getMaxBars(int bars) {
         if (bars==0) {
-            return getString(R.string.on);
+            return on_string;
         } else {
             return ""+bars;
         }
@@ -244,7 +272,7 @@ public class MetronomeFragment extends Fragment {
                 Handler handler = new Handler(Looper.getMainLooper());
                 handler.post(() -> {
                     myView.tapTempo.setEnabled(false);
-                    myView.tapTempo.setText(getString(R.string.reset));
+                    myView.tapTempo.setText(reset_string);
                     myView.tapTempo.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                     // Waited too long, reset count
                     total_calc_bpm = 0;
@@ -264,7 +292,7 @@ public class MetronomeFragment extends Fragment {
                 Handler handler = new Handler(Looper.getMainLooper());
                 handler.post(() -> {
                             myView.tapTempo.setEnabled(true);
-                            myView.tapTempo.setText(getString(R.string.tap_tempo));
+                            myView.tapTempo.setText(tap_tempo_string);
                             myView.tapTempo.setBackgroundColor(getResources().getColor(R.color.colorSecondary));
                 });
             });
@@ -302,14 +330,22 @@ public class MetronomeFragment extends Fragment {
         if (isRunning && getContext()!=null) {
             // Set the icon to stop
             try {
-                myView.startStopButton.post(() -> myView.startStopButton.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.stop)));
+                myView.startStopButton.post(() -> {
+                    if (getContext()!=null) {
+                        myView.startStopButton.setImageDrawable(AppCompatResources.getDrawable(getContext(), R.drawable.stop));
+                    }
+                });
             } catch (Exception e) {
                 e.printStackTrace();
             }
         } else if (getContext()!=null) {
             // Set the icon to play
             try {
-                myView.startStopButton.post(() -> myView.startStopButton.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.play)));
+                myView.startStopButton.post(() -> {
+                    if (getContext()!=null) {
+                        myView.startStopButton.setImageDrawable(AppCompatResources.getDrawable(getContext(), R.drawable.play));
+                    }
+                });
             } catch (Exception e) {
                 e.printStackTrace();
             }

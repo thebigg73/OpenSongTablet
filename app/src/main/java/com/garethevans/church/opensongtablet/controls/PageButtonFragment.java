@@ -45,6 +45,7 @@ public class PageButtonFragment extends Fragment {
     private ExposedDropDownArrayAdapter arrayAdapter;
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "PageButtonFragment";
+    private String page_buttons_string="", website_page_buttons_string="", button_string="", visible_string="";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -57,8 +58,10 @@ public class PageButtonFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsPagebuttonsBinding.inflate(inflater,container,false);
 
-        mainActivityInterface.updateToolbar(getString(R.string.page_buttons));
-        mainActivityInterface.updateToolbarHelp(getString(R.string.website_page_buttons));
+        prepareStrings();
+
+        mainActivityInterface.updateToolbar(page_buttons_string);
+        mainActivityInterface.updateToolbarHelp(website_page_buttons_string);
 
         // Set up the page button icons
         setupPageButtons();
@@ -66,6 +69,15 @@ public class PageButtonFragment extends Fragment {
         return myView.getRoot();
     }
 
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            page_buttons_string = getString(R.string.page_buttons);
+            website_page_buttons_string = getString(R.string.website_page_buttons);
+            button_string = getString(R.string.button);
+            visible_string = getString(R.string.visible);
+
+        }
+    }
     private void setupPageButtons() {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
@@ -101,7 +113,9 @@ public class PageButtonFragment extends Fragment {
                 addTextViews();
 
                 // Also set the dropdowns here
-                arrayAdapter = new ExposedDropDownArrayAdapter(requireActivity(), R.layout.view_exposed_dropdown_item, mainActivityInterface.getPageButtons().getPageButtonAvailableText());
+                if (getActivity()!=null) {
+                    arrayAdapter = new ExposedDropDownArrayAdapter(getActivity(), R.layout.view_exposed_dropdown_item, mainActivityInterface.getPageButtons().getPageButtonAvailableText());
+                }
                 for (int x=0;x<mainActivityInterface.getPageButtons().getPageButtonNum();x++) {
                     setTheDropDowns(x);
                     setTheText(x);
@@ -113,7 +127,7 @@ public class PageButtonFragment extends Fragment {
                     myButtons.get(x).setVisibility(View.VISIBLE);
                     setVisibilityFromBoolean(myLayouts.get(x), mainActivityInterface.getPageButtons().getPageButtonVisibility(x));
                     mySwitches.get(x).setChecked(mainActivityInterface.getPageButtons().getPageButtonVisibility(x));
-                    String string = getString(R.string.button) + " " + (x + 1) + ": " + getString(R.string.visible);
+                    String string = button_string + " " + (x + 1) + ": " + visible_string;
                     mySwitches.get(x).setText(string);
                     int finalX = x;
                     mySwitches.get(x).setOnCheckedChangeListener((buttonView, isChecked) -> changeVisibilityPreference(finalX, isChecked));
@@ -206,7 +220,9 @@ public class PageButtonFragment extends Fragment {
 
     private void setTheDropDowns(int pos) {
         exposedDropDowns.get(pos).setAdapter(arrayAdapter);
-        exposedDropDowns.get(pos).setArray(requireContext(), mainActivityInterface.getPageButtons().getPageButtonAvailableText());
+        if (getContext()!=null) {
+            exposedDropDowns.get(pos).setArray(getContext(), mainActivityInterface.getPageButtons().getPageButtonAvailableText());
+        }
         exposedDropDowns.get(pos).setText(mainActivityInterface.getPageButtons().getPageButtonText(pos));
         exposedDropDowns.get(pos).addTextChangedListener(new TextWatcher() {
             @Override
@@ -245,7 +261,9 @@ public class PageButtonFragment extends Fragment {
         mainActivityInterface.getPageButtons().setPageButtonText(x,foundpos);
         mainActivityInterface.getPageButtons().setPageButtonShortText(x,foundpos);
         mainActivityInterface.getPageButtons().setPageButtonLongText(x,foundpos);
-        mainActivityInterface.getPageButtons().setPageButtonDrawable(requireContext(),x,foundpos);
+        if (getContext()!=null) {
+            mainActivityInterface.getPageButtons().setPageButtonDrawable(getContext(), x, foundpos);
+        }
         mainActivityInterface.getPageButtons().setPageButton(myButtons.get(x), x,true);
         setTheText(x);
         mainActivityInterface.getPreferences().setMyPreferenceString("pageButton"+(x+1),mainActivityInterface.getPageButtons().getPageButtonAction(x));

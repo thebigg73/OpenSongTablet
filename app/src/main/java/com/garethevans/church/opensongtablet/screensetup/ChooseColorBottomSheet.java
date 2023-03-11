@@ -30,17 +30,17 @@ public class ChooseColorBottomSheet extends BottomSheetDialogFragment {
     private DisplayInterface displayInterface;
     private BottomSheetChooseColorBinding myView;
 
-    private String newColorHex;
-    private String alphaHex;
-    private String redHex;
-    private String greenHex;
-    private String blueHex;
-    private String themePrefix;
-    private final String whichColor;
+    private String newColorHex, alphaHex, redHex, greenHex, blueHex, themePrefix,
+            lyrics_color_string="", chord_color_string="", capo_chords_string="",
+            background_string="", verse_background_string="", chorus_background_string="",
+            prechorus_background_string="", bridge_background_string="", tag_background_string="",
+            custom_background_string="", comment_background_string="", info_text_string="",
+            text_string="", chords_string="", metronome_string="", page_buttons_string="",
+            alert_string="", block_text_shadow_string="", highlight_string="", title_string="";
+    private final String whichColor, fragName;
     private int newColorInt;
     private boolean sliding = false, typing = false;
     private final Fragment callingFragment;
-    private final String fragName;
 
     public ChooseColorBottomSheet(Fragment callingFragment, String fragName, String whichColor) {
         this.callingFragment = callingFragment;
@@ -71,6 +71,8 @@ public class ChooseColorBottomSheet extends BottomSheetDialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = BottomSheetChooseColorBinding.inflate(inflater,container,false);
 
+        prepareStrings();
+
         myView.dialogHeading.setText(getName());
         myView.dialogHeading.setClose(this);
 
@@ -84,6 +86,31 @@ public class ChooseColorBottomSheet extends BottomSheetDialogFragment {
         setListeners();
 
         return myView.getRoot();
+    }
+
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            lyrics_color_string = getString(R.string.lyrics_color);
+            chord_color_string = getString(R.string.chord_color);
+            capo_chords_string = getString(R.string.capo_chords);
+            background_string = getString(R.string.background);
+            verse_background_string = getString(R.string.verse_background);
+            chorus_background_string = getString(R.string.chorus_background);
+            prechorus_background_string = getString(R.string.prechorus_background);
+            bridge_background_string = getString(R.string.bridge_background);
+            tag_background_string = getString(R.string.tag_background);
+            custom_background_string = getString(R.string.custom_background);
+            comment_background_string = getString(R.string.comment_background);
+            info_text_string = getString(R.string.info_text);
+            text_string = getString(R.string.text);
+            chords_string = getString(R.string.chords);
+            metronome_string = getString(R.string.metronome);
+            page_buttons_string = getString(R.string.page_buttons);
+            alert_string = getString(R.string.alert);
+            block_text_shadow_string = getString(R.string.block_text_shadow);
+            highlight_string = getString(R.string.highlight);
+            title_string = getString(R.string.title);
+        }
     }
 
     private void setSliderValues() {
@@ -327,69 +354,69 @@ public class ChooseColorBottomSheet extends BottomSheetDialogFragment {
         String title="";
         switch (whichColor) {
             case "lyricsTextColor":
-                title = getString(R.string.lyrics_color);
+                title = lyrics_color_string;
                 break;
             case "lyricsChordsColor":
-                title = getString(R.string.chord_color);
+                title = chord_color_string;
                 break;
             case "lyricsCapoColor":
-                title = getString(R.string.capo_chords);
+                title = capo_chords_string;
                 break;
             case "lyricsBackgroundColor":
             case "stickyBackgroundColor":
             case "extraInfoBgColor":
             case "backgroundColor":
-                title = getString(R.string.background);
+                title = background_string;
                 break;
             case "lyricsVerseColor":
-                title = getString(R.string.verse_background);
+                title = verse_background_string;
                 break;
             case "lyricsChorusColor":
-                title = getString(R.string.chorus_background);
+                title = chorus_background_string;
                 break;
             case "lyricsPreChorusColor":
-                title = getString(R.string.prechorus_background);
+                title = prechorus_background_string;
                 break;
             case "lyricsBridgeColor":
-                title = getString(R.string.bridge_background);
+                title = bridge_background_string;
                 break;
             case "lyricsTagColor":
-                title = getString(R.string.tag_background);
+                title = tag_background_string;
                 break;
             case "lyricsCustomColor":
-                title = getString(R.string.custom_background);
+                title = custom_background_string;
                 break;
             case "lyricsCommentColor":
-                title = getString(R.string.comment_background);
+                title = comment_background_string;
                 break;
             case "presoInfoFontColor":
-                title = getString(R.string.info_text);
+                title = info_text_string;
                 break;
             case "presoFontColor":
             case "extraInfoTextColor":
             case "stickyTextColor":
-                title = getString(R.string.text);
+                title = text_string;
                 break;
             case "presoChordColor":
-                title = getString(R.string.chords);
+                title = chords_string;
                 break;
             case "metronomeColor":
-                title = getString(R.string.metronome);
+                title = metronome_string;
                 break;
             case "pageButtonsColor":
-                title = getString(R.string.page_buttons);
+                title = page_buttons_string;
                 break;
             case "presoAlertColor":
-                title = getString(R.string.alert);
+                title = alert_string;
                 break;
             case "presoShadowColor":
-                title = getString(R.string.block_text_shadow);
+                title = block_text_shadow_string;
                 break;
             case "highlightChordColor":
-                title = getString(R.string.chords) + " ("+getString(R.string.highlight)+")";
+                title = chords_string + " ("+highlight_string+")";
                 break;
             case "highlightHeadingColor":
-                title = getString(R.string.title) + " ("+getString(R.string.highlight)+")";
+                title = title_string + " ("+highlight_string+")";
                 break;
         }
         return title;

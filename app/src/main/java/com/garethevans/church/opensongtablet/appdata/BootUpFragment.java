@@ -57,6 +57,7 @@ public class BootUpFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
+        prepareStrings();
         myView = BootupLogoBinding.inflate(inflater, container, false);
         mainActivityInterface.registerFragment(this,"BootUpFragment");
 

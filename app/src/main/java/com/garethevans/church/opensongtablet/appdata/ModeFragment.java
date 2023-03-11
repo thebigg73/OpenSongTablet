@@ -20,6 +20,7 @@ public class ModeFragment extends Fragment {
     private final String TAG = "ModeFragment";
     private MainActivityInterface mainActivityInterface;
     private SettingsModeBinding myView;
+    private String choose_app_mode="", website_app_mode="";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -31,8 +32,11 @@ public class ModeFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsModeBinding.inflate(inflater,container,false);
-        mainActivityInterface.updateToolbar(getString(R.string.choose_app_mode));
-        mainActivityInterface.updateToolbarHelp(getString(R.string.website_app_mode));
+
+        prepareStrings();
+
+        mainActivityInterface.updateToolbar(choose_app_mode);
+        mainActivityInterface.updateToolbarHelp(website_app_mode);
 
         // Highlight the current mode
         highlightMode();
@@ -43,6 +47,12 @@ public class ModeFragment extends Fragment {
         return myView.getRoot();
     }
 
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            choose_app_mode = getString(R.string.choose_app_mode);
+            website_app_mode = getString(R.string.website_app_mode);
+        }
+    }
     private void highlightMode() {
         switch (mainActivityInterface.getPreferences().getMyPreferenceString(
                 "whichMode","Performance")) {

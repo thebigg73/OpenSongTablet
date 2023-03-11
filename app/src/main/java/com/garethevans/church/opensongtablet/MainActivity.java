@@ -2685,7 +2685,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public ShowCase getShowCase() {
         if (showCase==null) {
-            showCase = new ShowCase();
+            showCase = new ShowCase(this);
         }
         return showCase;
     }

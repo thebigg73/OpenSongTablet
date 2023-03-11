@@ -28,7 +28,8 @@ public class PDFExtractBottomSheet extends BottomSheetDialogFragment {
     private MainActivityInterface mainActivityInterface;
     private final ArrayList<String> incomingPages;
     private final String filename;
-
+    private String website_ocr_string="", create_new_song_string="",
+            save_text_for_searching_string="", deeplink_edit_string="";
     public PDFExtractBottomSheet(ArrayList<String> incomingPages, String filename) {
         this.incomingPages = incomingPages;
         this.filename = filename;
@@ -59,8 +60,10 @@ public class PDFExtractBottomSheet extends BottomSheetDialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         myView = BottomSheetPdfExtractBinding.inflate(inflater, container, false);
 
+        prepareStrings();
+
         myView.dialogHeader.setClose(this);
-        myView.dialogHeader.setWebHelp(mainActivityInterface, getString(R.string.website_ocr));
+        myView.dialogHeader.setWebHelp(mainActivityInterface, website_ocr_string);
 
         // Set up the lyrics
         setupLyrics();
@@ -71,6 +74,14 @@ public class PDFExtractBottomSheet extends BottomSheetDialogFragment {
         return myView.getRoot();
     }
 
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            website_ocr_string = getString(R.string.website_ocr);
+            create_new_song_string = getString(R.string.create_new_song);
+            save_text_for_searching_string = getString(R.string.save_text_for_searching);
+            deeplink_edit_string = getString(R.string.deeplink_edit);
+        }
+    }
     private void setupLyrics() {
         StringBuilder stringBuilder = new StringBuilder();
         for (String string:incomingPages) {
@@ -98,17 +109,19 @@ public class PDFExtractBottomSheet extends BottomSheetDialogFragment {
         myView.createNewSong.setOnCheckedChangeListener((compoundButton, b) -> {
             if (b) {
                 myView.newSongLayout.setVisibility(View.VISIBLE);
-                myView.saveSearchable.setText(R.string.create_new_song);
+                myView.saveSearchable.setText(create_new_song_string);
             } else {
                 myView.newSongLayout.setVisibility(View.GONE);
-                myView.saveSearchable.setText(getString(R.string.save_text_for_searching));
+                myView.saveSearchable.setText(save_text_for_searching_string);
             }
         });
 
         // Populate the folder options
         ArrayList<String> folders = mainActivityInterface.getSQLiteHelper().getFolders();
-        ExposedDropDownArrayAdapter exposedDropDownArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(),myView.folder,R.layout.view_exposed_dropdown_item,folders);
-        myView.folder.setAdapter(exposedDropDownArrayAdapter);
+        if (getContext()!=null) {
+            ExposedDropDownArrayAdapter exposedDropDownArrayAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.folder, R.layout.view_exposed_dropdown_item, folders);
+            myView.folder.setAdapter(exposedDropDownArrayAdapter);
+        }
         myView.folder.setText(mainActivityInterface.getSong().getFolder());
 
         // Set the save listener
@@ -132,7 +145,7 @@ public class PDFExtractBottomSheet extends BottomSheetDialogFragment {
                 mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong());
             }
             // Open the edit song page so the user can check for updates
-            mainActivityInterface.navigateToFragment(getString(R.string.deeplink_edit),0);
+            mainActivityInterface.navigateToFragment(deeplink_edit_string,0);
             dismiss();
         });
     }

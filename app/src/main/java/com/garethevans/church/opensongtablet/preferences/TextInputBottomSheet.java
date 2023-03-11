@@ -97,7 +97,10 @@ public class TextInputBottomSheet extends BottomSheetDialogFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Window w = requireActivity().getWindow();
+        Window w = null;
+        if (getActivity()!=null) {
+            w = getActivity().getWindow();
+        }
         if (w!=null) {
             w.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         }
@@ -175,8 +178,10 @@ public class TextInputBottomSheet extends BottomSheetDialogFragment {
         } else {
             // Hide the unwanted views
             myView.prefEditText.setVisibility(View.GONE);
-            ExposedDropDownArrayAdapter arrayAdapter = new ExposedDropDownArrayAdapter(requireContext(),myView.textValues,R.layout.view_exposed_dropdown_item,prefChoices);
-            myView.textValues.setAdapter(arrayAdapter);
+            if (getContext()!=null) {
+                ExposedDropDownArrayAdapter arrayAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.textValues, R.layout.view_exposed_dropdown_item, prefChoices);
+                myView.textValues.setAdapter(arrayAdapter);
+            }
             if (prefVal==null) {
                 prefVal = "";
             }

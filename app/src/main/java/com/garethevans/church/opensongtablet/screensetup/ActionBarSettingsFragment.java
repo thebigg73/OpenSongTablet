@@ -33,8 +33,10 @@ public class ActionBarSettingsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsActionbarBinding.inflate(inflater,container,false);
 
-        mainActivityInterface.updateToolbar(getString(R.string.actionbar_display));
-        mainActivityInterface.updateToolbarHelp(getString(R.string.website_actionbar));
+        if (getContext()!=null) {
+            mainActivityInterface.updateToolbar(getString(R.string.actionbar_display));
+            mainActivityInterface.updateToolbarHelp(getString(R.string.website_actionbar));
+        }
 
         // Set up preferences and view settings
         setupPreferences();

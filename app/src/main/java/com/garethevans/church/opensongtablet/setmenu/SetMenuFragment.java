@@ -34,7 +34,10 @@ public class SetMenuFragment extends Fragment {
     private LinearLayoutManager llm;
     private SetListAdapter setListAdapter;
     private ArrayList<SetItemInfo> setItemInfos;
-
+    private String deeplink_sets_manage_string="", save_changes_string="", overwrite_string="",
+            set_manage_click_string="", set_help_string="", set_manage_swipe_string="",
+            slide_string="", note_string="", scripture_string="", image_string="",
+            variation_string="", pdf_string="";
     private MainActivityInterface mainActivityInterface;
 
     @Override
@@ -47,6 +50,8 @@ public class SetMenuFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         myView = MenuSetsBinding.inflate(inflater, container, false);
+
+        prepareStrings();
 
         mainActivityInterface.registerFragment(this,"SetMenuFragment");
 
@@ -81,6 +86,22 @@ public class SetMenuFragment extends Fragment {
         return myView.getRoot();
     }
 
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            deeplink_sets_manage_string = getString(R.string.deeplink_sets_manage);
+            save_changes_string = getString(R.string.save_changes);
+            overwrite_string = getString(R.string.overwrite);
+            set_manage_click_string = getString(R.string.set_manage_click);
+            set_help_string = getString(R.string.set_help);
+            set_manage_swipe_string = getString(R.string.set_manage_swipe);
+            slide_string = getString(R.string.slide);
+            note_string = getString(R.string.note);
+            scripture_string = getString(R.string.scripture);
+            image_string = getString(R.string.image);
+            variation_string = getString(R.string.variation);
+            pdf_string = getString(R.string.pdf);
+        }
+    }
     @Override
     public void onResume() {
         super.onResume();
@@ -89,11 +110,11 @@ public class SetMenuFragment extends Fragment {
 
     private void setupAdapter() {
         if (getContext()!=null) {
-            setListAdapter = new SetListAdapter(requireContext());
+            setListAdapter = new SetListAdapter(getContext());
             ItemTouchHelper.Callback callback = new SetListItemTouchHelper(setListAdapter);
             ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
             setListAdapter.setTouchHelper(itemTouchHelper);
-            llm = new LinearLayoutManager(requireContext());
+            llm = new LinearLayoutManager(getContext());
             llm.setOrientation(RecyclerView.VERTICAL);
             myView.myRecyclerView.post(() -> {
                 myView.myRecyclerView.setLayoutManager(llm);
@@ -104,24 +125,24 @@ public class SetMenuFragment extends Fragment {
     }
 
     private void setListeners() {
-        myView.saveSetButton.post(() -> {
-            myView.saveSetButton.setOnClickListener(v -> {
-                String currentSetName = mainActivityInterface.getCurrentSet().getSetCurrentLastName();
-                if (currentSetName==null || currentSetName.isEmpty()) {
-                    // We need the user to give the set a name
-                    mainActivityInterface.setWhattodo("saveset");
-                    mainActivityInterface.navigateToFragment(getString(R.string.deeplink_sets_manage),0);
-                } else {
-                    // Prompt the user to confirm overwriting the original
-                    String message = getString(R.string.save_changes) + ": " + currentSetName + "\n\n" + getString(R.string.overwrite);
-                    AreYouSureBottomSheet areYouSureBottomSheet = new AreYouSureBottomSheet("saveset",message,null,"SetMenuFragment",SetMenuFragment.this,null);
-                    areYouSureBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"areYouSure");
-                }
-            });
-        });
+        myView.saveSetButton.post(() -> myView.saveSetButton.setOnClickListener(v -> {
+            String currentSetName = mainActivityInterface.getCurrentSet().getSetCurrentLastName();
+            if (currentSetName==null || currentSetName.isEmpty()) {
+                // We need the user to give the set a name
+                mainActivityInterface.setWhattodo("saveset");
+                mainActivityInterface.navigateToFragment(deeplink_sets_manage_string,0);
+            } else {
+                // Prompt the user to confirm overwriting the original
+                String message = save_changes_string + ": " + currentSetName + "\n\n" + overwrite_string;
+                AreYouSureBottomSheet areYouSureBottomSheet = new AreYouSureBottomSheet("saveset",message,null,"SetMenuFragment",SetMenuFragment.this,null);
+                areYouSureBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"areYouSure");
+            }
+        }));
         myView.setMasterFAB.post(() -> myView.setMasterFAB.setOnClickListener(v -> {
-            SetMenuBottomSheet setMenuBottomSheet = new SetMenuBottomSheet();
-            setMenuBottomSheet.show(requireActivity().getSupportFragmentManager(), "setMenuBottomSheet");
+            if (getActivity()!=null) {
+                SetMenuBottomSheet setMenuBottomSheet = new SetMenuBottomSheet();
+                setMenuBottomSheet.show(getActivity().getSupportFragmentManager(), "setMenuBottomSheet");
+            }
         }));
         myView.myRecyclerView.post(() -> {
             myView.myRecyclerView.setFastScrollListener(new FastScroller.FastScrollListener() {
@@ -236,13 +257,15 @@ public class SetMenuFragment extends Fragment {
     }
 
     public void runSetShowcase() {
-        try {
-            String info = getString(R.string.set_manage_click) + "\n" + getString(R.string.set_help) +
-                    "\n" + getString(R.string.set_manage_swipe);
-            myView.myRecyclerView.post(() -> mainActivityInterface.getShowCase().singleShowCase(requireActivity(),
-                    myView.setTitle, null, info, true, "setFragment"));
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (getActivity()!=null) {
+            try {
+                String info = set_manage_click_string + "\n" + set_help_string +
+                        "\n" + set_manage_swipe_string;
+                myView.myRecyclerView.post(() -> mainActivityInterface.getShowCase().singleShowCase(getActivity(),
+                        myView.setTitle, null, info, true, "setFragment"));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -270,22 +293,22 @@ public class SetMenuFragment extends Fragment {
         if (si.songfolder!=null) {
             if (si.songfolder.equals("**Slides")) {
                 si.songicon = "Slides";
-                si.songfoldernice = getString(R.string.slide);
+                si.songfoldernice = slide_string;
             } else if (si.songfolder.equals("**Notes")) {
                 si.songicon = "Notes";
-                si.songfoldernice = getString(R.string.note);
+                si.songfoldernice = note_string;
             } else if (si.songfolder.equals("**Scripture")) {
                 si.songicon = "Scripture";
-                si.songfoldernice = getString(R.string.scripture);
+                si.songfoldernice = scripture_string;
             } else if (si.songfolder.equals("**Images")) {
                 si.songicon = "Images";
-                si.songfoldernice = getString(R.string.image);
+                si.songfoldernice = image_string;
             } else if (si.songfolder.equals("**Variations")) {
                 si.songicon = "Variations";
-                si.songfoldernice = getString(R.string.variation);
+                si.songfoldernice = variation_string;
             } else if (si.songtitle.toLowerCase(Locale.ROOT).contains(".pdf")) {
                 si.songicon = ".pdf";
-                si.songfoldernice = getString(R.string.pdf);
+                si.songfoldernice = pdf_string;
             } else {
                 si.songicon = "Songs";
             }

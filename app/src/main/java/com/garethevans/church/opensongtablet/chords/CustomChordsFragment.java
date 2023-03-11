@@ -43,6 +43,8 @@ public class CustomChordsFragment extends Fragment {
 
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "CustomChordsFrag";
+    private String custom_chords_string="", website_chords_custom_string="", piano_string="",
+            customchords_name_string="", guitar_string="", banjo5_string="", custom_chord_exists_string="";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -55,8 +57,11 @@ public class CustomChordsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         myView = SettingsChordsCustomBinding.inflate(inflater, container, false);
-        mainActivityInterface.updateToolbar(getString(R.string.custom_chords));
-        mainActivityInterface.updateToolbarHelp(getString(R.string.website_chords_custom));
+
+        prepareStrings();
+
+        mainActivityInterface.updateToolbar(custom_chords_string);
+        mainActivityInterface.updateToolbarHelp(website_chords_custom_string);
 
         myView.instrument.setFocusable(false);
         myView.chordName.setFocusable(false);
@@ -93,6 +98,18 @@ public class CustomChordsFragment extends Fragment {
         canShowSave();
 
         return myView.getRoot();
+    }
+
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            custom_chords_string = getString(R.string.custom_chords);
+            website_chords_custom_string = getString(R.string.website_chords_custom);
+            customchords_name_string = getString(R.string.customchords_name);
+            guitar_string = getString(R.string.guitar);
+            banjo5_string = getString(R.string.banjo5);
+            piano_string = getString(R.string.piano);
+            custom_chord_exists_string = getString(R.string.custom_chord_exists);
+        }
     }
 
     // Get info from the song
@@ -177,10 +194,12 @@ public class CustomChordsFragment extends Fragment {
 
     // Set up the drop down menus
     private void setupInstruments() {
-        ExposedDropDownArrayAdapter exposedDropDownArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(),
-                myView.instrument, R.layout.view_exposed_dropdown_item,
-                mainActivityInterface.getChordDisplayProcessing().getInstruments());
-        myView.instrument.setAdapter(exposedDropDownArrayAdapter);
+        if (getContext()!=null) {
+            ExposedDropDownArrayAdapter exposedDropDownArrayAdapter = new ExposedDropDownArrayAdapter(getContext(),
+                    myView.instrument, R.layout.view_exposed_dropdown_item,
+                    mainActivityInterface.getChordDisplayProcessing().getInstruments());
+            myView.instrument.setAdapter(exposedDropDownArrayAdapter);
+        }
         String instrumentPref = mainActivityInterface.getPreferences().getMyPreferenceString(
                 "chordInstrument", "g");
         myView.instrument.setText(mainActivityInterface.getChordDisplayProcessing().getInstrumentFromPref(instrumentPref));
@@ -201,9 +220,11 @@ public class CustomChordsFragment extends Fragment {
                 chordsFingeringForInstrument.add(customChordsFingering.get(i));
             }
         }
-        ExposedDropDownArrayAdapter exposedDropDownArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(),
-                myView.chordName, R.layout.view_exposed_dropdown_item, chordsNameForInstrument);
-        myView.chordName.setAdapter(exposedDropDownArrayAdapter);
+        if (getContext()!=null) {
+            ExposedDropDownArrayAdapter exposedDropDownArrayAdapter = new ExposedDropDownArrayAdapter(getContext(),
+                    myView.chordName, R.layout.view_exposed_dropdown_item, chordsNameForInstrument);
+            myView.chordName.setAdapter(exposedDropDownArrayAdapter);
+        }
 
         if (selectedIndex>-1 && chordsNameForInstrument.size()>selectedIndex) {
             // We've already selected a chord in this menu
@@ -306,7 +327,7 @@ public class CustomChordsFragment extends Fragment {
         myView.newChord.setOnClickListener(v -> {
             // Open the bottom sheet dialog and get the text back from the MainActivity
             TextInputBottomSheet textInputBottomSheet = new TextInputBottomSheet(this,
-                    "CustomChordsFragment",getString(R.string.custom_chords),getString(R.string.customchords_name),null,
+                    "CustomChordsFragment",custom_chords_string,customchords_name_string,null,
                     null,null,true);
             textInputBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"textInputBottomSheet");
         });
@@ -316,9 +337,9 @@ public class CustomChordsFragment extends Fragment {
     // Simple getters based on the instrument chosen
     private int numberOfStrings() {
         String currInstr = myView.instrument.getText().toString();
-        if (currInstr.equals(getString(R.string.guitar))) {
+        if (currInstr.equals(guitar_string)) {
             return 6;
-        } else if (currInstr.equals(getString(R.string.banjo5))) {
+        } else if (currInstr.equals(banjo5_string)) {
             return 5;
         } else if (isPiano()) {
             return 0;
@@ -327,7 +348,7 @@ public class CustomChordsFragment extends Fragment {
         }
     }
     private boolean isPiano() {
-        return myView.instrument.getText().toString().equals(getString(R.string.piano));
+        return myView.instrument.getText().toString().equals(piano_string);
     }
 
     // Deal with the string display for guitar, etc
@@ -346,59 +367,61 @@ public class CustomChordsFragment extends Fragment {
         myView.guitarChordLayout.removeAllViews();
 
         // Set the string markers (and space) for the first row
-        TableRow markers = new TableRow(requireContext());
-        TextView textViewSpacer = new TextView(requireContext());
-        textViewSpacer.setId(View.generateViewId());
-        markers.addView(textViewSpacer);
+        if (getContext()!=null) {
+            TableRow markers = new TableRow(getContext());
+            TextView textViewSpacer = new TextView(getContext());
+            textViewSpacer.setId(View.generateViewId());
+            markers.addView(textViewSpacer);
 
-        for (int markerpos=1; markerpos < numberOfStrings()+1; markerpos++) {
-            TextView marker = getLayoutInflater().inflate(R.layout.view_string_marker,markers).
-                    findViewById(R.id.stringMarker);
-            marker.setTag("stringMarker"+markerpos);
-            marker.setText("o");
-            marker.setId(View.generateViewId());
-            marker.setLayoutParams(new TableRow.LayoutParams(markerpos));
-            marker.setOnClickListener(v -> stringMarkerListener(v.getTag().toString()));
-        }
-        myView.guitarChordLayout.addView(markers);
-
-        // Now add the strings for 5 frets
-        for (int fret=1; fret<6; fret++) {
-            TableRow frets = new TableRow(requireContext());
-            frets.setId(View.generateViewId());
-            TextView textView;
-            if (fret==1) {
-                textView = getLayoutInflater().inflate(R.layout.view_chord_fret_marker,frets).
-                        findViewById(R.id.fretMarker);
-                textView.setTag("fretMarker");
-                textView.setText("1");
-                textView.setOnClickListener(v->increaseFretNumber());
-
-            } else {
-                textView = new TextView(requireContext());
-                frets.addView(textView);
-                textView.setTag("spacerFret"+fret);
+            for (int markerpos = 1; markerpos < numberOfStrings() + 1; markerpos++) {
+                TextView marker = getLayoutInflater().inflate(R.layout.view_string_marker, markers).
+                        findViewById(R.id.stringMarker);
+                marker.setTag("stringMarker" + markerpos);
+                marker.setText("o");
+                marker.setId(View.generateViewId());
+                marker.setLayoutParams(new TableRow.LayoutParams(markerpos));
+                marker.setOnClickListener(v -> stringMarkerListener(v.getTag().toString()));
             }
-            textView.setId(View.generateViewId());
-            textView.setLayoutParams(new TableRow.LayoutParams(0));
+            myView.guitarChordLayout.addView(markers);
 
-            for (int string=1; string<numberOfStrings()+1; string++) {
-                View view;
-                if (string==1) {
-                    view = getLayoutInflater().inflate(R.layout.view_chord_string_left,frets,false);
-                } else if (string==numberOfStrings()) {
-                    view = getLayoutInflater().inflate(R.layout.view_chord_string_right,frets,false);
+            // Now add the strings for 5 frets
+            for (int fret = 1; fret < 6; fret++) {
+                TableRow frets = new TableRow(getContext());
+                frets.setId(View.generateViewId());
+                TextView textView;
+                if (fret == 1) {
+                    textView = getLayoutInflater().inflate(R.layout.view_chord_fret_marker, frets).
+                            findViewById(R.id.fretMarker);
+                    textView.setTag("fretMarker");
+                    textView.setText("1");
+                    textView.setOnClickListener(v -> increaseFretNumber());
+
                 } else {
-                    view = getLayoutInflater().inflate(R.layout.view_chord_string_middle,frets,false);
+                    textView = new TextView(getContext());
+                    frets.addView(textView);
+                    textView.setTag("spacerFret" + fret);
                 }
-                String stringTag = "fret"+fret+"_string"+string;
-                view.setTag(stringTag);
-                view.findViewById(R.id.stringOn).setTag("fret"+fret+"_stringOn"+string);
-                view.setLayoutParams(new TableRow.LayoutParams(string));
-                view.setOnClickListener(v -> stringNoteListener(view.getTag().toString()));
-                frets.addView(view);
+                textView.setId(View.generateViewId());
+                textView.setLayoutParams(new TableRow.LayoutParams(0));
+
+                for (int string = 1; string < numberOfStrings() + 1; string++) {
+                    View view;
+                    if (string == 1) {
+                        view = getLayoutInflater().inflate(R.layout.view_chord_string_left, frets, false);
+                    } else if (string == numberOfStrings()) {
+                        view = getLayoutInflater().inflate(R.layout.view_chord_string_right, frets, false);
+                    } else {
+                        view = getLayoutInflater().inflate(R.layout.view_chord_string_middle, frets, false);
+                    }
+                    String stringTag = "fret" + fret + "_string" + string;
+                    view.setTag(stringTag);
+                    view.findViewById(R.id.stringOn).setTag("fret" + fret + "_stringOn" + string);
+                    view.setLayoutParams(new TableRow.LayoutParams(string));
+                    view.setOnClickListener(v -> stringNoteListener(view.getTag().toString()));
+                    frets.addView(view);
+                }
+                myView.guitarChordLayout.addView(frets);
             }
-            myView.guitarChordLayout.addView(frets);
         }
     }
     private void setMarkerText(String tag, String text) {
@@ -411,29 +434,31 @@ public class CustomChordsFragment extends Fragment {
                 addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                try {
-                    // Measure the layout
-                    int childWidth = myView.guitarChordLayout.getMeasuredWidth();
-                    int childHeight = myView.guitarChordLayout.getMeasuredHeight();
-                    DisplayMetrics displayMetrics = new DisplayMetrics();
-                    requireActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-                    int width = displayMetrics.widthPixels;
-                    if (childWidth>0) {
-                        float scale = ((float) width / 2f) / (float) childWidth;
-                        myView.guitarChordLayout.setGravity(Gravity.CENTER | Gravity.TOP);
-                        ViewGroup.LayoutParams layoutParams = myView.guitarChordLayout.getLayoutParams();
-                        layoutParams.height = (int) (childHeight * scale);
-                        myView.guitarChordLayout.setPivotX(childWidth / 2f);
-                        myView.guitarChordLayout.setPivotY(0);
-                        myView.guitarChordLayout.setScaleX(scale);
-                        myView.guitarChordLayout.setScaleY(scale);
-                        myView.guitarChordLayout.setLayoutParams(layoutParams);
-                        myView.guitarChordLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                        myView.layout.invalidate();
-                        myView.guitarChordLayout.setVisibility(View.VISIBLE);
+                if (getActivity() != null) {
+                    try {
+                        // Measure the layout
+                        int childWidth = myView.guitarChordLayout.getMeasuredWidth();
+                        int childHeight = myView.guitarChordLayout.getMeasuredHeight();
+                        DisplayMetrics displayMetrics = new DisplayMetrics();
+                        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+                        int width = displayMetrics.widthPixels;
+                        if (childWidth > 0) {
+                            float scale = ((float) width / 2f) / (float) childWidth;
+                            myView.guitarChordLayout.setGravity(Gravity.CENTER | Gravity.TOP);
+                            ViewGroup.LayoutParams layoutParams = myView.guitarChordLayout.getLayoutParams();
+                            layoutParams.height = (int) (childHeight * scale);
+                            myView.guitarChordLayout.setPivotX(childWidth / 2f);
+                            myView.guitarChordLayout.setPivotY(0);
+                            myView.guitarChordLayout.setScaleX(scale);
+                            myView.guitarChordLayout.setScaleY(scale);
+                            myView.guitarChordLayout.setLayoutParams(layoutParams);
+                            myView.guitarChordLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                            myView.layout.invalidate();
+                            myView.guitarChordLayout.setVisibility(View.VISIBLE);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
             }
         });
@@ -830,7 +855,7 @@ public class CustomChordsFragment extends Fragment {
                 }
             }
             if (alreadyExists) {
-                mainActivityInterface.getShowToast().doIt(getString(R.string.custom_chord_exists));
+                mainActivityInterface.getShowToast().doIt(custom_chord_exists_string);
             } else {
                 // Build a default chord
                 if (isPiano()) {

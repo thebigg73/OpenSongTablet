@@ -44,8 +44,10 @@ public class FontSetupFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsFontsBinding.inflate(inflater, container, false);
 
-        mainActivityInterface.updateToolbar(getString(R.string.font_choose));
-        mainActivityInterface.updateToolbarHelp(getString(R.string.website_fonts));
+        if (getContext()!=null) {
+            mainActivityInterface.updateToolbar(getString(R.string.font_choose));
+            mainActivityInterface.updateToolbarHelp(getString(R.string.website_fonts));
+        }
 
         getPreferences();
         ExecutorService executorService = Executors.newSingleThreadExecutor();
@@ -113,10 +115,12 @@ public class FontSetupFragment extends Fragment {
         if (exposedDropDown!=null && isAdded()) {
             try {
                 exposedDropDown.post(() -> {
-                    ExposedDropDownArrayAdapter exposedDropDownArrayAdapter =
-                            new ExposedDropDownArrayAdapter(requireContext(), exposedDropDown,
-                                    R.layout.view_exposed_dropdown_item, fontNames);
-                    exposedDropDown.setAdapter(exposedDropDownArrayAdapter);
+                    if (getContext()!=null) {
+                        ExposedDropDownArrayAdapter exposedDropDownArrayAdapter =
+                                new ExposedDropDownArrayAdapter(getContext(), exposedDropDown,
+                                        R.layout.view_exposed_dropdown_item, fontNames);
+                        exposedDropDown.setAdapter(exposedDropDownArrayAdapter);
+                    }
                     exposedDropDown.setText(defaultValue);
                     exposedDropDown.addTextChangedListener(new MyTextWatcher(which));
                 });
@@ -143,7 +147,9 @@ public class FontSetupFragment extends Fragment {
             myView.chordPreview.setTextSize(24.0f * mainActivityInterface.getPreferences().getMyPreferenceFloat("scaleChords", 0.8f));
 
             // Set the presentation preview
-            myView.presoPreview.setBackground(ResourcesCompat.getDrawable(requireContext().getResources(), R.drawable.preso_default_bg, null));
+            if (getContext()!=null) {
+                myView.presoPreview.setBackground(ResourcesCompat.getDrawable(getContext().getResources(), R.drawable.preso_default_bg, null));
+            }
             myView.presoLorem.setTextColor(mainActivityInterface.getMyThemeColors().getPresoFontColor());
             myView.presoInfoLorem.setTextColor(mainActivityInterface.getMyThemeColors().getPresoInfoFontColor());
             myView.presoInfoLorem.setTextColor(mainActivityInterface.getMyThemeColors().getPresoInfoFontColor());

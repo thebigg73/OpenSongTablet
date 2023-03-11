@@ -37,7 +37,9 @@ public class ExportSongListBottomSheet extends BottomSheetDialogFragment {
     private final String TAG = "ExportSongList";
     private MainActivityInterface mainActivityInterface;
     private BottomSheetExportSongListBinding myView;
-    private String selectedFolders = "", contentText, contentPDF, contentCSV;
+    private String selectedFolders = "", contentText, contentPDF, contentCSV,
+            website_export_song_list_string="", nothing_selected_string="", export_string="",
+            app_name_string="", export_song_directory_string="", song_string="";
     private ArrayList<Uri> uris;
     private ArrayList<String> mimeTypes;
     private ArrayList<View> sectionViews;
@@ -70,7 +72,10 @@ public class ExportSongListBottomSheet extends BottomSheetDialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = BottomSheetExportSongListBinding.inflate(inflater, container, false);
         myView.dialogHeader.setClose(this);
-        myView.dialogHeader.setWebHelp(mainActivityInterface,getString(R.string.website_export_song_list));
+
+        prepareStrings();
+
+        myView.dialogHeader.setWebHelp(mainActivityInterface,website_export_song_list_string);
 
         // Build the list of folders
         setupViews();
@@ -78,23 +83,35 @@ public class ExportSongListBottomSheet extends BottomSheetDialogFragment {
         return myView.getRoot();
     }
 
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            website_export_song_list_string = getString(R.string.website_export_song_list);
+            nothing_selected_string = getString(R.string.nothing_selected);
+            export_string = getString(R.string.export);
+            app_name_string = getString(R.string.app_name);
+            export_song_directory_string = getString(R.string.export_song_directory);
+            song_string = getString(R.string.song);
+        }
+    }
     private void setupViews() {
         // We'll get these from the database
         ArrayList<String> folders = mainActivityInterface.getSQLiteHelper().getFolders();
-        for (String folder : folders) {
-            MaterialCheckBox checkBox = new MaterialCheckBox(requireContext());
-            checkBox.setText(folder);
-            checkBox.setChecked(false);
-            checkBox.setOnCheckedChangeListener((compoundButton, b) -> {
-                if (b) {
-                    if (!selectedFolders.contains("\n" + compoundButton.getText() + "\n")) {
-                        selectedFolders = selectedFolders + "\n" + compoundButton.getText() + "\n";
+        if (getContext()!=null) {
+            for (String folder : folders) {
+                MaterialCheckBox checkBox = new MaterialCheckBox(getContext());
+                checkBox.setText(folder);
+                checkBox.setChecked(false);
+                checkBox.setOnCheckedChangeListener((compoundButton, b) -> {
+                    if (b) {
+                        if (!selectedFolders.contains("\n" + compoundButton.getText() + "\n")) {
+                            selectedFolders = selectedFolders + "\n" + compoundButton.getText() + "\n";
+                        }
+                    } else {
+                        selectedFolders = selectedFolders.replace("\n" + compoundButton.getText() + "\n", "");
                     }
-                } else {
-                    selectedFolders = selectedFolders.replace("\n" + compoundButton.getText() + "\n", "");
-                }
-            });
-            myView.songFolders.addView(checkBox);
+                });
+                myView.songFolders.addView(checkBox);
+            }
         }
 
         myView.export.setOnClickListener(view -> {
@@ -102,7 +119,7 @@ public class ExportSongListBottomSheet extends BottomSheetDialogFragment {
                 printing = false;
                 prepareExport();
             } else {
-                mainActivityInterface.getShowToast().doIt(getString(R.string.nothing_selected));
+                mainActivityInterface.getShowToast().doIt(nothing_selected_string);
             }
         });
 
@@ -111,7 +128,7 @@ public class ExportSongListBottomSheet extends BottomSheetDialogFragment {
                 printing = true;
                 prepareExport();
             } else {
-                mainActivityInterface.getShowToast().doIt(getString(R.string.nothing_selected));
+                mainActivityInterface.getShowToast().doIt(nothing_selected_string);
             }
         });
     }
@@ -140,15 +157,15 @@ public class ExportSongListBottomSheet extends BottomSheetDialogFragment {
             uris.add(uri);
         }
 
-        String title = getString(R.string.export);
+        String title = export_string;
 
         processing(false);
 
         Intent intent = mainActivityInterface.getExportActions().setShareIntent(contentText, "*/*", null, uris);
         intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
         intent.setType("text/plain");
-        intent.putExtra(android.content.Intent.EXTRA_SUBJECT, requireActivity().getString(R.string.app_name) + " " +
-                getString(R.string.export_song_directory));
+        intent.putExtra(android.content.Intent.EXTRA_SUBJECT, app_name_string + " " +
+                export_song_directory_string);
         intent.putExtra(Intent.EXTRA_TEXT, contentText);
 
         startActivity(Intent.createChooser(intent, title));
@@ -245,7 +262,7 @@ public class ExportSongListBottomSheet extends BottomSheetDialogFragment {
     private void preparePDF(Handler handler) {
         // First up prepare the header here
         handler.post(() -> {
-            outputSong.setTitle(getString(R.string.export_song_directory));
+            outputSong.setTitle(export_song_directory_string);
             myView.headerLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override
                 public void onGlobalLayout() {
@@ -317,20 +334,22 @@ public class ExportSongListBottomSheet extends BottomSheetDialogFragment {
 
     private void doPrint() {
         // Get a PrintManager instance
-        PrintManager printManager = (PrintManager) requireActivity().getSystemService(Context.PRINT_SERVICE);
+        if (getActivity() != null) {
+            PrintManager printManager = (PrintManager) getActivity().getSystemService(Context.PRINT_SERVICE);
 
-        // Set job name, which will be displayed in the print queue
-        String jobName = requireActivity().getString(R.string.app_name) + " " + getString(R.string.export_song_directory);
+            // Set job name, which will be displayed in the print queue
+            String jobName = app_name_string + " " + export_song_directory_string;
 
-        // Start a print job, passing in a PrintDocumentAdapter implementation
-        // to handle the generation of a print document
+            // Start a print job, passing in a PrintDocumentAdapter implementation
+            // to handle the generation of a print document
 
-        processing(false);
+            processing(false);
 
-        PrinterAdapter printerAdapter = new PrinterAdapter(requireActivity());
-        printerAdapter.updateSections(sectionViews, sectionWidths, sectionHeights,
-                myView.headerLayout, headerWidth, headerHeight, getString(R.string.song));
-        mainActivityInterface.getMakePDF().setPreferedAttributes();
-        printManager.print(jobName, printerAdapter, mainActivityInterface.getMakePDF().getPrintAttributes());
+            PrinterAdapter printerAdapter = new PrinterAdapter(getActivity());
+            printerAdapter.updateSections(sectionViews, sectionWidths, sectionHeights,
+                    myView.headerLayout, headerWidth, headerHeight, song_string);
+            mainActivityInterface.getMakePDF().setPreferedAttributes();
+            printManager.print(jobName, printerAdapter, mainActivityInterface.getMakePDF().getPrintAttributes());
+        }
     }
 }

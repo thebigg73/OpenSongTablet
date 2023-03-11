@@ -38,6 +38,10 @@ public class LinksBottomSheet extends BottomSheetDialogFragment {
     private ActivityResultLauncher<Intent> activityResultLauncher;
     private final String fragName;
     private final Fragment callingFragment;
+    private String link_youtube_string="", link_search_youtube_string="", youtube_string="",
+            music_string="", link_audio_string="", link_search_document_string="", link_web_string="",
+            link_search_web_string="", link_file_string="", success_string="", error_string="",
+            nothing_selected_string="", link_error_string="";
 
     LinksBottomSheet(String fragName, Fragment callingFragment) {
         this.fragName = fragName;
@@ -67,10 +71,29 @@ public class LinksBottomSheet extends BottomSheetDialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = BottomSheetLinksBinding.inflate(inflater, container, false);
 
+        prepareStrings();
+
         myView.nestedScrollView.setFabToAnimate(myView.openLink);
         return myView.getRoot();
     }
 
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            link_youtube_string = getString(R.string.link_youtube);
+            link_search_youtube_string = getString(R.string.link_search_youtube);
+            youtube_string = getString(R.string.youtube);
+            music_string = getString(R.string.music);
+            link_audio_string = getString(R.string.link_audio);
+            link_search_document_string = getString(R.string.link_search_document);
+            link_web_string = getString(R.string.link_web);
+            link_search_web_string = getString(R.string.link_search_web);
+            link_file_string = getString(R.string.link_file);
+            success_string = getString(R.string.success);
+            error_string = getString(R.string.error);
+            nothing_selected_string = getString(R.string.nothing_selected);
+            link_error_string = getString(R.string.link_error);
+        }
+    }
     @SuppressLint("WrongConstant") // takeFlags is correct on Google documentation!!!!
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -90,8 +113,8 @@ public class LinksBottomSheet extends BottomSheetDialogFragment {
                         // If this is a localised (i.e. inside OpenSong folder), we don't need to take the permissions
                         // There is a limit of 128-512 permissions allowed (depending on Android version).
                         String localisedUri = mainActivityInterface.getStorageAccess().fixUriToLocal(contentUri);
-                        if (!localisedUri.contains("../OpenSong/")) {
-                            ContentResolver resolver = requireActivity().getContentResolver();
+                        if (!localisedUri.contains("../OpenSong/") && getActivity()!=null) {
+                            ContentResolver resolver = getActivity().getContentResolver();
                             resolver.takePersistableUriPermission(contentUri, data.getFlags()
                                     & ( Intent.FLAG_GRANT_READ_URI_PERMISSION
                                     + Intent.FLAG_GRANT_WRITE_URI_PERMISSION
@@ -113,16 +136,18 @@ public class LinksBottomSheet extends BottomSheetDialogFragment {
         switch (mainActivityInterface.getWhattodo()) {
             case "linkYouTube":
             default:
-                myView.dialogHeading.setText(getString(R.string.link_youtube));
+                myView.dialogHeading.setText(link_youtube_string);
                 myView.linkLocation.setText(mainActivityInterface.getSong().getLinkyoutube());
                 if (myView.linkLocation.getText().toString().contains("https://music.youtube.com")) {
                     myView.youTubeOrMusic.setSliderPos(1);
                 } else {
                     myView.youTubeOrMusic.setSliderPos(0);
                 }
-                myView.openLink.setImageDrawable(AppCompatResources.getDrawable(requireContext(),R.drawable.youtube));
+                if (getContext()!=null) {
+                    myView.openLink.setImageDrawable(AppCompatResources.getDrawable(getContext(), R.drawable.youtube));
+                }
                 myView.openLink.setOnClickListener(view -> openDocument());
-                myView.searchLink.setHint(getString(R.string.link_search_youtube));
+                myView.searchLink.setHint(link_search_youtube_string);
                 myView.searchLink.setOnClickListener(view -> {
                     if (myView.youTubeOrMusic.getValue()==0) {
                         openBrowser("https://www.youtube.com/search?q=");
@@ -131,35 +156,41 @@ public class LinksBottomSheet extends BottomSheetDialogFragment {
                     }
                 });
                 myView.youTubeOrMusic.setVisibility(View.VISIBLE);
-                myView.youTubeOrMusic.setTextRight(getString(R.string.youtube) + " " + getString(R.string.music));
+                myView.youTubeOrMusic.setTextRight(youtube_string + " " + music_string);
                 break;
 
             //music.youtube.com/watch?v=
             case "linkAudio":
-                myView.dialogHeading.setText(getString(R.string.link_audio));
+                myView.dialogHeading.setText(link_audio_string);
                 myView.linkLocation.setText(mainActivityInterface.getSong().getLinkaudio());
-                myView.openLink.setImageDrawable(AppCompatResources.getDrawable(requireContext(),R.drawable.play));
+                if (getContext()!=null) {
+                    myView.openLink.setImageDrawable(AppCompatResources.getDrawable(getContext(), R.drawable.play));
+                }
                 myView.padLink.setVisibility(View.VISIBLE);
                 myView.padLink.setOnClickListener(view -> setLinkAsPad());
                 myView.padLink.setVisibility(View.VISIBLE);
                 myView.openLink.setOnClickListener(view -> previewAudio(true));
-                myView.searchLink.setHint(getString(R.string.link_search_document));
+                myView.searchLink.setHint(link_search_document_string);
                 myView.searchLink.setOnClickListener(view -> searchFile("audio/*"));
                 break;
             case "linkOnline":
-                myView.dialogHeading.setText(getString(R.string.link_web));
+                myView.dialogHeading.setText(link_web_string);
                 myView.linkLocation.setText(mainActivityInterface.getSong().getLinkweb());
-                myView.openLink.setImageDrawable(AppCompatResources.getDrawable(requireContext(),R.drawable.web));
+                if (getContext()!=null) {
+                    myView.openLink.setImageDrawable(AppCompatResources.getDrawable(getContext(), R.drawable.web));
+                }
                 myView.openLink.setOnClickListener(view -> openDocument());
-                myView.searchLink.setHint(getString(R.string.link_search_web));
+                myView.searchLink.setHint(link_search_web_string);
                 myView.searchLink.setOnClickListener(view -> openBrowser("https://www.google.com/search?q="));
                 break;
             case "linkOther":
-                myView.dialogHeading.setText(getString(R.string.link_file));
+                myView.dialogHeading.setText(link_file_string);
                 myView.linkLocation.setText(mainActivityInterface.getSong().getLinkother());
-                myView.openLink.setImageDrawable(AppCompatResources.getDrawable(requireContext(),R.drawable.xml));
+                if (getContext()!=null) {
+                    myView.openLink.setImageDrawable(AppCompatResources.getDrawable(getContext(), R.drawable.xml));
+                }
                 myView.openLink.setOnClickListener(view -> openDocument());
-                myView.searchLink.setHint(getString(R.string.link_search_document));
+                myView.searchLink.setHint(link_search_document_string);
                 myView.searchLink.setOnClickListener(view -> searchFile("*/*"));
                 break;
         }
@@ -227,10 +258,10 @@ public class LinksBottomSheet extends BottomSheetDialogFragment {
                 break;
         }
         if (mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong())) {
-            mainActivityInterface.getShowToast().doIt(getString(R.string.success));
+            mainActivityInterface.getShowToast().doIt(success_string);
             Log.d(TAG,"Success");
         } else {
-            mainActivityInterface.getShowToast().doIt(getString(R.string.error));
+            mainActivityInterface.getShowToast().doIt(error_string);
         }
         mainActivityInterface.updateFragment(fragName, callingFragment, null);
     }
@@ -248,9 +279,9 @@ public class LinksBottomSheet extends BottomSheetDialogFragment {
         mediaPlayer = new MediaPlayer();
         if (!getLinkText().isEmpty()) {
             Uri uri = mainActivityInterface.getStorageAccess().fixLocalisedUri(getLinkText());
-            if (mainActivityInterface.getStorageAccess().uriExists(uri)) {
+            if (mainActivityInterface.getStorageAccess().uriExists(uri) && getContext()!=null) {
                 try {
-                    mediaPlayer.setDataSource(requireContext(), uri);
+                    mediaPlayer.setDataSource(getContext(), uri);
                     mediaPlayer.prepareAsync();
                     mediaPlayer.setOnPreparedListener(mediaPlayer -> startAudio(doPlay));
                 } catch (Exception e) {
@@ -269,7 +300,9 @@ public class LinksBottomSheet extends BottomSheetDialogFragment {
         if (doPlay) {
             try {
                 mediaPlayer.start();
-                myView.openLink.setImageDrawable(AppCompatResources.getDrawable(requireContext(),R.drawable.stop));
+                if (getContext()!=null) {
+                    myView.openLink.setImageDrawable(AppCompatResources.getDrawable(getContext(), R.drawable.stop));
+                }
             } catch (Exception e) {
                 e.printStackTrace();
                 badLink();
@@ -277,7 +310,9 @@ public class LinksBottomSheet extends BottomSheetDialogFragment {
             myView.openLink.setOnClickListener(view -> {
                 try {
                     mediaPlayer.stop();
-                    myView.openLink.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.play));
+                    if (getContext() != null) {
+                        myView.openLink.setImageDrawable(AppCompatResources.getDrawable(getContext(), R.drawable.play));
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -292,13 +327,13 @@ public class LinksBottomSheet extends BottomSheetDialogFragment {
 
     private void noLink () {
         // Empty - so put the cursor there to alert the user
-        mainActivityInterface.getShowToast().doIt(getString(R.string.nothing_selected));
+        mainActivityInterface.getShowToast().doIt(nothing_selected_string);
         myView.linkLocation.requestFocus();
     }
 
     private void badLink() {
         // Link threw an error (likely invalid)
-        mainActivityInterface.getShowToast().doIt(getString(R.string.link_error));
+        mainActivityInterface.getShowToast().doIt(link_error_string);
         myView.linkLocation.requestFocus();
     }
 

@@ -19,7 +19,7 @@ import com.google.android.material.slider.Slider;
 public class MarginsFragment extends Fragment {
 
     private MainActivityInterface mainActivityInterface;
-    @SuppressWarnings("unused")
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "MarginsFragment";
     private SettingsMarginsBinding myView;
 
@@ -35,8 +35,10 @@ public class MarginsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         myView = SettingsMarginsBinding.inflate(inflater, container, false);
 
-        mainActivityInterface.updateToolbar(getString(R.string.margins));
-        mainActivityInterface.updateToolbarHelp(getString(R.string.website_margins));
+        if (getContext()!=null) {
+            mainActivityInterface.updateToolbar(getString(R.string.margins));
+            mainActivityInterface.updateToolbarHelp(getString(R.string.website_margins));
+        }
 
         setupViews();
 
@@ -139,7 +141,7 @@ public class MarginsFragment extends Fragment {
         @Override
         public void onStopTrackingTouch(@NonNull Slider slider) {
             int val = (int) slider.getValue();
-            String hint = ((int)val + " px");
+            String hint = (val + " px");
 
             Log.d(TAG,"saving: "+val);
             switch (pref) {

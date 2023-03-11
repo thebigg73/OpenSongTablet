@@ -51,6 +51,10 @@ public class BackupRestoreSetsFragment extends Fragment {
     private boolean success = false;
     private final String setSeparator = "__";
     private final String TAG = "BackupRestoreSets";
+    private String restore_sets_string="", website_set_restore_string="", backup_string="",
+            website_set_backup_string="", unknown_string="", backup_sets_string="",
+            import_basic_string="", mainfoldername_string="", backup_info_string="",
+            success_string="", error_string="";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -64,32 +68,53 @@ public class BackupRestoreSetsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         myView = SettingsSetsBackupsBinding.inflate(inflater, container, false);
 
-        Window w = requireActivity().getWindow();
+        prepareStrings();
+
+        Window w = null;
+        if (getActivity()!=null) {
+            w = getActivity().getWindow();
+        }
         if (w != null) {
             w.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         }
 
         if (mainActivityInterface.getWhattodo().equals("restoresets")) {
-            mainActivityInterface.updateToolbar(getString(R.string.restore_sets));
-            mainActivityInterface.updateToolbarHelp(getString(R.string.website_set_restore));
+            mainActivityInterface.updateToolbar(restore_sets_string);
+            mainActivityInterface.updateToolbarHelp(website_set_restore_string);
             setupFileChooserListener();
             initialiseLauncher();
             openFilePicker();
         } else if (mainActivityInterface.getWhattodo().equals("intentlaunch")) {
-            mainActivityInterface.updateToolbar(getString(R.string.restore_sets));
-            mainActivityInterface.updateToolbarHelp(getString(R.string.website_set_restore));
+            mainActivityInterface.updateToolbar(restore_sets_string);
+            mainActivityInterface.updateToolbarHelp(website_set_restore_string);
             backupUri = mainActivityInterface.getImportUri();
             myView.backupName.setText(mainActivityInterface.getImportFilename());
             setupViews();
         } else {
             // Set up views
             setupViews();
-            mainActivityInterface.updateToolbarHelp(getString(R.string.website_set_backup));
+            mainActivityInterface.updateToolbarHelp(website_set_backup_string);
 
         }
 
         myView.nestedScrollView.setExtendedFabToAnimate(myView.createBackupFAB);
         return myView.getRoot();
+    }
+
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            restore_sets_string = getString(R.string.restore_sets);
+            website_set_restore_string = getString(R.string.website_set_restore);
+            website_set_backup_string = getString(R.string.website_set_backup);
+            unknown_string = getString(R.string.unknown);
+            backup_sets_string = getString(R.string.backup_sets);
+            backup_string = getString(R.string.backup);
+            import_basic_string = getString(R.string.import_basic);
+            mainfoldername_string = getString(R.string.mainfoldername);
+            backup_info_string = getString(R.string.backup_info);
+            success_string = getString(R.string.success);
+            error_string = getString(R.string.error);
+        }
     }
 
     private void initialiseLauncher () {
@@ -105,7 +130,7 @@ public class BackupRestoreSetsFragment extends Fragment {
                             myView.backupName.setText(importFilename);
                             setupViews();
                         } else {
-                            myView.backupName.setText(getString(R.string.unknown));
+                            myView.backupName.setText(unknown_string);
                             myView.createBackupFAB.setEnabled(false);
                         }
                     }
@@ -144,11 +169,11 @@ public class BackupRestoreSetsFragment extends Fragment {
             String formattedDate = df.format(cal.getTime());
             myView.backupName.setText("OpenSongSetBackup_" + formattedDate + ".osbs");
 
-            mainActivityInterface.updateToolbar(getString(R.string.backup_sets));
+            mainActivityInterface.updateToolbar(backup_sets_string);
 
             myView.overWrite.setVisibility(View.GONE);
 
-            myView.createBackupFAB.setText(getString(R.string.backup));
+            myView.createBackupFAB.setText(backup_string);
             myView.createBackupFAB.setOnClickListener(view -> doBackup());
 
             // Add the checkboxes
@@ -159,7 +184,7 @@ public class BackupRestoreSetsFragment extends Fragment {
             // Filename is set when user selects a file
             myView.overWrite.setVisibility(View.VISIBLE);
 
-            myView.createBackupFAB.setText(getString(R.string.import_basic));
+            myView.createBackupFAB.setText(import_basic_string);
             myView.createBackupFAB.setOnClickListener(view -> doImport());
 
             myView.progressBar.setVisibility(View.VISIBLE);
@@ -171,18 +196,20 @@ public class BackupRestoreSetsFragment extends Fragment {
                 Handler handler = new Handler(Looper.getMainLooper());
                 ArrayList<String> setList = new ArrayList<>();
 
-                InputStream inputStream;
+                InputStream inputStream = null;
                 if (mainActivityInterface.getWhattodo().equals("restoresets")) {
                     inputStream = mainActivityInterface.getStorageAccess().getInputStream(backupUri);
 
                 } else {
-                    File folder = new File(requireActivity().getExternalCacheDir(),"Import");
-                    Log.d(TAG,"created: "+folder.mkdirs());
-                    File file = new File(folder,mainActivityInterface.getImportFilename());
-                    try {
-                        inputStream = new FileInputStream(file);
-                    } catch (Exception e) {
-                        inputStream = null;
+                    if (getActivity()!=null) {
+                        File folder = new File(getActivity().getExternalCacheDir(), "Import");
+                        Log.d(TAG, "created: " + folder.mkdirs());
+                        File file = new File(folder, mainActivityInterface.getImportFilename());
+                        try {
+                            inputStream = new FileInputStream(file);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
 
@@ -245,7 +272,7 @@ public class BackupRestoreSetsFragment extends Fragment {
     private String niceSetItem(String setItem) {
         // This returns sets with categories in brackets
         if (!setItem.contains(setSeparator)) {
-            return "(" + getString(R.string.mainfoldername) + ") " + setItem;
+            return "(" + mainfoldername_string + ") " + setItem;
         } else {
             String[] bits = setItem.split(setSeparator);
             if (bits.length==2) {
@@ -314,7 +341,7 @@ public class BackupRestoreSetsFragment extends Fragment {
                     myView.progressBar.setVisibility(View.GONE);
                 }
                 Intent intent = mainActivityInterface.getExportActions().exportBackup(backupUri, backupFilename);
-                startActivity(Intent.createChooser(intent, getString(R.string.backup_info)));
+                startActivity(Intent.createChooser(intent, backup_info_string));
             });
         });
 
@@ -365,9 +392,9 @@ public class BackupRestoreSetsFragment extends Fragment {
             handler.post(() -> {
                 myView.progressBar.setVisibility(View.GONE);
                 if (success) {
-                    mainActivityInterface.getShowToast().doIt(getString(R.string.success));
+                    mainActivityInterface.getShowToast().doIt(success_string);
                 } else {
-                    mainActivityInterface.getShowToast().doIt(getString(R.string.error));
+                    mainActivityInterface.getShowToast().doIt(error_string);
                 }
             });
         });

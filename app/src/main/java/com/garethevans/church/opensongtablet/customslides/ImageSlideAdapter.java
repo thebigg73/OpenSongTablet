@@ -34,7 +34,7 @@ public class ImageSlideAdapter  extends RecyclerView.Adapter<ImageSlideViewHolde
     private final int viewWidth, viewHeight;
     private int totalPages;
     private float floatHeight;
-    private final String scaleType;
+    private final String scaleType, mode_performance_string, mode_stage_string, mode_presenter_string;
     private final float density;
     private int currentSection = 0;
     private final Context c;
@@ -49,6 +49,9 @@ public class ImageSlideAdapter  extends RecyclerView.Adapter<ImageSlideViewHolde
         scaleType = mainActivityInterface.getPreferences().getMyPreferenceString("songAutoScale","W");
         density = c.getResources().getDisplayMetrics().density;
         setSongInfo();
+        mode_performance_string = c.getString(R.string.mode_performance);
+        mode_stage_string = c.getString(R.string.mode_stage);
+        mode_presenter_string = c.getString(R.string.mode_presenter);
     }
 
     private void setSongInfo() {
@@ -72,7 +75,7 @@ public class ImageSlideAdapter  extends RecyclerView.Adapter<ImageSlideViewHolde
             slideInfo.pageNum = x;
             slideInfo.pageNumText = (x+1) + "/" + totalPages;
 
-            if (!mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance))) {
+            if (!mainActivityInterface.getMode().equals(mode_performance_string)) {
                 slideInfo.alpha = 0.4f;
             } else {
                 slideInfo.alpha = 1f;
@@ -150,7 +153,7 @@ public class ImageSlideAdapter  extends RecyclerView.Adapter<ImageSlideViewHolde
         int height = slideInfos.get(position).height;
         float alpha = slideInfos.get(position).alpha;
         CardView cardView = (CardView)holder.v;
-        if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_stage)) && position == currentSection) {
+        if (mainActivityInterface.getMode().equals(mode_stage_string) && position == currentSection) {
             alpha = 1.0f;
         }
         cardView.setAlpha(alpha);
@@ -191,7 +194,7 @@ public class ImageSlideAdapter  extends RecyclerView.Adapter<ImageSlideViewHolde
         // Because this is a screen touch, do the necessary UI update (check actionbar/prev/next)
         onTouchAction();
 
-        if (!mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance))) {
+        if (!mainActivityInterface.getMode().equals(mode_performance_string)) {
             slideInfos.get(currentSection).alpha = 0.4f;
             notifyItemChanged(currentSection, alphaChange);
         }
@@ -205,7 +208,7 @@ public class ImageSlideAdapter  extends RecyclerView.Adapter<ImageSlideViewHolde
         }
 
         // Send and update notification to Performance/Presenter Fragment via the MainActivity
-        if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_presenter))) {
+        if (mainActivityInterface.getMode().equals(mode_presenter_string)) {
             displayInterface.presenterShowSection(position);
         } else {
             displayInterface.performanceShowSection(position);

@@ -26,6 +26,7 @@ public class TagsBottomSheet extends BottomSheetDialogFragment {
     private final String fragName;
     private MainActivityInterface mainActivityInterface;
     private TagsAdapter tagsAdapter;
+    private String website_edit_song_tag_string="", theme_exists_string="";
 
     public TagsBottomSheet(Fragment callingFragment, String fragName) {
         this.callingFragment = callingFragment;
@@ -41,7 +42,10 @@ public class TagsBottomSheet extends BottomSheetDialogFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Window w = requireActivity().getWindow();
+        Window w = null;
+        if (getActivity()!=null) {
+            w = getActivity().getWindow();
+        }
         if (w!=null) {
             w.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         }
@@ -53,8 +57,10 @@ public class TagsBottomSheet extends BottomSheetDialogFragment {
                              @Nullable Bundle savedInstanceState) {
         myView = BottomSheetEditSongThemeBinding.inflate(inflater, container, false);
 
+        prepareStrings();
+
         myView.dialogHeading.setClose(this);
-        myView.dialogHeading.setWebHelp(mainActivityInterface,getString(R.string.website_edit_song_tag));
+        myView.dialogHeading.setWebHelp(mainActivityInterface,website_edit_song_tag_string);
 
         setCurrentTags();
 
@@ -65,14 +71,22 @@ public class TagsBottomSheet extends BottomSheetDialogFragment {
         return myView.getRoot();
     }
 
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            website_edit_song_tag_string = getString(R.string.website_edit_song_tag);
+            theme_exists_string = getString(R.string.theme_exists);
+        }
+    }
     private void setCurrentTags() {
         // Update the recycler view
-        tagsAdapter = new TagsAdapter(requireContext(), mainActivityInterface,
-                requireActivity().getSupportFragmentManager(), callingFragment, fragName);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireContext());
-        linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
-        myView.currentTags.setLayoutManager(linearLayoutManager);
-        myView.currentTags.setAdapter(tagsAdapter);
+        if (getActivity()!=null) {
+            tagsAdapter = new TagsAdapter(getContext(), mainActivityInterface,
+                    getActivity().getSupportFragmentManager(), callingFragment, fragName);
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+            linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
+            myView.currentTags.setLayoutManager(linearLayoutManager);
+            myView.currentTags.setAdapter(tagsAdapter);
+        }
     }
 
     public void insertTag() {
@@ -86,7 +100,7 @@ public class TagsBottomSheet extends BottomSheetDialogFragment {
             tagsAdapter.insertThemeTag(newThemeString);
             myView.currentTags.smoothScrollToPosition(0);
         } else {
-            mainActivityInterface.getShowToast().doIt(getString(R.string.theme_exists));
+            mainActivityInterface.getShowToast().doIt(theme_exists_string);
         }
     }
     public void deleteTags(int position) {

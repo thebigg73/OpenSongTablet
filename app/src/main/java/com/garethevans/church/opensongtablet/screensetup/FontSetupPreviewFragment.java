@@ -29,7 +29,7 @@ public class FontSetupPreviewFragment extends DialogFragment {
     private SettingsFontsPreviewBinding myView;
     private MainActivityInterface mainActivityInterface;
 
-    private String sampleText;
+    private String sampleText, font_browse_string="", lorem_string="", deeplink_fonts_string="";
     private ArrayList<String> fontNames, alphaList;
     private final Handler handler = new Handler();
 
@@ -45,9 +45,11 @@ public class FontSetupPreviewFragment extends DialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsFontsPreviewBinding.inflate(inflater,container,false);
 
-        mainActivityInterface.updateToolbar(getString(R.string.font_browse));
+        prepareStrings();
 
-        sampleText = getString(R.string.lorem);
+        mainActivityInterface.updateToolbar(font_browse_string);
+
+        sampleText = lorem_string;
 
         // Run the webview setup
         myView.webView.getSettings().setJavaScriptEnabled(true);
@@ -57,6 +59,14 @@ public class FontSetupPreviewFragment extends DialogFragment {
         setupWebView("a");
 
         return myView.getRoot();
+    }
+
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            font_browse_string = getString(R.string.font_browse);
+            lorem_string = getString(R.string.lorem);
+            deeplink_fonts_string = getString(R.string.deeplink_fonts);
+        }
     }
 
     private void setupWebView(String ab) {
@@ -146,7 +156,7 @@ public class FontSetupPreviewFragment extends DialogFragment {
             Handler handler = new Handler(Looper.getMainLooper());
             handler.post(() -> {
                 mainActivityInterface.popTheBackStack(R.id.fontSetupFragment, true);
-                mainActivityInterface.navigateToFragment(getString(R.string.deeplink_fonts), 0);
+                mainActivityInterface.navigateToFragment(deeplink_fonts_string, 0);
                 dismiss();
             });
         });

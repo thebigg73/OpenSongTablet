@@ -52,7 +52,10 @@ public class ImportOnlineFragment extends Fragment {
             "https://www.worshiptogether.com/search-results/#?cludoquery=", "https://ukutabs.com/?s=",
             "https://holychords.pro/search?name=", "https://www.boiteachansons.net/recherche/",
             "https://www.e-chords.com/search-all/"};
-    private String webSearchFull, webAddressFinal, source, webString, userAgentDefault;
+    private String webSearchFull, webAddressFinal, source, webString, userAgentDefault,
+            import_basic_string="", online_string="", website_song_online_string="",
+            text_extract_check_string="", text_extract_website_string="", mainfoldername_string="",
+            success_string="", error_string="", overwrite_string="", song_name_already_taken_string="";
     private Song newSong;
     private UltimateGuitar ultimateGuitar;
     private Chordie chordie;
@@ -75,8 +78,10 @@ public class ImportOnlineFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsImportOnlineBinding.inflate(inflater, container, false);
 
-        mainActivityInterface.updateToolbar(getString(R.string.import_basic) + " " + getString(R.string.online));
-        mainActivityInterface.updateToolbarHelp(getString(R.string.website_song_online));
+        prepareStrings();
+
+        mainActivityInterface.updateToolbar(import_basic_string + " " + online_string);
+        mainActivityInterface.updateToolbarHelp(website_song_online_string);
 
         // Setup helper
         setupHelpers();
@@ -90,9 +95,26 @@ public class ImportOnlineFragment extends Fragment {
         return myView.getRoot();
     }
 
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            import_basic_string = getString(R.string.import_basic);
+            online_string = getString(R.string.online);
+            website_song_online_string = getString(R.string.website_song_online);
+            text_extract_check_string = getString(R.string.text_extract_check);
+            text_extract_website_string = getString(R.string.text_extract_website);
+            mainfoldername_string = getString(R.string.mainfoldername);
+            success_string = getString(R.string.success);
+            error_string = getString(R.string.error);
+            overwrite_string = getString(R.string.overwrite);
+            song_name_already_taken_string = getString(R.string.song_name_already_taken);
+        }
+    }
+
     private void setupHelpers() {
+        if (getContext() != null) {
+            ultimateGuitar = new UltimateGuitar(getContext());
+        }
         newSong = new Song();
-        ultimateGuitar = new UltimateGuitar(requireContext());
         worshipTogether = new WorshipTogether();
         chordie = new Chordie();
         songSelect = new SongSelect();
@@ -109,9 +131,11 @@ public class ImportOnlineFragment extends Fragment {
         myView.saveLayout.setVisibility(View.GONE);
         myView.grabText.setVisibility(View.GONE);
 
-        ExposedDropDownArrayAdapter exposedDropDownArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(),
-                myView.onlineSource,R.layout.view_exposed_dropdown_item, sources);
-        myView.onlineSource.setAdapter(exposedDropDownArrayAdapter);
+        if (getContext()!=null) {
+            ExposedDropDownArrayAdapter exposedDropDownArrayAdapter = new ExposedDropDownArrayAdapter(getContext(),
+                    myView.onlineSource, R.layout.view_exposed_dropdown_item, sources);
+            myView.onlineSource.setAdapter(exposedDropDownArrayAdapter);
+        }
         if (mainActivityInterface.getCheckInternet().getSearchPhrase() != null) {
             myView.searchPhrase.setText(mainActivityInterface.getCheckInternet().getSearchPhrase());
         }
@@ -151,81 +175,83 @@ public class ImportOnlineFragment extends Fragment {
 
     @SuppressLint("SetJavaScriptEnabled")
     private void setupWebView() {
-        if (webView==null) {
-            webView = new WebView(requireContext());
-            myView.webViewHolder.addView(webView);
-        }
-        webView.setWebChromeClient(new WebChromeClient() {
-            @Override
-            public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
-                Log.d(TAG, consoleMessage.message() + " -- From line " +
-                        consoleMessage.lineNumber() + " of " + consoleMessage.sourceId());
-                return true;
+        if (getContext() != null) {
+            if (webView == null) {
+                webView = new WebView(getContext());
+                myView.webViewHolder.addView(webView);
             }
-        });
-        webView.setWebViewClient(new WebViewClient() {
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                return false;
-            }
-
-            @Override
-            public void onPageStarted(WebView view, String url, Bitmap favicon) {
-                super.onPageStarted(view, url, favicon);
-                webView.post(() -> webAddressFinal = webView.getUrl());
-            }
-
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                super.onPageFinished(view, url);
-                // Run a check for the desired content
-                extractContent();
-            }
-
-            @Override
-            public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
-                super.onReceivedError(view, request, error);
-                Log.d(TAG, "error");
-            }
-
-            @Override
-            public boolean onRenderProcessGone(WebView view, RenderProcessGoneDetail detail) {
-                Log.d("WebView", "crash");
-                destroyWebView();
-                setupWebView();
-                return true; // The app continues executing.
-            }
-        });
-        if (userAgentDefault==null) {
-            userAgentDefault = webView.getSettings().getUserAgentString();
-            Log.d(TAG,"userAgentString="+userAgentDefault);
-        }
-        webView.getSettings().getJavaScriptEnabled();
-        webView.getSettings().setJavaScriptEnabled(true);
-        webView.getSettings().setDomStorageEnabled(true);
-        webView.getSettings().setAllowFileAccess(true);
-        webView.getSettings().setLoadWithOverviewMode(true);
-        webView.getSettings().setUseWideViewPort(true);
-        webView.getSettings().setSupportZoom(true);
-        webView.getSettings().setBuiltInZoomControls(true);
-        webView.getSettings().setDisplayZoomControls(false);
-        webView.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_OVERLAY);
-        webView.setScrollbarFadingEnabled(false);
-        webView.addJavascriptInterface(new MyJSInterface(requireContext(),this), "HTMLOUT");
-
-        webView.setDownloadListener((url, userAgent, contentDisposition, mimetype, contentLength) -> {
-            // Show the progressBar
-            showDownloadProgress(true);
-            changeLayouts(false, false, false);
-
-            if (url!=null) {
-                if (url.startsWith("blob")) {
-                    webView.loadUrl(MyJSInterface.getBase64StringFromBlobUrl(url));
-                } else {
-                    webView.loadUrl(MyJSInterface.doNormalDownLoad(url));
+            webView.setWebChromeClient(new WebChromeClient() {
+                @Override
+                public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
+                    Log.d(TAG, consoleMessage.message() + " -- From line " +
+                            consoleMessage.lineNumber() + " of " + consoleMessage.sourceId());
+                    return true;
                 }
+            });
+            webView.setWebViewClient(new WebViewClient() {
+                @Override
+                public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                    return false;
+                }
+
+                @Override
+                public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                    super.onPageStarted(view, url, favicon);
+                    webView.post(() -> webAddressFinal = webView.getUrl());
+                }
+
+                @Override
+                public void onPageFinished(WebView view, String url) {
+                    super.onPageFinished(view, url);
+                    // Run a check for the desired content
+                    extractContent();
+                }
+
+                @Override
+                public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+                    super.onReceivedError(view, request, error);
+                    Log.d(TAG, "error");
+                }
+
+                @Override
+                public boolean onRenderProcessGone(WebView view, RenderProcessGoneDetail detail) {
+                    Log.d("WebView", "crash");
+                    destroyWebView();
+                    setupWebView();
+                    return true; // The app continues executing.
+                }
+            });
+            if (userAgentDefault == null) {
+                userAgentDefault = webView.getSettings().getUserAgentString();
+                Log.d(TAG, "userAgentString=" + userAgentDefault);
             }
-        });
+            webView.getSettings().getJavaScriptEnabled();
+            webView.getSettings().setJavaScriptEnabled(true);
+            webView.getSettings().setDomStorageEnabled(true);
+            webView.getSettings().setAllowFileAccess(true);
+            webView.getSettings().setLoadWithOverviewMode(true);
+            webView.getSettings().setUseWideViewPort(true);
+            webView.getSettings().setSupportZoom(true);
+            webView.getSettings().setBuiltInZoomControls(true);
+            webView.getSettings().setDisplayZoomControls(false);
+            webView.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_OVERLAY);
+            webView.setScrollbarFadingEnabled(false);
+            webView.addJavascriptInterface(new MyJSInterface(getContext(), this), "HTMLOUT");
+
+            webView.setDownloadListener((url, userAgent, contentDisposition, mimetype, contentLength) -> {
+                // Show the progressBar
+                showDownloadProgress(true);
+                changeLayouts(false, false, false);
+
+                if (url != null) {
+                    if (url.startsWith("blob")) {
+                        webView.loadUrl(MyJSInterface.getBase64StringFromBlobUrl(url));
+                    } else {
+                        webView.loadUrl(MyJSInterface.doNormalDownLoad(url));
+                    }
+                }
+            });
+        }
     }
 
     private void goBackBrowser() {
@@ -273,7 +299,9 @@ public class ImportOnlineFragment extends Fragment {
                     !webAddress.isEmpty()) {
                 changeLayouts(false, true, false);
                 myView.grabText.setVisibility(View.VISIBLE);
-                myView.grabText.post(() -> mainActivityInterface.getShowCase().singleShowCase(requireActivity(),myView.grabText,null,getString(R.string.text_extract_check),false,"onlineTextSearch"));
+                if (getActivity()!=null) {
+                    myView.grabText.post(() -> mainActivityInterface.getShowCase().singleShowCase(getActivity(), myView.grabText, null, text_extract_check_string, false, "onlineTextSearch"));
+                }
                 webSearchFull = webAddress + mainActivityInterface.getCheckInternet().getSearchPhrase() + extra;
                 String justaddress = webAddress;
                 webView.post(() -> {
@@ -394,11 +422,13 @@ public class ImportOnlineFragment extends Fragment {
         }
         if (show) {
             myView.saveButton.post(() -> {
-                myView.grabText.hide();
-                myView.saveButton.show();
-                mainActivityInterface.getCustomAnimation().pulse(requireContext(),myView.saveButton);
-                mainActivityInterface.getShowCase().singleShowCase(requireActivity(),myView.saveButton,
-                        null,getString(R.string.text_extract_website),false,"textWebsite");
+                if (getContext()!=null) {
+                    myView.grabText.hide();
+                    myView.saveButton.show();
+                    mainActivityInterface.getCustomAnimation().pulse(getContext(), myView.saveButton);
+                    mainActivityInterface.getShowCase().singleShowCase(getActivity(), myView.saveButton,
+                            null, text_extract_website_string, false, "textWebsite");
+                }
             });
 
         } else {
@@ -477,11 +507,13 @@ public class ImportOnlineFragment extends Fragment {
         // Get the folders available
         ArrayList<String> availableFolders = mainActivityInterface.getStorageAccess().getSongFolders(
                 mainActivityInterface.getStorageAccess().listSongs(), true, null);
-        ExposedDropDownArrayAdapter exposedDropDownArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(),
-                myView.folderChoice, R.layout.view_exposed_dropdown_item,availableFolders);
-        myView.folderChoice.setAdapter(exposedDropDownArrayAdapter);
+        if (getContext()!=null) {
+            ExposedDropDownArrayAdapter exposedDropDownArrayAdapter = new ExposedDropDownArrayAdapter(getContext(),
+                    myView.folderChoice, R.layout.view_exposed_dropdown_item, availableFolders);
+            myView.folderChoice.setAdapter(exposedDropDownArrayAdapter);
+        }
         myView.folderChoice.setText(mainActivityInterface.getPreferences().
-                getMyPreferenceString("songFolder",getString(R.string.mainfoldername)));
+                getMyPreferenceString("songFolder",mainfoldername_string));
         changeLayouts(false,false,true);
         myView.saveSong.setOnClickListener(v -> saveTheSong());
         showDownloadProgress(false);
@@ -491,7 +523,7 @@ public class ImportOnlineFragment extends Fragment {
     private void copyPDF(Uri inputUri) {
         // Prepare the output file
         String filename = "SongSelect.pdf";
-        String folder = mainActivityInterface.getPreferences().getMyPreferenceString("songFolder",getString(R.string.mainfoldername));
+        String folder = mainActivityInterface.getPreferences().getMyPreferenceString("songFolder",mainfoldername_string);
         if (myView.folderChoice.getText()!=null) {
             folder = myView.folderChoice.getText().toString();
         }
@@ -535,19 +567,19 @@ public class ImportOnlineFragment extends Fragment {
             }
 
             // Let the user know and show the song
-            mainActivityInterface.getShowToast().doIt(getString(R.string.success));
+            mainActivityInterface.getShowToast().doIt(success_string);
             mainActivityInterface.navHome();
 
         } catch (Exception e) {
             e.printStackTrace();
-            mainActivityInterface.getShowToast().doIt(getString(R.string.error));
+            mainActivityInterface.getShowToast().doIt(error_string);
         }
     }
 
     private void saveTheSong() {
         // Update the newSong values from what the user chose
         String getName = newSong.getTitle();
-        String getFolder = getString(R.string.mainfoldername);
+        String getFolder = mainfoldername_string;
         if (myView.saveFilename.getText()!=null) {
             getName = myView.saveFilename.getText().toString();
         }
@@ -568,7 +600,7 @@ public class ImportOnlineFragment extends Fragment {
             continueSaving();
         } else {
             // Alert the user with the bottom sheet are you sure
-            String message = getString(R.string.overwrite)+"\n\n"+getString(R.string.song_name_already_taken);
+            String message = overwrite_string+"\n\n"+song_name_already_taken_string;
             AreYouSureBottomSheet areYouSureBottomSheet = new AreYouSureBottomSheet(
                     "onlineSongOverwrite",message,null,"importOnlineFragment",this,newSong);
             areYouSureBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"AreYouSure");
@@ -595,11 +627,11 @@ public class ImportOnlineFragment extends Fragment {
 
             // Send an instruction to update the song menu (no need for full reindex)
             mainActivityInterface.updateSongMenu(newSong);
-            mainActivityInterface.getShowToast().doIt(getString(R.string.success));
+            mainActivityInterface.getShowToast().doIt(success_string);
 
             mainActivityInterface.navHome();
         } else {
-            mainActivityInterface.getShowToast().doIt(getString(R.string.error));
+            mainActivityInterface.getShowToast().doIt(error_string);
         }
     }
 

@@ -29,6 +29,9 @@ public class FolderManagementBottomSheet extends BottomSheetDialogFragment {
     private MainActivityInterface mainActivityInterface;
     private final boolean root, songs;
     private final String subdir;
+    private String deeplink_set_storage_string="", deeplink_backup_string="", delete_string="",
+            delete_folder_warning_string="", new_folder_string="", new_folder_name_string="",
+            folder_rename_string="", deeplink_move_string="";
     private final Fragment callingFragment;
 
     FolderManagementBottomSheet(Fragment callingFragment, boolean root, boolean songs, String subdir) {
@@ -71,6 +74,8 @@ public class FolderManagementBottomSheet extends BottomSheetDialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = BottomSheetStorageFolderBinding.inflate(inflater, container, false);
 
+        prepareStrings();
+
         // Initialise the 'close' floatingactionbutton
         myView.dialogHeading.setClose(this);
 
@@ -79,6 +84,18 @@ public class FolderManagementBottomSheet extends BottomSheetDialogFragment {
         return myView.getRoot();
     }
 
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            deeplink_set_storage_string = getString(R.string.deeplink_set_storage);
+            deeplink_backup_string = getString(R.string.deeplink_backup);
+            delete_string = getString(R.string.delete);
+            delete_folder_warning_string = getString(R.string.delete_folder_warning);
+            new_folder_string = getString(R.string.new_folder);
+            new_folder_name_string = getString(R.string.new_folder_name);
+            folder_rename_string = getString(R.string.folder_rename);
+            deeplink_move_string = getString(R.string.deeplink_move);
+        }
+    }
     private void setupView() {
         myView.backupFolder.setVisibility(View.VISIBLE);
         myView.backupFolder.setOnClickListener(new ActionClickListener("backupOSB"));
@@ -102,9 +119,11 @@ public class FolderManagementBottomSheet extends BottomSheetDialogFragment {
             myView.createSubdirectory.setOnClickListener(new ActionClickListener("createItem"));
             myView.exportSongList.setVisibility(View.VISIBLE);
             myView.exportSongList.setOnClickListener(v -> {
-                ExportSongListBottomSheet exportSongListBottomSheet = new ExportSongListBottomSheet();
-                exportSongListBottomSheet.show(requireActivity().getSupportFragmentManager(),"ExportSongListBottomSheet");
-                dismiss();
+                if (getActivity()!=null) {
+                    ExportSongListBottomSheet exportSongListBottomSheet = new ExportSongListBottomSheet();
+                    exportSongListBottomSheet.show(getActivity().getSupportFragmentManager(), "ExportSongListBottomSheet");
+                    dismiss();
+                }
             });
 
         } else {
@@ -130,15 +149,15 @@ public class FolderManagementBottomSheet extends BottomSheetDialogFragment {
             switch (what) {
                 case "resetStorage":
                     mainActivityInterface.setWhattodo("storageOk");
-                    mainActivityInterface.navigateToFragment(getString(R.string.deeplink_set_storage),0);
+                    mainActivityInterface.navigateToFragment(deeplink_set_storage_string,0);
                     break;
 
                 case "backupOSB":
-                    mainActivityInterface.navigateToFragment(getString(R.string.deeplink_backup),0);
+                    mainActivityInterface.navigateToFragment(deeplink_backup_string,0);
                     break;
 
                 case "deleteItem":
-                    String action = getString(R.string.delete) + ": " + "OpenSong/Songs/" + subdir + "\n" + getString(R.string.delete_folder_warning);
+                    String action = delete_string + ": " + "OpenSong/Songs/" + subdir + "\n" + delete_folder_warning_string;
                     ArrayList<String> arguments = new ArrayList<>();
                     arguments.add("Songs");
                     arguments.add(subdir);
@@ -149,7 +168,7 @@ public class FolderManagementBottomSheet extends BottomSheetDialogFragment {
                 case "createItem":
                     // Current sub directory is passed as we will create inside this
                     mainActivityInterface.setWhattodo("newfolder");
-                    TextInputBottomSheet textInputBottomSheet = new TextInputBottomSheet(callingFragment,"StorageManagementFragment",getString(R.string.new_folder),getString(R.string.new_folder_name),null,null,null,true);
+                    TextInputBottomSheet textInputBottomSheet = new TextInputBottomSheet(callingFragment,"StorageManagementFragment",new_folder_string,new_folder_name_string,null,null,null,true);
                     textInputBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"StorageManagementFragment");
                     break;
 
@@ -163,14 +182,14 @@ public class FolderManagementBottomSheet extends BottomSheetDialogFragment {
                     } else {
                         lastpart = subdir;
                     }
-                    TextInputBottomSheet textInputBottomSheet2 = new TextInputBottomSheet(callingFragment,"StorageManagementFragment",getString(R.string.folder_rename),getString(R.string.new_folder_name),lastpart,null,null,true);
+                    TextInputBottomSheet textInputBottomSheet2 = new TextInputBottomSheet(callingFragment,"StorageManagementFragment",folder_rename_string,new_folder_name_string,lastpart,null,null,true);
                     textInputBottomSheet2.show(mainActivityInterface.getMyFragmentManager(),"StorageManagementFragment");
                     break;
 
                 case "moveContents":
                     Bundle bundle = new Bundle();
                     bundle.putString("subdir", subdir);
-                    mainActivityInterface.navigateToFragment(getString(R.string.deeplink_move),0);
+                    mainActivityInterface.navigateToFragment(deeplink_move_string,0);
                     break;
             }
 

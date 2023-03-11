@@ -32,6 +32,7 @@ public class InlineSetList extends RecyclerView {
     private boolean showInline, showInlinePresenter;
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "InlineSetList";
+    private String mode_presenter_string="";
     private InlineSetListAdapter inlineSetListAdapter;
     private MainActivityInterface mainActivityInterface;
     private ArrayList<InlineSetItemInfo> setList;
@@ -60,6 +61,7 @@ public class InlineSetList extends RecyclerView {
         inlineSetListAdapter = new InlineSetListAdapter(c);
         setAdapter(inlineSetListAdapter);
         setVisibility(View.GONE);
+        mode_presenter_string = c.getString(R.string.mode_presenter);
     }
 
     public void orientationChanged(int orientation) {
@@ -106,8 +108,12 @@ public class InlineSetList extends RecyclerView {
     }
 
     private boolean needInline() {
-        return (!mainActivityInterface.getMode().equals(getContext().getString(R.string.mode_presenter)) && showInline) ||
-                (mainActivityInterface.getMode().equals(getContext().getString(R.string.mode_presenter)) && showInlinePresenter);
+        if (getContext()!=null) {
+            return (!mainActivityInterface.getMode().equals(mode_presenter_string) && showInline) ||
+                    (mainActivityInterface.getMode().equals(mode_presenter_string) && showInlinePresenter);
+        } else {
+            return false;
+        }
     }
 
     public int getInlineSetWidth() {

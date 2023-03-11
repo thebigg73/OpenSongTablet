@@ -57,7 +57,7 @@ public class AutoscrollBottomSheet extends BottomSheetDialogFragment {
         myView = BottomSheetAutoscrollBinding.inflate(inflater, container, false);
         myView.dialogHeading.setClose(this);
 
-        getStrings();
+        prepareStrings();
 
         myView.dialogHeading.setWebHelp(mainActivityInterface,website_autoscroll);
 
@@ -74,7 +74,7 @@ public class AutoscrollBottomSheet extends BottomSheetDialogFragment {
         return myView.getRoot();
     }
 
-    private void getStrings() {
+    private void prepareStrings() {
         if (getContext()!=null) {
             deeplink_autoscroll_settings = getString(R.string.deeplink_autoscroll_settings);
             website_autoscroll = getString(R.string.website_autoscroll);
@@ -155,10 +155,14 @@ public class AutoscrollBottomSheet extends BottomSheetDialogFragment {
 
     private void setStartStop() {
         if (mainActivityInterface.getAutoscroll().getIsAutoscrolling()) {
-            myView.startStopAutoscroll.setIcon(ContextCompat.getDrawable(requireContext(), R.drawable.stop));
+            if (getContext()!=null) {
+                myView.startStopAutoscroll.setIcon(ContextCompat.getDrawable(getContext(), R.drawable.stop));
+            }
             myView.startStopAutoscroll.setText(stop);
         } else {
-            myView.startStopAutoscroll.setIcon(ContextCompat.getDrawable(requireContext(), R.drawable.play));
+            if (getContext()!=null) {
+                myView.startStopAutoscroll.setIcon(ContextCompat.getDrawable(getContext(), R.drawable.play));
+            }
             myView.startStopAutoscroll.setText(start);
         }
     }

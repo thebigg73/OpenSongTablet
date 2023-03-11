@@ -29,6 +29,8 @@ public class ChordFingeringBottomSheet extends BottomSheetDialogFragment {
 
     private BottomSheetChordsFingeringBinding myView;
     private MainActivityInterface mainActivityInterface;
+    private String website_chords_fingering_string="", capo_chords_string="", capo_fret_string="",
+            transpose_string="", custom_string="";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -54,12 +56,13 @@ public class ChordFingeringBottomSheet extends BottomSheetDialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = BottomSheetChordsFingeringBinding.inflate(inflater, container, false);
 
+        prepareStrings();
+
         myView.dialogHeader.setClose(this);
-        myView.dialogHeader.setWebHelp(mainActivityInterface,getString(R.string.website_chords_fingering));
+        myView.dialogHeader.setWebHelp(mainActivityInterface,website_chords_fingering_string);
 
         // Initialise the chord directory and processing helpers
-
-        //chordDisplayProcessing = new ChordDisplayProcessing(requireContext());
+        //chordDisplayProcessing = new ChordDisplayProcessing(getContext());
 
         // Set up the instrument listener
         setupInstruments();
@@ -73,11 +76,22 @@ public class ChordFingeringBottomSheet extends BottomSheetDialogFragment {
         return myView.getRoot();
     }
 
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            website_chords_fingering_string = getString(R.string.website_chords_fingering);
+            capo_chords_string = getString(R.string.capo_chords);
+            capo_fret_string = getString(R.string.capo_fret);
+            transpose_string = getString(R.string.transpose);
+            custom_string = getString(R.string.custom);
+        }
+    }
     private void setupInstruments() {
 
-        ExposedDropDownArrayAdapter exposedDropDownArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(),
-                myView.instrument, R.layout.view_exposed_dropdown_item, mainActivityInterface.getChordDisplayProcessing().getInstruments());
-        myView.instrument.setAdapter(exposedDropDownArrayAdapter);
+        if (getContext()!=null) {
+            ExposedDropDownArrayAdapter exposedDropDownArrayAdapter = new ExposedDropDownArrayAdapter(getContext(),
+                    myView.instrument, R.layout.view_exposed_dropdown_item, mainActivityInterface.getChordDisplayProcessing().getInstruments());
+            myView.instrument.setAdapter(exposedDropDownArrayAdapter);
+        }
         myView.instrument.setText(instrumentPrefToText());
         myView.instrument.addTextChangedListener(new TextWatcher() {
             @Override
@@ -100,14 +114,14 @@ public class ChordFingeringBottomSheet extends BottomSheetDialogFragment {
         !myView.instrument.getText().toString().equals(mainActivityInterface.getChordDisplayProcessing().getInstruments().get(6))) {
             // Only for stringed instruments!
             myView.capoChords.setVisibility(View.VISIBLE);
-            String capoText = getString(R.string.capo_chords) + " (" + getString(R.string.capo_fret) + " " +
+            String capoText = capo_chords_string + " (" + capo_fret_string + " " +
                     mainActivityInterface.getChordDisplayProcessing().getCapoPosition() + ")";
             myView.capoChords.setText(capoText);
         } else if (!mainActivityInterface.getSong().getCapo().isEmpty() &&
                 myView.instrument.getText().toString().equals(mainActivityInterface.getChordDisplayProcessing().getInstruments().get(6))) {
             // Piano shows the transpose text instead
             myView.capoChords.setVisibility(View.VISIBLE);
-            String capoText = getString(R.string.transpose) + " (+" + mainActivityInterface.getSong().getCapo() + ")";
+            String capoText = transpose_string + " (+" + mainActivityInterface.getSong().getCapo() + ")";
             myView.capoChords.setText(capoText);
         } else {
             myView.capoChords.setVisibility(View.GONE);
@@ -167,18 +181,14 @@ public class ChordFingeringBottomSheet extends BottomSheetDialogFragment {
                         mainActivityInterface.getChordDisplayProcessing().getChordsInSong().get(i), mainActivityInterface.getChordDisplayProcessing().getFingerings().get(i));
                 String thisChordCode = mainActivityInterface.getChordDisplayProcessing().getFingerings().get(i);
                 if (chordLayout!=null) {
-                    chordLayout.setOnClickListener(v -> {
-                        mainActivityInterface.getMidi().playMidiNotes(thisChordCode, "standard", 50, 0);
-                    });
+                    chordLayout.setOnClickListener(v -> mainActivityInterface.getMidi().playMidiNotes(thisChordCode, "standard", 50, 0));
                 }
             } else {
                 chordLayout = mainActivityInterface.getChordDisplayProcessing().getChordDiagram(getLayoutInflater(),
                         mainActivityInterface.getChordDisplayProcessing().getChordsInSong().get(i), mainActivityInterface.getChordDisplayProcessing().getFingerings().get(i));
                 String thisChordCode = mainActivityInterface.getChordDisplayProcessing().getFingerings().get(i);
                 if (chordLayout!=null) {
-                    chordLayout.setOnClickListener(v -> {
-                        mainActivityInterface.getMidi().playMidiNotes(thisChordCode, "standard", 200, 0);
-                    });
+                    chordLayout.setOnClickListener(v -> mainActivityInterface.getMidi().playMidiNotes(thisChordCode, "standard", 200, 0));
                 }
             }
 
@@ -190,7 +200,7 @@ public class ChordFingeringBottomSheet extends BottomSheetDialogFragment {
         // Add the custom chords
         String[] customChords = mainActivityInterface.getSong().getCustomchords().split(" ");
         for (String chordCode:customChords) {
-            String customChordName = getString(R.string.custom);
+            String customChordName = custom_string;
             if (chordCode.contains("_")) {
                 customChordName = chordCode.substring(chordCode.lastIndexOf("_"));
                 customChordName = customChordName.replace("_","");

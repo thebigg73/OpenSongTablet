@@ -25,6 +25,9 @@ public class SongMenuBottomSheet extends BottomSheetDialogFragment {
     private final String TAG = "SongMenuBottomSheet";
     private BottomSheetMenuSongsBinding myView;
     private MainActivityInterface mainActivityInterface;
+    private String file_string="", deeplink_export_string="", deeplink_edit_string="",
+            deeplink_song_actions_string="", deeplink_import_string="", search_index_wait_string="",
+            added_to_set_string="", variation_string="";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -50,6 +53,8 @@ public class SongMenuBottomSheet extends BottomSheetDialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = BottomSheetMenuSongsBinding.inflate(inflater, container, false);
 
+        prepareStrings();
+
         // Initialise the 'close' floatingactionbutton
         myView.dialogHeading.setClose(this);
 
@@ -60,6 +65,18 @@ public class SongMenuBottomSheet extends BottomSheetDialogFragment {
         return myView.getRoot();
     }
 
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            file_string = getString(R.string.file);
+            deeplink_export_string = getString(R.string.deeplink_export);
+            deeplink_edit_string = getString(R.string.deeplink_edit);
+            deeplink_song_actions_string = getString(R.string.deeplink_song_actions);
+            deeplink_import_string = getString(R.string.deeplink_import);
+            search_index_wait_string = getString(R.string.search_index_wait);
+            added_to_set_string = getString(R.string.added_to_set);
+            variation_string = getString(R.string.variation);
+        }
+    }
     private void setupViews() {
         // Set up the song title
         String songTitle = mainActivityInterface.getSong().getTitle();
@@ -69,7 +86,7 @@ public class SongMenuBottomSheet extends BottomSheetDialogFragment {
         } else {
             myView.songSpecificActions.setVisibility(View.VISIBLE);
             myView.otherOptions.setVisibility(View.VISIBLE);
-            myView.songTitle.setHint(getString(R.string.file)+": "+songTitle);
+            myView.songTitle.setHint(file_string+": "+songTitle);
         }
         // Check we have songs in the menu
         if (mainActivityInterface.getSongsFound("song").size()>0) {
@@ -86,16 +103,18 @@ public class SongMenuBottomSheet extends BottomSheetDialogFragment {
                     mainActivityInterface.getSong().getFilename(),true);
             dismiss();
         });
-        myView.songShare.setOnClickListener(v -> navigateTo(getString(R.string.deeplink_export)));
-        myView.songEdit.setOnClickListener(v -> navigateTo(getString(R.string.deeplink_edit)));
-        myView.songActions.setOnClickListener(v -> navigateTo(getString(R.string.deeplink_song_actions)));
-        myView.newSongs.setOnClickListener(v -> navigateTo(getString(R.string.deeplink_import)));
+        myView.songShare.setOnClickListener(v -> navigateTo(deeplink_export_string));
+        myView.songEdit.setOnClickListener(v -> navigateTo(deeplink_edit_string));
+        myView.songActions.setOnClickListener(v -> navigateTo(deeplink_song_actions_string));
+        myView.newSongs.setOnClickListener(v -> navigateTo(deeplink_import_string));
         myView.addToSet.setOnClickListener(v -> addToSet());
         myView.addVariationToSet.setOnClickListener(v -> addVariationToSet());
         myView.randomSong.setOnClickListener(v -> {
-            RandomSongBottomSheet randomSongBottomSheet = new RandomSongBottomSheet("song");
-            randomSongBottomSheet.show(requireActivity().getSupportFragmentManager(),"RandomBottomSheet");
-            dismiss();
+            if (getActivity()!=null) {
+                RandomSongBottomSheet randomSongBottomSheet = new RandomSongBottomSheet("song");
+                randomSongBottomSheet.show(getActivity().getSupportFragmentManager(), "RandomBottomSheet");
+                dismiss();
+            }
         });
         myView.rebuildIndex.setOnClickListener(v -> {
             if (mainActivityInterface.getSongListBuildIndex().getIndexComplete()) {
@@ -104,7 +123,7 @@ public class SongMenuBottomSheet extends BottomSheetDialogFragment {
                 dismiss();
             } else {
                 dismiss();
-                mainActivityInterface.getShowToast().doIt(getString(R.string.search_index_wait));
+                mainActivityInterface.getShowToast().doIt(search_index_wait_string);
             }
         });
     }
@@ -125,8 +144,7 @@ public class SongMenuBottomSheet extends BottomSheetDialogFragment {
         addToCurrentSet();
 
         // Let the user know and close
-        alertSuccess(mainActivityInterface.getSong().getFilename() + " " +
-                getString(R.string.added_to_set));
+        alertSuccess(mainActivityInterface.getSong().getFilename() + " " + added_to_set_string);
     }
 
     private void addVariationToSet() {
@@ -145,9 +163,8 @@ public class SongMenuBottomSheet extends BottomSheetDialogFragment {
         }
 
         // Let the user know and close
-        alertSuccess(getString(R.string.variation) + " " +
-                mainActivityInterface.getSong().getFilename() + " " +
-                getString(R.string.added_to_set));
+        alertSuccess(variation_string + " " +
+                mainActivityInterface.getSong().getFilename() + " " + added_to_set_string);
     }
 
     private void addToCurrentSet() {

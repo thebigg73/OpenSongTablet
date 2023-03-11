@@ -23,6 +23,7 @@ public class CCLILogFragment extends Fragment {
 
     private MainActivityInterface mainActivityInterface;
     private SettingsCcliLogBinding myView;
+    private String ccli_string="", ccli_church_string="", ccli_licence_string="";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -40,16 +41,18 @@ public class CCLILogFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsCcliLogBinding.inflate(inflater, container, false);
 
-        mainActivityInterface.updateToolbar(getString(R.string.ccli) + " XML");
+        prepareString();
+
+        mainActivityInterface.updateToolbar(ccli_string + " XML");
 
         // Set up the default values
         Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Settings", "", "ActivityLog.xml");
         mainActivityInterface.getCCLILog().getCurrentEntries(uri);
         mainActivityInterface.getCCLILog().getLogFileSize(uri, myView.logSize);
-        String churchName = getString(R.string.ccli_church) + ": " +
+        String churchName = ccli_church_string + ": " +
                 mainActivityInterface.getPreferences().getMyPreferenceString("ccliChurchName","");
         myView.churchDetails.setText(churchName);
-        String churchLicence = getString(R.string.ccli_licence) + ": " +
+        String churchLicence = ccli_licence_string + ": " +
                 mainActivityInterface.getPreferences().getMyPreferenceString("ccliLicence","");
         myView.churchDetails.setHint(churchLicence);
 
@@ -60,6 +63,13 @@ public class CCLILogFragment extends Fragment {
         return myView.getRoot();
     }
 
+    private void prepareString() {
+        if (getContext()!=null) {
+            ccli_string = getString(R.string.ccli);
+            ccli_church_string = getString(R.string.ccli_church);
+            ccli_licence_string = getString(R.string.ccli_licence);
+        }
+    }
     @Override
     public void onDestroyView() {
         super.onDestroyView();
