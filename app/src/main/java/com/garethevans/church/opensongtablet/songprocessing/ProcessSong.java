@@ -2307,11 +2307,11 @@ public class ProcessSong {
             frameLayout.setClipChildren(false);
             frameLayout.setClipToPadding(false);
             // Make all the views the same width
-            v.getLayoutParams().width = LinearLayout.LayoutParams.MATCH_PARENT;
+            v.getLayoutParams().width = maxWidth;
             frameLayout.addView(v);
 
             // Now the view is created and has content, size it to the correct width
-            //frameLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            frameLayout.getLayoutParams().width = maxWidth;
             innerCol1.addView(frameLayout);
         }
 
