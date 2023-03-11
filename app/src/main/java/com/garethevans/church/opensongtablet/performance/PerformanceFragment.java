@@ -689,6 +689,7 @@ public class PerformanceFragment extends Fragment {
                 myView.pageHolder.setVisibility(View.GONE);
                 myView.songView.setVisibility(View.GONE);
                 myView.zoomLayout.setVisibility(View.GONE);
+                myView.highlighterView.setVisibility(View.GONE);
                 stageSectionAdapter = new StageSectionAdapter(requireContext(), mainActivityInterface,
                         displayInterface, myView.inlineSetList.getInlineSetWidth());
 
@@ -726,6 +727,7 @@ public class PerformanceFragment extends Fragment {
                 myView.songView.setVisibility(View.VISIBLE);
                 myView.imageView.setVisibility(View.GONE);
                 myView.recyclerView.setVisibility(View.GONE);
+                myView.highlighterView.setVisibility(View.GONE);
 
                 myView.zoomLayout.setPageSize(availableWidth, availableHeight);
                 myView.pageHolder.getLayoutParams().width = availableWidth;
