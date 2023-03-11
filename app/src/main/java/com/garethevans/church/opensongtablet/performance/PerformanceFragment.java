@@ -820,61 +820,63 @@ public class PerformanceFragment extends Fragment {
     }
 
     private void dealWithExtraStuffOnceSettled() {
-        // Send the autoscroll information (if required)
-        mainActivityInterface.getAutoscroll().initialiseSongAutoscroll(heightAfterScale, availableHeight);
-        if (mainActivityInterface.getAutoscroll().getShouldAutostart()) {
-            mainActivityInterface.getAutoscroll().startAutoscroll();
+        if (getContext()!=null && myView!=null) {
+            // Send the autoscroll information (if required)
+            mainActivityInterface.getAutoscroll().initialiseSongAutoscroll(heightAfterScale, availableHeight);
+            if (mainActivityInterface.getAutoscroll().getShouldAutostart()) {
+                mainActivityInterface.getAutoscroll().startAutoscroll();
+            }
+
+            // Deal with capo information (if required)
+            mainActivityInterface.updateOnScreenInfo("capoShow");
+            mainActivityInterface.dealWithCapo();
+
+            // Now deal with the highlighter file
+            if (mainActivityInterface.getMode().equals(mode_performance)) {
+                dealWithHighlighterFile(widthBeforeScale, heightBeforeScale);
+            }
+
+            // Load up the sticky notes if the user wants them
+            dealWithStickyNotes(false, false);
+
+            // IV - Consume any later pending client section change received from Host (-ve value)
+            if (mainActivityInterface.getNearbyConnections().hasValidConnections() &&
+                    !mainActivityInterface.getNearbyConnections().getIsHost() &&
+                    mainActivityInterface.getNearbyConnections().getWaitingForSectionChange()) {
+                int pendingSection = mainActivityInterface.getNearbyConnections().getPendingCurrentSection();
+
+                // Reset the flags to off
+                mainActivityInterface.getNearbyConnections().setWaitingForSectionChange(false);
+                mainActivityInterface.getNearbyConnections().setPendingCurrentSection(-1);
+
+                mainActivityInterface.getNearbyConnections().doSectionChange(pendingSection);
+            }
+
+            // Start the pad (if the pads are activated and the pad is valid)
+            mainActivityInterface.getPad().autoStartPad();
+
+            // Update any midi commands (if any)
+            if (mainActivityInterface.getPreferences().getMyPreferenceBoolean("midiSendAuto", false)) {
+                mainActivityInterface.getMidi().buildSongMidiMessages();
+                mainActivityInterface.getMidi().sendSongMessages();
+            }
+
+            // Update the secondary display (if present)
+            displayInterface.updateDisplay("newSongLoaded");
+            displayInterface.updateDisplay("setSongInfo");
+            displayInterface.updateDisplay("setSongContent");
+
+            // Send a call to nearby devices to process the song at their end
+            if (mainActivityInterface.getNearbyConnections().hasValidConnections() &&
+                    mainActivityInterface.getNearbyConnections().getIsHost()) {
+                mainActivityInterface.getNearbyConnections().sendSongPayload();
+            }
+
+            // If we opened the app with and intent/file, check if we need to import
+            tryToImportIntent();
+
+            mainActivityInterface.updateOnScreenInfo("showhide");
         }
-
-        // Deal with capo information (if required)
-        mainActivityInterface.updateOnScreenInfo("capoShow");
-        mainActivityInterface.dealWithCapo();
-
-        // Now deal with the highlighter file
-        if (mainActivityInterface.getMode().equals(mode_performance)) {
-            dealWithHighlighterFile(widthBeforeScale, heightBeforeScale);
-        }
-
-        // Load up the sticky notes if the user wants them
-        dealWithStickyNotes(false, false);
-
-        // IV - Consume any later pending client section change received from Host (-ve value)
-        if (mainActivityInterface.getNearbyConnections().hasValidConnections() &&
-                !mainActivityInterface.getNearbyConnections().getIsHost() &&
-                mainActivityInterface.getNearbyConnections().getWaitingForSectionChange()) {
-            int pendingSection = mainActivityInterface.getNearbyConnections().getPendingCurrentSection();
-
-            // Reset the flags to off
-            mainActivityInterface.getNearbyConnections().setWaitingForSectionChange(false);
-            mainActivityInterface.getNearbyConnections().setPendingCurrentSection(-1);
-
-            mainActivityInterface.getNearbyConnections().doSectionChange(pendingSection);
-        }
-
-        // Start the pad (if the pads are activated and the pad is valid)
-        mainActivityInterface.getPad().autoStartPad();
-
-        // Update any midi commands (if any)
-        if (mainActivityInterface.getPreferences().getMyPreferenceBoolean("midiSendAuto",false)) {
-            mainActivityInterface.getMidi().buildSongMidiMessages();
-            mainActivityInterface.getMidi().sendSongMessages();
-        }
-
-        // Update the secondary display (if present)
-        displayInterface.updateDisplay("newSongLoaded");
-        displayInterface.updateDisplay("setSongInfo");
-        displayInterface.updateDisplay("setSongContent");
-
-        // Send a call to nearby devices to process the song at their end
-        if (mainActivityInterface.getNearbyConnections().hasValidConnections() &&
-                mainActivityInterface.getNearbyConnections().getIsHost()) {
-            mainActivityInterface.getNearbyConnections().sendSongPayload();
-        }
-
-        // If we opened the app with and intent/file, check if we need to import
-        tryToImportIntent();
-
-        mainActivityInterface.updateOnScreenInfo("showhide");
     }
     public void dealWithAbc(boolean forceShow, boolean hide) {
         if (hide) {
@@ -894,7 +896,7 @@ public class PerformanceFragment extends Fragment {
     }
     private void dealWithHighlighterFile(int w, int h) {
         try {
-            if (!mainActivityInterface.getPreferences().
+            if (myView!=null && !mainActivityInterface.getPreferences().
                     getMyPreferenceString("songAutoScale", "W").equals("N")) {
                 // Set the highlighter image view to match
                 myView.highlighterView.setVisibility(View.INVISIBLE);
@@ -950,7 +952,7 @@ public class PerformanceFragment extends Fragment {
                         e.printStackTrace();
                     }
                 });
-            } else {
+            } else if (myView!=null) {
                 myView.highlighterView.post(() -> {
                     try {
                         myView.highlighterView.setVisibility(View.GONE);
