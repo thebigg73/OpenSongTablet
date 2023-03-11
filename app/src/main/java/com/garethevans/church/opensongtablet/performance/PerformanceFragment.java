@@ -758,6 +758,7 @@ public class PerformanceFragment extends Fragment {
                     heightAfterScale = (int)(scaleInfo[3]);
                     myView.pageHolder.getLayoutParams().width = availableWidth;
                     myView.songView.getLayoutParams().width = availableWidth;
+                    widthAfterScale = availableWidth;
                 }  else if (scaleInfo.length==6) {
                     // 3 columns. [0]=col1scale  [1]=col2scale  [2]=col3scale
                     // [3]=sectionnum for col2  [4]=sectionbum for col3 [5]=biggest col height
@@ -765,6 +766,7 @@ public class PerformanceFragment extends Fragment {
                     heightAfterScale = (int)scaleInfo[5];
                     myView.pageHolder.getLayoutParams().width = availableWidth;
                     myView.songView.getLayoutParams().width = availableWidth;
+                    widthAfterScale = availableWidth;
                 }
 
                 heightAfterScale = heightAfterScale + mainActivityInterface.getSongSheetTitleLayout().getHeight();
