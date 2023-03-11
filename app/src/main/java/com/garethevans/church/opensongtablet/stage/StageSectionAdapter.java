@@ -165,7 +165,8 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
             holder.sectionView.post(()-> {
                 try {
                     holder.v.getLayoutParams().width = availableWidth;
-                    holder.sectionView.getLayoutParams().width = (int) (width * scale);
+                    //holder.sectionView.getLayoutParams().width = (int) (width * scale);
+                    holder.sectionView.getLayoutParams().width = availableWidth;
                     holder.v.getLayoutParams().height = (int) (height * scale);
                     holder.sectionView.getLayoutParams().height = (int) (height * scale);
                     if (v.getParent()!=null) {

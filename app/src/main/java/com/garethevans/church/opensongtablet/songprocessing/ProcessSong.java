@@ -876,6 +876,7 @@ public class ProcessSong {
     private TableLayout groupTable(String string, int lyricColor, int chordColor, int capoColor,
                                    int highlightChordColor, boolean presentation) {
         TableLayout tableLayout = newTableLayout();
+        tableLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT));
 
         // If we have a capo and want to show capo chords, duplicate and transpose the chord line
         String capoText = mainActivityInterface.getSong().getCapo();
@@ -1747,6 +1748,8 @@ public class ProcessSong {
                     section = section + "\n ";
                 }
                 LinearLayout linearLayout = newLinearLayout(); // transparent color
+                linearLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+
                 if (presentation) {
                     linearLayout.setGravity(mainActivityInterface.getPresenterSettings().getPresoLyricsAlign());
                 }
@@ -1825,6 +1828,7 @@ public class ProcessSong {
                                             size, textColor,
                                             mainActivityInterface.getMyThemeColors().getHighlightHeadingColor(),
                                             mainActivityInterface.getMyThemeColors().getHighlightChordColor(), presentation);
+                                    tv.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                                     tv.setBackgroundColor(backgroundColor);
                                     linearLayout.addView(tv);
                                 } else {
@@ -2249,9 +2253,12 @@ public class ProcessSong {
             }
             frameLayout.setClipChildren(false);
             frameLayout.setClipToPadding(false);
+            // Make all the views the same width
+            v.getLayoutParams().width = LinearLayout.LayoutParams.MATCH_PARENT;
             frameLayout.addView(v);
+
             // Now the view is created and has content, size it to the correct width
-            frameLayout.setLayoutParams(new LinearLayout.LayoutParams(currentWidth,LinearLayout.LayoutParams.WRAP_CONTENT));
+            frameLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
             innerCol1.addView(frameLayout);
         }
 
@@ -2374,6 +2381,9 @@ public class ProcessSong {
             }
             frameLayout.setClipChildren(false);
             frameLayout.setClipToPadding(false);
+
+            // Make all the views the same width
+            sectionViews.get(i).getLayoutParams().width = LinearLayout.LayoutParams.MATCH_PARENT;
             frameLayout.addView(sectionViews.get(i));
 
             // Now the view is created and has content, size it to the correct width
@@ -2392,6 +2402,9 @@ public class ProcessSong {
             }
             frameLayout.setClipChildren(false);
             frameLayout.setClipToPadding(false);
+
+            // Make all the views the same width
+            sectionViews.get(i).getLayoutParams().width = LinearLayout.LayoutParams.MATCH_PARENT;
             frameLayout.addView(sectionViews.get(i));
 
             // Now the view is created and has content, size it to the correct width
@@ -2578,7 +2591,11 @@ public class ProcessSong {
             }
             frameLayout.setClipChildren(false);
             frameLayout.setClipToPadding(false);
+
+            // Make all the views the same width
+            sectionViews.get(i).getLayoutParams().width = LinearLayout.LayoutParams.MATCH_PARENT;
             frameLayout.addView(sectionViews.get(i));
+
 
             // Now the view is created and has content, size it to the correct width
             frameLayout.setLayoutParams(new LinearLayout.LayoutParams((int)thirdWidth,LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -2596,7 +2613,11 @@ public class ProcessSong {
             }
             frameLayout.setClipChildren(false);
             frameLayout.setClipToPadding(false);
+
+            // Make all the views the same width
+            sectionViews.get(i).getLayoutParams().width = LinearLayout.LayoutParams.MATCH_PARENT;
             frameLayout.addView(sectionViews.get(i));
+
 
             // Now the view is created and has content, size it to the correct width
             frameLayout.setLayoutParams(new LinearLayout.LayoutParams((int)thirdWidth,LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -2614,6 +2635,9 @@ public class ProcessSong {
             }
             frameLayout.setClipChildren(false);
             frameLayout.setClipToPadding(false);
+
+            // Make all the views the same width
+            sectionViews.get(i).getLayoutParams().width = LinearLayout.LayoutParams.MATCH_PARENT;
             frameLayout.addView(sectionViews.get(i));
 
             // Now the view is created and has content, size it to the correct width

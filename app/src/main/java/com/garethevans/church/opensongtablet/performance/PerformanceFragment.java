@@ -582,7 +582,7 @@ public class PerformanceFragment extends Fragment {
             mainActivityInterface.setSongSheetTitleLayout(null);
         }
         // We now have the views ready, we need to draw them so we can measure them
-        // Start with the song sheeet title/header
+        // Start with the song sheet title/header
         // The other views are dealt with after this call
 
         // Run this as a post to the root view - otherwise views aren't necessarily fully ready for drawing
