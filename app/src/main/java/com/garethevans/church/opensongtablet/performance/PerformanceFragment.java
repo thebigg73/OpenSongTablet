@@ -1006,7 +1006,9 @@ public class PerformanceFragment extends Fragment {
                     mainActivityInterface.getPreferences().
                             getMyPreferenceBoolean("stickyAuto", true)) || forceShow) {
                 // This is called from the MainActivity when we clicked on the page button
-                stickyPopUp.floatSticky(myView.pageHolder, forceShow);
+                if (myView!=null) {
+                    stickyPopUp.floatSticky(myView.pageHolder, forceShow);
+                }
             } }
     }
 

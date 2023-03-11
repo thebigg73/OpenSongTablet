@@ -211,9 +211,11 @@ public class HighlighterEditFragment extends Fragment {
     }
 
     private void setScale(int bitmapWidth, int bitmapHeight) {
-        float scaledX = (float) availableWidth / (float) bitmapWidth;
-        scaledWidth = (int) (bitmapWidth * scaledX);
-        scaledHeight = (int) (bitmapHeight * scaledX);
+        float maxScaleX = (float) availableWidth / (float) bitmapWidth;
+        float maxScaleY = (float) availableHeight / (float) bitmapHeight;
+        float maxScale = Math.min(maxScaleX,maxScaleY);
+        scaledWidth = (int) (bitmapWidth * maxScale);
+        scaledHeight = (int) (bitmapHeight * maxScale);
     }
 
     private void setImageSize() {
@@ -224,10 +226,10 @@ public class HighlighterEditFragment extends Fragment {
         myView.glideImage.setLayoutParams(layoutParams);
 
         // Get a scaled width and height of the bitmap being drawn as the highlighter
-        ViewGroup.LayoutParams layoutParams2 = myView.drawNotes.getLayoutParams();
+        ViewGroup.LayoutParams layoutParams2 = mainActivityInterface.getDrawNotes().getLayoutParams();
         layoutParams2.width = scaledWidth;
         layoutParams2.height = scaledHeight;
-        myView.drawNotes.setLayoutParams(layoutParams2);
+        mainActivityInterface.getDrawNotes().setLayoutParams(layoutParams2);
     }
     private void bottomSheetBar() {
         bottomSheetBehavior = BottomSheetBehavior.from(myView.bottomSheet.bottomSheet);
@@ -256,7 +258,7 @@ public class HighlighterEditFragment extends Fragment {
                     case BottomSheetBehavior.STATE_COLLAPSED:
                     case BottomSheetBehavior.STATE_HIDDEN:
                     case BottomSheetBehavior.STATE_HALF_EXPANDED:
-                        myView.drawNotes.setEnabled(true);
+                        mainActivityInterface.getDrawNotes().setEnabled(true);
                         myView.dimBackground.setVisibility(View.GONE);
                         break;
                     case BottomSheetBehavior.STATE_EXPANDED:
@@ -264,7 +266,7 @@ public class HighlighterEditFragment extends Fragment {
                     case BottomSheetBehavior.STATE_SETTLING:
                         checkUndos();
                         checkRedos();
-                        myView.drawNotes.setEnabled(false);
+                        mainActivityInterface.getDrawNotes().setEnabled(false);
                         break;
                 }
             }
