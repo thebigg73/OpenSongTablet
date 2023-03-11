@@ -172,6 +172,7 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
                     if (v.getParent()!=null) {
                         ((ViewGroup)v.getParent()).removeView(v);
                     }
+                    v.getLayoutParams().width = availableWidth;
                     holder.sectionView.addView(v);
                 } catch (Exception e) {
                     e.printStackTrace();
