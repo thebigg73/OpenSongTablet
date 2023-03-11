@@ -142,6 +142,8 @@
     <string name="chorus_background">"Chorus pozadí"</string>
     <string name="close">"Zavřít"</string>
     <string name="color_choose">"Barva Chooser"</string>
+    <string name="column_force">Ručně přepište konce sloupců</string>
+    <string name="column_force_info">Použijte nový kód stránky (!--) ve skladbě k vynucení nového zalomení sloupce při automatickém škálování</string>
     <string name="comment">Komentář</string>
     <string name="comment_background">"Komentář pozadí"</string>
     <string name="commentline_scale">"Měřítko text komentáře"</string>

@@ -142,6 +142,8 @@
     <string name="chorus_background">"Chór w tle"</string>
     <string name="close">"Zamknij"</string>
     <string name="color_choose">"Kolor Chooser"</string>
+    <string name="column_force">Ręcznie zastąp podziały kolumn</string>
+    <string name="column_force_info">Użyj nowego kodu strony (!--) w utworze, aby wymusić nowy podział kolumny podczas automatycznego skalowania</string>
     <string name="comment">Komentarz</string>
     <string name="comment_background">"Komentarz w tle"</string>
     <string name="commentline_scale">"Skalowanie tekstu komentarz"</string>

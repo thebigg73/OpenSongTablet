@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.net.Uri;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -137,7 +136,6 @@ public class Autoscroll {
         return isPaused;
     }
     public boolean getShouldAutostart() {
-        Log.d(TAG,"Should start autoscroll:" + (autoscrollActivated && autoscrollAutoStart));
         return autoscrollActivated && autoscrollAutoStart;
     }
     public boolean getIsAutoscrolling() {
@@ -377,8 +375,6 @@ public class Autoscroll {
         if (!alreadyFiguredOut) {
             figureOutTimes();
         }
-
-        Log.d(TAG,"autoscrollOK:"+autoscrollOK);
 
         if (autoscrollOK) {
             if (scheduledExecutorService == null) {

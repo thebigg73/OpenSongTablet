@@ -88,11 +88,13 @@ public class EditSongFragmentLyrics extends Fragment {
             myView.ocr.setVisibility(View.GONE);
         }
 
-        myView.lyrics.setText(mainActivityInterface.getTempSong().getLyrics());
+        int lines = Math.max(20,mainActivityInterface.getTempSong().getLyrics().split("\n").length);
+
         mainActivityInterface.getProcessSong().editBoxToMultiline(myView.lyrics);
         editTextSize = mainActivityInterface.getPreferences().getMyPreferenceFloat("editTextSize",14);
         myView.lyrics.setTextSize(editTextSize);
-        mainActivityInterface.getProcessSong().stretchEditBoxToLines(myView.lyrics,20);
+        mainActivityInterface.getProcessSong().stretchEditBoxToLines(myView.lyrics,lines);
+        myView.lyrics.setText(mainActivityInterface.getTempSong().getLyrics());
 
         validUndoRedo(mainActivityInterface.getTempSong().getLyricsUndosPos());
     }

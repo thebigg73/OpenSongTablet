@@ -142,6 +142,8 @@
     <string name="chorus_background">"Φόντο ρεφρέν"</string>
     <string name="close">"Close"</string>
     <string name="color_choose">"Επιλογέας χρώματος"</string>
+    <string name="column_force">Μη αυτόματη παράκαμψη αλλαγών στηλών</string>
+    <string name="column_force_info">Χρησιμοποιήστε τον κωδικό νέας σελίδας (!--) στο τραγούδι για να επιβάλετε μια νέα αλλαγή στήλης κατά την αυτόματη κλιμάκωση</string>
     <string name="comment">Σχόλιο</string>
     <string name="comment_background">"Φόντο σχολίου"</string>
     <string name="commentline_scale">"Κείμενο σχολίου κλίμακας"</string>

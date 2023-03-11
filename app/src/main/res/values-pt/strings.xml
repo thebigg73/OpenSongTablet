@@ -142,6 +142,8 @@
     <string name="chorus_background">"Fundo Chorus"</string>
     <string name="close">"Fechar"</string>
     <string name="color_choose">"Cor Chooser"</string>
+    <string name="column_force">Substituir quebras de coluna manualmente</string>
+    <string name="column_force_info">Use o novo código de página (!--) na música para forçar uma nova quebra de coluna ao dimensionar automaticamente</string>
     <string name="comment">Comente</string>
     <string name="comment_background">"Comentário fundo"</string>
     <string name="commentline_scale">"Dimensionar o comentário de texto"</string>

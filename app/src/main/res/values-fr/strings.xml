@@ -142,6 +142,8 @@
     <string name="chorus_background">"Fond des refrains"</string>
     <string name="close">"Fermer"</string>
     <string name="color_choose">"Sélecteur de couleur "</string>
+    <string name="column_force">Remplacer manuellement les sauts de colonne</string>
+    <string name="column_force_info">Utilisez le nouveau code de page (!--) dans la chanson pour forcer un nouveau saut de colonne lors de la mise à l\'échelle automatique</string>
     <string name="comment">Commentaire</string>
     <string name="comment_background">"Fond des commentaires"</string>
     <string name="commentline_scale">"Taille du texte de commentaire"</string>

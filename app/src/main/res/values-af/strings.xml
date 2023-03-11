@@ -142,6 +142,8 @@
     <string name="chorus_background">"Koor agtergrond"</string>
     <string name="close">"Sluit"</string>
     <string name="color_choose">"Kleur Chooser"</string>
+    <string name="column_force">Ignoreer kolombreuke met die hand</string>
+    <string name="column_force_info">Gebruik die nuwe bladsykode (!--) in die liedjie om \'n nuwe kolombreuk af te dwing wanneer outomatiese skaal gemaak word</string>
     <string name="comment">Lewer kommentaar</string>
     <string name="comment_background">"Kommentaar agtergrond"</string>
     <string name="commentline_scale">"Skaal die kommentaar teks"</string>

@@ -142,6 +142,8 @@
     <string name="chorus_background">Фон приспіву</string>
     <string name="close">причиняти</string>
     <string name="color_choose">Вибір кольору</string>
+    <string name="column_force">Перевизначте розриви стовпців вручну</string>
+    <string name="column_force_info">Використовуйте новий код сторінки (!--) у пісні, щоб примусово створювати новий розрив стовпця під час автоматичного масштабування</string>
     <string name="comment">Коментар</string>
     <string name="comment_background">Фон коментаря</string>
     <string name="commentline_scale">Розмір тексту коментаря</string>

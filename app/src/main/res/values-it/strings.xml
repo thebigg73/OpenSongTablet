@@ -142,6 +142,8 @@
     <string name="chorus_background">"Coro di sfondo"</string>
     <string name="close">"Chiudi"</string>
     <string name="color_choose">"Colore Scelta"</string>
+    <string name="column_force">Sovrascrivi manualmente le interruzioni di colonna</string>
+    <string name="column_force_info">Usa il nuovo codice di pagina (!--) nel brano per forzare una nuova interruzione di colonna durante il ridimensionamento automatico</string>
     <string name="comment">Commento</string>
     <string name="comment_background">"Commento sfondo"</string>
     <string name="commentline_scale">"Scalare il testo del commento"</string>

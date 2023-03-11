@@ -179,6 +179,8 @@
     <string name="chromecast" translatable="false">Chromecast</string>
     <string name="close">Close</string>
     <string name="color_choose">Colour Chooser</string>
+    <string name="column_force">Manually override column breaks</string>
+    <string name="column_force_info">Use the new page code (!--) in the song to force a new column break when autoscaling</string>
     <string name="comment">Comment</string>
     <string name="comment_background">Comment background</string>
     <string name="commentline_scale">Scale comment text</string>

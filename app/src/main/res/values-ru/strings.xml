@@ -142,6 +142,8 @@
     <string name="chorus_background">"Фон припева"</string>
     <string name="close">"Закрыть"</string>
     <string name="color_choose">"Выбор цвета"</string>
+    <string name="column_force">Вручную переопределить разрывы столбцов</string>
+    <string name="column_force_info">Используйте новый код страницы (!--) в песне, чтобы принудительно установить новый разрыв столбца при автоматическом масштабировании.</string>
     <string name="comment">Комментарий</string>
     <string name="comment_background">"Фон комментария"</string>
     <string name="commentline_scale">"Размер текста комментария"</string>

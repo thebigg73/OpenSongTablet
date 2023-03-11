@@ -142,6 +142,8 @@
     <string name="chorus_background">"Hintergrund Chorus"</string>
     <string name="close">"Schließen"</string>
     <string name="color_choose">"Farbauswahl"</string>
+    <string name="column_force">Spaltenumbrüche manuell überschreiben</string>
+    <string name="column_force_info">Verwenden Sie den neuen Seitencode (!--) im Song, um bei der automatischen Skalierung einen neuen Spaltenumbruch zu erzwingen</string>
     <string name="comment">Kommentar</string>
     <string name="comment_background">"Hintergrund Kommentar"</string>
     <string name="commentline_scale">"Kommentartext skalieren"</string>

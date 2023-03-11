@@ -142,6 +142,8 @@
     <string name="chorus_background">Pozadina refrena</string>
     <string name="close">Zatvoriti</string>
     <string name="color_choose">Odabir boja</string>
+    <string name="column_force">Ručno zaobiđite prelome kolona</string>
+    <string name="column_force_info">Koristite novi kod stranice (!--) u pesmi da biste nametnuli prelom nove kolone prilikom automatskog skaliranja</string>
     <string name="comment">Komentar</string>
     <string name="comment_background">Pozadina komentara</string>
     <string name="commentline_scale">Skaliranje teksta komentara</string>

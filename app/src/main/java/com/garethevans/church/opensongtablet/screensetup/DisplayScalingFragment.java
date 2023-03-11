@@ -49,6 +49,7 @@ public class DisplayScalingFragment extends Fragment {
         // The switches
         setAutoscaleMode();
         myView.scaleColumns.setChecked(getChecked("songAutoScaleColumnMaximise",true));
+        myView.forceColumns.setChecked(getChecked("forceColumns",true));
         myView.overrideFull.setChecked(getChecked("songAutoScaleOverrideFull",true));
         myView.overrideWidthSwitch.setChecked(getChecked("songAutoScaleOverrideWidth",false));
 
@@ -76,6 +77,8 @@ public class DisplayScalingFragment extends Fragment {
         switch (mode) {
             case "Y":
                 modeSwitches(true,false);
+                visibilityByBoolean(myView.scaleColumns,true);
+                visibilityByBoolean(myView.forceColumns,true);
                 visibilityByBoolean(myView.manualFontSize,false);
                 visibilityByBoolean(myView.autoFontSizeLayout,true);
                 visibilityByBoolean(myView.overrideFull,true);
@@ -83,6 +86,8 @@ public class DisplayScalingFragment extends Fragment {
                 break;
             case "W":
                 modeSwitches(true,true);
+                visibilityByBoolean(myView.scaleColumns,false);
+                visibilityByBoolean(myView.forceColumns,false);
                 visibilityByBoolean(myView.manualFontSize,false);
                 visibilityByBoolean(myView.autoFontSizeLayout,true);
                 visibilityByBoolean(myView.overrideFull,false);
@@ -90,6 +95,8 @@ public class DisplayScalingFragment extends Fragment {
                 break;
             case "N":
                 modeSwitches(false,false);
+                visibilityByBoolean(myView.scaleColumns,false);
+                visibilityByBoolean(myView.forceColumns,false);
                 visibilityByBoolean(myView.manualFontSize,true);
                 visibilityByBoolean(myView.autoFontSizeLayout,false);
                 break;
@@ -130,18 +137,24 @@ public class DisplayScalingFragment extends Fragment {
         String val;
         if (useAutoscale && scaleWidth) {
             val = "W";
+            visibilityByBoolean(myView.scaleColumns,false);
+            visibilityByBoolean(myView.forceColumns,false);
             visibilityByBoolean(myView.manualFontSize,false);
             visibilityByBoolean(myView.autoFontSizeLayout,true);
             visibilityByBoolean(myView.overrideFull,false);
             visibilityByBoolean(myView.overrideWidthSwitch,true);
         } else if (useAutoscale) {
             val = "Y";
+            visibilityByBoolean(myView.scaleColumns,true);
+            visibilityByBoolean(myView.forceColumns,true);
             visibilityByBoolean(myView.manualFontSize,false);
             visibilityByBoolean(myView.autoFontSizeLayout,true);
             visibilityByBoolean(myView.overrideFull,true);
             visibilityByBoolean(myView.overrideWidthSwitch,true);
         } else {
             val = "N";
+            visibilityByBoolean(myView.scaleColumns,false);
+            visibilityByBoolean(myView.forceColumns,false);
             visibilityByBoolean(myView.manualFontSize,true);
             visibilityByBoolean(myView.autoFontSizeLayout,false);
         }
@@ -165,7 +178,8 @@ public class DisplayScalingFragment extends Fragment {
     private void setListeners() {
         // The switches
         myView.useAutoscale.setOnCheckedChangeListener((buttonView, isChecked) -> getAutoscaleMode());
-        myView.scaleWidth.setOnCheckedChangeListener(((buttonView, isChecked) -> getAutoscaleMode()));
+        myView.scaleWidth.setOnCheckedChangeListener((buttonView, isChecked) -> getAutoscaleMode());
+        myView.forceColumns.setOnCheckedChangeListener((buttonView, isChecked) -> updateBooleanPreference("forceColumns",isChecked));
         myView.scaleColumns.setOnCheckedChangeListener((buttonView, isChecked) -> updateBooleanPreference("songAutoScaleColumnMaximise",isChecked));
         myView.overrideFull.setOnCheckedChangeListener((buttonView, isChecked) -> updateBooleanPreference("songAutoScaleOverrideFull",isChecked));
         myView.overrideWidthSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> updateBooleanPreference("songAutoScaleOverrideWidth",isChecked));

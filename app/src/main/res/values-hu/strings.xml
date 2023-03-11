@@ -142,6 +142,8 @@
     <string name="chorus_background">"Chorus háttér"</string>
     <string name="close">"Bezár"</string>
     <string name="color_choose">"Szín-választó"</string>
+    <string name="column_force">Oszloptörések manuális felülírása</string>
+    <string name="column_force_info">Használja az új oldalkódot (!--) a dalban, hogy új oszloptörést kényszerítsen ki az automatikus méretezés során</string>
     <string name="comment">Megjegyzés</string>
     <string name="comment_background">"Megjegyzés háttér"</string>
     <string name="commentline_scale">"Scale a megjegyzés szövegét"</string>

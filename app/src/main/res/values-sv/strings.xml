@@ -142,6 +142,8 @@
     <string name="chorus_background">"Kor bakgrund"</string>
     <string name="close">"Stänga"</string>
     <string name="color_choose">"Färgväljare"</string>
+    <string name="column_force">Åsidosätt kolumnbrytningar manuellt</string>
+    <string name="column_force_info">Använd den nya sidkoden (!--) i låten för att tvinga fram en ny kolumnbrytning vid automatisk skalning</string>
     <string name="comment">Kommentar</string>
     <string name="comment_background">"Kommentar bakgrund"</string>
     <string name="commentline_scale">"Skal kommentartext"</string>

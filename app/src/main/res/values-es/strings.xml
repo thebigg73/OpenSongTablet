@@ -142,6 +142,8 @@
     <string name="chorus_background">"Fondo Chorus"</string>
     <string name="close">"Cerrar"</string>
     <string name="color_choose">"Color Selector"</string>
+    <string name="column_force">Anular manualmente los saltos de columna</string>
+    <string name="column_force_info">Use el nuevo código de página (!--) en la canción para forzar un nuevo salto de columna al escalar automáticamente</string>
     <string name="comment">Comentario</string>
     <string name="comment_background">"Comentario fondo"</string>
     <string name="commentline_scale">"Escalar el texto del comentario"</string>

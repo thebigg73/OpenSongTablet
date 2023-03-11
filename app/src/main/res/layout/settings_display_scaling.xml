@@ -66,6 +66,15 @@
                     android:text="@string/maximise_columns"
                     android:hint="@string/maximise_columns_info"/>
 
+                <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                    android:id="@+id/forceColumns"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="@string/column_force"
+                    android:hint="@string/column_force_info"/>
+
                 <com.garethevans.church.opensongtablet.customviews.MaterialSlider
                     android:id="@+id/maxFontSize"
                     android:layout_width="match_parent"

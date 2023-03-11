@@ -322,6 +322,7 @@ public class Preferences extends Activity {
     // fontSizePreso                   float       The non-scale presentation font size (def:14.0f)
     // fontSizePresoMax                float       The maximum autoscaled font size (def:40.0f)
     // fontSticky                      String      The name of the font used for the sticky notes.  From fonts.google.com (def:lato)
+    // forceColumns                    boolean     When full autoscale is on and a song has !-- page breaks, use these to force column breaks (def:true)
     // gestureDoubleTap                String      The action for double tapping on the song screen (def:editsong)
     // gestureLongPress                String      The action for long pressing on the song screen (def:addtoset)
     // hideActionBar                   boolean     Should the action bar auto hide (def:false)
