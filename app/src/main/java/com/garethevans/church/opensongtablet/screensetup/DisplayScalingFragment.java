@@ -185,9 +185,9 @@ public class DisplayScalingFragment extends Fragment {
         myView.overrideWidthSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> updateBooleanPreference("songAutoScaleOverrideWidth",isChecked));
 
         // The sliders
-        setSliderListeners(myView.manualFontSize, "fontSize", 1.0f, "px");
-        setSliderListeners(myView.minFontSize, "fontSizeMin", 1.0f, "px");
-        setSliderListeners(myView.maxFontSize, "fontSizeMax", 1.0f, "px");
+        setSliderListeners(myView.manualFontSize, "fontSize", 1.0f, "sp");
+        setSliderListeners(myView.minFontSize, "fontSizeMin", 1.0f, "sp");
+        setSliderListeners(myView.maxFontSize, "fontSizeMax", 1.0f, "sp");
         setSliderListeners(myView.scaleHeading, "scaleHeadings", 100f, "%");
         setSliderListeners(myView.scaleChords, "scaleChords", 100f, "%");
         setSliderListeners(myView.scaleComments, "scaleComments", 100f, "%");
