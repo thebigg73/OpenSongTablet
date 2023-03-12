@@ -23,6 +23,7 @@ public class LyricsOptionsBottomSheet extends BottomSheetDialogFragment {
 
     private BottomSheetEditSongLyricsBinding myView;
     private MainActivityInterface mainActivityInterface;
+    private final String TAG = "LyricsBottomSheet";
     private int colorOn, colorOff;
     private final EditSongFragmentLyrics openingFragment;
 
@@ -96,17 +97,24 @@ public class LyricsOptionsBottomSheet extends BottomSheetDialogFragment {
         myView.textSizeDown.setOnClickListener(v -> checkTextSize(-1));
         myView.textSizeUp.setOnClickListener(v -> checkTextSize(+1));
         myView.insertSection.setOnClickListener(v -> {
-            openingFragment.insertSection();
-            dismiss();
+            openingFragment.insertSection("[]",1);
+            this.dismiss();
         });
-
+        myView.insertColumnBreak.setOnClickListener(v -> {
+            openingFragment.insertSection("!--",4);
+            this.dismiss();
+        });
+        myView.copyChordSections.setOnClickListener(v -> {
+            openingFragment.copyChords();
+            this.dismiss();
+        });
         myView.openSong.setOnClickListener(v -> {
             // Only do this if we aren't editing as OpenSong already
             if (mainActivityInterface.getTempSong().getEditingAsChoPro()) {
                 mainActivityInterface.getTempSong().setEditingAsChoPro(false);
                 openSongOrChoProButtonColor();
                 openingFragment.convertToOpenSong();
-                dismiss();
+                this.dismiss();
             }
         });
         myView.choPro.setOnClickListener(v -> {
@@ -115,7 +123,7 @@ public class LyricsOptionsBottomSheet extends BottomSheetDialogFragment {
                 mainActivityInterface.getTempSong().setEditingAsChoPro(true);
                 openSongOrChoProButtonColor();
                 openingFragment.convertToChoPro();
-                dismiss();
+                this.dismiss();
             }
         });
 
@@ -124,8 +132,9 @@ public class LyricsOptionsBottomSheet extends BottomSheetDialogFragment {
 
         myView.autoFix.setOnClickListener(v -> {
             openingFragment.autoFix();
-            dismiss();
+            this.dismiss();
         });
+
     }
 
 

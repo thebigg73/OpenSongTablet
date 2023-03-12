@@ -7,6 +7,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
@@ -210,5 +211,14 @@ public class MyMaterialTextView extends LinearLayout {
     public void setMyGravity(int gravity) {
         textView.setGravity(gravity);
         hintView.setGravity(gravity);
+    }
+
+    public void setHorizontalScroll(boolean horizontalScroll) {
+        textView.setHorizontallyScrolling(horizontalScroll);
+        hintView.setHorizontallyScrolling(horizontalScroll);
+        if (horizontalScroll) {
+            textView.setEllipsize(TextUtils.TruncateAt.END);
+            hintView.setEllipsize(TextUtils.TruncateAt.END);
+        }
     }
 }

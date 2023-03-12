@@ -823,8 +823,9 @@ public class ExportFragment extends Fragment {
 
                     if (png) {
                         // Now take a bitmap of the layout
+                        // Get the maximum width of the views
                         myView.previewLayout.setVisibility(View.VISIBLE);
-                        setPNGContent = Bitmap.createBitmap(myView.previewLayout.getWidth()*2, myView.previewLayout.getHeight()*2, Bitmap.Config.ARGB_8888);
+                        setPNGContent = Bitmap.createBitmap(myView.previewLayout.getWidth(), myView.previewLayout.getHeight(), Bitmap.Config.ARGB_8888);
                         Canvas canvas = new Canvas(setPNGContent);
                         myView.previewLayout.draw(canvas);
                         pngName = pdfName.replace(".pdf",".png");
@@ -845,7 +846,7 @@ public class ExportFragment extends Fragment {
                     // If we wanted a pdf (rather than png), add it
                     Log.d(TAG,"setPDF:"+setPDF+"  isSetFile:"+isSetFile);
 
-                    if (setPDF || (!isSetFile && !png)) {
+                    if (setPDF || (!isSetFile && pdf)) {
                         uris.add(mainActivityInterface.getMakePDF().createTextPDF(
                                 sectionViewsPDF, sectionViewWidthsPDF,
                                 sectionViewHeightsPDF, headerLayoutPDF,

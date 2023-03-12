@@ -172,7 +172,7 @@ public class MakePDF {
             headerScaling = Math.min(maxWidthScaling, maxHeightScaling);
         }
 
-        // To avoid text being too large, make sure the scaling doesn't exceed 1.8
+        // To avoid text being too large, make sure the scaling doesn't exceed the maxScaling
         headerScaling = Math.min(headerScaling,maxScaling);
 
         headerWidth = (int) ((float)headerWidth * headerScaling);

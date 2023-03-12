@@ -25,6 +25,7 @@
     <string name="add_song_to_set">Add current song to set</string>
     <string name="add_songs">Add songs</string>
     <string name="added_to_set">has been added to the end of your current set.</string>
+    <string name="after">After</string>
     <string name="air_turn_long_press">AirTurn mode</string>
     <string name="air_turn_long_press_info">When using a pedal that does not send long press actions, you can simulate this by setting a desired long press time</string>
     <string name="air_turn_long_press_time">Long press wait time</string>
@@ -38,6 +39,7 @@
     <string name="app_id" translatable="false">4E2B0891</string>
     <string name="app_name" translatable="false">OpenSongApp</string>
     <string name="appearance_change">Adjusts appearance</string>
+    <string name="apply_changes">Apply changes</string>
     <string name="are_you_sure">Are you sure?</string>
     <string name="artist">Artist</string>
     <string name="ask">Ask each time</string>
@@ -73,6 +75,7 @@
     <string name="beat_tick">Beat 1 (tick)</string>
     <string name="beat_tock">Beat 2 (tock)</string>
     <string name="beats">Beats</string>
+    <string name="before">Before</string>
     <string name="bible">Bible</string>
     <string name="bibleXML">OpenSong XML Bible</string>
     <string name="bible_browse">Browse/search bible</string>
@@ -181,6 +184,7 @@
     <string name="color_choose">Colour Chooser</string>
     <string name="column_force">Manually override column breaks</string>
     <string name="column_force_info">Use the new page code (!--) in the song to force a new column break when autoscaling</string>
+    <string name="column_force_insert">Insert column break</string>
     <string name="comment">Comment</string>
     <string name="comment_background">Comment background</string>
     <string name="commentline_scale">Scale comment text</string>
@@ -232,6 +236,10 @@
     <string name="content">Content</string>
     <string name="controls">Controls</string>
     <string name="controls_description">Foot pedals and screen gestures</string>
+    <string name="copy_chord">Copy chords between sections</string>
+    <string name="copy_chord_info">Take the chords from one section and apply them to another</string>
+    <string name="copy_chord_into">Copy into</string>
+    <string name="copy_chord_section">Use the chord structure in this section</string>
     <string name="copy_of">Copy</string>
     <string name="copyright">Copyright</string>
     <string name="create_folder_error">There was an error creating the new folder!</string>

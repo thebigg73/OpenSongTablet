@@ -4,44 +4,50 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:id="@+id/previewLayout"
+    <ScrollView
+        android:id="@+id/testScrollLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:visibility="invisible"
-        android:background="@color/white"
-        android:orientation="vertical">
+        android:layout_alignParentTop="true">
 
-    <LinearLayout
-        android:id="@+id/hiddenHeader"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="visible" />
+        <LinearLayout
+            android:id="@+id/previewLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:visibility="invisible">
 
-    <LinearLayout
-        android:id="@+id/hiddenSections"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="visible" />
-    </LinearLayout>
+            <LinearLayout
+                android:id="@+id/hiddenHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="visible" />
+
+            <LinearLayout
+                android:id="@+id/hiddenSections"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="visible" />
+        </LinearLayout>
+    </ScrollView>
 
     <com.garethevans.church.opensongtablet.customviews.NestedScrollWithFAB
         android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="16dp"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true">
+        android:layout_alignParentTop="true"
+        android:padding="16dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_marginBottom="64dp">
+            android:layout_marginBottom="64dp"
+            android:orientation="vertical">
 
             <LinearLayout
                 android:id="@+id/setOptionsLayout"
@@ -66,25 +72,25 @@
                     android:id="@+id/openSongAppSet"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/export_set"/>
+                    android:text="@string/export_set" />
 
                 <com.google.android.material.checkbox.MaterialCheckBox
                     android:id="@+id/openSongSet"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/export_desktop"/>
+                    android:text="@string/export_desktop" />
 
                 <com.google.android.material.checkbox.MaterialCheckBox
                     android:id="@+id/textSet"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/export_text"/>
+                    android:text="@string/export_text" />
 
                 <com.google.android.material.checkbox.MaterialCheckBox
                     android:id="@+id/setPNG"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/export_image"/>
+                    android:text="@string/export_image" />
 
                 <com.google.android.material.switchmaterial.SwitchMaterial
                     android:id="@+id/includeSongs"
@@ -111,7 +117,7 @@
                     android:id="@+id/currentFormat"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/export_current_format"/>
+                    android:text="@string/export_current_format" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/setExportInfo"
@@ -119,49 +125,49 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="4dp"
-                    android:text="@string/export_convert_song"/>
+                    android:text="@string/export_convert_song" />
 
                 <com.google.android.material.checkbox.MaterialCheckBox
                     android:id="@+id/pdf"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/pdf"/>
+                    android:text="@string/pdf" />
 
                 <com.google.android.material.checkbox.MaterialCheckBox
                     android:id="@+id/image"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/image"/>
+                    android:text="@string/image" />
 
                 <com.google.android.material.checkbox.MaterialCheckBox
                     android:id="@+id/openSongApp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/export_ost"/>
+                    android:text="@string/export_ost" />
 
                 <com.google.android.material.checkbox.MaterialCheckBox
                     android:id="@+id/openSong"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/export_desktop"/>
+                    android:text="@string/export_desktop" />
 
                 <com.google.android.material.checkbox.MaterialCheckBox
                     android:id="@+id/onSong"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/export_onsong"/>
+                    android:text="@string/export_onsong" />
 
                 <com.google.android.material.checkbox.MaterialCheckBox
                     android:id="@+id/chordPro"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/export_chordpro"/>
+                    android:text="@string/export_chordpro" />
 
                 <com.google.android.material.checkbox.MaterialCheckBox
                     android:id="@+id/text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/export_text"/>
+                    android:text="@string/export_text" />
 
             </LinearLayout>
         </LinearLayout>
@@ -173,10 +179,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:contentDescription="@string/export"
-        app:icon="@drawable/share"
-        android:text="@string/share"
         android:layout_margin="8dp"
+        android:contentDescription="@string/export"
+        android:text="@string/share"
+        app:icon="@drawable/share"
         app:useCompatPadding="true" />
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
@@ -184,11 +190,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:layout_margin="8dp"
         android:layout_toStartOf="@id/shareButton"
         android:contentDescription="@string/export"
-        app:icon="@drawable/print"
         android:text="@string/print"
-        android:layout_margin="8dp"
+        app:icon="@drawable/print"
         app:useCompatPadding="true" />
 
     <FrameLayout
@@ -198,23 +204,23 @@
         android:background="@color/scrim"
         android:focusable="true"
         android:focusableInTouchMode="true"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
         android:id="@+id/progressText"
-        android:focusable="false"
-        android:focusableInTouchMode="false"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
         android:layout_margin="32dp"
-        android:padding="16dp"
         android:background="@drawable/popup_bg"
-        app:mydrawable="@drawable/timer"
-        android:text="@string/processing"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:gravity="center"
         android:hint="@string/processing"
         android:minHeight="120dp"
-        android:layout_centerInParent="true"
-        android:gravity="center"
-        android:visibility="gone"/>
+        android:padding="16dp"
+        android:text="@string/processing"
+        android:visibility="gone"
+        app:mydrawable="@drawable/timer" />
 
 </RelativeLayout>

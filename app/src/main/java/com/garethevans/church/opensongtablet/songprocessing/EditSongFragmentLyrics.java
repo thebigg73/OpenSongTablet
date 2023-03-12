@@ -5,6 +5,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +26,7 @@ public class EditSongFragmentLyrics extends Fragment {
     private MainActivityInterface mainActivityInterface;
     private EditSongFragmentInterface editSongFragmentInterface;
     private EditSongLyricsBinding myView;
-    @SuppressWarnings("unused")
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "EditSongFragmentLyrics";
     private float editTextSize = 11;
     private int cursorPos=0;
@@ -181,10 +182,22 @@ public class EditSongFragmentLyrics extends Fragment {
     }
     private void validUndoRedo(int currentPosition) {
         // Enable/disable the undo button
-        myView.undoButton.setEnabled(currentPosition>0);
+        boolean undoValid = currentPosition>0;
+        myView.undoButton.setEnabled(undoValid);
+        if (undoValid) {
+            myView.undoButton.setVisibility(View.VISIBLE);
+        } else {
+            myView.undoButton.setVisibility(View.INVISIBLE);
+        }
 
         // Enable/disable the redo button
-        myView.redoButton.setEnabled(currentPosition<mainActivityInterface.getTempSong().getLyricsUndos().size()-1);
+        boolean redoValid = currentPosition<mainActivityInterface.getTempSong().getLyricsUndos().size()-1;
+        myView.redoButton.setEnabled(redoValid);
+        if (redoValid) {
+            myView.redoButton.setVisibility(View.VISIBLE);
+        } else {
+            myView.redoButton.setVisibility(View.INVISIBLE);
+        }
     }
 
     // The stuff below is called from the LyricsOptionsBottomSheet
@@ -195,14 +208,14 @@ public class EditSongFragmentLyrics extends Fragment {
         this.editTextSize = editTextSize;
         myView.lyrics.setTextSize(editTextSize);
     }
-    public void insertSection() {
+    public void insertSection(String bitToAdd, int moveCursorBy) {
         // Try to get the current text position
         String text = myView.lyrics.getText().toString();
         if (text.length()>cursorPos && cursorPos!=-1) {
-            text = text.substring(0, cursorPos) + "[]\n" + text.substring(cursorPos);
+            text = text.substring(0, cursorPos) + bitToAdd + "\n" + text.substring(cursorPos);
             myView.lyrics.setText(text);
         }
-        myView.lyrics.setSelection(cursorPos+1);
+        myView.lyrics.setSelection(cursorPos+moveCursorBy);
     }
 
     public void transpose(String direction) {
@@ -274,6 +287,37 @@ public class EditSongFragmentLyrics extends Fragment {
         // Don't add this as an undo/redo as it breaks the key
         //addUndoStep = false;
         //myView.lyrics.setText(mainActivityInterface.getTempSong().getLyrics());
+    }
+
+    public void copyChords() {
+        // Break the song into sections for copying, not quite the same as used in ProcessSong
+        String allLyrics = myView.lyrics.getText().toString();
+
+        String splitIdentifier = "___SPLITHERE___";
+
+        // Add the splitIdentifier to section headers
+        allLyrics = allLyrics.replace(" \n[",splitIdentifier+"[");
+        allLyrics = allLyrics.replace("\n[",splitIdentifier+"[");
+
+        // Replace all double line breaks with split identifier
+        allLyrics = allLyrics.replace("\n \n",splitIdentifier);
+        allLyrics = allLyrics.replace("\n\n",splitIdentifier);
+
+        // Now split the lyrics into sections
+        String[] sections = allLyrics.split(splitIdentifier);
+
+        if (sections.length>0) {
+            // Now send to another bottom sheet for user choice
+            LyricsChordCopyBottomSheet lyricsChordCopyBottomSheet = new LyricsChordCopyBottomSheet(this, sections);
+            lyricsChordCopyBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "LyricsChordCopyBottomSheet");
+        }
+        Log.d(TAG,"allLyrics="+allLyrics);
+    }
+
+    public void doCopyChords(String oldText, String newText) {
+        String textToAdjust = myView.lyrics.getText().toString();
+        textToAdjust = textToAdjust.replace(oldText.trim(),newText.trim());
+        myView.lyrics.setText(textToAdjust);
     }
 
     public void convertToOpenSong() {

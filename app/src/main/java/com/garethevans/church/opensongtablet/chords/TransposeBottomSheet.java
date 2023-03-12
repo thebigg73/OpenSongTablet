@@ -117,7 +117,9 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
                 mainActivityInterface.getCurrentSet().getSetFolders()!=null &&
                 position < mainActivityInterface.getCurrentSet().getSetFolders().size() &&
                 mainActivityInterface.getCurrentSet().getSetFilenames()!=null &&
-                position < mainActivityInterface.getCurrentSet().getSetFilenames().size()) {
+                position < mainActivityInterface.getCurrentSet().getSetFilenames().size() &&
+                mainActivityInterface.getCurrentSet().getSetKeys().get(position)!=null &&
+                !mainActivityInterface.getCurrentSet().getSetKeys().get(position).isEmpty()) {
 
             // In a set, so hide the song only transpose options
             myView.transposeCapo.setVisibility(View.GONE);
@@ -139,7 +141,7 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
             }
 
         } else {
-            // Not in a set, so hide the set options
+            // Not in a set, or the set item doesn't have a key set, so hide the set options
             setFolder = songFolder;
             myView.transposeSetItem.setVisibility(View.GONE);
             myView.transposeVariation.setVisibility(View.GONE);

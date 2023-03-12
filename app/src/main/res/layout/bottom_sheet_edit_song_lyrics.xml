@@ -33,6 +33,22 @@
             <TableRow style="@style/DividerLine" />
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                android:id="@+id/insertColumnBreak"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/column_force_info"
+                android:text="@string/column_force_insert" />
+            <TableRow style="@style/DividerLine" />
+
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                android:id="@+id/copyChordSections"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/copy_chord_info"
+                android:text="@string/copy_chord" />
+            <TableRow style="@style/DividerLine" />
+
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:id="@+id/autoFix"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -48,7 +64,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minHeight="64dp"
+                android:minHeight="48dp"
                 android:orientation="horizontal">
 
                 <com.google.android.material.button.MaterialButton
@@ -73,7 +89,7 @@
             </LinearLayout>
             <TableRow style="@style/DividerLine" />
 
-            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/textSize"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -82,7 +98,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minHeight="64dp">
+                android:minHeight="48dp">
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/textSizeDown"
@@ -106,7 +122,7 @@
             </LinearLayout>
             <TableRow style="@style/DividerLine" />
 
-            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/transposeText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -115,7 +131,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minHeight="64dp">
+                android:minHeight="48dp">
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/transposeDown"
