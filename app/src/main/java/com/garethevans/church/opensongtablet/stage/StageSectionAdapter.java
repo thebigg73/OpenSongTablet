@@ -65,6 +65,7 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
         if (availableHeight==0) {
             availableHeight = mainActivityInterface.getDisplayMetrics()[1];
         }
+        float defFontSize = mainActivityInterface.getProcessSong().getDefFontSize();
         for (int x=0; x<mainActivityInterface.getSectionViews().size(); x++) {
             StageSectionInfo stageSectionInfo = new StageSectionInfo();
 
@@ -80,7 +81,7 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
             float y_scale = (float)(availableHeight-mainActivityInterface.getToolbar().getActionBarHeight(mainActivityInterface.needActionBar()))*stageModeScale/(float)sectionHeight;
             float scale = Math.min(x_scale,y_scale);
             // Check the scale isn't bigger than the maximum font size
-            scale = Math.min(scale,(maxFontSize/14f));
+            scale = Math.min(scale,(maxFontSize /defFontSize));
 
             float itemHeight = sectionHeight * scale + (4f * density);
 
@@ -165,8 +166,8 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
             holder.sectionView.post(()-> {
                 try {
                     holder.v.getLayoutParams().width = availableWidth;
-                    //holder.sectionView.getLayoutParams().width = (int) (width * scale);
-                    holder.sectionView.getLayoutParams().width = availableWidth;
+                    holder.sectionView.getLayoutParams().width = (int) (width * scale);
+                    //holder.sectionView.getLayoutParams().width = availableWidth;
                     holder.v.getLayoutParams().height = (int) (height * scale);
                     holder.sectionView.getLayoutParams().height = (int) (height * scale);
                     if (v.getParent()!=null) {

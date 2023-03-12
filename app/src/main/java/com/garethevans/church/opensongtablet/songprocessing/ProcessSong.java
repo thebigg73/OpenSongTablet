@@ -1918,6 +1918,9 @@ public class ProcessSong {
         }
     }
 
+    public float getDefFontSize() {
+        return defFontSize;
+    }
     private float getFontSize(String string) {
         float f = defFontSize;
         switch (string) {
@@ -2188,6 +2191,10 @@ public class ProcessSong {
                 mainActivityInterface.getPreferences().getMyPreferenceBoolean("songSheet", false) &&
                  !mainActivityInterface.getMode().equals(c.getString(R.string.mode_presenter))) {
             songSheetTitleHeight = mainActivityInterface.getSongSheetTitleLayout().getHeight();
+            // Check the songsheet isn't already attached to a view
+            if (mainActivityInterface.getSongSheetTitleLayout().getParent()!=null) {
+                ((ViewGroup) mainActivityInterface.getSongSheetTitleLayout().getParent()).removeAllViews();
+            }
             songSheetView.addView(mainActivityInterface.getSongSheetTitleLayout());
             songSheetView.setVisibility(View.VISIBLE);
         } else if (songSheetView!=null) {
