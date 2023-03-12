@@ -21,6 +21,7 @@
     <string name="add_song_to_set">"Lägg till aktuell sång för att ställa in"</string>
     <string name="add_songs">Lägg till låtar</string>
     <string name="added_to_set">"Har lagts till i slutet av din nuvarande uppsättning."</string>
+    <string name="after">Efter</string>
     <string name="air_turn_long_press">AirTurn lång tryckläge</string>
     <string name="air_turn_long_press_info">När du använder en pedal som inte skickar långa tryckåtgärder kan du simulera detta genom att ställa in en önskad lång trycktid</string>
     <string name="air_turn_long_press_time">Lång tryckväntetid</string>
@@ -32,6 +33,7 @@
     <string name="alphabetical_level2_info">Genom att klicka på ett objekt i det alfabetiska indexet växlas det mellan ett och två teckens alfabetiskt index</string>
     <string name="alphabetical_sort">Placera objekt i alfabetisk ordning</string>
     <string name="appearance_change">Justerar utseendet</string>
+    <string name="apply_changes">Applicera förändringar</string>
     <string name="are_you_sure">"Är du säker?"</string>
     <string name="artist">Konstnär</string>
     <string name="ask">"Fråga varje gång"</string>
@@ -67,6 +69,7 @@
     <string name="beat_tick">Slå 1 (bocka)</string>
     <string name="beat_tock">Beat 2 (tock)</string>
     <string name="beats">Takter</string>
+    <string name="before">Innan</string>
     <string name="bible">Bibeln</string>
     <string name="bibleXML">"OpenSong XML Bible"</string>
     <string name="bible_browse">Bläddra/sök i Bibeln</string>
@@ -144,6 +147,7 @@
     <string name="color_choose">"Färgväljare"</string>
     <string name="column_force">Åsidosätt kolumnbrytningar manuellt</string>
     <string name="column_force_info">Använd den nya sidkoden (!--) i låten för att tvinga fram en ny kolumnbrytning vid automatisk skalning</string>
+    <string name="column_force_insert">Infoga kolumnbrytning</string>
     <string name="comment">Kommentar</string>
     <string name="comment_background">"Kommentar bakgrund"</string>
     <string name="commentline_scale">"Skal kommentartext"</string>
@@ -195,6 +199,10 @@
     <string name="content">"Innehåll"</string>
     <string name="controls">Kontrollera</string>
     <string name="controls_description">Fotpedaler och skärmgester</string>
+    <string name="copy_chord">Kopiera ackord mellan avsnitten</string>
+    <string name="copy_chord_info">Ta ackorden från ett avsnitt och tillämpa dem på ett annat</string>
+    <string name="copy_chord_into">Kopiera in</string>
+    <string name="copy_chord_section">Använd ackordstrukturen i det här avsnittet</string>
     <string name="copy_of">Kopiera</string>
     <string name="copyright">"Upphovsrättsinformation"</string>
     <string name="create_folder_error">"Det uppstod ett fel vid skapandet av den nya mappen!"</string>

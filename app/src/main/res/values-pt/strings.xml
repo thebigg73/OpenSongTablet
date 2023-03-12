@@ -21,6 +21,7 @@
     <string name="add_song_to_set">"Adicionar música atual para definir"</string>
     <string name="add_songs">Adicionar músicas</string>
     <string name="added_to_set">"foi adicionado ao final do seu conjunto atual."</string>
+    <string name="after">Depois</string>
     <string name="air_turn_long_press">Modo de pressão longa do AirTurn</string>
     <string name="air_turn_long_press_info">Ao usar um pedal que não envia ações de toque longo, você pode simular isso definindo um tempo de toque longo desejado</string>
     <string name="air_turn_long_press_time">Pressione longamente o tempo de espera</string>
@@ -32,6 +33,7 @@
     <string name="alphabetical_level2_info">Clicar em um item no índice alfabético alternará entre um e dois caracteres do índice alfabético</string>
     <string name="alphabetical_sort">Coloque os itens em ordem alfabética</string>
     <string name="appearance_change">Ajusta a aparência</string>
+    <string name="apply_changes">Aplicar mudanças</string>
     <string name="are_you_sure">"Tem certeza ? "</string>
     <string name="artist">Artista</string>
     <string name="ask">"Peça a cada vez"</string>
@@ -67,6 +69,7 @@
     <string name="beat_tick">Batida 1 (tick)</string>
     <string name="beat_tock">Batida 2 (toque)</string>
     <string name="beats">Batidos</string>
+    <string name="before">Antes</string>
     <string name="bible">Bíblia</string>
     <string name="bibleXML">"OpenSong XML Bible"</string>
     <string name="bible_browse">Navegar/pesquisar bíblia</string>
@@ -144,6 +147,7 @@
     <string name="color_choose">"Cor Chooser"</string>
     <string name="column_force">Substituir quebras de coluna manualmente</string>
     <string name="column_force_info">Use o novo código de página (!--) na música para forçar uma nova quebra de coluna ao dimensionar automaticamente</string>
+    <string name="column_force_insert">Inserir quebra de coluna</string>
     <string name="comment">Comente</string>
     <string name="comment_background">"Comentário fundo"</string>
     <string name="commentline_scale">"Dimensionar o comentário de texto"</string>
@@ -195,6 +199,10 @@
     <string name="content">"Conteúdo"</string>
     <string name="controls">Controlar</string>
     <string name="controls_description">Pedais e gestos na tela</string>
+    <string name="copy_chord">Copiar acordes entre as seções</string>
+    <string name="copy_chord_info">Pegue os acordes de uma seção e aplique-os em outra</string>
+    <string name="copy_chord_into">Copiar para</string>
+    <string name="copy_chord_section">Use a estrutura de acordes nesta seção</string>
     <string name="copy_of">Cópia de</string>
     <string name="copyright">"Info Copyright"</string>
     <string name="create_folder_error">"Houve um erro ao criar a nova pasta !"</string>

@@ -21,6 +21,7 @@
     <string name="add_song_to_set">可以为每个歌曲分配节拍，移调，打击垫等歌曲操作。</string>
     <string name="add_songs">添加歌曲</string>
     <string name="added_to_set">"已被添加到您的当前集的末尾。"</string>
+    <string name="after">后</string>
     <string name="air_turn_long_press">AirTurn长按模式</string>
     <string name="air_turn_long_press_info">当使用不发送长按动作的踏板时，您可以通过设置所需的长按时间来模拟</string>
     <string name="air_turn_long_press_time">长按等待时间</string>
@@ -32,6 +33,7 @@
     <string name="alphabetical_level2_info">单击字母索引中的项目将在一个和两个字符的字母索引之间切换</string>
     <string name="alphabetical_sort">按字母顺序放置项目</string>
     <string name="appearance_change">调整外观</string>
+    <string name="apply_changes">应用更改</string>
     <string name="are_you_sure">"是否确定?"</string>
     <string name="artist">艺术家</string>
     <string name="ask">"要求每个时间"</string>
@@ -67,6 +69,7 @@
     <string name="beat_tick">击败 1（滴答声）</string>
     <string name="beat_tock">击败 2（托克）</string>
     <string name="beats">节拍</string>
+    <string name="before">前</string>
     <string name="bible">圣经</string>
     <string name="bibleXML">"OpenSong XML圣经"</string>
     <string name="bible_browse">浏览/搜索圣经</string>
@@ -144,6 +147,7 @@
     <string name="color_choose">"颜色选择器"</string>
     <string name="column_force">手动覆盖分栏符</string>
     <string name="column_force_info">在歌曲中使用新的页面代码（！--）在自动缩放时强制使用新的分栏符</string>
+    <string name="column_force_insert">插入分栏符</string>
     <string name="comment">评论</string>
     <string name="comment_background">"评论背景"</string>
     <string name="commentline_scale">"缩放注释文本"</string>
@@ -195,6 +199,10 @@
     <string name="content">"内容"</string>
     <string name="controls">控制</string>
     <string name="controls_description">脚踏板和屏幕手势</string>
+    <string name="copy_chord">在部分之间复制和弦</string>
+    <string name="copy_chord_info">从一个部分提取和弦并将它们应用到另一个部分</string>
+    <string name="copy_chord_into">复制到</string>
+    <string name="copy_chord_section">使用本节中的和弦结构</string>
     <string name="copy_of">复制</string>
     <string name="copyright">"版权信息"</string>
     <string name="create_folder_error">"在建立新的文件夹的错误！"</string>

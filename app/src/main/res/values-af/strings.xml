@@ -21,6 +21,7 @@
     <string name="add_song_to_set">Elkeen kan toegewys word aan liedjies soos metronomieë, transponeer, boekies, ens.</string>
     <string name="add_songs">Voeg liedjies by</string>
     <string name="added_to_set">"is by die einde van jou huidige stel."</string>
+    <string name="after">Na</string>
     <string name="air_turn_long_press">AirTurn lang persmodus</string>
     <string name="air_turn_long_press_info">Wanneer jy \'n pedaal gebruik wat nie langdrukaksies stuur nie, kan jy dit simuleer deur \'n verlangde lang druktyd in te stel</string>
     <string name="air_turn_long_press_time">Lang druk wag tyd</string>
@@ -32,6 +33,7 @@
     <string name="alphabetical_level2_info">Deur op \'n item in die alfabetiese indeks te klik, sal tussen een en twee karakters alfabetiese indeks verander</string>
     <string name="alphabetical_sort">Plaas items in alfabetiese volgorde</string>
     <string name="appearance_change">Pas voorkoms aan</string>
+    <string name="apply_changes">Pas veranderinge toe</string>
     <string name="are_you_sure">"Is jy seker?"</string>
     <string name="artist">Kunstenaar</string>
     <string name="ask">"Vra elke keer"</string>
@@ -67,6 +69,7 @@
     <string name="beat_tick">Klop 1 (merk)</string>
     <string name="beat_tock">Klop 2 (tock)</string>
     <string name="beats">Slae</string>
+    <string name="before">Voorheen</string>
     <string name="bible">Bybel</string>
     <string name="bibleXML">"OpenSong XML Bible"</string>
     <string name="bible_browse">Blaai deur/soek Bybel</string>
@@ -144,6 +147,7 @@
     <string name="color_choose">"Kleur Chooser"</string>
     <string name="column_force">Ignoreer kolombreuke met die hand</string>
     <string name="column_force_info">Gebruik die nuwe bladsykode (!--) in die liedjie om \'n nuwe kolombreuk af te dwing wanneer outomatiese skaal gemaak word</string>
+    <string name="column_force_insert">Voeg kolombreuk in</string>
     <string name="comment">Lewer kommentaar</string>
     <string name="comment_background">"Kommentaar agtergrond"</string>
     <string name="commentline_scale">"Skaal die kommentaar teks"</string>
@@ -195,6 +199,10 @@
     <string name="content">"Inhoud"</string>
     <string name="controls">Beheer</string>
     <string name="controls_description">Voetpedale en skermbewegings</string>
+    <string name="copy_chord">Kopieer akkoorde tussen afdelings</string>
+    <string name="copy_chord_info">Neem die akkoorde uit een afdeling en pas dit toe op \'n ander</string>
+    <string name="copy_chord_into">Kopieer in</string>
+    <string name="copy_chord_section">Gebruik die akkoordstruktuur in hierdie afdeling</string>
     <string name="copy_of">Kopieer</string>
     <string name="copyright">"Kopiereg inligting"</string>
     <string name="create_folder_error">"Daar was 'n fout met die skep van die nuwe gids !"</string>

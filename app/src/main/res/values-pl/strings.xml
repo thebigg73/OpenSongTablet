@@ -21,6 +21,7 @@
     <string name="add_song_to_set">"Dodać bieżący utwór, aby ustawić"</string>
     <string name="add_songs">Dodaj utwory</string>
     <string name="added_to_set">"został dodany do końca bieżącego zestawu."</string>
+    <string name="after">Po</string>
     <string name="air_turn_long_press">Tryb długiego naciśnięcia AirTurn</string>
     <string name="air_turn_long_press_info">Używając pedału, który nie wysyła akcji długich naciśnięć, można to zasymulować, ustawiając żądany czas długiego naciśnięcia</string>
     <string name="air_turn_long_press_time">Długie naciśnięcie czasu oczekiwania!</string>
@@ -32,6 +33,7 @@
     <string name="alphabetical_level2_info">Kliknięcie pozycji w indeksie alfabetycznym spowoduje przełączenie między jedno- a dwuznakowym indeksem alfabetycznym</string>
     <string name="alphabetical_sort">Ułóż elementy w kolejności alfabetycznej</string>
     <string name="appearance_change">Dostosowuje wygląd</string>
+    <string name="apply_changes">Zatwierdź zmiany</string>
     <string name="are_you_sure">Jesteś pewien?</string>
     <string name="artist">Artysta</string>
     <string name="ask">"Zapytaj każdym razem"</string>
@@ -67,6 +69,7 @@
     <string name="beat_tick">Pokonaj 1 (zaznacz)</string>
     <string name="beat_tock">Pokonaj 2 (tak)</string>
     <string name="beats">Uderzenia</string>
+    <string name="before">Zanim</string>
     <string name="bible">Biblia</string>
     <string name="bibleXML">"Biblia OpenSong XML"</string>
     <string name="bible_browse">Przeglądaj/szukaj biblię</string>
@@ -144,6 +147,7 @@
     <string name="color_choose">"Kolor Chooser"</string>
     <string name="column_force">Ręcznie zastąp podziały kolumn</string>
     <string name="column_force_info">Użyj nowego kodu strony (!--) w utworze, aby wymusić nowy podział kolumny podczas automatycznego skalowania</string>
+    <string name="column_force_insert">Wstaw podział kolumny</string>
     <string name="comment">Komentarz</string>
     <string name="comment_background">"Komentarz w tle"</string>
     <string name="commentline_scale">"Skalowanie tekstu komentarz"</string>
@@ -195,6 +199,10 @@
     <string name="content">"Treść"</string>
     <string name="controls">Kontrola</string>
     <string name="controls_description">Pedały nożne i gesty na ekranie</string>
+    <string name="copy_chord">Kopiuj akordy między sekcjami</string>
+    <string name="copy_chord_info">Weź akordy z jednej sekcji i zastosuj je do innej</string>
+    <string name="copy_chord_into">Skopiuj do</string>
+    <string name="copy_chord_section">Użyj struktury akordów w tej sekcji</string>
     <string name="copy_of">Kopiuj</string>
     <string name="copyright">"Copyright informacji"</string>
     <string name="create_folder_error">"Wystąpił błąd podczas tworzenia nowego folderu !"</string>

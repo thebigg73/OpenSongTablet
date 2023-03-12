@@ -21,6 +21,7 @@
     <string name="add_song_to_set">"Add jelenlegi dal beállítani"</string>
     <string name="add_songs">Dalok hozzáadása</string>
     <string name="added_to_set">"került, hogy a végén a jelenlegi készlet."</string>
+    <string name="after">Után</string>
     <string name="air_turn_long_press">AirTurn hosszú megnyomású üzemmód</string>
     <string name="air_turn_long_press_info">Ha olyan pedált használ, amely nem küld hosszú lenyomási műveleteket, ezt szimulálhatja a kívánt hosszú lenyomási idő beállításával</string>
     <string name="air_turn_long_press_time">Hosszú nyomás várakozási idő</string>
@@ -32,6 +33,7 @@
     <string name="alphabetical_level2_info">Az alfabetikus index egy elemére kattintva válthat egy és két karakteres alfabetikus index között</string>
     <string name="alphabetical_sort">Tedd az elemeket ábécé sorrendbe</string>
     <string name="appearance_change">Beállítja a megjelenést</string>
+    <string name="apply_changes">Módosítások elfogadása</string>
     <string name="are_you_sure">"Biztos benne?"</string>
     <string name="artist">Művész</string>
     <string name="ask">"Kérdezze minden alkalommal"</string>
@@ -67,6 +69,7 @@
     <string name="beat_tick">Beat 1 (pipa)</string>
     <string name="beat_tock">Beat 2 (tock)</string>
     <string name="beats">Beats</string>
+    <string name="before">Előtt</string>
     <string name="bible">Biblia</string>
     <string name="bibleXML">"OpenSong XML Biblia"</string>
     <string name="bible_browse">Biblia böngészése/keresése</string>
@@ -144,6 +147,7 @@
     <string name="color_choose">"Szín-választó"</string>
     <string name="column_force">Oszloptörések manuális felülírása</string>
     <string name="column_force_info">Használja az új oldalkódot (!--) a dalban, hogy új oszloptörést kényszerítsen ki az automatikus méretezés során</string>
+    <string name="column_force_insert">Oszloptörés beszúrása</string>
     <string name="comment">Megjegyzés</string>
     <string name="comment_background">"Megjegyzés háttér"</string>
     <string name="commentline_scale">"Scale a megjegyzés szövegét"</string>
@@ -195,6 +199,10 @@
     <string name="content">"Tartalom"</string>
     <string name="controls">Vezérlők</string>
     <string name="controls_description">Lábpedálok és képernyőmozdulatok</string>
+    <string name="copy_chord">Akkordok másolása a szakaszok között</string>
+    <string name="copy_chord_info">Vegye ki az akkordokat az egyik szakaszból, és alkalmazza őket egy másikra</string>
+    <string name="copy_chord_into">Másolás be</string>
+    <string name="copy_chord_section">Használja ebben a részben az akkordszerkezetet</string>
     <string name="copy_of">Másolat</string>
     <string name="copyright">"Szerzői jogi információk"</string>
     <string name="create_folder_error">"Hiba történt létrehozása az új mappa !"</string>

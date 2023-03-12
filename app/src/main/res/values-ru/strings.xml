@@ -21,6 +21,7 @@
     <string name="add_song_to_set">"Добавить песню в список"</string>
     <string name="add_songs">Добавить песни</string>
     <string name="added_to_set">"добавлена ​​в конец текущего списка."</string>
+    <string name="after">После</string>
     <string name="air_turn_long_press">Режим длительного нажатия AirTurn</string>
     <string name="air_turn_long_press_info">При использовании педали, которая не отправляет действия длительного нажатия, вы можете имитировать это, установив желаемое время длительного нажатия.</string>
     <string name="air_turn_long_press_time">Время ожидания при длительном нажатии</string>
@@ -32,6 +33,7 @@
     <string name="alphabetical_level2_info">Щелчок по элементу в алфавитном указателе будет переключаться между односимвольным и двухсимвольным алфавитным указателем.</string>
     <string name="alphabetical_sort">Расположите элементы в алфавитном порядке</string>
     <string name="appearance_change">Настраивает внешний вид</string>
+    <string name="apply_changes">Применить изменения</string>
     <string name="are_you_sure">"Вы уверены? "</string>
     <string name="artist">Художник</string>
     <string name="ask">"Уточнять каждый раз"</string>
@@ -67,6 +69,7 @@
     <string name="beat_tick">Такт 1 (тик)</string>
     <string name="beat_tock">Такт 2 (так)</string>
     <string name="beats">Удары</string>
+    <string name="before">До</string>
     <string name="bible">Библия</string>
     <string name="bibleXML">"Библия OpenSong XML"</string>
     <string name="bible_browse">Просмотр/поиск Библии</string>
@@ -144,6 +147,7 @@
     <string name="color_choose">"Выбор цвета"</string>
     <string name="column_force">Вручную переопределить разрывы столбцов</string>
     <string name="column_force_info">Используйте новый код страницы (!--) в песне, чтобы принудительно установить новый разрыв столбца при автоматическом масштабировании.</string>
+    <string name="column_force_insert">Вставить разрыв столбца</string>
     <string name="comment">Комментарий</string>
     <string name="comment_background">"Фон комментария"</string>
     <string name="commentline_scale">"Размер текста комментария"</string>
@@ -195,6 +199,10 @@
     <string name="content">"Cодержание"</string>
     <string name="controls">Контроль</string>
     <string name="controls_description">Ножные педали и экранные жесты</string>
+    <string name="copy_chord">Копировать аккорды между разделами</string>
+    <string name="copy_chord_info">Возьмите аккорды из одного раздела и примените их к другому</string>
+    <string name="copy_chord_into">Скопировать в</string>
+    <string name="copy_chord_section">Используйте структуру аккордов в этом разделе</string>
     <string name="copy_of">Копировать</string>
     <string name="copyright">"Информация об авторском праве"</string>
     <string name="create_folder_error">"Произошла ошибка при создании папки !"</string>

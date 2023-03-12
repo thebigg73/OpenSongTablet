@@ -21,6 +21,7 @@
     <string name="add_song_to_set">Chacun peut être affecté à des actions de morceau telles que les métronomes, la transposition, les pads, etc.</string>
     <string name="add_songs">Ajouter des chansons</string>
     <string name="added_to_set">"a été ajoutée à la fin de votre liste actuelle."</string>
+    <string name="after">Après</string>
     <string name="air_turn_long_press">Mode appui long AirTurn</string>
     <string name="air_turn_long_press_info">Lorsque vous utilisez une pédale qui n\'envoie pas d\'actions d\'appui long, vous pouvez simuler cela en définissant un temps d\'appui long souhaité</string>
     <string name="air_turn_long_press_time">Temps d\'attente de la presse longue</string>
@@ -32,6 +33,7 @@
     <string name="alphabetical_level2_info">Cliquer sur un élément dans l\'index alphabétique basculera entre l\'index alphabétique à un et deux caractères</string>
     <string name="alphabetical_sort">Mettre les éléments par ordre alphabétique</string>
     <string name="appearance_change">Ajuste l\'apparence</string>
+    <string name="apply_changes">Appliquer les modifications</string>
     <string name="are_you_sure">"Êtes-vous sûr?"</string>
     <string name="artist">Artiste</string>
     <string name="ask">"Demandez à chaque fois"</string>
@@ -67,6 +69,7 @@
     <string name="beat_tick">Battre 1 (tic)</string>
     <string name="beat_tock">Battre 2 (toc)</string>
     <string name="beats">Beats</string>
+    <string name="before">Avant</string>
     <string name="bible">Bible</string>
     <string name="bibleXML">"OpenSong XML Bible"</string>
     <string name="bible_browse">Parcourir/rechercher la Bible</string>
@@ -144,6 +147,7 @@
     <string name="color_choose">"Sélecteur de couleur "</string>
     <string name="column_force">Remplacer manuellement les sauts de colonne</string>
     <string name="column_force_info">Utilisez le nouveau code de page (!--) dans la chanson pour forcer un nouveau saut de colonne lors de la mise à l\'échelle automatique</string>
+    <string name="column_force_insert">Insérer un saut de colonne</string>
     <string name="comment">Commentaire</string>
     <string name="comment_background">"Fond des commentaires"</string>
     <string name="commentline_scale">"Taille du texte de commentaire"</string>
@@ -195,6 +199,10 @@
     <string name="content">"Contenu"</string>
     <string name="controls">Contrôle</string>
     <string name="controls_description">Pédales et gestes à l\'écran</string>
+    <string name="copy_chord">Copier des accords entre les sections</string>
+    <string name="copy_chord_info">Prenez les accords d\'une section et appliquez-les à une autre</string>
+    <string name="copy_chord_into">Copier dans</string>
+    <string name="copy_chord_section">Utilisez la structure d\'accords dans cette section</string>
     <string name="copy_of">Copie</string>
     <string name="copyright">"Infos Copyright"</string>
     <string name="create_folder_error">"Erreur lors de la création du nouveau dossier !"</string>

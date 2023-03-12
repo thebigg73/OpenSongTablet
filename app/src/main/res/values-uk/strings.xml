@@ -21,6 +21,7 @@
     <string name="add_song_to_set">Додати пісню в список</string>
     <string name="add_songs">Додайте пісні</string>
     <string name="added_to_set">додана в кінець поточного списку.</string>
+    <string name="after">після</string>
     <string name="air_turn_long_press">Режим тривалого натискання AirTurn</string>
     <string name="air_turn_long_press_info">Якщо використовується педаль, яка не надсилає дії тривалого натискання, ви можете імітувати це, встановивши бажаний час тривалого натискання</string>
     <string name="air_turn_long_press_time">Тривале натискання. Час очікування</string>
@@ -32,6 +33,7 @@
     <string name="alphabetical_level2_info">Натискання елемента в алфавітному покажчику перемикає алфавітний індекс з одного та двох символів</string>
     <string name="alphabetical_sort">Розставте предмети в алфавітному порядку</string>
     <string name="appearance_change">Коригує зовнішній вигляд</string>
+    <string name="apply_changes">Застосувати зміни</string>
     <string name="are_you_sure">Ви впевнені?</string>
     <string name="artist">актор</string>
     <string name="ask">Уточнювати кожен раз</string>
@@ -67,6 +69,7 @@
     <string name="beat_tick">Удар 1 (галочка)</string>
     <string name="beat_tock">Удар 2 (такт)</string>
     <string name="beats">Удари</string>
+    <string name="before">Раніше</string>
     <string name="bible">Біблія</string>
     <string name="bibleXML">Біблія OpenSong XML</string>
     <string name="bible_browse">Перегляд / пошук Біблії</string>
@@ -144,6 +147,7 @@
     <string name="color_choose">Вибір кольору</string>
     <string name="column_force">Перевизначте розриви стовпців вручну</string>
     <string name="column_force_info">Використовуйте новий код сторінки (!--) у пісні, щоб примусово створювати новий розрив стовпця під час автоматичного масштабування</string>
+    <string name="column_force_insert">Вставити розрив стовпця</string>
     <string name="comment">Коментар</string>
     <string name="comment_background">Фон коментаря</string>
     <string name="commentline_scale">Розмір тексту коментаря</string>
@@ -195,6 +199,10 @@
     <string name="content">Зміст</string>
     <string name="controls">Елементи керування</string>
     <string name="controls_description">Ножні педалі та екранні жести</string>
+    <string name="copy_chord">Копіюйте акорди між розділами</string>
+    <string name="copy_chord_info">Візьміть акорди з одного розділу і застосуйте їх до іншого</string>
+    <string name="copy_chord_into">Копіювати в</string>
+    <string name="copy_chord_section">Використовуйте структуру акордів у цьому розділі</string>
     <string name="copy_of">Копія</string>
     <string name="copyright">Інформація про авторське право</string>
     <string name="create_folder_error">Помилка при створенні папки!</string>

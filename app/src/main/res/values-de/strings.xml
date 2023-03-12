@@ -21,6 +21,7 @@
     <string name="add_song_to_set">"Song zum aktuellen Set zufügen"</string>
     <string name="add_songs">Lieder hinzufügen</string>
     <string name="added_to_set">"wurde an das aktuelle Set angefügt."</string>
+    <string name="after">Nach</string>
     <string name="air_turn_long_press">AirTurn-Modus für langes Drücken</string>
     <string name="air_turn_long_press_info">Wenn Sie ein Pedal verwenden, das keine langen Betätigungen sendet, können Sie dies simulieren, indem Sie eine gewünschte lange Betätigungszeit einstellen</string>
     <string name="air_turn_long_press_time">Wartezeit lange drücken</string>
@@ -32,6 +33,7 @@
     <string name="alphabetical_level2_info">Durch Klicken auf ein Element im alphabetischen Index wird zwischen einem ein- und zweistelligen alphabetischen Index umgeschaltet</string>
     <string name="alphabetical_sort">Artikel alphabetisch ordnen</string>
     <string name="appearance_change">Passt das Aussehen an</string>
+    <string name="apply_changes">Änderungen übernehmen</string>
     <string name="are_you_sure">"Sind Sie sicher?"</string>
     <string name="artist">Künstler</string>
     <string name="ask">"Jedes Mal nachfragen"</string>
@@ -67,6 +69,7 @@
     <string name="beat_tick">Schlag 1 (Tick)</string>
     <string name="beat_tock">Schlag 2 (tock)</string>
     <string name="beats">Schläge</string>
+    <string name="before">Vor</string>
     <string name="bible">Bibel</string>
     <string name="bibleXML">"OpenSong XML Bibel"</string>
     <string name="bible_browse">Stöbere in der Bibel</string>
@@ -144,6 +147,7 @@
     <string name="color_choose">"Farbauswahl"</string>
     <string name="column_force">Spaltenumbrüche manuell überschreiben</string>
     <string name="column_force_info">Verwenden Sie den neuen Seitencode (!--) im Song, um bei der automatischen Skalierung einen neuen Spaltenumbruch zu erzwingen</string>
+    <string name="column_force_insert">Spaltenumbruch einfügen</string>
     <string name="comment">Kommentar</string>
     <string name="comment_background">"Hintergrund Kommentar"</string>
     <string name="commentline_scale">"Kommentartext skalieren"</string>
@@ -195,6 +199,10 @@
     <string name="content">"Inhalt"</string>
     <string name="controls">Steuerung</string>
     <string name="controls_description">Fußpedale und Bildschirmgesten</string>
+    <string name="copy_chord">Kopieren Sie Akkorde zwischen Abschnitten</string>
+    <string name="copy_chord_info">Nimm die Akkorde aus einem Abschnitt und wende sie auf einen anderen an</string>
+    <string name="copy_chord_into">Kopieren Sie hinein</string>
+    <string name="copy_chord_section">Verwenden Sie die Akkordstruktur in diesem Abschnitt</string>
     <string name="copy_of">Kopieren</string>
     <string name="copyright">"Copyright-Informationen"</string>
     <string name="create_folder_error">"Es gab einen Fehler beim Erstellen des neuen Ordners!"</string>

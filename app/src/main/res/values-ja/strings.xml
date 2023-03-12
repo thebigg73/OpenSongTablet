@@ -21,6 +21,7 @@
     <string name="add_song_to_set">"設定するには現在の曲を追加"</string>
     <string name="add_songs">曲を追加する</string>
     <string name="added_to_set">"あなたの現在のセットの最後に追加されました。"</string>
+    <string name="after">後</string>
     <string name="air_turn_long_press">AirTurn長押しモード</string>
     <string name="air_turn_long_press_info">長押しアクションを送信しないペダルを使用する場合は、希望の長押し時間を設定することでこれをシミュレートできます。</string>
     <string name="air_turn_long_press_time">長押し待ち時間</string>
@@ -32,6 +33,7 @@
     <string name="alphabetical_level2_info">アルファベット順のインデックスの項目をクリックすると、1 文字と 2 文字のアルファベット順のインデックスが切り替わります</string>
     <string name="alphabetical_sort">項目をアルファベット順に並べる</string>
     <string name="appearance_change">外観を調整します</string>
+    <string name="apply_changes">変更を適用する</string>
     <string name="are_you_sure">"確かですか？"</string>
     <string name="artist">アーティスト</string>
     <string name="ask">"毎回確認して下さい"</string>
@@ -67,6 +69,7 @@
     <string name="beat_tick">ビート1（ティック）</string>
     <string name="beat_tock">ビート2（トック）</string>
     <string name="beats">ビート</string>
+    <string name="before">前</string>
     <string name="bible">聖書</string>
     <string name="bibleXML">"OpenSong XML聖書"</string>
     <string name="bible_browse">聖書を閲覧/検索する</string>
@@ -144,6 +147,7 @@
     <string name="color_choose">"カラーセレクタ"</string>
     <string name="column_force">段区切りを手動で上書きする</string>
     <string name="column_force_info">曲の新しいページ コード (!--) を使用して、自動スケーリング時に新しい列区切りを強制します</string>
+    <string name="column_force_insert">段区切りを挿入</string>
     <string name="comment">コメント</string>
     <string name="comment_background">"コメントの背景"</string>
     <string name="commentline_scale">"コメントテキストを拡大縮小"</string>
@@ -195,6 +199,10 @@
     <string name="content">"コンテンツ"</string>
     <string name="controls">コントロール</string>
     <string name="controls_description">フットペダルと画面ジェスチャー</string>
+    <string name="copy_chord">セクション間でコードをコピーする</string>
+    <string name="copy_chord_info">あるセクションのコードを別のセクションに適用する</string>
+    <string name="copy_chord_into">にコピー</string>
+    <string name="copy_chord_section">このセクションのコード構造を使用する</string>
     <string name="copy_of">コピー</string>
     <string name="copyright">"著作権情報"</string>
     <string name="create_folder_error">"新しいフォルダの作成中にエラーが発生しました！"</string>

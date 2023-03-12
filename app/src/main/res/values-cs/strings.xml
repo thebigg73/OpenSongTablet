@@ -21,6 +21,7 @@
     <string name="add_song_to_set">Každému z nich lze přiřadit akce písní, jako jsou metronomy, transpozice, pady atd.</string>
     <string name="add_songs">Přidejte písně</string>
     <string name="added_to_set">"byla přidána na konec aktuálního souboru."</string>
+    <string name="after">Po</string>
     <string name="air_turn_long_press">AirTurn režim dlouhého stisknutí</string>
     <string name="air_turn_long_press_info">Při použití pedálu, který nevysílá akce dlouhého stisknutí, to můžete simulovat nastavením požadované doby dlouhého stisknutí</string>
     <string name="air_turn_long_press_time">Dlouhé stisknutí čekací doby</string>
@@ -32,6 +33,7 @@
     <string name="alphabetical_level2_info">Kliknutím na položku v abecedním rejstříku přepnete mezi jedno a dvouznakovým abecedním rejstříkem</string>
     <string name="alphabetical_sort">Seřaďte položky v abecedním pořadí</string>
     <string name="appearance_change">Upravuje vzhled</string>
+    <string name="apply_changes">Aplikuj změny</string>
     <string name="are_you_sure">"Jste si jist?"</string>
     <string name="artist">Umělec</string>
     <string name="ask">"Zeptejte se pokaždé,"</string>
@@ -67,6 +69,7 @@
     <string name="beat_tick">Porazit 1 (zaškrtnout)</string>
     <string name="beat_tock">Beat 2 (tak)</string>
     <string name="beats">Beats</string>
+    <string name="before">Před</string>
     <string name="bible">Bible</string>
     <string name="bibleXML">"OpenSong XML Bible"</string>
     <string name="bible_browse">Procházet/hledat bibli</string>
@@ -144,6 +147,7 @@
     <string name="color_choose">"Barva Chooser"</string>
     <string name="column_force">Ručně přepište konce sloupců</string>
     <string name="column_force_info">Použijte nový kód stránky (!--) ve skladbě k vynucení nového zalomení sloupce při automatickém škálování</string>
+    <string name="column_force_insert">Vložit zalomení sloupce</string>
     <string name="comment">Komentář</string>
     <string name="comment_background">"Komentář pozadí"</string>
     <string name="commentline_scale">"Měřítko text komentáře"</string>
@@ -195,6 +199,10 @@
     <string name="content">"Obsah"</string>
     <string name="controls">Řízení</string>
     <string name="controls_description">Nožní pedály a gesta na obrazovce</string>
+    <string name="copy_chord">Kopírovat akordy mezi sekcemi</string>
+    <string name="copy_chord_info">Vezměte akordy z jedné části a aplikujte je na druhou</string>
+    <string name="copy_chord_into">Zkopírujte do</string>
+    <string name="copy_chord_section">Použijte strukturu akordu v této části</string>
     <string name="copy_of">Kopírovat</string>
     <string name="copyright">"Copyright info"</string>
     <string name="create_folder_error">"Došlo k chybě při vytváření nové složky !"</string>

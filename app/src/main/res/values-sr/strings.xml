@@ -21,6 +21,7 @@
     <string name="add_song_to_set">Dodati trenutnu pesmu na set listu</string>
     <string name="add_songs">Dodajte pesme</string>
     <string name="added_to_set">je dodata na kraj trenutne set liste.</string>
+    <string name="after">Posle</string>
     <string name="air_turn_long_press">AirTurn režim dugog pritiska</string>
     <string name="air_turn_long_press_info">Kada koristite pedalu koja ne šalje radnje dugog pritiska, ovo možete simulirati postavljanjem željenog vremena dugog pritiska</string>
     <string name="air_turn_long_press_time">Dugi pritisak na vreme čekanja</string>
@@ -32,6 +33,7 @@
     <string name="alphabetical_level2_info">Klikom na stavku u abecednom indeksu prebacujete se između jednog i dvoslovnog abecednog indeksa</string>
     <string name="alphabetical_sort">Stavite stavke po abecednom redu</string>
     <string name="appearance_change">Prilagođava izgled</string>
+    <string name="apply_changes">Primenite izmene</string>
     <string name="are_you_sure">Da li ste sigurni?</string>
     <string name="artist">Umetnik</string>
     <string name="ask">Pitaj svaki put</string>
@@ -67,6 +69,7 @@
     <string name="beat_tick">Otkucaj 1 (štikl)</string>
     <string name="beat_tock">Otkucaj 2 (tak)</string>
     <string name="beats">Beats</string>
+    <string name="before">Pre nego što</string>
     <string name="bible">Biblija</string>
     <string name="bibleXML">OpenSong XML Biblija</string>
     <string name="bible_browse">Pregledajte/pretražite bibliju</string>
@@ -144,6 +147,7 @@
     <string name="color_choose">Odabir boja</string>
     <string name="column_force">Ručno zaobiđite prelome kolona</string>
     <string name="column_force_info">Koristite novi kod stranice (!--) u pesmi da biste nametnuli prelom nove kolone prilikom automatskog skaliranja</string>
+    <string name="column_force_insert">Umetni prelom kolone</string>
     <string name="comment">Komentar</string>
     <string name="comment_background">Pozadina komentara</string>
     <string name="commentline_scale">Skaliranje teksta komentara</string>
@@ -195,6 +199,10 @@
     <string name="content">Sadržaj</string>
     <string name="controls">Kontrole</string>
     <string name="controls_description">Nožne pedale i pokreti ekrana</string>
+    <string name="copy_chord">Kopirajte akorde između sekcija</string>
+    <string name="copy_chord_info">Uzmite akorde iz jednog dela i primenite ih na drugi</string>
+    <string name="copy_chord_into">Kopiraj u</string>
+    <string name="copy_chord_section">Koristite strukturu akorda u ovom odeljku</string>
     <string name="copy_of">Kopiraj</string>
     <string name="copyright">Copyright info</string>
     <string name="create_folder_error">Nastala je greška tokom pravljenja nove fascikle!</string>

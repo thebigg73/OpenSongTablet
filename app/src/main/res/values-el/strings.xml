@@ -21,6 +21,7 @@
     <string name="add_song_to_set">"Πρόσθεσε το τρέχων τραγουδι σε λιστα"</string>
     <string name="add_songs">Προσθήκη τραγουδιών</string>
     <string name="added_to_set">"προστέθηκε στο τέλος της σειράς."</string>
+    <string name="after">Μετά</string>
     <string name="air_turn_long_press">Λειτουργία μακρινής πτήσης AirTurn</string>
     <string name="air_turn_long_press_info">Όταν χρησιμοποιείτε ένα πεντάλ που δεν στέλνει ενέργειες παρατεταμένου πατήματος, μπορείτε να το προσομοιώσετε ορίζοντας τον επιθυμητό χρόνο παρατεταμένου πάτημας</string>
     <string name="air_turn_long_press_time">Χρόνος αναμονής για παρατεταμένο πάτημα</string>
@@ -32,6 +33,7 @@
     <string name="alphabetical_level2_info">Κάνοντας κλικ σε ένα στοιχείο στο αλφαβητικό ευρετήριο θα γίνει εναλλαγή μεταξύ ενός και δύο χαρακτήρων αλφαβητικού ευρετηρίου</string>
     <string name="alphabetical_sort">Βάλτε τα στοιχεία σε αλφαβητική σειρά</string>
     <string name="appearance_change">Ρυθμίζει την εμφάνιση</string>
+    <string name="apply_changes">Εφαρμόστε αλλαγές</string>
     <string name="are_you_sure">"Είσαι σίγουρος;"</string>
     <string name="artist">Καλλιτέχνης</string>
     <string name="ask">"Ερώτηση κάθε φορά"</string>
@@ -67,6 +69,7 @@
     <string name="beat_tick">Beat 1 (τικ)</string>
     <string name="beat_tock">Beat 2 (tock)</string>
     <string name="beats">Beats</string>
+    <string name="before">Πριν</string>
     <string name="bible">Αγια ΓΡΑΦΗ</string>
     <string name="bibleXML">"OpenSong XML Bible"</string>
     <string name="bible_browse">Περιήγηση/αναζήτηση Βίβλου</string>
@@ -144,6 +147,7 @@
     <string name="color_choose">"Επιλογέας χρώματος"</string>
     <string name="column_force">Μη αυτόματη παράκαμψη αλλαγών στηλών</string>
     <string name="column_force_info">Χρησιμοποιήστε τον κωδικό νέας σελίδας (!--) στο τραγούδι για να επιβάλετε μια νέα αλλαγή στήλης κατά την αυτόματη κλιμάκωση</string>
+    <string name="column_force_insert">Εισαγωγή αλλαγής στήλης</string>
     <string name="comment">Σχόλιο</string>
     <string name="comment_background">"Φόντο σχολίου"</string>
     <string name="commentline_scale">"Κείμενο σχολίου κλίμακας"</string>
@@ -195,6 +199,10 @@
     <string name="content">"Περιεχόμενο"</string>
     <string name="controls">Ελεγχος</string>
     <string name="controls_description">Πεντάλ ποδιών και χειρονομίες οθόνης</string>
+    <string name="copy_chord">Αντιγράψτε τις συγχορδίες μεταξύ των ενοτήτων</string>
+    <string name="copy_chord_info">Πάρτε τις συγχορδίες από ένα τμήμα και εφαρμόστε τις σε ένα άλλο</string>
+    <string name="copy_chord_into">Αντιγραφή σε</string>
+    <string name="copy_chord_section">Χρησιμοποιήστε τη δομή της χορδής σε αυτήν την ενότητα</string>
     <string name="copy_of">Αντίγραφο</string>
     <string name="copyright">"Copyright info"</string>
     <string name="create_folder_error">"Υπήρξε πρόβλημα στην δημιουργία νέου φακέλου!"</string>
