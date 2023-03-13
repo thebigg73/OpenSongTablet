@@ -22,9 +22,9 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.customviews.GlideApp;
 import com.garethevans.church.opensongtablet.databinding.SettingsHighlighterEditBinding;
 import com.garethevans.church.opensongtablet.filemanagement.AreYouSureBottomSheet;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
@@ -156,7 +156,7 @@ public class HighlighterEditFragment extends Fragment {
 
                 // Put the song image into the view
                 RequestOptions requestOptions = new RequestOptions().override(scaledWidth,scaledHeight);
-                GlideApp.with(myView.glideImage).load(screenShotBitmap).apply(requestOptions).
+                Glide.with(myView.glideImage).load(screenShotBitmap).apply(requestOptions).
                         into(myView.glideImage);
 
                 // Set the original highlighter file if it exists

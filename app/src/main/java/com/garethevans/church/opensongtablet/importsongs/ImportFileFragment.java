@@ -17,9 +17,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
-import com.garethevans.church.opensongtablet.customviews.GlideApp;
 import com.garethevans.church.opensongtablet.databinding.SettingsImportFileBinding;
 import com.garethevans.church.opensongtablet.filemanagement.AreYouSureBottomSheet;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
@@ -194,10 +194,10 @@ public class ImportFileFragment extends Fragment {
             if (mainActivityInterface.getImportFilename().toLowerCase(Locale.ROOT).endsWith(".pdf")) {
                 // Load in a preview if the version of Android is high enough
                 Bitmap bmp = mainActivityInterface.getProcessSong().getBitmapFromPDF(null,null,1,200,200,"N");
-                myView.imageView.post(()->GlideApp.with(getContext()).load(bmp).into(myView.imageView));
+                myView.imageView.post(()-> Glide.with(getContext()).load(bmp).into(myView.imageView));
                 newSong.setFiletype("PDF");
             } else {
-                myView.imageView.post(()->GlideApp.with(getContext()).load(mainActivityInterface.getImportUri()).into(myView.imageView));
+                myView.imageView.post(()->Glide.with(getContext()).load(mainActivityInterface.getImportUri()).into(myView.imageView));
                 newSong.setFiletype("IMG");
             }
         } else {

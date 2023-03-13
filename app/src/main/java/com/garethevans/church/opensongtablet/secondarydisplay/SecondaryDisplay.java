@@ -35,9 +35,9 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 
+import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.customviews.GlideApp;
 import com.garethevans.church.opensongtablet.databinding.CastScreenBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
@@ -409,16 +409,16 @@ public class SecondaryDisplay extends Presentation {
                     GradientDrawable solidColor = (GradientDrawable) drawable.mutate();
                     solidColor.setSize(availableScreenWidth, availableScreenHeight);
                     solidColor.setColor(mainActivityInterface.getPresenterSettings().getBackgroundColor());
-                    GlideApp.with(c).load(solidColor).apply(requestOptions).into((ImageView) backgroundToFadeIn);
+                    Glide.with(c).load(solidColor).apply(requestOptions).into((ImageView) backgroundToFadeIn);
                 }
             } else if (mainActivityInterface.getPresenterSettings().getBackgroundToUse().startsWith("img")) {
                 // Use a static image
                 assert backgroundToFadeIn instanceof ImageView;
                 if (background.toString().equals("bg.png")) {
                     Drawable defaultImage = ResourcesCompat.getDrawable(c.getResources(), R.drawable.preso_default_bg, null);
-                    GlideApp.with(c).load(defaultImage).apply(requestOptions).into((ImageView) backgroundToFadeIn);
+                    Glide.with(c).load(defaultImage).apply(requestOptions).into((ImageView) backgroundToFadeIn);
                 } else {
-                    GlideApp.with(c).load(background).apply(requestOptions).into((ImageView) backgroundToFadeIn);
+                    Glide.with(c).load(background).apply(requestOptions).into((ImageView) backgroundToFadeIn);
                 }
             } else if (mainActivityInterface.getPresenterSettings().getBackgroundToUse().startsWith("vid")) {
                 // We need to wait for the video to be prepared
@@ -457,7 +457,7 @@ public class SecondaryDisplay extends Presentation {
         layoutParams.height = size;
         myView.mainLogo.setLayoutParams(layoutParams);
         RequestOptions requestOptions = new RequestOptions().fitCenter().override(size,size);
-        GlideApp.with(c).load(mainActivityInterface.getPresenterSettings().getLogo()).apply(requestOptions).into(myView.mainLogo);
+        Glide.with(c).load(mainActivityInterface.getPresenterSettings().getLogo()).apply(requestOptions).into(myView.mainLogo);
     }
     public void showLogo(boolean show, boolean timedHide) {
         // Fade in/out the logo based on the setting
@@ -1037,7 +1037,7 @@ public class SecondaryDisplay extends Presentation {
                             myView.songContent1.getCol3().setVisibility(View.GONE);
                             myView.songContent1.getImageView().setVisibility(View.VISIBLE);
                             fixGravity(myView.songContent1.getImageView());
-                            GlideApp.with(c).load(bitmap).fitCenter().into(myView.songContent1.getImageView());
+                            Glide.with(c).load(bitmap).fitCenter().into(myView.songContent1.getImageView());
 
                         } else {
                             myView.songContent1.getCol1().setVisibility(View.VISIBLE);
@@ -1056,7 +1056,7 @@ public class SecondaryDisplay extends Presentation {
                             myView.songContent2.getCol3().setVisibility(View.GONE);
                             myView.songContent2.getImageView().setVisibility(View.VISIBLE);
                             fixGravity(myView.songContent2.getImageView());
-                            GlideApp.with(c).load(bitmap).fitCenter().into(myView.songContent2.getImageView());
+                            Glide.with(c).load(bitmap).fitCenter().into(myView.songContent2.getImageView());
 
                         } else {
                             myView.songContent2.getCol1().setVisibility(View.VISIBLE);

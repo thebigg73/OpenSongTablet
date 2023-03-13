@@ -200,7 +200,6 @@ public class MyMaterialTextView extends LinearLayout {
                 imageView.setMaxWidth(64);
                 imageView.setMaxHeight(64);
                 imageView.setImageDrawable(cloneDrawable);
-                //GlideApp.with(this).load(cloneDrawable).apply(requestOptions).into(imageView);
             }
             imageView.setVisibility(View.VISIBLE);
         } else {

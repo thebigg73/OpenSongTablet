@@ -24,13 +24,13 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.abcnotation.ABCPopup;
 import com.garethevans.church.opensongtablet.appdata.AlertInfoBottomSheet;
 import com.garethevans.church.opensongtablet.controls.GestureListener;
 import com.garethevans.church.opensongtablet.customslides.ImageSlideAdapter;
-import com.garethevans.church.opensongtablet.customviews.GlideApp;
 import com.garethevans.church.opensongtablet.customviews.RecyclerLayoutManager;
 import com.garethevans.church.opensongtablet.databinding.ModePerformanceBinding;
 import com.garethevans.church.opensongtablet.interfaces.ActionInterface;
@@ -502,7 +502,7 @@ public class PerformanceFragment extends Fragment {
         myView.imageView.getLayoutParams().height = heightAfterScale;
 
         RequestOptions requestOptions = new RequestOptions().override(widthAfterScale,heightAfterScale);
-        GlideApp.with(requireContext()).load(bmp).apply(requestOptions).into(myView.imageView);
+        Glide.with(requireContext()).load(bmp).apply(requestOptions).into(myView.imageView);
 
         myView.zoomLayout.setSongSize(widthAfterScale, heightAfterScale + (int)(mainActivityInterface.getSongSheetTitleLayout().getHeight()*scaleFactor));
 
@@ -922,7 +922,7 @@ public class PerformanceFragment extends Fragment {
 
                             myView.highlighterView.setLayoutParams(rlp);
                             RequestOptions requestOptions = new RequestOptions().centerInside().override(rlp.width,rlp.height);
-                            GlideApp.with(requireContext()).load(highlighterBitmap).
+                            Glide.with(requireContext()).load(highlighterBitmap).
                                     apply(requestOptions).
                                     into(myView.highlighterView);
 

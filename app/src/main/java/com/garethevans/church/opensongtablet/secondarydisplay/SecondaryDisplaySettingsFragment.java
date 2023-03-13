@@ -16,9 +16,9 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.customviews.GlideApp;
 import com.garethevans.church.opensongtablet.databinding.SettingsDisplayConnectedBinding;
 import com.garethevans.church.opensongtablet.interfaces.DisplayInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
@@ -80,7 +80,7 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
         if (getContext()!=null) {
             // Get the current logo and preview in the button
             RequestOptions options = new RequestOptions().override(128, 72).centerInside();
-            GlideApp.with(getContext()).load(mainActivityInterface.getPresenterSettings().getLogo()).apply(options).into(myView.currentLogo);
+            Glide.with(getContext()).load(mainActivityInterface.getPresenterSettings().getLogo()).apply(options).into(myView.currentLogo);
             myView.logoSize.setValue(100 * mainActivityInterface.getPresenterSettings().getLogoSize());
         }
     }
@@ -92,24 +92,24 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
             RequestOptions options = new RequestOptions().override(136, 72).centerCrop();
             switch (mainActivityInterface.getPresenterSettings().getBackgroundToUse()) {
                 case "img1":
-                    GlideApp.with(getContext()).load(mainActivityInterface.getPresenterSettings().getBackgroundImage1()).apply(options).into(myView.currentBackground);
-                    GlideApp.with(getContext()).load(mainActivityInterface.getPresenterSettings().getBackgroundImage1()).apply(options).into(myView.infoBackgroundColor);
+                    Glide.with(getContext()).load(mainActivityInterface.getPresenterSettings().getBackgroundImage1()).apply(options).into(myView.currentBackground);
+                    Glide.with(getContext()).load(mainActivityInterface.getPresenterSettings().getBackgroundImage1()).apply(options).into(myView.infoBackgroundColor);
                     myView.videoBackgroundIcon.hide();
                     Log.d(TAG, "should update to img1");
                     break;
                 case "img2":
-                    GlideApp.with(getContext()).load(mainActivityInterface.getPresenterSettings().getBackgroundImage2()).apply(options).into(myView.currentBackground);
-                    GlideApp.with(getContext()).load(mainActivityInterface.getPresenterSettings().getBackgroundImage2()).apply(options).into(myView.infoBackgroundColor);
+                    Glide.with(getContext()).load(mainActivityInterface.getPresenterSettings().getBackgroundImage2()).apply(options).into(myView.currentBackground);
+                    Glide.with(getContext()).load(mainActivityInterface.getPresenterSettings().getBackgroundImage2()).apply(options).into(myView.infoBackgroundColor);
                     myView.videoBackgroundIcon.hide();
                     break;
                 case "vid1":
-                    GlideApp.with(getContext()).load(mainActivityInterface.getPresenterSettings().getBackgroundVideo1()).apply(options).into(myView.currentBackground);
-                    GlideApp.with(getContext()).load(mainActivityInterface.getPresenterSettings().getBackgroundVideo1()).apply(options).into(myView.infoBackgroundColor);
+                    Glide.with(getContext()).load(mainActivityInterface.getPresenterSettings().getBackgroundVideo1()).apply(options).into(myView.currentBackground);
+                    Glide.with(getContext()).load(mainActivityInterface.getPresenterSettings().getBackgroundVideo1()).apply(options).into(myView.infoBackgroundColor);
                     myView.videoBackgroundIcon.show();
                     break;
                 case "vid2":
-                    GlideApp.with(getContext()).load(mainActivityInterface.getPresenterSettings().getBackgroundVideo2()).apply(options).into(myView.currentBackground);
-                    GlideApp.with(getContext()).load(mainActivityInterface.getPresenterSettings().getBackgroundVideo2()).apply(options).into(myView.infoBackgroundColor);
+                    Glide.with(getContext()).load(mainActivityInterface.getPresenterSettings().getBackgroundVideo2()).apply(options).into(myView.currentBackground);
+                    Glide.with(getContext()).load(mainActivityInterface.getPresenterSettings().getBackgroundVideo2()).apply(options).into(myView.infoBackgroundColor);
                     myView.videoBackgroundIcon.show();
                     break;
                 case "color":
@@ -117,8 +117,8 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
                     if (drawable != null) {
                         GradientDrawable gradientDrawable = (GradientDrawable) drawable.mutate();
                         gradientDrawable.setColor(mainActivityInterface.getPresenterSettings().getBackgroundColor());
-                        GlideApp.with(getContext()).load(gradientDrawable).apply(options).into(myView.currentBackground);
-                        GlideApp.with(getContext()).load(gradientDrawable).apply(options).into(myView.infoBackgroundColor);
+                        Glide.with(getContext()).load(gradientDrawable).apply(options).into(myView.currentBackground);
+                        Glide.with(getContext()).load(gradientDrawable).apply(options).into(myView.infoBackgroundColor);
                     }
                     myView.videoBackgroundIcon.hide();
             }
@@ -133,7 +133,7 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
             if (drawable != null) {
                 GradientDrawable gradientDrawable = (GradientDrawable) drawable.mutate();
                 gradientDrawable.setColor(mainActivityInterface.getMyThemeColors().getPresoShadowColor());
-                GlideApp.with(getContext()).load(gradientDrawable).apply(options).into(myView.infoBackgroundColor);
+                Glide.with(getContext()).load(gradientDrawable).apply(options).into(myView.infoBackgroundColor);
             }
         }
     }

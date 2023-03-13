@@ -25,9 +25,9 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.customviews.GlideApp;
 import com.garethevans.church.opensongtablet.databinding.BottomSheetImageChooseBinding;
 import com.garethevans.church.opensongtablet.interfaces.DisplayInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
@@ -119,13 +119,13 @@ public class ImageChooserBottomSheet extends BottomSheetDialogFragment {
                 if (drawable != null) {
                     GradientDrawable gradientDrawable = (GradientDrawable) drawable.mutate();
                     gradientDrawable.setColor(mainActivityInterface.getPresenterSettings().getBackgroundColor());
-                    GlideApp.with(getContext()).load(gradientDrawable).apply(options).into(view);
+                    Glide.with(getContext()).load(gradientDrawable).apply(options).into(view);
                 }
             } else {
                 if (uri == null) {
-                    GlideApp.with(getContext()).load(ContextCompat.getDrawable(getContext(), R.drawable.image)).apply(options).into(view);
+                    Glide.with(getContext()).load(ContextCompat.getDrawable(getContext(), R.drawable.image)).apply(options).into(view);
                 } else {
-                    GlideApp.with(getContext()).load(uri).apply(options).into(view);
+                    Glide.with(getContext()).load(uri).apply(options).into(view);
                 }
             }
         }
