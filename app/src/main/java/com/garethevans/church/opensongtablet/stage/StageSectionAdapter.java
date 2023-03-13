@@ -4,6 +4,7 @@ package com.garethevans.church.opensongtablet.stage;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -167,13 +168,11 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
                 try {
                     holder.v.getLayoutParams().width = availableWidth;
                     holder.sectionView.getLayoutParams().width = (int) (width * scale);
-                    //holder.sectionView.getLayoutParams().width = availableWidth;
                     holder.v.getLayoutParams().height = (int) (height * scale);
                     holder.sectionView.getLayoutParams().height = (int) (height * scale);
                     if (v.getParent()!=null) {
                         ((ViewGroup)v.getParent()).removeView(v);
                     }
-                    v.getLayoutParams().width = availableWidth;
                     holder.sectionView.addView(v);
                 } catch (Exception e) {
                     e.printStackTrace();

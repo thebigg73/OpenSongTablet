@@ -1881,7 +1881,6 @@ public class ProcessSong {
 
                     linearLayout.setBackgroundColor(overallBackgroundColor);
                     sectionColors.add(overallBackgroundColor);
-
                     sectionViews.add(linearLayout);
                 }
             }
@@ -2122,7 +2121,7 @@ public class ProcessSong {
                 }
             }
 
-            // Default font size is 14sp when drawing. If scaling takes this below the min font Size, override back to 1 column
+            // Default font size is 8sp when drawing. If scaling takes this below the min font Size, override back to 1 column
             if (best == 2) {
                 if (col2[2] == 0) {
                     return 1;

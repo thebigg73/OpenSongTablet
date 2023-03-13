@@ -42,7 +42,6 @@
         android:visibility="invisible" />
 
     <!-- This is used for the pdf pages, images and stage mode -->
-    <!-- No scaling allowed on this -->
     <com.garethevans.church.opensongtablet.customviews.MyRecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
