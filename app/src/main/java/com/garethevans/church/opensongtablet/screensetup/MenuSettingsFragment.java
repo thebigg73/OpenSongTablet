@@ -46,18 +46,25 @@ public class MenuSettingsFragment extends Fragment {
     private void setupViews() {
         boolean showAlphabetical = mainActivityInterface.getPreferences().
                 getMyPreferenceBoolean("songMenuAlphaIndexShow",true);
-        float fontSize = mainActivityInterface.getPreferences().
+        float itemFontSize = mainActivityInterface.getPreferences().
+                getMyPreferenceFloat("songMenuItemSize",12.0f);
+        float alphaFontSize = mainActivityInterface.getPreferences().
                 getMyPreferenceFloat("songMenuAlphaIndexSize",12.0f);
         boolean showTickBoxes = mainActivityInterface.getPreferences().
                 getMyPreferenceBoolean("songMenuSetTicksShow",true);
         boolean sortByTitles = mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuSortTitles",true);
         boolean songMenuAlphaIndexLevel2 = mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuAlphaIndexLevel2",false);
+        myView.songMenuItemSize.setLabelFormatter(value -> (int)value+"sp");
+        myView.songMenuItemSize.setValue(itemFontSize);
+        myView.songMenuItemSize.setHint((int)itemFontSize + "sp");
+        myView.songMenuItemSize.setHintTextSize(itemFontSize);
         myView.largePopups.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("largePopups",true));
         myView.songAlphabeticalShow.setChecked(showAlphabetical);
         myView.level2Index.setChecked(songMenuAlphaIndexLevel2);
-        myView.songAlphabeticalSize.setValue(fontSize);
-        myView.songAlphabeticalSize.setHint(fontSize+"sp");
-        myView.songAlphabeticalSize.setLabelFormatter(value -> ((int)value)+"sp");
+        myView.songAlphabeticalSize.setValue(alphaFontSize);
+        myView.songAlphabeticalSize.setHint((int)alphaFontSize+"sp");
+        myView.songAlphabeticalSize.setLabelFormatter(value -> (int)value+"sp");
+        myView.songAlphabeticalSize.setHintTextSize(alphaFontSize);
         myView.songMenuCheckboxes.setChecked(showTickBoxes);
         if (sortByTitles) {
             myView.songMenuOrder.setSliderPos(1);
@@ -81,6 +88,22 @@ public class MenuSettingsFragment extends Fragment {
             mainActivityInterface.updateSongMenu("menuSettingsFragment",null, null);
         });
         myView.level2Index.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getPreferences().setMyPreferenceBoolean("songMenuAlphaIndexLevel2",isChecked));
+        myView.songMenuItemSize.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
+            @Override
+            public void onStartTrackingTouch(@NonNull Slider slider) {}
+
+            @Override
+            public void onStopTrackingTouch(@NonNull Slider slider) {
+                float myVal = myView.songMenuItemSize.getValue();
+                mainActivityInterface.getPreferences().setMyPreferenceFloat("songMenuItemSize", myVal);
+                // Try to update the song menu
+                mainActivityInterface.updateSongMenu("menuSettingsFragment",null,null);
+            }
+        });
+        myView.songMenuItemSize.addOnChangeListener((slider, value, fromUser) -> {
+            myView.songMenuItemSize.setHint((int)value + "sp");
+            myView.songMenuItemSize.setHintTextSize(value);
+        });
         myView.songAlphabeticalSize.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
             @Override
             public void onStartTrackingTouch(@NonNull Slider slider) { }
@@ -93,7 +116,10 @@ public class MenuSettingsFragment extends Fragment {
                 mainActivityInterface.updateSongMenu("menuSettingsFragment",null, null);
             }
         });
-        myView.songAlphabeticalSize.addOnChangeListener((slider, value, fromUser) -> myView.songAlphabeticalSize.setHint(value+"sp"));
+        myView.songAlphabeticalSize.addOnChangeListener((slider, value, fromUser) -> {
+            myView.songAlphabeticalSize.setHint((int)value+"sp");
+            myView.songAlphabeticalSize.setHintTextSize(value);
+        });
         myView.songMenuOrder.addOnChangeListener((slider, value, fromUser) -> {
             mainActivityInterface.getPreferences().setMyPreferenceBoolean("songMenuSortTitles",value==1);
             mainActivityInterface.updateSongMenu("",null, null);

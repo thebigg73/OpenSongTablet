@@ -16,6 +16,16 @@
             android:layout_marginBottom="100dp"
             android:orientation="vertical">
 
+            <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+                android:id="@+id/songMenuItemSize"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/size"
+                android:text="@string/song_menu_size"
+                android:valueFrom="6.0"
+                android:valueTo="32.0" />
+            <TableRow style="@style/DividerLine"/>
+
             <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/songMenuCheckboxes"
                 android:layout_width="match_parent"
@@ -24,6 +34,7 @@
                 android:layout_marginBottom="8dp"
                 android:text="@string/song_menu_checkboxes" />
             <TableRow style="@style/DividerLine" />
+
 
             <com.garethevans.church.opensongtablet.customviews.TextSlider
                 android:id="@+id/songMenuOrder"

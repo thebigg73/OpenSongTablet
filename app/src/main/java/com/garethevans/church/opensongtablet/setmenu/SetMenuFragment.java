@@ -216,10 +216,20 @@ public class SetMenuFragment extends Fragment {
                 setItemInfos.add(makeSetItem(i));
             }
             myView.myRecyclerView.post(() -> {
-                setListAdapter.updateSetList(setItemInfos);
-                myView.myRecyclerView.setVisibility(View.VISIBLE);
+                try {
+                    setListAdapter.updateSetList(setItemInfos);
+                    myView.myRecyclerView.setVisibility(View.VISIBLE);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             });
-            myView.progressBar.post(() -> myView.progressBar.setVisibility(View.GONE));
+            myView.progressBar.post(() -> {
+                try {
+                    myView.progressBar.setVisibility(View.GONE);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
         } catch (Exception e) {
             e.printStackTrace();
         }

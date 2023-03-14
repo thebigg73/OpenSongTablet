@@ -7,6 +7,7 @@ import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -364,26 +365,28 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         prepareSearch();
     }
     public void prepareSearch() {
-        songMenuSortTitles = mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuSortTitles", true);
-        getSearchVals();
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        executorService.execute(() -> {
-            Handler handler = new Handler(Looper.getMainLooper());
-            handler.post(() -> buttonsEnabled(false));
-            try {
-                songsFound = mainActivityInterface.getSQLiteHelper().getSongsByFilters(
-                        songListSearchByFolder, songListSearchByArtist, songListSearchByKey,
-                        songListSearchByTag, songListSearchByFilter, songListSearchByTitle,
-                        folderSearchVal, artistSearchVal, keySearchVal, tagSearchVal,
-                        filterSearchVal, titleSearchVal, songMenuSortTitles);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            handler.post(() -> {
-                updateSongList();
-                displayIndex();
+        if (mainActivityInterface!=null) {
+            songMenuSortTitles = mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuSortTitles", true);
+            getSearchVals();
+            ExecutorService executorService = Executors.newSingleThreadExecutor();
+            executorService.execute(() -> {
+                Handler handler = new Handler(Looper.getMainLooper());
+                handler.post(() -> buttonsEnabled(false));
+                try {
+                    songsFound = mainActivityInterface.getSQLiteHelper().getSongsByFilters(
+                            songListSearchByFolder, songListSearchByArtist, songListSearchByKey,
+                            songListSearchByTag, songListSearchByFilter, songListSearchByTitle,
+                            folderSearchVal, artistSearchVal, keySearchVal, tagSearchVal,
+                            filterSearchVal, titleSearchVal, songMenuSortTitles);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                handler.post(() -> {
+                    updateSongList();
+                    displayIndex();
+                });
             });
-        });
+        }
     }
 
     public void updateCheckForThisSong(Song thisSong) {
@@ -424,7 +427,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     }
 
     private void displayIndex() {
-        if (mainActivityInterface!=null) {
+        if (mainActivityInterface!=null && getContext()!=null) {
             try {
                 myView.songmenualpha.sideIndex.removeAllViews();
                 TextView textView;
@@ -432,8 +435,8 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                 Set<String> setString = map.keySet();
                 List<String> indexList = new ArrayList<>(setString);
                 float tvSize = mainActivityInterface.getPreferences().getMyPreferenceFloat("songMenuAlphaIndexSize", 14.0f);
-
-                int padding = (int)(tvSize/mainActivityInterface.getDisplayDensity())*2;
+                int padding = (int)(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, tvSize, getResources().getDisplayMetrics())*0.5f);
+                //int padding = (int)(tvSize/mainActivityInterface.getDisplayDensity())*2;
                 for (int p = 0; p < indexList.size(); p++) {
                     String index = indexList.get(p);
                     if (getActivity() != null) {
