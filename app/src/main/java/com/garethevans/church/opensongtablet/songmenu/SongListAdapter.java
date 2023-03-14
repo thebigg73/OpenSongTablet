@@ -51,7 +51,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
 
         songMenuSortTitles = mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuSortTitles", true);
         // Make the title text the same as the alphaIndex size
-        titleSize = mainActivityInterface.getPreferences().getMyPreferenceFloat("songMenuItemSize",12f);
+        titleSize = mainActivityInterface.getPreferences().getMyPreferenceFloat("songMenuItemSize",14f);
         subtitleSize = titleSize - 2f;
     }
 

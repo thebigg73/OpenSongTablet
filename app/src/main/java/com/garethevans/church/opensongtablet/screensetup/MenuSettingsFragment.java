@@ -47,7 +47,7 @@ public class MenuSettingsFragment extends Fragment {
         boolean showAlphabetical = mainActivityInterface.getPreferences().
                 getMyPreferenceBoolean("songMenuAlphaIndexShow",true);
         float itemFontSize = mainActivityInterface.getPreferences().
-                getMyPreferenceFloat("songMenuItemSize",12.0f);
+                getMyPreferenceFloat("songMenuItemSize",14.0f);
         float alphaFontSize = mainActivityInterface.getPreferences().
                 getMyPreferenceFloat("songMenuAlphaIndexSize",12.0f);
         boolean showTickBoxes = mainActivityInterface.getPreferences().
