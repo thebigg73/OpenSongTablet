@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="abc_transpose_to_song">Transposição automática para a tecla da música</string>
     <string name="abc_transpose_to_song_info">Se uma tecla for definida na música e na notação abc, o aplicativo tentará ajustar a saída da notação abc para corresponder à tecla da música.</string>
     <string name="about">Cerca de</string>
@@ -146,7 +146,7 @@
     <string name="close">"Fechar"</string>
     <string name="color_choose">"Cor Chooser"</string>
     <string name="column_force">Substituir quebras de coluna manualmente</string>
-    <string name="column_force_info">Use o novo código de página (!--) na música para forçar uma nova quebra de coluna ao dimensionar automaticamente</string>
+    <string name="column_force_info" tools:ignore="TypographyDashes">Use o novo código de página (!--) na música para forçar uma nova quebra de coluna ao dimensionar automaticamente</string>
     <string name="column_force_insert">Inserir quebra de coluna</string>
     <string name="comment">Comente</string>
     <string name="comment_background">"Comentário fundo"</string>
@@ -657,6 +657,8 @@
     <string name="song_features">Recursos da música</string>
     <string name="song_features_warning">Esses valores são melhor definidos usando as opções de recursos de música dedicados no menu de configurações. Salve a música primeiro. Você pode, no entanto, editar manualmente os valores aqui.</string>
     <string name="song_menu_checkboxes">"Mostrar caixas de seleção no menu de músicas"</string>
+    <string name="song_menu_subtitle_size">Tamanho da legenda do item do menu de música</string>
+    <string name="song_menu_title_size">Tamanho do título do item do menu de música</string>
     <string name="song_name_already_taken">"Infelizmente esta canção título / nome do arquivo já tenha sido utilizado (a proposta seria a de adicionar um número de versão para o final)."</string>
     <string name="song_new_name">"Digite um novo nome de arquivo para essa música (é assim que ele vai aparecer no seu menu canção)"</string>
     <string name="song_notes">"Canção notas"</string>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="abc_transpose_to_song">Transponeer outomaties na liedsleutel</string>
     <string name="abc_transpose_to_song_info">As \'n sleutel in die liedjie en in die abc-notasie gestel is, sal die toepassing probeer om die uitvoer van die abc-notasie aan te pas om by die liedjiesleutel te pas.</string>
     <string name="about">Oor</string>
@@ -146,7 +146,7 @@
     <string name="close">"Sluit"</string>
     <string name="color_choose">"Kleur Chooser"</string>
     <string name="column_force">Ignoreer kolombreuke met die hand</string>
-    <string name="column_force_info">Gebruik die nuwe bladsykode (!--) in die liedjie om \'n nuwe kolombreuk af te dwing wanneer outomatiese skaal gemaak word</string>
+    <string name="column_force_info" tools:ignore="TypographyDashes">Gebruik die nuwe bladsykode (!--) in die liedjie om \'n nuwe kolombreuk af te dwing wanneer outomatiese skaal gemaak word</string>
     <string name="column_force_insert">Voeg kolombreuk in</string>
     <string name="comment">Lewer kommentaar</string>
     <string name="comment_background">"Kommentaar agtergrond"</string>
@@ -657,6 +657,8 @@
     <string name="song_features">Lied kenmerke</string>
     <string name="song_features_warning">Hierdie waardes word die beste gestel deur die toegewyde liedjie-funksie-opsies in die instellingskieslys te gebruik. Stoor eers die liedjie. U kan egter die waardes hier handmatig wysig.</string>
     <string name="song_menu_checkboxes">"Wys verstek bokse in die lied menu"</string>
+    <string name="song_menu_subtitle_size">Song-kieslys-item ondertitelgrootte</string>
+    <string name="song_menu_title_size">Liedjie kieslys item titel grootte</string>
     <string name="song_name_already_taken">"Ongelukkig is hierdie liedjie titel / lêernaam is reeds gebruik ( \'n voorstel kan \'n weergawe nommer toe te voeg tot die einde )."</string>
     <string name="song_new_name">"Voer 'n nuwe lêer naam vir hierdie liedjie (dit is hoe dit in jou liedjie spyskaart sal verskyn)"</string>
     <string name="song_notes">"Lied taai notas"</string>

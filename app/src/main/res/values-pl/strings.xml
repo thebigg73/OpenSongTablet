@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="abc_transpose_to_song">Automatyczna transpozycja do klawisza utworu</string>
     <string name="abc_transpose_to_song_info">Jeśli klucz jest ustawiony w utworze i w notacji abc, aplikacja spróbuje dostosować wyjście notacji abc, aby pasowało do klucza utworu.</string>
     <string name="about">O</string>
@@ -146,7 +146,7 @@
     <string name="close">"Zamknij"</string>
     <string name="color_choose">"Kolor Chooser"</string>
     <string name="column_force">Ręcznie zastąp podziały kolumn</string>
-    <string name="column_force_info">Użyj nowego kodu strony (!--) w utworze, aby wymusić nowy podział kolumny podczas automatycznego skalowania</string>
+    <string name="column_force_info" tools:ignore="TypographyDashes">Użyj nowego kodu strony (!--) w utworze, aby wymusić nowy podział kolumny podczas automatycznego skalowania</string>
     <string name="column_force_insert">Wstaw podział kolumny</string>
     <string name="comment">Komentarz</string>
     <string name="comment_background">"Komentarz w tle"</string>
@@ -657,6 +657,8 @@
     <string name="song_features">Funkcje piosenki</string>
     <string name="song_features_warning">Te wartości najlepiej ustawić za pomocą dedykowanych opcji funkcji utworu w menu ustawień. Najpierw zapisz piosenkę. Możesz jednak ręcznie edytować wartości tutaj.</string>
     <string name="song_menu_checkboxes">"Pokaż zaznaczone pola wyboru w menu piosenki"</string>
+    <string name="song_menu_subtitle_size">Rozmiar napisów pozycji menu utworu</string>
+    <string name="song_menu_title_size">Rozmiar tytułu elementu menu utworu</string>
     <string name="song_name_already_taken">"Niestety ta piosenka tytuł / nazwa pliku jest już używany (sugestia może być dodanie numeru wersji do końca)."</string>
     <string name="song_new_name">"Wpisz nową nazwę pliku dźwiękowego (to , jak będzie wyglądał w menu utworu )"</string>
     <string name="song_notes">"Piosenka karteczki"</string>

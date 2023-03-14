@@ -21,7 +21,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/size"
-                android:text="@string/song_menu_size"
+                android:text="@string/song_menu_title_size"
                 android:valueFrom="6.0"
                 android:valueTo="32.0" />
             <TableRow style="@style/DividerLine"/>
@@ -31,7 +31,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/size"
-                android:text="@string/song_menu_sub_size"
+                android:text="@string/song_menu_subtitle_size"
                 android:valueFrom="6.0"
                 android:valueTo="32.0" />
             <TableRow style="@style/DividerLine"/>

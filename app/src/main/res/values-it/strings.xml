@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="abc_transpose_to_song">Trasposizione automatica alla chiave del brano</string>
     <string name="abc_transpose_to_song_info">Se una chiave è impostata nella canzone e nella notazione abc, l\'app proverà a regolare l\'output della notazione abc in modo che corrisponda alla chiave della canzone.</string>
     <string name="about">Di</string>
@@ -146,7 +146,7 @@
     <string name="close">"Chiudi"</string>
     <string name="color_choose">"Colore Scelta"</string>
     <string name="column_force">Sovrascrivi manualmente le interruzioni di colonna</string>
-    <string name="column_force_info">Usa il nuovo codice di pagina (!--) nel brano per forzare una nuova interruzione di colonna durante il ridimensionamento automatico</string>
+    <string name="column_force_info" tools:ignore="TypographyDashes">Usa il nuovo codice di pagina (!--) nel brano per forzare una nuova interruzione di colonna durante il ridimensionamento automatico</string>
     <string name="column_force_insert">Inserisci interruzione di colonna</string>
     <string name="comment">Commento</string>
     <string name="comment_background">"Commento sfondo"</string>
@@ -657,6 +657,8 @@
     <string name="song_features">Caratteristiche della canzone</string>
     <string name="song_features_warning">Questi valori possono essere impostati al meglio utilizzando le opzioni della funzione brano dedicata nel menu delle impostazioni. Salva prima la canzone. È tuttavia possibile modificare manualmente i valori qui.</string>
     <string name="song_menu_checkboxes">"Mostra le caselle di controllo nel menu song"</string>
+    <string name="song_menu_subtitle_size">Dimensione dei sottotitoli della voce di menu dei brani</string>
+    <string name="song_menu_title_size">Dimensione del titolo della voce di menu del brano</string>
     <string name="song_name_already_taken">"Purtroppo questa canzone titolo / nome del file è già stato utilizzato ( un suggerimento potrebbe essere quello di aggiungere un numero di versione alla fine ) ."</string>
     <string name="song_new_name">"Immettere un nuovo nome di file per questa canzone ( questo è come apparirà nel vostro menu canzone )"</string>
     <string name="song_notes">"Canzone note appiccicose"</string>

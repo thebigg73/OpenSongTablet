@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="abc_transpose_to_song">Automatikus transzponálás a dal kulcsára</string>
     <string name="abc_transpose_to_song_info">Εάν έχει οριστεί ένα πλήκτρο στο τραγούδι και στη σημειογραφία abc, η εφαρμογή θα προσπαθήσει να προσαρμόσει την έξοδο της σημειογραφίας abc ώστε να ταιριάζει με το πλήκτρο τραγουδιού.</string>
     <string name="about">Ról ről</string>
@@ -146,7 +146,7 @@
     <string name="close">"Bezár"</string>
     <string name="color_choose">"Szín-választó"</string>
     <string name="column_force">Oszloptörések manuális felülírása</string>
-    <string name="column_force_info">Használja az új oldalkódot (!--) a dalban, hogy új oszloptörést kényszerítsen ki az automatikus méretezés során</string>
+    <string name="column_force_info" tools:ignore="TypographyDashes">Használja az új oldalkódot (!--) a dalban, hogy új oszloptörést kényszerítsen ki az automatikus méretezés során</string>
     <string name="column_force_insert">Oszloptörés beszúrása</string>
     <string name="comment">Megjegyzés</string>
     <string name="comment_background">"Megjegyzés háttér"</string>
@@ -657,6 +657,8 @@
     <string name="song_features">A dal jellemzői</string>
     <string name="song_features_warning">Ezeket az értékeket a legjobban a beállítások menüben található dal funkció opcióival lehet beállítani. Először mentse el a dalt. Itt azonban manuálisan is szerkesztheti az értékeket.</string>
     <string name="song_menu_checkboxes">"Itt található készlet jelölőnégyzetet dal menü"</string>
+    <string name="song_menu_subtitle_size">Dal menüelem felirat mérete</string>
+    <string name="song_menu_title_size">Dal menüpont címének mérete</string>
     <string name="song_name_already_taken">"Sajnos ez a dal címe / filename már használják (a javaslat lehet , hogy adjunk egy verziószámot a vége)."</string>
     <string name="song_new_name">"Adjon meg egy új fájlnevet ezt a dalt ( ez így is fog jelenni a dal menüben)"</string>
     <string name="song_notes">"Song cetlik"</string>

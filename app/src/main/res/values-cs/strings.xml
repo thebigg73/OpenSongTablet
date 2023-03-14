@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="abc_transpose_to_song">Automatická transpozice do tóniny písně</string>
     <string name="abc_transpose_to_song_info">Pokud je ve skladbě a v notaci abc nastavena tónina, aplikace se pokusí upravit výstup notace abc tak, aby odpovídal tónině skladby.</string>
     <string name="about">Asi</string>
@@ -146,7 +146,7 @@
     <string name="close">"Zavřít"</string>
     <string name="color_choose">"Barva Chooser"</string>
     <string name="column_force">Ručně přepište konce sloupců</string>
-    <string name="column_force_info">Použijte nový kód stránky (!--) ve skladbě k vynucení nového zalomení sloupce při automatickém škálování</string>
+    <string name="column_force_info" tools:ignore="TypographyDashes">Použijte nový kód stránky (!--) ve skladbě k vynucení nového zalomení sloupce při automatickém škálování</string>
     <string name="column_force_insert">Vložit zalomení sloupce</string>
     <string name="comment">Komentář</string>
     <string name="comment_background">"Komentář pozadí"</string>
@@ -657,6 +657,8 @@
     <string name="song_features">Vlastnosti písně</string>
     <string name="song_features_warning">Tyto hodnoty lze nejlépe nastavit pomocí možností vyhrazených funkcí skladby v nabídce nastavení. Nejprve skladbu uložte. Zde však můžete ručně upravit hodnoty.</string>
     <string name="song_menu_checkboxes">"Zobrazit zaškrtávací políčka v nabídce skladby"</string>
+    <string name="song_menu_subtitle_size">Velikost titulků položky nabídky skladby</string>
+    <string name="song_menu_title_size">Velikost názvu položky nabídky skladby</string>
     <string name="song_name_already_taken">"Bohužel tento název skladby / souboru byl již použit (návrh může být přidat číslo verze až do konce )."</string>
     <string name="song_new_name">"Zadejte nový název souboru pro tuto píseň (to je, jak to bude vypadat ve vaší nabídce písně)"</string>
     <string name="song_notes">"Poznámky song"</string>

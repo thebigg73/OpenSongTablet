@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="abc_transpose_to_song">Autotransponera till sångnyckel</string>
     <string name="abc_transpose_to_song_info">Om en tangent är inställd i låten och i abc-notationen, kommer appen att försöka justera utmatningen av abc-notationen för att matcha sångnyckeln.</string>
     <string name="about">Handla om</string>
@@ -146,7 +146,7 @@
     <string name="close">"Stänga"</string>
     <string name="color_choose">"Färgväljare"</string>
     <string name="column_force">Åsidosätt kolumnbrytningar manuellt</string>
-    <string name="column_force_info">Använd den nya sidkoden (!--) i låten för att tvinga fram en ny kolumnbrytning vid automatisk skalning</string>
+    <string name="column_force_info" tools:ignore="TypographyDashes">Använd den nya sidkoden (!--) i låten för att tvinga fram en ny kolumnbrytning vid automatisk skalning</string>
     <string name="column_force_insert">Infoga kolumnbrytning</string>
     <string name="comment">Kommentar</string>
     <string name="comment_background">"Kommentar bakgrund"</string>
@@ -657,6 +657,8 @@
     <string name="song_features">Låtfunktioner</string>
     <string name="song_features_warning">Dessa värden ställs bäst in med de dedikerade sångfunktionsalternativen i inställningsmenyn. Spara låten först. Du kan dock redigera värdena manuellt här.</string>
     <string name="song_menu_checkboxes">"Visa inställda kryssrutor i låtmenyn"</string>
+    <string name="song_menu_subtitle_size">Sångmenyalternativ undertextstorlek</string>
+    <string name="song_menu_title_size">Sångmenyobjektets titelstorlek</string>
     <string name="song_name_already_taken">"Tyvärr har denna sångtitel / filnamn redan använts (ett förslag kan vara att lägga till ett versionsnummer till slutet)."</string>
     <string name="song_new_name">"Ange ett nytt filnamn för den här låten (så här visas den i din låtmeny)"</string>
     <string name="song_notes">"Sånghäftor"</string>

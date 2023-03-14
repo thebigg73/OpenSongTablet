@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="abc_transpose_to_song">自动移调到乐曲键</string>
     <string name="abc_transpose_to_song_info">如果在歌曲和 abc 表示法中设置了键，应用程序将尝试调整 abc 表示法的输出以匹配歌曲键。</string>
     <string name="about">关于</string>
@@ -146,7 +146,7 @@
     <string name="close">"关闭"</string>
     <string name="color_choose">"颜色选择器"</string>
     <string name="column_force">手动覆盖分栏符</string>
-    <string name="column_force_info">在歌曲中使用新的页面代码（！--）在自动缩放时强制使用新的分栏符</string>
+    <string name="column_force_info" tools:ignore="TypographyDashes">在歌曲中使用新的页面代码（！--）在自动缩放时强制使用新的分栏符</string>
     <string name="column_force_insert">插入分栏符</string>
     <string name="comment">评论</string>
     <string name="comment_background">"评论背景"</string>
@@ -657,6 +657,8 @@
     <string name="song_features">歌曲特色</string>
     <string name="song_features_warning">这些值最好使用设置菜单中的专用歌曲功能选项进行设置。 先保存歌曲。 但是，您可以在此处手动编辑值。</string>
     <string name="song_menu_checkboxes">"在歌曲菜单中显示设置复选框"</string>
+    <string name="song_menu_subtitle_size">歌曲菜单项字幕大小</string>
+    <string name="song_menu_title_size">歌曲菜单项标题大小</string>
     <string name="song_name_already_taken">"幸的是这首歌曲的标题/文件名已被使用（建议可以是一个版本号添加到末尾）。"</string>
     <string name="song_new_name">"在这首歌中输入新的文件名（这是怎么会出现在你的歌声菜单）"</string>
     <string name="song_notes">"宋即时贴"</string>

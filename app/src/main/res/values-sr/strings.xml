@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="abc_transpose_to_song">Automatsko transponovanje u taster pesme</string>
     <string name="abc_transpose_to_song_info">Ako je ključ podešen u pesmi i u abc notaciji, aplikacija će pokušati da prilagodi izlaz abc notacije tako da odgovara ključu pesme.</string>
     <string name="about">O tome</string>
@@ -146,7 +146,7 @@
     <string name="close">Zatvoriti</string>
     <string name="color_choose">Odabir boja</string>
     <string name="column_force">Ručno zaobiđite prelome kolona</string>
-    <string name="column_force_info">Koristite novi kod stranice (!--) u pesmi da biste nametnuli prelom nove kolone prilikom automatskog skaliranja</string>
+    <string name="column_force_info" tools:ignore="TypographyDashes">Koristite novi kod stranice (!--) u pesmi da biste nametnuli prelom nove kolone prilikom automatskog skaliranja</string>
     <string name="column_force_insert">Umetni prelom kolone</string>
     <string name="comment">Komentar</string>
     <string name="comment_background">Pozadina komentara</string>
@@ -657,6 +657,8 @@
     <string name="song_features">Karakteristike pesme</string>
     <string name="song_features_warning">Ove vrednosti se najbolje podešavaju korišćenjem posebnih opcija za pesmu u meniju podešavanja. Prvo sačuvajte pesmu. Međutim, ovde možete ručno urediti vrednosti.</string>
     <string name="song_menu_checkboxes">Prikazivanje ček boksa u meniju pesama</string>
+    <string name="song_menu_subtitle_size">Veličina titla stavke menija pesme</string>
+    <string name="song_menu_title_size">Veličina naslova stavke menija pesme</string>
     <string name="song_name_already_taken">Nažalost ovaj naziv pesme / ime datoteke se već koristi (preporuka je dodati broj verzije na kraju).</string>
     <string name="song_new_name">Unesite novo ime datoteke za ovu pesmu (tako će se prikazati u Vašem meniju pesama)</string>
     <string name="song_notes">Beleška uz pesmu</string>

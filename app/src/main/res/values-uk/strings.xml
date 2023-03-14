@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="abc_transpose_to_song">Autotransponera till sångnyckel</string>
     <string name="abc_transpose_to_song_info">Якщо в пісні та нотації abc встановлено тональність, програма спробує налаштувати вихід нотації abc відповідно до тональності пісні.</string>
     <string name="about">Про</string>
@@ -146,7 +146,7 @@
     <string name="close">причиняти</string>
     <string name="color_choose">Вибір кольору</string>
     <string name="column_force">Перевизначте розриви стовпців вручну</string>
-    <string name="column_force_info">Використовуйте новий код сторінки (!--) у пісні, щоб примусово створювати новий розрив стовпця під час автоматичного масштабування</string>
+    <string name="column_force_info" tools:ignore="TypographyDashes">Використовуйте новий код сторінки (!--) у пісні, щоб примусово створювати новий розрив стовпця під час автоматичного масштабування</string>
     <string name="column_force_insert">Вставити розрив стовпця</string>
     <string name="comment">Коментар</string>
     <string name="comment_background">Фон коментаря</string>
@@ -657,6 +657,8 @@
     <string name="song_features">Особливості пісні</string>
     <string name="song_features_warning">Ці значення найкраще встановити за допомогою спеціальних опцій функції пісні в меню налаштувань. Спочатку збережіть пісню. Однак тут можна вручну відредагувати значення.</string>
     <string name="song_menu_checkboxes">Показувати встановлені прапорці в меню пісень</string>
+    <string name="song_menu_subtitle_size">Розмір субтитрів пункту меню пісні</string>
+    <string name="song_menu_title_size">Розмір назви пункту меню пісні</string>
     <string name="song_name_already_taken">На жаль, це назва пісні/ім\'я файлу вже використовується (рекомендується додати номер версії).</string>
     <string name="song_new_name">Введіть нове ім\'я файлу для цієї пісні (то, як вона з\'явиться у вашому меню пісень)</string>
     <string name="song_notes">Нотатки</string>

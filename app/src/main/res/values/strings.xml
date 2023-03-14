@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="a_hz" translatable="false">A (Hz)</string>
     <string name="abc_transpose_to_song">Auto transpose to song key</string>
     <string name="abc_transpose_to_song_info">If a key is set in the song and in the abc notation, the app will try to adjust the output of the abc notation to match the song key.</string>
@@ -183,7 +183,7 @@
     <string name="close">Close</string>
     <string name="color_choose">Colour Chooser</string>
     <string name="column_force">Manually override column breaks</string>
-    <string name="column_force_info">Use the new page code (!--) in the song to force a new column break when autoscaling</string>
+    <string name="column_force_info" tools:ignore="TypographyDashes">Use the new page code (!--) in the song to force a new column break when autoscaling</string>
     <string name="column_force_insert">Insert column break</string>
     <string name="comment">Comment</string>
     <string name="comment_background">Comment background</string>
@@ -816,6 +816,8 @@
     <string name="song_features">Song features</string>
     <string name="song_features_warning">These values are best set using the dedicated song feature options in the settings menu. Save the song first. You can, however, manually edit the values here.</string>
     <string name="song_menu_checkboxes">Show set checkboxes in song menu</string>
+    <string name="song_menu_subtitle_size">Song menu item subtitle size</string>
+    <string name="song_menu_title_size">Song menu item title size</string>
     <string name="song_name_already_taken">Unfortunately this song title / filename has already been used (a suggestion could be to add a version number to the end).</string>
     <string name="song_new_name">Enter a new file name for this song (this is how it will appear in your song menu)</string>
     <string name="song_notes">Song sticky notes</string>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="abc_transpose_to_song">曲のキーに自動移調</string>
     <string name="abc_transpose_to_song_info">Se una chiave è impostata nella canzone e nella notazione abc, l\'app proverà a regolare l\'output della notazione abc in modo che corrisponda alla chiave della canzone.</string>
     <string name="about">約</string>
@@ -146,7 +146,7 @@
     <string name="close">"閉じる"</string>
     <string name="color_choose">"カラーセレクタ"</string>
     <string name="column_force">段区切りを手動で上書きする</string>
-    <string name="column_force_info">曲の新しいページ コード (!--) を使用して、自動スケーリング時に新しい列区切りを強制します</string>
+    <string name="column_force_info" tools:ignore="TypographyDashes">曲の新しいページ コード (!--) を使用して、自動スケーリング時に新しい列区切りを強制します</string>
     <string name="column_force_insert">段区切りを挿入</string>
     <string name="comment">コメント</string>
     <string name="comment_background">"コメントの背景"</string>
@@ -657,6 +657,8 @@
     <string name="song_features">曲の特徴</string>
     <string name="song_features_warning">これらの値は、設定メニューの専用の曲機能オプションを使用して設定するのが最適です。 最初に曲を保存します。 ただし、ここで値を手動で編集できます。</string>
     <string name="song_menu_checkboxes">"ソングメニューで設定したチェックボックスを表示する"</string>
+    <string name="song_menu_subtitle_size">曲のメニュー項目の字幕サイズ</string>
+    <string name="song_menu_title_size">ソングメニュー項目のタイトルサイズ</string>
     <string name="song_name_already_taken">"残念ながら、この曲のタイトル/ファイル名がすでに（提案は最後にバージョン番号を追加することができる）に使用されている。"</string>
     <string name="song_new_name">"（これはそれがあなたの曲のメニューに表示されるかである） 、この曲のために新しいファイル名を入力してください"</string>
     <string name="song_notes">"ソング付箋"</string>

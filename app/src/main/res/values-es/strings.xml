@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="abc_transpose_to_song">Transposición automática a clave de canción</string>
     <string name="abc_transpose_to_song_info">Si se establece una clave en la canción y en la notación abc, la aplicación intentará ajustar la salida de la notación abc para que coincida con la clave de la canción.</string>
     <string name="about">Acerca de</string>
@@ -146,7 +146,7 @@
     <string name="close">"Cerrar"</string>
     <string name="color_choose">"Color Selector"</string>
     <string name="column_force">Anular manualmente los saltos de columna</string>
-    <string name="column_force_info">Use el nuevo código de página (!--) en la canción para forzar un nuevo salto de columna al escalar automáticamente</string>
+    <string name="column_force_info" tools:ignore="TypographyDashes">Use el nuevo código de página (!--) en la canción para forzar un nuevo salto de columna al escalar automáticamente</string>
     <string name="column_force_insert">Insertar salto de columna</string>
     <string name="comment">Comentario</string>
     <string name="comment_background">"Comentario fondo"</string>
@@ -657,6 +657,8 @@
     <string name="song_features">Características de la canción</string>
     <string name="song_features_warning">Estos valores se configuran mejor utilizando las opciones de funciones de canciones dedicadas en el menú de configuración. Guarde la canción primero. Sin embargo, puede editar manualmente los valores aquí.</string>
     <string name="song_menu_checkboxes">"Mostrar casillas de verificación en el menú de canciones"</string>
+    <string name="song_menu_subtitle_size">Tamaño de los subtítulos del elemento del menú de la canción</string>
+    <string name="song_menu_title_size">Tamaño del título del elemento del menú de la canción</string>
     <string name="song_name_already_taken">"Desafortunadamente este título de la canción / nombre de archivo ya ha sido utilizado ( una sugerencia podría ser añadir un número de versión para el final)."</string>
     <string name="song_new_name">"Introduzca un nuevo nombre de archivo para esta canción (así es como aparecerá en el menú de la canción)"</string>
     <string name="song_notes">"Canción notas adhesivas"</string>

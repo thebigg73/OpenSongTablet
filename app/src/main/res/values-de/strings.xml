@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="abc_transpose_to_song">Automatische Transponierung in die Tonart des Songs</string>
     <string name="abc_transpose_to_song_info">Wenn im Song und in der abc-Notation eine Tonart festgelegt ist, versucht die App, die Ausgabe der abc-Notation an die Tonart des Songs anzupassen.</string>
     <string name="about">Über</string>
@@ -146,7 +146,7 @@
     <string name="close">"Schließen"</string>
     <string name="color_choose">"Farbauswahl"</string>
     <string name="column_force">Spaltenumbrüche manuell überschreiben</string>
-    <string name="column_force_info">Verwenden Sie den neuen Seitencode (!--) im Song, um bei der automatischen Skalierung einen neuen Spaltenumbruch zu erzwingen</string>
+    <string name="column_force_info" tools:ignore="TypographyDashes">Verwenden Sie den neuen Seitencode (!--) im Song, um bei der automatischen Skalierung einen neuen Spaltenumbruch zu erzwingen</string>
     <string name="column_force_insert">Spaltenumbruch einfügen</string>
     <string name="comment">Kommentar</string>
     <string name="comment_background">"Hintergrund Kommentar"</string>
@@ -657,6 +657,8 @@
     <string name="song_features">Song-Funktionen</string>
     <string name="song_features_warning">Diese Werte werden am besten mit den speziellen Song-Feature-Optionen im Einstellungsmenü eingestellt. Speichern Sie zuerst das Lied. Sie können die Werte hier jedoch manuell bearbeiten.</string>
     <string name="song_menu_checkboxes">"Set-Kontrollkästchen im Liedmenü anzeigen"</string>
+    <string name="song_menu_subtitle_size">Untertitelgröße des Liedmenüelements</string>
+    <string name="song_menu_title_size">Titelgröße des Song-Menüeintrags</string>
     <string name="song_name_already_taken">"Leider wurde dieser Songtitel / Dateiname bereits verwendet (ein Vorschlag könnte sein, eine Versionsnummer an das Ende hinzufügen)."</string>
     <string name="song_new_name">"Geben Sie einen neuen Dateinamen für dieses Lied ein (das Lied wird später so im Song-Menü angezeigt)"</string>
     <string name="song_notes">"Song-Notizen"</string>

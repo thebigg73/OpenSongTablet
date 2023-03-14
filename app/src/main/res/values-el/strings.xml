@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="abc_transpose_to_song">Αυτόματη μεταφορά στο πλήκτρο τραγουδιού</string>
     <string name="abc_transpose_to_song_info">Εάν έχει οριστεί ένα πλήκτρο στο τραγούδι και στη σημειογραφία abc, η εφαρμογή θα προσπαθήσει να προσαρμόσει την έξοδο της σημειογραφίας abc ώστε να ταιριάζει με το πλήκτρο τραγουδιού.</string>
     <string name="about">Σχετικά με</string>
@@ -146,7 +146,7 @@
     <string name="close">"Close"</string>
     <string name="color_choose">"Επιλογέας χρώματος"</string>
     <string name="column_force">Μη αυτόματη παράκαμψη αλλαγών στηλών</string>
-    <string name="column_force_info">Χρησιμοποιήστε τον κωδικό νέας σελίδας (!--) στο τραγούδι για να επιβάλετε μια νέα αλλαγή στήλης κατά την αυτόματη κλιμάκωση</string>
+    <string name="column_force_info" tools:ignore="TypographyDashes">Χρησιμοποιήστε τον κωδικό νέας σελίδας (!--) στο τραγούδι για να επιβάλετε μια νέα αλλαγή στήλης κατά την αυτόματη κλιμάκωση</string>
     <string name="column_force_insert">Εισαγωγή αλλαγής στήλης</string>
     <string name="comment">Σχόλιο</string>
     <string name="comment_background">"Φόντο σχολίου"</string>
@@ -657,6 +657,8 @@
     <string name="song_features">Χαρακτηριστικά τραγουδιού</string>
     <string name="song_features_warning">Αυτές οι τιμές ρυθμίζονται καλύτερα χρησιμοποιώντας τις αποκλειστικές επιλογές δυνατοτήτων τραγουδιού στο μενού ρυθμίσεων. Αποθηκεύστε πρώτα το τραγούδι. Μπορείτε, ωστόσο, να επεξεργαστείτε με μη αυτόματο τρόπο τις τιμές εδώ.</string>
     <string name="song_menu_checkboxes">"Εμφάνιση των πλαισίων ελέγχου στο μενού τραγουδιών"</string>
+    <string name="song_menu_subtitle_size">Μέγεθος υποτίτλων στοιχείου μενού τραγουδιού</string>
+    <string name="song_menu_title_size">Μέγεθος τίτλου στοιχείου μενού τραγουδιού</string>
     <string name="song_name_already_taken">"Unfortunately this song title / filename has already been used (a suggestion could be to add a version number to the end)."</string>
     <string name="song_new_name">"Enter a new file name for this song (this is how it will appear in your song menu)"</string>
     <string name="song_notes">"Song sticky notes"</string>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="abc_transpose_to_song">Автоматическое транспонирование в тональность песни</string>
     <string name="abc_transpose_to_song_info">Если тональность задана в песне и в нотации abc, приложение попытается настроить вывод нотации abc в соответствии с тональностью песни.</string>
     <string name="about">Около</string>
@@ -146,7 +146,7 @@
     <string name="close">"Закрыть"</string>
     <string name="color_choose">"Выбор цвета"</string>
     <string name="column_force">Вручную переопределить разрывы столбцов</string>
-    <string name="column_force_info">Используйте новый код страницы (!--) в песне, чтобы принудительно установить новый разрыв столбца при автоматическом масштабировании.</string>
+    <string name="column_force_info" tools:ignore="TypographyDashes">Используйте новый код страницы (!--) в песне, чтобы принудительно установить новый разрыв столбца при автоматическом масштабировании.</string>
     <string name="column_force_insert">Вставить разрыв столбца</string>
     <string name="comment">Комментарий</string>
     <string name="comment_background">"Фон комментария"</string>
@@ -657,6 +657,8 @@
     <string name="song_features">Особенности песни</string>
     <string name="song_features_warning">Эти значения лучше всего установить с помощью специальных параметров функции песни в меню настроек. Сначала сохраните песню. Однако вы можете вручную редактировать значения здесь.</string>
     <string name="song_menu_checkboxes">"Показывать установленные флажки в меню песен"</string>
+    <string name="song_menu_subtitle_size">Размер субтитров пункта меню песни</string>
+    <string name="song_menu_title_size">Размер заголовка пункта меню песни</string>
     <string name="song_name_already_taken">"К сожалению, это название песни / имя файла уже используется ( рекомендуется добавить номер версии)."</string>
     <string name="song_new_name">"Введите новое имя файла для этой песни ( то, как она появится в вашем меню песен )"</string>
     <string name="song_notes">"Заметки"</string>
