@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.customviews.MaterialSlider;
 import com.garethevans.church.opensongtablet.databinding.SettingsMenuBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.slider.Slider;
@@ -44,28 +45,42 @@ public class MenuSettingsFragment extends Fragment {
     }
 
     private void setupViews() {
+        // Get the user preferences
         boolean showAlphabetical = mainActivityInterface.getPreferences().
                 getMyPreferenceBoolean("songMenuAlphaIndexShow",true);
-        float itemFontSize = mainActivityInterface.getPreferences().
+        float songMenuItemSize = mainActivityInterface.getPreferences().
                 getMyPreferenceFloat("songMenuItemSize",14.0f);
-        float alphaFontSize = mainActivityInterface.getPreferences().
+        float songMenuSubItemSize = mainActivityInterface.getPreferences().getMyPreferenceFloat("songMenuSubItemSize",12.0f);
+        float songMenuAlphaIndexSize = mainActivityInterface.getPreferences().
                 getMyPreferenceFloat("songMenuAlphaIndexSize",12.0f);
         boolean showTickBoxes = mainActivityInterface.getPreferences().
                 getMyPreferenceBoolean("songMenuSetTicksShow",true);
         boolean sortByTitles = mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuSortTitles",true);
         boolean songMenuAlphaIndexLevel2 = mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuAlphaIndexLevel2",false);
+
+        // Set those values into the views
         myView.songMenuItemSize.setLabelFormatter(value -> (int)value+"sp");
-        myView.songMenuItemSize.setValue(itemFontSize);
-        myView.songMenuItemSize.setHint((int)itemFontSize + "sp");
-        myView.songMenuItemSize.setHintTextSize(itemFontSize);
+        myView.songMenuItemSize.setValue(songMenuItemSize);
+        myView.songMenuItemSize.setHint((int)songMenuItemSize + "sp");
+        myView.songMenuItemSize.setHintTextSize(songMenuItemSize);
+
+        myView.songMenuSubItemSize.setLabelFormatter(value -> (int)value+"sp");
+        myView.songMenuSubItemSize.setValue(songMenuSubItemSize);
+        myView.songMenuSubItemSize.setHint((int)songMenuSubItemSize + "sp");
+        myView.songMenuSubItemSize.setHintTextSize(songMenuSubItemSize);
+
         myView.largePopups.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("largePopups",true));
+
         myView.songAlphabeticalShow.setChecked(showAlphabetical);
+
         myView.level2Index.setChecked(songMenuAlphaIndexLevel2);
-        myView.songAlphabeticalSize.setValue(alphaFontSize);
-        myView.songAlphabeticalSize.setHint((int)alphaFontSize+"sp");
+
+        myView.songAlphabeticalSize.setValue(songMenuAlphaIndexSize);
+        myView.songAlphabeticalSize.setHint((int)songMenuAlphaIndexSize+"sp");
         myView.songAlphabeticalSize.setLabelFormatter(value -> (int)value+"sp");
-        myView.songAlphabeticalSize.setHintTextSize(alphaFontSize);
+        myView.songAlphabeticalSize.setHintTextSize(songMenuAlphaIndexSize);
         myView.songMenuCheckboxes.setChecked(showTickBoxes);
+
         if (sortByTitles) {
             myView.songMenuOrder.setSliderPos(1);
         } else {
@@ -88,38 +103,15 @@ public class MenuSettingsFragment extends Fragment {
             mainActivityInterface.updateSongMenu("menuSettingsFragment",null, null);
         });
         myView.level2Index.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getPreferences().setMyPreferenceBoolean("songMenuAlphaIndexLevel2",isChecked));
-        myView.songMenuItemSize.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
-            @Override
-            public void onStartTrackingTouch(@NonNull Slider slider) {}
 
-            @Override
-            public void onStopTrackingTouch(@NonNull Slider slider) {
-                float myVal = myView.songMenuItemSize.getValue();
-                mainActivityInterface.getPreferences().setMyPreferenceFloat("songMenuItemSize", myVal);
-                // Try to update the song menu
-                mainActivityInterface.updateSongMenu("menuSettingsFragment",null,null);
-            }
-        });
-        myView.songMenuItemSize.addOnChangeListener((slider, value, fromUser) -> {
-            myView.songMenuItemSize.setHint((int)value + "sp");
-            myView.songMenuItemSize.setHintTextSize(value);
-        });
-        myView.songAlphabeticalSize.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
-            @Override
-            public void onStartTrackingTouch(@NonNull Slider slider) { }
+        myView.songMenuItemSize.addOnChangeListener(new MyChangeSlider(myView.songMenuItemSize));
+        myView.songMenuSubItemSize.addOnChangeListener(new MyChangeSlider(myView.songMenuSubItemSize));
+        myView.songAlphabeticalSize.addOnChangeListener(new MyChangeSlider(myView.songAlphabeticalSize));
 
-            @Override
-            public void onStopTrackingTouch(@NonNull Slider slider) {
-                float myVal = myView.songAlphabeticalSize.getValue();
-                mainActivityInterface.getPreferences().setMyPreferenceFloat("songMenuAlphaIndexSize", myVal);
-                // Try to update the song menu
-                mainActivityInterface.updateSongMenu("menuSettingsFragment",null, null);
-            }
-        });
-        myView.songAlphabeticalSize.addOnChangeListener((slider, value, fromUser) -> {
-            myView.songAlphabeticalSize.setHint((int)value+"sp");
-            myView.songAlphabeticalSize.setHintTextSize(value);
-        });
+        myView.songMenuItemSize.addOnSliderTouchListener(new MySliderTouch(myView.songMenuItemSize,"songMenuItemSize"));
+        myView.songMenuSubItemSize.addOnSliderTouchListener(new MySliderTouch(myView.songMenuSubItemSize,"songMenuSubItemSize"));
+        myView.songAlphabeticalSize.addOnSliderTouchListener(new MySliderTouch(myView.songAlphabeticalSize,"songMenuAlphaIndexSize"));
+
         myView.songMenuOrder.addOnChangeListener((slider, value, fromUser) -> {
             mainActivityInterface.getPreferences().setMyPreferenceBoolean("songMenuSortTitles",value==1);
             mainActivityInterface.updateSongMenu("",null, null);
@@ -142,5 +134,37 @@ public class MenuSettingsFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         myView = null;
+    }
+
+    private static class MyChangeSlider implements Slider.OnChangeListener {
+
+        final MaterialSlider materialSlider;
+        MyChangeSlider(MaterialSlider materialSlider) {
+            this.materialSlider = materialSlider;
+        }
+        @Override
+        public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
+            materialSlider.setHint((int)value + "sp");
+            materialSlider.setHintTextSize(value);
+        }
+    }
+
+    private class MySliderTouch implements Slider.OnSliderTouchListener {
+        String prefName;
+        MaterialSlider materialSlider;
+        MySliderTouch(MaterialSlider materialSlider, String prefName) {
+            this.prefName = prefName;
+            this.materialSlider = materialSlider;
+        }
+        @Override
+        public void onStartTrackingTouch(@NonNull Slider slider) {}
+
+        @Override
+        public void onStopTrackingTouch(@NonNull Slider slider) {
+            float myVal = materialSlider.getValue();
+            mainActivityInterface.getPreferences().setMyPreferenceFloat(prefName, myVal);
+            // Try to update the song menu
+            mainActivityInterface.updateSongMenu("menuSettingsFragment",null,null);
+        }
     }
 }

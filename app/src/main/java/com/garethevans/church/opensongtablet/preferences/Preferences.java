@@ -505,6 +505,7 @@ public class Preferences extends Activity {
     // songMenuAlphaIndexShow          boolean     Should we show the alphabetical index in the song menu (def:true)
     // songMenuAlphaIndexSize          float       The text size for the alphabetical index in the song menu (def:12.0f)
     // songMenuItemSize                float       The text size for the song menu items (def:14.0f)
+    // songMenuSubItemSize             float       The text size for the song menu item sub titles (def:12.0f)
     // songMenuSetTicksShow            boolean     Should we show the ticks identifying song is in the set in the song menu (def:true)
     // songSheet                       boolean     Should the extra song info be shown at the top like a printed songsheet? (def:false)
     // songTitleSize                   float       The size of the song title text in the action bar (def:13.0f)

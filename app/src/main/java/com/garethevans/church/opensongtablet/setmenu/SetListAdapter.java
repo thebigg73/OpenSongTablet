@@ -45,7 +45,7 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
         offColor = context.getResources().getColor(R.color.colorAltPrimary);
         // Make the title text the same as the alphaIndex size
         titleSize = mainActivityInterface.getPreferences().getMyPreferenceFloat("songMenuItemSize",14f);
-        subtitleSize = titleSize - 2f;
+        subtitleSize = mainActivityInterface.getPreferences().getMyPreferenceFloat("songMenuSubItemSize",12f);
     }
 
     public void updateSetList(ArrayList<SetItemInfo> setItemInfos) {
