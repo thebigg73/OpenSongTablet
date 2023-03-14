@@ -68,7 +68,7 @@ public class SaveSong {
             }
 
             // Now save the new song
-            boolean saveSuccessful = updateSong(newSong);
+            boolean saveSuccessful = updateSong(newSong,true);
 
             // Now, if the save was successful and the folder/filename changes, delete the old stuff
             if ((folderChange || filenameChange) && saveSuccessful) {
@@ -90,7 +90,7 @@ public class SaveSong {
     }
 
     // This updates the current song
-    public boolean updateSong(Song thisSong) {
+    public boolean updateSong(Song thisSong, boolean updateSongMenu) {
         // This is called if we just want to save the current song updates stored in the current song
         // This only works is the folder and filename haven't changed (done in the step above from edit song instead)
 
@@ -111,7 +111,9 @@ public class SaveSong {
             }
 
             // Update the song menu
-            mainActivityInterface.updateSongMenu(thisSong);
+            if (updateSongMenu) {
+                mainActivityInterface.updateSongMenu(thisSong);
+            }
 
             mainActivityInterface.getSong().setFilename(thisSong.getFilename());
             mainActivityInterface.getSong().setFolder(thisSong.getFolder());

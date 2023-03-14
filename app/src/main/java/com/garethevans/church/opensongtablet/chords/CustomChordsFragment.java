@@ -820,7 +820,7 @@ public class CustomChordsFragment extends Fragment {
             }
         }
         mainActivityInterface.getSong().setCustomChords(customChordText.toString().trim());
-        mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong());
+        mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong(),false);
         currentCode = "";
 
 

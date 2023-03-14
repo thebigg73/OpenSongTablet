@@ -30,6 +30,7 @@ public class MyMaterialEditText extends LinearLayout implements View.OnTouchList
     private final TextInputLayout textInputLayout;
     private final boolean restoreState;
     private final float xxlarge, xlarge, large, medium, small, xsmall;
+    private int endIconMode;
 
     // By default this is a single line edit text
     // For multiline, the number of lines has to be specified (maxLines/lines)
@@ -83,7 +84,7 @@ public class MyMaterialEditText extends LinearLayout implements View.OnTouchList
         int imeOptions = a.getInt(6, EditorInfo.IME_ACTION_DONE);
         int inputType = a.getInt(7, InputType.TYPE_CLASS_TEXT);
         restoreState = a.getBoolean(8, true);
-        int endIconMode = a.getInt(9, TextInputLayout.END_ICON_NONE);
+        endIconMode = a.getInt(9, TextInputLayout.END_ICON_NONE);
         boolean useMonospace = a.getBoolean(10, false);
         CharSequence suffixText = a.getText(11);
         CharSequence helperText = a.getText(12);
@@ -157,8 +158,14 @@ public class MyMaterialEditText extends LinearLayout implements View.OnTouchList
 
         editText.setGravity(gravity);
 
-        textInputLayout.setEndIconMode(endIconMode);
+        setEndIconMode(endIconMode);
+
         a.recycle();
+    }
+
+    public void setEndIconMode(int endIconMode) {
+        this.endIconMode = endIconMode;
+        textInputLayout.setEndIconMode(endIconMode);
     }
 
     public void setText(String text) {

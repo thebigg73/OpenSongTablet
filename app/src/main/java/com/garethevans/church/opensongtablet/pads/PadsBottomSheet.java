@@ -216,7 +216,7 @@ public class PadsBottomSheet extends BottomSheetDialogFragment {
         myView.padLinkAudio.addTextChangedListener(new MyTextWatcher("padLink"));
         myView.padLoop.setOnCheckedChangeListener((compoundButton, b) -> {
             mainActivityInterface.getSong().setPadloop(""+b);
-            mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong());
+            mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong(),false);
         });
         myView.padSettings.setOnClickListener(view -> {
             mainActivityInterface.navigateToFragment(deeplink_pads_string,0);
@@ -274,7 +274,7 @@ public class PadsBottomSheet extends BottomSheetDialogFragment {
                     mainActivityInterface.getSong().setLinkaudio(editable.toString());
                     break;
             }
-            mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong());
+            mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong(),false);
             Log.d(TAG,"Song saved");
         }
     }

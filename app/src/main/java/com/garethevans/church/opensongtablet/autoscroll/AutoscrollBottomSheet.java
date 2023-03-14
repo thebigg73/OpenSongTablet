@@ -186,7 +186,7 @@ public class AutoscrollBottomSheet extends BottomSheetDialogFragment {
 
             mainActivityInterface.getSong().setAutoscrolldelay(delay + "");
             mainActivityInterface.getSong().setAutoscrolllength(total + "");
-            mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong());
+            mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong(),false);
         }
     }
 

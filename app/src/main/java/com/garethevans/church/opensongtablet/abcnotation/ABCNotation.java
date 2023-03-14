@@ -135,7 +135,7 @@ public class ABCNotation {
     public void saveAbcContent(MainActivityInterface mainActivityInterface, Song thisSong) {
         thisSong.setAbc(songAbc);
         thisSong.setAbcTranspose(songAbcTranspose+"");
-        mainActivityInterface.getSaveSong().updateSong(thisSong);
+        mainActivityInterface.getSaveSong().updateSong(thisSong, false);
     }
 
 

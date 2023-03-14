@@ -402,7 +402,7 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
                         mainActivityInterface.getSong().setFolder(setFolder);
                         mainActivityInterface.getTranspose().doTranspose(mainActivityInterface.getSong(),
                                 transposeDirection, transposeTimes, fromFormat, toFormat);
-                        mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong());
+                        mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong(),true);
 
                     } else if (!setFolder.contains("**Variation") && transposeVariation) {
                         // If this is a normal song, but want to convert to a variation
@@ -412,7 +412,7 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
                         // This song was already a variation (no option to transposeSet or transposeVariation)
                         mainActivityInterface.getTranspose().doTranspose(mainActivityInterface.getSong(),
                                 transposeDirection, transposeTimes, fromFormat, toFormat);
-                        mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong());
+                        mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong(),true);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -466,7 +466,7 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
 
                     } else {
                         // Just update the song and be done with it!
-                        mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong());
+                        mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong(),true);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -477,7 +477,7 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
                 handler.post(() -> {
                     try {
                         mainActivityInterface.updateSongMenu(mainActivityInterface.getSong());
-                        mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong());
+                        mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong(),true);
                         mainActivityInterface.doSongLoad(mainActivityInterface.getSong().getFolder(),
                                 mainActivityInterface.getSong().getFilename(), true);
                         dismiss();

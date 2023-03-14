@@ -581,7 +581,7 @@ public class Midi {
         }
         mainActivityInterface.getSong().setMidi(s.toString().trim());
         if (!mainActivityInterface.getSong().getFilename().equals("Welcome to OpenSongApp")) {
-            mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong());
+            mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong(),false);
         }
     }
 

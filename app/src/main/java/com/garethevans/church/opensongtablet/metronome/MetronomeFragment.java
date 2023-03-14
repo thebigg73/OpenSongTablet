@@ -436,7 +436,7 @@ public class MetronomeFragment extends Fragment {
             switch (preference) {
                 case "songTempo":
                     mainActivityInterface.getSong().setTempo(exposedDropDown.getText().toString());
-                    mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong());
+                    mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong(),false);
                     restartMetronome();
                     break;
                 case "songTimeSignature_beats":
@@ -457,7 +457,7 @@ public class MetronomeFragment extends Fragment {
                         mainActivityInterface.getSong().setTimesig("");
                     }
                     restartMetronome();
-                    mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong());
+                    mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong(),false);
                     break;
                 case "metronomeTickSound":
                 case "metronomeTockSound":
