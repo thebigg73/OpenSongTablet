@@ -209,7 +209,7 @@ public class EditSongFragmentTags extends Fragment {
 
                 } else if (thisSong.getFiletype().equals("XML")) {
                     // Update the actual OpenSong file since it is XML
-                    mainActivityInterface.getSaveSong().updateSong(thisSong);
+                    mainActivityInterface.getSaveSong().updateSong(thisSong,false);
                 }
             }
             // Update the array adapter in the bottom sheet fragment

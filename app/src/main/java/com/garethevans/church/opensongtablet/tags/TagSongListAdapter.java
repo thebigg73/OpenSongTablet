@@ -180,26 +180,35 @@ public class TagSongListAdapter extends RecyclerView.Adapter<TagViewHolder> {
     }
 
     public void updateSongTags(String folder, String filename, boolean isChecked, int position) {
-        Song tempSong = mainActivityInterface.getSQLiteHelper().getSpecificSong(folder,filename);
-        String thisTheme = fixTagStringForSaving(tempSong.getTheme());
-        String thisAltTheme = fixTagStringForSaving(tempSong.getAlttheme());
 
-        if (isChecked && !thisTheme.contains(currentTag+";")) {
-            // Add the current theme if it isn't already there
-            thisTheme = thisTheme + currentTag + ";";
-            tempSong.setTheme(thisTheme);
-        } else {
-            // Remove the current theme (from both theme and alttheme)
-            thisTheme = thisTheme.replace(currentTag+";","");
-            tempSong.setTheme(thisTheme);
-            tempSong.setAlttheme((thisAltTheme.replace(currentTag+";","")));
-        }
-        Log.d(TAG,"after update:"+tempSong.getTitle()+"  theme="+tempSong.getTheme());
-
-        songInfos.get(position).tag = thisTheme;
-        recyclerView.post(()->notifyItemChanged(position,"updateTag"));
         ExecutorService executorService = Executors.newSingleThreadExecutor();
-        executorService.execute(() -> mainActivityInterface.getSaveSong().updateSong(tempSong));
+        executorService.execute(() -> {
+            Song tempSong = mainActivityInterface.getSQLiteHelper().getSpecificSong(folder,filename);
+            String thisTheme = fixTagStringForSaving(tempSong.getTheme());
+            String thisAltTheme = fixTagStringForSaving(tempSong.getAlttheme());
+
+            if (isChecked && !thisTheme.contains(currentTag+";")) {
+                // Add the current theme if it isn't already there
+                thisTheme = thisTheme + currentTag + ";";
+                tempSong.setTheme(thisTheme);
+            } else {
+                // Remove the current theme (from both theme and alttheme)
+                thisTheme = thisTheme.replace(currentTag+";","");
+                tempSong.setTheme(thisTheme);
+                tempSong.setAlttheme((thisAltTheme.replace(currentTag+";","")));
+            }
+            Log.d(TAG,"after update:"+tempSong.getTitle()+"  theme="+tempSong.getTheme());
+
+            songInfos.get(position).tag = thisTheme;
+            recyclerView.post(()->{
+                try {
+                    notifyItemChanged(position, "updateTag");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+            mainActivityInterface.getSaveSong().updateSong(tempSong,false);
+        });
     }
 
     private String fixTagStringForSaving(String thisTag) {
