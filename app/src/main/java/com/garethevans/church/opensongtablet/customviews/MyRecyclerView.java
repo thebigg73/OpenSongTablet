@@ -135,9 +135,13 @@ public class MyRecyclerView extends RecyclerView  implements RecyclerView.Smooth
                 rollingTotal += y;
             }
 
+            int viewHeight = 0;
+            int spaceAbove = (int)(0.5f * getHeight());
             // Work out the space to try to leave above the view
-            int viewHeight = recyclerLayoutManager.getChildSizes().get(position);
-            int spaceAbove = (int) (0.5f * (getHeight() - viewHeight));
+            if (recyclerLayoutManager.getChildSizes().size()!=0) {
+                viewHeight = recyclerLayoutManager.getChildSizes().get(position);
+                spaceAbove = (int) (0.5f * (getHeight() - viewHeight));
+            }
 
             // Get the current scroll position, the position we need to get to and how far this is
             int currScroll = recyclerLayoutManager.getScrollY();
