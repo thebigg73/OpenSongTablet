@@ -92,4 +92,12 @@
         android:layout_marginBottom="8dp"
         android:contentDescription="@string/extra_settings"
         android:src="@drawable/menu" />
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:icon="@drawable/save"
+        android:text="@string/save"
+        android:layout_margin="12dp"
+        android:layout_gravity="bottom|end"/>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
