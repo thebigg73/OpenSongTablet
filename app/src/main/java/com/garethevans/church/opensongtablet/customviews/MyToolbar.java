@@ -40,7 +40,6 @@ public class MyToolbar extends MaterialToolbar {
     private final TextView capo;
     private final TextClock clock;
     private final ImageView setIcon, batteryimage;
-    private final ImageView webHelp;
     private final com.google.android.material.textview.MaterialTextView batterycharge;
     private Handler delayActionBarHide;
     private Runnable hideActionBarRunnable;
@@ -63,7 +62,7 @@ public class MyToolbar extends MaterialToolbar {
                 actionBar.hide();
             }
         };
-        updateActionBarPrefs();
+        updateClock();
     }
     public MyToolbar(@NonNull Context context, @Nullable @org.jetbrains.annotations.Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -77,7 +76,6 @@ public class MyToolbar extends MaterialToolbar {
         batteryimage = v.findViewById(R.id.batteryimage);
         batterycharge = v.findViewById(R.id.batterycharge);
         clock = v.findViewById(R.id.digitalclock);
-        webHelp = v.findViewById(R.id.webHelp);
 
         batteryholder.setOnClickListener(v1 -> {
             mainActivityInterface.showActionBar();
@@ -93,7 +91,6 @@ public class MyToolbar extends MaterialToolbar {
         clockSeconds = mainActivityInterface.getPreferences().getMyPreferenceBoolean("clockSeconds",false);
         hideActionBar = mainActivityInterface.getPreferences().getMyPreferenceBoolean("hideActionBar",false);
         actionBarHideTime = mainActivityInterface.getPreferences().getMyPreferenceInt("actionBarHideTime",1200);
-        updateClock();
     }
     public void updateActionBarSettings(String prefName, float value, boolean isvisible) {
 
@@ -112,6 +109,7 @@ public class MyToolbar extends MaterialToolbar {
                 mainActivityInterface.getBatteryStatus().setBatteryTextSize(value);
                 break;
             case "clockOn":
+                clockOn = isvisible;
                 hideView(clock,!isvisible);
                 break;
             case "clock24hFormat":
@@ -139,6 +137,9 @@ public class MyToolbar extends MaterialToolbar {
             case "actionBarHideTime":
                 actionBarHideTime = (int)value;
                 break;
+            case "showBatteryHolder":
+                batteryholder.setVisibility(isvisible ? View.VISIBLE : View.GONE);
+                break;
         }
     }
 
@@ -158,8 +159,11 @@ public class MyToolbar extends MaterialToolbar {
 
     // Update the text in the actionbar to either be a song info, or menu title
     public void setActionBar(String newtitle) {
-        // By default hide the webHelp (can be shown later)
-        updateToolbarHelp(null);
+        // If changing, reset help
+        if(!(title.getText().equals(newtitle))) {
+            // By default hide help (can be shown later
+            mainActivityInterface.updateToolbarHelp("");
+        }
 
         if (newtitle == null) {
             // We are in the Performance/Stage mode
@@ -185,6 +189,9 @@ public class MyToolbar extends MaterialToolbar {
                     text = "*" + text;
                 }
                 title.setText(text);
+                hideView(title, false);
+            } else {
+                hideView(title, true);
             }
             if (author != null && mainActivityInterface.getSong().getAuthor() != null &&
                     !mainActivityInterface.getSong().getAuthor().isEmpty()) {
@@ -230,26 +237,14 @@ public class MyToolbar extends MaterialToolbar {
             // We are in a different fragment, so hide the song info stuff
             setIcon.setVisibility(View.GONE);
             if (title != null) {
+                title.setOnClickListener(null);
+                title.setOnLongClickListener(null);
                 title.setTextSize(18.0f);
                 title.setText(newtitle);
+                hideView(title, false);
                 hideView(author, true);
                 hideView(key, true);
             }
-        }
-    }
-
-    // Update the web help icon in the toolbar
-    public void updateToolbarHelp(String webAddress) {
-        // This allows a help button to be shown in the action bar
-        // This links to the specific page in the user manul (if webAddress isn't null)
-        if (webAddress==null || webAddress.isEmpty()) {
-            webHelp.setVisibility(View.GONE);
-        } else {
-            webHelp.setVisibility(View.VISIBLE);
-            webHelp.setOnClickListener(v->mainActivityInterface.openDocument(webAddress));
-            // For the first run, show the showcase as well
-            mainActivityInterface.getShowCase().singleShowCase(activity, webHelp,null,
-                    c.getString(R.string.help),false,"webHelp");
         }
     }
 
@@ -274,12 +269,18 @@ public class MyToolbar extends MaterialToolbar {
     }
 
     // This is used to show/hide various parts of the toolbar text (author, copyright, etc)
-    private void hideView(View v, boolean hide) {
+    public void hideView(View v, boolean hide) {
         if (hide) {
             v.setVisibility(View.GONE);
         } else {
             v.setVisibility(View.VISIBLE);
         }
+    }
+
+    public void hideSongDetails(boolean hide) {
+        hideView(title,hide);
+        hideView(author,hide);
+        hideView(key,hide);
     }
 
     // Set when entering/exiting performance mode as this is used to determine if we can autohide actionbar
@@ -340,12 +341,15 @@ public class MyToolbar extends MaterialToolbar {
     }
 
     public void updateClock() {
+        // IV - Refresh form preferences as may have changed
+        updateActionBarPrefs();
         mainActivityInterface.getTimeTools().setFormat(clock,clockTextSize,
                 clockOn, clock24hFormat, clockSeconds);
     }
 
-    public void batteryholderVisibility(int visibility) {
+    public void batteryholderVisibility(int visibility, boolean clickable) {
         batteryholder.setVisibility(visibility);
+        batteryholder.setClickable(clickable);
     }
 
     public ImageView getBatteryimage() {
@@ -359,6 +363,7 @@ public class MyToolbar extends MaterialToolbar {
     public void showClock(boolean show) {
         if (show && clockOn) {
             // Only show if that is our preference
+            clock.setTextSize(clockTextSize);
             clock.setVisibility(View.VISIBLE);
         } else {
             clock.setVisibility(View.GONE);

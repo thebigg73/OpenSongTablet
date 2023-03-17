@@ -38,9 +38,9 @@ import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 
+import com.bumptech.glide.Glide;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.appdata.InformationBottomSheet;
-import com.garethevans.church.opensongtablet.customviews.GlideApp;
 import com.garethevans.church.opensongtablet.customviews.MyMaterialEditText;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
@@ -388,6 +388,16 @@ public class ProcessSong {
         }
         return s;
     }
+
+    public String fixLyricsOnlySpace(String s) {
+        // IV - Used for whole lines when displaying lyrics only
+        // IV - Remove typical word splits, white space and trim - beautify!
+        return s.replaceAll("_", "")
+                .replaceAll("\\s+-\\s+", "")
+                .replaceAll("\\s{2,}", " ")
+                .trim();
+    }
+
     public String determineLineTypes(String string) {
         String type;
         if (string.startsWith("[")) {
@@ -819,52 +829,62 @@ public class ProcessSong {
         return s;
     }
 
-    // Splitting the song up in to manageable chunks
-    public String makeGroups(String string, boolean displayChords) {
-        if (string == null) {
-            string = "";
+    // Keep only wanted lines and group lines that should be in a table for alignment purposes
+    public String filterAndGroupLines(String string, boolean displayChords) {
+        // IV - If no content then return an empty section
+        if (string == null || string.trim().isEmpty()) {
+            return "\n\n§[]";
         }
-        String[] lines = string.split("\n");
-        StringBuilder sb = new StringBuilder();
 
-        // Go through each line and add bits together as groups (____groupline____ between bits, \n for new group)
-        int i = 0;
-        while (i < lines.length) {
+        // IV - Protect section breaks
+        string = string.replace("\n\n§", "\n¬");
+
+        StringBuilder sb = new StringBuilder();
+        String[] lines = string.split("\n");
+
+        // Go through each line and when displaying chords add lines together as groups ('groupline_string' between bits, \n for new group)
+        for (int i=0; i<lines.length; i++) {
             if (lines[i].startsWith(".") && displayChords) {
                 // This is a chord line = this needs to be part of a group
                 sb.append("\n").append(lines[i]).append(groupline_string);
                 // If the next line is a lyric or comment add this to the group and stop there
-                int nl = i + 1;
-                boolean stillworking = true;
-                if (shouldNextLineBeAdded(nl, lines, true)) {
-                    sb.append(fixWordStretch(lines[nl])).append(groupline_string);
-                    while (stillworking) {
-                        // Keep going for multiple lines to be added
-                        if (shouldNextLineBeAdded(nl + 1, lines, false)) {
-                            i = nl;
-                            nl++;
-                            sb.append(fixWordStretch(lines[nl])).append(groupline_string);
-                        } else {
-                            i++;
-                            stillworking = false;
-                        }
+                if (shouldNextLineBeAdded(i + 1, lines, true)) {
+                    i++;
+                    // IV - Support a useful quirk of v5 that renders a comment line immediately following a chord line as a lyric line
+                    // IV - For example a line may have a chords version for repeat. The repeat variant lyrics can be changed to comment, it will not be projected
+                    if (lines[i].startsWith(";")) {
+                        lines[i] = lines[i].replaceFirst(";"," ");
                     }
+                    if (lines[i].startsWith(" ")) {
+                        if (displayLyrics) {
+                            sb.append(fixWordStretch(lines[i])).append(groupline_string);
+                        }
+                    } else {
+                        sb.append(lines[i]).append(groupline_string);
+                    }
+                    // Keep going for multiple lines to be added
+                    while (shouldNextLineBeAdded(i + 1, lines, false)) {
+                        i++;
+                        sb.append(fixWordStretch(lines[i])).append(groupline_string);
+                    }
+                } else {
+                    sb.append(lines[i]).append(groupline_string);
                 }
-            } else if (lines[i].startsWith(" ") && !displayChords) {
-                // IV - Remove typical word splits, white space and trim - beautify!
-                // IV - Similar logic is used in other places - if changed find and make changes to all
-                lines[i] = lines[i].replaceAll("_", "")
-                        .replaceAll("\\s+-\\s+", "")
-                        .replaceAll("\\s{2,}", " ")
-                        .trim();
-                sb.append("\n ").append(lines[i]);
-            } else if (displayLyrics && !lines[i].startsWith(".")) {
+            } else if (lines[i].startsWith(" ") && !displayChords && displayLyrics) {
+                // IV - When displaying lyrics only - remove typical word splits, white space and trim - beautify!
+                sb.append("\n ").append(fixLyricsOnlySpace(lines[i]));
+            } else if (lines[i].contains("¬") || (displayLyrics && !lines[i].startsWith("."))) {
+                // IV - Always add section breaks.  Add other non chord lines when displaying lyrics.
                 sb.append("\n").append(fixWordStretch(lines[i]));
             }
-            i++;
         }
-        // IV - Content is added with leading \n, the first needs to be removed
-        return sb.toString().replaceFirst("\n","");
+        String fixed = sb.toString();
+        // IV - protect a leading section break
+        if (fixed.startsWith("\n¬")) {
+            fixed = "\n" + fixed;
+        }
+        // IV - Lines are added with leading \n, the first needs to be removed.  We restore section breaks.
+        return fixed.replaceFirst("\n","").replace("¬","\n§");
     }
 
     private boolean shouldNextLineBeAdded(int nl, String[] lines, boolean incnormallyricline) {
@@ -895,11 +915,6 @@ public class ProcessSong {
         // Split the group into lines
         String[] lines = string.split(groupline_string);
 
-        // Line 0 is the chord line (or capo line).  All other lines need to be at least this size
-        if (lineIsChordForMultiline(lines)) {
-            lines[0] = ". " + lines[0].substring(1);
-        }
-
         int minlength = 0;
         for (String line : lines) {
             minlength = Math.max(minlength, line.length());
@@ -919,26 +934,31 @@ public class ProcessSong {
         // Get the positions of the chords.  Each will be the start of a new section
         // IV - Use getChordPosition logic which improves the layout of chords
         ArrayList<Integer> pos = new ArrayList<>();
-        if (lines.length > 1) {
-            String[] chordPos;
-            if (lines[0].startsWith("˄") && lines.length>2) {
-                // For capo chords.  lines[1] is the chords, lines[2] the lyrics
-                chordPos = getChordPositions(lines[0], lines[2]);
-            } else if (lines[1].startsWith(".")) {
-                // IV - A chord line follows so position this line referring only to itself
-                chordPos = getChordPositions(lines[0], lines[0]);
-            } else {
-                // Standard chord line followed by lyrics
-                chordPos = getChordPositions(lines[0], lines[1]);
-            }
-            for (String p : chordPos) {
-                // Convert to int arraylist
-                pos.add(Integer.valueOf(p));
+
+        // IV - If we are not displaying chords, handle the line as a whole
+        if (!displayChords) {
+            pos.add(0);
+        } else {
+            if (lines.length > 1) {
+                String[] chordPos;
+                if (lines[0].startsWith("˄") && lines.length>2) {
+                    // For capo chords.  lines[1] is the chords, lines[2] the lyrics
+                    chordPos = getChordPositions(lines[0], lines[2]);
+                } else if (lines[1].startsWith(".")) {
+                    // IV - A chord line follows so position this line referring only to itself
+                    chordPos = getChordPositions(lines[0], lines[0]);
+                } else {
+                    // Standard chord line followed by lyrics
+                    chordPos = getChordPositions(lines[0], lines[1]);
+                }
+                for (String p : chordPos) {
+                    // Convert to int arraylist
+                    pos.add(Integer.valueOf(p));
+                }
             }
         }
 
         String linetype;
-        String lastlinetype = "";
 
         // Now we have the sizes, split into individual TextViews inside a TableRow for each line
         for (int t = 0; t < lines.length; t++) {
@@ -947,16 +967,6 @@ public class ProcessSong {
                 tableRow.setGravity(mainActivityInterface.getPresenterSettings().getPresoLyricsAlign());
             }
             linetype = getLineType(lines[t]);
-
-            // IV - Add back a quirk of the older layout engine that rendered a comment line following a chord line as a lyric line;
-            // IV - Commenting a lyric line is effective at suppressing a lyric line when presenting - useful when a line has variations with different chords
-            if (lastlinetype.equals("chord") && linetype.equals("comment")) {
-                lastlinetype = "comment";
-                linetype = "lyric";
-                lines[t] = " " + lines[t].substring(1);
-            } else {
-                lastlinetype = linetype;
-            }
 
             // Headings with just a comment missed this out
             // Also comments followed by headings
@@ -1011,6 +1021,10 @@ public class ProcessSong {
                             if (displayLyrics) {
                                 str = str.replace("_","");
                                 str = str.replaceAll("[|]"," ");
+                                if (!displayChords) {
+                                    // IV - Remove typical word splits, white space and trim - beautify!
+                                    str = fixLyricsOnlySpace(str);
+                                }
                                 if (trimWordSpacing) {
                                     if (!multiLineVerseKeepCompact && !multilineSong) {
                                         str = fixExcessSpaces(str);
@@ -1082,6 +1096,10 @@ public class ProcessSong {
                     if (displayLyrics) {
                         str = str.replace("_", "");
                         str = str.replaceAll("[|]", " ");
+                        if (!displayChords) {
+                            // IV - Remove typical word splits, white space and trim - beautify!
+                            str = fixLyricsOnlySpace(str);
+                        }
                         if (trimWordSpacing) {
                             if (!multiLineVerseKeepCompact && !multilineSong) {
                                 str = fixExcessSpaces(str);
@@ -1163,34 +1181,16 @@ public class ProcessSong {
 
     private boolean isMultiLineFormatSong(String string) {
         // Best way to determine if the song is in multiline format is
-        // Look for [v] or [c] case insensitive
-        // And it needs to be followed by a line starting with 1 and 2
-        if (string != null) {
-            try {
-                String[] sl = string.split("\n");
-                boolean has_multiline_vtag = false;
-                boolean has_multiline_ctag = false;
-                boolean has_multiline_1tag = false;
-                boolean has_multiline_2tag = false;
-
-                for (String l : sl) {
-                    if (l.toLowerCase(mainActivityInterface.getLocale()).startsWith("[v]")) {
-                        has_multiline_vtag = true;
-                    } else if (l.toLowerCase(mainActivityInterface.getLocale()).startsWith("[c]")) {
-                        has_multiline_ctag = true;
-                    } else if (l.toLowerCase(mainActivityInterface.getLocale()).startsWith("1")) {
-                        has_multiline_1tag = true;
-                    } else if (l.toLowerCase(mainActivityInterface.getLocale()).startsWith("2")) {
-                        has_multiline_2tag = true;
-                    }
-                }
-
-                return (has_multiline_vtag || has_multiline_ctag) && has_multiline_1tag && has_multiline_2tag;
-            } catch (Exception e) {
-                e.printStackTrace();
-                return false;
-            }
-        } else {
+        // Look for lines starting with 1 and 2 and lines starting [v] or [c] case insensitive
+        if (string == null || string.isEmpty()) {
+            return false;
+        }
+        try {
+            String lString = "\n" + string.toLowerCase(mainActivityInterface.getLocale());
+            return (lString.contains("\n1") && lString.contains("\n2")) &&
+                    (lString.contains("\n[v]") || lString.contains("\n[c]"));
+        } catch (Exception e) {
+            e.printStackTrace();
             return false;
         }
     }
@@ -1362,83 +1362,91 @@ public class ProcessSong {
 
         if (mainActivityInterface.getPresenterSettings().getUsePresentationOrder() &&
                 song.getPresentationorder() != null && !song.getPresentationorder().isEmpty() &&
-            !multiLineVerseKeepCompact) {
-            // Update to match the presentation order
-            ArrayList<String> newSections = new ArrayList<>();
-            ArrayList<String> newHeaders = new ArrayList<>();
+            !(multiLineVerseKeepCompact && isMultiLineFormatSong(song.getLyrics()))) {
+            try {
+                // Update to match the presentation order
+                ArrayList<String> newSections = new ArrayList<>();
+                ArrayList<String> newHeaders = new ArrayList<>();
 
-            StringBuilder tempPresentationOrder = new StringBuilder(song.getPresentationorder() + " ");
-            StringBuilder errors = new StringBuilder();
+                StringBuilder tempPresentationOrder = new StringBuilder(song.getPresentationorder() + " ");
+                StringBuilder errors = new StringBuilder();
 
-            // Go through each tag in the song
-            for (String tag : song.getSongSectionHeadings()) {
-                if (tag.equals("") || tag.equals(" ")) {
-                    Log.d(TAG, "Empty search");
-                } else if (tempPresentationOrder.toString().contains(tag)) {
-                    tempPresentationOrder = new StringBuilder(tempPresentationOrder.toString().
-                            replace(tag + " ", "<__" + tag + "__>"));
-                } else {
-                    // IV - this logic avoids a trailing new line
-                    if (errors.length() > 0) {
-                        errors.append(("\n"));
-                    }
-                    // We have sections in the song we haven't included
-                    errors.append(tag).append(" - ").append(c.getString(R.string.section_not_used)).append("\n");
-                }
-            }
-            // tempPresentationOrder now looks like "Intro <__V1__>V2 <__C__><__V3__><__C__><__C__><__Guitar Solo__><__C__>Outro "
-            // Assuming V2 and Outro aren't in the song anymore
-            // Split the string by <__
-            String[] tempPresOrderArray = tempPresentationOrder.toString().split("<__");
-            // tempPresOrderArray now looks like "Intro ", "V1__>V2 ", "C__>", "V3__>", "C__>", "C__>", "Guitar Solo__>", "C__>Outro "
-            // So, if entry doesn't contain __> it isn't in the song
-            // Also, anything after __> isn't in the song
-            for (int d = 0; d < tempPresOrderArray.length; d++) {
-                if (!tempPresOrderArray[d].contains("__>")) {
-                    if (!tempPresOrderArray[d].equals("") && !tempPresOrderArray[d].equals(" ")) {
+                // Go through each tag in the song
+                for (String tag : song.getSongSectionHeadings()) {
+                    if (tag.equals("") || tag.equals(" ")) {
+                        Log.d(TAG, "Empty search");
+                    } else if (tempPresentationOrder.toString().contains(tag)) {
+                        tempPresentationOrder = new StringBuilder(tempPresentationOrder.toString().
+                                replace(tag + " ", "<__" + tag + "__>"));
+                    } else {
+                        // IV - this logic avoids a trailing new line
                         if (errors.length() > 0) {
                             errors.append(("\n"));
                         }
-                        errors.append(tempPresOrderArray[d]).append(" - ").append(c.getString(R.string.section_not_found));
-                    }
-                    tempPresOrderArray[d] = "";
-                    // tempPresOrderArray now looks like "", "V1__>V2 ", "C__>", "V3__>", "C__>", "C__>", "Guitar Solo__>", "C__>Outro "
-                } else {
-                    String goodbit = tempPresOrderArray[d].substring(0, tempPresOrderArray[d].indexOf("__>"));
-                    String badbit = tempPresOrderArray[d].replace(goodbit + "__>", "");
-                    tempPresOrderArray[d] = goodbit;
-                    if (!badbit.equals("") && !badbit.equals(" ")) {
-                        if (errors.length() > 0) {
-                            errors.append(("\n"));
-                        }
-                        errors.append(badbit).append(" - ").append(c.getString(R.string.section_not_found));
-                    }
-                    // tempPresOrderArray now looks like "", "V1", "C", "V3", "C", "C", "Guitar Solo", "C"
-                }
-            }
-
-            // Go through the tempPresOrderArray and add the sections back together
-            for (String aTempPresOrderArray : tempPresOrderArray) {
-                if (!aTempPresOrderArray.equals("")) {
-                    for (int a = 0; a < song.getSongSectionHeadings().size(); a++) {
-                        if (song.getSongSectionHeadings().get(a).trim().equals(aTempPresOrderArray.trim())) {
-                            newSections.add(song.getGroupedSections().get(a));
-                            newHeaders.add(song.getSongSectionHeadings().get(a));
-                        }
+                        // We have sections in the song we haven't included
+                        errors.append(tag).append(" - ").append(c.getString(R.string.section_not_used)).append("\n");
                     }
                 }
-            }
+                // tempPresentationOrder now looks like "Intro <__V1__>V2 <__C__><__V3__><__C__><__C__><__Guitar Solo__><__C__>Outro "
+                // Assuming V2 and Outro aren't in the song anymore
+                // Split the string by <__
+                String[] tempPresOrderArray = tempPresentationOrder.toString().split("<__");
+                // tempPresOrderArray now looks like "Intro ", "V1__>V2 ", "C__>", "V3__>", "C__>", "C__>", "Guitar Solo__>", "C__>Outro "
+                // So, if entry doesn't contain __> it isn't in the song
+                // Also, anything after __> isn't in the song
+                for (int d = 0; d < tempPresOrderArray.length; d++) {
+                    if (!tempPresOrderArray[d].contains("__>")) {
+                        if (!tempPresOrderArray[d].equals("") && !tempPresOrderArray[d].equals(" ")) {
+                            if (errors.length() > 0) {
+                                errors.append(("\n"));
+                            }
+                            errors.append(tempPresOrderArray[d]).append(" - ").append(c.getString(R.string.section_not_found));
+                        }
+                        tempPresOrderArray[d] = "";
+                        // tempPresOrderArray now looks like "", "V1__>V2 ", "C__>", "V3__>", "C__>", "C__>", "Guitar Solo__>", "C__>Outro "
+                    } else {
+                        String goodbit = tempPresOrderArray[d].substring(0, tempPresOrderArray[d].indexOf("__>"));
+                        String badbit = tempPresOrderArray[d].replace(goodbit + "__>", "");
+                        tempPresOrderArray[d] = goodbit;
+                        if (!badbit.equals("") && !badbit.equals(" ")) {
+                            if (errors.length() > 0) {
+                                errors.append(("\n"));
+                            }
+                            errors.append(badbit).append(" - ").append(c.getString(R.string.section_not_found));
+                        }
+                        // tempPresOrderArray now looks like "", "V1", "C", "V3", "C", "C", "Guitar Solo", "C"
+                    }
+                }
 
-            // Display any errors as a bottom sheet (may need time to read)
-            if (!errors.toString().trim().isEmpty()) {
-                InformationBottomSheet informationBottomSheet = new InformationBottomSheet(
-                        c.getString(R.string.presentation_order), errors.toString().trim(),
-                        c.getString(R.string.edit_song), c.getString(R.string.deeplink_edit));
-                informationBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "InformationBottomSheet");
-            }
+                // Go through the tempPresOrderArray and add the sections back together
+                for (String aTempPresOrderArray : tempPresOrderArray) {
+                    if (!aTempPresOrderArray.equals("")) {
+                        for (int a = 0; a < song.getSongSectionHeadings().size(); a++) {
+                            if (song.getSongSectionHeadings().get(a).trim().equals(aTempPresOrderArray.trim())) {
+                                newSections.add(song.getGroupedSections().get(a));
+                                newHeaders.add(song.getSongSectionHeadings().get(a));
+                            }
+                        }
+                    }
+                }
 
-            song.setPresoOrderSongSections(newSections);
-            song.setPresoOrderSongHeadings(newHeaders);
+                // Display any errors as a bottom sheet (may need time to read)
+                if (!errors.toString().trim().isEmpty()) {
+                    // Use a toast which is less intrusive during live performance - Inform but do not demand a reponse. For example, not using a verse section may be valid.
+                    mainActivityInterface.getShowToast().doIt(c.getString(R.string.presentation_order) + ": " + c.getString(R.string.error) + "?");
+                    //InformationBottomSheet informationBottomSheet = new InformationBottomSheet(
+                    //        c.getString(R.string.presentation_order), errors.toString().trim(),
+                    //        c.getString(R.string.edit_song), c.getString(R.string.deeplink_edit));
+                    //informationBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "InformationBottomSheet");
+                }
+
+                song.setPresoOrderSongSections(newSections);
+                song.setPresoOrderSongHeadings(newHeaders);
+            } catch (Exception e) {
+                // IV - An error has occurred so return what we have
+                song.setPresoOrderSongSections(song.getGroupedSections());
+                song.setPresoOrderSongHeadings(song.getSongSectionHeadings());
+            }
         } else {
             // Not using presentation order, so just return what we have
             song.setPresoOrderSongSections(song.getGroupedSections());
@@ -1677,18 +1685,17 @@ public class ProcessSong {
                 fixedlyrics.append(sectionHeader).append("\n").append(("¬"+ songSections.get(x)).replace("¬\n","").replace("¬",""));
             }
         }
-
         // IV - Content is added with leading \n§, the first needs to be removed
         lyrics = fixedlyrics.toString().replaceFirst("\n§","");
 
         // 8. Go through the lyrics and get section headers and add to the song object
         song.setSongSectionHeadings(getSectionHeadings(lyrics));
 
-        // 9. Go through the lyrics and group lines that should be in a table for alignment purposes
+        // 9. Go through the lyrics, filter for wanted line types and group lines that should be in a table for alignment purposes
         if (presentation) {
-            lyrics = makeGroups(lyrics, mainActivityInterface.getPresenterSettings().getPresoShowChords());
+            lyrics = filterAndGroupLines(lyrics, mainActivityInterface.getPresenterSettings().getPresoShowChords());
         } else {
-            lyrics = makeGroups(lyrics, displayChords);
+            lyrics = filterAndGroupLines(lyrics, displayChords);
         }
 
         // 10. Build the songSections for later recall
@@ -1850,10 +1857,8 @@ public class ProcessSong {
                                     // IV - Remove typical word splits, white space and trim - beautify!
                                     // IV - Similar logic is used in other places - if changed find and make changes to all
                                     if (!displayChords) {
-                                        line = line.replaceAll("_", "")
-                                                .replaceAll("\\s+-\\s+", "")
-                                                .replaceAll("\\s{2,}", " ")
-                                                .trim();
+                                        // IV - Remove typical word splits, white space and trim - beautify!
+                                        line = fixLyricsOnlySpace(line);
                                     }
                                     TextView tv = lineText(linetype, line, typeface,
                                             size, textColor,
@@ -1867,10 +1872,8 @@ public class ProcessSong {
                                     // IV - Remove typical word splits, white space and trim - beautify!
                                     // IV - Similar logic is used in other places - if changed find and make changes to all
                                     if (!displayChords) {
-                                        line = line.replaceAll("_", "")
-                                                .replaceAll("\\s+-\\s+", "")
-                                                .replaceAll("\\s{2,}", " ")
-                                                .trim();
+                                        // IV - Remove typical word splits, white space and trim - beautify!
+                                        line = fixLyricsOnlySpace(line);
                                     }
                                     linearLayout.addView(lineText(linetype, line, typeface,
                                             size, textColor, Color.TRANSPARENT, Color.TRANSPARENT, presentation));
@@ -1881,7 +1884,6 @@ public class ProcessSong {
 
                     linearLayout.setBackgroundColor(overallBackgroundColor);
                     sectionColors.add(overallBackgroundColor);
-
                     sectionViews.add(linearLayout);
                 }
             }
@@ -2122,7 +2124,7 @@ public class ProcessSong {
                 }
             }
 
-            // Default font size is 14sp when drawing. If scaling takes this below the min font Size, override back to 1 column
+            // Default font size is 8sp when drawing. If scaling takes this below the min font Size, override back to 1 column
             if (best == 2) {
                 if (col2[2] == 0) {
                     return 1;
@@ -3372,7 +3374,7 @@ public class ProcessSong {
                     Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
                     page.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY);
 
-                    GlideApp.with(c).load(bitmap).override(width,height).into(imageView);
+                    Glide.with(c).load(bitmap).override(width,height).into(imageView);
                     imageViews.add(imageView);
 
                     page.close();
