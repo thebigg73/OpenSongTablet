@@ -722,7 +722,7 @@ public class PerformanceFragment extends Fragment {
                 myView.pageHolder.getLayoutParams().height = availableHeight;
 
                 float[] scaleInfo = mainActivityInterface.getProcessSong().addViewsToScreen(
-                        false, mainActivityInterface.getSectionViews(),
+                        mainActivityInterface.getSectionViews(),
                         mainActivityInterface.getSectionWidths(), mainActivityInterface.getSectionHeights(),
                         myView.pageHolder, myView.songView, myView.songSheetTitle,
                         availableWidth, availableHeight, myView.songView.getCol1(), myView.songView.getCol2(),

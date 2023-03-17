@@ -57,10 +57,6 @@ public class PageButtons {
         actionInterface = (ActionInterface) c;
         // Prepare the arrays of available actions with matching short and long text
         prepareAvailableActions();
-        prepareAvailableButtonText();
-        prepareShortActionText();
-        prepareLongActionText();
-        prepareDrawableIds();
 
         // Now get our button preferences
         setPreferences();
@@ -149,228 +145,97 @@ public class PageButtons {
         // Build the arrays with the available actions, short text and long text descriptions
         // These are the options available for the exposed dropdowns in the PageButtonsFragment
         actions = new ArrayList<>();
-        actions.add("");
-        actions.add("set");
-        actions.add("inlineset");
-        actions.add("transpose");
-        actions.add("pad");
-        actions.add("metronome");
-        actions.add("autoscroll");
-        actions.add("link");
-        actions.add("nearby");
-        actions.add("chordfingerings");
-        actions.add("tuner");
-        actions.add("stickynotes");
-        actions.add("pdfpage");
-        actions.add("highlight");
-        actions.add("editsong");
-        actions.add("share_song");
-        actions.add("addtoset");
-        actions.add("togglescale");
-        actions.add("scrolldown");
-        actions.add("scrollup");
-        actions.add("next");
-        actions.add("previous");
-        actions.add("theme");
-        actions.add("fonts");
-        actions.add("profiles");
-        actions.add("gestures");
-        actions.add("pedals");
-        actions.add("showchords");
-        actions.add("showcapo");
-        actions.add("showlyrics");
-        actions.add("search");
-        actions.add("randomsong");
-        actions.add("abc");
-        actions.add("inc_autoscroll_speed");
-        actions.add("dec_autoscroll_speed");
-        actions.add("toggle_autoscroll_pause");
-        actions.add("midi");
-        actions.add("bible");
-        actions.add("soundlevel");
-        actions.add("import");
-        actions.add("invertpdf");
-        actions.add("exit");
-    }
-    private void prepareAvailableButtonText() {
         text = new ArrayList<>();
-        text.add("");
-        text.add(c.getString(R.string.set_current));
-        text.add(c.getString(R.string.set_inline));
-        text.add(c.getString(R.string.transpose));
-        text.add(c.getString(R.string.pad));
-        text.add(c.getString(R.string.metronome));
-        text.add(c.getString(R.string.autoscroll));
-        text.add(c.getString(R.string.link));
-        text.add(c.getString(R.string.connections_connect));
-        text.add(c.getString(R.string.chord_fingering));
-        text.add("Tuner");
-        text.add(c.getString(R.string.song_notes));
-        text.add(c.getString(R.string.select_page));
-        text.add(c.getString(R.string.highlight));
-        text.add(c.getString(R.string.edit) + " " + c.getString(R.string.song));
-        text.add(c.getString(R.string.export)+" ("+c.getString(R.string.song)+")");
-        text.add(c.getString(R.string.add_song_to_set));
-        text.add(c.getString(R.string.scale_auto));
-        text.add(c.getString(R.string.scroll_down));
-        text.add(c.getString(R.string.scroll_up));
-        text.add(c.getString(R.string.next));
-        text.add(c.getString(R.string.previous));
-        text.add(c.getString(R.string.theme_choose));
-        text.add(c.getString(R.string.font_choose));
-        text.add(c.getString(R.string.profile));
-        text.add(c.getString(R.string.custom_gestures));
-        text.add(c.getString(R.string.pedal));
-        text.add(c.getString(R.string.show_chords));
-        text.add(c.getString(R.string.show_capo));
-        text.add(c.getString(R.string.show_lyrics));
-        text.add(c.getString(R.string.show_songs));
-        text.add(c.getString(R.string.random_song));
-        text.add(c.getString(R.string.music_score));
-        text.add(c.getString(R.string.inc_autoscroll_speed));
-        text.add(c.getString(R.string.dec_autoscroll_speed));
-        text.add(c.getString(R.string.autoscroll_pause));
-        text.add(c.getString(R.string.midi));
-        text.add(c.getString(R.string.bible_verse));
-        text.add(c.getString(R.string.sound_level_meter));
-        text.add(c.getString(R.string.import_basic));
-        text.add(c.getString(R.string.invert_PDF));
-        text.add(c.getString(R.string.exit));
-    }
-    private void prepareShortActionText() {
         shortText = new ArrayList<>();
-        shortText.add("");
-        shortText.add(c.getString(R.string.show));
-        shortText.add(c.getString(R.string.show) + " / " + c.getString(R.string.hide));
-        shortText.add(c.getString(R.string.open));
-        shortText.add(c.getString(R.string.start) + " / " + c.getString(R.string.stop));
-        shortText.add(c.getString(R.string.start) + " / " + c.getString(R.string.stop));
-        shortText.add(c.getString(R.string.start) + " / " + c.getString(R.string.stop));
-        shortText.add(c.getString(R.string.open));
-        shortText.add(c.getString(R.string.connections_discover));
-        shortText.add(c.getString(R.string.show) + " / " + c.getString(R.string.hide));
-        shortText.add(c.getString(R.string.select));
-        shortText.add(c.getString(R.string.show) + " / " + c.getString(R.string.hide));
-        shortText.add(c.getString(R.string.select));
-        shortText.add(c.getString(R.string.show) + " / " + c.getString(R.string.hide));
-        shortText.add(c.getString(R.string.open));
-        shortText.add(c.getString(R.string.select));
-        shortText.add(c.getString(R.string.set_add));
-        shortText.add(c.getString(R.string.scale_style));
-        shortText.add(c.getString(R.string.select));
-        shortText.add(c.getString(R.string.select));
-        shortText.add(c.getString(R.string.select));
-        shortText.add(c.getString(R.string.select));
-        shortText.add(c.getString(R.string.select));
-        shortText.add(c.getString(R.string.select));
-        shortText.add(c.getString(R.string.settings));
-        shortText.add(c.getString(R.string.settings));
-        shortText.add(c.getString(R.string.settings));
-        shortText.add(c.getString(R.string.show) + " / " + c.getString(R.string.hide));
-        shortText.add(c.getString(R.string.show) + " / " + c.getString(R.string.hide));
-        shortText.add(c.getString(R.string.show) + " / " + c.getString(R.string.hide));
-        shortText.add(c.getString(R.string.open) + " / " + c.getString(R.string.close));
-        shortText.add(c.getString(R.string.random_song));
-        shortText.add(c.getString(R.string.show) + " / " + c.getString(R.string.hide));
-        shortText.add(c.getString(R.string.inc_autoscroll_speed));
-        shortText.add(c.getString(R.string.dec_autoscroll_speed));
-        shortText.add(c.getString(R.string.pause) + " / " + c.getString(R.string.resume));
-        shortText.add(c.getString(R.string.midi_send));
-        shortText.add(c.getString(R.string.search));
-        shortText.add(c.getString(R.string.show) + " / " + c.getString(R.string.hide));
-        shortText.add(c.getString(R.string.online_services));
-        shortText.add(c.getString(R.string.select));
-        shortText.add(c.getString(R.string.exit) + " " + c.getString(R.string.app_name));
-    }
-    private void prepareLongActionText() {
         longText = new ArrayList<>();
-        longText.add("");
-        longText.add("");
-        longText.add(c.getString(R.string.settings));
-        longText.add(c.getString(R.string.settings));
-        longText.add(c.getString(R.string.settings));
-        longText.add(c.getString(R.string.settings));
-        longText.add(c.getString(R.string.settings));
-        longText.add("");
-        longText.add(c.getString(R.string.settings));
-        longText.add(c.getString(R.string.edit));
-        longText.add("");
-        longText.add(c.getString(R.string.edit));
-        longText.add("");
-        longText.add(c.getString(R.string.edit));
-        longText.add("");
-        longText.add("");
-        longText.add(c.getString(R.string.variation_make));
-        longText.add(c.getString(R.string.scaling_info));
-        longText.add("");
-        longText.add("");
-        longText.add("");
-        longText.add("");
-        longText.add("");
-        longText.add("");
-        longText.add("");
-        longText.add("");
-        longText.add("");
-        longText.add("");
-        longText.add("");
-        longText.add("");
-        longText.add("");
-        longText.add(c.getString(R.string.settings));
-        longText.add(c.getString(R.string.edit));
-        longText.add("");
-        longText.add("");
-        longText.add("");
-        longText.add(c.getString(R.string.settings));
-        longText.add("");
-        longText.add("");
-        longText.add(c.getString(R.string.import_main));
-        longText.add("");
-        longText.add("");
-    }
-    private void prepareDrawableIds() {
         drawableIds = new ArrayList<>();
-        drawableIds.add(R.drawable.help);
-        drawableIds.add(R.drawable.list_number);
-        drawableIds.add(R.drawable.inline_set);
-        drawableIds.add(R.drawable.transpose);
-        drawableIds.add(R.drawable.amplifier);
-        drawableIds.add(R.drawable.metronome);
-        drawableIds.add(R.drawable.autoscroll);
-        drawableIds.add(R.drawable.link);
-        drawableIds.add(R.drawable.nearby);
-        drawableIds.add(R.drawable.guitar);
-        drawableIds.add(R.drawable.tuner);
-        drawableIds.add(R.drawable.note_text);
-        drawableIds.add(R.drawable.book);
-        drawableIds.add(R.drawable.highlighter);
-        drawableIds.add(R.drawable.set_edit);
-        drawableIds.add(R.drawable.share);
-        drawableIds.add(R.drawable.set_add);
-        drawableIds.add(R.drawable.stretch);
-        drawableIds.add(R.drawable.arrow_down);
-        drawableIds.add(R.drawable.arrow_up);
-        drawableIds.add(R.drawable.arrow_right);
-        drawableIds.add(R.drawable.arrow_left);
-        drawableIds.add(R.drawable.theme);
-        drawableIds.add(R.drawable.text);
-        drawableIds.add(R.drawable.account);
-        drawableIds.add(R.drawable.fingerprint);
-        drawableIds.add(R.drawable.pedal);
-        drawableIds.add(R.drawable.guitar);
-        drawableIds.add(R.drawable.capo);
-        drawableIds.add(R.drawable.voice);
-        drawableIds.add(R.drawable.search);
-        drawableIds.add(R.drawable.shuffle);
-        drawableIds.add(R.drawable.clef);
-        drawableIds.add(R.drawable.timer_plus);
-        drawableIds.add(R.drawable.timer_minus);
-        drawableIds.add(R.drawable.timer_pause);
-        drawableIds.add(R.drawable.midi);
-        drawableIds.add(R.drawable.bible);
-        drawableIds.add(R.drawable.sound_level);
-        drawableIds.add(R.drawable.database_import);
-        drawableIds.add(R.drawable.invert_colors);
-        drawableIds.add(R.drawable.exit);
+
+        prepareOption("","","","",R.drawable.help);
+
+        // Set actions
+        prepareOption("set",c.getString(R.string.set_current),c.getString(R.string.show),"",R.drawable.list_number);
+        prepareOption("inlineset",c.getString(R.string.set_inline),c.getString(R.string.show) + " / " + c.getString(R.string.hide),c.getString(R.string.settings),R.drawable.inline_set);
+        prepareOption("addtoset",c.getString(R.string.add_song_to_set),c.getString(R.string.set_add),c.getString(R.string.variation_make),R.drawable.set_add);
+
+        prepareOption("","","","",R.drawable.help);
+
+        // Song actions
+        prepareOption("pad",c.getString(R.string.pad),c.getString(R.string.start) + " / " + c.getString(R.string.stop),c.getString(R.string.settings),R.drawable.amplifier);
+        prepareOption("metronome",c.getString(R.string.metronome),c.getString(R.string.start) + " / " + c.getString(R.string.stop),c.getString(R.string.settings),R.drawable.metronome);
+        prepareOption("autoscroll",c.getString(R.string.autoscroll),c.getString(R.string.start) + " / " + c.getString(R.string.stop),c.getString(R.string.settings),R.drawable.autoscroll);
+        prepareOption("inc_autoscroll_speed",c.getString(R.string.inc_autoscroll_speed),c.getString(R.string.inc_autoscroll_speed),"",R.drawable.timer_plus);
+        prepareOption("dec_autoscroll_speed",c.getString(R.string.dec_autoscroll_speed),c.getString(R.string.dec_autoscroll_speed),"",R.drawable.timer_minus);
+        prepareOption("toggle_autoscroll_pause",c.getString(R.string.autoscroll_pause),c.getString(R.string.pause) + " / " + c.getString(R.string.resume),"",R.drawable.timer_pause);
+        prepareOption("editsong",c.getString(R.string.edit) + " " + c.getString(R.string.song),c.getString(R.string.open),"",R.drawable.set_edit);
+        prepareOption("share_song",c.getString(R.string.export)+" "+c.getString(R.string.song),c.getString(R.string.select),"",R.drawable.share);
+        prepareOption("import",c.getString(R.string.import_basic),c.getString(R.string.online_services),c.getString(R.string.import_main),R.drawable.database_import);
+
+        prepareOption("","","","",R.drawable.help);
+
+        // Song navigation
+        prepareOption("search",c.getString(R.string.show_songs),c.getString(R.string.open) + " / " + c.getString(R.string.close),"",R.drawable.search);
+        prepareOption("scrolldown",c.getString(R.string.scroll_down),c.getString(R.string.select),"",R.drawable.arrow_down);
+        prepareOption("scrollup",c.getString(R.string.scroll_up),c.getString(R.string.select),"",R.drawable.arrow_up);
+        prepareOption("next",c.getString(R.string.next),c.getString(R.string.select),"",R.drawable.arrow_right);
+        prepareOption("previous",c.getString(R.string.previous),c.getString(R.string.select),"",R.drawable.arrow_left);
+        prepareOption("randomsong",c.getString(R.string.random_song),c.getString(R.string.random_song),c.getString(R.string.settings),R.drawable.shuffle);
+
+        prepareOption("","","","",R.drawable.help);
+
+        // Chords
+        prepareOption("transpose",c.getString(R.string.transpose),c.getString(R.string.open),c.getString(R.string.settings),R.drawable.transpose);
+        prepareOption("chordfingerings",c.getString(R.string.chord_fingering),c.getString(R.string.show) + " / " + c.getString(R.string.hide),c.getString(R.string.edit),R.drawable.guitar);
+
+        prepareOption("","","","",R.drawable.help);
+
+        // Song information
+        prepareOption("link",c.getString(R.string.link),c.getString(R.string.open),"",R.drawable.link);
+        prepareOption("stickynotes",c.getString(R.string.song_notes),c.getString(R.string.show) + " / " + c.getString(R.string.hide),c.getString(R.string.edit),R.drawable.note_text);
+        prepareOption("highlight",c.getString(R.string.highlight),c.getString(R.string.show) + " / " + c.getString(R.string.hide),c.getString(R.string.edit),R.drawable.highlighter);
+        prepareOption("abc",c.getString(R.string.music_score),c.getString(R.string.show) + " / " + c.getString(R.string.hide),c.getString(R.string.edit),R.drawable.clef);
+
+        prepareOption("","","","",R.drawable.help);
+
+        // Display
+        prepareOption("profiles",c.getString(R.string.profile),c.getString(R.string.settings),"",R.drawable.account);
+        prepareOption("showchords",c.getString(R.string.show_chords),c.getString(R.string.show) + " / " + c.getString(R.string.hide),"",R.drawable.guitar);
+        prepareOption("showcapo",c.getString(R.string.show_capo),c.getString(R.string.show) + " / " + c.getString(R.string.hide),"",R.drawable.capo);
+        prepareOption("showlyrics",c.getString(R.string.show_lyrics),c.getString(R.string.show) + " / " + c.getString(R.string.hide),"",R.drawable.voice);
+        prepareOption("theme",c.getString(R.string.theme_choose),c.getString(R.string.select),"",R.drawable.theme);
+        prepareOption("togglescale",c.getString(R.string.scale_auto),c.getString(R.string.scale_style),c.getString(R.string.scaling_info),R.drawable.stretch);
+        prepareOption("pdfpage",c.getString(R.string.select_page),c.getString(R.string.select),"",R.drawable.book);
+        prepareOption("invertpdf",c.getString(R.string.invert_PDF),c.getString(R.string.select),"",R.drawable.invert_colors);
+        prepareOption("fonts",c.getString(R.string.font_choose),c.getString(R.string.select),"",R.drawable.text);
+
+        prepareOption("","","","",R.drawable.help);
+
+        // Controls
+        prepareOption("nearby",c.getString(R.string.connections_connect),c.getString(R.string.connections_discover),c.getString(R.string.settings),R.drawable.nearby);
+        prepareOption("gestures",c.getString(R.string.custom_gestures),c.getString(R.string.settings),"",R.drawable.fingerprint);
+        prepareOption("pedals",c.getString(R.string.pedal),c.getString(R.string.settings),"",R.drawable.pedal);
+        prepareOption("midi",c.getString(R.string.midi),c.getString(R.string.midi_send),c.getString(R.string.settings),R.drawable.midi);
+
+        prepareOption("","","","",R.drawable.help);
+
+        // Utilities
+        prepareOption("soundlevel",c.getString(R.string.sound_level_meter),c.getString(R.string.show) + " / " + c.getString(R.string.hide),"",R.drawable.sound_level);
+        prepareOption("tuner",c.getString(R.string.tuner),c.getString(R.string.select),"",R.drawable.tuner);
+        prepareOption("bible",c.getString(R.string.bible_verse),c.getString(R.string.search),"",R.drawable.bible);
+
+        prepareOption("","","","",R.drawable.help);
+
+        // Exit
+        prepareOption("exit",c.getString(R.string.exit),c.getString(R.string.exit) + " " + c.getString(R.string.app_name),"",R.drawable.exit);
+
+    }
+
+    private void prepareOption(String code, String description, String shortAction,
+                               String longAction, int drawable) {
+        actions.add(code);
+        text.add(description);
+        shortText.add(shortAction);
+        longText.add(longAction);
+        drawableIds.add(drawable);
     }
 
     // Decide which button we want to grab

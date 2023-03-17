@@ -1121,7 +1121,7 @@ public class SecondaryDisplay extends Presentation {
         boolean need23columns = mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance));
         if (!myView.songContent1.getIsDisplaying()) {
             float[] f= mainActivityInterface.getProcessSong().addViewsToScreen(
-                    need23columns, secondaryViews, secondaryWidths, secondaryHeights, myView.allContent,
+                    secondaryViews, secondaryWidths, secondaryHeights, myView.allContent,
                     myView.songContent1, null, availableScreenWidth, modeHeight,
                     myView.songContent1.getCol1(), myView.songContent1.getCol2(),
                     myView.songContent1.getCol3(), true, displayMetrics);
@@ -1142,7 +1142,7 @@ public class SecondaryDisplay extends Presentation {
 
         } else if (!myView.songContent2.getIsDisplaying()) {
             float[] f= mainActivityInterface.getProcessSong().addViewsToScreen(
-                    need23columns, secondaryViews, secondaryWidths, secondaryHeights, myView.allContent,
+                    secondaryViews, secondaryWidths, secondaryHeights, myView.allContent,
                     myView.songContent2, null, availableScreenWidth, modeHeight,
                     myView.songContent2.getCol1(), myView.songContent2.getCol2(),
                     myView.songContent2.getCol3(), true, displayMetrics);

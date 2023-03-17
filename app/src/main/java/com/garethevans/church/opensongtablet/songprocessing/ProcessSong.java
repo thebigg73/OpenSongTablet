@@ -62,6 +62,7 @@ public class ProcessSong {
         newline_string="___NEWLINE___", columnbreak_string="::CBr::";
     private final float defFontSize = 8.0f;
     private boolean addSectionSpace;
+    //private boolean addSectionBox;
     private boolean blockShadow;
     private boolean displayBoldChordsHeadings;
     private boolean displayChords;
@@ -82,7 +83,6 @@ public class ProcessSong {
     private String songAutoScale;
     // Stuff for resizing/scaling
     private int padding = 8;
-    private String thisAutoScale;
     private boolean bracketsOpen = false;
     private int bracketsStyle = Typeface.NORMAL;
     private boolean curlyBrackets = true;
@@ -113,7 +113,7 @@ public class ProcessSong {
         trimLines = mainActivityInterface.getPreferences().getMyPreferenceBoolean("trimLines", true);
         trimSections = mainActivityInterface.getPreferences().getMyPreferenceBoolean("trimSections", true);
         trimWordSpacing = mainActivityInterface.getPreferences().getMyPreferenceBoolean("trimWordSpacing", true);
-        boolean addSectionBox = mainActivityInterface.getPreferences().getMyPreferenceBoolean("addSectionBox", false);
+        //addSectionBox = mainActivityInterface.getPreferences().getMyPreferenceBoolean("addSectionBox", false);
         fontSize = mainActivityInterface.getPreferences().getMyPreferenceFloat("fontSize", 20f);
         fontSizeMax = mainActivityInterface.getPreferences().getMyPreferenceFloat("fontSizeMax", 50f);
         fontSizeMin = mainActivityInterface.getPreferences().getMyPreferenceFloat("fontSizeMin", 8f);
@@ -871,9 +871,9 @@ public class ProcessSong {
     private boolean shouldNextLineBeAdded(int nl, String[] lines, boolean incnormallyricline) {
         if (incnormallyricline) {
             return (nl < lines.length && (lines[nl].startsWith(" ") && !lines[nl].trim().isEmpty() || lines[nl].startsWith(";") ||
-                    lines[nl].matches("^[0-9].*$")));
+                    lines[nl].matches("^\\d.*$")));
         } else {
-            return (nl < lines.length && (lines[nl].matches("^[0-9].*$")));
+            return (nl < lines.length && (lines[nl].matches("^\\d.*$")));
         }
     }
 
@@ -1197,7 +1197,7 @@ public class ProcessSong {
     }
 
     private boolean lineIsChordForMultiline(String[] lines) {
-        return (lines[0].length() > 1 && lines.length > 1 && lines[1].matches("^[0-9].*$"));
+        return (lines[0].length() > 1 && lines.length > 1 && lines[1].matches("^\\d.*$"));
     }
 
     private String fixMultiLineFormat(String string, boolean presentation) {
@@ -1775,10 +1775,6 @@ public class ProcessSong {
                     // IV - End trim only as a section may start with a lyric line and have no header
                     section = ("¬" + section).trim().replace("¬","");
                 }
-                /*if (!presentation && addSectionSpace && !mainActivityInterface.getMakePDF().getIsSetListPrinting() &&
-                        sect != (song.getPresoOrderSongSections().size() - 1)) { // Don't do for last section
-                    section = section + "\n ";
-                }*/
                 LinearLayout linearLayout = newLinearLayout(); // transparent color
                 linearLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 
@@ -1803,16 +1799,17 @@ public class ProcessSong {
                             // Get the text stylings
                             String linetype = getLineType(line);
 
+                            boolean notLyricOrChord = linetype.equals("heading") || linetype.equals("comment") || linetype.equals("tab");
                             if (presentation && !mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance))) {
-                                if (linetype.equals("heading") || linetype.equals("comment") || linetype.equals("tab")) {
+                                if (notLyricOrChord) {
                                     // Do not use these lines with the second screen
                                     continue;
                                 } else if (curlyBrackets) {
-                                    line = line.replaceAll("\\{.*?\\}", "");
+                                    line = line.replaceAll("\\{.*?}", "");
                                 }
                             }
                             backgroundColor = overallBackgroundColor;
-                            if (!asPDF && !presentation && (linetype.equals("heading") || linetype.equals("comment") || linetype.equals("tab"))) {
+                            if (!asPDF && !presentation && notLyricOrChord) {
                                 backgroundColor = getBGColor(line);
                                 if (l==0) {
                                     overallBackgroundColor = backgroundColor;
@@ -1859,7 +1856,7 @@ public class ProcessSong {
                                     TextView tv = lineText(linetype, line, typeface,
                                             size, textColor,
                                             mainActivityInterface.getMyThemeColors().getHighlightHeadingColor(),
-                                            mainActivityInterface.getMyThemeColors().getHighlightChordColor(), presentation);
+                                            mainActivityInterface.getMyThemeColors().getHighlightChordColor(), false);
                                     tv.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                                     tv.setBackgroundColor(backgroundColor);
                                     linearLayout.addView(tv);
@@ -2073,7 +2070,7 @@ public class ProcessSong {
     }
 
     private float[] columnSplitAlgorithm(ArrayList<Integer> sectionWidths, ArrayList<Integer> sectionHeights,
-                                         int availableWidth, int availableHeight, String autoScale, boolean overrideToWidth,
+                                         int availableWidth, int availableHeight, String autoScale,
                                          boolean forceColumns, int[] forceColumnInfo, boolean presentation) {
         // An updated algorithm to calculate the best way to split a song into columns
 
@@ -2165,9 +2162,6 @@ public class ProcessSong {
                     float scale3Y = (float)availableHeight/(float)col3_3Height;
                     col3_3ScaleBest = Math.min(scale3X,scale3Y);
                     threeColumnScale = Math.min(col1_3ScaleBest, Math.min(col2_3ScaleBest, col3_3ScaleBest));
-                    //col1_3ScaleBest = 1f;
-                    //col2_3ScaleBest = 1f;
-                    //col3_3ScaleBest = 1f;
                 }
             } else {
                 // Not point working out 2 columns unless we have more than 1 section!
@@ -2278,11 +2272,6 @@ public class ProcessSong {
         boolean threeColumn = (forceColumns && forceColumnInfo!=null && forceColumnInfo[0]==3) ||
                 threeColumnScale > oneColumnScale && threeColumnScale > twoColumnScale;
 
-        Log.d(TAG,"oneColumn:"+oneColumn+"  twoColumn:"+twoColumn+"  threeColumn:"+threeColumn);
-
-        // TODO fix overrides
-        boolean widthOnly = false;
-
         if (threeColumn) {
             // Compare with max scaling due to font size allowed
             threeColumnScale = Math.min(maxFontScale, threeColumnScale);
@@ -2366,10 +2355,9 @@ public class ProcessSong {
 }
 
 
-
     // These are called from the VTO listener - draw the stuff to the screen as 1,2 or 3 columns
     // This then returns the best (largest) scaling size as a float
-    public float[] addViewsToScreen(boolean need23ColumnCheck, ArrayList<View> sectionViews,
+    public float[] addViewsToScreen(ArrayList<View> sectionViews,
                                     ArrayList<Integer> sectionWidths, ArrayList<Integer> sectionHeights,
                                     RelativeLayout pageHolder, LinearLayout songView,
                                     LinearLayout songSheetView, int availableWidth, int availableHeight,
@@ -2418,7 +2406,7 @@ public class ProcessSong {
             songSheetView.setVisibility(View.GONE);
         }
 
-        thisAutoScale = songAutoScale;
+        String thisAutoScale = songAutoScale;
 
         // A request to force columns (still a maximum of 3 allowed though)
         boolean doForceColumns = false;
@@ -2454,10 +2442,9 @@ public class ProcessSong {
         Log.d(TAG,"forceCols:"+doForceColumns+"  split1:"+split1+"  split2:"+split2);
 
         // Figure out the best option of 1,2 or 3 columns and how to arrange them
-        // TODO deal with force columns instead if required
         float[] columnInfo = columnSplitAlgorithm(sectionWidths, sectionHeights, availableWidth,
                 availableHeight-songSheetTitleHeight,songAutoScale,
-                songAutoScaleOverrideWidth,doForceColumns, forceColumnsInfo, presentation);
+                doForceColumns, forceColumnsInfo, presentation);
 
         if (columnInfo[0]==1) {
             createOneColumn(sectionViews, column1, column2, column3, currentWidth,
@@ -2735,8 +2722,6 @@ public class ProcessSong {
 
     // Now the stuff to read in pdf files (converts the pages to an image for displaying)
     // This uses Android built in PdfRenderer, so will only work on Lollipop+
-
-
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public Bitmap getBitmapFromPDF(String folder, String filename, int page, int allowedWidth,
                                    int allowedHeight, String scale) {
@@ -2965,7 +2950,8 @@ public class ProcessSong {
         }
     }
 
-    // TODO Not working or implemented yet.  This will allow trimming images/pdfs by whitespace
+    // Not working or implemented yet.  This will allow trimming images/pdfs by whitespace
+    @SuppressWarnings("unused")
     public Bitmap trimBitmap(Bitmap bmp) {
         boolean trimMargins = false;
         if (trimMargins) {
@@ -3060,7 +3046,6 @@ public class ProcessSong {
             return bmp;
         }
     }
-
 
 
     // This stuff deals with the highlighter notes
@@ -3323,6 +3308,7 @@ public class ProcessSong {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @SuppressWarnings("unused")
     public ArrayList<ImageView> getPDFAsImageViews(Context c, Uri pdfUri) {
         ArrayList<ImageView> imageViews = new ArrayList<>();
 
