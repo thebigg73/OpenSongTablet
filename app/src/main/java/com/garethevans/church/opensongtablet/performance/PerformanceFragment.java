@@ -380,23 +380,11 @@ public class PerformanceFragment extends Fragment {
             myView.inlineSetList.checkVisibility();
 
             int[] screenSizes = mainActivityInterface.getDisplayMetrics();
-            // TODO May get rid of this once Frank lets me know
-            //int[] margins = mainActivityInterface.getWindowFlags().getMargins();
             int screenWidth = screenSizes[0];
             int screenHeight = screenSizes[1];
 
-            // TODO May get rid of this once Frank lets me know
-            //availableWidth = screenWidth - margins[0] - margins[2] - myView.inlineSetList.getInlineSetWidth();
-            //availableHeight = screenHeight - margins[1] - margins[3] - mainActivityInterface.getToolbar().getActionBarHeight(mainActivityInterface.needActionBar());
-
             int[] viewPadding = mainActivityInterface.getViewMargins();
-            // TODO May get rid of this once Frank lets me know
-            //Log.d(TAG,"LEFT margins[0]:"+margins[0]+"   viewPadding:"+viewPadding[0]);
-            //Log.d(TAG,"RIGHT margins[2]:"+margins[2]+"   viewPadding:"+viewPadding[1]);
-            //Log.d(TAG,"TOP margins[0]+actionbar:"+(margins[1]+mainActivityInterface.getToolbar().getActionBarHeight(mainActivityInterface.needActionBar()))+"   viewPadding:"+viewPadding[2]);
-            //Log.d(TAG,"BOTTOM margins[0]:"+margins[3]+"   viewPadding:"+viewPadding[3]);
 
-            // TODO FOR FRANK TEST - DELETE IF THIS DOESN'T WORK!
             availableWidth = screenWidth - viewPadding[0] - viewPadding[1] - myView.inlineSetList.getInlineSetWidth();
             availableHeight = screenHeight - viewPadding[2] - viewPadding[3];
 
@@ -742,31 +730,54 @@ public class PerformanceFragment extends Fragment {
 
                 // Determine how many columns are scaled
                 heightAfterScale = 0;
-                if (scaleInfo.length==2) {
-                    // 1 column.  [0]=scaleSize, [1]=scaled height
-                    scaleFactor = scaleInfo[0];
-                    heightAfterScale = (int)scaleInfo[1];
-                    for (int x = 0; x < mainActivityInterface.getSectionViews().size(); x++) {
-                        widthBeforeScale = Math.max(widthBeforeScale, mainActivityInterface.getSectionWidths().get(x));
-                        heightBeforeScale += mainActivityInterface.getSectionHeights().get(x);
-                    }
-                    widthAfterScale = (int) (widthBeforeScale * scaleFactor);
+                if (scaleInfo[0]==1) {
+                    /*float[] {1,           // Number of columns
+                    1    oneColumnScale,    // Overall best scale
+                    2    col1_1Width,       // Column 1 max width
+                    3    col1_1Height,      // Column 1 total height
+                    4    sectionSpace}      // Section space per view except last column */
+                    scaleFactor = scaleInfo[1];
+                    widthAfterScale = (int)(scaleInfo[2] * scaleFactor);
+                    heightAfterScale = (int)(scaleInfo[3] * scaleFactor);
                     myView.pageHolder.getLayoutParams().width = widthAfterScale;
-                } else if (scaleInfo.length==4) {
-                    // 2 columns. [0]=col1scale  [1]=col2scale  [2]=sectionnum for col2  [3]=biggest col height
-                    scaleFactor = Math.max(scaleInfo[0],scaleInfo[1]);
-                    heightAfterScale = (int)(scaleInfo[3]);
+                } else if (scaleInfo[0]==2) {
+
+                    /*float[]{2,             // Number of columns
+                    1    twoColumnScale,     // Overall best scale
+                    2    columnBreak2,       // Break point
+                    3    col1_2ScaleBest,    // Best col 1 scale
+                    4    col1_2Width,        // Column 1 max width
+                    5    col1_2Height,       // Column 1 total height
+                    6    col2_2ScaleBest,    // Best col 2 scale
+                    7    col2_2Width,        // Column 2 max width
+                    8    col2_2Height,       // Column 2 total height
+                    9    sectionSpace}       // Section space per view except last column */
+                    scaleFactor = Math.max(scaleInfo[3],scaleInfo[6]);
+                    widthAfterScale = availableWidth;
+                    heightAfterScale = (int)Math.max(scaleInfo[3]*scaleInfo[5],scaleInfo[6]*scaleInfo[8]);
                     myView.pageHolder.getLayoutParams().width = availableWidth;
                     myView.songView.getLayoutParams().width = availableWidth;
+                } else if (scaleInfo[0]==3) {
+                    /*float[]{3,             // Number of columns
+                    1    threeColumnScale,   // Overall best scale
+                    2    columnBreak3_a,     // Break point 1
+                    3    columnBreak3_b,     // Break point 2
+                    4    col1_3ScaleBest,    // Best col 1 scale
+                    5    col1_3Width,        // Column 1 max width
+                    6    col1_3Height,       // Column 1 total height
+                    7    col2_3ScaleBest,    // Best col 2 scale
+                    8    col2_3Width,        // Column 2 max width
+                    9    col2_3Height,       // Column 2 total height
+                    10   col3_3ScaleBest,    // Best col 3 scale
+                    11   col3_3Width,        // Column 3 max width
+                    12   col3_3Height,       // Column 3 total height
+                    13   sectionSpace};      // Section space per view except last in column */
+
                     widthAfterScale = availableWidth;
-                }  else if (scaleInfo.length==6) {
-                    // 3 columns. [0]=col1scale  [1]=col2scale  [2]=col3scale
-                    // [3]=sectionnum for col2  [4]=sectionbum for col3 [5]=biggest col height
-                    scaleFactor = Math.max(scaleInfo[0],Math.max(scaleInfo[1],scaleInfo[2]));
-                    heightAfterScale = (int)scaleInfo[5];
+                    scaleFactor = Math.max(scaleInfo[4],Math.max(scaleInfo[7],scaleInfo[10]));
+                    heightAfterScale = (int)Math.max(scaleInfo[4]*scaleInfo[6],Math.max(scaleInfo[7]*scaleInfo[9],scaleInfo[10]*scaleInfo[12]));
                     myView.pageHolder.getLayoutParams().width = availableWidth;
                     myView.songView.getLayoutParams().width = availableWidth;
-                    widthAfterScale = availableWidth;
                 }
 
                 heightAfterScale = heightAfterScale + mainActivityInterface.getSongSheetTitleLayout().getHeight();
@@ -776,6 +787,7 @@ public class PerformanceFragment extends Fragment {
 
                 // Pass this scale factor to the zoom layout as the new minimum scale
                 myView.zoomLayout.setCurrentScale(scaleFactor);
+
                 myView.zoomLayout.setSongSize(widthAfterScale,heightAfterScale);
 
                 myView.zoomLayout.post(() -> {

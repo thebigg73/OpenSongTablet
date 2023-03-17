@@ -11,8 +11,6 @@ import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Paint;
 import android.graphics.Typeface;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.graphics.pdf.PdfRenderer;
 import android.net.Uri;
 import android.os.Build;
@@ -24,11 +22,11 @@ import android.text.SpannableStringBuilder;
 import android.text.style.BackgroundColorSpan;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -356,6 +354,9 @@ public class ProcessSong {
                 line = " " + line;
                 //} else if (line.matches("^[0-9].*$") && line.length() > 1 && !line.startsWith(".", 1)) {
                 // Multiline verse
+            }
+            if (line.trim().isEmpty()) {
+                line = "";
             }
             fixedlyrics.append(line).append("\n");
         }
@@ -1774,10 +1775,10 @@ public class ProcessSong {
                     // IV - End trim only as a section may start with a lyric line and have no header
                     section = ("¬" + section).trim().replace("¬","");
                 }
-                if (!presentation && addSectionSpace && !mainActivityInterface.getMakePDF().getIsSetListPrinting() &&
+                /*if (!presentation && addSectionSpace && !mainActivityInterface.getMakePDF().getIsSetListPrinting() &&
                         sect != (song.getPresoOrderSongSections().size() - 1)) { // Don't do for last section
                     section = section + "\n ";
-                }
+                }*/
                 LinearLayout linearLayout = newLinearLayout(); // transparent color
                 linearLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 
@@ -1862,7 +1863,7 @@ public class ProcessSong {
                                     tv.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                                     tv.setBackgroundColor(backgroundColor);
                                     linearLayout.addView(tv);
-                                } else {
+                                } else if (!line.isEmpty()) {
                                     // PDF or presentation
                                     // IV - Remove typical word splits, white space and trim - beautify!
                                     // IV - Similar logic is used in other places - if changed find and make changes to all
@@ -2025,18 +2026,6 @@ public class ProcessSong {
         return textView;
     }
 
-    private FrameLayout newFrameLayout(int color) {
-        FrameLayout frameLayout = new FrameLayout(c);
-        LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        llp.setMargins(0, 0, 0, 0);
-        frameLayout.setLayoutParams(llp);
-        frameLayout.setPadding(0, 0, 0, 0);
-        frameLayout.setClipToPadding(false);
-        frameLayout.setClipChildren(false);
-        frameLayout.setBackgroundColor(color);
-        return frameLayout;
-    }
-
     public int getMaxValue(ArrayList<Integer> values, int start, int end) {
         int maxValue = 0;
         if (start > values.size()) {
@@ -2074,79 +2063,308 @@ public class ProcessSong {
         linearLayout.setPadding(0, 0, 0, 0);
     }
 
-    private float setScaledView(LinearLayout innerColumn, float scaleSize, float maxFontSize) {
+    private void scaleView(LinearLayout innerColumn, float scaleSize) {
         if (innerColumn!=null) {
             innerColumn.setPivotX(0);
             innerColumn.setPivotY(0);
-            // Don't scale above the preferred maximum font size
-            float maxScaleSize = maxFontSize / defFontSize;
-            if (scaleSize > maxScaleSize) {
-                scaleSize = maxScaleSize;
-            }
             innerColumn.setScaleX(scaleSize);
             innerColumn.setScaleY(scaleSize);
         }
-        return scaleSize;
     }
 
-    private void resizeColumn(LinearLayout column, int startWidth, int startHeight, float scaleSize) {
-        // Used to resize the inner columns which get added to columns 1,2,3
-        int newWidth = Math.round(startWidth*scaleSize);
-        int newHeight = Math.max(Math.round(startHeight * scaleSize), startHeight);
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(newWidth, newHeight);
-        column.setLayoutParams(lp);
-    }
+    private float[] columnSplitAlgorithm(ArrayList<Integer> sectionWidths, ArrayList<Integer> sectionHeights,
+                                         int availableWidth, int availableHeight, String autoScale, boolean overrideToWidth,
+                                         boolean forceColumns, int[] forceColumnInfo, boolean presentation) {
+        // An updated algorithm to calculate the best way to split a song into columns
 
-    private int howManyColumnsAreBest(float col1, float[] col2, float[] col3, String autoScale,
-                                      float fontSizeMin, boolean songAutoScaleOverrideFull,
-                                      boolean need23ColumnCheck) {
+        // Prepare the return float.  [0]=num columns best
+        float[] returnFloats = null;
 
-        // There's a few things to consider here.  Firstly, if scaling is off, best is 1 column.
-        // If we are overriding full scale to width only, or 1 col to off, best is 1 column.
-        if (!need23ColumnCheck && (autoScale.equals("N") || autoScale.equals("W"))) {
-            return 1;
-        } else {
-            float col2best = Math.min(col2[0], col2[1]);
-            float col3best = Math.min(col3[0], Math.min(col3[1], col3[2]));
-            int best;
-            if (col1 > col2best) {
-                best = 1;
-                if (col3best > col1) {
-                    best = 3;
+        // Calculate the available widths for 2 and 3 columns
+        int availableWidth2 = (int) (((float) availableWidth / 2.0f));
+        int availableWidth3 = (int) (((float) availableWidth / 3.0f));
+
+        // If we have chosen to add section space, we need to add this to the bottom of all views
+        // Do not add to the last view in a column though!
+        int sectionSpace = 0;
+        int totalSectionSpace = 0;
+        if (!presentation && addSectionSpace && !mainActivityInterface.getMakePDF().getIsSetListPrinting()) {
+            sectionSpace = (int) (0.75 * TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, defFontSize, c.getResources().getDisplayMetrics()));
+            if (sectionHeights.size() > 1) {
+                totalSectionSpace = sectionSpace * (sectionHeights.size() - 1);
+            }
+        }
+
+        // Work out the maximum scale allowed by preferred max scale font size
+        float maxFontScale = fontSizeMax / defFontSize;
+
+        // Work out the minimum scale allowed by preferred min scale font size
+        float minFontScale = fontSizeMin / defFontSize;
+
+        // Firstly, work out the scaling for one column
+        int col1_1Width = getMaxValue(sectionWidths, 0, sectionWidths.size());
+        int col1_1Height = getTotal(sectionHeights, 0, sectionHeights.size()) + totalSectionSpace;
+        float col1_1XScale = (float) availableWidth / (float) col1_1Width;
+        float col1_1YScale = (float) availableHeight / (float) col1_1Height;
+        float oneColumnScale = Math.min(col1_1XScale, col1_1YScale);
+
+        float col1_2ScaleBest = 0f, col2_2ScaleBest = 0f, twoColumnScale = 0f;
+        int columnBreak2 = 0;
+
+        float col1_3ScaleBest = 0f, col2_3ScaleBest = 0f, col3_3ScaleBest = 0f, threeColumnScale = 0f;
+        int columnBreak3_a = 0, columnBreak3_b = 0;
+        int col1_2Width = 0, col2_2Width = 0, col1_3Width = 0, col2_3Width = 0, col3_3Width = 0;
+        int col1_2Height = 0, col2_2Height = 0, col1_3Height = 0, col2_3Height = 0, col3_3Height = 0;
+
+        // Only need to work out 2/3 columns if full autoscaling, or we have force splitpoints
+        if (autoScale.equals("Y")) {
+
+            if (forceColumns && forceColumnInfo != null && forceColumnInfo[0]!=1) {
+                if (forceColumnInfo[0] == 2) {
+                    // Two columns, so get the widths and heights of both
+                    columnBreak2 = forceColumnInfo[1];
+                    int totalSectionSpace1_2 = sectionSpace * (columnBreak2 - 1);
+                    int totalSectionSpace2_2 = sectionSpace * (sectionWidths.size() - columnBreak2);
+                    col1_2Width  = getMaxValue(sectionWidths,0,columnBreak2);
+                    col1_2Height = getTotal(sectionHeights,0,columnBreak2) + totalSectionSpace1_2;
+                    col2_2Width  = getMaxValue(sectionWidths,columnBreak2,sectionWidths.size());
+                    col2_2Height = getTotal(sectionHeights,columnBreak2,sectionHeights.size()) + totalSectionSpace2_2;
+                    float scale1X = (float)(availableWidth2-padding)/(float)col1_2Width;
+                    float scale1Y = (float)availableHeight/(float)col1_2Height;
+                    col1_2ScaleBest = Math.min(scale1X,scale1Y);
+                    float scale2X = (float)(availableWidth2-padding)/(float)col2_2Width;
+                    float scale2Y = (float)availableHeight/(float)col2_2Height;
+                    col2_2ScaleBest = Math.min(scale2X,scale2Y);
+                    twoColumnScale = Math.min(col1_2ScaleBest, col2_2ScaleBest);
+
+                } else if (forceColumnInfo[0] == 3) {
+                    for (int x=0;x<sectionWidths.size();x++) {
+                        Log.d(TAG,"["+x+"]: "+sectionWidths.get(x)+"x"+sectionHeights.get(x));
+                    }
+                    // Three columns, so get the widths and heights of all of them
+                    columnBreak3_a = forceColumnInfo[1];
+                    columnBreak3_b = forceColumnInfo[2];
+                    int totalSectionSpace1_3 = sectionSpace * (columnBreak3_a - 1);
+                    int totalSectionSpace2_3 = sectionSpace * (columnBreak3_b - columnBreak3_a - 1);
+                    int totalSectionSpace3_3 = sectionSpace * (sectionWidths.size() - columnBreak3_b - 1);
+                    Log.d(TAG,"sections:"+sectionWidths.size()+"  break3a:"+columnBreak3_a+"  break3b:"+columnBreak3_b);
+                    Log.d(TAG,"totalSectionSpace1_3:"+totalSectionSpace1_3+"  totalSectionSpace2_3:"+totalSectionSpace2_3+"  totalSectionSpace3_3:"+totalSectionSpace3_3);
+                    col1_3Width  = getMaxValue(sectionWidths,0,columnBreak3_a);
+                    col1_3Height = getTotal(sectionHeights,0,columnBreak3_a) + totalSectionSpace1_3;
+                    col2_3Width  = getMaxValue(sectionWidths,columnBreak3_a,columnBreak3_b);
+                    col2_3Height = getTotal(sectionHeights,columnBreak3_a,columnBreak3_b) + totalSectionSpace2_3;
+                    col3_3Width  = getMaxValue(sectionWidths,columnBreak3_b,sectionWidths.size());
+                    col3_3Height = getTotal(sectionHeights,columnBreak3_b,sectionHeights.size()) + totalSectionSpace3_3;
+                    float scale1X = (float)(availableWidth3-padding)/(float)col1_3Width;
+                    float scale1Y = (float)availableHeight/(float)col1_3Height;
+                    col1_3ScaleBest = Math.min(scale1X,scale1Y);
+                    float scale2X = (float)(availableWidth3-(2*padding))/(float)col2_3Width;
+                    float scale2Y = (float)availableHeight/(float)col2_3Height;
+                    col2_3ScaleBest = Math.min(scale2X,scale2Y);
+                    float scale3X = (float)(availableWidth3-padding)/(float)col3_3Width;
+                    float scale3Y = (float)availableHeight/(float)col3_3Height;
+                    col3_3ScaleBest = Math.min(scale3X,scale3Y);
+                    threeColumnScale = Math.min(col1_3ScaleBest, Math.min(col2_3ScaleBest, col3_3ScaleBest));
+                    //col1_3ScaleBest = 1f;
+                    //col2_3ScaleBest = 1f;
+                    //col3_3ScaleBest = 1f;
                 }
             } else {
-                best = 2;
-                if (col3best > col2best) {
-                    best = 3;
+                // Not point working out 2 columns unless we have more than 1 section!
+                if (sectionWidths.size() > 1) {
+                    // Now try the two columns
+                    // We start moving the more sections to column 1 from column 2
+                    // Each time, recalculate the scaling and keep a record of the best option
+                    for (int v = 1; v < sectionWidths.size(); v++) {
+                        int totalSectionSpace1_2 = sectionSpace * (v - 1);
+                        int totalSectionSpace2_2 = sectionSpace * (sectionWidths.size() -v -1);
+                        int thisWidth1_2 = getMaxValue(sectionWidths, 0, v);
+                        int thisHeight1_2 = getTotal(sectionHeights, 0, v) + totalSectionSpace1_2;
+                        int thisWidth2_2 = getMaxValue(sectionWidths, v, sectionWidths.size());
+                        int thisHeight2_2 = getTotal(sectionHeights, v, sectionHeights.size()) + totalSectionSpace2_2;
+                        float scale1 = 0f;
+                        float scale2 = 0f;
+                        if (thisWidth1_2 > 0 && thisHeight1_2 > 0) {
+                            float maxXScale1 = (float) (availableWidth2 - padding) / (float) thisWidth1_2;
+                            float maxYScale1 = (float) availableHeight / (float) thisHeight1_2;
+                            scale1 = Math.min(maxXScale1, maxYScale1);
+                        }
+                        if (thisWidth2_2 > 0 && thisHeight2_2 > 0) {
+                            float maxXScale2 = (float) (availableWidth2 - padding) / (float) thisWidth2_2;
+                            float maxYScale2 = (float) availableHeight / (float) thisHeight2_2;
+                            scale2 = Math.min(maxXScale2, maxYScale2);
+                        }
+
+                        if (Math.min(scale1, scale2) > twoColumnScale) {
+                            // Improved column split option, so get the values
+                            col1_2Width = thisWidth1_2;
+                            col1_2Height = thisHeight1_2;
+                            col2_2Width = thisWidth2_2;
+                            col2_2Height = thisHeight2_2;
+                            col1_2ScaleBest = scale1;
+                            col2_2ScaleBest = scale2;
+                            twoColumnScale = Math.min(scale1, scale2);
+                            columnBreak2 = v;
+                        }
+                    }
+                }
+
+                // No point working out 3 columns unless we have 3 or more sections
+                if (sectionWidths.size() > 3) {
+                    // Now try the three columns
+                    // Start with 1 section in column 1, 1 section in column 2 and the rest in column 3
+                    // Gradually move column 3 contents into column 2 until only 1 is left in column 3
+                    // Then move 2 sections into column 1, 1 into column 2 and the rest in column 3
+                    // Repeat...
+
+                    // E.g a 5 section song goes through these steps:
+                    // 1 1 3  >  1 2 2  >  1 3 1  >  2 1 2  >  2 2 1  >  3 1 1
+                    // Too many sections might really slow this down - we'll see!
+
+                    int c1;
+                    int c2 = 1;
+                    int c3 = 1;
+                    for (c1 = 1; c1 < sectionWidths.size() - c2 - c3; c1++) {
+                        for (c3 = sectionWidths.size() - c1 - c2; c3 >= 1; c3--) {
+                            int totalSectionSpace1_3 = sectionSpace * (c1 - 1);
+                            int totalSectionSpace2_3 = sectionSpace * (c2 - 1);
+                            int totalSectionSpace3_3 = sectionSpace * (c3 - 1);
+                            int this1_3Width = getMaxValue(sectionWidths, 0, c1);
+                            int this2_3Width = getMaxValue(sectionWidths, c1, c1 + c2);
+                            int this3_3Width = getMaxValue(sectionWidths, c1 + c2, sectionWidths.size());
+                            int this1_3Height = getTotal(sectionHeights, 0, c1) + totalSectionSpace1_3;
+                            int this2_3Height = getTotal(sectionHeights, c1, c1 + c2) + totalSectionSpace2_3;
+                            int this3_3Height = getTotal(sectionHeights, c1 + c2, sectionHeights.size()) + totalSectionSpace3_3;
+                            float scaleX1 = (float) (availableWidth3 - padding) / (float) this1_3Width;
+                            float scaleX2 = (float) (availableWidth3 - 2 * padding) / (float) this2_3Width;
+                            float scaleX3 = (float) (availableWidth3 - padding) / (float) this3_3Width;
+                            float scaleY1 = (float) (availableHeight) / (float) this1_3Height;
+                            float scaleY2 = (float) (availableHeight) / (float) this2_3Height;
+                            float scaleY3 = (float) (availableHeight) / (float) this3_3Height;
+                            float scale1 = Math.min(scaleX1, scaleY1);
+                            float scale2 = Math.min(scaleX2, scaleY2);
+                            float scale3 = Math.min(scaleX3, scaleY3);
+                            float min = Math.min(scale1, Math.min(scale2, scale3));
+                            if (min > threeColumnScale) {
+                                col1_3Width = this1_3Width;
+                                col1_3Height = this1_3Height;
+                                col2_3Width = this2_3Width;
+                                col2_3Height = this2_3Height;
+                                col3_3Width = this3_3Width;
+                                col3_3Height = this3_3Height;
+                                col1_3ScaleBest = scale1;
+                                col2_3ScaleBest = scale2;
+                                col3_3ScaleBest = scale3;
+                                threeColumnScale = min;
+                                columnBreak3_a = c1;
+                                columnBreak3_b = c1 + c2;
+                            }
+                            c2++;
+                        }
+                        c2 = 1;
+                    }
                 }
             }
-
-            // Default font size is 8sp when drawing. If scaling takes this below the min font Size, override back to 1 column
-            if (best == 2) {
-                if (col2[2] == 0) {
-                    return 1;
-                }
-                float newFontSize2Col = defFontSize * col2best;
-
-                if (!need23ColumnCheck && songAutoScaleOverrideFull && newFontSize2Col < fontSizeMin) {
-                    thisAutoScale = "W";
-                    return 1;
-                }
-            }
-            if (best == 3) {
-                if (col3[3] == 0) {
-                    return 2;
-                }
-                float newFontSize3Col = defFontSize * col3best;
-                if (songAutoScaleOverrideFull && newFontSize3Col < fontSizeMin) {
-                    thisAutoScale = "W";
-                    return 1;
-                }
-            }
-
-            return best;
+        } else {
+            // Autoscale turned off - base the scaling on the desired user font size
+            oneColumnScale = fontSize / defFontSize;
         }
-    }
+
+
+        // Decide which is the best
+        boolean oneColumn = (oneColumnScale >= twoColumnScale && oneColumnScale >= threeColumnScale) || !autoScale.equals("Y");
+        boolean twoColumn = (forceColumns && forceColumnInfo!=null && forceColumnInfo[0]==2) ||
+                (twoColumnScale > oneColumnScale && twoColumnScale >= threeColumnScale);
+        boolean threeColumn = (forceColumns && forceColumnInfo!=null && forceColumnInfo[0]==3) ||
+                threeColumnScale > oneColumnScale && threeColumnScale > twoColumnScale;
+
+        Log.d(TAG,"oneColumn:"+oneColumn+"  twoColumn:"+twoColumn+"  threeColumn:"+threeColumn);
+
+        // TODO fix overrides
+        boolean widthOnly = false;
+
+        if (threeColumn) {
+            // Compare with max scaling due to font size allowed
+            threeColumnScale = Math.min(maxFontScale, threeColumnScale);
+            col1_3ScaleBest = Math.min(maxFontScale, col1_3ScaleBest);
+            col2_3ScaleBest = Math.min(maxFontScale, col2_3ScaleBest);
+            col3_3ScaleBest = Math.min(maxFontScale, col3_3ScaleBest);
+
+            // If we have override to width, then check we are above the minimum font size
+            // If not, we revert to the oneColumn logic
+            if (threeColumnScale >= minFontScale || !songAutoScaleOverrideFull) {
+                returnFloats = new float[]{3,// Number of columns
+                        threeColumnScale,   // Overall best scale
+                        columnBreak3_a,     // Break point 1
+                        columnBreak3_b,     // Break point 2
+                        col1_3ScaleBest,    // Best col 1 scale
+                        col1_3Width,        // Column 1 max width
+                        col1_3Height,       // Column 1 total height
+                        col2_3ScaleBest,    // Best col 2 scale
+                        col2_3Width,        // Column 2 max width
+                        col2_3Height,       // Column 2 total height
+                        col3_3ScaleBest,    // Best col 3 scale
+                        col3_3Width,        // Column 3 max width
+                        col3_3Height,       // Column 3 total height
+                        sectionSpace};      // Section space per view except last in column
+                Log.d(TAG,"col1_3Height:"+col1_3Height+"  col2_3Height:"+col2_3Height+"  col3_3Height:"+col3_3Height);
+                Log.d(TAG,"col1_3ScaleBest:"+col1_3ScaleBest+"  col2_3ScaleBest:"+col2_3ScaleBest+"  col3_3ScaleBest:"+col3_3ScaleBest);
+
+            } else {
+                oneColumn = true;
+            }
+
+        } else if (twoColumn) {
+            // Compare with max scaling due to font size allowed
+            twoColumnScale = Math.min(maxFontScale, twoColumnScale);
+            col1_2ScaleBest = Math.min(maxFontScale, col1_2ScaleBest);
+            col2_2ScaleBest = Math.min(maxFontScale, col2_2ScaleBest);
+
+            // If we have override to width, then check we are above the minimum font size
+            // If not, we revert to the oneColumn logic
+            if (twoColumnScale >= minFontScale || !songAutoScaleOverrideFull) {
+                returnFloats = new float[]{2,// Number of columns
+                        twoColumnScale,     // Overall best scale
+                        columnBreak2,       // Break point
+                        col1_2ScaleBest,    // Best col 1 scale
+                        col1_2Width,        // Column 1 max width
+                        col1_2Height,       // Column 1 total height
+                        col2_2ScaleBest,    // Best col 2 scale
+                        col2_2Width,        // Column 2 max width
+                        col2_2Height,       // Column 2 total height
+                        sectionSpace};      // Section space per view except last in column
+            } else {
+                oneColumn = true;
+            }
+        }
+
+        if (oneColumn && !twoColumn && !threeColumn) {
+            Log.d(TAG,"autoScale:"+autoScale+"  oneColumnScale:"+oneColumnScale);
+            // Compare with max scaling due to font size allowed
+            if (autoScale.equals("Y")) {
+                oneColumnScale = Math.min(maxFontScale, oneColumnScale);
+                if (oneColumnScale<minFontScale && songAutoScaleOverrideFull) {
+                    autoScale = "W";
+                }
+            }
+
+            if (autoScale.equals("W")) {
+                oneColumnScale = (float)availableWidth/(float)col1_1Width;
+                if (oneColumnScale<minFontScale && songAutoScaleOverrideWidth) {
+                    oneColumnScale = fontSize/defFontSize;
+                }
+            }
+
+            returnFloats = new float[]{1,// Number of columns
+                    oneColumnScale, // Overall best scale
+                    col1_1Width,    // Column 1 max width
+                    col1_1Height,   // Column 1 total height
+                    sectionSpace};  // Section space per view except last in column
+        }
+
+        return returnFloats;
+}
+
 
 
     // These are called from the VTO listener - draw the stuff to the screen as 1,2 or 3 columns
@@ -2154,7 +2372,7 @@ public class ProcessSong {
     public float[] addViewsToScreen(boolean need23ColumnCheck, ArrayList<View> sectionViews,
                                     ArrayList<Integer> sectionWidths, ArrayList<Integer> sectionHeights,
                                     RelativeLayout pageHolder, LinearLayout songView,
-                                    LinearLayout songSheetView, int screenWidth, int screenHeight,
+                                    LinearLayout songSheetView, int availableWidth, int availableHeight,
                                     LinearLayout column1, LinearLayout column2, LinearLayout column3,
                                     boolean presentation, DisplayMetrics displayMetrics) {
         // Now we have all the sizes in, determines the best way to show the song
@@ -2173,7 +2391,7 @@ public class ProcessSong {
 
         // Set the padding and boxpadding from 8dp to px
         float scale = displayMetrics.density;
-        padding = (int) (2 * scale);
+        padding = (int) (4 * scale);
 
         // Reset any scaling of the views
         for (int i=0; i<sectionViews.size(); i++) {
@@ -2203,7 +2421,10 @@ public class ProcessSong {
         thisAutoScale = songAutoScale;
 
         // A request to force columns (still a maximum of 3 allowed though)
-        boolean doForceColumn = false;
+        boolean doForceColumns = false;
+        int cols = 1;
+        int split1 = -1;
+        int split2 = -1;
         ArrayList<Integer> sectionswithbreak = new ArrayList<>();
         if (thisAutoScale.equals("Y") && forceColumns && mainActivityInterface.getSong().getLyrics().contains("!--")) {
             // The song sections will have the page break at the start.
@@ -2213,80 +2434,54 @@ public class ProcessSong {
                 String section = mainActivityInterface.getSong().getPresoOrderSongSections().get(x);
                 if (section.contains(columnbreak_string)) {
                     sectionswithbreak.add(x+1); // Add afterwards
+                    if (split1==-1) {
+                        split1 = x+1;
+                    } else if (split2==-1) {
+                        split2 = x+1;
+                    }
                 }
             }
             if (!sectionswithbreak.isEmpty()) {
-                doForceColumn = true;
+                doForceColumns = true;
+                if (sectionswithbreak.size()==1) {
+                    cols=2;
+                } else {
+                    cols=3;  // The max allowed
+                }
             }
         }
+        int[] forceColumnsInfo = new int[]{cols,split1,split2};
+        Log.d(TAG,"forceCols:"+doForceColumns+"  split1:"+split1+"  split2:"+split2);
 
-        float[] scaleSize_2cols = new float[3];
-        float[] scaleSize_3cols = new float[5];
-        // All scaling types need to process the single column view, either to use it or compare to 2/3 columns
-        if (songAutoScale.equals("Y") || need23ColumnCheck || doForceColumn) {
-            // Figure out two and three columns.  Only do this if we need to to save processing time.
-            scaleSize_2cols = col2Scale(screenWidth, screenHeight-songSheetTitleHeight, currentHeight, songAutoScaleColumnMaximise, sectionWidths, sectionHeights, sectionswithbreak);
-            scaleSize_3cols = col3Scale(screenWidth, screenHeight-songSheetTitleHeight, currentHeight, songAutoScaleColumnMaximise, sectionWidths, sectionHeights, sectionswithbreak);
+        // Figure out the best option of 1,2 or 3 columns and how to arrange them
+        // TODO deal with force columns instead if required
+        float[] columnInfo = columnSplitAlgorithm(sectionWidths, sectionHeights, availableWidth,
+                availableHeight-songSheetTitleHeight,songAutoScale,
+                songAutoScaleOverrideWidth,doForceColumns, forceColumnsInfo, presentation);
+
+        if (columnInfo[0]==1) {
+            createOneColumn(sectionViews, column1, column2, column3, currentWidth,
+                    currentHeight, columnInfo[1], presentation, songSheetTitleHeight, (int)columnInfo[4]);
+
+        } else if (columnInfo[0]==2) {
+            // If we have 2 force column tags, use those positions instead
+            createTwoColumns(sectionViews, column1, column2,
+                    column3, columnInfo, presentation, songSheetTitleHeight);
+
+        } else if (columnInfo[0]==3) {
+            createThreeColumns(sectionViews, column1, column2, column3, columnInfo,
+                    presentation, songSheetTitleHeight);
+
         }
-
-        // Set the scaleSize_1col
-        float[] scaleSize_1col = col1Scale(screenWidth, screenHeight-songSheetTitleHeight, currentWidth, currentHeight);
-
-        // Now decide if 1,2 or 3 columns is best
-        int howManyColumns = howManyColumnsAreBest(scaleSize_1col[0], scaleSize_2cols, scaleSize_3cols, songAutoScale, fontSizeMin, songAutoScaleOverrideFull,need23ColumnCheck);
-
-        if (doForceColumn) {
-            howManyColumns = Math.min(3,sectionswithbreak.size()+1);
-        }
-
-        switch (howManyColumns) {
-            case 1:
-            default:
-                // If we are using one column and resizing to width only, change the scale size
-                if (!presentation) {
-                    if (songAutoScale.equals("W") || thisAutoScale.equals("W")) {
-                        scaleSize_1col[0] = (float) screenWidth / (float) currentWidth;
-                        if (defFontSize * scaleSize_1col[0] < fontSizeMin && songAutoScaleOverrideWidth) {
-                            thisAutoScale = "N";
-                        }
-                    }
-                    // If autoscale is off, scale to the desired fontsize
-                    if (songAutoScale.equals("N") || thisAutoScale.equals("N")) {
-                        scaleSize_1col[0] = fontSize / defFontSize;
-                    }
-                }
-                return setOneColumn(sectionViews, column1, column2, column3, currentWidth,
-                        currentHeight, scaleSize_1col, fontSizeMax, songSheetTitleHeight, presentation,
-                        screenWidth,-1);
-
-            case 2:
-                return setTwoColumns(sectionViews, column1, column2, column3, sectionWidths,
-                        sectionHeights, scaleSize_2cols, fontSizeMax, (int) ((float) (screenWidth / 2.0f) - padding),
-                        songSheetTitleHeight, presentation, displayMetrics);
-
-            case 3:
-                return setThreeColumns(sectionViews, column1, column2, column3, sectionWidths,
-                        sectionHeights, scaleSize_3cols, fontSizeMax, (int) ((float) (screenWidth / 3.0f) - padding),
-                        songSheetTitleHeight, presentation, displayMetrics);
-        }
+        return columnInfo;
     }
+
 
     // 1 column stuff
-    private float[] col1Scale(int screenWidth, int screenHeight, int viewWidth, int viewHeight) {
-        // 0=scale col1   1=scaled height
-        float[] scale = new float[2];
-
-        float x_scale = (float) screenWidth / (float) viewWidth;
-        float y_scale = (float) screenHeight / ((float) viewHeight);
-        scale[0] = Math.min(x_scale, y_scale);
-        scale[1] = scale[0] * viewHeight;
-        return scale;
-    }
-
-    private float[] setOneColumn(ArrayList<View> sectionViews, LinearLayout column1,
-                                 LinearLayout column2, LinearLayout column3, int currentWidth,
-                                 int currentHeight, float[] scaleSize, float maxFontSize,
-                                 int songSheetTitleHeight, boolean presentation, int maxWidth, int maxHeight) {
+    private void createOneColumn(ArrayList<View> sectionViews, LinearLayout column1,
+                                 LinearLayout column2, LinearLayout column3, int maxWidth,
+                                 int totalHeight, float scaleSize, boolean presentation,
+                                 int songSheetTitleHeight, int sectionSpace) {
         // Hide all columns for now
         columnVisibility(column1, column2, column3, false, false, false);
 
@@ -2294,468 +2489,249 @@ public class ProcessSong {
         LinearLayout innerCol1 = newLinearLayout();
 
         // Get the actual scale which might be less due to the maxFontSize being exceeded
-        float thisScale = setScaledView(innerCol1, scaleSize[0], maxFontSize);
-        innerCol1.setLayoutParams(new LinearLayout.LayoutParams((int)(currentWidth*thisScale),LinearLayout.LayoutParams.WRAP_CONTENT));
+        scaleView(innerCol1, scaleSize);
+        innerCol1.setLayoutParams(new LinearLayout.LayoutParams((int)(maxWidth*scaleSize),(int)(totalHeight*scaleSize)));
 
-        int color;
         // For each section, add it to a relativelayout to deal with the background colour.
-        for (View v : sectionViews) {
-            color = Color.TRANSPARENT;
-            Drawable background = v.getBackground();
-            if (background instanceof ColorDrawable) {
-                color = ((ColorDrawable) background).getColor();
-            }
-
-            FrameLayout frameLayout = newFrameLayout(color);
-            if (v.getParent() != null) {
-                ((ViewGroup) v.getParent()).removeAllViews();
-            }
-            frameLayout.setClipChildren(false);
-            frameLayout.setClipToPadding(false);
-            // Make all the views the same width
+        for (int i=0; i<sectionViews.size(); i++) {
+            View v = sectionViews.get(i);
             v.getLayoutParams().width = maxWidth;
-            frameLayout.addView(v);
+
+            // If this isn't the last view, add the section space
+            if (i!=sectionViews.size()-1) {
+                v.setPadding(0,0,0,sectionSpace);
+            }
 
             // Now the view is created and has content, size it to the correct width
-            frameLayout.getLayoutParams().width = maxWidth;
-            innerCol1.addView(frameLayout);
+            innerCol1.addView(v);
         }
 
-        // Get a scaled view (get the actual scale returned as it might be smaller based on max font size)
-        resizeColumn(innerCol1, currentWidth, currentHeight, thisScale);
-        setMargins(column1, 0, 0);
+        // Sort the margins
+        setMargins(innerCol1, 0, 0);
         column1.addView(innerCol1);
         columnVisibility(column1, column2, column3, true, false, false);
         if (!presentation) {
-            mainActivityInterface.updateSizes((int) (currentWidth * thisScale), (int) (currentHeight * thisScale) + songSheetTitleHeight);
+            mainActivityInterface.updateSizes((int) (maxWidth * scaleSize), (int) (totalHeight * scaleSize) + songSheetTitleHeight);
         }
-        scaleSize[0] = thisScale;
-        scaleSize[1] = thisScale * currentHeight;
-        return scaleSize;
     }
-
 
     // 2 column stuff
-    private float[] col2Scale(int screenWidth, int screenHeight, int totalViewHeight, boolean songAutoScaleColumnMaximise,
-                              ArrayList<Integer> viewWidth, ArrayList<Integer> viewHeight, ArrayList<Integer> sectionswithbreaks) {
-        // 0=scale col1   1=scale col2    2=section num col2 starts at    3=biggest scaled height
-        float[] scaleSize_2cols = new float[4];
-        int col1Height = 0;
-        int col2Height = totalViewHeight;
-        int preHalfWay = 0;
-        int postHalfWay = 0;
-
-        if (sectionswithbreaks.size() == 1) {
-            // Forcing columns because we know better...
-            preHalfWay = sectionswithbreaks.get(0);
-            postHalfWay = sectionswithbreaks.get(0);
-        } else {
-            // Now go through the views and decide on the number for the first column (the rest is the second column)
-            int i = 0;
-            while (i < viewHeight.size() && col1Height < col2Height) {
-                preHalfWay = i;
-                postHalfWay = preHalfWay + 1;
-                col1Height += viewHeight.get(i);
-                col2Height -= viewHeight.get(i);
-                i++;
-            }
-        }
-
-        // Get the max width for pre halfway split column 1
-        int maxWidth_preHalfWay1 = getMaxValue(viewWidth, 0, preHalfWay);
-        int maxWidth_preHalfWay2 = getMaxValue(viewWidth, preHalfWay, viewWidth.size());
-        int totaHeight_preHalfWay1 = getTotal(viewHeight, 0, preHalfWay);
-        int totaHeight_preHalfWay2 = getTotal(viewHeight, preHalfWay, viewHeight.size());
-        int maxWidth_postHalfWay1 = getMaxValue(viewWidth, 0, postHalfWay);
-        int maxWidth_postHalfWay2 = getMaxValue(viewWidth, postHalfWay, viewWidth.size());
-        int totaHeight_postHalfWay1 = getTotal(viewHeight, 0, postHalfWay);
-        int totaHeight_postHalfWay2 = getTotal(viewHeight, postHalfWay, viewHeight.size());
-
-        // Get pre and post halfway scales
-        float halfWidth = ((float) screenWidth / 2.0f) - padding - 0.5f;
-        float preCol1scaleX = halfWidth / (float) maxWidth_preHalfWay1;
-        float preCol1scaleY = (float) screenHeight / (float) totaHeight_preHalfWay1;
-        float preCol1Scale = Math.min(preCol1scaleX, preCol1scaleY);
-        float preCol2scaleX = halfWidth / (float) maxWidth_preHalfWay2;
-        float preCol2scaleY = (float) screenHeight / (float) totaHeight_preHalfWay2;
-        float preCol2Scale = Math.min(preCol2scaleX, preCol2scaleY);
-
-        float postCol1scaleX = halfWidth / (float) maxWidth_postHalfWay1;
-        float postCol1scaleY = (float) screenHeight / (float) totaHeight_postHalfWay1;
-        float postCol1Scale = Math.min(postCol1scaleX, postCol1scaleY);
-        float postCol2scaleX = halfWidth / (float) maxWidth_postHalfWay2;
-        float postCol2scaleY = (float) screenHeight / (float) totaHeight_postHalfWay2;
-        float postCol2Scale = Math.min(postCol2scaleX, postCol2scaleY);
-
-        // Prefer the method that gives the largest scaling of col1 + col2
-        float preScaleTotal = preCol1Scale + preCol2Scale;
-        float postScaleTotal = postCol1Scale + postCol2Scale;
-
-        if (preScaleTotal >= postScaleTotal) {
-            scaleSize_2cols[0] = preCol1Scale;
-            scaleSize_2cols[1] = preCol2Scale;
-            scaleSize_2cols[2] = preHalfWay;
-        } else {
-            scaleSize_2cols[0] = postCol1Scale;
-            scaleSize_2cols[1] = postCol2Scale;
-            scaleSize_2cols[2] = postHalfWay;
-        }
-
-        if (!songAutoScaleColumnMaximise) {
-            // make 2 all the values of the smallest (but the same)
-            float min = Math.min(scaleSize_2cols[0], scaleSize_2cols[1]);
-            scaleSize_2cols[0] = min;
-            scaleSize_2cols[1] = min;
-        }
-
-
-        return scaleSize_2cols;
-    }
-
-    private float[] setTwoColumns(ArrayList<View> sectionViews, LinearLayout column1,
+    private void createTwoColumns(ArrayList<View>sectionViews, LinearLayout column1,
                                   LinearLayout column2, LinearLayout column3,
-                                  ArrayList<Integer> sectionWidths, ArrayList<Integer> sectionHeights,
-                                  float[] scaleSize, float maxFontSize, int halfwidth,
-                                  int songSheetTitleHeight, boolean presentation,
-                                  DisplayMetrics displayMetrics) {
+                                  float[] columnInfo,
+                                  boolean presentation, int songSheetTitleHeight) {
+
+        /*
+        columnInfo = new float[]{2,         // Number of columns
+                        twoColumnScale,     // Overall best scale
+                        columnBreak2,       // Break point
+                        col1_2ScaleBest,    // Best col 1 scale
+                        col1_2Width,        // Column 1 max width
+                        col1_2Height,       // Column 1 total height
+                        col2_2ScaleBest,    // Best col 2 scale
+                        col2_2Width,        // Column 2 max width
+                        col2_2Height,       // Column 2 total height
+                        sectionSpace}       // Section space
+         */
+        float bestOverallScale = columnInfo[1];
+        int columnBreak2 = (int)columnInfo[2];
+        float col1_2ScaleBest = columnInfo[3];
+        int col1_2Width = (int)columnInfo[4];
+        int col1_2Height = (int)columnInfo[5];
+        float col2_2ScaleBest = columnInfo[6];
+        int col2_2Width = (int)columnInfo[7];
+        int col2_2Height = (int)columnInfo[8];
+        int sectionSpace = (int)columnInfo[9];
+
         // Use 2 columns, but hide them all for now
         columnVisibility(column1, column2, column3, false, false, false);
+
+        // Decide on the scaling for each column
+        if (!songAutoScaleColumnMaximise) {
+            // Set both columns to the same minimum size
+            col1_2ScaleBest = bestOverallScale;
+            col2_2ScaleBest = bestOverallScale;
+        }
 
         // Prepare the inner columns
         LinearLayout innerCol1 = newLinearLayout();
         LinearLayout innerCol2 = newLinearLayout();
 
-        int col1Height = getTotal(sectionHeights, 0, (int) scaleSize[2]);
-        int col2Height = getTotal(sectionHeights, (int) scaleSize[2], sectionHeights.size());
+        // Make the inner column big enough for the unscaled content
+        // Need to consider scaling <1.  If I did this now, the views get cropped
+        innerCol1.getLayoutParams().width = col1_2Width;
+        innerCol1.getLayoutParams().height = col1_2Height;
+        innerCol2.getLayoutParams().width = col2_2Width;
+        innerCol2.getLayoutParams().height = col2_2Height;
 
-        int col1Width = getMaxValue(sectionWidths, 0, (int) scaleSize[2]);
-        int col2Width = getMaxValue(sectionWidths, (int) scaleSize[2], sectionWidths.size());
+        // Scale the inner columns
+        scaleView(innerCol1, col1_2ScaleBest);
+        scaleView(innerCol2, col2_2ScaleBest);
 
-        // Get the actual scale which might be less due to the maxFontSize being exceeded
-        float thisScale1 = setScaledView(innerCol1, scaleSize[0], maxFontSize);
-        innerCol1.setLayoutParams(new LinearLayout.LayoutParams(halfwidth,LinearLayout.LayoutParams.WRAP_CONTENT));
-        float thisScale2 = setScaledView(innerCol2, scaleSize[1], maxFontSize);
-        innerCol2.setLayoutParams(new LinearLayout.LayoutParams(halfwidth,LinearLayout.LayoutParams.WRAP_CONTENT));
-
-        int color;
-        for (int i = 0; i < scaleSize[2]; i++) {
-            color = Color.TRANSPARENT;
-            Drawable background = sectionViews.get(i).getBackground();
-            if (background instanceof ColorDrawable) {
-                color = ((ColorDrawable) background).getColor();
+        for (int i = 0; i < columnBreak2; i++) {
+            // Make all the views the same width as each other
+            sectionViews.get(i).getLayoutParams().width = (int)(col1_2Width);
+            // If this isn't the last view in the column, add the sectionSpace
+            if (i!=columnBreak2-1) {
+                sectionViews.get(i).setPadding(0,0,0,sectionSpace);
             }
-            FrameLayout frameLayout = newFrameLayout(color);
-            if (sectionViews.get(i).getParent()!=null) {
-                ((ViewGroup)sectionViews.get(i).getParent()).removeView(sectionViews.get(i));
-            }
-            frameLayout.setClipChildren(false);
-            frameLayout.setClipToPadding(false);
-
-            // Make all the views the same width
-            sectionViews.get(i).getLayoutParams().width = col1Width;
-            frameLayout.addView(sectionViews.get(i));
-
-            // Now the view is created and has content, size it to the correct width
-            frameLayout.getLayoutParams().width = col1Width;
-            innerCol1.addView(frameLayout);
+            // Add the views to the scaled inner column
+            innerCol1.addView(sectionViews.get(i));
         }
-        for (int i = (int) scaleSize[2]; i < sectionViews.size(); i++) {
-            color = Color.TRANSPARENT;
-            Drawable background = sectionViews.get(i).getBackground();
-            if (background instanceof ColorDrawable) {
-                color = ((ColorDrawable) background).getColor();
+        for (int i = (int)columnBreak2; i < sectionViews.size(); i++) {
+            // Make all the views the same width as each other
+            sectionViews.get(i).getLayoutParams().width = (int)(col2_2Width);
+            // If this isn't the last view in the column, add the sectionSpace
+            if (i!=sectionViews.size()-1) {
+                sectionViews.get(i).setPadding(0,0,0,sectionSpace);
             }
-            FrameLayout frameLayout = newFrameLayout(color);
-            if (sectionViews.get(i).getParent()!=null) {
-                ((ViewGroup)sectionViews.get(i).getParent()).removeView(sectionViews.get(i));
-            }
-            frameLayout.setClipChildren(false);
-            frameLayout.setClipToPadding(false);
-
-            // Make all the views the same width
-            sectionViews.get(i).getLayoutParams().width = col2Width;
-            frameLayout.addView(sectionViews.get(i));
-
-            // Now the view is created and has content, size it to the correct width
-            frameLayout.getLayoutParams().width = col2Width;
-            innerCol2.addView(frameLayout);
+            // Add the views to the scaled inner column
+            innerCol2.addView(sectionViews.get(i));
         }
+
+        // Now the view has been drawn, scale the innerCols
+        scaleView(innerCol1, col1_2ScaleBest);
+        scaleView(innerCol2, col2_2ScaleBest);
+
+        // Resize the holding column height to the correct size
+        // Don't adjust the width, as this is set by weights in the layout
+        int col1h = (int) (col1_2Height*col1_2ScaleBest);
+        int col2h = (int) (col2_2Height*col2_2ScaleBest);
+        column1.getLayoutParams().height = col1h;
+        column2.getLayoutParams().height = col2h;
+
         columnVisibility(column1, column2, column3, true, true, false);
-
-        resizeColumn(innerCol1, halfwidth, col1Height, thisScale1);
-        resizeColumn(innerCol2, halfwidth, col2Height, thisScale2);
-
         column1.addView(innerCol1);
         column2.addView(innerCol2);
 
-        setMargins(column1, 0, padding);
-        setMargins(column2, padding, 0);
+        // Set the margins
+        setMargins(innerCol1, 0, padding);
+        setMargins(innerCol2, padding, 0);
 
-        int col1h = (int) (col1Height*thisScale1);
-        int col2h = (int) (col2Height*thisScale2);
-
-        scaleSize[0] = thisScale1;
-        scaleSize[1] = thisScale2;
-        scaleSize[3] = Math.max(col1h,col2h);
         if (!presentation) {
-            mainActivityInterface.updateSizes(displayMetrics.widthPixels,
-                    (int) scaleSize[3] + songSheetTitleHeight);
+            mainActivityInterface.updateSizes(mainActivityInterface.getDisplayMetrics()[0],
+                    Math.max(col1h,col2h) + songSheetTitleHeight);
         }
-        return scaleSize;
     }
 
     // 3 column stuff
-    private float[] col3Scale(int screenWidth, int screenHeight, int totalViewHeight,
-                              boolean songAutoScaleColumnMaximise, ArrayList<Integer> viewWidth,
-                              ArrayList<Integer> viewHeight, ArrayList<Integer> sectionswithbreaks) {
-        // 0=scale col1   1=scale col2    2=scale col2
-        // 3=section num col2 starts at   4=section num col3 starts at
-        // 5=biggest scaled height
-        float[] scaleSize_3cols = new float[6];
+    private void createThreeColumns(ArrayList<View>sectionViews, LinearLayout column1,
+                                    LinearLayout column2, LinearLayout column3, float[] columnInfo,
+                                    boolean presentation, int songSheetTitleHeight) {
+        /*columnInfo new float[]{3,          // Number of columns
+        1                threeColumnScale,   // Overall best scale
+        2                columnBreak3_a,     // Break point 1
+        3                columnBreak3_b,     // Break point 2
+        4                col1_3ScaleBest,    // Best col 1 scale
+        5                col1_3Width,        // Column 1 max width
+        6                col1_3Height,       // Column 1 total height
+        7                col2_3ScaleBest,    // Best col 2 scale
+        8                col2_3Width,        // Column 2 max width
+        9                col2_3Height,       // Column 2 total height
+        10               col3_3ScaleBest,    // Best col 3 scale
+        11               col3_3Width,        // Column 3 max width
+        12               col3_3Height,       // Column 3 total height
+        13               sectionSpace};      // Section space per view except last in column */
 
-        // Find the third height of all of the views together
-        float thirdViewheight = (float) totalViewHeight / 3.0f;
+        float bestOverallScale = columnInfo[1];
+        int columnBreak3_a = (int)columnInfo[2];
+        int columnBreak3_b = (int)columnInfo[3];
+        float col1_3ScaleBest = columnInfo[4];
+        int col1_3Width = (int)columnInfo[5];
+        int col1_3Height = (int)columnInfo[6];
+        float col2_3ScaleBest = columnInfo[7];
+        int col2_3Width = (int)columnInfo[8];
+        int col2_3Height = (int)columnInfo[9];
+        float col3_3ScaleBest = columnInfo[10];
+        int col3_3Width = (int)columnInfo[11];
+        int col3_3Height = (int)columnInfo[12];
+        int sectionSpace = (int)columnInfo[13];
 
-        // Go through the three sections and try to get them similar
-        int col1Height = 0;
-        int preThirdWay = 0;
-        int postThirdWay = 0;
-
-        if (sectionswithbreaks.size()>=2) {
-            preThirdWay = sectionswithbreaks.get(0);
-            postThirdWay = sectionswithbreaks.get(0);
-        } else {
-            int i = 0;
-            while (i < viewHeight.size() && col1Height < thirdViewheight) {
-                preThirdWay = i;
-                postThirdWay = preThirdWay + 1;
-                col1Height += viewHeight.get(i);
-                i++;
-            }
-            if (postThirdWay > viewHeight.size()) {
-                postThirdWay = preThirdWay;
-            }
-        }
-
-        // Decide if we're closer underheight or overheight
-        int col1Height_pre = getTotal(viewHeight, 0, preThirdWay);
-        int col1Height_post = getTotal(viewHeight, 0, postThirdWay);
-        int diff_pre = Math.abs((int) thirdViewheight - getTotal(viewHeight, 0, preThirdWay));
-        int diff_post = Math.abs((int) thirdViewheight - getTotal(viewHeight, 0, postThirdWay));
-
-        int thirdWay;
-        if (diff_pre <= diff_post) {
-            thirdWay = preThirdWay;
-            col1Height = col1Height_pre;
-        } else {
-            thirdWay = postThirdWay;
-            col1Height = col1Height_post;
-        }
-
-        // Now we have the best first column, we compare column2 and column3 in ths same way as 2 columns
-        int col2Height = 0;
-        int col3Height = totalViewHeight - col1Height;
-        int preTwoThirdWay = 0;
-        int postTwoThirdWay = 0;
-        if (sectionswithbreaks.size()>=2) {
-            preTwoThirdWay = sectionswithbreaks.get(1);
-            postTwoThirdWay = sectionswithbreaks.get(1);
-        } else {
-            preTwoThirdWay = thirdWay;
-            while (preTwoThirdWay < viewHeight.size() && col2Height < col3Height) {
-                col2Height += viewHeight.get(preTwoThirdWay);
-                col3Height -= viewHeight.get(preTwoThirdWay);
-                preTwoThirdWay++;
-                postTwoThirdWay = preTwoThirdWay + 1;
-            }
-            if (preTwoThirdWay > viewHeight.size()) {
-                postTwoThirdWay = preTwoThirdWay;
-            }
-        }
-
-        // Decide if we're closer underheight or overheight
-        int col2Height_pre = getTotal(viewHeight, thirdWay, preTwoThirdWay);
-        int col2Height_post = getTotal(viewHeight, thirdWay, postTwoThirdWay);
-        int col3Height_pre = totalViewHeight - col2Height_pre - col1Height;
-        int col3Height_post = totalViewHeight - col2Height_post - col1Height;
-        diff_pre = Math.abs(col2Height_pre - col3Height_pre);
-        diff_post = Math.abs(col2Height_post - col3Height_post);
-
-        int twoThirdWay;
-        if (diff_pre <= diff_post) {
-            twoThirdWay = preTwoThirdWay;
-            col2Height = col2Height_pre;
-            col3Height = col3Height_pre;
-        } else {
-            twoThirdWay = postTwoThirdWay;
-            col2Height = col2Height_post;
-            col3Height = col3Height_post;
-        }
-
-        // Now decide on the x and y scaling available for each column
-        int maxWidthCol1 = getMaxValue(viewWidth, 0, thirdWay);
-        int maxWidthCol2 = getMaxValue(viewWidth, thirdWay, twoThirdWay);
-        int maxWidthCol3 = getMaxValue(viewWidth, twoThirdWay, viewWidth.size());
-
-        float thirdWidth = ((float) screenWidth / 3.0f) - padding;
-
-        float col1Xscale = thirdWidth / (float) maxWidthCol1;
-        float col1Yscale = (float) screenHeight / (float) col1Height;
-        float col1Scale = Math.min(col1Xscale, col1Yscale);
-        float col2Xscale = thirdWidth / (float) maxWidthCol2;
-        float col2Yscale = (float) screenHeight / (float) col2Height;
-        float col2Scale = Math.min(col2Xscale, col2Yscale);
-        float col3Xscale = thirdWidth / (float) maxWidthCol3;
-        float col3Yscale = (float) screenHeight / (float) col3Height;
-        float col3Scale = Math.min(col3Xscale, col3Yscale);
-
-        scaleSize_3cols[0] = col1Scale;
-        scaleSize_3cols[1] = col2Scale;
-        scaleSize_3cols[2] = col3Scale;
-        scaleSize_3cols[3] = thirdWay;
-        scaleSize_3cols[4] = twoThirdWay;
-
-        if (!songAutoScaleColumnMaximise) {
-            // make 2 all the values of the smallest (but the same)
-            float min = Math.min(scaleSize_3cols[0], Math.min(scaleSize_3cols[1], scaleSize_3cols[2]));
-            scaleSize_3cols[0] = min;
-            scaleSize_3cols[1] = min;
-            scaleSize_3cols[2] = min;
-        }
-
-        // Get the planned heights of the column and get the biggest value
-        int height1 = Math.round(col1Height*scaleSize_3cols[0]);
-        int height2 = Math.round(col2Height*scaleSize_3cols[1]);
-        int height3 = Math.round(col3Height*scaleSize_3cols[2]);
-        scaleSize_3cols[5] = Math.max(height1,Math.max(height2,height3));
-
-        return scaleSize_3cols;
-    }
-
-    private float[] setThreeColumns(ArrayList<View> sectionViews, LinearLayout column1,
-                                 LinearLayout column2, LinearLayout column3, ArrayList<Integer> sectionWidths,
-                                 ArrayList<Integer> sectionHeights, float[] scaleSize,
-                                 float maxFontSize, float thirdWidth, int songSheetTitleHeight,
-                                    boolean presentation, DisplayMetrics displayMetrics) {
         // Use 3 columns, but hide them all for now
         columnVisibility(column1, column2, column3, false, false, false);
+
+        if (!songAutoScaleColumnMaximise) {
+            // Set both columns to the same minimum size
+            col1_3ScaleBest = bestOverallScale;
+            col2_3ScaleBest = bestOverallScale;
+            col3_3ScaleBest = bestOverallScale;
+        }
 
         // Prepare the inner columns
         LinearLayout innerCol1 = newLinearLayout();
         LinearLayout innerCol2 = newLinearLayout();
         LinearLayout innerCol3 = newLinearLayout();
 
-        int col1Height = getTotal(sectionHeights, 0, (int) scaleSize[3]);
-        int col2Height = getTotal(sectionHeights, (int) scaleSize[3], (int) scaleSize[4]);
-        int col3Height = getTotal(sectionHeights, (int) scaleSize[4], sectionHeights.size());
+        // Make the inner column big enough for the unscaled content
+        // Need to consider scaling <1.  If I did this now, the views get cropped
+        innerCol1.getLayoutParams().width = col1_3Width;
+        innerCol1.getLayoutParams().height = col1_3Height;
+        innerCol2.getLayoutParams().width = col2_3Width;
+        innerCol2.getLayoutParams().height = col2_3Height;
+        innerCol3.getLayoutParams().width = col3_3Width;
+        innerCol3.getLayoutParams().height = col3_3Height;
 
-        // Get the actual scale which might be less due to the maxFontSize being exceeded
-        float thisScale1 = setScaledView(innerCol1, scaleSize[0], maxFontSize);
-        innerCol1.setLayoutParams(new LinearLayout.LayoutParams((int)(thirdWidth),LinearLayout.LayoutParams.WRAP_CONTENT));
-        float thisScale2 = setScaledView(innerCol2, scaleSize[1], maxFontSize);
-        innerCol2.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT));
-        float thisScale3 = setScaledView(innerCol3, scaleSize[2], maxFontSize);
-        innerCol3.setLayoutParams(new LinearLayout.LayoutParams((int)(thirdWidth),LinearLayout.LayoutParams.WRAP_CONTENT));
-
-        int color;
-        int col1Width = getMaxValue(sectionWidths, 0, (int) scaleSize[3]);
-        int col2Width = getMaxValue(sectionWidths, (int) scaleSize[3], (int) scaleSize[4]);
-        int col3Width = getMaxValue(sectionWidths, (int) scaleSize[4], sectionWidths.size());
-
-        for (int i = 0; i < scaleSize[3]; i++) {
-            color = Color.TRANSPARENT;
-            Drawable background = sectionViews.get(i).getBackground();
-            if (background instanceof ColorDrawable) {
-                color = ((ColorDrawable) background).getColor();
+        for (int i = 0; i < columnBreak3_a; i++) {
+            // Make all the views the same width as each other
+            sectionViews.get(i).getLayoutParams().width = (int)(col1_3Width);
+            // If this isn't the last view in the column, add the sectionSpace
+            if (i!=columnBreak3_a-1) {
+                sectionViews.get(i).setPadding(0,0,0,sectionSpace);
             }
-            FrameLayout frameLayout = newFrameLayout(color);
-            if (sectionViews.get(i).getParent()!=null) {
-                ((ViewGroup)sectionViews.get(i).getParent()).removeView(sectionViews.get(i));
+            // Add the views to the scaled inner column
+            innerCol1.addView(sectionViews.get(i));
+        }
+        for (int i = columnBreak3_a; i<columnBreak3_b; i++) {
+            // Make all the views the same width as each other
+            sectionViews.get(i).getLayoutParams().width = (int)(col2_3Width);
+            // If this isn't the last view in the column, add the sectionSpace
+            if (i!=columnBreak3_b-1) {
+                sectionViews.get(i).setPadding(0,0,0,sectionSpace);
             }
-            frameLayout.setClipChildren(false);
-            frameLayout.setClipToPadding(false);
-
-            // Make all the views the same width
-            sectionViews.get(i).getLayoutParams().width = col1Width;
-            frameLayout.addView(sectionViews.get(i));
-
-            // Now the view is created and has content, size it to the correct width
-            frameLayout.getLayoutParams().width = col1Width;
-            innerCol1.addView(frameLayout);
+            // Add the views to the scaled inner column
+            innerCol2.addView(sectionViews.get(i));
+        }
+        for (int i = columnBreak3_b; i < sectionViews.size(); i++) {
+            // Make all the views the same width as each other
+            sectionViews.get(i).getLayoutParams().width = (int)(col3_3Width);
+            // If this isn't the last view in the column, add the sectionSpace
+            if (i!=sectionViews.size()-1) {
+                sectionViews.get(i).setPadding(0,0,0,sectionSpace);
+            }
+            // Add the views to the scaled inner column
+            innerCol3.addView(sectionViews.get(i));
         }
 
-        for (int i = (int) scaleSize[3]; i < (int) scaleSize[4]; i++) {
-            color = Color.TRANSPARENT;
-            Drawable background = sectionViews.get(i).getBackground();
-            if (background instanceof ColorDrawable) {
-                color = ((ColorDrawable) background).getColor();
-            }
-            FrameLayout frameLayout = newFrameLayout(color);
-            if (sectionViews.get(i).getParent()!=null) {
-                ((ViewGroup)sectionViews.get(i).getParent()).removeView(sectionViews.get(i));
-            }
-            frameLayout.setClipChildren(false);
-            frameLayout.setClipToPadding(false);
+        // Now the view has been drawn, scale the innerCols
+        scaleView(innerCol1, col1_3ScaleBest);
+        scaleView(innerCol2, col2_3ScaleBest);
+        scaleView(innerCol3, col3_3ScaleBest);
 
-            // Make all the views the same width
-            sectionViews.get(i).getLayoutParams().width = col2Width;
-            frameLayout.addView(sectionViews.get(i));
-
-            // Now the view is created and has content, size it to the correct width
-            frameLayout.getLayoutParams().width = col2Width;
-            innerCol2.addView(frameLayout);
-        }
-
-        for (int i = (int) scaleSize[4]; i < sectionViews.size(); i++) {
-            color = Color.TRANSPARENT;
-            Drawable background = sectionViews.get(i).getBackground();
-            if (background instanceof ColorDrawable) {
-                color = ((ColorDrawable) background).getColor();
-            }
-            FrameLayout frameLayout = newFrameLayout(color);
-            if (sectionViews.get(i).getParent()!=null) {
-                ((ViewGroup)sectionViews.get(i).getParent()).removeView(sectionViews.get(i));
-            }
-            frameLayout.setClipChildren(false);
-            frameLayout.setClipToPadding(false);
-
-            // Make all the views the same width
-            sectionViews.get(i).getLayoutParams().width = col3Width;
-            frameLayout.addView(sectionViews.get(i));
-
-            // Now the view is created and has content, size it to the correct width
-            frameLayout.getLayoutParams().width = col3Width;
-            innerCol3.addView(frameLayout);
-        }
+        // Resize the holding column height to the correct size
+        // Don't adjust the width, as this is set by weights in the layout
+        int col1h = (int) (col1_3Height*col1_3ScaleBest);
+        int col2h = (int) (col2_3Height*col2_3ScaleBest);
+        int col3h = (int) (col3_3Height*col3_3ScaleBest);
+        column1.getLayoutParams().height = col1h;
+        column2.getLayoutParams().height = col2h;
+        column3.getLayoutParams().height = col3h;
 
         columnVisibility(column1, column2, column3, true, true, true);
-
-        resizeColumn(innerCol1, col1Width, col1Height, thisScale1);
-        resizeColumn(innerCol2, col2Width, col2Height, thisScale2);
-        resizeColumn(innerCol3, col3Width, col3Height, thisScale3);
-
         column1.addView(innerCol1);
         column2.addView(innerCol2);
         column3.addView(innerCol3);
 
+        // Set the margins
         setMargins(column1, 0, padding);
         setMargins(column2, padding, padding);
-        setMargins(column3, padding, 0);
+        setMargins(column3, padding,0);
 
-        int col1h = (int) (col1Height*thisScale1);
-        int col2h = (int) (col2Height*thisScale2);
-        int col3h = (int) (col3Height*thisScale3);
-
-        scaleSize[0] = thisScale1;
-        scaleSize[1] = thisScale2;
-        scaleSize[2] = thisScale3;
-        scaleSize[5] = Math.max(col1h,Math.max(col2h,col3h));
         if (!presentation) {
-            mainActivityInterface.updateSizes(displayMetrics.widthPixels,
-                    (int) scaleSize[5] + songSheetTitleHeight);
+            mainActivityInterface.updateSizes(mainActivityInterface.getDisplayMetrics()[0],
+                    Math.max(col1h,Math.max(col2h,col3h)) + songSheetTitleHeight);
         }
-        return scaleSize;
     }
+
 
     // Now the stuff to read in pdf files (converts the pages to an image for displaying)
     // This uses Android built in PdfRenderer, so will only work on Lollipop+
@@ -2885,8 +2861,8 @@ public class ProcessSong {
     public ArrayList<Integer> getBitmapScaledSize(ArrayList<Integer> pdfSize, int allowedWidth, int allowedHeight, String scale) {
         ArrayList<Integer> sizes = new ArrayList<>();
 
-        int bmpwidth = 0;
-        int bmpheight = 0;
+        int bmpwidth;
+        int bmpheight;
 
         float xscale = (float) allowedWidth / (float) pdfSize.get(0);
         float yscale = (float) allowedHeight / (float) pdfSize.get(1);

@@ -69,6 +69,10 @@ public class DisplayScalingFragment extends Fragment {
         myView.scaleChords.setLabelFormatter(value -> ((int)value)+"%");
         myView.scaleComments.setLabelFormatter(value -> ((int)value)+"%");
         myView.scaleStage.setLabelFormatter(value -> ((int)value)+"%");
+
+        visibilityByBoolean(myView.manualFontSize,!myView.useAutoscale.getChecked() ||
+                (myView.overrideWidthSwitch.getVisibility()==View.VISIBLE &&
+                        myView.overrideWidthSwitch.isChecked()));
     }
 
     private void setAutoscaleMode() {
@@ -79,7 +83,7 @@ public class DisplayScalingFragment extends Fragment {
                 modeSwitches(true,false);
                 visibilityByBoolean(myView.scaleColumns,true);
                 visibilityByBoolean(myView.forceColumns,true);
-                visibilityByBoolean(myView.manualFontSize,false);
+                //visibilityByBoolean(myView.manualFontSize,false);
                 visibilityByBoolean(myView.autoFontSizeLayout,true);
                 visibilityByBoolean(myView.overrideFull,true);
                 visibilityByBoolean(myView.overrideWidthSwitch,true);
@@ -88,7 +92,7 @@ public class DisplayScalingFragment extends Fragment {
                 modeSwitches(true,true);
                 visibilityByBoolean(myView.scaleColumns,false);
                 visibilityByBoolean(myView.forceColumns,false);
-                visibilityByBoolean(myView.manualFontSize,false);
+                //visibilityByBoolean(myView.manualFontSize,false);
                 visibilityByBoolean(myView.autoFontSizeLayout,true);
                 visibilityByBoolean(myView.overrideFull,false);
                 visibilityByBoolean(myView.overrideWidthSwitch,true);
@@ -101,6 +105,9 @@ public class DisplayScalingFragment extends Fragment {
                 visibilityByBoolean(myView.autoFontSizeLayout,false);
                 break;
         }
+        visibilityByBoolean(myView.manualFontSize,!myView.useAutoscale.getChecked() ||
+                (myView.overrideWidthSwitch.getVisibility()==View.VISIBLE &&
+                        myView.overrideWidthSwitch.isChecked()));
     }
     private void modeSwitches(boolean useAutoScale, boolean widthOnly) {
         myView.useAutoscale.setChecked(useAutoScale);
@@ -182,7 +189,10 @@ public class DisplayScalingFragment extends Fragment {
         myView.forceColumns.setOnCheckedChangeListener((buttonView, isChecked) -> updateBooleanPreference("forceColumns",isChecked));
         myView.scaleColumns.setOnCheckedChangeListener((buttonView, isChecked) -> updateBooleanPreference("songAutoScaleColumnMaximise",isChecked));
         myView.overrideFull.setOnCheckedChangeListener((buttonView, isChecked) -> updateBooleanPreference("songAutoScaleOverrideFull",isChecked));
-        myView.overrideWidthSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> updateBooleanPreference("songAutoScaleOverrideWidth",isChecked));
+        myView.overrideWidthSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            updateBooleanPreference("songAutoScaleOverrideWidth",isChecked);
+            visibilityByBoolean(myView.manualFontSize,isChecked);
+        });
 
         // The sliders
         setSliderListeners(myView.manualFontSize, "fontSize", 1.0f, "sp");

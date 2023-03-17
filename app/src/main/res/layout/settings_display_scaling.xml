@@ -30,17 +30,6 @@
                 android:text="@string/autoscale"
                 android:hint="@string/autoscale_info"/>
 
-            <!--Manual font size-->
-            <com.garethevans.church.opensongtablet.customviews.MaterialSlider
-                android:id="@+id/manualFontSize"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/choose_fontsize"
-                android:valueFrom="5"
-                android:valueTo="90"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"/>
-
             <!--Auto font size-->
             <LinearLayout
                 android:id="@+id/autoFontSizeLayout"
@@ -116,6 +105,18 @@
                     android:layout_marginBottom="8dp"
                     android:text="@string/override_widthautoscale" />
             </LinearLayout>
+
+            <!--Manual font size-->
+            <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+                android:id="@+id/manualFontSize"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/choose_fontsize"
+                android:valueFrom="5"
+                android:valueTo="90"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"/>
+
             <TableRow style="@style/DividerLine" />
 
             <!--Scale headings-->

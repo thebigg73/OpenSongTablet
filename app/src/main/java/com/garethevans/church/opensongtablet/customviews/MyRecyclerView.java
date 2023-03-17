@@ -138,7 +138,7 @@ public class MyRecyclerView extends RecyclerView  implements RecyclerView.Smooth
             int viewHeight = 0;
             int spaceAbove = (int)(0.5f * getHeight());
             // Work out the space to try to leave above the view
-            if (recyclerLayoutManager.getChildSizes().size()!=0) {
+            if (recyclerLayoutManager.getChildSizes().size()>position) {
                 viewHeight = recyclerLayoutManager.getChildSizes().get(position);
                 spaceAbove = (int) (0.5f * (getHeight() - viewHeight));
             }
