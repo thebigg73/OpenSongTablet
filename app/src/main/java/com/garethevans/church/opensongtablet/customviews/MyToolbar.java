@@ -305,12 +305,6 @@ public class MyToolbar extends MaterialToolbar {
         }
     }
 
-    public void hideSongDetails(boolean hide) {
-        hideView(title,hide);
-        hideView(author,hide);
-        hideView(key,hide);
-    }
-
     // Set when entering/exiting performance mode as this is used to determine if we can autohide actionbar
     public void setPerformanceMode(boolean inPerformanceMode) {
         performanceMode = inPerformanceMode;

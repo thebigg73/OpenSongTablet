@@ -558,7 +558,7 @@ public class Pad {
                             } else {
                                 String text = "0:00";
                                 try {
-                                    if (pad1Prepared && pad1.isPlaying() && pad1FadeTimerTask == null) {
+                                    if (pad1 != null && pad1Prepared && pad1.isPlaying() && pad1FadeTimerTask == null) {
                                         text = mainActivityInterface.getTimeTools().timeFormatFixer((int) (pad1.getCurrentPosition() / 1000f));
                                     }
                                     if (pad2Prepared && pad2.isPlaying() && pad2FadeTimerTask == null) {
