@@ -79,7 +79,6 @@ public class MyToolbar extends MaterialToolbar {
         batterycharge = v.findViewById(R.id.batterycharge);
         songandauthor = v.findViewById(R.id.songandauthor);
         clock = v.findViewById(R.id.digitalclock);
-        webHelp = v.findViewById(R.id.webHelp);
 
         batteryholder.setOnClickListener(v1 -> {
             mainActivityInterface.showActionBar();
@@ -260,7 +259,7 @@ public class MyToolbar extends MaterialToolbar {
             }
         }
     }
-    
+
     // Update the web help icon in the toolbar
     public void updateToolbarHelp(String webAddress) {
         // This allows a help button to be shown in the action bar
