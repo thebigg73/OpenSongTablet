@@ -140,7 +140,7 @@ public class MyRecyclerView extends RecyclerView  implements RecyclerView.Smooth
             // Work out the space to try to leave above the view
             if (recyclerLayoutManager.getChildSizes().size()>position) {
                 viewHeight = recyclerLayoutManager.getChildSizes().get(position);
-                spaceAbove = (int) (0.5f * (getHeight() - viewHeight));
+                (int) ((1.0f - mainActivityInterface.getPreferences().getMyPreferenceFloat("stageModeScale",0.8f)) * (getHeight() - viewHeight));
             }
 
             // Get the current scroll position, the position we need to get to and how far this is
