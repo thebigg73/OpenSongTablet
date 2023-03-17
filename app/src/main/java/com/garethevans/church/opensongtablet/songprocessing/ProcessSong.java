@@ -867,8 +867,6 @@ public class ProcessSong {
                         i++;
                         sb.append(fixWordStretch(lines[i])).append(groupline_string);
                     }
-                } else {
-                    sb.append(lines[i]).append(groupline_string);
                 }
             } else if (lines[i].startsWith(" ") && !displayChords && displayLyrics) {
                 // IV - When displaying lyrics only - remove typical word splits, white space and trim - beautify!
