@@ -104,11 +104,7 @@ public class StickyPopUp {
                 LinearLayout.LayoutParams.WRAP_CONTENT));
         stickyNotes.setTextColor(mainActivityInterface.getMyThemeColors().getStickyTextColor());
         stickyNotes.setTypeface(mainActivityInterface.getMyFonts().getStickyFont());
-        if (mainActivityInterface.getPreferences().getMyPreferenceBoolean("stickyLargeFont", true)) {
-            stickyNotes.setTextSize(22.0f);
-        } else {
-            stickyNotes.setTextSize(16.0f);
-        }
+        stickyNotes.setTextSize(mainActivityInterface.getPreferences().getMyPreferenceFloat("stickyTextSize",14f));
         stickyNotes.setText(mainActivityInterface.getSong().getNotes());
         floatWindow.addView(stickyNotes);
 
