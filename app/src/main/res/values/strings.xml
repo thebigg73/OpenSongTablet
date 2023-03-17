@@ -1128,4 +1128,5 @@ Check out the categories in the right hand options menu.
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zoom_level">Zoom level</string>
     <string name="text_size">Text size</string>
+    <string name="small_buttons">Small buttons</string>
 </resources>

@@ -391,6 +391,7 @@ public class Preferences extends Activity {
     // padVol                          float       The volume of the pad (def:1.0f)
     // pageButton1...                  String      The action for page button 1,2,3... (def for 1=set, 2=transpose, the rest empty)
     // pageButtonShow1...              boolean     Should the button be visible. User can temporarily hide (or change the num)
+    // pageButtonMini                  boolean     Should the page buttons be mini (def:false)
     // pdfSize                         String      The size for printing PDF (def:A4)
     // pedal1Code                      int         The keyboard int code assigned to pedal 1 (default is 21 - left arrow)
     // pedal1Midi                      String      The midi note assigned to pedal 1 (default:C3)

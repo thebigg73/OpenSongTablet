@@ -83,6 +83,12 @@ public class PageButtonFragment extends Fragment {
         executorService.execute(() -> {
             Handler handler = new Handler(Looper.getMainLooper());
             handler.post(() -> {
+                myView.pageButtonMini.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("pageButtonMini",false));
+                myView.pageButtonMini.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                    mainActivityInterface.getPreferences().setMyPreferenceBoolean("pageButtonMini",isChecked);
+                    mainActivityInterface.getPageButtons().updatePageButtonMini(isChecked);
+                    mainActivityInterface.miniPageButton(isChecked);
+                });
 
                 int opacity = (int)(mainActivityInterface.getMyThemeColors().getPageButtonsSplitAlpha()*100);
                 if (opacity<myView.opacity.getValueFrom()) {

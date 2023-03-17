@@ -146,6 +146,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
@@ -1251,6 +1252,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 customAnimation.fadeActionButton(myView.actionFAB, themeColors.getPageButtonsSplitAlpha());
             }
         });
+    }
+    @Override
+    public void miniPageButton(boolean mini) {
+        if (mini) {
+            myView.actionFAB.setSize(FloatingActionButton.SIZE_MINI);
+        } else {
+            myView.actionFAB.setSize(FloatingActionButton.SIZE_NORMAL);
+        }
     }
 
     @Override

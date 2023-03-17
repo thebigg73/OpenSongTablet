@@ -36,6 +36,7 @@ public class PageButtons {
     private ArrayList<Integer> drawableIds;
     private int pageButtonColor;
     private float pageButtonAlpha;
+    private boolean pageButtonMini;
     private int pageButtonIconColor;
 
     // My buttons in the main activity
@@ -60,6 +61,8 @@ public class PageButtons {
 
         // Now get our button preferences
         setPreferences();
+
+        pageButtonMini = mainActivityInterface.getPreferences().getMyPreferenceBoolean("pageButtonMini",false);
     }
 
     public void setMainFABS(FloatingActionButton actionButton, FloatingActionButton custom1,
@@ -86,6 +89,19 @@ public class PageButtons {
         custom6.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
         custom7.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
         custom8.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
+        int size = FloatingActionButton.SIZE_NORMAL;
+        if (pageButtonMini) {
+            size = FloatingActionButton.SIZE_MINI;
+        }
+        custom1.setSize(size);
+        custom2.setSize(size);
+        custom3.setSize(size);
+        custom4.setSize(size);
+        custom5.setSize(size);
+        custom6.setSize(size);
+        custom7.setSize(size);
+        custom8.setSize(size);
+
         fabs.add(custom1);
         fabs.add(custom2);
         fabs.add(custom3);
@@ -96,6 +112,18 @@ public class PageButtons {
         fabs.add(custom8);
         pageButtonsLayout.setAlpha(pageButtonAlpha);
         this.pageButtonsLayout = pageButtonsLayout;
+    }
+
+    public void updatePageButtonMini(boolean pageButtonMini) {
+        this.pageButtonMini = pageButtonMini;
+        int size = FloatingActionButton.SIZE_NORMAL;
+        if (pageButtonMini) {
+            size = FloatingActionButton.SIZE_MINI;
+        }
+        for (int x=0;x<fabs.size();x++) {
+            fabs.get(x).setSize(size);
+        }
+
     }
 
     public void updateColors() {
