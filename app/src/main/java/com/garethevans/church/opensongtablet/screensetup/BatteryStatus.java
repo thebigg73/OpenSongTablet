@@ -80,6 +80,7 @@ public class BatteryStatus extends BroadcastReceiver {
     public void setBatteryTextOn(boolean batteryTextOn) {
         this.batteryTextOn = batteryTextOn;
         if (batteryTextOn) {
+            batteryCharge.setTextSize(batteryTextSize);
             batteryCharge.setVisibility(View.VISIBLE);
         } else {
             batteryCharge.setVisibility(View.GONE);

@@ -66,7 +66,8 @@ public class MaterialSwitch extends LinearLayout {
 
         typedArray.recycle();
 
-
+        textView.setOnClickListener(v -> setChecked(!getChecked()));
+        hintView.setOnClickListener(v -> setChecked(!getChecked()));
     }
 
     public void setSize(String size) {
