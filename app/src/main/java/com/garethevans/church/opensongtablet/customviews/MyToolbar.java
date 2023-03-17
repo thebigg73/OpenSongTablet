@@ -247,6 +247,21 @@ public class MyToolbar extends MaterialToolbar {
             }
         }
     }
+    
+    // Update the web help icon in the toolbar
+    public void updateToolbarHelp(String webAddress) {
+        // This allows a help button to be shown in the action bar
+        // This links to the specific page in the user manul (if webAddress isn't null)
+        if (webAddress==null || webAddress.isEmpty()) {
+            webHelp.setVisibility(View.GONE);
+        } else {
+            webHelp.setVisibility(View.VISIBLE);
+            webHelp.setOnClickListener(v->mainActivityInterface.openDocument(webAddress));
+            // For the first run, show the showcase as well
+            mainActivityInterface.getShowCase().singleShowCase(activity, webHelp,null,
+                    c.getString(R.string.help),false,"webHelp");
+        }
+    }
 
     // Clicking on the song title/author/etc. opens up the song details bottom sheet
     private void openDetails() {
