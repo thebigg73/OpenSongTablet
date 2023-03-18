@@ -1684,6 +1684,7 @@ public class ProcessSong {
                 fixedlyrics.append(sectionHeader).append("\n").append(("¬"+ songSections.get(x)).replace("¬\n","").replace("¬",""));
             }
         }
+
         // IV - Content is added with leading \n§, the first needs to be removed
         lyrics = fixedlyrics.toString().replaceFirst("\n§","");
 
@@ -1878,6 +1879,14 @@ public class ProcessSong {
                         }
                     }
 
+                    // IV - Support add section space feature for stage mode. This is done in column processing for performance mode.
+                    if (addSectionSpace & !presentation && mainActivityInterface.getMode().equals(c.getString(R.string.mode_stage)) &&
+                            !mainActivityInterface.getMakePDF().getIsSetListPrinting() &&
+                            sect != (song.getPresoOrderSongSections().size() - 1)) {
+                        linearLayout.addView(lineText("lyric", "", getTypeface(false, "lyric"),
+                                getFontSize("lyric") / 2, Color.TRANSPARENT, Color.TRANSPARENT, Color.TRANSPARENT, false));
+                    }
+
                     linearLayout.setBackgroundColor(overallBackgroundColor);
                     sectionColors.add(overallBackgroundColor);
                     sectionViews.add(linearLayout);
@@ -2062,6 +2071,10 @@ public class ProcessSong {
     }
 
     private void scaleView(LinearLayout innerColumn, float scaleSize) {
+        // IV - Cope with empty songs!
+        if (scaleSize == Double.POSITIVE_INFINITY) {
+            scaleSize = 1.0f;
+        }
         if (innerColumn!=null) {
             innerColumn.setPivotX(0);
             innerColumn.setPivotY(0);
@@ -2364,6 +2377,8 @@ public class ProcessSong {
                                     LinearLayout songSheetView, int availableWidth, int availableHeight,
                                     LinearLayout column1, LinearLayout column2, LinearLayout column3,
                                     boolean presentation, DisplayMetrics displayMetrics) {
+        updateProcessingPreferences();
+
         // Now we have all the sizes in, determines the best way to show the song
         // This will be single, two or three columns.  The best one will be the one
         // which gives the best scale size
