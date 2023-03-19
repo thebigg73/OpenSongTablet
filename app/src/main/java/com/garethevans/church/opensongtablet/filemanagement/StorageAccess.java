@@ -11,7 +11,6 @@ import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.ContentResolver;
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.AssetManager;
 import android.content.res.Configuration;
 import android.database.Cursor;
@@ -766,35 +765,13 @@ public class StorageAccess {
             return false;
         }
     }
-    public boolean canWrite(Uri uri) {
-        if (lollipopOrLater()) {
-            return canWrite_SAF(uri);
-        } else {
-            return canWrite_File(uri);
-        }
-    }
-    private boolean canWrite_SAF(Uri uri) {
-        DocumentFile df = DocumentFile.fromSingleUri(c, uri);
-        if (df != null) {
-            return df.canWrite();
-        } else {
-            return false;
-        }
-    }
-    private boolean canWrite_File(Uri uri) {
-        if (uri != null && uri.getPath() != null) {
-            File f = new File(uri.getPath());
-            return f.canWrite();
-        } else {
-            return false;
-        }
-    }
     public boolean isTextFile(Uri uri) {
         boolean istext = false;
         if (uri != null && uri.getLastPathSegment() != null) {
             String name = uri.getLastPathSegment().toLowerCase(Locale.ROOT);
-            if ((!name.contains(".pdf") && !name.contains(".doc") &&
-                    !name.contains(".docx") && !name.contains(".png") &&
+            if ((!name.contains(".pdf") && !name.contains(".zip") &&
+                    !name.contains(".doc") && !name.contains(".docx") &&
+                    !name.contains(".png") &&
                     !name.contains(".jpg") && !name.contains(".gif") &&
                     !name.contains(".jpeg")) || name.endsWith(".txt")) {
                 istext = true;
@@ -1003,24 +980,6 @@ public class StorageAccess {
             Log.d(TAG,"Uri for "+name+" was null");
             return false;
         }
-    }
-    public String getUriString(Uri uri) {
-        String uriString = "";
-        if (uri!=null) {
-            uriString = uri.toString();
-            if (uriString.contains("OpenSong/")) {
-                // Localised preLollipop
-                uriString = uriString.substring(uriString.lastIndexOf("OpenSong/")+9);
-                uriString = "../" + uriString;
-            } else if (uriString.contains("OpenSong%2F")) {
-                // Localised storageAccessFramework
-                uriString = uriString.substring(uriString.lastIndexOf("OpenSong%2F")+11);
-                uriString = uriString.replace("%2F","/");
-                uriString = uriString.replace("%20"," ");
-                uriString = "../" + uriString;
-            }
-        }
-        return uriString;
     }
 
 
@@ -1510,14 +1469,6 @@ public class StorageAccess {
         }
         return b;
     }
-    public Intent selectFileIntent(String[] mimeTypes) {
-        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-        intent.setType("*/*");
-        if (mimeTypes != null && mimeTypes.length > 0) {
-            intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
-        }
-        return intent;
-    }
     public String getActualFilename(String string) {
         Uri uri = Uri.parse(string);
         if (lollipopOrLater()) {
@@ -1733,7 +1684,6 @@ public class StorageAccess {
             createFolder_SAF(uriTreeHome,folder,false);
         }
         if (subfolder!=null && !subfolder.isEmpty()) {
-            Uri subfolderUri = getUriForItem_SAF(folder,subfolder,"");
             createFolder_SAF(folderUri,subfolder,false);
         }
     }
