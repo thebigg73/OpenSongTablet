@@ -874,9 +874,9 @@ public class ProcessSong {
     private boolean shouldNextLineBeAdded(int nl, String[] lines, boolean incnormallyricline) {
         if (incnormallyricline) {
             return (nl < lines.length && (lines[nl].startsWith(" ") && !lines[nl].trim().isEmpty() || lines[nl].startsWith(";") ||
-                    lines[nl].matches("^\\d.*$")));
+                    lines[nl].matches("\\d.*$")));
         } else {
-            return (nl < lines.length && (lines[nl].matches("^\\d.*$")));
+            return (nl < lines.length && (lines[nl].matches("\\d.*$")));
         }
     }
 
@@ -1200,7 +1200,7 @@ public class ProcessSong {
     }
 
     private boolean lineIsChordForMultiline(String[] lines) {
-        return (lines[0].length() > 1 && lines.length > 1 && lines[1].matches("^\\d.*$"));
+        return (lines[0].length() > 1 && lines.length > 1 && lines[1].matches("\\d.*$"));
     }
 
     private String fixMultiLineFormat(String string, boolean presentation) {
