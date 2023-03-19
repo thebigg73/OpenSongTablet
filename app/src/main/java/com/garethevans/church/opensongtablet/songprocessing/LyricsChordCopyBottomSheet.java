@@ -30,7 +30,7 @@ public class LyricsChordCopyBottomSheet  extends BottomSheetDialogFragment {
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "LyricsBottomSheet";
     private final String[] sections;
-    ArrayList<String> sectionsWithChords;
+    ArrayList<String> sectionsWithChords, previewsWithChords, previewsAll;
     private final EditSongFragmentLyrics openingFragment;
 
     // Initialise with a reference to the opening fragment
@@ -77,8 +77,24 @@ public class LyricsChordCopyBottomSheet  extends BottomSheetDialogFragment {
 
     private void prepareChordsFromSections() {
         sectionsWithChords = new ArrayList<>();
-        for (String section:sections) {
+        previewsAll = new ArrayList<>();
+        previewsWithChords = new ArrayList<>();
+        for (int x=0; x<sections.length; x++) {
+            String section = sections[x];
             String[] lines = section.split("\n");
+            if (lines.length > 0) {
+                if (lines[0].startsWith("[") && lines[0].contains("]")) {
+                    previewsAll.add(". "+lines[0].substring(0,lines[0].indexOf("]")+1));
+                } else if (lines[0].length()>6) {
+                    // Show an elipsis
+                    previewsAll.add(". "+lines[0].substring(0,6)+"...");
+                } else {
+                    previewsAll.add(". "+lines[0]);
+                }
+            } else {
+                previewsAll.add("");
+            }
+
             boolean hasChords=false;
             for (String line:lines) {
                 if (line.startsWith(".")) {
@@ -88,6 +104,7 @@ public class LyricsChordCopyBottomSheet  extends BottomSheetDialogFragment {
             }
             if (hasChords) {
                 sectionsWithChords.add(section);
+                previewsWithChords.add(previewsAll.get(x));
             }
         }
     }
@@ -99,20 +116,26 @@ public class LyricsChordCopyBottomSheet  extends BottomSheetDialogFragment {
 
     private void updateCopyFrom() {
         if (myView.copyFrom.getText()!=null && !myView.copyFrom.getText().toString().isEmpty()) {
-            int position = Integer.parseInt(myView.copyFrom.getText().toString())-1;
-            myView.extractFromAll.setHint(sectionsWithChords.get(position));
+            int position = positionFromText(myView.copyFrom.getText().toString())-1;
+            myView.extractFromAll.post(() -> {
+                myView.extractFromAll.setHint(sectionsWithChords.get(position));
+                updateCopyTo();
+            });
+
         }
     }
 
     private void updateCopyTo() {
         if (myView.copyTo.getText()!=null && !myView.copyTo.getText().toString().isEmpty()) {
-            int position = Integer.parseInt(myView.copyTo.getText().toString())-1;
-            String textToWorkOn = sections[position];
+            // Get the position number
+            int positionFrom = positionFromText(myView.copyFrom.getText().toString())-1;
+            int positionTo = positionFromText(myView.copyTo.getText().toString())-1;
+            String textToWorkOn = sections[positionTo];
             myView.copyIntoBefore.setHint(textToWorkOn);
 
             // Now the logic to do the copy!!  Split into lines and work on one at a time
             ArrayList<String> linesToImprove = new ArrayList<>(Arrays.asList(textToWorkOn.split("\n")));
-            ArrayList<String> linesToCopy = new ArrayList<>(Arrays.asList((myView.extractFromAll.getHint().toString().split("\n"))));
+            ArrayList<String> linesToCopy = new ArrayList<>(Arrays.asList((sectionsWithChords.get(positionFrom).split("\n"))));
 
             // Go through the extract from array and try to insert these chords into the other array
             for (int l=0; l<linesToCopy.size(); l++) {
@@ -141,16 +164,31 @@ public class LyricsChordCopyBottomSheet  extends BottomSheetDialogFragment {
             myView.copyIntoAfter.setHint(stringBuilder.toString());
         }
     }
+
+    private int positionFromText(String text) {
+        if (text.length()>3 && text.contains(".") && text.indexOf(".")<3) {
+            text = text.substring(0,text.indexOf(".")).replace(".","").trim();
+            text = text.replaceAll("\\D","");
+        }
+        try {
+            return Integer.parseInt(text);
+        } catch (Exception e) {
+            return 1;
+        }
+    }
+
     private void prepareViews() {
         // Extract the sections that actually have chords!
         ArrayList<String> sectionNum = new ArrayList<>();
         for (int i=0; i<sectionsWithChords.size(); i++) {
-            sectionNum.add(""+(i+1));
+            // Get a small preview text for the dropdown list
+            sectionNum.add((i+1)+previewsWithChords.get(i));
         }
         ArrayList<String> toSections = new ArrayList<>();
         for (int i=0; i<sections.length; i++) {
-            toSections.add(""+(i+1));
+            toSections.add((i+1)+previewsAll.get(i));
         }
+
         if (getContext()!=null && sectionsWithChords!=null && !sectionsWithChords.isEmpty()) {
             ExposedDropDownArrayAdapter copyFromAdapter = new ExposedDropDownArrayAdapter(getContext(),
                     myView.copyFrom, R.layout.view_exposed_dropdown_item, sectionNum);
@@ -171,6 +209,7 @@ public class LyricsChordCopyBottomSheet  extends BottomSheetDialogFragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 updateCopyFrom();
+                //updateCopyTo();
             }
 
             @Override
@@ -183,6 +222,7 @@ public class LyricsChordCopyBottomSheet  extends BottomSheetDialogFragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                //updateCopyFrom();
                 updateCopyTo();
             }
 
@@ -190,8 +230,12 @@ public class LyricsChordCopyBottomSheet  extends BottomSheetDialogFragment {
             public void afterTextChanged(Editable s) {}
         });
 
-        myView.copyFrom.setText("1");
-        myView.copyTo.setText("1");
+        if (sectionsWithChords.size()>0) {
+            myView.copyFrom.setText("1" + previewsWithChords.get(0));
+        }
+        if (sections.length>0) {
+            myView.copyTo.setText("1" + previewsAll.get(0));
+        }
 
         myView.applyChanges.setOnClickListener(v -> {
             String oldText = myView.copyIntoBefore.getHint().toString();
