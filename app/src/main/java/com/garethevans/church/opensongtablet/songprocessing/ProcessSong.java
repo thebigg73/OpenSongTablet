@@ -724,6 +724,7 @@ public class ProcessSong {
     }
 
     public String beautifyHeading(String line) {
+        Log.d(TAG,"BEFORE line:"+line);
         boolean annotated = line.contains("-]");
 
         if (line.equals("")) {
@@ -750,6 +751,14 @@ public class ProcessSong {
                         line.contains(":T") || line.contains(":P"))) {
             line = line.substring(line.indexOf(":") + 1);
         }
+
+        // Look for caps or English tags for non-English app users
+        line = replaceBadHeadings(line, "verse", "V");
+        line = replaceBadHeadings(line, "prechorus", "P");
+        line = replaceBadHeadings(line, "pre-chorus", "P");
+        line = replaceBadHeadings(line, "chorus", "C");
+        line = replaceBadHeadings(line, "tag", "T");
+        line = replaceBadHeadings(line, "bridge", "B");
 
         // IV - Test 1 char or 2 chars ending 0-9 or 3 chars ending 10
         if (line.length() == 1 ||
@@ -779,14 +788,8 @@ public class ProcessSong {
 
         line = line.replace("[", "").replace("]", "");
 
-        // Look for caps or English tags for non-English app users
-        line = replaceBadHeadings(line, "verse", "V");
-        line = replaceBadHeadings(line, "prechorus", "P");
-        line = replaceBadHeadings(line, "pre-chorus", "P");
-        line = replaceBadHeadings(line, "chorus", "C");
-        line = replaceBadHeadings(line, "tag", "T");
-        line = replaceBadHeadings(line, "bridge", "B");
 
+        Log.d(TAG,"AFTER  line:"+line);
         return line.trim();
     }
 
