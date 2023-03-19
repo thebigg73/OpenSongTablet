@@ -176,8 +176,13 @@ public class PerformanceFragment extends Fragment {
 
         removeViews();
 
-        doSongLoad(mainActivityInterface.getPreferences().getMyPreferenceString("songFolder",mainfoldername),
-                mainActivityInterface.getPreferences().getMyPreferenceString("songFilename","Welcome to OpenSongApp"));
+        if (mainActivityInterface.getWhattodo().equals("pendingLoadSet")) {
+            mainActivityInterface.setWhattodo("");
+            mainActivityInterface.loadSongFromSet(0);
+        } else {
+            doSongLoad(mainActivityInterface.getPreferences().getMyPreferenceString("songFolder", mainfoldername),
+                    mainActivityInterface.getPreferences().getMyPreferenceString("songFilename", "Welcome to OpenSongApp"));
+        }
 
         // Check if we need to show an alert
         if (mainActivityInterface.getAlertChecks().showPlayServicesAlert() ||
@@ -309,35 +314,37 @@ public class PerformanceFragment extends Fragment {
 
                 ExecutorService executorService = Executors.newSingleThreadExecutor();
                 executorService.execute(() -> {
-                    Handler handler = new Handler(Looper.getMainLooper());
+                            Handler handler = new Handler(Looper.getMainLooper());
 
-                    // Prepare the slide out and in animations based on swipe direction
-                    setupSlideOut();
-                    setupSlideIn();
+                            // Prepare the slide out and in animations based on swipe direction
+                            setupSlideOut();
+                            setupSlideIn();
 
-                    // Remove any sticky notes
-                    actionInterface.showSticky(false, true);
+                            // Remove any sticky notes
+                            actionInterface.showSticky(false, true);
 
-                    // Now reset the song object (doesn't change what's already drawn on the screen)
-                    mainActivityInterface.setSong(mainActivityInterface.getLoadSong().doLoadSong(
-                            mainActivityInterface.getSong(), false));
+                            // Now reset the song object (doesn't change what's already drawn on the screen)
+                            mainActivityInterface.setSong(mainActivityInterface.getLoadSong().doLoadSong(
+                                    mainActivityInterface.getSong(), false));
 
-                    // Remove capo
-                    mainActivityInterface.updateOnScreenInfo("capoHide");
+                            // Remove capo
+                            mainActivityInterface.updateOnScreenInfo("capoHide");
 
-                    mainActivityInterface.moveToSongInSongMenu();
+                            mainActivityInterface.moveToSongInSongMenu();
 
-                    // Now slide out the song and after a delay start the next bit of the processing
-                    myView.recyclerView.post(() -> {
-                        if (myView.recyclerView.getVisibility() == View.VISIBLE) {
-                            myView.recyclerView.startAnimation(animSlideOut);
-                        }
-                    });
-                    myView.pageHolder.post(() -> {
-                        if (myView.pageHolder.getVisibility() == View.VISIBLE) {
-                            myView.pageHolder.startAnimation(animSlideOut);
-                        }
-                    });
+                            // Now slide out the song and after a delay start the next bit of the processing
+                            if (myView != null) {
+                                myView.recyclerView.post(() -> {
+                                    if (myView.recyclerView.getVisibility() == View.VISIBLE) {
+                                        myView.recyclerView.startAnimation(animSlideOut);
+                                    }
+                                });
+                                myView.pageHolder.post(() -> {
+                                    if (myView.pageHolder.getVisibility() == View.VISIBLE) {
+                                        myView.pageHolder.startAnimation(animSlideOut);
+                                    }
+                                });
+                            }
                     handler.postDelayed(this::prepareSongViews, 50 + requireContext().getResources().getInteger(R.integer.slide_out_time));
                 });
             }
