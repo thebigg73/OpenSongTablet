@@ -33,7 +33,6 @@ public class PresenterFragment extends Fragment {
     private ModePresenterBinding myView;
     private PageAdapter pageAdapter;
     private SongSectionsFragment songSectionsFragment;
-    private SongSectionsAdapter songSectionsAdapter;
     private AdvancedFragment advancedFragment;
     private final String TAG = "PresenterFragment";
     private boolean landscape;
@@ -223,8 +222,6 @@ public class PresenterFragment extends Fragment {
         mainActivityInterface.getSong().setPresoOrderSongSections(null);
         mainActivityInterface.getProcessSong().processSongIntoSections(
                 mainActivityInterface.getSong(), true);
-        // TODO Check this #188 for IVA removed this
-        //mainActivityInterface.getProcessSong().matchPresentationOrder(mainActivityInterface.getSong());
 
         // Get the song views
         getSongViews();
