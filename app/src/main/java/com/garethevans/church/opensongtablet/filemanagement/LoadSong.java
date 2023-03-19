@@ -114,7 +114,6 @@ public class LoadSong {
                 where, thisSong.getFolder(), thisSong.getFilename());
 
         if (mainActivityInterface.getStorageAccess().uriExists(uri)) {
-
             // If this is an image or a PDF (or DOC or ZIP), we don't load a song object from the file
             // Instead we use the database, but the user will have to wait!
             if (!thisSong.getFiletype().equals("PDF") && !thisSong.getFiletype().equals("IMG") &&
