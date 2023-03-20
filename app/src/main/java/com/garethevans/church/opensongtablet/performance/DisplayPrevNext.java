@@ -82,8 +82,6 @@ public class DisplayPrevNext {
     }
 
     public void setPrevNext() {
-        next.hide();
-        prev.hide();
         nextVisible = false;
         prevVisible = false;
 
@@ -109,7 +107,9 @@ public class DisplayPrevNext {
         }
     }
 
-    private void getPositions() {
+    public void getPositions() {
+        next.hide();
+        prev.hide();
         int setPosition = mainActivityInterface.getSetActions().indexSongInSet(mainActivityInterface.getSong());
         mainActivityInterface.getCurrentSet().setIndexSongInSet(setPosition);
         int songPosition = mainActivityInterface.getPositionOfSongInMenu();
