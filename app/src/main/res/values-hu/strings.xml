@@ -646,6 +646,7 @@
     <string name="size">"Méret"</string>
     <string name="slide">"Oldal"</string>
     <string name="slide_add_page">"Helyezze be az új oldalt egyedi dia"</string>
+    <string name="small_buttons">Kis gombok</string>
     <string name="song">"DAL"</string>
     <string name="song_actions">Dal akciók</string>
     <string name="song_actions_description">Módosítsa a dalműveletek beállításait</string>
@@ -723,6 +724,7 @@
     <string name="text_extract">Szöveg kibontása fájlból (OCR)</string>
     <string name="text_extract_check">Az OpenSongApp automatikusan megpróbálja megkeresni a dal tartalmát, azonban erre a gombra kattintva manuálisan is ellenőrizheti.</string>
     <string name="text_extract_website">A dal szövege ezen az oldalon található. Kattintson ide a kibontáshoz.</string>
+    <string name="text_size">Szövegméret</string>
     <string name="theme">"Témák"</string>
     <string name="theme_choose">"Változik téma"</string>
     <string name="theme_custom1">"Custom 1"</string>

@@ -20,6 +20,7 @@ public class MenuSettingsFragment extends Fragment {
 
     SettingsMenuBinding myView;
     MainActivityInterface mainActivityInterface;
+    private String off_string;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -35,6 +36,7 @@ public class MenuSettingsFragment extends Fragment {
         if (getContext()!=null) {
             mainActivityInterface.updateToolbar(getString(R.string.menu_settings));
             mainActivityInterface.updateToolbarHelp(getString(R.string.website_menu_settings));
+            off_string = getString(R.string.off);
         }
 
         // Deal with the views
@@ -59,15 +61,28 @@ public class MenuSettingsFragment extends Fragment {
         boolean songMenuAlphaIndexLevel2 = mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuAlphaIndexLevel2",false);
 
         // Set those values into the views
-        myView.songMenuItemSize.setLabelFormatter(value -> (int)value+"sp");
+        myView.songMenuItemSize.setLabelFormatter(value -> (int)value + "sp");
+
         myView.songMenuItemSize.setValue(songMenuItemSize);
         myView.songMenuItemSize.setHint((int)songMenuItemSize + "sp");
         myView.songMenuItemSize.setHintTextSize(songMenuItemSize);
 
-        myView.songMenuSubItemSize.setLabelFormatter(value -> (int)value+"sp");
+        myView.songMenuSubItemSize.setLabelFormatter(value -> {
+            if (value==7) {
+                return off_string;
+            } else {
+                return (int)value + "sp";
+            }
+        });
         myView.songMenuSubItemSize.setValue(songMenuSubItemSize);
-        myView.songMenuSubItemSize.setHint((int)songMenuSubItemSize + "sp");
-        myView.songMenuSubItemSize.setHintTextSize(songMenuSubItemSize);
+        if (songMenuSubItemSize==7) {
+            // The 'off' option
+            myView.songMenuSubItemSize.setHint(off_string);
+            myView.songMenuSubItemSize.setHintTextSize(14);
+        } else {
+            myView.songMenuSubItemSize.setHint((int) songMenuSubItemSize + "sp");
+            myView.songMenuSubItemSize.setHintTextSize(songMenuSubItemSize);
+        }
 
         myView.largePopups.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("largePopups",true));
 
@@ -136,7 +151,7 @@ public class MenuSettingsFragment extends Fragment {
         myView = null;
     }
 
-    private static class MyChangeSlider implements Slider.OnChangeListener {
+    private class MyChangeSlider implements Slider.OnChangeListener {
 
         final MaterialSlider materialSlider;
         MyChangeSlider(MaterialSlider materialSlider) {
@@ -144,8 +159,13 @@ public class MenuSettingsFragment extends Fragment {
         }
         @Override
         public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
-            materialSlider.setHint((int)value + "sp");
-            materialSlider.setHintTextSize(value);
+            if (materialSlider==myView.songMenuSubItemSize && value==7) {
+                myView.songMenuSubItemSize.setHint(off_string);
+                myView.songMenuSubItemSize.setHintTextSize(14);
+            } else {
+                materialSlider.setHint((int) value + "sp");
+                materialSlider.setHintTextSize(value);
+            }
         }
     }
 

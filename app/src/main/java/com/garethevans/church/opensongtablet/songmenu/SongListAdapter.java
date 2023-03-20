@@ -163,20 +163,27 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
                 songItemViewHolder.itemTitle.setText(displayname);
 
 
-                songItemViewHolder.itemAuthor.setTextSize(subtitleSize);
-                // Set the author if present
-                if (author.isEmpty()) {
+                if (subtitleSize==7) {
+                    // This is the 'off' value
                     songItemViewHolder.itemAuthor.setVisibility(View.GONE);
+                    songItemViewHolder.itemFolderNamePair.setVisibility(View.GONE);
                 } else {
-                    // IV - Weird issue that when rapidly moving through list author can exit GONE even though not set!
-                    // Seen as around 1 in 18 songs with author not showing author.  To ensure stability - set VISIBLE
-                    songItemViewHolder.itemAuthor.setText(author);
-                    songItemViewHolder.itemAuthor.setVisibility(View.VISIBLE);
-                }
+                    // Set the path
+                    songItemViewHolder.itemFolderNamePair.setVisibility(View.VISIBLE);
+                    songItemViewHolder.itemFolderNamePair.setTextSize(subtitleSize);
+                    songItemViewHolder.itemFolderNamePair.setText(folderNamePair);
 
-                // Set the path
-                songItemViewHolder.itemFolderNamePair.setTextSize(subtitleSize);
-                songItemViewHolder.itemFolderNamePair.setText(folderNamePair);
+                    // Set the author if present
+                    songItemViewHolder.itemAuthor.setTextSize(subtitleSize);
+                    if (author.isEmpty()) {
+                        songItemViewHolder.itemAuthor.setVisibility(View.GONE);
+                    } else {
+                        // IV - Weird issue that when rapidly moving through list author can exit GONE even though not set!
+                        // Seen as around 1 in 18 songs with author not showing author.  To ensure stability - set VISIBLE
+                        songItemViewHolder.itemAuthor.setText(author);
+                        songItemViewHolder.itemAuthor.setVisibility(View.VISIBLE);
+                    }
+                }
 
                 // Set the checkbox if the song is in the set
                 bindCheckBox(songItemViewHolder.itemChecked, i);

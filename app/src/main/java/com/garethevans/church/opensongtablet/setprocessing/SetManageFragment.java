@@ -550,7 +550,9 @@ public class SetManageFragment extends Fragment {
                 mainActivityInterface.navHome();
                 mainActivityInterface.getCurrentSet().updateSetTitleView();
                 mainActivityInterface.chooseMenu(true);
+                mainActivityInterface.setWhattodo("pendingLoadSet");
             });
+
         });
     }
 

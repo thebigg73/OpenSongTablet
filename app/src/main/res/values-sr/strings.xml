@@ -646,6 +646,7 @@
     <string name="size">Veličina</string>
     <string name="slide">Slajd</string>
     <string name="slide_add_page">Ubaciti novu stranu za ručni slajd</string>
+    <string name="small_buttons">Mala dugmad</string>
     <string name="song">Pesma</string>
     <string name="song_actions">Akcije pesme</string>
     <string name="song_actions_description">Podesite podešavanja za radnje pesme</string>
@@ -723,6 +724,7 @@
     <string name="text_extract">Izvucite tekst iz datoteke (OCR)</string>
     <string name="text_extract_check">OpenSongApp će pokušati da automatski pronađe sadržaj pesme, međutim, možete ručno da proverite klikom na ovo dugme.</string>
     <string name="text_extract_website">Tekst pesme pronađen na ovoj stranici. Kliknite ovde da biste izdvojili.</string>
+    <string name="text_size">Veličina teksta</string>
     <string name="theme">Tema</string>
     <string name="theme_choose">Promeniti temu</string>
     <string name="theme_custom1">Prilagođeno 1</string>

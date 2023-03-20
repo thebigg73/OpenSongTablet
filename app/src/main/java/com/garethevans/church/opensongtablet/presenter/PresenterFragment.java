@@ -33,7 +33,6 @@ public class PresenterFragment extends Fragment {
     private ModePresenterBinding myView;
     private PageAdapter pageAdapter;
     private SongSectionsFragment songSectionsFragment;
-    private SongSectionsAdapter songSectionsAdapter;
     private AdvancedFragment advancedFragment;
     private final String TAG = "PresenterFragment";
     private boolean landscape;

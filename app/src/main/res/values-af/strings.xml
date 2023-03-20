@@ -646,6 +646,7 @@
     <string name="size">"Grootte"</string>
     <string name="slide">"Page"</string>
     <string name="slide_add_page">"Voeg nuwe bladsy om persoonlike slide"</string>
+    <string name="small_buttons">Klein knoppies</string>
     <string name="song">"LIED"</string>
     <string name="song_actions">Lied aksies</string>
     <string name="song_actions_description">Pas instellings vir liedjie-aksies aan</string>
@@ -723,6 +724,7 @@
     <string name="text_extract">Onttrek teks uit lêer (OCR)</string>
     <string name="text_extract_check">OpenSongApp sal probeer om liedjie-inhoud outomaties te vind, maar jy kan handmatig kontroleer deur op hierdie knoppie te klik.</string>
     <string name="text_extract_website">Liedjie teks gevind op hierdie bladsy. Klik hier om te onttrek.</string>
+    <string name="text_size">Teks grootte</string>
     <string name="theme">"Tema"</string>
     <string name="theme_choose">"Skakel Tema"</string>
     <string name="theme_custom1">"Custom 1"</string>

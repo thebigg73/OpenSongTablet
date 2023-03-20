@@ -115,10 +115,10 @@ public class LoadSong {
 
         if (mainActivityInterface.getStorageAccess().uriExists(uri)) {
 
-            // If this is an image or a PDF (or DOC), we don't load a song object from the file
-            // Instead we use the database, but the user will have to wait!
+            // If this is an image or a PDF (or DOC or ZIP), we don't load a song object from the file
+            // Instead we use the databse, but the user will have to wait!
             if (!thisSong.getFiletype().equals("PDF") && !thisSong.getFiletype().equals("IMG") &&
-                    !thisSong.getFiletype().equals("DOC")) {
+                    !thisSong.getFiletype().equals("DOC") && !thisSong.getFilename().equals("ZIP")) {
 
                 String utf;
                 // Go through our options one at a time
@@ -182,7 +182,7 @@ public class LoadSong {
                     Uri olduri = uri;
                     uri = mainActivityInterface.getStorageAccess().getUriForItem(where,thisSong.getFolder(),newname);
                     mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(false,uri,null,where,thisSong.getFolder(),newname);
-                    String newSongContent = mainActivityInterface.getProcessSong().getXML(thisSong);
+                    //String newSongContent = mainActivityInterface.getProcessSong().getXML(thisSong);
                     if (mainActivityInterface.getStorageAccess().doStringWriteToFile(where,thisSong.getFolder(),newname,thisSong.getSongXML())) {
                         mainActivityInterface.getStorageAccess().deleteFile(olduri);
                     }
@@ -285,6 +285,8 @@ public class LoadSong {
             return "iOS";
         } else if (filename.endsWith(".txt")) {
             return "TXT";
+        } else if (filename.endsWith(".zip")) {
+            return "ZIP";
         } else {
             // Assume we are good to go!
             return "XML";
@@ -494,10 +496,6 @@ public class LoadSong {
         return thisSong;
     }
 
-    public ArrayList<Song> getSongsToFix() {
-        return songsToFix;
-    }
-
     public void resetSongsToFix() {
         if (songsToFix!=null) {
             if (songsToFix.size()>0) {
@@ -513,44 +511,45 @@ public class LoadSong {
     public void fixSongs() {
         if (songsToFix!=null && songsToFix.size()>0) {
             for (Song thisSong:songsToFix) {
-                Log.d(TAG,"songToFix:"+thisSong.getFolder()+"/"+thisSong.getFilename()+"  "+thisSong.getFiletype());
-                mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" Fix Songs/"+thisSong.getFolder()+"/"+thisSong.getFilename()+"  deleteOld=true");
-                Uri thisSongUri = mainActivityInterface.getStorageAccess().getUriForItem("Songs",thisSong.getFolder(),thisSong.getFilename());
-                InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(thisSongUri);
-                String content = mainActivityInterface.getStorageAccess().readTextFileToString(inputStream);
-                boolean success = false;
-                try {
-                    inputStream.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                // Corrupted XML files with </song> before the end
-                if (content.contains("</song>") && (content.indexOf("</song>") + 7) < content.length()) {
-                    content = content.substring(0, content.indexOf("</song>")) + "</song>";
-                    mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" fixSongs doStringWriteToFile Songs/"+thisSong.getFolder()+"/"+thisSong.getFilename()+" with: "+content);
-                    success = mainActivityInterface.getStorageAccess().doStringWriteToFile(
-                            "Songs", thisSong.getFolder(), thisSong.getFilename(), content);
-                    Log.d(TAG,"fixSong: "+success);
-
-                } else if (thisSong.getFiletype().equals("XML") || thisSong.getFiletype().equals("TXT")) {
-                    thisSong.setLyrics(content);
-                    String oldname = thisSong.getFilename();
-                    Uri oldUri = mainActivityInterface.getStorageAccess().getUriForItem("Songs",thisSong.getFolder(),thisSong.getFilename());
-                    String newname = oldname.replace(".txt","");
-                    thisSong.setFilename(newname);
-                    thisSong.setTitle(newname);
-                    String xml = mainActivityInterface.getProcessSong().getXML(thisSong);
-                    success = mainActivityInterface.getStorageAccess().doStringWriteToFile(
-                            "Songs", thisSong.getFolder(), newname, xml);
-                    if (success && !newname.equals(oldname)) {
-                        // Remove the obsolete file
-                        mainActivityInterface.getStorageAccess().deleteFile(oldUri);
+                if (thisSong.getFiletype().equals("XML")) {
+                    Log.d(TAG, "songToFix:" + thisSong.getFolder() + "/" + thisSong.getFilename() + "  " + thisSong.getFiletype());
+                    mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG + " Fix Songs/" + thisSong.getFolder() + "/" + thisSong.getFilename() + "  deleteOld=true");
+                    Uri thisSongUri = mainActivityInterface.getStorageAccess().getUriForItem("Songs", thisSong.getFolder(), thisSong.getFilename());
+                    InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(thisSongUri);
+                    String content = mainActivityInterface.getStorageAccess().readTextFileToString(inputStream);
+                    boolean success = false;
+                    try {
+                        inputStream.close();
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                }
+                    // Corrupted XML files with </song> before the end
+                    if (content.contains("</song>") && (content.indexOf("</song>") + 7) < content.length()) {
+                        content = content.substring(0, content.indexOf("</song>")) + "</song>";
+                        mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG + " fixSongs doStringWriteToFile Songs/" + thisSong.getFolder() + "/" + thisSong.getFilename() + " with: " + content);
+                        success = mainActivityInterface.getStorageAccess().doStringWriteToFile(
+                                "Songs", thisSong.getFolder(), thisSong.getFilename(), content);
+                        Log.d(TAG, "fixSong: " + success);
 
-                Log.d(TAG,"fixSong: "+success);
-                if (success) {
-                    mainActivityInterface.getSQLiteHelper().updateSong(thisSong);
+                    } else if (thisSong.getFiletype().equals("XML") || thisSong.getFiletype().equals("TXT")) {
+                        thisSong.setLyrics(content);
+                        String oldname = thisSong.getFilename();
+                        Uri oldUri = mainActivityInterface.getStorageAccess().getUriForItem("Songs", thisSong.getFolder(), thisSong.getFilename());
+                        String newname = oldname.replace(".txt", "");
+                        thisSong.setFilename(newname);
+                        thisSong.setTitle(newname);
+                        String xml = mainActivityInterface.getProcessSong().getXML(thisSong);
+                        success = mainActivityInterface.getStorageAccess().doStringWriteToFile(
+                                "Songs", thisSong.getFolder(), newname, xml);
+                        if (success && !newname.equals(oldname)) {
+                            // Remove the obsolete file
+                            mainActivityInterface.getStorageAccess().deleteFile(oldUri);
+                        }
+                    }
+                    Log.d(TAG, "fixSong: " + success);
+                    if (success) {
+                        mainActivityInterface.getSQLiteHelper().updateSong(thisSong);
+                    }
                 }
             }
         }

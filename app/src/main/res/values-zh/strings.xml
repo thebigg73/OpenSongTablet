@@ -646,6 +646,7 @@
     <string name="size">"尺寸"</string>
     <string name="slide">"页面"</string>
     <string name="slide_add_page">"插入新的页面自定义幻灯片"</string>
+    <string name="small_buttons">小按钮</string>
     <string name="song">"歌"</string>
     <string name="song_actions">歌曲动作</string>
     <string name="song_actions_description">调整歌曲动作的设置</string>
@@ -723,6 +724,7 @@
     <string name="text_extract">从文件中提取文本 (OCR)</string>
     <string name="text_extract_check">OpenSongApp 将尝试自动查找歌曲内容，但是，您可以通过单击此按钮手动检查。</string>
     <string name="text_extract_website">在此页面上找到的歌曲文本。 点击这里提取。</string>
+    <string name="text_size">字体大小</string>
     <string name="theme">"背景主题"</string>
     <string name="theme_choose">"切换主题"</string>
     <string name="theme_custom1">"自定义1"</string>

@@ -646,6 +646,7 @@
     <string name="size">"Rozmiar"</string>
     <string name="slide">"Paź"</string>
     <string name="slide_add_page">"Włóż nową stronę obyczajowa slajdu"</string>
+    <string name="small_buttons">Małe guziki</string>
     <string name="song">"PIOSENKA"</string>
     <string name="song_actions">Akcje piosenki</string>
     <string name="song_actions_description">Dostosuj ustawienia dla działań związanych z utworami</string>
@@ -723,6 +724,7 @@
     <string name="text_extract">Wyodrębnij tekst z pliku (OCR)</string>
     <string name="text_extract_check">OpenSongApp spróbuje automatycznie znaleźć zawartość utworu, jednak możesz to sprawdzić ręcznie, klikając ten przycisk.</string>
     <string name="text_extract_website">Tekst utworu znaleziony na tej stronie. Kliknij tutaj, aby wyodrębnić.</string>
+    <string name="text_size">Rozmiar czcionki</string>
     <string name="theme">"Motyw"</string>
     <string name="theme_choose">"Przełącz Skórka"</string>
     <string name="theme_custom1">"Niestandardowy 1"</string>

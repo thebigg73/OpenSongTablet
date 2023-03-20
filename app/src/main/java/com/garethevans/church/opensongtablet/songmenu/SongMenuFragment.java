@@ -43,6 +43,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     // The helper classes used
     private MenuSongsBinding myView;
     private boolean songButtonActive = true;
+    private boolean hasShownMenuShowcase = false;
     private String folderSearchVal = "", artistSearchVal = "", keySearchVal = "", tagSearchVal = "",
             filterSearchVal = "", titleSearchVal = "";
     private boolean songListSearchByFolder, songListSearchByArtist, songListSearchByKey,
@@ -742,6 +743,17 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
             songListAdapter.updateSongMenuSortTitles(mainActivityInterface.getPreferences().
                     getMyPreferenceBoolean("songMenuSortTitles",true));
         }
+    }
+
+
+    // Showing the main showcase for the menu gets triggered onDrawerOpened.  This can be called
+    // twice in quick succession before the preference is checked.  Add this check
+    public boolean getHasShownMenuShowcase() {
+        return hasShownMenuShowcase;
+    }
+
+    public void setHasShownMenuShowcase(boolean hasShownMenuShowcase) {
+        this.hasShownMenuShowcase = hasShownMenuShowcase;
     }
 
 }

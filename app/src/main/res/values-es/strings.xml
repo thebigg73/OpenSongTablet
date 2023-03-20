@@ -646,6 +646,7 @@
     <string name="size">"Tamaño"</string>
     <string name="slide">"Página"</string>
     <string name="slide_add_page">"Insertar nueva página de presentación personalizada"</string>
+    <string name="small_buttons">Botones pequeños</string>
     <string name="song">"CANCIÓN"</string>
     <string name="song_actions">Acciones de canciones</string>
     <string name="song_actions_description">Ajustar la configuración de las acciones de la canción</string>
@@ -723,6 +724,7 @@
     <string name="text_extract">Extraer texto del archivo (OCR)</string>
     <string name="text_extract_check">OpenSongApp intentará encontrar el contenido de la canción automáticamente, sin embargo, puede verificarlo manualmente haciendo clic en este botón.</string>
     <string name="text_extract_website">Texto de la canción encontrado en esta página. Haga clic aquí para extraer.</string>
+    <string name="text_size">Tamano del texto</string>
     <string name="theme">"Tema"</string>
     <string name="theme_choose">"Cambie Tema"</string>
     <string name="theme_custom1">"Personalizado 1"</string>
