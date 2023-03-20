@@ -646,6 +646,7 @@
     <string name="size">Розмір</string>
     <string name="slide">Слайд</string>
     <string name="slide_add_page">Вставте нову сторінку слайд користувача</string>
+    <string name="small_buttons">Маленькі кнопки</string>
     <string name="song">Пісня</string>
     <string name="song_actions">Пісенні дії</string>
     <string name="song_actions_description">Налаштуйте параметри дій пісні</string>
@@ -723,6 +724,7 @@
     <string name="text_extract">Витяг тексту з файлу (OCR)</string>
     <string name="text_extract_check">OpenSongApp намагатиметься автоматично знайти вміст пісні, однак ви можете перевірити це вручну, натиснувши цю кнопку.</string>
     <string name="text_extract_website">Текст пісні знайдено на цій сторінці. Натисніть тут, щоб витягти.</string>
+    <string name="text_size">Розмір тексту</string>
     <string name="theme">Тема</string>
     <string name="theme_choose">Перемикання теми</string>
     <string name="theme_custom1">Тема 1</string>

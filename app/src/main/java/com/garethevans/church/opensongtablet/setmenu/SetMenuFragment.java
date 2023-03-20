@@ -28,6 +28,8 @@ import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
+
 public class SetMenuFragment extends Fragment {
 
     private MenuSetsBinding myView;

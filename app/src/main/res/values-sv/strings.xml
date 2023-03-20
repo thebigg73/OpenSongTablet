@@ -646,6 +646,7 @@
     <string name="size">"Storlek"</string>
     <string name="slide">"Glida"</string>
     <string name="slide_add_page">"Infoga ny sida till anpassad bild"</string>
+    <string name="small_buttons">Små knappar</string>
     <string name="song">"LÅT"</string>
     <string name="song_actions">Låtåtgärder</string>
     <string name="song_actions_description">Justera inställningar för sångåtgärder</string>
@@ -723,6 +724,7 @@
     <string name="text_extract">Extrahera text från fil (OCR)</string>
     <string name="text_extract_check">OpenSongApp kommer att försöka hitta låtinnehåll automatiskt, men du kan kontrollera manuellt genom att klicka på den här knappen.</string>
     <string name="text_extract_website">Låttext finns på den här sidan. Klicka här för att extrahera.</string>
+    <string name="text_size">Textstorlek</string>
     <string name="theme">"Tema"</string>
     <string name="theme_choose">"Byt tema"</string>
     <string name="theme_custom1">"Anpassad 1"</string>

@@ -5,7 +5,6 @@ import android.graphics.Canvas;
 import android.graphics.PointF;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
@@ -51,6 +50,7 @@ public class MyRecyclerView extends RecyclerView  implements RecyclerView.Smooth
     private final LinearInterpolator linearInterpolator = new LinearInterpolator();
     private final ScrollListener scrollListener;
     private final ItemTouchListener itemTouchListener;
+    private RecyclerView.SmoothScroller smoothScroller;
 
     RecyclerView.SmoothScroller smoothScroller;
 
@@ -152,7 +152,6 @@ public class MyRecyclerView extends RecyclerView  implements RecyclerView.Smooth
             int rollingTotal = 0;
             ArrayList<Integer> yPositions = new ArrayList<>();
             for (int y : recyclerLayoutManager.getChildSizes()) {
-                //Log.d(TAG,"rollingTotal:"+rollingTotal);
                 yPositions.add(rollingTotal);
                 rollingTotal += y;
             }

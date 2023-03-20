@@ -71,6 +71,7 @@ import com.garethevans.church.opensongtablet.customslides.CustomSlideFragment;
 import com.garethevans.church.opensongtablet.customviews.DrawNotes;
 import com.garethevans.church.opensongtablet.customviews.MyToolbar;
 import com.garethevans.church.opensongtablet.databinding.ActivityBinding;
+import com.garethevans.church.opensongtablet.drummer.Drummer;
 import com.garethevans.church.opensongtablet.export.ExportActions;
 import com.garethevans.church.opensongtablet.export.PrepareFormats;
 import com.garethevans.church.opensongtablet.filemanagement.AreYouSureBottomSheet;
@@ -94,7 +95,6 @@ import com.garethevans.church.opensongtablet.interfaces.NearbyReturnActionsInter
 import com.garethevans.church.opensongtablet.interfaces.SwipeDrawingInterface;
 import com.garethevans.church.opensongtablet.links.LinksFragment;
 import com.garethevans.church.opensongtablet.metronome.Metronome;
-import com.garethevans.church.opensongtablet.drummer.Drummer;
 import com.garethevans.church.opensongtablet.midi.Midi;
 import com.garethevans.church.opensongtablet.midi.MidiFragment;
 import com.garethevans.church.opensongtablet.nearby.NearbyConnections;
@@ -809,7 +809,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             public void onDrawerOpened(@NonNull View drawerView) {
                 menuOpen = true;
                 hideActionButton(true);
-                if (setSongMenuFragment()) {
+                if (setSongMenuFragment() && !songMenuFragment.getHasShownMenuShowcase()) {
+                    songMenuFragment.setHasShownMenuShowcase(true);
                     showTutorial("songsetMenu",null);
                 }
                 // Hide the keyboard
@@ -1303,7 +1304,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
     @Override
     public void showTutorial(String what, ArrayList<View> viewsToHighlight) {
-        //MaterialShowcaseView.resetAll(this);
         if (settingsButton==null) {
             invalidateOptionsMenu();
         }

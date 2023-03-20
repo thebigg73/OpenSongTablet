@@ -25,7 +25,7 @@ public class BatteryStatus extends BroadcastReceiver {
 
     private float batteryTextSize, charge;
     private int batteryDialThickness;
-    private int toolbarHeight;
+    private final int toolbarHeight;
     private boolean batteryTextOn, batteryDialOn;
     private final TextView batteryCharge;
     private final ImageView batteryImage;

@@ -805,6 +805,7 @@
     <string name="size">Size</string>
     <string name="slide">Slide</string>
     <string name="slide_add_page">Insert new page to custom slide</string>
+    <string name="small_buttons">Small buttons</string>
     <string name="song">Song</string>
     <string name="song_actions">Song actions</string>
     <string name="song_actions_description">Adjust settings for song actions</string>
@@ -883,6 +884,7 @@
     <string name="text_extract">Extract text from file (OCR)</string>
     <string name="text_extract_check">OpenSongApp will try to find song content automatically, however, you can manually check by clicking on this button.</string>
     <string name="text_extract_website">Song text found on this page.  Click here to extract.</string>
+    <string name="text_size">Text size</string>
     <string name="theme">Theme</string>
     <string name="theme_choose">Switch theme</string>
     <string name="theme_custom1">Custom 1</string>
@@ -1114,7 +1116,7 @@ Check out the categories in the right hand options menu.
     <string name="website_song_onsong" translatable="false">https://www.opensongapp.com/user-manual/songs/add-songs/ios-onsong</string>
     <string name="website_song_opensongapp" translatable="false">https://www.opensongapp.com/user-manual/songs/add-songs/backup-songs</string>
     <string name="website_song_sample" translatable="false">https://www.opensongapp.com/user-manual/songs/add-songs/sample-songs</string>
-    <string name="website_sound_level_meter" translatable="false">https://www.opensongapp.com/user-manual/sound-level-meter</string>
+    <string name="website_sound_level_meter" translatable="false">https://www.opensongapp.com/user-manual/utilities/sound-level-meter</string>
     <string name="website_storage_overview" translatable="false">https://www.opensongapp.com/user-manual/storage/storage-overview</string>
     <string name="website_storage_set" translatable="false">https://www.opensongapp.com/user-manual/storage/set-storage-location</string>
     <string name="website_swipe_settings" translatable="false">https://www.opensongapp.com/user-manual/controls/swipe-settings</string>
@@ -1127,6 +1129,4 @@ Check out the categories in the right hand options menu.
     <string name="youtube" translatable="false">YouTube</string>
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zoom_level">Zoom level</string>
-    <string name="text_size">Text size</string>
-    <string name="small_buttons">Small buttons</string>
 </resources>
