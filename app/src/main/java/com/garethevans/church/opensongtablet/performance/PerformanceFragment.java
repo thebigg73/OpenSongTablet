@@ -744,8 +744,10 @@ public class PerformanceFragment extends Fragment {
                     3    col1_1Height,      // Column 1 total height
                     4    sectionSpace}      // Section space per view except last column */
                     scaleFactor = scaleInfo[1];
-                    widthAfterScale = (int)(scaleInfo[2] * scaleFactor);
-                    heightAfterScale = (int)(scaleInfo[3] * scaleFactor);
+                    widthBeforeScale = (int)scaleInfo[2];
+                    heightBeforeScale = (int)scaleInfo[3];
+                    widthAfterScale = (int)(widthBeforeScale * scaleFactor);
+                    heightAfterScale = (int)(heightBeforeScale * scaleFactor);
                     myView.pageHolder.getLayoutParams().width = widthAfterScale;
                 } else if (scaleInfo[0]==2) {
 
@@ -760,6 +762,8 @@ public class PerformanceFragment extends Fragment {
                     8    col2_2Height,       // Column 2 total height
                     9    sectionSpace}       // Section space per view except last column */
                     scaleFactor = Math.max(scaleInfo[3],scaleInfo[6]);
+                    widthBeforeScale = availableWidth;
+                    heightBeforeScale = (int)Math.max(scaleInfo[5],scaleInfo[8]);
                     widthAfterScale = availableWidth;
                     heightAfterScale = (int)Math.max(scaleInfo[3]*scaleInfo[5],scaleInfo[6]*scaleInfo[8]);
                     myView.pageHolder.getLayoutParams().width = availableWidth;
@@ -779,7 +783,8 @@ public class PerformanceFragment extends Fragment {
                     11   col3_3Width,        // Column 3 max width
                     12   col3_3Height,       // Column 3 total height
                     13   sectionSpace};      // Section space per view except last in column */
-
+                    widthBeforeScale = (int)availableWidth;
+                    heightBeforeScale = (int)Math.max(scaleInfo[6],Math.max(scaleInfo[9],scaleInfo[12]));
                     widthAfterScale = availableWidth;
                     scaleFactor = Math.max(scaleInfo[4],Math.max(scaleInfo[7],scaleInfo[10]));
                     heightAfterScale = (int)Math.max(scaleInfo[4]*scaleInfo[6],Math.max(scaleInfo[7]*scaleInfo[9],scaleInfo[10]*scaleInfo[12]));
@@ -854,7 +859,7 @@ public class PerformanceFragment extends Fragment {
 
             // Now deal with the highlighter file
             if (mainActivityInterface.getMode().equals(mode_performance)) {
-                dealWithHighlighterFile(widthBeforeScale, heightBeforeScale);
+                dealWithHighlighterFile(widthAfterScale, heightAfterScale);
             }
 
             // Load up the sticky notes if the user wants them

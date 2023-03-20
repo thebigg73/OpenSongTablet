@@ -724,7 +724,6 @@ public class ProcessSong {
     }
 
     public String beautifyHeading(String line) {
-        Log.d(TAG,"BEFORE line:"+line);
         boolean annotated = line.contains("-]");
 
         if (line.equals("")) {
@@ -785,11 +784,7 @@ public class ProcessSong {
                     break;
             }
         }
-
         line = line.replace("[", "").replace("]", "");
-
-
-        Log.d(TAG,"AFTER  line:"+line);
         return line.trim();
     }
 
@@ -2138,17 +2133,12 @@ public class ProcessSong {
                     twoColumnScale = Math.min(col1_2ScaleBest, col2_2ScaleBest);
 
                 } else if (forceColumnInfo[0] == 3) {
-                    for (int x=0;x<sectionWidths.size();x++) {
-                        Log.d(TAG,"["+x+"]: "+sectionWidths.get(x)+"x"+sectionHeights.get(x));
-                    }
                     // Three columns, so get the widths and heights of all of them
                     columnBreak3_a = forceColumnInfo[1];
                     columnBreak3_b = forceColumnInfo[2];
                     int totalSectionSpace1_3 = sectionSpace * (columnBreak3_a - 1);
                     int totalSectionSpace2_3 = sectionSpace * (columnBreak3_b - columnBreak3_a - 1);
                     int totalSectionSpace3_3 = sectionSpace * (sectionWidths.size() - columnBreak3_b - 1);
-                    Log.d(TAG,"sections:"+sectionWidths.size()+"  break3a:"+columnBreak3_a+"  break3b:"+columnBreak3_b);
-                    Log.d(TAG,"totalSectionSpace1_3:"+totalSectionSpace1_3+"  totalSectionSpace2_3:"+totalSectionSpace2_3+"  totalSectionSpace3_3:"+totalSectionSpace3_3);
                     col1_3Width  = getMaxValue(sectionWidths,0,columnBreak3_a);
                     col1_3Height = getTotal(sectionHeights,0,columnBreak3_a) + totalSectionSpace1_3;
                     col2_3Width  = getMaxValue(sectionWidths,columnBreak3_a,columnBreak3_b);
@@ -2299,9 +2289,6 @@ public class ProcessSong {
                         col3_3Width,        // Column 3 max width
                         col3_3Height,       // Column 3 total height
                         sectionSpace};      // Section space per view except last in column
-                Log.d(TAG,"col1_3Height:"+col1_3Height+"  col2_3Height:"+col2_3Height+"  col3_3Height:"+col3_3Height);
-                Log.d(TAG,"col1_3ScaleBest:"+col1_3ScaleBest+"  col2_3ScaleBest:"+col2_3ScaleBest+"  col3_3ScaleBest:"+col3_3ScaleBest);
-
             } else {
                 oneColumn = true;
             }
@@ -2331,7 +2318,6 @@ public class ProcessSong {
         }
 
         if (oneColumn && !twoColumn && !threeColumn) {
-            Log.d(TAG,"autoScale:"+autoScale+"  oneColumnScale:"+oneColumnScale);
             // Compare with max scaling due to font size allowed
             if (autoScale.equals("Y")) {
                 oneColumnScale = Math.min(maxFontScale, oneColumnScale);
@@ -2442,7 +2428,6 @@ public class ProcessSong {
             }
         }
         int[] forceColumnsInfo = new int[]{cols,split1,split2};
-        Log.d(TAG,"forceCols:"+doForceColumns+"  split1:"+split1+"  split2:"+split2);
 
         // Figure out the best option of 1,2 or 3 columns and how to arrange them
         float[] columnInfo = columnSplitAlgorithm(sectionWidths, sectionHeights, availableWidth,
