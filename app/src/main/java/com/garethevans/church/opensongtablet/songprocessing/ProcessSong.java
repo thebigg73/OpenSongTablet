@@ -836,11 +836,8 @@ public class ProcessSong {
     public String filterAndGroupLines(String string, boolean displayChords) {
         // IV - If no content then return an empty section
         if (string == null || string.trim().isEmpty()) {
-            return "\n\n§[]";
+            return "\n§[]";
         }
-
-        // IV - Protect section breaks
-        string = string.replace("\n\n§", "\n¬");
 
         StringBuilder sb = new StringBuilder();
         String[] lines = string.split("\n");
@@ -874,18 +871,18 @@ public class ProcessSong {
             } else if (lines[i].startsWith(" ") && !displayChords && displayLyrics) {
                 // IV - When displaying lyrics only - remove typical word splits, white space and trim - beautify!
                 sb.append("\n ").append(fixLyricsOnlySpace(lines[i]));
-            } else if (lines[i].contains("¬") || (displayLyrics && !lines[i].startsWith("."))) {
+            } else if (lines[i].contains("§") || (displayLyrics && !lines[i].startsWith("."))) {
                 // IV - Always add section breaks.  Add other non chord lines when displaying lyrics.
                 sb.append("\n").append(fixWordStretch(lines[i]));
             }
         }
         String fixed = sb.toString();
-        // IV - protect a leading section break
-        if (fixed.startsWith("\n¬")) {
+        // IV - Correct any leading section break
+        if (fixed.startsWith("\n§")) {
             fixed = "\n" + fixed;
         }
         // IV - Lines are added with leading \n, the first needs to be removed.  We restore section breaks.
-        return fixed.replaceFirst("\n","").replace("¬","\n§");
+        return fixed.replaceFirst("\n","");
     }
 
     private boolean shouldNextLineBeAdded(int nl, String[] lines, boolean incnormallyricline) {
@@ -1615,10 +1612,6 @@ public class ProcessSong {
                     .replace("¬"," ")
                     // Remove whitespace before the section marker
                     .replaceAll("\\s+§","\n§");
-            // IV - Correct any leading section break after the trim
-            if (lyrics.startsWith("§")) {
-                lyrics = "\n" + lyrics;
-            }
         }
 
         // 12. Go through the lyrics and get section headers and add to the song object
