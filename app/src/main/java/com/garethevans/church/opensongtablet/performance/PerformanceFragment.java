@@ -698,7 +698,7 @@ public class PerformanceFragment extends Fragment {
                         myView.recyclerView.setVisibility(View.VISIBLE);
                         myView.recyclerView.startAnimation(animSlideIn);
 
-                        dealWithStuffAfterReady();
+                            dealWithStuffAfterReady();
 
                         // Get a null screenshot
                         getScreenshot(0, 0, 0);
@@ -787,14 +787,28 @@ public class PerformanceFragment extends Fragment {
 
                 // Pass this scale factor to the zoom layout as the new minimum scale
                 myView.zoomLayout.setCurrentScale(scaleFactor);
-
                 myView.zoomLayout.setSongSize(widthAfterScale,heightAfterScale);
 
-                myView.zoomLayout.post(() -> {
+                // Set the load status to the song (used to enable nearby section change listener)
+                mainActivityInterface.getSong().setCurrentlyLoading(false);
+
+                // Release the processing lock
+                processingTestView = false;
+
+                // Set the positions
+                mainActivityInterface.getDisplayPrevNext().getPositions();
+
+                // Slide in
+                long QOSAdjustment = doSongLoadQOSTime - (System.currentTimeMillis() - doSongLoadStartTime);
+                Log.d(TAG, "Song QOS adjustment: " + Math.max(0, QOSAdjustment) + " (" + (doSongLoadQOSTime - QOSAdjustment) + ")");
+
+                myView.zoomLayout.postDelayed(() -> {
                     try {
                         // The new song sizes were sent to the zoomLayout in ProcessSong
                         int topPadding = 0;
 
+                        // IV - We need to request layout to get songsheet information added ahead of animate in. Odd!
+                        myView.pageHolder.requestLayout();
                         myView.pageHolder.setVisibility(View.VISIBLE);
                         myView.pageHolder.startAnimation(animSlideIn);
 
@@ -805,7 +819,7 @@ public class PerformanceFragment extends Fragment {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                });
+                }, Math.max(0, QOSAdjustment));
             }
 
         } catch (Exception e) {
@@ -879,12 +893,6 @@ public class PerformanceFragment extends Fragment {
             displayInterface.updateDisplay("newSongLoaded");
             displayInterface.updateDisplay("setSongInfo");
             displayInterface.updateDisplay("setSongContent");
-
-            // Send a call to nearby devices to process the song at their end
-            if (mainActivityInterface.getNearbyConnections().hasValidConnections() &&
-                    mainActivityInterface.getNearbyConnections().getIsHost()) {
-                mainActivityInterface.getNearbyConnections().sendSongPayload();
-            }
 
             // If we opened the app with and intent/file, check if we need to import
             tryToImportIntent();
@@ -1068,7 +1076,13 @@ public class PerformanceFragment extends Fragment {
         // Scroll the recyclerView to the position as long as we aren't in an autoscroll
         if (!mainActivityInterface.getAutoscroll().getIsAutoscrolling()) {
             //myView.recyclerView.smoothScrollBy(0,500);
-            myView.recyclerView.doSmoothScrollTo(recyclerLayoutManager, position);
+
+            // IV - Use a snap to top scroller if scrolling to the top of the screen
+            if (mainActivityInterface.getPreferences().getMyPreferenceFloat("stageModeScale",0.8f) == 1.0f) {
+                myView.recyclerView.smoothScrollTo(getContext(),recyclerLayoutManager, position);
+            } else {
+                myView.recyclerView.doSmoothScrollTo(recyclerLayoutManager, position);
+            }
         }
         mainActivityInterface.getPresenterSettings().setCurrentSection(position);
         displayInterface.updateDisplay("showSection");

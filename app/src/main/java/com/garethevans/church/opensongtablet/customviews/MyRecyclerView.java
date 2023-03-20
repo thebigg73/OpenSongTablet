@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.PointF;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
@@ -11,6 +13,7 @@ import android.view.animation.LinearInterpolator;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
@@ -49,13 +52,15 @@ public class MyRecyclerView extends RecyclerView  implements RecyclerView.Smooth
     private final ScrollListener scrollListener;
     private final ItemTouchListener itemTouchListener;
 
+    RecyclerView.SmoothScroller smoothScroller;
+
     public MyRecyclerView(@NonNull Context context) {
         super(context);
         scrollListener = new ScrollListener();
         itemTouchListener = new ItemTouchListener();
         addOnScrollListener(scrollListener);
         addOnItemTouchListener(itemTouchListener);
-        setOverScrollMode(OVER_SCROLL_ALWAYS);
+        setOverScrollMode(OVER_SCROLL_NEVER);
         setClipChildren(false);
         setClipToPadding(false);
         setItemAnimator(null);
@@ -69,7 +74,7 @@ public class MyRecyclerView extends RecyclerView  implements RecyclerView.Smooth
         itemTouchListener = new ItemTouchListener();
         addOnScrollListener(scrollListener);
         addOnItemTouchListener(itemTouchListener);
-        setOverScrollMode(OVER_SCROLL_ALWAYS);
+        setOverScrollMode(OVER_SCROLL_NEVER);
         setClipChildren(false);
         floatScrollPos = 0;
         mScaleDetector = new ScaleGestureDetector(getContext(), new ScaleListener());
@@ -121,6 +126,23 @@ public class MyRecyclerView extends RecyclerView  implements RecyclerView.Smooth
         }
     }
 
+    public void smoothScrollTo(Context c, LayoutManager layoutManager, int position) {
+        smoothScroller = new LinearSmoothScroller(c) {
+            @Override
+            protected int getVerticalSnapPreference() {
+                return LinearSmoothScroller.SNAP_TO_START;
+            }
+
+            @Override
+            protected float calculateSpeedPerPixel(DisplayMetrics displayMetrics) {
+                return 100f / displayMetrics.densityDpi;
+            }
+
+        };
+        smoothScroller.setTargetPosition(position);
+        layoutManager.startSmoothScroll(smoothScroller);
+    }
+
     public void doSmoothScrollTo(RecyclerLayoutManager recyclerLayoutManager, int position) {
         try {
             // Try to work out scrolling amount
@@ -136,20 +158,23 @@ public class MyRecyclerView extends RecyclerView  implements RecyclerView.Smooth
             }
 
             int viewHeight;
-            int spaceAbove = (int) ((1.0f - mainActivityInterface.getPreferences().getMyPreferenceFloat("stageModeScale",0.8f)) * getHeight());
+            int spaceAbove = (int)((1.0f - mainActivityInterface.getPreferences().getMyPreferenceFloat("stageModeScale",0.8f)) * getHeight());
             // Work out the space to try to leave above the view
             if (recyclerLayoutManager.getChildSizes().size()>position) {
                 viewHeight = recyclerLayoutManager.getChildSizes().get(position);
+                spaceAbove = (int) ((1.0f - mainActivityInterface.getPreferences().getMyPreferenceFloat("stageModeScale",0.8f)) * (getHeight() - viewHeight));
             }
 
             // Get the current scroll position, the position we need to get to and how far this is
             int currScroll = recyclerLayoutManager.getScrollY();
             int scrollToY = yPositions.get(position);
             int scrollAmount = scrollToY - currScroll - spaceAbove;
+            Log.d(TAG,"scrollAmount = " + scrollAmount);
 
-            // Do the scrolling
-            smoothScrollBy(0, scrollAmount);
-
+            // Do the scrolling, but not if small movement
+            if (Math.abs(scrollAmount) > 25) {
+                smoothScrollBy(0, scrollAmount);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

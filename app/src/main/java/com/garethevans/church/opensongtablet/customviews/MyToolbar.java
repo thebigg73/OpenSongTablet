@@ -40,6 +40,8 @@ public class MyToolbar extends MaterialToolbar {
     private final TextView capo;
     private final TextClock clock;
     private final ImageView setIcon, batteryimage;
+    private final RelativeLayout songandauthor;
+    private final ImageView webHelp;
     private final com.google.android.material.textview.MaterialTextView batterycharge;
     private Handler delayActionBarHide;
     private Runnable hideActionBarRunnable;
@@ -75,7 +77,9 @@ public class MyToolbar extends MaterialToolbar {
         batteryholder = v.findViewById(R.id.batteryholder);
         batteryimage = v.findViewById(R.id.batteryimage);
         batterycharge = v.findViewById(R.id.batterycharge);
+        songandauthor = v.findViewById(R.id.songandauthor);
         clock = v.findViewById(R.id.digitalclock);
+        webHelp = v.findViewById(R.id.webHelp);
 
         batteryholder.setOnClickListener(v1 -> {
             mainActivityInterface.showActionBar();
@@ -161,7 +165,7 @@ public class MyToolbar extends MaterialToolbar {
     public void setActionBar(String newtitle) {
         // If changing, reset help
         if(!(title.getText().equals(newtitle))) {
-            // By default hide help (can be shown later
+            // By default hide help (can be shown later)
             mainActivityInterface.updateToolbarHelp("");
         }
 
@@ -232,6 +236,13 @@ public class MyToolbar extends MaterialToolbar {
                     return true;
                 });
             }
+            if (songandauthor!=null) {
+                songandauthor.setOnClickListener(v -> openDetails());
+                songandauthor.setOnLongClickListener(view -> {
+                    editSong();
+                    return true;
+                });
+            }
 
         } else {
             // We are in a different fragment, so hide the song info stuff
@@ -244,6 +255,8 @@ public class MyToolbar extends MaterialToolbar {
                 hideView(title, false);
                 hideView(author, true);
                 hideView(key, true);
+                songandauthor.setOnClickListener(null);
+                songandauthor.setOnLongClickListener(null);
             }
         }
     }
@@ -356,7 +369,7 @@ public class MyToolbar extends MaterialToolbar {
     }
 
     public void updateClock() {
-        // IV - Refresh form preferences as may have changed
+        // IV - Refresh from preferences as may have changed
         updateActionBarPrefs();
         mainActivityInterface.getTimeTools().setFormat(clock,clockTextSize,
                 clockOn, clock24hFormat, clockSeconds);
