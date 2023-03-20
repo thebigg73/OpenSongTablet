@@ -99,7 +99,9 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
             str = str.replace("____groupline____","\n");
         } else {
             // Just text, so trim spaces
-            str = mainActivityInterface.getProcessSong().fixExcessSpaces(str);
+            if (mainActivityInterface.getPreferences().getMyPreferenceBoolean("trimWordSpacing", true)) {
+                str = mainActivityInterface.getProcessSong().fixExcessSpaces(str);
+            }
         }
 
         String[] lines = str.split("\n");
