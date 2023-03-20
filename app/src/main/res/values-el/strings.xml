@@ -646,6 +646,7 @@
     <string name="size">"Size"</string>
     <string name="slide">"Διαφάνεια"</string>
     <string name="slide_add_page">"Insert new page to custom slide"</string>
+    <string name="small_buttons">Μικρά κουμπιά</string>
     <string name="song">"ΤΡΑΓΟΥΔΙ"</string>
     <string name="song_actions">Δράσεις τραγουδιού</string>
     <string name="song_actions_description">Προσαρμόστε τις ρυθμίσεις για τις ενέργειες τραγουδιού</string>
@@ -723,6 +724,7 @@
     <string name="text_extract">Εξαγωγή κειμένου από αρχείο (OCR)</string>
     <string name="text_extract_check">Το OpenSongApp θα προσπαθήσει να βρει αυτόματα το περιεχόμενο του τραγουδιού, ωστόσο, μπορείτε να το ελέγξετε χειροκίνητα κάνοντας κλικ σε αυτό το κουμπί.</string>
     <string name="text_extract_website">Το κείμενο του τραγουδιού βρίσκεται σε αυτή τη σελίδα. Κάντε κλικ εδώ για εξαγωγή.</string>
+    <string name="text_size">Μέγεθος κειμένου</string>
     <string name="theme">"Theme"</string>
     <string name="theme_choose">"Αλλαγή θέματος"</string>
     <string name="theme_custom1">"Custom 1"</string>

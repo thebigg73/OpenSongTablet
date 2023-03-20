@@ -646,6 +646,7 @@
     <string name="size">"サイズ"</string>
     <string name="slide">"ページ"</string>
     <string name="slide_add_page">"カスタムスライドに新しいページを挿入"</string>
+    <string name="small_buttons">小さなボタン</string>
     <string name="song">"歌"</string>
     <string name="song_actions">歌のアクション</string>
     <string name="song_actions_description">ソングアクションの設定を調整する</string>
@@ -723,6 +724,7 @@
     <string name="text_extract">ファイルからテキストを抽出する（OCR）</string>
     <string name="text_extract_check">OpenSongAppは曲のコンテンツを自動的に検索しようとしますが、このボタンをクリックして手動で確認できます。</string>
     <string name="text_extract_website">このページにある曲のテキスト。 抽出するには、ここをクリックしてください。</string>
+    <string name="text_size">文字サイズ</string>
     <string name="theme">"テーマ"</string>
     <string name="theme_choose">"スイッチのテーマ"</string>
     <string name="theme_custom1">"カスタム1"</string>

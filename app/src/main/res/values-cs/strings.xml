@@ -646,6 +646,7 @@
     <string name="size">"Velikost"</string>
     <string name="slide">"Stránka"</string>
     <string name="slide_add_page">"Vložit novou stránku na vlastní snímek"</string>
+    <string name="small_buttons">Malá tlačítka</string>
     <string name="song">"PÍSEŇ"</string>
     <string name="song_actions">Akce s písněmi</string>
     <string name="song_actions_description">Upravte nastavení pro akce skladeb</string>
@@ -723,6 +724,7 @@
     <string name="text_extract">Extrahovat text ze souboru (OCR)</string>
     <string name="text_extract_check">OpenSongApp se pokusí najít obsah skladby automaticky, kliknutím na toto tlačítko to však můžete zkontrolovat ručně.</string>
     <string name="text_extract_website">Text písně nalezený na této stránce. Klikněte sem pro extrahování.</string>
+    <string name="text_size">Velikost textu</string>
     <string name="theme">"Téma"</string>
     <string name="theme_choose">"Změnit vzhled"</string>
     <string name="theme_custom1">"Custom 1"</string>

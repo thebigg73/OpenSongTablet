@@ -646,6 +646,7 @@
     <string name="size">"Größe"</string>
     <string name="slide">"Folie"</string>
     <string name="slide_add_page">"Neue Seite in benutzerdefinierte Folie einfügen"</string>
+    <string name="small_buttons">Kleine Knöpfe</string>
     <string name="song">SONG</string>
     <string name="song_actions">Song-Aktionen</string>
     <string name="song_actions_description">Passen Sie die Einstellungen für Songaktionen an</string>
@@ -723,6 +724,7 @@
     <string name="text_extract">Text aus Datei extrahieren (OCR)</string>
     <string name="text_extract_check">OpenSongApp wird versuchen, Songinhalte automatisch zu finden, Sie können dies jedoch manuell überprüfen, indem Sie auf diese Schaltfläche klicken.</string>
     <string name="text_extract_website">Liedtext auf dieser Seite gefunden. Klicken Sie hier, um zu extrahieren.</string>
+    <string name="text_size">Textgröße</string>
     <string name="theme">"Thema"</string>
     <string name="theme_choose">"Design umschalten"</string>
     <string name="theme_custom1">"Benutzerdefiniert 1"</string>
