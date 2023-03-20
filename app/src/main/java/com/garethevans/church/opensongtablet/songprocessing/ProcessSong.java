@@ -397,6 +397,8 @@ public class ProcessSong {
         return s.replaceAll("_", "")
                 .replaceAll("\\s+-\\s+", "")
                 .replaceAll("\\s{2,}", " ")
+                // Fix sentences
+                .replace(". ", ".  ")
                 .trim();
     }
 
@@ -910,6 +912,9 @@ public class ProcessSong {
             string = chordbit + groupline_string + string;
         }
 
+        boolean applyFixExcessSpaces = (trimWordSpacing || presentation || !mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) &&
+                (!multiLineVerseKeepCompact && !multilineSong));
+
         // Split the group into lines
         String[] lines = string.split(groupline_string);
 
@@ -955,6 +960,8 @@ public class ProcessSong {
                 }
             }
         }
+        // IV - Add the end of line to positions
+        pos.add(minlength);
 
         String linetype;
 
@@ -980,7 +987,7 @@ public class ProcessSong {
             int color = getFontColor(linetype, lyricColor, chordColor, capoColor);
             int startpos = 0;
             for (int endpos : pos) {
-                if (endpos != 0 && endpos>startpos && endpos<lines[t].length()) {
+                if (endpos != 0 && endpos>startpos && endpos<lines[t].length() + 1) {
                     TextView textView = newTextView(linetype, typeface, size, color);
                     String str = lines[t].substring(startpos, endpos);
                     if (startpos == 0) {
@@ -1020,18 +1027,13 @@ public class ProcessSong {
                                 str = str.replace("_","");
                                 str = str.replaceAll("[|]"," ");
                                 if (!displayChords) {
-                                    // IV - Remove typical word splits, white space and trim - beautify!
+                                    // IV - Remove typical word splits, white space and beautify!
                                     str = fixLyricsOnlySpace(str);
-                                }
-                                if (trimWordSpacing) {
-                                    if (!multiLineVerseKeepCompact && !multilineSong) {
+                                } else {
+                                    if (applyFixExcessSpaces) {
                                         str = fixExcessSpaces(str);
                                     }
                                 }
-                                if (presentation || !mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance))) {
-                                    str = fixExcessSpaces(str);
-                                }
-
                                 SpannableStringBuilder spannableString = getSpannableBracketString(str);
                                 textView.setText(spannableString);
                             } else {
@@ -1040,8 +1042,7 @@ public class ProcessSong {
                             break;
                         default:
                             // Just set the text
-                            if (presentation || !mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) ||
-                                    (!multiLineVerseKeepCompact && !multilineSong)) {
+                            if (applyFixExcessSpaces) {
                                 str = fixExcessSpaces(str);
                             }
                             SpannableStringBuilder spannableString = getSpannableBracketString(str);
@@ -1053,78 +1054,6 @@ public class ProcessSong {
                     }
                     startpos = endpos;
                 }
-            }
-            // Add the final position
-            TextView textView = newTextView(linetype, typeface, size, color);
-            String str = lines[t].substring(startpos);
-            // IV - Code must be the same as above
-            if (startpos == 0) {
-                str = trimOutLineIdentifiers(linetype, str);
-            }
-            // If this is a chord line that either has highlighting, or needs to to include capo chords
-            // We process separately, otherwise it is handled in the last default 'else'
-            switch (linetype) {
-                case "chord":
-                    // Only show this if we want chords and if there is a capo, we want both capo and native
-                    if (displayChords && (!hasCapo || displayCapoAndNativeChords || !displayCapoChords)) {
-                        if (highlightChordColor != 0x00000000) {
-                            textView.setText(new SpannableString(highlightChords(str,
-                                    highlightChordColor)));
-                        } else {
-                            textView.setText(str);
-                        }
-                    } else {
-                        textView = null;
-                    }
-                    break;
-                case "capoline":
-                    // Only show this if we want chords and if there is a capo and showcapo
-                    if (displayChords && hasCapo && (displayCapoChords || displayCapoAndNativeChords)) {
-                        if (highlightChordColor != 0x00000000) {
-                            textView.setText(new SpannableString(highlightChords(str,
-                                    highlightChordColor)));
-                        } else {
-                            textView.setText(str);
-                        }
-                    } else {
-                        textView = null;
-                    }
-                    break;
-                case "lyric":
-                    if (displayLyrics) {
-                        str = str.replace("_", "");
-                        str = str.replaceAll("[|]", " ");
-                        if (!displayChords) {
-                            // IV - Remove typical word splits, white space and trim - beautify!
-                            str = fixLyricsOnlySpace(str);
-                        }
-                        if (trimWordSpacing) {
-                            if (!multiLineVerseKeepCompact && !multilineSong) {
-                                str = fixExcessSpaces(str);
-                            }
-                        }
-                        if (presentation || !mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance))) {
-                            str = fixExcessSpaces(str);
-                        }
-
-                        SpannableStringBuilder spannableString = getSpannableBracketString(str);
-                        textView.setText(spannableString);
-                    } else {
-                        textView = null;
-                    }
-                    break;
-                default:
-                    // Just set the text
-                    if (presentation || !mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) ||
-                            (!multiLineVerseKeepCompact && !multilineSong)) {
-                        str = fixExcessSpaces(str);
-                    }
-                    SpannableStringBuilder spannableString = getSpannableBracketString(str);
-                    textView.setText(spannableString);
-                    break;
-            }
-            if (textView!=null) {
-                tableRow.addView(textView);
             }
             tableLayout.addView(tableRow);
         }
@@ -1456,6 +1385,10 @@ public class ProcessSong {
                               String string, Typeface typeface, float size, int color,
                               int highlightHeadingColor, int highlightChordColor, boolean presentation) {
         TextView textView = newTextView(linetype, typeface, size, color);
+
+        boolean applyFixExcessSpaces = (trimWordSpacing || presentation || !mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) &&
+                (!multiLineVerseKeepCompact && !multilineSong));
+
         if (presentation) {
             textView.setGravity(mainActivityInterface.getPresenterSettings().getPresoLyricsAlign());
         }
@@ -1470,13 +1403,11 @@ public class ProcessSong {
             if (linetype.equals("chord") && highlightChordColor != 0x00000000) {
                 textView.setText(highlightChords(str, highlightChordColor));
             } else if (linetype.equals("lyric")) {
-                // IV - This will need more complexity depending on mode and if showing chords
-                if ((!mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) &&
-                        (presentation || trimWordSpacing)) ||
-                        (!multilineSong || !multiLineVerseKeepCompact)) {
+                // Just set the text
+                str = str.replaceAll("[|_]", " ");
+                if (applyFixExcessSpaces) {
                     str = fixExcessSpaces(str);
                 }
-                str = str.replaceAll("[|_]", " ");
                 SpannableStringBuilder spannableString = getSpannableBracketString(str);
                 textView.setText(spannableString);
             } else {
@@ -1548,44 +1479,32 @@ public class ProcessSong {
         // 2. Check for multiline verse formatting e.g. [V] 1. 2. etc.
         lyrics = fixMultiLineFormat(lyrics, presentation);
 
-        // 2b. Make sure new column/breaks aren't pulled into separate sections
-        // Do this by trimming space before them
+        // 3. Make sure new column/breaks aren't pulled into separate sections
+        // Do this by trimming whitespace before them
         if (lyrics.contains("!--")) {
-            // We need to remove this before drawing the views!
-            // Pull the break back onto the previous line so it isn't converted into a section
-            lyrics = lyrics.replace("\n\n\n!--", "!--");
-            lyrics = lyrics.replace("\n\n\n !--", "!--");
-            lyrics = lyrics.replace("\n \n \n!--", "!--");
-            lyrics = lyrics.replace("\n \n \n !--", "!--");
-            lyrics = lyrics.replace("\n\n!--","!--");
-            lyrics = lyrics.replace("\n\n !--","!--");
-            lyrics = lyrics.replace("\n \n!--","!--");
-            lyrics = lyrics.replace("\n \n !--","!--");
-            lyrics = lyrics.replace("\n!--","!--");
-            lyrics = lyrics.replace("\n !--","!--");
-            lyrics = lyrics.replace(" !--","!--");
+            lyrics = lyrics.replaceAll("\\s+!--","!--");
         }
 
-        // 3. Prepare for line splits: | are relevant to Presenter mode only without chord display
+        // 4. Prepare for line splits: | are relevant to Presenter mode only without chord display
         String lineSplit = " ";
         if (presentation && !mainActivityInterface.getPresenterSettings().getPresoShowChords()) {
             lineSplit = "\n";
         }
 
-        // 4. Prepare for section splits: || are relevant to presentation and Stage mode.
-        // If sectionSplit is ║ is used to test for further processing later.
+        // 5. Prepare for section splits: || are relevant to presentation and Stage mode.
+        // If sectionSplit, ║ is used in further processing later.
         String sectionSplit = "";
         if (presentation || mainActivityInterface.getMode().equals(c.getString(R.string.mode_stage))) {
             sectionSplit = "║";
         }
 
-        // 5. Prepare for double new line:  We split at \n\n but not for scripture
+        // 6. Prepare for double new line:  We split at \n\n but not for scripture
         String doubleNewlineSplit = "\n\n";
         if (!mainActivityInterface.getSong().getFolder().contains(c.getResources().getString(R.string.scripture))) {
             doubleNewlineSplit = "§";
         }
 
-        // 6. Process ||, | and split markers on lyric lines
+        // 7. Process ||, | and split markers on lyric lines
         // Add a trailing ¶ to force a split behaviour that copes with a trailing new line!
         StringBuilder stringBuilder = new StringBuilder();
         for (String line : (lyrics + "¶").split("\n")) {
@@ -1603,33 +1522,22 @@ public class ProcessSong {
             stringBuilder.append(line);
         }
 
+         // 8. Handle new sections
         lyrics = stringBuilder.toString()
                 .replace("-!!", "")
-                // --- Process new section markers
-                .replace("\n ---", "\n[]")
-                .replace("\n---", "\n[]")
-                // --- Handle empty lines
-                .replace("\n\n", doubleNewlineSplit)
-                .replace("\n[", "§[")
-                .replace("§\n", "§")
-                .replace("\n§", "§")
-                .replace("§ §", "§")
-                .replace("§§", "§") // Needed
-                // --- Ensure \n§ at section splits
-                .replace("§", "\n§")
-                // --- Tidy section end newlines
-                .replace("\n\n\n", "\n \n§")
-                .replace("\n \n \n", "\n \n§")
-                .replace("\n\n", "\n \n§")
-                .replace("\n \n", "\n \n§")
+                // --- Process section markers
+                .replace("\n ---", "\n§")
+                .replace("\n---", "\n§")
                 .replace("\n [", "\n§[")
-                .replace("§§", "§") // Needed again
-                // --- Because we trail with ¶, this removes the added leading \n as part of removing leading white space
-                .trim()
-                // --- Now remove trailing ¶
+                .replace("\n[", "\n§[")
+                .replace("\n\n", doubleNewlineSplit)
+                .replace("§§","§")
+                // --- Remove the leading added leading \n
+                .substring(1)
+                // --- Because we trail with ¶, this removes the added leading \n as part of removing leading white space                // --- Now remove trailing ¶
                 .replace("¶","");
 
-        // 7. Handle null sections (ignore) and || splits
+        // 9. Handle || splits
         String[] sections = lyrics.split("§");
         ArrayList<String> songSections = new ArrayList<>();
         String[] thissection;
@@ -1665,7 +1573,7 @@ public class ProcessSong {
             }
         }
 
-        // IV - Pack up as lyric string.  Carry forward the sectionHeader.
+        // 10. Pack up as lyric string.  Carry forward the section header to split sections for Stage and Presenter modes
         StringBuilder fixedlyrics = new StringBuilder();
         String sectionHeader = "";
 
@@ -1674,7 +1582,7 @@ public class ProcessSong {
             if (songSections.get(x).startsWith("[")) {
                 // IV - Store the header.  Use an empty header in performance mode.
                 if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance))) {
-                    sectionHeader = "[]";
+                    sectionHeader = "¬";
                 } else {
                     sectionHeader = songSections.get(x).substring(0,songSections.get(x).indexOf("]") + 1);
                 }
@@ -1683,24 +1591,48 @@ public class ProcessSong {
                 fixedlyrics.append(sectionHeader).append("\n").append(("¬"+ songSections.get(x)).replace("¬\n","").replace("¬",""));
             }
         }
+        lyrics = fixedlyrics.toString()
+                // IV - Content is added with leading \n§, the first needs to be removed
+                .replaceFirst("\n§","")
+                // IV - Remove (when present) performance mode 'empty' sectionHeader
+                .replace("\n§¬\n","\n");
 
-        // IV - Content is added with leading \n§, the first needs to be removed
-        lyrics = fixedlyrics.toString().replaceFirst("\n§","");
+        // 11. Handle section trimming
+        if (trimSections) {
+            lyrics = lyrics
+                    // We protect the leading space of lyric lines
+                    // --- Simplify empty lyric lines... the replace is needed twice
+                    .replace("\n \n","\n\n")
+                    .replace("\n \n","\n\n")
+                    // --- Replace the leading spaces of lyric lines with ¬
+                    .replace("\n ","\n¬")
+                    // Trim to remove leading and trailing whitespace
+                    .trim()
+                    // Remove whitespace after section header - which will not remove ¬
+                    .replaceAll("]\\s+","]\n")
+                    // --- Revert the protected spaces
+                    .replace("¬"," ")
+                    // Remove whitespace before the section marker
+                    .replaceAll("\\s+§","\n§");
+            // IV - Correct any leading section break after the trim
+            if (lyrics.startsWith("§")) {
+                lyrics = "\n" + lyrics;
+            }
+        }
 
-        // 8. Go through the lyrics and get section headers and add to the song object
+        // 12. Go through the lyrics and get section headers and add to the song object
         song.setSongSectionHeadings(getSectionHeadings(lyrics));
 
-        // 9. Go through the lyrics, filter for wanted line types and group lines that should be in a table for alignment purposes
+        // 13. Go through the lyrics, filter for wanted line types and group lines that should be in a table for alignment purposes
         if (presentation) {
             lyrics = filterAndGroupLines(lyrics, mainActivityInterface.getPresenterSettings().getPresoShowChords());
         } else {
             lyrics = filterAndGroupLines(lyrics, displayChords);
         }
 
-        // 10. Build the songSections for later recall
+        // 14. Build the songSections for later recall
         // The song sections are not the views (which can have sections repeated using presentationOrder
         // The grouped sections are used for alignments
-
         songSections = new ArrayList<>();
         ArrayList<String> groupedSections = new ArrayList<>();
 
@@ -1715,7 +1647,7 @@ public class ProcessSong {
         song.setSongSections(songSections);
         song.setGroupedSections(groupedSections);
 
-        // 11. Put into presentation order when required
+        // 15. Put into presentation order when required
         matchPresentationOrder(song);
 
         // Reset the spannable brackets here as we are just starting processing
@@ -1810,6 +1742,7 @@ public class ProcessSong {
                                     // Do not use these lines with the second screen
                                     continue;
                                 } else if (curlyBrackets) {
+                                    // Android Studio gets confused over escapes here - suggesting removing escapes that break the regex!  Keep lots of escapes to be sure it works!
                                     line = line.replaceAll("\\{.*?\\}", "");
                                 }
                             }
@@ -2351,9 +2284,9 @@ public class ProcessSong {
             }
 
             if (autoScale.equals("W")) {
-                oneColumnScale = (float) availableWidth / (float) col1_1Width;
-                if (oneColumnScale < minFontScale && songAutoScaleOverrideWidth) {
-                    oneColumnScale = fontSize / defFontSize;
+                oneColumnScale = Math.min(maxFontScale,(float)availableWidth/(float)col1_1Width);
+                if (oneColumnScale<minFontScale && songAutoScaleOverrideWidth) {
+                    oneColumnScale = fontSize/defFontSize;
                 }
             }
 
@@ -2572,7 +2505,7 @@ public class ProcessSong {
 
         for (int i = 0; i < columnBreak2; i++) {
             // Make all the views the same width as each other
-            sectionViews.get(i).getLayoutParams().width = (int)(col1_2Width);
+            sectionViews.get(i).getLayoutParams().width = col1_2Width;
             // If this isn't the last view in the column, add the sectionSpace
             if (i!=columnBreak2-1) {
                 sectionViews.get(i).setPadding(0,0,0,sectionSpace);
@@ -2580,9 +2513,9 @@ public class ProcessSong {
             // Add the views to the scaled inner column
             innerCol1.addView(sectionViews.get(i));
         }
-        for (int i = (int)columnBreak2; i < sectionViews.size(); i++) {
+        for (int i = columnBreak2; i < sectionViews.size(); i++) {
             // Make all the views the same width as each other
-            sectionViews.get(i).getLayoutParams().width = (int)(col2_2Width);
+            sectionViews.get(i).getLayoutParams().width = col2_2Width;
             // If this isn't the last view in the column, add the sectionSpace
             if (i!=sectionViews.size()-1) {
                 sectionViews.get(i).setPadding(0,0,0,sectionSpace);
@@ -2675,7 +2608,7 @@ public class ProcessSong {
 
         for (int i = 0; i < columnBreak3_a; i++) {
             // Make all the views the same width as each other
-            sectionViews.get(i).getLayoutParams().width = (int)(col1_3Width);
+            sectionViews.get(i).getLayoutParams().width = col1_3Width;
             // If this isn't the last view in the column, add the sectionSpace
             if (i!=columnBreak3_a-1) {
                 sectionViews.get(i).setPadding(0,0,0,sectionSpace);
@@ -2685,7 +2618,7 @@ public class ProcessSong {
         }
         for (int i = columnBreak3_a; i<columnBreak3_b; i++) {
             // Make all the views the same width as each other
-            sectionViews.get(i).getLayoutParams().width = (int)(col2_3Width);
+            sectionViews.get(i).getLayoutParams().width = col2_3Width;
             // If this isn't the last view in the column, add the sectionSpace
             if (i!=columnBreak3_b-1) {
                 sectionViews.get(i).setPadding(0,0,0,sectionSpace);
@@ -2695,7 +2628,7 @@ public class ProcessSong {
         }
         for (int i = columnBreak3_b; i < sectionViews.size(); i++) {
             // Make all the views the same width as each other
-            sectionViews.get(i).getLayoutParams().width = (int)(col3_3Width);
+            sectionViews.get(i).getLayoutParams().width = col3_3Width;
             // If this isn't the last view in the column, add the sectionSpace
             if (i!=sectionViews.size()-1) {
                 sectionViews.get(i).setPadding(0,0,0,sectionSpace);
