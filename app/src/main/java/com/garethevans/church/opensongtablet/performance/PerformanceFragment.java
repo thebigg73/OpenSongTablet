@@ -817,7 +817,10 @@ public class PerformanceFragment extends Fragment {
                 mainActivityInterface.getDisplayPrevNext().getPositions();
 
                 // Slide in
-                myView.zoomLayout.post(() -> {
+                long QOSAdjustment = doSongLoadQOSTime - (System.currentTimeMillis() - doSongLoadStartTime);
+                Log.d(TAG, "Song QOS adjustment: " + Math.max(0, QOSAdjustment) + " (" + (doSongLoadQOSTime - QOSAdjustment) + ")");
+
+                myView.zoomLayout.postDelayed(() -> {
                     try {
                         // The new song sizes were sent to the zoomLayout in ProcessSong
                         int topPadding = 0;
@@ -834,7 +837,7 @@ public class PerformanceFragment extends Fragment {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                });
+                }, Math.max(0, QOSAdjustment));
             }
 
         } catch (Exception e) {
@@ -908,12 +911,6 @@ public class PerformanceFragment extends Fragment {
             displayInterface.updateDisplay("newSongLoaded");
             displayInterface.updateDisplay("setSongInfo");
             displayInterface.updateDisplay("setSongContent");
-
-            // Send a call to nearby devices to process the song at their end
-            if (mainActivityInterface.getNearbyConnections().hasValidConnections() &&
-                    mainActivityInterface.getNearbyConnections().getIsHost()) {
-                mainActivityInterface.getNearbyConnections().sendSongPayload();
-            }
 
             // If we opened the app with and intent/file, check if we need to import
             tryToImportIntent();
@@ -1134,8 +1131,8 @@ public class PerformanceFragment extends Fragment {
             //myView.recyclerView.smoothScrollBy(0,500);
 
             // IV - Use a snap to top scroller if scrolling to the top of the screen
-            if (mainActivityInterface.getPreferences().getMyPreferenceFloat("stageModeScale", 0.8f) == 1.0f) {
-                myView.recyclerView.smoothScrollTo(getContext(), recyclerLayoutManager, position);
+            if (mainActivityInterface.getPreferences().getMyPreferenceFloat("stageModeScale",0.8f) == 1.0f) {
+                myView.recyclerView.smoothScrollTo(getContext(),recyclerLayoutManager, position);
             } else {
                 myView.recyclerView.doSmoothScrollTo(recyclerLayoutManager, position);
             }
