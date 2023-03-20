@@ -158,11 +158,6 @@ public class PerformanceFragment extends Fragment {
         mainActivityInterface.getToolbar().setPerformanceMode(true);
         mainActivityInterface.showActionBar();
 
-        // Set tutorials
-        Handler h = new Handler();
-        Runnable r = () -> mainActivityInterface.showTutorial("performanceView",null);
-        h.postDelayed(r,1000);
-
         // MainActivity initialisation has firstRun set as true.
         // Check for connected displays now we have loaded preferences, etc
         if (mainActivityInterface.getFirstRun()) {
@@ -189,6 +184,12 @@ public class PerformanceFragment extends Fragment {
         mainActivityInterface.getAlertChecks().showBackup() || mainActivityInterface.getAlertChecks().showUpdateInfo()) {
                     AlertInfoBottomSheet alertInfoBottomSheet = new AlertInfoBottomSheet();
                     alertInfoBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "AlertInfoBottomSheet");
+        } else {
+            // Check for the showcase for new users
+            // Set tutorials
+            Handler h = new Handler();
+            Runnable r = () -> mainActivityInterface.showTutorial("performanceView",null);
+            h.postDelayed(r,1000);
         }
 
         // Pass a reference of the zoom layout to the next/prev so we can stop fling scrolls
