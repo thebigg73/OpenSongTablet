@@ -173,7 +173,13 @@ public class PerformanceFragment extends Fragment {
 
         if (mainActivityInterface.getWhattodo().equals("pendingLoadSet")) {
             mainActivityInterface.setWhattodo("");
-            mainActivityInterface.loadSongFromSet(0);
+            // Check if the current song is in the set
+            int position = mainActivityInterface.getSetActions().indexSongInSet(mainActivityInterface.getSong());
+            if (position<0) {
+                mainActivityInterface.loadSongFromSet(0);
+            } else {
+                mainActivityInterface.loadSongFromSet(position);
+            }
         } else {
             doSongLoad(mainActivityInterface.getPreferences().getMyPreferenceString("songFolder", mainfoldername),
                     mainActivityInterface.getPreferences().getMyPreferenceString("songFilename", "Welcome to OpenSongApp"));

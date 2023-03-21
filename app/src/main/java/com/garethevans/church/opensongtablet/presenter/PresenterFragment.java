@@ -65,7 +65,9 @@ public class PresenterFragment extends Fragment {
     @Nullable
     @org.jetbrains.annotations.Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable @org.jetbrains.annotations.Nullable ViewGroup container,
+                             @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         myView = ModePresenterBinding.inflate(inflater,container,false);
 
         prepareStrings();
@@ -99,9 +101,19 @@ public class PresenterFragment extends Fragment {
         // Set up the the pager
         setupPager();
 
-        // Load the song
-        doSongLoad(mainActivityInterface.getPreferences().getMyPreferenceString("songFolder",mainfoldername_string),
-                mainActivityInterface.getPreferences().getMyPreferenceString("songFilename","Welcome to OpenSongApp"));
+        if (mainActivityInterface.getWhattodo().equals("pendingLoadSet")) {
+            mainActivityInterface.setWhattodo("");
+            // Check if the current song is in the set
+            int position = mainActivityInterface.getSetActions().indexSongInSet(mainActivityInterface.getSong());
+            if (position<0) {
+                mainActivityInterface.loadSongFromSet(0);
+            } else {
+                mainActivityInterface.loadSongFromSet(position);
+            }
+        } else {
+            doSongLoad(mainActivityInterface.getPreferences().getMyPreferenceString("songFolder", mainfoldername_string),
+                    mainActivityInterface.getPreferences().getMyPreferenceString("songFilename", "Welcome to OpenSongApp"));
+        }
 
         // Prepare the song menu (will be called again after indexing from the main activity index songs)
         if (mainActivityInterface.getSongListBuildIndex().getIndexRequired() &&
