@@ -166,8 +166,7 @@ public class MyRecyclerView extends RecyclerView  implements RecyclerView.Smooth
             int currScroll = recyclerLayoutManager.getScrollY();
             int scrollToY = yPositions.get(position);
             int scrollAmount = scrollToY - currScroll - spaceAbove;
-            Log.d(TAG,"scrollAmount = " + scrollAmount);
-
+            
             // Do the scrolling, but not if small movement
             if (Math.abs(scrollAmount) > 25) {
                 smoothScrollBy(0, scrollAmount);
