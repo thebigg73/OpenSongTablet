@@ -10,7 +10,6 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.LinearLayout;
 
 import androidx.core.content.res.ResourcesCompat;
-import androidx.core.graphics.ColorUtils;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.ViewCompat;
 
@@ -93,6 +92,11 @@ public class PageButtons {
         if (pageButtonMini) {
             size = FloatingActionButton.SIZE_MINI;
         }
+
+        // The main button
+        actionButton.setSize(size);
+        actionButton.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
+
         custom1.setSize(size);
         custom2.setSize(size);
         custom3.setSize(size);
@@ -150,12 +154,13 @@ public class PageButtons {
         if (open) {
             ViewCompat.animate(actionButton).rotation(45f).withLayer().setDuration(animationTime).
                     setInterpolator(interpolator).start();
-            int redAlpha = ColorUtils.setAlphaComponent(c.getResources().getColor(R.color.red), (int)(pageButtonAlpha*255));
-            actionButton.setBackgroundTintList(ColorStateList.valueOf(redAlpha));
+            // If we decide to go back to a red tint
+            //int redAlpha = ColorUtils.setAlphaComponent(c.getResources().getColor(R.color.red), (int)(pageButtonAlpha*255));
+            //actionButton.setBackgroundTintList(ColorStateList.valueOf(redAlpha));
         } else {
             ViewCompat.animate(actionButton).rotation(0f).withLayer().setDuration(animationTime).
                     setInterpolator(interpolator).start();
-            actionButton.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
+            //actionButton.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
         }
         for (int x=0; x<pageButtonNum; x++) {
             if (pageButtonVisibility.get(x) && open) {
