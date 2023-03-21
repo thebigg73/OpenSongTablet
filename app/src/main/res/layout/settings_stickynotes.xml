@@ -57,6 +57,15 @@
                 android:text="@string/autoshow_stickynotes" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+                android:id="@+id/timeSlider"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/autohide_time"
+                android:valueFrom="0"
+                android:valueTo="100"
+                android:value="0"/>
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialSlider
                 android:id="@+id/alphaSlider"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -65,14 +74,6 @@
                 android:valueTo="100"
                 android:value="80"/>
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialSlider
-                android:id="@+id/timeSlider"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/time"
-                android:valueFrom="0"
-                android:valueTo="100"
-                android:value="0"/>
 
             <com.garethevans.church.opensongtablet.customviews.MaterialSlider
                 android:id="@+id/stickyTextSize"

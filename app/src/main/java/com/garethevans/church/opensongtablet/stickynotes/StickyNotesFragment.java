@@ -63,6 +63,7 @@ public class StickyNotesFragment extends Fragment {
         myView.stickyNotes.setText(mainActivityInterface.getSong().getNotes());
         myView.autoShowSticky.setChecked(mainActivityInterface.getPreferences().
                 getMyPreferenceBoolean("stickyAuto",true));
+        hideTimeVisibility(myView.autoShowSticky.isChecked());
         int time = mainActivityInterface.getPreferences().
                 getMyPreferenceInt("timeToDisplaySticky",0);
         myView.timeSlider.setValue((float)time);
@@ -99,7 +100,10 @@ public class StickyNotesFragment extends Fragment {
     }
 
     private void setupListeners() {
-        myView.autoShowSticky.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getPreferences().setMyPreferenceBoolean("stickyAuto",isChecked));
+        myView.autoShowSticky.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean("stickyAuto",isChecked);
+            hideTimeVisibility(isChecked);
+        });
         myView.saveButton.setOnClickListener(v -> {
             if (myView.stickyNotes.getText()!=null) {
                 mainActivityInterface.getSong().setNotes(myView.stickyNotes.getText().toString());
@@ -157,6 +161,13 @@ public class StickyNotesFragment extends Fragment {
 
     }
 
+    private void hideTimeVisibility(boolean visible) {
+        if (visible) {
+            myView.timeSlider.setVisibility(View.VISIBLE);
+        } else {
+            myView.timeSlider.setVisibility(View.GONE);
+        }
+    }
     @Override
     public void onDestroyView() {
         super.onDestroyView();

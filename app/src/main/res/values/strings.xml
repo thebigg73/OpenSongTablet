@@ -46,6 +46,7 @@
     <string name="audio">Audio</string>
     <string name="audio_source">Audio source</string>
     <string name="author">Author</string>
+    <string name="autohide_time">Time to keep visible (autohide time)</string>
     <string name="autoscale">Autoscale</string>
     <string name="autoscale_info">The app will make the text as large as possible to fit the screen</string>
     <string name="autoscroll">Autoscroll</string>
