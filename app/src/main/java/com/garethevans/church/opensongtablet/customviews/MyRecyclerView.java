@@ -52,8 +52,6 @@ public class MyRecyclerView extends RecyclerView  implements RecyclerView.Smooth
     private final ItemTouchListener itemTouchListener;
     private RecyclerView.SmoothScroller smoothScroller;
 
-    RecyclerView.SmoothScroller smoothScroller;
-
     public MyRecyclerView(@NonNull Context context) {
         super(context);
         scrollListener = new ScrollListener();
