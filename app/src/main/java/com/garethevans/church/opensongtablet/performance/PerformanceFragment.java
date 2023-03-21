@@ -59,6 +59,8 @@ public class PerformanceFragment extends Fragment {
     private int availableHeight;
     private int widthBeforeScale;
     private int heightBeforeScale;
+    private long doSongLoadStartTime;
+    private final long doSongLoadQOSTime = 200;
     private int widthAfterScale;
     private int heightAfterScale;
     private boolean processingTestView;
@@ -302,6 +304,7 @@ public class PerformanceFragment extends Fragment {
     // This stuff loads the song and prepares the views
     public void doSongLoad(String folder, String filename) {
         try {
+            doSongLoadStartTime = System.currentTimeMillis();
             mainActivityInterface.closeDrawer(true);
 
             // Make sure we only do this once (reset at the end of 'dealwithstuffafterready')
