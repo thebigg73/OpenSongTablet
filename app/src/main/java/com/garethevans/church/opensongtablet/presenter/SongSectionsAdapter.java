@@ -130,7 +130,8 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
     }
 
     @Override
-    public void onBindViewHolder(@NonNull SongSectionViewHolder holder, int position, @NonNull List<Object> payloads) {
+    public void onBindViewHolder(@NonNull SongSectionViewHolder holder, int position,
+                                 @NonNull List<Object> payloads) {
         if (payloads.isEmpty()) {
             super.onBindViewHolder(holder, position, payloads);
         } else {
@@ -251,14 +252,14 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
 
     public void itemSelected(int thisPos) {
         notifyItemChanged(thisPos);
-        highlightedArray.put(currentPosition,false);
-        highlightedArray.put(thisPos,true);
-        notifyItemChanged(currentPosition,colorChange);
-        notifyItemChanged(thisPos,colorChange);
+        highlightedArray.put(currentPosition, false);
+        highlightedArray.put(thisPos, true);
+        notifyItemChanged(currentPosition, colorChange);
+        notifyItemChanged(thisPos, colorChange);
         mainActivityInterface.getPresenterSettings().setCurrentSection(thisPos);
         displayInterface.presenterShowSection(thisPos);
         currentPosition = thisPos;
-
+        songSectionsFragment.scrollToPosition(thisPos);
         // State we've started projection
         // This method checks that logo, black screen, blank screen are off too
         mainActivityInterface.getPresenterSettings().setStartedProjection(true);

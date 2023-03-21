@@ -1803,7 +1803,7 @@ public class ProcessSong {
                                     // Do not use these lines with the second screen
                                     continue;
                                 } else if (curlyBrackets) {
-                                    line = line.replaceAll("\\{.*?}", "");
+                                    line = line.replaceAll("\\{.*?\\}", "");
                                 }
                             }
                             backgroundColor = overallBackgroundColor;

@@ -37,6 +37,7 @@ public class SongSectionsFragment extends Fragment {
     private Timer timer;
     private TimerTask timerTask;
     private ImageSlideAdapter imageSlideAdapter;
+    private LinearLayoutManager linearLayoutManager;
     private String deeplink_edit_string="", start_string="", is_not_set_string="", stop_string="";
 
     @Override
@@ -70,6 +71,9 @@ public class SongSectionsFragment extends Fragment {
 
         // Set up song info layout to only show minimal info in simple format
         if (getContext()!=null) {
+            linearLayoutManager = new LinearLayoutManager(getContext());
+            myView.recyclerView.setLayoutManager(linearLayoutManager);
+            myView.recyclerView.setHasFixedSize(true);
             myView.songInfo.setupLayout(getContext(), mainActivityInterface, false);
         }
 
@@ -84,9 +88,8 @@ public class SongSectionsFragment extends Fragment {
 
         myView.recyclerView.setItemAnimator(null);
         if (getContext()!=null) {
-            myView.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            myView.recyclerView.setAdapter(mainActivityInterface.getPresenterSettings().getSongSectionsAdapter());
         }
-        myView.recyclerView.setAdapter(mainActivityInterface.getPresenterSettings().getSongSectionsAdapter());
 
         showSongInfo();
 
@@ -141,19 +144,16 @@ public class SongSectionsFragment extends Fragment {
                     mainActivityInterface.getSong().setPdfPageCount(pdfPageAdapter.getItemCount());
                     //Log.d(TAG, "heights" + pdfPageAdapter.getHeights());
 
-                    myView.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                     myView.recyclerView.setAdapter(pdfPageAdapter);
 
 
                 } else if (getContext()!=null && mainActivityInterface.getSong().getFiletype().equals("IMG")) {
                     ImageAdapter imageAdapter = new ImageAdapter(getContext(), this, mainActivityInterface, displayInterface, 600, 800);
-                    myView.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                     myView.recyclerView.setAdapter(imageAdapter);
 
                 } else if (getContext()!=null && mainActivityInterface.getSong().getFolder().contains("**Images")) {
                     // TODO what happens if nearby device sends the song?
                     imageSlideAdapter = new ImageSlideAdapter(getContext(), mainActivityInterface, displayInterface, 600, 800);
-                    myView.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                     myView.recyclerView.setAdapter(imageSlideAdapter);
                     myView.imageSlideInfo.setVisibility(View.VISIBLE);
                     myView.imageSlideLoop.setVisibility(View.VISIBLE);
@@ -163,7 +163,6 @@ public class SongSectionsFragment extends Fragment {
 
                 } else if (getContext()!=null) {
                     // Standard XML file
-                    myView.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                     myView.recyclerView.setAdapter(mainActivityInterface.getPresenterSettings().getSongSectionsAdapter());
 
                     if (myView != null && mainActivityInterface != null && mainActivityInterface.getPresenterSettings() != null &&
@@ -316,6 +315,14 @@ public class SongSectionsFragment extends Fragment {
             } else {
                 doStop();
             }
+        }
+    }
+
+    public void scrollToPosition(int position) {
+        if (myView!=null) {
+            myView.recyclerView.post(() -> {
+                myView.recyclerView.smoothScrollToPosition(position);
+            });
         }
     }
 
