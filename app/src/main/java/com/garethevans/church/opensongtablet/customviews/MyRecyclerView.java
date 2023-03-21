@@ -171,7 +171,7 @@ public class MyRecyclerView extends RecyclerView  implements RecyclerView.Smooth
             if (Math.abs(scrollAmount) > 25) {
                 smoothScrollBy(0, scrollAmount);
             }
-            
+
         } catch (Exception e) {
             e.printStackTrace();
         }
