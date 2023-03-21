@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
@@ -19,6 +20,14 @@ public class PadDefaultsFragment extends Fragment {
 
     private MainActivityInterface mainActivityInterface;
     private SettingsPadsDefaultsBinding myView;
+    private boolean padPlaying;
+    private String webAddress;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mainActivityInterface.updateToolbarHelp(webAddress);
+    }
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -33,7 +42,7 @@ public class PadDefaultsFragment extends Fragment {
 
         if (getContext()!=null) {
             mainActivityInterface.updateToolbar(getString(R.string.pad_settings_info));
-            mainActivityInterface.updateToolbarHelp(getString(R.string.website_pad));
+            webAddress = getString(R.string.website_pad);
         }
 
         // Set up views based on preferences
@@ -102,6 +111,21 @@ public class PadDefaultsFragment extends Fragment {
             mainActivityInterface.
                     updateOnScreenInfo("setpreferences");
         });
+        padPlaying = mainActivityInterface.getPad().isPadPlaying();
+        changePlayIcon();
+
+        myView.startStopButton.setOnClickListener(v -> {
+            padPlaying = mainActivityInterface.playPad();
+            changePlayIcon();
+        });
+    }
+
+    private void changePlayIcon() {
+        if (padPlaying) {
+            myView.startStopButton.setImageDrawable(ResourcesCompat.getDrawable(requireContext().getResources(),R.drawable.stop,null));
+        } else {
+            myView.startStopButton.setImageDrawable(ResourcesCompat.getDrawable(requireContext().getResources(),R.drawable.play,null));
+        }
     }
 
     private class MySliderTouchListener implements Slider.OnSliderTouchListener {
@@ -121,12 +145,16 @@ public class PadDefaultsFragment extends Fragment {
             switch (prefName) {
                 case "padVol":
                     mainActivityInterface.getPreferences().setMyPreferenceFloat(prefName,myView.padVolume.getValue()/100f);
+                    // IV - When playing, set the volumes to the new preferences
+                    if (mainActivityInterface.getPad().isPadPlaying()) {
+                        mainActivityInterface.getPad().setVolume(1,-1,-1);
+                        mainActivityInterface.getPad().setVolume(2,-1,-1);
+                    }
                     break;
 
                 case "padCrossFadeTime":
-                    mainActivityInterface.getPreferences().setMyPreferenceInt("padCrossFadeTime", (int)(myView.crossFadeTime.getValue()*1000f));
+                    mainActivityInterface.getPreferences().setMyPreferenceInt(prefName, (int)(myView.crossFadeTime.getValue()*1000f));
                     break;
-
             }
         }
     }
@@ -145,21 +173,12 @@ public class PadDefaultsFragment extends Fragment {
                     break;
 
                 case "padPan":
-                    int pos = myView.padPan.getValue();
-                    String pan;
-                    switch (pos) {
-                        case 0:
-                            pan = "L";
-                            break;
-                        case 1:
-                        default:
-                            pan = "C";
-                            break;
-                        case 2:
-                            pan = "R";
-                            break;
+                    mainActivityInterface.getPreferences().setMyPreferenceString(prefName,"LCR".substring((int) value, (int) value + 1));
+                    // IV - When playing, set the volumes to the new preferences
+                    if (mainActivityInterface.getPad().isPadPlaying()) {
+                        mainActivityInterface.getPad().setVolume(1,-1,-1);
+                        mainActivityInterface.getPad().setVolume(2,-1,-1);
                     }
-                    mainActivityInterface.getPreferences().setMyPreferenceString("padPan",pan);
                     break;
 
                 case "padCrossFadeTime":
@@ -167,5 +186,4 @@ public class PadDefaultsFragment extends Fragment {
             }
         }
     }
-
 }
