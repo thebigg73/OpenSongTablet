@@ -2067,10 +2067,17 @@ public class ProcessSong {
         }
     }
 
+    // v6 logic that splits always by the biggest scaling arrangement
     private float[] columnSplitAlgorithm(ArrayList<Integer> sectionWidths, ArrayList<Integer> sectionHeights,
                                          int availableWidth, int availableHeight, String autoScale,
                                          boolean forceColumns, int[] forceColumnInfo, boolean presentation) {
         // An updated algorithm to calculate the best way to split a song into columns
+
+        // TODO IV to check this value - v5 used a -12 weighting (based on number of lines)
+        // v6 algorithm uses the actual section widths and heights.
+        // This fudge factor is effectively a percentage of the running total subtracted from the best so far
+        // This favours more in column 1.  It doesn't need much!!  1% is a little too high.
+        float fudgeFactor = 0.005f;
 
         // Prepare the return float.  [0]=num columns best
         float[] returnFloats = null;
@@ -2114,22 +2121,22 @@ public class ProcessSong {
         // Only need to work out 2/3 columns if full autoscaling, or we have force splitpoints
         if (autoScale.equals("Y")) {
 
-            if (forceColumns && forceColumnInfo != null && forceColumnInfo[0]!=1) {
+            if (forceColumns && forceColumnInfo != null && forceColumnInfo[0] != 1) {
                 if (forceColumnInfo[0] == 2) {
                     // Two columns, so get the widths and heights of both
                     columnBreak2 = forceColumnInfo[1];
                     int totalSectionSpace1_2 = sectionSpace * (columnBreak2 - 1);
                     int totalSectionSpace2_2 = sectionSpace * (sectionWidths.size() - columnBreak2);
-                    col1_2Width  = getMaxValue(sectionWidths,0,columnBreak2);
-                    col1_2Height = getTotal(sectionHeights,0,columnBreak2) + totalSectionSpace1_2;
-                    col2_2Width  = getMaxValue(sectionWidths,columnBreak2,sectionWidths.size());
-                    col2_2Height = getTotal(sectionHeights,columnBreak2,sectionHeights.size()) + totalSectionSpace2_2;
-                    float scale1X = (float)(availableWidth2-padding)/(float)col1_2Width;
-                    float scale1Y = (float)availableHeight/(float)col1_2Height;
-                    col1_2ScaleBest = Math.min(scale1X,scale1Y);
-                    float scale2X = (float)(availableWidth2-padding)/(float)col2_2Width;
-                    float scale2Y = (float)availableHeight/(float)col2_2Height;
-                    col2_2ScaleBest = Math.min(scale2X,scale2Y);
+                    col1_2Width = getMaxValue(sectionWidths, 0, columnBreak2);
+                    col1_2Height = getTotal(sectionHeights, 0, columnBreak2) + totalSectionSpace1_2;
+                    col2_2Width = getMaxValue(sectionWidths, columnBreak2, sectionWidths.size());
+                    col2_2Height = getTotal(sectionHeights, columnBreak2, sectionHeights.size()) + totalSectionSpace2_2;
+                    float scale1X = (float) (availableWidth2 - padding) / (float) col1_2Width;
+                    float scale1Y = (float) availableHeight / (float) col1_2Height;
+                    col1_2ScaleBest = Math.min(scale1X, scale1Y);
+                    float scale2X = (float) (availableWidth2 - padding) / (float) col2_2Width;
+                    float scale2Y = (float) availableHeight / (float) col2_2Height;
+                    col2_2ScaleBest = Math.min(scale2X, scale2Y);
                     twoColumnScale = Math.min(col1_2ScaleBest, col2_2ScaleBest);
 
                 } else if (forceColumnInfo[0] == 3) {
@@ -2139,21 +2146,21 @@ public class ProcessSong {
                     int totalSectionSpace1_3 = sectionSpace * (columnBreak3_a - 1);
                     int totalSectionSpace2_3 = sectionSpace * (columnBreak3_b - columnBreak3_a - 1);
                     int totalSectionSpace3_3 = sectionSpace * (sectionWidths.size() - columnBreak3_b - 1);
-                    col1_3Width  = getMaxValue(sectionWidths,0,columnBreak3_a);
-                    col1_3Height = getTotal(sectionHeights,0,columnBreak3_a) + totalSectionSpace1_3;
-                    col2_3Width  = getMaxValue(sectionWidths,columnBreak3_a,columnBreak3_b);
-                    col2_3Height = getTotal(sectionHeights,columnBreak3_a,columnBreak3_b) + totalSectionSpace2_3;
-                    col3_3Width  = getMaxValue(sectionWidths,columnBreak3_b,sectionWidths.size());
-                    col3_3Height = getTotal(sectionHeights,columnBreak3_b,sectionHeights.size()) + totalSectionSpace3_3;
-                    float scale1X = (float)(availableWidth3-padding)/(float)col1_3Width;
-                    float scale1Y = (float)availableHeight/(float)col1_3Height;
-                    col1_3ScaleBest = Math.min(scale1X,scale1Y);
-                    float scale2X = (float)(availableWidth3-(2*padding))/(float)col2_3Width;
-                    float scale2Y = (float)availableHeight/(float)col2_3Height;
-                    col2_3ScaleBest = Math.min(scale2X,scale2Y);
-                    float scale3X = (float)(availableWidth3-padding)/(float)col3_3Width;
-                    float scale3Y = (float)availableHeight/(float)col3_3Height;
-                    col3_3ScaleBest = Math.min(scale3X,scale3Y);
+                    col1_3Width = getMaxValue(sectionWidths, 0, columnBreak3_a);
+                    col1_3Height = getTotal(sectionHeights, 0, columnBreak3_a) + totalSectionSpace1_3;
+                    col2_3Width = getMaxValue(sectionWidths, columnBreak3_a, columnBreak3_b);
+                    col2_3Height = getTotal(sectionHeights, columnBreak3_a, columnBreak3_b) + totalSectionSpace2_3;
+                    col3_3Width = getMaxValue(sectionWidths, columnBreak3_b, sectionWidths.size());
+                    col3_3Height = getTotal(sectionHeights, columnBreak3_b, sectionHeights.size()) + totalSectionSpace3_3;
+                    float scale1X = (float) (availableWidth3 - padding) / (float) col1_3Width;
+                    float scale1Y = (float) availableHeight / (float) col1_3Height;
+                    col1_3ScaleBest = Math.min(scale1X, scale1Y);
+                    float scale2X = (float) (availableWidth3 - (2 * padding)) / (float) col2_3Width;
+                    float scale2Y = (float) availableHeight / (float) col2_3Height;
+                    col2_3ScaleBest = Math.min(scale2X, scale2Y);
+                    float scale3X = (float) (availableWidth3 - padding) / (float) col3_3Width;
+                    float scale3Y = (float) availableHeight / (float) col3_3Height;
+                    col3_3ScaleBest = Math.min(scale3X, scale3Y);
                     threeColumnScale = Math.min(col1_3ScaleBest, Math.min(col2_3ScaleBest, col3_3ScaleBest));
                 }
             } else {
@@ -2164,7 +2171,7 @@ public class ProcessSong {
                     // Each time, recalculate the scaling and keep a record of the best option
                     for (int v = 1; v < sectionWidths.size(); v++) {
                         int totalSectionSpace1_2 = sectionSpace * (v - 1);
-                        int totalSectionSpace2_2 = sectionSpace * (sectionWidths.size() -v -1);
+                        int totalSectionSpace2_2 = sectionSpace * (sectionWidths.size() - v - 1);
                         int thisWidth1_2 = getMaxValue(sectionWidths, 0, v);
                         int thisHeight1_2 = getTotal(sectionHeights, 0, v) + totalSectionSpace1_2;
                         int thisWidth2_2 = getMaxValue(sectionWidths, v, sectionWidths.size());
@@ -2182,7 +2189,7 @@ public class ProcessSong {
                             scale2 = Math.min(maxXScale2, maxYScale2);
                         }
 
-                        if (Math.min(scale1, scale2) > twoColumnScale) {
+                        if (Math.min(scale1, scale2) > twoColumnScale - fudgeFactor * twoColumnScale) {
                             // Improved column split option, so get the values
                             col1_2Width = thisWidth1_2;
                             col1_2Height = thisHeight1_2;
@@ -2232,7 +2239,7 @@ public class ProcessSong {
                             float scale2 = Math.min(scaleX2, scaleY2);
                             float scale3 = Math.min(scaleX3, scaleY3);
                             float min = Math.min(scale1, Math.min(scale2, scale3));
-                            if (min > threeColumnScale) {
+                            if (min > threeColumnScale - fudgeFactor * threeColumnScale) {
                                 col1_3Width = this1_3Width;
                                 col1_3Height = this1_3Height;
                                 col2_3Width = this2_3Width;
@@ -2257,12 +2264,11 @@ public class ProcessSong {
             oneColumnScale = fontSize / defFontSize;
         }
 
-
         // Decide which is the best
         boolean oneColumn = (oneColumnScale >= twoColumnScale && oneColumnScale >= threeColumnScale) || !autoScale.equals("Y");
-        boolean twoColumn = (forceColumns && forceColumnInfo!=null && forceColumnInfo[0]==2) ||
+        boolean twoColumn = (forceColumns && forceColumnInfo != null && forceColumnInfo[0] == 2) ||
                 (twoColumnScale > oneColumnScale && twoColumnScale >= threeColumnScale);
-        boolean threeColumn = (forceColumns && forceColumnInfo!=null && forceColumnInfo[0]==3) ||
+        boolean threeColumn = (forceColumns && forceColumnInfo != null && forceColumnInfo[0] == 3) ||
                 threeColumnScale > oneColumnScale && threeColumnScale > twoColumnScale;
 
         if (threeColumn) {
@@ -2321,15 +2327,15 @@ public class ProcessSong {
             // Compare with max scaling due to font size allowed
             if (autoScale.equals("Y")) {
                 oneColumnScale = Math.min(maxFontScale, oneColumnScale);
-                if (oneColumnScale<minFontScale && songAutoScaleOverrideFull) {
+                if (oneColumnScale < minFontScale && songAutoScaleOverrideFull) {
                     autoScale = "W";
                 }
             }
 
             if (autoScale.equals("W")) {
-                oneColumnScale = (float)availableWidth/(float)col1_1Width;
-                if (oneColumnScale<minFontScale && songAutoScaleOverrideWidth) {
-                    oneColumnScale = fontSize/defFontSize;
+                oneColumnScale = (float) availableWidth / (float) col1_1Width;
+                if (oneColumnScale < minFontScale && songAutoScaleOverrideWidth) {
+                    oneColumnScale = fontSize / defFontSize;
                 }
             }
 
@@ -2341,8 +2347,7 @@ public class ProcessSong {
         }
 
         return returnFloats;
-}
-
+    }
 
     // These are called from the VTO listener - draw the stuff to the screen as 1,2 or 3 columns
     // This then returns the best (largest) scaling size as a float
@@ -2433,6 +2438,7 @@ public class ProcessSong {
         float[] columnInfo = columnSplitAlgorithm(sectionWidths, sectionHeights, availableWidth,
                 availableHeight-songSheetTitleHeight,songAutoScale,
                 doForceColumns, forceColumnsInfo, presentation);
+
 
         if (columnInfo[0]==1) {
             createOneColumn(sectionViews, column1, column2, column3, currentWidth,
