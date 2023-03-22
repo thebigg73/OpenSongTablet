@@ -264,8 +264,6 @@ public class MyZoomLayout extends FrameLayout {
         }
         invalidate();
 
-        // We will also send this to nearby devices if we are a host
-        mainActivityInterface.getNearbyConnections().sendScrollByPayload(scrollDown,scrollFloat);
     }
 
 

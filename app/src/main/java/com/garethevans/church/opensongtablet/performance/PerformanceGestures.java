@@ -240,6 +240,9 @@ public class PerformanceGestures {
         if (myZoomLayout != null && myZoomLayout.getVisibility() == View.VISIBLE) {
             myZoomLayout.animateScrollBy(mainActivityInterface,
                     mainActivityInterface.getGestures().getScrollDistance(), scrollDown);
+            // We will also send this to nearby devices if we are a host
+            mainActivityInterface.getNearbyConnections().sendScrollByPayload(scrollDown,
+                    mainActivityInterface.getGestures().getScrollDistance());
         } else if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) &&
                 recyclerView != null && recyclerView.getVisibility() == View.VISIBLE) {
             int height = (int)(mainActivityInterface.getGestures().getScrollDistance()*recyclerView.getHeight());
@@ -247,6 +250,9 @@ public class PerformanceGestures {
                 height = - height;
             }
             recyclerView.smoothScrollBy(0,height);
+            // We will also send this to nearby devices if we are a host
+            mainActivityInterface.getNearbyConnections().sendScrollByPayload(scrollDown,
+                    mainActivityInterface.getGestures().getScrollDistance());
 
         } else if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_stage)) &&
                 recyclerView != null && recyclerView.getVisibility() == View.VISIBLE) {
@@ -396,16 +402,19 @@ public class PerformanceGestures {
     // Increase the autoscroll speed
     public void speedUpAutoscroll() {
         mainActivityInterface.getAutoscroll().speedUpAutoscroll();
+        mainActivityInterface.getNearbyConnections().increaseAutoscrollPayload();
     }
 
     // Decrease the autoscroll speed
     public void slowDownAutoscroll() {
         mainActivityInterface.getAutoscroll().slowDownAutoscroll();
+        mainActivityInterface.getNearbyConnections().decreaseAutoscrollPayload();
     }
 
     // Pause autoscrolling
     public void pauseAutoscroll() {
         mainActivityInterface.getAutoscroll().pauseAutoscroll();
+        mainActivityInterface.getNearbyConnections().sendAutoscrollPausePayload();
     }
 
     // Open links

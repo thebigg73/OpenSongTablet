@@ -57,6 +57,8 @@ public class NearbyConnections implements NearbyInterface {
     private final Context c;
     private final String TAG = "NearbyConnections", sectionTag = "___section___",
             scrollByTag = "___scrollby___", scrollToTag = "___scrollto___",
+            autoscrollPause = "___autoscrollpause___", autoscrollincrease = "___autoscrollincrease___",
+            autoscrolldecrease = "___autoscrolldecrease___",
             songTag = "_xx____xx_", endpointSplit = "__",
             serviceId = "com.garethevans.church.opensongtablet";
     private final ArrayList<String> connectedEndpoints, discoveredEndpoints; //  CODE__DeviceName
@@ -587,6 +589,24 @@ public class NearbyConnections implements NearbyInterface {
                                 if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) && receiveHostAutoscroll) {
                                     payloadAutoscroll(incoming);
                                 }
+                            } else if (incoming !=null && incoming.equals(autoscrollPause)) {
+                                if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) &&
+                                        receiveHostAutoscroll) {
+                                    mainActivityInterface.getAutoscroll().pauseAutoscroll();
+                                }
+
+                            } else if (incoming !=null && incoming.equals(autoscrollincrease)) {
+                                if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) &&
+                                        receiveHostAutoscroll) {
+                                    mainActivityInterface.getAutoscroll().speedUpAutoscroll();
+                                }
+
+                            } else if (incoming !=null && incoming.equals(autoscrolldecrease)) {
+                                if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) &&
+                                        receiveHostAutoscroll) {
+                                    mainActivityInterface.getAutoscroll().slowDownAutoscroll();
+                                }
+
                             } else if (incoming != null && incoming.contains(sectionTag)) {
                                 // IV - Section change only in Stage and Presentation mode (or PDF) when user option is selected
                                 if ((!mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) ||
@@ -874,6 +894,21 @@ public class NearbyConnections implements NearbyInterface {
         if (hasValidConnections() && isHost) {
             String infoPayload = scrollToTag + scrollProportion;
             doSendPayloadBytes(infoPayload);
+        }
+    }
+    public void sendAutoscrollPausePayload() {
+        if (hasValidConnections() && isHost) {
+            doSendPayloadBytes(autoscrollPause);
+        }
+    }
+    public void increaseAutoscrollPayload() {
+        if (hasValidConnections() && isHost) {
+            doSendPayloadBytes(autoscrollincrease);
+        }
+    }
+    public void decreaseAutoscrollPayload() {
+        if (hasValidConnections() && isHost) {
+            doSendPayloadBytes(autoscrolldecrease);
         }
     }
 

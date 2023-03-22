@@ -1106,6 +1106,9 @@ public class PerformanceFragment extends Fragment {
                 !mainActivityInterface.getPreferences().getMyPreferenceString("songAutoScale","W").equals("Y")) {
             myView.zoomLayout.animateScrollBy(mainActivityInterface,
                     Math.abs(proportionScroll),proportionScroll>0);
+        } else if (myView.recyclerView.getVisibility()==View.VISIBLE) {
+            int height = (int)(proportionScroll*myView.recyclerView.getHeight());
+            myView.recyclerView.smoothScrollBy(0,height);
         }
     }
 
@@ -1114,6 +1117,9 @@ public class PerformanceFragment extends Fragment {
         if (myView.zoomLayout.getVisibility()==View.VISIBLE &&
                 !mainActivityInterface.getPreferences().getMyPreferenceString("songAutoScale","W").equals("Y")) {
             myView.zoomLayout.scrollTo(0,(int)(myView.zoomLayout.getHeight()*proportionScroll));
+        } else if (myView.recyclerView.getVisibility()==View.VISIBLE) {
+            int height = (int)(proportionScroll*myView.recyclerView.getHeight());
+            myView.recyclerView.scrollTo(0,height);
         }
     }
 
