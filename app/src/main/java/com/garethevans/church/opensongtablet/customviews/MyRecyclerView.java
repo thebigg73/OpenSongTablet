@@ -50,7 +50,6 @@ public class MyRecyclerView extends RecyclerView  implements RecyclerView.Smooth
     private final LinearInterpolator linearInterpolator = new LinearInterpolator();
     private final ScrollListener scrollListener;
     private final ItemTouchListener itemTouchListener;
-    private RecyclerView.SmoothScroller smoothScroller;
 
     public MyRecyclerView(@NonNull Context context) {
         super(context);
@@ -125,7 +124,7 @@ public class MyRecyclerView extends RecyclerView  implements RecyclerView.Smooth
     }
 
     public void smoothScrollTo(Context c, LayoutManager layoutManager, int position) {
-        smoothScroller = new LinearSmoothScroller(c) {
+        SmoothScroller smoothScroller = new LinearSmoothScroller(c) {
             @Override
             protected int getVerticalSnapPreference() {
                 return LinearSmoothScroller.SNAP_TO_START;
@@ -164,12 +163,14 @@ public class MyRecyclerView extends RecyclerView  implements RecyclerView.Smooth
 
             // Get the current scroll position, the position we need to get to and how far this is
             int currScroll = recyclerLayoutManager.getScrollY();
-            int scrollToY = yPositions.get(position);
-            int scrollAmount = scrollToY - currScroll - spaceAbove;
+            if (yPositions.size()>0 && yPositions.size()>position) {
+                int scrollToY = yPositions.get(position);
+                int scrollAmount = scrollToY - currScroll - spaceAbove;
 
-            // Do the scrolling, but not if small movement
-            if (Math.abs(scrollAmount) > 25) {
-                smoothScrollBy(0, scrollAmount);
+                // Do the scrolling, but not if small movement
+                if (Math.abs(scrollAmount) > 25) {
+                    smoothScrollBy(0, scrollAmount);
+                }
             }
 
         } catch (Exception e) {

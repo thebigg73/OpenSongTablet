@@ -177,6 +177,9 @@ public class StickyPopUp {
             try {
                 handler.postDelayed(this::closeSticky, displayTime);
             } catch (Exception e) {
+                if (floatWindow!=null) {
+                    floatWindow.postDelayed(this::closeSticky, displayTime);
+                }
                 e.printStackTrace();
             }
         }
