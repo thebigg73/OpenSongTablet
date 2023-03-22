@@ -5,7 +5,8 @@ import com.google.android.material.button.MaterialButton;
 public interface NearbyReturnActionsInterface {
     void toggleAutoscroll();
     void selectSection(int i);
-
+    void doScrollByProportion(float scrollProportion);
+    void doScrollToProportion(float scrollProportion);
     void loadSong();
     void goToPreviousPage();
     void goToNextPage();

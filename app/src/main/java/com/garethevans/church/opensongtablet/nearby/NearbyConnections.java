@@ -56,6 +56,7 @@ public class NearbyConnections implements NearbyInterface {
 
     private final Context c;
     private final String TAG = "NearbyConnections", sectionTag = "___section___",
+            scrollByTag = "___scrollby___", scrollToTag = "___scrollto___",
             songTag = "_xx____xx_", endpointSplit = "__",
             serviceId = "com.garethevans.church.opensongtablet";
     private final ArrayList<String> connectedEndpoints, discoveredEndpoints; //  CODE__DeviceName
@@ -69,7 +70,7 @@ public class NearbyConnections implements NearbyInterface {
     private boolean isHost, receiveHostFiles, keepHostFiles, usingNearby, temporaryAdvertise,
             isAdvertising = false, isDiscovering = false, nearbyHostMenuOnly,
             receiveHostAutoscroll = true, receiveHostSongSections = true, connectionsOpen,
-            waitingForSectionChange = false, nearbyHostPassthrough;
+            waitingForSectionChange = false, nearbyHostPassthrough, receiveHostScroll;
     private AdvertisingOptions advertisingOptions;
     private DiscoveryOptions discoveryOptions;
     // The stuff used for Google Nearby for connecting devices
@@ -596,6 +597,20 @@ public class NearbyConnections implements NearbyInterface {
                                 }
                             } else if (incoming != null && incoming.contains(songTag)) {
                                 payloadOpenSong(incoming);
+                            } else if (incoming!=null && incoming.contains(scrollByTag)) {
+                                // We have received a scroll by amount command.  Check we want this
+                                if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) &&
+                                        receiveHostScroll) {
+                                    Log.d(TAG,"call payloadScrollBy");
+                                    payloadScrollBy(incoming);
+                                }
+                            } else if (incoming!=null && incoming.contains(scrollToTag)) {
+                                // We have receive a scroll to instruction.  Check we want this
+                                if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) &&
+                                       receiveHostScroll) {
+                                    Log.d(TAG,"call payloadScrollTo");
+                                    payloadScrollTo(incoming);
+                                }
                             }
                             Log.d(TAG, "incoming=" + incoming);
                         }
@@ -744,6 +759,7 @@ public class NearbyConnections implements NearbyInterface {
     }
 
 
+
     private void repeatPayload(Payload payload) {
         if (nearbyStrategy==Strategy.P2P_CLUSTER) {
             for (String connectedEndpoint : connectedEndpoints) {
@@ -842,6 +858,24 @@ public class NearbyConnections implements NearbyInterface {
         doSendPayloadBytes(message);
     }
 
+    public void sendScrollByPayload(boolean scrollDown, float scrollProportion) {
+        if (hasValidConnections() && isHost) {
+            Log.d(TAG, "scrollDown:" + scrollDown + "  scrollProportion:" + scrollProportion);
+            String infoPayload = scrollByTag;
+            if (scrollDown) {
+                infoPayload += scrollProportion;
+            } else {
+                infoPayload += -scrollProportion;
+            }
+            doSendPayloadBytes(infoPayload);
+        }
+    }
+    public void sendScrollToPayload(float scrollProportion) {
+        if (hasValidConnections() && isHost) {
+            String infoPayload = scrollToTag + scrollProportion;
+            doSendPayloadBytes(infoPayload);
+        }
+    }
 
     // Deal with actions received as a client device
     public void doSectionChange(int mysection) {
@@ -1174,6 +1208,38 @@ public class NearbyConnections implements NearbyInterface {
     }
     public boolean getReceiveHostAutoscroll() {
         return receiveHostAutoscroll;
+    }
+    private void payloadScrollBy(String incoming) {
+        // It sends the scrollProportion as a ratio of scrollAmount/songHeight
+        if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) &&
+        nearbyReturnActionsInterface!=null) {
+            incoming = incoming.replace(scrollByTag,"");
+            try {
+                float proportion = Float.parseFloat(incoming);
+                nearbyReturnActionsInterface.doScrollByProportion(proportion);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    private void payloadScrollTo(String incoming) {
+        // It sends the scrollProportion as a ratio of scrollAmount/songHeight
+        if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) &&
+                nearbyReturnActionsInterface!=null) {
+            incoming = incoming.replace(scrollToTag,"");
+            try {
+                float proportion = Float.parseFloat(incoming);
+                nearbyReturnActionsInterface.doScrollToProportion(proportion);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    private void setReceiveHostScroll(boolean receiveHostScroll) {
+        this.receiveHostScroll = receiveHostScroll;
+    }
+    public boolean getReceiveHostScroll() {
+        return receiveHostScroll;
     }
 
 

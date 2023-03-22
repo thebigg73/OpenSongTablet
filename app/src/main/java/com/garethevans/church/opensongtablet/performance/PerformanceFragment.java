@@ -1071,6 +1071,18 @@ public class PerformanceFragment extends Fragment {
                 mainActivityInterface.getDisplayPrevNext().showAndHide();
                 mainActivityInterface.updateOnScreenInfo("showhide");
                 mainActivityInterface.showActionBar();
+                // Check for updating send nearby to
+                if (mainActivityInterface.getNearbyConnections().hasValidConnections() &&
+                mainActivityInterface.getNearbyConnections().getIsHost() &&
+                !mainActivityInterface.getPreferences().getMyPreferenceString("songAutoScale","W").equals("Y")) {
+                    // Get the song height
+                    int height = myView.zoomLayout.getHeight();
+                    // Get the scroll position
+                    int scrollPos = myView.zoomLayout.getScrollY();
+                    if (height>0) {
+                        mainActivityInterface.getNearbyConnections().sendScrollToPayload((float)scrollPos/(float)height);
+                    }
+                }
             }
             return gestureDetector.onTouchEvent(motionEvent);
         });
@@ -1085,6 +1097,23 @@ public class PerformanceFragment extends Fragment {
         } else {
             // Toggles between different zooms
             myView.zoomLayout.toggleScale();
+        }
+    }
+
+    public void doNearbyScrollBy(float proportionScroll) {
+        // We received from nearby host, so attempt to scroll by this proportion in the zoomLayout
+        if (myView.zoomLayout.getVisibility()==View.VISIBLE &&
+                !mainActivityInterface.getPreferences().getMyPreferenceString("songAutoScale","W").equals("Y")) {
+            myView.zoomLayout.animateScrollBy(mainActivityInterface,
+                    Math.abs(proportionScroll),proportionScroll>0);
+        }
+    }
+
+    public void doNearbyScrollTo(float proportionScroll) {
+        // We received from nearby host, so attempt to scroll this position (as ratio of height)
+        if (myView.zoomLayout.getVisibility()==View.VISIBLE &&
+                !mainActivityInterface.getPreferences().getMyPreferenceString("songAutoScale","W").equals("Y")) {
+            myView.zoomLayout.scrollTo(0,(int)(myView.zoomLayout.getHeight()*proportionScroll));
         }
     }
 

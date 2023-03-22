@@ -238,7 +238,8 @@ public class PerformanceGestures {
     // Scroll up/down
     public void scroll(boolean scrollDown) {
         if (myZoomLayout != null && myZoomLayout.getVisibility() == View.VISIBLE) {
-            myZoomLayout.animateScrollBy(mainActivityInterface.getGestures().getScrollDistance(), scrollDown);
+            myZoomLayout.animateScrollBy(mainActivityInterface,
+                    mainActivityInterface.getGestures().getScrollDistance(), scrollDown);
         } else if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) &&
                 recyclerView != null && recyclerView.getVisibility() == View.VISIBLE) {
             int height = (int)(mainActivityInterface.getGestures().getScrollDistance()*recyclerView.getHeight());

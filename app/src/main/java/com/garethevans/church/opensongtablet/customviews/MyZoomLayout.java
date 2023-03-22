@@ -13,6 +13,8 @@ import android.widget.OverScroller;
 
 import androidx.annotation.Nullable;
 
+import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+
 public class MyZoomLayout extends FrameLayout {
 
     @SuppressWarnings({"unused","FieldCanBeLocal"})
@@ -250,7 +252,8 @@ public class MyZoomLayout extends FrameLayout {
         }
     }
 
-    public void animateScrollBy(float scrollFloat, boolean scrollDown) {
+    public void animateScrollBy(MainActivityInterface mainActivityInterface,
+                                float scrollFloat, boolean scrollDown) {
         float velocityY = (viewHeight*scrollFloat)/0.3f;
         if (scrollDown) {
             overScroller.fling(getScrollX(), getScrollY(), 0, (int)velocityY,
@@ -260,7 +263,11 @@ public class MyZoomLayout extends FrameLayout {
                     0, maxScrollX, 0, maxScrollY,overShootX,overShootY);
         }
         invalidate();
+
+        // We will also send this to nearby devices if we are a host
+        mainActivityInterface.getNearbyConnections().sendScrollByPayload(scrollDown,scrollFloat);
     }
+
 
     public void setPageSize(int viewWidth, int viewHeight) {
         this.viewWidth = viewWidth;

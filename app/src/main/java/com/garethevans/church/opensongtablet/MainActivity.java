@@ -2417,6 +2417,18 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
 
     @Override
+    public void doScrollByProportion(float scrollProportion) {
+        if (performanceValid()) {
+            performanceFragment.doNearbyScrollBy(scrollProportion);
+        }
+    }
+    @Override
+    public void doScrollToProportion(float scrollProportion) {
+        if (performanceValid()) {
+            performanceFragment.doNearbyScrollTo(scrollProportion);
+        }
+    }
+    @Override
     public Pad getPad() {
         if (pad==null) {
             pad = new Pad(this, myView.onScreenInfo.getPad());
