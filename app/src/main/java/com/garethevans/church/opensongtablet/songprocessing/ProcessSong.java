@@ -44,6 +44,7 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Locale;
 
@@ -2297,6 +2298,7 @@ public class ProcessSong {
                         sectionSpace};      // Section space per view except last in column
             } else {
                 oneColumn = true;
+                threeColumn = false;
             }
 
         } else if (twoColumn) {
@@ -2320,9 +2322,11 @@ public class ProcessSong {
                         sectionSpace};      // Section space per view except last in column
             } else {
                 oneColumn = true;
+                twoColumn = false;
             }
         }
 
+        Log.d(TAG,"oneColumn:"+oneColumn+"  twoColumn:"+twoColumn+"  threeColumn:"+threeColumn);
         if (oneColumn && !twoColumn && !threeColumn) {
             // Compare with max scaling due to font size allowed
             if (autoScale.equals("Y")) {
@@ -2346,6 +2350,7 @@ public class ProcessSong {
                     sectionSpace};  // Section space per view except last in column
         }
 
+        Log.d(TAG,"returnFloats:"+ Arrays.toString(returnFloats));
         return returnFloats;
     }
 
