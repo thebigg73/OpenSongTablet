@@ -132,7 +132,7 @@ public class EditSongFragmentLyrics extends Fragment {
         });
 
         myView.ocr.setOnClickListener(v -> {
-            mainActivityInterface.navHome();
+
             if (mainActivityInterface.getSong().getFiletype().equals("PDF")) {
                 mainActivityInterface.getOCR().getTextFromPDF(
                         mainActivityInterface.getSong().getFolder(), mainActivityInterface.getSong().getFilename());
@@ -141,6 +141,9 @@ public class EditSongFragmentLyrics extends Fragment {
                         mainActivityInterface.getSong().getFolder(),
                         mainActivityInterface.getSong().getFilename());
             }
+            Log.d(TAG,"filetype:"+mainActivityInterface.getSong().getFiletype());
+            Log.d(TAG,"filename:"+mainActivityInterface.getSong().getFilename());
+            mainActivityInterface.navHome();
         });
 
         myView.settingsButton.setOnClickListener(v -> {

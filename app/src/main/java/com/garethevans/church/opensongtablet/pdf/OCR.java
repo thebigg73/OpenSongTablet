@@ -31,6 +31,8 @@ public class OCR {
         // However we will iterate through each page and send the bitmap off for ocr recognition
         // It also processes images (png, jpg, gif) and camera intents using the same logic with 1 page
 
+        this.filename = filename;
+
         pdfPages = new ArrayList<>();
 
         // Get the pdf uri
@@ -144,5 +146,6 @@ public class OCR {
         // Send the array of pages to the Bottom sheet for the user to decide what to do
         PDFExtractBottomSheet pdfExtractBottomSheet = new PDFExtractBottomSheet(pdfPages,filename);
         pdfExtractBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"PDFExtractBottomSheet");
+        filename = null;
     }
 }
