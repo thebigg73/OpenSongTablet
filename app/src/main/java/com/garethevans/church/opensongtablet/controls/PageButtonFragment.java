@@ -6,7 +6,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,10 +19,10 @@ import androidx.fragment.app.Fragment;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDown;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
+import com.garethevans.church.opensongtablet.customviews.MyFAB;
 import com.garethevans.church.opensongtablet.customviews.MyMaterialTextView;
 import com.garethevans.church.opensongtablet.databinding.SettingsPagebuttonsBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.slider.Slider;
 
 import java.util.ArrayList;
@@ -35,7 +34,7 @@ import java.util.concurrent.Executors;
 public class PageButtonFragment extends Fragment {
 
     private MainActivityInterface mainActivityInterface;
-    private ArrayList<FloatingActionButton> myButtons;
+    private ArrayList<MyFAB> myButtons;
     private ArrayList<LinearLayout> myLayouts;
     private ArrayList<SwitchCompat> mySwitches;
     private ArrayList<ExposedDropDown> exposedDropDowns;
@@ -262,7 +261,6 @@ public class PageButtonFragment extends Fragment {
     private void saveDropDownChoice(int x, String text) {
         // x tells us the button we are dealing with and action is, well, the action
         int foundpos = mainActivityInterface.getPageButtons().getPositionFromText(text);
-        Log.d(TAG,"foundpos="+foundpos);
         mainActivityInterface.getPageButtons().setPageButtonAction(x,foundpos);
         mainActivityInterface.getPageButtons().setPageButtonText(x,foundpos);
         mainActivityInterface.getPageButtons().setPageButtonShortText(x,foundpos);

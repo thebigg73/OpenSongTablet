@@ -9,11 +9,13 @@ import android.graphics.drawable.Drawable;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.LinearLayout;
 
+import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.ViewCompat;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.customviews.MyFAB;
 import com.garethevans.church.opensongtablet.interfaces.ActionInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -40,7 +42,7 @@ public class PageButtons {
 
     // My buttons in the main activity
     private LinearLayout pageButtonsLayout;
-    private ArrayList<FloatingActionButton> fabs;
+    private ArrayList<MyFAB> fabs;
 
     // My chosen buttons in the edit fragment
     private final int pageButtonNum = 8;
@@ -48,7 +50,7 @@ public class PageButtons {
     private ArrayList<String> pageButtonAction, pageButtonText, pageButtonShortText, pageButtonLongText;
     private ArrayList<Drawable> pageButtonDrawable;
     private ArrayList<Boolean> pageButtonVisibility;
-    private FloatingActionButton actionButton;
+    private MyFAB actionButton;
 
     public PageButtons(Context c) {
         this.c = c;
@@ -64,11 +66,12 @@ public class PageButtons {
         pageButtonMini = mainActivityInterface.getPreferences().getMyPreferenceBoolean("pageButtonMini",false);
     }
 
-    public void setMainFABS(FloatingActionButton actionButton, FloatingActionButton custom1,
-                       FloatingActionButton custom2, FloatingActionButton custom3,
-                       FloatingActionButton custom4, FloatingActionButton custom5,
-                       FloatingActionButton custom6, FloatingActionButton custom7,
-                            FloatingActionButton custom8, LinearLayout pageButtonsLayout) {
+
+    public void setMainFABS(MyFAB actionButton, MyFAB custom1,
+                            MyFAB custom2, MyFAB custom3,
+                            MyFAB custom4, MyFAB custom5,
+                            MyFAB custom6, MyFAB custom7,
+                            MyFAB custom8, LinearLayout pageButtonsLayout) {
         this.actionButton = actionButton;
         fabs = new ArrayList<>();
         updateColors();
@@ -108,6 +111,7 @@ public class PageButtons {
 
         fabs.add(custom1);
         fabs.add(custom2);
+        fabs.add(custom2);
         fabs.add(custom3);
         fabs.add(custom4);
         fabs.add(custom5);
@@ -137,7 +141,7 @@ public class PageButtons {
         if (actionButton!=null && actionButton.getRotation()==0) {
             actionButton.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
         }
-        for (FloatingActionButton fab:fabs) {
+        for (MyFAB fab:fabs) {
             fab.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
         }
         if (pageButtonsLayout!=null) {
@@ -145,7 +149,7 @@ public class PageButtons {
         }
     }
 
-    public FloatingActionButton getFAB(int x) {
+    public MyFAB getFAB(int x) {
         return fabs.get(x);
     }
     private final AccelerateDecelerateInterpolator interpolator = new AccelerateDecelerateInterpolator();
@@ -328,13 +332,22 @@ public class PageButtons {
     }
 
     // This will redesign the button for the page
-    public void setPageButton(FloatingActionButton fab, int buttonNum, boolean editing) {
+    public void setPageButton(MyFAB fab, int buttonNum, boolean editing) {
         // The alpha is set on the linear layout, not the individual buttons
         pageButtonsLayout.setAlpha(pageButtonAlpha);
+
+        // Tint the button
         fab.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
+
+        // If this is the main page button, set it's drawable
         Drawable drawable = fab.getDrawable();
-        DrawableCompat.setTint(drawable, pageButtonIconColor);
-        fab.setImageDrawable(drawable);
+        if (drawable==null && buttonNum==-1) {
+            drawable = ContextCompat.getDrawable(c, R.drawable.plus);
+            if (drawable!=null) {
+                DrawableCompat.setTint(drawable, pageButtonIconColor);
+                fab.setImageDrawable(drawable);
+            }
+        }
 
         if (buttonNum>=0 && buttonNum<=pageButtonNum) {
             Drawable buttonDrawable = pageButtonDrawable.get(buttonNum);

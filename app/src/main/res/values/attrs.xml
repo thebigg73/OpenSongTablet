@@ -16,6 +16,10 @@
         <attr name="size" />
     </declare-styleable>
 
+    <declare-styleable name="MyFAB">
+        <attr name="fab_padding" format="dimension" />
+    </declare-styleable>
+
     <declare-styleable name="MaterialEditText">
         <attr name="android:text"/>
         <attr name="android:hint"/>

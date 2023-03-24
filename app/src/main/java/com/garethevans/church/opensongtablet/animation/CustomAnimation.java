@@ -9,7 +9,7 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
 
 import com.garethevans.church.opensongtablet.R;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.garethevans.church.opensongtablet.customviews.MyFAB;
 
 public class CustomAnimation {
 
@@ -88,7 +88,7 @@ public class CustomAnimation {
         }
     }
 
-    public void fadeActionButton(FloatingActionButton fab, float fadeTo) {
+    public void fadeActionButton(MyFAB fab, float fadeTo) {
         new Handler().postDelayed(() -> {
             fab.setAlpha(1.0f);
             fab.animate().alpha(fadeTo).setDuration(800);

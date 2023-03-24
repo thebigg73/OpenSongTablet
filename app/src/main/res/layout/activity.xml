@@ -71,21 +71,19 @@
                 android:layout_above="@+id/actionFAB"
                 android:layout_below="@+id/onScreenInfo"
                 android:layout_alignParentEnd="true"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="16dp"
                 android:clipChildren="true" />
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
+            <com.garethevans.church.opensongtablet.customviews.MyFAB
                 android:id="@+id/actionFAB"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true"
-                app:useCompatPadding="true"
-                android:layout_marginEnd="8dp"
+                app:fab_padding="12dp"
                 android:contentDescription="@string/action"
-                android:src="@drawable/plus" />
+                android:src="@drawable/plus"
+                android:layout_marginTop="12dp"/>
+
 
             <!-- The previous and next info -->
             <include

@@ -96,16 +96,15 @@
                 android:visibility="gone"/>
         </FrameLayout>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
+        <com.garethevans.church.opensongtablet.customviews.MyFAB
             android:id="@+id/actionFAB"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
-            android:layout_margin="8dp"
+            app:fab_padding="10dp"
             android:contentDescription="@string/action"
-            android:src="@drawable/plus"
-            app:useCompatPadding="true" />
+            android:src="@drawable/plus"/>
 
     </RelativeLayout>
 
