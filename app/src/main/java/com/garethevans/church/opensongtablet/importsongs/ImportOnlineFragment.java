@@ -66,6 +66,13 @@ public class ImportOnlineFragment extends Fragment {
     private Boiteachansons boiteachansons;
     private EChords eChords;
     private WebView webView;
+    private String webAddress;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mainActivityInterface.updateToolbarHelp(webAddress);
+    }
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -81,7 +88,7 @@ public class ImportOnlineFragment extends Fragment {
         prepareStrings();
 
         mainActivityInterface.updateToolbar(import_basic_string + " " + online_string);
-        mainActivityInterface.updateToolbarHelp(website_song_online_string);
+        webAddress = website_song_online_string;
 
         // Setup helper
         setupHelpers();

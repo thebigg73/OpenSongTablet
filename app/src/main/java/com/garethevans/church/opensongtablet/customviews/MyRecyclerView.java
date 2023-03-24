@@ -172,7 +172,6 @@ public class MyRecyclerView extends RecyclerView  implements RecyclerView.Smooth
                     smoothScrollBy(0, scrollAmount);
                 }
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }

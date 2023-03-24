@@ -21,6 +21,13 @@ public class ModeFragment extends Fragment {
     private MainActivityInterface mainActivityInterface;
     private SettingsModeBinding myView;
     private String choose_app_mode="", website_app_mode="";
+    private String webAddress;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mainActivityInterface.updateToolbarHelp(webAddress);
+    }
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -36,7 +43,7 @@ public class ModeFragment extends Fragment {
         prepareStrings();
 
         mainActivityInterface.updateToolbar(choose_app_mode);
-        mainActivityInterface.updateToolbarHelp(website_app_mode);
+        webAddress = website_app_mode;
 
         // Highlight the current mode
         highlightMode();

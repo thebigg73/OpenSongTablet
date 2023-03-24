@@ -47,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/song_title"
                 android:valueFrom="6"
-                android:valueTo="22"
+                android:valueTo="20"
                 app:stepSize="1"
                 android:padding="0dp"/>
 
@@ -57,7 +57,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/author"
                 android:valueFrom="6"
-                android:valueTo="22"
+                android:valueTo="20"
                 app:stepSize="1"
                 android:padding="0dp"/>
             <TableRow style="@style/DividerLine"/>
@@ -89,7 +89,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/size"
                 android:valueFrom="1"
-                android:valueTo="8"
+                android:valueTo="6"
                 app:stepSize="1"
                 android:padding="0dp"/>
 
@@ -106,7 +106,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/size"
                 android:valueFrom="6"
-                android:valueTo="16"
+                android:valueTo="10"
                 app:stepSize="1"
                 android:padding="0dp"/>
             <TableRow style="@style/DividerLine"/>
@@ -158,7 +158,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/size"
                     android:valueFrom="6"
-                    android:valueTo="16"
+                    android:valueTo="10"
                     app:stepSize="1"
                     android:padding="0dp"/>
             </LinearLayout>

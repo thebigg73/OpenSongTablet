@@ -45,6 +45,13 @@ public class BibleDownloadFragment extends Fragment {
     private WebDownload webDownload;
     private String success_string="", download_string="", website_bible_download_string,
         error_string="", requires_internet_string="";
+    private String webAddress;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mainActivityInterface.updateToolbarHelp(webAddress);
+    }
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -60,7 +67,7 @@ public class BibleDownloadFragment extends Fragment {
         prepareStrings();
 
         mainActivityInterface.updateToolbar(download_string);
-        mainActivityInterface.updateToolbarHelp(website_bible_download_string);
+        webAddress = website_bible_download_string;
 
         // Set up helpers
         setupHelpers();

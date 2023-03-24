@@ -27,6 +27,13 @@ public class CustomPadsFragment extends Fragment {
     private MyMaterialEditText myMaterialEditText;
     private String prefName, prefValue, pad_string="", custom_string="", website_pad_string="",
             pad_auto_string="";
+      private String webAddress;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mainActivityInterface.updateToolbarHelp(webAddress);
+    }
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -42,7 +49,7 @@ public class CustomPadsFragment extends Fragment {
         prepareStrings();
 
         mainActivityInterface.updateToolbar(pad_string + " (" + custom_string + ")");
-        mainActivityInterface.updateToolbarHelp(website_pad_string);
+        webAddress = website_pad_string;
 
         // Set up the file launcher listener
         setupLauncher();

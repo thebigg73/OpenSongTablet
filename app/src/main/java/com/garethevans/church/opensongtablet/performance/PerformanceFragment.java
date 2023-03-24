@@ -177,11 +177,7 @@ public class PerformanceFragment extends Fragment {
             mainActivityInterface.setWhattodo("");
             // Check if the current song is in the set
             int position = mainActivityInterface.getSetActions().indexSongInSet(mainActivityInterface.getSong());
-            if (position<0) {
-                mainActivityInterface.loadSongFromSet(0);
-            } else {
-                mainActivityInterface.loadSongFromSet(position);
-            }
+            mainActivityInterface.loadSongFromSet(Math.max(position, 0));
         } else {
             doSongLoad(mainActivityInterface.getPreferences().getMyPreferenceString("songFolder", mainfoldername),
                     mainActivityInterface.getPreferences().getMyPreferenceString("songFilename", "Welcome to OpenSongApp"));
@@ -462,7 +458,7 @@ public class PerformanceFragment extends Fragment {
                 getScreenshot(0, 0, 0);
 
                 // Deal with song actions to run after display (highlighter, notes, etc)
-                dealWithStuffAfterReady();
+                dealWithStuffAfterReady(true);
             }
         });
         myView.recyclerView.setAdapter(pdfPageAdapter);
@@ -518,7 +514,7 @@ public class PerformanceFragment extends Fragment {
         });
 
         // Deal with song actions to run after display (highlighter, notes, etc)
-        dealWithStuffAfterReady();
+        dealWithStuffAfterReady(true);
 
     }
     private void prepareSlideImageView() {
@@ -556,7 +552,7 @@ public class PerformanceFragment extends Fragment {
                 myView.recyclerView.startAnimation(animSlideIn);
 
                 // Deal with song actions to run after display (highlighter, notes, etc)
-                dealWithStuffAfterReady();
+                dealWithStuffAfterReady(true);
 
                 // Get a null screenshot
                 getScreenshot(0,0,0);
@@ -629,8 +625,6 @@ public class PerformanceFragment extends Fragment {
 
     private void setUpTestViewListener() {
         if (myView!=null) {
-            myView.testPane.removeAllViews();
-
             // Add the views and wait for the vto of each to finish
             myView.songView.clearViews();
             myView.testPane.removeAllViews();
@@ -672,8 +666,8 @@ public class PerformanceFragment extends Fragment {
     }
 
     private void songIsReadyToDisplay() {
-        // Set the page holder to fullscreen for now
         try {
+            // Set the page holder to fullscreen for now
             myView.pageHolder.getLayoutParams().width = availableWidth;
             myView.pageHolder.getLayoutParams().height = availableHeight;
             myView.songSheetTitle.setVisibility(View.VISIBLE);
@@ -711,15 +705,22 @@ public class PerformanceFragment extends Fragment {
                         myView.recyclerView.setMaxScrollY(heightAfterScale - availableHeight);
                         myView.recyclerView.setPadding(myView.inlineSetList.getInlineSetWidth(),0,0,0);
 
+                        endProcessing();
+
                         // Slide in
+                        long QOSAdjustment = doSongLoadQOSTime - (System.currentTimeMillis() - doSongLoadStartTime);
+                        Log.d(TAG, "Song QOS adjustment: " + Math.max(0, QOSAdjustment) + " (" + (doSongLoadQOSTime - QOSAdjustment) + ")");
+
                         myView.recyclerView.setVisibility(View.VISIBLE);
-                        myView.recyclerView.startAnimation(animSlideIn);
 
-                        dealWithStuffAfterReady();
+                        new Handler().postDelayed(() -> {
+                            myView.recyclerView.startAnimation(animSlideIn);
 
-                        // Get a null screenshot
-                        getScreenshot(0, 0, 0);
+                            dealWithStuffAfterReady(false);
 
+                            // Get a null screenshot
+                            getScreenshot(0, 0, 0);
+                        }, Math.max(0, QOSAdjustment));
                     }
                 });
                 myView.recyclerView.post(() -> myView.recyclerView.setAdapter(stageSectionAdapter));
@@ -810,14 +811,7 @@ public class PerformanceFragment extends Fragment {
                 myView.zoomLayout.setCurrentScale(scaleFactor);
                 myView.zoomLayout.setSongSize(widthAfterScale,heightAfterScale);
 
-                // Set the load status to the song (used to enable nearby section change listener)
-                mainActivityInterface.getSong().setCurrentlyLoading(false);
-
-                // Release the processing lock
-                processingTestView = false;
-
-                // Set the positions
-                mainActivityInterface.getDisplayPrevNext().getPositions();
+                endProcessing();
 
                 // Slide in
                 long QOSAdjustment = doSongLoadQOSTime - (System.currentTimeMillis() - doSongLoadStartTime);
@@ -833,7 +827,7 @@ public class PerformanceFragment extends Fragment {
                         myView.pageHolder.setVisibility(View.VISIBLE);
                         myView.pageHolder.startAnimation(animSlideIn);
 
-                        dealWithStuffAfterReady();
+                        dealWithStuffAfterReady(false);
 
                         // Try to take a screenshot ready for any highlighter actions that may be called
                         getScreenshot(myView.pageHolder.getWidth(), myView.pageHolder.getHeight()-myView.songSheetTitle.getHeight(), topPadding);
@@ -848,22 +842,40 @@ public class PerformanceFragment extends Fragment {
         }
     }
 
-    // This stuff deals with running song action stuff
-    private void dealWithStuffAfterReady() {
-         // Set the load status to the song (used to enable nearby section change listener)
+    private void endProcessing () {
+        // Set the load status to the song (used to enable nearby section change  listener)
         mainActivityInterface.getSong().setCurrentlyLoading(false);
 
-        // Set the previous/next if we want to
+        // Set the previous/next
         mainActivityInterface.getDisplayPrevNext().setPrevNext();
 
         // Release the processing lock
         processingTestView = false;
+    }
+
+    // This stuff deals with running song actions
+    private void dealWithStuffAfterReady(boolean callEndProcessing) {
+
+        if (callEndProcessing) {
+            endProcessing();
+        }
+
+        // IV - Consume any later pending client section change received from Host (-ve value)
+        if (mainActivityInterface.getNearbyConnections().hasValidConnections() &&
+                !mainActivityInterface.getNearbyConnections().getIsHost() &&
+                (mainActivityInterface.getNearbyConnections().getWaitingForSectionChange())) {
+            int pendingSection = mainActivityInterface.getNearbyConnections().getPendingCurrentSection();
+            mainActivityInterface.getNearbyConnections().doSectionChange(pendingSection);
+            // Reset the flags to off
+            mainActivityInterface.getNearbyConnections().setWaitingForSectionChange(false);
+            mainActivityInterface.getNearbyConnections().setPendingCurrentSection(0);
+        }
 
         // Run this only when the user has stopped on a song after 2s.
         // This is important for pad use - the pad will not change while the user rapidly changes songs.
-        // This is important for rapid song - we only run autoscroll, metronome etc. for the last song.
+        // This is important for rapid song changes - we only run autoscroll, metronome etc. for the last song.
         // For pads, once settled on a song the user has 2s grace to prep to play the song before cross fade.
-        // A good time to change capo
+        // A good time to change capo!
         dealWithExtraStuffOnceSettledHandler.removeCallbacks((dealWithExtraStuffOnceSettledRunnable));
         dealWithExtraStuffOnceSettledHandler.postDelayed(dealWithExtraStuffOnceSettledRunnable, 2000);
     }
@@ -888,19 +900,6 @@ public class PerformanceFragment extends Fragment {
             // Load up the sticky notes if the user wants them
             dealWithStickyNotes(false, false);
 
-            // IV - Consume any later pending client section change received from Host (-ve value)
-            if (mainActivityInterface.getNearbyConnections().hasValidConnections() &&
-                    !mainActivityInterface.getNearbyConnections().getIsHost() &&
-                    mainActivityInterface.getNearbyConnections().getWaitingForSectionChange()) {
-                int pendingSection = mainActivityInterface.getNearbyConnections().getPendingCurrentSection();
-
-                // Reset the flags to off
-                mainActivityInterface.getNearbyConnections().setWaitingForSectionChange(false);
-                mainActivityInterface.getNearbyConnections().setPendingCurrentSection(-1);
-
-                mainActivityInterface.getNearbyConnections().doSectionChange(pendingSection);
-            }
-
             // Start the pad (if the pads are activated and the pad is valid)
             mainActivityInterface.getPad().autoStartPad();
 
@@ -914,6 +913,12 @@ public class PerformanceFragment extends Fragment {
             displayInterface.updateDisplay("newSongLoaded");
             displayInterface.updateDisplay("setSongInfo");
             displayInterface.updateDisplay("setSongContent");
+
+            // Send a call to nearby devices to process the song at their end
+            if (mainActivityInterface.getNearbyConnections().hasValidConnections() &&
+                    mainActivityInterface.getNearbyConnections().getIsHost()) {
+                mainActivityInterface.getNearbyConnections().sendSongPayload();
+            }
 
             // If we opened the app with and intent/file, check if we need to import
             tryToImportIntent();
@@ -948,43 +953,47 @@ public class PerformanceFragment extends Fragment {
                 highlighterVTO.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                     @Override
                     public void onGlobalLayout() {
-                        myView.highlighterView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                        // Load in the bitmap with these dimensions
-                        Bitmap highlighterBitmap = mainActivityInterface.getProcessSong().
-                                getHighlighterFile(0, 0);
+                        try {
+                            myView.highlighterView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                            // Load in the bitmap with these dimensions
+                            Bitmap highlighterBitmap = mainActivityInterface.getProcessSong().
+                                    getHighlighterFile(0, 0);
 
-                        if (highlighterBitmap != null &&
-                                mainActivityInterface.getPreferences().getMyPreferenceBoolean("drawingAutoDisplay", true)) {
+                            if (highlighterBitmap != null &&
+                                    mainActivityInterface.getPreferences().getMyPreferenceBoolean("drawingAutoDisplay", true)) {
 
-                            myView.highlighterView.setVisibility(View.VISIBLE);
-                            ViewGroup.LayoutParams rlp = myView.highlighterView.getLayoutParams();
-                            rlp.width = (int)((float)w*scaleFactor);
-                            rlp.height = (int)((float)h*scaleFactor);
+                                myView.highlighterView.setVisibility(View.VISIBLE);
+                                ViewGroup.LayoutParams rlp = myView.highlighterView.getLayoutParams();
+                                rlp.width = (int)((float)w*scaleFactor);
+                                rlp.height = (int)((float)h*scaleFactor);
 
-                            myView.highlighterView.setLayoutParams(rlp);
-                            RequestOptions requestOptions = new RequestOptions().centerInside().override(rlp.width,rlp.height);
-                            Glide.with(requireContext()).load(highlighterBitmap).
-                                    apply(requestOptions).
-                                    into(myView.highlighterView);
+                                myView.highlighterView.setLayoutParams(rlp);
+                                RequestOptions requestOptions = new RequestOptions().centerInside().override(rlp.width,rlp.height);
+                                Glide.with(requireContext()).load(highlighterBitmap).
+                                        apply(requestOptions).
+                                        into(myView.highlighterView);
 
-                            myView.highlighterView.setPivotX(0f);
-                            myView.highlighterView.setPivotY(0f);
+                                myView.highlighterView.setPivotX(0f);
+                                myView.highlighterView.setPivotY(0f);
 
-                            // Hide after a certain length of time
-                            int timetohide = mainActivityInterface.getPreferences().getMyPreferenceInt("timeToDisplayHighlighter", 0);
-                            if (timetohide != 0) {
-                                new Handler().postDelayed(() -> myView.highlighterView.setVisibility(View.GONE), timetohide);
-                            }
-                        } else {
-                            myView.highlighterView.post(() -> {
-                                if (myView!=null) {
-                                    try {
-                                        myView.highlighterView.setVisibility(View.GONE);
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
+                                // Hide after a certain length of time
+                                int timetohide = mainActivityInterface.getPreferences().getMyPreferenceInt("timeToDisplayHighlighter", 0);
+                                if (timetohide != 0) {
+                                    new Handler().postDelayed(() -> myView.highlighterView.setVisibility(View.GONE), timetohide);
                                 }
-                            });
+                            } else {
+                                myView.highlighterView.post(() -> {
+                                    if (myView!=null) {
+                                        try {
+                                            myView.highlighterView.setVisibility(View.GONE);
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                });
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
                     }
                 });
@@ -1054,7 +1063,8 @@ public class PerformanceFragment extends Fragment {
                 if (myView!=null) {
                     stickyPopUp.floatSticky(myView.pageHolder, forceShow);
                 }
-            } }
+            }
+        }
     }
 
     // The scale and gesture bits of the code
@@ -1091,12 +1101,15 @@ public class PerformanceFragment extends Fragment {
     }
 
     public void toggleScale() {
-        if (myView.recyclerView.getVisibility()==View.VISIBLE) {
+        // IV - View may no longer be valid
+        if (myView.recyclerView != null && myView.recyclerView.getVisibility() == View.VISIBLE) {
             // Resets the zoom
             myView.recyclerView.toggleScale();
         } else {
-            // Toggles between different zooms
-            myView.zoomLayout.toggleScale();
+            if (myView.zoomLayout != null) {
+                // Toggles between different zooms
+                myView.zoomLayout.toggleScale();
+            }
         }
     }
 
@@ -1144,20 +1157,17 @@ public class PerformanceFragment extends Fragment {
         displayInterface.updateDisplay("showSection");
     }
 
-    public void scrollToTop() {
-        myView.recyclerView.doSmoothScrollTo(recyclerLayoutManager,0);
-        myView.zoomLayout.scrollTo(0,0);
-        mainActivityInterface.updateMargins();
-    }
-
     // If a nearby host initiated a section change
     public void selectSection(int position) {
         if (mainActivityInterface.getSong().getFiletype().equals("PDF") &&
                 Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 pdfPageAdapter.sectionSelected(position);
         } else if (mainActivityInterface.getMode().equals(mode_stage)) {
-            stageSectionAdapter.sectionSelected(position);
+            new Handler().postDelayed(()-> {
+                stageSectionAdapter.clickOnSection(position);
+                Log.d(TAG,"Scroll to section " + position);
+                performanceShowSection(position);
+            },50);
         }
     }
-
 }

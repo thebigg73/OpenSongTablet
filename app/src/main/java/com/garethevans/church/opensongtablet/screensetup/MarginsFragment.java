@@ -22,6 +22,13 @@ public class MarginsFragment extends Fragment {
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "MarginsFragment";
     private SettingsMarginsBinding myView;
+    private String webAddress;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mainActivityInterface.updateToolbarHelp(webAddress);
+    }
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -37,7 +44,7 @@ public class MarginsFragment extends Fragment {
 
         if (getContext()!=null) {
             mainActivityInterface.updateToolbar(getString(R.string.margins));
-            mainActivityInterface.updateToolbarHelp(getString(R.string.website_margins));
+            webAddress = getString(R.string.website_margins);
         }
 
         setupViews();

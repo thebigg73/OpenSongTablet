@@ -40,6 +40,13 @@ public class BulkTagAssignFragment extends Fragment {
     private TagSongListAdapter tagSongListAdapter;
     private ArrayList<String> newValues;
     private int activecolor, inactivecolor;
+    private String webAddress;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mainActivityInterface.updateToolbarHelp(webAddress);
+    }
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -56,7 +63,7 @@ public class BulkTagAssignFragment extends Fragment {
         prepareStrings();
 
         mainActivityInterface.updateToolbar(tag_song_string);
-        mainActivityInterface.updateToolbarHelp(website_tags_string);
+        webAddress = website_tags_string;
 
         setupViews();
 

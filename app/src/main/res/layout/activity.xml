@@ -25,6 +25,7 @@
 
             <com.garethevans.church.opensongtablet.customviews.MyToolbar
                 android:id="@+id/myToolbar"
+                android:background="@color/colorAltPrimary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom" />

@@ -207,10 +207,10 @@
 
     <!-- The ActionBar -->
     <style name="ActionBar" parent="AppTheme">
-        <item name="android:background">@color/colorAltPrimary</item>
-        <item name="background">@color/colorAltPrimary</item>
-        <item name="windowActionBarOverlay">true</item>
-        <item name="android:windowActionBarOverlay">true</item>
+        <item name="android:background">@color/transparent</item>
+        <item name="background">@color/transparent</item>
+        <item name="windowActionBarOverlay">false</item>
+        <item name="android:windowActionBarOverlay">false</item>
         <item name="android:textColorPrimary">@color/white</item>
         <item name="android:textColor">@color/white</item>
     </style>
@@ -218,7 +218,7 @@
     <!--For the Preferences windows-->
     <style name="DefaultView" parent="AppTheme">
         <item name="android:background">@color/colorPrimary</item>
-        <item name="android:layout_margin">0dp</item>
+        <item name="android:layout_margin">4dp</item>
         <item name="android:padding">16dp</item>
     </style>
 

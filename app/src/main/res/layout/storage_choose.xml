@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:padding="16dp"
-            android:src="@drawable/web"
+            android:src="@drawable/help_outline"
             android:contentDescription="@string/help" />
     </LinearLayout>
 

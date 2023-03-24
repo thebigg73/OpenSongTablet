@@ -64,6 +64,15 @@ public class SetStorageLocationFragment extends Fragment {
     ActivityResultLauncher<String> storagePermission;
 
     private StorageChooseBinding myView;
+    private String webAddress;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mainActivityInterface.getWhattodo().equals("storageOk")) {
+            mainActivityInterface.updateToolbarHelp(webAddress);
+        }
+    }
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -85,7 +94,7 @@ public class SetStorageLocationFragment extends Fragment {
             mainActivityInterface.showActionBar();
             mainActivityInterface.setWhattodo("");
             myView.headerText.setVisibility(View.GONE);
-            mainActivityInterface.updateToolbarHelp(website_storage_set_string);
+            webAddress = website_storage_set_string;
 
         } else {
             myView.mainpage.postDelayed(()-> {

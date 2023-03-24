@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet.screensetup;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,20 @@ public class ActionBarSettingsFragment extends Fragment {
 
     private SettingsActionbarBinding myView;
     private MainActivityInterface mainActivityInterface;
+    private String webAddress;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mainActivityInterface.updateToolbarHelp(webAddress);
+
+        // IV - Set the battery/clock visible but not clickable (floatval 0)
+        new Handler().postDelayed(() -> {
+            if (myView != null) {
+                mainActivityInterface.updateActionBarSettings("showBatteryHolder", 0.0f, true);
+            }
+        },50);
+    }
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -35,7 +50,7 @@ public class ActionBarSettingsFragment extends Fragment {
 
         if (getContext()!=null) {
             mainActivityInterface.updateToolbar(getString(R.string.actionbar_display));
-            mainActivityInterface.updateToolbarHelp(getString(R.string.website_actionbar));
+            webAddress = getString(R.string.website_actionbar);
         }
 
         // Set up preferences and view settings
@@ -54,11 +69,11 @@ public class ActionBarSettingsFragment extends Fragment {
 
         // The sliders
         myView.titleTextSize.setValue(titleTextSize);
-        myView.titleTextSize.setHint(titleTextSize+" sp");
+        myView.titleTextSize.setHint((int)titleTextSize+" sp");
         myView.titleTextSize.setLabelFormatter(value -> ((int)value)+" sp");
         myView.titleTextSize.setHintTextSize(titleTextSize);
         myView.authorTextSize.setValue(authorTextSize);
-        myView.authorTextSize.setHint(authorTextSize+" sp");
+        myView.authorTextSize.setHint((int)authorTextSize+" sp");
         myView.authorTextSize.setLabelFormatter(value -> ((int)value)+" sp");
         myView.authorTextSize.setHintTextSize(authorTextSize);
         myView.batteryDialSize.setValue(batteryDialSize);

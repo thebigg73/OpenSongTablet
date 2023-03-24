@@ -23,6 +23,13 @@ public class InlineSetFragment extends Fragment {
     private SettingsSetsInlineBinding myView;
     private String set_inline_string="", website_inline_set_string="", performance_mode_string="",
             stage_mode_string="", presenter_mode_string="";
+    private String webAddress;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mainActivityInterface.updateToolbarHelp(webAddress);
+    }
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -39,7 +46,7 @@ public class InlineSetFragment extends Fragment {
         prepareStrings();
 
         mainActivityInterface.updateToolbar(set_inline_string);
-        mainActivityInterface.updateToolbarHelp(website_inline_set_string);
+        webAddress = website_inline_set_string;
 
         // Set up the views
         setupViews();

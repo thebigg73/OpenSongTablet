@@ -51,6 +51,13 @@ public class BackupOSBFragment extends Fragment {
     boolean wantHighlighter, wantPersistentDB;
 
     private ExecutorService executorService;
+    private String webAddress;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mainActivityInterface.updateToolbarHelp(webAddress);
+    }
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -65,7 +72,7 @@ public class BackupOSBFragment extends Fragment {
         prepareStrings();
 
         mainActivityInterface.updateToolbar(string_backup);
-        mainActivityInterface.updateToolbarHelp(string_website_backup);
+        webAddress = string_website_backup;
 
         setupViews();
 

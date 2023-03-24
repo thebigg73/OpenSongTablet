@@ -46,6 +46,13 @@ public class PageButtonFragment extends Fragment {
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "PageButtonFragment";
     private String page_buttons_string="", website_page_buttons_string="", button_string="", visible_string="";
+    private String webAddress;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mainActivityInterface.updateToolbarHelp(webAddress);
+    }
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -61,7 +68,7 @@ public class PageButtonFragment extends Fragment {
         prepareStrings();
 
         mainActivityInterface.updateToolbar(page_buttons_string);
-        mainActivityInterface.updateToolbarHelp(website_page_buttons_string);
+        webAddress = website_page_buttons_string;
 
         // Set up the page button icons
         setupPageButtons();

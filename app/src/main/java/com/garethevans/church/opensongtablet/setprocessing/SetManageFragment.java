@@ -51,6 +51,13 @@ public class SetManageFragment extends Fragment {
             website_set_load_string="", new_category_string="", file_exists_string="",
             success_string="", error_string="", deeplink_export_string="",
             search_index_wait_string="";
+    private String webAddress;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mainActivityInterface.updateToolbarHelp(webAddress);
+    }
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -143,7 +150,7 @@ public class SetManageFragment extends Fragment {
         switch (whattodo) {
             case "saveset":
                 mainActivityInterface.updateToolbar(set_string + ": " + save_string);
-                mainActivityInterface.updateToolbarHelp(website_set_save_string);
+                webAddress = website_set_save_string;
                 myView.setName.setVisibility(View.VISIBLE);
                 myView.overWrite.setVisibility(View.VISIBLE);
                 myView.setLoadInfo1.setVisibility(View.GONE);
@@ -160,7 +167,7 @@ public class SetManageFragment extends Fragment {
 
             case "renameset":
                 mainActivityInterface.updateToolbar(set_string + ": " + rename_string);
-                mainActivityInterface.updateToolbarHelp(website_set_rename_string);
+                webAddress = website_set_rename_string;
                 myView.setName.setVisibility(View.VISIBLE);
                 myView.overWrite.setVisibility(View.VISIBLE);
                 myView.setLoadInfo1.setVisibility(View.GONE);
@@ -177,7 +184,7 @@ public class SetManageFragment extends Fragment {
 
             case "deleteset":
                 mainActivityInterface.updateToolbar(set_string + ": " + delete_string);
-                mainActivityInterface.updateToolbarHelp(website_set_delete_string);
+                webAddress = website_set_delete_string;
                 myView.setName.setVisibility(View.GONE);
                 myView.overWrite.setVisibility(View.GONE);
                 myView.setLoadInfo1.setVisibility(View.VISIBLE);
@@ -193,7 +200,7 @@ public class SetManageFragment extends Fragment {
 
             case "exportset":
                 mainActivityInterface.updateToolbar(set_string + ": " + export_string);
-                mainActivityInterface.updateToolbarHelp(website_export_set_string);
+                webAddress = website_export_set_string;
                 myView.setName.setVisibility(View.GONE);
                 myView.overWrite.setVisibility(View.GONE);
                 myView.newCategory.setVisibility(View.GONE);
@@ -210,7 +217,7 @@ public class SetManageFragment extends Fragment {
             case "loadset":
             default:
                 mainActivityInterface.updateToolbar(set_string + ": " + load_string);
-                mainActivityInterface.updateToolbarHelp(website_set_load_string);
+                webAddress = website_set_load_string;
                 myView.setName.setVisibility(View.GONE);
                 myView.overWrite.setVisibility(View.GONE);
                 myView.newCategory.setVisibility(View.GONE);

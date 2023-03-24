@@ -39,6 +39,13 @@ public class NearbyConnectionsFragment extends Fragment {
             connections_advertise_info_string="", connections_discover_info_string="",
             connections_discover_string="", connections_advertise_string="",
             connections_advertising_string="", connections_searching_string="";
+    private String webAddress;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mainActivityInterface.updateToolbarHelp(webAddress);
+    }
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -55,7 +62,7 @@ public class NearbyConnectionsFragment extends Fragment {
         prepareStrings();
 
         mainActivityInterface.updateToolbar(connections_connect_string);
-        mainActivityInterface.updateToolbarHelp(website_nearby_string);
+        webAddress = website_nearby_string;
 
         onColor = ColorStateList.valueOf(getResources().getColor(R.color.colorSecondary));
         offColor = ColorStateList.valueOf(getResources().getColor(R.color.colorAltPrimary));

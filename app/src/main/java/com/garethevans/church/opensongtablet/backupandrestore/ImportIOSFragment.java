@@ -54,6 +54,13 @@ public class ImportIOSFragment extends Fragment {
             error="", processing="", success="", error_song_not_saved="", file_exists="";
     private StringBuilder errorFiles, notOverwritten;
     private File onsongdbfile;
+    private String webAddress;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mainActivityInterface.updateToolbarHelp(webAddress);
+    }
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -71,7 +78,7 @@ public class ImportIOSFragment extends Fragment {
 
         // Update the title
         mainActivityInterface.updateToolbar(onsong_import);
-        mainActivityInterface.updateToolbarHelp(website_import_onsongbackup);
+        webAddress = website_import_onsongbackup;
 
         myView.filename.setText(mainActivityInterface.getImportFilename());
 

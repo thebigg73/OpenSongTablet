@@ -34,7 +34,7 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
     private final String colorChange = "color";
     private String newContent;
     private SparseBooleanArray highlightedArray = new SparseBooleanArray();
-    private final String TAG = "SongSectionsAdapter";
+    private final String TAG = "SongSectionsAdapter", groupline_string = "____groupline____";
 
     SongSectionsAdapter(Context c, MainActivityInterface mainActivityInterface,
                         SongSectionsFragment songSectionsFragment,
@@ -95,8 +95,10 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
     }
 
     private String tidyContent(String str) {
-        if (str.contains("____groupline____")) {
-            str = str.replace("____groupline____","\n");
+        if (str.contains(groupline_string)) {
+            // IV - Handle groupline separator for end of line first then in middle of group lines
+            str = str.replace(groupline_string + "\n","\n").
+                    replace(groupline_string,"\n");
         } else {
             // Just text, so trim spaces
             if (mainActivityInterface.getPreferences().getMyPreferenceBoolean("trimWordSpacing", true)) {
@@ -207,7 +209,7 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
         sectionEdited = section;
         Log.d(TAG,"sectionEdited:"+sectionEdited);
         Log.d(TAG,"content before tweak:"+mainActivityInterface.getSong().getPresoOrderSongSections().get(section));
-        sectionEditedContent = mainActivityInterface.getSong().getPresoOrderSongSections().get(section).replace("____groupline____","\n");
+        sectionEditedContent = mainActivityInterface.getSong().getPresoOrderSongSections().get(section).replace(groupline_string,"\n");
         Log.d(TAG,"content after tweak:"+sectionEditedContent);
 
         // Get the current header
@@ -270,8 +272,7 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
         if (sectionEdited > -1) {
             try {
                 // Update the song sections
-                content = mainActivityInterface.getProcessSong().makeGroups(content,
-                        mainActivityInterface.getPresenterSettings().getPresoShowChords());
+                content = mainActivityInterface.getProcessSong().filterAndGroupLines(content, mainActivityInterface.getPresenterSettings().getPresoShowChords());
                 mainActivityInterface.getSong().getPresoOrderSongSections().set(sectionEdited, content);
 
                 String newBits;

@@ -62,6 +62,13 @@ public class ImportOSBFragment extends Fragment {
     private File tempDBFile;
 
     private ActivityResultLauncher<Intent> activityResultLauncher;
+    private String webAddress;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mainActivityInterface.updateToolbarHelp(webAddress);
+    }
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -77,7 +84,7 @@ public class ImportOSBFragment extends Fragment {
         prepareStrings();
 
         mainActivityInterface.updateToolbar(import_basic);
-        mainActivityInterface.updateToolbarHelp(website_restore);
+        webAddress = website_restore;
 
         myView.nestedScrollView.setExtendedFabToAnimate(myView.createBackupFAB);
 

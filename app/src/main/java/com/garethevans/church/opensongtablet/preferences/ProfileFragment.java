@@ -27,6 +27,13 @@ public class ProfileFragment extends Fragment {
     private SettingsProfilesBinding myView;
     private MainActivityInterface mainActivityInterface;
     private ActivityResultLauncher<Intent> activityLoadResultLauncher, activitySaveResultLauncher;
+    private String webAddress;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mainActivityInterface.updateToolbarHelp(webAddress);
+    }
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -41,7 +48,7 @@ public class ProfileFragment extends Fragment {
 
         if (getContext()!=null) {
             mainActivityInterface.updateToolbar(getString(R.string.profile));
-            mainActivityInterface.updateToolbarHelp(getString(R.string.website_profiles));
+            webAddress = getString(R.string.website_profiles);
         }
 
         // Setup helpers

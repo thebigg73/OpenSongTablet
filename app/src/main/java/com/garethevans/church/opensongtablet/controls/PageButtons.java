@@ -549,7 +549,7 @@ public class PageButtons {
             case "showlyrics":
                 actionInterface.getPerformanceGestures().showLyrics();
                 break;
-            case "search":
+            case "songmenu":
                 actionInterface.getPerformanceGestures().songMenu();
                 break;
             case "randomsong":

@@ -49,6 +49,13 @@ public class PedalsFragment extends Fragment {
 
     private Handler pageButtonWaiting;
     private Runnable stopListening;
+    private String webAddress;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mainActivityInterface.updateToolbarHelp(webAddress);
+    }
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -65,7 +72,7 @@ public class PedalsFragment extends Fragment {
         prepareStrings();
 
         mainActivityInterface.updateToolbar(pedal_string);
-        mainActivityInterface.updateToolbarHelp(website_foot_pedal_string);
+        webAddress = website_foot_pedal_string;
 
         // Register this fragment
         mainActivityInterface.registerFragment(this,"PedalsFragment");

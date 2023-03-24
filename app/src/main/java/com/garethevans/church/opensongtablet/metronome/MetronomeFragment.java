@@ -44,6 +44,13 @@ public class MetronomeFragment extends Fragment {
             sound_high_string="", sound_bass_drum_string="", sound_bell_string, sound_click_string="",
             sound_digital_string="", sound_hihat_string="", sound_stick_string="", tap_tempo_string="",
             sound_wood_string="", tempo_string="", bpm_string="", on_string="", reset_string="";
+    private String webAddress;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mainActivityInterface.updateToolbarHelp(webAddress);
+    }
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -59,7 +66,7 @@ public class MetronomeFragment extends Fragment {
         prepareStrings();
 
         mainActivityInterface.updateToolbar(metronome_string);
-        mainActivityInterface.updateToolbarHelp(website_metronome_string);
+        webAddress = website_metronome_string;
 
         // Set up the values for the exposeddropdowns
         initialiseDropDowns();

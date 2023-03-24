@@ -36,6 +36,13 @@ public class StorageManagementFragment extends Fragment {
     private String currentSubDir, storage_manage_string="", website_storage_overview_string="",
             root_string="", songs_string="", mainfoldername_string="", storage_reset_string="",
             storage_main_string="";
+    private String webAddress;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mainActivityInterface.updateToolbarHelp(webAddress);
+    }
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -50,7 +57,7 @@ public class StorageManagementFragment extends Fragment {
         prepareStrings();
 
         mainActivityInterface.updateToolbar(storage_manage_string);
-        mainActivityInterface.updateToolbarHelp(website_storage_overview_string);
+        webAddress = website_storage_overview_string;
 
         // Do this as separate tasks in a new thread
         setUpThread();
