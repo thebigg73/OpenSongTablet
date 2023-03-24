@@ -74,7 +74,8 @@ public class EditSongFragmentMain extends Fragment  {
         mainActivityInterface.getProcessSong().editBoxToMultiline(myView.songNotes);
         mainActivityInterface.getProcessSong().stretchEditBoxToLines(myView.songNotes,5);
         myView.filename.setText(mainActivityInterface.getTempSong().getFilename());
-        folders = mainActivityInterface.getSQLiteHelper().getFolders();
+        //folders = mainActivityInterface.getSQLiteHelper().getFolders();
+        getFoldersFromStorage();
         newFolder = "+ " + new_folder_add_string;
         folders.add(newFolder);
         if (getContext()!=null) {
@@ -172,15 +173,19 @@ public class EditSongFragmentMain extends Fragment  {
         }
 
         if (!selectNewFolder) {
-            ArrayList<String> songIds = mainActivityInterface.getStorageAccess().listSongs();
-            mainActivityInterface.getStorageAccess().writeSongIDFile(songIds);
-            folders = mainActivityInterface.getStorageAccess().getSongFolders(songIds,true,null);
+            getFoldersFromStorage();
             folders.add(newFolder);
             arrayAdapter.notifyDataSetChanged();
             myView.folder.setText(value);
         } else {
             myView.folder.setText(mainActivityInterface.getTempSong().getFolder());
         }
+    }
+
+    private void getFoldersFromStorage() {
+        ArrayList<String> songIds = mainActivityInterface.getStorageAccess().listSongs();
+        mainActivityInterface.getStorageAccess().writeSongIDFile(songIds);
+        folders = mainActivityInterface.getStorageAccess().getSongFolders(songIds,true,null);
     }
 
     // Finished with this view

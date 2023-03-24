@@ -72,7 +72,7 @@ public class NearbyConnections implements NearbyInterface {
     private boolean isHost, receiveHostFiles, keepHostFiles, usingNearby, temporaryAdvertise,
             isAdvertising = false, isDiscovering = false, nearbyHostMenuOnly,
             receiveHostAutoscroll = true, receiveHostSongSections = true, connectionsOpen,
-            waitingForSectionChange = false, nearbyHostPassthrough, receiveHostScroll;
+            waitingForSectionChange = false, nearbyHostPassthrough, receiveHostScroll = true;
     private AdvertisingOptions advertisingOptions;
     private DiscoveryOptions discoveryOptions;
     // The stuff used for Google Nearby for connecting devices
@@ -770,7 +770,7 @@ public class NearbyConnections implements NearbyInterface {
     // Deal with sending payloads as a host for clients to listen for
     @Override
     public void doSendPayloadBytes(String infoPayload) {
-        if (isHost) {
+        if (sendAsHost()) {
             for (String endpointString : connectedEndpoints) {
                 String endpointId = getEndpointSplit(endpointString)[0];
                 Nearby.getConnectionsClient(c).sendPayload(endpointId, Payload.fromBytes(infoPayload.getBytes()));
@@ -865,13 +865,15 @@ public class NearbyConnections implements NearbyInterface {
         return largePayLoad;
     }
     public void sendSongSectionPayload() {
-        String infoPayload;
-        if (mainActivityInterface.getSong().getFiletype().equals("PDF")) {
-            infoPayload = sectionTag + (mainActivityInterface.getSong().getPdfPageCurrent());
-        } else {
-            infoPayload = sectionTag + (mainActivityInterface.getSong().getCurrentSection());
+        if (sendAsHost()) {
+            String infoPayload;
+            if (mainActivityInterface.getSong().getFiletype().equals("PDF")) {
+                infoPayload = sectionTag + (mainActivityInterface.getSong().getPdfPageCurrent());
+            } else {
+                infoPayload = sectionTag + (mainActivityInterface.getSong().getCurrentSection());
+            }
+            doSendPayloadBytes(infoPayload);
         }
-        doSendPayloadBytes(infoPayload);
     }
 
     public void sendAutoscrollPayload(String message) {
@@ -879,8 +881,7 @@ public class NearbyConnections implements NearbyInterface {
     }
 
     public void sendScrollByPayload(boolean scrollDown, float scrollProportion) {
-        if (hasValidConnections() && isHost) {
-            Log.d(TAG, "scrollDown:" + scrollDown + "  scrollProportion:" + scrollProportion);
+        if (sendAsHost()) {
             String infoPayload = scrollByTag;
             if (scrollDown) {
                 infoPayload += scrollProportion;
@@ -891,23 +892,23 @@ public class NearbyConnections implements NearbyInterface {
         }
     }
     public void sendScrollToPayload(float scrollProportion) {
-        if (hasValidConnections() && isHost) {
+        if (sendAsHost()) {
             String infoPayload = scrollToTag + scrollProportion;
             doSendPayloadBytes(infoPayload);
         }
     }
     public void sendAutoscrollPausePayload() {
-        if (hasValidConnections() && isHost) {
+        if (sendAsHost()) {
             doSendPayloadBytes(autoscrollPause);
         }
     }
     public void increaseAutoscrollPayload() {
-        if (hasValidConnections() && isHost) {
+        if (sendAsHost()) {
             doSendPayloadBytes(autoscrollincrease);
         }
     }
     public void decreaseAutoscrollPayload() {
-        if (hasValidConnections() && isHost) {
+        if (sendAsHost()) {
             doSendPayloadBytes(autoscrolldecrease);
         }
     }
@@ -1270,7 +1271,7 @@ public class NearbyConnections implements NearbyInterface {
             }
         }
     }
-    private void setReceiveHostScroll(boolean receiveHostScroll) {
+    public void setReceiveHostScroll(boolean receiveHostScroll) {
         this.receiveHostScroll = receiveHostScroll;
     }
     public boolean getReceiveHostScroll() {
@@ -1327,5 +1328,9 @@ public class NearbyConnections implements NearbyInterface {
     }
     public void setConnectionLog(String connectionLog) {
         this.connectionLog = connectionLog;
+    }
+
+    private boolean sendAsHost() {
+        return hasValidConnections() && isHost;
     }
 }

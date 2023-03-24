@@ -131,7 +131,7 @@ public class NearbyConnectionsFragment extends Fragment {
         myView.bottomSheet.keepHostFiles.setChecked(mainActivityInterface.getNearbyConnections().getKeepHostFiles());
         myView.bottomSheet.receiveAutoscroll.setChecked(mainActivityInterface.getNearbyConnections().getReceiveHostAutoscroll());
         myView.bottomSheet.receiveHostSections.setChecked(mainActivityInterface.getNearbyConnections().getReceiveHostSongSections());
-
+        myView.bottomSheet.receiveScroll.setChecked(mainActivityInterface.getNearbyConnections().getReceiveHostScroll());
         // Show any connection log
         updateConnectionsLog();
     }
@@ -349,7 +349,7 @@ public class NearbyConnectionsFragment extends Fragment {
         myView.bottomSheet.nearbyHostMenuOnly.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getNearbyConnections().setNearbyHostMenuOnly(isChecked));
         myView.bottomSheet.receiveAutoscroll.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getNearbyConnections().setReceiveHostAutoscroll(isChecked));
         myView.bottomSheet.receiveHostSections.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getNearbyConnections().setReceiveHostSongSections(isChecked));
-
+        myView.bottomSheet.receiveScroll.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getNearbyConnections().setReceiveHostScroll(isChecked));
         // Changing the nearby connection
         myView.off.setOnClickListener(v -> {
             updateOffHostClient(false, false);

@@ -166,6 +166,13 @@ public class MyZoomLayout extends FrameLayout {
         this.isUserTouching = isUserTouching;
     }
 
+    public void doScrollTo(int x, int y) {
+        x = Math.max(0,x);
+        x = Math.min(maxScrollX,x);
+        y = Math.max(0,y);
+        y = Math.min(maxScrollY,y);
+        scrollTo(x,y);
+    }
     public void autoscrollTo(float newY) {
         scrollTo(0,(int)(newY));
     }
@@ -173,6 +180,9 @@ public class MyZoomLayout extends FrameLayout {
     public float getScaleFactor() {
         // So we can adjust the autoscroll
         return scaleFactor;
+    }
+    public int getMaxScrollY() {
+        return maxScrollY;
     }
 
     private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
@@ -243,6 +253,7 @@ public class MyZoomLayout extends FrameLayout {
             return super.onFling(e1, e2, velocityX, velocityY);
         }
 
+
         @Override
         public boolean onDown(MotionEvent e) {
             if (!overScroller.isFinished()) {
@@ -250,11 +261,14 @@ public class MyZoomLayout extends FrameLayout {
             }
             return true;
         }
+
+
     }
 
     public void animateScrollBy(MainActivityInterface mainActivityInterface,
                                 float scrollFloat, boolean scrollDown) {
         float velocityY = (viewHeight*scrollFloat)/0.3f;
+
         if (scrollDown) {
             overScroller.fling(getScrollX(), getScrollY(), 0, (int)velocityY,
                     0, maxScrollX, 0, maxScrollY,overShootX,overShootY);

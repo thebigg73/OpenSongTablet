@@ -79,7 +79,10 @@ public class Autoscroll {
         this.displayHeight = displayHeight;
         this.songHeight = songHeight;
         alreadyFiguredOut = false;
-        autoscrollView.setOnClickListener(view -> isPaused = !isPaused);
+        autoscrollView.setOnClickListener(view -> {
+            mainActivityInterface.getNearbyConnections().sendAutoscrollPausePayload();
+            isPaused = !isPaused;
+        });
         autoscrollView.setOnLongClickListener(view -> {
             stopAutoscroll();
             return true;

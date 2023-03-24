@@ -136,6 +136,13 @@
                     android:hint="@string/connection_autoscroll_info"
                     android:text="@string/autoscroll" />
 
+                <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                    android:id="@+id/receiveScroll"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/connection_scroll_info"
+                    android:text="@string/scroll" />
+
                 <TableRow style="@style/DividerLine" />
             </LinearLayout>
 

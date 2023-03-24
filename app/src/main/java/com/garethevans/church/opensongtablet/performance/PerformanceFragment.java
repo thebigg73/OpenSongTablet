@@ -1075,8 +1075,8 @@ public class PerformanceFragment extends Fragment {
                 if (mainActivityInterface.getNearbyConnections().hasValidConnections() &&
                 mainActivityInterface.getNearbyConnections().getIsHost() &&
                 !mainActivityInterface.getPreferences().getMyPreferenceString("songAutoScale","W").equals("Y")) {
-                    // Get the song height
-                    int height = myView.zoomLayout.getHeight();
+                    // Get the scroll height
+                    int height = myView.zoomLayout.getMaxScrollY();
                     // Get the scroll position
                     int scrollPos = myView.zoomLayout.getScrollY();
                     if (height>0) {
@@ -1116,7 +1116,7 @@ public class PerformanceFragment extends Fragment {
         // We received from nearby host, so attempt to scroll this position (as ratio of height)
         if (myView.zoomLayout.getVisibility()==View.VISIBLE &&
                 !mainActivityInterface.getPreferences().getMyPreferenceString("songAutoScale","W").equals("Y")) {
-            myView.zoomLayout.scrollTo(0,(int)(myView.zoomLayout.getHeight()*proportionScroll));
+            myView.zoomLayout.doScrollTo(0,(int)(myView.zoomLayout.getMaxScrollY()*proportionScroll));
         } else if (myView.recyclerView.getVisibility()==View.VISIBLE) {
             int height = (int)(proportionScroll*myView.recyclerView.getHeight());
             myView.recyclerView.scrollTo(0,height);
