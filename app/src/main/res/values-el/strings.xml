@@ -40,6 +40,7 @@
     <string name="audio">"Ήχος"</string>
     <string name="audio_source">Πηγή ήχου</string>
     <string name="author">"Author"</string>
+    <string name="autohide_time">Ώρα να παραμείνει ορατή (αυτόματη απόκρυψη χρόνου)</string>
     <string name="autoscale">"Αυτόματη κλίμακα"</string>
     <string name="autoscale_info">Η εφαρμογή θα κάνει το κείμενο όσο το δυνατόν μεγαλύτερο ώστε να ταιριάζει στην οθόνη</string>
     <string name="autoscroll">"Αυτόματη κύλιση"</string>
@@ -155,6 +156,7 @@
     <string name="connected_display">"Συνδεδεμένη οθόνη"</string>
     <string name="connected_display_description">Ρυθμίσεις ειδικά για έξοδο Chromecast / HDMI</string>
     <string name="connection_autoscroll_info">Ακούστε τις εντολές διακοπής και έναρξης αυτόματης κύλισης</string>
+    <string name="connection_scroll_info">Ακούστε τις εντολές κύλισης προς τα πάνω και προς τα κάτω</string>
     <string name="connections_accept">Συνδέω με</string>
     <string name="connections_accept_code">Επιβεβαιώστε ότι ο κωδικός ταιριάζει και στις δύο συσκευές:</string>
     <string name="connections_actasclient">Ενεργήστε ως πελάτης</string>
@@ -583,6 +585,7 @@
     <string name="scaling">Απολέπιση</string>
     <string name="scaling_info">Ρυθμίσεις αυτόματης κλίμακας και κλιμάκωση τομών</string>
     <string name="scripture">"Scripture"</string>
+    <string name="scroll">Πάπυρος</string>
     <string name="scroll_amount">"Μετακινήστε το ποσό"</string>
     <string name="scroll_down">Scroll down</string>
     <string name="scroll_up">Scroll up</string>

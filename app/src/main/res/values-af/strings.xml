@@ -40,6 +40,7 @@
     <string name="audio">Audio</string>
     <string name="audio_source">Oudio bron</string>
     <string name="author">"Skrywer"</string>
+    <string name="autohide_time">Tyd om sigbaar te hou (outo-versteek tyd)</string>
     <string name="autoscale">"Autoscale"</string>
     <string name="autoscale_info">Die toepassing sal die teks so groot as moontlik maak om by die skerm te pas</string>
     <string name="autoscroll">"Auto-boek"</string>
@@ -155,6 +156,7 @@
     <string name="connected_display">"Gekoppelde skerm"</string>
     <string name="connected_display_description">Instellings spesifiek vir Chromecast / HDMI-uitvoer</string>
     <string name="connection_autoscroll_info">Luister vir stop- en begin-opdragte met outomatiese blaai</string>
+    <string name="connection_scroll_info">Luister vir blaai op en af opdragte</string>
     <string name="connections_accept">Konnekteer met</string>
     <string name="connections_accept_code">Bevestig dat die kode ooreenstem op albei toestelle:</string>
     <string name="connections_actasclient">Tree op as kliënt</string>
@@ -583,6 +585,7 @@
     <string name="scaling">Skaal</string>
     <string name="scaling_info">Outoskaal instellings en seksie skaal</string>
     <string name="scripture">"Skrif"</string>
+    <string name="scroll">Blaai</string>
     <string name="scroll_amount">"Scroll bedrag"</string>
     <string name="scroll_down">Scroll down</string>
     <string name="scroll_up">Scroll up</string>

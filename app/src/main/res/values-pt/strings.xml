@@ -40,6 +40,7 @@
     <string name="audio">Auditivo</string>
     <string name="audio_source">Fonte de áudio</string>
     <string name="author">"Autor"</string>
+    <string name="autohide_time">Hora de manter visível (tempo de ocultar automaticamente)</string>
     <string name="autoscale">"Escala automática"</string>
     <string name="autoscale_info">O aplicativo tornará o texto o maior possível para caber na tela</string>
     <string name="autoscroll">"Auto-scroll"</string>
@@ -155,6 +156,7 @@
     <string name="connected_display">"Exibição conectada"</string>
     <string name="connected_display_description">Configurações específicas para saída Chromecast / HDMI</string>
     <string name="connection_autoscroll_info">Ouça os comandos de parada e início de rolagem automática</string>
+    <string name="connection_scroll_info">Ouça os comandos de rolagem para cima e para baixo</string>
     <string name="connections_accept">Conectar com</string>
     <string name="connections_accept_code">Confirme se o código corresponde em ambos os dispositivos:</string>
     <string name="connections_actasclient">Atuar como cliente</string>
@@ -583,6 +585,7 @@
     <string name="scaling">Escala</string>
     <string name="scaling_info">Configurações de dimensionamento automático e dimensionamento de seção</string>
     <string name="scripture">"Bíblia"</string>
+    <string name="scroll">Rolagem</string>
     <string name="scroll_amount">"Quantidade de rolagem"</string>
     <string name="scroll_down">Role</string>
     <string name="scroll_up">Vá para cima</string>

@@ -40,6 +40,7 @@
     <string name="audio">"Audio"</string>
     <string name="audio_source">Ljudkälla</string>
     <string name="author">"Författare"</string>
+    <string name="autohide_time">Dags att hålla sig synlig (autohide time)</string>
     <string name="autoscale">"Autoscale"</string>
     <string name="autoscale_info">Appen kommer att göra texten så stor som möjligt för att passa skärmen</string>
     <string name="autoscroll">"Auto-scrolla"</string>
@@ -155,6 +156,7 @@
     <string name="connected_display">"Ansluten display"</string>
     <string name="connected_display_description">Inställningar specifika för Chromecast / HDMI-utgång</string>
     <string name="connection_autoscroll_info">Lyssna efter autoscroll-stopp- och startkommandon</string>
+    <string name="connection_scroll_info">Lyssna efter kommandon för att scrolla upp och ner</string>
     <string name="connections_accept">Ansluta till</string>
     <string name="connections_accept_code">Bekräfta kodmatchningarna på båda enheterna:</string>
     <string name="connections_actasclient">Fungera som klient</string>
@@ -583,6 +585,7 @@
     <string name="scaling">Skalning</string>
     <string name="scaling_info">Autoskalningsinställningar och sektionsskalning</string>
     <string name="scripture">Skriften</string>
+    <string name="scroll">Skrolla</string>
     <string name="scroll_amount">"Rulla beloppet"</string>
     <string name="scroll_down">Scroll down</string>
     <string name="scroll_up">Scroll up</string>

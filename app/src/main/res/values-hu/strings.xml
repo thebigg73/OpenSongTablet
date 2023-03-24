@@ -40,6 +40,7 @@
     <string name="audio">Hang-</string>
     <string name="audio_source">Hangforrás</string>
     <string name="author">"Szerző"</string>
+    <string name="autohide_time">A látható tartás ideje (automatikus elrejtési idő)</string>
     <string name="autoscale">Autoscale</string>
     <string name="autoscale_info">Az alkalmazás a szöveget a lehető legnagyobbra teszi, hogy elférjen a képernyőn</string>
     <string name="autoscroll">"Auto-scroll"</string>
@@ -155,6 +156,7 @@
     <string name="connected_display">"csatlakoztatott megjelenítő"</string>
     <string name="connected_display_description">A Chromecast / HDMI kimenetre vonatkozó beállítások</string>
     <string name="connection_autoscroll_info">Hallgassa meg az automatikus görgetés leállítási és indítási parancsait</string>
+    <string name="connection_scroll_info">Figyelje a görgető fel és le parancsokat</string>
     <string name="connections_accept">Kapcsolódik valamivel</string>
     <string name="connections_accept_code">Ellenőrizze, hogy a kód megfelel-e mindkét eszközön:</string>
     <string name="connections_actasclient">Ügyfélként jár el</string>
@@ -583,6 +585,7 @@
     <string name="scaling">Méretezés</string>
     <string name="scaling_info">Automatikus méretezési beállítások és szakaszméretezés</string>
     <string name="scripture">"Szentírás"</string>
+    <string name="scroll">Tekercs</string>
     <string name="scroll_amount">"Scroll összeg"</string>
     <string name="scroll_down">Görgessen le</string>
     <string name="scroll_up">Görgetés fel</string>

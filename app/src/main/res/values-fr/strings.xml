@@ -40,6 +40,7 @@
     <string name="audio">Médias</string>
     <string name="audio_source">Source audio</string>
     <string name="author">"Auteur"</string>
+    <string name="autohide_time">Temps pour rester visible (temps de masquage automatique)</string>
     <string name="autoscale">"Échelle automatique"</string>
     <string name="autoscale_info">L\'application rendra le texte aussi grand que possible pour s\'adapter à l\'écran</string>
     <string name="autoscroll">"Auto-défilement"</string>
@@ -155,6 +156,7 @@
     <string name="connected_display">"Affichage connecté"</string>
     <string name="connected_display_description">Paramètres spécifiques à la sortie Chromecast / HDMI</string>
     <string name="connection_autoscroll_info">Écoutez les commandes d\'arrêt et de démarrage du défilement automatique</string>
+    <string name="connection_scroll_info">Écoutez les commandes de défilement vers le haut et vers le bas</string>
     <string name="connections_accept">Se connecter avec</string>
     <string name="connections_accept_code">Confirmez que le code correspond sur les deux appareils:</string>
     <string name="connections_actasclient">Agir en tant que client</string>
@@ -583,6 +585,7 @@
     <string name="scaling">Mise à l\'échelle</string>
     <string name="scaling_info">Paramètres de mise à l\'échelle automatique et mise à l\'échelle de la section</string>
     <string name="scripture">"Texte sacré"</string>
+    <string name="scroll">Faire défiler</string>
     <string name="scroll_amount">"Montant de défilement"</string>
     <string name="scroll_down">défiler vers le bas</string>
     <string name="scroll_up">défiler vers le haut</string>

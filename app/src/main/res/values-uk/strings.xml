@@ -40,6 +40,7 @@
     <string name="audio">Аудіо</string>
     <string name="audio_source">Джерело звуку</string>
     <string name="author">Автор</string>
+    <string name="autohide_time">Час залишатися видимим (час автоматичного приховування)</string>
     <string name="autoscale">Автомасштабування</string>
     <string name="autoscale_info">Додаток зробить текст максимально великим, щоб він поміщався на екрані</string>
     <string name="autoscroll">Автопрокрутка</string>
@@ -155,6 +156,7 @@
     <string name="connected_display">Підключений дисплей</string>
     <string name="connected_display_description">Налаштування, специфічні для виходу Chromecast/HDMI</string>
     <string name="connection_autoscroll_info">Слухайте команди зупинки та запуску автопрокрутки</string>
+    <string name="connection_scroll_info">Слухайте команди прокрутки вгору та вниз</string>
     <string name="connections_accept">З\\\'єднати з</string>
     <string name="connections_accept_code">Підтвердіть збіг коду на обох пристроях:</string>
     <string name="connections_actasclient">Діяти як клієнт</string>
@@ -583,6 +585,7 @@
     <string name="scaling">Масштабування</string>
     <string name="scaling_info">Налаштування автоматичного масштабування та масштабування розділів</string>
     <string name="scripture">Священний писання</string>
+    <string name="scroll">Прокрутка</string>
     <string name="scroll_amount">Інтервал прокрутки</string>
     <string name="scroll_down">Прокрути вниз</string>
     <string name="scroll_up">Прокрутки вгору</string>

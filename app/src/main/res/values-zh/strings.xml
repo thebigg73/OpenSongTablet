@@ -40,6 +40,7 @@
     <string name="audio">音频</string>
     <string name="audio_source">音源</string>
     <string name="author">"作者"</string>
+    <string name="autohide_time">保持可见的时间（自动隐藏时间）</string>
     <string name="autoscale">"自动定标"</string>
     <string name="autoscale_info">该应用程序将使文本尽可能大以适合屏幕</string>
     <string name="autoscroll">"自动滚动"</string>
@@ -155,6 +156,7 @@
     <string name="connected_display">"连接显示"</string>
     <string name="connected_display_description">特定于Chromecast / HDMI输出的设置</string>
     <string name="connection_autoscroll_info">监听自动滚动停止和启动命令</string>
+    <string name="connection_scroll_info">监听向上和向下滚动命令</string>
     <string name="connections_accept">与连接</string>
     <string name="connections_accept_code">确认两个设备上的代码匹配：</string>
     <string name="connections_actasclient">担任客户</string>
@@ -583,6 +585,7 @@
     <string name="scaling">缩放</string>
     <string name="scaling_info">自动缩放设置和截面缩放</string>
     <string name="scripture">"圣经"</string>
+    <string name="scroll">滚动</string>
     <string name="scroll_amount">"滚动量"</string>
     <string name="scroll_down">向下滚动</string>
     <string name="scroll_up">向上滚动</string>

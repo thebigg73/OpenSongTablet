@@ -40,6 +40,7 @@
     <string name="audio">Audio-</string>
     <string name="audio_source">Fuente de audio</string>
     <string name="author">"Autor"</string>
+    <string name="autohide_time">Tiempo para mantenerse visible (tiempo de ocultación automática)</string>
     <string name="autoscale">"Auto escala"</string>
     <string name="autoscale_info">La aplicación hará que el texto sea lo más grande posible para que quepa en la pantalla.</string>
     <string name="autoscroll">"Auto-scroll"</string>
@@ -155,6 +156,7 @@
     <string name="connected_display">"Pantalla conectada"</string>
     <string name="connected_display_description">Configuración específica para la salida Chromecast / HDMI</string>
     <string name="connection_autoscroll_info">Escuche los comandos de inicio y parada de desplazamiento automático</string>
+    <string name="connection_scroll_info">Escuche los comandos de desplazamiento hacia arriba y hacia abajo</string>
     <string name="connections_accept">Conectar con</string>
     <string name="connections_accept_code">Confirme que el código coincida en ambos dispositivos:</string>
     <string name="connections_actasclient">Actuar como cliente</string>
@@ -583,6 +585,7 @@
     <string name="scaling">Escalada</string>
     <string name="scaling_info">Ajustes de escalado automático y escalado de secciones</string>
     <string name="scripture">"Sagrada Escritura"</string>
+    <string name="scroll">Desplazarse</string>
     <string name="scroll_amount">"Cantidad de desplazamiento"</string>
     <string name="scroll_down">Desplácese hacia abajo</string>
     <string name="scroll_up">Desplácese hacia arriba</string>

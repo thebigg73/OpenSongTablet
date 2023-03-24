@@ -193,6 +193,7 @@
     <string name="connected_display">Connected display</string>
     <string name="connected_display_description">Settings specific to Chromecast/HDMI output</string>
     <string name="connection_autoscroll_info">Listen for autoscroll stop and start commands</string>
+    <string name="connection_scroll_info">Listen for scroll up and down commands</string>
     <string name="connections_accept">Connect with</string>
     <string name="connections_accept_code">Confirm the code matches on both devices:</string>
     <string name="connections_actasclient">Act as client</string>
@@ -742,6 +743,7 @@
     <string name="scaling">Scaling</string>
     <string name="scaling_info">Autoscale settings and section scaling</string>
     <string name="scripture">Scripture</string>
+    <string name="scroll">Scroll</string>
     <string name="scroll_amount">Scroll amount</string>
     <string name="scroll_down">Scroll down</string>
     <string name="scroll_up">"Scroll up</string>

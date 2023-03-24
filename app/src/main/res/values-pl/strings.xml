@@ -40,6 +40,7 @@
     <string name="audio">Audio</string>
     <string name="audio_source">Źródło dźwięku</string>
     <string name="author">"Autor"</string>
+    <string name="autohide_time">Czas zachowania widoczności (czas automatycznego ukrywania)</string>
     <string name="autoscale">"Autoscale"</string>
     <string name="autoscale_info">Aplikacja sprawi, że tekst będzie tak duży, jak to możliwe, aby zmieścił się na ekranie</string>
     <string name="autoscroll">"Auto-scroll"</string>
@@ -155,6 +156,7 @@
     <string name="connected_display">"Podłączony wyświetlacz"</string>
     <string name="connected_display_description">Ustawienia specyficzne dla wyjścia Chromecast / HDMI</string>
     <string name="connection_autoscroll_info">Ouça os comandos de parada e início de rolagem automática</string>
+    <string name="connection_scroll_info">Słuchaj poleceń przewijania w górę iw dół</string>
     <string name="connections_accept">Połączyć się z</string>
     <string name="connections_accept_code">Sprawdź, czy kod pasuje na obu urządzeniach:</string>
     <string name="connections_actasclient">Działaj jako klient</string>
@@ -583,6 +585,7 @@
     <string name="scaling">Skalowanie</string>
     <string name="scaling_info">Ustawienia autoskalowania i skalowanie sekcji</string>
     <string name="scripture">"Pismo"</string>
+    <string name="scroll">Zwój</string>
     <string name="scroll_amount">"Kwota przewijania"</string>
     <string name="scroll_down">Przewiń</string>
     <string name="scroll_up">W górę</string>

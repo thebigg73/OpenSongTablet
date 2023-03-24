@@ -40,6 +40,7 @@
     <string name="audio">Audio</string>
     <string name="audio_source">Audio izvor</string>
     <string name="author">Autor</string>
+    <string name="autohide_time">Vreme da ostane vidljivo (vreme za automatsko sakrivanje)</string>
     <string name="autoscale">Autoskaliranje</string>
     <string name="autoscale_info">Aplikacija će učiniti da tekst bude što veći da stane na ekran</string>
     <string name="autoscroll">Automatski skrol</string>
@@ -155,6 +156,7 @@
     <string name="connected_display">Povezani displej</string>
     <string name="connected_display_description">Postavke specifične za Chromecast / HDMI izlaz</string>
     <string name="connection_autoscroll_info">Slušajte komande za zaustavljanje i pokretanje automatskog pomeranja</string>
+    <string name="connection_scroll_info">Slušajte komande za pomeranje nagore i nadole</string>
     <string name="connections_accept">Povezivanje sa</string>
     <string name="connections_accept_code">Potvrdite podudaranje koda na oba uređaja:</string>
     <string name="connections_actasclient">Понашајте се као клијент</string>
@@ -583,6 +585,7 @@
     <string name="scaling">Skaliranje</string>
     <string name="scaling_info">Podešavanja automatskog skaliranja i skaliranje sekcija</string>
     <string name="scripture">Skripta</string>
+    <string name="scroll">Svitak</string>
     <string name="scroll_amount">Pomični iznos</string>
     <string name="scroll_down">Dole</string>
     <string name="scroll_up">Gore</string>

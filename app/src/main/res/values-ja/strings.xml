@@ -40,6 +40,7 @@
     <string name="audio">オーディオ</string>
     <string name="audio_source">オーディオソース</string>
     <string name="author">"作成者"</string>
+    <string name="autohide_time">表示を維持する時間 (自動非表示時間)</string>
     <string name="autoscale">"オートスケール"</string>
     <string name="autoscale_info">アプリは、画面に合わせてテキストを可能な限り大きくします</string>
     <string name="autoscroll">"自動スクロール"</string>
@@ -155,6 +156,7 @@
     <string name="connected_display">"接続されたディスプレイ"</string>
     <string name="connected_display_description">Chromecast / HDMI出力に固有の設定</string>
     <string name="connection_autoscroll_info">自動スクロールの停止および開始コマンドをリッスンします</string>
+    <string name="connection_scroll_info">上下にスクロールするコマンドを聞く</string>
     <string name="connections_accept">と接続する</string>
     <string name="connections_accept_code">両方のデバイスでコードが一致することを確認します。</string>
     <string name="connections_actasclient">クライアントとして行動する</string>
@@ -583,6 +585,7 @@
     <string name="scaling">スケーリング</string>
     <string name="scaling_info">自動スケーリング設定とセクションスケーリング</string>
     <string name="scripture">"聖書"</string>
+    <string name="scroll">スクロール</string>
     <string name="scroll_amount">"スクロール量"</string>
     <string name="scroll_down">"セットボタンを「下にスクロール」"</string>
     <string name="scroll_up">"ボタンを「スクロールアップ」に設定"</string>

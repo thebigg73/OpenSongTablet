@@ -40,6 +40,7 @@
     <string name="audio">Audio</string>
     <string name="audio_source">Audio quelle</string>
     <string name="author">"Autor"</string>
+    <string name="autohide_time">Zeit, um sichtbar zu bleiben (Autohide-Zeit)</string>
     <string name="autoscale">"Autoskalierung"</string>
     <string name="autoscale_info">Die App wird den Text so groß wie möglich machen, damit er auf den Bildschirm passt</string>
     <string name="autoscroll">"Autoscroll"</string>
@@ -155,6 +156,7 @@
     <string name="connected_display">"Verbundene Anzeige"</string>
     <string name="connected_display_description">Spezifische Einstellungen für den Chromecast / HDMI-Ausgang</string>
     <string name="connection_autoscroll_info">Warten Sie auf Autoscroll-Stopp- und Startbefehle</string>
+    <string name="connection_scroll_info">Hören Sie auf Befehle zum Hoch- und Herunterscrollen</string>
     <string name="connections_accept">Verbinden mit</string>
     <string name="connections_accept_code">Bestätigen Sie, dass der Code auf beiden Geräten übereinstimmt:</string>
     <string name="connections_actasclient">Als Kunde auftreten</string>
@@ -583,6 +585,7 @@
     <string name="scaling">Skalierung</string>
     <string name="scaling_info">Autoscale-Einstellungen und Abschnittsskalierung</string>
     <string name="scripture">"Bibeltext"</string>
+    <string name="scroll">Scrollen</string>
     <string name="scroll_amount">"Scrollweite"</string>
     <string name="scroll_down">Herunter scrollen</string>
     <string name="scroll_up">Hoch scrollen</string>

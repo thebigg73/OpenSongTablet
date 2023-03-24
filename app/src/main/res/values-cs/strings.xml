@@ -40,6 +40,7 @@
     <string name="audio">Audio</string>
     <string name="audio_source">Zdroj zvuku</string>
     <string name="author">"Autor"</string>
+    <string name="autohide_time">Čas zůstat viditelný (čas automatického skrytí)</string>
     <string name="autoscale">"Autoscale"</string>
     <string name="autoscale_info">Aplikace udělá text co největší, aby se vešel na obrazovku</string>
     <string name="autoscroll">"Auto-scroll"</string>
@@ -155,6 +156,7 @@
     <string name="connected_display">"Připojený displej"</string>
     <string name="connected_display_description">Nastavení specifická pro výstup Chromecast / HDMI</string>
     <string name="connection_autoscroll_info">Poslouchejte příkazy zastavení a spuštění automatického posunu</string>
+    <string name="connection_scroll_info">Poslouchejte příkazy pro posun nahoru a dolů</string>
     <string name="connections_accept">Spojit s</string>
     <string name="connections_accept_code">Potvrďte shodu kódu na obou zařízeních:</string>
     <string name="connections_actasclient">Působit jako klient</string>
@@ -583,6 +585,7 @@
     <string name="scaling">Měřítko</string>
     <string name="scaling_info">Nastavení automatického měřítka a měřítka sekcí</string>
     <string name="scripture">"Písmo svaté"</string>
+    <string name="scroll">Svitek</string>
     <string name="scroll_amount">"Množství posunu"</string>
     <string name="scroll_down">Přejděte dolů</string>
     <string name="scroll_up">Scroll up</string>
