@@ -82,10 +82,10 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true"
-                android:layout_margin="8dp"
+                app:useCompatPadding="true"
+                android:layout_marginEnd="8dp"
                 android:contentDescription="@string/action"
-                android:src="@drawable/plus"
-                app:useCompatPadding="false" />
+                android:src="@drawable/plus" />
 
             <!-- The previous and next info -->
             <include
