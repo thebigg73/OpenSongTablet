@@ -3,7 +3,6 @@ package com.garethevans.church.opensongtablet.export;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.util.Log;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
@@ -14,6 +13,7 @@ import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class ExportActions {
 
@@ -29,7 +29,17 @@ public class ExportActions {
 
     public Intent setShareIntent(String content, String type, Uri uri, ArrayList<Uri> uris) {
         Intent intent = new Intent();
-        if (uris==null || uris.size()==0) {
+        if (uris==null) {
+            uris = new ArrayList<>();
+        }
+        if (uri!=null) {
+            uris.add(uri);
+        }
+
+        // Remove any empty/null entries
+        uris.removeAll(Collections.singleton(null));
+
+        if (uris.isEmpty()) {
             intent.setAction(Intent.ACTION_SEND);
         } else {
             intent.setAction(Intent.ACTION_SEND_MULTIPLE);
@@ -39,9 +49,9 @@ public class ExportActions {
         if (content!=null) {
             intent.putExtra(Intent.EXTRA_TEXT, content);
         }
-        if (uri!=null) {
+        /*if (uri!=null) {
             intent.putExtra(Intent.EXTRA_STREAM, uri);
-        }
+        }*/
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
         if (type!=null) {
             intent.setType(type);
@@ -170,7 +180,6 @@ public class ExportActions {
                     if (eventType == XmlPullParser.START_TAG) {
                         if (xpp.getName().equals("slide_group")) {
                             // Look for the type attribute and see what type of slide it is
-                            Log.d(TAG,"type:"+xpp.getAttributeValue(null, "type"));
                             switch (xpp.getAttributeValue(null, "type")) {
                                 case "song":
                                 case "custom":
@@ -196,7 +205,6 @@ public class ExportActions {
                                             id = "../Variations/" + filename;
                                             custom = c.getString(R.string.variation);
                                             key = mainActivityInterface.getProcessSong().parseHTML(xpp.getAttributeValue("", "prefKey"));
-                                            Log.d(TAG,"key for variation filename: "+filename+" is: "+key);
 
                                         } else if (filename.contains("# " + c.getResources().getString(R.string.note) + " # - ")) {
                                             filename = filename.replace("# " + c.getResources().getString(R.string.note) + " # - ", "");

@@ -48,7 +48,7 @@ public class ExportFragment extends Fragment {
             set_string="", song_string="", app_name_string="";
     private boolean openSong = false, currentFormat = false, openSongApp = false, pdf = false, image = false,
             png = false, chordPro = false, onsong = false, text = false, setPDF = false, openSongSet = false,
-            setPNG = false, openSongAppSet = false, includeSongs = false, textSet = false, isPrint;
+            setPNG = false, openSongAppSet = false, includeSongs = false, textSet = false, isPrint, setPDFDone = false, setPNGDone = false;
     private String[] location, setData, ids, setKeys;
     private StringBuilder songsAlreadyAdded;
     private Handler handler;
@@ -83,10 +83,6 @@ public class ExportFragment extends Fragment {
             setData = mainActivityInterface.getExportActions().parseSets(setNames);
             textContent = setData[1];
             setContent = setData[1];
-            Log.d(TAG,"setData[0]:"+setData[0]);
-            Log.d(TAG,"setData[1]:"+setData[1]);
-            Log.d(TAG,"setData[2]:"+setData[2]);
-
         } else {
             setContent = null;
         }
@@ -360,7 +356,6 @@ public class ExportFragment extends Fragment {
 
                 for (int x=0; x<songsToAdd; x++) {
                     String id = ids[x];
-                    Log.d(TAG,"id:"+id);
 
                     // Only add if we don't already have it (as we may have multiple references to
                     // songs in sets, especially is we have selected more than one set)
@@ -382,7 +377,6 @@ public class ExportFragment extends Fragment {
                             song.setFolder("../Export");
                             song.setFilename(location[1]);
                             song = mainActivityInterface.getLoadSong().doLoadSongFile(song,false);
-                            Log.d(TAG,"song:"+song.getFolder()+"/"+song.getFilename()+"  lyrics:"+song.getLyrics());
                         } else {
                             song = mainActivityInterface.getSQLiteHelper().getSpecificSong(location[0], location[1]);
                         }
@@ -400,7 +394,6 @@ public class ExportFragment extends Fragment {
                             mainActivityInterface.getProcessSong().getXML(song);
                             mainActivityInterface.getStorageAccess().doStringWriteToFile("Export","",song.getFilename(),song.getSongXML());
                             uris.add(uri);
-                            Log.d(TAG,"adding "+uri);
                             if (!mimeTypes.contains("text/xml")) {
                                 mimeTypes.add("text/xml");
                             }
@@ -415,7 +408,7 @@ public class ExportFragment extends Fragment {
                         // Deal with the currentFormat option first, or PDF for PDF songs
                         if (!id.equals("ignore") && (currentFormat && !useTransposed) || (pdf && likelyPDF)) {
                             // Just get a uri for the song
-                            uris.add(mainActivityInterface.getStorageAccess().getUriForItem("Songs", location[0], location[1]));
+                            uris.add(mainActivityInterface.getStorageAccess().getUriForItem("Songs", fixSubfolder(location[0]), location[1]));
                             if (openSong && !mimeTypes.contains("text/xml")) {
                                 mimeTypes.add("text/xml");
                             } else if (pdf && !mimeTypes.contains("application/pdf")) {
@@ -432,7 +425,7 @@ public class ExportFragment extends Fragment {
                                         "Export", "", song.getFilename() + ".ost"));
                             } else {
                                 uris.add(mainActivityInterface.getStorageAccess().copyFromTo(
-                                        "Songs", location[0], location[1],
+                                        "Songs", fixSubfolder(location[0]), location[1],
                                         "Export", "", location[1] + ".ost"));
                             }
                             if (!mimeTypes.contains("text/xml")) {
@@ -493,9 +486,21 @@ public class ExportFragment extends Fragment {
         });
     }
 
+    private String fixSubfolder(String subfolder) {
+        if (subfolder.contains("../")) {
+            subfolder = subfolder.replace("../Notes","../Notes/_cache");
+            subfolder = subfolder.replace("../Scripture","../Scripture/_cache");
+            subfolder = subfolder.replace("../Slides","../Slides/_cache");
+            subfolder = subfolder.replace("../Variations","../Variations/_cache");
+            subfolder = subfolder.replace("/_cache/_cache","/_cache");
+        }
+        return subfolder;
+    }
+
     private void renderPDFSet() {
         songsProcessed = 0;
-
+        setPDFDone = false;
+        setPNGDone = false;
         if (setPDF || setPNG) {
             mainActivityInterface.getMakePDF().setIsSetListPrinting(true);
             Song tempSong = new Song();
@@ -515,15 +520,9 @@ public class ExportFragment extends Fragment {
     private void renderPDFSongs() {
         mainActivityInterface.getMakePDF().setIsSetListPrinting(false);
         // Go through the songs if we are adding them as pdfs until we have processed all
-        Log.d(TAG,"songsProcessed:"+songsProcessed);
         if (ids==null) {
             ids = new String[1];
         }
-        Log.d(TAG,"ids.length:"+ids.length);
-        Log.d(TAG,"includeSongs:"+includeSongs);
-        Log.d(TAG,"pdf:"+pdf);
-        Log.d(TAG,"songsToAdd:"+songsToAdd);
-
 
         if (songsProcessed>=ids.length || !includeSongs || !pdf || songsProcessed==songsToAdd) {
             initiateShare();
@@ -535,7 +534,6 @@ public class ExportFragment extends Fragment {
             boolean likelyXML = !location[1].contains(".") || location[1].toLowerCase(Locale.ROOT).endsWith(".xml");
 
             // Only add if we haven't already added it
-            Log.d(TAG,"id:"+id);
             if (likelyXML && !songsAlreadyAdded.toString().contains(id+".pdf") && !id.equals("ignore")) {
                 songsAlreadyAdded.append("\n").append(id);
                 updateProgressText(location[1]+".pdf", songsProcessed + 1, ids.length);
@@ -593,7 +591,7 @@ public class ExportFragment extends Fragment {
             if (pdf && isPDF || openSong && isXML || image && isIMG) {
                 // Just add the xml or pdf song
                 uris.add(mainActivityInterface.getStorageAccess().getUriForItem("Songs",
-                        folder, filename));
+                        fixSubfolder(folder), filename));
                 if (pdf && !mimeTypes.contains("application/pdf")) {
                     mimeTypes.add("application/pdf");
                 } else if (openSong && !mimeTypes.contains("text/plain")) {
@@ -665,9 +663,6 @@ public class ExportFragment extends Fragment {
     }
 
     private void initiateShare() {
-        for (Uri uri:uris) {
-            Log.d(TAG,"sharing:"+uri);
-        }
         Intent intent = mainActivityInterface.getExportActions().setShareIntent(textContent,"*/*",null,uris);
         intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
         intent.putExtra(Intent.EXTRA_SUBJECT, app_name_string + " " +
@@ -717,8 +712,6 @@ public class ExportFragment extends Fragment {
     }
 
     public void createOnTheFlyHeader(Song thisSong, String pdfName) {
-        Log.d(TAG,"setPNG:"+setPNG+"  pdfName:"+pdfName+"   ==   Set "+setToExport+".pdf");
-
         // Get the song sheet header
         // Once this has drawn, move to the next stage of the song sections
 
@@ -782,16 +775,14 @@ public class ExportFragment extends Fragment {
 
                     boolean isSetFile = pdfName.equals(set_string +" " +setToExport+".pdf");
 
-                    Log.d(TAG,"setPNG:"+setPNG+"  pdfName:"+pdfName+"   ==   Set "+setToExport+".pdf");
                     // If we are exporting a setPNG and this is the set, take a bitmap!
-                    if (isSetFile && setPNG) {
+                    if (isSetFile && setPNG && !setPNGDone) {
                         try {
                             // The header should still be in place
                             // Now take a bitmap of the layout
                             setPNGContent = Bitmap.createBitmap(maxWidth, myView.previewLayout.getHeight(), Bitmap.Config.ARGB_8888);
                             Canvas canvas = new Canvas(setPNGContent);
                             myView.previewLayout.draw(canvas);
-                            Log.d(TAG, "bitmap  width:" + setPNGContent.getWidth() + "  height:" + setPNGContent.getHeight());
                             Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Export","",pdfName.replace(".pdf",".png"));
                             mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true,uri,null,"Export","",pdfName.replace(".pdf",".png"));
                             OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(uri);
@@ -811,6 +802,7 @@ public class ExportFragment extends Fragment {
                         } catch (OutOfMemoryError | Exception e) {
                             e.printStackTrace();
                         }
+                        setPNGDone = true;
                     }
 
                     // Now trigger the next step of preparing the pdf from the views created on the fly
@@ -821,16 +813,14 @@ public class ExportFragment extends Fragment {
                         mimeTypes = new ArrayList<>();
                     }
 
-                    if (png) {
-                        // Now take a bitmap of the layout
+                    if (png && !isSetFile) {
+                        // Now take a bitmap of the layout for the song
                         // Get the maximum width of the views
                         myView.previewLayout.setVisibility(View.VISIBLE);
                         setPNGContent = Bitmap.createBitmap(myView.previewLayout.getWidth(), myView.previewLayout.getHeight(), Bitmap.Config.ARGB_8888);
                         Canvas canvas = new Canvas(setPNGContent);
                         myView.previewLayout.draw(canvas);
                         pngName = pdfName.replace(".pdf",".png");
-                        Log.d(TAG, "pngName:" + pngName + "  bitmap  width:" + setPNGContent.getWidth() + "  height:" + setPNGContent.getHeight());
-                        Log.d(TAG,"children:"+myView.previewLayout.getChildCount());
                         Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Export", "", pngName);
                         mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, uri, null, "Export", "", pngName);
                         OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(uri);
@@ -844,16 +834,17 @@ public class ExportFragment extends Fragment {
                     myView.hiddenSections.removeAllViews();
 
                     // If we wanted a pdf (rather than png), add it
-                    Log.d(TAG,"setPDF:"+setPDF+"  isSetFile:"+isSetFile);
 
-                    if (setPDF || (!isSetFile && pdf)) {
+                    if ((setPDF && isSetFile && !setPDFDone) || (!isSetFile && pdf)) {
+                        // Sets are always processed first, so mark as done
+                        setPDFDone = true;
                         uris.add(mainActivityInterface.getMakePDF().createTextPDF(
                                 sectionViewsPDF, sectionViewWidthsPDF,
                                 sectionViewHeightsPDF, headerLayoutPDF,
                                 headerLayoutWidth, headerLayoutHeight,
                                 pdfName, null));
 
-                        if (!pdf) {
+                        if ((!isSetFile && !pdf) || (isSetFile && !setPDF)) {
                             // Remove that uri as it was only created for an image screenshot
                             uris.remove(uris.size()-1);
                         } else {
