@@ -513,6 +513,7 @@ public class StorageAccess {
         returnvals[0] = folder;
         returnvals[1] = subfolder;
         returnvals[2] = filename;
+
         return returnvals;
     }
     private String removeStartAndEndSlashes(String s) {
@@ -1078,10 +1079,13 @@ public class StorageAccess {
         }
     }
     public Uri copyFromTo(String fromFolder, String fromSubfolder, String fromName, String toFolder, String toSubfolder, String toName) {
-        Uri fromUri = getUriForItem(fromFolder, fromSubfolder, fromName);
-        Uri toUri = getUriForItem(toFolder, toSubfolder, toName);
+        // Fix folders
+        String[] fixedFrom = fixFoldersAndFiles(fromFolder,fromSubfolder,fromName);
+        String[] fixedTo   = fixFoldersAndFiles(toFolder,toSubfolder,toName);
+        Uri fromUri = getUriForItem(fixedFrom[0], fixedFrom[1], fixedFrom[2]);
+        Uri toUri = getUriForItem(fixedTo[0], fixedTo[1], fixedTo[2]);
         // Make sure the newUri is valid and exists
-        lollipopCreateFileForOutputStream(true, toUri,null,toFolder,toSubfolder,toName);
+        lollipopCreateFileForOutputStream(true, toUri,null,fixedTo[0],fixedTo[1],fixedTo[2]);
         // Get the input and output streams
         InputStream inputStream = getInputStream(fromUri);
         OutputStream outputStream = getOutputStream(toUri);
@@ -1603,14 +1607,12 @@ public class StorageAccess {
         // Work out what the new uri should be
         Uri newUri;
         // Get rid of the old last folder and replace it
-        Log.d(TAG,"oldsubfolder:"+oldsubfolder);
         if (oldsubfolder.contains("/")) {
             oldsubfolder = oldsubfolder.substring(0,oldsubfolder.lastIndexOf("/"));
         } else {
             // Just the one subfolder (no sub-sub folders)
             oldsubfolder = "";
         }
-        Log.d(TAG,"oldsubfolder:"+oldsubfolder);
 
         if (oldsubfolder.isEmpty()) {
             newUri = getUriForItem("Songs", newsubfolder, "");
@@ -1629,7 +1631,6 @@ public class StorageAccess {
             }
             try {
                 Uri renamed = DocumentsContract.renameDocument(c.getContentResolver(), oldUri, newsubfolder);
-                Log.d(TAG,"renamed:"+renamed+"  newUri:"+newUri);
                 if (renamed!=null && renamed.equals(newUri)) {
                     message = c.getString(R.string.success);
                 } else {
@@ -1745,10 +1746,6 @@ public class StorageAccess {
     }
     public ArrayList<String> getSongFolders(ArrayList<String> songIDs, boolean addMain, String toIgnore) {
         ArrayList<String> availableFolders = new ArrayList<>();
-        // Add the MAIN folder
-        if (addMain) {
-            songIDs.add(0, c.getString(R.string.mainfoldername) + "/");
-        }
         for (String entry : songIDs) {
             if (entry.endsWith("/")) {
                 String newtext = entry.substring(0, entry.lastIndexOf("/"));
@@ -1757,7 +1754,11 @@ public class StorageAccess {
                 }
             }
         }
-        Collections.sort(availableFolders);
+        Collections.sort(availableFolders,String.CASE_INSENSITIVE_ORDER);
+        // Add the MAIN folder
+        if (addMain) {
+            availableFolders.add(0, c.getString(R.string.mainfoldername));
+        }
         return availableFolders;
     }
 
