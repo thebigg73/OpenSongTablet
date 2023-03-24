@@ -33,6 +33,13 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
     private SettingsDisplayConnectedBinding myView;
     private String connected_display_string="", website_connected_display_string="",
             mode_performance_string="", mode_stage_string="";
+    private String webAddress;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mainActivityInterface.updateToolbarHelp(webAddress);
+    }
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -50,7 +57,7 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
         prepareStrings();
 
         mainActivityInterface.updateToolbar(connected_display_string);
-        mainActivityInterface.updateToolbarHelp(website_connected_display_string);
+        webAddress = website_connected_display_string;
 
         // Update the currently chosen logo and backgrounds
         mainActivityInterface.getPresenterSettings().getAllPreferences();

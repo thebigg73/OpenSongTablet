@@ -31,6 +31,13 @@ public class GesturesFragment extends Fragment {
     private SettingsGesturesBinding myView;
     private MainActivityInterface mainActivityInterface;
     private String custom_gestures_string="", website_custom_gestures_string="";
+    private String webAddress;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mainActivityInterface.updateToolbarHelp(webAddress);
+    }
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -46,7 +53,7 @@ public class GesturesFragment extends Fragment {
         prepareStrings();
 
         mainActivityInterface.updateToolbar(custom_gestures_string);
-        mainActivityInterface.updateToolbarHelp(website_custom_gestures_string);
+        webAddress = website_custom_gestures_string;
 
         myView.allowPinchToZoom.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("allowPinchToZoom",true));
         myView.allowPinchToZoom.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getPreferences().setMyPreferenceBoolean("allowPinchToZoom",isChecked));

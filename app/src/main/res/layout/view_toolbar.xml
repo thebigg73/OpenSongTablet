@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.appbar.MaterialToolbar
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.appbar.MaterialToolbar xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/myToolbar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_alignParentStart="true"
     android:minHeight="?attr/actionBarSize"
     android:theme="@style/ActionBar"
-    app:contentInsetEnd="0dp"
+    app:contentInsetEnd="8dp"
     app:contentInsetStart="0dp"
-    app:contentInsetStartWithNavigation="0dp"
+    app:contentInsetLeft="0dp"
     app:elevation="4dp"
     app:titleMarginStart="0dp">
 
@@ -18,6 +18,8 @@
         android:id="@+id/actionBarBackground"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:baselineAligned="false"
+        android:minHeight="60dp"
         android:orientation="horizontal">
 
         <RelativeLayout
@@ -25,7 +27,8 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:gravity="center_vertical|start">
+            android:gravity="center_vertical|start"
+            android:paddingBottom="5dp">
 
             <ImageView
                 android:id="@+id/setIcon"
@@ -48,8 +51,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_toEndOf="@id/setIcon"
                 android:orientation="horizontal"
-                android:paddingStart="0dp"
-                android:paddingEnd="16dp">
+                android:paddingStart="0dp">
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/songtitle_ab"
@@ -64,6 +66,7 @@
                     android:id="@+id/songkey_ab"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:ellipsize="end"
                     android:maxLines="1"
                     tools:text="Song key" />
 
@@ -71,13 +74,10 @@
                     android:id="@+id/songcapo_ab"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:ellipsize="end"
                     android:maxLines="1"
                     tools:text=" (capo)" />
 
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" />
             </LinearLayout>
 
             <com.google.android.material.textview.MaterialTextView
@@ -99,25 +99,26 @@
         <RelativeLayout
             android:id="@+id/batteryholder"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:maxWidth="48dp"
-            android:minWidth="48dp"
-            android:orientation="vertical"
-            android:padding="0dp">
+            android:layout_height="48dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
+            android:orientation="vertical">
 
             <ImageView
                 android:id="@+id/batteryimage"
                 android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentTop="false"
                 android:layout_centerInParent="true"
-                android:contentDescription="@string/time" />
+                android:contentDescription="@string/time"
+                android:foregroundGravity="top"
+                android:paddingStart="-6dp"
+                android:paddingEnd="-6dp" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:background="@color/transparent"
                 android:gravity="center"
                 android:orientation="vertical"
                 android:padding="0dp">
@@ -126,12 +127,12 @@
                     android:id="@+id/batterycharge"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:maxWidth="50dp"
-                    android:text="99%"
-                    android:textColor="#fff"
-                    android:background="@color/transparent"
+                    android:text="100%"
+                    android:textColor="#ffffff"
                     android:textSize="11sp"
                     tools:gravity="center"
                     tools:ignore="HardcodedText,SmallSp" />
@@ -140,28 +141,19 @@
                     android:id="@+id/digitalclock"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
                     android:layout_gravity="center"
                     android:layout_margin="0dp"
-                    android:background="@color/transparent"
                     android:ellipsize="marquee"
                     android:gravity="center"
                     android:maxWidth="50dp"
-                    android:padding="0dp"
                     android:singleLine="true"
                     android:text="12:00"
                     android:textColor="#ffffff"
                     android:textSize="11sp"
-                    tools:ignore="HardcodedText,SmallSp"/>
+                    tools:gravity="center"
+                    tools:ignore="HardcodedText,SmallSp" />
             </LinearLayout>
         </RelativeLayout>
-
-        <ImageView
-            android:id="@+id/webHelp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:src="@drawable/web"
-            android:visibility="gone"
-            android:contentDescription="@string/help" />
     </LinearLayout>
 </com.google.android.material.appbar.MaterialToolbar>

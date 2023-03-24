@@ -55,6 +55,13 @@ public class BackupRestoreSetsFragment extends Fragment {
             website_set_backup_string="", unknown_string="", backup_sets_string="",
             import_basic_string="", mainfoldername_string="", backup_info_string="",
             success_string="", error_string="";
+    private String webAddress;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mainActivityInterface.updateToolbarHelp(webAddress);
+    }
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -80,20 +87,21 @@ public class BackupRestoreSetsFragment extends Fragment {
 
         if (mainActivityInterface.getWhattodo().equals("restoresets")) {
             mainActivityInterface.updateToolbar(restore_sets_string);
-            mainActivityInterface.updateToolbarHelp(website_set_restore_string);
+            webAddress = website_set_restore_string;
             setupFileChooserListener();
             initialiseLauncher();
             openFilePicker();
         } else if (mainActivityInterface.getWhattodo().equals("intentlaunch")) {
             mainActivityInterface.updateToolbar(restore_sets_string);
-            mainActivityInterface.updateToolbarHelp(website_set_restore_string);
+            webAddress = website_set_restore_string;
             backupUri = mainActivityInterface.getImportUri();
             myView.backupName.setText(mainActivityInterface.getImportFilename());
             setupViews();
         } else {
             // Set up views
             setupViews();
-            mainActivityInterface.updateToolbarHelp(website_set_backup_string);
+            mainActivityInterface.updateToolbar(backup_sets_string);
+            webAddress = website_set_backup_string;
 
         }
 

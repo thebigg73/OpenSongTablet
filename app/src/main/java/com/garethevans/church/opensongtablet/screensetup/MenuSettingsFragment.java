@@ -21,6 +21,13 @@ public class MenuSettingsFragment extends Fragment {
     SettingsMenuBinding myView;
     MainActivityInterface mainActivityInterface;
     private String off_string;
+    private String webAddress;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mainActivityInterface.updateToolbarHelp(webAddress);
+    }
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -37,6 +44,7 @@ public class MenuSettingsFragment extends Fragment {
             mainActivityInterface.updateToolbar(getString(R.string.menu_settings));
             mainActivityInterface.updateToolbarHelp(getString(R.string.website_menu_settings));
             off_string = getString(R.string.off);
+            webAddress = getString(R.string.website_menu_settings);
         }
 
         // Deal with the views

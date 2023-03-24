@@ -45,6 +45,13 @@ public class CustomChordsFragment extends Fragment {
     private final String TAG = "CustomChordsFrag";
     private String custom_chords_string="", website_chords_custom_string="", piano_string="",
             customchords_name_string="", guitar_string="", banjo5_string="", custom_chord_exists_string="";
+    private String webAddress;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mainActivityInterface.updateToolbarHelp(webAddress);
+    }
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -61,7 +68,7 @@ public class CustomChordsFragment extends Fragment {
         prepareStrings();
 
         mainActivityInterface.updateToolbar(custom_chords_string);
-        mainActivityInterface.updateToolbarHelp(website_chords_custom_string);
+        webAddress = website_chords_custom_string;
 
         myView.instrument.setFocusable(false);
         myView.chordName.setFocusable(false);

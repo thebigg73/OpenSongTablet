@@ -54,6 +54,13 @@ public class ExportFragment extends Fragment {
     private Handler handler;
     private float scaleComments;
     private Bitmap setPNGContent;
+    private String webAddress;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mainActivityInterface.updateToolbarHelp(webAddress);
+    }
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -68,7 +75,7 @@ public class ExportFragment extends Fragment {
 
         prepareStrings();
 
-        mainActivityInterface.updateToolbar(export_string);
+        webAddress = export_string;
 
         mainActivityInterface.getProcessSong().updateProcessingPreferences();
         scaleComments = mainActivityInterface.getPreferences().getMyPreferenceFloat("scaleComments",0.8f);
@@ -174,7 +181,7 @@ public class ExportFragment extends Fragment {
 
         // Check if we are exporting a set
         if (mainActivityInterface.getWhattodo().startsWith("exportset:")) {
-            mainActivityInterface.updateToolbarHelp(website_export_set_string);
+            webAddress = website_export_set_string;
 
             myView.setExportInfo.setVisibility(View.VISIBLE);
             myView.currentFormat.setVisibility(View.VISIBLE);
@@ -197,7 +204,7 @@ public class ExportFragment extends Fragment {
 
         } else {
             // Hide the options based on the song format
-            mainActivityInterface.updateToolbarHelp(website_export_song_string);
+            webAddress = website_export_song_string;
             myView.setExportInfo.setVisibility(View.GONE);
             myView.currentFormat.setVisibility(View.GONE);
 

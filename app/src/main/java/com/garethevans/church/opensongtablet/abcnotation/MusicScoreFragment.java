@@ -26,6 +26,14 @@ public class MusicScoreFragment extends Fragment {
     private SettingsAbcnotationBinding myView;
     private final String TAG = "MusicScoreFragment";
     private String music_score="", website_music_score="";
+    private String webAddress;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mainActivityInterface.updateToolbarHelp(webAddress);
+    }
+
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -38,7 +46,7 @@ public class MusicScoreFragment extends Fragment {
         myView = SettingsAbcnotationBinding.inflate(inflater, container, false);
         prepareStrings();
         mainActivityInterface.updateToolbar(music_score);
-        mainActivityInterface.updateToolbarHelp(website_music_score);
+        webAddress = website_music_score;
 
         requireActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 

@@ -69,6 +69,13 @@ public class MidiFragment extends Fragment {
     private String midi_string="", website_midi_connections_string="", permissions_refused_string="",
             note_string="", on_string="", off_string="", midi_program_string="", okay_string="",
             midi_controller_string="", unknown_string="", error_string="", midi_error_string="";
+    private String webAddress;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mainActivityInterface.updateToolbarHelp(webAddress);
+    }
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -85,7 +92,7 @@ public class MidiFragment extends Fragment {
         prepareStrings();
 
         mainActivityInterface.updateToolbar(midi_string);
-        mainActivityInterface.updateToolbarHelp(website_midi_connections_string);
+        webAddress = website_midi_connections_string;
 
         // Register this fragment with the main activity to deal with listeners
         mainActivityInterface.registerFragment(this, "MidiFragment");

@@ -20,6 +20,13 @@ public class PadSettingsFragment extends Fragment {
     private SettingsPadsBinding myView;
     private MainActivityInterface mainActivityInterface;
     private boolean padPlaying;
+    private String webAddress;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mainActivityInterface.updateToolbarHelp(webAddress);
+    }
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -34,7 +41,7 @@ public class PadSettingsFragment extends Fragment {
 
         if (getContext()!=null) {
             mainActivityInterface.updateToolbar(getString(R.string.pad));
-            mainActivityInterface.updateToolbarHelp(getString(R.string.website_pad));
+            webAddress = getString(R.string.website_pad);
         }
         setListeners();
 

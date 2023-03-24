@@ -28,6 +28,13 @@ public class ThemeSetupFragment extends Fragment {
             stage_mode_string="", theme_dark_string="", theme_light_string="",
             theme_custom1_string="", theme_custom2_string="", reset_colours_string="";
     private ArrayList<String> themes;
+    private String webAddress;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mainActivityInterface.updateToolbarHelp(webAddress);
+    }
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -42,7 +49,7 @@ public class ThemeSetupFragment extends Fragment {
         prepareStrings();
 
         mainActivityInterface.updateToolbar(theme_string);
-        mainActivityInterface.updateToolbarHelp(website_themes_string);
+        webAddress = website_themes_string;
 
         String text = presenter_mode_string + " / " + stage_mode_string;
         myView.presenterStageMode.setText(text);

@@ -27,7 +27,8 @@ public class OnScreenInfo extends LinearLayout {
     private final MaterialTextView padTime;
     private final MaterialTextView padTotalTime;
     private boolean capoInfoNeeded, capoPulsing, autoHideCapo, autoHidePad, autoHideAutoscroll;
-    private final int delayTime = 3000;
+    // IV - Needs to be longer to be seen after song load
+    private final int delayTime = 5000;
     private final Runnable hideCapoRunnable = new Runnable() {
         @Override
         public void run() {
@@ -45,6 +46,7 @@ public class OnScreenInfo extends LinearLayout {
                     capoInfo.setVisibility(View.VISIBLE);
                     capoInfo.clearAnimation();
                 });
+                capoInfo.removeCallbacks(hideCapoRunnable);
                 capoInfo.postDelayed(hideCapoRunnable,delayTime);
             }
         }
@@ -126,26 +128,15 @@ public class OnScreenInfo extends LinearLayout {
         } else {
             capoInfo.setVisibility(View.GONE);
         }
-
         if (mainActivityInterface.getPad().isPadPrepared()) {
-            if (pad.getVisibility()!=View.VISIBLE) {
-                pad.setVisibility(View.VISIBLE);
-                if (autoHidePad) {
-                    pad.postDelayed(() -> pad.setVisibility(View.GONE), delayTime);
-                }
-            }
-        } else {
-            pad.setVisibility(View.GONE);
+            pad.setVisibility(View.VISIBLE);
+            pad.removeCallbacks(hidePadRunnable);
+            pad.postDelayed(hidePadRunnable, delayTime);
         }
         if (mainActivityInterface.getAutoscroll().getAutoscrollActivated()) {
-            if (autoscroll.getVisibility()!=View.VISIBLE) {
-                autoscroll.setVisibility(View.VISIBLE);
-                if (autoHideAutoscroll) {
-                    autoscroll.postDelayed(() -> autoscroll.setVisibility(View.GONE), delayTime);
-                }
-            }
-        } else {
-            autoscroll.setVisibility(View.GONE);
+            autoscroll.setVisibility(View.VISIBLE);
+            autoscroll.removeCallbacks(hideAutoScrollRunnable);
+            autoscroll.postDelayed(hideAutoScrollRunnable, delayTime);
         }
     }
     public LinearLayout getInfo() {
@@ -163,5 +154,30 @@ public class OnScreenInfo extends LinearLayout {
     public MaterialTextView getAutoscrollTotalTime() {
         return autoscrollTotalTime;
     }
-
+    private final Runnable hidePadRunnable = new Runnable() {
+        @Override
+        public void run() {
+            if (autoHidePad) {
+                pad.setVisibility(View.GONE);
+            }
+        }
+    };
+    private final Runnable hideAutoScrollRunnable = new Runnable() {
+        @Override
+        public void run() {
+            if (autoHidePad) {
+                pad.setVisibility(View.GONE);
+            }
+        }
+    };
+    public void showCapo(boolean show) {
+        if (show) {
+            capoInfo.post(() -> capoInfo.setAlpha(1.0f));
+        } else {
+            capoInfo.post(() -> {
+                capoInfo.setAlpha(0.0f);
+                capoInfo.setVisibility(View.GONE);
+            });
+        }
+    }
 }

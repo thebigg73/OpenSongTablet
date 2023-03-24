@@ -24,6 +24,13 @@ public class AutoscrollSettingsFragment extends Fragment {
     private SettingsAutoscrollBinding myView;
     private MainActivityInterface mainActivityInterface;
     private String autoscroll="", website_autoscroll="";
+    private String webAddress;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mainActivityInterface.updateToolbarHelp(webAddress);
+    }
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -40,7 +47,7 @@ public class AutoscrollSettingsFragment extends Fragment {
         prepareStrings();
 
         mainActivityInterface.updateToolbar(autoscroll);
-        mainActivityInterface.updateToolbarHelp(website_autoscroll);
+        webAddress = website_autoscroll;
         // Set up the views
         setupViews();
 

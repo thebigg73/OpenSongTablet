@@ -245,7 +245,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private SecondaryDisplay[] secondaryDisplays;
     private Display[] connectedDisplays;
     private int prevNumConnectedDisplays = 0;
-    private ImageView screenMirror;
+    private ImageView screenMirror, screenHelp;
 
     // Variables used
     private ArrayList<View> targets;
@@ -260,7 +260,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private boolean settingsOpen = false, showSetMenu,
             pageButtonActive = true, fullIndexRequired, menuOpen, firstRun=true;
     private final String TAG = "MainActivity";
-    private MenuItem settingsButton;
+    private Menu globalMenuItem;
     private Locale locale;
     private Bitmap screenShot;
 
@@ -632,7 +632,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
                 if (myView!=null) {
                     myView.fragmentView.setPadding(margins[0], Math.max(topPadding,bottomOfToolbar), margins[2], margins[3]);
-                    myView.songMenuLayout.setPadding(margins[0], statusPadding, 0, margins[3]);
+                    myView.songMenuLayout.setPadding(margins[0],  Math.max(topPadding,bottomOfToolbar) - myView.menuTop.menuTop.getBottom() - 12 , 0, margins[3]);
                     myView.songMenuLayout.findViewById(R.id.menu_top).setPadding(windowFlags.getMarginToolbarLeft(),0,0,0);
                 }
             });
@@ -915,10 +915,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         navController.addOnDestinationChangedListener((navController, navDestination, bundle) -> {
             if (navDestination.getId()==R.id.performanceFragment ||
                     navDestination.getId()==R.id.presenterFragment) {
-                showMenuItems(true);
                 settingsOpen = false;
             } else if (navDestination.getId()==R.id.actionBarSettingsFragment) {
-                showMenuItems(true);
                 settingsOpen = true;
             }
         });
@@ -926,6 +924,17 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void navigateToFragment(String deepLink, int id) {
+        if (globalMenuItem != null) {
+            // IV - To get smooth transitions we clear elements left to right
+            myView.myToolbar.setActionBar("");
+            myView.myToolbar.batteryholderVisibility(View.GONE, false);
+            globalMenuItem.findItem(R.id.help_menu_item).setVisible(false);
+            globalMenuItem.findItem(R.id.mirror_menu_item).setVisible(false);
+            // IV - Going to a settings fragment so set the 'close' icon
+            globalMenuItem.findItem(R.id.settings_menu_item).setIcon(R.drawable.close);
+            myView.myToolbar.requestLayout();
+        }
+
         // Either sent a deeplink string, or a fragment id
         lockDrawer(true);
         closeDrawer(true);  // Only the Performance and Presenter fragments allow this.  Switched on in these fragments
@@ -1041,8 +1050,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 case "presenterFragmentSongSections":
                     if (presenterValid()) {
                         processSong.processSongIntoSections(song,true);
-                        // TODO Check this #188 for IVA removed this
-                        //processSong.matchPresentationOrder(song);
                         presenterFragment.getSongViews();
                         presenterFragment.updateButtons();
                     }
@@ -1098,7 +1105,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             navigateToFragment(deeplink_performance,0);
             myView.fragmentView.setBackgroundColor(themeColors.getLyricsBackgroundColor());
         }
-        settingsOpen = false;
     }
     @Override
     public void allowNavigationUp(boolean allow) {
@@ -1109,20 +1115,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 getSupportActionBar().setHomeButtonEnabled(allow);
             });
         }
-    }
-    private void showMenuItems(boolean show) {
-        if (show) {
-            myView.myToolbar.post(() -> myView.myToolbar.showClock(true));
-            if (batteryStatus!=null) {
-                batteryStatus.showBattery(true);
-            }
-        } else {
-            myView.myToolbar.post(() -> myView.myToolbar.showClock(false));
-            if (batteryStatus!=null) {
-                batteryStatus.showBattery(false);
-            }
-        }
-        updateCastIcon();
     }
     @Override
     public boolean onSupportNavigateUp() {
@@ -1292,8 +1284,24 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void updateToolbarHelp(String webAddress) {
-        // Null or empty web addresses hide the webHelp button
-        myView.myToolbar.updateToolbarHelp(webAddress);
+        // If a webAddress is supplied, setup and reveal the help button
+        // or for a null or empty web address,hide the help button
+        if (globalMenuItem != null) {
+            if (!(webAddress == null || webAddress.isEmpty())) {
+                // IV - Post the icon and click action after a short delay - testing shows the delay is needed to ensure stability
+                globalMenuItem.findItem(R.id.help_menu_item).setVisible(true);
+                Log.d(TAG,"Help visible requested");
+                new Handler().postDelayed(() -> {
+                    if (globalMenuItem != null) {
+                        screenHelp = (ImageView) globalMenuItem.findItem(R.id.help_menu_item).getActionView();
+                        screenHelp.setOnClickListener(v -> openDocument(webAddress));
+                        globalMenuItem.findItem(R.id.help_menu_item).setVisible(true);
+                        // For the first run, show the showcase as well
+                        showCase.singleShowCase(this, screenHelp, null, getString(R.string.help), false, "webHelp");
+                    }
+                },50);
+            }
+        }
     }
 
     @Override
@@ -1304,7 +1312,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
     @Override
     public void showTutorial(String what, ArrayList<View> viewsToHighlight) {
-        if (settingsButton==null) {
+        if (globalMenuItem == null) {
             invalidateOptionsMenu();
         }
         initialiseArrayLists();
@@ -1413,22 +1421,46 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     // Settings and options menus
     @Override
     public boolean onPrepareOptionsMenu(@NonNull Menu menu) {
+        globalMenuItem = menu;
+        // IV - To smooth teardown, we clear elements left to right
+        if (!settingsOpen && whichMode.equals(performance)) {
+            myView.myToolbar.hideSongDetails(true);
+        }
+        myView.myToolbar.batteryholderVisibility(View.GONE, false);
+        if (!settingsOpen) {
+            globalMenuItem.findItem(R.id.help_menu_item).setVisible(false);
+        }
+        globalMenuItem.findItem(R.id.mirror_menu_item).setVisible(false);
+        myView.myToolbar.batteryholderVisibility(View.GONE, false);
+
+        // IV - To smooth build, we add elements right to left
+        // IV - Set 'settings'/'close' icon is set depending on settingOpen
+        globalMenuItem.findItem(R.id.settings_menu_item).setIcon(settingsOpen ? R.drawable.close : R.drawable.settings_outline);
+        myView.myToolbar.requestLayout();
+        if (!settingsOpen) {
+            updateCastIcon();
+            updateToolbarHelp(null);
+            if (getPreferences().getMyPreferenceBoolean("clockOn", true) ||
+                    getPreferences().getMyPreferenceBoolean("batteryTextOn", true) ||
+                    getPreferences().getMyPreferenceBoolean("batteryDialOn", true)) {
+                myView.myToolbar.batteryholderVisibility(View.VISIBLE, true);
+            }
+            if (whichMode.equals(performance)) {
+                updateToolbar(null);
+            }
+        }
         super.onPrepareOptionsMenu(menu);
-        settingsButton = menu.findItem(R.id.settings_menu_item);
         return true;
     }
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (settings.equals(item.toString())) {
             if (settingsOpen) {
-                settingsOpen = false;
                 myView.fragmentView.setBackgroundColor(themeColors.getLyricsBackgroundColor());
                 navHome();
             } else {
                 navigateToFragment(deeplink_preferences, 0);
                 myView.fragmentView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                settingsOpen = true;
-                showMenuItems(false);
             }
         }
         return super.onOptionsItemSelected(item);
@@ -1447,7 +1479,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         screenMirror = (ImageView) menu.findItem(R.id.mirror_menu_item).getActionView();
         screenMirror.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.cast));
         screenMirror.setOnClickListener(view -> startActivity(new Intent("android.settings.CAST_SETTINGS")));
-        updateCastIcon();
+        screenHelp = (ImageView) menu.findItem(R.id.help_menu_item).getActionView();
+        screenHelp.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.help_outline));
         return true;
     }
 
@@ -1458,7 +1491,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         if (myView != null) {
             if (lock) {
                 settingsOpen = true;
-                showMenuItems(false);
                 myView.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
             } else {
                 settingsOpen = false;
@@ -1545,7 +1577,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             }
         });
         myView.menuTop.versionCode.setOnClickListener(v -> closeDrawer(true));
-
+        myView.menuTop.backButton.setOnClickListener(v -> closeDrawer(true));
     }
     @Override
     public boolean getShowSetMenu() {
@@ -2064,20 +2096,27 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void doSongLoad(String folder, String filename, boolean closeDrawer) {
-        if (whichMode.equals(presenter)) {
-            if (presenterValid()) {
-                presenterFragment.doSongLoad(folder,filename);
-            } else {
-                navigateToFragment(null,R.id.presenterFragment);
-            }
-        } else {
-            if (performanceValid()) {
-                performanceFragment.doSongLoad(folder,filename);
-            } else {
-                navigateToFragment(null,R.id.performanceFragment);
-            }
+        // IV - Close an open drawer and start song load after animate out
+        int delay = 0;
+        if (getMenuOpen()) {
+            closeDrawer(true);
+            delay = 200;
         }
-        closeDrawer(closeDrawer);
+        new Handler().postDelayed(() -> {
+            if (whichMode.equals(presenter)) {
+                if (presenterValid()) {
+                    presenterFragment.doSongLoad(folder, filename);
+                } else {
+                    navigateToFragment(null, R.id.presenterFragment);
+                }
+            } else {
+                if (performanceValid()) {
+                    performanceFragment.doSongLoad(folder, filename);
+                } else {
+                    navigateToFragment(null, R.id.performanceFragment);
+                }
+            }
+        },delay);
     }
 
     @Override
@@ -3006,6 +3045,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 presenterFragment.selectSection(i);
             } else if (performanceValid()) {
                 performanceFragment.selectSection(i);
+                performanceShowSection(i);
             }
         } else {
             nearbyConnections.setWaitingForSectionChange(true);
@@ -3125,19 +3165,27 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     // Set the current orientation
                     pad.setCurrentOrientation(newConfig.orientation);
                     pageButtons.requestLayout();
-                    doSongLoad(song.getFolder(), song.getFilename(), true);
+                    // IV - After a short delay - to allow screen layout to stabilise
+                    new Handler().postDelayed(() -> {
+                        // IV - Following testing - Margins update requires 2 calls on orientation change!
+                        updateMargins();
+                        doSongLoad(song.getFolder(), song.getFilename(), true);
+                    }, 50);
                 }
-                if (!settingsOpen && performanceValid()) {
-                    performanceFragment.orientationInlineSet(newConfig.orientation);
-                    performanceFragment.scrollToTop();
-                } else if (!settingsOpen && presenterValid()) {
-                    presenterFragment.orientationInlineSet(newConfig.orientation);
+                if (!settingsOpen) {
+                    if (performanceValid()) {
+                        performanceFragment.orientationInlineSet(newConfig.orientation);
+                    } else if (presenterValid()) {
+                        presenterFragment.orientationInlineSet(newConfig.orientation);
+                    }
                 }
                 windowFlags.setCurrentRotation(this.getWindow().getDecorView().getDisplay().getRotation());
-                updateMargins();
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            closeDrawer(true);
+            // IV - Following testing - Margins update requires 2 calls on orientation change!
+            updateMargins();
         }
     }
 
@@ -3285,29 +3333,21 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
 
     private void updateCastIcon() {
-        int visibility;
-        if (screenMirror != null) {
-            if (GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this) != ConnectionResult.SUCCESS ||
-                    (menuOpen || settingsOpen)) {
-                visibility = View.GONE;
+        if (globalMenuItem != null) {
+            if (settingsOpen || GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this) != ConnectionResult.SUCCESS) {
+                globalMenuItem.findItem(R.id.mirror_menu_item).setVisible(false);
             } else {
-                visibility = View.VISIBLE;
+                Drawable drawable;
+                if (secondaryDisplays != null && connectedDisplays.length > 0) {
+                    drawable = ContextCompat.getDrawable(this, R.drawable.cast_connected);
+                } else {
+                    drawable = ContextCompat.getDrawable(this, R.drawable.cast);
+                }
+                globalMenuItem.findItem(R.id.mirror_menu_item).setIcon(drawable);
+                globalMenuItem.findItem(R.id.mirror_menu_item).setVisible(true);
             }
-
-            Drawable drawable;
-            if (secondaryDisplays != null && connectedDisplays.length > 0) {
-                drawable = ContextCompat.getDrawable(this, R.drawable.cast_connected);
-            } else {
-                drawable = ContextCompat.getDrawable(this, R.drawable.cast);
-            }
-
-            screenMirror.post(() -> {
-                screenMirror.setImageDrawable(drawable);
-                screenMirror.setVisibility(visibility);
-            });
         }
     }
-
 
     private void setupDisplays() {
         // Go through each connected display and create the secondaryDisplay Presentation class

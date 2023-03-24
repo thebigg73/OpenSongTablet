@@ -22,6 +22,13 @@ public class ChordSettingsFragment extends DialogFragment {
     private SettingsChordsBinding myView;
     private MainActivityInterface mainActivityInterface;
     private String chords_string="", website_chords_string="";
+    private String webAddress;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mainActivityInterface.updateToolbarHelp(webAddress);
+    }
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -37,7 +44,7 @@ public class ChordSettingsFragment extends DialogFragment {
         prepareStrings();
 
         mainActivityInterface.updateToolbar(chords_string);
-        mainActivityInterface.updateToolbarHelp(website_chords_string);
+        webAddress = website_chords_string;
 
         // Set up listeners
         setupListeners();

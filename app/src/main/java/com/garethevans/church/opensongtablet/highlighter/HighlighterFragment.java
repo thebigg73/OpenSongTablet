@@ -21,6 +21,13 @@ public class HighlighterFragment extends Fragment {
     private SettingsHighlighterBinding myView;
     private String highlight_string="", website_highlighter_string="", mode_performance_string="",
             on_string="";
+    private String webAddress;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mainActivityInterface.updateToolbarHelp(webAddress);
+    }
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -36,7 +43,7 @@ public class HighlighterFragment extends Fragment {
         prepareStrings();
 
         mainActivityInterface.updateToolbar(highlight_string);
-        mainActivityInterface.updateToolbarHelp(website_highlighter_string);
+        webAddress = website_highlighter_string;
 
         // Set current values
         setupViews();

@@ -105,11 +105,7 @@ public class PresenterFragment extends Fragment {
             mainActivityInterface.setWhattodo("");
             // Check if the current song is in the set
             int position = mainActivityInterface.getSetActions().indexSongInSet(mainActivityInterface.getSong());
-            if (position<0) {
-                mainActivityInterface.loadSongFromSet(0);
-            } else {
-                mainActivityInterface.loadSongFromSet(position);
-            }
+            mainActivityInterface.loadSongFromSet(Math.max(position, 0));
         } else {
             doSongLoad(mainActivityInterface.getPreferences().getMyPreferenceString("songFolder", mainfoldername_string),
                     mainActivityInterface.getPreferences().getMyPreferenceString("songFilename", "Welcome to OpenSongApp"));
@@ -222,13 +218,12 @@ public class PresenterFragment extends Fragment {
     }
 
     public void doSongLoad(String folder, String filename) {
+        mainActivityInterface.closeDrawer(true);
         myView.viewPager.setCurrentItem(0);
         mainActivityInterface.getSong().setFolder(folder);
         mainActivityInterface.getSong().setFilename(filename);
         mainActivityInterface.setSong(mainActivityInterface.getLoadSong().doLoadSong(
                 mainActivityInterface.getSong(),false));
-
-        mainActivityInterface.closeDrawer(true);
 
         // Because we have loaded the song, figure out any presentation order requirements
         mainActivityInterface.getSong().setPresoOrderSongSections(null);
@@ -247,14 +242,10 @@ public class PresenterFragment extends Fragment {
                 !mainActivityInterface.getNearbyConnections().getIsHost() &&
                 mainActivityInterface.getNearbyConnections().getWaitingForSectionChange()) {
             int pendingSection = mainActivityInterface.getNearbyConnections().getPendingCurrentSection();
-
+            mainActivityInterface.getNearbyConnections().doSectionChange(pendingSection);
             // Reset the flags to off
             mainActivityInterface.getNearbyConnections().setWaitingForSectionChange(false);
             mainActivityInterface.getNearbyConnections().setPendingCurrentSection(-1);
-
-            mainActivityInterface.getNearbyConnections().doSectionChange(pendingSection);
-        } else {
-            mainActivityInterface.getPresenterSettings().setCurrentSection(-1);
         }
 
         // State we haven't started the projection (for the song info bar check)

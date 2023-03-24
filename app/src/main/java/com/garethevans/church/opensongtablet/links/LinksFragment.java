@@ -21,6 +21,13 @@ public class LinksFragment extends Fragment {
     private MainActivityInterface mainActivityInterface;
     private LinksBottomSheet linksBottomSheet;
     private String link_string="", website_link_string="", link_choose_string="";
+    private String webAddress;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mainActivityInterface.updateToolbarHelp(webAddress);
+    }
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -36,7 +43,7 @@ public class LinksFragment extends Fragment {
         prepareStrings();
 
         mainActivityInterface.updateToolbar(link_string);
-        mainActivityInterface.updateToolbarHelp(website_link_string);
+        webAddress = website_link_string;
 
         // Set views
         setupViews();

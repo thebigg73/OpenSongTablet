@@ -31,6 +31,13 @@ public class DisplayExtraFragment extends Fragment {
     private String song_display_string="", website_song_display_string="", save_string="",
             filters_string="", format_text_normal_string="", format_text_italic_string="",
             format_text_bold_string="", format_text_bolditalic_string="";
+    private String webAddress;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mainActivityInterface.updateToolbarHelp(webAddress);
+    }
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -50,7 +57,7 @@ public class DisplayExtraFragment extends Fragment {
         }
 
         mainActivityInterface.updateToolbar(song_display_string);
-        mainActivityInterface.updateToolbarHelp(website_song_display_string);
+       webAddress = website_song_display_string;
 
 
         // Set up views

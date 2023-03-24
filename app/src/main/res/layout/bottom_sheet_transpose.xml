@@ -100,7 +100,7 @@
                     android:layout_height="match_parent"
                     android:hint="@string/pref_key_text"
                     android:text="@string/chord_settings"
-                    app:mydrawable="@drawable/settings" />
+                    app:mydrawable="@drawable/settings_outline" />
 
                 <TableRow style="@style/DividerLine" />
 

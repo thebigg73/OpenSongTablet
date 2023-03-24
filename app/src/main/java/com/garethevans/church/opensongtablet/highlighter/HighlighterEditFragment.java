@@ -70,6 +70,13 @@ public class HighlighterEditFragment extends Fragment {
             not_saved_string="", cancel_string="", error_string="";
 
     private BottomSheetBehavior<View> bottomSheetBehavior;
+    private String webAddress;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mainActivityInterface.updateToolbarHelp(webAddress);
+    }
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -85,7 +92,7 @@ public class HighlighterEditFragment extends Fragment {
         prepareStrings();
 
         mainActivityInterface.updateToolbar(edit_string + " " + highlight_string);
-        mainActivityInterface.updateToolbarHelp(website_highlighter_string);
+        webAddress = website_highlighter_string;
 
         // Set up views
         setupViews();

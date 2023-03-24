@@ -32,6 +32,13 @@ public class FontSetupFragment extends Fragment {
     private ArrayList<String> fontNames;
     private String fontLyric, fontChord, fontPreso, fontPresoInfo, fontSticky, which;
     private MainActivityInterface mainActivityInterface;
+    private String webAddress;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mainActivityInterface.updateToolbarHelp(webAddress);
+    }
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -46,7 +53,7 @@ public class FontSetupFragment extends Fragment {
 
         if (getContext()!=null) {
             mainActivityInterface.updateToolbar(getString(R.string.font_choose));
-            mainActivityInterface.updateToolbarHelp(getString(R.string.website_fonts));
+            webAddress = getString(R.string.website_fonts);
         }
 
         getPreferences();

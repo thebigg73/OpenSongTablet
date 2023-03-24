@@ -41,6 +41,13 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
             website_edit_song_tag_string="", lyrics_string="", mainfoldername_string="",
             song_features_string="", tag_string="", not_saved_filename_string="",
             not_saved_folder_string="", not_saved_string="";
+    private String webAddress;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mainActivityInterface.updateToolbarHelp(webAddress);
+    }
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -72,7 +79,7 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
 
         // Update the toolbar
         mainActivityInterface.updateToolbar(edit_string);
-        mainActivityInterface.updateToolbarHelp(website_edit_song_string);
+        webAddress = website_edit_song_string;
 
         // Set up the updated song (a copy of the current song for editing)
         mainActivityInterface.setTempSong(new Song(mainActivityInterface.getSong()));
@@ -147,18 +154,19 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
                     super.onPageSelected(position);
                     switch (position) {
                         case 0:
-                            mainActivityInterface.updateToolbarHelp(website_edit_song_string);
+                            webAddress = website_edit_song_string;
                             break;
                         case 1:
-                            mainActivityInterface.updateToolbarHelp(website_edit_song_main_string);
+                            webAddress = website_edit_song_main_string;
                             break;
                         case 2:
-                            mainActivityInterface.updateToolbarHelp(website_edit_song_features_string);
+                            webAddress = website_edit_song_features_string;
                             break;
                         case 3:
-                            mainActivityInterface.updateToolbarHelp(website_edit_song_tag_string);
+                            webAddress = website_edit_song_tag_string;
                             break;
                     }
+                    mainActivityInterface.updateToolbarHelp(webAddress);
                     mainActivityInterface.getWindowFlags().hideKeyboard();
                 }
             };

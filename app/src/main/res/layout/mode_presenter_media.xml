@@ -35,7 +35,7 @@
                 android:hint="@string/set_add"
                 android:padding="8dp"
                 android:text="@string/search_biblegateway"
-                app:mydrawable="@drawable/web" />
+                app:mydrawable="@drawable/help_outline" />
 
             <TableRow style="@style/DividerLine" />
 

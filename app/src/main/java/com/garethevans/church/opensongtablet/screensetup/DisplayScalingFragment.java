@@ -20,6 +20,13 @@ public class DisplayScalingFragment extends Fragment {
 
     private MainActivityInterface mainActivityInterface;
     private SettingsDisplayScalingBinding myView;
+    private String webAddress;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mainActivityInterface.updateToolbarHelp(webAddress);
+    }
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -33,7 +40,7 @@ public class DisplayScalingFragment extends Fragment {
         myView = SettingsDisplayScalingBinding.inflate(inflater,container,false);
         if (getContext()!=null) {
             mainActivityInterface.updateToolbar(getString(R.string.scaling));
-            mainActivityInterface.updateToolbarHelp(getString(R.string.website_scaling));
+            webAddress = getString(R.string.website_scaling);
         }
 
         // Set up the views
