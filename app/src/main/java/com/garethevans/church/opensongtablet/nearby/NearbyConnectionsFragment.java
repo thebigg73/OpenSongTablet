@@ -122,7 +122,7 @@ public class NearbyConnectionsFragment extends Fragment {
 
         // Set the default values for off/host/client
         updateOffHostClient(mainActivityInterface.getNearbyConnections().getIsHost(),
-                mainActivityInterface.getNearbyConnections().hasValidConnections());
+                mainActivityInterface.getNearbyConnections().getUsingNearby());
 
         // IV - Display relevant options to process nearby Song Section changes and autoscroll
         if (mainActivityInterface.getMode().equals(mode_presenter_string)) {

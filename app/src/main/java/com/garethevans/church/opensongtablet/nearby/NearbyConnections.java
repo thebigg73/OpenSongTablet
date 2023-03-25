@@ -52,6 +52,7 @@ import java.util.TimerTask;
 // Changing the mode doesn't automatically advertise/discover.
 // Once connection has been established, the host/client button is an internal check (not affected by mode)
 
+
 public class NearbyConnections implements NearbyInterface {
 
     private final Context c;
@@ -61,7 +62,8 @@ public class NearbyConnections implements NearbyInterface {
             autoscrolldecrease = "___autoscrolldecrease___",
             songTag = "_xx____xx_", endpointSplit = "__",
             serviceId = "com.garethevans.church.opensongtablet";
-    private final ArrayList<String> connectedEndpoints, discoveredEndpoints; //  CODE__DeviceName
+    private final ArrayList<String> connectedEndpoints;  // CODE_DeviceName - currently connected
+    private final ArrayList<String> discoveredEndpoints; // CODE__DeviceName - permission already given
     private final NearbyReturnActionsInterface nearbyReturnActionsInterface;
     private final MainActivityInterface mainActivityInterface;
 
@@ -346,24 +348,23 @@ public class NearbyConnections implements NearbyInterface {
     }
 
 
-    // Once devices are found, deal with connecting them
-    // Deals with connecting, initiating, ending connections
+    // THIS IS USED IF WE ARE THE HOST AND A CLIENT INITIATES THE CONNECTION
     private ConnectionLifecycleCallback connectionLifecycleCallback() {
         return new ConnectionLifecycleCallback() {
             @Override
             public void onConnectionInitiated(@NonNull String endpointId, @NonNull ConnectionInfo connectionInfo) {
-                // Get a string for the connection
+                // Client has tried to connect.  Get a string for the connection
                 String endpointString = getEndpointString(endpointId,connectionInfo.getEndpointName());
                 Log.d(TAG,"connection initiated.  endpointString:"+endpointString+ "   endpointId="+endpointId);
 
-                // Check to see if this device was already registered (permission granted)
+                // Check to see if this device was already discovered (permission granted)
                 // If the device was previously registered, try to reconnect silently
-                if (endpointRegistered(endpointString)) {
-                    Log.d(TAG,"Previously connected to "+endpointString);
+                if (recognisedDevice(endpointString)) {
+                    Log.d(TAG,"We have previously connected to "+endpointString+".  Attempt reconnect");
                     delayAcceptConnection(endpointString);
 
                 } else {
-                    Log.d(TAG,"Device wasn't previously connected: "+endpointString);
+                    Log.d(TAG,"Device wasn't previously connected: "+endpointString+".  Get connection permission");
                     // Allow clients to connect to the host when the Connect menu is open, or the user switches off the requirement for the Connect menu to be open
                     if (connectionsOpen || !mainActivityInterface.getPreferences().getMyPreferenceBoolean("nearbyHostMenuOnly", false)) {
                         new AlertDialog.Builder(c)
@@ -396,28 +397,21 @@ public class NearbyConnections implements NearbyInterface {
                     case ConnectionsStatusCodes.STATUS_OK:
                     case ConnectionsStatusCodes.STATUS_ALREADY_CONNECTED_TO_ENDPOINT:
                         Log.d(TAG,"connections status either ok or already connected");
-
-                        // IV - Added handling of when already connected
-                        if (!endpointRegistered(endpointString)) {
-                            Log.d(TAG,"adding string: "+endpointString);
-                            connectedEndpoints.add(endpointString);
-                        }
-
+                        // Add connection record if it doesn't exist
+                        updateConnectedEndpoints(endpointString,true);
+                        updateDiscoveredEndpoints(endpointString,true);
+                        updateConnectionLog(c.getString(R.string.connections_connected) + " " + getEndpointSplit(endpointString)[1]);
                         if (isHost) {
                             // try to send the current song payload
                             Log.d(TAG,"Sending payload successful:" + sendSongPayload());
                         }
-                        updateConnectionLog(c.getString(R.string.connections_connected) + " " + getEndpointSplit(endpointString)[1]);
                         break;
                     case ConnectionsStatusCodes.STATUS_CONNECTION_REJECTED:
                         Log.d(TAG,"Rejected");
-                        if (endpointRegistered(endpointString)) {
-                            Log.d(TAG,"removing string: "+endpointString);
-                            connectedEndpoints.remove(endpointString);
-                        }
+                        // Remove connection from all records - need to try again
+                        updateConnectedEndpoints(endpointString,false);
+                        updateDiscoveredEndpoints(endpointString,false);
                         updateConnectionLog(c.getString(R.string.cancel));
-
-
                         break;
                     case ConnectionsStatusCodes.STATUS_ERROR:
                         Log.d(TAG,"Error status code");
@@ -425,6 +419,9 @@ public class NearbyConnections implements NearbyInterface {
                         // The connection was rejected by one or both sides.
                         updateConnectionLog(c.getString(R.string.connections_failure) + " " + getUserNickname() +
                                 " <-> " + getEndpointSplit(endpointString)[1]);
+                        // Remove connection from all records - need to try again
+                        updateDiscoveredEndpoints(endpointString,false);
+                        updateConnectedEndpoints(endpointString,false);
                         break;
                     default:
                         // Unknown status code
@@ -438,14 +435,12 @@ public class NearbyConnections implements NearbyInterface {
                 // The endpointId is just the id, so we need to find a nice name
                 String disconnectedFrom = getNameMatchingId(endpointId);
                 String endpointString = getEndpointString(endpointId,disconnectedFrom);
-                Log.d(TAG, "On disconnect: "+endpointString);
+                Log.d(TAG, "On disconnected: "+endpointString);
 
-                int position = endpointPositionInArray(endpointString);
-                if (usingNearby && position>=0) {
-                    connectedEndpoints.remove(position);
-                    updateConnectionLog(c.getResources().getString(R.string.connections_disconnect) +
-                            " " + disconnectedFrom);
-                }
+                // Remove from the connectedDevices but not discoveredDevices
+                updateConnectedEndpoints(endpointString,false);
+                updateConnectionLog(c.getResources().getString(R.string.connections_disconnect) +
+                        " " + disconnectedFrom);
 
                 if (!isHost) {
                     // Clients should try to silently connect again after 2 seconds
@@ -455,14 +450,18 @@ public class NearbyConnections implements NearbyInterface {
             }
         };
     }
-    // This is called when devices/endpoints are discovered
+
+
+
+    // THIS IS USED IF WE ARE A CLIENT AND HAVE DISCOVERED A HOST CONNECTION
     private EndpointDiscoveryCallback endpointDiscoveryCallback() {
         return new EndpointDiscoveryCallback() {
             @Override
             public void onEndpointFound(@NonNull String endpointId, @NonNull DiscoveredEndpointInfo discoveredEndpointInfo) {
                 String endpointString = getEndpointString(endpointId,discoveredEndpointInfo.getEndpointName());
                 Log.d(TAG,"EndpointDiscoveryCallback  endpointString:"+endpointString);
-                if (!endpointRegistered(endpointString)) {
+                if (!recognisedDevice(endpointString)) {
+                    Log.d(TAG,endpointString+ "is not found a recognised device, so attempt connection with permission");
                     // Only attempt a connection if we aren't already connected
                     Nearby.getConnectionsClient(c)
                             .requestConnection(getUserNickname(), endpointId, connectionLifecycleCallback())
@@ -479,10 +478,12 @@ public class NearbyConnections implements NearbyInterface {
 
                                         // IV - Added handling of when already connected
                                         if (((ApiException) e).getStatusCode() == ConnectionsStatusCodes.STATUS_ALREADY_CONNECTED_TO_ENDPOINT) {
-                                            if (!endpointRegistered(endpointString)) {
-                                                connectedEndpoints.add(endpointString);
-                                            }
+                                            Log.d(TAG, endpointString + " was already connected");
+                                            // Check we have both records
+                                            updateConnectedEndpoints(endpointString, true);
+                                            updateDiscoveredEndpoints(endpointString, true);
                                             updateConnectionLog(c.getString(R.string.connections_connected) + " " + discoveredEndpointInfo.getEndpointName());
+
                                             // IV - Already connected so replay last incoming song
                                             if (incomingPrevious != null && !incomingPrevious.equals("")) {
                                                 String incoming = incomingPrevious;
@@ -498,6 +499,9 @@ public class NearbyConnections implements NearbyInterface {
                                         }
                                         Log.d(TAG, "Connections failure: " + e);
                                     });
+                } else {
+                    Log.d(TAG,endpointString+" already a recognised device.  Try to connect automatically");
+                    delayAcceptConnection(endpointString);
                 }
             }
 
@@ -506,7 +510,8 @@ public class NearbyConnections implements NearbyInterface {
                 String endpointName = getNameMatchingId(endpointId);
                 String endpointString = getEndpointString(endpointId,endpointName);
                 Log.d(TAG, "onEndPointlost: "+endpointString);
-
+                // Remove from the connected devices (but keep in recognised devices)
+                updateConnectedEndpoints(endpointString,false);
                 updateConnectionLog(c.getString(R.string.connections_disconnect) + " " + endpointName);
                 // Try to connect again after 2 seconds
                 if (!isHost) {
@@ -514,18 +519,21 @@ public class NearbyConnections implements NearbyInterface {
                     h.postDelayed(() -> startDiscovery(), 2000);
                 }
             }
+
+
         };
     }
-    // A delayed connections function
+
+
+
+    // ONCE PERMISSION FOR CONNECTIONS HAVE BEEN ACCEPTED, CONNECT!
     private void delayAcceptConnection(String endpointString) {
         // For stability add a small delay
         Handler waitAccept = new Handler();
         waitAccept.postDelayed(() -> {
             // Add a note of the nice name on to the endpointId
             Log.d(TAG, "about to try and accept " + endpointString);
-            if (!discoveredEndpoints.contains(endpointString)) {
-                discoveredEndpoints.add(endpointString);
-            }
+            updateDiscoveredEndpoints(endpointString,true);
 
             // The user confirmed, so we can accept the connection.
             Nearby.getConnectionsClient(c)
@@ -537,6 +545,7 @@ public class NearbyConnections implements NearbyInterface {
     // Triggered when a host has sent a payload - this is where clients listen out!
     // If the host is allowing passthrough, it doesn't listen, but passes it on
     private PayloadCallback payloadCallback() {
+        Log.d(TAG,"payloadCallback()");
         return new PayloadCallback() {
             @Override
             public void onPayloadReceived(@NonNull String s, @NonNull Payload payload) {
@@ -708,19 +717,66 @@ public class NearbyConnections implements NearbyInterface {
         }
         return returnVal;
     }
-    private boolean endpointRegistered(String endpointString) {
+    /*private boolean endpointRegistered(String endpointString) {
+        Log.d(TAG,"endpointRegistered()  endpointString:"+endpointString);
+
         if (!endpointString.contains(endpointSplit)) {
             endpointString = endpointString + endpointSplit;
         }
         boolean found = false;
-        for (String string:connectedEndpoints) {
+        for (String string:discoveredEndpoints) {
+            Log.d(TAG,"already registered string:"+string);
             if (string.contains(endpointString)) {
                 found = true;
             }
-            Log.d(TAG,"array item: "+string+"  looking for"+endpointString);
+            Log.d(TAG,"array item: "+string+"  looking for:"+endpointString);
         }
+        Log.d(TAG,"found:"+found);
         return found;
+    }*/
+    private void updateConnectedEndpoints(String endpointString, boolean addEndpoint) {
+        if (addEndpoint) {
+            // Add to the connected list if not already there
+            if (!connectedEndpoints.contains(endpointString)) {
+                Log.d(TAG,"ADD: "+endpointString+" was not in connectedEndpoints - adding");
+                connectedEndpoints.add(endpointString);
+            } else {
+                Log.d(TAG,"ADD: "+endpointString+" was already in connectedEndpoints - skip");
+            }
+        } else {
+            if (connectedEndpoints.contains(endpointString)) {
+                Log.d(TAG,"REMOVE: "+ endpointString+" was already in connectedEndpoints - remove");
+                connectedEndpoints.remove(endpointString);
+            } else {
+                Log.d(TAG,"REMOVE: "+ endpointString+" was not in connectedEndpoints - ignore");
+            }
+        }
     }
+    private void updateDiscoveredEndpoints(String endpointString, boolean addEndpoint) {
+        if (addEndpoint) {
+            // Add to the discovered lists (recognised devices) if not already there
+            if (!discoveredEndpoints.contains(endpointString)) {
+                Log.d(TAG,"ADD: "+endpointString+" was not in discoveredEndpoints - adding");
+                discoveredEndpoints.add(endpointString);
+            } else {
+                Log.d(TAG,"ADD: "+endpointString+" was already in discoveredEndpoints - skip");
+            }
+        } else {
+            if (discoveredEndpoints.contains(endpointString)) {
+                Log.d(TAG,"REMOVE: "+ endpointString+" was in discoveredEndpoints - remove");
+                discoveredEndpoints.remove(endpointString);
+            } else {
+                Log.d(TAG,"REMOVE: "+ endpointString+" was not in discoveredEndpoints - skip");
+            }
+        }
+    }
+    private boolean recognisedDevice(String endpointString) {
+        return discoveredEndpoints.contains(endpointString);
+    }
+    private boolean alreadyConnected(String endpointString) {
+        return connectedEndpoints.contains(endpointString);
+    }
+
     private int endpointPositionInArray(String endpointString) {
         return connectedEndpoints.indexOf(endpointString);
     }
