@@ -113,7 +113,7 @@
             android:name=".MainActivity"
             android:exported="true"
             android:configChanges="orientation|keyboard|keyboardHidden|screenSize|navigation|screenLayout"
-            android:screenOrientation="fullSensor"
+            android:screenOrientation="user"
             android:windowSoftInputMode="adjustResize"
             android:launchMode="singleInstance"
             android:theme="@style/AppTheme">
