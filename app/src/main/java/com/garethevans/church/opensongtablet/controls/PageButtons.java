@@ -156,14 +156,18 @@ public class PageButtons {
 
     public void animatePageButton(boolean open) {
         if (open) {
-            ViewCompat.animate(actionButton).rotation(45f).withLayer().setDuration(animationTime).
-                    setInterpolator(interpolator).start();
-            // If we decide to go back to a red tint
-            //int redAlpha = ColorUtils.setAlphaComponent(c.getResources().getColor(R.color.red), (int)(pageButtonAlpha*255));
-            //actionButton.setBackgroundTintList(ColorStateList.valueOf(redAlpha));
+            if (actionButton.getRotation()==0) {
+                ViewCompat.animate(actionButton).rotation(45f).withLayer().setDuration(animationTime).
+                        setInterpolator(interpolator).start();
+                // If we decide to go back to a red tint
+                //int redAlpha = ColorUtils.setAlphaComponent(c.getResources().getColor(R.color.red), (int)(pageButtonAlpha*255));
+                //actionButton.setBackgroundTintList(ColorStateList.valueOf(redAlpha));
+            }
         } else {
-            ViewCompat.animate(actionButton).rotation(0f).withLayer().setDuration(animationTime).
-                    setInterpolator(interpolator).start();
+            if (actionButton.getRotation()!=0) {
+                ViewCompat.animate(actionButton).rotation(0f).withLayer().setDuration(animationTime).
+                        setInterpolator(interpolator).start();
+            }
             //actionButton.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
         }
         for (int x=0; x<pageButtonNum; x++) {

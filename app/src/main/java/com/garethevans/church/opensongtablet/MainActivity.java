@@ -763,6 +763,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 Handler h = new Handler();
                 h.postDelayed(() -> pageButtonActive = true,pageButtons.getAnimationTime());
                 animatePageButtons();
+
             }
         });
         myView.actionFAB.setOnLongClickListener(view -> {
@@ -1237,6 +1238,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             } else {
                 myView.actionFAB.setVisibility(View.VISIBLE);
                 myView.pageButtonRight.bottomButtons.setVisibility(View.VISIBLE);
+                pageButtons.animatePageButton(false);
                 myView.onScreenInfo.getInfo().setVisibility(View.VISIBLE);
                 if (displayPrevNext.getShowPrev() || displayPrevNext.getShowNext()) {
                     myView.nextPrevInfo.nextPrevInfoLayout.setVisibility(View.VISIBLE);
