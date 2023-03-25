@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet.songmenu;
 
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -15,6 +16,7 @@ class SongItemViewHolder extends RecyclerView.ViewHolder {
     final TextView itemAuthor;
     final TextView itemFolderNamePair;
     final CheckBox itemChecked;
+    final FrameLayout itemCheckedFrame;
     final LinearLayout itemCard;
 
     SongItemViewHolder(View v) {
@@ -24,5 +26,6 @@ class SongItemViewHolder extends RecyclerView.ViewHolder {
         itemAuthor = v.findViewById(R.id.cardview_author);
         itemFolderNamePair = v.findViewById(R.id.cardview_foldernamepair);
         itemChecked = v.findViewById(R.id.cardview_setcheck);
+        itemCheckedFrame = v.findViewById(R.id.cardview_setcheck_frame);
     }
 }

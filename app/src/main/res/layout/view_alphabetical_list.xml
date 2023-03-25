@@ -7,4 +7,6 @@
     android:paddingTop="8dp"
     android:paddingBottom="8dp"
     android:textColor="#aaaaaa"
+    android:minHeight="48dp"
+    android:minWidth="48dp"
     xmlns:android="http://schemas.android.com/apk/res/android" />

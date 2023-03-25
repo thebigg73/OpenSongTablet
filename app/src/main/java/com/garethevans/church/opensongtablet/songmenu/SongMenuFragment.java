@@ -121,7 +121,27 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         myView.songmenualpha.sideIndex.removeAllViews();
         if (getContext()!=null) {
             try {
-                songListLayoutManager = new LinearLayoutManager(getContext());
+                songListLayoutManager = new LinearLayoutManager(getContext()){
+                    @Override
+                    public boolean supportsPredictiveItemAnimations() {
+                        return false;
+                    }
+
+                    @Override
+                    public void scrollToPosition(int position) {
+                        try {
+                            super.scrollToPosition(position);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onLayoutCompleted(RecyclerView.State state) {
+                        Log.d(TAG,"layoutcomplete");
+                        super.onLayoutCompleted(state);
+                    }
+                };
                 songListLayoutManager.setOrientation(RecyclerView.VERTICAL);
                 myView.songListRecyclerView.setLayoutManager(songListLayoutManager);
                 myView.songListRecyclerView.setHasFixedSize(false);
@@ -415,7 +435,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                 songListAdapter = new SongListAdapter(getContext(),
                         songsFound, SongMenuFragment.this);
                 myView.songListRecyclerView.setAdapter(songListAdapter);
-                myView.songListRecyclerView.setFastScrollEnabled(true);
+                myView.songListRecyclerView.setFastScrollEnabled(false);
                 displayIndex();
                 myView.progressBar.setVisibility(View.GONE);
                 buttonsEnabled(true);
@@ -444,9 +464,9 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                         textView = (TextView) View.inflate(getActivity(), R.layout.view_alphabetical_list, null);
                         if (textView != null) {
                             textView.setTextSize(tvSize);
-                            textView.setPadding(padding, padding, padding, padding);
-                            textView.setMinimumWidth(14);
-                            textView.setMinimumHeight(14);
+                            //textView.setPadding(padding, padding, padding, padding);
+                            //textView.setMinimumWidth(14);
+                            //textView.setMinimumHeight(14);
                             textView.setText(index);
                             int finalP = p;
                             textView.setOnClickListener(view -> {
@@ -603,6 +623,12 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
             // Set up the spinners
             setUpExposedDropDowns();
 
+            // Check set checkbox header
+            if (mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuSetTicksShow",true)) {
+                myView.menuSongs.findViewById(R.id.setCheckTitle).setVisibility(View.VISIBLE);
+            } else {
+                myView.menuSongs.findViewById(R.id.setCheckTitle).setVisibility(View.GONE);
+            }
             // Set up page buttons
             setListeners();
 

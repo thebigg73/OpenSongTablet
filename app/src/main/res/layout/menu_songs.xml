@@ -67,7 +67,8 @@
                             app:handleColor="@color/colorAltSecondary"
                             app:hideScrollbar="false"
                             app:scrollTrackColor="@color/colorPrimary"
-                            app:showTrack="true" />
+                            app:showTrack="true"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
                     </FrameLayout>
                 </LinearLayout>
             </LinearLayout>
@@ -86,11 +87,11 @@
                 android:id="@+id/progressText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp"
+                android:layout_margin="12dp"
                 toolsNs:text="0%"
                 android:background="@drawable/rectangle"
                 app:backgroundTint="@color/colorSecondary"
-                android:padding="16dp"
+                android:padding="12dp"
                 android:gravity="center_vertical"
                 android:drawableStart="@drawable/timer"
                 android:visibility="gone"/>
@@ -116,6 +117,7 @@
         android:indeterminate="true"
         android:scaleX="0.4"
         android:scaleY="0.4"
+        android:padding="10dp"
         app:layout_anchor="@+id/relativeLayout"
         app:layout_anchorGravity="center" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

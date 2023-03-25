@@ -190,8 +190,10 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
 
                 if (showChecked) {
                     songItemViewHolder.itemChecked.setVisibility(View.VISIBLE);
+                    songItemViewHolder.itemCheckedFrame.setVisibility(View.VISIBLE);
                 } else {
                     songItemViewHolder.itemChecked.setVisibility(View.GONE);
+                    songItemViewHolder.itemCheckedFrame.setVisibility(View.GONE);
                 }
 
                 // Set the listeners
@@ -271,7 +273,11 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
 
     void bindCheckBox(CheckBox checkBox, int position) {
         // use the sparse boolean array to check
-        checkBox.setChecked(checkedArray.get(position, false));
+        try {
+            checkBox.setChecked(checkedArray.get(position, false));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @NonNull
