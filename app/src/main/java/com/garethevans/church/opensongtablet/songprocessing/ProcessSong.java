@@ -11,8 +11,6 @@ import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Paint;
 import android.graphics.Typeface;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.graphics.pdf.PdfRenderer;
 import android.net.Uri;
 import android.os.Build;
@@ -40,7 +38,6 @@ import androidx.annotation.RequiresApi;
 
 import com.bumptech.glide.Glide;
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.appdata.InformationBottomSheet;
 import com.garethevans.church.opensongtablet.customviews.MyMaterialEditText;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
@@ -2009,6 +2006,20 @@ public class ProcessSong {
             innerColumn.setScaleY(scaleSize);
         }
     }
+    private View scaleView(View view, int originalWidth, int originalHeight, float scaleSize) {
+        if (scaleSize == Double.POSITIVE_INFINITY) {
+            scaleSize = 1.0f;
+        }
+        if (view!=null) {
+            view.setPivotX(0);
+            view.setPivotY(0);
+            view.setScaleX(scaleSize);
+            view.setScaleY(scaleSize);
+            view.getLayoutParams().width = (int)(originalWidth*scaleSize);
+            view.getLayoutParams().height = (int)(originalHeight*scaleSize);
+        }
+        return view;
+    }
 
     // v6 logic that splits always by the biggest scaling arrangement
     private float[] columnSplitAlgorithm(ArrayList<Integer> sectionWidths, ArrayList<Integer> sectionHeights,
@@ -2390,7 +2401,10 @@ public class ProcessSong {
 
 
         if (columnInfo[0]==1) {
-            createOneColumn(sectionViews, column1, column2, column3, currentWidth,
+            if (availableWidth>currentWidth) {
+                currentWidth = availableWidth;
+            }
+            createOneColumn(sectionViews, sectionWidths, sectionHeights, column1, column2, column3, currentWidth,
                     currentHeight, columnInfo[1], presentation, songSheetTitleHeight, (int)columnInfo[4]);
 
         } else if (columnInfo[0]==2) {
@@ -2408,7 +2422,8 @@ public class ProcessSong {
 
 
     // 1 column stuff
-    private void createOneColumn(ArrayList<View> sectionViews, LinearLayout column1,
+    private void createOneColumn(ArrayList<View> sectionViews, ArrayList<Integer> sectionWidths,
+                                 ArrayList<Integer> sectionHeights, LinearLayout column1,
                                  LinearLayout column2, LinearLayout column3, int maxWidth,
                                  int totalHeight, float scaleSize, boolean presentation,
                                  int songSheetTitleHeight, int sectionSpace) {
@@ -2418,23 +2433,27 @@ public class ProcessSong {
         // Prepare the inner column
         LinearLayout innerCol1 = newLinearLayout();
 
-        // Get the actual scale which might be less due to the maxFontSize being exceeded
-        scaleView(innerCol1, scaleSize);
-        innerCol1.setLayoutParams(new LinearLayout.LayoutParams((int)(maxWidth*scaleSize),(int)(totalHeight*scaleSize)));
-
-        // For each section, add it to a relativelayout to deal with the background colour.
+        // For each section, add it
         for (int i=0; i<sectionViews.size(); i++) {
             View v = sectionViews.get(i);
+
             v.getLayoutParams().width = maxWidth;
 
             // If this isn't the last view, add the section space
             if (i!=sectionViews.size()-1) {
                 v.setPadding(0,0,0,sectionSpace);
             }
-
-            // Now the view is created and has content, size it to the correct width
             innerCol1.addView(v);
         }
+
+        // Now scale the column to the correct sizes
+        scaleView(innerCol1, scaleSize);
+
+        // TODO Figure out why!!
+        // GE Adding extra height here.
+        // It seems to be linked to the display cutout height (on rotation so cutout isn't there it isn't an issue)
+        // For testing, this happens on Abba Medley, American Pie (i.e. long songs!)
+        innerCol1.setLayoutParams(new LinearLayout.LayoutParams((int)(maxWidth*scaleSize),(int)(totalHeight*scaleSize) + 1000));
 
         // Sort the margins
         setMargins(innerCol1, 0, 0);
@@ -2489,10 +2508,11 @@ public class ProcessSong {
 
         // Make the inner column big enough for the unscaled content
         // Need to consider scaling <1.  If I did this now, the views get cropped
+        // TODO as with column 1, adding height just in case of cropping
         innerCol1.getLayoutParams().width = col1_2Width;
-        innerCol1.getLayoutParams().height = col1_2Height;
+        innerCol1.getLayoutParams().height = col1_2Height+1000;
         innerCol2.getLayoutParams().width = col2_2Width;
-        innerCol2.getLayoutParams().height = col2_2Height;
+        innerCol2.getLayoutParams().height = col2_2Height+1000;
 
         // Scale the inner columns
         scaleView(innerCol1, col1_2ScaleBest);
@@ -2527,8 +2547,9 @@ public class ProcessSong {
         // Don't adjust the width, as this is set by weights in the layout
         int col1h = (int) (col1_2Height*col1_2ScaleBest);
         int col2h = (int) (col2_2Height*col2_2ScaleBest);
-        column1.getLayoutParams().height = col1h;
-        column2.getLayoutParams().height = col2h;
+        // TODO as with column 1 adding extra height
+        column1.getLayoutParams().height = col1h+1000;
+        column2.getLayoutParams().height = col2h+1000;
 
         columnVisibility(column1, column2, column3, true, true, false);
         column1.addView(innerCol1);
@@ -2594,12 +2615,13 @@ public class ProcessSong {
 
         // Make the inner column big enough for the unscaled content
         // Need to consider scaling <1.  If I did this now, the views get cropped
+        // TODO as with column 1 adding extra height
         innerCol1.getLayoutParams().width = col1_3Width;
-        innerCol1.getLayoutParams().height = col1_3Height;
+        innerCol1.getLayoutParams().height = col1_3Height+1000;
         innerCol2.getLayoutParams().width = col2_3Width;
-        innerCol2.getLayoutParams().height = col2_3Height;
+        innerCol2.getLayoutParams().height = col2_3Height+1000;
         innerCol3.getLayoutParams().width = col3_3Width;
-        innerCol3.getLayoutParams().height = col3_3Height;
+        innerCol3.getLayoutParams().height = col3_3Height+1000;
 
         for (int i = 0; i < columnBreak3_a; i++) {
             // Make all the views the same width as each other
@@ -2642,9 +2664,10 @@ public class ProcessSong {
         int col1h = (int) (col1_3Height*col1_3ScaleBest);
         int col2h = (int) (col2_3Height*col2_3ScaleBest);
         int col3h = (int) (col3_3Height*col3_3ScaleBest);
-        column1.getLayoutParams().height = col1h;
-        column2.getLayoutParams().height = col2h;
-        column3.getLayoutParams().height = col3h;
+        // TODO as with column 1 adding extra height
+        column1.getLayoutParams().height = col1h+1000;
+        column2.getLayoutParams().height = col2h+1000;
+        column3.getLayoutParams().height = col3h+1000;
 
         columnVisibility(column1, column2, column3, true, true, true);
         column1.addView(innerCol1);
