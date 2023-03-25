@@ -8,6 +8,7 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
@@ -39,6 +40,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.garethevans.church.opensongtablet.R;
 
 public class FastScroller extends LinearLayout {
+
+    private final String TAG = "FastScroller";
 
     public enum Size {
         NORMAL(R.drawable.fastscroll_bubble, R.dimen.fastscroll_bubble_text_size),
@@ -113,7 +116,10 @@ public class FastScroller extends LinearLayout {
             try {
                 if (isEnabled()) {
                     switch (newState) {
-                        case RecyclerView.SCROLL_STATE_DRAGGING:
+                        case RecyclerView.NO_POSITION:
+                            break;
+
+                        case RecyclerView.SCROLL_STATE_DRAGGING: //1
                             getHandler().removeCallbacks(scrollbarHider);
                             cancelAnimation(scrollbarAnimator);
 
@@ -123,7 +129,7 @@ public class FastScroller extends LinearLayout {
 
                             break;
 
-                        case RecyclerView.SCROLL_STATE_IDLE:
+                        case RecyclerView.SCROLL_STATE_IDLE: //0
                             if (hideScrollbar && !handleView.isSelected()) {
                                 getHandler().postDelayed(scrollbarHider, SCROLLBAR_HIDE_DELAY);
                             }
@@ -194,14 +200,15 @@ public class FastScroller extends LinearLayout {
                 requestDisallowInterceptTouchEvent(false);
                 setHandleSelected(false);
 
+                recyclerView.post(() -> {
+                    hideBubble();
+                    if (fastScrollListener != null) {
+                        fastScrollListener.onFastScrollStop(this);
+                    }
+                });
+
                 if (hideScrollbar) {
-                    getHandler().postDelayed(scrollbarHider, SCROLLBAR_HIDE_DELAY);
-                }
-
-                hideBubble();
-
-                if (fastScrollListener != null) {
-                    fastScrollListener.onFastScrollStop(this);
+                    recyclerView.postDelayed(scrollbarHider, SCROLLBAR_HIDE_DELAY);
                 }
                 return true;
         }
@@ -226,6 +233,7 @@ public class FastScroller extends LinearLayout {
         int marginBottom = getResources().getDimensionPixelSize(R.dimen.fastscroll_scrollbar_margin_bottom);
 
         if (recyclerViewId == NO_ID) {
+            Log.d(TAG,"no ID");
             throw new IllegalArgumentException("RecyclerView must have a view ID");
         }
 
@@ -410,6 +418,7 @@ public class FastScroller extends LinearLayout {
         try {
             if (recyclerView != null && recyclerView.getAdapter() != null && recyclerView.getLayoutManager() != null) {
                 int itemCount = recyclerView.getAdapter().getItemCount();
+                Log.d(TAG,"itemCount:"+itemCount);
                 float proportion;
 
                 if (handleView.getY() == 0) {
@@ -427,7 +436,9 @@ public class FastScroller extends LinearLayout {
                 }
 
                 int targetPos = getValueInRange(0, itemCount - 1, scrolledItemCount);
-                recyclerView.getLayoutManager().scrollToPosition(targetPos);
+                if (recyclerView.getAdapter().getItemCount()>targetPos) {
+                    recyclerView.getLayoutManager().scrollToPosition(targetPos);
+                };
 
                 if (showBubble && sectionIndexer != null) {
                     bubbleView.setText(sectionIndexer.getSectionText(targetPos));

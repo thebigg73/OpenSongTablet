@@ -21,6 +21,7 @@ public class FastScrollRecyclerView extends RecyclerView {
         setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
     }
 
+
     public FastScrollRecyclerView(@NonNull Context context, @Nullable AttributeSet attrs) {
         this(context, attrs, 0);
     }
@@ -29,6 +30,7 @@ public class FastScrollRecyclerView extends RecyclerView {
         super(context, attrs, defStyleAttr);
         layout(context, attrs);
     }
+
 
     @Override
     public void setAdapter(@Nullable Adapter adapter) {
