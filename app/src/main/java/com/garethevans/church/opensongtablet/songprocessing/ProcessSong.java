@@ -3030,7 +3030,7 @@ public class ProcessSong {
         if (song.getFiletype().equals("PDF")) {
             filename += "_" + song.getPdfPageCurrent();
         } else {
-            //if (portrait) {
+            //if (portrait) {  // old v5 logic which only worked for full autoscale
             if (columns==1) {
                 filename += "_p";
             } else {
