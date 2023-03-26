@@ -82,7 +82,7 @@ public class ProcessSong {
             lineSpacing, scaleHeadings, scaleChords, scaleComments;
     private String songAutoScale;
     // Stuff for resizing/scaling
-    private int padding = 8;
+    private int padding = 8, columns=1;
     private boolean bracketsOpen = false;
     private int bracketsStyle = Typeface.NORMAL;
     private boolean curlyBrackets = true;
@@ -2404,15 +2404,18 @@ public class ProcessSong {
             if (availableWidth>currentWidth) {
                 currentWidth = availableWidth;
             }
+            columns = 1;
             createOneColumn(sectionViews, sectionWidths, sectionHeights, column1, column2, column3, currentWidth,
                     currentHeight, columnInfo[1], presentation, songSheetTitleHeight, (int)columnInfo[4]);
 
         } else if (columnInfo[0]==2) {
             // If we have 2 force column tags, use those positions instead
+            columns = 2;
             createTwoColumns(sectionViews, column1, column2,
                     column3, columnInfo, presentation, songSheetTitleHeight);
 
         } else if (columnInfo[0]==3) {
+            columns = 3;
             createThreeColumns(sectionViews, column1, column2, column3, columnInfo,
                     presentation, songSheetTitleHeight);
 
@@ -3019,13 +3022,16 @@ public class ProcessSong {
     // This stuff deals with the highlighter notes
     public String getHighlighterFilename(Song song, boolean portrait) {
         // The highlighter song file is encoded as FOLDER_FILENAME_{p or l LANDSCAPE}{if pdf _PAGENUMBER_}.png
+        // v6, however now uses the landscape as the column version (historically only written if full autoscale is on)
+
         String filename = song.getFolder().replace("/", "_") + "_" +
                 song.getFilename();
 
         if (song.getFiletype().equals("PDF")) {
             filename += "_" + song.getPdfPageCurrent();
         } else {
-            if (portrait) {
+            //if (portrait) {
+            if (columns==1) {
                 filename += "_p";
             } else {
                 filename += "_l";
