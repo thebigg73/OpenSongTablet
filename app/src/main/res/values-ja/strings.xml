@@ -40,6 +40,7 @@
     <string name="audio">オーディオ</string>
     <string name="audio_source">オーディオソース</string>
     <string name="author">"作成者"</string>
+    <string name="autohide_page_button">展開されていないメインページボタンを自動的に非表示にする</string>
     <string name="autohide_time">表示を維持する時間 (自動非表示時間)</string>
     <string name="autoscale">"オートスケール"</string>
     <string name="autoscale_info">アプリは、画面に合わせてテキストを可能な限り大きくします</string>
@@ -414,6 +415,8 @@
     <string name="menu_song_info">このボタンを使用して、曲を表示および管理します</string>
     <string name="menu_song_order">メニューに曲をどのように表示する必要がありますか？</string>
     <string name="metronome">"メトロノーム"</string>
+    <string name="metronome_autostart">自動起動メトロノーム</string>
+    <string name="metronome_autostart_info">曲を変えるときにメトロノームを鳴らし続ける</string>
     <string name="metronome_duration">メトロノームの長さ（バー）</string>
     <string name="metronome_info">メトロノーム設定を調整する</string>
     <string name="microphone">マイク</string>
@@ -534,6 +537,8 @@
     <string name="presentation_order_use">曲の提示順序が存在する場合は、これを使用してディスプレイを作成します</string>
     <string name="presenter_mode">"プレゼンテーションモード"</string>
     <string name="preso_alpha">背景の不透明度</string>
+    <string name="prev_next_autohide">前/次のボタンを自動的に隠す</string>
+    <string name="prev_next_text">テキストの前/次のボタンを使用する</string>
     <string name="previous">"「前」ボタンを設定する"</string>
     <string name="print">印刷する</string>
     <string name="processing">"ファイルが処理されています"</string>
@@ -650,6 +655,7 @@
     <string name="slide">"ページ"</string>
     <string name="slide_add_page">"カスタムスライドに新しいページを挿入"</string>
     <string name="small_buttons">小さなボタン</string>
+    <string name="small_buttons_info">画面上のページ ボタンのサイズを小さくする</string>
     <string name="song">"歌"</string>
     <string name="song_actions">歌のアクション</string>
     <string name="song_actions_description">ソングアクションの設定を調整する</string>
@@ -724,6 +730,7 @@
     <string name="tap_tempo">"テンポを設定するタップ"</string>
     <string name="tempo">"Tempo"</string>
     <string name="text">"テキスト"</string>
+    <string name="text_button">曲の詳細を含めます。ディスプレイが小さいデバイスでは、コンテンツが正しく表示されない場合があります</string>
     <string name="text_extract">ファイルからテキストを抽出する（OCR）</string>
     <string name="text_extract_check">OpenSongAppは曲のコンテンツを自動的に検索しようとしますが、このボタンをクリックして手動で確認できます。</string>
     <string name="text_extract_website">このページにある曲のテキスト。 抽出するには、ここをクリックしてください。</string>

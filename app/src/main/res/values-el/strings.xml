@@ -40,6 +40,7 @@
     <string name="audio">"Ήχος"</string>
     <string name="audio_source">Πηγή ήχου</string>
     <string name="author">"Author"</string>
+    <string name="autohide_page_button">Αυτόματη απόκρυψη του κουμπιού κύριας σελίδας όταν δεν είναι ανεπτυγμένο</string>
     <string name="autohide_time">Ώρα να παραμείνει ορατή (αυτόματη απόκρυψη χρόνου)</string>
     <string name="autoscale">"Αυτόματη κλίμακα"</string>
     <string name="autoscale_info">Η εφαρμογή θα κάνει το κείμενο όσο το δυνατόν μεγαλύτερο ώστε να ταιριάζει στην οθόνη</string>
@@ -414,6 +415,8 @@
     <string name="menu_song_info">Χρησιμοποιήστε αυτό το κουμπί προβολή και διαχείριση των τραγουδιών σας</string>
     <string name="menu_song_order">Πώς πρέπει να εμφανίζονται τα τραγούδια στο μενού;</string>
     <string name="metronome">"Metronome"</string>
+    <string name="metronome_autostart">Μετρονόμος αυτόματης εκκίνησης</string>
+    <string name="metronome_autostart_info">Διατηρήστε τον μετρονόμο σε λειτουργία όταν αλλάζετε τραγούδια</string>
     <string name="metronome_duration">Διάρκεια μετρονόμου (bars)</string>
     <string name="metronome_info">Προσαρμόστε τις ρυθμίσεις του μετρονόμου</string>
     <string name="microphone">Μικρόφωνο</string>
@@ -534,6 +537,8 @@
     <string name="presentation_order_use">Εάν υπάρχει σειρά παρουσίασης για το τραγούδι, χρησιμοποιήστε το για να δημιουργήσετε την οθόνη</string>
     <string name="presenter_mode">"Λειτουργία προβολής"</string>
     <string name="preso_alpha">"Background opacity"</string>
+    <string name="prev_next_autohide">Αυτόματη απόκρυψη κουμπιών προηγούμενου / επόμενου</string>
+    <string name="prev_next_text">Χρησιμοποιήστε τα κουμπιά κειμένου προηγούμενο / επόμενο</string>
     <string name="previous">Previous</string>
     <string name="print">Τυπώνω</string>
     <string name="processing">"Τα αρχεία που υποβάλλονται σε επεξεργασία"</string>
@@ -650,6 +655,7 @@
     <string name="slide">"Διαφάνεια"</string>
     <string name="slide_add_page">"Insert new page to custom slide"</string>
     <string name="small_buttons">Μικρά κουμπιά</string>
+    <string name="small_buttons_info">Μειώστε το μέγεθος των κουμπιών σελίδας στην οθόνη</string>
     <string name="song">"ΤΡΑΓΟΥΔΙ"</string>
     <string name="song_actions">Δράσεις τραγουδιού</string>
     <string name="song_actions_description">Προσαρμόστε τις ρυθμίσεις για τις ενέργειες τραγουδιού</string>
@@ -724,6 +730,7 @@
     <string name="tap_tempo">"Ακούμπα (Tap) για να εισαχθεί ο ρυθμός"</string>
     <string name="tempo">"Tempo"</string>
     <string name="text">"Κείμενο"</string>
+    <string name="text_button">Συμπεριλάβετε λεπτομέρειες τραγουδιού. Οι συσκευές με μικρότερες οθόνες ενδέχεται να μην εμφανίζουν σωστά το περιεχόμενο</string>
     <string name="text_extract">Εξαγωγή κειμένου από αρχείο (OCR)</string>
     <string name="text_extract_check">Το OpenSongApp θα προσπαθήσει να βρει αυτόματα το περιεχόμενο του τραγουδιού, ωστόσο, μπορείτε να το ελέγξετε χειροκίνητα κάνοντας κλικ σε αυτό το κουμπί.</string>
     <string name="text_extract_website">Το κείμενο του τραγουδιού βρίσκεται σε αυτή τη σελίδα. Κάντε κλικ εδώ για εξαγωγή.</string>

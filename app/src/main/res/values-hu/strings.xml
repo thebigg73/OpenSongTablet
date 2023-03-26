@@ -40,6 +40,7 @@
     <string name="audio">Hang-</string>
     <string name="audio_source">Hangforrás</string>
     <string name="author">"Szerző"</string>
+    <string name="autohide_page_button">A főoldal gombjának automatikus elrejtése, ha nincs kibontva</string>
     <string name="autohide_time">A látható tartás ideje (automatikus elrejtési idő)</string>
     <string name="autoscale">Autoscale</string>
     <string name="autoscale_info">Az alkalmazás a szöveget a lehető legnagyobbra teszi, hogy elférjen a képernyőn</string>
@@ -414,6 +415,8 @@
     <string name="menu_song_info">Ezzel a gombbal megtekintheti és kezelheti dalait</string>
     <string name="menu_song_order">Hogyan kell a dalokat felsorolni a menüben?</string>
     <string name="metronome">"Metronóm"</string>
+    <string name="metronome_autostart">Metronóm automatikus indítása</string>
+    <string name="metronome_autostart_info">A metronóm folyamatosan fut, amikor dalokat vált</string>
     <string name="metronome_duration">Metronóm időtartam (sávok)</string>
     <string name="metronome_info">Módosítsa a metronóm beállításait</string>
     <string name="microphone">Mikrofon</string>
@@ -534,6 +537,8 @@
     <string name="presentation_order_use">Ha létezik bemutatási sorrend a dalhoz, használja ezt a megjelenítés létrehozásához</string>
     <string name="presenter_mode">"Bemutató üzemmód"</string>
     <string name="preso_alpha">Háttér homályossága</string>
+    <string name="prev_next_autohide">Az előző/következő gombok automatikus elrejtése</string>
+    <string name="prev_next_text">Használja a szöveg előző/következő gombjait</string>
     <string name="previous">Előző</string>
     <string name="print">Nyomtatás</string>
     <string name="processing">"Fájlok feldolgozása"</string>
@@ -650,6 +655,7 @@
     <string name="slide">"Oldal"</string>
     <string name="slide_add_page">"Helyezze be az új oldalt egyedi dia"</string>
     <string name="small_buttons">Kis gombok</string>
+    <string name="small_buttons_info">Csökkentse a képernyőn megjelenő oldalgombok méretét</string>
     <string name="song">"DAL"</string>
     <string name="song_actions">Dal akciók</string>
     <string name="song_actions_description">Módosítsa a dalműveletek beállításait</string>
@@ -724,6 +730,7 @@
     <string name="tap_tempo">"Érintse meg, hogy a tempó"</string>
     <string name="tempo">"Tempó"</string>
     <string name="text">"Szöveg"</string>
+    <string name="text_button">Adja meg a dal részleteit. Előfordulhat, hogy a kisebb kijelzővel rendelkező eszközök nem jelenítik meg megfelelően a tartalmat</string>
     <string name="text_extract">Szöveg kibontása fájlból (OCR)</string>
     <string name="text_extract_check">Az OpenSongApp automatikusan megpróbálja megkeresni a dal tartalmát, azonban erre a gombra kattintva manuálisan is ellenőrizheti.</string>
     <string name="text_extract_website">A dal szövege ezen az oldalon található. Kattintson ide a kibontáshoz.</string>

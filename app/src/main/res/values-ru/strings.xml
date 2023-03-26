@@ -40,6 +40,7 @@
     <string name="audio">Медиафайл</string>
     <string name="audio_source">Источник звука</string>
     <string name="author">"Автор"</string>
+    <string name="autohide_page_button">Автоматическое отображение кнопки главной страницы, если она не развернута</string>
     <string name="autohide_time">Время оставаться видимым (время автоматического скрытия)</string>
     <string name="autoscale">"Автомасштабирование"</string>
     <string name="autoscale_info">Приложение сделает текст максимально большим, чтобы он поместился на экране.</string>
@@ -414,6 +415,8 @@
     <string name="menu_song_info">Используйте эту кнопку просмотра и управляйте своими песнями</string>
     <string name="menu_song_order">Как песни должны быть перечислены в меню?</string>
     <string name="metronome">"Метроном"</string>
+    <string name="metronome_autostart">Автозапуск метронома</string>
+    <string name="metronome_autostart_info">Держите метроном включенным при смене песен</string>
     <string name="metronome_duration">Продолжительность метронома (бары)</string>
     <string name="metronome_info">Отрегулируйте настройки метронома</string>
     <string name="microphone">Микрофон</string>
@@ -534,6 +537,8 @@
     <string name="presentation_order_use">Если для песни существует порядок представления, используйте его для создания отображения.</string>
     <string name="presenter_mode">Режим презентации</string>
     <string name="preso_alpha">Прозрачность фона</string>
+    <string name="prev_next_autohide">Автоматически скрывать кнопки «предыдущий/следующий»</string>
+    <string name="prev_next_text">Используйте текстовые кнопки «предыдущий/следующий»</string>
     <string name="previous">"Назначьте кнопку «Назад»"</string>
     <string name="print">Распечатать</string>
     <string name="processing">"Файлы обрабатываются"</string>
@@ -650,6 +655,7 @@
     <string name="slide">"Слайд"</string>
     <string name="slide_add_page">"Вставьте новую страницу  слайд пользователя"</string>
     <string name="small_buttons">Маленькие кнопки</string>
+    <string name="small_buttons_info">Уменьшить размер кнопок страницы на экране</string>
     <string name="song">"ПЕСНЯ"</string>
     <string name="song_actions">Действия песни</string>
     <string name="song_actions_description">Отрегулируйте настройки для действий песни</string>
@@ -724,6 +730,7 @@
     <string name="tap_tempo">"Нажмите, чтобы установить темп"</string>
     <string name="tempo">"Темп"</string>
     <string name="text">"Текст"</string>
+    <string name="text_button">Включите детали песни. Устройства с меньшими дисплеями могут не отображать контент должным образом.</string>
     <string name="text_extract">Извлечь текст из файла (OCR)</string>
     <string name="text_extract_check">OpenSongApp попытается найти содержимое песни автоматически, однако вы можете проверить это вручную, нажав эту кнопку.</string>
     <string name="text_extract_website">Текст песни найден на этой странице. Нажмите здесь, чтобы извлечь.</string>

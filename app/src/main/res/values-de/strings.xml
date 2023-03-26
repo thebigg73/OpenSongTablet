@@ -40,6 +40,7 @@
     <string name="audio">Audio</string>
     <string name="audio_source">Audio quelle</string>
     <string name="author">"Autor"</string>
+    <string name="autohide_page_button">Schaltfläche \"Hauptseite\" automatisch ausblenden, wenn sie nicht erweitert ist</string>
     <string name="autohide_time">Zeit, um sichtbar zu bleiben (Autohide-Zeit)</string>
     <string name="autoscale">"Autoskalierung"</string>
     <string name="autoscale_info">Die App wird den Text so groß wie möglich machen, damit er auf den Bildschirm passt</string>
@@ -414,6 +415,8 @@
     <string name="menu_song_info">Verwenden Sie diese Schaltflächenansicht und verwalten Sie Ihre Songs</string>
     <string name="menu_song_order">Wie sollten Songs im Menü aufgelistet werden?</string>
     <string name="metronome">"Metronom"</string>
+    <string name="metronome_autostart">Autostart-Metronom</string>
+    <string name="metronome_autostart_info">Lassen Sie das Metronom laufen, wenn Sie Songs wechseln</string>
     <string name="metronome_duration">Metronomdauer (Takte)</string>
     <string name="metronome_info">Passen Sie die Metronomeinstellungen an</string>
     <string name="microphone">Mikrofon</string>
@@ -534,6 +537,8 @@
     <string name="presentation_order_use">Wenn für das Lied eine Präsentationsreihenfolge vorhanden ist, verwenden Sie diese, um die Anzeige zu erstellen</string>
     <string name="presenter_mode">"Präsentationsmodus"</string>
     <string name="preso_alpha">Hintergrund Deckkraft</string>
+    <string name="prev_next_autohide">Vorherige / Nächste Schaltflächen automatisch ausblenden</string>
+    <string name="prev_next_text">Verwenden Sie die Text-Zurück-/Weiter-Schaltflächen</string>
     <string name="previous">Zurück</string>
     <string name="print">Drucken</string>
     <string name="processing">"Dateien werden verarbeitet"</string>
@@ -650,6 +655,7 @@
     <string name="slide">"Folie"</string>
     <string name="slide_add_page">"Neue Seite in benutzerdefinierte Folie einfügen"</string>
     <string name="small_buttons">Kleine Knöpfe</string>
+    <string name="small_buttons_info">Reduzieren Sie die Größe der Seitenschaltflächen auf dem Bildschirm</string>
     <string name="song">SONG</string>
     <string name="song_actions">Song-Aktionen</string>
     <string name="song_actions_description">Passen Sie die Einstellungen für Songaktionen an</string>
@@ -724,6 +730,7 @@
     <string name="tap_tempo">"Tappen, um Tempo einzustellen"</string>
     <string name="tempo">"Tempo"</string>
     <string name="text">"Text"</string>
+    <string name="text_button">Füge Songdetails hinzu. Geräte mit kleineren Displays zeigen den Inhalt möglicherweise nicht richtig an</string>
     <string name="text_extract">Text aus Datei extrahieren (OCR)</string>
     <string name="text_extract_check">OpenSongApp wird versuchen, Songinhalte automatisch zu finden, Sie können dies jedoch manuell überprüfen, indem Sie auf diese Schaltfläche klicken.</string>
     <string name="text_extract_website">Liedtext auf dieser Seite gefunden. Klicken Sie hier, um zu extrahieren.</string>

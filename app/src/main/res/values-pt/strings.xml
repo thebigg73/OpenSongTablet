@@ -40,6 +40,7 @@
     <string name="audio">Auditivo</string>
     <string name="audio_source">Fonte de áudio</string>
     <string name="author">"Autor"</string>
+    <string name="autohide_page_button">Ocultar automaticamente o botão da página principal quando não for expandido</string>
     <string name="autohide_time">Hora de manter visível (tempo de ocultar automaticamente)</string>
     <string name="autoscale">"Escala automática"</string>
     <string name="autoscale_info">O aplicativo tornará o texto o maior possível para caber na tela</string>
@@ -414,6 +415,8 @@
     <string name="menu_song_info">Use este botão para visualizar e gerenciar suas músicas</string>
     <string name="menu_song_order">Como as músicas devem ser listadas no menu?</string>
     <string name="metronome">"Metrónomo"</string>
+    <string name="metronome_autostart">Metrônomo de início automático</string>
+    <string name="metronome_autostart_info">Mantenha o metrônomo funcionando ao mudar de música</string>
     <string name="metronome_duration">Duração do metrônomo (barras)</string>
     <string name="metronome_info">Ajuste as configurações do metrônomo</string>
     <string name="microphone">Microfone</string>
@@ -534,6 +537,8 @@
     <string name="presentation_order_use">Se houver ordem de apresentação para a música, use-a para criar a exibição</string>
     <string name="presenter_mode">"Modo de apresentação"</string>
     <string name="preso_alpha">Opacidade fundo</string>
+    <string name="prev_next_autohide">Ocultar automaticamente os botões anterior/seguinte</string>
+    <string name="prev_next_text">Use os botões de texto anterior/seguinte</string>
     <string name="previous">Anterior</string>
     <string name="print">Imprimir</string>
     <string name="processing">"Arquivos estão sendo processados"</string>
@@ -650,6 +655,7 @@
     <string name="slide">"Página"</string>
     <string name="slide_add_page">"Insira nova página com o costume de slides"</string>
     <string name="small_buttons">Botões pequenos</string>
+    <string name="small_buttons_info">Reduzir o tamanho dos botões de página na tela</string>
     <string name="song">"CANÇÃO"</string>
     <string name="song_actions">Ações da música</string>
     <string name="song_actions_description">Ajuste as configurações para ações de música</string>
@@ -724,6 +730,7 @@
     <string name="tap_tempo">"Toque para definir andamento"</string>
     <string name="tempo">"Tempo"</string>
     <string name="text">"Texto"</string>
+    <string name="text_button">Inclua detalhes da música. Dispositivos com telas menores podem não mostrar o conteúdo corretamente</string>
     <string name="text_extract">Extrair texto do arquivo (OCR)</string>
     <string name="text_extract_check">O OpenSongApp tentará encontrar o conteúdo da música automaticamente, no entanto, você pode verificar manualmente clicando neste botão.</string>
     <string name="text_extract_website">Texto da música encontrado nesta página. Clique aqui para extrair.</string>

@@ -40,6 +40,7 @@
     <string name="audio">Audio</string>
     <string name="audio_source">Oudio bron</string>
     <string name="author">"Skrywer"</string>
+    <string name="autohide_page_button">Versteek die hoofbladsy-knoppie outomaties wanneer dit nie uitgebrei is nie</string>
     <string name="autohide_time">Tyd om sigbaar te hou (outo-versteek tyd)</string>
     <string name="autoscale">"Autoscale"</string>
     <string name="autoscale_info">Die toepassing sal die teks so groot as moontlik maak om by die skerm te pas</string>
@@ -414,6 +415,8 @@
     <string name="menu_song_info">Gebruik hierdie knoppie sien en bestuur jou liedjies</string>
     <string name="menu_song_order">Hoe moet liedjies in die spyskaart gelys word?</string>
     <string name="metronome">"Metronoom"</string>
+    <string name="metronome_autostart">Outostart metronoom</string>
+    <string name="metronome_autostart_info">Hou metronoom aan die gang wanneer jy van liedjies verander</string>
     <string name="metronome_duration">Metronoomduur (mate)</string>
     <string name="metronome_info">Pas die metronoominstellings aan</string>
     <string name="microphone">Mikrofoon</string>
@@ -534,6 +537,8 @@
     <string name="presentation_order_use">As aanbiedingsvolgorde vir die liedjie bestaan, gebruik dit om die vertoning te skep</string>
     <string name="presenter_mode">"Aanbieding af"</string>
     <string name="preso_alpha">Agtergrond ondeursigtigheid</string>
+    <string name="prev_next_autohide">Versteek vorige / volgende knoppies outomaties</string>
+    <string name="prev_next_text">Gebruik teks vorige / volgende knoppies</string>
     <string name="previous">Vorige</string>
     <string name="print">Druk</string>
     <string name="processing">"Lêers word verwerk"</string>
@@ -650,6 +655,7 @@
     <string name="slide">"Page"</string>
     <string name="slide_add_page">"Voeg nuwe bladsy om persoonlike slide"</string>
     <string name="small_buttons">Klein knoppies</string>
+    <string name="small_buttons_info">Verminder die grootte van die bladsyknoppies op die skerm</string>
     <string name="song">"LIED"</string>
     <string name="song_actions">Lied aksies</string>
     <string name="song_actions_description">Pas instellings vir liedjie-aksies aan</string>
@@ -724,6 +730,7 @@
     <string name="tap_tempo">"Tik tempo stel"</string>
     <string name="tempo">"Tempo"</string>
     <string name="text">"Teks"</string>
+    <string name="text_button">Sluit liedjiebesonderhede in. Toestelle met kleiner skerms sal dalk nie die inhoud behoorlik wys nie</string>
     <string name="text_extract">Onttrek teks uit lêer (OCR)</string>
     <string name="text_extract_check">OpenSongApp sal probeer om liedjie-inhoud outomaties te vind, maar jy kan handmatig kontroleer deur op hierdie knoppie te klik.</string>
     <string name="text_extract_website">Liedjie teks gevind op hierdie bladsy. Klik hier om te onttrek.</string>

@@ -40,6 +40,7 @@
     <string name="audio">音频</string>
     <string name="audio_source">音源</string>
     <string name="author">"作者"</string>
+    <string name="autohide_page_button">未展开时自动隐藏主页按钮</string>
     <string name="autohide_time">保持可见的时间（自动隐藏时间）</string>
     <string name="autoscale">"自动定标"</string>
     <string name="autoscale_info">该应用程序将使文本尽可能大以适合屏幕</string>
@@ -414,6 +415,8 @@
     <string name="menu_song_info">使用此按钮查看和管理您的歌曲</string>
     <string name="menu_song_order">歌曲应该如何在菜单中列出？</string>
     <string name="metronome">"节拍器"</string>
+    <string name="metronome_autostart">自动启动节拍器</string>
+    <string name="metronome_autostart_info">改变歌曲时保持节拍器运行</string>
     <string name="metronome_duration">节拍器持续时间（巴）</string>
     <string name="metronome_info">调整节拍器设置</string>
     <string name="microphone">麦克风</string>
@@ -534,6 +537,8 @@
     <string name="presentation_order_use">如果歌曲存在演示顺序，则使用它来创建显示</string>
     <string name="presenter_mode">"演示模式"</string>
     <string name="preso_alpha">背景透明度</string>
+    <string name="prev_next_autohide">自动隐藏上一个/下一个按钮</string>
+    <string name="prev_next_text">使用文本上一个/下一个按钮</string>
     <string name="previous">上一页</string>
     <string name="print">打印</string>
     <string name="processing">"文件正在处理中"</string>
@@ -650,6 +655,7 @@
     <string name="slide">"页面"</string>
     <string name="slide_add_page">"插入新的页面自定义幻灯片"</string>
     <string name="small_buttons">小按钮</string>
+    <string name="small_buttons_info">减小屏幕上页面按钮的大小</string>
     <string name="song">"歌"</string>
     <string name="song_actions">歌曲动作</string>
     <string name="song_actions_description">调整歌曲动作的设置</string>
@@ -724,6 +730,7 @@
     <string name="tap_tempo">"轻按以设定的速度"</string>
     <string name="tempo">"拍子"</string>
     <string name="text">"正文"</string>
+    <string name="text_button">包括歌曲详细信息。显示屏较小的设备可能无法正确显示内容</string>
     <string name="text_extract">从文件中提取文本 (OCR)</string>
     <string name="text_extract_check">OpenSongApp 将尝试自动查找歌曲内容，但是，您可以通过单击此按钮手动检查。</string>
     <string name="text_extract_website">在此页面上找到的歌曲文本。 点击这里提取。</string>

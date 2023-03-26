@@ -40,6 +40,7 @@
     <string name="audio">Audio</string>
     <string name="audio_source">Audio izvor</string>
     <string name="author">Autor</string>
+    <string name="autohide_page_button">Automatski sakrij glavno dugme stranice kada nije razvijeno</string>
     <string name="autohide_time">Vreme da ostane vidljivo (vreme za automatsko sakrivanje)</string>
     <string name="autoscale">Autoskaliranje</string>
     <string name="autoscale_info">Aplikacija će učiniti da tekst bude što veći da stane na ekran</string>
@@ -414,6 +415,8 @@
     <string name="menu_song_info">Koristite ovo dugme za pregled i upravljanje svojim pesmama</string>
     <string name="menu_song_order">Kako pesme treba da budu navedene u meniju?</string>
     <string name="metronome">Metronom</string>
+    <string name="metronome_autostart">Autostart metronom</string>
+    <string name="metronome_autostart_info">Neka metronom radi kada menjate pesme</string>
     <string name="metronome_duration">Metronome trajanje (barovi)</string>
     <string name="metronome_info">Podesite podešavanja metronoma</string>
     <string name="microphone">Mikrofon</string>
@@ -534,6 +537,8 @@
     <string name="presentation_order_use">Ako postoji redosled prezentacije za pesmu, koristite ovo za kreiranje prikaza</string>
     <string name="presenter_mode">Mod prezentacije</string>
     <string name="preso_alpha">Neprozirnost pozadine</string>
+    <string name="prev_next_autohide">Automatsko sakrivanje prethodnog/sledećeg dugmeta</string>
+    <string name="prev_next_text">Koristite dugmad za prethodni / sledeći tekst</string>
     <string name="previous">Prethodno</string>
     <string name="print">Print</string>
     <string name="processing">Datoteke se obrađuju</string>
@@ -650,6 +655,7 @@
     <string name="slide">Slajd</string>
     <string name="slide_add_page">Ubaciti novu stranu za ručni slajd</string>
     <string name="small_buttons">Mala dugmad</string>
+    <string name="small_buttons_info">Smanjite veličinu dugmadi stranice na ekranu</string>
     <string name="song">Pesma</string>
     <string name="song_actions">Akcije pesme</string>
     <string name="song_actions_description">Podesite podešavanja za radnje pesme</string>
@@ -724,6 +730,7 @@
     <string name="tap_tempo">Tapnuti za određivanje tempa</string>
     <string name="tempo">Tempo</string>
     <string name="text">Tekst</string>
+    <string name="text_button">Uključite detalje pesme. Uređaji sa manjim ekranima možda neće pravilno prikazati sadržaj</string>
     <string name="text_extract">Izvucite tekst iz datoteke (OCR)</string>
     <string name="text_extract_check">OpenSongApp će pokušati da automatski pronađe sadržaj pesme, međutim, možete ručno da proverite klikom na ovo dugme.</string>
     <string name="text_extract_website">Tekst pesme pronađen na ovoj stranici. Kliknite ovde da biste izdvojili.</string>

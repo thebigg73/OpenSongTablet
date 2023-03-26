@@ -40,6 +40,7 @@
     <string name="audio">Audio</string>
     <string name="audio_source">Zdroj zvuku</string>
     <string name="author">"Autor"</string>
+    <string name="autohide_page_button">Automaticky skrýt tlačítko hlavní stránky, když není rozbalené</string>
     <string name="autohide_time">Čas zůstat viditelný (čas automatického skrytí)</string>
     <string name="autoscale">"Autoscale"</string>
     <string name="autoscale_info">Aplikace udělá text co největší, aby se vešel na obrazovku</string>
@@ -414,6 +415,8 @@
     <string name="menu_song_info">Použijte toto tlačítko pro zobrazení a správu skladeb</string>
     <string name="menu_song_order">Jak by měly být skladby uvedeny v nabídce?</string>
     <string name="metronome">"Metronom"</string>
+    <string name="metronome_autostart">Automatické spuštění metronomu</string>
+    <string name="metronome_autostart_info">Při změně skladeb mějte spuštěný metronom</string>
     <string name="metronome_duration">Trvání metronomu (bary)</string>
     <string name="metronome_info">Upravte nastavení metronomu</string>
     <string name="microphone">Mikrofon</string>
@@ -534,6 +537,8 @@
     <string name="presentation_order_use">Pokud pro skladbu existuje pořadí prezentace, použijte toto k vytvoření zobrazení</string>
     <string name="presenter_mode">"Režim prezentace"</string>
     <string name="preso_alpha">Pozadí neprůhlednost</string>
+    <string name="prev_next_autohide">Automaticky skrýt předchozí / další tlačítka</string>
+    <string name="prev_next_text">Použijte tlačítka text předchozí / další</string>
     <string name="previous">Předchozí</string>
     <string name="print">Tisk</string>
     <string name="processing">"Soubory jsou zpracovávány"</string>
@@ -650,6 +655,7 @@
     <string name="slide">"Stránka"</string>
     <string name="slide_add_page">"Vložit novou stránku na vlastní snímek"</string>
     <string name="small_buttons">Malá tlačítka</string>
+    <string name="small_buttons_info">Zmenšete velikost tlačítek stránek na obrazovce</string>
     <string name="song">"PÍSEŇ"</string>
     <string name="song_actions">Akce s písněmi</string>
     <string name="song_actions_description">Upravte nastavení pro akce skladeb</string>
@@ -724,6 +730,7 @@
     <string name="tap_tempo">"Klepnutím nastavte tempo"</string>
     <string name="tempo">"Tempo"</string>
     <string name="text">"Text"</string>
+    <string name="text_button">Zahrnout podrobnosti o skladbě. Zařízení s menšími displeji nemusí zobrazovat obsah správně</string>
     <string name="text_extract">Extrahovat text ze souboru (OCR)</string>
     <string name="text_extract_check">OpenSongApp se pokusí najít obsah skladby automaticky, kliknutím na toto tlačítko to však můžete zkontrolovat ručně.</string>
     <string name="text_extract_website">Text písně nalezený na této stránce. Klikněte sem pro extrahování.</string>

@@ -40,6 +40,7 @@
     <string name="audio">"Audio"</string>
     <string name="audio_source">Ljudkälla</string>
     <string name="author">"Författare"</string>
+    <string name="autohide_page_button">Dölj huvudsidesknappen automatiskt när den inte expanderas</string>
     <string name="autohide_time">Dags att hålla sig synlig (autohide time)</string>
     <string name="autoscale">"Autoscale"</string>
     <string name="autoscale_info">Appen kommer att göra texten så stor som möjligt för att passa skärmen</string>
@@ -414,6 +415,8 @@
     <string name="menu_song_info">Använd den här knappen visa och hantera dina låtar</string>
     <string name="menu_song_order">Hur ska låtar listas i menyn?</string>
     <string name="metronome">"Metronom"</string>
+    <string name="metronome_autostart">Autostart metronom</string>
+    <string name="metronome_autostart_info">Håll metronomen igång när du byter låt</string>
     <string name="metronome_duration">Metronome varaktighet (staplar)</string>
     <string name="metronome_info">Justera metronominställningarna</string>
     <string name="microphone">Mikrofon</string>
@@ -534,6 +537,8 @@
     <string name="presentation_order_use">Om det finns presentationsordning för låten, använd denna för att skapa displayen</string>
     <string name="presenter_mode">"Presentationsläge"</string>
     <string name="preso_alpha">"Bakgrundsopacitet"</string>
+    <string name="prev_next_autohide">Dölj föregående/nästa knappar automatiskt</string>
+    <string name="prev_next_text">Använd knapparna text föregående/nästa</string>
     <string name="previous">Föregående</string>
     <string name="print">Skriva ut</string>
     <string name="processing">"Filerna behandlas"</string>
@@ -650,6 +655,7 @@
     <string name="slide">"Glida"</string>
     <string name="slide_add_page">"Infoga ny sida till anpassad bild"</string>
     <string name="small_buttons">Små knappar</string>
+    <string name="small_buttons_info">Minska storleken på sidknapparna på skärmen</string>
     <string name="song">"LÅT"</string>
     <string name="song_actions">Låtåtgärder</string>
     <string name="song_actions_description">Justera inställningar för sångåtgärder</string>
@@ -724,6 +730,7 @@
     <string name="tap_tempo">"Tryck för att ställa in tempo"</string>
     <string name="tempo">"Tempo"</string>
     <string name="text">"Text"</string>
+    <string name="text_button">Inkludera låtdetaljer. Enheter med mindre skärmar kanske inte visar innehållet korrekt</string>
     <string name="text_extract">Extrahera text från fil (OCR)</string>
     <string name="text_extract_check">OpenSongApp kommer att försöka hitta låtinnehåll automatiskt, men du kan kontrollera manuellt genom att klicka på den här knappen.</string>
     <string name="text_extract_website">Låttext finns på den här sidan. Klicka här för att extrahera.</string>
