@@ -18,7 +18,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.customviews.FastScroller;
 import com.garethevans.church.opensongtablet.databinding.MenuSetsBinding;
 import com.garethevans.church.opensongtablet.filemanagement.AreYouSureBottomSheet;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
@@ -144,30 +143,17 @@ public class SetMenuFragment extends Fragment {
                 setMenuBottomSheet.show(getActivity().getSupportFragmentManager(), "setMenuBottomSheet");
             }
         }));
-        myView.myRecyclerView.post(() -> {
-            myView.myRecyclerView.setFastScrollListener(new FastScroller.FastScrollListener() {
-                @Override
-                public void onFastScrollStart(@NonNull FastScroller fastScroller) {
+        myView.myRecyclerView.post(() -> myView.myRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    myView.setMasterFAB.show();
+                } else {
                     myView.setMasterFAB.hide();
                 }
-
-                @Override
-                public void onFastScrollStop(@NonNull FastScroller fastScroller) {
-                    myView.setMasterFAB.show();
-                }
-            });
-            myView.myRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-                @Override
-                public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                    if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                        myView.setMasterFAB.show();
-                    } else {
-                        myView.setMasterFAB.hide();
-                    }
-                    super.onScrollStateChanged(recyclerView, newState);
-                }
-            });
-        });
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+        }));
 
     }
 

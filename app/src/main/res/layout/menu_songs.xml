@@ -61,20 +61,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:orientation="vertical"/>
-                        <!--<com.garethevans.church.opensongtablet.customviews.FastScrollRecyclerView
-                            android:id="@+id/songListRecyclerView"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="vertical"
-                            app:bubbleColor="@color/colorSecondary"
-                            app:bubbleSize="small"
-                            app:bubbleTextColor="@color/white"
-                            app:handleColor="@color/colorAltSecondary"
-                            app:hideScrollbar="false"
-                            app:scrollTrackColor="@color/colorPrimary"
-                            app:showTrack="true"
-                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>-->
-                    </FrameLayout>
+                        </FrameLayout>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

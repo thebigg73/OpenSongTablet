@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.customviews.FastScroller;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.interfaces.SetItemTouchInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
@@ -21,7 +20,7 @@ import com.garethevans.church.opensongtablet.songprocessing.Song;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> implements FastScroller.SectionIndexer, SetItemTouchInterface {
+public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> implements SetItemTouchInterface {
 
     // All the helpers we need to access are in the MainActivity
     private final MainActivityInterface mainActivityInterface;
@@ -232,16 +231,6 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
         }
         highlightedArray.put(currentPosition, true);
         notifyItemChanged(currentPosition, "highlightItem");
-    }
-
-    @Override
-    public CharSequence getSectionText(int position) {
-        if (setList != null &&
-                setList.size() > position) {
-            return setList.get(position).songitem;
-        } else {
-            return "";
-        }
     }
 
     public ArrayList<SetItemInfo> getSetList() {

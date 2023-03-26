@@ -37,17 +37,11 @@
             android:layout_height="match_parent"
             android:background="@color/colorPrimary">
 
-            <com.garethevans.church.opensongtablet.customviews.FastScrollRecyclerView
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/my_recycler_view"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:bubbleColor="@color/colorSecondary"
-                app:bubbleSize="small"
-                app:bubbleTextColor="@color/white"
-                app:handleColor="@color/colorAltSecondary"
-                app:hideScrollbar="false"
-                app:scrollTrackColor="@color/colorPrimary"
-                app:showTrack="true" />
+                android:layout_height="match_parent"/>
+
         </FrameLayout>
 
         <com.garethevans.church.opensongtablet.customviews.MyFAB

@@ -12,7 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.customviews.FastScroller;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.setprocessing.CurrentSet;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
@@ -22,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> implements FastScroller.SectionIndexer {
+public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> {
 
     private final List<Song> songList;
     @SuppressWarnings({"FieldCanBeLocal","unused"})
@@ -53,20 +52,6 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
         // Make the title text the same as the alphaIndex size
         titleSize = mainActivityInterface.getPreferences().getMyPreferenceFloat("songMenuItemSize",14f);
         subtitleSize = mainActivityInterface.getPreferences().getMyPreferenceFloat("songMenuSubItemSize",12f);
-    }
-
-    @Override
-    public CharSequence getSectionText(int position) {
-        if (songList!=null && songList.size()>position) {
-            String item = songList.get(position).getTitle();
-            if (item.length() > 0) {
-                return item.substring(0, 1);
-            } else {
-                return "" + position;
-            }
-        } else {
-            return "" + position;
-        }
     }
 
     public interface AdapterCallback {

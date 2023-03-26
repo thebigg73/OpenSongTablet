@@ -168,7 +168,7 @@ public class InlineSetList extends RecyclerView {
         public int item;
     }
 
-    private class InlineSetListAdapter extends RecyclerView.Adapter<InlineSetItemViewHolder> implements FastScroller.SectionIndexer {
+    private class InlineSetListAdapter extends RecyclerView.Adapter<InlineSetItemViewHolder> {
 
         // All the helpers we need to access are in the MainActivity
         private final int onColor, offColor;
@@ -317,15 +317,6 @@ public class InlineSetList extends RecyclerView {
             notifyItemChanged(selectedItem, "highlightItem");
         }
 
-        @Override
-        public CharSequence getSectionText(int position) {
-            if (setList != null &&
-                    setList.size() > position) {
-                return "" + setList.get(position).item;
-            } else {
-                return "";
-            }
-        }
     }
 
     private class InlineSetItemViewHolder extends RecyclerView.ViewHolder {
