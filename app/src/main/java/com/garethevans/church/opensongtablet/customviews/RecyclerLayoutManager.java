@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet.customviews;
 
 import android.content.Context;
 import android.graphics.PointF;
+import android.util.Log;
 import android.view.View;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -28,6 +29,7 @@ public class RecyclerLayoutManager extends LinearLayoutManager {
         for (float val:floatSizes) {
             total += val;
             childSizes.add((int)val);
+            Log.d(TAG,"size added:"+val);
         }
         size = (int)total;
         this.screenSize = screenSize;
@@ -73,5 +75,15 @@ public class RecyclerLayoutManager extends LinearLayoutManager {
     @Override
     public PointF computeScrollVectorForPosition(int targetPosition) {
         return super.computeScrollVectorForPosition(targetPosition);
+    }
+
+    public int getTop(int position) {
+        // Get the top of the required position
+        int y=0;
+        for (int i=0; i<position; i++) {
+            y += childSizes.get(i);
+        }
+        Log.d(TAG,"y="+y);
+        return y;
     }
 }

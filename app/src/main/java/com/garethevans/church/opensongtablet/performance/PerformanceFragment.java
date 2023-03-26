@@ -1150,6 +1150,7 @@ public class PerformanceFragment extends Fragment {
             if (mainActivityInterface.getPreferences().getMyPreferenceFloat("stageModeScale",0.8f) == 1.0f) {
                 myView.recyclerView.smoothScrollTo(getContext(),recyclerLayoutManager, position);
             } else {
+                Log.d(TAG,"scrolling to :"+position);
                 myView.recyclerView.doSmoothScrollTo(recyclerLayoutManager, position);
             }
         }

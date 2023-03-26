@@ -39,6 +39,7 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
     private boolean fakeClick;
     @SuppressWarnings({"FieldCanBeLocal","unused"})
     private final String TAG = "StageSectionAdapter";
+    int spacing = 0;
 
 
     public StageSectionAdapter(Context c, MainActivityInterface mainActivityInterface,
@@ -67,6 +68,8 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
 
         padding = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
                 16, c.getResources().getDisplayMetrics());
+        spacing = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                4, c.getResources().getDisplayMetrics());
         density = metrics[2];
 
         Log.d(TAG,"padding:"+padding);
@@ -98,7 +101,7 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
             // Check the scale isn't bigger than the maximum font size
             scale = Math.min(scale,(maxFontSize / defFontSize));
 
-            float itemHeight = sectionHeight * scale + (4f * density);
+            float itemHeight = sectionHeight * scale + (spacing);
 
             floatHeight += itemHeight;
             floatSizes.add(itemHeight);
