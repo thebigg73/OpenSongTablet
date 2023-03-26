@@ -1234,14 +1234,18 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 myView.pageButtonRight.bottomButtons.setVisibility(View.GONE);
                 myView.onScreenInfo.getInfo().setVisibility(View.GONE);
                 myView.nextPrevInfo.nextPrevInfoLayout.setVisibility(View.GONE);
+                myView.nextPrevInfo.nextPrevInfoFABLayout.setVisibility(View.GONE);
 
             } else {
                 myView.actionFAB.setVisibility(View.VISIBLE);
                 myView.pageButtonRight.bottomButtons.setVisibility(View.VISIBLE);
                 pageButtons.animatePageButton(false);
                 myView.onScreenInfo.getInfo().setVisibility(View.VISIBLE);
-                if (displayPrevNext.getShowPrev() || displayPrevNext.getShowNext()) {
+                if (displayPrevNext.getTextButtons() && (displayPrevNext.getShowPrev() || displayPrevNext.getShowNext())) {
                     myView.nextPrevInfo.nextPrevInfoLayout.setVisibility(View.VISIBLE);
+                }
+                if (!displayPrevNext.getTextButtons() && (displayPrevNext.getShowPrev() || displayPrevNext.getShowNext())) {
+                    myView.nextPrevInfo.nextPrevInfoFABLayout.setVisibility(View.VISIBLE);
                 }
                 // Do this with a delay
                 customAnimation.fadeActionButton(myView.actionFAB, themeColors.getPageButtonsSplitAlpha());

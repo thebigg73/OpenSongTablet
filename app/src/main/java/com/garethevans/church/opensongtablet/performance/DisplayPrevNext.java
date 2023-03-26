@@ -111,7 +111,7 @@ public class DisplayPrevNext {
         nextVisible = false;
         prevVisible = false;
 
-        if (showPrev) {
+        if (showPrev && !mainActivityInterface.getMenuOpen()) {
             layout.findViewById(R.id.prevHolder).setVisibility(prevNextTextButtons?View.VISIBLE:View.GONE);
             layout.findViewById(R.id.prevFABHolder).setVisibility(prevNextTextButtons?View.GONE:View.VISIBLE);
         } else {
@@ -119,7 +119,7 @@ public class DisplayPrevNext {
             layout.findViewById(R.id.prevFABHolder).setVisibility(View.GONE);
 
         }
-        if (showNext) {
+        if (showNext && !mainActivityInterface.getMenuOpen()) {
             layout.findViewById(R.id.nextHolder).setVisibility(prevNextTextButtons?View.VISIBLE:View.GONE);
             layout.findViewById(R.id.nextFABHolder).setVisibility(prevNextTextButtons?View.GONE:View.VISIBLE);
         } else {
@@ -133,6 +133,10 @@ public class DisplayPrevNext {
     }
     public boolean getShowNext() {
         return showNext;
+    }
+
+    public boolean getTextButtons() {
+        return prevNextTextButtons;
     }
 
     public void setPrevNext() {
