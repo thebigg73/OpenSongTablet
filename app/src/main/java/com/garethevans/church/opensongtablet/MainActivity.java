@@ -1312,7 +1312,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             if (!(webAddress == null || webAddress.isEmpty())) {
                 // IV - Post the icon and click action after a short delay - testing shows the delay is needed to ensure stability
                 globalMenuItem.findItem(R.id.help_menu_item).setVisible(true);
-                Log.d(TAG,"Help visible requested");
                 new Handler().postDelayed(() -> {
                     if (globalMenuItem != null) {
                         screenHelp = (ImageView) globalMenuItem.findItem(R.id.help_menu_item).getActionView();
@@ -1950,7 +1949,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 myView.onScreenInfo.updateAlpha(this,this);
                 break;
             case "showhide":
-                Log.d(TAG,"showhide");
                 myView.onScreenInfo.showHideViews(this);
                 if (pageButtons.getPageButtonHide() && !pageButtons.getPageButtonActivated()) {
                     if (hideActionButtonRunnable==null) {

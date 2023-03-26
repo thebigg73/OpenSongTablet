@@ -43,7 +43,6 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Locale;
 
@@ -2006,20 +2005,6 @@ public class ProcessSong {
             innerColumn.setScaleY(scaleSize);
         }
     }
-    private View scaleView(View view, int originalWidth, int originalHeight, float scaleSize) {
-        if (scaleSize == Double.POSITIVE_INFINITY) {
-            scaleSize = 1.0f;
-        }
-        if (view!=null) {
-            view.setPivotX(0);
-            view.setPivotY(0);
-            view.setScaleX(scaleSize);
-            view.setScaleY(scaleSize);
-            view.getLayoutParams().width = (int)(originalWidth*scaleSize);
-            view.getLayoutParams().height = (int)(originalHeight*scaleSize);
-        }
-        return view;
-    }
 
     // v6 logic that splits always by the biggest scaling arrangement
     private float[] columnSplitAlgorithm(ArrayList<Integer> sectionWidths, ArrayList<Integer> sectionHeights,
@@ -2279,7 +2264,6 @@ public class ProcessSong {
             }
         }
 
-        Log.d(TAG,"oneColumn:"+oneColumn+"  twoColumn:"+twoColumn+"  threeColumn:"+threeColumn);
         if (oneColumn && !twoColumn && !threeColumn) {
             // Compare with max scaling due to font size allowed
             if (autoScale.equals("Y")) {
@@ -2303,7 +2287,6 @@ public class ProcessSong {
                     sectionSpace};  // Section space per view except last in column
         }
 
-        Log.d(TAG,"returnFloats:"+ Arrays.toString(returnFloats));
         return returnFloats;
     }
 
@@ -2671,9 +2654,7 @@ public class ProcessSong {
         innerCol1.getLayoutParams().height = col1h+1000;
         innerCol2.getLayoutParams().height = col2h+1000;
         innerCol3.getLayoutParams().height = col3h+1000;
-        innerCol3.getLayoutParams().width = (int)(col3_3Width*col3_3ScaleBest)+1000;
 
-        Log.d(TAG,"padding:"+padding+"  scaling:"+col3_3ScaleBest);
         columnVisibility(column1, column2, column3, true, true, true);
         column1.addView(innerCol1);
         column2.addView(innerCol2);
