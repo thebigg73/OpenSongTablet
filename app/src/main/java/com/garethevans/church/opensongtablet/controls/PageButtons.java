@@ -111,7 +111,6 @@ public class PageButtons {
 
         fabs.add(custom1);
         fabs.add(custom2);
-        fabs.add(custom2);
         fabs.add(custom3);
         fabs.add(custom4);
         fabs.add(custom5);

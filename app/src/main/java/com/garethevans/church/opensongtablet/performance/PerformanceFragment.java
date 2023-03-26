@@ -953,8 +953,7 @@ public class PerformanceFragment extends Fragment {
     }
     private void dealWithHighlighterFile(int w, int h) {
         try {
-            if (myView!=null && !mainActivityInterface.getPreferences().
-                    getMyPreferenceString("songAutoScale", "W").equals("N")) {
+            if (myView!=null) {
                 // Set the highlighter image view to match
                 myView.highlighterView.setVisibility(View.INVISIBLE);
                 // Once the view is ready at the required size, deal with it
@@ -965,6 +964,9 @@ public class PerformanceFragment extends Fragment {
                         try {
                             myView.highlighterView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                             // Load in the bitmap with these dimensions
+                            // v5 used portrait and landscape views.  However, now if we only have one
+                            // column, we will always load the portrait view
+                            // landscape is now for columns
                             Bitmap highlighterBitmap = mainActivityInterface.getProcessSong().
                                     getHighlighterFile(0, 0);
 

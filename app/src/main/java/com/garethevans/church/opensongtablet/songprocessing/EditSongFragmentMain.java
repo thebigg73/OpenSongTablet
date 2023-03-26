@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,8 @@ public class EditSongFragmentMain extends Fragment  {
     // The variable used in this fragment
     private EditSongMainBinding myView;
     private MainActivityInterface mainActivityInterface;
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
+    private final String TAG = "EditSongMain";
     private EditSongFragmentInterface editSongFragmentInterface;
     private String newFolder, new_folder_add_string="", new_folder_string="", new_folder_name_string="";
     private TextInputBottomSheet textInputBottomSheet;
@@ -164,6 +167,7 @@ public class EditSongFragmentMain extends Fragment  {
 
 
     public void updateValue(String value) {
+        Log.d(TAG,"value:"+value);
         // New folder name given.  If it isn't null/empty try to create it and select it
         boolean selectNewFolder = false;
         if (value!=null && !value.isEmpty()) {
@@ -172,13 +176,15 @@ public class EditSongFragmentMain extends Fragment  {
                         "Songs","",value,true);
         }
 
-        if (!selectNewFolder) {
+        if (selectNewFolder) {
             getFoldersFromStorage();
+            newFolder = "+ " + new_folder_add_string;
             folders.add(newFolder);
-            arrayAdapter.notifyDataSetChanged();
-            myView.folder.setText(value);
-        } else {
-            myView.folder.setText(mainActivityInterface.getTempSong().getFolder());
+            if (getContext() != null) {
+                arrayAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.folder, R.layout.view_exposed_dropdown_item, folders);
+                myView.folder.setAdapter(arrayAdapter);
+                myView.folder.setText(value);
+            }
         }
     }
 
