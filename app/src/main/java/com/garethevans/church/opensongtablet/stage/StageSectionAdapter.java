@@ -4,6 +4,8 @@ package com.garethevans.church.opensongtablet.stage;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,13 +32,14 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
     private final ArrayList<Float> floatSizes;
     private float floatHeight = 0;
     private int currentSection = 0;
-    private final float maxFontSize, density, stageModeScale;
+    private final float maxFontSize, stageModeScale;
     private final String alphaChange = "alpha";
     private final float alphaoff = 0.4f;
-    private int availableWidth, availableHeight;
+    private int availableWidth, availableHeight, density, inlineSetWidth, padding;
     private boolean fakeClick;
     @SuppressWarnings({"FieldCanBeLocal","unused"})
     private final String TAG = "StageSectionAdapter";
+
 
     public StageSectionAdapter(Context c, MainActivityInterface mainActivityInterface,
                                DisplayInterface displayInterface, int inlineSetWidth) {
@@ -49,22 +52,34 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
         sectionInfos = new ArrayList<>();
         floatSizes = new ArrayList<>();
         setSongInfo(inlineSetWidth);
+        this.inlineSetWidth = inlineSetWidth;
+
+        setAvailableSize();
+    }
+
+    private void setAvailableSize() {
         int[] metrics = mainActivityInterface.getDisplayMetrics();
-        availableWidth = metrics[0];
-        availableHeight = metrics[1];
+        int[] viewPadding = mainActivityInterface.getViewMargins();
+
+        Log.d(TAG,"displayW:"+metrics[0]+"  lmargin:"+viewPadding[0]+"  rmargin"+viewPadding[1]+"  inlinesetW:"+inlineSetWidth);
+        availableWidth = metrics[0] - viewPadding[0] - viewPadding[1] - inlineSetWidth;
+        availableHeight = metrics[1] - viewPadding[2] - viewPadding[3];
+
+        padding = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                16, c.getResources().getDisplayMetrics());
         density = metrics[2];
+
+        Log.d(TAG,"padding:"+padding);
     }
 
     private void setSongInfo(int inlineSetWidth) {
         // Prepare the info for each section
         floatHeight = 0;
 
-        if (availableWidth==0) {
-            availableWidth = mainActivityInterface.getDisplayMetrics()[0];
+        if (availableWidth==0 || availableHeight==0) {
+            setAvailableSize();
         }
-        if (availableHeight==0) {
-            availableHeight = mainActivityInterface.getDisplayMetrics()[1];
-        }
+
         float defFontSize = mainActivityInterface.getProcessSong().getDefFontSize();
         for (int x=0; x<mainActivityInterface.getSectionViews().size(); x++) {
             StageSectionInfo stageSectionInfo = new StageSectionInfo();
@@ -77,11 +92,11 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
             int sectionWidth = mainActivityInterface.getSectionWidths().get(x);
             int sectionHeight = mainActivityInterface.getSectionHeights().get(x);
 
-            float x_scale = (float)(availableWidth-16-inlineSetWidth)/(float)sectionWidth;
+            float x_scale = (float)(availableWidth - padding)/(float)sectionWidth;
             float y_scale = (float)(availableHeight-mainActivityInterface.getToolbar().getActionBarHeight(mainActivityInterface.needActionBar()))*stageModeScale/(float)sectionHeight;
             float scale = Math.min(x_scale,y_scale);
             // Check the scale isn't bigger than the maximum font size
-            scale = Math.min(scale,(maxFontSize /defFontSize));
+            scale = Math.min(scale,(maxFontSize / defFontSize));
 
             float itemHeight = sectionHeight * scale + (4f * density);
 

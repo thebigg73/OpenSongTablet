@@ -2184,7 +2184,7 @@ public class ProcessSong {
                             int this2_3Height = getTotal(sectionHeights, c1, c1 + c2) + totalSectionSpace2_3;
                             int this3_3Height = getTotal(sectionHeights, c1 + c2, sectionHeights.size()) + totalSectionSpace3_3;
                             float scaleX1 = (float) (availableWidth3 - padding) / (float) this1_3Width;
-                            float scaleX2 = (float) (availableWidth3 - 2 * padding) / (float) this2_3Width;
+                            float scaleX2 = (float) (availableWidth3 - (2 * padding)) / (float) this2_3Width;
                             float scaleX3 = (float) (availableWidth3 - padding) / (float) this3_3Width;
                             float scaleY1 = (float) (availableHeight) / (float) this1_3Height;
                             float scaleY2 = (float) (availableHeight) / (float) this2_3Height;
@@ -2665,10 +2665,12 @@ public class ProcessSong {
         int col2h = (int) (col2_3Height*col2_3ScaleBest);
         int col3h = (int) (col3_3Height*col3_3ScaleBest);
         // TODO as with column 1 adding extra height
-        column1.getLayoutParams().height = col1h+1000;
-        column2.getLayoutParams().height = col2h+1000;
-        column3.getLayoutParams().height = col3h+1000;
+        innerCol1.getLayoutParams().height = col1h+1000;
+        innerCol2.getLayoutParams().height = col2h+1000;
+        innerCol3.getLayoutParams().height = col3h+1000;
+        innerCol3.getLayoutParams().width = (int)(col3_3Width*col3_3ScaleBest)+1000;
 
+        Log.d(TAG,"padding:"+padding+"  scaling:"+col3_3ScaleBest);
         columnVisibility(column1, column2, column3, true, true, true);
         column1.addView(innerCol1);
         column2.addView(innerCol2);
