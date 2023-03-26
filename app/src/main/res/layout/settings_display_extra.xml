@@ -64,6 +64,26 @@
                 android:hint="@string/page_buttons"/>
 
             <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                android:id="@+id/prevNextTextButtons"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:checked="true"
+                android:text="@string/prev_next_text"
+                android:hint="@string/text_button"/>
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                android:id="@+id/prevNextHide"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:checked="true"
+                android:text="@string/prev_next_autohide"
+                android:hint="@string/info_text_autohide_info"/>
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
                 android:id="@+id/onscreenAutoscrollHide"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

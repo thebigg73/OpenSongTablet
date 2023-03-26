@@ -135,12 +135,6 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                             e.printStackTrace();
                         }
                     }
-
-                    @Override
-                    public void onLayoutCompleted(RecyclerView.State state) {
-                        Log.d(TAG,"layoutcomplete");
-                        super.onLayoutCompleted(state);
-                    }
                 };
                 songListLayoutManager.setOrientation(RecyclerView.VERTICAL);
                 myView.songListRecyclerView.setLayoutManager(songListLayoutManager);

@@ -2065,8 +2065,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public DisplayPrevNext getDisplayPrevNext() {
         if (displayPrevNext==null) {
-            displayPrevNext = new DisplayPrevNext(this,myView.nextPrevInfo.nextPrevInfoLayout,
-                    myView.nextPrevInfo.prevButton, myView.nextPrevInfo.nextButton);
+            displayPrevNext = new DisplayPrevNext(this,myView.nextPrevInfo.nextPrev,
+                    myView.nextPrevInfo.prevButton, myView.nextPrevInfo.nextButton,
+                    myView.nextPrevInfo.prevButtonFAB, myView.nextPrevInfo.nextButtonFAB);
         }
         return displayPrevNext;
     }

@@ -87,6 +87,8 @@ public class DisplayExtraFragment extends Fragment {
         myView.nextInSet.setChecked(getChecked("nextInSet",true));
         myView.prevInSet.setChecked(getChecked("prevInSet",false));
         myView.prevNextSongMenu.setChecked(getChecked("prevNextSongMenu",false));
+        myView.prevNextTextButtons.setChecked(getChecked("prevNextTextButtons",true));
+        myView.prevNextHide.setChecked(getChecked("prevNextHide",true));
         myView.onscreenAutoscrollHide.setChecked(getChecked("onscreenAutoscrollHide",true));
         myView.onscreenCapoHide.setChecked(getChecked("onscreenCapoHide", true));
         myView.onscreenPadHide.setChecked(getChecked("onscreenPadHide",true));
@@ -172,6 +174,14 @@ public class DisplayExtraFragment extends Fragment {
         });
         myView.prevNextSongMenu.setOnCheckedChangeListener((buttonView, isChecked) -> {
             updateBooleanPreference("prevNextSongMenu", isChecked, null);
+            mainActivityInterface.getDisplayPrevNext().updateShow();
+        });
+        myView.prevNextTextButtons.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            updateBooleanPreference("prevNextTextButtons", isChecked, null);
+            mainActivityInterface.getDisplayPrevNext().updateShow();
+        });
+        myView.prevNextHide.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            updateBooleanPreference("prevNextHide", isChecked, null);
             mainActivityInterface.getDisplayPrevNext().updateShow();
         });
         myView.onscreenAutoscrollHide.setOnCheckedChangeListener((buttonView, isChecked) -> {

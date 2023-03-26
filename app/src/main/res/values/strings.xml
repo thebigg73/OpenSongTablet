@@ -1132,4 +1132,7 @@ Check out the categories in the right hand options menu.
     <string name="youtube" translatable="false">YouTube</string>
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zoom_level">Zoom level</string>
+    <string name="text_button">Include song details. Devices with smaller displays may not show the content properly</string>
+    <string name="prev_next_autohide">Autohide previous / next buttons</string>
+    <string name="prev_next_text">Use text previous / next buttons</string>
 </resources>

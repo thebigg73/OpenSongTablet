@@ -93,6 +93,7 @@ public class PageButtonFragment extends Fragment {
                 myView.pageButtonMini.setOnCheckedChangeListener((buttonView, isChecked) -> {
                     mainActivityInterface.getPreferences().setMyPreferenceBoolean("pageButtonMini",isChecked);
                     mainActivityInterface.getPageButtons().updatePageButtonMini(isChecked);
+                    mainActivityInterface.getDisplayPrevNext().updateShow();
                     mainActivityInterface.miniPageButton(isChecked);
                 });
 

@@ -2,14 +2,20 @@ package com.garethevans.church.opensongtablet.performance;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.view.View;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.customviews.MyFAB;
 import com.garethevans.church.opensongtablet.customviews.MyZoomLayout;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class DisplayPrevNext {
     // This deals with showing the previous and next song buttons and their actions
@@ -19,12 +25,15 @@ public class DisplayPrevNext {
     private final Context c;
     @SuppressWarnings({"FieldCanBeLocal","unused"})
     private final String TAG = "DisplayPrevNext";
-    private final LinearLayout layout;
+    private final RelativeLayout layout;
     private MyZoomLayout zoomLayout;
     private final ExtendedFloatingActionButton prev, next;
+    private final MyFAB prevFAB, nextFAB;
     private boolean showPrev, prevVisible = false;
     private boolean showNext, nextVisible = false;
     private boolean prevNextSongMenu;
+    private boolean prevNextTextButtons;
+    private boolean prevNextHide;
     private boolean movePrevInSet, moveNextInSet, moveNextInMenu, movePrevInMenu;
     private String swipeDirection = "R2L";
     private int prevIndex, nextIndex;
@@ -35,6 +44,13 @@ public class DisplayPrevNext {
             nextVisible = false;
         }
     };
+    private final Runnable hideNextFABRunnable = new Runnable() {
+        @Override
+        public void run() {
+            nextFAB.hide();
+            nextVisible = false;
+        }
+    };
     private final Runnable hidePrevRunnable = new Runnable() {
         @Override
         public void run() {
@@ -42,14 +58,24 @@ public class DisplayPrevNext {
             prevVisible = false;
         }
     };
+    private final Runnable hidePrevFABRunnable = new Runnable() {
+        @Override
+        public void run() {
+            prevFAB.hide();
+            prevVisible = false;
+        }
+    };
 
-    public DisplayPrevNext (Context c, LinearLayout layout,
-                           ExtendedFloatingActionButton prev, ExtendedFloatingActionButton next) {
+    public DisplayPrevNext (Context c, RelativeLayout layout,
+                            ExtendedFloatingActionButton prev, ExtendedFloatingActionButton next,
+                            MyFAB prevFAB, MyFAB nextFAB) {
         this.c = c;
         this.mainActivityInterface = (MainActivityInterface) c;
         this.layout = layout;
         this.prev = prev;
         this.next = next;
+        this.prevFAB = prevFAB;
+        this.nextFAB = nextFAB;
         updateShow();
         updateColors();
     }
@@ -62,15 +88,43 @@ public class DisplayPrevNext {
         showPrev = mainActivityInterface.getPreferences().getMyPreferenceBoolean("prevInSet", false);
         showNext = mainActivityInterface.getPreferences().getMyPreferenceBoolean("nextInSet", true);
         prevNextSongMenu = mainActivityInterface.getPreferences().getMyPreferenceBoolean("prevNextSongMenu", false);
+        prevNextTextButtons = mainActivityInterface.getPreferences().getMyPreferenceBoolean("prevNextTextButtons", true);
+        prevNextHide = mainActivityInterface.getPreferences().getMyPreferenceBoolean("prevNextHide",true);
+        boolean pageButtonMini = mainActivityInterface.getPreferences().getMyPreferenceBoolean("pageButtonMini", false);
+        prevFAB.setSize(pageButtonMini ? FloatingActionButton.SIZE_MINI:FloatingActionButton.SIZE_NORMAL);
+        nextFAB.setSize(pageButtonMini ? FloatingActionButton.SIZE_MINI:FloatingActionButton.SIZE_NORMAL);
+
+        // Decide which layout is required and hide the other one
+        layout.findViewById(R.id.nextPrevInfoLayout).setVisibility(prevNextTextButtons &&
+                !mainActivityInterface.getSettingsOpen() &&
+                !mainActivityInterface.getMode().equals(c.getString(R.string.presenter_mode)) ?
+                View.VISIBLE:View.GONE);
+        layout.findViewById(R.id.nextPrevInfoFABLayout).setVisibility(prevNextTextButtons &&
+                !mainActivityInterface.getSettingsOpen() &&
+                !mainActivityInterface.getMode().equals(c.getString(R.string.presenter_mode)) ?
+                View.GONE:View.VISIBLE);
+
+        prev.hide();
+        prevFAB.hide();
+        next.hide();
+        nextFAB.hide();
+        nextVisible = false;
+        prevVisible = false;
+
         if (showPrev) {
-            layout.findViewById(R.id.prevHolder).setVisibility(View.VISIBLE);
+            layout.findViewById(R.id.prevHolder).setVisibility(prevNextTextButtons?View.VISIBLE:View.GONE);
+            layout.findViewById(R.id.prevFABHolder).setVisibility(prevNextTextButtons?View.GONE:View.VISIBLE);
         } else {
             layout.findViewById(R.id.prevHolder).setVisibility(View.GONE);
+            layout.findViewById(R.id.prevFABHolder).setVisibility(View.GONE);
+
         }
         if (showNext) {
-            layout.findViewById(R.id.nextHolder).setVisibility(View.VISIBLE);
+            layout.findViewById(R.id.nextHolder).setVisibility(prevNextTextButtons?View.VISIBLE:View.GONE);
+            layout.findViewById(R.id.nextFABHolder).setVisibility(prevNextTextButtons?View.GONE:View.VISIBLE);
         } else {
             layout.findViewById(R.id.nextHolder).setVisibility(View.GONE);
+            layout.findViewById(R.id.nextFABHolder).setVisibility(View.GONE);
         }
     }
 
@@ -96,7 +150,9 @@ public class DisplayPrevNext {
             // Set the listeners
             // Use the text as it is for the filename (might be Uri encoded)
             prev.setOnClickListener(v -> moveToPrev());
+            prevFAB.setOnClickListener(v -> moveToPrev());
             next.setOnClickListener(v -> moveToNext());
+            nextFAB.setOnClickListener(v -> moveToNext());
 
             // Update the text
             next.setText(nextText);
@@ -108,8 +164,6 @@ public class DisplayPrevNext {
     }
 
     public void getPositions() {
-        next.hide();
-        prev.hide();
         int setPosition = mainActivityInterface.getSetActions().indexSongInSet(mainActivityInterface.getSong());
         mainActivityInterface.getCurrentSet().setIndexSongInSet(setPosition);
         int songPosition = mainActivityInterface.getPositionOfSongInMenu();
@@ -219,6 +273,16 @@ public class DisplayPrevNext {
     }
 
     private void doMove(int position) {
+        prev.removeCallbacks(hidePrevRunnable);
+        prevFAB.removeCallbacks(hidePrevFABRunnable);
+        next.removeCallbacks(hideNextRunnable);
+        nextFAB.removeCallbacks(hideNextFABRunnable);
+        prev.hide();
+        prevFAB.hide();
+        next.hide();
+        nextFAB.hide();
+        nextVisible = false;
+        prevVisible = false;
         if (isSetMove(position)) {
             mainActivityInterface.loadSongFromSet(position);
         } else if (isMenuMove(position)){
@@ -241,15 +305,35 @@ public class DisplayPrevNext {
         if (moveNextInSet || movePrevInSet || prevNextSongMenu) {
             if (showNext && !next.getText().toString().isEmpty() && !nextVisible) {
                 nextVisible = true;
-                next.removeCallbacks(hideNextRunnable);
-                next.show();
-                next.postDelayed(hideNextRunnable, 3000);
+                if (prevNextTextButtons) {
+                    next.removeCallbacks(hideNextRunnable);
+                    next.show();
+                    if (prevNextHide) {
+                        next.postDelayed(hideNextRunnable, 3000);
+                    }
+                } else {
+                    nextFAB.removeCallbacks(hideNextFABRunnable);
+                    nextFAB.show();
+                    if (prevNextHide) {
+                        nextFAB.postDelayed(hideNextFABRunnable, 3000);
+                    }
+                }
             }
             if (showPrev && !prev.getText().toString().isEmpty() && !prevVisible) {
                 prevVisible = true;
-                prev.removeCallbacks(hidePrevRunnable);
-                prev.show();
-                prev.postDelayed(hidePrevRunnable, 3000);
+                if (prevNextTextButtons) {
+                    prev.removeCallbacks(hidePrevRunnable);
+                    prev.show();
+                    if (prevNextHide) {
+                        prev.postDelayed(hidePrevRunnable, 3000);
+                    }
+                } else {
+                    prevFAB.removeCallbacks(hidePrevFABRunnable);
+                    prevFAB.show();
+                    if (prevNextHide) {
+                        prevFAB.postDelayed(hidePrevFABRunnable, 3000);
+                    }
+                }
             }
         }
     }
@@ -260,8 +344,20 @@ public class DisplayPrevNext {
         int buttonIconColor = mainActivityInterface.getMyThemeColors().getExtraInfoTextColor();
         prev.setIconTint(ColorStateList.valueOf(buttonIconColor));
         next.setIconTint(ColorStateList.valueOf(buttonIconColor));
+        Drawable leftArrow = ContextCompat.getDrawable(c, R.drawable.arrow_left);
+        Drawable rightArrow = ContextCompat.getDrawable(c, R.drawable.arrow_right);
+        if (leftArrow!=null) {
+            DrawableCompat.setTint(leftArrow, buttonIconColor);
+            prevFAB.setImageDrawable(leftArrow);
+        }
+        if (rightArrow!=null) {
+            DrawableCompat.setTint(rightArrow, buttonIconColor);
+            nextFAB.setImageDrawable(rightArrow);
+        }
         prev.setBackgroundTintList(ColorStateList.valueOf(buttonColor));
         next.setBackgroundTintList(ColorStateList.valueOf(buttonColor));
+        prevFAB.setBackgroundTintList(ColorStateList.valueOf(buttonColor));
+        nextFAB.setBackgroundTintList(ColorStateList.valueOf(buttonColor));
         layout.setAlpha(buttonAlpha);
     }
 

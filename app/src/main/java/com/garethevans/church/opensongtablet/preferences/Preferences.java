@@ -462,6 +462,8 @@ public class Preferences extends Activity {
     // presoXMargin                    int         The margin for the X axis on the presentation window (def:0)
     // presoYMargin                    int         The margin for the Y axis on the presentation window (def:0)
     // prevInSet                       boolean     Should the previous song in the set be shown (def:false)
+    // prevNextTextButtons             boolean     Should the previous / next buttons be ExtendedFABs with text rather than FABs (def:true)
+    // prevNextHide                    boolean     Should the previous / next buttons be hidden after timeout (def:true)
     // prevNextSongMenu                boolean     Should previous and next songs be shown when not in a set from song menu (def:false)
     // profileName                     String      The last loaded or saved profile name (def:"")
     // refAHz                          int         The preferred frequency of A4 in Hz for the tuner (def:440).
