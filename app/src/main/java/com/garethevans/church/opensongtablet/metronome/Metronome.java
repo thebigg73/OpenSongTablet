@@ -3,12 +3,15 @@ package com.garethevans.church.opensongtablet.metronome;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.AssetFileDescriptor;
+import android.graphics.Color;
 import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+
+import androidx.core.graphics.ColorUtils;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDown;
@@ -30,11 +33,12 @@ public class Metronome {
     private final Activity activity;  // For run on UI updates
     private final String TAG = "Metronome";
     private int beat, beats, divisions, beatTimeLength, beatsRequired, beatsRunningTotal,
-            metronomeFlashOnColor, metronomeFlashOffColor, tickClip, tockClip;
+            metronomeFlashOnColor, metronomeFlashOffColor, metronomeFlashOnColorDarker,
+            tickClip, tockClip;
     private float volumeTickLeft = 1.0f, volumeTickRight = 1.0f, volumeTockLeft = 1.0f,
             volumeTockRight = 1.0f, meterTimeDivision = 1.0f;
     private boolean visualMetronome = false, isRunning = false, validTimeSig = false,
-            validTempo = false, tickPlayerReady, tockPlayerReady;
+            validTempo = false, tickPlayerReady, tockPlayerReady, metronomeAutoStart;
     private String tickSound, tockSound;
     private SoundPool soundPool;
     private Timer metronomeTimer, visualTimer;
@@ -54,6 +58,7 @@ public class Metronome {
         this.activity = activity;
         c = (Context) activity;
         mainActivityInterface = (MainActivityInterface) c;
+        metronomeAutoStart = mainActivityInterface.getPreferences().getMyPreferenceBoolean("metronomeAutoStart",false);
     }
     // The call to start and stop the metronome called from MainActivity
     public void startMetronome() {
@@ -134,6 +139,7 @@ public class Metronome {
         tickSound = mainActivityInterface.getPreferences().getMyPreferenceString("metronomeTickSound","digital_high");
         tockSound = mainActivityInterface.getPreferences().getMyPreferenceString("metronomeTockSound", "digital_low");
     }
+
     private void setupSoundPool() {
         int maxStreams = 4;
         if (mainActivityInterface.getStorageAccess().lollipopOrLater()) {
@@ -154,6 +160,7 @@ public class Metronome {
 
         metronomeFlashOffColor = c.getResources().getColor(R.color.colorAltPrimary);
         metronomeFlashOnColor = mainActivityInterface.getMyThemeColors().getMetronomeColor();
+        metronomeFlashOnColorDarker = ColorUtils.blendARGB(metronomeFlashOnColor, Color.BLACK, 0.3f);
     }
     public void setVolumes() {
         String pan = mainActivityInterface.getPreferences().getMyPreferenceString("metronomePan","C");
@@ -290,6 +297,7 @@ public class Metronome {
                 tickBeats.add(13);
             }
         }
+        Log.d(TAG,"tickBeats:"+tickBeats);
         return tickBeats;
     }
     public void setBarsAndBeats() {
@@ -321,29 +329,37 @@ public class Metronome {
         metronomeTimerTask = new TimerTask() {
             public void run() {
                 metronomeTimerHandler.post(() -> {
-
+                    Log.d(TAG,"since start: "+(System.currentTimeMillis()-startTime)+"  Expected gap:"+beatTimeLength);
                     if (beat>beats) {
                         beat = 1;
                     }
                     if (tickBeats.contains(beat)) {
                         if (soundPool!=null) {
-                            soundPool.play(tickClip, volumeTickLeft, volumeTickRight, 2, 0, 1);
+                            soundPool.play(tickClip, volumeTickLeft, volumeTickRight, 0, 0, 1);
                         }
                     } else {
                         if (soundPool!=null) {
-                            soundPool.play(tockClip, volumeTockLeft, volumeTockRight, 1, 0, 1);
+                            soundPool.play(tockClip, volumeTockLeft, volumeTockRight, 0, 0, 1);
                         }
 
                     }
+                    beat ++;
+                    beatsRunningTotal ++;
+
                     if (visualMetronome) {
+                        // Because this is aysnc, beat is 1 less
                         ExecutorService executorService = Executors.newSingleThreadExecutor();
                         executorService.execute(() -> {
                             Handler handler = new Handler(Looper.getMainLooper());
-                            handler.post(() -> mainActivityInterface.getToolbar().doFlash(metronomeFlashOnColor));
+                            handler.post(() -> {
+                                if (tickBeats.contains(beat-1)) {
+                                    mainActivityInterface.getToolbar().doFlash(metronomeFlashOnColor);
+                                } else {
+                                    mainActivityInterface.getToolbar().doFlash(metronomeFlashOnColorDarker);
+                                }
+                            });
                         });
                     }
-                    beat ++;
-                    beatsRunningTotal ++;
                     if (beatsRequired>0 && beatsRunningTotal>beatsRequired) {
                         // Stop the metronome (beats and visual)
                         stopMetronome();
@@ -351,8 +367,11 @@ public class Metronome {
                 });
             }
         };
+        startTime = System.currentTimeMillis();
+
         metronomeTimer.scheduleAtFixedRate(metronomeTimerTask, 0, beatTimeLength);
     }
+    private long startTime;
     private void timerVisual() {
         // The flash on is handled in the metronome.
         // This timer is runs half way through the beat to turn the flash off
@@ -511,5 +530,13 @@ public class Metronome {
         }
         tapTempoHandlerCheck = new Handler();
         tapTempoHandlerCheck.postDelayed(tapTempoRunnableCheck,1500);
+    }
+
+    public void setMetronomeAutoStart(boolean metronomeAutoStart) {
+        this.metronomeAutoStart = metronomeAutoStart;
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean("metronomeAutoStart",metronomeAutoStart);
+    }
+    public boolean getMetronomeAutoStart() {
+        return metronomeAutoStart;
     }
 }

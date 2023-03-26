@@ -1135,4 +1135,6 @@ Check out the categories in the right hand options menu.
     <string name="text_button">Include song details. Devices with smaller displays may not show the content properly</string>
     <string name="prev_next_autohide">Autohide previous / next buttons</string>
     <string name="prev_next_text">Use text previous / next buttons</string>
+    <string name="metronome_autostart">Autostart metronome</string>
+    <string name="metronome_autostart_info">Keep metronome running when changing songs</string>
 </resources>

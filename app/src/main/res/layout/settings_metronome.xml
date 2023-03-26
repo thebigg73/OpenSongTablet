@@ -104,6 +104,15 @@
                     android:layout_height="wrap_content"
                     android:text="@string/metronome_info" />
 
+                <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                    android:id="@+id/metronomeAutoStart"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="8dp"
+                    android:text="@string/metronome_autostart"
+                    android:hint="@string/metronome_autostart_info"/>
+
                 <com.garethevans.church.opensongtablet.customviews.TextThreeSlider
                     android:id="@+id/metronomePan"
                     android:layout_width="match_parent"

@@ -176,6 +176,9 @@ public class MetronomeFragment extends Fragment {
         myView.signatureBeats.setText(timeSignature.get(0));
         myView.signatureDivisions.setText(timeSignature.get(1));
 
+        // The autostart metronome feature
+        myView.metronomeAutoStart.setChecked(mainActivityInterface.getMetronome().getMetronomeAutoStart());
+
         // Get the metronome pan value
         switch (mainActivityInterface.getPreferences().getMyPreferenceString("metronomePan","C")) {
             case "C":
@@ -257,6 +260,8 @@ public class MetronomeFragment extends Fragment {
             mainActivityInterface.getPreferences().setMyPreferenceBoolean("metronomeShowVisual",isChecked);
             mainActivityInterface.getMetronome().setVisualMetronome();
         });
+        myView.metronomeAutoStart.setOnCheckedChangeListener((compoundButton, isChecked) ->
+                mainActivityInterface.getMetronome().setMetronomeAutoStart(isChecked));
         myView.tapTempo.setOnClickListener(button -> tapTempo());
 
         // Set up a recurring task to check the isRunning status and update the button as required

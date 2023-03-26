@@ -5,7 +5,6 @@ import android.graphics.Canvas;
 import android.graphics.PointF;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
@@ -143,9 +142,6 @@ public class MyRecyclerView extends RecyclerView  implements RecyclerView.Smooth
 
     public void doSmoothScrollTo(RecyclerLayoutManager recyclerLayoutManager, int position) {
         try {
-            Log.d(TAG,"getScrollY():"+recyclerLayoutManager.getScrollY());
-            Log.d(TAG,"y="+recyclerLayoutManager.getTop(position));
-
             // Try to work out scrolling amount
             // Get the top of each view by taking running total of the heights
             // e.g. child 1 is at the height of child 0

@@ -888,6 +888,15 @@ public class PerformanceFragment extends Fragment {
                 mainActivityInterface.getAutoscroll().startAutoscroll();
             }
 
+            // Deal with the metronome
+            boolean metronomeWasRunning =  mainActivityInterface.getMetronome().getIsRunning();
+            if (metronomeWasRunning) {
+                mainActivityInterface.getMetronome().stopMetronome();
+            }
+            if (mainActivityInterface.getMetronome().getMetronomeAutoStart() && metronomeWasRunning) {
+                mainActivityInterface.getMetronome().startMetronome();
+            }
+
             // Deal with capo information (if required)
             mainActivityInterface.updateOnScreenInfo("capoShow");
             mainActivityInterface.dealWithCapo();
@@ -1150,7 +1159,6 @@ public class PerformanceFragment extends Fragment {
             if (mainActivityInterface.getPreferences().getMyPreferenceFloat("stageModeScale",0.8f) == 1.0f) {
                 myView.recyclerView.smoothScrollTo(getContext(),recyclerLayoutManager, position);
             } else {
-                Log.d(TAG,"scrolling to :"+position);
                 myView.recyclerView.doSmoothScrollTo(recyclerLayoutManager, position);
             }
         }
@@ -1166,7 +1174,6 @@ public class PerformanceFragment extends Fragment {
         } else if (mainActivityInterface.getMode().equals(mode_stage)) {
             new Handler().postDelayed(()-> {
                 stageSectionAdapter.clickOnSection(position);
-                Log.d(TAG,"Scroll to section " + position);
                 performanceShowSection(position);
             },50);
         }

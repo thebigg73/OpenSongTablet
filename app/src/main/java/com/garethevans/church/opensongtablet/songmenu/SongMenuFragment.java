@@ -22,7 +22,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
-import com.garethevans.church.opensongtablet.customviews.FastScroller;
 import com.garethevans.church.opensongtablet.databinding.MenuSongsBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
@@ -248,17 +247,6 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                 showActionDialog();
             }
         });
-        myView.songListRecyclerView.setFastScrollListener(new FastScroller.FastScrollListener() {
-            @Override
-            public void onFastScrollStart(@NonNull FastScroller fastScroller) {
-                myView.actionFAB.hide();
-            }
-
-            @Override
-            public void onFastScrollStop(@NonNull FastScroller fastScroller) {
-                myView.actionFAB.show();
-            }
-        });
         myView.songListRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
@@ -429,7 +417,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                 songListAdapter = new SongListAdapter(getContext(),
                         songsFound, SongMenuFragment.this);
                 myView.songListRecyclerView.setAdapter(songListAdapter);
-                myView.songListRecyclerView.setFastScrollEnabled(false);
+                //myView.songListRecyclerView.setFastScrollEnabled(false);
                 displayIndex();
                 myView.progressBar.setVisibility(View.GONE);
                 buttonsEnabled(true);
@@ -617,12 +605,6 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
             // Set up the spinners
             setUpExposedDropDowns();
 
-            // Check set checkbox header
-            if (mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuSetTicksShow",true)) {
-                myView.menuSongs.findViewById(R.id.setCheckTitle).setVisibility(View.VISIBLE);
-            } else {
-                myView.menuSongs.findViewById(R.id.setCheckTitle).setVisibility(View.GONE);
-            }
             // Set up page buttons
             setListeners();
 
@@ -634,6 +616,13 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                 executorService.execute(() -> {
                     Handler handler = new Handler(Looper.getMainLooper());
                     handler.post(() -> {
+
+                        Log.d(TAG,"ticksOn:"+mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuSetTicksShow",true));
+
+                        myView.menuSongs.findViewById(R.id.setCheckTitle).setVisibility(
+                                mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuSetTicksShow",true) ?
+                                        View.VISIBLE:View.GONE);
+
                         try {
                             songListAdapter.notifyItemRangeChanged(0, songListAdapter.getItemCount());
                         } catch (Exception e) {
