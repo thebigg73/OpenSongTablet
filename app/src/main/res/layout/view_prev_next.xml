@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nextPrev"
     android:layout_width="match_parent"
-    android:layout_height="96dp"
+    android:layout_height="wrap_content"
     android:minHeight="96dp">
 <LinearLayout
     android:id="@+id/nextPrevInfoLayout"
@@ -11,6 +11,7 @@
     android:layout_height="wrap_content"
     android:baselineAligned="false"
     android:paddingBottom="4dp"
+    android:layout_alignParentBottom="true"
     android:minHeight="48dp"
     android:orientation="horizontal">
 
@@ -80,6 +81,7 @@
         android:baselineAligned="false"
         android:paddingBottom="4dp"
         android:minHeight="48dp"
+        android:layout_alignParentBottom="true"
         android:orientation="horizontal">
 
     <FrameLayout

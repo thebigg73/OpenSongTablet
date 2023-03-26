@@ -49,14 +49,16 @@ public class MyFAB extends FrameLayout {
         a.recycle();
 
         myFABHolder.setOnClickListener(v -> {
-            myFAB.performClick();
-            myFAB.setPressed(true);
-            myFAB.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    myFAB.setPressed(false);
-                }
-            },300);
+            if (myFAB.getVisibility()==View.VISIBLE) {
+                myFAB.performClick();
+                myFAB.setPressed(true);
+                myFAB.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        myFAB.setPressed(false);
+                    }
+                }, 300);
+            }
         });
 
         setAnimationListeners();

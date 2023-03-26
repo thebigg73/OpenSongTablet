@@ -263,6 +263,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private Menu globalMenuItem;
     private Locale locale;
     private Bitmap screenShot;
+    private Runnable hideActionButtonRunnable;
 
     private Intent fileOpenIntent;
 
@@ -757,13 +758,19 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
     private void setListeners() {
         myView.actionFAB.setOnClickListener(v  -> {
+            if (hideActionButtonRunnable==null) {
+                setHideActionButtonRunnable();
+            }
+            myView.actionFAB.removeCallbacks(hideActionButtonRunnable);
             if (pageButtonActive) {
                 pageButtonActive = false;
                 // Reenable the page button after the animation time
                 Handler h = new Handler();
                 h.postDelayed(() -> pageButtonActive = true,pageButtons.getAnimationTime());
                 animatePageButtons();
-
+            }
+            if (!pageButtonActive && pageButtons.getPageButtonHide()) {
+                myView.actionFAB.postDelayed(hideActionButtonRunnable,3000);
             }
         });
         myView.actionFAB.setOnLongClickListener(view -> {
@@ -1230,6 +1237,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     public void hideActionButton(boolean hide) {
         runOnUiThread(() -> {
             if (hide) {
+                if (hideActionButtonRunnable!=null) {
+                    myView.actionFAB.removeCallbacks(hideActionButtonRunnable);
+                }
                 myView.actionFAB.setVisibility(View.GONE);
                 myView.pageButtonRight.bottomButtons.setVisibility(View.GONE);
                 myView.onScreenInfo.getInfo().setVisibility(View.GONE);
@@ -1238,6 +1248,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
             } else {
                 myView.actionFAB.setVisibility(View.VISIBLE);
+                if (hideActionButtonRunnable==null) {
+                    setHideActionButtonRunnable();
+                }
+                if (pageButtons.getPageButtonHide() && pageButtons.getPageButtonActivated()) {
+                    myView.actionFAB.postDelayed(hideActionButtonRunnable,3000);
+                }
                 myView.pageButtonRight.bottomButtons.setVisibility(View.VISIBLE);
                 pageButtons.animatePageButton(false);
                 myView.onScreenInfo.getInfo().setVisibility(View.VISIBLE);
@@ -1934,12 +1950,32 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 myView.onScreenInfo.updateAlpha(this,this);
                 break;
             case "showhide":
+                Log.d(TAG,"showhide");
                 myView.onScreenInfo.showHideViews(this);
+                if (pageButtons.getPageButtonHide() && !pageButtons.getPageButtonActivated()) {
+                    if (hideActionButtonRunnable==null) {
+                        setHideActionButtonRunnable();
+                    }
+                    myView.actionFAB.removeCallbacks(hideActionButtonRunnable);
+                    myView.actionFAB.show();
+                    myView.actionFAB.postDelayed(hideActionButtonRunnable,3000);
+                }
                 break;
             case "setpreferences":
                 myView.onScreenInfo.setPreferences(this,this);
                 break;
         }
+    }
+
+    private void setHideActionButtonRunnable() {
+        hideActionButtonRunnable = new Runnable() {
+            @Override
+            public void run() {
+                if (!pageButtons.getPageButtonActivated()) {
+                    myView.actionFAB.hide();
+                }
+            }
+        };
     }
 
     // Song processing

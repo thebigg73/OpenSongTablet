@@ -37,7 +37,7 @@ public class PageButtons {
     private ArrayList<Integer> drawableIds;
     private int pageButtonColor;
     private float pageButtonAlpha;
-    private boolean pageButtonMini;
+    private boolean pageButtonMini, pageButtonHide;
     private int pageButtonIconColor;
 
     // My buttons in the main activity
@@ -64,6 +64,7 @@ public class PageButtons {
         setPreferences();
 
         pageButtonMini = mainActivityInterface.getPreferences().getMyPreferenceBoolean("pageButtonMini",false);
+        pageButtonHide = mainActivityInterface.getPreferences().getMyPreferenceBoolean("pageButtonHide",false);
     }
 
 
@@ -133,6 +134,16 @@ public class PageButtons {
 
     }
 
+    public void setPageButtonHide(boolean pageButtonHide) {
+        this.pageButtonHide = pageButtonHide;
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean("pageButtonHide",pageButtonHide);
+    }
+    public boolean getPageButtonHide() {
+        return pageButtonHide;
+    }
+    public boolean getPageButtonActivated() {
+        return actionButton.getRotation()!=0;
+    }
     public void updateColors() {
         pageButtonColor = mainActivityInterface.getMyThemeColors().getPageButtonsSplitColor();
         pageButtonAlpha = mainActivityInterface.getMyThemeColors().getPageButtonsSplitAlpha();

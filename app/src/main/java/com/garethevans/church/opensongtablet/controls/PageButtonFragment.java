@@ -97,6 +97,9 @@ public class PageButtonFragment extends Fragment {
                     mainActivityInterface.miniPageButton(isChecked);
                 });
 
+                myView.pageButtonHide.setChecked(mainActivityInterface.getPageButtons().getPageButtonHide());
+                myView.pageButtonHide.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getPageButtons().setPageButtonHide(isChecked));
+
                 int opacity = (int)(mainActivityInterface.getMyThemeColors().getPageButtonsSplitAlpha()*100);
                 if (opacity<myView.opacity.getValueFrom()) {
                     opacity = (int)myView.opacity.getValueFrom();

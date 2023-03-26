@@ -29,7 +29,17 @@
                 android:id="@+id/pageButtonMini"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/small_buttons"/>
+                android:layout_marginTop="16dp"
+                android:text="@string/small_buttons"
+                android:hint="@string/small_buttons_info"/>
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                android:id="@+id/pageButtonHide"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:text="@string/autohide_page_button"
+                android:hint="@string/info_text_autohide_info"/>
 
             <TableRow style="@style/DividerLine" />
 
