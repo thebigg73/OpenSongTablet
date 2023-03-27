@@ -18,7 +18,6 @@ import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
@@ -84,14 +83,7 @@ public class PerformanceFragment extends Fragment {
         mainActivityInterface = (MainActivityInterface) context;
         actionInterface = (ActionInterface) context;
         displayInterface = (DisplayInterface) context;
-        mainActivityInterface.registerFragment(this,"Performance");
-        OnBackPressedCallback onBackPressedCallback = new OnBackPressedCallback(true) {
-            @Override
-            public void handleOnBackPressed() {
-                mainActivityInterface.onBackPressed();
-            }
-        };
-        requireActivity().getOnBackPressedDispatcher().addCallback(this, onBackPressedCallback);
+        mainActivityInterface.registerFragment(this, "Performance");
     }
 
     @Override
@@ -111,9 +103,16 @@ public class PerformanceFragment extends Fragment {
     }
     @Override
     public void onDestroyView() {
-        super.onDestroyView();
-        actionInterface.showSticky(false,true);
+        try {
+            stickyPopUp.closeSticky();
+            actionInterface.showSticky(false, true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        stickyPopUp.destroyPopup();
         myView = null;
+        stickyPopUp = null;
+        super.onDestroyView();
     }
 
     // The logic to start this fragment
@@ -1180,4 +1179,5 @@ public class PerformanceFragment extends Fragment {
             },50);
         }
     }
+
 }

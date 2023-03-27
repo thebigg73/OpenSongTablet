@@ -25,6 +25,8 @@ public class StickyPopUp {
     private int posX;
     private int posY;
     private int stickyWidth;
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
+    private final String TAG = "StickyPopUp";
 
     private final Context c;
     private final MainActivityInterface mainActivityInterface;
@@ -166,7 +168,11 @@ public class StickyPopUp {
 
     public void closeSticky() {
         if (floatWindow!=null && popupWindow!=null) {
-            floatWindow.post(() -> popupWindow.dismiss());
+            floatWindow.post(() -> {
+                if (popupWindow!=null) {
+                    popupWindow.dismiss();
+                }
+            });
         }
     }
 
@@ -182,6 +188,23 @@ public class StickyPopUp {
                 }
                 e.printStackTrace();
             }
+        }
+    }
+
+    public void destroyPopup() {
+        try {
+            if (popupWindow != null) {
+                popupWindow.dismiss();
+                popupWindow = null;
+            }
+            if (closeButton != null) {
+                closeButton = null;
+            }
+            if (floatWindow != null) {
+                floatWindow = null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
