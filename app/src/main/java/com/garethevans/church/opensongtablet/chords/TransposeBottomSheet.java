@@ -227,7 +227,7 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
             return newKey;
         } else {
             return string_Key + ": " + originalKey + "\n" +
-                    string_Transpose + ": " + newKey;
+                    string_Transpose + ": " + mainActivityInterface.getTranspose().convertToPreferredChord(newKey);
         }
     }
     private void setListeners() {

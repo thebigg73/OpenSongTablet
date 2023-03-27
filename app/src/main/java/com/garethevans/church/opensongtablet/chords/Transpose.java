@@ -277,25 +277,25 @@ public class Transpose {
         // Remove chord space adjustment indicators
         key = key.replace("»","").replace("«","");
 
-        if (key.equals("G#") && mainActivityInterface.getPreferences().getMyPreferenceBoolean("prefKeyAb",true)) {
+        if (key.equals("G#") && mainActivityInterface.getPreferences().getMyPreferenceBoolean("prefKey_Ab",true)) {
             key = "Ab";
-        } else if (key.equals("G#m") && mainActivityInterface.getPreferences().getMyPreferenceBoolean("prefKeyAbm",false)) {
+        } else if (key.equals("G#m") && mainActivityInterface.getPreferences().getMyPreferenceBoolean("prefKey_Abm",false)) {
             key = "Abm";
-        } else if (key.equals("A#")  && mainActivityInterface.getPreferences().getMyPreferenceBoolean("prefKeyBb",true)) {
+        } else if (key.equals("A#")  && mainActivityInterface.getPreferences().getMyPreferenceBoolean("prefKey_Bb",true)) {
             key = "Bb";
-        } else if (key.equals("A#m") && mainActivityInterface.getPreferences().getMyPreferenceBoolean("prefKeyBbm",true)) {
+        } else if (key.equals("A#m") && mainActivityInterface.getPreferences().getMyPreferenceBoolean("prefKey_Bbm",true)) {
             key = "Bbm";
-        } else if (key.equals("C#")  && mainActivityInterface.getPreferences().getMyPreferenceBoolean("prefKeyDb",false)) {
+        } else if (key.equals("C#")  && mainActivityInterface.getPreferences().getMyPreferenceBoolean("prefKey_Db",false)) {
             key = "Db";
-        } else if (key.equals("C#m") && mainActivityInterface.getPreferences().getMyPreferenceBoolean("prefKeyDbm",true)) {
+        } else if (key.equals("C#m") && mainActivityInterface.getPreferences().getMyPreferenceBoolean("prefKey_Dbm",true)) {
             key = "Dbm";
-        } else if (key.equals("D#")  && mainActivityInterface.getPreferences().getMyPreferenceBoolean("prefKeyEb",true)) {
+        } else if (key.equals("D#")  && mainActivityInterface.getPreferences().getMyPreferenceBoolean("prefKey_Eb",true)) {
             key = "Eb";
-        } else if (key.equals("D#m") && mainActivityInterface.getPreferences().getMyPreferenceBoolean("prefKeyEbm",true)) {
+        } else if (key.equals("D#m") && mainActivityInterface.getPreferences().getMyPreferenceBoolean("prefKey_Ebm",true)) {
             key = "Ebm";
-        } else if (key.equals("F#")  && mainActivityInterface.getPreferences().getMyPreferenceBoolean("prefKeyGb",false)) {
+        } else if (key.equals("F#")  && mainActivityInterface.getPreferences().getMyPreferenceBoolean("prefKey_Gb",false)) {
             key = "Gb";
-        } else if (key.equals("F#m") && mainActivityInterface.getPreferences().getMyPreferenceBoolean("prefKeyGbm",false)) {
+        } else if (key.equals("F#m") && mainActivityInterface.getPreferences().getMyPreferenceBoolean("prefKey_Gbm",false)) {
             key = "Gbm";
         }
 
@@ -303,15 +303,15 @@ public class Transpose {
     }
 
     private boolean keyUsesFlats(String testkey) {
-        return  (testkey.equals("Ab")  && mainActivityInterface.getPreferences().getMyPreferenceBoolean("prefKeyAb",true)) ||
-                (testkey.equals("Bb")  && mainActivityInterface.getPreferences().getMyPreferenceBoolean("prefKeyBb",true)) ||
-                (testkey.equals("Db")  && mainActivityInterface.getPreferences().getMyPreferenceBoolean("prefKeyDb",false)) ||
-                (testkey.equals("Eb")  && mainActivityInterface.getPreferences().getMyPreferenceBoolean("prefKeyEb",true)) ||
-                (testkey.equals("Gb")  && mainActivityInterface.getPreferences().getMyPreferenceBoolean("prefKeyGb",false)) ||
-                (testkey.equals("Bbm") && mainActivityInterface.getPreferences().getMyPreferenceBoolean("prefKeyBbm",true)) ||
-                (testkey.equals("Dbm") && mainActivityInterface.getPreferences().getMyPreferenceBoolean("prefKeyDbm",false)) ||
-                (testkey.equals("Ebm") && mainActivityInterface.getPreferences().getMyPreferenceBoolean("prefKeyEbm",true)) ||
-                (testkey.equals("Gbm") && mainActivityInterface.getPreferences().getMyPreferenceBoolean("prefKeyGbm",false)) ||
+        return  (testkey.equals("Ab")  && mainActivityInterface.getPreferences().getMyPreferenceBoolean("prefKey_Ab",true)) ||
+                (testkey.equals("Bb")  && mainActivityInterface.getPreferences().getMyPreferenceBoolean("prefKey_Bb",true)) ||
+                (testkey.equals("Db")  && mainActivityInterface.getPreferences().getMyPreferenceBoolean("prefKey_Db",false)) ||
+                (testkey.equals("Eb")  && mainActivityInterface.getPreferences().getMyPreferenceBoolean("prefKey_Eb",true)) ||
+                (testkey.equals("Gb")  && mainActivityInterface.getPreferences().getMyPreferenceBoolean("prefKey_Gb",false)) ||
+                (testkey.equals("Bbm") && mainActivityInterface.getPreferences().getMyPreferenceBoolean("prefKey_Bbm",true)) ||
+                (testkey.equals("Dbm") && mainActivityInterface.getPreferences().getMyPreferenceBoolean("prefKey_Dbm",false)) ||
+                (testkey.equals("Ebm") && mainActivityInterface.getPreferences().getMyPreferenceBoolean("prefKey_Ebm",true)) ||
+                (testkey.equals("Gbm") && mainActivityInterface.getPreferences().getMyPreferenceBoolean("prefKey_Gbm",false)) ||
                 testkey.equals("C") ||
                 testkey.equals("F") ||
                 testkey.equals("Dm") ||
@@ -881,6 +881,7 @@ public class Transpose {
 
     public String convertToPreferredChord(String chord) {
         // Changes Ab/G# to user's preference.  This sends out to another function which checks minor and major
+        // By default all major chords are set to true
         chord = swapToPrefChords("Ab","G#", chord, false);
         chord = swapToPrefChords("Bb","A#", chord, true);
         chord = swapToPrefChords("Db","C#", chord, false);
@@ -894,14 +895,14 @@ public class Transpose {
 
         if (chord.startsWith(flatOption+"m") || chord.startsWith(sharpOption+"m")) {
             // Check the minor chord first
-            if (mainActivityInterface.getPreferences().getMyPreferenceBoolean("prefKey"+flatOption+"m",defaultFlatMinor)) {
+            if (mainActivityInterface.getPreferences().getMyPreferenceBoolean("prefKey_"+flatOption+"m",defaultFlatMinor)) {
                 chord = chord.replace(sharpOption+"m", flatOption+"m");
             } else {
                 chord = chord.replace(flatOption+"m",sharpOption+"m");
             }
         } else if (chord.startsWith(flatOption) || chord.startsWith(sharpOption)) {
             // Now check the major chord
-            if (mainActivityInterface.getPreferences().getMyPreferenceBoolean("prefKey"+flatOption, true)) {
+            if (mainActivityInterface.getPreferences().getMyPreferenceBoolean("prefKey_"+flatOption, true)) {
                 chord = chord.replace(sharpOption, flatOption);
             } else {
                 chord = chord.replace(flatOption,sharpOption);
