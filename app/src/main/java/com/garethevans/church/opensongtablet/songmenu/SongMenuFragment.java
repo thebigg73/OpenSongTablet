@@ -7,7 +7,6 @@ import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -417,7 +416,6 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                 songListAdapter = new SongListAdapter(getContext(),
                         songsFound, SongMenuFragment.this);
                 myView.songListRecyclerView.setAdapter(songListAdapter);
-                //myView.songListRecyclerView.setFastScrollEnabled(false);
                 displayIndex();
                 myView.progressBar.setVisibility(View.GONE);
                 buttonsEnabled(true);
@@ -438,17 +436,12 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                 Set<String> setString = map.keySet();
                 List<String> indexList = new ArrayList<>(setString);
                 float tvSize = mainActivityInterface.getPreferences().getMyPreferenceFloat("songMenuAlphaIndexSize", 14.0f);
-                int padding = (int)(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, tvSize, getResources().getDisplayMetrics())*0.5f);
-                //int padding = (int)(tvSize/mainActivityInterface.getDisplayDensity())*2;
                 for (int p = 0; p < indexList.size(); p++) {
                     String index = indexList.get(p);
                     if (getActivity() != null) {
                         textView = (TextView) View.inflate(getActivity(), R.layout.view_alphabetical_list, null);
                         if (textView != null) {
                             textView.setTextSize(tvSize);
-                            //textView.setPadding(padding, padding, padding, padding);
-                            //textView.setMinimumWidth(14);
-                            //textView.setMinimumHeight(14);
                             textView.setText(index);
                             int finalP = p;
                             textView.setOnClickListener(view -> {

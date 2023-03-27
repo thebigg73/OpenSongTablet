@@ -15,6 +15,7 @@
             android:id="@+id/cardview_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:minHeight="48dp"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -22,7 +23,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_gravity="center_vertical">
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/cardview_title"
@@ -47,7 +49,7 @@
             <FrameLayout
                 android:id="@+id/cardview_setcheck_frame"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:minWidth="48dp"
                 android:minHeight="48dp">
             <com.google.android.material.checkbox.MaterialCheckBox
@@ -56,20 +58,17 @@
                 android:layout_height="match_parent"
                 android:paddingStart="24dp"
                 android:paddingEnd="24dp"
-                android:paddingTop="16dp"
-                android:paddingBottom="16dp"
-                android:layout_marginStart="0dp"
-                android:layout_marginEnd="0dp"
-                android:layout_marginTop="0dp"
-                android:layout_marginBottom="0dp"
                 android:checked="true"
-                android:minWidth="0dp"
-                android:minHeight="0dp"/>
+                android:minWidth="48dp"
+                android:minHeight="48dp"/>
             </FrameLayout>
         </LinearLayout>
 
         <TableRow style="@style/DividerLine"
-            android:layout_marginEnd="12dp" />
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginStart="12dp"/>
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>
