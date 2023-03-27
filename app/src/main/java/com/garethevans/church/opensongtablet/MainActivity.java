@@ -890,17 +890,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     displayAreYouSure("exit", exit_confirm, null,
                             Objects.requireNonNull(navController.getCurrentDestination()).getNavigatorName(),
                             navHostFragment, null);
-                } else {
-                    settingsOpen = true;
-                    super.onBackPressed();
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                super.onBackPressed();
             }
-        } else {
-            super.onBackPressed();
         }
+        super.onBackPressed();
     }
 
 
@@ -921,28 +916,42 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         NavigationUI.setupActionBarWithNavController(this,navController,appBarConfiguration);
         NavigationUI.setupWithNavController(myView.myToolbar, navController, appBarConfiguration);
         navController.addOnDestinationChangedListener((navController, navDestination, bundle) -> {
-            if (navDestination.getId()==R.id.performanceFragment ||
-                    navDestination.getId()==R.id.presenterFragment) {
-                settingsOpen = false;
-            } else if (navDestination.getId()==R.id.actionBarSettingsFragment) {
-                settingsOpen = true;
+            // IV - We set settingsOpen based on the navDestination
+            settingsOpen = !((navDestination.getId()==R.id.performanceFragment ||
+                    navDestination.getId()==R.id.presenterFragment));
+            Log.d(TAG, "navController.addOnDestinationChangedListener settingsOpen= " + settingsOpen);
+            // IV - We are changing so adjust option menu elements
+            if (globalMenuItem != null) {
+                // IV - To smooth teardown, we clear elements left to right
+                if (!settingsOpen && whichMode.equals(performance)) {
+                    myView.myToolbar.hideSongDetails(true);
+                }
+                myView.myToolbar.batteryholderVisibility(View.GONE, false);
+                updateToolbarHelp(null);
+                globalMenuItem.findItem(R.id.mirror_menu_item).setVisible(false);
+
+                // IV - To smooth build, we add elements right to left
+                if (settingsOpen) {
+                    globalMenuItem.findItem(R.id.settings_menu_item).setIcon(R.drawable.close);
+                    // IV - Other elements are added by the called fragment
+                } else {
+                    // IV - Top level of menu - song details are added by song load
+                    globalMenuItem.findItem(R.id.settings_menu_item).setIcon(R.drawable.settings_outline);
+                    updateCastIcon();
+                    if (getPreferences().getMyPreferenceBoolean("clockOn", true) ||
+                            getPreferences().getMyPreferenceBoolean("batteryTextOn", true) ||
+                            getPreferences().getMyPreferenceBoolean("batteryDialOn", true)) {
+                        myView.myToolbar.batteryholderVisibility(View.VISIBLE, true);
+                    }
+                    // IV - Song details are added by song load
+                }
+                myView.myToolbar.requestLayout();
             }
         });
     }
 
     @Override
     public void navigateToFragment(String deepLink, int id) {
-        if (globalMenuItem != null) {
-            // IV - To get smooth transitions we clear elements left to right
-            myView.myToolbar.setActionBar("");
-            myView.myToolbar.batteryholderVisibility(View.GONE, false);
-            globalMenuItem.findItem(R.id.help_menu_item).setVisible(false);
-            globalMenuItem.findItem(R.id.mirror_menu_item).setVisible(false);
-            // IV - Going to a settings fragment so set the 'close' icon
-            globalMenuItem.findItem(R.id.settings_menu_item).setIcon(R.drawable.close);
-            myView.myToolbar.requestLayout();
-        }
-
         // Either sent a deeplink string, or a fragment id
         lockDrawer(true);
         closeDrawer(true);  // Only the Performance and Presenter fragments allow this.  Switched on in these fragments
@@ -958,9 +967,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 e.printStackTrace();
             }
         });
-        if (id != R.id.setStorageLocationFragment && deepLink!=null && deepLink.equals(storage_change)) {
-            settingsOpen = true;
-        }
         showActionBar();
     }
     @Override
@@ -1321,6 +1327,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         showCase.singleShowCase(this, screenHelp, null, getString(R.string.help), false, "webHelp");
                     }
                 },50);
+            } else {
+                globalMenuItem.findItem(R.id.help_menu_item).setVisible(false);
             }
         }
     }
@@ -1442,34 +1450,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     // Settings and options menus
     @Override
     public boolean onPrepareOptionsMenu(@NonNull Menu menu) {
-        globalMenuItem = menu;
-        // IV - To smooth teardown, we clear elements left to right
-        if (!settingsOpen && whichMode.equals(performance)) {
-            myView.myToolbar.hideSongDetails(true);
-        }
-        myView.myToolbar.batteryholderVisibility(View.GONE, false);
-        if (!settingsOpen) {
-            globalMenuItem.findItem(R.id.help_menu_item).setVisible(false);
-        }
-        globalMenuItem.findItem(R.id.mirror_menu_item).setVisible(false);
-        myView.myToolbar.batteryholderVisibility(View.GONE, false);
-
-        // IV - To smooth build, we add elements right to left
-        // IV - Set 'settings'/'close' icon is set depending on settingOpen
-        globalMenuItem.findItem(R.id.settings_menu_item).setIcon(settingsOpen ? R.drawable.close : R.drawable.settings_outline);
-        myView.myToolbar.requestLayout();
-        if (!settingsOpen) {
-            updateCastIcon();
-            updateToolbarHelp(null);
-            if (getPreferences().getMyPreferenceBoolean("clockOn", true) ||
-                    getPreferences().getMyPreferenceBoolean("batteryTextOn", true) ||
-                    getPreferences().getMyPreferenceBoolean("batteryDialOn", true)) {
-                myView.myToolbar.batteryholderVisibility(View.VISIBLE, true);
-            }
-            if (whichMode.equals(performance)) {
-                updateToolbar(null);
-            }
-        }
         super.onPrepareOptionsMenu(menu);
         return true;
     }
@@ -1502,6 +1482,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         screenMirror.setOnClickListener(view -> startActivity(new Intent("android.settings.CAST_SETTINGS")));
         screenHelp = (ImageView) menu.findItem(R.id.help_menu_item).getActionView();
         screenHelp.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.help_outline));
+        globalMenuItem = menu;
+        // IV - Set 'settings'/'close' icon is set depending on settingOpen
+        globalMenuItem.findItem(R.id.settings_menu_item).setIcon(settingsOpen ? R.drawable.close : R.drawable.settings_outline);
+        updateCastIcon();
         return true;
     }
 
@@ -1511,10 +1495,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         // This is done whenever we have a settings window open
         if (myView != null) {
             if (lock) {
-                settingsOpen = true;
                 myView.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
             } else {
-                settingsOpen = false;
                 myView.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
             }
 
@@ -1966,12 +1948,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
 
     private void setHideActionButtonRunnable() {
-        hideActionButtonRunnable = new Runnable() {
-            @Override
-            public void run() {
-                if (!pageButtons.getPageButtonActivated()) {
-                    myView.actionFAB.hide();
-                }
+        hideActionButtonRunnable = () -> {
+            if (!pageButtons.getPageButtonActivated()) {
+                myView.actionFAB.hide();
             }
         };
     }
@@ -3089,7 +3068,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 performanceShowSection(i);
             }
         } else {
-            nearbyConnections.setWaitingForSectionChange(true);
             nearbyConnections.setPendingCurrentSection(i);
         }
     }
