@@ -27,7 +27,7 @@
         android:id="@+id/delete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/delete"
+        app:srcCompat="@drawable/delete"
         app:backgroundTint="@color/darkred"
         app:useCompatPadding="true"
         android:contentDescription="@string/delete" />

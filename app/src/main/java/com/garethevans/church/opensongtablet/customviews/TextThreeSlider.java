@@ -3,6 +3,7 @@ package com.garethevans.church.opensongtablet.customviews;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
@@ -76,9 +77,13 @@ public class TextThreeSlider extends LinearLayout {
         textOrNull(textLeft,leftText);
         textOrNull(textRight,rightText);
         textOrNull(textCenter,centerText);
-        imageLeft.setImageDrawable(leftDrawable);
-        imageRight.setImageDrawable(rightDrawable);
-        imageCenter.setImageDrawable(centerDrawable);
+
+        // To cope with KitKat not liking vector assets
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
+            imageLeft.setImageDrawable(leftDrawable);
+            imageRight.setImageDrawable(rightDrawable);
+            imageCenter.setImageDrawable(centerDrawable);
+        }
 
         textLeft.setOnClickListener(view -> slider.setValue(0));
         textCenter.setOnClickListener(view -> slider.setValue(1));

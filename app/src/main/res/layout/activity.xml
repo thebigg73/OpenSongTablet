@@ -82,7 +82,7 @@
                 android:layout_alignParentBottom="true"
                 app:fab_padding="16dp"
                 android:contentDescription="@string/action"
-                android:src="@drawable/plus"
+                app:srcCompat="@drawable/plus"
                 android:layout_marginTop="12dp"/>
 
 

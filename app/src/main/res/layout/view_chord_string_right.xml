@@ -2,7 +2,8 @@
 <FrameLayout android:id="@+id/string6"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ImageView
         android:layout_width="@dimen/string_width"
@@ -13,7 +14,7 @@
         android:paddingTop="0dp"
         android:paddingEnd="@dimen/string_padding"
         android:paddingBottom="0dp"
-        android:src="@drawable/line" />
+        app:srcCompat="@drawable/line" />
 
     <ImageView
         android:layout_width="@dimen/fret_width_half"
@@ -22,7 +23,7 @@
         android:contentDescription="@string/on"
         android:paddingStart="@dimen/string_padding"
         android:paddingEnd="0dp"
-        android:src="@drawable/line" />
+        app:srcCompat="@drawable/line" />
 
     <ImageView
         android:layout_width="@dimen/fret_width_half"
@@ -31,7 +32,7 @@
         android:contentDescription="@string/on"
         android:paddingStart="@dimen/string_padding"
         android:paddingEnd="0dp"
-        android:src="@drawable/line" />
+        app:srcCompat="@drawable/line" />
 
     <ImageView
         android:id="@+id/stringOn"
@@ -40,6 +41,6 @@
         android:layout_gravity="center"
         android:contentDescription="@string/on"
         android:padding="@dimen/fingering_padding"
-        android:src="@drawable/circle"
+        app:srcCompat="@drawable/circle"
         android:visibility="invisible" />
 </FrameLayout>

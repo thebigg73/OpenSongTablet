@@ -59,7 +59,7 @@
                         android:contentDescription="@string/media"
                         android:enabled="false"
                         android:padding="0dp"
-                        android:src="@drawable/play"
+                        app:srcCompat="@drawable/play"
                         android:tint="@color/colorAltSecondary"
                         app:backgroundTint="@color/colorAltPrimary"
                         app:fabCustomSize="16dp"

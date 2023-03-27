@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:contentDescription="@string/new_something"
-            android:src="@drawable/plus"
+            app:srcCompat="@drawable/plus"
             app:fabSize="mini"
             app:useCompatPadding="true" />
     </LinearLayout>

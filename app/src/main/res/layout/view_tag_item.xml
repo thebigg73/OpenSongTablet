@@ -43,6 +43,6 @@
             android:layout_alignParentEnd="true"
             app:fabSize="mini"
             android:contentDescription="@string/delete"
-            android:src="@drawable/delete" />
+            app:srcCompat="@drawable/delete" />
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

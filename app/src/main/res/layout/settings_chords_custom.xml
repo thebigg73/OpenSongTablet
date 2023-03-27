@@ -64,7 +64,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp"
                     android:contentDescription="@string/delete"
-                    android:src="@drawable/delete"
+                    app:srcCompat="@drawable/delete"
                     android:text="@string/delete"
                     app:fabSize="normal" />
 
@@ -75,7 +75,7 @@
                     android:layout_gravity="center"
                     android:layout_marginStart="8dp"
                     android:contentDescription="@string/new_something"
-                    android:src="@drawable/plus"
+                    app:srcCompat="@drawable/plus"
                     app:fabSize="normal" />
             </LinearLayout>
 

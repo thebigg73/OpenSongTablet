@@ -58,7 +58,7 @@
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="8dp"
                 android:contentDescription="@string/highlight"
-                android:src="@drawable/pencil"
+                app:srcCompat="@drawable/pencil"
                 app:fabSize="mini" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -71,7 +71,7 @@
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="8dp"
                 android:contentDescription="@string/highlight"
-                android:src="@drawable/highlighter"
+                app:srcCompat="@drawable/highlighter"
                 app:fabSize="mini" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -84,7 +84,7 @@
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="8dp"
                 android:contentDescription="@string/highlight"
-                android:src="@drawable/eraser"
+                app:srcCompat="@drawable/eraser"
                 app:fabSize="mini" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -97,7 +97,7 @@
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="8dp"
                 android:contentDescription="@string/highlight"
-                android:src="@drawable/undo"
+                app:srcCompat="@drawable/undo"
                 app:fabSize="mini" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -110,7 +110,7 @@
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="8dp"
                 android:contentDescription="@string/highlight"
-                android:src="@drawable/redo"
+                app:srcCompat="@drawable/redo"
                 app:fabSize="mini" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -123,7 +123,7 @@
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="8dp"
                 android:contentDescription="@string/highlight"
-                android:src="@drawable/delete"
+                app:srcCompat="@drawable/delete"
                 app:fabSize="mini"/>
         </LinearLayout>
     </HorizontalScrollView>

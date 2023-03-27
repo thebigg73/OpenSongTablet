@@ -92,7 +92,7 @@
             android:layout_gravity="bottom|end"
             android:layout_margin="16dp"
             android:contentDescription="@string/open"
-            android:src="@drawable/help_outline"
+            app:srcCompat="@drawable/help_outline"
             app:elevation="16dp"
             app:useCompatPadding="true" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

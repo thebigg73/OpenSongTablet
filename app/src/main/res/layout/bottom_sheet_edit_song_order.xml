@@ -76,7 +76,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:contentDescription="@string/delete"
-                    android:src="@drawable/delete" />
+                    app:srcCompat="@drawable/delete" />
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView

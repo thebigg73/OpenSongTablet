@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:paddingTop="4dp"
     android:paddingBottom="4dp">
@@ -49,7 +50,7 @@
         android:contentDescription="@string/set"
         android:paddingStart="16dp"
         android:paddingEnd="0dp"
-        android:src="@drawable/check"
+        app:srcCompat="@drawable/check"
         android:visibility="gone" />
 
     <FrameLayout

@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:padding="16dp"
-            android:src="@drawable/help_outline"
+            app:srcCompat="@drawable/help_outline"
             android:contentDescription="@string/help" />
     </LinearLayout>
 
@@ -137,6 +137,6 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:contentDescription="@string/information"
-        android:src="@drawable/information"
+        app:srcCompat="@drawable/information"
         app:useCompatPadding="true" />
 </RelativeLayout>

@@ -69,7 +69,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
             android:contentDescription="@string/back"
-            android:src="@drawable/undo" />
+            app:srcCompat="@drawable/undo" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/redoButton"
@@ -80,7 +80,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
             android:contentDescription="@string/next"
-            android:src="@drawable/redo" />
+            app:srcCompat="@drawable/redo" />
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -92,7 +92,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:contentDescription="@string/extra_settings"
-        android:src="@drawable/menu" />
+        app:srcCompat="@drawable/menu" />
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:layout_width="wrap_content"

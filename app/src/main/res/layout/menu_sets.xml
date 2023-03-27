@@ -51,7 +51,7 @@
             android:layout_gravity="bottom|end"
             app:fab_padding="10dp"
             android:contentDescription="@string/action"
-            android:src="@drawable/plus"
+            app:srcCompat="@drawable/plus"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

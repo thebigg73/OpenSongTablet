@@ -661,30 +661,32 @@ public class ImportOnlineFragment extends Fragment {
         // Make sure you remove the WebView from its parent view before doing anything.
         myView.webViewHolder.removeAllViews();
 
-        webView.clearHistory();
+        if (webView!=null) {
+            webView.clearHistory();
 
-        // NOTE: clears RAM cache, if you pass true, it will also clear the disk cache.
-        // Probably not a great idea to pass true if you have other WebViews still alive.
-        webView.clearCache(true);
+            // NOTE: clears RAM cache, if you pass true, it will also clear the disk cache.
+            // Probably not a great idea to pass true if you have other WebViews still alive.
+            webView.clearCache(true);
 
-        // Loading a blank page is optional, but will ensure that the WebView isn't doing anything when you destroy it.
-        webView.loadUrl("about:blank");
+            // Loading a blank page is optional, but will ensure that the WebView isn't doing anything when you destroy it.
+            webView.loadUrl("about:blank");
 
-        webView.onPause();
-        webView.removeAllViews();
-        webView.destroyDrawingCache();
+            webView.onPause();
+            webView.removeAllViews();
+            webView.destroyDrawingCache();
 
-        // NOTE: This pauses JavaScript execution for ALL WebViews,
-        // do not use if you have other WebViews still alive.
-        // If you create another WebView after calling this,
-        // make sure to call mWebView.resumeTimers().
-        webView.pauseTimers();
+            // NOTE: This pauses JavaScript execution for ALL WebViews,
+            // do not use if you have other WebViews still alive.
+            // If you create another WebView after calling this,
+            // make sure to call mWebView.resumeTimers().
+            webView.pauseTimers();
 
-        // NOTE: This can occasionally cause a segfault below API 17 (4.2)
-        webView.destroy();
+            // NOTE: This can occasionally cause a segfault below API 17 (4.2)
+            webView.destroy();
 
-        // Null out the reference so that you don't end up re-using it.
-        webView = null;
+            // Null out the reference so that you don't end up re-using it.
+            webView = null;
+        }
     }
 
     @Override

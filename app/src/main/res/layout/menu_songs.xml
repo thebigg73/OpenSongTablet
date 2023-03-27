@@ -97,7 +97,7 @@
             android:layout_alignParentBottom="true"
             app:fab_padding="10dp"
             android:contentDescription="@string/action"
-            android:src="@drawable/plus"/>
+            app:srcCompat="@drawable/plus"/>
 
     </RelativeLayout>
 

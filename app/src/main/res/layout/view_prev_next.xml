@@ -95,7 +95,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="start|bottom"
-        android:src="@drawable/arrow_left"
+        app:srcCompat="@drawable/arrow_left"
         app:fab_padding="12dp"/>
     </FrameLayout>
 
@@ -110,7 +110,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
-        android:src="@drawable/arrow_right"
+        app:srcCompat="@drawable/arrow_right"
         app:fab_padding="12dp"/>
     </FrameLayout>
     </LinearLayout>

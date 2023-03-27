@@ -22,7 +22,7 @@
         android:alpha="0.1"
         android:contentDescription="@string/app_name"
         android:scaleType="fitXY"
-        android:src="@drawable/logo"
+        app:srcCompat="@drawable/logo"
         tools:ignore="ImageContrastCheck" />
 
     <!-- Where we draw the test sections to get sizes -->

@@ -18,7 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/piano"
-            android:src="@drawable/piano_note_white"
+            app:srcCompat="@drawable/piano_note_white"
             app:backgroundTint="@color/white" />
 
         <ImageView
@@ -26,7 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/piano"
-            android:src="@drawable/piano_note_white"
+            app:srcCompat="@drawable/piano_note_white"
             app:backgroundTint="@color/white" />
 
         <ImageView
@@ -34,7 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/piano"
-            android:src="@drawable/piano_note_white"
+            app:srcCompat="@drawable/piano_note_white"
             app:backgroundTint="@color/white" />
 
         <ImageView
@@ -42,7 +42,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/piano"
-            android:src="@drawable/piano_note_white"
+            app:srcCompat="@drawable/piano_note_white"
             app:backgroundTint="@color/white" />
 
         <ImageView
@@ -50,7 +50,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/piano"
-            android:src="@drawable/piano_note_white"
+            app:srcCompat="@drawable/piano_note_white"
             app:backgroundTint="@color/white" />
 
         <ImageView
@@ -58,14 +58,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/piano"
-            android:src="@drawable/piano_note_white" />
+            app:srcCompat="@drawable/piano_note_white" />
 
         <ImageView
             android:id="@+id/b0"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/piano"
-            android:src="@drawable/piano_note_white"
+            app:srcCompat="@drawable/piano_note_white"
             app:backgroundTint="@color/white" />
 
         <ImageView
@@ -73,7 +73,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/piano"
-            android:src="@drawable/piano_note_white"
+            app:srcCompat="@drawable/piano_note_white"
             app:backgroundTint="@color/white" />
 
         <ImageView
@@ -81,7 +81,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/piano"
-            android:src="@drawable/piano_note_white"
+            app:srcCompat="@drawable/piano_note_white"
             app:backgroundTint="@color/white" />
 
         <ImageView
@@ -89,7 +89,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/piano"
-            android:src="@drawable/piano_note_white"
+            app:srcCompat="@drawable/piano_note_white"
             app:backgroundTint="@color/white" />
 
         <ImageView
@@ -97,7 +97,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/piano"
-            android:src="@drawable/piano_note_white"
+            app:srcCompat="@drawable/piano_note_white"
             app:backgroundTint="@color/white" />
 
         <ImageView
@@ -105,7 +105,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/piano"
-            android:src="@drawable/piano_note_white"
+            app:srcCompat="@drawable/piano_note_white"
             app:backgroundTint="@color/white" />
 
         <ImageView
@@ -113,7 +113,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/piano"
-            android:src="@drawable/piano_note_white"
+            app:srcCompat="@drawable/piano_note_white"
             app:backgroundTint="@color/white" />
 
         <ImageView
@@ -121,7 +121,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/piano"
-            android:src="@drawable/piano_note_white"
+            app:srcCompat="@drawable/piano_note_white"
             app:backgroundTint="@color/white" />
 
         <ImageView
@@ -129,7 +129,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/piano"
-            android:src="@drawable/piano_note_white"
+            app:srcCompat="@drawable/piano_note_white"
             app:backgroundTint="@color/white" />
 
         <ImageView
@@ -137,7 +137,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/piano"
-            android:src="@drawable/piano_note_white"
+            app:srcCompat="@drawable/piano_note_white"
             app:backgroundTint="@color/white" />
 
         <ImageView
@@ -145,7 +145,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/piano"
-            android:src="@drawable/piano_note_white"
+            app:srcCompat="@drawable/piano_note_white"
             app:backgroundTint="@color/white" />
 
     </LinearLayout>
@@ -165,7 +165,7 @@
             android:layout_marginStart="@dimen/piano_black_space_one"
             android:layout_marginTop="1dp"
             android:contentDescription="@string/piano"
-            android:src="@drawable/piano_note_black" />
+            app:srcCompat="@drawable/piano_note_black" />
 
         <ImageView
             android:id="@+id/dsharp0"
@@ -174,7 +174,7 @@
             android:layout_marginStart="@dimen/piano_black_space_half"
             android:layout_marginTop="1dp"
             android:contentDescription="@string/piano"
-            android:src="@drawable/piano_note_black" />
+            app:srcCompat="@drawable/piano_note_black" />
 
         <ImageView
             android:id="@+id/fsharp0"
@@ -183,7 +183,7 @@
             android:layout_marginStart="@dimen/piano_black_space_two"
             android:layout_marginTop="1dp"
             android:contentDescription="@string/piano"
-            android:src="@drawable/piano_note_black" />
+            app:srcCompat="@drawable/piano_note_black" />
 
         <ImageView
             android:id="@+id/gsharp0"
@@ -192,7 +192,7 @@
             android:layout_marginStart="@dimen/piano_black_space_half"
             android:layout_marginTop="1dp"
             android:contentDescription="@string/piano"
-            android:src="@drawable/piano_note_black" />
+            app:srcCompat="@drawable/piano_note_black" />
 
         <ImageView
             android:id="@+id/asharp0"
@@ -201,7 +201,7 @@
             android:layout_marginStart="@dimen/piano_black_space_half"
             android:layout_marginTop="1dp"
             android:contentDescription="@string/piano"
-            android:src="@drawable/piano_note_black" />
+            app:srcCompat="@drawable/piano_note_black" />
 
         <ImageView
             android:id="@+id/csharp1"
@@ -210,7 +210,7 @@
             android:layout_marginStart="@dimen/piano_black_space_two"
             android:layout_marginTop="1dp"
             android:contentDescription="@string/piano"
-            android:src="@drawable/piano_note_black" />
+            app:srcCompat="@drawable/piano_note_black" />
 
         <ImageView
             android:id="@+id/dsharp1"
@@ -219,7 +219,7 @@
             android:layout_marginStart="@dimen/piano_black_space_half"
             android:layout_marginTop="1dp"
             android:contentDescription="@string/piano"
-            android:src="@drawable/piano_note_black" />
+            app:srcCompat="@drawable/piano_note_black" />
 
         <ImageView
             android:id="@+id/fsharp1"
@@ -228,7 +228,7 @@
             android:layout_marginStart="@dimen/piano_black_space_two"
             android:layout_marginTop="1dp"
             android:contentDescription="@string/piano"
-            android:src="@drawable/piano_note_black" />
+            app:srcCompat="@drawable/piano_note_black" />
 
         <ImageView
             android:id="@+id/gsharp1"
@@ -237,7 +237,7 @@
             android:layout_marginStart="@dimen/piano_black_space_half"
             android:layout_marginTop="1dp"
             android:contentDescription="@string/piano"
-            android:src="@drawable/piano_note_black" />
+            app:srcCompat="@drawable/piano_note_black" />
 
         <ImageView
             android:id="@+id/asharp1"
@@ -246,7 +246,7 @@
             android:layout_marginStart="@dimen/piano_black_space_half"
             android:layout_marginTop="1dp"
             android:contentDescription="@string/piano"
-            android:src="@drawable/piano_note_black" />
+            app:srcCompat="@drawable/piano_note_black" />
 
         <ImageView
             android:id="@+id/csharp2"
@@ -255,7 +255,7 @@
             android:layout_marginStart="@dimen/piano_black_space_two"
             android:layout_marginTop="1dp"
             android:contentDescription="@string/piano"
-            android:src="@drawable/piano_note_black" />
+            app:srcCompat="@drawable/piano_note_black" />
 
         <ImageView
             android:id="@+id/dsharp2"
@@ -264,7 +264,7 @@
             android:layout_marginStart="@dimen/piano_black_space_half"
             android:layout_marginTop="1dp"
             android:contentDescription="@string/piano"
-            android:src="@drawable/piano_note_black" />
+            app:srcCompat="@drawable/piano_note_black" />
 
     </LinearLayout>
 </RelativeLayout>

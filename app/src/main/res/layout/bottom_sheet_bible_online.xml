@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:contentDescription="@string/back"
-            android:src="@drawable/arrow_left"
+            app:srcCompat="@drawable/arrow_left"
             app:fabSize="mini" />
 
         <FrameLayout
@@ -53,7 +53,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:contentDescription="@string/back"
-            android:src="@drawable/close"
+            app:srcCompat="@drawable/close"
             app:backgroundTint="@color/red"
             app:fabSize="mini" />
     </LinearLayout>

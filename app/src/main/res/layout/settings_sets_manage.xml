@@ -47,7 +47,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/new_category"
-                    android:src="@drawable/plus"
+                    app:srcCompat="@drawable/plus"
                     android:layout_marginStart="8dp"
                     android:layout_gravity="center_vertical"
                     app:useCompatPadding="false" />
