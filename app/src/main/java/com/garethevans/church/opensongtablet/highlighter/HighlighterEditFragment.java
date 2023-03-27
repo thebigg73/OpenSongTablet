@@ -21,6 +21,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -121,11 +122,11 @@ public class HighlighterEditFragment extends Fragment {
         if (getContext()!=null) {
             buttonActive = ContextCompat.getColor(getContext(), R.color.colorSecondary);
             buttonInactive = ContextCompat.getColor(getContext(), R.color.colorAltPrimary);
-            whiteCheck = ContextCompat.getDrawable(getContext(), R.drawable.check);
+            whiteCheck = VectorDrawableCompat.create(getResources(), R.drawable.check, getContext().getTheme());
             if (whiteCheck != null) {
                 whiteCheck.mutate();
             }
-            blackCheck = ContextCompat.getDrawable(getContext(), R.drawable.check);
+            blackCheck = VectorDrawableCompat.create(getResources(), R.drawable.check, getContext().getTheme());
             if (blackCheck != null) {
                 blackCheck.setColorFilter(Color.BLACK, PorterDuff.Mode.SRC_IN);
             }

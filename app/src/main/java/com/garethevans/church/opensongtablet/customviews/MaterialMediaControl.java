@@ -8,7 +8,7 @@ import android.util.AttributeSet;
 import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
-import androidx.core.content.res.ResourcesCompat;
+import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
@@ -51,8 +51,8 @@ public class MaterialMediaControl extends LinearLayout {
         playbackSlider = findViewById(R.id.playbackSlider);
         playbackStartStop = findViewById(R.id.playbackStartStop);
         playbackStartStop.setOnClickListener(view -> startStop());
-        startDrawable = ResourcesCompat.getDrawable(c.getResources(),R.drawable.play,null);
-        stopDrawable = ResourcesCompat.getDrawable(c.getResources(),R.drawable.stop,null);
+        startDrawable = VectorDrawableCompat.create(c.getResources(),R.drawable.play,null);
+        stopDrawable = VectorDrawableCompat.create(c.getResources(),R.drawable.stop,null);
         checkEnabled();
     }
 

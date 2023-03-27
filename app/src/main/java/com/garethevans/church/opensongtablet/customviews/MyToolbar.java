@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -184,6 +185,7 @@ public class MyToolbar extends MaterialToolbar {
                 mainActivityInterface.getCurrentSet().setIndexSongInSet(-1);
             }
 
+            Log.d(TAG,"title:"+title+"  song().getTitle():"+mainActivityInterface.getSong().getTitle());
             if (title != null && mainActivityInterface.getSong().getTitle() != null) {
                 title.setTextSize(mainsize);
                 String text = mainActivityInterface.getSong().getTitle();

@@ -14,7 +14,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import androidx.core.content.ContextCompat;
+import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
@@ -495,13 +495,17 @@ public class ChordDisplayProcessing {
         Drawable drawable;
         if (imageView!=null) {
             if (on && note.contains("#")) {
-                drawable = ContextCompat.getDrawable(c, R.drawable.piano_note_black_on);
+                //drawable = ContextCompat.getDrawable(c, R.drawable.piano_note_black_on);
+                drawable = VectorDrawableCompat.create(c.getResources(),R.drawable.piano_note_black_on,c.getTheme());
             } else if (!on && note.contains("#")) {
-                drawable = ContextCompat.getDrawable(c, R.drawable.piano_note_black);
+                //drawable = ContextCompat.getDrawable(c, R.drawable.piano_note_black);
+                drawable = VectorDrawableCompat.create(c.getResources(),R.drawable.piano_note_black,c.getTheme());
             } else if (on && !note.contains("#")) {
-                drawable = ContextCompat.getDrawable(c, R.drawable.piano_note_white_on);
+                //drawable = ContextCompat.getDrawable(c, R.drawable.piano_note_white_on);
+                drawable = VectorDrawableCompat.create(c.getResources(),R.drawable.piano_note_white_on,c.getTheme());
             } else {
-                drawable = ContextCompat.getDrawable(c, R.drawable.piano_note_white);
+                //drawable = ContextCompat.getDrawable(c, R.drawable.piano_note_white);
+                drawable = VectorDrawableCompat.create(c.getResources(),R.drawable.piano_note_white,c.getTheme());
             }
             imageView.setImageDrawable(drawable);
         }

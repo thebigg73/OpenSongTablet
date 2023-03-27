@@ -11,11 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.MenuSetsBinding;
@@ -66,7 +66,7 @@ public class SetMenuFragment extends Fragment {
         myView.myRecyclerView.setVisibility(View.GONE);
         myView.progressBar.setVisibility(View.VISIBLE);
         if (getContext()!=null) {
-            myView.setTitle.setImageView(ContextCompat.getDrawable(getContext(), R.drawable.asterisk), Color.WHITE);
+            myView.setTitle.setImageView(VectorDrawableCompat.create(getResources(), R.drawable.asterisk, getContext().getTheme()), Color.WHITE);
             myView.setTitle.getImageView().setVisibility(View.GONE);
         }
         ExecutorService executorService = Executors.newSingleThreadExecutor();

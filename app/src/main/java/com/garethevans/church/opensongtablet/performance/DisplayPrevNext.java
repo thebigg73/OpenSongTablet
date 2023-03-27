@@ -7,8 +7,8 @@ import android.net.Uri;
 import android.view.View;
 import android.widget.RelativeLayout;
 
-import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.MyFAB;
@@ -348,8 +348,8 @@ public class DisplayPrevNext {
         int buttonIconColor = mainActivityInterface.getMyThemeColors().getExtraInfoTextColor();
         prev.setIconTint(ColorStateList.valueOf(buttonIconColor));
         next.setIconTint(ColorStateList.valueOf(buttonIconColor));
-        Drawable leftArrow = ContextCompat.getDrawable(c, R.drawable.arrow_left);
-        Drawable rightArrow = ContextCompat.getDrawable(c, R.drawable.arrow_right);
+        Drawable leftArrow = VectorDrawableCompat.create(c.getResources(), R.drawable.arrow_left,c.getTheme());
+        Drawable rightArrow = VectorDrawableCompat.create(c.getResources(), R.drawable.arrow_right,c.getTheme());
         if (leftArrow!=null) {
             DrawableCompat.setTint(leftArrow, buttonIconColor);
             prevFAB.setImageDrawable(leftArrow);

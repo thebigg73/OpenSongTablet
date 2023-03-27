@@ -14,8 +14,8 @@ import android.widget.CheckBox;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.StorageBackupBinding;
@@ -120,7 +120,7 @@ public class BackupOSBFragment extends Fragment {
 
                 myView.createBackupFAB.setText(string_export);
                 if (getContext()!=null) {
-                    myView.createBackupFAB.setIcon(ContextCompat.getDrawable(getContext(), R.drawable.database_export));
+                    myView.createBackupFAB.setIcon(VectorDrawableCompat.create(getResources(), R.drawable.database_export, getContext().getTheme()));
                 }
                 myView.createBackupFAB.setOnClickListener(v -> doSave());
 

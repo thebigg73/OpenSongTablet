@@ -9,10 +9,10 @@ import android.graphics.drawable.Drawable;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.LinearLayout;
 
-import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.ViewCompat;
+import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.MyFAB;
@@ -356,7 +356,8 @@ public class PageButtons {
         // If this is the main page button, set it's drawable
         Drawable drawable = fab.getDrawable();
         if (drawable==null && buttonNum==-1) {
-            drawable = ContextCompat.getDrawable(c, R.drawable.plus);
+            //drawable = ContextCompat.getDrawable(c, R.drawable.plus);
+            drawable = VectorDrawableCompat.create(c.getResources(),R.drawable.plus,c.getTheme());
             if (drawable!=null) {
                 DrawableCompat.setTint(drawable, pageButtonIconColor);
                 fab.setImageDrawable(drawable);

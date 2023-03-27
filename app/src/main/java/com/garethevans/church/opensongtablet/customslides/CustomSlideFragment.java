@@ -27,8 +27,8 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.SettingsCustomSlideBinding;
@@ -297,7 +297,7 @@ public class CustomSlideFragment extends Fragment {
                 }
                 if (!mainActivityInterface.getStorageAccess().uriExists(uri)) {
                     if (getContext()!=null) {
-                        Drawable notfound = ContextCompat.getDrawable(getContext(), R.drawable.warning);
+                        Drawable notfound = VectorDrawableCompat.create(getResources(), R.drawable.warning, getContext().getTheme());
                         thumbnail.setImageDrawable(notfound);
                     }
                 } else {

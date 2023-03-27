@@ -15,8 +15,8 @@ import android.widget.CheckBox;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
@@ -160,7 +160,7 @@ public class SetManageFragment extends Fragment {
                 myView.setCategory.setText(category);
                 myView.loadorsaveButton.setText(save_string);
                 if (getContext()!=null) {
-                    myView.loadorsaveButton.setIcon(ContextCompat.getDrawable(getContext(), R.drawable.save));
+                    myView.loadorsaveButton.setIcon(VectorDrawableCompat.create(getResources(), R.drawable.save, getContext().getTheme()));
                 }
                 myView.loadorsaveButton.setOnClickListener(v -> saveSet());
                 break;
@@ -177,7 +177,7 @@ public class SetManageFragment extends Fragment {
                 myView.setCategory.setText(category);
                 myView.loadorsaveButton.setText(rename_string);
                 if (getContext()!=null) {
-                    myView.loadorsaveButton.setIcon(ContextCompat.getDrawable(getContext(), R.drawable.save));
+                    myView.loadorsaveButton.setIcon(VectorDrawableCompat.create(getResources(), R.drawable.save, getContext().getTheme()));
                 }
                 myView.loadorsaveButton.setOnClickListener(v -> renameSet());
                 break;
@@ -193,7 +193,7 @@ public class SetManageFragment extends Fragment {
                 myView.setCategory.setVisibility(View.VISIBLE);
                 myView.loadorsaveButton.setText(delete_string);
                 if (getContext()!=null) {
-                    myView.loadorsaveButton.setIcon(ContextCompat.getDrawable(getContext(), R.drawable.delete));
+                    myView.loadorsaveButton.setIcon(VectorDrawableCompat.create(getResources(), R.drawable.delete, getContext().getTheme()));
                 }
                 myView.loadorsaveButton.setOnClickListener(v -> deleteSet());
                 break;
@@ -209,7 +209,7 @@ public class SetManageFragment extends Fragment {
                 myView.setLoadInfo2.setText(set_saved_not_current_string);
                 myView.loadorsaveButton.setText(export_string);
                 if (getContext()!=null) {
-                    myView.loadorsaveButton.setIcon(ContextCompat.getDrawable(getContext(), R.drawable.share));
+                    myView.loadorsaveButton.setIcon(VectorDrawableCompat.create(getResources(), R.drawable.share, getContext().getTheme()));
                 }
                 myView.loadorsaveButton.setOnClickListener(v -> exportSet());
                 break;
@@ -225,7 +225,7 @@ public class SetManageFragment extends Fragment {
                 myView.setLoadInfo2.setVisibility(View.VISIBLE);
                 myView.loadorsaveButton.setText(load_string);
                 if (getContext()!=null) {
-                    myView.loadorsaveButton.setIcon(ContextCompat.getDrawable(getContext(), R.drawable.save));
+                    myView.loadorsaveButton.setIcon(VectorDrawableCompat.create(getResources(), R.drawable.save, getContext().getTheme()));
                 }
                 myView.loadorsaveButton.setOnClickListener(v -> loadSet());
                 break;

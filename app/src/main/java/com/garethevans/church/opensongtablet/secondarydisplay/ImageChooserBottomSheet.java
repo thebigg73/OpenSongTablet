@@ -24,6 +24,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -123,7 +124,7 @@ public class ImageChooserBottomSheet extends BottomSheetDialogFragment {
                 }
             } else {
                 if (uri == null) {
-                    Glide.with(getContext()).load(ContextCompat.getDrawable(getContext(), R.drawable.image)).apply(options).into(view);
+                    Glide.with(getContext()).load(VectorDrawableCompat.create(getResources(), R.drawable.image, getContext().getTheme())).apply(options).into(view);
                 } else {
                     Glide.with(getContext()).load(uri).apply(options).into(view);
                 }

@@ -13,7 +13,7 @@ import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
+import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 
 import com.garethevans.church.opensongtablet.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -112,7 +112,8 @@ public class MyFAB extends FrameLayout {
     }
 
     public void setImageDrawable(int drawableInt) {
-        Drawable drawable = ContextCompat.getDrawable(getContext(),drawableInt);
+        //Drawable drawable = ContextCompat.getDrawable(getContext(),drawableInt);
+        Drawable drawable = VectorDrawableCompat.create(getResources(),drawableInt, getContext().getTheme());
         myFAB.setImageDrawable(drawable);
     }
 
