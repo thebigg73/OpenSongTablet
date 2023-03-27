@@ -28,7 +28,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.GravityCompat;
 import androidx.core.view.ViewCompat;
@@ -42,6 +41,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.garethevans.church.opensongtablet.abcnotation.ABCNotation;
@@ -299,6 +299,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             } else if (nearbyConnections.getUsingNearby() && !nearbyConnections.getIsHost()) {
                 nearbyConnections.doTempDiscover();
             }
+
+            // Make sure the song title is there
+            updateToolbar(null);
 
         } else {
             rebooted = false;
@@ -957,6 +960,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         myView.myToolbar.batteryholderVisibility(View.VISIBLE, true);
                     }
                     // IV - Song details are added by song load
+                    // GE onResuming (open cast and return), not called, so quick check is worthwhile
+                    updateToolbar(null);
                 }
                 myView.myToolbar.requestLayout();
             }
@@ -1491,10 +1496,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.mainactivitymenu, menu);
         screenMirror = (ImageView) menu.findItem(R.id.mirror_menu_item).getActionView();
-        screenMirror.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.cast));
+        screenMirror.setImageDrawable(VectorDrawableCompat.create(getResources(),R.drawable.cast,getTheme()));
         screenMirror.setOnClickListener(view -> startActivity(new Intent("android.settings.CAST_SETTINGS")));
         screenHelp = (ImageView) menu.findItem(R.id.help_menu_item).getActionView();
-        screenHelp.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.help_outline));
+        screenHelp.setImageDrawable(VectorDrawableCompat.create(getResources(),R.drawable.help_outline,getTheme()));
         globalMenuItem = menu;
         // IV - Set 'settings'/'close' icon is set depending on settingOpen
         globalMenuItem.findItem(R.id.settings_menu_item).setIcon(settingsOpen ? R.drawable.close : R.drawable.settings_outline);
@@ -3389,9 +3394,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             } else {
                 Drawable drawable;
                 if (secondaryDisplays != null && connectedDisplays.length > 0) {
-                    drawable = ContextCompat.getDrawable(this, R.drawable.cast_connected);
+                    drawable = VectorDrawableCompat.create(getResources(),R.drawable.cast_connected,getTheme());
+                    //drawable = ContextCompat.getDrawable(this, R.drawable.cast_connected);
                 } else {
-                    drawable = ContextCompat.getDrawable(this, R.drawable.cast);
+                    drawable = VectorDrawableCompat.create(getResources(),R.drawable.cast,getTheme());
+                    //drawable = ContextCompat.getDrawable(this, R.drawable.cast);
                 }
                 globalMenuItem.findItem(R.id.mirror_menu_item).setIcon(drawable);
                 globalMenuItem.findItem(R.id.mirror_menu_item).setVisible(true);
