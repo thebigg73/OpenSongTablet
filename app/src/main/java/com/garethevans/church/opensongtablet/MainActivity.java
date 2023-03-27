@@ -288,6 +288,18 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             songListBuildIndex.setIndexComplete(savedInstanceState.getBoolean("indexComplete", false));
             fullIndexRequired = !songListBuildIndex.getIndexComplete();
 
+            nearbyConnections = getNearbyConnections();
+            nearbyConnections.setIsHost(savedInstanceState.getBoolean("isHost",false));
+            nearbyConnections.setUsingNearby(savedInstanceState.getBoolean("usingNearby",false));
+            nearbyConnections.setDiscoveredEndpoints(savedInstanceState.getStringArrayList("discoveredEndpoints"));
+            nearbyConnections.setConnectedEndpoints(savedInstanceState.getStringArrayList("connectedEndpoints"));
+            // If we were using Nearby, try to start it again
+            if (nearbyConnections.getUsingNearby() && nearbyConnections.getIsHost()) {
+                nearbyConnections.doTempAdvertise();
+            } else if (nearbyConnections.getUsingNearby() && !nearbyConnections.getIsHost()) {
+                nearbyConnections.doTempDiscover();
+            }
+
         } else {
             rebooted = false;
         }
@@ -893,9 +905,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+                super.onBackPressed();
             }
         }
-        super.onBackPressed();
+
     }
 
 
@@ -3213,6 +3226,17 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         //songsFound = songMenuFragment.getSongs();
         outState.putBoolean("bootUpCompleted",bootUpCompleted);
         outState.putBoolean("indexComplete",songListBuildIndex.getIndexComplete());
+
+        // If we were using nearby, keep a reference of known devices and a call to restart it
+        if (nearbyConnections.getUsingNearby() && nearbyConnections.hasValidConnections()) {
+            // Note we were using
+            outState.putBoolean("usingNearby",nearbyConnections.getUsingNearby());
+            // Are we a host or client?
+            outState.putBoolean("isHost",nearbyConnections.getIsHost());
+            // What connections did we have
+            outState.putStringArrayList("discoveredEndpoints",nearbyConnections.getDiscoveredEndpoints());
+            outState.putStringArrayList("connectedEndpoints",nearbyConnections.getConnectedEndpoints());
+        }
         super.onSaveInstanceState(outState);
         Log.d(TAG,"bootupcompleted:"+bootUpCompleted);
         Log.d(TAG,"indexComplete:"+songListBuildIndex.getIndexComplete());
@@ -3248,8 +3272,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     protected void onStop() {
-        // Turn off nearby
-        nearbyConnections.turnOffNearby();
+        Log.d(TAG,"onStop()");
+
         // Stop pad timers
         if (pad != null) {
             pad.stopPad();
@@ -3288,6 +3312,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         if (showToast!=null) {
             showToast.kill();
         }
+        Log.d(TAG,"onDestroy");
+
+        // Turn off nearby
+        nearbyConnections.turnOffNearby();
+
+        // Keep a reference to connections if needed as bundle
+
         super.onDestroy();
     }
 

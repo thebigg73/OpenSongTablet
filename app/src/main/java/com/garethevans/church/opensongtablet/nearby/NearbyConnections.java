@@ -62,8 +62,9 @@ public class NearbyConnections implements NearbyInterface {
             autoscrolldecrease = "___autoscrolldecrease___",
             songTag = "_xx____xx_", endpointSplit = "__",
             serviceId = "com.garethevans.church.opensongtablet";
-    private final ArrayList<String> connectedEndpoints;  // CODE_DeviceName - currently connected
-    private final ArrayList<String> discoveredEndpoints; // CODE__DeviceName - permission already given
+    private int countDiscovery = 0, countAdvertise = 0;
+    private ArrayList<String> connectedEndpoints;  // CODE_DeviceName - currently connected
+    private ArrayList<String> discoveredEndpoints; // CODE__DeviceName - permission already given
     private final NearbyReturnActionsInterface nearbyReturnActionsInterface;
     private final MainActivityInterface mainActivityInterface;
 
@@ -442,15 +443,23 @@ public class NearbyConnections implements NearbyInterface {
                 updateConnectionLog(c.getResources().getString(R.string.connections_disconnect) +
                         " " + disconnectedFrom);
 
+                Handler h = new Handler();
                 if (!isHost) {
                     // Clients should try to silently connect again after 2 seconds
-                    Handler h = new Handler();
-                    h.postDelayed(() -> startDiscovery(), 2000);
+                    h.postDelayed(() -> {
+                        countDiscovery = 0;
+                        doTempDiscover();
+                    }, 2000);
+                } else {
+                    // Hosts should advertise again
+                    h.postDelayed(() -> {
+                        countAdvertise = 0;
+                        doTempAdvertise();
+                    }, 2000);
                 }
             }
         };
     }
-
 
 
     // THIS IS USED IF WE ARE A CLIENT AND HAVE DISCOVERED A HOST CONNECTION
@@ -516,7 +525,10 @@ public class NearbyConnections implements NearbyInterface {
                 // Try to connect again after 2 seconds
                 if (!isHost) {
                     Handler h = new Handler();
-                    h.postDelayed(() -> startDiscovery(), 2000);
+                    h.postDelayed(() -> {
+                        countDiscovery = 0;
+                        doTempDiscover();
+                    }, 2000);
                 }
             }
 
@@ -717,23 +729,7 @@ public class NearbyConnections implements NearbyInterface {
         }
         return returnVal;
     }
-    /*private boolean endpointRegistered(String endpointString) {
-        Log.d(TAG,"endpointRegistered()  endpointString:"+endpointString);
 
-        if (!endpointString.contains(endpointSplit)) {
-            endpointString = endpointString + endpointSplit;
-        }
-        boolean found = false;
-        for (String string:discoveredEndpoints) {
-            Log.d(TAG,"already registered string:"+string);
-            if (string.contains(endpointString)) {
-                found = true;
-            }
-            Log.d(TAG,"array item: "+string+"  looking for:"+endpointString);
-        }
-        Log.d(TAG,"found:"+found);
-        return found;
-    }*/
     private void updateConnectedEndpoints(String endpointString, boolean addEndpoint) {
         if (addEndpoint) {
             // Add to the connected list if not already there
@@ -772,13 +768,6 @@ public class NearbyConnections implements NearbyInterface {
     }
     private boolean recognisedDevice(String endpointString) {
         return discoveredEndpoints.contains(endpointString);
-    }
-    private boolean alreadyConnected(String endpointString) {
-        return connectedEndpoints.contains(endpointString);
-    }
-
-    private int endpointPositionInArray(String endpointString) {
-        return connectedEndpoints.indexOf(endpointString);
     }
     public boolean hasValidConnections() {
         if (usingNearby) {
@@ -1388,5 +1377,97 @@ public class NearbyConnections implements NearbyInterface {
 
     private boolean sendAsHost() {
         return hasValidConnections() && isHost;
+    }
+
+    public ArrayList<String> getDiscoveredEndpoints() {
+        return discoveredEndpoints;
+    }
+    public void setDiscoveredEndpoints(ArrayList<String> discoveredEndpointsBundled) {
+        // Called on resume from saved bundle.  Reset the temp counts
+        countAdvertise = 0;
+        countDiscovery = 0;
+        if (discoveredEndpointsBundled!=null && !discoveredEndpointsBundled.isEmpty()) {
+            if (discoveredEndpoints == null) {
+                discoveredEndpoints = new ArrayList<>();
+            }
+            for (String de : discoveredEndpointsBundled) {
+                if (!discoveredEndpoints.contains(de)) {
+                    discoveredEndpoints.add(de);
+                }
+            }
+        }
+    }
+    public ArrayList<String> getConnectedEndpoints() {
+        return connectedEndpoints;
+    }
+    public void setConnectedEndpoints(ArrayList<String> connectedEndpointsBundled) {
+        if (connectedEndpointsBundled!=null && !connectedEndpointsBundled.isEmpty()) {
+            if (connectedEndpoints == null) {
+                connectedEndpoints = new ArrayList<>();
+            }
+            for (String ce : connectedEndpointsBundled) {
+                if (!connectedEndpoints.contains(ce)) {
+                    connectedEndpoints.add(ce);
+                }
+            }
+        }
+    }
+
+    public void doTempAdvertise() {
+        // Stop advertising/discovering if we were already doing that
+        stopAdvertising();
+        stopDiscovery();
+
+        // After a short delay, advertise
+        new Handler().postDelayed(() -> {
+            try {
+                startAdvertising();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        },200);
+
+        // After 10 seconds, stop advertising
+        new Handler().postDelayed(() -> {
+            try {
+                stopAdvertising();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            countAdvertise ++;
+            if (countAdvertise<3 && !hasValidConnections()) {
+                // Repeat the process again
+                doTempAdvertise();
+            }
+        },10000);
+    }
+
+    public void doTempDiscover() {
+        // Stop advertising/discovering if we were already doing that
+        stopAdvertising();
+        stopDiscovery();
+
+        // After a short delay, discover
+        new Handler().postDelayed(() -> {
+            try {
+                startDiscovery();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        },200);
+
+        // After 10 seconds, stop discovering
+        new Handler().postDelayed(() -> {
+            try {
+                stopDiscovery();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            countDiscovery ++;
+            if (countDiscovery<3 && !hasValidConnections()) {
+                // Repeat the process again
+                doTempDiscover();
+            }
+        },10000);
     }
 }
