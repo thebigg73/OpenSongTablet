@@ -69,7 +69,11 @@ public class SongDetailsBottomSheet extends BottomSheetDialogFragment {
         }
         myView.title.setHint(mainActivityInterface.getSong().getTitle());
         myView.author.setHint(mainActivityInterface.getSong().getAuthor());
-        myView.key.setHint(mainActivityInterface.getSong().getKey());
+        String key = mainActivityInterface.getSong().getKey();
+        if (!mainActivityInterface.getToolbar().getCapoString().isEmpty()) {
+            key += " [" + getString(R.string.capo) + " " + mainActivityInterface.getToolbar().getCapoString() + "]";
+        }
+        myView.key.setHint(key);
         myView.copyright.setHint(mainActivityInterface.getSong().getCopyright());
         myView.ccli.setHint(mainActivityInterface.getSong().getCcli());
         myView.presentationOrder.setHint(mainActivityInterface.getSong().getPresentationorder());
