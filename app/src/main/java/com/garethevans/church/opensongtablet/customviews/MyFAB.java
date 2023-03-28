@@ -33,14 +33,13 @@ public class MyFAB extends FrameLayout {
         myFAB.setId(View.generateViewId());
         myFABHolder.setId(View.generateViewId());
 
-        int[] set = new int[] {android.R.attr.src};
+        int[] set = new int[] {R.attr.srcCompat};
 
         TypedArray typedArray = context.obtainStyledAttributes(attrs,set);
         // Get drawable image
-        Drawable drawable = typedArray.getDrawable(0);
-        if (drawable!=null) {
-            myFAB.setImageDrawable(drawable);
-        }
+        //Drawable drawable = typedArray.getDrawable(0);
+        Drawable drawable = VectorDrawableCompat.create(getResources(),typedArray.getResourceId(0,R.drawable.help_outline),getContext().getTheme());
+        myFAB.setImageDrawable(drawable);
         typedArray.recycle();
 
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.MyFAB);

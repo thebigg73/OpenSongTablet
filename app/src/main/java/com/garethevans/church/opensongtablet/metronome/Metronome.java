@@ -144,8 +144,8 @@ public class Metronome {
         int maxStreams = 4;
         if (mainActivityInterface.getStorageAccess().lollipopOrLater()) {
             AudioAttributes audioAttributes = new AudioAttributes.Builder()
-                    .setUsage(AudioAttributes.USAGE_ASSISTANCE_SONIFICATION)
-                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                    .setUsage(AudioAttributes.USAGE_MEDIA)
+                    .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
                     .build();
             soundPool = new SoundPool.Builder().setMaxStreams(maxStreams)
                     .setAudioAttributes(audioAttributes).build();
@@ -263,7 +263,7 @@ public class Metronome {
         return meterTimeDivision;
     }
 
-    public ArrayList<Integer> getEmphasisBeats() {
+    public void getEmphasisBeats() {
         // This is only necessary for compound times only
         tickBeats = new ArrayList<>();
         tickBeats.add(1);
@@ -298,7 +298,6 @@ public class Metronome {
             }
         }
         Log.d(TAG,"tickBeats:"+tickBeats);
-        return tickBeats;
     }
     public void setBarsAndBeats() {
         int barsRequired = mainActivityInterface.getPreferences().getMyPreferenceInt("metronomeLength", 0);
@@ -341,7 +340,6 @@ public class Metronome {
                         if (soundPool!=null) {
                             soundPool.play(tockClip, volumeTockLeft, volumeTockRight, 0, 0, 1);
                         }
-
                     }
                     beat ++;
                     beatsRunningTotal ++;
