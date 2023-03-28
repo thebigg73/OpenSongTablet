@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TextView android:id="@+id/alphalist"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:paddingStart="8dp"
+    android:paddingStart="0dp"
     android:paddingEnd="0dp"
     android:paddingTop="0dp"
     android:paddingBottom="0dp"
+    android:gravity="center"
     android:textColor="#aaaaaa"
     android:minHeight="48dp"
     android:minWidth="48dp"
+    android:text="A"
     xmlns:android="http://schemas.android.com/apk/res/android" />
