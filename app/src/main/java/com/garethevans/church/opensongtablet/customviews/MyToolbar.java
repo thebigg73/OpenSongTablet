@@ -5,7 +5,6 @@ import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -51,6 +50,7 @@ public class MyToolbar extends MaterialToolbar {
             menuOpen;
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "MyToolbar";
+    private String capoString = "", keyString = "";
 
     // Set up the view and view items
     public void initialiseToolbar(Activity activity, Context c, ActionBar actionBar) {
@@ -185,7 +185,6 @@ public class MyToolbar extends MaterialToolbar {
                 mainActivityInterface.getCurrentSet().setIndexSongInSet(-1);
             }
 
-            Log.d(TAG,"title:"+title+"  song().getTitle():"+mainActivityInterface.getSong().getTitle());
             if (title != null && mainActivityInterface.getSong().getTitle() != null) {
                 title.setTextSize(mainsize);
                 String text = mainActivityInterface.getSong().getTitle();
@@ -207,14 +206,32 @@ public class MyToolbar extends MaterialToolbar {
             }
             if (key != null && mainActivityInterface.getSong().getKey() != null &&
                     !mainActivityInterface.getSong().getKey().isEmpty()) {
-                String k = " (" + mainActivityInterface.getSong().getKey() + ")";
+                keyString = " (" + mainActivityInterface.getSong().getKey() + ")";
                 key.setTextSize(mainsize);
                 capo.setTextSize(mainsize);
-                key.setText(k);
+                key.setText(keyString);
                 hideView(key, false);
             } else {
                 hideView(key, true);
             }
+            if (capo != null && mainActivityInterface.getSong().getCapo() !=null &&
+                    !mainActivityInterface.getSong().getCapo().isEmpty()) {
+                capoString = mainActivityInterface.getChordDisplayProcessing().getCapoPosition();
+            } else {
+                capoString = "";
+            }
+
+            if (!capoString.isEmpty() && !keyString.isEmpty()) {
+                int capo = Integer.parseInt(mainActivityInterface.getSong().getCapo());
+                String key = mainActivityInterface.getSong().getKey();
+                capoString += " (" + mainActivityInterface.getTranspose().getKeyBeforeCapo(capo,key) + ")";
+            }
+            String thisCapoString = "";
+            if (!capoString.isEmpty()) {
+                thisCapoString = " ["+capoString+"]";
+            }
+            capo.setText(thisCapoString);
+
             if (title!=null) {
                 title.setOnClickListener(v -> openDetails());
                 title.setOnLongClickListener(view -> {
@@ -259,6 +276,11 @@ public class MyToolbar extends MaterialToolbar {
                 songandauthor.setOnLongClickListener(null);
             }
         }
+    }
+
+    // The onscreen capo display can grab this rather than reprocessing it
+    public String getCapoString() {
+        return capoString;
     }
 
     // Clicking on the song title/author/etc. opens up the song details bottom sheet

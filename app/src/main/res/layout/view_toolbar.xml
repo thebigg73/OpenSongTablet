@@ -55,28 +55,29 @@
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/songtitle_ab"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:layout_margin="0dp"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    tools:text="Song title" />
+                    tools:text="A mighty fortress is our God, a bullwark never failing" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/songkey_ab"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:ellipsize="end"
+                    android:ellipsize="none"
                     android:maxLines="1"
-                    tools:text="Song key" />
+                    tools:text="(Bb)" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/songcapo_ab"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:ellipsize="end"
+                    android:ellipsize="none"
                     android:maxLines="1"
-                    tools:text=" (capo)" />
+                    tools:text=" [(A) 2]" />
 
             </LinearLayout>
 

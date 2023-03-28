@@ -96,7 +96,7 @@ public class OnScreenInfo extends LinearLayout {
         capoInfoNeeded = !mainActivityInterface.getMode().equals(c.getString(R.string.mode_presenter)) &&
                 mainActivityInterface.getProcessSong().showingCapo(mainActivityInterface.getSong().getCapo());
         if (capoInfoNeeded) {
-            capoInfo.setText(mainActivityInterface.getChordDisplayProcessing().getCapoPosition());
+            capoInfo.setText(mainActivityInterface.getToolbar().getCapoString());
             capoInfo.setVisibility(View.VISIBLE);
             capoInfo.setAlpha(mainActivityInterface.getMyThemeColors().getExtraInfoBgSplitAlpha());
             capoInfo.post(() -> {
@@ -119,6 +119,8 @@ public class OnScreenInfo extends LinearLayout {
             capoInfo.setVisibility(View.GONE);
         }
     }
+
+
 
     public void showHideViews(MainActivityInterface mainActivityInterface) {
         if (capoInfoNeeded && autoHideCapo) {
