@@ -964,6 +964,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     updateToolbar(null);
                 }
                 myView.myToolbar.requestLayout();
+                myView.myToolbar.setContentInsetStartWithNavigation(0);
             }
         });
     }
