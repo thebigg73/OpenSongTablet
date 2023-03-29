@@ -24,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -273,6 +274,15 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
         super.onCreate(savedInstanceState);
 
+        // Set up the onBackPressed intercepter as onBackPressed is deprecated
+        OnBackPressedCallback onBackPressedCallback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                interceptBackPressed();
+            }
+        };
+        this.getOnBackPressedDispatcher().addCallback(this, onBackPressedCallback);
+
         prepareStrings();
 
         WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
@@ -328,13 +338,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         // Set up views
         setupViews();
 
-
         // Set up the navigation controller
         setupNavigation();
 
-
         initialiseActivity();
-
     }
 
     private String deeplink_import_osb="", deeplink_sets_backup_restore="", deeplink_onsong="",
@@ -698,7 +705,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             return insets;
         });
 
-        myView.myToolbar.initialiseToolbar(this,this, getSupportActionBar());
+        myView.myToolbar.initialiseToolbar(this, getSupportActionBar());
         pageButtons.setMainFABS(
                 myView.actionFAB, myView.pageButtonRight.custom1Button,
                 myView.pageButtonRight.custom2Button,myView.pageButtonRight.custom3Button,
@@ -896,8 +903,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         }
         return super.onKeyLongPress(keyCode, keyEvent);
     }
-    @Override
-    public void onBackPressed() {
+
+    public void interceptBackPressed() {
+        Log.d(TAG,"onBackPressed()");
         if (navController!=null && navController.getCurrentDestination()!=null) {
             try {
                 int id = Objects.requireNonNull(navController.getCurrentDestination()).getId();
@@ -942,7 +950,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 if (!settingsOpen && whichMode.equals(performance)) {
                     myView.myToolbar.hideSongDetails(true);
                 }
-                myView.myToolbar.batteryholderVisibility(View.GONE, false);
+                myView.myToolbar.batteryholderVisibility(false, false);
+                batteryStatus.showBatteryStuff(false);
                 updateToolbarHelp(null);
                 globalMenuItem.findItem(R.id.mirror_menu_item).setVisible(false);
 
@@ -957,7 +966,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     if (getPreferences().getMyPreferenceBoolean("clockOn", true) ||
                             getPreferences().getMyPreferenceBoolean("batteryTextOn", true) ||
                             getPreferences().getMyPreferenceBoolean("batteryDialOn", true)) {
-                        myView.myToolbar.batteryholderVisibility(View.VISIBLE, true);
+                        myView.myToolbar.batteryholderVisibility(true, true);
+                        batteryStatus.showBatteryStuff(true);
                     }
                     // IV - Song details are added by song load
                     // GE onResuming (open cast and return), not called, so quick check is worthwhile

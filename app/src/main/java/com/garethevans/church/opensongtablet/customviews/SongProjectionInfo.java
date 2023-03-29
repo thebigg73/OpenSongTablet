@@ -214,7 +214,8 @@ public class SongProjectionInfo extends LinearLayoutCompat {
     }
 
     public void updateClockSettings(MainActivityInterface mainActivityInterface) {
-        mainActivityInterface.getTimeTools().setFormat(textClock,clockTextSize,
+        mainActivityInterface.getTimeTools().setFormat(textClock,
+                mainActivityInterface.getSettingsOpen(), clockTextSize,
                 mainActivityInterface.getPresenterSettings().getPresoShowClock(),
                 mainActivityInterface.getPresenterSettings().getPresoClock24h(),
                 mainActivityInterface.getPresenterSettings().getPresoClockSeconds());

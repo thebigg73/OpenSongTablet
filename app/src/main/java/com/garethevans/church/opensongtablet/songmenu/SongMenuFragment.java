@@ -91,7 +91,11 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         initialiseRecyclerView();
 
         // Update the song menu
-        updateSongMenu(mainActivityInterface.getSong());
+        try {
+            updateSongMenu(mainActivityInterface.getSong());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         return myView.getRoot();
     }
@@ -427,7 +431,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         }
     }
 
-    private void displayIndex() {
+    public void displayIndex() {
         if (mainActivityInterface!=null && getContext()!=null) {
             try {
                 myView.songmenualpha.sideIndex.removeAllViews();
@@ -568,6 +572,8 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         mainActivityInterface.getDisplayPrevNext().setSwipeDirection("R2L");
         mainActivityInterface.doSongLoad(folder, filename,true);
         songListLayoutManager.scrollToPositionWithOffset(position,0);
+        // Make sure the alphabetical index shows single letters
+        displayIndex();
     }
 
     @Override
@@ -609,17 +615,16 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                 executorService.execute(() -> {
                     Handler handler = new Handler(Looper.getMainLooper());
                     handler.post(() -> {
+                        if (mainActivityInterface!=null && myView!=null) {
+                            try {
+                                myView.menuSongs.findViewById(R.id.setCheckTitle).setVisibility(
+                                        mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuSetTicksShow", true) ?
+                                                View.VISIBLE : View.GONE);
 
-                        Log.d(TAG,"ticksOn:"+mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuSetTicksShow",true));
-
-                        myView.menuSongs.findViewById(R.id.setCheckTitle).setVisibility(
-                                mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuSetTicksShow",true) ?
-                                        View.VISIBLE:View.GONE);
-
-                        try {
-                            songListAdapter.notifyItemRangeChanged(0, songListAdapter.getItemCount());
-                        } catch (Exception e) {
-                            e.printStackTrace();
+                                songListAdapter.notifyItemRangeChanged(0, songListAdapter.getItemCount());
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                         }
                     });
                 });

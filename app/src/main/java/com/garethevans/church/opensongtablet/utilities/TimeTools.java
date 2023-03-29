@@ -40,16 +40,12 @@ public class TimeTools {
     }
 
 
-    public void setFormat(TextClock textClock, float textSize, boolean visible,
+    public void setFormat(TextClock textClock, boolean settingsOpen, float textSize, boolean visible,
                           boolean is24hr, boolean showSeconds) {
         // This deals with the actionbar and presentation clock formatting in one place.
         textClock.post(() -> {
             // Should the clock be shown?
-            if (visible) {
-                textClock.setVisibility(View.VISIBLE);
-            } else {
-                textClock.setVisibility(View.GONE);
-            }
+            textClock.setVisibility(visible && !settingsOpen ? View.VISIBLE: View.GONE);
 
             // Set the text size
             textClock.setTextSize(textSize);

@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.appbar.MaterialToolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/myToolbar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentStart="true"
+    android:minHeight="?attr/actionBarSize"
+    android:theme="@style/ActionBar"
+    app:contentInsetEnd="0dp"
+    app:contentInsetStart="0dp"
+    app:contentInsetLeft="0dp"
+    app:contentInsetRight="0dp"
+    app:contentInsetStartWithNavigation="0dp"
+    android:padding="0dp"
+    app:elevation="4dp"
+    app:titleMarginStart="0dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/actionBarBackground"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="60dp">
+
+        <ImageView
+            android:id="@+id/setIcon"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:contentDescription="@string/set"
+            android:visibility="visible"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/songtitle_ab"
+            app:layout_constraintBottom_toBottomOf="@+id/songtitle_ab"
+            app:srcCompat="@drawable/check" />
+
+        <FrameLayout
+            android:id="@+id/songandauthor"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/batterySpace"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/songtitle_ab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="0dp"
+            android:layout_marginTop="0dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textSize="16sp"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintBottom_toTopOf="@+id/songauthor_ab"
+            app:layout_constraintEnd_toStartOf="@+id/songkey_ab"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/setIcon"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.5"
+            tools:text="Title" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/songauthor_ab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textSize="14sp"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/batterySpace"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintVertical_bias="1.0"
+            app:layout_constraintStart_toEndOf="@+id/setIcon"
+            app:layout_constraintTop_toBottomOf="@id/songtitle_ab"
+            tools:text="Author" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/songkey_ab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="none"
+            android:maxLines="1"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toStartOf="@id/songcapo_ab"
+            app:layout_constraintBottom_toBottomOf="@+id/songtitle_ab"
+            app:layout_constraintStart_toEndOf="@+id/songtitle_ab"
+            app:layout_constraintTop_toTopOf="@+id/songtitle_ab"
+            app:layout_constraintVertical_bias="1.0"
+            tools:text=" (Key)" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/songcapo_ab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="none"
+            android:maxLines="1"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@+id/songkey_ab"
+            app:layout_constraintEnd_toStartOf="@id/batterySpace"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/songkey_ab"
+            app:layout_constraintTop_toTopOf="@+id/songkey_ab"
+            app:layout_constraintVertical_bias="1.0"
+            tools:text=" [Capo]" />
+
+        <Space
+            android:id="@+id/batterySpace"
+            android:layout_width="12dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/batteryholder"/>
+
+        <FrameLayout
+            android:id="@+id/batteryholder"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="40dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <ImageView
+            android:id="@+id/batteryimage"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:contentDescription="@string/time"
+            app:layout_constraintEnd_toEndOf="@id/batteryholder"
+            app:layout_constraintTop_toTopOf="@id/batteryholder"
+            app:layout_constraintStart_toStartOf="@id/batteryholder"
+            app:layout_constraintBottom_toBottomOf="@id/batteryholder"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/batterycharge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:maxWidth="50dp"
+            tools:text="100%"
+            android:textColor="#ffffff"
+            android:textSize="11sp"
+            tools:gravity="center"
+            tools:ignore="HardcodedText,SmallSp"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:layout_constraintTop_toTopOf="@id/batteryholder"
+            app:layout_constraintBottom_toTopOf="@id/digitalclock"
+            app:layout_constraintStart_toStartOf="@id/batteryholder"
+            app:layout_constraintEnd_toEndOf="@id/batteryholder" />
+
+        <TextClock
+            android:id="@+id/digitalclock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="0dp"
+            android:ellipsize="marquee"
+            android:gravity="center"
+            android:maxWidth="50dp"
+            android:singleLine="true"
+            android:text="12:00"
+            android:textColor="#ffffff"
+            android:textSize="11sp"
+            tools:gravity="center"
+            tools:ignore="HardcodedText,SmallSp"
+            app:layout_constraintStart_toStartOf="@id/batteryholder"
+            app:layout_constraintEnd_toEndOf="@id/batteryholder"
+            app:layout_constraintTop_toBottomOf="@id/batterycharge"
+            app:layout_constraintBottom_toBottomOf="@id/batteryholder"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.appbar.MaterialToolbar>

@@ -6,6 +6,7 @@ package com.garethevans.church.opensongtablet.controls;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.LinearLayout;
 
@@ -165,6 +166,7 @@ public class PageButtons {
     private final AccelerateDecelerateInterpolator interpolator = new AccelerateDecelerateInterpolator();
 
     public void animatePageButton(boolean open) {
+        Log.d(TAG,"open:"+open);
         if (open) {
             if (actionButton.getRotation()==0) {
                 ViewCompat.animate(actionButton).rotation(45f).withLayer().setDuration(animationTime).

@@ -1558,6 +1558,7 @@ public class ProcessSong {
                     for (String line : thissection) {
                         sections[x] += line + "\n";
                     }
+
                     // Add to the array, split by the section split
                     Collections.addAll(songSections, sections[x].split("║"));
 

@@ -64,13 +64,17 @@ public class BatteryStatus extends BroadcastReceiver {
         setBatteryDialThickness(mainActivityInterface.getPreferences().getMyPreferenceInt("batteryDialThickness", 4));
     }
 
-    public void setBatteryDialOn(boolean batteryDialOn) {
-        this.batteryDialOn = batteryDialOn;
-        if (batteryDialOn) {
-            batteryImage.setVisibility(View.VISIBLE);
+    public void showBatteryStuff(boolean show) {
+        if (show) {
+            batteryImage.setVisibility(batteryDialOn ? View.VISIBLE:View.GONE);
+            batteryCharge.setVisibility(batteryTextOn ? View.VISIBLE:View.GONE);
         } else {
             batteryImage.setVisibility(View.GONE);
+            batteryCharge.setVisibility(View.GONE);
         }
+    }
+    public void setBatteryDialOn(boolean batteryDialOn) {
+        this.batteryDialOn = batteryDialOn;
     }
 
     public void setBatteryDialThickness(int batteryDialThickness) {
@@ -79,12 +83,6 @@ public class BatteryStatus extends BroadcastReceiver {
     }
     public void setBatteryTextOn(boolean batteryTextOn) {
         this.batteryTextOn = batteryTextOn;
-        if (batteryTextOn) {
-            batteryCharge.setTextSize(batteryTextSize);
-            batteryCharge.setVisibility(View.VISIBLE);
-        } else {
-            batteryCharge.setVisibility(View.GONE);
-        }
     }
     public void setBatteryTextSize(float batteryTextSize) {
         this.batteryTextSize = batteryTextSize;
@@ -198,21 +196,5 @@ public class BatteryStatus extends BroadcastReceiver {
             return null;
         }
     }
-
-    public void showBattery(boolean show) {
-        // Only show if this is our preference
-        if (show) {
-            if (batteryDialOn) {
-                batteryImage.post(() -> batteryImage.setVisibility(View.VISIBLE));
-            }
-            if (batteryTextOn) {
-                batteryImage.post(() -> batteryCharge.setVisibility(View.VISIBLE));
-            }
-        } else {
-            batteryImage.post(() -> batteryImage.setVisibility(View.GONE));
-            batteryCharge.post(() -> batteryCharge.setVisibility(View.GONE));
-        }
-    }
-
 
 }
