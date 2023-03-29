@@ -172,6 +172,7 @@ public interface MainActivityInterface {
     void hideActionButton(boolean hide);
     void updatePageButtonLayout();
     void miniPageButton(boolean mini);
+    void expandActionButton();
 
     // Controls
     PedalActions getPedalActions();

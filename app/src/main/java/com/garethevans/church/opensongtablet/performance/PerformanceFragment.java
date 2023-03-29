@@ -142,6 +142,7 @@ public class PerformanceFragment extends Fragment {
         // Allow the song menu and page buttons
         mainActivityInterface.lockDrawer(false);
         mainActivityInterface.hideActionButton(false);
+        //mainActivityInterface.expandActionButton();
 
         // Load in preferences
         loadPreferences();

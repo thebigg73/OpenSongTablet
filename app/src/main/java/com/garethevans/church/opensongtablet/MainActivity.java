@@ -258,7 +258,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private String whichMode, whattodo, importFilename;
     private final String presenter = "Presenter", performance = "Performance";
     private Uri importUri;
-    private boolean settingsOpen = false, showSetMenu,
+    private boolean settingsOpen = false, showSetMenu, actionButtonWasExpanded = false,
             pageButtonActive = true, fullIndexRequired, menuOpen, firstRun=true;
     private final String TAG = "MainActivity";
     private Menu globalMenuItem;
@@ -972,6 +972,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     // IV - Song details are added by song load
                     // GE onResuming (open cast and return), not called, so quick check is worthwhile
                     updateToolbar(null);
+
+                    // Return the pagebuttons to their expanded state
                 }
                 myView.myToolbar.requestLayout();
                 myView.myToolbar.setContentInsetStartWithNavigation(0);
@@ -984,6 +986,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         // Either sent a deeplink string, or a fragment id
         lockDrawer(true);
         closeDrawer(true);  // Only the Performance and Presenter fragments allow this.  Switched on in these fragments
+        actionButtonWasExpanded = myView.actionFAB.getRotation()!=0;
         hideActionButton(true);
         runOnUiThread(() -> {
             try {
@@ -1290,7 +1293,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     myView.actionFAB.postDelayed(hideActionButtonRunnable,3000);
                 }
                 myView.pageButtonRight.bottomButtons.setVisibility(View.VISIBLE);
-                pageButtons.animatePageButton(false);
+
                 myView.onScreenInfo.getInfo().setVisibility(View.VISIBLE);
                 if (displayPrevNext.getTextButtons() && (displayPrevNext.getShowPrev() || displayPrevNext.getShowNext())) {
                     myView.nextPrevInfo.nextPrevInfoLayout.setVisibility(View.VISIBLE);
@@ -1302,6 +1305,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 customAnimation.fadeActionButton(myView.actionFAB, themeColors.getPageButtonsSplitAlpha());
             }
         });
+    }
+    @Override
+    public void expandActionButton() {
+        if (actionButtonWasExpanded && myView.actionFAB.getRotation()==0) {
+            myView.actionFAB.performClick();
+        }
     }
     @Override
     public void miniPageButton(boolean mini) {
