@@ -1525,10 +1525,22 @@ public class ProcessSong {
                 .replace("\n---", "\n§")
                 .replace("\n [", "\n§[")
                 .replace("\n[", "\n§[")
-                .replace("\n\n", doubleNewlineSplit)
-                .replace("§§","§")
+                .replace("\n\n", doubleNewlineSplit);
+
+                // GE - if we are in Perfomance mode, we might want extra line breaks as spacing!
+                if (!mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance))) {
+                    lyrics = lyrics.replace("§§","§");
+                } else {
+                    // GE Add extra lines that we'll remove later
+                    // This is to allow extra blank spacing lines in the song
+                    lyrics = lyrics.replace("§\n§","\n\n\n§")
+                            .replace("§§§§","\n\n\n\n§")
+                            .replace("§§§","\n\n\n§")
+                            .replace("§§","\n\n§");
+
+                }
                 // --- Remove the leading added leading \n
-                .substring(1)
+                lyrics = lyrics.substring(1)
                 // --- Because we trail with ¶, this removes the added leading \n as part of removing leading white space                // --- Now remove trailing ¶
                 .replace("¶","");
 
@@ -1589,15 +1601,22 @@ public class ProcessSong {
         }
         lyrics = fixedlyrics.toString()
                 // IV - Content is added with leading \n§, the first needs to be removed
-                .replaceFirst("\n§","")
-                // IV - Remove (when present) performance mode 'empty' sectionHeader
-                .replace("\n§¬\n","\n");
+                .replaceFirst("\n§","");
+
+        // IV - Remove (when present) performance mode 'empty' sectionHeader
+        // GE Do this this Stage/Presenter mode
+        if (!mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance))) {
+            lyrics = lyrics.replace("\n§¬\n", "\n");
+        } else {
+            lyrics = lyrics.replace("¬","");
+        }
 
         // 11. Handle section trimming
         if (trimSections) {
             lyrics = lyrics
                     // We protect the leading space of lyric lines
                     // --- Simplify empty lyric lines... the replace is needed twice
+                    .replace("\n§¬\n","\n")
                     .replace("\n \n","\n\n")
                     .replace("\n \n","\n\n")
                     // --- Replace the leading spaces of lyric lines with ¬
@@ -1621,18 +1640,30 @@ public class ProcessSong {
         } else {
             lyrics = filterAndGroupLines(lyrics, displayChords);
         }
-
         // 14. Build the songSections for later recall
-        // The song sections are not the views (which can have sections repeated using presentationOrder
+        // The song sections are not the views (which can have sections repeated using presentationOrder)
         // The grouped sections are used for alignments
         songSections = new ArrayList<>();
         ArrayList<String> groupedSections = new ArrayList<>();
 
-        // IV - This ignores empty sections
+        if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance))) {
+            // Remove that extra line at the end
+            lyrics = lyrics.replace("\n\n§","\n§");
+        }
         for (String thisSection : lyrics.split("\n§")) {
-            if (thisSection != null && !thisSection.trim().isEmpty()) {
+            // IV - This ignores empty sections for non-performance modes
+            if (!mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) &&
+                    thisSection != null && !thisSection.trim().isEmpty()) {
                 groupedSections.add(thisSection);
                 songSections.add(thisSection.replace(groupline_string, "\n"));
+            } else if (thisSection != null) {
+                String groupedSection = thisSection.replace(groupline_string,"\n");
+                if (trimSections) {
+                    thisSection = thisSection.trim();
+                    groupedSection = groupedSection.trim();
+                }
+                groupedSections.add(thisSection);
+                songSections.add(groupedSection);
             }
         }
 
@@ -1719,15 +1750,14 @@ public class ProcessSong {
 
                 // Add this section to the array (so it can be called later for presentation)
                 if (!section.trim().isEmpty()) {
-                    // Now split by line
-                    String[] lines = section.split("\n");
+                    // Now split by line, but keeping empty ones
+                    String[] lines = section.split("\n",-1);
                     for (int l=0; l<lines.length; l++) {
                         String line = lines[l];
                         // IV - Do not process an empty group line or empty header line
                         if (!line.equals(groupline_string) && !line.equals("[]")) {
                             // Get the text stylings
                             String linetype = getLineType(line);
-
                             boolean notLyricOrChord = linetype.equals("heading") || linetype.equals("comment") || linetype.equals("tab");
                             if (presentation && !mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance))) {
                                 if (notLyricOrChord) {
@@ -1774,7 +1804,7 @@ public class ProcessSong {
                                     linearLayout.addView(tl);
                                 }
                             } else {
-                                if (!presentation && !asPDF && !line.isEmpty()) {
+                                if (!presentation && !asPDF && (!line.isEmpty() || mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)))) {
                                     // IV - Remove typical word splits, white space and trim - beautify!
                                     // IV - Similar logic is used in other places - if changed find and make changes to all
                                     if (!displayChords) {

@@ -238,8 +238,10 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
     }
 
     public void clickOnSection(int position) {
-        fakeClick = true;
-        sectionSelected(position);
+        if (sectionInfos.size()>position) {
+            fakeClick = true;
+            sectionSelected(position);
+        }
     }
 
     public void sectionSelected(int position) {
