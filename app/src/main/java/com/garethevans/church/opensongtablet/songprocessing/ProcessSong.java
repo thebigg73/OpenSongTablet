@@ -1654,8 +1654,14 @@ public class ProcessSong {
             // IV - This ignores empty sections for non-performance modes
             if (!mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) &&
                     thisSection != null && !thisSection.trim().isEmpty()) {
-                groupedSections.add(thisSection);
-                songSections.add(thisSection.replace(groupline_string, "\n"));
+                if (thisSection.trim().startsWith("[") && thisSection.trim().endsWith("]") &&
+                        thisSection.trim().split("\n").length==1) {
+                    Log.d(TAG,"Empty section that we are ignoring");
+                } else {
+                    Log.d(TAG, "thisSection:" + thisSection);
+                    groupedSections.add(thisSection);
+                    songSections.add(thisSection.replace(groupline_string, "\n"));
+                }
             } else if (thisSection != null) {
                 String groupedSection = thisSection.replace(groupline_string,"\n");
                 if (trimSections) {
