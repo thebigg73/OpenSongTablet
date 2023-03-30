@@ -66,7 +66,7 @@ public class DisplayScalingFragment extends Fragment {
         setSliderValue(myView.maxFontSize,"fontSizeMax",50.0f,1,"sp");
         setSliderValue(myView.scaleHeading,"scaleHeadings",0.6f,100,"%");
         setSliderValue(myView.scaleChords,"scaleChords",0.8f,100,"%");
-        setSliderValue(myView.scaleComments,"scaleChords",0.8f,100,"%");
+        setSliderValue(myView.scaleComments,"scaleComments",0.8f,100,"%");
         setSliderValue(myView.scaleStage,"stageModeScale", 0.8f,100,"%");
 
         myView.manualFontSize.setLabelFormatter(value -> ((int)value)+"sp");
