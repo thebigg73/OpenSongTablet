@@ -96,6 +96,8 @@ public class ConvertTextSong {
                 //Remove any double braces
                 l = l.replace("[[", "[");
                 l = l.replace("]]", "]");
+                l = l.replace("[(","[");
+                l = l.replace(")]","]");
                 // IV - Fix chordpro tags converted from comments
                 l = l.replace("[;","[");
             }

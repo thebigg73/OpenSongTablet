@@ -28,7 +28,7 @@
             android:layout_width="16dp"
             android:layout_height="16dp"
             android:contentDescription="@string/set"
-            android:visibility="visible"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/songtitle_ab"
             app:layout_constraintBottom_toBottomOf="@+id/songtitle_ab"
@@ -132,6 +132,7 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:contentDescription="@string/time"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="@id/batteryholder"
             app:layout_constraintTop_toTopOf="@id/batteryholder"
             app:layout_constraintStart_toStartOf="@id/batteryholder"
@@ -147,6 +148,7 @@
             tools:text="100%"
             android:textColor="#ffffff"
             android:textSize="11sp"
+            android:visibility="gone"
             tools:gravity="center"
             tools:ignore="HardcodedText,SmallSp"
             app:layout_constraintVertical_chainStyle="packed"
@@ -168,13 +170,12 @@
             android:text="12:00"
             android:textColor="#ffffff"
             android:textSize="11sp"
+            android:visibility="gone"
             tools:gravity="center"
             tools:ignore="HardcodedText,SmallSp"
             app:layout_constraintStart_toStartOf="@id/batteryholder"
             app:layout_constraintEnd_toEndOf="@id/batteryholder"
             app:layout_constraintTop_toBottomOf="@id/batterycharge"
             app:layout_constraintBottom_toBottomOf="@id/batteryholder"/>
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.appbar.MaterialToolbar>
