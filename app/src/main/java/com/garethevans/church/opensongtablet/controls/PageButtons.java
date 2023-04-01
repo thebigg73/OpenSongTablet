@@ -226,12 +226,12 @@ public class PageButtons {
         prepareOption("","","","",R.drawable.help);
 
         // Song navigation
-        prepareOption("search",c.getString(R.string.show_songs),c.getString(R.string.open) + " / " + c.getString(R.string.close),"",R.drawable.search);
+        prepareOption("songmenu",c.getString(R.string.show_songs),c.getString(R.string.open) + " / " + c.getString(R.string.close),"",R.drawable.search);
         prepareOption("scrolldown",c.getString(R.string.scroll_down),c.getString(R.string.select),"",R.drawable.arrow_down);
         prepareOption("scrollup",c.getString(R.string.scroll_up),c.getString(R.string.select),"",R.drawable.arrow_up);
         prepareOption("next",c.getString(R.string.next),c.getString(R.string.select),"",R.drawable.arrow_right);
         prepareOption("previous",c.getString(R.string.previous),c.getString(R.string.select),"",R.drawable.arrow_left);
-        prepareOption("randomsong",c.getString(R.string.random_song),c.getString(R.string.random_song),c.getString(R.string.settings),R.drawable.shuffle);
+        prepareOption("randomsong",c.getString(R.string.random_song),c.getString(R.string.random_song),"",R.drawable.shuffle);
 
         prepareOption("","","","",R.drawable.help);
 
@@ -259,6 +259,7 @@ public class PageButtons {
         prepareOption("pdfpage",c.getString(R.string.select_page),c.getString(R.string.select),"",R.drawable.book);
         prepareOption("invertpdf",c.getString(R.string.invert_PDF),c.getString(R.string.select),"",R.drawable.invert_colors);
         prepareOption("fonts",c.getString(R.string.font_choose),c.getString(R.string.select),"",R.drawable.text);
+        prepareOption("refreshsong",c.getString(R.string.refresh_song),c.getString(R.string.select),"",R.drawable.redo);
 
         prepareOption("","","","",R.drawable.help);
 
@@ -445,189 +446,7 @@ public class PageButtons {
     // They are all sent to the PerformanceGestures class for processing
     public void sendPageAction(int x, boolean isLongPress) {
         // Get the action we are trying to run
-        switch(actions.get(x)) {
-            case "":
-                actionInterface.getPerformanceGestures().editPageButtons();
-                break;
-            case "set":
-                actionInterface.getPerformanceGestures().setMenu();
-                break;
-            case "inlineset":
-                if (isLongPress) {
-                    actionInterface.getPerformanceGestures().inlineSetSettings();
-                } else {
-                    actionInterface.getPerformanceGestures().inlineSet();
-                }
-                break;
-            case "transpose":
-                actionInterface.getPerformanceGestures().transpose();
-                break;
-            case "pad":
-                if (isLongPress) {
-                    actionInterface.getPerformanceGestures().padSettings();
-                } else {
-                    actionInterface.getPerformanceGestures().togglePad();
-                }
-                break;
-            case "metronome":
-                if (isLongPress) {
-                    actionInterface.getPerformanceGestures().metronomeSettings();
-                } else {
-                    actionInterface.getPerformanceGestures().toggleMetronome();
-                }
-                break;
-            case "autoscroll":
-                if (isLongPress) {
-                    actionInterface.getPerformanceGestures().autoscrollSettings();
-                } else {
-                    actionInterface.getPerformanceGestures().toggleAutoscroll();
-                }
-                break;
-            case "link":
-                actionInterface.getPerformanceGestures().openLinks();
-                break;
-            case "nearby":
-                if (isLongPress) {
-                    actionInterface.getPerformanceGestures().nearbySettings();
-                } else {
-                    actionInterface.getPerformanceGestures().nearbyDiscover();
-                }
-                break;
-            case "chordfingerings":
-                if (isLongPress) {
-                    actionInterface.getPerformanceGestures().chordSettings();
-                } else {
-                    actionInterface.getPerformanceGestures().showChordFingerings();
-                }
-                break;
-            case "tuner":
-                actionInterface.getPerformanceGestures().showTuner();
-                break;
-            case "stickynotes":
-                if (isLongPress) {
-                    actionInterface.getPerformanceGestures().stickySettings();
-                } else {
-                    actionInterface.getPerformanceGestures().showSticky();
-                }
-                break;
-            case "pdfpage":
-                actionInterface.getPerformanceGestures().pdfPage();
-                break;
-            case "highlight":
-                if (isLongPress) {
-                    actionInterface.getPerformanceGestures().highlighterEdit();
-                } else {
-                    actionInterface.getPerformanceGestures().showHighlight();
-                }
-                break;
-            case "editsong":
-                actionInterface.getPerformanceGestures().editSong();
-                break;
-            case "share_song":
-                actionInterface.getPerformanceGestures().shareSong();
-                break;
-            case "addtoset":
-                if (isLongPress) {
-                    actionInterface.getPerformanceGestures().addToSetAsVariation();
-                } else {
-                    actionInterface.getPerformanceGestures().addToSet();
-                }
-                break;
-            case "togglescale":
-                if (isLongPress) {
-                    actionInterface.getPerformanceGestures().editAutoscale();
-                } else {
-                    actionInterface.getPerformanceGestures().toggleScale();
-                }
-                break;
-            case "scrolldown":
-                actionInterface.getPerformanceGestures().scroll(true);
-                break;
-            case "scrollup":
-                actionInterface.getPerformanceGestures().scroll(false);
-                break;
-            case "next":
-                actionInterface.getPerformanceGestures().nextSong();
-                break;
-            case "previous":
-                actionInterface.getPerformanceGestures().prevSong();
-                break;
-            case "theme":
-                actionInterface.getPerformanceGestures().editTheme();
-                break;
-            case "autoscale":
-                actionInterface.getPerformanceGestures().editAutoscale();
-                break;
-            case "fonts":
-                actionInterface.getPerformanceGestures().editFonts();
-                break;
-            case "profiles":
-                actionInterface.getPerformanceGestures().editProfiles();
-                break;
-            case "gestures":
-                actionInterface.getPerformanceGestures().editGestures();
-                break;
-            case "pedals":
-                actionInterface.getPerformanceGestures().editPedals();
-                break;
-            case "showchords":
-                actionInterface.getPerformanceGestures().showChords();
-                break;
-            case "showcapo":
-                actionInterface.getPerformanceGestures().showCapo();
-                break;
-            case "showlyrics":
-                actionInterface.getPerformanceGestures().showLyrics();
-                break;
-            case "songmenu":
-                actionInterface.getPerformanceGestures().songMenu();
-                break;
-            case "randomsong":
-                actionInterface.getPerformanceGestures().randomSong();
-                break;
-            case "abc":
-                if (isLongPress) {
-                    actionInterface.getPerformanceGestures().abcEdit();
-                } else {
-                    actionInterface.getPerformanceGestures().showABCNotation();
-                }
-                break;
-            case "inc_autoscroll_speed":
-                actionInterface.getPerformanceGestures().speedUpAutoscroll();
-                break;
-            case "dec_autoscroll_speed":
-                actionInterface.getPerformanceGestures().slowDownAutoscroll();
-                break;
-            case "toggle_autoscroll_pause":
-                actionInterface.getPerformanceGestures().pauseAutoscroll();
-                break;
-            case "midi":
-                if (isLongPress) {
-                    actionInterface.getPerformanceGestures().editMidi();
-                } else {
-                    actionInterface.getPerformanceGestures().songMidi();
-                }
-                break;
-            case "bible":
-                actionInterface.getPerformanceGestures().bibleSettings();
-                break;
-            case "soundlevel":
-                actionInterface.getPerformanceGestures().soundLevel();
-                break;
-            case "import":
-                if (isLongPress) {
-                    actionInterface.getPerformanceGestures().addSongs();
-                } else {
-                    actionInterface.getPerformanceGestures().onlineImport();
-                }
-                break;
-            case "invertpdf":
-                actionInterface.getPerformanceGestures().invertPDF();
-                break;
-            case "exit":
-                actionInterface.getPerformanceGestures().onBackPressed();
-                break;
-        }
+        mainActivityInterface.getPerformanceGestures().doAction(actions.get(x),isLongPress);
     }
 
 

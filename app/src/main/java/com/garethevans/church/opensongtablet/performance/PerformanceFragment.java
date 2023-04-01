@@ -130,8 +130,8 @@ public class PerformanceFragment extends Fragment {
         initialiseHelpers();
 
         // Initialise the recyclerview
-        if (recyclerLayoutManager==null) {
-            recyclerLayoutManager = new RecyclerLayoutManager(requireContext());
+        if (recyclerLayoutManager==null && getContext()!=null) {
+            recyclerLayoutManager = new RecyclerLayoutManager(getContext());
             myView.recyclerView.setLayoutManager(recyclerLayoutManager);
         }
         myView.recyclerView.setItemAnimator(null);
@@ -214,11 +214,13 @@ public class PerformanceFragment extends Fragment {
 
     // Getting the preferences and helpers ready
     private void initialiseHelpers() {
-        stickyPopUp = new StickyPopUp(requireContext());
-        abcPopup = new ABCPopup(requireContext());
-        mainActivityInterface.getPerformanceGestures().setZoomLayout(myView.zoomLayout);
-        mainActivityInterface.getPerformanceGestures().setRecyclerView(myView.recyclerView);
-        myView.recyclerView.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false));
+        if (getContext() != null) {
+            stickyPopUp = new StickyPopUp(getContext());
+            abcPopup = new ABCPopup(getContext());
+            mainActivityInterface.getPerformanceGestures().setZoomLayout(myView.zoomLayout);
+            mainActivityInterface.getPerformanceGestures().setRecyclerView(myView.recyclerView);
+            myView.recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        }
     }
     private void loadPreferences() {
         mainActivityInterface.getProcessSong().updateProcessingPreferences();
@@ -235,7 +237,9 @@ public class PerformanceFragment extends Fragment {
             myView.waterMark.setVisibility(View.GONE);
         }
         mainActivityInterface.updateOnScreenInfo("setpreferences");
-        myView.inlineSetList.initialisePreferences(requireContext(),mainActivityInterface);
+        if (getContext()!=null) {
+            myView.inlineSetList.initialisePreferences(getContext(), mainActivityInterface);
+        }
         myView.inlineSetList.prepareSet();
 
         boolean allowPinchToZoom = mainActivityInterface.getPreferences().getMyPreferenceBoolean("allowPinchToZoom",true);
@@ -351,7 +355,9 @@ public class PerformanceFragment extends Fragment {
                                     }
                                 });
                             }
-                    handler.postDelayed(this::prepareSongViews, 50 + requireContext().getResources().getInteger(R.integer.slide_out_time));
+                            if (getContext()!=null) {
+                                handler.postDelayed(this::prepareSongViews, 50 + getContext().getResources().getInteger(R.integer.slide_out_time));
+                            }
                 });
             }
         } catch (Exception e) {
@@ -437,9 +443,10 @@ public class PerformanceFragment extends Fragment {
         myView.songView.setVisibility(View.GONE);
         myView.zoomLayout.setVisibility(View.GONE);
 
-        pdfPageAdapter = new PDFPageAdapter(requireContext(), mainActivityInterface, displayInterface,
-                availableWidth, availableHeight, myView.inlineSetList.getInlineSetWidth());
-
+        if (getContext()!=null) {
+            pdfPageAdapter = new PDFPageAdapter(getContext(), mainActivityInterface, displayInterface,
+                    availableWidth, availableHeight, myView.inlineSetList.getInlineSetWidth());
+        }
         myView.recyclerView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
@@ -503,8 +510,9 @@ public class PerformanceFragment extends Fragment {
         myView.imageView.getLayoutParams().height = heightAfterScale;
 
         RequestOptions requestOptions = new RequestOptions().override(widthAfterScale,heightAfterScale);
-        Glide.with(requireContext()).load(bmp).apply(requestOptions).into(myView.imageView);
-
+        if (getContext()!=null) {
+            Glide.with(getContext()).load(bmp).apply(requestOptions).into(myView.imageView);
+        }
         myView.zoomLayout.setSongSize(widthAfterScale, heightAfterScale + (int)(mainActivityInterface.getSongSheetTitleLayout().getHeight()*scaleFactor));
 
         // Slide in
@@ -523,8 +531,10 @@ public class PerformanceFragment extends Fragment {
         myView.songView.setVisibility(View.GONE);
         myView.zoomLayout.setVisibility(View.GONE);
         myView.recyclerView.setVisibility(View.INVISIBLE);
-        imageSlideAdapter = new ImageSlideAdapter(requireContext(), mainActivityInterface, displayInterface,
-                availableWidth, availableHeight);
+        if (getContext()!=null) {
+            imageSlideAdapter = new ImageSlideAdapter(getContext(), mainActivityInterface, displayInterface,
+                    availableWidth, availableHeight);
+        }
 
         // If we have a time for each slide, set the song duration
         if (mainActivityInterface.getSong().getUser1()!=null && !mainActivityInterface.getSong().getUser1().isEmpty()) {
@@ -689,8 +699,10 @@ public class PerformanceFragment extends Fragment {
                 myView.songView.setVisibility(View.GONE);
                 myView.zoomLayout.setVisibility(View.GONE);
                 myView.highlighterView.setVisibility(View.GONE);
-                stageSectionAdapter = new StageSectionAdapter(requireContext(), mainActivityInterface,
-                        displayInterface, myView.inlineSetList.getInlineSetWidth());
+                if (getContext()!=null) {
+                    stageSectionAdapter = new StageSectionAdapter(getContext(), mainActivityInterface,
+                            displayInterface, myView.inlineSetList.getInlineSetWidth());
+                }
 
                 myView.recyclerView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                     @Override
@@ -962,46 +974,48 @@ public class PerformanceFragment extends Fragment {
                     @Override
                     public void onGlobalLayout() {
                         try {
-                            myView.highlighterView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                            // Load in the bitmap with these dimensions
-                            // v5 used portrait and landscape views.  However, now if we only have one
-                            // column, we will always load the portrait view
-                            // landscape is now for columns
-                            Bitmap highlighterBitmap = mainActivityInterface.getProcessSong().
-                                    getHighlighterFile(0, 0);
+                            if (getContext()!= null) {
+                                myView.highlighterView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                                // Load in the bitmap with these dimensions
+                                // v5 used portrait and landscape views.  However, now if we only have one
+                                // column, we will always load the portrait view
+                                // landscape is now for columns
+                                Bitmap highlighterBitmap = mainActivityInterface.getProcessSong().
+                                        getHighlighterFile(0, 0);
 
-                            if (highlighterBitmap != null &&
-                                    mainActivityInterface.getPreferences().getMyPreferenceBoolean("drawingAutoDisplay", true)) {
+                                if (highlighterBitmap != null &&
+                                        mainActivityInterface.getPreferences().getMyPreferenceBoolean("drawingAutoDisplay", true)) {
 
-                                myView.highlighterView.setVisibility(View.VISIBLE);
-                                ViewGroup.LayoutParams rlp = myView.highlighterView.getLayoutParams();
-                                rlp.width = (int)((float)w*scaleFactor);
-                                rlp.height = (int)((float)h*scaleFactor);
+                                    myView.highlighterView.setVisibility(View.VISIBLE);
+                                    ViewGroup.LayoutParams rlp = myView.highlighterView.getLayoutParams();
+                                    rlp.width = (int) ((float) w * scaleFactor);
+                                    rlp.height = (int) ((float) h * scaleFactor);
 
-                                myView.highlighterView.setLayoutParams(rlp);
-                                RequestOptions requestOptions = new RequestOptions().centerInside().override(rlp.width,rlp.height);
-                                Glide.with(requireContext()).load(highlighterBitmap).
-                                        apply(requestOptions).
-                                        into(myView.highlighterView);
+                                    myView.highlighterView.setLayoutParams(rlp);
+                                    RequestOptions requestOptions = new RequestOptions().centerInside().override(rlp.width, rlp.height);
+                                    Glide.with(getContext()).load(highlighterBitmap).
+                                            apply(requestOptions).
+                                            into(myView.highlighterView);
 
-                                myView.highlighterView.setPivotX(0f);
-                                myView.highlighterView.setPivotY(0f);
+                                    myView.highlighterView.setPivotX(0f);
+                                    myView.highlighterView.setPivotY(0f);
 
-                                // Hide after a certain length of time
-                                int timetohide = mainActivityInterface.getPreferences().getMyPreferenceInt("timeToDisplayHighlighter", 0);
-                                if (timetohide != 0) {
-                                    new Handler().postDelayed(() -> myView.highlighterView.setVisibility(View.GONE), timetohide);
-                                }
-                            } else {
-                                myView.highlighterView.post(() -> {
-                                    if (myView!=null) {
-                                        try {
-                                            myView.highlighterView.setVisibility(View.GONE);
-                                        } catch (Exception e) {
-                                            e.printStackTrace();
-                                        }
+                                    // Hide after a certain length of time
+                                    int timetohide = mainActivityInterface.getPreferences().getMyPreferenceInt("timeToDisplayHighlighter", 0);
+                                    if (timetohide != 0) {
+                                        new Handler().postDelayed(() -> myView.highlighterView.setVisibility(View.GONE), timetohide);
                                     }
-                                });
+                                } else {
+                                    myView.highlighterView.post(() -> {
+                                        if (myView != null) {
+                                            try {
+                                                myView.highlighterView.setVisibility(View.GONE);
+                                            } catch (Exception e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                    });
+                                }
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -1082,33 +1096,35 @@ public class PerformanceFragment extends Fragment {
     @SuppressLint("ClickableViewAccessibility")
     private void setGestureListeners(){
         // get the gesture detector
-        gestureDetector = new GestureDetector(requireContext(), new GestureListener(mainActivityInterface,
-                mainActivityInterface.getPerformanceGestures(),swipeMinimumDistance, swipeMaxDistanceYError,swipeMinimumVelocity));
+        if (getContext()!=null) {
+            gestureDetector = new GestureDetector(getContext(), new GestureListener(mainActivityInterface,
+                    swipeMinimumDistance, swipeMaxDistanceYError, swipeMinimumVelocity));
 
-        // Any interaction with the screen should trigger the display prev/next (if required)
-        // It should also show the action bar
-        myView.zoomLayout.setOnTouchListener((view, motionEvent) -> {
-            if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                mainActivityInterface.getDisplayPrevNext().showAndHide();
-                mainActivityInterface.updateOnScreenInfo("showhide");
-                mainActivityInterface.showActionBar();
-                // Check for updating send nearby to
-                if (mainActivityInterface.getNearbyConnections().hasValidConnections() &&
-                mainActivityInterface.getNearbyConnections().getIsHost() &&
-                !mainActivityInterface.getPreferences().getMyPreferenceString("songAutoScale","W").equals("Y")) {
-                    // Get the scroll height
-                    int height = myView.zoomLayout.getMaxScrollY();
-                    // Get the scroll position
-                    int scrollPos = myView.zoomLayout.getScrollY();
-                    if (height>0) {
-                        mainActivityInterface.getNearbyConnections().sendScrollToPayload((float)scrollPos/(float)height);
+            // Any interaction with the screen should trigger the display prev/next (if required)
+            // It should also show the action bar
+            myView.zoomLayout.setOnTouchListener((view, motionEvent) -> {
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    mainActivityInterface.getDisplayPrevNext().showAndHide();
+                    mainActivityInterface.updateOnScreenInfo("showhide");
+                    mainActivityInterface.showActionBar();
+                    // Check for updating send nearby to
+                    if (mainActivityInterface.getNearbyConnections().hasValidConnections() &&
+                            mainActivityInterface.getNearbyConnections().getIsHost() &&
+                            !mainActivityInterface.getPreferences().getMyPreferenceString("songAutoScale", "W").equals("Y")) {
+                        // Get the scroll height
+                        int height = myView.zoomLayout.getMaxScrollY();
+                        // Get the scroll position
+                        int scrollPos = myView.zoomLayout.getScrollY();
+                        if (height > 0) {
+                            mainActivityInterface.getNearbyConnections().sendScrollToPayload((float) scrollPos / (float) height);
+                        }
                     }
                 }
-            }
-            return gestureDetector.onTouchEvent(motionEvent);
-        });
+                return gestureDetector.onTouchEvent(motionEvent);
+            });
 
-        myView.recyclerView.setGestureDetector(gestureDetector);
+            myView.recyclerView.setGestureDetector(gestureDetector);
+        }
     }
 
     public void toggleScale() {

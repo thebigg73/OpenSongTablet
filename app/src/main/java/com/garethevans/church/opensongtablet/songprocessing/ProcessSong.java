@@ -1658,7 +1658,6 @@ public class ProcessSong {
                         thisSection.trim().split("\n").length==1) {
                     Log.d(TAG,"Empty section that we are ignoring");
                 } else {
-                    Log.d(TAG, "thisSection:" + thisSection);
                     groupedSections.add(thisSection);
                     songSections.add(thisSection.replace(groupline_string, "\n"));
                 }

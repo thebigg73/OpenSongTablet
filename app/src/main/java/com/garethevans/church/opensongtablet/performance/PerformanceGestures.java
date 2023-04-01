@@ -51,6 +51,292 @@ public class PerformanceGestures {
         }
     }
 
+
+    public void doAction(String action, boolean isLongPress) {
+        // Get the action we are trying to run
+        switch(action) {
+            case "":
+                editPageButtons();
+                break;
+
+            // Set actions
+            case "set":
+                setMenu();
+                break;
+            case "inlineset":
+                if (isLongPress) {
+                    inlineSetSettings();
+                } else {
+                    inlineSet();
+                }
+                break;
+            case "inlinesetsettings":
+                inlineSetSettings();
+                break;
+            case "addtoset":
+                if (isLongPress) {
+                    addToSetAsVariation();
+                } else {
+                    addToSet();
+                }
+                break;
+            case "addtosetvariation":
+                addToSetAsVariation();
+                break;
+
+
+            // Song actions
+            case "pad":
+                if (isLongPress) {
+                    padSettings();
+                } else {
+                    togglePad();
+                }
+                break;
+            case "padsettings":
+                padSettings();
+                break;
+            case "metronome":
+                if (isLongPress) {
+                    metronomeSettings();
+                } else {
+                    toggleMetronome();
+                }
+                break;
+            case "metronomesettings":
+                metronomeSettings();
+                break;
+            case "autoscroll":
+                if (isLongPress) {
+                    autoscrollSettings();
+                } else {
+                    toggleAutoscroll();
+                }
+                break;
+            case "autoscrollsettings":
+                autoscrollSettings();
+                break;
+            case "inc_autoscroll_speed":
+                speedUpAutoscroll();
+                break;
+            case "dec_autoscroll_speed":
+                slowDownAutoscroll();
+                break;
+            case "toggle_autoscroll_pause":
+                pauseAutoscroll();
+                break;
+            case "pad_autoscroll":
+                togglePad();
+                toggleAutoscroll();
+                break;
+            case "pad_metronome":
+                togglePad();
+                toggleMetronome();
+                break;
+            case "autoscroll_metronome":
+                toggleMetronome();
+                toggleAutoscroll();
+                break;
+            case "pad_autoscroll_metronome":
+                togglePad();
+                toggleMetronome();
+                toggleAutoscroll();
+                break;
+            case "editsong":
+                editSong();
+                break;
+            case "share_song":
+                shareSong();
+                break;
+            case "import":
+                if (isLongPress) {
+                    addSongs();
+                } else {
+                    onlineImport();
+                }
+                break;
+            case "importonline":
+                onlineImport();
+                break;
+            case "importoptions":
+                addSongs();
+                break;
+
+
+            // Song navigation
+            case "songmenu":
+                songMenu();
+                break;
+            case "scrolldown":
+                scroll(true);
+                break;
+            case "scrollup":
+                scroll(false);
+                break;
+            case "next":
+                nextSong();
+                break;
+            case "previous":
+                prevSong();
+                break;
+            case "randomsong":
+                randomSong();
+                break;
+            case "scrollmenuup":
+                mainActivityInterface.scrollOpenMenu(false);
+                break;
+            case "scrollmenudown":
+                mainActivityInterface.scrollOpenMenu(true);
+                break;
+
+
+            // Chords
+            case "transpose":
+                if (isLongPress) {
+                    mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_chords),0);
+                } else {
+                    transpose();
+                }
+                break;
+            case "transposesettings":
+                mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_chords),0);
+                break;
+            case "chordfingerings":
+                if (isLongPress) {
+                    customChords();
+                } else {
+                    showChordFingerings();
+                }
+                break;
+            case "customchords":
+                customChords();
+                break;
+
+
+            // Song information
+            case "link":
+                openLinks();
+                break;
+            case "stickynotes":
+                if (isLongPress) {
+                    stickySettings();
+                } else {
+                    showSticky();
+                }
+                break;
+            case "stickynotessettings":
+                stickySettings();
+                break;
+            case "highlight":
+                if (isLongPress) {
+                    highlighterEdit();
+                } else {
+                    showHighlight();
+                }
+                break;
+            case "highlightedit":
+                highlighterEdit();
+                break;
+            case "abc":
+                if (isLongPress) {
+                    abcEdit();
+                } else {
+                    showABCNotation();
+                }
+                break;
+            case "abcedit":
+                abcEdit();
+                break;
+
+
+            // Display
+            case "profiles":
+                editProfiles();
+                break;
+            case "showchords":
+                showChords();
+                break;
+            case "showcapo":
+                showCapo();
+                break;
+            case "showlyrics":
+                showLyrics();
+                break;
+            case "theme":
+                editTheme();
+                break;
+            case "togglescale":
+                if (isLongPress) {
+                    editAutoscale();
+                } else {
+                    toggleScale();
+                }
+                break;
+            case "autoscalesettings":
+                editAutoscale();
+                break;
+            case "pdfpage":
+                pdfPage();
+                break;
+            case "invertpdf":
+                invertPDF();
+                break;
+            case "fonts":
+                editFonts();
+                break;
+            case "refreshsong":
+                loadSong();
+                break;
+
+
+            // Controls
+            case "nearby":
+                if (isLongPress) {
+                    nearbySettings();
+                } else {
+                    nearbyDiscover();
+                }
+                break;
+            case "nearbysettings":
+                nearbySettings();
+                break;
+            case "gestures":
+                editGestures();
+                break;
+            case "pedals":
+                editPedals();
+                break;
+            case "midi":
+                if (isLongPress) {
+                    editMidi();
+                } else {
+                    songMidi();
+                }
+                break;
+            case "midisettings":
+                editMidi();
+                break;
+
+
+            // Utilities
+            case "soundlevel":
+                soundLevel();
+                break;
+            case "tuner":
+                showTuner();
+                break;
+            case "bible":
+                bibleSettings();
+                break;
+
+
+            // Exit
+            case "exit":
+                onBackPressed();
+                break;
+        }
+    }
+
     // The following are called from GestureListener, PedalActions, PageButtons
 
     // Edit page buttons
@@ -332,6 +618,11 @@ public class PerformanceGestures {
     // Show the chord settings
     public void chordSettings() {
         mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_chords),0);
+    }
+
+    // Custom chords
+    public void customChords() {
+        mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_chords_custom),0);
     }
 
     // Toggle between native, capo and both

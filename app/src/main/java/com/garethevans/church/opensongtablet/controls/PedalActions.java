@@ -82,40 +82,108 @@ public class PedalActions {
     private void setActions() {
         actions = new ArrayList<>();
         actionCodes = new ArrayList<>();
+
         String startstop = " (" + c.getString(R.string.start) + " / " + c.getString(R.string.stop) + ")";
         String showhide = " (" + c.getString(R.string.show) + " / " + c.getString(R.string.hide) + ")";
+        String settings = " " + c.getString(R.string.settings);
         String autoscroll = c.getString(R.string.autoscroll) + startstop;
         String pad = c.getString(R.string.pad) + startstop;
         String metronome = c.getString(R.string.metronome) + startstop;
+
         addString("","");
-        addString("prev",c.getString(R.string.previous));
-        addString("next",c.getString(R.string.next));
-        addString("up",c.getString(R.string.scroll_up));
-        addString("down",c.getString(R.string.scroll_down));
+
+        // Set actions
+        addString("set",c.getString(R.string.set_current) + showhide);
+        addString("inlineset",c.getString(R.string.set_inline) + showhide);
+        addString("inlinesetsettings",c.getString(R.string.set_inline)+ settings);
+        addString("addtoset",c.getString(R.string.add_song_to_set));
+        addString("addtosetvariation",c.getString(R.string.variation_make));
+
+        addString("","");
+
+        // Song actions
         addString("pad",pad);
-        addString("autoscroll",autoscroll);
+        addString("padsettings",c.getString(R.string.pad)+settings);
         addString("metronome",metronome);
+        addString("metronomesettings",c.getString(R.string.metronome)+settings);
+        addString("autoscroll",autoscroll);
+        addString("autoscrollsettings",c.getString(R.string.autoscroll)+settings);
+        addString("inc_autoscroll_speed",c.getString(R.string.inc_autoscroll_speed));
+        addString("dec_autoscroll_speed",c.getString(R.string.dec_autoscroll_speed));
+        addString("toggle_autoscroll_pause",c.getString(R.string.autoscroll_pause));
         addString("pad_autoscroll",pad + " & " + c.getString(R.string.autoscroll));
         addString("pad_metronome",pad + " & " + c.getString(R.string.metronome));
         addString("autoscroll_metronome",autoscroll + " & " + c.getString(R.string.metronome));
         addString("pad_autoscroll_metronome",pad + " & " + c.getString(R.string.autoscroll) + " & " + c.getString(R.string.metronome));
         addString("editsong",c.getString(R.string.edit));
+        addString("share_song",c.getString(R.string.export)+" "+c.getString(R.string.song));
+        addString("importoptions",c.getString(R.string.import_main));
+        addString("importonline",c.getString(R.string.import_basic)+" "+c.getString(R.string.online_services));
+        addString("refreshsong",c.getString(R.string.refresh_song));
+        addString("","");
+
+        // Song navigation
+        addString("songmenu",c.getString(R.string.show_songs) + showhide);
+        addString("scrolldown",c.getString(R.string.scroll_down));
+        addString("scrollup",c.getString(R.string.scroll_up));
+        addString("next",c.getString(R.string.next));
+        addString("previous",c.getString(R.string.previous));
+        addString("randomsong",c.getString(R.string.random_song));
+
+        addString("","");
+
+        // Chords
         addString("transpose",c.getString(R.string.transpose));
-        addString("tuner",c.getString(R.string.tuner));
+        addString("transposesettings",c.getString(R.string.chord_settings));
+        addString("chordfingerings",c.getString(R.string.chord_fingering)+showhide);
+        addString("customchords",c.getString(R.string.custom_chords));
+
+        addString("","");
+
+        // Song information
+        addString("link",c.getString(R.string.link));
+        addString("stickynotes",c.getString(R.string.song_notes)+showhide);
+        addString("stickynotessettings",c.getString(R.string.song_notes_edit));
+        addString("highlight",c.getString(R.string.highlight)+showhide);
+        addString("highlightedit",c.getString(R.string.highlight_info));
+        addString("abc",c.getString(R.string.music_score));
+        addString("abcedit",c.getString(R.string.music_score_info));
+
+        addString("","");
+
+        // Display
+        addString("profiles",c.getString(R.string.profile));
         addString("showchords",c.getString(R.string.show_chords));
         addString("showcapo",c.getString(R.string.show_capo));
         addString("showlyrics",c.getString(R.string.show_lyrics));
-        addString("randomsong",c.getString(R.string.random_song));
-        addString("abcnotation",c.getString(R.string.music_score));
-        addString("highlight",c.getString(R.string.highlight));
-        addString("sticky",c.getString(R.string.song_notes));
-        addString("speedup",c.getString(R.string.inc_autoscroll_speed));
-        addString("slowdown",c.getString(R.string.dec_autoscroll_speed));
-        addString("pause",c.getString(R.string.autoscroll_pause));
-        addString("songmenu",c.getString(R.string.songs) + showhide);
-        addString("set",c.getString(R.string.set_current) + showhide);
-        addString("refreshsong",c.getString(R.string.refresh_song));
-        addString("addsongtoset",c.getString(R.string.add_song_to_set));
+        addString("theme",c.getString(R.string.theme_choose));
+        addString("togglescale",c.getString(R.string.scale_auto));
+        addString("autoscalesettings",c.getString(R.string.scaling_info));
+        addString("pdfpage",c.getString(R.string.select_page));
+        addString("invertpdf",c.getString(R.string.invert_PDF));
+        addString("fonts",c.getString(R.string.font_choose));
+
+        addString("","");
+
+        // Controls
+        addString("nearby",c.getString(R.string.connections_discover));
+        addString("nearbysettings",c.getString(R.string.connections_connect)+settings);
+        addString("gestures",c.getString(R.string.custom_gestures));
+        addString("pedals",c.getString(R.string.pedal)+settings);
+        addString("midi",c.getString(R.string.midi_send));
+        addString("midisettings",c.getString(R.string.midi)+settings);
+
+        addString("","");
+
+        // Utilities
+        addString("soundlevel",c.getString(R.string.sound_level_meter));
+        addString("tuner",c.getString(R.string.tuner));
+        addString("bible",c.getString(R.string.bible_verse));
+
+        addString("","");
+
+        // Exit
+        addString("exit",c.getString(R.string.exit) + " " + c.getString(R.string.app_name));
     }
     private void addString(String id, String val) {
         actionCodes.add(id);
@@ -204,146 +272,47 @@ public class PedalActions {
             warningWaitHandler.removeCallbacks(warningWaitRunnable);
         }
 
+
+        // Convert extra actions based on if song menu is open/closed
+        // Also check for warning
         switch (desiredAction) {
-            case "prev":
+
+            case "previous":
                 // If the menu is open, scroll up
                 if (mainActivityInterface.getMenuOpen()) {
-                    mainActivityInterface.scrollOpenMenu(false);
+                    desiredAction = "scrollmenuup";
                 } else if (!pedalIgnorePrevNext) {
                     warningActive = false;
-                    mainActivityInterface.getPerformanceGestures().prevSong();
+                } else {
+                    desiredAction = "";
                 }
                 break;
-
             case "next":
                 // If the menu is open, scroll down
                 if (mainActivityInterface.getMenuOpen()) {
-                    mainActivityInterface.scrollOpenMenu(true);
+                    desiredAction = "scrollmenudown";
                 } else if (!pedalIgnorePrevNext) {
                     warningActive = false;
-                    mainActivityInterface.getPerformanceGestures().nextSong();
+                } else {
+                    desiredAction = "";
                 }
                 break;
-
             case "down":
                 // If the menu is open, scroll down
                 if (mainActivityInterface.getMenuOpen()) {
-                    mainActivityInterface.scrollOpenMenu(true);
-                } else {
-                    mainActivityInterface.getPerformanceGestures().scroll(true);
+                    desiredAction = "scrollmenudown";
                 }
                 break;
-
             case "up":
                 // If the menu is open, scroll up
                 if (mainActivityInterface.getMenuOpen()) {
-                    mainActivityInterface.scrollOpenMenu(false);
-                } else {
-                    mainActivityInterface.getPerformanceGestures().scroll(false);
+                    desiredAction = "scrollmenuup";
                 }
                 break;
-
-            case "pad":
-                mainActivityInterface.getPerformanceGestures().togglePad();
-                break;
-
-            case "autoscroll":
-                mainActivityInterface.getPerformanceGestures().toggleAutoscroll();
-                break;
-
-            case "metronome":
-                mainActivityInterface.getPerformanceGestures().toggleMetronome();
-                break;
-
-            case "pad_autoscroll":
-                mainActivityInterface.getPerformanceGestures().togglePad();
-                mainActivityInterface.getPerformanceGestures().toggleAutoscroll();
-                break;
-
-            case "pad_metronome":
-                mainActivityInterface.getPerformanceGestures().togglePad();
-                mainActivityInterface.getPerformanceGestures().toggleMetronome();
-                break;
-
-            case "autoscroll_metronome":
-                mainActivityInterface.getPerformanceGestures().toggleMetronome();
-                mainActivityInterface.getPerformanceGestures().toggleAutoscroll();
-                break;
-
-            case "pad_autoscroll_metronome":
-                mainActivityInterface.getPerformanceGestures().togglePad();
-                mainActivityInterface.getPerformanceGestures().toggleMetronome();
-                mainActivityInterface.getPerformanceGestures().toggleAutoscroll();
-                break;
-
-            case "editsong":
-                mainActivityInterface.getPerformanceGestures().editSong();
-                break;
-
-            case "randomsong":
-                mainActivityInterface.getPerformanceGestures().randomSong();
-                break;
-
-            case "transpose":
-                mainActivityInterface.getPerformanceGestures().transpose();
-                break;
-
-            case "tuner":
-                mainActivityInterface.getPerformanceGestures().showTuner();
-                break;
-
-            case "showchords":
-                mainActivityInterface.getPerformanceGestures().showChords();
-                break;
-
-            case "showcapo":
-                mainActivityInterface.getPerformanceGestures().showCapo();
-                break;
-
-            case "showlyrics":
-                mainActivityInterface.getPerformanceGestures().showLyrics();
-                break;
-
-            case "abcnotation":
-                mainActivityInterface.getPerformanceGestures().showABCNotation();
-                break;
-
-            case "highlight":
-                mainActivityInterface.getPerformanceGestures().showHighlight();
-                break;
-
-            case "sticky":
-                mainActivityInterface.getPerformanceGestures().showSticky();
-                break;
-
-            case "speedup":
-                mainActivityInterface.getPerformanceGestures().speedUpAutoscroll();
-                break;
-
-            case "slowdown":
-                mainActivityInterface.getPerformanceGestures().slowDownAutoscroll();
-                break;
-
-            case "pause":
-                mainActivityInterface.getPerformanceGestures().pauseAutoscroll();
-                break;
-
-            case "songmenu":
-                mainActivityInterface.getPerformanceGestures().songMenu();
-                break;
-
-            case "set":
-                mainActivityInterface.getPerformanceGestures().setMenu();
-                break;
-
-            case "refreshsong":
-                mainActivityInterface.getPerformanceGestures().loadSong();
-                break;
-
-            case "addsongtoset":
-                mainActivityInterface.getPerformanceGestures().addToSet();
-                break;
         }
+
+        // Now deal with the desired action.  isLongPress is for page buttons (not to do with pedal)
+        mainActivityInterface.getPerformanceGestures().doAction(desiredAction,false);
     }
 
     public int getButtonNumber(int keyCode, String keyMidi) {
@@ -370,7 +339,6 @@ public class PedalActions {
             return pedalLongPressAction[pedal];
         }
     }
-
 
     // Getters and setters
     public boolean getPedalScrollBeforeMove() {

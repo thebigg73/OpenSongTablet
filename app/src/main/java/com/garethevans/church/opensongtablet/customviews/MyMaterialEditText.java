@@ -125,12 +125,13 @@ public class MyMaterialEditText extends LinearLayout implements View.OnTouchList
         // Now figure out the inputType to use
         if (inputType == InputType.TYPE_TEXT_FLAG_MULTI_LINE) {
             editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
-            editText.setImeOptions(EditorInfo.IME_ACTION_NONE);
+            imeOptions = imeOptions & EditorInfo.IME_ACTION_DONE;
+        //    editText.setImeOptions(EditorInfo.IME_ACTION_NONE);
         } else if (inputType == InputType.TYPE_CLASS_NUMBER) {
             editText.setInputType(inputType);
         } else {
             editText.setInputType(inputType);
-            editText.setImeOptions(imeOptions);
+            //editText.setImeOptions(imeOptions);
             editText.setOnEditorActionListener((v, actionId, event) -> {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     //Clear focus here from edittext
@@ -160,8 +161,11 @@ public class MyMaterialEditText extends LinearLayout implements View.OnTouchList
 
         setEndIconMode(endIconMode);
 
+        editText.setImeOptions(imeOptions);
+
         a.recycle();
     }
+
 
     public void setEndIconMode(int endIconMode) {
         this.endIconMode = endIconMode;

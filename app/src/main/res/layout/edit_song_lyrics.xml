@@ -41,7 +41,6 @@
                     android:layout_below="@+id/ocr"
                     android:layout_marginBottom="72dp"
                     android:hint="@string/lyrics"
-                    android:imeOptions="actionNone"
                     android:inputType="text|textMultiLine"
                     android:minLines="25"
                     app:autoSizeMaxTextSize="18sp"
@@ -94,11 +93,4 @@
         android:contentDescription="@string/extra_settings"
         app:srcCompat="@drawable/menu" />
 
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:icon="@drawable/save"
-        android:text="@string/save"
-        android:layout_margin="12dp"
-        android:layout_gravity="bottom|end"/>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
