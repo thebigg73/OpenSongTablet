@@ -1493,9 +1493,10 @@ public class ProcessSong {
             sectionSplit = "║";
         }
 
-        // 6. Prepare for double new line:  We split at \n\n but not for scripture
+        // 6. Prepare for double new line section split - needed for all except scripture or performance primary (not presentation) screen
         String doubleNewlineSplit = "\n\n";
-        if (!mainActivityInterface.getSong().getFolder().contains(c.getResources().getString(R.string.scripture))) {
+        if (!mainActivityInterface.getSong().getFolder().contains(c.getResources().getString(R.string.scripture)) &&
+                !(mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) && !presentation )) {
             doubleNewlineSplit = "§";
         }
 
@@ -1525,22 +1526,10 @@ public class ProcessSong {
                 .replace("\n---", "\n§")
                 .replace("\n [", "\n§[")
                 .replace("\n[", "\n§[")
-                .replace("\n\n", doubleNewlineSplit);
-
-                // GE - if we are in Perfomance mode, we might want extra line breaks as spacing!
-                if (!mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance))) {
-                    lyrics = lyrics.replace("§§","§");
-                } else {
-                    // GE Add extra lines that we'll remove later
-                    // This is to allow extra blank spacing lines in the song
-                    lyrics = lyrics.replace("§\n§","\n\n\n§")
-                            .replace("§§§§","\n\n\n\n§")
-                            .replace("§§§","\n\n\n§")
-                            .replace("§§","\n\n§");
-
-                }
+                .replace("\n\n", doubleNewlineSplit)
+                .replace("§§","§")
                 // --- Remove the leading added leading \n
-                lyrics = lyrics.substring(1)
+                .substring(1)
                 // --- Because we trail with ¶, this removes the added leading \n as part of removing leading white space                // --- Now remove trailing ¶
                 .replace("¶","");
 
@@ -1601,32 +1590,27 @@ public class ProcessSong {
         }
         lyrics = fixedlyrics.toString()
                 // IV - Content is added with leading \n§, the first needs to be removed
-                .replaceFirst("\n§","");
-
-        // IV - Remove (when present) performance mode 'empty' sectionHeader
-        // GE Do this this Stage/Presenter mode
-        if (!mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance))) {
-            lyrics = lyrics.replace("\n§¬\n", "\n");
-        } else {
-            lyrics = lyrics.replace("¬","");
-        }
+                .replaceFirst("\n§","")
+                // IV - Remove 'empty' section headers
+                .replace("\n§¬\n","\n");
 
         // 11. Handle section trimming
-        if (trimSections) {
+        // IV - Trim but not if performance primary screen and trimsections is off
+        if (!mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance))  ||
+                (!presentation && trimSections)) {
             lyrics = lyrics
                     // We protect the leading space of lyric lines
                     // --- Simplify empty lyric lines... the replace is needed twice
-                    .replace("\n§¬\n","\n")
                     .replace("\n \n","\n\n")
                     .replace("\n \n","\n\n")
-                    // --- Replace the leading spaces of lyric lines with ¬
-                    .replace("\n ","\n¬")
+                    // --- Replace the leading spaces of lyric lines with ×
+                    .replace("\n ","\n×")
                     // Trim to remove leading and trailing whitespace
                     .trim()
                     // Remove whitespace after section header - which will not remove ¬
                     .replaceAll("]\\s+","]\n")
                     // --- Revert the protected spaces
-                    .replace("¬"," ")
+                    .replace("×"," ")
                     // Remove whitespace before the section marker
                     .replaceAll("\\s+§","\n§");
         }
@@ -1640,35 +1624,19 @@ public class ProcessSong {
         } else {
             lyrics = filterAndGroupLines(lyrics, displayChords);
         }
+
         // 14. Build the songSections for later recall
         // The song sections are not the views (which can have sections repeated using presentationOrder)
         // The grouped sections are used for alignments
         songSections = new ArrayList<>();
         ArrayList<String> groupedSections = new ArrayList<>();
 
-        if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance))) {
-            // Remove that extra line at the end
-            lyrics = lyrics.replace("\n\n§","\n§");
-        }
+        // IV - Ignore sections with no lines
         for (String thisSection : lyrics.split("\n§")) {
-            // IV - This ignores empty sections for non-performance modes
-            if (!mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) &&
-                    thisSection != null && !thisSection.trim().isEmpty()) {
-                if (thisSection.trim().startsWith("[") && thisSection.trim().endsWith("]") &&
-                        thisSection.trim().split("\n").length==1) {
-                    Log.d(TAG,"Empty section that we are ignoring");
-                } else {
-                    groupedSections.add(thisSection);
-                    songSections.add(thisSection.replace(groupline_string, "\n"));
-                }
-            } else if (thisSection != null) {
-                String groupedSection = thisSection.replace(groupline_string,"\n");
-                if (trimSections) {
-                    thisSection = thisSection.trim();
-                    groupedSection = groupedSection.trim();
-                }
+            if (thisSection != null && !thisSection.trim().isEmpty() &&
+            !(thisSection.trim().startsWith("[") && thisSection.trim().endsWith("]") && thisSection.trim().split("\n").length==1)) {
                 groupedSections.add(thisSection);
-                songSections.add(groupedSection);
+                songSections.add(thisSection.replace(groupline_string, "\n"));
             }
         }
 
