@@ -2094,7 +2094,7 @@ public class ProcessSong {
         int col1_2Height = 0, col2_2Height = 0, col1_3Height = 0, col2_3Height = 0, col3_3Height = 0;
 
         // Only need to work out 2/3 columns if full autoscaling, or we have force splitpoints
-        if (autoScale.equals("Y")) {
+        if (autoScale.equals("Y") || (presentation && mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)))) {
 
             if (forceColumns && forceColumnInfo != null && forceColumnInfo[0] != 1) {
                 if (forceColumnInfo[0] == 2) {
@@ -2302,17 +2302,19 @@ public class ProcessSong {
 
         if (oneColumn && !twoColumn && !threeColumn) {
             // Compare with max scaling due to font size allowed
-            if (autoScale.equals("Y")) {
-                oneColumnScale = Math.min(maxFontScale, oneColumnScale);
-                if (oneColumnScale < minFontScale && songAutoScaleOverrideFull) {
-                    autoScale = "W";
+            if (!presentation) {
+                if (autoScale.equals("Y")) {
+                    oneColumnScale = Math.min(maxFontScale, oneColumnScale);
+                    if (oneColumnScale < minFontScale && songAutoScaleOverrideFull) {
+                        autoScale = "W";
+                    }
                 }
-            }
 
-            if (autoScale.equals("W")) {
-                oneColumnScale = Math.min(maxFontScale,(float)availableWidth/(float)col1_1Width);
-                if (oneColumnScale<minFontScale && songAutoScaleOverrideWidth) {
-                    oneColumnScale = fontSize/defFontSize;
+                if (autoScale.equals("W")) {
+                    oneColumnScale = Math.min(maxFontScale, (float) availableWidth / (float) col1_1Width);
+                    if (oneColumnScale < minFontScale && songAutoScaleOverrideWidth) {
+                        oneColumnScale = fontSize / defFontSize;
+                    }
                 }
             }
 
@@ -2418,7 +2420,6 @@ public class ProcessSong {
                 availableHeight-songSheetTitleHeight,songAutoScale,
                 doForceColumns, forceColumnsInfo, presentation);
 
-
         if (columnInfo[0]==1) {
             if (availableWidth>currentWidth) {
                 currentWidth = availableWidth;
@@ -2464,6 +2465,9 @@ public class ProcessSong {
             // If this isn't the last view, add the section space
             if (i!=sectionViews.size()-1) {
                 v.setPadding(0,0,0,sectionSpace);
+            }
+            if (v.getParent()!=null) {
+                ((LinearLayout)v.getParent()).removeView(v);
             }
             innerCol1.addView(v);
         }

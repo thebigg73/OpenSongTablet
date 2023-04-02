@@ -650,7 +650,6 @@ public class SecondaryDisplay extends Presentation {
                 capo = null;
             }
 
-
             Log.d(TAG,"currentInfoText:"+currentInfoText);
 
             // Get final strings for VTO
@@ -675,20 +674,13 @@ public class SecondaryDisplay extends Presentation {
                 @Override
                 public void onGlobalLayout() {
                     // Check we are all done and proceed if all values are non null/set
-
-                    Log.d(TAG,"VTO called.  ready? "+myView.testSongInfo.getValuesNonNull());
                     if (myView.testSongInfo.getValuesNonNull()) {
-                        Log.d(TAG,"valuesNonNull");
-
                         // Measure the view
                         int height = myView.testSongInfo.getHeight();
-                        Log.d(TAG, "height = " + height);
-
 
                         // Now write the actual song info and set the determined height
                         // These will go into the currently hidden info bar
                         if (!myView.songProjectionInfo1.getIsDisplaying()) {
-                            Log.d(TAG,"Write to 1");
                             myView.songProjectionInfo1.setSongTitle(finalTitle);
                             myView.songProjectionInfo1.setSongAuthor(finalAuthor);
                             myView.songProjectionInfo1.setSongCopyright(finalCopyright);
@@ -701,7 +693,6 @@ public class SecondaryDisplay extends Presentation {
                             myView.songProjectionInfo1.setViewHeight(height);
 
                         } else {
-                            Log.d(TAG,"Write to 2");
                             myView.songProjectionInfo2.setSongTitle(finalTitle);
                             myView.songProjectionInfo2.setSongAuthor(finalAuthor);
                             myView.songProjectionInfo2.setSongCopyright(finalCopyright);
@@ -738,6 +729,7 @@ public class SecondaryDisplay extends Presentation {
     }
     public void checkSongInfoShowHide() {
         View infoToHide = songInfoHideCheck();
+        Log.d(TAG,"infoBarRequired:"+infoBarRequired);
         if (infoBarRequired) {
             if (songInfoChanged()) {
                 isNewSong = false;
@@ -783,8 +775,8 @@ public class SecondaryDisplay extends Presentation {
                 return myView.songProjectionInfo1;
 
             } else if (!myView.songProjectionInfo2.getIsDisplaying()) {
-                myView.songProjectionInfo2.setIsDisplaying(true);
                 myView.songProjectionInfo1.setIsDisplaying(false);
+                myView.songProjectionInfo2.setIsDisplaying(true);
                 return myView.songProjectionInfo2;
             } else {
                 return null;
@@ -831,6 +823,7 @@ public class SecondaryDisplay extends Presentation {
             setSectionViews();
         }
     }
+    // TODO Update this when prefs change
     public void setSongContentPrefs() {
         trimLines = mainActivityInterface.getPreferences().getMyPreferenceBoolean("trimLines", false);
         trimSections = mainActivityInterface.getPreferences().getMyPreferenceBoolean("trimSections", false);
@@ -847,8 +840,6 @@ public class SecondaryDisplay extends Presentation {
 
         // Draw them to the screen test layout for measuring
         waitingOnViewsToDraw = secondaryViews.size();
-        Log.d(TAG,"waitingOnViewsToDraw: "+waitingOnViewsToDraw);
-
         for (View view : secondaryViews) {
             view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override
@@ -858,7 +849,6 @@ public class SecondaryDisplay extends Presentation {
                     // In case rogue calls get fired, only proceed if we should
                     if (waitingOnViewsToDraw > 0) {
                         waitingOnViewsToDraw--;
-                        Log.d(TAG,"waitingOnViewsToDraw: "+waitingOnViewsToDraw);
                         if (waitingOnViewsToDraw == 0) {
                             // This was the last item, so move on
                             viewsAreReady();
@@ -881,7 +871,6 @@ public class SecondaryDisplay extends Presentation {
             secondaryWidths.add(x, width);
             secondaryHeights.add(x, height);
 
-            Log.d(TAG,"view:"+x+"  >  "+width+"x"+height);
             // Calculate the scale factor for each section individually
             // For each meausured view, get the max x and y scale value
             // Check they are less than the max preferred value
@@ -904,7 +893,6 @@ public class SecondaryDisplay extends Presentation {
         myView.testLayout.removeAllViews();
 
         if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance))) {
-            Log.d(TAG, "Perfomance mode - need to show everything");
             showAllSections();
         } else {
             // Only need to show the current section (if it has been chosen)
@@ -931,8 +919,6 @@ public class SecondaryDisplay extends Presentation {
             } else {
                 viewsAvailable = mainActivityInterface.getSong().getPresoOrderSongSections().size();
             }
-            Log.d(TAG,"stageOk:"+stageOk+"  presenterOk:"+presenterOk);
-            Log.d(TAG,"position="+position+"  viewsAvailable="+viewsAvailable);
             // TODO need to fix for Stage mode too - getSongSectionsAdapter not initialised
 
             if ((stageOk || presenterOk || pdf || image || imageslide) && position!=-1) {
@@ -955,7 +941,6 @@ public class SecondaryDisplay extends Presentation {
                     if (infoHeight == 0) {
                         infoHeight = myView.testSongInfo.getViewHeight();
                     }
-                    Log.d(TAG,"infoHeight="+infoHeight);
                     int alertHeight = myView.alertBar.getViewHeight();
 
                     if (!pdf && !image && !imageslide) {
@@ -981,7 +966,6 @@ public class SecondaryDisplay extends Presentation {
 
                         // We can now prepare the new view and animate in/out the views as long as the logo is off
                         // and the blank screen isn't on
-                        //Log.d(TAG, "showWhich=" + showWhich + "  canShowSong()=" + canShowSong());
 
                         // Translate the scaled views based on the alignment
                         int newWidth = (int) (width * best);
@@ -989,7 +973,6 @@ public class SecondaryDisplay extends Presentation {
                         translateView(secondaryViews.get(position), newWidth, newHeight, infoHeight, alertHeight);
                     }
 
-                    Log.d(TAG,"image:"+image);
                     if (pdf) {
                         bitmap = mainActivityInterface.getProcessSong().getBitmapFromPDF(mainActivityInterface.getSong().getFolder(),
                                 mainActivityInterface.getSong().getFilename(),position,availableScreenWidth,
@@ -1001,25 +984,16 @@ public class SecondaryDisplay extends Presentation {
                                         mainActivityInterface.getSong().getFilename()),
                                 0,0);
                     } else if (imageslide) {
-                        Log.d(TAG,"lyrics: "+mainActivityInterface.getSong().getLyrics());
-                        Log.d(TAG,"user1: "+mainActivityInterface.getSong().getUser1());
-                        Log.d(TAG,"user2: "+mainActivityInterface.getSong().getUser2());
-                        Log.d(TAG,"user3: "+mainActivityInterface.getSong().getUser3());
                         String[] bits = mainActivityInterface.getSong().getUser3().trim().split("\n");
-                        Log.d(TAG,"bits.length:"+bits.length);
                         if (bits.length>0 && bits.length>position) {
-                            Log.d(TAG,"uri="+bits[position]);
                             bitmap = mainActivityInterface.getProcessSong().getBitmapFromUri(Uri.parse(bits[position]),0,0);
                         } else {
-                            Log.d(TAG,"bits.length: "+bits.length + "  position:"+position);
                             bitmap = null;
                         }
 
                     } else {
                         bitmap = null;
                     }
-
-                    Log.d(TAG,"bitmap:"+bitmap);
 
                     if (!image && !pdf && !imageslide &&
                             secondaryViews!=null && secondaryViews.size()>position &&
@@ -1113,12 +1087,7 @@ public class SecondaryDisplay extends Presentation {
         // The bar height is constant
         int infoHeight = Math.max(myView.songProjectionInfo1.getViewHeight(),myView.songProjectionInfo2.getViewHeight());
         int modeHeight = availableScreenHeight - infoHeight;
-
-        Log.d(TAG,"infoHeight="+infoHeight);
-        Log.d(TAG,"availableScreenHeight="+availableScreenHeight);
-        Log.d(TAG,"modeHeight="+modeHeight);
-
-        boolean need23columns = mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance));
+        isNewSong = true;
         if (!myView.songContent1.getIsDisplaying()) {
             float[] f= mainActivityInterface.getProcessSong().addViewsToScreen(
                     secondaryViews, secondaryWidths, secondaryHeights, myView.allContent,
@@ -1126,19 +1095,14 @@ public class SecondaryDisplay extends Presentation {
                     myView.songContent1.getCol1(), myView.songContent1.getCol2(),
                     myView.songContent1.getCol3(), true, displayMetrics);
 
-            for (float tf:f) {
-                Log.d(TAG,"tf:"+tf);
-            }
-
             ViewGroup.LayoutParams lp = myView.songContent1.getLayoutParams();
             lp.width = MATCH_PARENT;
             lp.height = modeHeight;
             myView.songContent1.setLayoutParams(lp);
             myView.songContent1.setIsDisplaying(true);
             myView.songContent2.setIsDisplaying(false);
-            //Log.d(TAG, "showing all sections.   songContent1:getIsDisplaying(): "+myView.songContent1.getIsDisplaying()+"  songContent2:getIsDisplaying(): "+myView.songContent2.getIsDisplaying());
-            //Log.d(TAG, "Fade out 2, fade in 1");
             crossFadeContent(myView.songContent2,myView.songContent1);
+            checkSongInfoShowHide();
 
         } else if (!myView.songContent2.getIsDisplaying()) {
             float[] f= mainActivityInterface.getProcessSong().addViewsToScreen(
@@ -1147,19 +1111,14 @@ public class SecondaryDisplay extends Presentation {
                     myView.songContent2.getCol1(), myView.songContent2.getCol2(),
                     myView.songContent2.getCol3(), true, displayMetrics);
 
-            for (float tf:f) {
-                Log.d(TAG,"tf:"+tf);
-            }
-
             ViewGroup.LayoutParams lp = myView.songContent2.getLayoutParams();
             lp.width = MATCH_PARENT;
             lp.height = modeHeight;
             myView.songContent2.setLayoutParams(lp);
             myView.songContent2.setIsDisplaying(true);
             myView.songContent1.setIsDisplaying(false);
-            //Log.d(TAG, "showing all sections.   songContent1:getIsDisplaying(): "+myView.songContent1.getIsDisplaying()+"  songContent2:getIsDisplaying(): "+myView.songContent2.getIsDisplaying());
-            //Log.d(TAG, "Fade out 1, fade in 2");
             crossFadeContent(myView.songContent1,myView.songContent2);
+            checkSongInfoShowHide();
         }
     }
 
@@ -1206,7 +1165,6 @@ public class SecondaryDisplay extends Presentation {
         // Create a blank song with just this section
         Song tempSong = new Song();
         String lyrics = mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().getNewContent();
-        Log.d(TAG,"new lyrics:"+lyrics);
         tempSong.setLyrics(lyrics);
         mainActivityInterface.getProcessSong().processSongIntoSections(tempSong,true);
 
