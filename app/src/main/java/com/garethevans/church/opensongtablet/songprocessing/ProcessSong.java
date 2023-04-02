@@ -1612,7 +1612,7 @@ public class ProcessSong {
                     // --- Revert the protected spaces
                     .replace("×"," ")
                     // Remove whitespace before the section marker
-                    .replaceAll("\\s+§","\n§");
+                    .replaceAll("\\s+§","\n\n§");
         }
 
         // 12. Go through the lyrics and get section headers and add to the song object
@@ -1631,6 +1631,9 @@ public class ProcessSong {
         // The grouped sections are used for alignments
         songSections = new ArrayList<>();
         ArrayList<String> groupedSections = new ArrayList<>();
+
+       // Remove a new line added by section processing which is not from the song
+        lyrics = lyrics.replace("\n§","§");
 
         // IV - Ignore empty sections.  Sections which have a header only are needed.
         for (String thisSection : lyrics.split("\n§")) {
