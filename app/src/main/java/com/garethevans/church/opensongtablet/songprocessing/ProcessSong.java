@@ -1867,11 +1867,11 @@ public class ProcessSong {
         } else if (presentation) {
             return mainActivityInterface.getMyFonts().getPresoFont();
         } else {
-            if (string.equals("chord")) {
+            if (string.equals("chord") || string.equals("capoline")) {
                 return mainActivityInterface.getMyFonts().getChordFont();
             }
-            return mainActivityInterface.getMyFonts().getLyricFont();
         }
+        return mainActivityInterface.getMyFonts().getLyricFont();
     }
 
     private int getFontColor(String string, int lyricColor, int chordColor, int capoColor) {
