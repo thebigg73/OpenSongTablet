@@ -1591,7 +1591,7 @@ public class ProcessSong {
         lyrics = fixedlyrics.toString()
                 // IV - Content is added with leading \n§, the first needs to be removed
                 .replaceFirst("\n§","")
-                // IV - Remove 'empty' section headers
+                // IV - Remove (when present) performance mode 'empty' sectionHeader
                 .replace("\n§¬\n","\n");
 
         // 11. Handle section trimming
@@ -1607,7 +1607,7 @@ public class ProcessSong {
                     .replace("\n ","\n×")
                     // Trim to remove leading and trailing whitespace
                     .trim()
-                    // Remove whitespace after section header - which will not remove ¬
+                    // Remove whitespace after section header - which will not remove ×
                     .replaceAll("]\\s+","]\n")
                     // --- Revert the protected spaces
                     .replace("×"," ")
@@ -1618,7 +1618,8 @@ public class ProcessSong {
         // 12. Go through the lyrics and get section headers and add to the song object
         song.setSongSectionHeadings(getSectionHeadings(lyrics));
 
-        // 13. Go through the lyrics, filter for wanted line types and group lines that should be in a table for alignment purposes
+        // 13. Go through the lyrics, filter lines needed for this mode/display chords combination.
+        // Returns wanted line types and group lines that should be in a table for alignment purposes
         if (presentation) {
             lyrics = filterAndGroupLines(lyrics, mainActivityInterface.getPresenterSettings().getPresoShowChords());
         } else {
@@ -1631,10 +1632,9 @@ public class ProcessSong {
         songSections = new ArrayList<>();
         ArrayList<String> groupedSections = new ArrayList<>();
 
-        // IV - Ignore sections with no lines
+        // IV - Ignore empty sections.  Sections which have a header only are needed.
         for (String thisSection : lyrics.split("\n§")) {
-            if (thisSection != null && !thisSection.trim().isEmpty() &&
-            !(thisSection.trim().startsWith("[") && thisSection.trim().endsWith("]") && thisSection.trim().split("\n").length==1)) {
+            if (thisSection != null && !thisSection.trim().isEmpty()) {
                 groupedSections.add(thisSection);
                 songSections.add(thisSection.replace(groupline_string, "\n"));
             }
