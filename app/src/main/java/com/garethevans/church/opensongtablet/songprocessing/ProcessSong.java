@@ -1614,6 +1614,10 @@ public class ProcessSong {
                     // Remove whitespace before the section marker
                     .replaceAll("\\s+§","\n\n§");
         }
+        // IV - Fix a trimmed leading section marker
+        if (lyrics.startsWith("§")) {
+            lyrics = "\n\n" + lyrics;
+        }
 
         // 12. Go through the lyrics and get section headers and add to the song object
         song.setSongSectionHeadings(getSectionHeadings(lyrics));
