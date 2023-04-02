@@ -146,6 +146,8 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
                     getActivity().getLifecycle());
             adapter.createFragment(0);
 
+            mainActivityInterface.enableSwipe("edit",false);
+
             myView.viewpager.setAdapter(adapter);
             myView.viewpager.setOffscreenPageLimit(1);
             callback = new ViewPager2.OnPageChangeCallback() {
