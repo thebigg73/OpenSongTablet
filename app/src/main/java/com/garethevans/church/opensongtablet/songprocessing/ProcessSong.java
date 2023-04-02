@@ -1575,7 +1575,7 @@ public class ProcessSong {
         String sectionHeader = "";
 
         for (int x = 0; x < songSections.size(); x++) {
-            fixedlyrics.append("\n§");
+            fixedlyrics.append("§");
             if (songSections.get(x).startsWith("[")) {
                 // IV - Store the header.  Use an empty header in performance mode.
                 if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance))) {
@@ -1589,10 +1589,10 @@ public class ProcessSong {
             }
         }
         lyrics = fixedlyrics.toString()
-                // IV - Content is added with leading \n§, the first needs to be removed
-                .replaceFirst("\n§","")
+                // IV - Content is added with leading §, the first needs to be removed
+                .replaceFirst("§","")
                 // IV - Remove (when present) performance mode 'empty' sectionHeader
-                .replace("\n§¬\n","\n");
+                .replace("§¬\n","");
 
         // 11. Handle section trimming
         // IV - Trim but not if performance primary screen and trimsections is off
