@@ -61,7 +61,6 @@ public class SecondaryDisplay extends Presentation {
     private ArrayList<View> secondaryViews;
     private ArrayList<Integer> secondaryWidths, secondaryHeights;
     private DisplayMetrics displayMetrics;
-    private Bitmap bitmap;
 
     // Default variables
     private float scaleChords, scaleHeadings, scaleComments, lineSpacing;
@@ -82,9 +81,6 @@ public class SecondaryDisplay extends Presentation {
     private String currentInfoText;
     private boolean waitForVideo;
     private boolean infoBarRequired=false;
-    private boolean trimLines;
-    private boolean trimSections;
-    private boolean addSectionSpace;
     private boolean boldChordHeading;
     private boolean displayChords;
     private boolean invertXY;
@@ -254,10 +250,6 @@ public class SecondaryDisplay extends Presentation {
 
         updateViewSizes(myView.pageHolder);
 
-        int availableWidth_1col = availableScreenWidth;
-        int availableWidth_2col = (int) ((float) availableScreenWidth / 2.0f);
-        int availableWidth_3col = (int) ((float) availableScreenWidth / 3.0f);
-
         // These bits are dependent on the screen size, so are called here initially
         changeMargins();
         changeLogo();
@@ -338,7 +330,6 @@ public class SecondaryDisplay extends Presentation {
             boldChordHeading = mainActivityInterface.getPreferences().getMyPreferenceBoolean("boldChordHeading", false);
         }
         infoBarRequired = true;
-        boolean forceCastUpdate = false;
         hideCols2and3();
     }
     private void hideCols2and3() {
@@ -628,11 +619,6 @@ public class SecondaryDisplay extends Presentation {
                         c.getString(R.string.ccli_licence) + " " + mainActivityInterface.
                         getPresenterSettings().getCcliLicence();
             }
-            // IV - Song number is not specified for display by CCLI - less is more!
-            //String ccli = mainActivityInterface.getSong().getCcli();
-            //if (ccli != null && !ccli.isEmpty()) {
-            //    ccliLine += ".  " + c.getString(R.string.song) + " #" + ccli;
-            // }
             String copyright = mainActivityInterface.getSong().getCopyright();
             if (copyright != null && !copyright.isEmpty() && !copyright.contains("©")) {
                 copyright = "©" + copyright;
@@ -825,9 +811,6 @@ public class SecondaryDisplay extends Presentation {
     }
     // TODO Update this when prefs change
     public void setSongContentPrefs() {
-        trimLines = mainActivityInterface.getPreferences().getMyPreferenceBoolean("trimLines", false);
-        trimSections = mainActivityInterface.getPreferences().getMyPreferenceBoolean("trimSections", false);
-        addSectionSpace = mainActivityInterface.getPreferences().getMyPreferenceBoolean("addSectionSpace", true);
         boldChordHeading = mainActivityInterface.getPreferences().getMyPreferenceBoolean("boldChordHeading", false);
         scaleChords = mainActivityInterface.getPreferences().getMyPreferenceFloat("scaleChords", 0.8f);
     }
@@ -903,6 +886,7 @@ public class SecondaryDisplay extends Presentation {
     }
 
     public void showSection(final int position) {
+        Log.d(TAG,"position:"+position);
         try {
             // Decide which view to show.  Do nothing if it is already showing
             boolean stageOk = mainActivityInterface.getMode().equals(c.getString(R.string.mode_stage));
@@ -973,6 +957,7 @@ public class SecondaryDisplay extends Presentation {
                         translateView(secondaryViews.get(position), newWidth, newHeight, infoHeight, alertHeight);
                     }
 
+                    Bitmap bitmap;
                     if (pdf) {
                         bitmap = mainActivityInterface.getProcessSong().getBitmapFromPDF(mainActivityInterface.getSong().getFolder(),
                                 mainActivityInterface.getSong().getFilename(),position,availableScreenWidth,
@@ -1089,7 +1074,7 @@ public class SecondaryDisplay extends Presentation {
         int modeHeight = availableScreenHeight - infoHeight;
         isNewSong = true;
         if (!myView.songContent1.getIsDisplaying()) {
-            float[] f= mainActivityInterface.getProcessSong().addViewsToScreen(
+             mainActivityInterface.getProcessSong().addViewsToScreen(
                     secondaryViews, secondaryWidths, secondaryHeights, myView.allContent,
                     myView.songContent1, null, availableScreenWidth, modeHeight,
                     myView.songContent1.getCol1(), myView.songContent1.getCol2(),
@@ -1105,7 +1090,7 @@ public class SecondaryDisplay extends Presentation {
             checkSongInfoShowHide();
 
         } else if (!myView.songContent2.getIsDisplaying()) {
-            float[] f= mainActivityInterface.getProcessSong().addViewsToScreen(
+            mainActivityInterface.getProcessSong().addViewsToScreen(
                     secondaryViews, secondaryWidths, secondaryHeights, myView.allContent,
                     myView.songContent2, null, availableScreenWidth, modeHeight,
                     myView.songContent2.getCol1(), myView.songContent2.getCol2(),

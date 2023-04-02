@@ -17,12 +17,14 @@ import androidx.fragment.app.Fragment;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
 import com.garethevans.church.opensongtablet.databinding.SettingsDisplayExtraBinding;
+import com.garethevans.church.opensongtablet.interfaces.DisplayInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.slider.Slider;
 
 public class DisplayExtraFragment extends Fragment {
 
     private MainActivityInterface mainActivityInterface;
+    private DisplayInterface displayInterface;
     private SettingsDisplayExtraBinding myView;
     private String[] bracketStyles_Names;
     private int[] bracketStyles_Ints;
@@ -43,6 +45,7 @@ public class DisplayExtraFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mainActivityInterface = (MainActivityInterface) context;
+        displayInterface = (DisplayInterface) mainActivityInterface;
     }
 
     @Nullable
@@ -199,6 +202,7 @@ public class DisplayExtraFragment extends Fragment {
         myView.boldChordsHeadings.setOnCheckedChangeListener((buttonView, isChecked) -> {
             updateBooleanPreference("displayBoldChordsHeadings",isChecked,null);
             mainActivityInterface.getProcessSong().updateProcessingPreferences();
+            displayInterface.updateDisplay("setSongContentPrefs");
         });
         myView.showChords.setOnCheckedChangeListener((buttonView, isChecked) -> {
             updateBooleanPreference("displayChords",isChecked,null);

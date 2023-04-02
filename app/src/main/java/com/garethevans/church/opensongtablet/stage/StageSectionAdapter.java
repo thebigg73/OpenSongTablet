@@ -35,7 +35,10 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
     private final float maxFontSize, stageModeScale;
     private final String alphaChange = "alpha";
     private final float alphaoff = 0.4f;
-    private int availableWidth, availableHeight, density, inlineSetWidth, padding;
+    private int availableWidth;
+    private int availableHeight;
+    private final int inlineSetWidth;
+    private int padding;
     private boolean fakeClick;
     @SuppressWarnings({"FieldCanBeLocal","unused"})
     private final String TAG = "StageSectionAdapter";
@@ -52,7 +55,7 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
         stageModeScale = mainActivityInterface.getPreferences().getMyPreferenceFloat("stageModeScale",0.8f);
         sectionInfos = new ArrayList<>();
         floatSizes = new ArrayList<>();
-        setSongInfo(inlineSetWidth);
+        setSongInfo();
         this.inlineSetWidth = inlineSetWidth;
 
         setAvailableSize();
@@ -70,12 +73,11 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
                 16, c.getResources().getDisplayMetrics());
         spacing = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
                 4, c.getResources().getDisplayMetrics());
-        density = metrics[2];
 
         Log.d(TAG,"padding:"+padding);
     }
 
-    private void setSongInfo(int inlineSetWidth) {
+    private void setSongInfo() {
         // Prepare the info for each section
         floatHeight = 0;
 
@@ -205,6 +207,7 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
                     ViewCompat.setBackgroundTintList(cardView, ColorStateList.valueOf(mainActivityInterface.getSectionColors().get(section)));
                     cardView.setVisibility(View.VISIBLE);
                     cardView.setOnClickListener(view -> {
+                        Log.d(TAG,"pos:"+pos);
                         if (fakeClick) {
                             fakeClick = false;
                         } else {

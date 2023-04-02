@@ -3512,6 +3512,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                             case "changeRotation":
                                 secondaryDisplay.changeRotation();
                                 break;
+                            case "setSongContentPrefs":
+                                secondaryDisplay.setSongContentPrefs();
+                                break;
 
                             // The logo
                             case "changeLogo":
