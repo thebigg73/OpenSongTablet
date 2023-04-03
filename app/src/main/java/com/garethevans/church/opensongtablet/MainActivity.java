@@ -1344,8 +1344,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         // Null titles are for the default song, author, etc.
         // Otherwise a new title is passed as a string (in a settings menu)
         //windowFlags.setImmersive(true);
-        myView.myToolbar.setActionBar(what);
-        myView.fragmentView.setTop(myView.myToolbar.getActionBarHeight(settingsOpen||menuOpen));
+        if (myView != null) {
+            myView.myToolbar.setActionBar(what);
+            myView.fragmentView.setTop(myView.myToolbar.getActionBarHeight(settingsOpen || menuOpen));
+        }
     }
 
     @Override
