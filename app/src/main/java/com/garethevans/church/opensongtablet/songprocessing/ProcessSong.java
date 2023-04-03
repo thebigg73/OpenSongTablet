@@ -1527,11 +1527,17 @@ public class ProcessSong {
                 .replace("\n [", "\n§[")
                 .replace("\n[", "\n§[")
                 .replace("\n\n", doubleNewlineSplit)
-                .replace("§§","§")
-                // --- Remove the leading added leading \n
+                .replaceAll("§+","§")
+                // --- Remove the added leading \n
                 .substring(1)
-                // --- Because we trail with ¶, this removes the added leading \n as part of removing leading white space                // --- Now remove trailing ¶
+                // --- Remove the added trailing ¶
                 .replace("¶","");
+
+        // IV - Compress runs of empty sections created by doubleNewLineSplit into one
+        if (doubleNewlineSplit.equals("§")) {
+            lyrics = lyrics.replaceAll("§\\s+§","§")
+                    .replaceAll("§+","§");
+        }
 
         // 9. Handle || splits
         String[] sections = lyrics.split("§");
