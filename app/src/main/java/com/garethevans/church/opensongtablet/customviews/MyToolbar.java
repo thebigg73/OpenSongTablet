@@ -260,16 +260,20 @@ public class MyToolbar extends MaterialToolbar {
 
         } else {
             // We are in a different fragment, so hide the song info stuff
-            setIcon.setVisibility(View.GONE);
+            if (setIcon!=null) {
+                setIcon.setVisibility(View.GONE);
+            }
             if (title != null) {
                 title.setOnClickListener(null);
                 title.setOnLongClickListener(null);
                 title.setTextSize(18.0f);
                 title.setText(newtitle);
-                hideView(title, false);
-                hideView(author, true);
-                hideView(key, true);
-                hideView(capo,true);
+            }
+            hideView(title, false);
+            hideView(author, true);
+            hideView(key, true);
+            hideView(capo,true);
+            if (songandauthor!=null) {
                 songandauthor.setOnClickListener(null);
                 songandauthor.setOnLongClickListener(null);
             }

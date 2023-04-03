@@ -288,17 +288,31 @@ public class PerformanceFragment extends Fragment {
         myView.inlineSetList.updateInlineSetMove(from,to);
     }
     public void updateInlineSetRemoved(int from) {
-        myView.inlineSetList.updateInlineSetRemoved(from);
+        if (myView!=null) {
+            try {
+                myView.inlineSetList.updateInlineSetRemoved(from);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
     public void updateInlineSetAdded(SetItemInfo setItemInfo) {
-        try {
-            myView.inlineSetList.updateInlineSetAdded(setItemInfo);
-        } catch (Exception e) {
-            Log.d(TAG,"Couldn't update inline set - might just not be shown currently");
+        if (myView!=null) {
+            try {
+                myView.inlineSetList.updateInlineSetAdded(setItemInfo);
+            } catch (Exception e) {
+                Log.d(TAG, "Couldn't update inline set - might just not be shown currently");
+            }
         }
     }
     public void initialiseInlineSetItem(int position) {
-        myView.inlineSetList.initialiseInlineSetItem(position);
+        if (myView!=null) {
+            try {
+                myView.inlineSetList.initialiseInlineSetItem(position);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     // This stuff loads the song and prepares the views
@@ -603,7 +617,7 @@ public class PerformanceFragment extends Fragment {
     private void setUpHeaderListener() {
         // If we want headers, the header layout isn't null, so we can draw and listen
         // Add the view and wait for the vto return
-        if (mainActivityInterface.getSongSheetTitleLayout() != null &&
+        if (myView!=null && mainActivityInterface.getSongSheetTitleLayout() != null &&
                 !mainActivityInterface.getMode().equals(mode_presenter)) {
             // Check the header isn't already attached to a view
             if (mainActivityInterface.getSongSheetTitleLayout().getParent()!=null) {

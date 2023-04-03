@@ -2441,10 +2441,9 @@ public class ProcessSong {
             if (i!=sectionViews.size()-1) {
                 v.setPadding(0,0,0,sectionSpace);
             }
-            if (v.getParent()!=null) {
-                ((LinearLayout)v.getParent()).removeView(v);
+            if (childNotInLinearLayoutParent(v)) {
+                innerCol1.addView(v);
             }
-            innerCol1.addView(v);
         }
 
         // Now scale the column to the correct sizes
@@ -2527,7 +2526,9 @@ public class ProcessSong {
                 sectionViews.get(i).setPadding(0,0,0,sectionSpace);
             }
             // Add the views to the scaled inner column
-            innerCol1.addView(sectionViews.get(i));
+            if (childNotInLinearLayoutParent(sectionViews.get(i))) {
+                innerCol1.addView(sectionViews.get(i));
+            }
         }
         for (int i = columnBreak2; i < sectionViews.size(); i++) {
             // Make all the views the same width as each other
@@ -2537,7 +2538,9 @@ public class ProcessSong {
                 sectionViews.get(i).setPadding(0,0,0,sectionSpace);
             }
             // Add the views to the scaled inner column
-            innerCol2.addView(sectionViews.get(i));
+            if (childNotInLinearLayoutParent(sectionViews.get(i))) {
+                innerCol2.addView(sectionViews.get(i));
+            }
         }
 
         // Now the view has been drawn, scale the innerCols
@@ -2632,7 +2635,9 @@ public class ProcessSong {
                 sectionViews.get(i).setPadding(0,0,0,sectionSpace);
             }
             // Add the views to the scaled inner column
-            innerCol1.addView(sectionViews.get(i));
+            if (childNotInLinearLayoutParent(sectionViews.get(i))) {
+                innerCol1.addView(sectionViews.get(i));
+            }
         }
         for (int i = columnBreak3_a; i<columnBreak3_b; i++) {
             // Make all the views the same width as each other
@@ -2642,7 +2647,9 @@ public class ProcessSong {
                 sectionViews.get(i).setPadding(0,0,0,sectionSpace);
             }
             // Add the views to the scaled inner column
-            innerCol2.addView(sectionViews.get(i));
+            if (childNotInLinearLayoutParent(sectionViews.get(i))) {
+                innerCol2.addView(sectionViews.get(i));
+            }
         }
         for (int i = columnBreak3_b; i < sectionViews.size(); i++) {
             // Make all the views the same width as each other
@@ -2652,7 +2659,9 @@ public class ProcessSong {
                 sectionViews.get(i).setPadding(0,0,0,sectionSpace);
             }
             // Add the views to the scaled inner column
-            innerCol3.addView(sectionViews.get(i));
+            if (childNotInLinearLayoutParent(sectionViews.get(i))) {
+                innerCol3.addView(sectionViews.get(i));
+            }
         }
 
         // Now the view has been drawn, scale the innerCols
@@ -2689,6 +2698,22 @@ public class ProcessSong {
 
     // Now the stuff to read in pdf files (converts the pages to an image for displaying)
     // This uses Android built in PdfRenderer, so will only work on Lollipop+
+
+    private boolean childNotInLinearLayoutParent(View v) {
+        if (v!=null) {
+            try {
+                if (((LinearLayout)v.getParent())!=null) {
+                    ((LinearLayout)(LinearLayout) v.getParent()).removeView(v);
+                }
+                return true;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+        return false;
+    }
+
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public Bitmap getBitmapFromPDF(String folder, String filename, int page, int allowedWidth,
                                    int allowedHeight, String scale) {
