@@ -947,7 +947,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             // IV - We are changing so adjust option menu elements
             if (globalMenuItem != null) {
                 // IV - To smooth teardown, we clear elements left to right
-                if (!settingsOpen && whichMode.equals(performance)) {
+                if (settingsOpen && !whichMode.equals(presenter)) {
                     myView.myToolbar.hideSongDetails(true);
                 }
                 myView.myToolbar.batteryholderVisibility(false, false);
@@ -3106,7 +3106,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 performanceShowSection(i);
             }
         } else {
-            nearbyConnections.setPendingCurrentSection(i);
+            nearbyConnections.setPendingSection(i);
         }
     }
 

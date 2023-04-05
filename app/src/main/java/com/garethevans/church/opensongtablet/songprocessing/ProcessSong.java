@@ -831,9 +831,9 @@ public class ProcessSong {
 
     // Keep only wanted lines and group lines that should be in a table for alignment purposes
     public String filterAndGroupLines(String string, boolean displayChords) {
-        // IV - If no content then return an empty section
+        // IV - If no content then return an empty string
         if (string == null || string.trim().isEmpty()) {
-            return "\n§[]";
+            return "";
         }
 
         StringBuilder sb = new StringBuilder();
@@ -874,10 +874,7 @@ public class ProcessSong {
             }
         }
         String fixed = sb.toString();
-        // IV - Correct any leading section break
-        if (fixed.startsWith("\n§")) {
-            fixed = "\n" + fixed;
-        }
+
         // IV - Lines are added with leading \n, the first needs to be removed.  We restore section breaks.
         return fixed.replaceFirst("\n","");
     }
@@ -1620,10 +1617,6 @@ public class ProcessSong {
                     // Remove whitespace before the section marker
                     .replaceAll("\\s+§","\n\n§");
         }
-        // IV - Fix a trimmed leading section marker
-        if (lyrics.startsWith("§")) {
-            lyrics = "\n\n" + lyrics;
-        }
 
         // 12. Go through the lyrics and get section headers and add to the song object
         song.setSongSectionHeadings(getSectionHeadings(lyrics));
@@ -1639,6 +1632,16 @@ public class ProcessSong {
         // 14. Build the songSections for later recall
         // The song sections are not the views (which can have sections repeated using presentationOrder)
         // The grouped sections are used for alignments
+
+        // IV - Handle empty lyrics and fix a trimmed leading section marker
+        if (lyrics.equals("")) {
+            lyrics = "\n\n§[]";
+        } else if (lyrics.startsWith("§")) {
+            lyrics = "\n\n" + lyrics;
+        } else if (lyrics.startsWith("\n§")) {
+            lyrics = "\n" + lyrics;
+        }
+
         songSections = new ArrayList<>();
         ArrayList<String> groupedSections = new ArrayList<>();
 

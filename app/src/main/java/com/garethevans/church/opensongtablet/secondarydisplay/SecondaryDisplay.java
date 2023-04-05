@@ -620,8 +620,12 @@ public class SecondaryDisplay extends Presentation {
                         getPresenterSettings().getCcliLicence();
             }
             String copyright = mainActivityInterface.getSong().getCopyright();
-            if (copyright != null && !copyright.isEmpty() && !copyright.contains("©")) {
-                copyright = "©" + copyright;
+            if (copyright != null && !copyright.isEmpty()) {
+                if (!copyright.contains("©")) {
+                    copyright = "©" + copyright;
+                }
+            } else {
+                copyright = "";
             }
             String author = mainActivityInterface.getSong().getAuthor();
             if (author != null && !author.isEmpty()) {
