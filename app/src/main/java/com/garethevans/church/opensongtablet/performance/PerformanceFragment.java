@@ -615,8 +615,6 @@ public class PerformanceFragment extends Fragment {
     }
 
     private void setUpHeaderListener() {
-        // If we want headers, the header layout isn't null, so we can draw and listen
-        // Add the view and wait for the vto return
         try {
             // If we want headers, the header layout isn't null, so we can draw and listen
             // Add the view and wait for the vto return
