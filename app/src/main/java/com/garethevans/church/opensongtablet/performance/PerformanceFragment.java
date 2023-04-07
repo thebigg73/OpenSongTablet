@@ -75,6 +75,20 @@ public class PerformanceFragment extends Fragment {
     private final Runnable dealWithExtraStuffOnceSettledRunnable = this::dealWithExtraStuffOnceSettled;
 
     private String mainfoldername="", mode_performance="", mode_presenter="", mode_stage="", not_allowed="";
+    private int sendSongDelay = 0;
+    private final Handler sendSongAfterDelayHandler = new Handler();
+    private final Runnable sendSongAfterDelayRunnable = () -> {
+        // IV - The send is always called by the 'if' and will return true if a large file has been sent
+        if (mainActivityInterface.getNearbyConnections().sendSongPayload()) {
+            //TODO v5 displayed a message saying the song is large?
+        }
+        sendSongDelay = 3000;
+    };
+    private final Handler resetSendSongAfterDelayHandler = new Handler();
+    private final Runnable resetSendSongAfterDelayRunnable = () -> {
+        sendSongDelay = 0;
+        mainActivityInterface.getNearbyConnections().setSendSongDelayActive(false);
+    };
 
     // Attaching and destroying
     @Override
@@ -326,6 +340,9 @@ public class PerformanceFragment extends Fragment {
                 processingTestView = true;
                 // Loading the song is dealt with in this fragment as specific actions are required
 
+                // Remove capo
+                mainActivityInterface.updateOnScreenInfo("capoHide");
+
                 // Stop any autoscroll if required
                 boolean autoScrollActivated = mainActivityInterface.getAutoscroll().getAutoscrollActivated();
                 mainActivityInterface.getAutoscroll().stopAutoscroll();
@@ -351,21 +368,47 @@ public class PerformanceFragment extends Fragment {
                             mainActivityInterface.setSong(mainActivityInterface.getLoadSong().doLoadSong(
                                     mainActivityInterface.getSong(), false));
 
-                            // Remove capo
-                            mainActivityInterface.updateOnScreenInfo("capoHide");
+                            // IV - Reset current values to 0
+                            if (mainActivityInterface.getSong().getFiletype().equals("PDF")) {
+                                mainActivityInterface.getSong().setPdfPageCurrent(0);
+                            } else {
+                                mainActivityInterface.getSong().setCurrentSection(0);
+                                mainActivityInterface.getPresenterSettings().setCurrentSection(0);
+                            }
+
+                            if (mainActivityInterface.getNearbyConnections().hasValidConnections() &&
+                                mainActivityInterface.getNearbyConnections().getIsHost()) {
+                                // Only the first (with no delay) and last (with delay) of a long sequence of song changes is actually sent
+                                // sendSongDelay will be 0 for the first song
+                                // IV - Always empty then add to queue (known state)
+                                mainActivityInterface.getNearbyConnections().setSendSongDelayActive(sendSongDelay != 0);
+                                sendSongAfterDelayHandler.removeCallbacks(sendSongAfterDelayRunnable);
+                                sendSongAfterDelayHandler.postDelayed(sendSongAfterDelayRunnable, sendSongDelay);
+                                // IV - Always empty then add to queue (known state)
+                                resetSendSongAfterDelayHandler.removeCallbacks(resetSendSongAfterDelayRunnable);
+                                resetSendSongAfterDelayHandler.postDelayed(resetSendSongAfterDelayRunnable, 3500);
+                            }
 
                             mainActivityInterface.moveToSongInSongMenu();
 
                             // Now slide out the song and after a delay start the next bit of the processing
                             if (myView != null) {
                                 myView.recyclerView.post(() -> {
-                                    if (myView.recyclerView.getVisibility() == View.VISIBLE) {
-                                        myView.recyclerView.startAnimation(animSlideOut);
+                                    try {
+                                        if (myView.recyclerView.getVisibility() == View.VISIBLE) {
+                                            myView.recyclerView.startAnimation(animSlideOut);
+                                        }
+                                    } catch (Exception e) {
+                                        // Continue
                                     }
                                 });
                                 myView.pageHolder.post(() -> {
-                                    if (myView.pageHolder.getVisibility() == View.VISIBLE) {
-                                        myView.pageHolder.startAnimation(animSlideOut);
+                                    try {
+                                        if (myView.pageHolder.getVisibility() == View.VISIBLE) {
+                                            myView.pageHolder.startAnimation(animSlideOut);
+                                        }
+                                    } catch (Exception e) {
+                                        // Continue
                                     }
                                 });
                             }
@@ -894,13 +937,12 @@ public class PerformanceFragment extends Fragment {
 
         // IV - Consume any later pending client section change received from Host (-ve value)
         if (mainActivityInterface.getNearbyConnections().hasValidConnections() &&
-                !mainActivityInterface.getNearbyConnections().getIsHost() &&
-                (mainActivityInterface.getNearbyConnections().getWaitingForSectionChange())) {
-            int pendingSection = mainActivityInterface.getNearbyConnections().getPendingCurrentSection();
-            mainActivityInterface.getNearbyConnections().doSectionChange(pendingSection);
-            // Reset the flags to off
-            mainActivityInterface.getNearbyConnections().setWaitingForSectionChange(false);
-            mainActivityInterface.getNearbyConnections().setPendingCurrentSection(0);
+                !mainActivityInterface.getNearbyConnections().getIsHost()) {
+            int hostPendingSection = mainActivityInterface.getNearbyConnections().getHostPendingSection();
+            if (hostPendingSection != 0) {
+                mainActivityInterface.getNearbyConnections().doSectionChange(hostPendingSection);
+            }
+            mainActivityInterface.getNearbyConnections().resetHostPendingSection();
         }
 
         // Run this only when the user has stopped on a song after 2s.
@@ -954,12 +996,6 @@ public class PerformanceFragment extends Fragment {
             displayInterface.updateDisplay("newSongLoaded");
             displayInterface.updateDisplay("setSongInfo");
             displayInterface.updateDisplay("setSongContent");
-
-            // Send a call to nearby devices to process the song at their end
-            if (mainActivityInterface.getNearbyConnections().hasValidConnections() &&
-                    mainActivityInterface.getNearbyConnections().getIsHost()) {
-                mainActivityInterface.getNearbyConnections().sendSongPayload();
-            }
 
             // If we opened the app with and intent/file, check if we need to import
             tryToImportIntent();

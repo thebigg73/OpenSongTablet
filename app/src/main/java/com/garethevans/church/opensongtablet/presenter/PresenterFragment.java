@@ -38,6 +38,20 @@ public class PresenterFragment extends Fragment {
     private boolean landscape;
     private String presenter_mode_string="", mainfoldername_string="", song_string="",
             extra_settings_string="";
+    private int sendSongDelay = 0;
+    private final Handler sendSongAfterDelayHandler = new Handler();
+    private final Runnable sendSongAfterDelayRunnable = () -> {
+        // IV - The send is always called by the 'if' and will return true if a large file has been sent
+        if (mainActivityInterface.getNearbyConnections().sendSongPayload()) {
+            //TODO v5 disaplayed a message saying the song is large?
+        }
+        sendSongDelay = 3000;
+    };
+    private final Handler resetSendSongAfterDelayHandler = new Handler();
+    private final Runnable resetSendSongAfterDelayRunnable = () -> {
+        sendSongDelay = 0;
+        mainActivityInterface.getNearbyConnections().setSendSongDelayActive(false);
+    };
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -237,15 +251,35 @@ public class PresenterFragment extends Fragment {
         displayInterface.updateDisplay("newSongLoaded");
         displayInterface.updateDisplay("setSongInfo");
 
+        // IV - Reset current values to 0
+        if (mainActivityInterface.getSong().getFiletype().equals("PDF")) {
+            mainActivityInterface.getSong().setPdfPageCurrent(0);
+        } else {
+            mainActivityInterface.getSong().setCurrentSection(0);
+            mainActivityInterface.getPresenterSettings().setCurrentSection(0);
+        }
+
+        if (mainActivityInterface.getNearbyConnections().hasValidConnections() &&
+                mainActivityInterface.getNearbyConnections().getIsHost()) {
+            // Only the first (with no delay) and last (with delay) of a long sequence of song changes is actually sent
+            // sendSongDelay will be 0 for the first song
+            // IV - Always empty then add to queue (known state)
+            mainActivityInterface.getNearbyConnections().setSendSongDelayActive(sendSongDelay != 0);
+            sendSongAfterDelayHandler.removeCallbacks(sendSongAfterDelayRunnable);
+            sendSongAfterDelayHandler.postDelayed(sendSongAfterDelayRunnable, sendSongDelay);
+            // IV - Always empty then add to queue (known state)
+            resetSendSongAfterDelayHandler.removeCallbacks(resetSendSongAfterDelayRunnable);
+            resetSendSongAfterDelayHandler.postDelayed(resetSendSongAfterDelayRunnable, 3500);
+        }
+
         // IV - Consume any later pending client section change received from Host (-ve value)
         if (mainActivityInterface.getNearbyConnections().hasValidConnections() &&
-                !mainActivityInterface.getNearbyConnections().getIsHost() &&
-                mainActivityInterface.getNearbyConnections().getWaitingForSectionChange()) {
-            int pendingSection = mainActivityInterface.getNearbyConnections().getPendingCurrentSection();
-            mainActivityInterface.getNearbyConnections().doSectionChange(pendingSection);
-            // Reset the flags to off
-            mainActivityInterface.getNearbyConnections().setWaitingForSectionChange(false);
-            mainActivityInterface.getNearbyConnections().setPendingCurrentSection(-1);
+                !mainActivityInterface.getNearbyConnections().getIsHost()) {
+            int hostPendingSection = mainActivityInterface.getNearbyConnections().getHostPendingSection();
+            if (hostPendingSection != 0) {
+                mainActivityInterface.getNearbyConnections().doSectionChange(hostPendingSection);
+            }
+            mainActivityInterface.getNearbyConnections().resetHostPendingSection();
         }
 
         // State we haven't started the projection (for the song info bar check)
@@ -355,7 +389,15 @@ public class PresenterFragment extends Fragment {
     }
 
     public void selectSection(int section) {
-        songSectionsFragment.selectSection(section);
+        try {
+            if (mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().getItemCount() > section) {
+                songSectionsFragment.selectSection(section);
+            } else {
+                mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().setSelectedPosition(-1);
+            }
+        } catch (Exception e) {
+            // Continue
+        }
     }
 
     // Inline set

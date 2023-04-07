@@ -117,7 +117,15 @@ public class SongSectionsFragment extends Fragment {
                     mainActivityInterface.getSong() != null) {
                 myView.songInfo.setSongTitle(mainActivityInterface.getSong().getTitle());
                 myView.songInfo.setSongAuthor(mainActivityInterface.getSong().getAuthor());
-                myView.songInfo.setSongCopyright("©" + mainActivityInterface.getSong().getCopyright());
+                String copyright = mainActivityInterface.getSong().getCopyright();
+                if (copyright != null && !copyright.isEmpty()) {
+                    if (!copyright.contains("©")) {
+                        copyright = "©" + copyright;
+                    }
+                } else {
+                    copyright = "";
+                }
+                myView.songInfo.setSongCopyright(copyright);
                 myView.songInfo.setSongCCLI(mainActivityInterface.getSong().getCcli());
                 myView.imageSlideInfo.setVisibility(View.GONE);
                 myView.imageSlideLoop.setVisibility(View.GONE);
@@ -201,6 +209,7 @@ public class SongSectionsFragment extends Fragment {
             mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().setSelectedPosition(newPosition);
             mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().notifyItemChanged(oldPosition, "colorchange");
             mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().notifyItemChanged(newPosition, "colorchange");
+            mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().itemSelected(newPosition);
         }
     }
 

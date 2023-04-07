@@ -118,7 +118,7 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
             }
             newContent.append(line).append("\n");
         }
-        return newContent.toString();
+        return newContent.toString().trim();
     }
 
     @NonNull
@@ -265,6 +265,16 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
         // State we've started projection
         // This method checks that logo, black screen, blank screen are off too
         mainActivityInterface.getPresenterSettings().setStartedProjection(true);
+        if (mainActivityInterface.getSong().getFiletype().equals("PDF")) {
+            mainActivityInterface.getSong().setPdfPageCurrent(thisPos);
+        } else {
+            mainActivityInterface.getSong().setCurrentSection(thisPos);
+        }
+        // IV - Send the section change to Nearby clients
+        if (mainActivityInterface.getNearbyConnections().hasValidConnections() &&
+                mainActivityInterface.getNearbyConnections().getIsHost()) {
+            mainActivityInterface.getNearbyConnections().sendSongSectionPayload();
+        }
     }
 
     public void setSectionEditedContent(String content) {

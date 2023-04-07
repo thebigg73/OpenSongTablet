@@ -183,40 +183,44 @@ public class Metronome {
     }
     public void setSongValues() {
         // First up the tempo
+        int tempo = 0;
         validTempo = false;
         String t = mainActivityInterface.getSong().getTempo();
-        // Check for text version from desktop app
-        t = t.replace("Very Fast", "140").
-                replace("Fast", "120").
-                replace("Moderate", "100").
-                replace("Slow", "80").
-                replace("Very Slow", "60").
-                replaceAll("[\\D]", "");
-        int tempo;
         try {
-            tempo = (short) Integer.parseInt(t);
-            validTempo = true;
-        } catch (NumberFormatException nfe) {
-            tempo = 0;
-        }
+            // Check for text version from desktop app
+            t = t.replace("Very Fast", "140").
+                    replace("Fast", "120").
+                    replace("Moderate", "100").
+                    replace("Slow", "80").
+                    replace("Very Slow", "60").
+                    replaceAll("[\\D]", "");
+            try {
+                tempo = (short) Integer.parseInt(t);
+                validTempo = true;
+            } catch (NumberFormatException nfe) {
+                tempo = 0;
+            }
 
-        // Check the tempo is within the permitted range
-        if (tempo <40 || tempo >299) {
-            tempo = 0;
-            validTempo = false;
-        }
+            // Check the tempo is within the permitted range
+            if (tempo <40 || tempo >299) {
+                tempo = 0;
+                validTempo = false;
+            }
 
-        // This bit splits the time signature into beats and divisions
-        // We then deal with compound time signatures and get a division factor
-        // Compound and complex time signatures can have additional emphasis beats (not just beat 1)
-        processTimeSignature();
-        meterTimeFactor(); // 1.0f for simple signatures, 2.0f or 3.0f for compound ones
-        getEmphasisBeats();   // Always has beat 1, but can have more
+            // This bit splits the time signature into beats and divisions
+            // We then deal with compound time signatures and get a division factor
+            // Compound and complex time signatures can have additional emphasis beats (not just beat 1)
+            processTimeSignature();
+            meterTimeFactor(); // 1.0f for simple signatures, 2.0f or 3.0f for compound ones
+            getEmphasisBeats();   // Always has beat 1, but can have more
 
-        if (tempo >0) {
-            beatTimeLength = Math.round(((60.0f / (float) tempo) * 1000.0f) / meterTimeDivision);
-        } else {
-            beatTimeLength = 0;
+            if (tempo >0) {
+                beatTimeLength = Math.round(((60.0f / (float) tempo) * 1000.0f) / meterTimeDivision);
+            } else {
+                beatTimeLength = 0;
+            }
+        } catch (Exception e) {
+            // Badly formatted tempo
         }
     }
     public ArrayList<String> processTimeSignature() {
