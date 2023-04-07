@@ -270,6 +270,7 @@
     <string name="deeplink_alert" translatable="false">https://www.opensongapp.com/?p=alert</string>
     <string name="deeplink_autoscroll_settings" translatable="false">https://www.opensongapp.com/?p=settings/autoscroll</string>
     <string name="deeplink_backup" translatable="false">https://www.opensongapp.com/?p=settings/storage/backup</string>
+    <string name="deeplink_beatbuddy" translatable="false">https://www.opensongapp.com/?p=settings/utilities/beatbuddy</string>
     <string name="deeplink_bible" translatable="false">https://www.opensongapp.com/?p=settings/bible</string>
     <string name="deeplink_bootup" translatable="false">https://www.opensongapp.com/?p=bootup</string>
     <string name="deeplink_chords" translatable="false">https://www.opensongapp.com/?p=settings/actions/chords</string>
@@ -1139,4 +1140,12 @@ Check out the categories in the right hand options menu.
     <string name="youtube" translatable="false">YouTube</string>
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zoom_level">Zoom level</string>
+    <string name="volume_headphones">Headphone volume</string>
+    <string name="midi_messages">Song MIDI messages (sent in order)</string>
+    <string name="beat_buddy">BeatBuddy</string>
+    <string name="beat_buddy_info">Edit and save song commands for use with a BeatBuddy pedal</string>
+    <string name="midi_delay">MIDI delay between messages</string>
+    <string name="midi_message_add_to_song">Add to song messages</string>
+    <string name="midi_message_include">Include this in the song messages</string>
+    <string name="drum_kit">Drum kit</string>
 </resources>

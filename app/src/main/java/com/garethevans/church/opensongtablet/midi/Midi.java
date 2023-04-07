@@ -35,12 +35,13 @@ public class Midi {
     @SuppressWarnings({"FieldCanBeLocal","unused"})
     private final String TAG = "Midi";
     private MediaPlayer midiMediaPlayer;
+    private String[] messageParts;
 
     // Initialise
     public Midi(Context c) {
         this.c = c;
         mainActivityInterface = (MainActivityInterface) c;
-        setMidiDelay(mainActivityInterface.getPreferences().getMyPreferenceInt("midiDelay", 100));
+        midiDelay = mainActivityInterface.getPreferences().getMyPreferenceInt("midiDelay", 100);
     }
 
     private ArrayList<String> songMidiMessages = new ArrayList<>();
@@ -154,6 +155,7 @@ public class Midi {
 
     public void setMidiDelay(int midiDelay) {
         this.midiDelay = midiDelay;
+        mainActivityInterface.getPreferences().setMyPreferenceInt("midiDelay", midiDelay);
     }
 
     String getMidiCommand(int i) {
@@ -168,9 +170,9 @@ public class Midi {
         return notes.get(i);
     }
 
-    String getReadableStringFromHex(String s) {
+    public String getReadableStringFromHex(String s) {
         // This tries to get a readable version of a midi hex line
-        // e.g. try to convert 0x92 0x02 0x64 into "Channel 1 Note on Note D0 Velocity 100
+        // e.g. try to convert 0x90 0x02 0x64 into "Channel 1 Note on Note D0 Velocity 100
         // First then, we need to split the string into sections.
         String message;
         String channel = c.getString(R.string.midi_channel);
@@ -183,8 +185,11 @@ public class Midi {
         String value = c.getString(R.string.midi_value);
         String msb = "MSB";
         String lsb = "LSB";
+        messageParts = new String[4];
 
         String[] sections = s.trim().split(" ");
+        messageParts[0] = "";
+        messageParts[1] = "";
         if (sections.length >= 1 && sections[0] != null && !sections[0].isEmpty()) {
             String s0_0;
             String s0_1;
@@ -193,7 +198,9 @@ public class Midi {
                 s0_1 = sections[0].replace("0x", "").substring(1);
 
                 // The channel is the second digit (in hex) of the first byte
-                channel = channel + " " + (getIntFromHexString(s0_1) + 1);
+                messageParts[0] = ""+(getIntFromHexString(s0_1) + 1);
+                messageParts[1] = s0_0;
+                channel = channel + " " + messageParts[0];
                 switch (s0_0) {
                     case "9":
                         action = noteon;
@@ -211,12 +218,16 @@ public class Midi {
                         action = "?";
                         break;
                 }
+
             } catch (Exception e) {
                 action = "?";
+                messageParts[0] = "";
+                messageParts[1] = "";
             }
         }
 
         // Now deal with the middle byte (note or program number)
+        messageParts[2]="";
         if (sections.length >= 2 && sections[1] != null && !sections[1].isEmpty()) {
             try {
                 String s1 = sections[1].replace("0x", "").trim();
@@ -224,23 +235,29 @@ public class Midi {
                 if (action.equals(contchange) && v1 == 32) {
                     // This is a LSB message
                     action = lsb;
+                    messageParts[2] = "LSB";
                 } else if (action.equals(contchange) && v1 == 0) {
                     // This is a MSB message
                     action = msb;
+                    messageParts[2] = "MSB";
                 } else if (action.equals(noteon) || action.equals(noteoff)) {
                     action = action + " " + notes.get(v1);
+                    messageParts[2] = notes.get(v1);
                 } else {
                     action = action + " " + v1;
+                    messageParts[2] = ""+v1;
                 }
             } catch (Exception e) {
                 action = "?";
             }
         }
         // Now deal with the last byte (velocity or value) - not present for program change
+        messageParts[3]="";
         if (sections.length >= 3 && sections[2] != null && !sections[2].isEmpty()) {
             try {
                 String s2 = sections[2].replace("0x", "").trim();
                 int v2 = getIntFromHexString(s2);
+                messageParts[3]=""+v2;
                 if (action.startsWith(noteon) || action.startsWith(noteoff)) {
                     action = action + "\n" + velocity + " " + v2;
                 } else {
@@ -256,8 +273,12 @@ public class Midi {
         return message;
     }
 
+    public String[] getMessageParts() {
+        return messageParts;
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.M)
-    boolean sendMidi(byte[] b) {
+    public boolean sendMidi(byte[] b) {
         boolean success = false;
         if (midiInputPort != null) {
             try {
@@ -271,7 +292,7 @@ public class Midi {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    void sendMidi(int position) {
+    public void sendMidi(int position) {
         // Send midi from the arrayList
         if (position >= 0 && position < songMidiMessages.size()) {
             sendMidi(returnBytesFromHexText(songMidiMessages.get(position)));
@@ -418,7 +439,7 @@ public class Midi {
         //mainActivityInterface.sendToMidiDriver(returnBytesFromHexText(programChange));
     }
 
-    String buildMidiString(String action, int channel, int byte2, int byte3) {
+    public String buildMidiString(String action, int channel, int byte2, int byte3) {
         String s = "";
         String b1 = "0x";                               // This initialises the hex numbering convention
         String b2 = " 0x" + Integer.toHexString(byte2).toUpperCase(Locale.ROOT); // Convert numbers 0-127 to hex

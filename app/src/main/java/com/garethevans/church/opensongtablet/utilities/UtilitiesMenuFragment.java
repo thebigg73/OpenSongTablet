@@ -18,6 +18,7 @@ public class UtilitiesMenuFragment extends Fragment {
 
     private MainActivityInterface mainActivityInterface;
     private SettingsUtilitiesBinding myView;
+    private String beatBuddy_string = "";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -33,6 +34,7 @@ public class UtilitiesMenuFragment extends Fragment {
 
         if (getContext()!=null) {
             mainActivityInterface.updateToolbar(getString(R.string.utilities));
+            beatBuddy_string = getString(R.string.deeplink_beatbuddy);
         }
         // Set up listeners
         setupListeners();
@@ -49,6 +51,7 @@ public class UtilitiesMenuFragment extends Fragment {
             TunerBottomSheet tunerBottomSheet = new TunerBottomSheet();
             tunerBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"tunerBottomSheet");
         });
+        myView.beatBuddy.setOnClickListener(v -> mainActivityInterface.navigateToFragment(beatBuddy_string,0));
     }
 
 }
