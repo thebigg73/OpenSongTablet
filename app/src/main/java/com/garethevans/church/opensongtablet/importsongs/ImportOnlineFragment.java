@@ -401,7 +401,8 @@ public class ImportOnlineFragment extends Fragment {
                 }
                 break;
             case "SongSelect":
-                if (webString.contains("<span class=\"cproTitleLine\">")) {
+                if (webString.contains("<div id=\"LyricsText\"") ||
+                        webString.contains("<span class=\"cproTitleLine\">")) {
                     show = true;
                 }
                 break;
@@ -466,10 +467,14 @@ public class ImportOnlineFragment extends Fragment {
                 break;
             case "SongSelect":
                 Log.d(TAG,"getting here SongSelect");
-                newSong = songSelect.processContent(mainActivityInterface,newSong,webString);
+                if (webString.contains("<div id=\"LyricsText\"")) {
+                    newSong = songSelect.processContentLyricsText(mainActivityInterface, newSong, webString);
+                } else  if (webString.contains("<span class=\"cproTitleLine\">")) {
+                    newSong = songSelect.processContentChordPro(mainActivityInterface, newSong, webString);
+                }
                 break;
             case "UkuTabs":
-                Log.d("ImportOnline", "getting here UkuTabs");
+                Log.d(TAG, "getting here UkuTabs");
                 newSong = ukuTabs.processContent(newSong,webString);
                 break;
             case "HolyChords":
