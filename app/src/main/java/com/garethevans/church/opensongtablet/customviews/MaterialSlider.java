@@ -5,12 +5,14 @@ import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
 import com.garethevans.church.opensongtablet.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.slider.LabelFormatter;
 import com.google.android.material.slider.Slider;
 
@@ -18,30 +20,25 @@ public class MaterialSlider extends LinearLayout {
 
     private final Slider slider;
     private final TextView titleTextView, valueTextView;
+    private final FloatingActionButton minusFAB, plusFAB;
+    private final FrameLayout minusHolder, plusHolder;
     private final float stepSize;
-    private final float xxlarge, xlarge, large, medium, small, xsmall;
 
     public MaterialSlider(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         inflate(context, R.layout.view_material_slider, this);
 
-        xxlarge = context.getResources().getDimension(R.dimen.text_xxlarge);
-        xlarge = context.getResources().getDimension(R.dimen.text_xlarge);
-        large = context.getResources().getDimension(R.dimen.text_large);
-        medium = context.getResources().getDimension(R.dimen.text_medium);
-        small = context.getResources().getDimension(R.dimen.text_small);
-        xsmall = context.getResources().getDimension(R.dimen.text_xsmall);
-
-        int[] set = new int[]{android.R.attr.text,
-                android.R.attr.hint,
-                android.R.attr.valueFrom,
-                android.R.attr.valueTo,
-                R.attr.stepSize,
-                android.R.attr.value,
-                R.attr.trackColor,
-                R.attr.trackHeight,
-                R.attr.thumbRadius,
-                R.attr.thumbColor
+        int[] set = new int[]{android.R.attr.text,  // 0
+                android.R.attr.hint,                // 1
+                android.R.attr.valueFrom,           // 2
+                android.R.attr.valueTo,             // 3
+                R.attr.stepSize,                    // 4
+                android.R.attr.value,               // 5
+                R.attr.trackColor,                  // 6
+                R.attr.trackHeight,                 // 7
+                R.attr.thumbRadius,                 // 8
+                R.attr.thumbColor,                  // 9
+                R.attr.adjustable                   // 10
         };
         TypedArray a = context.obtainStyledAttributes(attrs, set);
         CharSequence text = a.getText(0);
@@ -54,14 +51,25 @@ public class MaterialSlider extends LinearLayout {
         float height = a.getDimensionPixelSize(7,0);
         float radius = a.getDimensionPixelSize(8,0);
         int thumb = a.getColor(9,0);
+        boolean adjustButtons = a.getBoolean(10,false);
 
         slider = findViewById(R.id.slider);
         titleTextView = findViewById(R.id.titleText);
         valueTextView = findViewById(R.id.valueText);
+        minusHolder = findViewById(R.id.minusHolder);
+        plusHolder = findViewById(R.id.plusHolder);
+        minusFAB = findViewById(R.id.minus);
+        plusFAB = findViewById(R.id.plus);
 
         slider.setId(View.generateViewId());
         titleTextView.setId(View.generateViewId());
         valueTextView.setId(View.generateViewId());
+        minusHolder.setId(View.generateViewId());
+        plusHolder.setId(View.generateViewId());
+        minusFAB.setId(View.generateViewId());
+        plusFAB.setId(View.generateViewId());
+
+        setAdjustableButtons(adjustButtons);
 
         if (text==null) {
             text = "";
@@ -188,5 +196,36 @@ public class MaterialSlider extends LinearLayout {
     public void setEnabled(boolean enabled) {
         super.setEnabled(enabled);
         slider.setEnabled(enabled);
+    }
+
+    private void decreaseValue() {
+        if (getValue()>getValueFrom()) {
+            // Need to add in the OnChange !fromUser in the fragment using this if required
+            setValue(getValue()-stepSize);
+        }
+    }
+    private void increaseValue() {
+        if (getValue()<getValueTo()) {
+            // Need to add in the OnChange !fromUser in the fragment using this if required
+            setValue(getValue()+stepSize);
+        }
+    }
+
+    public void setAdjustableButtons(boolean adjustButtons) {
+        minusHolder.setVisibility(adjustButtons ? View.VISIBLE:View.GONE);
+        plusHolder.setVisibility(adjustButtons ? View.VISIBLE:View.GONE);
+        minusFAB.setOnClickListener(v -> decreaseValue());
+        plusFAB.setOnClickListener(v -> increaseValue());
+        minusHolder.setOnClickListener(v -> {
+            minusFAB.performClick();
+            minusFAB.setPressed(true);
+            minusFAB.postDelayed(() -> minusFAB.setPressed(false),500);
+        });
+        plusHolder.setOnClickListener(v -> {
+            plusFAB.performClick();
+            plusFAB.setPressed(true);
+            plusFAB.postDelayed(() -> plusFAB.setPressed(false),500);
+        });
+        requestLayout();
     }
 }
