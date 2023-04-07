@@ -308,10 +308,13 @@ public class PerformanceGestures {
                 break;
             case "midi":
                 if (isLongPress) {
-                    editMidi();
+                    toggleMidiSend();
                 } else {
                     songMidi();
                 }
+                break;
+            case "midisend":
+                toggleMidiSend();
                 break;
             case "midisettings":
                 editMidi();
@@ -788,6 +791,17 @@ public class PerformanceGestures {
     // Open the midi settings
     public void editMidi() {
         mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_midi),0);
+    }
+
+    // Toggle auto MIDI send on/off
+    public void toggleMidiSend() {
+        boolean newPref = !mainActivityInterface.getPreferences().getMyPreferenceBoolean("midiSendAuto",false);
+        if (newPref) {
+            mainActivityInterface.getShowToast().doIt(c.getString(R.string.midi_auto)+": "+c.getString(R.string.on));
+        } else {
+            mainActivityInterface.getShowToast().doIt(c.getString(R.string.midi_auto)+": "+c.getString(R.string.off));
+        }
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean("midiSendAuto",newPref);
     }
 
     // Get the bible settings

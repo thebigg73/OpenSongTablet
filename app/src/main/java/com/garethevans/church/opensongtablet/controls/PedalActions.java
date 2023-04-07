@@ -85,6 +85,7 @@ public class PedalActions {
 
         String startstop = " (" + c.getString(R.string.start) + " / " + c.getString(R.string.stop) + ")";
         String showhide = " (" + c.getString(R.string.show) + " / " + c.getString(R.string.hide) + ")";
+        String onoff = " (" + c.getString(R.string.on)+" / "+c.getString(R.string.off) + ")";
         String settings = " " + c.getString(R.string.settings);
         String autoscroll = c.getString(R.string.autoscroll) + startstop;
         String pad = c.getString(R.string.pad) + startstop;
@@ -172,6 +173,7 @@ public class PedalActions {
         addString("pedals",c.getString(R.string.pedal)+settings);
         addString("midi",c.getString(R.string.midi_send));
         addString("midisettings",c.getString(R.string.midi)+settings);
+        addString("midisend",c.getString(R.string.midi_auto)+onoff);
 
         addString("","");
 

@@ -28,6 +28,7 @@ import com.garethevans.church.opensongtablet.controls.Swipes;
 import com.garethevans.church.opensongtablet.customslides.CustomSlide;
 import com.garethevans.church.opensongtablet.customviews.DrawNotes;
 import com.garethevans.church.opensongtablet.customviews.MyToolbar;
+import com.garethevans.church.opensongtablet.drummer.BeatBuddy;
 import com.garethevans.church.opensongtablet.export.ExportActions;
 import com.garethevans.church.opensongtablet.export.PrepareFormats;
 import com.garethevans.church.opensongtablet.filemanagement.LoadSong;
@@ -215,6 +216,7 @@ public interface MainActivityInterface {
     Midi getMidi();
     void registerMidiAction(boolean actionDown, boolean actionUp, boolean actionLong, String note);
     Drummer getDrummer();
+    BeatBuddy getBeatBuddy();
 
     // Database
     SQLiteHelper getSQLiteHelper();

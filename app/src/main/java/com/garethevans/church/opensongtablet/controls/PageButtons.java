@@ -267,7 +267,8 @@ public class PageButtons {
         prepareOption("nearby",c.getString(R.string.connections_connect),c.getString(R.string.connections_discover),c.getString(R.string.settings),R.drawable.nearby);
         prepareOption("gestures",c.getString(R.string.custom_gestures),c.getString(R.string.settings),"",R.drawable.fingerprint);
         prepareOption("pedals",c.getString(R.string.pedal),c.getString(R.string.settings),"",R.drawable.pedal);
-        prepareOption("midi",c.getString(R.string.midi),c.getString(R.string.midi_send),c.getString(R.string.settings),R.drawable.midi);
+        prepareOption("midi",c.getString(R.string.midi),c.getString(R.string.midi_send),c.getString(R.string.midi_auto)+" "+
+                c.getString(R.string.on)+" / "+c.getString(R.string.off),R.drawable.midi);
 
         prepareOption("","","","",R.drawable.help);
 

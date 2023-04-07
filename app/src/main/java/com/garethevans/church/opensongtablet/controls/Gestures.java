@@ -43,6 +43,7 @@ public class Gestures {
         // Set up the dropdown options
         String startstop = " (" + c.getString(R.string.start) + " / " + c.getString(R.string.stop) + ")";
         String showhide = " (" + c.getString(R.string.show) + " / " + c.getString(R.string.hide) + ")";
+        String onoff = " (" + c.getString(R.string.on)+" / "+c.getString(R.string.off) + ")";
         String settings = " " + c.getString(R.string.settings);
         String autoscroll = c.getString(R.string.autoscroll);
         String metronome = c.getString(R.string.metronome);
@@ -58,19 +59,19 @@ public class Gestures {
         addString("","");
 
         // Song actions
-        addString("pad",pad);
+        addString("pad",pad+startstop);
         addString("padsettings",c.getString(R.string.pad)+settings);
-        addString("metronome",metronome);
+        addString("metronome",metronome+startstop);
         addString("metronomesettings",c.getString(R.string.metronome)+settings);
-        addString("autoscroll",autoscroll);
+        addString("autoscroll",autoscroll+startstop);
         addString("autoscrollsettings",c.getString(R.string.autoscroll)+settings);
         addString("inc_autoscroll_speed",c.getString(R.string.inc_autoscroll_speed));
         addString("dec_autoscroll_speed",c.getString(R.string.dec_autoscroll_speed));
         addString("toggle_autoscroll_pause",c.getString(R.string.autoscroll_pause));
-        addString("pad_autoscroll",pad + " & " + c.getString(R.string.autoscroll));
-        addString("pad_metronome",pad + " & " + c.getString(R.string.metronome));
-        addString("autoscroll_metronome",autoscroll + " & " + c.getString(R.string.metronome));
-        addString("pad_autoscroll_metronome",pad + " & " + c.getString(R.string.autoscroll) + " & " + c.getString(R.string.metronome));
+        addString("pad_autoscroll",pad + " & " + autoscroll+startstop);
+        addString("pad_metronome",pad + " & " + metronome+startstop);
+        addString("autoscroll_metronome",autoscroll + " & " + metronome+startstop);
+        addString("pad_autoscroll_metronome",pad + " & " + autoscroll + " & " + metronome+startstop);
         addString("editsong",c.getString(R.string.edit));
         addString("share_song",c.getString(R.string.export)+" "+c.getString(R.string.song));
         addString("importoptions",c.getString(R.string.import_main));
@@ -128,6 +129,7 @@ public class Gestures {
         addString("pedals",c.getString(R.string.pedal)+settings);
         addString("midi",c.getString(R.string.midi_send));
         addString("midisettings",c.getString(R.string.midi)+settings);
+        addString("midisend",c.getString(R.string.midi_auto)+onoff);
 
         addString("","");
 
