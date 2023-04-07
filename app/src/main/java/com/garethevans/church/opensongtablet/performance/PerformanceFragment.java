@@ -617,33 +617,39 @@ public class PerformanceFragment extends Fragment {
     private void setUpHeaderListener() {
         // If we want headers, the header layout isn't null, so we can draw and listen
         // Add the view and wait for the vto return
-        if (myView!=null && mainActivityInterface.getSongSheetTitleLayout() != null &&
-                !mainActivityInterface.getMode().equals(mode_presenter)) {
-            // Check the header isn't already attached to a view
-            if (mainActivityInterface.getSongSheetTitleLayout().getParent()!=null) {
-                ((ViewGroup) mainActivityInterface.getSongSheetTitleLayout().getParent()).removeAllViews();
-            }
-            myView.testPaneHeader.removeAllViews();
-
-            mainActivityInterface.getSongSheetTitleLayout().post(() -> {
-                if (myView!=null) {
-                    try {
-                        setUpTestViewListener();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+        try {
+            // If we want headers, the header layout isn't null, so we can draw and listen
+            // Add the view and wait for the vto return
+            if (mainActivityInterface.getSongSheetTitleLayout() != null &&
+                    !mainActivityInterface.getMode().equals(mode_presenter)) {
+                // Check the header isn't already attached to a view
+                if (mainActivityInterface.getSongSheetTitleLayout().getParent() != null) {
+                    ((ViewGroup) mainActivityInterface.getSongSheetTitleLayout().getParent()).removeAllViews();
                 }
-            });
-            try {
-                myView.testPaneHeader.addView(mainActivityInterface.getSongSheetTitleLayout());
-            } catch (Exception e) {
-                e.printStackTrace();
+                myView.testPaneHeader.removeAllViews();
+
+                mainActivityInterface.getSongSheetTitleLayout().post(() -> {
+                    if (myView != null) {
+                        try {
+                            setUpTestViewListener();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                try {
+                    myView.testPaneHeader.addView(mainActivityInterface.getSongSheetTitleLayout());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    setUpTestViewListener();
+                }
+
+            } else {
+                // No song sheet title requested, so skip
                 setUpTestViewListener();
             }
-
-        } else {
-            // No song sheet title requested, so skip
-            setUpTestViewListener();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

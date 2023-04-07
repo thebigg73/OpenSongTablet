@@ -33,13 +33,16 @@ public class MyFAB extends FrameLayout {
         myFAB.setId(View.generateViewId());
         myFABHolder.setId(View.generateViewId());
 
-        int[] set = new int[] {R.attr.srcCompat};
+        int[] set = new int[] {R.attr.srcCompat,R.attr.fabSize};
 
         TypedArray typedArray = context.obtainStyledAttributes(attrs,set);
         // Get drawable image
-        //Drawable drawable = typedArray.getDrawable(0);
         Drawable drawable = VectorDrawableCompat.create(getResources(),typedArray.getResourceId(0,R.drawable.help_outline),getContext().getTheme());
+        int size = typedArray.getInt(1,FloatingActionButton.SIZE_NORMAL);
+
         myFAB.setImageDrawable(drawable);
+        myFAB.setSize(size);
+
         typedArray.recycle();
 
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.MyFAB);

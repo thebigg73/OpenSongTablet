@@ -45,7 +45,7 @@
             app:uri="@string/deeplink_performance" />
         <action
             android:id="@+id/action_performanceFragment_to_alertInfoDialogFragment"
-            app:destination="@id/alertInfoDialogFragment" />
+            app:destination="@+id/alertInfoDialogFragment" />
         <action
             android:id="@+id/action_performanceFragment_to_songMenuFragment"
             app:destination="@id/song_menu_graph" />
@@ -487,15 +487,6 @@
             app:uri="@string/deeplink_preferences" />
 
 
-        <dialog
-            android:id="@+id/alertInfoDialogFragment"
-            android:name="com.garethevans.church.opensongtablet.appdata.AlertInfoBottomSheet"
-            android:label="@string/information">
-            <deepLink
-                android:id="@+id/deepLinkAlert"
-                app:uri="@string/deeplink_alert" />
-        </dialog>
-
         <!--Song actions graph -->
         <navigation android:id="@+id/actions_graph"
             app:startDestination="@id/songActionsMenuFragment">
@@ -854,7 +845,36 @@
                 android:id="@+id/utilitiesMenuFragment"
                 android:name="com.garethevans.church.opensongtablet.utilities.UtilitiesMenuFragment"
                 android:label="UtilitiesMenuFragment"
-                tools:layout="@layout/settings_utilities"/>
+                tools:layout="@layout/settings_utilities">
+                <action
+                    android:id="@+id/action_utilitiesMenuFragment_to_beatBuddyFragment"
+                    app:destination="@id/beatBuddyFragment" />
+                <action
+                    android:id="@+id/action_utilitiesMenuFragment_to_soundLevelBottomSheet"
+                    app:destination="@id/soundLevelBottomSheet" />
+                <action
+                    android:id="@+id/action_utilitiesMenuFragment_to_tunerBottomSheet"
+                    app:destination="@id/tunerBottomSheet" />
+            </fragment>
+            <dialog
+                android:id="@+id/tunerBottomSheet"
+                android:name="com.garethevans.church.opensongtablet.utilities.TunerBottomSheet"
+                android:label="TunerBottomSheet"
+                tools:layout="@layout/bottom_sheet_tuner"/>
+            <fragment
+                android:id="@+id/beatBuddyFragment"
+                android:name="com.garethevans.church.opensongtablet.drummer.BeatBuddyFragment"
+                android:label="BeatBuddyFragment"
+                tools:layout="@layout/settings_beatbuddy">
+            <deepLink
+                android:id="@+id/deepLinkBeatBuddy"
+                app:uri="@string/deeplink_beatbuddy"/>
+            </fragment>
+            <dialog
+                android:id="@+id/soundLevelBottomSheet"
+                android:name="com.garethevans.church.opensongtablet.utilities.SoundLevelBottomSheet"
+                android:label="SoundLevelBottomSheet"
+                tools:layout="@layout/bottom_sheet_sound_level_meter"/>
         </navigation>
 
     </navigation>
@@ -950,6 +970,11 @@
             android:label="SetVariationBottomSheet"
             tools:layout="@layout/bottom_sheet_setitemedit"/>
     </navigation>
+    <dialog
+        android:id="@+id/alertInfoBottomSheet"
+        android:name="com.garethevans.church.opensongtablet.appdata.AlertInfoBottomSheet"
+        android:label="AlertInfoBottomSheet"
+        tools:layout="@layout/bottom_sheet_alert_info"/>
 
 
 </navigation>

@@ -72,6 +72,7 @@ import com.garethevans.church.opensongtablet.customslides.CustomSlideFragment;
 import com.garethevans.church.opensongtablet.customviews.DrawNotes;
 import com.garethevans.church.opensongtablet.customviews.MyToolbar;
 import com.garethevans.church.opensongtablet.databinding.ActivityBinding;
+import com.garethevans.church.opensongtablet.drummer.BeatBuddy;
 import com.garethevans.church.opensongtablet.drummer.Drummer;
 import com.garethevans.church.opensongtablet.export.ExportActions;
 import com.garethevans.church.opensongtablet.export.PrepareFormats;
@@ -174,6 +175,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private AlertChecks alertChecks;
     //private CustomToolBar customToolBar;
     private Autoscroll autoscroll;
+    private BeatBuddy beatBuddy;
     private Bible bible;
     private CCLILog ccliLog;
     private CheckInternet checkInternet;
@@ -544,6 +546,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         performanceGestures = getPerformanceGestures();
         pageButtons = getPageButtons();
         midi = getMidi();
+        beatBuddy = getBeatBuddy();
         drummer = getDrummer();
         pedalActions = getPedalActions();
         pad = getPad();
@@ -1895,6 +1898,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             midi = new Midi(this);
         }
         return midi;
+    }
+    @Override
+    public BeatBuddy getBeatBuddy() {
+        if (beatBuddy==null) {
+            beatBuddy = new BeatBuddy(this);
+        }
+        return beatBuddy;
     }
 
     @Override
