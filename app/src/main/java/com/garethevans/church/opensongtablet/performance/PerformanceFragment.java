@@ -648,6 +648,8 @@ public class PerformanceFragment extends Fragment {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            // Error, so skip
+            setUpTestViewListener();
         }
     }
 
