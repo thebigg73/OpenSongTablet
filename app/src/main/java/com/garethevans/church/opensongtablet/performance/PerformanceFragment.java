@@ -621,13 +621,13 @@ public class PerformanceFragment extends Fragment {
             if (mainActivityInterface.getSongSheetTitleLayout() != null &&
                     !mainActivityInterface.getMode().equals(mode_presenter)) {
                 // Check the header isn't already attached to a view
-                if (mainActivityInterface.getSongSheetTitleLayout().getParent() != null) {
+                if (mainActivityInterface.getSongSheetTitleLayout().getParent()!=null) {
                     ((ViewGroup) mainActivityInterface.getSongSheetTitleLayout().getParent()).removeAllViews();
                 }
                 myView.testPaneHeader.removeAllViews();
 
                 mainActivityInterface.getSongSheetTitleLayout().post(() -> {
-                    if (myView != null) {
+                    if (myView!=null) {
                         try {
                             setUpTestViewListener();
                         } catch (Exception e) {
