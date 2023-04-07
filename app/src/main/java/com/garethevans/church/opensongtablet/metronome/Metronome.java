@@ -202,7 +202,7 @@ public class Metronome {
             }
 
             // Check the tempo is within the permitted range
-            if (tempo <40 || tempo >299) {
+            if (tempo <40 || tempo >300) {
                 tempo = 0;
                 validTempo = false;
             }
@@ -519,8 +519,8 @@ public class Metronome {
             tempoView.setText("40");
             mainActivityInterface.getSong().setTempo("40");
         }  else {
-            tempoView.setText("299");
-            mainActivityInterface.getSong().setTempo("299");
+            tempoView.setText("300");
+            mainActivityInterface.getSong().setTempo("300");
         }
 
         old_time = new_time;
