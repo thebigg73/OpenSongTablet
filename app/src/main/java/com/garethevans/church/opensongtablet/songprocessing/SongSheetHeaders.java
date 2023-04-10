@@ -101,9 +101,7 @@ public class SongSheetHeaders {
 
         if (capo!=null && !capo.isEmpty()) {
             keyCapoTempo += "| " + c.getString(R.string.capo) + ": " + capo + " ";
-            if (key!=null && !key.isEmpty()) {
-                keyCapoTempo += "(" + mainActivityInterface.getTranspose().getKeyBeforeCapo(Integer.parseInt(capo), key) + ") ";
-            }
+            keyCapoTempo += ("(" + mainActivityInterface.getTranspose().capoKeyTranspose() + ") ").replace(" ()","");
         }
 
         if (key!=null && !key.isEmpty()) {

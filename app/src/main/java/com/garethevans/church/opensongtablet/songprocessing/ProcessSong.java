@@ -1688,6 +1688,9 @@ public class ProcessSong {
         // First we process the song (could be the loaded song, or a temp song - that's why we take a reference)
         processSongIntoSections(song, presentation);
 
+        // IV - Initialise transpose capo key  - might be needed
+        mainActivityInterface.getTranspose().capoKeyTranspose();
+
         if (asPDF && mainActivityInterface.getMakePDF().getIsSetListPrinting()) {
             // This is the set list PDF print.  Items are split by empty section headers []
             // We need to now remove those and trim the section content otherwise the PDF has gaps between lines
