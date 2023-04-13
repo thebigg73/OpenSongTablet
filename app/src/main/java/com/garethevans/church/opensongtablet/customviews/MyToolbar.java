@@ -385,6 +385,9 @@ public class MyToolbar extends MaterialToolbar {
     public ImageView getBatteryimage() {
         return batteryimage;
     }
+    public TextClock getClock() {
+        return clock;
+    }
 
     public MaterialTextView getBatterycharge() {
         return batterycharge;

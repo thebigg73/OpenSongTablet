@@ -56,6 +56,8 @@ public class ActionBarSettingsFragment extends Fragment {
         // Set up preferences and view settings
         setupPreferences();
 
+        changeVisibilities();
+
         return myView.getRoot();
     }
 
@@ -126,16 +128,19 @@ public class ActionBarSettingsFragment extends Fragment {
             }
         });
         myView.batteryDialOnOff.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            changeVisibilities();
             updateActionBar("batteryDialOn",0.0f,isChecked);
             showOrHideView(isChecked,false ,myView.batteryDialOnOff, myView.batteryDialSize);
             mainActivityInterface.getPreferences().setMyPreferenceBoolean("batteryDialOn",isChecked);
         });
         myView.batteryTextOnOff.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            changeVisibilities();
             mainActivityInterface.getPreferences().setMyPreferenceBoolean("batteryTextOn",isChecked);
             showOrHideView(isChecked,false ,myView.batteryTextOnOff, myView.batteryTextSize);
             updateActionBar("batteryTextOn",0.0f,isChecked);
         });
         myView.clockTextOnOff.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            changeVisibilities();
             mainActivityInterface.getPreferences().setMyPreferenceBoolean("clockOn",isChecked);
             showOrHideView(isChecked,false ,myView.clockTextOnOff, myView.timeLayout);
             updateActionBar("clockOn",0.0f,isChecked);
@@ -227,5 +232,13 @@ public class ActionBarSettingsFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         myView = null;
+    }
+
+    private void changeVisibilities() {
+        mainActivityInterface.getToolbar().batteryholderVisibility(true, false);
+        mainActivityInterface.getBatteryStatus().showBatteryStuff(true);
+        mainActivityInterface.getToolbar().getBatteryimage().setVisibility(myView.batteryDialOnOff.isChecked() ? View.VISIBLE:View.INVISIBLE);
+        mainActivityInterface.getToolbar().getBatterycharge().setVisibility(myView.batteryTextOnOff.isChecked() ? View.VISIBLE:View.INVISIBLE);
+        mainActivityInterface.getToolbar().getClock().setVisibility(myView.clockTextOnOff.isChecked() ? View.VISIBLE:View.INVISIBLE);
     }
 }

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/myToolbar"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="?attr/actionBarSize"
     android:layout_alignParentStart="true"
     android:minHeight="?attr/actionBarSize"
     android:theme="@style/ActionBar"
@@ -21,7 +21,7 @@
         android:id="@+id/actionBarBackground"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="60dp">
+        android:minHeight="?attr/actionBarSize">
 
         <ImageView
             android:id="@+id/setIcon"
@@ -123,8 +123,8 @@
 
         <FrameLayout
             android:id="@+id/batteryholder"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="?attr/actionBarSize"
+            android:layout_height="?attr/actionBarSize"
             android:layout_marginStart="40dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
