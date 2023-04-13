@@ -1,8 +1,11 @@
 package com.garethevans.church.opensongtablet.importsongs;
 
+import static android.content.Context.DOWNLOAD_SERVICE;
+
 import android.app.DownloadManager;
 import android.content.Context;
 import android.net.Uri;
+import android.os.Environment;
 import android.util.Base64;
 import android.util.Log;
 import android.webkit.CookieManager;
@@ -13,7 +16,9 @@ import androidx.fragment.app.Fragment;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 
 
@@ -24,6 +29,7 @@ public class MyJSInterface {
     private final Uri saveFile;
     private final Fragment fragment;
     private final String TAG = "MyJSInterface";
+    private String filename;
 
     public MyJSInterface(Context c, Fragment fragment) {
         this.c = c;
@@ -61,6 +67,10 @@ public class MyJSInterface {
         convertBase64StringToPdfAndStoreIt(base64Data);
     }
 
+    public void setFilename(String filename) {
+        this.filename = filename;
+    }
+
     private void convertBase64StringToPdfAndStoreIt(String base64PDf) throws IOException {
         Log.d(TAG, base64PDf);
         byte[] pdfAsBytes = Base64.decode(base64PDf.replaceFirst("^data:application/pdf;base64,", ""), 0);
@@ -71,11 +81,11 @@ public class MyJSInterface {
 
         Log.d(TAG, "Download blob complete");
 
-        mainActivityInterface.songSelectDownloadPDF(fragment, R.id.importOnlineFragment,saveFile);
+        mainActivityInterface.songSelectDownloadPDF(fragment, R.id.importOnlineFragment,saveFile,"SongSelect.pdf");
     }
 
-    public static String doNormalDownLoad(String url) {
-        return "javascript: HTMLOUT.setDownload(\""+url+"\");";
+    public static String doNormalDownLoad(String url, String filename) {
+        return "javascript: HTMLOUT.setDownload(\""+url+"\",\""+filename+"\");";
     }
 
     @JavascriptInterface
@@ -87,25 +97,33 @@ public class MyJSInterface {
     }
 
     @JavascriptInterface
-    public void setDownload(String url) {
+    public void setDownload(String url, String filename) {
         String cookie = CookieManager.getInstance().getCookie(url);
-        //String myName = "SongSelect";
         Log.d("d", "url=" + url);
-        DownloadManager.Request request = new DownloadManager.Request(
-                Uri.parse(url));
+        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
 
         request.allowScanningByMediaScanner();
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED); //Notify client once download is completed!
-
-        request.setDestinationUri(saveFile);
-        DownloadManager dm = (DownloadManager) c.getSystemService(Context.DOWNLOAD_SERVICE);
+        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename);
+        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), filename);
+        Uri downloadedFile = Uri.fromFile(file);
+        DownloadManager dm = (DownloadManager) c.getSystemService(DOWNLOAD_SERVICE);
         request.addRequestHeader("Cookie", cookie);
         if (dm != null) {
             dm.enqueue(request);
         }
-        Log.d("d", "Download complete");
 
+        Log.d(TAG, "downloadedFile:" + downloadedFile);
+            try {
+                if (filename.endsWith(".pdf")) {
+                    InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(downloadedFile);
+                    OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(saveFile);
+                    mainActivityInterface.getStorageAccess().copyFile(inputStream, outputStream);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            mainActivityInterface.songSelectDownloadPDF(fragment, R.id.importOnlineFragment, saveFile, filename);
 
-        mainActivityInterface.songSelectDownloadPDF(fragment, R.id.importOnlineFragment,saveFile);
     }
 }

@@ -227,7 +227,7 @@ public interface MainActivityInterface {
     WebDownload getWebDownload();
     CheckInternet getCheckInternet();
     void isWebConnected(Fragment fragment, int fragId, boolean isConnected);
-    void songSelectDownloadPDF(Fragment fragment, int fragId, Uri uri);
+    void songSelectDownloadPDF(Fragment fragment, int fragId, Uri uri, String filename);
     void openDocument(String location);
 
     // General tools

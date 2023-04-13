@@ -983,7 +983,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     }
                     // IV - Song details are added by song load
                     // GE onResuming (open cast and return), not called, so quick check is worthwhile
-                    updateToolbar(null);
+                    if (!whichMode.equals(getString(R.string.mode_presenter))) {
+                        updateToolbar(null);
+                    }
 
                     // Return the pagebuttons to their expanded state
                 }
@@ -2942,10 +2944,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
 
     @Override
-    public void songSelectDownloadPDF(Fragment fragment, int fragId, Uri uri) {
+    public void songSelectDownloadPDF(Fragment fragment, int fragId, Uri uri, String filename) {
+        Log.d(TAG,"songSelectDownloadPDF  fragment:"+fragment+"  fragID:"+fragId+"  uri:"+uri);
         if (fragment!=null && fragId==R.id.importOnlineFragment) {
             try {
-                ((ImportOnlineFragment)fragment).finishedDownloadPDF(uri);
+                ((ImportOnlineFragment)fragment).finishedDownloadPDF(uri, filename);
             } catch (Exception e) {
                 e.printStackTrace();
             }
