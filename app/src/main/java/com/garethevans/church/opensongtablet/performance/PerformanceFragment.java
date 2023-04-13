@@ -76,7 +76,8 @@ public class PerformanceFragment extends Fragment {
 
     private String mainfoldername="", mode_performance="", mode_presenter="", mode_stage="", not_allowed="";
     private int sendSongDelay = 0;
-    private final Handler sendSongAfterDelayHandler = new Handler();
+    private final Handler sendSongAfterDelayHandler = new Handler(),
+        autoHideHighlighterHandler = new Handler();
     private final Runnable sendSongAfterDelayRunnable = () -> {
         // IV - The send is always called by the 'if' and will return true if a large file has been sent
         if (mainActivityInterface.getNearbyConnections().sendSongPayload()) {
@@ -84,6 +85,15 @@ public class PerformanceFragment extends Fragment {
         }
         sendSongDelay = 3000;
     };
+    private final Runnable autoHideHighlighterRunnable = new Runnable() {
+        @Override
+        public void run() {
+            if (myView!=null) {
+                myView.highlighterView.setVisibility(View.GONE);
+            }
+        }
+    };
+
     private final Handler resetSendSongAfterDelayHandler = new Handler();
     private final Runnable resetSendSongAfterDelayRunnable = () -> {
         sendSongDelay = 0;
@@ -347,6 +357,9 @@ public class PerformanceFragment extends Fragment {
                 boolean autoScrollActivated = mainActivityInterface.getAutoscroll().getAutoscrollActivated();
                 mainActivityInterface.getAutoscroll().stopAutoscroll();
                 mainActivityInterface.getAutoscroll().setAutoscrollActivated(autoScrollActivated);
+
+                // Stop the highlighter autohide if required
+                autoHideHighlighterHandler.removeCallbacks(autoHideHighlighterRunnable);
 
                 // During the load song call, the song is cleared
                 // However it first extracts the folder and filename we've just set
@@ -950,6 +963,9 @@ public class PerformanceFragment extends Fragment {
             dealWithHighlighterFile(widthAfterScale, heightAfterScale);
         }
 
+        // Load up the sticky notes if the user wants them
+        dealWithStickyNotes(false, false);
+
         // Run this only when the user has stopped on a song after 2s.
         // This is important for pad use - the pad will not change while the user rapidly changes songs.
         // This is important for rapid song changes - we only run autoscroll, metronome etc. for the last song.
@@ -979,9 +995,6 @@ public class PerformanceFragment extends Fragment {
             // Deal with capo information (if required)
             mainActivityInterface.updateOnScreenInfo("capoShow");
             mainActivityInterface.dealWithCapo();
-
-            // Load up the sticky notes if the user wants them
-            dealWithStickyNotes(false, false);
 
             // Start the pad (if the pads are activated and the pad is valid)
             mainActivityInterface.getPad().autoStartPad();
@@ -1059,11 +1072,8 @@ public class PerformanceFragment extends Fragment {
                                     // Hide after a certain length of time
                                     int timetohide = mainActivityInterface.getPreferences().getMyPreferenceInt("timeToDisplayHighlighter", 0);
                                     if (timetohide != 0) {
-                                        new Handler().postDelayed(() ->  {
-                                            if (myView.highlighterView!=null) {
-                                                myView.highlighterView.setVisibility(View.GONE);
-                                            }
-                                        }, timetohide * 1000L);
+                                        autoHideHighlighterHandler.postDelayed(
+                                            autoHideHighlighterRunnable, timetohide * 1000L);
                                     }
                                 } else {
                                     myView.highlighterView.post(() -> {

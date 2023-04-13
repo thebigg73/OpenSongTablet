@@ -58,6 +58,8 @@ public class EditSongFragmentLyrics extends Fragment {
         // Add listeners
         setupListeners();
 
+        myView.getRoot().requestFocus();
+
         return myView.getRoot();
     }
 
@@ -112,6 +114,7 @@ public class EditSongFragmentLyrics extends Fragment {
         myView.lyrics.setText(mainActivityInterface.getTempSong().getLyrics());
 
         validUndoRedo(mainActivityInterface.getTempSong().getLyricsUndosPos());
+
     }
 
     private void setupListeners() {

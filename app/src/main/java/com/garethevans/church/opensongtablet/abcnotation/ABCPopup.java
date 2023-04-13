@@ -31,6 +31,9 @@ public class ABCPopup {
     private final MainActivityInterface mainActivityInterface;
     @SuppressWarnings("FieldCanBeLocal")
     private final String TAG = "ABCPopup";
+    private final Handler handler = new Handler();
+    private final Runnable autoCloseScoreRunnable = this::closeScore;
+
 
     public ABCPopup(Context c) {
         this.c = c;
@@ -166,6 +169,7 @@ public class ABCPopup {
     }
 
     public void closeScore() {
+        handler.removeCallbacks(autoCloseScoreRunnable);
         if (floatWindow!=null && popupWindow!=null) {
             floatWindow.post(() -> popupWindow.dismiss());
         }
@@ -176,7 +180,7 @@ public class ABCPopup {
         long displayTime = mainActivityInterface.getPreferences().getMyPreferenceInt("timeToDisplaySticky",0) * 1000L;
         if (displayTime>0) {
             try {
-                handler.postDelayed(this::closeScore, displayTime);
+                handler.postDelayed(autoCloseScoreRunnable, displayTime);
             } catch (Exception e) {
                 e.printStackTrace();
             }

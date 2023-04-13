@@ -27,6 +27,8 @@ public class StickyPopUp {
     private int stickyWidth;
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "StickyPopUp";
+    private Handler handler = new Handler();
+    private final Runnable autoCloseStickyRunnable = this::closeSticky;
 
     private final Context c;
     private final MainActivityInterface mainActivityInterface;
@@ -167,6 +169,9 @@ public class StickyPopUp {
     }
 
     public void closeSticky() {
+        if (handler!=null) {
+            handler.removeCallbacks(autoCloseStickyRunnable);
+        }
         if (floatWindow!=null && popupWindow!=null) {
             floatWindow.post(() -> {
                 if (popupWindow!=null) {
@@ -177,11 +182,11 @@ public class StickyPopUp {
     }
 
     private void dealWithAutohide() {
-        Handler handler = new Handler();
+        handler = new Handler();
         long displayTime = mainActivityInterface.getPreferences().getMyPreferenceInt("timeToDisplaySticky",0) * 1000L;
         if (displayTime>0) {
             try {
-                handler.postDelayed(this::closeSticky, displayTime);
+                handler.postDelayed(autoCloseStickyRunnable, displayTime);
             } catch (Exception e) {
                 if (floatWindow!=null) {
                     floatWindow.postDelayed(this::closeSticky, displayTime);
