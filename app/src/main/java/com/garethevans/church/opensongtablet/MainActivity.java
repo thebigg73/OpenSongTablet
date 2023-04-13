@@ -168,7 +168,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     private ActivityBinding myView;
     private boolean bootUpCompleted = false;
-    private boolean rebooted = false;
+    private boolean rebooted = false, alreadyBackPressed = false;
 
     // The helpers sorted alphabetically
     private ABCNotation abcNotation;
@@ -907,9 +907,18 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         return super.onKeyLongPress(keyCode, keyEvent);
     }
 
+    @Override
+    public void setAlreadyBackPressed(boolean alreadyBackPressed) {
+        this.alreadyBackPressed = alreadyBackPressed;
+    }
     public void interceptBackPressed() {
         Log.d(TAG,"onBackPressed()");
+        if (alreadyBackPressed) {
+            // Close the app
+            confirmedAction(true,"exit",null,null,null,null);
+        }
         if (navController!=null && navController.getCurrentDestination()!=null) {
+            alreadyBackPressed = true;
             try {
                 int id = Objects.requireNonNull(navController.getCurrentDestination()).getId();
                 if (id == R.id.performanceFragment || id == R.id.presenterFragment || id == R.id.setStorageLocationFragment) {
@@ -986,6 +995,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void navigateToFragment(String deepLink, int id) {
+        Log.d(TAG,"deepLink:"+deepLink+"  id:"+id);
         // Either sent a deeplink string, or a fragment id
         lockDrawer(true);
         closeDrawer(true);  // Only the Performance and Presenter fragments allow this.  Switched on in these fragments

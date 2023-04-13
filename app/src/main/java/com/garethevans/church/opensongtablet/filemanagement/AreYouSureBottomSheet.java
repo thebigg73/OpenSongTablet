@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet.filemanagement;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -75,5 +76,13 @@ public class AreYouSureBottomSheet extends BottomSheetDialogFragment {
             dismiss();
         });
         return myView.getRoot();
+    }
+
+    @Override
+    public void onDismiss(@NonNull DialogInterface dialog) {
+        super.onDismiss(dialog);
+        if (what.equals("exit")) {
+            mainActivityInterface.setAlreadyBackPressed(false);
+        }
     }
 }

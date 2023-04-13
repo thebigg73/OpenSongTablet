@@ -242,6 +242,7 @@ public interface MainActivityInterface {
     String getWhattodo();
     void setWhattodo(String whattodo);
     WindowFlags getWindowFlags();
+    void setAlreadyBackPressed(boolean alreadyBackPressed);
 
     // CCLI
     CCLILog getCCLILog();

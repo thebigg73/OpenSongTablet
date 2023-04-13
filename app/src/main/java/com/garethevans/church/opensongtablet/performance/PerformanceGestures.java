@@ -55,7 +55,7 @@ public class PerformanceGestures {
     public void doAction(String action, boolean isLongPress) {
         // Get the action we are trying to run
         switch(action) {
-            case "":
+            case "pageButtons":
                 editPageButtons();
                 break;
 
