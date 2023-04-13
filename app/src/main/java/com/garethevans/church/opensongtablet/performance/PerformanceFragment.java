@@ -945,6 +945,11 @@ public class PerformanceFragment extends Fragment {
             mainActivityInterface.getNearbyConnections().resetHostPendingSection();
         }
 
+        // Now deal with the highlighter file
+        if (mainActivityInterface.getMode().equals(mode_performance)) {
+            dealWithHighlighterFile(widthAfterScale, heightAfterScale);
+        }
+
         // Run this only when the user has stopped on a song after 2s.
         // This is important for pad use - the pad will not change while the user rapidly changes songs.
         // This is important for rapid song changes - we only run autoscroll, metronome etc. for the last song.
@@ -974,11 +979,6 @@ public class PerformanceFragment extends Fragment {
             // Deal with capo information (if required)
             mainActivityInterface.updateOnScreenInfo("capoShow");
             mainActivityInterface.dealWithCapo();
-
-            // Now deal with the highlighter file
-            if (mainActivityInterface.getMode().equals(mode_performance)) {
-                dealWithHighlighterFile(widthAfterScale, heightAfterScale);
-            }
 
             // Load up the sticky notes if the user wants them
             dealWithStickyNotes(false, false);
@@ -1059,7 +1059,11 @@ public class PerformanceFragment extends Fragment {
                                     // Hide after a certain length of time
                                     int timetohide = mainActivityInterface.getPreferences().getMyPreferenceInt("timeToDisplayHighlighter", 0);
                                     if (timetohide != 0) {
-                                        new Handler().postDelayed(() -> myView.highlighterView.setVisibility(View.GONE), timetohide);
+                                        new Handler().postDelayed(() ->  {
+                                            if (myView.highlighterView!=null) {
+                                                myView.highlighterView.setVisibility(View.GONE);
+                                            }
+                                        }, timetohide * 1000L);
                                     }
                                 } else {
                                     myView.highlighterView.post(() -> {

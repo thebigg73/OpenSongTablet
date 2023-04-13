@@ -81,7 +81,7 @@ public class ProcessSong {
             lineSpacing, scaleHeadings, scaleChords, scaleComments;
     private String songAutoScale;
     // Stuff for resizing/scaling
-    private int padding = 8, columns=1;
+    private int padding = 8, primaryScreenColumns=1;
     private boolean bracketsOpen = false;
     private int bracketsStyle = Typeface.NORMAL;
     private boolean curlyBrackets = true;
@@ -1688,6 +1688,9 @@ public class ProcessSong {
         // First we process the song (could be the loaded song, or a temp song - that's why we take a reference)
         processSongIntoSections(song, presentation);
 
+        // IV - Initialise transpose capo key  - might be needed
+        mainActivityInterface.getTranspose().capoKeyTranspose();
+
         if (asPDF && mainActivityInterface.getMakePDF().getIsSetListPrinting()) {
             // This is the set list PDF print.  Items are split by empty section headers []
             // We need to now remove those and trim the section content otherwise the PDF has gaps between lines
@@ -2408,18 +2411,27 @@ public class ProcessSong {
             if (availableWidth>currentWidth) {
                 currentWidth = availableWidth;
             }
-            columns = 1;
+            if (!presentation) {
+                // Used by primary screen highlighter file naming
+                primaryScreenColumns = 1;
+            }
             createOneColumn(sectionViews, sectionWidths, sectionHeights, column1, column2, column3, currentWidth,
                     currentHeight, columnInfo[1], presentation, songSheetTitleHeight, (int)columnInfo[4]);
 
         } else if (columnInfo[0]==2) {
             // If we have 2 force column tags, use those positions instead
-            columns = 2;
+            if (!presentation) {
+                // Used by primary screen highlighter file naming
+                primaryScreenColumns = 2;
+            }
             createTwoColumns(sectionViews, column1, column2,
                     column3, columnInfo, presentation, songSheetTitleHeight);
 
         } else if (columnInfo[0]==3) {
-            columns = 3;
+            if (!presentation) {
+                // Used by primary screen highlighter file naming
+                primaryScreenColumns = 3;
+            }
             createThreeColumns(sectionViews, column1, column2, column3, columnInfo,
                     presentation, songSheetTitleHeight);
 
@@ -3061,7 +3073,7 @@ public class ProcessSong {
             filename += "_" + song.getPdfPageCurrent();
         } else {
             //if (portrait) {  // old v5 logic which only worked for full autoscale
-            if (columns==1) {
+            if (primaryScreenColumns == 1) {
                 filename += "_p";
             } else {
                 filename += "_l";

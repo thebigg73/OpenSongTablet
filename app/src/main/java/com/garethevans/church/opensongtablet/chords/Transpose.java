@@ -191,10 +191,6 @@ public class Transpose {
     private int major;
     private int root;
 
-    private boolean forceFlats;
-    private boolean usesFlats;
-    private boolean capoForceFlats;
-    private boolean capoUsesFlats;
     private String capoKey;
     private int oldChordFormat, newChordFormat;
     private String transposeDirection;
@@ -257,7 +253,9 @@ public class Transpose {
         tempSong.setDesiredChordFormat(1);
         transposeDirection = "-1";
         transposeTimes = capo;
-        return transposeString(tempSong).replace(".","");
+
+        // IV - Number converts are used to return the users preferred key
+        return numberToKey(keyToNumber(transposeString(tempSong).replace(".","")));
     }
 
     public String keyToNumber(String key) {
@@ -327,6 +325,7 @@ public class Transpose {
         miniTransposeSong.setDesiredChordFormat(mainActivityInterface.getSong().getDesiredChordFormat());
         transposeTimes = capo;
         transposeDirection = "-1";
+        miniTransposeSong.setKey(capoKey);
         return transposeString(miniTransposeSong);
     }
 
@@ -334,13 +333,7 @@ public class Transpose {
     public String transposeString(Song thisSong) {
 
         // Now we have the new key, we can decide if we use flats or not for any notes
-        if (thisSong.getKey()!=null) {
-            forceFlats = keyUsesFlats(thisSong.getKey());
-            usesFlats = forceFlats;
-        } else {
-            usesFlats = forceFlats;
-            forceFlats = false;
-        }
+        boolean forceFlats = thisSong.getKey() != null && keyUsesFlats(thisSong.getKey());
 
         try {
             StringBuilder sb = new StringBuilder();
@@ -723,31 +716,10 @@ public class Transpose {
         }
     }
 
-    String capoTranspose() {
-        // StageMode sets FullscreenActivity.capokey to "" in loadSong(), first call after sets for new song
-        if (capoKey.equals("")) {
-            // Get the capokey
-            if (mainActivityInterface.getSong().getKey() != null) {
-                capoKeyTranspose();
-            }
-            // Determine if we need to force flats for the capo key
-            capoForceFlats = keyUsesFlats(capoKey);
-        }
-
-        // If not showing Capo chords then 'transpose' Capo 0 to display preferred chords
-        if (!mainActivityInterface.getPreferences().getMyPreferenceBoolean("displayCapoChords", true)) {
-            transposeTimes = 0;
-        } else {
-            transposeTimes = Integer.parseInt("0" + mainActivityInterface.getSong().getCapo());
-        }
-
-        transposeDirection = "-1";
-        return transposeString(mainActivityInterface.getSong());
-    }
-
-    private void capoKeyTranspose() {
+    public String capoKeyTranspose() {
         capoKey = numberToKey(transposeNumber(keyToNumber(mainActivityInterface.getSong().getKey()),
                 "-1", Integer.parseInt("0" + mainActivityInterface.getSong().getCapo())));
+        return capoKey;
     }
 
     private ArrayList<String> quickCapoKey(String key) {
