@@ -88,6 +88,8 @@ public class EditSongFragmentMain extends Fragment  {
         myView.folder.setText(mainActivityInterface.getTempSong().getFolder());
         textInputBottomSheet = new TextInputBottomSheet(this,"EditSongFragmentMain",new_folder_string,new_folder_name_string,null,"","",true);
 
+        myView.getRoot().requestFocus();
+
         // Resize the bottom padding to the soft keyboard height or half the screen height for the soft keyboard (workaround)
         mainActivityInterface.getWindowFlags().adjustViewPadding(mainActivityInterface,myView.resizeForKeyboardLayout);
     }

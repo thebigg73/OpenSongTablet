@@ -278,6 +278,7 @@ public class ImportOnlineFragment extends Fragment {
     }
 
     private void checkConnection() {
+        mainActivityInterface.getWindowFlags().hideKeyboard();
         // Check we have an internet connection
         mainActivityInterface.getCheckInternet().checkConnection(this, R.id.importOnlineFragment, mainActivityInterface);
     }
@@ -482,6 +483,7 @@ public class ImportOnlineFragment extends Fragment {
                 } else  if (webString.contains("<span class=\"cproTitleLine\">")) {
                     newSong = songSelect.processContentChordPro(mainActivityInterface, newSong, webString);
                 }
+                Log.d(TAG,"newSong:"+newSong.getLyrics());
                 // Trigger the clicking of the download buttons
                 String what="";
                 if (webString.contains("id=\"downloadLyrics\"")) {
@@ -583,6 +585,25 @@ public class ImportOnlineFragment extends Fragment {
             filename = myView.saveFilename.getText().toString();
         }
 
+        // Set the folder
+        newSong.setFolder(folder);
+
+        // If we have a pdfSong with extracted lyrics, save that too
+        if (isPDF && newSong.getLyrics()!=null && !newSong.getLyrics().trim().isEmpty()) {
+            String nonPDFFilename = filename.replace(".pdf","").replace(".PDF","");
+            newSong.setFilename(nonPDFFilename);
+            newSong.setTitle(nonPDFFilename);
+            newSong.setFiletype("XML");
+            // Set the main song otherwise it gets overwritten!
+            mainActivityInterface.getSong().setFilename(nonPDFFilename);
+            mainActivityInterface.getSong().setFolder(folder);
+            mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG + " write OpenSongSong from PDF " + filename + " to Songs/" + folder + "/" + nonPDFFilename);
+            mainActivityInterface.getSaveSong().doSave(newSong);
+            // Add to the database
+            mainActivityInterface.getSQLiteHelper().createSong(folder,nonPDFFilename);
+            mainActivityInterface.getSQLiteHelper().updateSong(newSong);
+        }
+
         // Update the song pdf values
         if (isPDF) {
             if (!filename.toLowerCase().endsWith(".pdf")) {
@@ -591,7 +612,6 @@ public class ImportOnlineFragment extends Fragment {
             newSong.setTitle(filename);
             newSong.setFilename(filename);
         }
-        newSong.setFolder(folder);
         newSong.setFiletype("PDF");
 
         Log.d(TAG,"newSong filename:"+newSong.getFilename()+"  folder:"+newSong.getFolder()+"  lyrics:"+newSong.getLyrics());
@@ -606,16 +626,15 @@ public class ImportOnlineFragment extends Fragment {
                 mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG + " copyPDF copyFile from " + inputUri + " to Songs/" + folder + "/" + filename);
                 mainActivityInterface.getStorageAccess().copyFile(inputStream, outputStream);
             } else {
-                // A text based song, so just create the song
+                // A text based song, so just create the song in OpenSong format
                 newSong.setFiletype("XML");
                 folder = newSong.getFolder();
                 filename = newSong.getFilename();
                 mainActivityInterface.getSong().setFolder(folder);
                 mainActivityInterface.getSong().setFilename(filename);
                 mainActivityInterface.getSaveSong().doSave(newSong);
-
             }
-            // Update the current song
+            // Update the current song for loading up
             mainActivityInterface.getPreferences().setMyPreferenceString("songFolder",folder);
             mainActivityInterface.getPreferences().setMyPreferenceString("songFilename",filename);
 

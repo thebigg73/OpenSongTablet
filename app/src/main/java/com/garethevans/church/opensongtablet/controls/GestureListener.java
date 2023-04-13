@@ -30,11 +30,12 @@ public class GestureListener extends GestureDetector.SimpleOnGestureListener {
 
     @Override
     public void onLongPress(MotionEvent e) {
-        Log.d(TAG,"onLongPress");
+
         super.onLongPress(e);
         if (doubleTapping) {
             doubleTapping = false;
         } else {
+            Log.d(TAG,"onLongPress");
             performAction(mainActivityInterface.getGestures().getLongPress());
         }
     }

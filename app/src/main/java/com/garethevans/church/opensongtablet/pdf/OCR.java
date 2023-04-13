@@ -2,13 +2,21 @@ package com.garethevans.church.opensongtablet.pdf;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Rect;
 import android.graphics.pdf.PdfRenderer;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
+import android.util.SparseArray;
+
+import androidx.annotation.NonNull;
 
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.mlkit.vision.common.InputImage;
+import com.google.mlkit.vision.text.Text;
 import com.google.mlkit.vision.text.TextRecognition;
 import com.google.mlkit.vision.text.TextRecognizer;
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions;
@@ -21,7 +29,8 @@ public class OCR {
     private int pageCount;
     private String filename = null;
     private final MainActivityInterface mainActivityInterface;
-    private final String TAG = "OCR";
+    private final String TAG = "OCR", blockSplitStart = "__BLOCKSTART_", blockSplitEnd = "_BLOCKEND__";
+    private int pageHeightRunning = 0, maxTop = 0, totalLineHeight = 0, totalLineCount = 0;
 
     public OCR(Context c) {
         mainActivityInterface = (MainActivityInterface) c;
@@ -118,10 +127,138 @@ public class OCR {
     }
 
     private void extractTextFromBitmap(Bitmap bmp, int page) {
-        InputImage image = InputImage.fromBitmap(bmp, 0);
-        TextRecognizer recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS);
+        int pageHeightToAdd = (page) * bmp.getHeight();
+        maxTop = pageHeightToAdd; // 0 for first page
         final int currpage = page;
-        recognizer.process(image).addOnSuccessListener(visionText -> {
+        InputImage image = InputImage.fromBitmap(bmp, 0);
+        TextRecognizer textRecognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS);
+        Task<Text> task = textRecognizer.process(image);
+        task.addOnSuccessListener(new OnSuccessListener<Text>() {
+            @Override
+            public void onSuccess(Text text) {
+                // Use an array where the index is the top position
+                SparseArray<String> stringSparseArray = new SparseArray<>();
+
+                for (Text.TextBlock block : text.getTextBlocks()) {
+                    for (Text.Line line : block.getLines()) {
+                        String lineText = line.getText();
+                        Rect lineFrame = line.getBoundingBox();
+                        int top = pageHeightToAdd;
+                        int left = 0;
+                        if (lineFrame!=null) {
+                            top = lineFrame.top + pageHeightToAdd;
+                            left = lineFrame.left;
+                            totalLineCount++;
+                            totalLineHeight += lineFrame.bottom - lineFrame.top;
+                        }
+
+                        String currLine = stringSparseArray.get(top,"");
+                        String newLine = (currLine+blockSplitStart+left+blockSplitEnd+lineText).trim();
+                        stringSparseArray.put(top,newLine);
+                        maxTop = Math.max(maxTop,top);
+                    }
+                }
+
+                // Now we have the lines in the correct order (by top position)
+                // Try to merge lines that have similar tops (within fudge)
+                int lastTop = 0;
+                // Work out the fudge factor based on average line height
+                int fudge = 10;
+                if (totalLineCount!=0) {
+                    float avHeight = (float)totalLineHeight/(float)totalLineCount;
+                    fudge = Math.round((0.5f*avHeight));
+                }
+
+
+                SparseArray<String> tidiedLines = new SparseArray<>();
+                for (int x=0; x<maxTop+1; x++) {
+                    if (stringSparseArray.get(x,null)!=null) {
+                        if (x<lastTop+fudge) {
+                            // Merge to lastTop
+                            String prevVal = tidiedLines.get(lastTop,"");
+                            tidiedLines.put(lastTop,(prevVal+" "+stringSparseArray.get(x)).trim());
+                        } else {
+                            // New line
+                            tidiedLines.put(x,stringSparseArray.get(x));
+                            lastTop = x;
+                        }
+                    }
+                }
+
+                StringBuilder textFromLinesArray = new StringBuilder();
+                for (int x=0; x<maxTop; x++) {
+                    StringBuilder thisLine = new StringBuilder();
+                    if (tidiedLines.get(x,null)!=null) {
+                        // This line has each section with the left position inside
+                        // We need to do this to add them back in the correct order
+                        String[] blocks = tidiedLines.get(x).split(blockSplitStart);
+                        SparseArray<String> horizontalArray = new SparseArray<>();
+                        int maxHPos = 0;
+                        for (int y = 0; y < blocks.length; y++) {
+                            // Get the horizontal pos
+                            if (blocks[y].contains(blockSplitEnd)) {
+                                int hpos = Integer.parseInt(blocks[y].substring(0, blocks[y].indexOf(blockSplitEnd)).replaceAll("\\D", ""));
+                                String blockText = blocks[y].substring(blocks[y].indexOf(blockSplitEnd) + blockSplitEnd.length());
+                                horizontalArray.put(hpos, blockText);
+                                maxHPos = Math.max(hpos, maxHPos);
+                            }
+                        }
+                        for (int z = 0; z < maxHPos+1; z++) {
+                            if (horizontalArray.get(z, null) != null) {
+                                thisLine.append(horizontalArray.get(z)).append(" ");
+                            }
+                        }
+                        textFromLinesArray.append(thisLine).append("\n");
+                    }
+                }
+
+                pdfPages.add(currpage,textFromLinesArray.toString());
+                pageHeightRunning = maxTop;
+                if (pdfPages.size()==pageCount) {
+                    // We're done
+                    runCompleteTask();
+                }
+            }
+        });
+        task.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                pdfPages.add(currpage,"");
+                Log.d(TAG,"Error on page "+currpage);
+                if (pdfPages.size()==pageCount) {
+                    // We're done
+                    runCompleteTask();
+                }
+            }
+        });
+
+
+        /*recognizer.process(image).addOnSuccessListener(visionText -> {
+
+            String resultText = visionText.getText();
+            for (Text.TextBlock block : visionText.getTextBlocks()) {
+                String blockText = block.getText();
+                Log.d(TAG,"blockText:"+blockText);
+                Point[] blockCornerPoints = block.getCornerPoints();
+                Rect blockFrame = block.getBoundingBox();
+                for (Text.Line line : block.getLines()) {
+                    String lineText = line.getText();
+                    Log.d(TAG,"lineText:"+lineText);
+                    Point[] lineCornerPoints = line.getCornerPoints();
+                    Rect lineFrame = line.getBoundingBox();
+                    for (Text.Element element : line.getElements()) {
+                        String elementText = element.getText();
+                        Log.d(TAG,"elementText:"+elementText);
+                        Point[] elementCornerPoints = element.getCornerPoints();
+                        Rect elementFrame = element.getBoundingBox();
+                        for (Text.Symbol symbol : element.getSymbols()) {
+                            String symbolText = symbol.getText();
+                            Point[] symbolCornerPoints = symbol.getCornerPoints();
+                            Rect symbolFrame = symbol.getBoundingBox();
+                        }
+                    }
+                }
+            }
                             pdfPages.add(currpage,visionText.getText());
                             if (pdfPages.size()==pageCount) {
                                 // We're done
@@ -134,7 +271,7 @@ public class OCR {
                                 // We're done
                                 runCompleteTask();
                             }
-                        });
+                        });*/
     }
 
     private void runCompleteTask() {
