@@ -133,6 +133,12 @@ public class SongProjectionInfo extends LinearLayoutCompat {
         songCopyright.setTextColor(mainActivityInterface.getMyThemeColors().getPresoInfoFontColor());
         songCCLI.setTextColor(mainActivityInterface.getMyThemeColors().getPresoInfoFontColor());
         textClock.setTextColor(mainActivityInterface.getMyThemeColors().getPresoInfoFontColor());
+
+        songTitle.setTextSize(mainActivityInterface.getPresenterSettings().getPresoTitleTextSize());
+        songAuthor.setTextSize(mainActivityInterface.getPresenterSettings().getPresoAuthorTextSize());
+        songCopyright.setTextSize(mainActivityInterface.getPresenterSettings().getPresoCopyrightTextSize());
+        songCCLI.setTextSize(mainActivityInterface.getPresenterSettings().getPresoCopyrightTextSize());
+        textClock.setTextSize(mainActivityInterface.getPresenterSettings().getPresoClockSize());
     }
 
     public String getTextViewString(TextView textView) {

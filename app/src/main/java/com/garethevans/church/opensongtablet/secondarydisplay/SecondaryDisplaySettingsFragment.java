@@ -446,28 +446,28 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
                     mainActivityInterface.getPreferences().setMyPreferenceFloat(
                             prefName, slider.getValue());
                     mainActivityInterface.getPresenterSettings().setPresoClockSize(slider.getValue());
-                    displayInterface.updateDisplay("setSongInfo");
+                    displayInterface.updateDisplay("setInfoStyles");
                     break;
                 case "presoTitleTextSize":
                     // The slider goes from 6 to 22
                     mainActivityInterface.getPreferences().setMyPreferenceFloat(
                             prefName,slider.getValue());
                     mainActivityInterface.getPresenterSettings().setPresoTitleTextSize(slider.getValue());
-                    displayInterface.updateDisplay("setSongInfo");
+                    displayInterface.updateDisplay("setInfoStyles");
                     break;
                 case "presoAuthorTextSize":
                     // The slider goes from 6 to 22
                     mainActivityInterface.getPreferences().setMyPreferenceFloat(
                             prefName,slider.getValue());
                     mainActivityInterface.getPresenterSettings().setPresoAuthorTextSize(slider.getValue());
-                    displayInterface.updateDisplay("setSongInfo");
+                    displayInterface.updateDisplay("setInfoStyles");
                     break;
                 case "presoCopyrightTextSize":
                     // The slider goes from 6 to 22
                     mainActivityInterface.getPreferences().setMyPreferenceFloat(
                             prefName,slider.getValue());
                     mainActivityInterface.getPresenterSettings().setPresoCopyrightTextSize(slider.getValue());
-                    displayInterface.updateDisplay("setSongInfo");
+                    displayInterface.updateDisplay("setInfoStyles");
                     break;
             }
         }

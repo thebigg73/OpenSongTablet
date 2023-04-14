@@ -21,6 +21,7 @@ import com.garethevans.church.opensongtablet.appdata.CheckInternet;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDown;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
 import com.garethevans.church.opensongtablet.databinding.SettingsFontsBinding;
+import com.garethevans.church.opensongtablet.interfaces.DisplayInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 import java.util.ArrayList;
@@ -32,6 +33,7 @@ public class FontSetupFragment extends Fragment {
     private ArrayList<String> fontNames;
     private String fontLyric, fontChord, fontPreso, fontPresoInfo, fontSticky, which;
     private MainActivityInterface mainActivityInterface;
+    private DisplayInterface displayInterface;
     private String webAddress;
 
     @Override
@@ -44,6 +46,7 @@ public class FontSetupFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mainActivityInterface = (MainActivityInterface) context;
+        displayInterface = (DisplayInterface) context;
     }
 
     @Nullable
@@ -196,6 +199,9 @@ public class FontSetupFragment extends Fragment {
 
                     // Set the sticky preview
                     myView.stickyLorem.post(() -> myView.stickyLorem.setTypeface(mainActivityInterface.getMyFonts().getStickyFont()));
+
+                    // Change the values in other used locations
+                    displayInterface.updateDisplay("setInfoStyles");
                 });
                 ExecutorService executorService = Executors.newSingleThreadExecutor();
                 executorService.execute(() -> {
