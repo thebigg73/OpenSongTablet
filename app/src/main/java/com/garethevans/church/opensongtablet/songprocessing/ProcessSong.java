@@ -3069,6 +3069,8 @@ public class ProcessSong {
         String filename = song.getFolder().replace("/", "_") + "_" +
                 song.getFilename();
 
+        Log.d(TAG,"song.getFolder():"+song.getFolder()+"  song.getFilename():"+song.getFilename());
+
         if (song.getFiletype().equals("PDF")) {
             filename += "_" + song.getPdfPageCurrent();
         } else {
@@ -3080,6 +3082,12 @@ public class ProcessSong {
             }
         }
         filename += ".png";
+
+        // Ignore any **Variation prefixes (as these aren't included in the highlighter filename
+        filename = filename.replace("**Variation_","");
+        // Remove any key from the variation, as these aren't included
+        filename = filename.replace("_"+song.getKey()+"_","_");
+
         return filename;
     }
 
