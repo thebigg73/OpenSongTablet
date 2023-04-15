@@ -56,7 +56,6 @@
             android:hint="@string/variation_info"/>
         <TableRow style="@style/DividerLine"/>
 
-
         <com.google.android.material.textview.MaterialTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
