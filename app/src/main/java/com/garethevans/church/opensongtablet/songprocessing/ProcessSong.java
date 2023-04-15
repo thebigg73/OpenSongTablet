@@ -3089,6 +3089,8 @@ public class ProcessSong {
             // Remove any key from the variation, as these aren't included
             filename = filename.replace("_" + song.getKey() + "_", "_");
         }
+
+
         return filename;
     }
 
