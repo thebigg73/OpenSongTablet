@@ -3083,8 +3083,9 @@ public class ProcessSong {
 
         // Ignore any **Variation prefixes (as these aren't included in the highlighter filename)
         // Only done if the variation is a key change
-        if (filename.contains("**Variation") && filename.contains("_"+song.getKey()+"_")) {
+        if ((filename.contains("**Variation")||filename.contains("**"+c.getString(R.string.variation))) && filename.contains("_"+song.getKey()+"_")) {
             filename = filename.replace("**Variation_", "");
+            filename = filename.replace("**"+c.getString(R.string.variation),"");
             // Remove any key from the variation, as these aren't included
             filename = filename.replace("_" + song.getKey() + "_", "_");
         }
