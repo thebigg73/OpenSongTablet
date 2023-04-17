@@ -557,6 +557,7 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
                     mainActivityInterface.getPreferences().setMyPreferenceInt(
                             "presoLyricsAlign", gravity);
                     mainActivityInterface.getPresenterSettings().setPresoLyricsAlign(gravity);
+                    displayInterface.updateDisplay("contentAlignment");
                     displayInterface.updateDisplay("setSongContent");
                     break;
                 case "presoLyricsVAlign":
@@ -565,6 +566,7 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
                     mainActivityInterface.getPreferences().setMyPreferenceInt(
                             "presoLyricsVAlign", gravity);
                     mainActivityInterface.getPresenterSettings().setPresoLyricsVAlign(gravity);
+                    displayInterface.updateDisplay("contentAlignment");
                     displayInterface.updateDisplay("setSongContent");
                     break;
                 case "fontSizePresoMax":

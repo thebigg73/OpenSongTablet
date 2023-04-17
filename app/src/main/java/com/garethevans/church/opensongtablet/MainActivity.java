@@ -1668,7 +1668,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         executorService.execute(() -> {
             Handler handler = new Handler(Looper.getMainLooper());
             try {
-                handler.post(() -> showToast.doIt(search_index_start));
+                handler.post(() -> {
+                    if (showToast!=null && search_index_start!=null) {
+                        showToast.doIt(search_index_start);
+                    }
+                });
                 songListBuildIndex.setIndexComplete(false);
                 songListBuildIndex.fullIndex(songMenuFragment.getProgressText());
             } catch (Exception e) {
@@ -3510,6 +3514,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                             // Song content
                             case "setSongContent":
                                 secondaryDisplay.setSongContent();
+                                break;
+                            case "contentAlignment":
+                                secondaryDisplay.showSection(presenterSettings.getCurrentSection());
                                 break;
                             case "showSection":
                                 secondaryDisplay.showSection(presenterSettings.getCurrentSection());

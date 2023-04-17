@@ -188,8 +188,16 @@ public class ProcessSong {
             myNEWXML += "  " + extraStuff + "\n";
         }
         myNEWXML += "</song>";
-        thisSong.setSongXML(myNEWXML);
-        return myNEWXML;
+        // Strip out any empty lines
+        StringBuilder stringBuilder = new StringBuilder();
+        String[] lines = myNEWXML.split("\n");
+        for (String line:lines) {
+            if (!line.trim().isEmpty()) {
+                stringBuilder.append(line).append("\n");
+            }
+        }
+        thisSong.setSongXML(stringBuilder.toString());
+        return stringBuilder.toString();
     }
 
     // These is used when loading and converting songs (ChordPro, badly formatted XML, etc).
