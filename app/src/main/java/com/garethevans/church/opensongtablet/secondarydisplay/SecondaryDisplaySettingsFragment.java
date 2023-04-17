@@ -2,15 +2,22 @@ package com.garethevans.church.opensongtablet.secondarydisplay;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.DocumentsContract;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
@@ -34,6 +41,20 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
     private String connected_display_string="", website_connected_display_string="",
             mode_performance_string="", mode_stage_string="";
     private String webAddress;
+    private ActivityResultLauncher<String> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.GetContent(),
+            new ActivityResultCallback<Uri>() {
+                @Override
+                public void onActivityResult(Uri uri) {
+                    // Handle the returned Uri
+                    if (uri != null) {
+                        String localised = mainActivityInterface.getStorageAccess().fixUriToLocal(uri);
+                        mainActivityInterface.getPresenterSettings().setLogo(uri);
+                        mainActivityInterface.getPreferences().setMyPreferenceString("customLogo", localised);
+                        displayInterface.updateDisplay("changeLogo");
+                        updateLogo();
+                    }
+                }
+            });
 
     @Override
     public void onResume() {
@@ -225,6 +246,19 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
         myView.infoBackgroundColor.setOnClickListener(view -> {
             ChooseColorBottomSheet chooseColorBottomSheet = new ChooseColorBottomSheet(this, "presenterFragmentSettings", "presoShadowColor");
             chooseColorBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"ChooseColorBottomSheet");
+        });
+        myView.currentLogo.setOnClickListener(view -> {
+            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+            intent.setType("image/*");
+
+            // Optionally, specify a URI for the file that should appear in the
+            // system file picker when it loads.
+            if (Build.VERSION.SDK_INT>=26) {
+                intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI,
+                        mainActivityInterface.getStorageAccess().getUriForItem("Backgrounds", "", ""));
+            }
+            activityResultLauncher.launch("image/*");
         });
 
         myView.presoBackgroundAlpha.addOnSliderTouchListener(new SliderTouchListener("presoBackgroundAlpha"));
