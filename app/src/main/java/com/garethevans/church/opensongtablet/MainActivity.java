@@ -447,8 +447,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     } else if (importFilename.toLowerCase(Locale.ROOT).endsWith(".osbs")) {
                         // OpenSongApp sets backup file
                         setWhattodo("intentlaunch");
-                        Log.d(TAG,"Opening import set backup");
+                        Log.d(TAG, "Opening import set backup");
                         dealingWithIntent = deeplink_sets_backup_restore;
+                    } else if (importFilename.toLowerCase(Locale.ROOT).endsWith(".osts")) {
+                        // OpenSong set
+                        Log.d(TAG,"Opening import set");
+                        setWhattodo("intentlaunch");
+                        dealingWithIntent = deeplink_import_file;
                     } else if (importFilename.toLowerCase(Locale.ROOT).endsWith(".backup")) {
                         // OnSong backup file
                         Log.d(TAG,"Opening import onsong backup");
