@@ -3066,6 +3066,10 @@ public class ProcessSong {
         // The highlighter song file is encoded as FOLDER_FILENAME_{p or l LANDSCAPE}{if pdf _PAGENUMBER_}.png
         // v6, however now uses the landscape as the column version (historically only written if full autoscale is on)
 
+        // Actually we need the following options
+        // p: Single column - use portrait suffix (works for any scale mode or orientation)
+        // c: Columns - use when in portrait, but more than one column due to autoscale // NEW
+        // l: Landscape when in landscape mode more than one column is used
         String filename = song.getFolder().replace("/", "_") + "_" +
                 song.getFilename();
 
@@ -3075,6 +3079,8 @@ public class ProcessSong {
             //if (portrait) {  // old v5 logic which only worked for full autoscale
             if (primaryScreenColumns == 1) {
                 filename += "_p";
+            } else if (portrait) {
+                filename += "_c";
             } else {
                 filename += "_l";
             }
@@ -3090,7 +3096,7 @@ public class ProcessSong {
             filename = filename.replace("_" + song.getKey() + "_", "_");
         }
 
-
+        Log.d(TAG,"highlighter filename:"+filename);
         return filename;
     }
 
