@@ -162,6 +162,7 @@ public class SongListBuildIndex {
             indexComplete = true;
             mainActivityInterface.getSetActions().checkMissingKeys();
             returnString.append(c.getString(R.string.search_index_end)).append("\n");
+            mainActivityInterface.refreshSong();
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -199,6 +199,7 @@ public interface MainActivityInterface {
     // File work
     StorageAccess getStorageAccess();
     void doSongLoad(String folder, String filename, boolean closeDrawer);
+    void refreshSong();
     void loadSongFromSet(int position);
     ExportActions getExportActions();
     Uri getImportUri();
