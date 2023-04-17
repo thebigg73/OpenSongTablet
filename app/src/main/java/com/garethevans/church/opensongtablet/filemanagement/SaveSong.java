@@ -33,10 +33,12 @@ public class SaveSong {
             String oldFilename = mainActivityInterface.getSong().getFilename();
             boolean folderChange = !newSong.getFolder().equals(oldFolder);
             boolean filenameChange = !newSong.getFilename().equals(oldFilename);
-            String oldHighlighterFile_p = mainActivityInterface.getProcessSong().getHighlighterFilename(mainActivityInterface.getSong(),true);
-            String oldHighlighterFile_l = mainActivityInterface.getProcessSong().getHighlighterFilename(mainActivityInterface.getSong(),false);
-            String newHighlighterFile_p = mainActivityInterface.getProcessSong().getHighlighterFilename(newSong,true);
-            String newHighlighterFile_l = mainActivityInterface.getProcessSong().getHighlighterFilename(newSong,false);
+            String oldHighlighterFile_p = mainActivityInterface.getProcessSong().getHighlighterFilename(mainActivityInterface.getSong(),true,1);
+            String oldHighlighterFile_c = mainActivityInterface.getProcessSong().getHighlighterFilename(mainActivityInterface.getSong(),true,2);
+            String oldHighlighterFile_l = mainActivityInterface.getProcessSong().getHighlighterFilename(mainActivityInterface.getSong(),false,2);
+            String newHighlighterFile_p = mainActivityInterface.getProcessSong().getHighlighterFilename(newSong,true,1);
+            String newHighlighterFile_c = mainActivityInterface.getProcessSong().getHighlighterFilename(newSong,true,2);
+            String newHighlighterFile_l = mainActivityInterface.getProcessSong().getHighlighterFilename(newSong,false,2);
 
             // The folder may not be in 'Songs'.  If this is the case, it starts with ../
             // This is most common if a user wants to save a received song (set/nearby)
@@ -55,17 +57,23 @@ public class SaveSong {
                 }
 
                 // Now try to rename the highlighter files if they exist
-                Uri portraitOld = mainActivityInterface.getStorageAccess().getUriForItem("Highlighter","", oldHighlighterFile_p);
-                Uri landscapeOld = mainActivityInterface.getStorageAccess().getUriForItem("Highlighter","", oldHighlighterFile_l);
-                if (mainActivityInterface.getStorageAccess().uriExists(portraitOld)) {
-                    Uri portraitNew = mainActivityInterface.getStorageAccess().getUriForItem("Highlighter", "", newHighlighterFile_p);
-                    mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" doSave renameFileFromUri "+portraitOld+" to "+portraitNew);
-                    mainActivityInterface.getStorageAccess().renameFileFromUri(portraitOld,portraitNew,"Highlighter","",newHighlighterFile_p);
+                Uri pOld = mainActivityInterface.getStorageAccess().getUriForItem("Highlighter","", oldHighlighterFile_p);
+                Uri cOld = mainActivityInterface.getStorageAccess().getUriForItem("Highlighter","", oldHighlighterFile_c);
+                Uri lOld = mainActivityInterface.getStorageAccess().getUriForItem("Highlighter","", oldHighlighterFile_l);
+                if (mainActivityInterface.getStorageAccess().uriExists(pOld)) {
+                    Uri pNew = mainActivityInterface.getStorageAccess().getUriForItem("Highlighter", "", newHighlighterFile_p);
+                    mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" doSave renameFileFromUri "+pOld+" to "+pNew);
+                    mainActivityInterface.getStorageAccess().renameFileFromUri(pOld,pNew,"Highlighter","",newHighlighterFile_p);
                 }
-                if (mainActivityInterface.getStorageAccess().uriExists(landscapeOld)) {
-                    Uri landscapeNew = mainActivityInterface.getStorageAccess().getUriForItem("Highlighter", "", newHighlighterFile_l);
-                    mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" doSave renameFileFromUri "+landscapeOld+" to "+landscapeNew);
-                    mainActivityInterface.getStorageAccess().renameFileFromUri(landscapeOld,landscapeNew,"Highlighter", "", newHighlighterFile_l);
+                if (mainActivityInterface.getStorageAccess().uriExists(cOld)) {
+                    Uri cNew = mainActivityInterface.getStorageAccess().getUriForItem("Highlighter", "", newHighlighterFile_l);
+                    mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" doSave renameFileFromUri "+cOld+" to "+cNew);
+                    mainActivityInterface.getStorageAccess().renameFileFromUri(cOld,cNew,"Highlighter", "", newHighlighterFile_c);
+                }
+                if (mainActivityInterface.getStorageAccess().uriExists(lOld)) {
+                    Uri lNew = mainActivityInterface.getStorageAccess().getUriForItem("Highlighter", "", newHighlighterFile_l);
+                    mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" doSave renameFileFromUri "+lOld+" to "+lNew);
+                    mainActivityInterface.getStorageAccess().renameFileFromUri(lOld,lNew,"Highlighter", "", newHighlighterFile_l);
                 }
             }
 

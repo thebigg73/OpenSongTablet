@@ -1039,7 +1039,7 @@ public class PerformanceFragment extends Fragment {
             if (getContext()!=null) {
                 String highlighterFilename = mainActivityInterface.getProcessSong().
                         getHighlighterFilename(mainActivityInterface.getSong(),
-                                getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT);
+                                getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT,-1);
                 Uri highlighterUri = mainActivityInterface.getStorageAccess().getUriForItem("Highlighter","",highlighterFilename);
 
                 if (myView!=null && mainActivityInterface.getStorageAccess().uriExists(highlighterUri)) {

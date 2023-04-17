@@ -480,7 +480,7 @@ public class HighlighterEditFragment extends Fragment {
         if (confirmed && getContext()!=null) {
             // Set the original highlighter file if it exists
             Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Highlighter", "",
-                    mainActivityInterface.getProcessSong().getHighlighterFilename(mainActivityInterface.getSong(), getContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT));
+                    mainActivityInterface.getProcessSong().getHighlighterFilename(mainActivityInterface.getSong(), getContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT,-1));
             mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" doDelete deleteFile "+uri);
             if (mainActivityInterface.getStorageAccess().deleteFile(uri)) {
                 mainActivityInterface.getShowToast().doIt(success_string);
@@ -528,7 +528,7 @@ public class HighlighterEditFragment extends Fragment {
             ExecutorService executorService = Executors.newSingleThreadExecutor();
             executorService.execute(() -> {
                 Handler handler = new Handler(Looper.getMainLooper());
-                String hname = mainActivityInterface.getProcessSong().getHighlighterFilename(mainActivityInterface.getSong(), orientation == Configuration.ORIENTATION_PORTRAIT);
+                String hname = mainActivityInterface.getProcessSong().getHighlighterFilename(mainActivityInterface.getSong(), orientation == Configuration.ORIENTATION_PORTRAIT,-1);
                 highlighterUri = mainActivityInterface.getStorageAccess().getUriForItem("Highlighter", "", hname);
                 // Check the uri exists for the outputstream to be valid
                 mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG + " Create Highlighter/" + hname + "  deleteOld=false");

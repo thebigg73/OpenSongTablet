@@ -238,26 +238,33 @@ public class MoveContentFragment extends Fragment {
                         // Try to rename highlighter files (it they exist)
                         tempSong.setFilename(filesChosen.get(x));
                         tempSong.setFolder(subfolder);
-                        String portraitOld = mainActivityInterface.getProcessSong().getHighlighterFilename(tempSong,true);
-                        String landscapeOld = mainActivityInterface.getProcessSong().getHighlighterFilename(tempSong,false);
-                        Uri portraitOldUri = mainActivityInterface.getStorageAccess().getUriForItem("Highlighter","",portraitOld);
-                        Uri landscapeOldUri = mainActivityInterface.getStorageAccess().getUriForItem("Highlighter","",landscapeOld);
-                        if (mainActivityInterface.getStorageAccess().uriExists(portraitOldUri) ||
-                        mainActivityInterface.getStorageAccess().uriExists(landscapeOldUri)) {
+                        String pOld = mainActivityInterface.getProcessSong().getHighlighterFilename(tempSong,true,1);
+                        String cOld = mainActivityInterface.getProcessSong().getHighlighterFilename(tempSong,true,2);
+                        String lOld = mainActivityInterface.getProcessSong().getHighlighterFilename(tempSong,false,2);
+                        Uri pOldUri = mainActivityInterface.getStorageAccess().getUriForItem("Highlighter","",pOld);
+                        Uri cOldUri = mainActivityInterface.getStorageAccess().getUriForItem("Highlighter","",cOld);
+                        Uri lOldUri = mainActivityInterface.getStorageAccess().getUriForItem("Highlighter","",lOld);
+                        if (mainActivityInterface.getStorageAccess().uriExists(pOldUri) ||
+                            mainActivityInterface.getStorageAccess().uriExists(cOldUri) ||
+                                mainActivityInterface.getStorageAccess().uriExists(lOldUri)) {
                             // Update the new song details
                             tempSong.setFiletype((filesChosen.get(x)));
                             tempSong.setFolder(newFolder);
-                            String portraitNew = mainActivityInterface.getProcessSong().getHighlighterFilename(tempSong,true);
-                            String landscapeNew = mainActivityInterface.getProcessSong().getHighlighterFilename(tempSong,false);
+                            String pNew = mainActivityInterface.getProcessSong().getHighlighterFilename(tempSong,true,1);
+                            String cNew = mainActivityInterface.getProcessSong().getHighlighterFilename(tempSong,true,2);
+                            String lNew = mainActivityInterface.getProcessSong().getHighlighterFilename(tempSong,false,2);
 
-                            // Deal with portrait
-                            if (mainActivityInterface.getStorageAccess().uriExists(portraitOldUri)) {
-                                renameHighlighterFiles(portraitOldUri,portraitNew);
+                            // Deal with portrait/single column
+                            if (mainActivityInterface.getStorageAccess().uriExists(pOldUri)) {
+                                renameHighlighterFiles(pOldUri,pNew);
                             }
-
-                            // Deal with landscape
-                            if (mainActivityInterface.getStorageAccess().uriExists(landscapeOldUri)) {
-                                renameHighlighterFiles(landscapeOldUri,landscapeNew);
+                            // Deal with portrait/multiple column
+                            if (mainActivityInterface.getStorageAccess().uriExists(cOldUri)) {
+                                renameHighlighterFiles(cOldUri,cNew);
+                            }
+                            // Deal with landscape/multiple column
+                            if (mainActivityInterface.getStorageAccess().uriExists(lOldUri)) {
+                                renameHighlighterFiles(lOldUri,lNew);
                             }
                         }
                     }

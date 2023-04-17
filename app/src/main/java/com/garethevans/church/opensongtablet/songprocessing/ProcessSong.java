@@ -3062,7 +3062,11 @@ public class ProcessSong {
 
 
     // This stuff deals with the highlighter notes
-    public String getHighlighterFilename(Song song, boolean portrait) {
+    public String getHighlighterFilename(Song song, boolean portrait, int fakeColumns) {
+        // Fake columns are set for manual filename identification, not what the song actually uses at the time
+        if (fakeColumns==-1) {
+            fakeColumns = primaryScreenColumns;
+        }
         // The highlighter song file is encoded as FOLDER_FILENAME_{p or l LANDSCAPE}{if pdf _PAGENUMBER_}.png
         // v6, however now uses the landscape as the column version (historically only written if full autoscale is on)
 
@@ -3077,11 +3081,14 @@ public class ProcessSong {
             filename += "_" + song.getPdfPageCurrent();
         } else {
             //if (portrait) {  // old v5 logic which only worked for full autoscale
-            if (primaryScreenColumns == 1) {
+            if (fakeColumns == 1) {
+                // Single column.  Can be any mode or scaling
                 filename += "_p";
+                // More than one column, but portrait
             } else if (portrait) {
                 filename += "_c";
             } else {
+                // More than one column, but landscape
                 filename += "_l";
             }
         }
@@ -3096,7 +3103,6 @@ public class ProcessSong {
             filename = filename.replace("_" + song.getKey() + "_", "_");
         }
 
-        Log.d(TAG,"highlighter filename:"+filename);
         return filename;
     }
 
@@ -3145,9 +3151,9 @@ public class ProcessSong {
         String filename;
         int orientation = c.getResources().getConfiguration().orientation;
         if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-            filename = getHighlighterFilename(mainActivityInterface.getSong(), true);
+            filename = getHighlighterFilename(mainActivityInterface.getSong(), true, -1);
         } else {
-            filename = getHighlighterFilename(mainActivityInterface.getSong(), false);
+            filename = getHighlighterFilename(mainActivityInterface.getSong(), false, -1);
         }
         return getHighlighterBitmap(filename, w, h);
     }
