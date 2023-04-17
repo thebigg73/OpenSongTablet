@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -20,12 +21,12 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 public class SongProjectionInfo extends LinearLayoutCompat {
 
-    private final LinearLayout castSongInfo;
+    private final LinearLayout castSongInfo, contentLayout;
     private final TextView songTitle, songAuthor, songCopyright, songCCLI, capoIcon;
     private final TextClock textClock;
     private final ImageView miniLogo;
     private int viewHeight = 0;
-    private boolean smallText, isDisplaying=false;
+    private boolean smallText, isDisplaying=false, presenterPrimaryScreen;
     private float clockTextSize;
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "SongProjectionInfo";
@@ -35,7 +36,7 @@ public class SongProjectionInfo extends LinearLayoutCompat {
         inflate(context, R.layout.view_song_info, this);
 
         castSongInfo = findViewById(R.id.castSongInfo);
-        LinearLayout contentLayout = findViewById(R.id.contentLayout);
+        contentLayout = findViewById(R.id.contentLayout);
         songTitle = findViewById(R.id.songTitle);
         songAuthor = findViewById(R.id.songAuthor);
         songCopyright = findViewById(R.id.songCopyright);
@@ -56,12 +57,16 @@ public class SongProjectionInfo extends LinearLayoutCompat {
 
 
     // Adjust the layout depending on what is needed
+    public void setPresenterPrimaryScreen(boolean presenterPrimaryScreen) {
+        // Used for the PresenterMode device screen - stick to Lato!
+        this.presenterPrimaryScreen = presenterPrimaryScreen;
+    }
     public void setupLayout(Context c, MainActivityInterface mainActivityInterface, boolean miniInfo) {
         // Set up the text info bar fonts
         setupFonts(mainActivityInterface);
 
         // Set the background color, logo and alignment based on mode
-        if (miniInfo) {
+        if (miniInfo || presenterPrimaryScreen) {
             // We just want the text
             showMiniLogo(false);
             smallText(mainActivityInterface, true);
@@ -118,27 +123,39 @@ public class SongProjectionInfo extends LinearLayoutCompat {
         }
     }
     public void setupFonts(MainActivityInterface mainActivityInterface) {
-        songTitle.setTypeface(mainActivityInterface.getMyFonts().getPresoInfoFont());
-        songAuthor.setTypeface(mainActivityInterface.getMyFonts().getPresoInfoFont());
-        songCopyright.setTypeface(mainActivityInterface.getMyFonts().getPresoInfoFont());
-        songCCLI.setTypeface(mainActivityInterface.getMyFonts().getPresoInfoFont());
-        textClock.setTypeface(mainActivityInterface.getMyFonts().getPresoInfoFont());
+        if (!presenterPrimaryScreen) {
+            songTitle.setTypeface(mainActivityInterface.getMyFonts().getPresoInfoFont());
+            songAuthor.setTypeface(mainActivityInterface.getMyFonts().getPresoInfoFont());
+            songCopyright.setTypeface(mainActivityInterface.getMyFonts().getPresoInfoFont());
+            songCCLI.setTypeface(mainActivityInterface.getMyFonts().getPresoInfoFont());
+            textClock.setTypeface(mainActivityInterface.getMyFonts().getPresoInfoFont());
 
-        capoIcon.setTextColor(mainActivityInterface.getMyThemeColors().getPresoInfoFontColor());
-        ColorStateList colorList = ColorStateList.valueOf(mainActivityInterface.getMyThemeColors().getPresoInfoFontColor());
-        TextViewCompat.setCompoundDrawableTintList(capoIcon, colorList);
+            capoIcon.setTextColor(mainActivityInterface.getMyThemeColors().getPresoInfoFontColor());
+            ColorStateList colorList = ColorStateList.valueOf(mainActivityInterface.getMyThemeColors().getPresoInfoFontColor());
+            TextViewCompat.setCompoundDrawableTintList(capoIcon, colorList);
 
-        songTitle.setTextColor(mainActivityInterface.getMyThemeColors().getPresoInfoFontColor());
-        songAuthor.setTextColor(mainActivityInterface.getMyThemeColors().getPresoInfoFontColor());
-        songCopyright.setTextColor(mainActivityInterface.getMyThemeColors().getPresoInfoFontColor());
-        songCCLI.setTextColor(mainActivityInterface.getMyThemeColors().getPresoInfoFontColor());
-        textClock.setTextColor(mainActivityInterface.getMyThemeColors().getPresoInfoFontColor());
+            songTitle.setTextColor(mainActivityInterface.getMyThemeColors().getPresoInfoFontColor());
+            songAuthor.setTextColor(mainActivityInterface.getMyThemeColors().getPresoInfoFontColor());
+            songCopyright.setTextColor(mainActivityInterface.getMyThemeColors().getPresoInfoFontColor());
+            songCCLI.setTextColor(mainActivityInterface.getMyThemeColors().getPresoInfoFontColor());
+            textClock.setTextColor(mainActivityInterface.getMyThemeColors().getPresoInfoFontColor());
 
-        songTitle.setTextSize(mainActivityInterface.getPresenterSettings().getPresoTitleTextSize());
-        songAuthor.setTextSize(mainActivityInterface.getPresenterSettings().getPresoAuthorTextSize());
-        songCopyright.setTextSize(mainActivityInterface.getPresenterSettings().getPresoCopyrightTextSize());
-        songCCLI.setTextSize(mainActivityInterface.getPresenterSettings().getPresoCopyrightTextSize());
-        textClock.setTextSize(mainActivityInterface.getPresenterSettings().getPresoClockSize());
+            songTitle.setTextSize(mainActivityInterface.getPresenterSettings().getPresoTitleTextSize());
+            songAuthor.setTextSize(mainActivityInterface.getPresenterSettings().getPresoAuthorTextSize());
+            songCopyright.setTextSize(mainActivityInterface.getPresenterSettings().getPresoCopyrightTextSize());
+            songCCLI.setTextSize(mainActivityInterface.getPresenterSettings().getPresoCopyrightTextSize());
+            textClock.setTextSize(mainActivityInterface.getPresenterSettings().getPresoClockSize());
+        } else {
+            songTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP,14);
+            songAuthor.setTextSize(TypedValue.COMPLEX_UNIT_SP,12);
+            songCopyright.setTextSize(TypedValue.COMPLEX_UNIT_SP,12);
+            songCCLI.setTextSize(TypedValue.COMPLEX_UNIT_SP,12);
+            castSongInfo.setBackgroundColor(Color.TRANSPARENT);
+            contentLayout.setPadding(0,0,0,0);
+            miniLogo.setVisibility(View.GONE);
+            capoIcon.setVisibility(View.GONE);
+            textClock.setVisibility(View.GONE);
+        }
     }
 
     public String getTextViewString(TextView textView) {
