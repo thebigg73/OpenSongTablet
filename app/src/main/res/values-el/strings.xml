@@ -4,6 +4,7 @@
     <string name="abc_transpose_to_song_info">Εάν έχει οριστεί ένα πλήκτρο στο τραγούδι και στη σημειογραφία abc, η εφαρμογή θα προσπαθήσει να προσαρμόσει την έξοδο της σημειογραφίας abc ώστε να ταιριάζει με το πλήκτρο τραγουδιού.</string>
     <string name="about">Σχετικά με</string>
     <string name="about_description">Πληροφορίες εφαρμογής, βοήθεια, οδηγός χρήστη κ.λπ.</string>
+    <string name="accent">Τόνος</string>
     <string name="accuracy">Ακρίβεια</string>
     <string name="action">"Δράση"</string>
     <string name="action_button_info">Κάντε κλικ για εμφάνιση ή απόκρυψη των κουμπιών της σελίδας σας.\n\nΚάθε μπορεί να αντιστοιχιστεί σε ενέργειες τραγουδιού, όπως μετρονόμοι, μετατόπιση, μαξιλάρια κ.λπ.\nΜε παρατεταμένη πίεση στο κύριο κουμπί μπορείτε να αλλάξετε τις ρυθμίσεις κάθε κουμπιού. ορισμένα κουμπιά σελίδας εκτελούν γρήγορες ενέργειες όπως έναρξη / διακοπή / επεξεργασία</string>
@@ -68,6 +69,9 @@
     <string name="banjo4">"Μπάντζο (4)"</string>
     <string name="banjo5">"Μπάντζο (5)"</string>
     <string name="battery">"μπαταρία"</string>
+    <string name="beat_buddy_folder_info">Ο φάκελος πρέπει να είναι ένας αριθμός μεταξύ 1 και 16384</string>
+    <string name="beat_buddy_info">Επεξεργασία και αποθήκευση εντολών τραγουδιού για χρήση με πεντάλ BeatBuddy</string>
+    <string name="beat_buddy_song_info">Το τραγούδι πρέπει να είναι ένας αριθμός μεταξύ 1 και 128</string>
     <string name="beat_tick">Beat 1 (τικ)</string>
     <string name="beat_tock">Beat 2 (tock)</string>
     <string name="beats">Beats</string>
@@ -236,8 +240,10 @@
     <string name="display_settings">Αλλαγή ρυθμίσεων εμφάνισης (αυτό που βλέπετε στην οθόνη)</string>
     <string name="divisions">Τμήματα</string>
     <string name="double_tap">"Select double tap action"</string>
+    <string name="double_time">Διπλό χρόνο</string>
     <string name="download">Κατεβάστε</string>
     <string name="download_wifi_only">Λήψη μόνο μέσω Wi-Fi</string>
+    <string name="drum_kit">Κιτ τυμπάνου</string>
     <string name="duplicate">Αντίγραφο</string>
     <string name="duplicate_sections">Έχετε χρησιμοποιήσει την ίδια ετικέτα πολλές φορές στο τραγούδι. Αυτό μπορεί να προκαλέσει προβλήματα κατά τον ορισμό της παραγγελίας.</string>
     <string name="duplicate_song">Δημιουργήστε ένα αντίγραφο αυτού του τραγουδιού</string>
@@ -282,6 +288,7 @@
     <string name="file_exists">"Το αρχείο υπάρχει ήδη. Παρακαλώ μετονομάστε το."</string>
     <string name="file_type">"Τύπος αρχείου"</string>
     <string name="filename">Ονομα αρχείου</string>
+    <string name="fill">Γεμίζω</string>
     <string name="filter_by_artist">Αυτό το κουμπί χρησιμοποιείται για να συμπεριλάβει ένα φίλτρο καλλιτέχνη για τη λίστα τραγουδιών σας</string>
     <string name="filter_by_dropdown">Περιορίστε την αναζήτησή σας επιλέγοντας μια επιλογή από την αναπτυσσόμενη λίστα εδώ</string>
     <string name="filter_by_edit">Βελτιώστε την αναζήτησή σας εισάγοντας κάποιο κείμενο εδώ</string>
@@ -323,6 +330,7 @@
     <string name="github_description">Συνεισφέρετε στην ανάπτυξη εφαρμογών</string>
     <string name="green">Πράσινος</string>
     <string name="guitar">"Κιθάρα"</string>
+    <string name="half_time">Ημίχρονο</string>
     <string name="heading_scale">"Κείμενο τίτλου κλίμακας"</string>
     <string name="help">"Βοήθεια (Online)"</string>
     <string name="hex_color_code">Hex χρωματικός κωδικός</string>
@@ -426,11 +434,14 @@
     <string name="midi_channel">"Κανάλι"</string>
     <string name="midi_commands">"Επεξεργασία εντολών τραγουδιού"</string>
     <string name="midi_controller">"Εναλλαγή ελεγκτή"</string>
+    <string name="midi_delay">Καθυστέρηση MIDI μεταξύ μηνυμάτων</string>
     <string name="midi_description">Συνδέστε συσκευές midi και αλλάξτε τις ρυθμίσεις</string>
     <string name="midi_devices">"Διαθέσιμες συσκευές"</string>
     <string name="midi_disconnect">Αποσυνδέω</string>
     <string name="midi_error">"Ελέγξτε τη σύνδεση MIDI"</string>
-    <string name="midi_list">"Κάντε κλικ σε ένα στοιχείο για δοκιμή και κάντε κλικ μακριά για να το καταργήσετε"</string>
+    <string name="midi_list_item">Κάντε κλικ για δοκιμή, σάρωση για διαγραφή ή αναδιάταξη</string>
+    <string name="midi_message_include">Συμπεριλάβετε αυτό στα μηνύματα τραγουδιού</string>
+    <string name="midi_messages">Μηνύματα MIDI τραγουδιού (αποστέλλονται με τη σειρά)</string>
     <string name="midi_note">"Σημείωση"</string>
     <string name="midi_pedal">Ακρόαση για εισερχόμενα MIDI (π.χ. ποδόπληκτρο)</string>
     <string name="midi_program">"Αλλαγή προγράμματος"</string>
@@ -618,6 +629,7 @@
     <string name="set_help">"Drag songs around to change the order of your set"</string>
     <string name="set_inline">Ενσωματωμένο σετ</string>
     <string name="set_inline_info">Εμφάνιση του setlist στην οθόνη δίπλα στο παράθυρο τραγουδιών</string>
+    <string name="set_item_info">Μπορείτε να αλλάξετε το όνομα φακέλου/αρχείου του τραγουδιού που φορτώθηκε από το σετ και μπορείτε επίσης να αλλάξετε το πλήκτρο για την εμφάνιση του τραγουδιού (αυτό εκτελεί προσωρινή αντιμετάθεση του τραγουδιού στη συσκευή σας, εάν απαιτείται)</string>
     <string name="set_load_info">Φορτώστε ένα προηγουμένως αποθηκευμένο σύνολο</string>
     <string name="set_load_merge">Εάν επιλέξετε περισσότερα από ένα, θα συγχωνευθούν με την επιλεγμένη σειρά.</string>
     <string name="set_manage">Διαχειριστείτε τα σετ σας</string>
@@ -755,6 +767,7 @@
     <string name="title">"Τίτλος"</string>
     <string name="tool">Εργαλείο</string>
     <string name="top">Μπλουζα</string>
+    <string name="transition">Μετάβαση</string>
     <string name="transpose">"Αλλαγή τόνου"</string>
     <string name="transpose_capo">Μεταφορά με αλλαγή τάστα capo</string>
     <string name="transpose_capo_info">Κρατήστε τα ακόρντα ίδια, αλλά αλλάξτε τη θέση του capo</string>
@@ -779,6 +792,7 @@
     <string name="utilities">Βοηθητικά προγράμματα</string>
     <string name="utilities_info">Άλλα εργαλεία για μουσικούς</string>
     <string name="variation">"Παραλαγή"</string>
+    <string name="variation_info">Δημιουργήστε ένα αντίγραφο αυτού του τραγουδιού που μπορείτε να επεξεργαστείτε.  Αυτό το τραγούδι μπορεί να αποθηκευτεί σε ένα σετ και να φορτωθεί ξανά, αλλά χάνεται κατά την εκκαθάριση του σετ</string>
     <string name="variation_make">"Τροποποίηση ενός στοιχείου της σειράς"</string>
     <string name="verse">"Στίχος"</string>
     <string name="verse_background">"Φόντο κουπλέ"</string>

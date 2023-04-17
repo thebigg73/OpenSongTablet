@@ -4,6 +4,7 @@
     <string name="abc_transpose_to_song_info">Ako je ključ podešen u pesmi i u abc notaciji, aplikacija će pokušati da prilagodi izlaz abc notacije tako da odgovara ključu pesme.</string>
     <string name="about">O tome</string>
     <string name="about_description">Informacije o aplikaciji, pomoć, korisnički vodič itd.</string>
+    <string name="accent">Akcenat</string>
     <string name="accuracy">Preciznost</string>
     <string name="action">Radnja</string>
     <string name="action_button_info">Kliknite da biste prikazali ili sakrili dugmad na stranici.\n\nSve se mogu dodeliti radnjama pesama kao što su metronomi, transponovanje, jastučići itd.\nDugo pritiskanje glavnog dugmeta omogućava vam da promenite podešavanja svakog</string>
@@ -68,6 +69,9 @@
     <string name="banjo4">Bendžo (4)</string>
     <string name="banjo5">Bendžo (5)</string>
     <string name="battery">Baterija</string>
+    <string name="beat_buddy_folder_info">Fascikla mora biti broj između 1 i 16384</string>
+    <string name="beat_buddy_info">Uređivanje i čuvanje komandi pesama za upotrebu pomoću BeatBuddy pedale</string>
+    <string name="beat_buddy_song_info">Pesma mora biti broj između 1 i 128</string>
     <string name="beat_tick">Otkucaj 1 (štikl)</string>
     <string name="beat_tock">Otkucaj 2 (tak)</string>
     <string name="beats">Beats</string>
@@ -236,8 +240,10 @@
     <string name="display_settings">Promenite podešavanja prikaza (ono što vidite na ekranu)</string>
     <string name="divisions">Divizije</string>
     <string name="double_tap">Odaberi akciju za dupli tap</string>
+    <string name="double_time">Dvostruko vreme</string>
     <string name="download">Preuzimanje</string>
     <string name="download_wifi_only">Preuzmite samo preko Vi-Fi-a</string>
+    <string name="drum_kit">Pribor za bubnjeve</string>
     <string name="duplicate">Duplikat</string>
     <string name="duplicate_sections">Koristili ste istu oznaku više puta u pesmi. Ovo može izazvati probleme prilikom postavljanja naloga.</string>
     <string name="duplicate_song">Napravite kopiju ove pesme</string>
@@ -282,6 +288,7 @@
     <string name="file_exists">Datoteka već postoji. Molimo promenite ime.</string>
     <string name="file_type">Tip datoteke</string>
     <string name="filename">Naziv dokumenta</string>
+    <string name="fill">Popune</string>
     <string name="filter_by_artist">Ovo dugme se koristi za uključivanje filtera izvođača za vašu listu pesama</string>
     <string name="filter_by_dropdown">Precizirajte pretragu izborom opcije sa padajuće liste ovde</string>
     <string name="filter_by_edit">Precizirajte pretragu tako što ćete ovde uneti neki tekst</string>
@@ -323,6 +330,7 @@
     <string name="github_description">Doprineti razvoju aplikacija</string>
     <string name="green">Zelena</string>
     <string name="guitar">Gitara</string>
+    <string name="half_time">Poluvreme</string>
     <string name="heading_scale">Skaliranje naslovnog teksta</string>
     <string name="help">Pomoć (Online)</string>
     <string name="hex_color_code">Heksadecimalni kod boja</string>
@@ -426,11 +434,14 @@
     <string name="midi_channel">MIDI Kanal</string>
     <string name="midi_commands">Uređivanje MIDI komandi</string>
     <string name="midi_controller">Promena MIDI kontrolera</string>
+    <string name="midi_delay">MIDI odlaganje između poruka</string>
     <string name="midi_description">Povežite midi uređaje i promenite podešavanja</string>
     <string name="midi_devices">Dostupni uređaji</string>
     <string name="midi_disconnect">Prekini vezu</string>
     <string name="midi_error">Molim proverite MIDI povezivanje</string>
-    <string name="midi_list">Kliknite na MIDI stavku da se testira i dugo pritisnite da je uklonite</string>
+    <string name="midi_list_item">Kliknite da biste testirali, brzo prevucite prstom da biste izbrisali ili prerasporedili</string>
+    <string name="midi_message_include">Uključi ovo u poruke pesama</string>
+    <string name="midi_messages">Pesme MIDI poruke (poslate redom)</string>
     <string name="midi_note">MIDI beleška</string>
     <string name="midi_pedal">Slušajte dolazni MIDI (npr. nožna pedala)</string>
     <string name="midi_program">MIDI promena programa</string>
@@ -618,6 +629,7 @@
     <string name="set_help">Prevlačite pesme da bi promenili redosled na set listi</string>
     <string name="set_inline">Inline set</string>
     <string name="set_inline_info">Prikažite set listu na ekranu pored prozora sa pesmom</string>
+    <string name="set_item_info">Možete da promenite ime fascikle/datoteke pesme učitane iz skupa, a možete i da promenite ključ za prikaz pesme (ovo izvršava privremeni transpon pesme na uređaju ako je to potrebno)</string>
     <string name="set_load_info">Učitajte prethodno sačuvani set</string>
     <string name="set_load_merge">Ako izaberete više od jednog, oni će se spojiti u izabranom redosledu.</string>
     <string name="set_manage">Upravljajte svojim setovima</string>
@@ -755,6 +767,7 @@
     <string name="title">Naslov</string>
     <string name="tool">Oruđe</string>
     <string name="top">Vrh</string>
+    <string name="transition">Tranzicije</string>
     <string name="transpose">Transponovati</string>
     <string name="transpose_capo">Transponovanje promenom kapo praga</string>
     <string name="transpose_capo_info">Zadržite akorde iste, ali promenite položaj kapa</string>
@@ -779,6 +792,7 @@
     <string name="utilities">Komunalne usluge</string>
     <string name="utilities_info">Drugi alati za muzičare</string>
     <string name="variation">Varijacija</string>
+    <string name="variation_info">Napravite kopiju ove pesme koja se može uređivati.  Ova pesma se može sačuvati u kompletu i učitati nazad, ali se gubi prilikom raščišćavanja seta</string>
     <string name="variation_make">Napravite varijaciju set stavke</string>
     <string name="verse">Strofa</string>
     <string name="verse_background">Pozadina strofe</string>

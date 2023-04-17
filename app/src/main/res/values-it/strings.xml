@@ -4,6 +4,7 @@
     <string name="abc_transpose_to_song_info">Se una chiave è impostata nella canzone e nella notazione abc, l\'app proverà a regolare l\'output della notazione abc in modo che corrisponda alla chiave della canzone.</string>
     <string name="about">Di</string>
     <string name="about_description">Informazioni sull\'app, aiuto, guida per l\'utente, ecc.</string>
+    <string name="accent">Accento</string>
     <string name="accuracy">Accuratezza</string>
     <string name="action">"Azione"</string>
     <string name="action_button_info">Fai clic per mostrare o nascondere i pulsanti della tua pagina.\n\nOgnuno può essere assegnato ad azioni del brano come metronomi, trasposizione, pad, ecc.\nPremendo a lungo il pulsante principale è possibile modificare le impostazioni di ciascun pulsante.\nPremendo a lungo su alcuni pulsanti di pagina eseguono azioni rapide come avvio / arresto / modifica</string>
@@ -68,6 +69,9 @@
     <string name="banjo4">"Banjio (4)"</string>
     <string name="banjo5">"Banjio (5)</string>
     <string name="battery">"Batteria"</string>
+    <string name="beat_buddy_folder_info">La cartella deve essere un numero compreso tra 1 e 16384</string>
+    <string name="beat_buddy_info">Modifica e salva i comandi dei brani da utilizzare con un pedale BeatBuddy</string>
+    <string name="beat_buddy_song_info">La canzone deve essere un numero compreso tra 1 e 128</string>
     <string name="beat_tick">Batti 1 (segno di spunta)</string>
     <string name="beat_tock">Batti 2 (toc)</string>
     <string name="beats">Battiti</string>
@@ -236,8 +240,10 @@
     <string name="display_settings">Modifica le impostazioni di visualizzazione (cosa vedi sullo schermo)</string>
     <string name="divisions">Divisioni</string>
     <string name="double_tap">"Selezionare l'azione doppio tap"</string>
+    <string name="double_time">Doppio tempo</string>
     <string name="download">Scarica</string>
     <string name="download_wifi_only">Scarica solo tramite Wi-Fi</string>
+    <string name="drum_kit">Batteria</string>
     <string name="duplicate">Duplicare</string>
     <string name="duplicate_sections">Hai usato lo stesso tag più volte nella canzone. Ciò può causare problemi durante l\'impostazione dell\'ordine.</string>
     <string name="duplicate_song">Crea una copia di questo brano</string>
@@ -282,6 +288,7 @@
     <string name="file_exists">"Il file esiste già. Si prega di rinominarlo."</string>
     <string name="file_type">"Tipo di file"</string>
     <string name="filename">Nome del file</string>
+    <string name="fill">Riempire</string>
     <string name="filter_by_artist">Questo pulsante viene utilizzato per includere un filtro artista per l\'elenco dei brani</string>
     <string name="filter_by_dropdown">Perfeziona la tua ricerca scegliendo un\'opzione dall\'elenco a discesa qui</string>
     <string name="filter_by_edit">Affina la tua ricerca inserendo del testo qui</string>
@@ -323,6 +330,7 @@
     <string name="github_description">Contribuisci allo sviluppo di app</string>
     <string name="green">Verde</string>
     <string name="guitar">Chitarra</string>
+    <string name="half_time">Intervallo</string>
     <string name="heading_scale">"Scalare il testo del titolo"</string>
     <string name="help">"Guida (online)"</string>
     <string name="hex_color_code">Codice colore esadecimale</string>
@@ -426,11 +434,14 @@
     <string name="midi_channel">"Canale"</string>
     <string name="midi_commands">"Modifica i comandi del brano"</string>
     <string name="midi_controller">"Cambio del controller"</string>
+    <string name="midi_delay">Ritardo MIDI tra i messaggi</string>
     <string name="midi_description">Collega dispositivi midi e modifica le impostazioni</string>
     <string name="midi_devices">"Dispositivi disponibili"</string>
     <string name="midi_disconnect">Disconnetti</string>
     <string name="midi_error">"Si prega di verificare la connessione MIDI"</string>
-    <string name="midi_list">"Fare clic su un elemento per testare e fare un lungo clic per rimuoverlo"</string>
+    <string name="midi_list_item">Fare clic per testare, scorrere rapidamente per eliminare o riorganizzare</string>
+    <string name="midi_message_include">Includi questo nei messaggi dei brani</string>
+    <string name="midi_messages">Messaggi MIDI Song (inviati in ordine)</string>
     <string name="midi_note">"Nota"</string>
     <string name="midi_pedal">Ascolta il MIDI in entrata (es. pedale)</string>
     <string name="midi_program">"Cambio di programma"</string>
@@ -618,6 +629,7 @@
     <string name="set_help">"Trascinare brani intorno per cambiare l' ordine del set"</string>
     <string name="set_inline">Insieme in linea</string>
     <string name="set_inline_info">Mostra la scaletta sullo schermo accanto alla finestra del brano</string>
+    <string name="set_item_info">È possibile modificare la cartella / nome del file del brano caricato dal set e si può anche cambiare la chiave per la visualizzazione del brano (questo esegue una trasposizione temporanea del brano sul dispositivo, se necessario)</string>
     <string name="set_load_info">Carica un set precedentemente salvato</string>
     <string name="set_load_merge">Scegliendo più di uno li unirà nell\'ordine selezionato.</string>
     <string name="set_manage">Gestisci i tuoi set</string>
@@ -755,6 +767,7 @@
     <string name="title">Titolo</string>
     <string name="tool">Attrezzo</string>
     <string name="top">Superiore</string>
+    <string name="transition">Transizione</string>
     <string name="transpose">"Trasposizione"</string>
     <string name="transpose_capo">Trasposizione tramite cambio tasto capotasto</string>
     <string name="transpose_capo_info">Mantieni gli accordi uguali, ma cambia la posizione del capotasto</string>
@@ -779,6 +792,7 @@
     <string name="utilities">Utilità</string>
     <string name="utilities_info">Altri strumenti per musicisti</string>
     <string name="variation">"Variazione"</string>
+    <string name="variation_info">Fai una copia di questa canzone che può essere modificata.  Questa canzone può essere salvata in un set e caricata di nuovo, ma viene persa quando si cancella il set</string>
     <string name="variation_make">"Fare una variazione voce insieme"</string>
     <string name="verse">"Versetto"</string>
     <string name="verse_background">"Verse sfondo"</string>

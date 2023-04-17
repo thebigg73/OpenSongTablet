@@ -4,6 +4,7 @@
     <string name="abc_transpose_to_song_info">Jeśli klucz jest ustawiony w utworze i w notacji abc, aplikacja spróbuje dostosować wyjście notacji abc, aby pasowało do klucza utworu.</string>
     <string name="about">O</string>
     <string name="about_description">Informacje o aplikacji, pomoc, podręcznik użytkownika itp.</string>
+    <string name="accent">Akcent</string>
     <string name="accuracy">Dokładność</string>
     <string name="action">"Akcja"</string>
     <string name="action_button_info">Kliknij, aby pokazać lub ukryć przyciski strony.\n\nKażdy z nich można przypisać do czynności związanych z utworem, takich jak metronomy, transpozycja, pady itp.\nDługie naciśnięcie głównego przycisku umożliwia zmianę ustawień każdego przycisku.\nDługie naciśnięcie Niektóre przyciski stron wykonują szybkie czynności, takie jak start / stop / edycja</string>
@@ -68,6 +69,9 @@
     <string name="banjo4">"Banjo (4)"</string>
     <string name="banjo5">"Banjo (5)"</string>
     <string name="battery">"Bateria"</string>
+    <string name="beat_buddy_folder_info">Folder musi mieć numer z zakresu od 1 do 16384</string>
+    <string name="beat_buddy_info">Edytowanie i zapisywanie poleceń utworów do użycia z pedałem BeatBuddy</string>
+    <string name="beat_buddy_song_info">Utwór musi być liczbą z zakresu od 1 do 128</string>
     <string name="beat_tick">Pokonaj 1 (zaznacz)</string>
     <string name="beat_tock">Pokonaj 2 (tak)</string>
     <string name="beats">Uderzenia</string>
@@ -236,8 +240,10 @@
     <string name="display_settings">Zmień ustawienia wyświetlania (to, co widzisz na ekranie)</string>
     <string name="divisions">Podziały</string>
     <string name="double_tap">"Wybierz podwójne działanie kranu"</string>
+    <string name="double_time">Podwójny czas</string>
     <string name="download">Ściągnij</string>
     <string name="download_wifi_only">Pobieraj tylko przez Wi-Fi</string>
+    <string name="drum_kit">Perkusja</string>
     <string name="duplicate">Duplikować</string>
     <string name="duplicate_sections">Wielokrotnie użyłeś tego samego tagu w utworze. Może to powodować problemy przy ustalaniu kolejności.</string>
     <string name="duplicate_song">Utwórz kopię tego utworu</string>
@@ -282,6 +288,7 @@
     <string name="file_exists">"Plik już istnieje. Proszę zmienić jego nazwę."</string>
     <string name="file_type">"Typ pliku"</string>
     <string name="filename">Nazwa pliku</string>
+    <string name="fill">Wypełnić</string>
     <string name="filter_by_artist">Ten przycisk służy do włączenia filtra wykonawcy do listy utworów</string>
     <string name="filter_by_dropdown">Zawęź wyszukiwanie, wybierając opcję z rozwijanej listy tutaj</string>
     <string name="filter_by_edit">Zawęź wyszukiwanie, wpisując tutaj jakiś tekst</string>
@@ -323,6 +330,7 @@
     <string name="github_description">Przyczyń się do rozwoju aplikacji</string>
     <string name="green">Zielony</string>
     <string name="guitar">Gitara</string>
+    <string name="half_time">Połowa etatu</string>
     <string name="heading_scale">"Skalowanie tekstu nagłówka"</string>
     <string name="help">"Pomoc (Online)"</string>
     <string name="hex_color_code">Kod koloru szesnastkowego</string>
@@ -426,11 +434,14 @@
     <string name="midi_channel">"Kanał"</string>
     <string name="midi_commands">"Edytuj polecenia piosenki"</string>
     <string name="midi_controller">"Zmiana sterownika"</string>
+    <string name="midi_delay">Opóźnienie MIDI między wiadomościami</string>
     <string name="midi_description">Podłącz urządzenia midi i zmień ustawienia</string>
     <string name="midi_devices">"Dostępne urządzenia"</string>
     <string name="midi_disconnect">Rozłączyć się</string>
     <string name="midi_error">"Sprawdź połączenie MIDI"</string>
-    <string name="midi_list">"Kliknij element, aby go przetestować, i kliknij go, aby go usunąć"</string>
+    <string name="midi_list_item">Kliknij, aby przetestować, szybko przesuń palcem, aby usunąć lub zmienić kolejność</string>
+    <string name="midi_message_include">Dołącz to do wiadomości o utworach</string>
+    <string name="midi_messages">Wiadomości MIDI utworu (wysyłane w kolejności)</string>
     <string name="midi_note">"Uwaga"</string>
     <string name="midi_pedal">Słuchaj przychodzącego MIDI (np. pedału)</string>
     <string name="midi_program">"Zmiana programu"</string>
@@ -618,6 +629,7 @@
     <string name="set_help">"Przeciągnij piosenki wokół, aby zmienić kolejność zestawu"</string>
     <string name="set_inline">Zestaw wbudowany</string>
     <string name="set_inline_info">Pokaż setlistę na ekranie obok okna utworu</string>
+    <string name="set_item_info">Możesz zmienić folder / nazwę pliku utworu załadowanego z zestawu, a także zmienić wyświetlania utworu (w razie potrzeby wykonuje tymczasową transpozycję utworu na urządzeniu)</string>
     <string name="set_load_info">Załaduj wcześniej zapisany zestaw</string>
     <string name="set_load_merge">Wybranie więcej niż jednego spowoduje scalenie ich w wybranej kolejności.</string>
     <string name="set_manage">Zarządzaj swoimi zestawami</string>
@@ -755,6 +767,7 @@
     <string name="title">Tytuł</string>
     <string name="tool">Narzędzie</string>
     <string name="top">Szczyt</string>
+    <string name="transition">Przejście</string>
     <string name="transpose">"Transpozycji"</string>
     <string name="transpose_capo">Transpozycja przez zmianę progu capo</string>
     <string name="transpose_capo_info">Zachowaj te same akordy, ale zmień położenie kapona</string>
@@ -779,6 +792,7 @@
     <string name="utilities">Narzędzia</string>
     <string name="utilities_info">Inne narzędzia dla muzyków</string>
     <string name="variation">"Zmiana"</string>
+    <string name="variation_info">Zrób kopię tego utworu, który można edytować.  Ten utwór można zapisać w zestawie i załadować z powrotem, ale zostanie utracony podczas czyszczenia zestawu</string>
     <string name="variation_make">"Bądź odmianę zestaw artykuł"</string>
     <string name="verse">"Werset"</string>
     <string name="verse_background">"Werset tle"</string>

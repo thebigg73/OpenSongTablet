@@ -4,6 +4,7 @@
     <string name="abc_transpose_to_song_info">As \'n sleutel in die liedjie en in die abc-notasie gestel is, sal die toepassing probeer om die uitvoer van die abc-notasie aan te pas om by die liedjiesleutel te pas.</string>
     <string name="about">Oor</string>
     <string name="about_description">Inligting oor inligting, hulp, gebruikersgids, ens.</string>
+    <string name="accent">Aksent</string>
     <string name="accuracy">Akkuraatheid</string>
     <string name="action">"Aksie"</string>
     <string name="action_button_info">Klik om u bladsyknoppies te wys of weg te steek.\n\nElkeen kan toegewys word aan liedjie-aksies soos metronomes, transponeer, boekies, ens.\nAs u die hoofknoppie lang indruk, kan u die instellings van elke knoppie verander.\nLang druk op sommige bladsyknoppies voer vinnige aksies uit soos begin / stop / wysig</string>
@@ -68,6 +69,9 @@
     <string name="banjo4">"Banjo (4)"</string>
     <string name="banjo5">"Banjo (5)"</string>
     <string name="battery">"Battery"</string>
+    <string name="beat_buddy_folder_info">Vouer moet \'n nommer tussen 1 en 16384 wees</string>
+    <string name="beat_buddy_info">Wysig en stoor liedjieopdragte vir gebruik met \'n BeatBuddy-pedaal</string>
+    <string name="beat_buddy_song_info">Lied moet \'n getal tussen 1 en 128 wees</string>
     <string name="beat_tick">Klop 1 (merk)</string>
     <string name="beat_tock">Klop 2 (tock)</string>
     <string name="beats">Slae</string>
@@ -236,8 +240,10 @@
     <string name="display_settings">Verander die skerminstellings (wat u op die skerm sien)</string>
     <string name="divisions">Afdelings</string>
     <string name="double_tap">"Kies dubbel tap aksie"</string>
+    <string name="double_time">Dubbel tyd</string>
     <string name="download">Aflaai</string>
     <string name="download_wifi_only">Laai slegs oor Wi-Fi af</string>
+    <string name="drum_kit">Dromstel</string>
     <string name="duplicate">Dupliseer</string>
     <string name="duplicate_sections">Jy het dieselfde merker verskeie kere in die liedjie gebruik. Dit kan probleme veroorsaak wanneer die bestelling opgestel word.</string>
     <string name="duplicate_song">Skep \'n kopie van hierdie liedjie</string>
@@ -282,6 +288,7 @@
     <string name="file_exists">"Lêer bestaan reeds. Asseblief hernoem nie."</string>
     <string name="file_type">Lêer tipe</string>
     <string name="filename">Lêernaam</string>
+    <string name="fill">Vul</string>
     <string name="filter_by_artist">Hierdie knoppie word gebruik om \'n kunstenaarfilter vir u liedjieslys in te sluit</string>
     <string name="filter_by_dropdown">Verfyn u soektog deur hier \'n opsie uit die keuselys te kies</string>
     <string name="filter_by_edit">Verfyn u soektog deur \'n teks hier in te voer</string>
@@ -323,6 +330,7 @@
     <string name="github_description">Dra by tot toepassingsontwikkeling</string>
     <string name="green">Groen</string>
     <string name="guitar">Guitar</string>
+    <string name="half_time">Halftyd</string>
     <string name="heading_scale">"Skaal die opskrif teks"</string>
     <string name="help">"Help (Online)"</string>
     <string name="hex_color_code">Hekskleurkode</string>
@@ -426,11 +434,14 @@
     <string name="midi_channel">Kanaal</string>
     <string name="midi_commands">"Wys liedjies opdragte"</string>
     <string name="midi_controller">"Kontroleerder verander"</string>
+    <string name="midi_delay">MIDI vertraging tussen boodskappe</string>
     <string name="midi_description">Koppel midi-toestelle en verander instellings</string>
     <string name="midi_devices">"Beskikbare toestelle"</string>
     <string name="midi_disconnect">Ontkoppel</string>
     <string name="midi_error">"Kontroleer asseblief MIDI-verbinding"</string>
-    <string name="midi_list">"Klik 'n item om te toets en langskliek om dit te verwyder"</string>
+    <string name="midi_list_item">Klik om te toets, vee om uit te vee of herrangskik</string>
+    <string name="midi_message_include">Sluit dit in die liedboodskappe in</string>
+    <string name="midi_messages">Song MIDI-boodskappe (in volgorde gestuur)</string>
     <string name="midi_note">Nota</string>
     <string name="midi_pedal">Luister vir inkomende MIDI (bv. voetpedaal)</string>
     <string name="midi_program">"Program verandering"</string>
@@ -618,6 +629,7 @@
     <string name="set_help">"Sleep liedjies rondom die einde van jou stel om te verander"</string>
     <string name="set_inline">Inlyn stel</string>
     <string name="set_inline_info">Wys die stellys op die skerm langs die liedjievenster</string>
+    <string name="set_item_info">U kan die vouer/lêernaam van die liedjie wat uit die stel gelaai is, verander, en u kan ook die sleutel vir die vertoon van die liedjie verander (dit voer \'n tydelike transponeer van die liedjie op u toestel uit indien nodig)</string>
     <string name="set_load_info">Laai \'n voorheen gestoorde stel</string>
     <string name="set_load_merge">Deur meer as een te kies, sal hulle in die geselekteerde volgorde saamsmelt.</string>
     <string name="set_manage">Bestuur jou stelle</string>
@@ -755,6 +767,7 @@
     <string name="title">Titel</string>
     <string name="tool">Gereedskap</string>
     <string name="top">Top</string>
+    <string name="transition">Oorgang</string>
     <string name="transpose">"Transponeer"</string>
     <string name="transpose_capo">Transponeer deur capo fret verandering</string>
     <string name="transpose_capo_info">Hou die akkoorde dieselfde, maar verander die posisie van die capo</string>
@@ -779,6 +792,7 @@
     <string name="utilities">Nutsprogramme</string>
     <string name="utilities_info">Ander gereedskap vir musikante</string>
     <string name="variation">Variasie</string>
+    <string name="variation_info">Maak \'n kopie van hierdie liedjie wat geredigeer kan word.  Hierdie liedjie kan in \'n stel gestoor word en teruggelaai word, maar gaan verlore wanneer die stel skoongemaak word</string>
     <string name="variation_make">"Maak \'n stel item variasie"</string>
     <string name="verse">Vers</string>
     <string name="verse_background">"Vers agtergrond"</string>

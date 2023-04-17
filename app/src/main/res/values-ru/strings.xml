@@ -4,6 +4,7 @@
     <string name="abc_transpose_to_song_info">Если тональность задана в песне и в нотации abc, приложение попытается настроить вывод нотации abc в соответствии с тональностью песни.</string>
     <string name="about">Около</string>
     <string name="about_description">Информация о приложении, справка, руководство пользователя и т. Д.</string>
+    <string name="accent">Акцент</string>
     <string name="accuracy">Точность</string>
     <string name="action">Действие</string>
     <string name="action_button_info">Нажмите, чтобы отобразить или скрыть кнопки страницы.\n\nКаждую из них можно назначить действиям в песне, таким как метрономы, транспонирование, пэды и т. Д.\nДлительное нажатие на основную кнопку позволяет изменять настройки каждой кнопки.\nДлительное нажатие на некоторые кнопки страницы выполняют быстрые действия, такие как запуск / остановка / редактирование</string>
@@ -68,6 +69,9 @@
     <string name="banjo4">"Банджо (4)"</string>
     <string name="banjo5">"Банджо (5)"</string>
     <string name="battery">"аккумулятор"</string>
+    <string name="beat_buddy_folder_info">Папка должна иметь номер от 1 до 16384</string>
+    <string name="beat_buddy_info">Редактируйте и сохраняйте команды песни для использования с педалью BeatBuddy</string>
+    <string name="beat_buddy_song_info">Песня должна быть числом от 1 до 128</string>
     <string name="beat_tick">Такт 1 (тик)</string>
     <string name="beat_tock">Такт 2 (так)</string>
     <string name="beats">Удары</string>
@@ -236,8 +240,10 @@
     <string name="display_settings">Изменить настройки отображения (то, что вы видите на экране)</string>
     <string name="divisions">Подразделения</string>
     <string name="double_tap">"Действие при двойном касании"</string>
+    <string name="double_time">Двойное время</string>
     <string name="download">Скачать</string>
     <string name="download_wifi_only">Скачивать только через Wi-Fi</string>
+    <string name="drum_kit">Ударная установка</string>
     <string name="duplicate">дублировать</string>
     <string name="duplicate_sections">Вы использовали один и тот же тег несколько раз в песне. Это может вызвать проблемы при установке порядка.</string>
     <string name="duplicate_song">Создать копию этой песни</string>
@@ -282,6 +288,7 @@
     <string name="file_exists">"Файл с таким именем существует. Пожалуйста выберите другое имя"</string>
     <string name="file_type">"Тип файла"</string>
     <string name="filename">Имя файла</string>
+    <string name="fill">Заполнять</string>
     <string name="filter_by_artist">Эта кнопка используется для включения фильтра исполнителей в список песен.</string>
     <string name="filter_by_dropdown">Уточните свой поиск, выбрав вариант из раскрывающегося списка здесь</string>
     <string name="filter_by_edit">Уточните поиск, введя текст здесь</string>
@@ -323,6 +330,7 @@
     <string name="github_description">Участвовать в разработке приложений</string>
     <string name="green">Зеленый</string>
     <string name="guitar">Гитара</string>
+    <string name="half_time">Перерыв</string>
     <string name="heading_scale">"Размер текста заголовка"</string>
     <string name="help">"Помощь (онлайн)"</string>
     <string name="hex_color_code">Шестнадцатеричный код цвета</string>
@@ -426,11 +434,14 @@
     <string name="midi_channel">Kанал</string>
     <string name="midi_commands">"Редактирование команд песни"</string>
     <string name="midi_controller">"Изменение контроллера"</string>
+    <string name="midi_delay">MIDI-задержка между сообщениями</string>
     <string name="midi_description">Подключайте миди-устройства и меняйте настройки</string>
     <string name="midi_devices">"Доступные устройства"</string>
     <string name="midi_disconnect">Отключить</string>
     <string name="midi_error">"Проверьте подключение MIDI"</string>
-    <string name="midi_list">"Короткое нажатие для проверки элемента и долгое, чтобы удалить его."</string>
+    <string name="midi_list_item">Нажмите, чтобы проверить, проведите пальцем, чтобы удалить или изменить порядок</string>
+    <string name="midi_message_include">Включите это в сообщения песни</string>
+    <string name="midi_messages">MIDI-сообщения песни (отправляются по порядку)</string>
     <string name="midi_note">"Заметка"</string>
     <string name="midi_pedal">Слушайте входящие MIDI (например, педаль)</string>
     <string name="midi_program">"Изменение программы"</string>
@@ -618,6 +629,7 @@
     <string name="set_help">"Переместите песни, чтобы изменить порядок в списке"</string>
     <string name="set_inline">Встроенный набор</string>
     <string name="set_inline_info">Показать сет-лист на экране рядом с окном песни</string>
+    <string name="set_item_info">Вы можете изменить папку/имя файла песни, загруженной из набора, а также изменить клавишу отображения песни (при необходимости выполняется временное транспонирование песни на ваше устройство)</string>
     <string name="set_load_info">Загрузить ранее сохраненный набор</string>
     <string name="set_load_merge">Если выбрать более одного, они будут объединены в выбранном порядке.</string>
     <string name="set_manage">Управляйте своими наборами</string>
@@ -755,6 +767,7 @@
     <string name="title">Hазвание</string>
     <string name="tool">Инструмент</string>
     <string name="top">Верхняя</string>
+    <string name="transition">Переход</string>
     <string name="transpose">"Транспонирование"</string>
     <string name="transpose_capo">Транспонировать сменой каподастра</string>
     <string name="transpose_capo_info">Сохраните аккорды, но измените положение каподастра.</string>
@@ -779,6 +792,7 @@
     <string name="utilities">Утилиты</string>
     <string name="utilities_info">Другие инструменты для музыкантов</string>
     <string name="variation">Bариация</string>
+    <string name="variation_info">Сделайте копию этой песни, которую можно редактировать.  Эта песня может быть сохранена в наборе и загружена обратно, но теряется при очистке набора</string>
     <string name="variation_make">"Измененить элемента списка"</string>
     <string name="verse">"Куплет"</string>
     <string name="verse_background">"Фон куплета"</string>

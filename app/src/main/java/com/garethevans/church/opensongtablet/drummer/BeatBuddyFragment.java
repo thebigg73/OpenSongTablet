@@ -34,7 +34,7 @@ public class BeatBuddyFragment extends Fragment {
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "BeatBuddyFragment";
     private String not_set_string="", bpm_string="", folder_string="", song_string="", channel_string="",
-        success_string="", tempo_string="", volume_string="", unknown_string="", drumkit_string="";
+        success_string="", tempo_string="", volume_string="", unknown_string="", drumkit_string="", web_string="";
     private ArrayList<String> messageDescriptions;
     private ArrayList<String> messageBeatBuddy;
     private String songCommand, tempoCommand, volumeCommand, drumKitCommand, beatBuddyCommands;
@@ -48,6 +48,12 @@ public class BeatBuddyFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mainActivityInterface = (MainActivityInterface) context;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mainActivityInterface.updateToolbarHelp(web_string);
     }
 
     @Nullable
@@ -68,6 +74,7 @@ public class BeatBuddyFragment extends Fragment {
     }
 
     private void setupStrings() {
+            web_string = getString(R.string.website_beatbuddy);
             not_set_string = getString(R.string.is_not_set);
             bpm_string = getString(R.string.bpm);
             folder_string = getString(R.string.folder);
@@ -175,13 +182,13 @@ public class BeatBuddyFragment extends Fragment {
                 String volumeCCMessage = "";
                 if (!volumeCC.isEmpty()) {
                     fromSongMessages_volumeCC = Integer.parseInt(volumeCC);
-                    volumeCCMessage = volume_string + " (PC):" + fromSongMessages_volumeCC;
+                    volumeCCMessage = volume_string + " (CC):" + fromSongMessages_volumeCC;
                 }
 
                 String drumKitCCMessage = "";
                 if (!drumkitCC.isEmpty()) {
                     fromSongMessages_drumKitCC = Integer.parseInt(drumkitCC);
-                    drumKitCCMessage = drumkit_string + " (PC):" + (fromSongMessages_drumKitCC + 1);
+                    drumKitCCMessage = drumkit_string + " (CC):" + (fromSongMessages_drumKitCC + 1);
                 }
 
                 String known_message = folderMSBMessage + folderLSBMessage + songPCMessage +

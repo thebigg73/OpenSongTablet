@@ -4,6 +4,7 @@
     <string name="abc_transpose_to_song_info">Якщо в пісні та нотації abc встановлено тональність, програма спробує налаштувати вихід нотації abc відповідно до тональності пісні.</string>
     <string name="about">Про</string>
     <string name="about_description">Інформація про програму, довідка, посібник користувача тощо.</string>
+    <string name="accent">Акцент</string>
     <string name="accuracy">Точність</string>
     <string name="action">Дія</string>
     <string name="action_button_info">Натисніть, щоб показати або приховати кнопки сторінки.  Кожному можна призначити такі дії пісні, як метроном, транспонування, пэди тощо. Тривале натискання на головну кнопку дозволяє змінити налаштування кожної кнопки. Тривале натискання деяких кнопок сторінки виконує швидкі дії, такі як запуск/зупинка/редагування</string>
@@ -68,6 +69,9 @@
     <string name="banjo4">Банджо (4)</string>
     <string name="banjo5">Банджо (5)</string>
     <string name="battery">Aкумулятор</string>
+    <string name="beat_buddy_folder_info">Папка має містити номер від 1 до 16384</string>
+    <string name="beat_buddy_info">Редагування та збереження команд пісні для використання з педаллю BeatBuddy</string>
+    <string name="beat_buddy_song_info">Пісня має бути від 1 до 128</string>
     <string name="beat_tick">Удар 1 (галочка)</string>
     <string name="beat_tock">Удар 2 (такт)</string>
     <string name="beats">Удари</string>
@@ -236,8 +240,10 @@
     <string name="display_settings">Змінити налаштування дисплея (те, що ви бачите на екрані)</string>
     <string name="divisions">Дивізії</string>
     <string name="double_tap">Дія при подвійному торканні</string>
+    <string name="double_time">Подвійний час</string>
     <string name="download">Завантажити</string>
     <string name="download_wifi_only">Завантажуйте лише через Wi-Fi</string>
+    <string name="drum_kit">Ударна установка</string>
     <string name="duplicate">дублювати</string>
     <string name="duplicate_sections">Ви використовували той самий тег кілька разів у пісні. Це може викликати проблеми під час встановлення замовлення.</string>
     <string name="duplicate_song">Створіть копію цієї пісні</string>
@@ -282,6 +288,7 @@
     <string name="file_exists">Файл з таким ім\'ям існує. Будь ласка виберіть інше ім\'я</string>
     <string name="file_type">Тип файлу</string>
     <string name="filename">Ім\'я файлу</string>
+    <string name="fill">Заповнити</string>
     <string name="filter_by_artist">Ця кнопка використовується для включення фільтра виконавців до вашого списку пісень</string>
     <string name="filter_by_dropdown">Уточніть свій пошук, вибравши опцію зі спадного списку тут</string>
     <string name="filter_by_edit">Уточніть свій пошук, ввівши тут текст</string>
@@ -323,6 +330,7 @@
     <string name="github_description">Допомагайте розробці додатків</string>
     <string name="green">Зелений</string>
     <string name="guitar">Гітара</string>
+    <string name="half_time">Половина часу</string>
     <string name="heading_scale">Розмір тексту заголовка</string>
     <string name="help">Допомога (онлайн)</string>
     <string name="hex_color_code">Шістнадцятковий код кольору</string>
@@ -426,11 +434,14 @@
     <string name="midi_channel">Kанал</string>
     <string name="midi_commands">Редагування команд пісні</string>
     <string name="midi_controller">Зміна контролера</string>
+    <string name="midi_delay">MIDI-затримка між повідомленнями</string>
     <string name="midi_description">Підключіть midi-пристрої та змініть налаштування</string>
     <string name="midi_devices">Доступні пристрої</string>
     <string name="midi_disconnect">Від’єднати</string>
     <string name="midi_error">Перевірте підключення MIDI</string>
-    <string name="midi_list">Коротке натискання для перевірки елемента і довгий, щоб видалити його.</string>
+    <string name="midi_list_item">Натисніть, щоб перевірити, проведіть пальцем, щоб видалити або перевпорядкувати</string>
+    <string name="midi_message_include">Включити це в повідомлення пісні</string>
+    <string name="midi_messages">Пісня MIDI повідомлення (відправляється по замовленню)</string>
     <string name="midi_note">Зберегти</string>
     <string name="midi_pedal">Слухайте вхідний MIDI (наприклад, педаль)</string>
     <string name="midi_program">Зміна програми</string>
@@ -618,6 +629,7 @@
     <string name="set_help">Перемістити пісні, щоб змінити порядок у списку</string>
     <string name="set_inline">Вбудований набір</string>
     <string name="set_inline_info">Показати сет-лист на екрані біля вікна пісні</string>
+    <string name="set_item_info">Ви можете змінити папку/ім\'я файлу пісні, завантаженої з набору, а також змінити клавішу відображення пісні (це виконує тимчасову транспозицію пісні на вашому пристрої, якщо потрібно)</string>
     <string name="set_load_info">Завантажте раніше збережений набір</string>
     <string name="set_load_merge">Якщо вибрати декілька, вони об’єднаються у вибраному порядку.</string>
     <string name="set_manage">Керуйте своїми наборами</string>
@@ -755,6 +767,7 @@
     <string name="title">Hазва</string>
     <string name="tool">Інструмент</string>
     <string name="top">Верх</string>
+    <string name="transition">Перехід</string>
     <string name="transpose">Транспонування</string>
     <string name="transpose_capo">Транспонування за допомогою зміни ладу капо</string>
     <string name="transpose_capo_info">Збережіть акорди колишніми, але змініть положення капо</string>
@@ -779,6 +792,7 @@
     <string name="utilities">комунальні послуги</string>
     <string name="utilities_info">Інші інструменти для музикантів</string>
     <string name="variation">Bаріація</string>
+    <string name="variation_info">Зробіть копію цієї пісні, яку можна редагувати.  Цю пісню можна зберегти в набір і завантажити назад, але вона втрачається при очищенні набору</string>
     <string name="variation_make">Зробіть варіант предмета набору</string>
     <string name="verse">Kуплет</string>
     <string name="verse_background">Фон куплета</string>

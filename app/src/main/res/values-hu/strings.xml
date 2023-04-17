@@ -4,6 +4,7 @@
     <string name="abc_transpose_to_song_info">Εάν έχει οριστεί ένα πλήκτρο στο τραγούδι και στη σημειογραφία abc, η εφαρμογή θα προσπαθήσει να προσαρμόσει την έξοδο της σημειογραφίας abc ώστε να ταιριάζει με το πλήκτρο τραγουδιού.</string>
     <string name="about">Ról ről</string>
     <string name="about_description">Alkalmazás információk, súgó, felhasználói útmutató stb.</string>
+    <string name="accent">Akcentus</string>
     <string name="accuracy">Pontosság</string>
     <string name="action">"Akció"</string>
     <string name="action_button_info">Kattintson az oldalgombok megjelenítéséhez vagy elrejtéséhez.\n\nMindegyiket hozzárendelhetünk olyan dalműveletekhez, mint metronomok, átültetés, betétek stb.\nHosszan lenyomva a fő gombot, megváltoztathatja az egyes gombok beállításait.\nHosszan nyomja meg egyes oldalgombok gyors műveleteket hajtanak végre, például indítás / leállítás / szerkesztés</string>
@@ -68,6 +69,9 @@
     <string name="banjo4">"Bendzsó (4)"</string>
     <string name="banjo5">"Bendzsó (5)"</string>
     <string name="battery">"Akkumulátor"</string>
+    <string name="beat_buddy_folder_info">A mappának 1 és 16384 közötti számnak kell lennie</string>
+    <string name="beat_buddy_info">Dalparancsok szerkesztése és mentése BeatBuddy pedállal való használathoz</string>
+    <string name="beat_buddy_song_info">A dalnak 1 és 128 közötti számnak kell lennie</string>
     <string name="beat_tick">Beat 1 (pipa)</string>
     <string name="beat_tock">Beat 2 (tock)</string>
     <string name="beats">Beats</string>
@@ -236,8 +240,10 @@
     <string name="display_settings">Megjelenítési beállítások módosítása (amit a képernyőn lát)</string>
     <string name="divisions">Osztályok</string>
     <string name="double_tap">"Válassza ki dupla csap akció"</string>
+    <string name="double_time">Dupla alkalommal</string>
     <string name="download">Letöltés</string>
     <string name="download_wifi_only">Letöltés csak Wi-Fi-n keresztül</string>
+    <string name="drum_kit">Dobfelszerelés</string>
     <string name="duplicate">Másolat</string>
     <string name="duplicate_sections">Többször használtad ugyanazt a címkét a dalban. Ez problémákat okozhat a rendelés beállításakor.</string>
     <string name="duplicate_song">Készítsen másolatot erről a dalról</string>
@@ -282,6 +288,7 @@
     <string name="file_exists">"A fájl már létezik. Kérjük, nevezze át."</string>
     <string name="file_type">"Fájltípus"</string>
     <string name="filename">Fájl név</string>
+    <string name="fill">Tölt</string>
     <string name="filter_by_artist">Ezzel a gombbal előadói szűrőt helyezhet el a dallistához</string>
     <string name="filter_by_dropdown">Finomítsa a keresést az itt található legördülő lista kiválasztásával</string>
     <string name="filter_by_edit">Szöveg beírásával finomítsa a keresést</string>
@@ -323,6 +330,7 @@
     <string name="github_description">Hozzájáruljon az alkalmazások fejlesztéséhez</string>
     <string name="green">Zöld</string>
     <string name="guitar">Gitár</string>
+    <string name="half_time">Félidő</string>
     <string name="heading_scale">"Scale a fejlécszöveget"</string>
     <string name="help">"Segítség (Online)"</string>
     <string name="hex_color_code">Hex színkód</string>
@@ -426,11 +434,14 @@
     <string name="midi_channel">"Csatorna"</string>
     <string name="midi_commands">"Zeneszerzőparancsok szerkesztése"</string>
     <string name="midi_controller">"Vezérlőváltás"</string>
+    <string name="midi_delay">MIDI-késleltetés az üzenetek között</string>
     <string name="midi_description">Csatlakoztasson midi eszközöket és módosítsa a beállításokat</string>
     <string name="midi_devices">"Rendelkezésre álló eszközök"</string>
     <string name="midi_disconnect">Leválasztás</string>
     <string name="midi_error">"Kérjük, ellenőrizze a MIDI kapcsolatot"</string>
-    <string name="midi_list">"Kattints egy elemre a teszteléshez, és kattints rá a eltávolításhoz"</string>
+    <string name="midi_list_item">Kattintson ide a teszteléshez, pöccintéssel törölje vagy rendezze át</string>
+    <string name="midi_message_include">Ezt szerepeltesse a dal üzeneteiben</string>
+    <string name="midi_messages">Dal MIDI-üzenetek (sorrendben elküldve)</string>
     <string name="midi_note">Jegyzet</string>
     <string name="midi_pedal">Hallgassa meg a bejövő MIDI-t (pl. lábpedál)</string>
     <string name="midi_program">"Programváltás"</string>
@@ -618,6 +629,7 @@
     <string name="set_help">"Drag dalok körül, hogy a sorrend megváltoztatása a beállított"</string>
     <string name="set_inline">Inline készlet</string>
     <string name="set_inline_info">Jelenítse meg a setlist listát a dal ablaka melletti képernyőn</string>
+    <string name="set_item_info">Megváltoztathatja a készletből betöltött dal mappáját/fájlnevét, és megváltoztathatja a dal megjelenítésének gombját is (ez szükség esetén elvégzi a dal ideiglenes átültetését az eszközön)</string>
     <string name="set_load_info">Töltsön be egy korábban mentett készletet</string>
     <string name="set_load_merge">Ha egynél többet választ, azok a kiválasztott sorrendben egyesülnek.</string>
     <string name="set_manage">Kezelje készleteit</string>
@@ -755,6 +767,7 @@
     <string name="title">Cím</string>
     <string name="tool">Eszköz</string>
     <string name="top">Top</string>
+    <string name="transition">Átmenet</string>
     <string name="transpose">"Át kell ültetni"</string>
     <string name="transpose_capo">Transzponálás capo fret változással</string>
     <string name="transpose_capo_info">Tartsa az akkordokat ugyanazon, de változtassa meg a capo helyzetét</string>
@@ -779,6 +792,7 @@
     <string name="utilities">Segédprogramok</string>
     <string name="utilities_info">Egyéb eszközök zenészek számára</string>
     <string name="variation">"Variáció"</string>
+    <string name="variation_info">Készítsen másolatot erről a dalról, amely szerkeszthető.  Ez a dal elmenthető egy készletbe, és visszatölthető, de a készlet törlésekor elveszik</string>
     <string name="variation_make">"Készíts egy sor tételváltozat"</string>
     <string name="verse">Vers</string>
     <string name="verse_background">"Verse háttér"</string>

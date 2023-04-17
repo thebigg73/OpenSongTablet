@@ -4,6 +4,7 @@
     <string name="abc_transpose_to_song_info">如果在歌曲和 abc 表示法中设置了键，应用程序将尝试调整 abc 表示法的输出以匹配歌曲键。</string>
     <string name="about">关于</string>
     <string name="about_description">应用信息，帮助，用户指南等</string>
+    <string name="accent">口音</string>
     <string name="accuracy">准确性</string>
     <string name="action">"行动"</string>
     <string name="action_button_info">单击以显示或隐藏页面按钮。\n\n可以将每个按钮分配给节拍，移调，打击垫等歌曲操作。\n长按主按钮可更改每个按钮的设置。\n长按 一些页面按钮执行快速操作，例如开始/停止/编辑</string>
@@ -68,6 +69,9 @@
     <string name="banjo4">"班卓琴 (4)"</string>
     <string name="banjo5">"班卓琴 (5)"</string>
     <string name="battery">"电池"</string>
+    <string name="beat_buddy_folder_info">文件夹必须是介于 1 和 16384 之间的数字</string>
+    <string name="beat_buddy_info">编辑和保存歌曲命令以用于 BeatBuddy 踏板</string>
+    <string name="beat_buddy_song_info">歌曲必须是 1 到 128 之间的数字</string>
     <string name="beat_tick">击败 1（滴答声）</string>
     <string name="beat_tock">击败 2（托克）</string>
     <string name="beats">节拍</string>
@@ -236,8 +240,10 @@
     <string name="display_settings">更改显示设置（您在屏幕上看到的内容）</string>
     <string name="divisions">部门</string>
     <string name="double_tap">"选择双击动作"</string>
+    <string name="double_time">双倍时间</string>
     <string name="download">下载</string>
     <string name="download_wifi_only">仅通过 Wi-Fi 下载</string>
+    <string name="drum_kit">爵士鼓</string>
     <string name="duplicate">重复</string>
     <string name="duplicate_sections">您在歌曲中多次使用相同的标签。 这可能会在设置订单时引起问题。</string>
     <string name="duplicate_song">创建这首歌的副本</string>
@@ -282,6 +288,7 @@
     <string name="file_exists">"文件已经存在。请重新命名。"</string>
     <string name="file_type">"文件类型"</string>
     <string name="filename">文档名称</string>
+    <string name="fill">填补</string>
     <string name="filter_by_artist">此按钮用于为您的歌曲列表添加艺术家过滤器</string>
     <string name="filter_by_dropdown">通过从此处的下拉列表中选择一个选项来优化搜索</string>
     <string name="filter_by_edit">通过在此处输入一些文字来优化搜索</string>
@@ -323,6 +330,7 @@
     <string name="github_description">为应用程序开发做出贡献</string>
     <string name="green">绿</string>
     <string name="guitar">吉他</string>
+    <string name="half_time">中场休息</string>
     <string name="heading_scale">"缩放标题文本"</string>
     <string name="help">"帮助（在线）"</string>
     <string name="hex_color_code">十六进制颜色代码</string>
@@ -426,11 +434,14 @@
     <string name="midi_channel">"渠道"</string>
     <string name="midi_commands">"编辑歌曲命令"</string>
     <string name="midi_controller">"控制器更改"</string>
+    <string name="midi_delay">消息之间的 MIDI 延迟</string>
     <string name="midi_description">连接 MIDI 设备并更改设置</string>
     <string name="midi_devices">"可用设备"</string>
     <string name="midi_disconnect">断开</string>
     <string name="midi_error">"请检查MIDI连接"</string>
-    <string name="midi_list">"点击要测试的项目，然后长按即可将其删除"</string>
+    <string name="midi_list_item">单击以测试、滑动以删除或重新排列</string>
+    <string name="midi_message_include">将其包含在歌曲消息中</string>
+    <string name="midi_messages">歌曲 MIDI 消息（按顺序发送）</string>
     <string name="midi_note">"注意"</string>
     <string name="midi_pedal">监听传入的 MIDI（例如脚踏板）</string>
     <string name="midi_program">"程序更改"</string>
@@ -618,6 +629,7 @@
     <string name="set_help">"拖动歌曲各地更改设置的顺序"</string>
     <string name="set_inline">内联集</string>
     <string name="set_inline_info">在歌曲窗口旁边的屏幕上显示设置列表</string>
+    <string name="set_item_info">您可以更改从集合加载的歌曲的文件夹/文件名，也可以更改歌曲显示的键（如果需要，这会在您的设备上临时转置歌曲）</string>
     <string name="set_load_info">加载以前保存的集合</string>
     <string name="set_load_merge">选择多个将按所选顺序合并它们。</string>
     <string name="set_manage">管理您的集</string>
@@ -755,6 +767,7 @@
     <string name="title">"称号"</string>
     <string name="tool">工具</string>
     <string name="top">最佳</string>
+    <string name="transition">过渡</string>
     <string name="transpose">"移调"</string>
     <string name="transpose_capo">通过变调夹改变移调</string>
     <string name="transpose_capo_info">保持和弦不变，但改变变调夹的位置</string>
@@ -779,6 +792,7 @@
     <string name="utilities">实用程序</string>
     <string name="utilities_info">音乐家的其他工具</string>
     <string name="variation">"变异变异变异变异变异变异"变异</string>
+    <string name="variation_info">复制这首可以编辑的歌曲。 这首歌曲可以保存到集合中并加载回，但在清除集合时会丢失</string>
     <string name="variation_make">"制定一套项变化"</string>
     <string name="verse">"诗"</string>
     <string name="verse_background">"经文背景"</string>

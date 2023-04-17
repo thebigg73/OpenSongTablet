@@ -4,6 +4,7 @@
     <string name="abc_transpose_to_song_info">Wenn im Song und in der abc-Notation eine Tonart festgelegt ist, versucht die App, die Ausgabe der abc-Notation an die Tonart des Songs anzupassen.</string>
     <string name="about">Über</string>
     <string name="about_description">App-Informationen, Hilfe, Benutzerhandbuch usw.</string>
+    <string name="accent">Akzent</string>
     <string name="accuracy">Genauigkeit</string>
     <string name="action">"Aktion"</string>
     <string name="action_button_info">Klicken Sie hier, um Ihre Seitentasten ein- oder auszublenden.\n\nJede kann Songaktionen wie Metronomen, Transponieren, Pads usw. zugewiesen werden.\nDurch langes Drücken der Haupttaste können Sie die Einstellungen der einzelnen Tasten ändern.\nLange Drücken auf Einige Seitenschaltflächen führen schnelle Aktionen wie Starten / Stoppen / Bearbeiten aus</string>
@@ -68,6 +69,9 @@
     <string name="banjo4">"Banjo (4)"</string>
     <string name="banjo5">"Banjo (5)"</string>
     <string name="battery">"Batterie"</string>
+    <string name="beat_buddy_folder_info">Der Ordner muss eine Zahl zwischen 1 und 16384 haben</string>
+    <string name="beat_buddy_info">Bearbeiten und Speichern von Songbefehlen für die Verwendung mit einem BeatBuddy-Pedal</string>
+    <string name="beat_buddy_song_info">Das Lied muss eine Zahl zwischen 1 und 128 haben</string>
     <string name="beat_tick">Schlag 1 (Tick)</string>
     <string name="beat_tock">Schlag 2 (tock)</string>
     <string name="beats">Schläge</string>
@@ -236,8 +240,10 @@
     <string name="display_settings">Anzeigeeinstellungen ändern (was Sie auf dem Bildschirm sehen)</string>
     <string name="divisions">Abteilungen</string>
     <string name="double_tap">"Doppeltipp-Aktion wählen"</string>
+    <string name="double_time">Doppelte Zeit</string>
     <string name="download">Herunterladen</string>
     <string name="download_wifi_only">Nur über Wi-Fi herunterladen</string>
+    <string name="drum_kit">Schlagzeug</string>
     <string name="duplicate">Duplikat</string>
     <string name="duplicate_sections">Sie haben dasselbe Tag mehrmals im Song verwendet. Dies kann zu Problemen beim Einstellen der Reihenfolge führen.</string>
     <string name="duplicate_song">Erstellen Sie eine Kopie dieses Songs</string>
@@ -282,6 +288,7 @@
     <string name="file_exists">"Datei existiert bereits. Bitte umbenennen."</string>
     <string name="file_type">"Dateityp"</string>
     <string name="filename">Dateinamen</string>
+    <string name="fill">Füllen</string>
     <string name="filter_by_artist">Diese Schaltfläche wird verwendet, um einen Künstlerfilter für Ihre Songliste einzufügen</string>
     <string name="filter_by_dropdown">Verfeinern Sie Ihre Suche, indem Sie hier eine Option aus der Dropdown-Liste auswählen</string>
     <string name="filter_by_edit">Verfeinern Sie Ihre Suche, indem Sie hier einen Text eingeben</string>
@@ -323,6 +330,7 @@
     <string name="github_description">Beteiligen Sie sich an der App-Entwicklung</string>
     <string name="green">Grün</string>
     <string name="guitar">Gitarre</string>
+    <string name="half_time">Halbzeit</string>
     <string name="heading_scale">"Überschrift skalieren"</string>
     <string name="help">"Hilfe (Online)"</string>
     <string name="hex_color_code">Hex-Farbcode</string>
@@ -426,11 +434,14 @@
     <string name="midi_channel">"Kanal"</string>
     <string name="midi_commands">"Song-Befehle bearbeiten"</string>
     <string name="midi_controller">"Controllerwechsel"</string>
+    <string name="midi_delay">MIDI-Verzögerung zwischen den Nachrichten</string>
     <string name="midi_description">Schließen Sie Midi-Geräte an und ändern Sie die Einstellungen</string>
     <string name="midi_devices">"Verfügbare Geräte"</string>
     <string name="midi_disconnect">Trennen</string>
     <string name="midi_error">"Bitte überprüfen Sie die MIDI-Verbindung"</string>
-    <string name="midi_list">"Klicken Sie auf ein Objekt, um es zu testen, und klicken Sie lange darauf, um es zu entfernen"</string>
+    <string name="midi_list_item">Klicken Sie zum Testen, wischen Sie, um zu löschen, oder ordnen Sie sie neu an</string>
+    <string name="midi_message_include">Fügen Sie dies in die Songbotschaften ein</string>
+    <string name="midi_messages">Song-MIDI-Nachrichten (in der richtigen Reihenfolge gesendet)</string>
     <string name="midi_note">"Note"</string>
     <string name="midi_pedal">Hören Sie auf eingehendes MIDI (z. B. Fußpedal)</string>
     <string name="midi_program">"Programmwechsel"</string>
@@ -618,6 +629,7 @@
     <string name="set_help">"Elemente verschieben um die Reihenfolge im aktuellen Set zu ändern"</string>
     <string name="set_inline">Inline-Set</string>
     <string name="set_inline_info">Zeigen Sie die Setlist auf dem Bildschirm neben dem Song-Fenster an</string>
+    <string name="set_item_info">Sie können den Ordner/Dateinamen des aus dem Set geladenen Songs ändern und Sie können auch die Taste für die Songanzeige ändern (dies führt bei Bedarf eine temporäre Transponierung des Songs auf Ihrem Gerät durch)</string>
     <string name="set_load_info">Laden Sie einen zuvor gespeicherten Satz</string>
     <string name="set_load_merge">Wenn Sie mehr als eine auswählen, werden sie in der ausgewählten Reihenfolge zusammengeführt.</string>
     <string name="set_manage">Verwalten Sie Ihre Sets</string>
@@ -755,6 +767,7 @@
     <string name="title">"Titel"</string>
     <string name="tool">Werkzeug</string>
     <string name="top">Oben</string>
+    <string name="transition">Übergang</string>
     <string name="transpose">"Transponieren"</string>
     <string name="transpose_capo">Transponieren durch Kapodaster-Bundwechsel</string>
     <string name="transpose_capo_info">Behalten Sie die gleichen Akkorde bei, aber ändern Sie die Position des Kapodasters</string>
@@ -779,6 +792,7 @@
     <string name="utilities">Dienstprogramme</string>
     <string name="utilities_info">Andere Werkzeuge für Musiker</string>
     <string name="variation">"Variation"</string>
+    <string name="variation_info">Erstellen Sie eine Kopie dieses Liedes, die bearbeitet werden kann.  Dieser Song kann in einem Set gespeichert und wieder geladen werden, geht aber beim Löschen des Sets verloren</string>
     <string name="variation_make">"Variation erstellen"</string>
     <string name="verse">"Vers"</string>
     <string name="verse_background">"Hintergrund Vers"</string>

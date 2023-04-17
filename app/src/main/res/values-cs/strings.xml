@@ -4,6 +4,7 @@
     <string name="abc_transpose_to_song_info">Pokud je ve skladbě a v notaci abc nastavena tónina, aplikace se pokusí upravit výstup notace abc tak, aby odpovídal tónině skladby.</string>
     <string name="about">Asi</string>
     <string name="about_description">Informace o aplikaci, nápověda, uživatelská příručka atd.</string>
+    <string name="accent">Přízvuk</string>
     <string name="accuracy">Přesnost</string>
     <string name="action">"Akce"</string>
     <string name="action_button_info">Kliknutím zobrazíte nebo skryjete tlačítka stránky.\n\nKaždému lze přiřadit akce písní, jako jsou metronomy, transpozice, pady atd.\nDlouhým stisknutím hlavního tlačítka můžete změnit nastavení jednotlivých tlačítek.\nDlouhým stisknutím některá tlačítka stránky provádějí rychlé akce, jako je spuštění / zastavení / úpravy</string>
@@ -68,6 +69,9 @@
     <string name="banjo4">"Bendžo (4)"</string>
     <string name="banjo5">"Bendžo (5)"</string>
     <string name="battery">"Baterie"</string>
+    <string name="beat_buddy_folder_info">Složka musí mít číslo mezi 1 a 16384</string>
+    <string name="beat_buddy_info">Úpravy a ukládání příkazů skladeb pro použití s pedálem BeatBuddy</string>
+    <string name="beat_buddy_song_info">Píseň musí mít číslo mezi 1 a 128</string>
     <string name="beat_tick">Porazit 1 (zaškrtnout)</string>
     <string name="beat_tock">Beat 2 (tak)</string>
     <string name="beats">Beats</string>
@@ -236,8 +240,10 @@
     <string name="display_settings">Změna nastavení zobrazení (to, co vidíte na obrazovce)</string>
     <string name="divisions">Divize</string>
     <string name="double_tap">"Vyberte dvojí akci klepněte na položku"</string>
+    <string name="double_time">Dvojnásobný čas</string>
     <string name="download">Stažení</string>
     <string name="download_wifi_only">Stahujte pouze přes Wi-Fi</string>
+    <string name="drum_kit">Bicí souprava</string>
     <string name="duplicate">Duplikát</string>
     <string name="duplicate_sections">Stejnou značku jste v písni použili několikrát. To může způsobit problémy při zadávání objednávky.</string>
     <string name="duplicate_song">Vytvořte kopii této písně</string>
@@ -282,6 +288,7 @@
     <string name="file_exists">"Soubor již existuje. Prosím přejmenovat."</string>
     <string name="file_type">"Typ souboru"</string>
     <string name="filename">Název souboru</string>
+    <string name="fill">Vyplnit</string>
     <string name="filter_by_artist">Toto tlačítko slouží k zahrnutí filtru umělce pro váš seznam skladeb</string>
     <string name="filter_by_dropdown">Upřesněte vyhledávání výběrem možnosti z rozevíracího seznamu zde</string>
     <string name="filter_by_edit">Upřesněte své hledání zadáním nějakého textu zde</string>
@@ -323,6 +330,7 @@
     <string name="github_description">Přispějte k vývoji aplikací</string>
     <string name="green">Zelená</string>
     <string name="guitar">Kytara</string>
+    <string name="half_time">Poločas</string>
     <string name="heading_scale">"Měřítko textu záhlaví"</string>
     <string name="help">"Help (online)"</string>
     <string name="hex_color_code">Hexadecimální kód barvy</string>
@@ -426,11 +434,14 @@
     <string name="midi_channel">"Kanál"</string>
     <string name="midi_commands">"Upravit příkazy ke skladbě"</string>
     <string name="midi_controller">"Změna řadiče"</string>
+    <string name="midi_delay">MIDI zpoždění mezi zprávami</string>
     <string name="midi_description">Připojte midi zařízení a změňte nastavení</string>
     <string name="midi_devices">"Dostupné zařízení"</string>
     <string name="midi_disconnect">Odpojit</string>
     <string name="midi_error">"Zkontrolujte prosím připojení MIDI"</string>
-    <string name="midi_list">"Klikněte na položku, kterou chcete otestovat, a dlouhým klepnutím ji odeberte"</string>
+    <string name="midi_list_item">Kliknutím otestujte, přejetím prstem odstraníte nebo změníte uspořádání</string>
+    <string name="midi_message_include">Zahrňte to do zpráv skladby</string>
+    <string name="midi_messages">MIDI zprávy ve skladbě (odeslané v pořadí)</string>
     <string name="midi_note">"Poznámka"</string>
     <string name="midi_pedal">Poslouchat příchozí MIDI (např. pedál)</string>
     <string name="midi_program">"Změna programu"</string>
@@ -618,6 +629,7 @@
     <string name="set_help">"Přetažením písně , a tak změnit pořadí vašeho přístroje"</string>
     <string name="set_inline">Inline sada</string>
     <string name="set_inline_info">Zobrazit setlist na obrazovce vedle okna skladby</string>
+    <string name="set_item_info">Můžete změnit složku/název souboru skladby načtené ze sady a můžete také změnit klávesu pro zobrazení skladby (v případě potřeby provede dočasnou transpozici skladby do vašeho zařízení)</string>
     <string name="set_load_info">Načtěte dříve uloženou sadu</string>
     <string name="set_load_merge">Výběrem více než jednoho je sloučíte ve zvoleném pořadí.</string>
     <string name="set_manage">Spravujte své sady</string>
@@ -755,6 +767,7 @@
     <string name="title">Nadpis</string>
     <string name="tool">Nástroj</string>
     <string name="top">Horní</string>
+    <string name="transition">Přechod</string>
     <string name="transpose">"Transpozice"</string>
     <string name="transpose_capo">Transponujte změnou capo pražce</string>
     <string name="transpose_capo_info">Udržujte akordy stejné, ale změňte polohu kapodastru</string>
@@ -779,6 +792,7 @@
     <string name="utilities">Utility</string>
     <string name="utilities_info">Další nástroje pro hudebníky</string>
     <string name="variation">Změna</string>
+    <string name="variation_info">Vytvořte kopii této skladby, kterou lze upravit.  Tato skladba může být uložena do sady a načtena zpět, ale je ztracena při vymazání sady</string>
     <string name="variation_make">"Udělejte variaci set položek"</string>
     <string name="verse">"Verš"</string>
     <string name="verse_background">"Verš pozadí"</string>

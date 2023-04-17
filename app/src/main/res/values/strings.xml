@@ -5,6 +5,7 @@
     <string name="abc_transpose_to_song_info">If a key is set in the song and in the abc notation, the app will try to adjust the output of the abc notation to match the song key.</string>
     <string name="about">About</string>
     <string name="about_description">App info, help, user guide, etc.</string>
+    <string name="accent">Accent</string>
     <string name="accuracy">Accuracy</string>
     <string name="action">Action</string>
     <string name="action_button_info">Click to show or hide your page buttons.\n\nEach one can be assigned
@@ -74,6 +75,10 @@
     <string name="banjo4">Banjo (4)</string>
     <string name="banjo5">Banjo (5)</string>
     <string name="battery">Battery</string>
+    <string name="beat_buddy" translatable="false">BeatBuddy</string>
+    <string name="beat_buddy_folder_info">Folder must be a number between 1 and 16384</string>
+    <string name="beat_buddy_info">Edit and save song commands for use with a BeatBuddy pedal</string>
+    <string name="beat_buddy_song_info">Song must be a number between 1 and 128</string>
     <string name="beat_tick">Beat 1 (tick)</string>
     <string name="beat_tock">Beat 2 (tock)</string>
     <string name="beats">Beats</string>
@@ -324,8 +329,10 @@
     <string name="display_settings">Change display settings (what you see on screen)</string>
     <string name="divisions">Divisions</string>
     <string name="double_tap">Select double tap action</string>
+    <string name="double_time">Double time</string>
     <string name="download">Download</string>
     <string name="download_wifi_only">Download over Wi-Fi only</string>
+    <string name="drum_kit">Drum kit</string>
     <string name="duplicate">Duplicate</string>
     <string name="duplicate_sections">You have used the same tag multiple times in the song.  This can cause problems when setting the order.</string>
     <string name="duplicate_song">Create a copy of this song</string>
@@ -370,6 +377,7 @@
     <string name="file_exists">File already exists.  Please rename it.</string>
     <string name="file_type">File type</string>
     <string name="filename">Filename</string>
+    <string name="fill">Fill</string>
     <string name="filter_by_artist">This button is used to include an artist filter for your song list</string>
     <string name="filter_by_dropdown">Refine your search by choosing an option from the drop down list here</string>
     <string name="filter_by_edit">Refine your search by entering some text here </string>
@@ -412,6 +420,7 @@
     <string name="github_description">Contribute to app development</string>
     <string name="green">Green</string>
     <string name="guitar">Guitar</string>
+    <string name="half_time">Half time</string>
     <string name="heading_scale">Scale heading text</string>
     <string name="help">Help (Online)</string>
     <string name="hex_color_code">Hex color code</string>
@@ -573,10 +582,14 @@
     <string name="midi_channel">Channel</string>
     <string name="midi_commands">Edit song commands</string>
     <string name="midi_controller">Controller change</string>
+    <string name="midi_delay">MIDI delay between messages</string>
     <string name="midi_description">Connect midi devices and change settings</string>
     <string name="midi_devices">Available devices</string>
     <string name="midi_disconnect">Disconnect</string>
     <string name="midi_error">Please check MIDI connection</string>
+    <string name="midi_list_item">Click to test, swipe to delete, or rearrange</string>
+    <string name="midi_message_include">Include this in the song messages</string>
+    <string name="midi_messages">Song MIDI messages (sent in order)</string>
     <string name="midi_note">Note</string>
     <string name="midi_pedal">Listen for incoming MIDI (e.g. footpedal)</string>
     <string name="midi_program">Program change</string>
@@ -777,6 +790,7 @@
     <string name="set_help">Drag songs around to change the order of your set</string>
     <string name="set_inline">Inline set</string>
     <string name="set_inline_info">Show the setlist on the screen beside the song window</string>
+    <string name="set_item_info">You can change the folder/filename of the song loaded from the set and you can also change the key for song display (this performs a temporary transpose of the song on your device if required)</string>
     <string name="set_load_info">Load a previously saved set</string>
     <string name="set_load_merge">Choosing more than one will merge them in the order selected.</string>
     <string name="set_manage">Manage your sets</string>
@@ -915,6 +929,7 @@
     <string name="title">Title</string>
     <string name="tool">Tool</string>
     <string name="top">Top</string>
+    <string name="transition">Transition</string>
     <string name="transpose">Transpose</string>
     <string name="transpose_capo">Transpose by capo fret change</string>
     <string name="transpose_capo_info">Keep the chords the same, but change the position of the capo</string>
@@ -1047,6 +1062,7 @@ Check out the categories in the right hand options menu.
     <string name="utilities">Utilities</string>
     <string name="utilities_info">Other tools for musicians</string>
     <string name="variation">Variation</string>
+    <string name="variation_info">Make a copy of this song that can be edited.  This song can be saved into a set and loaded back, but is lost when clearing the set</string>
     <string name="variation_make">Make a set item variation</string>
     <string name="verse">Verse</string>
     <string name="verse_background">Verse background</string>
@@ -1064,6 +1080,7 @@ Check out the categories in the right hand options menu.
     <string name="website_app_mode" translatable="false">https://www.opensongapp.com/user-manual/app-mode</string>
     <string name="website_autoscroll" translatable="false">https://www.opensongapp.com/user-manual/songs/song-actions/autoscroll</string>
     <string name="website_backup" translatable="false">https://www.opensongapp.com/user-manual/songs/opensongapp-backup</string>
+    <string name="website_beatbuddy" translatable="false">https://www.opensongapp.com/user-manual/utilities/beatbuddy</string>
     <string name="website_bible_download" translatable="false">https://www.opensongapp.com/user-manual/sets/bible/download-bible</string>
     <string name="website_bible_offline" translatable="false">https://www.opensongapp.com/user-manual/sets/bible/search-offline</string>
     <string name="website_bible_online" translatable="false">https://www.opensongapp.com/user-manual/sets/bible/search-online</string>
@@ -1139,20 +1156,4 @@ Check out the categories in the right hand options menu.
     <string name="youtube" translatable="false">YouTube</string>
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zoom_level">Zoom level</string>
-    <string name="midi_messages">Song MIDI messages (sent in order)</string>
-    <string name="beat_buddy_info">Edit and save song commands for use with a BeatBuddy pedal</string>
-    <string name="midi_delay">MIDI delay between messages</string>
-    <string name="midi_message_include">Include this in the song messages</string>
-    <string name="drum_kit">Drum kit</string>
-    <string name="beat_buddy_folder_info">Folder must be a number between 1 and 16384</string>
-    <string name="beat_buddy_song_info">Song must be a number between 1 and 128</string>
-    <string name="beat_buddy">BeatBuddy</string>
-    <string name="accent">Accent</string>
-    <string name="fill">Fill</string>
-    <string name="transition">Transition</string>
-    <string name="half_time">Half time</string>
-    <string name="double_time">Double time</string>
-    <string name="variation_info">Make a copy of this song that can be edited.  This song can be saved into a set and loaded back, but is lost when clearing the set</string>
-    <string name="set_item_info">You can change the folder/filename of the song loaded from the set and you can also change the key for song display (this performs a temporary transpose of the song on your device if required)</string>
-    <string name="midi_list_item">Click to test, swipe to delete, or rearrange</string>
 </resources>

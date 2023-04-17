@@ -4,6 +4,7 @@
     <string name="abc_transpose_to_song_info">Si une clé est définie dans la chanson et dans la notation abc, l\'application essaiera d\'ajuster la sortie de la notation abc pour qu\'elle corresponde à la clé de la chanson.</string>
     <string name="about">À propos</string>
     <string name="about_description">Informations sur l\'application, aide, guide de l\'utilisateur, etc.</string>
+    <string name="accent">Accent</string>
     <string name="accuracy">Exactitude</string>
     <string name="action">Chacun peut être affecté à des actions de morceau telles que les métronomes, la transposition, les pads, etc.</string>
     <string name="action_button_info">Cliquez pour afficher ou masquer les boutons de votre page.\n\nChacun peut être affecté à des actions de morceau telles que les métronomes, la transposition, les pads, etc.\nUn appui long sur le bouton principal vous permet de modifier les paramètres de chaque bouton.\nUn appui long sur certains boutons de page effectue des actions rapides telles que démarrer / arrêter / modifier</string>
@@ -68,6 +69,9 @@
     <string name="banjo4">"Banjo (4)"</string>
     <string name="banjo5">"Banjo (5)"</string>
     <string name="battery">"Batterie"</string>
+    <string name="beat_buddy_folder_info">Le dossier doit être un nombre compris entre 1 et 16384</string>
+    <string name="beat_buddy_info">Modifier et enregistrer des commandes de chanson pour les utiliser avec une pédale BeatBuddy</string>
+    <string name="beat_buddy_song_info">La chanson doit être un nombre compris entre 1 et 128</string>
     <string name="beat_tick">Battre 1 (tic)</string>
     <string name="beat_tock">Battre 2 (toc)</string>
     <string name="beats">Beats</string>
@@ -236,8 +240,10 @@
     <string name="display_settings">Modifier les paramètres d\'affichage (ce que vous voyez à l\'écran)</string>
     <string name="divisions">Divisions</string>
     <string name="double_tap">"Sélectionnez l\'action du double clic"</string>
+    <string name="double_time">Temps double</string>
     <string name="download">Télécharger</string>
     <string name="download_wifi_only">Télécharger via Wi-Fi uniquement</string>
+    <string name="drum_kit">Batterie</string>
     <string name="duplicate">Dupliquer</string>
     <string name="duplicate_sections">Vous avez utilisé la même balise plusieurs fois dans la chanson. Cela peut causer des problèmes lors de la définition de la commande.</string>
     <string name="duplicate_song">Créer une copie de cette chanson</string>
@@ -282,6 +288,7 @@
     <string name="file_exists">"Le fichier existe déjà. Merci de le renommer."</string>
     <string name="file_type">"Type de fichier"</string>
     <string name="filename">Nom de fichier</string>
+    <string name="fill">Remplir</string>
     <string name="filter_by_artist">Ce bouton est utilisé pour inclure un filtre d\'artiste pour votre liste de chansons</string>
     <string name="filter_by_dropdown">Affinez votre recherche en choisissant une option dans la liste déroulante ici</string>
     <string name="filter_by_edit">Affinez votre recherche en saisissant du texte ici</string>
@@ -323,6 +330,7 @@
     <string name="github_description">Contribuer au développement de l\'application</string>
     <string name="green">Vert</string>
     <string name="guitar">Guitare</string>
+    <string name="half_time">Mi-temps</string>
     <string name="heading_scale">"Taille du texte de titre"</string>
     <string name="help">"Aide (en ligne)"</string>
     <string name="hex_color_code">Code couleur hexadécimal</string>
@@ -426,11 +434,14 @@
     <string name="midi_channel">"Canal"</string>
     <string name="midi_commands">"Modifier les commandes de morceau"</string>
     <string name="midi_controller">"Changement de contrôleur"</string>
+    <string name="midi_delay">Délai MIDI entre les messages</string>
     <string name="midi_description">Connecter des appareils midi et modifier les paramètres</string>
     <string name="midi_devices">"Dispositifs disponibles"</string>
     <string name="midi_disconnect">Déconnecter</string>
     <string name="midi_error">"Veuillez vérifier la connexion MIDI"</string>
-    <string name="midi_list">"Cliquez sur un élément à tester et cliquez longuement pour le supprimer"</string>
+    <string name="midi_list_item">Cliquez pour tester, balayez pour supprimer ou réorganisez</string>
+    <string name="midi_message_include">Incluez ceci dans les messages de la chanson</string>
+    <string name="midi_messages">Messages MIDI de chanson (envoyés dans l’ordre)</string>
     <string name="midi_note">"Remarque"</string>
     <string name="midi_pedal">Écoutez le MIDI entrant (par exemple, pédale)</string>
     <string name="midi_program">"Changement de programme"</string>
@@ -618,6 +629,7 @@
     <string name="set_help">"Deplacez les chansons dans l\'ordre choisis"</string>
     <string name="set_inline">Ensemble en ligne</string>
     <string name="set_inline_info">Afficher la setlist sur l\'écran à côté de la fenêtre de la chanson</string>
+    <string name="set_item_info">Vous pouvez changer le dossier / nom de fichier de la chanson chargée à partir de l’ensemble et vous pouvez également changer la touche d’affichage de la chanson (cela effectue une transposition temporaire de la chanson sur votre appareil si nécessaire)</string>
     <string name="set_load_info">Charger un ensemble précédemment enregistré</string>
     <string name="set_load_merge">En choisir plusieurs les fusionnera dans l\'ordre sélectionné.</string>
     <string name="set_manage">Gérez vos ensembles</string>
@@ -755,6 +767,7 @@
     <string name="title">Titre</string>
     <string name="tool">Outil</string>
     <string name="top">Haut</string>
+    <string name="transition">Transition</string>
     <string name="transpose">"Transposer"</string>
     <string name="transpose_capo">Transposition par changement de frette capodastre</string>
     <string name="transpose_capo_info">Gardez les accords identiques, mais changez la position du capodastre</string>
@@ -779,6 +792,7 @@
     <string name="utilities">Utilitaires</string>
     <string name="utilities_info">Autres outils pour les musiciens</string>
     <string name="variation">"Variation"</string>
+    <string name="variation_info">Faites une copie de cette chanson qui peut être éditée.  Cette chanson peut être enregistrée dans un ensemble et rechargée, mais elle est perdue lors de l’effacement de l’ensemble</string>
     <string name="variation_make">"Faire une variation ensemble d\'objet"</string>
     <string name="verse">"Verset"</string>
     <string name="verse_background">"Fond des couplets"</string>

@@ -4,6 +4,7 @@
     <string name="abc_transpose_to_song_info">Se una chiave è impostata nella canzone e nella notazione abc, l\'app proverà a regolare l\'output della notazione abc in modo che corrisponda alla chiave della canzone.</string>
     <string name="about">約</string>
     <string name="about_description">アプリ情報、ヘルプ、ユーザーガイドなど。</string>
+    <string name="accent">訛り</string>
     <string name="accuracy">精度</string>
     <string name="action">"アクション"</string>
     <string name="action_button_info">クリックしてページボタンを表示または非表示にします。\n\nメトロノーム、トランスポーズ、パッドなどの曲のアクションに各ボタンを割り当てることができます。\nメインボタンを長押しすると、各ボタンの設定を変更できます。\n長押し 一部のページボタンは、開始/停止/編集などのクイックアクションを実行します</string>
@@ -68,6 +69,9 @@
     <string name="banjo4">"バンジョー (4)"</string>
     <string name="banjo5">"バンジョー (5)"</string>
     <string name="battery">"バッテリー"</string>
+    <string name="beat_buddy_folder_info">フォルダーは 1 から 16384 までの数値である必要があります</string>
+    <string name="beat_buddy_info">BeatBuddyペダルで使用するための曲コマンドの編集と保存</string>
+    <string name="beat_buddy_song_info">曲は1から128までの数字でなければなりません</string>
     <string name="beat_tick">ビート1（ティック）</string>
     <string name="beat_tock">ビート2（トック）</string>
     <string name="beats">ビート</string>
@@ -236,8 +240,10 @@
     <string name="display_settings">表示設定（画面に表示されるもの）を変更します</string>
     <string name="divisions">部門</string>
     <string name="double_tap">"ダブルタップアクションを選択します"</string>
+    <string name="double_time">ダブルタイム</string>
     <string name="download">ダウンロード</string>
     <string name="download_wifi_only">Wi-Fi経由でのみダウンロード</string>
+    <string name="drum_kit">ドラムキット</string>
     <string name="duplicate">複製する</string>
     <string name="duplicate_sections">曲の中で同じタグを複数回使用しました。 これにより、順序を設定するときに問題が発生する可能性があります。</string>
     <string name="duplicate_song">この曲のコピーを作成する</string>
@@ -282,6 +288,7 @@
     <string name="file_exists">"ファイルが既に存在します。その名前を変更してください。"</string>
     <string name="file_type">"ファイルの種類"</string>
     <string name="filename">ファイル名</string>
+    <string name="fill">注ぐ</string>
     <string name="filter_by_artist">このボタンは、曲リストのアーティストフィルターを含めるために使用されます</string>
     <string name="filter_by_dropdown">ここのドロップダウンリストからオプションを選択して、検索を絞り込みます</string>
     <string name="filter_by_edit">ここにテキストを入力して、検索を絞り込みます</string>
@@ -323,6 +330,7 @@
     <string name="github_description">アプリ開発に貢献する</string>
     <string name="green">緑</string>
     <string name="guitar">ギター</string>
+    <string name="half_time">ハーフタイム</string>
     <string name="heading_scale">"見出しのテキストを拡大縮小"</string>
     <string name="help">"ヘルプ（オンライン）"</string>
     <string name="hex_color_code">16進カラーコード</string>
@@ -426,11 +434,14 @@
     <string name="midi_channel">"チャネル"</string>
     <string name="midi_commands">"曲の編集コマンド"</string>
     <string name="midi_controller">"コントローラの変更"</string>
+    <string name="midi_delay">メッセージ間の MIDI 遅延</string>
     <string name="midi_description">MIDIデバイスを接続して設定を変更する</string>
     <string name="midi_devices">"使用可能なデバイス"</string>
     <string name="midi_disconnect">切断する</string>
     <string name="midi_error">"MIDI接続を確認してください"</string>
-    <string name="midi_list">"テストするアイテムをクリックし、長いクリックで削除します"</string>
+    <string name="midi_list_item">クリックしてテスト、スワイプして削除、または並べ替え</string>
+    <string name="midi_message_include">これを曲のメッセージに含めます</string>
+    <string name="midi_messages">曲のMIDIメッセージ(順番に送信)</string>
     <string name="midi_note">"注意"</string>
     <string name="midi_pedal">着信MIDI（フットペダルなど）をリッスンする</string>
     <string name="midi_program">"プログラムの変更"</string>
@@ -618,6 +629,7 @@
     <string name="set_help">"ドラッグ曲は周りのあなたのセットの順序を変更するには"</string>
     <string name="set_inline">インライン セット</string>
     <string name="set_inline_info">曲ウィンドウの横の画面にセットリストを表示します</string>
+    <string name="set_item_info">セットからロードされた曲のフォルダ/ファイル名を変更したり、曲表示のキーを変更したりすることもできます(これにより、必要に応じてデバイス上の曲の一時的な移調が実行されます)</string>
     <string name="set_load_info">以前に保存したセットをロードします</string>
     <string name="set_load_merge">複数を選択すると、選択した順序でそれらがマージされます。</string>
     <string name="set_manage">セットを管理する</string>
@@ -755,6 +767,7 @@
     <string name="title">"タイトル"</string>
     <string name="tool">道具</string>
     <string name="top">上</string>
+    <string name="transition">遷移</string>
     <string name="transpose">"トランスポーズ"</string>
     <string name="transpose_capo">カポフレットチェンジで移調</string>
     <string name="transpose_capo_info">コードは同じままにしますが、カポの位置を変更します</string>
@@ -779,6 +792,7 @@
     <string name="utilities">ユーティリティ</string>
     <string name="utilities_info">ミュージシャンのための他のツール</string>
     <string name="variation">"変化"</string>
+    <string name="variation_info">編集可能なこの曲のコピーを作成します。 この曲はセットに保存してロードし直すことができますが、セットをクリアすると失われます</string>
     <string name="variation_make">"設定項目の変動を作ります"</string>
     <string name="verse">"詩"</string>
     <string name="verse_background">"詩の背景"</string>

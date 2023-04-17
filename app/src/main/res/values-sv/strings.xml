@@ -4,6 +4,7 @@
     <string name="abc_transpose_to_song_info">Om en tangent är inställd i låten och i abc-notationen, kommer appen att försöka justera utmatningen av abc-notationen för att matcha sångnyckeln.</string>
     <string name="about">Handla om</string>
     <string name="about_description">Appinfo, hjälp, användarhandbok etc.</string>
+    <string name="accent">Accent</string>
     <string name="accuracy">Noggrannhet</string>
     <string name="action">"Handling"</string>
     <string name="action_button_info">Klicka för att visa eller dölja sidoknapparna.\n\nVar och en kan tilldelas sångåtgärder som metronomer, transponering, kuddar, etc.\nLång tryckning på huvudknappen låter dig ändra inställningarna för varje knapp.\nLång tryckning på vissa sidoknappar utför snabba åtgärder som start / stopp / redigering</string>
@@ -68,6 +69,9 @@
     <string name="banjo4">"Banjo (4)"</string>
     <string name="banjo5">"Banjo (5)"</string>
     <string name="battery">"Batteri"</string>
+    <string name="beat_buddy_folder_info">Mappen måste vara ett nummer mellan 1 och 16384</string>
+    <string name="beat_buddy_info">Redigera och spara låtkommandon för användning med en BeatBuddy-pedal</string>
+    <string name="beat_buddy_song_info">Låten måste vara ett tal mellan 1 och 128</string>
     <string name="beat_tick">Slå 1 (bocka)</string>
     <string name="beat_tock">Beat 2 (tock)</string>
     <string name="beats">Takter</string>
@@ -236,8 +240,10 @@
     <string name="display_settings">Ändra visningsinställningar (vad du ser på skärmen)</string>
     <string name="divisions">Divisioner</string>
     <string name="double_tap">"Välj dubbelknappsåtgärd"</string>
+    <string name="double_time">Dubbel tid</string>
     <string name="download">Ladda ner</string>
     <string name="download_wifi_only">Ladda ner endast via Wi-Fi</string>
+    <string name="drum_kit">Trumset</string>
     <string name="duplicate">Duplicera</string>
     <string name="duplicate_sections">Du har använt samma tagg flera gånger i låten. Detta kan orsaka problem vid beställning.</string>
     <string name="duplicate_song">Skapa en kopia av den här låten</string>
@@ -282,6 +288,7 @@
     <string name="file_exists">"Filen finns redan. Vänligen byt namn på den."</string>
     <string name="file_type">"Filtyp"</string>
     <string name="filename">Filnamn</string>
+    <string name="fill">Fylla</string>
     <string name="filter_by_artist">Den här knappen används för att inkludera ett artistfilter för din sånglista</string>
     <string name="filter_by_dropdown">Förfina din sökning genom att välja ett alternativ i listrutan här</string>
     <string name="filter_by_edit">Förfina din sökning genom att ange lite text här</string>
@@ -323,6 +330,7 @@
     <string name="github_description">Bidra till apputveckling</string>
     <string name="green">Grön</string>
     <string name="guitar">"Gitarr"</string>
+    <string name="half_time">Halvtid</string>
     <string name="heading_scale">"Skala rubrik text"</string>
     <string name="help">"Hjälp (Online)"</string>
     <string name="hex_color_code">Hex färgkod</string>
@@ -426,11 +434,14 @@
     <string name="midi_channel">Kanalisera</string>
     <string name="midi_commands">"Redigera låtkommandon"</string>
     <string name="midi_controller">"Controller förändring"</string>
+    <string name="midi_delay">MIDI-fördröjning mellan meddelanden</string>
     <string name="midi_description">Anslut midi-enheter och ändra inställningar</string>
     <string name="midi_devices">"Tillgängliga enheter"</string>
     <string name="midi_disconnect">Koppla ifrån</string>
     <string name="midi_error">"Kontrollera MIDI-anslutningen"</string>
-    <string name="midi_list">"Klicka på ett objekt som ska testas och länge klicka för att ta bort det"</string>
+    <string name="midi_list_item">Klicka för att testa, svepa för att radera eller ordna om</string>
+    <string name="midi_message_include">Inkludera detta i låtmeddelandena</string>
+    <string name="midi_messages">Sång MIDI-meddelanden (skickas i ordning)</string>
     <string name="midi_note">"Notera"</string>
     <string name="midi_pedal">Lyssna efter inkommande MIDI (t.ex. fotpedal)</string>
     <string name="midi_program">"Programändring"</string>
@@ -618,6 +629,7 @@
     <string name="set_help">"Dra sånger runt för att ändra ordning på din uppsättning"</string>
     <string name="set_inline">Inline set</string>
     <string name="set_inline_info">Visa setlistan på skärmen bredvid låtfönstret</string>
+    <string name="set_item_info">Du kan ändra mappen / filnamnet på låten som laddas från uppsättningen och du kan också ändra tangenten för låtvisning (detta utför en tillfällig transponering av låten på din enhet om det behövs)</string>
     <string name="set_load_info">Ladda en tidigare sparad uppsättning</string>
     <string name="set_load_merge">Om du väljer mer än en slås dem samman i den valda ordningen.</string>
     <string name="set_manage">Hantera dina uppsättningar</string>
@@ -755,6 +767,7 @@
     <string name="title">"Titel"</string>
     <string name="tool">Verktyg</string>
     <string name="top">Topp</string>
+    <string name="transition">Övergång</string>
     <string name="transpose">Införliva</string>
     <string name="transpose_capo">Transponera med capo fret change</string>
     <string name="transpose_capo_info">Håll ackorden desamma, men ändra positionen för capon</string>
@@ -779,6 +792,7 @@
     <string name="utilities">Verktyg</string>
     <string name="utilities_info">Andra verktyg för musiker</string>
     <string name="variation">"Variation"</string>
+    <string name="variation_info">Gör en kopia av den här låten som kan redigeras.  Den här låten kan sparas i en uppsättning och laddas tillbaka, men går förlorad när du rensar uppsättningen</string>
     <string name="variation_make">"Gör en uppsättning variabler"</string>
     <string name="verse">"Vers"</string>
     <string name="verse_background">"Vers bakgrund"</string>
