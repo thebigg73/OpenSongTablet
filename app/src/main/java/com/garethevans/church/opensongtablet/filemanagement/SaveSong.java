@@ -53,7 +53,13 @@ public class SaveSong {
                 if (newSong.getFiletype().equals("PDF") || newSong.getFiletype().equals("IMG")) {
                     // If it isn't an XML file, also update the persistent database
                     mainActivityInterface.getNonOpenSongSQLiteHelper().renameSong(
-                            oldFolder, newSong.getFolder(), oldFilename, newSong.getFilename());
+                            oldLocation.get(0), newSong.getFolder(), oldLocation.get(1), newSong.getFilename());
+                    // Copy the pdf/img file now
+                    mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" doSave move "
+                            +oldFolder+"/"+oldFilename+" to "+newSong.getFolder()+"/"+newSong.getFilename());
+                    mainActivityInterface.getStorageAccess().copyFromTo(oldLocation.get(0),
+                            oldLocation.get(1), oldFilename,"Songs",
+                            newSong.getFolder(),newSong.getFilename());
                 }
 
                 // Now try to rename the highlighter files if they exist
