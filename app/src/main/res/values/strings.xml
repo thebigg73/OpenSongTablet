@@ -577,7 +577,6 @@
     <string name="midi_devices">Available devices</string>
     <string name="midi_disconnect">Disconnect</string>
     <string name="midi_error">Please check MIDI connection</string>
-    <string name="midi_list">Click an item to test and long click to remove it</string>
     <string name="midi_note">Note</string>
     <string name="midi_pedal">Listen for incoming MIDI (e.g. footpedal)</string>
     <string name="midi_program">Program change</string>
@@ -1140,12 +1139,20 @@ Check out the categories in the right hand options menu.
     <string name="youtube" translatable="false">YouTube</string>
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zoom_level">Zoom level</string>
-    <string name="volume_headphones">Headphone volume</string>
     <string name="midi_messages">Song MIDI messages (sent in order)</string>
-    <string name="beat_buddy">BeatBuddy</string>
     <string name="beat_buddy_info">Edit and save song commands for use with a BeatBuddy pedal</string>
     <string name="midi_delay">MIDI delay between messages</string>
-    <string name="midi_message_add_to_song">Add to song messages</string>
     <string name="midi_message_include">Include this in the song messages</string>
     <string name="drum_kit">Drum kit</string>
+    <string name="beat_buddy_folder_info">Folder must be a number between 1 and 16384</string>
+    <string name="beat_buddy_song_info">Song must be a number between 1 and 128</string>
+    <string name="beat_buddy">BeatBuddy</string>
+    <string name="accent">Accent</string>
+    <string name="fill">Fill</string>
+    <string name="transition">Transition</string>
+    <string name="half_time">Half time</string>
+    <string name="double_time">Double time</string>
+    <string name="variation_info">Make a copy of this song that can be edited.  This song can be saved into a set and loaded back, but is lost when clearing the set</string>
+    <string name="set_item_info">You can change the folder/filename of the song loaded from the set and you can also change the key for song display (this performs a temporary transpose of the song on your device if required)</string>
+    <string name="midi_list_item">Click to test, swipe to delete, or rearrange</string>
 </resources>
