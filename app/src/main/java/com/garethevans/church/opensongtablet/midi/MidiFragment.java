@@ -42,6 +42,7 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
 import com.garethevans.church.opensongtablet.databinding.SettingsMidiBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.google.android.material.slider.Slider;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -224,8 +225,21 @@ public class MidiFragment extends Fragment {
         myView.midiController.setText(midiValue.get(0));    // This is the program number (for midi controller only)
         myView.midiValue.setText(midiValue.get(0));         // This is for the program number/value (alt to midiNote)
         myView.midiVelocity.setText(midiValue.get(99));     // This is the velocity
-    }
+        myView.midiDelay.setAdjustableButtons(true);
+        myView.midiDelay.setHint(mainActivityInterface.getMidi().getMidiDelay() + "ms");
+        myView.midiDelay.setValue(mainActivityInterface.getMidi().getMidiDelay());
+        myView.midiDelay.setLabelFormatter(value1 -> (int) value1 + "ms");
+        myView.midiDelay.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
+            @Override
+            public void onStartTrackingTouch(@NonNull Slider slider) {}
 
+            @Override
+            public void onStopTrackingTouch(@NonNull Slider slider) {
+                mainActivityInterface.getMidi().setMidiDelay((int)myView.midiDelay.getValue());
+            }
+        });
+        myView.midiDelay.addOnChangeListener((slider, value, fromUser) -> mainActivityInterface.getMidi().setMidiDelay((int)myView.midiDelay.getValue()));
+    }
 
     // Set the view visibilities
     @RequiresApi(api = Build.VERSION_CODES.M)

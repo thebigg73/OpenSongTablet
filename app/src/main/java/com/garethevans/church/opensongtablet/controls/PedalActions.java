@@ -174,20 +174,20 @@ public class PedalActions {
         addString("midi",c.getString(R.string.midi_send));
         addString("midisettings",c.getString(R.string.midi)+settings);
         addString("midisend",c.getString(R.string.midi_auto)+onoff);
-        addString("beatbuddystart",c.getString(R.string.beatbuddy)+" "+c.getString(R.string.start));
-        addString("beatbuddystop",c.getString(R.string.beatbuddy)+" "+c.getString(R.string.stop));
-        addString("beatbuddypause",c.getString(R.string.beatbuddy)+" "+c.getString(R.string.pause));
-        addString("beatbuddyaccent",c.getString(R.string.beatbuddy)+" "+c.getString(R.string.accent));
-        addString("beatbuddyfill",c.getString(R.string.beatbuddy)+" "+c.getString(R.string.fill));
-        addString("beatbuddytrans1",c.getString(R.string.beatbuddy)+" "+c.getString(R.string.transition)+" 1");
-        addString("beatbuddytrans2",c.getString(R.string.beatbuddy)+" "+c.getString(R.string.transition)+" 2");
-        addString("beatbuddytrans3",c.getString(R.string.beatbuddy)+" "+c.getString(R.string.transition)+" 3");
-        addString("beatbuddytransnext",c.getString(R.string.beatbuddy)+" "+c.getString(R.string.transition)+" "+c.getString(R.string.next));
-        addString("beatbuddytransexit",c.getString(R.string.beatbuddy)+" "+c.getString(R.string.transition)+" "+c.getString(R.string.exit));
-        addString("beatbuddyhalf",c.getString(R.string.beatbuddy)+" "+c.getString(R.string.half_time));
-        addString("beatbuddyhalfexit",c.getString(R.string.beatbuddy)+" "+c.getString(R.string.half_time)+" "+c.getString(R.string.exit));
-        addString("beatbuddydouble",c.getString(R.string.beatbuddy)+" "+c.getString(R.string.double_time));
-        addString("beatbuddydoubleexit",c.getString(R.string.beatbuddy)+" "+c.getString(R.string.double_time)+" "+c.getString(R.string.exit));
+        addString("beatbuddystart",c.getString(R.string.beat_buddy)+" "+c.getString(R.string.start));
+        addString("beatbuddystop",c.getString(R.string.beat_buddy)+" "+c.getString(R.string.stop));
+        addString("beatbuddypause",c.getString(R.string.beat_buddy)+" "+c.getString(R.string.pause));
+        addString("beatbuddyaccent",c.getString(R.string.beat_buddy)+" "+c.getString(R.string.accent));
+        addString("beatbuddyfill",c.getString(R.string.beat_buddy)+" "+c.getString(R.string.fill));
+        addString("beatbuddytrans1",c.getString(R.string.beat_buddy)+" "+c.getString(R.string.transition)+" 1");
+        addString("beatbuddytrans2",c.getString(R.string.beat_buddy)+" "+c.getString(R.string.transition)+" 2");
+        addString("beatbuddytrans3",c.getString(R.string.beat_buddy)+" "+c.getString(R.string.transition)+" 3");
+        addString("beatbuddytransnext",c.getString(R.string.beat_buddy)+" "+c.getString(R.string.transition)+" "+c.getString(R.string.next));
+        addString("beatbuddytransexit",c.getString(R.string.beat_buddy)+" "+c.getString(R.string.transition)+" "+c.getString(R.string.exit));
+        addString("beatbuddyhalf",c.getString(R.string.beat_buddy)+" "+c.getString(R.string.half_time));
+        addString("beatbuddyhalfexit",c.getString(R.string.beat_buddy)+" "+c.getString(R.string.half_time)+" "+c.getString(R.string.exit));
+        addString("beatbuddydouble",c.getString(R.string.beat_buddy)+" "+c.getString(R.string.double_time));
+        addString("beatbuddydoubleexit",c.getString(R.string.beat_buddy)+" "+c.getString(R.string.double_time)+" "+c.getString(R.string.exit));
 
         addString("","");
 

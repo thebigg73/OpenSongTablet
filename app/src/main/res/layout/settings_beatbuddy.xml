@@ -149,10 +149,11 @@
                 android:visibility="gone"/>
             <TableRow style="@style/DividerLine"/>
 
-            <com.google.android.material.textview.MaterialTextView
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/midi_commands"/>
+                android:text="@string/midi_messages"
+                android:hint="@string/midi_list_item" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/currentSongMessages"
