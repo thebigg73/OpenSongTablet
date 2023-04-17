@@ -356,7 +356,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             song_actions="", settings="", deeplink_preferences="", song_string="", set_string="",
             search_index_start="", search_index_end="", deeplink_metronome="", variation="",
             mode_presenter="", mode_performance="", success="", okay="", pad_playback_info="",
-            no_suitable_application="";
+            no_suitable_application="", indexing_string="", deeplink_edit="";
     private void prepareStrings() {
         // To avoid null context for long tasks throwing error when getting strings
         if (getApplicationContext()!=null) {
@@ -364,6 +364,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             deeplink_sets_backup_restore = getString(R.string.deeplink_sets_backup_restore);
             deeplink_onsong = getString(R.string.deeplink_onsong);
             deeplink_import_file = getString(R.string.deeplink_import_file);
+            deeplink_edit = getString(R.string.deeplink_edit);
             unknown = getString(R.string.unknown);
             mainfoldername = getString(R.string.mainfoldername);
             deeplink_page_buttons = getString(R.string.deeplink_page_buttons);
@@ -403,6 +404,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             okay = getString(R.string.okay);
             pad_playback_info = getString(R.string.pad_playback_info);
             no_suitable_application = getString(R.string.no_suitable_application);
+            indexing_string = getString(R.string.search_index_wait);
         }
     }
     @Override
@@ -1005,17 +1007,21 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         closeDrawer(true);  // Only the Performance and Presenter fragments allow this.  Switched on in these fragments
         actionButtonWasExpanded = myView.actionFAB.getRotation()!=0;
         hideActionButton(true);
-        runOnUiThread(() -> {
-            try {
-                if (deepLink != null) {
-                    navController.navigate(Uri.parse(deepLink));
-                } else {
-                    navController.navigate(id);
+        if (deepLink!=null && deepLink.equals(deeplink_edit) && songListBuildIndex.getCurrentlyIndexing()) {
+            showToast.doIt(indexing_string);
+        } else{
+            runOnUiThread(() -> {
+                try {
+                    if (deepLink != null) {
+                        navController.navigate(Uri.parse(deepLink));
+                    } else {
+                        navController.navigate(id);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
+            });
+        }
         showActionBar();
     }
     @Override
