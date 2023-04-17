@@ -366,7 +366,7 @@ public class PerformanceFragment extends Fragment {
                 // During the load song call, the song is cleared
                 // However it first extracts the folder and filename we've just set
                 mainActivityInterface.getSong().setFolder(folder);
-                mainActivityInterface.getSong().setFilename((filename));
+                mainActivityInterface.getSong().setFilename(filename);
 
                 ExecutorService executorService = Executors.newSingleThreadExecutor();
                 executorService.execute(() -> {

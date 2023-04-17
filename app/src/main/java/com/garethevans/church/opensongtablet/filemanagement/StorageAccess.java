@@ -1196,7 +1196,7 @@ public class StorageAccess {
                 while ((string = reader.readLine()) != null) {
                     stringBuilder.append(string).append("\n");
                 }
-            } catch (Exception e) {
+            } catch (Exception | OutOfMemoryError e) {
                 e.printStackTrace();
             }
             if (reader!=null) {

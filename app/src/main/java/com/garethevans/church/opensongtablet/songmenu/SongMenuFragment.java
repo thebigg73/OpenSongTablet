@@ -747,7 +747,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     }
 
     public void updateSongMenuSortTitles() {
-        if (songListAdapter!=null) {
+        if (songListAdapter!=null && mainActivityInterface!=null) {
             songListAdapter.updateSongMenuSortTitles(mainActivityInterface.getPreferences().
                     getMyPreferenceBoolean("songMenuSortTitles",true));
         }
