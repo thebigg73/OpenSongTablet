@@ -408,6 +408,8 @@
     <string name="mandolin">"Μαντολίνο"</string>
     <string name="margins">Περιθώρια</string>
     <string name="margins_custom">Προσαρμοσμένα πρόσθετα περιθώρια</string>
+    <string name="margins_gestures">Χρήση πλοήγησης με χειρονομίες</string>
+    <string name="margins_gestures_info">Μειώνει το ύψος που προορίζεται για τη γραμμή περιήγησης ώστε να ταιριάζει με τη γραμμή κινήσεων</string>
     <string name="margins_info">Προσαρμόστε τα περιθώρια γύρω από το περιεχόμενο για να αποφύγετε τις εγκοπές οθόνης και τις στρογγυλεμένες γωνίες</string>
     <string name="margins_system">Περιθώρια συστήματος</string>
     <string name="margins_system_info">Αφήστε χώρο για τα στοιχεία ελέγχου συσκευής που εντοπίστηκαν (κάτω γραμμή πλοήγησης και πλευρικά μενού)</string>
@@ -600,6 +602,7 @@
     <string name="scale_width_info">Όταν είναι ενεργοποιημένη, η εφαρμογή μεγεθύνει το κείμενο για να καλύψει το πλάτος της οθόνης. Ίσως χρειαστεί να κάνετε κύλιση προς τα κάτω για να δείτε το υπόλοιπο τραγούδι. Όταν είναι απενεργοποιημένη, η εφαρμογή χωράει ολόκληρο το τραγούδι στο παράθυρο.</string>
     <string name="scaling">Απολέπιση</string>
     <string name="scaling_info">Ρυθμίσεις αυτόματης κλίμακας και κλιμάκωση τομών</string>
+    <string name="screenshot">Στιγμιότυπο οθόνης</string>
     <string name="scripture">"Scripture"</string>
     <string name="scroll">Πάπυρος</string>
     <string name="scroll_amount">"Μετακινήστε το ποσό"</string>

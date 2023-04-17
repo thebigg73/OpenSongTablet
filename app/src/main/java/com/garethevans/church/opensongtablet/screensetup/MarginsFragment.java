@@ -59,6 +59,8 @@ public class MarginsFragment extends Fragment {
         myView.ignoreRoundedCorners.setChecked(mainActivityInterface.getWindowFlags().getIgnoreRoundedCorners());
         myView.navBarKeepSpace.setChecked(mainActivityInterface.getWindowFlags().getNavBarKeepSpace());
         myView.immersiveMode.setChecked(mainActivityInterface.getWindowFlags().getImmersiveMode());
+        myView.gestureNavigation.setVisibility(myView.navBarKeepSpace.getChecked() ? View.VISIBLE:View.GONE);
+        myView.gestureNavigation.setChecked(mainActivityInterface.getWindowFlags().getGestureNavigation());
 
         myView.actionbarLeft.setValue(mainActivityInterface.getWindowFlags().getMarginToolbarLeft());
         myView.actionbarRight.setValue(mainActivityInterface.getWindowFlags().getMarginToolbarRight());
@@ -103,9 +105,23 @@ public class MarginsFragment extends Fragment {
             mainActivityInterface.getWindowFlags().setMargins();
             mainActivityInterface.updateMargins();
             checkVisibilityChange();
+            if (!isChecked) {
+                myView.getRoot().setTranslationY(mainActivityInterface.getWindowFlags().getStatusHeight());
+            } else {
+                myView.getRoot().setTranslationY(0);
+            }
+
         });
         myView.navBarKeepSpace.setOnCheckedChangeListener((buttonView, isChecked) -> {
             mainActivityInterface.getWindowFlags().setNavBarKeepSpace(isChecked);
+            mainActivityInterface.getWindowFlags().hideOrShowSystemBars();
+            mainActivityInterface.getWindowFlags().setMargins();
+            mainActivityInterface.updateMargins();
+            myView.gestureNavigation.setVisibility(isChecked ? View.VISIBLE:View.GONE);
+        });
+        myView.gestureNavigation.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            mainActivityInterface.getWindowFlags().setGestureNavigation(isChecked);
+            mainActivityInterface.getWindowFlags().checkNavBarHeight();
             mainActivityInterface.getWindowFlags().hideOrShowSystemBars();
             mainActivityInterface.getWindowFlags().setMargins();
             mainActivityInterface.updateMargins();

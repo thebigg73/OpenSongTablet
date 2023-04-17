@@ -408,6 +408,8 @@
     <string name="mandolin">Mandolina</string>
     <string name="margins">Margine</string>
     <string name="margins_custom">Prilagođene dodatne margine</string>
+    <string name="margins_gestures">Korišćenje pokretne navigacije</string>
+    <string name="margins_gestures_info">Smanjuje visinu rezervisanu za traku za navigaciju tako da odgovara traci za pokrete</string>
     <string name="margins_info">Podesite margine oko sadržaja da biste izbegli isečke na ekranu i zaobljene uglove</string>
     <string name="margins_system">Sistemske margine</string>
     <string name="margins_system_info">Ostavite prostor za detektovane kontrole uređaja (donja traka za navigaciju i bočni meniji)</string>
@@ -600,6 +602,7 @@
     <string name="scale_width_info">Kada je uključena, aplikacija zumira tekst da bi popunila širinu ekrana. Možda ćete morati da skrolujete nadole da biste videli ostatak pesme. Kada je isključena, aplikacija uklapa celu pesmu u prozor.</string>
     <string name="scaling">Skaliranje</string>
     <string name="scaling_info">Podešavanja automatskog skaliranja i skaliranje sekcija</string>
+    <string name="screenshot">Snimak ekrana</string>
     <string name="scripture">Skripta</string>
     <string name="scroll">Svitak</string>
     <string name="scroll_amount">Pomični iznos</string>

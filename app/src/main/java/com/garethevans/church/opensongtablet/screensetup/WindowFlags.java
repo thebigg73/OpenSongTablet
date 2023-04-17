@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.RoundedCorner;
 import android.view.Surface;
 import android.view.View;
@@ -45,12 +46,13 @@ public class WindowFlags {
 
      */
 
+    private final Context c;
     private final Window w;
     private final MainActivityInterface mainActivityInterface;
     private final WindowInsetsControllerCompat windowInsetsControllerCompat;
     private WindowInsetsCompat insetsCompat;
     private DisplayCutoutCompat displayCutoutCompat;
-    private Insets systemGestures, navBars, statusBars, systemBars;
+    private Insets systemGestures, navBars, statusBars, systemBars, mandatoryInset;
     @SuppressWarnings({"FieldCanBeLocal", "unused"})
     private final String TAG = "WindowFlags";
     private final float density;
@@ -65,7 +67,7 @@ public class WindowFlags {
     private int[] totalMargins = new int[4];
     private boolean immersiveMode, ignoreCutouts, navBarKeepSpace,
             showStatus, showStatusInCutout, showNav, currentTopHasCutout, ignoreRoundedCorners,
-            isNavAtBottom;
+            isNavAtBottom, gestureNavigation;
     private final int typeStatusBars = WindowInsetsCompat.Type.statusBars(),
             typeNavBars = WindowInsetsCompat.Type.navigationBars(),
             typeIme = WindowInsetsCompat.Type.ime(),
@@ -76,6 +78,7 @@ public class WindowFlags {
 
     // This is called once when the class is instantiated.
     public WindowFlags(Context c, Window w) {
+        this.c = c;
         this.w = w;
         mainActivityInterface = (MainActivityInterface) c;
         windowInsetsControllerCompat = WindowCompat.getInsetsController(w, w.getDecorView());
@@ -93,6 +96,7 @@ public class WindowFlags {
             @SuppressLint("DiscouragedApi") int resourceId = c.getResources().getIdentifier("config_navBarInteractionMode", "integer", "android");
             if (resourceId > 0) {
                 if (c.getResources().getInteger(resourceId) == 2) {
+                    gestureNavigation = true;
                     defaultKeepNavSpace = true;
                 }
             }
@@ -109,6 +113,7 @@ public class WindowFlags {
         ignoreRoundedCorners = mainActivityInterface.getPreferences().getMyPreferenceBoolean("ignoreRoundedCorners",true);
         marginToolbarLeft = mainActivityInterface.getPreferences().getMyPreferenceInt("marginToolbarLeft",0);
         marginToolbarRight = mainActivityInterface.getPreferences().getMyPreferenceInt("marginToolbarRight",0);
+        gestureNavigation = mainActivityInterface.getPreferences().getMyPreferenceBoolean("gestureNavigation",true);
     }
 
     // Initialise the WindowInsetsCompat from MainActivity (once it is ready)
@@ -118,6 +123,7 @@ public class WindowFlags {
         firstBootRotation = w.getDecorView().getDisplay().getRotation();
         displayCutoutCompat = insetsCompat.getDisplayCutout();
         systemGestures = insetsCompat.getInsetsIgnoringVisibility(typeGestures);
+        mandatoryInset = insetsCompat.getInsets(WindowInsetsCompat.Type.mandatorySystemGestures());
         navBars = insetsCompat.getInsetsIgnoringVisibility(typeNavBars);
         statusBars = insetsCompat.getInsetsIgnoringVisibility(typeStatusBars);
         systemBars = insetsCompat.getInsetsIgnoringVisibility(typeSystemBars);
@@ -160,7 +166,20 @@ public class WindowFlags {
     public void checkNavBarHeight() {
         // Navbar could be left, bottom, right if screen is small and rotated)
         // Measure each position (should only be 1) and use the biggest
-        navHeight = Math.max(navBars.bottom,Math.max(navBars.left,navBars.right));
+        if (gestureNavigation) {
+            navHeight = 42;
+        } else {
+            navHeight = Math.max(navBars.bottom, Math.max(navBars.left, navBars.right));
+        }
+        Log.d(TAG,"navHeight="+navHeight);
+    }
+
+    public void setGestureNavigation(boolean gestureNavigation) {
+        this.gestureNavigation = gestureNavigation;
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean("gestureNavigation",gestureNavigation);
+    }
+    public boolean getGestureNavigation() {
+        return gestureNavigation;
     }
 
     // Set and hold a reference to the soft keyboard height
@@ -561,7 +580,15 @@ public class WindowFlags {
         // Add the nav height to the correct margin
         int nav = 0;
         if (showNav) {
+            if (gestureNavigation) {
+                navHeight = 42;
+            }
             nav = navHeight;
+            Log.d(TAG,"navHeight:"+nav);
+            Log.d(TAG,"mandatoryInset.bottom:"+mandatoryInset.bottom);
+            Log.d(TAG,"systemGestures.bottom:"+systemGestures.bottom);
+            Log.d(TAG,"systemBars.bottom:"+systemBars.bottom);
+
         }
         switch (navBarPosition) {
             case "b":

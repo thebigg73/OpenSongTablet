@@ -408,6 +408,8 @@
     <string name="mandolin">マンドリン</string>
     <string name="margins">余白</string>
     <string name="margins_custom">カスタム追加マージン</string>
+    <string name="margins_gestures">ジェスチャ ナビゲーションの使用</string>
+    <string name="margins_gestures_info">ナビゲーション バー用に予約されている高さをジェスチャ バーに合わせて減らします。</string>
     <string name="margins_info">画面の切り抜きや角の丸みを避けるために、コンテンツの周囲の余白を調整します</string>
     <string name="margins_system">システムマージン</string>
     <string name="margins_system_info">検出されたデバイス コントロール (下部のナビゲーション バーとサイド メニュー) 用のスペースを残す</string>
@@ -600,6 +602,7 @@
     <string name="scale_width_info">オンにすると、アプリは画面の幅全体にテキストをズームします。 曲の残りの部分を表示するには、下にスクロールする必要がある場合があります。 オフの場合、アプリは曲全体をウィンドウに合わせます。</string>
     <string name="scaling">スケーリング</string>
     <string name="scaling_info">自動スケーリング設定とセクションスケーリング</string>
+    <string name="screenshot">スクリーンショット</string>
     <string name="scripture">"聖書"</string>
     <string name="scroll">スクロール</string>
     <string name="scroll_amount">"スクロール量"</string>

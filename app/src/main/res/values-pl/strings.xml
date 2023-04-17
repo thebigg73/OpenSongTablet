@@ -408,6 +408,8 @@
     <string name="mandolin">Mandolina</string>
     <string name="margins">Marże</string>
     <string name="margins_custom">Niestandardowe dodatkowe marże</string>
+    <string name="margins_gestures">Korzystanie z nawigacji gestami</string>
+    <string name="margins_gestures_info">Zmniejsza wysokość zarezerwowaną dla paska nawigacyjnego, aby dopasować ją do paska gestów</string>
     <string name="margins_info">Dostosuj marginesy wokół treści, aby uniknąć wycięcia ekranu i zaokrąglonych rogów</string>
     <string name="margins_system">Marże systemowe</string>
     <string name="margins_system_info">Zostaw miejsce na wykryte elementy sterujące urządzenia (dolny pasek nawigacyjny i boczne menu)</string>
@@ -600,6 +602,7 @@
     <string name="scale_width_info">Po włączeniu aplikacja powiększa tekst, aby wypełnić szerokość ekranu. Być może będziesz musiał przewinąć w dół, aby zobaczyć resztę utworu. Gdy jest wyłączona, aplikacja dopasowuje całą piosenkę do okna.</string>
     <string name="scaling">Skalowanie</string>
     <string name="scaling_info">Ustawienia autoskalowania i skalowanie sekcji</string>
+    <string name="screenshot">Zrzut ekranu</string>
     <string name="scripture">"Pismo"</string>
     <string name="scroll">Zwój</string>
     <string name="scroll_amount">"Kwota przewijania"</string>

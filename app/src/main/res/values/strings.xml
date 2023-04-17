@@ -555,6 +555,8 @@
     <string name="mandolin">Mandolin</string>
     <string name="margins">Margins</string>
     <string name="margins_custom">Custom additional margins</string>
+    <string name="margins_gestures">Using gesture navigation</string>
+    <string name="margins_gestures_info">Reduces the height reserved for the navigation bar to match the gesture bar</string>
     <string name="margins_info">Adjust the margins around the content to avoid screen cutouts and rounded corners</string>
     <string name="margins_system">System margins</string>
     <string name="margins_system_info">Leave space for detected device controls (bottom navigation bar and side menus)</string>
@@ -760,6 +762,7 @@
     <string name="scale_width_info">When switched on, the app zooms the text to fill the width of the screen.  You might have to scroll down to see the rest of the song.  When off, the app fits the entire song into the window.</string>
     <string name="scaling">Scaling</string>
     <string name="scaling_info">Autoscale settings and section scaling</string>
+    <string name="screenshot">Screenshot</string>
     <string name="scripture">Scripture</string>
     <string name="scroll">Scroll</string>
     <string name="scroll_amount">Scroll amount</string>
@@ -1156,5 +1159,4 @@ Check out the categories in the right hand options menu.
     <string name="youtube" translatable="false">YouTube</string>
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zoom_level">Zoom level</string>
-    <string name="screenshot">Screenshot</string>
 </resources>

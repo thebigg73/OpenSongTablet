@@ -408,6 +408,8 @@
     <string name="mandolin">Mандоліна</string>
     <string name="margins">Поля</string>
     <string name="margins_custom">Індивідуальні додаткові націнки</string>
+    <string name="margins_gestures">Використання навігації жестами</string>
+    <string name="margins_gestures_info">Зменшує висоту, зарезервовану для панелі переходів, щоб вона відповідала панелі жестів</string>
     <string name="margins_info">Відрегулюйте поля навколо вмісту, щоб уникнути вирізів на екрані та закруглених кутів</string>
     <string name="margins_system">Системні поля</string>
     <string name="margins_system_info">Залиште місце для виявлених елементів керування пристроєм (нижня панель навігації та бічні меню)</string>
@@ -600,6 +602,7 @@
     <string name="scale_width_info">При включенні програма масштабує текст, щоб заповнити ширину екрана. Можливо, вам доведеться прокрутити вниз, щоб побачити решту пісні. У вимкненому режимі програма поміщає всю пісню у вікно.</string>
     <string name="scaling">Масштабування</string>
     <string name="scaling_info">Налаштування автоматичного масштабування та масштабування розділів</string>
+    <string name="screenshot">Скріншот</string>
     <string name="scripture">Священний писання</string>
     <string name="scroll">Прокрутка</string>
     <string name="scroll_amount">Інтервал прокрутки</string>

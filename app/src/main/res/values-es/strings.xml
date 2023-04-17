@@ -408,6 +408,8 @@
     <string name="mandolin">Mandolina</string>
     <string name="margins">Márgenes</string>
     <string name="margins_custom">Márgenes adicionales personalizados</string>
+    <string name="margins_gestures">Uso de la navegación por gestos</string>
+    <string name="margins_gestures_info">Reduce la altura reservada para que la barra de navegación coincida con la barra de gestos</string>
     <string name="margins_info">Ajuste los márgenes alrededor del contenido para evitar recortes de pantalla y esquinas redondeadas</string>
     <string name="margins_system">Márgenes del sistema</string>
     <string name="margins_system_info">Deje espacio para los controles del dispositivo detectado (barra de navegación inferior y menús laterales)</string>
@@ -600,6 +602,7 @@
     <string name="scale_width_info">Cuando está activada, la aplicación amplía el texto para llenar el ancho de la pantalla. Es posible que tengas que desplazarte hacia abajo para ver el resto de la canción. Cuando está desactivada, la aplicación ajusta toda la canción en la ventana.</string>
     <string name="scaling">Escalada</string>
     <string name="scaling_info">Ajustes de escalado automático y escalado de secciones</string>
+    <string name="screenshot">Captura de pantalla</string>
     <string name="scripture">"Sagrada Escritura"</string>
     <string name="scroll">Desplazarse</string>
     <string name="scroll_amount">"Cantidad de desplazamiento"</string>

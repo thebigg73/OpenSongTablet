@@ -408,6 +408,8 @@
     <string name="mandolin">Mандолина</string>
     <string name="margins">Поля</string>
     <string name="margins_custom">Пользовательские дополнительные поля</string>
+    <string name="margins_gestures">Использование навигации жестами</string>
+    <string name="margins_gestures_info">Уменьшает высоту, зарезервированную для панели навигации, чтобы она соответствовала панели жестов</string>
     <string name="margins_info">Отрегулируйте поля вокруг содержимого, чтобы избежать вырезов экрана и закругленных углов.</string>
     <string name="margins_system">Системные поля</string>
     <string name="margins_system_info">Оставьте место для элементов управления обнаруженными устройствами (нижняя панель навигации и боковые меню).</string>
@@ -600,6 +602,7 @@
     <string name="scale_width_info">При включении приложение масштабирует текст на всю ширину экрана. Возможно, вам придется прокрутить вниз, чтобы увидеть остальную часть песни. В выключенном состоянии приложение помещает всю песню в окно.</string>
     <string name="scaling">Масштабирование</string>
     <string name="scaling_info">Настройки автомасштабирования и масштабирование раздела</string>
+    <string name="screenshot">Скриншот</string>
     <string name="scripture">"Cвященное писание"</string>
     <string name="scroll">Прокрутить</string>
     <string name="scroll_amount">"Интервал прокрутки"</string>

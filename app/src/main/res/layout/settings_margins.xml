@@ -32,6 +32,14 @@
                 android:layout_marginBottom="16dp"/>
 
             <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                android:id="@+id/gestureNavigation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/margins_gestures"
+                android:hint="@string/margins_gestures_info"
+                android:layout_marginBottom="16dp"/>
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
                 android:id="@+id/ignoreCutouts"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

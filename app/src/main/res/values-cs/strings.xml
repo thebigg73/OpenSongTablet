@@ -408,6 +408,8 @@
     <string name="mandolin">Mandolína</string>
     <string name="margins">边距</string>
     <string name="margins_custom">Vlastní dodatečné okraje</string>
+    <string name="margins_gestures">Použití navigace gesty</string>
+    <string name="margins_gestures_info">Zmenší výšku vyhrazenou pro navigační panel tak, aby odpovídala panelu gest</string>
     <string name="margins_info">Upravte okraje kolem obsahu, abyste se vyhnuli výřezům na obrazovce a zaobleným rohům</string>
     <string name="margins_system">Systémové marže</string>
     <string name="margins_system_info">Ponechat místo pro ovládací prvky detekovaného zařízení (spodní navigační lišta a boční nabídky)</string>
@@ -600,6 +602,7 @@
     <string name="scale_width_info">Po zapnutí aplikace přiblíží text tak, aby vyplnil celou šířku obrazovky. Možná budete muset posunout dolů, abyste viděli zbytek skladby. Když je vypnutá, aplikace se do okna vejde celá skladba.</string>
     <string name="scaling">Měřítko</string>
     <string name="scaling_info">Nastavení automatického měřítka a měřítka sekcí</string>
+    <string name="screenshot">Snímek obrazovky</string>
     <string name="scripture">"Písmo svaté"</string>
     <string name="scroll">Svitek</string>
     <string name="scroll_amount">"Množství posunu"</string>

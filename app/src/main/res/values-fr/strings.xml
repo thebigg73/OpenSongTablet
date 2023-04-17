@@ -408,6 +408,8 @@
     <string name="mandolin">Mandoline</string>
     <string name="margins">Marges</string>
     <string name="margins_custom">Marges supplémentaires personnalisées</string>
+    <string name="margins_gestures">Utilisation de la navigation gestuelle</string>
+    <string name="margins_gestures_info">Réduit la hauteur réservée à la barre de navigation pour qu’elle corresponde à la barre de mouvements</string>
     <string name="margins_info">Ajustez les marges autour du contenu pour éviter les coupures d\'écran et les coins arrondis</string>
     <string name="margins_system">Marges du système</string>
     <string name="margins_system_info">Laissez de l\'espace pour les commandes de l\'appareil détecté (barre de navigation inférieure et menus latéraux)</string>
@@ -600,6 +602,7 @@
     <string name="scale_width_info">Lorsqu\'elle est activée, l\'application agrandit le texte pour remplir la largeur de l\'écran. Vous devrez peut-être faire défiler vers le bas pour voir le reste de la chanson. Lorsqu\'elle est désactivée, l\'application place la chanson entière dans la fenêtre.</string>
     <string name="scaling">Mise à l\'échelle</string>
     <string name="scaling_info">Paramètres de mise à l\'échelle automatique et mise à l\'échelle de la section</string>
+    <string name="screenshot">Capture d’écran</string>
     <string name="scripture">"Texte sacré"</string>
     <string name="scroll">Faire défiler</string>
     <string name="scroll_amount">"Montant de défilement"</string>

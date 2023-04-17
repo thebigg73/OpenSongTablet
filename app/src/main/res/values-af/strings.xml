@@ -408,6 +408,8 @@
     <string name="mandolin">Mandolien</string>
     <string name="margins">Marges</string>
     <string name="margins_custom">Pasgemaakte bykomende marges</string>
+    <string name="margins_gestures">Gebruik gebaarnavigasie</string>
+    <string name="margins_gestures_info">Verminder die hoogte wat gereserveer is vir die navigasiebalk om by die gebaarbalk te pas</string>
     <string name="margins_info">Pas die kantlyne rondom die inhoud aan om skermuitknipsels en afgeronde hoeke te vermy</string>
     <string name="margins_system">System margins</string>
     <string name="margins_system_info">Los spasie vir bespeurde toestelkontroles (onderste navigasiebalk en sykieslyste)</string>
@@ -600,6 +602,7 @@
     <string name="scale_width_info">Wanneer dit aangeskakel is, zoom die toepassing die teks in om die breedte van die skerm te vul. Jy sal dalk af moet blaai om die res van die liedjie te sien. As dit af is, pas die toepassing die hele liedjie in die venster.</string>
     <string name="scaling">Skaal</string>
     <string name="scaling_info">Outoskaal instellings en seksie skaal</string>
+    <string name="screenshot">Skermskoot</string>
     <string name="scripture">"Skrif"</string>
     <string name="scroll">Blaai</string>
     <string name="scroll_amount">"Scroll bedrag"</string>

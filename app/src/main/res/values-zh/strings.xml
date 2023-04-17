@@ -408,6 +408,8 @@
     <string name="mandolin">曼多林</string>
     <string name="margins">边距</string>
     <string name="margins_custom">自定义附加边距</string>
+    <string name="margins_gestures">使用手势导航</string>
+    <string name="margins_gestures_info">减小为导航栏保留的高度以匹配手势栏</string>
     <string name="margins_info">调整内容周围的边距以避免屏幕切口和圆角</string>
     <string name="margins_system">系统边距</string>
     <string name="margins_system_info">为检测到的设备控件留出空间（底部导航栏和侧边菜单）</string>
@@ -600,6 +602,7 @@
     <string name="scale_width_info">打开后，应用程序会缩放文本以填充屏幕的宽度。 您可能需要向下滚动才能看到歌曲的其余部分。 关闭时，应用程序会将整首歌曲放入窗口。</string>
     <string name="scaling">缩放</string>
     <string name="scaling_info">自动缩放设置和截面缩放</string>
+    <string name="screenshot">截图</string>
     <string name="scripture">"圣经"</string>
     <string name="scroll">滚动</string>
     <string name="scroll_amount">"滚动量"</string>

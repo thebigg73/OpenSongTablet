@@ -408,6 +408,8 @@
     <string name="mandolin">Mandolim</string>
     <string name="margins">Margens</string>
     <string name="margins_custom">Margens adicionais personalizadas</string>
+    <string name="margins_gestures">Usando a navegação por gestos</string>
+    <string name="margins_gestures_info">Reduz a altura reservada para a barra de navegação para corresponder à barra de gestos</string>
     <string name="margins_info">Ajuste as margens ao redor do conteúdo para evitar recortes de tela e cantos arredondados</string>
     <string name="margins_system">Margens do sistema</string>
     <string name="margins_system_info">Deixe espaço para os controles do dispositivo detectados (barra de navegação inferior e menus laterais)</string>
@@ -600,6 +602,7 @@
     <string name="scale_width_info">Quando ligado, o aplicativo amplia o texto para preencher a largura da tela. Você pode ter que rolar para baixo para ver o resto da música. Quando desativado, o aplicativo ajusta a música inteira na janela.</string>
     <string name="scaling">Escala</string>
     <string name="scaling_info">Configurações de dimensionamento automático e dimensionamento de seção</string>
+    <string name="screenshot">Captura de tela</string>
     <string name="scripture">"Bíblia"</string>
     <string name="scroll">Rolagem</string>
     <string name="scroll_amount">"Quantidade de rolagem"</string>

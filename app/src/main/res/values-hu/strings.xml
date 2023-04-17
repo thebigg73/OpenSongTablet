@@ -408,6 +408,8 @@
     <string name="mandolin">Mandolin</string>
     <string name="margins">Margók</string>
     <string name="margins_custom">Egyedi kiegészítő margók</string>
+    <string name="margins_gestures">Kézmozdulatos navigáció használata</string>
+    <string name="margins_gestures_info">Csökkenti a navigációs sáv számára fenntartott magasságot, hogy illeszkedjen a kézmozdulatsávhoz</string>
     <string name="margins_info">Állítsa be a margókat a tartalom körül, hogy elkerülje a képernyő kivágásait és lekerekített sarkait</string>
     <string name="margins_system">Rendszer margók</string>
     <string name="margins_system_info">Hagyjon helyet az észlelt eszközvezérlőknek (alsó navigációs sáv és oldalsó menük)</string>
@@ -600,6 +602,7 @@
     <string name="scale_width_info">Bekapcsolt állapotban az alkalmazás kinagyítja a szöveget, hogy kitöltse a képernyő szélességét. Lehet, hogy le kell görgetnie a dal többi részének megtekintéséhez. Kikapcsolt állapotban az alkalmazás a teljes dalt az ablakba illeszti.</string>
     <string name="scaling">Méretezés</string>
     <string name="scaling_info">Automatikus méretezési beállítások és szakaszméretezés</string>
+    <string name="screenshot">Pillanatkép</string>
     <string name="scripture">"Szentírás"</string>
     <string name="scroll">Tekercs</string>
     <string name="scroll_amount">"Scroll összeg"</string>
