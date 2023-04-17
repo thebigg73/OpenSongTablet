@@ -565,7 +565,17 @@ public class PerformanceFragment extends Fragment {
         myView.zoomLayout.setPageSize(availableWidth, availableHeight);
 
         if (widthBeforeScale>0 && heightBeforeScale>0) {
-            scaleFactor = Math.min((float)availableWidth/(float)widthBeforeScale, (float)availableHeight/(float)heightBeforeScale);
+            String scaleMethod = mainActivityInterface.getPreferences().getMyPreferenceString("songAutoScale", "W");
+            switch (scaleMethod) {
+                case "W":
+                    scaleFactor = (float) availableWidth / (float) widthBeforeScale;
+                    break;
+                case "Y":
+                    scaleFactor = Math.min((float) availableWidth / (float) widthBeforeScale, (float) availableHeight / (float) heightBeforeScale);
+                    break;
+                default:
+                    scaleFactor = 1f;
+            }
         } else {
             scaleFactor = 1f;
         }
@@ -799,7 +809,7 @@ public class PerformanceFragment extends Fragment {
 
                         // Slide in
                         long QOSAdjustment = doSongLoadQOSTime - (System.currentTimeMillis() - doSongLoadStartTime);
-                        Log.d(TAG, "Song QOS adjustment: " + Math.max(0, QOSAdjustment) + " (" + (doSongLoadQOSTime - QOSAdjustment) + ")");
+                        //Log.d(TAG, "Song QOS adjustment: " + Math.max(0, QOSAdjustment) + " (" + (doSongLoadQOSTime - QOSAdjustment) + ")");
 
                         myView.recyclerView.setVisibility(View.VISIBLE);
 
@@ -905,7 +915,7 @@ public class PerformanceFragment extends Fragment {
 
                 // Slide in
                 long QOSAdjustment = doSongLoadQOSTime - (System.currentTimeMillis() - doSongLoadStartTime);
-                Log.d(TAG, "Song QOS adjustment: " + Math.max(0, QOSAdjustment) + " (" + (doSongLoadQOSTime - QOSAdjustment) + ")");
+                //Log.d(TAG, "Song QOS adjustment: " + Math.max(0, QOSAdjustment) + " (" + (doSongLoadQOSTime - QOSAdjustment) + ")");
 
                 myView.zoomLayout.postDelayed(() -> {
                     try {
