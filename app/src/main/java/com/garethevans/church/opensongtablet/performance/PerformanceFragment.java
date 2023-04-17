@@ -2,8 +2,10 @@ package com.garethevans.church.opensongtablet.performance;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -882,7 +884,7 @@ public class PerformanceFragment extends Fragment {
                     11   col3_3Width,        // Column 3 max width
                     12   col3_3Height,       // Column 3 total height
                     13   sectionSpace};      // Section space per view except last in column */
-                    widthBeforeScale = (int)availableWidth;
+                    widthBeforeScale = availableWidth;
                     heightBeforeScale = (int)Math.max(scaleInfo[6],Math.max(scaleInfo[9],scaleInfo[12]));
                     widthAfterScale = availableWidth;
                     scaleFactor = Math.max(scaleInfo[4],Math.max(scaleInfo[7],scaleInfo[10]));
@@ -1034,79 +1036,86 @@ public class PerformanceFragment extends Fragment {
     }
     private void dealWithHighlighterFile(int w, int h) {
         try {
-            if (myView!=null) {
-                // Set the highlighter image view to match
-                myView.highlighterView.setVisibility(View.INVISIBLE);
-                // Once the view is ready at the required size, deal with it
-                ViewTreeObserver highlighterVTO = myView.highlighterView.getViewTreeObserver();
-                highlighterVTO.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                    @Override
-                    public void onGlobalLayout() {
-                        try {
-                            if (getContext()!= null) {
-                                myView.highlighterView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                                // Load in the bitmap with these dimensions
-                                // v5 used portrait and landscape views.  However, now if we only have one
-                                // column, we will always load the portrait view
-                                // landscape is now for columns
-                                Bitmap highlighterBitmap = mainActivityInterface.getProcessSong().
-                                        getHighlighterFile(0, 0);
+            if (getContext()!=null) {
+                String highlighterFilename = mainActivityInterface.getProcessSong().
+                        getHighlighterFilename(mainActivityInterface.getSong(),
+                                getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT);
+                Uri highlighterUri = mainActivityInterface.getStorageAccess().getUriForItem("Highlighter","",highlighterFilename);
 
-                                if (highlighterBitmap != null &&
-                                        mainActivityInterface.getPreferences().getMyPreferenceBoolean("drawingAutoDisplay", true)) {
+                if (myView!=null && mainActivityInterface.getStorageAccess().uriExists(highlighterUri)) {
+                    // Set the highlighter image view to match
+                    myView.highlighterView.setVisibility(View.INVISIBLE);
+                    // Once the view is ready at the required size, deal with it
+                    ViewTreeObserver highlighterVTO = myView.highlighterView.getViewTreeObserver();
+                    highlighterVTO.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                        @Override
+                        public void onGlobalLayout() {
+                            try {
+                                if (getContext() != null) {
+                                    myView.highlighterView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                                    // Load in the bitmap with these dimensions
+                                    // v5 used portrait and landscape views.  However, now if we only have one
+                                    // column, we will always load the portrait view
+                                    // landscape is now for columns
+                                    Bitmap highlighterBitmap = mainActivityInterface.getProcessSong().
+                                            getHighlighterFile(0, 0);
 
-                                    myView.highlighterView.setVisibility(View.VISIBLE);
-                                    ViewGroup.LayoutParams rlp = myView.highlighterView.getLayoutParams();
-                                    rlp.width = (int) ((float) w * scaleFactor);
-                                    rlp.height = (int) ((float) h * scaleFactor);
+                                    if (highlighterBitmap != null &&
+                                            mainActivityInterface.getPreferences().getMyPreferenceBoolean("drawingAutoDisplay", true)) {
 
-                                    myView.highlighterView.setLayoutParams(rlp);
-                                    RequestOptions requestOptions = new RequestOptions().centerInside().override(rlp.width, rlp.height);
-                                    Glide.with(getContext()).load(highlighterBitmap).
-                                            apply(requestOptions).
-                                            into(myView.highlighterView);
+                                        myView.highlighterView.setVisibility(View.VISIBLE);
+                                        ViewGroup.LayoutParams rlp = myView.highlighterView.getLayoutParams();
+                                        rlp.width = (int) ((float) w * scaleFactor);
+                                        rlp.height = (int) ((float) h * scaleFactor);
 
-                                    myView.highlighterView.setPivotX(0f);
-                                    myView.highlighterView.setPivotY(0f);
+                                        myView.highlighterView.setLayoutParams(rlp);
+                                        RequestOptions requestOptions = new RequestOptions().centerInside().override(rlp.width, rlp.height);
+                                        Glide.with(getContext()).load(highlighterBitmap).
+                                                apply(requestOptions).
+                                                into(myView.highlighterView);
 
-                                    // Hide after a certain length of time
-                                    int timetohide = mainActivityInterface.getPreferences().getMyPreferenceInt("timeToDisplayHighlighter", 0);
-                                    if (timetohide != 0) {
-                                        autoHideHighlighterHandler.postDelayed(
-                                            autoHideHighlighterRunnable, timetohide * 1000L);
-                                    }
-                                } else {
-                                    myView.highlighterView.post(() -> {
-                                        if (myView != null) {
-                                            try {
-                                                myView.highlighterView.setVisibility(View.GONE);
-                                            } catch (Exception e) {
-                                                e.printStackTrace();
-                                            }
+                                        myView.highlighterView.setPivotX(0f);
+                                        myView.highlighterView.setPivotY(0f);
+
+                                        // Hide after a certain length of time
+                                        int timetohide = mainActivityInterface.getPreferences().getMyPreferenceInt("timeToDisplayHighlighter", 0);
+                                        if (timetohide != 0) {
+                                            autoHideHighlighterHandler.postDelayed(
+                                                    autoHideHighlighterRunnable, timetohide * 1000L);
                                         }
-                                    });
+                                    } else {
+                                        myView.highlighterView.post(() -> {
+                                            if (myView != null) {
+                                                try {
+                                                    myView.highlighterView.setVisibility(View.GONE);
+                                                } catch (Exception e) {
+                                                    e.printStackTrace();
+                                                }
+                                            }
+                                        });
+                                    }
                                 }
+                            } catch (Exception e) {
+                                e.printStackTrace();
                             }
+                        }
+                    });
+                    myView.highlighterView.post(() -> {
+                        try {
+                            myView.highlighterView.requestLayout();
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-                    }
-                });
-                myView.highlighterView.post(() -> {
-                    try {
-                        myView.highlighterView.requestLayout();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                });
-            } else if (myView!=null) {
-                myView.highlighterView.post(() -> {
-                    try {
-                        myView.highlighterView.setVisibility(View.GONE);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                });
+                    });
+                } else if (myView!=null) {
+                    myView.highlighterView.post(() -> {
+                        try {
+                            myView.highlighterView.setVisibility(View.GONE);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    });
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();

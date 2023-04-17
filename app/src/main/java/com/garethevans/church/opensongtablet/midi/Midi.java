@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
@@ -313,6 +314,19 @@ public class Midi {
             }
         }
     }
+    public void sendMidiHexSequence(String sequence) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
+                sequence!=null && !sequence.isEmpty()) {
+            String[] messages = sequence.split("\n");
+            for (int x=0; x<messages.length; x++) {
+                int finalX = x;
+                new Handler().postDelayed(() -> {
+                    Log.d(TAG,"sending:"+messages[finalX]);
+                    sendMidi(returnBytesFromHexText(messages[finalX]));
+                }, (long) midiDelay * x);
+            }
+        }
+    }
 
     public void playMidiNotes(String chordCode, String tuning, long timeBetweenNotes, int turnOffNoteTime) {
         // Tuning notes can be set as chords: 0xxxxx for a guitar 6th string
@@ -442,8 +456,8 @@ public class Midi {
     public String buildMidiString(String action, int channel, int byte2, int byte3) {
         String s = "";
         String b1 = "0x";                               // This initialises the hex numbering convention
-        String b2 = " 0x" + Integer.toHexString(byte2).toUpperCase(Locale.ROOT); // Convert numbers 0-127 to hex
-        String b3 = " 0x" + Integer.toHexString(byte3).toUpperCase(Locale.ROOT);
+        String b2 = " 0x" + String.format("%02X", byte2); // Convert numbers 0-127 to hex 2 digits
+        String b3 = " 0x" + String.format("%02X", byte3);
         String hexString = Integer.toHexString(channel).toUpperCase(Locale.ROOT);
         String bCommon = b1 + "B" + Integer.toHexString(channel).toUpperCase(Locale.ROOT);
         switch (action) {
@@ -570,6 +584,7 @@ public class Midi {
         String messages = mainActivityInterface.getSong().getMidi();
 
         if (messages != null) {
+            messages = messages.trim();
             String[] bits = messages.split("\n");
             Collections.addAll(songMidiMessages, bits);
         }

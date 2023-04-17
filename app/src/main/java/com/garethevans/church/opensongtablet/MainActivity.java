@@ -912,12 +912,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         this.alreadyBackPressed = alreadyBackPressed;
     }
     public void interceptBackPressed() {
-        Log.d(TAG,"onBackPressed()");
-        if (alreadyBackPressed) {
+        if (alreadyBackPressed && !settingsOpen) {
             // Close the app
             confirmedAction(true,"exit",null,null,null,null);
-        }
-        if (navController!=null && navController.getCurrentDestination()!=null) {
+        } else if (settingsOpen) {
+            navController.navigateUp();
+        } else if (navController != null && navController.getCurrentDestination() != null) {
             alreadyBackPressed = true;
             try {
                 int id = Objects.requireNonNull(navController.getCurrentDestination()).getId();
@@ -931,7 +931,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 super.onBackPressed();
             }
         }
-
     }
 
 
@@ -955,7 +954,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             // IV - We set settingsOpen based on the navDestination
             settingsOpen = !((navDestination.getId()==R.id.performanceFragment ||
                     navDestination.getId()==R.id.presenterFragment));
-            Log.d(TAG, "navController.addOnDestinationChangedListener settingsOpen= " + settingsOpen);
             // IV - We are changing so adjust option menu elements
             if (globalMenuItem != null) {
                 // IV - To smooth teardown, we clear elements left to right
@@ -997,7 +995,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void navigateToFragment(String deepLink, int id) {
-        Log.d(TAG,"deepLink:"+deepLink+"  id:"+id);
         // Either sent a deeplink string, or a fragment id
         lockDrawer(true);
         closeDrawer(true);  // Only the Performance and Presenter fragments allow this.  Switched on in these fragments

@@ -269,6 +269,17 @@ public class PageButtons {
         prepareOption("pedals",c.getString(R.string.pedal),c.getString(R.string.settings),"",R.drawable.pedal);
         prepareOption("midi",c.getString(R.string.midi),c.getString(R.string.midi_send),c.getString(R.string.midi_auto)+" "+
                 c.getString(R.string.on)+" / "+c.getString(R.string.off),R.drawable.midi);
+        prepareOption("beatbuddystart",c.getString(R.string.beatbuddy)+" "+c.getString(R.string.start),c.getString(R.string.start),c.getString(R.string.stop),R.drawable.beatbuddy_start);
+        prepareOption("beatbuddystop",c.getString(R.string.beatbuddy)+" "+c.getString(R.string.stop),c.getString(R.string.stop),"",R.drawable.beatbuddy_stop);
+        prepareOption("beatbuddypause",c.getString(R.string.beatbuddy)+" "+c.getString(R.string.pause),c.getString(R.string.pause),"",R.drawable.beatbuddy_pause);
+        prepareOption("beatbuddyaccent",c.getString(R.string.beatbuddy)+" "+c.getString(R.string.accent),c.getString(R.string.accent),c.getString(R.string.fill),R.drawable.beatbuddy_accent);
+        prepareOption("beatbuddyfill",c.getString(R.string.beatbuddy)+" "+c.getString(R.string.fill),c.getString(R.string.fill),c.getString(R.string.accent),R.drawable.beatbuddy_fill);
+        prepareOption("beatbuddytrans1",c.getString(R.string.beatbuddy)+" "+c.getString(R.string.transition)+" 1",c.getString(R.string.start),c.getString(R.string.exit),R.drawable.beatbuddy_trans1);
+        prepareOption("beatbuddytrans2",c.getString(R.string.beatbuddy)+" "+c.getString(R.string.transition)+" 2",c.getString(R.string.start),c.getString(R.string.exit),R.drawable.beatbuddy_trans2);
+        prepareOption("beatbuddytrans3",c.getString(R.string.beatbuddy)+" "+c.getString(R.string.transition)+" 3",c.getString(R.string.start),c.getString(R.string.exit),R.drawable.beatbuddy_trans3);
+        prepareOption("beatbuddytransnext",c.getString(R.string.beatbuddy)+" "+c.getString(R.string.transition)+" "+c.getString(R.string.next),c.getString(R.string.start),c.getString(R.string.exit),R.drawable.beatbuddy_transnext);
+        prepareOption("beatbuddyhalf",c.getString(R.string.beatbuddy)+" "+c.getString(R.string.half_time),c.getString(R.string.start),c.getString(R.string.exit),R.drawable.beatbuddy_halftime);
+        prepareOption("beatbuddydouble",c.getString(R.string.beatbuddy)+" "+c.getString(R.string.double_time),c.getString(R.string.start),c.getString(R.string.exit),R.drawable.beatbuddy_doubletime);
 
         prepareOption("","","","",R.drawable.help);
 

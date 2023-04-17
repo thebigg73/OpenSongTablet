@@ -319,7 +319,81 @@ public class PerformanceGestures {
             case "midisettings":
                 editMidi();
                 break;
-
+            case "beatbuddystart":
+                if (isLongPress) {
+                    beatBuddyStop();
+                } else {
+                    beatBuddyStart();
+                }
+                break;
+            case "beatbuddystop":
+                beatBuddyStop();
+                break;
+            case "beatbuddypause":
+                beatBuddyPause();
+                break;
+            case "beatbuddyaccent":
+                if (isLongPress) {
+                    beatBuddyFill();
+                } else {
+                    beatBuddyAccent();
+                }
+                break;
+            case "beatbuddyfill":
+                if (isLongPress) {
+                    beatBuddyAccent();
+                } else {
+                    beatBuddyFill();
+                }
+                break;
+            case "beatbuddytrans1":
+                if (isLongPress) {
+                    beatBuddyTransitionExit();
+                } else {
+                    beatBuddyTransition1();
+                }
+                break;
+            case "beatbuddytrans2":
+                if (isLongPress) {
+                    beatBuddyTransitionExit();
+                } else {
+                    beatBuddyTransition2();
+                }
+                break;
+            case "beatbuddytrans3":
+                if (isLongPress) {
+                    beatBuddyTransitionExit();
+                } else {
+                    beatBuddyTransition3();
+                }
+                break;
+            case "beatbuddytransnext":
+                if (isLongPress) {
+                    beatBuddyTransitionExit();
+                } else {
+                    beatBuddyTransitionNext();
+                }
+                break;
+            case "beatbuddyhalf":
+                if (isLongPress) {
+                    beatBuddyHalfTimeExit();
+                } else {
+                    beatBuddyHalfTime();
+                }
+                break;
+            case "beatbuddyhalfexit":
+                beatBuddyHalfTimeExit();
+                break;
+            case "beatbuddydouble":
+                if (isLongPress) {
+                    beatBuddyDoubleTimeExit();
+                } else {
+                    beatBuddyDoubleTime();
+                }
+                break;
+            case "beatbuddydoubleexit":
+                beatBuddyDoubleTimeExit();
+                break;
 
             // Utilities
             case "soundlevel":
@@ -836,6 +910,51 @@ public class PerformanceGestures {
     public void shareSong() {
         mainActivityInterface.setWhattodo("exportSong");
         mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_export),0);
+    }
+
+
+    // The BeatBuddy stuff
+    public void beatBuddyStart() {
+        mainActivityInterface.getBeatBuddy().beatBuddyStart();
+    }
+    public void beatBuddyStop() {
+        mainActivityInterface.getBeatBuddy().beatBuddyStop();
+    }
+    public void beatBuddyPause() {
+        mainActivityInterface.getBeatBuddy().beatBuddyPause();
+    }
+    public void beatBuddyAccent() {
+        mainActivityInterface.getBeatBuddy().beatBuddyAccent();
+    }
+    public void beatBuddyFill() {
+        mainActivityInterface.getBeatBuddy().beatBuddyFill();
+    }
+    public void beatBuddyTransition1() {
+        mainActivityInterface.getBeatBuddy().beatBuddyTransition1();
+    }
+    public void beatBuddyTransition2() {
+        mainActivityInterface.getBeatBuddy().beatBuddyTransition2();
+    }
+    public void beatBuddyTransition3() {
+        mainActivityInterface.getBeatBuddy().beatBuddyTransition3();
+    }
+    public void beatBuddyTransitionNext() {
+        mainActivityInterface.getBeatBuddy().beatBuddyTransitionNext();
+    }
+    public void beatBuddyTransitionExit() {
+        mainActivityInterface.getBeatBuddy().beatBuddyTransitionExit();
+    }
+    public void beatBuddyHalfTime() {
+        mainActivityInterface.getBeatBuddy().beatBuddyHalfTime();
+    }
+    public void beatBuddyHalfTimeExit() {
+        mainActivityInterface.getBeatBuddy().beatBuddyHalfTimeExit();
+    }
+    public void beatBuddyDoubleTime() {
+        mainActivityInterface.getBeatBuddy().beatBuddyDoubleTime();
+    }
+    public void beatBuddyDoubleTimeExit() {
+        mainActivityInterface.getBeatBuddy().beatBuddyDoubleTimeExit();
     }
 
     // The checks
