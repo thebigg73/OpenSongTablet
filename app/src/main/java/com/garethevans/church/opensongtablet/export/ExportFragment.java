@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.print.PrintManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,7 +47,8 @@ public class ExportFragment extends Fragment {
             set_string="", song_string="", app_name_string="";
     private boolean openSong = false, currentFormat = false, openSongApp = false, pdf = false, image = false,
             png = false, chordPro = false, onsong = false, text = false, setPDF = false, openSongSet = false,
-            setPNG = false, openSongAppSet = false, includeSongs = false, textSet = false, isPrint, setPDFDone = false, setPNGDone = false;
+            setPNG = false, openSongAppSet = false, includeSongs = false, textSet = false, isPrint,
+            setPDFDone = false, setPNGDone = false, screenShot = false;
     private String[] location, setData, ids, setKeys;
     private StringBuilder songsAlreadyAdded;
     private Handler handler;
@@ -159,6 +159,7 @@ public class ExportFragment extends Fragment {
         myView.onSong.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("exportOnSong",false));
         myView.chordPro.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("exportChordPro",false));
         myView.text.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("exportText",false));
+        myView.screenShot.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("exportScreenshot",false));
 
         // Set the listeners for preferences
         myView.setPDF.setOnCheckedChangeListener(new MyCheckChanged("exportSetPDF"));
@@ -174,6 +175,7 @@ public class ExportFragment extends Fragment {
         myView.onSong.setOnCheckedChangeListener(new MyCheckChanged("exportOnSong"));
         myView.chordPro.setOnCheckedChangeListener(new MyCheckChanged("exportChordPro"));
         myView.text.setOnCheckedChangeListener(new MyCheckChanged("exportText"));
+        myView.screenShot.setOnCheckedChangeListener(new MyCheckChanged("exportScreenshot"));
 
         // Make sure the progress info is hidden to start with
         myView.scrim.setVisibility(View.GONE);
@@ -186,6 +188,7 @@ public class ExportFragment extends Fragment {
             myView.setExportInfo.setVisibility(View.VISIBLE);
             myView.currentFormat.setVisibility(View.VISIBLE);
             myView.openSong.setVisibility(View.GONE);
+            myView.screenShot.setVisibility(View.GONE);
 
             // Include the songs views
             myView.includeSongs.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("exportSetSongs",true));
@@ -198,6 +201,8 @@ public class ExportFragment extends Fragment {
             // If we are exporting songs, hide the ones not allowed for sets
             myView.image.setVisibility(View.GONE);
             myView.image.setChecked(false);
+            myView.screenShot.setVisibility(View.GONE);
+            myView.screenShot.setChecked(false);
 
             // Now show the set view
             myView.setOptionsLayout.setVisibility(View.VISIBLE);
@@ -216,6 +221,7 @@ public class ExportFragment extends Fragment {
                 myView.openSong.setVisibility(View.GONE);
                 myView.openSongApp.setVisibility(View.GONE);
                 myView.text.setVisibility(View.GONE);
+                myView.screenShot.setVisibility(View.GONE);
             }
 
             switch (mainActivityInterface.getSong().getFiletype()) {
@@ -282,6 +288,7 @@ public class ExportFragment extends Fragment {
         chordPro = myView.chordPro.isChecked();
         text = myView.text.isChecked();
         currentFormat = myView.currentFormat.isChecked();
+        screenShot = myView.screenShot.isChecked();
 
         myView.scrim.setVisibility(View.VISIBLE);
         myView.progressText.setVisibility(View.VISIBLE);
@@ -614,6 +621,24 @@ public class ExportFragment extends Fragment {
                         folder, filename, "Export", "", filename + ".ost"));
                 if (!mimeTypes.contains("text/plain")) {
                     mimeTypes.add("text/plain");
+                }
+            }
+
+            if (screenShot && isXML) {
+                if (mainActivityInterface.getScreenshot()!=null) {
+                    try {
+                        mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG + " doExportSong as screenshot");
+                        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Export","",filename+".png");
+                        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true,uri,null,"Export","",filename+".png");
+                        OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(uri);
+                        mainActivityInterface.getStorageAccess().writeImage(outputStream, mainActivityInterface.getScreenshot());
+                        if (!mimeTypes.contains("image/png")) {
+                            mimeTypes.add("image/png");
+                        }
+                        uris.add(uri);
+                    } catch (Exception | OutOfMemoryError e) {
+                        e.printStackTrace();
+                    }
                 }
             }
 

@@ -140,6 +140,12 @@
                     android:text="@string/image" />
 
                 <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/screenShot"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/screenshot" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
                     android:id="@+id/openSongApp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

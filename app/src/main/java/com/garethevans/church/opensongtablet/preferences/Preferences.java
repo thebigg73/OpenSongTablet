@@ -314,6 +314,7 @@ public class Preferences extends Activity {
     // exportPDF                        boolean     Should we export .pdf file (def:false)
     // exportPNG                        boolean     Should we export .png file (def:false)
     // exportSetPDF                     boolean     Should we export the set as .pdf file (def:false)
+    // exportScreenshot                 boolean     Should we export the song as a screenshot (WYSIWYG) .png file (def:false)
     // filterSections                   boolean     Should we enable filter by section tags (def:false)
     // filterShow                       boolean     If filtering should only show current filters rather than hide (def:false)
     // filterText                       String      Filter text split by line breaks
