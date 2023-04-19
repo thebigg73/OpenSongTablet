@@ -186,11 +186,13 @@ public class ImportOnlineFragment extends Fragment {
         }
         if (web) {
             myView.webLayout.post(() -> myView.webLayout.setVisibility(View.VISIBLE));
+            myView.grabText.post(() -> myView.grabText.setVisibility(myView.onlineSource.getText().toString().equals("Google")? View.GONE:View.VISIBLE));
         } else {
             myView.webLayout.post(() -> myView.webLayout.setVisibility(View.GONE));
         }
         if (save) {
             myView.saveLayout.post(() -> myView.saveLayout.setVisibility(View.VISIBLE));
+            myView.saveButton.post(() -> myView.saveButton.setVisibility(myView.onlineSource.getText().toString().equals("Google")?View.GONE:View.VISIBLE));
         } else {
             myView.saveLayout.post(() -> myView.saveLayout.setVisibility(View.GONE));
         }
@@ -364,8 +366,8 @@ public class ImportOnlineFragment extends Fragment {
                     !mainActivityInterface.getCheckInternet().getSearchPhrase().isEmpty() &&
                     !webAddress.isEmpty()) {
                 changeLayouts(false, true, false);
-                myView.grabText.setVisibility(View.VISIBLE);
-                if (getActivity()!=null) {
+                myView.grabText.setVisibility(myView.onlineSource.getText().toString().equals("Google")? View.GONE:View.VISIBLE);
+                if (getActivity()!=null && myView.grabText.getVisibility()==View.VISIBLE) {
                     myView.grabText.post(() -> mainActivityInterface.getShowCase().singleShowCase(getActivity(), myView.grabText, null, text_extract_check_string, false, "onlineTextSearch"));
                 }
                 webSearchFull = webAddress + mainActivityInterface.getCheckInternet().getSearchPhrase() + extra;
@@ -495,10 +497,12 @@ public class ImportOnlineFragment extends Fragment {
             myView.saveButton.post(() -> {
                 if (getContext()!=null) {
                     myView.grabText.hide();
-                    myView.saveButton.show();
-                    mainActivityInterface.getCustomAnimation().pulse(getContext(), myView.saveButton);
-                    mainActivityInterface.getShowCase().singleShowCase(getActivity(), myView.saveButton,
-                            null, text_extract_website_string, false, "textWebsite");
+                    if (!myView.onlineSource.getText().toString().equals("Google")) {
+                        myView.saveButton.show();
+                        mainActivityInterface.getCustomAnimation().pulse(getContext(), myView.saveButton);
+                        mainActivityInterface.getShowCase().singleShowCase(getActivity(), myView.saveButton,
+                                null, text_extract_website_string, false, "textWebsite");
+                    }
                 }
             });
 
@@ -506,7 +510,9 @@ public class ImportOnlineFragment extends Fragment {
             myView.saveButton.post(() -> {
                 myView.saveButton.hide();
                 myView.saveButton.clearAnimation();
-                myView.grabText.show();
+                if (!myView.onlineSource.getText().toString().equals("Google")) {
+                    myView.grabText.show();
+                }
             });
 
         }
