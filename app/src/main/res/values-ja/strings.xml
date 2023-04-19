@@ -149,6 +149,7 @@
     <string name="chords_found">歌詞にあるすべてのコード</string>
     <string name="chorus">折り返し</string>
     <string name="chorus_background">"コー​​ラス背景"</string>
+    <string name="clipboard_info">インポートする曲の歌詞/コードが見つかったら、それらを強調表示して、クリップボードの[コピー]オプションをクリックします。</string>
     <string name="close">"閉じる"</string>
     <string name="color_choose">"カラーセレクタ"</string>
     <string name="column_force">段区切りを手動で上書きする</string>
@@ -409,7 +410,7 @@
     <string name="margins">余白</string>
     <string name="margins_custom">カスタム追加マージン</string>
     <string name="margins_gestures">ジェスチャ ナビゲーションの使用</string>
-    <string name="margins_gestures_info">ナビゲーション バー用に予約されている高さをジェスチャ バーに合わせて減らします。</string>
+    <string name="margins_gestures_info">ナビゲーション バー用に予約されている高さを小さくします。</string>
     <string name="margins_info">画面の切り抜きや角の丸みを避けるために、コンテンツの周囲の余白を調整します</string>
     <string name="margins_system">システムマージン</string>
     <string name="margins_system_info">検出されたデバイス コントロール (下部のナビゲーション バーとサイド メニュー) 用のスペースを残す</string>

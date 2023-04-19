@@ -1,10 +1,14 @@
 package com.garethevans.church.opensongtablet.importsongs;
 
 import android.annotation.SuppressLint;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.JsonReader;
 import android.util.JsonToken;
 import android.util.Log;
@@ -45,16 +49,19 @@ public class ImportOnlineFragment extends Fragment {
 
     private MainActivityInterface mainActivityInterface;
     private SettingsImportOnlineBinding myView;
+    private ClipboardManager clipboardManager;
+    private ClipboardManager.OnPrimaryClipChangedListener clipboardManagerListener;
     private final String TAG = "ImportOnline";
+    private String clipboardText = "";
     private Uri downloadedFile = null;
     private boolean isPDF;
     private final String[] sources = new String[]{"UltimateGuitar", "Chordie", "SongSelect",
-            "WorshipTogether", "UkuTabs", "HolyChords", "La Boîte à chansons", "eChords"};
+            "WorshipTogether", "UkuTabs", "HolyChords", "La Boîte à chansons", "eChords", "Google"};
     private final String[] address = new String[]{"https://www.ultimate-guitar.com/search.php?search_type=title&value=",
             "https://www.chordie.com/results.php?q=", "https://songselect.ccli.com/Search/Results?SearchText=",
             "https://www.worshiptogether.com/search-results/#?cludoquery=", "https://ukutabs.com/?s=",
             "https://holychords.pro/search?name=", "https://www.boiteachansons.net/recherche/",
-            "https://www.e-chords.com/search-all/"};
+            "https://www.e-chords.com/search-all/","https://www.google.com/search?q="};
     private String webSearchFull, webAddressFinal, source, webString, userAgentDefault,
             import_basic_string="", online_string="", website_song_online_string="",
             text_extract_check_string="", text_extract_website_string="", mainfoldername_string="",
@@ -149,6 +156,21 @@ public class ImportOnlineFragment extends Fragment {
         if (mainActivityInterface.getCheckInternet().getSearchPhrase() != null) {
             myView.searchPhrase.setText(mainActivityInterface.getCheckInternet().getSearchPhrase());
         }
+        // If Google, provide instructions
+        myView.onlineSource.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                myView.clipboardInstructions.setVisibility(
+                        myView.onlineSource.getText().toString().equals("Google") ? View.VISIBLE:View.GONE);
+            }
+        });
+
         if (mainActivityInterface.getCheckInternet().getSearchSite() != null) {
             myView.onlineSource.setText(mainActivityInterface.getCheckInternet().getSearchSite());
         }
@@ -253,7 +275,6 @@ public class ImportOnlineFragment extends Fragment {
                 showDownloadProgress(true);
                 changeLayouts(false, false, false);
 
-                Log.d(TAG,"256 url:"+url);
                 String filename = URLUtil.guessFileName(url, contentDisposition, mimetype);
                 if (url != null) {
                     if (url.startsWith("blob")) {
@@ -287,6 +308,34 @@ public class ImportOnlineFragment extends Fragment {
         Log.d(TAG, "connected=" + connected);
         // Received back from the MainActivity after being told if we have a valid internet connection or not
         if (connected) {
+            // This listener is to grab text saved to the clipboard manager
+            if (getContext() != null) {
+                if (myView.onlineSource.getText()!=null && myView.onlineSource.getText().toString().equals("Google")) {
+                    source = "Google";
+                    clipboardManager = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
+                    clipboardManagerListener = () -> {
+                        ClipData clipData = clipboardManager.getPrimaryClip();
+                        if (clipData != null) {
+                            ClipData.Item item = clipData.getItemAt(0);
+                            if (item != null) {
+                                CharSequence charSequence = item.getText();
+                                if (charSequence != null) {
+                                    clipboardText = charSequence.toString();
+                                    if (!clipboardText.isEmpty()) {
+                                        clipboardText = mainActivityInterface.getConvertTextSong().convertText(clipboardText);
+                                        // Remove this listener otherwise it keeps going!
+                                        clipboardManager.removePrimaryClipChangedListener(clipboardManagerListener);
+                                        processContent();
+                                    }
+                                }
+                            }
+                        }
+                    };
+                    if (clipboardManager != null) {
+                        clipboardManager.addPrimaryClipChangedListener(clipboardManagerListener);
+                    }
+                }
+            }
             // Get the search string and build the web address
             String webAddress = "";
             String extra = "";
@@ -302,6 +351,8 @@ public class ImportOnlineFragment extends Fragment {
                 } else if (source.equals("UltimateGuitar")) {
                     String newUA = "Mozilla/5.0 (X11; Linux i686; rv:64.0) Gecko/20100101 Firefox/64.0";
                     webView.post(() -> webView.getSettings().setUserAgentString(newUA));
+                } else if (source.equals("Google")) {
+                    extra = " chords lyrics";
                 }
                 for (int x = 0; x < sources.length; x++) {
                     if (sources[x].equals(source)) {
@@ -339,6 +390,7 @@ public class ImportOnlineFragment extends Fragment {
 
     private void extractContent() {
         Log.d(TAG, "Extract content");
+
         try {
             showDownloadProgress(true);
         } catch (Exception e) {
@@ -353,7 +405,7 @@ public class ImportOnlineFragment extends Fragment {
                 try {
                     webView.evaluateJavascript("javascript:document.getElementsByTagName('html')[0].innerHTML", webContent);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                        e.printStackTrace();
                 }
             });
         });
@@ -362,12 +414,14 @@ public class ImportOnlineFragment extends Fragment {
     private final ValueCallback<String> webContent = new ValueCallback<String>() {
         @Override
         public void onReceiveValue(String value) {
+            Log.d(TAG,"value:"+value);
             JsonReader reader = new JsonReader(new StringReader(value));
             reader.setLenient(true);
 
             try {
                 if (reader.peek() == JsonToken.STRING) {
                     webString = reader.nextString();
+                    Log.d(TAG,"webString:"+webString);
                 }
                 reader.close();
             } catch (IOException e) {
@@ -467,6 +521,10 @@ public class ImportOnlineFragment extends Fragment {
         isPDF = false;
         boolean songSelectDownload = false;
         switch (source) {
+            case "Google":
+                newSong.setTitle(myView.searchPhrase.getText().toString());
+                newSong.setLyrics(clipboardText);
+                break;
             case "UltimateGuitar":
                 newSong = ultimateGuitar.processContent(newSong,webString);
                 break;
@@ -773,5 +831,12 @@ public class ImportOnlineFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         myView = null;
+        try {
+            if (clipboardManager!=null && clipboardManagerListener!=null) {
+                clipboardManager.removePrimaryClipChangedListener(clipboardManagerListener);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

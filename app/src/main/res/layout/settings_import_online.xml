@@ -30,6 +30,13 @@
             android:layout_marginTop="16dp"
             android:hint="@string/website" />
 
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/clipboardInstructions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/clipboard_info"/>
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/searchButton"
             android:layout_width="match_parent"

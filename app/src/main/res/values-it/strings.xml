@@ -149,6 +149,7 @@
     <string name="chords_found">Tutti gli accordi trovati nei testi delle canzoni</string>
     <string name="chorus">Ritornello</string>
     <string name="chorus_background">"Coro di sfondo"</string>
+    <string name="clipboard_info">Quando trovi i testi / accordi della canzone che desideri importare, evidenziali e fai clic sull\'opzione Copia negli appunti.</string>
     <string name="close">"Chiudi"</string>
     <string name="color_choose">"Colore Scelta"</string>
     <string name="column_force">Sovrascrivi manualmente le interruzioni di colonna</string>
@@ -409,7 +410,7 @@
     <string name="margins">Margini</string>
     <string name="margins_custom">Margini aggiuntivi personalizzati</string>
     <string name="margins_gestures">Uso della navigazione gestuale</string>
-    <string name="margins_gestures_info">Riduce l\'altezza riservata alla barra di navigazione in modo che corrisponda alla barra dei gesti</string>
+    <string name="margins_gestures_info">Riduce l\'altezza riservata alla barra di navigazione</string>
     <string name="margins_info">Regola i margini attorno al contenuto per evitare ritagli dello schermo e angoli arrotondati</string>
     <string name="margins_system">Margini di sistema</string>
     <string name="margins_system_info">Lascia spazio per i controlli dei dispositivi rilevati (barra di navigazione inferiore e menu laterali)</string>

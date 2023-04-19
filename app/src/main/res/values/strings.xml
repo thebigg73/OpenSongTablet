@@ -187,6 +187,7 @@
     <string name="chorus">Chorus</string>
     <string name="chorus_background">Chorus background</string>
     <string name="chromecast" translatable="false">Chromecast</string>
+    <string name="clipboard_info">When you find the song lyrics/chords you want to import, highlight them and click on the \'Copy\' option in the clipboard.</string>
     <string name="close">Close</string>
     <string name="color_choose">Colour Chooser</string>
     <string name="column_force">Manually override column breaks</string>
@@ -556,7 +557,7 @@
     <string name="margins">Margins</string>
     <string name="margins_custom">Custom additional margins</string>
     <string name="margins_gestures">Using gesture navigation</string>
-    <string name="margins_gestures_info">Reduces the height reserved for the navigation bar to match the gesture bar</string>
+    <string name="margins_gestures_info">Reduces the height reserved for the navigation bar</string>
     <string name="margins_info">Adjust the margins around the content to avoid screen cutouts and rounded corners</string>
     <string name="margins_system">System margins</string>
     <string name="margins_system_info">Leave space for detected device controls (bottom navigation bar and side menus)</string>

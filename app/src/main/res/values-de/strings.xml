@@ -149,6 +149,7 @@
     <string name="chords_found">Alle Akkorde in den Liedtexten gefunden</string>
     <string name="chorus">Chorus</string>
     <string name="chorus_background">"Hintergrund Chorus"</string>
+    <string name="clipboard_info">Wenn Sie die Songtexte/Akkorde gefunden haben, die Sie importieren möchten, markieren Sie sie und klicken Sie in der Zwischenablage auf die Option Kopieren.</string>
     <string name="close">"Schließen"</string>
     <string name="color_choose">"Farbauswahl"</string>
     <string name="column_force">Spaltenumbrüche manuell überschreiben</string>
@@ -409,7 +410,7 @@
     <string name="margins">Ränder</string>
     <string name="margins_custom">Benutzerdefinierte zusätzliche Ränder</string>
     <string name="margins_gestures">Verwenden der Gestennavigation</string>
-    <string name="margins_gestures_info">Verringert die für die Navigationsleiste reservierte Höhe, um sie an die Gestenleiste anzupassen</string>
+    <string name="margins_gestures_info">Verringert die für die Navigationsleiste reservierte Höhe</string>
     <string name="margins_info">Passen Sie die Ränder um den Inhalt an, um Bildschirmausschnitte und abgerundete Ecken zu vermeiden</string>
     <string name="margins_system">Systemgrenzen</string>
     <string name="margins_system_info">Lassen Sie Platz für erkannte Gerätesteuerungen (untere Navigationsleiste und Seitenmenüs)</string>

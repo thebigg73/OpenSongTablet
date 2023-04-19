@@ -149,6 +149,7 @@
     <string name="chords_found">Alle akkoorde gevind in die liedjie lirieke</string>
     <string name="chorus">Koor</string>
     <string name="chorus_background">"Koor agtergrond"</string>
+    <string name="clipboard_info">As u die liedtekste/akkoorde vind wat u wil invoer, merk dit en klik op die opsie Kopieer in die knipbord.</string>
     <string name="close">"Sluit"</string>
     <string name="color_choose">"Kleur Chooser"</string>
     <string name="column_force">Ignoreer kolombreuke met die hand</string>
@@ -409,7 +410,7 @@
     <string name="margins">Marges</string>
     <string name="margins_custom">Pasgemaakte bykomende marges</string>
     <string name="margins_gestures">Gebruik gebaarnavigasie</string>
-    <string name="margins_gestures_info">Verminder die hoogte wat gereserveer is vir die navigasiebalk om by die gebaarbalk te pas</string>
+    <string name="margins_gestures_info">Verminder die hoogte wat gereserveer is vir die navigasiebalk</string>
     <string name="margins_info">Pas die kantlyne rondom die inhoud aan om skermuitknipsels en afgeronde hoeke te vermy</string>
     <string name="margins_system">System margins</string>
     <string name="margins_system_info">Los spasie vir bespeurde toestelkontroles (onderste navigasiebalk en sykieslyste)</string>

@@ -149,6 +149,7 @@
     <string name="chords_found">Tous les accords trouvés dans les paroles de la chanson</string>
     <string name="chorus">Refrain</string>
     <string name="chorus_background">"Fond des refrains"</string>
+    <string name="clipboard_info">Lorsque vous trouvez les paroles / accords de la chanson que vous souhaitez importer, mettez-les en surbrillance et cliquez sur l’option Copier dans le presse-papiers.</string>
     <string name="close">"Fermer"</string>
     <string name="color_choose">"Sélecteur de couleur "</string>
     <string name="column_force">Remplacer manuellement les sauts de colonne</string>
@@ -409,7 +410,7 @@
     <string name="margins">Marges</string>
     <string name="margins_custom">Marges supplémentaires personnalisées</string>
     <string name="margins_gestures">Utilisation de la navigation gestuelle</string>
-    <string name="margins_gestures_info">Réduit la hauteur réservée à la barre de navigation pour qu’elle corresponde à la barre de mouvements</string>
+    <string name="margins_gestures_info">Réduit la hauteur réservée à la barre de navigation</string>
     <string name="margins_info">Ajustez les marges autour du contenu pour éviter les coupures d\'écran et les coins arrondis</string>
     <string name="margins_system">Marges du système</string>
     <string name="margins_system_info">Laissez de l\'espace pour les commandes de l\'appareil détecté (barre de navigation inférieure et menus latéraux)</string>

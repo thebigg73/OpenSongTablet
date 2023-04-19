@@ -149,6 +149,7 @@
     <string name="chords_found">Усі акорди знайдено в тексті пісні</string>
     <string name="chorus">Приспів</string>
     <string name="chorus_background">Фон приспіву</string>
+    <string name="clipboard_info">Коли ви знайдете тексти пісень/акорди, які потрібно імпортувати, виділіть їх і натисніть опцію Копіювати в буфері обміну.</string>
     <string name="close">причиняти</string>
     <string name="color_choose">Вибір кольору</string>
     <string name="column_force">Перевизначте розриви стовпців вручну</string>
@@ -409,7 +410,7 @@
     <string name="margins">Поля</string>
     <string name="margins_custom">Індивідуальні додаткові націнки</string>
     <string name="margins_gestures">Використання навігації жестами</string>
-    <string name="margins_gestures_info">Зменшує висоту, зарезервовану для панелі переходів, щоб вона відповідала панелі жестів</string>
+    <string name="margins_gestures_info">Зменшує висоту, зарезервовану для панелі переходів</string>
     <string name="margins_info">Відрегулюйте поля навколо вмісту, щоб уникнути вирізів на екрані та закруглених кутів</string>
     <string name="margins_system">Системні поля</string>
     <string name="margins_system_info">Залиште місце для виявлених елементів керування пристроєм (нижня панель навігації та бічні меню)</string>

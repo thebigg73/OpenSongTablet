@@ -149,6 +149,7 @@
     <string name="chords_found">Všechny akordy nalezené v textu písně</string>
     <string name="chorus">Refrén</string>
     <string name="chorus_background">"Chorus pozadí"</string>
+    <string name="clipboard_info">Když najdete texty / akordy písní, které chcete importovat, zvýrazněte je a klikněte na ikonu Kopírovat možnost ve schránce.</string>
     <string name="close">"Zavřít"</string>
     <string name="color_choose">"Barva Chooser"</string>
     <string name="column_force">Ručně přepište konce sloupců</string>
@@ -409,7 +410,7 @@
     <string name="margins">边距</string>
     <string name="margins_custom">Vlastní dodatečné okraje</string>
     <string name="margins_gestures">Použití navigace gesty</string>
-    <string name="margins_gestures_info">Zmenší výšku vyhrazenou pro navigační panel tak, aby odpovídala panelu gest</string>
+    <string name="margins_gestures_info">Zmenší výšku vyhrazenou pro navigační panel</string>
     <string name="margins_info">Upravte okraje kolem obsahu, abyste se vyhnuli výřezům na obrazovce a zaobleným rohům</string>
     <string name="margins_system">Systémové marže</string>
     <string name="margins_system_info">Ponechat místo pro ovládací prvky detekovaného zařízení (spodní navigační lišta a boční nabídky)</string>

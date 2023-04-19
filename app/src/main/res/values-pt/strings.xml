@@ -149,6 +149,7 @@
     <string name="chords_found">Todos os acordes encontrados na letra da música</string>
     <string name="chorus">Refrão</string>
     <string name="chorus_background">"Fundo Chorus"</string>
+    <string name="clipboard_info">Quando encontrar as letras/acordes das músicas que deseja importar, destaque-os e clique na opção Copiar na área de transferência.</string>
     <string name="close">"Fechar"</string>
     <string name="color_choose">"Cor Chooser"</string>
     <string name="column_force">Substituir quebras de coluna manualmente</string>
@@ -409,7 +410,7 @@
     <string name="margins">Margens</string>
     <string name="margins_custom">Margens adicionais personalizadas</string>
     <string name="margins_gestures">Usando a navegação por gestos</string>
-    <string name="margins_gestures_info">Reduz a altura reservada para a barra de navegação para corresponder à barra de gestos</string>
+    <string name="margins_gestures_info">Reduz a altura reservada para a barra de navegação</string>
     <string name="margins_info">Ajuste as margens ao redor do conteúdo para evitar recortes de tela e cantos arredondados</string>
     <string name="margins_system">Margens do sistema</string>
     <string name="margins_system_info">Deixe espaço para os controles do dispositivo detectados (barra de navegação inferior e menus laterais)</string>

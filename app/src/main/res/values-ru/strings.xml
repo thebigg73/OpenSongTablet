@@ -149,6 +149,7 @@
     <string name="chords_found">Все аккорды, найденные в тексте песни</string>
     <string name="chorus">Припев</string>
     <string name="chorus_background">"Фон припева"</string>
+    <string name="clipboard_info">Когда вы найдете тексты песен / аккорды, которые хотите импортировать, выделите их и нажмите кнопку «Копировать» в буфере обмена.</string>
     <string name="close">"Закрыть"</string>
     <string name="color_choose">"Выбор цвета"</string>
     <string name="column_force">Вручную прописать разрывы столбцов</string>
@@ -409,7 +410,7 @@
     <string name="margins">Поля</string>
     <string name="margins_custom">Пользовательские дополнительные поля</string>
     <string name="margins_gestures">Использование жестов</string>
-    <string name="margins_gestures_info">Уменьшить высоту, зарезервированную для панели навигации, чтобы она соответствовала панели жестов</string>
+    <string name="margins_gestures_info">Уменьшить высоту, зарезервированную для панели навигации</string>
     <string name="margins_info">Регулировка полей вокруг содержимого, чтобы избежать вырезов экрана и закругленных углов.</string>
     <string name="margins_system">Системные поля</string>
     <string name="margins_system_info">Оставить место для стандартных элементов управления устройства (нижняя панель навигации и боковые меню).</string>

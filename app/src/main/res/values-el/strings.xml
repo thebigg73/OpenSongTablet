@@ -149,6 +149,7 @@
     <string name="chords_found">Όλες οι συγχορδίες που βρέθηκαν στους στίχους του τραγουδιού</string>
     <string name="chorus">"Ρεφρέν"</string>
     <string name="chorus_background">"Φόντο ρεφρέν"</string>
+    <string name="clipboard_info">Όταν βρείτε τους στίχους/συγχορδίες τραγουδιών που θέλετε να εισαγάγετε, επισημάνετε τους και κάντε κλικ στην επιλογή Αντιγραφή στο πρόχειρο.</string>
     <string name="close">"Close"</string>
     <string name="color_choose">"Επιλογέας χρώματος"</string>
     <string name="column_force">Μη αυτόματη παράκαμψη αλλαγών στηλών</string>
@@ -409,7 +410,7 @@
     <string name="margins">Περιθώρια</string>
     <string name="margins_custom">Προσαρμοσμένα πρόσθετα περιθώρια</string>
     <string name="margins_gestures">Χρήση πλοήγησης με χειρονομίες</string>
-    <string name="margins_gestures_info">Μειώνει το ύψος που προορίζεται για τη γραμμή περιήγησης ώστε να ταιριάζει με τη γραμμή κινήσεων</string>
+    <string name="margins_gestures_info">Μειώνει το ύψος που προορίζεται για τη γραμμή περιήγησης</string>
     <string name="margins_info">Προσαρμόστε τα περιθώρια γύρω από το περιεχόμενο για να αποφύγετε τις εγκοπές οθόνης και τις στρογγυλεμένες γωνίες</string>
     <string name="margins_system">Περιθώρια συστήματος</string>
     <string name="margins_system_info">Αφήστε χώρο για τα στοιχεία ελέγχου συσκευής που εντοπίστηκαν (κάτω γραμμή πλοήγησης και πλευρικά μενού)</string>

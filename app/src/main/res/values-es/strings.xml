@@ -149,6 +149,7 @@
     <string name="chords_found">Todos los acordes que se encuentran en la letra de la canción</string>
     <string name="chorus">Coro</string>
     <string name="chorus_background">"Fondo Chorus"</string>
+    <string name="clipboard_info">Cuando encuentre las letras / acordes de la canción que desea importar, resáltelos y haga clic en la opción Copiar en el portapapeles.</string>
     <string name="close">"Cerrar"</string>
     <string name="color_choose">"Color Selector"</string>
     <string name="column_force">Anular manualmente los saltos de columna</string>
@@ -409,7 +410,7 @@
     <string name="margins">Márgenes</string>
     <string name="margins_custom">Márgenes adicionales personalizados</string>
     <string name="margins_gestures">Uso de la navegación por gestos</string>
-    <string name="margins_gestures_info">Reduce la altura reservada para que la barra de navegación coincida con la barra de gestos</string>
+    <string name="margins_gestures_info">Reduce la altura reservada para que la barra de navegación</string>
     <string name="margins_info">Ajuste los márgenes alrededor del contenido para evitar recortes de pantalla y esquinas redondeadas</string>
     <string name="margins_system">Márgenes del sistema</string>
     <string name="margins_system_info">Deje espacio para los controles del dispositivo detectado (barra de navegación inferior y menús laterales)</string>

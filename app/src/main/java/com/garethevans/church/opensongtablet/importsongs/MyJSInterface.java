@@ -67,6 +67,13 @@ public class MyJSInterface {
         convertBase64StringToPdfAndStoreIt(base64Data);
     }
 
+    @JavascriptInterface
+    public String getHighlightedText(String highlightedText) {
+        // Do nothing yet
+        Log.d(TAG,"highlightedText:"+highlightedText);
+        return mainActivityInterface.getConvertTextSong().convertText(highlightedText);
+    }
+
     public void setFilename(String filename) {
         this.filename = filename;
     }
@@ -85,7 +92,11 @@ public class MyJSInterface {
     }
 
     public static String doNormalDownLoad(String url, String filename) {
-        return "javascript: HTMLOUT.setDownload(\""+url+"\",\""+filename+"\");";
+        return "javascript: HTMLOUT.getHighlightedText(\""+url+"\",\""+filename+"\");";
+    }
+
+    public String doExtractFromSelected(String selected) {
+        return "javascript: HTMLOUT.getHighlighterText(\""+selected+"\");";
     }
 
     @JavascriptInterface

@@ -149,6 +149,7 @@
     <string name="chords_found">A dalszövegekben található összes akkord</string>
     <string name="chorus">Kórus</string>
     <string name="chorus_background">"Chorus háttér"</string>
+    <string name="clipboard_info">Ha megtalálta az importálni kívánt dalszövegeket / akkordokat, jelölje ki őket, és kattintson a gombra másolás opciót a vágólapon.</string>
     <string name="close">"Bezár"</string>
     <string name="color_choose">"Szín-választó"</string>
     <string name="column_force">Oszloptörések manuális felülírása</string>
@@ -409,7 +410,7 @@
     <string name="margins">Margók</string>
     <string name="margins_custom">Egyedi kiegészítő margók</string>
     <string name="margins_gestures">Kézmozdulatos navigáció használata</string>
-    <string name="margins_gestures_info">Csökkenti a navigációs sáv számára fenntartott magasságot, hogy illeszkedjen a kézmozdulatsávhoz</string>
+    <string name="margins_gestures_info">Csökkenti a navigációs sáv számára fenntartott magasságot</string>
     <string name="margins_info">Állítsa be a margókat a tartalom körül, hogy elkerülje a képernyő kivágásait és lekerekített sarkait</string>
     <string name="margins_system">Rendszer margók</string>
     <string name="margins_system_info">Hagyjon helyet az észlelt eszközvezérlőknek (alsó navigációs sáv és oldalsó menük)</string>
