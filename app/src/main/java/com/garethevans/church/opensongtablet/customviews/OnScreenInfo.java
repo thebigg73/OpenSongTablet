@@ -179,9 +179,7 @@ public class OnScreenInfo extends LinearLayout {
         if (show && capoInfoNeeded) {
             capoInfo.post(() -> capoInfo.setVisibility(View.VISIBLE));
         } else if (!show) {
-            capoInfo.post(() -> {
-                capoInfo.setVisibility(View.GONE);
-            });
+            capoInfo.post(() -> capoInfo.setVisibility(View.GONE));
         }
     }
 }
