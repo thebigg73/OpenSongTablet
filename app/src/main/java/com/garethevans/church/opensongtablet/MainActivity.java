@@ -1679,16 +1679,22 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         showToast.doIt(search_index_start);
                     }
                 });
-                songListBuildIndex.setIndexComplete(false);
-                songListBuildIndex.fullIndex(songMenuFragment.getProgressText());
+                if (songListBuildIndex!=null && songMenuFragment!=null && songMenuFragment.getProgressText()!=null) {
+                    songListBuildIndex.setIndexComplete(false);
+                    songListBuildIndex.fullIndex(songMenuFragment.getProgressText());
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
             handler.post(() -> {
                 try {
-                    songListBuildIndex.setIndexRequired(false);
-                    songListBuildIndex.setIndexComplete(true);
-                    showToast.doIt(search_index_end);
+                    if (songListBuildIndex!=null) {
+                        songListBuildIndex.setIndexRequired(false);
+                        songListBuildIndex.setIndexComplete(true);
+                    }
+                    if (showToast!=null && search_index_end!=null) {
+                        showToast.doIt(search_index_end);
+                    }
                     updateSongMenu(song);
                     updateFragment("set_updateKeys", null, null);
                 } catch (Exception e) {
@@ -1732,12 +1738,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             if (songMenuFragment!=null) {
                 songMenuFragment.changeAlphabeticalLayout();
             }
-        } else if (rebooted && bootUpCompleted) {
+        } else if (rebooted && bootUpCompleted && songMenuFragment!=null) {
             // We have resumed from stale state, build the index but from the database
             songMenuFragment.prepareSearch();
 
-        } else {
-
+        } else if (songListBuildIndex!=null && songMenuFragment!=null) {
             // This is a full rebuild
             // If sent called from another fragment the fragName and callingFragment are used to run an update listener
             songListBuildIndex.setIndexComplete(false);
@@ -2029,6 +2034,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 break;
             case "setpreferences":
                 myView.onScreenInfo.setPreferences(this,this);
+                break;
+            case "capoHide":
+                myView.onScreenInfo.showCapo(false);
                 break;
         }
     }
