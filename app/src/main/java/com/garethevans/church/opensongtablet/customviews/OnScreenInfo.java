@@ -29,6 +29,8 @@ public class OnScreenInfo extends LinearLayout {
     private boolean capoInfoNeeded, capoPulsing, autoHideCapo, autoHidePad, autoHideAutoscroll;
     // IV - Needs to be longer to be seen after song load
     private final int delayTime = 5000;
+
+    // The runnables for hiding and showing
     private final Runnable hideCapoRunnable = new Runnable() {
         @Override
         public void run() {
@@ -51,6 +53,23 @@ public class OnScreenInfo extends LinearLayout {
             }
         }
     };
+    private final Runnable hideAutoScrollRunnable = new Runnable() {
+        @Override
+        public void run() {
+            if (autoHideAutoscroll) {
+                pad.setVisibility(View.GONE);
+            }
+        }
+    };
+    private final Runnable hidePadRunnable = new Runnable() {
+        @Override
+        public void run() {
+            if (autoHidePad) {
+                pad.setVisibility(View.GONE);
+            }
+        }
+    };
+
 
     public OnScreenInfo(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -121,7 +140,6 @@ public class OnScreenInfo extends LinearLayout {
     }
 
 
-
     public void showHideViews(MainActivityInterface mainActivityInterface) {
         if (capoInfoNeeded && autoHideCapo) {
             capoInfo.post(showCapoRunnable);
@@ -156,22 +174,7 @@ public class OnScreenInfo extends LinearLayout {
     public MaterialTextView getAutoscrollTotalTime() {
         return autoscrollTotalTime;
     }
-    private final Runnable hidePadRunnable = new Runnable() {
-        @Override
-        public void run() {
-            if (autoHidePad) {
-                pad.setVisibility(View.GONE);
-            }
-        }
-    };
-    private final Runnable hideAutoScrollRunnable = new Runnable() {
-        @Override
-        public void run() {
-            if (autoHidePad) {
-                pad.setVisibility(View.GONE);
-            }
-        }
-    };
+
     public void showCapo(boolean show) {
         if (show && capoInfoNeeded) {
             capoInfo.post(() -> capoInfo.setVisibility(View.VISIBLE));
