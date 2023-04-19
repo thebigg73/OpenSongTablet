@@ -95,6 +95,7 @@ public class WindowFlags {
         try {
             @SuppressLint("DiscouragedApi") int resourceId = c.getResources().getIdentifier("config_navBarInteractionMode", "integer", "android");
             if (resourceId > 0) {
+                // Tries to detect gesture navigation, but doesn't always work
                 if (c.getResources().getInteger(resourceId) == 2) {
                     gestureNavigation = true;
                     defaultKeepNavSpace = true;
@@ -167,7 +168,8 @@ public class WindowFlags {
         // Navbar could be left, bottom, right if screen is small and rotated)
         // Measure each position (should only be 1) and use the biggest
         if (gestureNavigation) {
-            navHeight = 42;
+            // Set this to 0.  Users change the bottom padding if required
+            navHeight = 0;
         } else {
             navHeight = Math.max(navBars.bottom, Math.max(navBars.left, navBars.right));
         }
@@ -581,7 +583,8 @@ public class WindowFlags {
         int nav = 0;
         if (showNav) {
             if (gestureNavigation) {
-                navHeight = 42;
+                // Set this to 0.  Users change the bottom padding if required
+                navHeight = 0;
             }
             nav = navHeight;
             Log.d(TAG,"navHeight:"+nav);
