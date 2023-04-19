@@ -22,6 +22,8 @@
     <string name="add_song_to_set">"Add jelenlegi dal beállítani"</string>
     <string name="add_songs">Dalok hozzáadása</string>
     <string name="added_to_set">"került, hogy a végén a jelenlegi készlet."</string>
+    <string name="aeros_mode">Aeros mód</string>
+    <string name="aeros_mode_info">Ez összesen 128-ra korlátozza a mappák számát, hogy megfeleljen az Aeros Loop Studio pedálnak.  Az első 111 mappaként, a fennmaradó 17 pedig lejátszási listaként van kijelölve</string>
     <string name="after">Után</string>
     <string name="air_turn_long_press">AirTurn hosszú megnyomású üzemmód</string>
     <string name="air_turn_long_press_info">Ha olyan pedált használ, amely nem küld hosszú lenyomási műveleteket, ezt szimulálhatja a kívánt hosszú lenyomási idő beállításával</string>
@@ -539,6 +541,7 @@
     <string name="pinch_to_zoom_info">Dal nagyításának és kicsinyítésének engedélyezése Teljesítmény módban a csippentés a nagyításhoz kézmozdulattal</string>
     <string name="play_services_error">A Google Cast, a Betűtípusok és a Közeli kapcsolatok használatához telepítenie kell a Google Play szolgáltatásokat.</string>
     <string name="play_services_how">Mutassa meg, hogyan</string>
+    <string name="playlist">Lejátszási lista</string>
     <string name="popup_large">Nagy előugró ablakok</string>
     <string name="popup_large_info">Használjon nagy előugró ablakokat a legördülő menükhöz</string>
     <string name="portrait">Portré</string>

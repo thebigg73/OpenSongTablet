@@ -22,6 +22,8 @@
     <string name="add_song_to_set">Chacun peut être affecté à des actions de morceau telles que les métronomes, la transposition, les pads, etc.</string>
     <string name="add_songs">Ajouter des chansons</string>
     <string name="added_to_set">"a été ajoutée à la fin de votre liste actuelle."</string>
+    <string name="aeros_mode">Mode Aeros</string>
+    <string name="aeros_mode_info">Cela limite le nombre de dossiers à 128 au total pour correspondre à la pédale Aeros Loop Studio.  Les 111 premiers sont désignés comme dossiers et les 17 autres sont désignés comme listes de lecture</string>
     <string name="after">Après</string>
     <string name="air_turn_long_press">Mode appui long AirTurn</string>
     <string name="air_turn_long_press_info">Lorsque vous utilisez une pédale qui n\'envoie pas d\'actions d\'appui long, vous pouvez simuler cela en définissant un temps d\'appui long souhaité</string>
@@ -539,6 +541,7 @@
     <string name="pinch_to_zoom_info">Autoriser le zoom avant et arrière d’un morceau en mode Performance à l’aide du geste de pincement pour zoomer</string>
     <string name="play_services_error">Pour utiliser Google Cast, les polices et les connexions à proximité, vous devrez installer les services Google Play.</string>
     <string name="play_services_how">Me montrer comment</string>
+    <string name="playlist">Playlist</string>
     <string name="popup_large">Grandes fenêtres contextuelles</string>
     <string name="popup_large_info">Utilisez de grandes fenêtres contextuelles pour les menus déroulants</string>
     <string name="portrait">Portrait</string>

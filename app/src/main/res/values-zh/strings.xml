@@ -22,6 +22,8 @@
     <string name="add_song_to_set">可以为每个歌曲分配节拍，移调，打击垫等歌曲操作。</string>
     <string name="add_songs">添加歌曲</string>
     <string name="added_to_set">"已被添加到您的当前集的末尾。"</string>
+    <string name="aeros_mode">Aeros 模式</string>
+    <string name="aeros_mode_info">这将文件夹的数量限制为总共 128 个，以匹配 Aeros Loop Studio 踏板。 前 111 个被指定为文件夹，其余 17 个被指定为播放列表</string>
     <string name="after">后</string>
     <string name="air_turn_long_press">AirTurn长按模式</string>
     <string name="air_turn_long_press_info">当使用不发送长按动作的踏板时，您可以通过设置所需的长按时间来模拟</string>
@@ -539,6 +541,7 @@
     <string name="pinch_to_zoom_info">允许在“表演”模式下使用捏合缩放手势放大和缩小歌曲</string>
     <string name="play_services_error">要使用Google Cast，字体和附近的连接，您需要安装Google Play服务。</string>
     <string name="play_services_how">告诉我如何</string>
+    <string name="playlist">播放列表</string>
     <string name="popup_large">大型弹出窗口</string>
     <string name="popup_large_info">为下拉菜单使用大弹出窗口</string>
     <string name="portrait">肖像</string>

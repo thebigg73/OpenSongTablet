@@ -34,7 +34,8 @@ public class BeatBuddyFragment extends Fragment {
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "BeatBuddyFragment";
     private String not_set_string="", bpm_string="", folder_string="", song_string="", channel_string="",
-        success_string="", tempo_string="", volume_string="", unknown_string="", drumkit_string="", web_string="";
+        success_string="", tempo_string="", volume_string="", unknown_string="", drumkit_string="",
+            web_string="", playlist_string="";
     private ArrayList<String> messageDescriptions;
     private ArrayList<String> messageBeatBuddy;
     private String songCommand, tempoCommand, volumeCommand, drumKitCommand, beatBuddyCommands;
@@ -85,6 +86,7 @@ public class BeatBuddyFragment extends Fragment {
             volume_string = getString(R.string.volume);
             unknown_string = getString(R.string.unknown);
             drumkit_string = getString(R.string.drum_kit);
+            playlist_string = getString(R.string.playlist);
     }
 
     private void checkExistingMessages() {
@@ -125,16 +127,16 @@ public class BeatBuddyFragment extends Fragment {
                     } else if (messageParts[1].equals("C")) {
                         channelLSB = messageParts[0];
                         songPC = messageParts[2];
-                    } else if (messageParts[1].equals("B") && messageParts[2].equals("106")) {
+                    } else if (messageParts[1].equals("B") && messageParts[2].equals(""+mainActivityInterface.getBeatBuddy().getCC_Tempo_MSB())) {
                         channelLSB = messageParts[0];
                         tempoMSB = messageParts[3];
-                    } else if (messageParts[1].equals("B") && messageParts[2].equals("107")) {
+                    } else if (messageParts[1].equals("B") && messageParts[2].equals(""+mainActivityInterface.getBeatBuddy().getCC_Tempo_LSB())) {
                         channelLSB = messageParts[0];
                         tempoLSB = messageParts[3];
-                    } else if (messageParts[1].equals("B") && messageParts[2].equals("116")) {
+                    } else if (messageParts[1].equals("B") && messageParts[2].equals(""+mainActivityInterface.getBeatBuddy().getCC_Drum_kit())) {
                         channelLSB = messageParts[0];
                         drumkitCC = messageParts[3];
-                    } else if (messageParts[1].equals("B") && messageParts[2].equals("108")) {
+                    } else if (messageParts[1].equals("B") && messageParts[2].equals(""+mainActivityInterface.getBeatBuddy().getCC_Mix_vol())) {
                         channelLSB = messageParts[0];
                         volumeCC = messageParts[3];
                     } else {
@@ -158,7 +160,12 @@ public class BeatBuddyFragment extends Fragment {
                 String folderLSBMessage = "";
                 if (!folderLSB.isEmpty()) {
                     fromSongMessages_folderLSB = Integer.parseInt(folderLSB);
-                    folderLSBMessage = folder_string + " (LSB):" + (fromSongMessages_folderLSB + 1);
+                    int val = fromSongMessages_folderLSB;
+                    if (mainActivityInterface.getBeatBuddy().getBeatBuddyAerosMode() && val>111) {
+                        folderLSBMessage = playlist_string + " (LSB):" + (fromSongMessages_folderLSB - 111 + 1);
+                    } else {
+                        folderLSBMessage = folder_string + " (LSB):" + (fromSongMessages_folderLSB + 1);
+                    }
                 }
 
                 String songPCMessage = "";
@@ -205,25 +212,53 @@ public class BeatBuddyFragment extends Fragment {
     }
 
     private void setupViews() {
+        // Make the FABs hide/show with scroll
         myView.beatBuddyNestedScroll.setExtendedFabToAnimate(myView.testSongCode);
         myView.beatBuddyNestedScroll.setExtendedFab2ToAnimate(myView.addMidiCommands);
 
+        // Set the input method to numbers only.  Not using sliders as the folder can be huge number!
         myView.songFolder.setInputType(InputType.TYPE_CLASS_NUMBER);
         myView.songNumber.setInputType(InputType.TYPE_CLASS_NUMBER);
 
+        // If we are including song details
         myView.includeSong.setChecked(mainActivityInterface.getBeatBuddy().getBeatBuddyIncludeSong());
+        myView.aerosMode.setChecked(mainActivityInterface.getBeatBuddy().getBeatBuddyIncludeSong() &&
+                mainActivityInterface.getBeatBuddy().getBeatBuddyAerosMode());
+        // When in normal mode, show the text input for Folder (1-128^2) and Song (1-128)
         myView.includeSongLayout.setVisibility(
-                mainActivityInterface.getBeatBuddy().getBeatBuddyIncludeSong() ? View.VISIBLE:View.GONE);
+                mainActivityInterface.getBeatBuddy().getBeatBuddyIncludeSong() &&
+                        !mainActivityInterface.getBeatBuddy().getBeatBuddyAerosMode()? View.VISIBLE:View.GONE);
+        // When in Aeros mode, show the sliders for Folder/Playlist and Song
+        myView.aerosSliders.setVisibility(
+                mainActivityInterface.getBeatBuddy().getBeatBuddyIncludeSong() &&
+                        mainActivityInterface.getBeatBuddy().getBeatBuddyAerosMode()? View.VISIBLE:View.GONE);
         myView.includeSong.setOnCheckedChangeListener((buttonView, isChecked) -> {
             mainActivityInterface.getBeatBuddy().setBeatBuddyIncludeSong(isChecked);
-            myView.includeSongLayout.setVisibility(isChecked ? View.VISIBLE:View.GONE);
+            myView.includeSongLayout.setVisibility(isChecked &&
+                    !mainActivityInterface.getBeatBuddy().getBeatBuddyAerosMode()? View.VISIBLE:View.GONE);
+            myView.aerosSliders.setVisibility(isChecked &&
+                    mainActivityInterface.getBeatBuddy().getBeatBuddyAerosMode()? View.VISIBLE:View.GONE);
             updateSongCommand();
-            myView.includeSongErrors.setVisibility(isChecked ? View.VISIBLE:View.GONE);
+            myView.includeSongErrors.setVisibility(isChecked &&
+                    !mainActivityInterface.getBeatBuddy().getBeatBuddyAerosMode() ? View.VISIBLE:View.GONE);
+        });
+        myView.aerosMode.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            mainActivityInterface.getBeatBuddy().setBeatBuddyAerosMode(isChecked);
+            // Update any existing song messages
+            checkExistingMessages();
+            updateRecyclerView();
+            myView.aerosSliders.setVisibility(isChecked &&
+                    mainActivityInterface.getBeatBuddy().getBeatBuddyIncludeSong() ? View.VISIBLE:View.GONE);
+            myView.includeSongLayout.setVisibility(!isChecked &&
+                    mainActivityInterface.getBeatBuddy().getBeatBuddyIncludeSong() ? View.VISIBLE:View.GONE);
+            myView.includeSongErrors.setVisibility(!isChecked &&
+                    mainActivityInterface.getBeatBuddy().getBeatBuddyIncludeSong() ? View.VISIBLE:View.GONE);
         });
         myView.songFolder.addTextChangedListener(new SongCommandChange());
         myView.songNumber.addTextChangedListener(new SongCommandChange());
         updateSongCommand();
 
+        // Include volume
         myView.includeVolume.setChecked(mainActivityInterface.getBeatBuddy().getBeatBuddyIncludeVolume());
         myView.beatBuddyVolume.setVisibility(
                 mainActivityInterface.getBeatBuddy().getBeatBuddyIncludeVolume() ? View.VISIBLE:View.GONE);
@@ -233,6 +268,7 @@ public class BeatBuddyFragment extends Fragment {
             updateVolumeCommand();
         });
 
+        // Include tempo change
         myView.includeTempo.setChecked(mainActivityInterface.getBeatBuddy().getBeatBuddyIncludeTempo());
         myView.songTempo.setVisibility(
                 mainActivityInterface.getBeatBuddy().getBeatBuddyIncludeTempo() ? View.VISIBLE:View.GONE);
@@ -241,6 +277,7 @@ public class BeatBuddyFragment extends Fragment {
             myView.songTempo.setVisibility(isChecked ? View.VISIBLE:View.GONE);
         });
 
+        // Include drum kit
         myView.includeDrumKit.setChecked(mainActivityInterface.getBeatBuddy().getBeatBuddyIncludeDrumKit());
         myView.drumKit.setVisibility(
                 mainActivityInterface.getBeatBuddy().getBeatBuddyIncludeDrumKit() ? View.VISIBLE:View.GONE);
@@ -249,6 +286,7 @@ public class BeatBuddyFragment extends Fragment {
             myView.drumKit.setVisibility(isChecked ? View.VISIBLE:View.GONE);
         });
 
+        // Initialise the sliders, values, hints and listeners
         initialiseSlider(myView.beatBuddyChannel,"beatBuddyChannel",
                 mainActivityInterface.getBeatBuddy().getBeatBuddyChannel(),"");
         initialiseSlider(myView.beatBuddyVolume, "beatBuddyHeadphones",
@@ -259,9 +297,17 @@ public class BeatBuddyFragment extends Fragment {
                 mainActivityInterface.getMidi().getMidiDelay(),"ms");
         initialiseSlider(myView.drumKit, "beatBuddyDrumKit",
                 mainActivityInterface.getBeatBuddy().getBeatBuddyDrumKit(),"");
+        initialiseSlider(myView.aerosFolder, "aerosFolder",
+                1,"");
+        initialiseSlider(myView.aerosSong, "aerosSong",
+                1,"");
 
+        // Enable the + / - adjustment buttons for fine tuning
         myView.beatBuddyChannel.setAdjustableButtons(true);
         myView.beatBuddyVolume.setAdjustableButtons(true);
+        myView.aerosFolder.setAdjustableButtons(true);
+        myView.aerosSong.setAdjustableButtons(true);
+        myView.beatBuddyChannel.setAdjustableButtons(true);
         myView.songTempo.setAdjustableButtons(true);
         myView.midiDelay.setAdjustableButtons(true);
         myView.drumKit.setAdjustableButtons(true);
@@ -276,13 +322,24 @@ public class BeatBuddyFragment extends Fragment {
             // Set this tempo
             myView.songTempo.setValue(bpm);
         }
-        if (fromSongMessages_folderMSB>-1 && fromSongMessages_folderLSB>-1) {
+        if (!mainActivityInterface.getBeatBuddy().getBeatBuddyAerosMode() &&
+                fromSongMessages_folderMSB>-1 && fromSongMessages_folderLSB>-1) {
             int folder = (fromSongMessages_folderMSB*128) + fromSongMessages_folderLSB + 1;
             myView.songFolder.setText(""+folder);
+        } else if (mainActivityInterface.getBeatBuddy().getBeatBuddyAerosMode() &&
+                fromSongMessages_folderLSB>-1) {
+            int folder = fromSongMessages_folderLSB + 1;
+            if (folder<=128) {
+                myView.aerosFolder.setValue(folder);
+            }
         }
         if (fromSongMessages_songPC>-1) {
             int song = fromSongMessages_songPC+1;
-            myView.songNumber.setText(""+song);
+            if (!mainActivityInterface.getBeatBuddy().getBeatBuddyAerosMode()) {
+                myView.songNumber.setText("" + song);
+            } else {
+                myView.aerosSong.setValue(song);
+            }
         }
         if (fromSongMessages_drumKitCC>-1) {
             int kit = fromSongMessages_drumKitCC+1;
@@ -341,6 +398,13 @@ public class BeatBuddyFragment extends Fragment {
             slider.setValue(39); // The off position
             slider.setHint(not_set_string);
             mainActivityInterface.getSong().setTempo("");
+        } else if (prefName!=null && prefName.equals("aerosFolder")) {
+            if (value > 111) {
+                slider.setHint(playlist_string+"\n"+(value-111));
+            } else {
+                slider.setHint(folder_string+"\n"+ value);
+            }
+            slider.setValue(value);
         } else {
             slider.setHint(value + labelEnd);
             slider.setValue(value);
@@ -348,6 +412,12 @@ public class BeatBuddyFragment extends Fragment {
         slider.setLabelFormatter(value1 -> {
             if (prefName!=null && prefName.equals("songTempo") && (value1<40||value1>300)) {
                 return not_set_string;
+            } else if (prefName!=null && prefName.equals("aerosFolder")) {
+                if (value1 > 111) {
+                    return playlist_string+"\n"+(int)(value1-111);
+                } else {
+                    return folder_string + "\n" + (int)value1;
+                }
             } else {
                 return (int) value1 + labelEnd;
             }
@@ -395,6 +465,11 @@ public class BeatBuddyFragment extends Fragment {
                     case "beatBuddyDrumKit":
                         mainActivityInterface.getBeatBuddy().setBeatBuddyDrumKit(value);
                         break;
+
+                    case "aerosFolder":
+                    case "aerosSong":
+                        // Don't need to make any global changes
+                        break;
                 }
             }
         }
@@ -422,6 +497,12 @@ public class BeatBuddyFragment extends Fragment {
                 materialSlider.setHint(((int) value) + labelEnd);
                 mainActivityInterface.getSong().setTempo(value+"");
                 mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong(),false);
+            } else if (prefName!=null && prefName.equals("aerosFolder")) {
+                if (value > 111) {
+                    materialSlider.setHint(playlist_string+"\n"+(int)(value-111));
+                } else {
+                    materialSlider.setHint(folder_string + "\n" + (int)value);
+                }
             } else {
                 // Just set the hint
                 materialSlider.setHint(((int) value) + labelEnd);
@@ -480,32 +561,41 @@ public class BeatBuddyFragment extends Fragment {
 
         // Get the song folder and song number
         if (myView.includeSong.getChecked()) {
-            if (myView.songFolder.getText() != null && !myView.songFolder.getText().toString().isEmpty()) {
-                String songFolder = myView.songFolder.getText().toString().replaceAll("\\D", "");
-                try {
-                    songFolderNum = Integer.parseInt(songFolder);
-                    if (songFolderNum >= 1 && songFolderNum <= 16384) {
-                        songFolderOk = true;
+            if (mainActivityInterface.getBeatBuddy().getBeatBuddyAerosMode()) {
+                songFolderNum = (int)myView.aerosFolder.getValue();
+                songNum = (int)myView.aerosSong.getValue();
+                songFolderOk = true;
+                songNumberOk = true;
+            } else {
+                if (myView.songFolder.getText() != null && !myView.songFolder.getText().toString().isEmpty()) {
+                    String songFolder = myView.songFolder.getText().toString().replaceAll("\\D", "");
+                    try {
+                        songFolderNum = Integer.parseInt(songFolder);
+                        if (songFolderNum >= 1 && songFolderNum <= 16384) {
+                            songFolderOk = true;
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
+                }
+
+                if (myView.songNumber.getText() != null && !myView.songNumber.getText().toString().isEmpty()) {
+                    String songNumber = myView.songNumber.getText().toString().replaceAll("\\D", "");
+                    try {
+                        songNum = Integer.parseInt(songNumber);
+                        if (songNum >= 1 && songNum <= 128) {
+                            songNumberOk = true;
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
 
-            if (myView.songNumber.getText() != null && !myView.songNumber.getText().toString().isEmpty()) {
-                String songNumber = myView.songNumber.getText().toString().replaceAll("\\D", "");
-                try {
-                    songNum = Integer.parseInt(songNumber);
-                    if (songNum >= 1 && songNum <= 128) {
-                        songNumberOk = true;
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            myView.songFolderError.setVisibility(songFolderOk ? View.GONE : View.VISIBLE);
-            myView.songNumberError.setVisibility(songNumberOk ? View.GONE : View.VISIBLE);
+            myView.songFolderError.setVisibility(!songFolderOk &&
+                    !mainActivityInterface.getBeatBuddy().getBeatBuddyAerosMode()? View.VISIBLE : View.GONE);
+            myView.songNumberError.setVisibility(!songNumberOk &&
+                    !mainActivityInterface.getBeatBuddy().getBeatBuddyAerosMode()? View.VISIBLE : View.GONE);
 
             if (songFolderOk && songNumberOk) {
                 songCommand = mainActivityInterface.getBeatBuddy().getSongCode(songFolderNum, songNum);

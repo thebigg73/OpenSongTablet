@@ -22,6 +22,8 @@
     <string name="add_song_to_set">"Añadir canción actual para establecer"</string>
     <string name="add_songs">Agregar canciones</string>
     <string name="added_to_set">"se ha añadido al final de su conjunto actual."</string>
+    <string name="aeros_mode">Modo Aeros</string>
+    <string name="aeros_mode_info">Esto restringe el número de carpetas a 128 en total para que coincida con el pedal Aeros Loop Studio.  Los primeros 111 se designan como carpetas y los 17 restantes se designan como listas de reproducción.</string>
     <string name="after">Después</string>
     <string name="air_turn_long_press">Modo de pulsación larga AirTurn</string>
     <string name="air_turn_long_press_info">Cuando utilice un pedal que no envía acciones de pulsación larga, puede simular esto configurando un tiempo de pulsación larga deseado</string>
@@ -539,6 +541,7 @@
     <string name="pinch_to_zoom_info">Permitir acercar y alejar una canción en el modo Rendimiento con el gesto de pellizcar para hacer zoom</string>
     <string name="play_services_error">Para utilizar Google Cast, fuentes y conexiones cercanas, deberá instalar Google Play Services.</string>
     <string name="play_services_how">Muéstrame cómo</string>
+    <string name="playlist">Playlist</string>
     <string name="popup_large">Ventanas emergentes grandes</string>
     <string name="popup_large_info">Use ventanas emergentes grandes para los menús desplegables</string>
     <string name="portrait">Retrato</string>

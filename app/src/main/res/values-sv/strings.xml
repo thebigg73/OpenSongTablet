@@ -22,6 +22,8 @@
     <string name="add_song_to_set">"Lägg till aktuell sång för att ställa in"</string>
     <string name="add_songs">Lägg till låtar</string>
     <string name="added_to_set">"Har lagts till i slutet av din nuvarande uppsättning."</string>
+    <string name="aeros_mode">Aeros-läge</string>
+    <string name="aeros_mode_info">Detta begränsar antalet mappar till totalt 128 för att matcha Aeros Loop Studio-pedalen.  De första 111 betecknas som mappar och de återstående 17 betecknas som spellistor</string>
     <string name="after">Efter</string>
     <string name="air_turn_long_press">AirTurn lång tryckläge</string>
     <string name="air_turn_long_press_info">När du använder en pedal som inte skickar långa tryckåtgärder kan du simulera detta genom att ställa in en önskad lång trycktid</string>
@@ -539,6 +541,7 @@
     <string name="pinch_to_zoom_info">Tillåt zoomning in och ut ur en låt i prestandaläge med hjälp av nyp för att zooma gesten</string>
     <string name="play_services_error">För att kunna använda Google Cast, teckensnitt och anslutningar i närheten måste du installera Google Play-tjänster.</string>
     <string name="play_services_how">Visa mig hur</string>
+    <string name="playlist">Spellista</string>
     <string name="popup_large">Stora popup-fönster</string>
     <string name="popup_large_info">Använd stora popup-fönster för rullgardinsmenyer</string>
     <string name="portrait">Porträtt</string>

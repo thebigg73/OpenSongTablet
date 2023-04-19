@@ -2,7 +2,6 @@ package com.garethevans.church.opensongtablet.drummer;
 
 import android.content.Context;
 import android.os.Build;
-import android.util.Log;
 
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
@@ -17,56 +16,129 @@ public class BeatBuddy {
     // Control options are:
     private int beatBuddyChannel = 1, beatBuddyVolume = 100, beatBuddyDrumKit = 1;
     private byte[] commandStart, commandStop, commandAccent, commandFill, commandTransition1,
-            commandTransition2, commandTransition3, commandTransitionNext, commandTransitionExit,
-            commandHalfTime, commandHalfTimeExit, commandDoubleTime, commandDoubleTimeExit, commandPauseToggle;
+            commandTransition2, commandTransition3, commandTransitionNext, commandTransitionPrev,
+            commandTransitionExit, commandExclusiveTransition1, commandExclusiveTransition2,
+            commandExclusiveTransition3, commandExclusiveTransitionNext, commandExclusiveTransitionPrev,
+            commandExclusiveTransitionExit, commandHalfTime, commandHalfTimeExit, commandDoubleTime,
+            commandDoubleTimeExit, commandPauseToggle;
 
-    private boolean beatBuddyIncludeSong, beatBuddyIncludeTempo, beatBuddyIncludeVolume, beatBuddyIncludeDrumKit;
+    private boolean beatBuddyIncludeSong, beatBuddyIncludeTempo, beatBuddyIncludeVolume,
+            beatBuddyIncludeDrumKit, beatBuddyAerosMode;
 
+    // The commond CC commands.  In one easy readable place!
+    @SuppressWarnings({"FieldCanBeLocal","unused"})
+    private final int CC_Folder_MSB = 0;                // val 0-127
+    @SuppressWarnings({"FieldCanBeLocal","unused"})
+    private final int CC_Half_time = 82;                // val 1-127=on   val 0=off
+    @SuppressWarnings({"FieldCanBeLocal","unused"})
+    private final int CC_Double_time = 83;              // val 1-127=on   val 0=off
+    @SuppressWarnings({"FieldCanBeLocal","unused"})
+    private final int CC_Folder_LSB = 32;               // val 0-127
+    @SuppressWarnings({"FieldCanBeLocal","unused"})
+    private final int CC_Tempo_MSB = 106;               // val 0-127 (BeatBuddy only listens for 0-2 though as max tempo is 300)
+    @SuppressWarnings({"FieldCanBeLocal","unused"})
+    private final int CC_Tempo_LSB = 107;               // val 0-127 (BeatBuddy only listens for 40-127 though as min tempo is 40)
+    @SuppressWarnings({"FieldCanBeLocal","unused"})
+    private final int CC_Mix_vol = 108;                 // val 1-100
+
+    @SuppressWarnings({"FieldCanBeLocal","unused"})
+    private final int CC_HP_vol = 109;                  // val 1-100
+    @SuppressWarnings({"FieldCanBeLocal","unused"})
+    private final int CC_Accent_hit = 110;              // val 0-127 (any to trigger at that volume relative to output vol)
+    @SuppressWarnings({"FieldCanBeLocal","unused"})
+    private final int CC_Pause_unpause = 111;           // val 0-127 (any to trigger)
+    @SuppressWarnings({"FieldCanBeLocal","unused"})
+    private final int CC_Drum_fill = 112;               // val 0-127 (any to trigger at that volume relative to output vol)
+    @SuppressWarnings({"FieldCanBeLocal","unused"})
+    private final int CC_Transition = 113;              // val 1-33 for part, val 126=prev, val 127=next, val 0=end transition and move to part
+    @SuppressWarnings({"FieldCanBeLocal","unused"})
+    private final int CC_Intro = 114;                   // val 1-127=on val 0=ignored
+    @SuppressWarnings({"FieldCanBeLocal","unused"})
+    private final int CC_Outro = 115;                   // val 1-127=on val 0=ignored
+    @SuppressWarnings({"FieldCanBeLocal","unused"})
+    private final int CC_Drum_kit = 116;                 // val 1-127 for that drum kit
+    @SuppressWarnings({"FieldCanBeLocal","unused"})
+    private final int CC_Exclusive_transition = 121;    // val 1-33 for part, val 126=prev, val 127=next, val 0=end transition and move to part
+
+    public int getCC_Mix_vol() {
+        return CC_Mix_vol;
+    }
+    public int getCC_Tempo_MSB() {
+        return CC_Tempo_MSB;
+    }
+    public int getCC_Tempo_LSB() {
+        return CC_Tempo_LSB;
+    }
+    public int getCC_Drum_kit() {
+        return CC_Drum_kit;
+    }
+    // Initialise this helper class
     public BeatBuddy(Context c) {
         this.mainActivityInterface = (MainActivityInterface) c;
         setPrefs();
         buildCommands();
     }
 
+    // Load in the user preferences.  These can be changed from the helper class fragment
+    // This updates the references here and saves the user preference in the set..() methods
     public void setPrefs() {
         beatBuddyChannel = mainActivityInterface.getPreferences().getMyPreferenceInt("beatBuddyChannel",1);
         beatBuddyIncludeSong = mainActivityInterface.getPreferences().getMyPreferenceBoolean("beatBuddyIncludeSong",false);
         beatBuddyIncludeTempo = mainActivityInterface.getPreferences().getMyPreferenceBoolean("beatBuddyIncludeTempo",false);
         beatBuddyIncludeVolume = mainActivityInterface.getPreferences().getMyPreferenceBoolean("beatBuddyIncludeVolume",false);
         beatBuddyIncludeDrumKit = mainActivityInterface.getPreferences().getMyPreferenceBoolean("beatBuddyIncludeDrumKit",false);
+        beatBuddyAerosMode = mainActivityInterface.getPreferences().getMyPreferenceBoolean("beatBuddyAerosMode",false);
     }
 
     // Commands received from gestures and sent via MIDI to connected BeatBuddy
+    // These are prebuilt and stored rather than building each time to avoid any delay when performing
+    // These get rebuilt when any changes are made to the MIDI channel or volume via the helper fragment
     public void buildCommands() {
         commandStart = mainActivityInterface.getMidi().returnBytesFromHexText(
-                mainActivityInterface.getMidi().buildMidiString("CC", beatBuddyChannel, 114,beatBuddyVolume));
+                mainActivityInterface.getMidi().buildMidiString("CC", beatBuddyChannel, CC_Intro,1));
         commandStop = mainActivityInterface.getMidi().returnBytesFromHexText(
-                mainActivityInterface.getMidi().buildMidiString("CC",beatBuddyChannel,115,beatBuddyVolume));
+                mainActivityInterface.getMidi().buildMidiString("CC",beatBuddyChannel,CC_Outro,1));
         commandAccent = mainActivityInterface.getMidi().returnBytesFromHexText(
-                mainActivityInterface.getMidi().buildMidiString("CC",beatBuddyChannel,110,beatBuddyVolume));
+                mainActivityInterface.getMidi().buildMidiString("CC",beatBuddyChannel,CC_Accent_hit,Math.round((beatBuddyVolume/100f)*127f)));
         commandFill = mainActivityInterface.getMidi().returnBytesFromHexText(
-                mainActivityInterface.getMidi().buildMidiString("CC",beatBuddyChannel,112,beatBuddyVolume));
+                mainActivityInterface.getMidi().buildMidiString("CC",beatBuddyChannel,CC_Drum_fill,Math.round((beatBuddyVolume/100f)*127f)));
         commandTransition1 = mainActivityInterface.getMidi().returnBytesFromHexText(
-                mainActivityInterface.getMidi().buildMidiString("CC",beatBuddyChannel,113,1));
+                mainActivityInterface.getMidi().buildMidiString("CC",beatBuddyChannel,CC_Transition,1));
         commandTransition2 = mainActivityInterface.getMidi().returnBytesFromHexText(
-                mainActivityInterface.getMidi().buildMidiString("CC",beatBuddyChannel,113,2));
+                mainActivityInterface.getMidi().buildMidiString("CC",beatBuddyChannel,CC_Transition,2));
         commandTransition3 = mainActivityInterface.getMidi().returnBytesFromHexText(
-                mainActivityInterface.getMidi().buildMidiString("CC",beatBuddyChannel,113,3));
+                mainActivityInterface.getMidi().buildMidiString("CC",beatBuddyChannel,CC_Transition,3));
+        commandTransitionPrev = mainActivityInterface.getMidi().returnBytesFromHexText(
+                mainActivityInterface.getMidi().buildMidiString("CC",beatBuddyChannel,CC_Transition,126));
         commandTransitionNext = mainActivityInterface.getMidi().returnBytesFromHexText(
-                mainActivityInterface.getMidi().buildMidiString("CC",beatBuddyChannel,113,127));
+                mainActivityInterface.getMidi().buildMidiString("CC",beatBuddyChannel,CC_Transition,127));
         commandTransitionExit = mainActivityInterface.getMidi().returnBytesFromHexText(
-                mainActivityInterface.getMidi().buildMidiString("CC",beatBuddyChannel,113,0));
+                mainActivityInterface.getMidi().buildMidiString("CC",beatBuddyChannel,CC_Transition,0));
+        commandExclusiveTransition1 = mainActivityInterface.getMidi().returnBytesFromHexText(
+                mainActivityInterface.getMidi().buildMidiString("CC",beatBuddyChannel,CC_Exclusive_transition,1));
+        commandExclusiveTransition2 = mainActivityInterface.getMidi().returnBytesFromHexText(
+                mainActivityInterface.getMidi().buildMidiString("CC",beatBuddyChannel,CC_Exclusive_transition,2));
+        commandExclusiveTransition3 = mainActivityInterface.getMidi().returnBytesFromHexText(
+                mainActivityInterface.getMidi().buildMidiString("CC",beatBuddyChannel,CC_Exclusive_transition,3));
+        commandExclusiveTransitionPrev = mainActivityInterface.getMidi().returnBytesFromHexText(
+                mainActivityInterface.getMidi().buildMidiString("CC",beatBuddyChannel,CC_Exclusive_transition,126));
+        commandExclusiveTransitionNext = mainActivityInterface.getMidi().returnBytesFromHexText(
+                mainActivityInterface.getMidi().buildMidiString("CC",beatBuddyChannel,CC_Exclusive_transition,127));
+        commandExclusiveTransitionExit = mainActivityInterface.getMidi().returnBytesFromHexText(
+                mainActivityInterface.getMidi().buildMidiString("CC",beatBuddyChannel,CC_Exclusive_transition,0));
         commandHalfTime = mainActivityInterface.getMidi().returnBytesFromHexText(
-                mainActivityInterface.getMidi().buildMidiString("CC",beatBuddyChannel,82,1));
+                mainActivityInterface.getMidi().buildMidiString("CC",beatBuddyChannel,CC_Half_time,1));
         commandHalfTimeExit = mainActivityInterface.getMidi().returnBytesFromHexText(
-                mainActivityInterface.getMidi().buildMidiString("CC",beatBuddyChannel,82,0));
+                mainActivityInterface.getMidi().buildMidiString("CC",beatBuddyChannel,CC_Half_time,0));
         commandDoubleTime = mainActivityInterface.getMidi().returnBytesFromHexText(
-                mainActivityInterface.getMidi().buildMidiString("CC",beatBuddyChannel,83,1));
+                mainActivityInterface.getMidi().buildMidiString("CC",beatBuddyChannel,CC_Double_time,1));
         commandDoubleTimeExit = mainActivityInterface.getMidi().returnBytesFromHexText(
-                mainActivityInterface.getMidi().buildMidiString("CC",beatBuddyChannel,83,0));
+                mainActivityInterface.getMidi().buildMidiString("CC",beatBuddyChannel,CC_Double_time,0));
         commandPauseToggle = mainActivityInterface.getMidi().returnBytesFromHexText(
-                mainActivityInterface.getMidi().buildMidiString("CC",beatBuddyChannel,111,127));
+                mainActivityInterface.getMidi().buildMidiString("CC",beatBuddyChannel,CC_Pause_unpause,127));
     }
+
+    // These are the controls called by the PerformanceGestures (pedals, page buttons or gestures)
     public void beatBuddyStart() {
         // Send a MIDI command to start the BeatBuddy
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -121,13 +193,54 @@ public class BeatBuddy {
             mainActivityInterface.getMidi().sendMidi(commandTransitionNext);
         }
     }
+    public void beatBuddyTransitionPrev() {
+        // Send a MIDI command to start the next transition on the BeatBuddy
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            mainActivityInterface.getMidi().sendMidi(commandTransitionPrev);
+        }
+    }
     public void beatBuddyTransitionExit() {
         // Send a MIDI command to stop the transition on the BeatBuddy
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             mainActivityInterface.getMidi().sendMidi(commandTransitionExit);
         }
     }
-
+    public void beatBuddyExclusiveTransition1() {
+        // Send a MIDI command to start transition 1 on the BeatBuddy
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            mainActivityInterface.getMidi().sendMidi(commandExclusiveTransition1);
+        }
+    }
+    public void beatBuddyExclusiveTransition2() {
+        // Send a MIDI command to start transition 2 on the BeatBuddy
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            mainActivityInterface.getMidi().sendMidi(commandExclusiveTransition2);
+        }
+    }
+    public void beatBuddyExclusiveTransition3() {
+        // Send a MIDI command to start transition 3 on the BeatBuddy
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            mainActivityInterface.getMidi().sendMidi(commandExclusiveTransition3);
+        }
+    }
+    public void beatBuddyExclusiveTransitionNext() {
+        // Send a MIDI command to start the next transition on the BeatBuddy
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            mainActivityInterface.getMidi().sendMidi(commandExclusiveTransitionNext);
+        }
+    }
+    public void beatBuddyExclusiveTransitionPrev() {
+        // Send a MIDI command to start the next transition on the BeatBuddy
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            mainActivityInterface.getMidi().sendMidi(commandExclusiveTransitionPrev);
+        }
+    }
+    public void beatBuddyExclusiveTransitionExit() {
+        // Send a MIDI command to stop the transition on the BeatBuddy
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            mainActivityInterface.getMidi().sendMidi(commandExclusiveTransitionExit);
+        }
+    }
     public void beatBuddyHalfTime() {
         // Send a MIDI command to play half time on the BeatBuddy
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -140,7 +253,6 @@ public class BeatBuddy {
             mainActivityInterface.getMidi().sendMidi(commandHalfTimeExit);
         }
     }
-
     public void beatBuddyDoubleTime() {
         // Send a MIDI command to play double time on the BeatBuddy
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -155,7 +267,7 @@ public class BeatBuddy {
     }
 
 
-    // The getters and setters
+    // The getters and setters for the helper fragment
     public int getBeatBuddyChannel() {
         return beatBuddyChannel;
     }
@@ -177,13 +289,18 @@ public class BeatBuddy {
     public int getBeatBuddyDrumKit() {
         return beatBuddyDrumKit;
     }
+    public boolean getBeatBuddyAerosMode() {
+        return beatBuddyAerosMode;
+    }
 
     public void setBeatBuddyChannel(int beatBuddyChannel) {
         this.beatBuddyChannel = beatBuddyChannel;
         mainActivityInterface.getPreferences().setMyPreferenceInt("beatBuddyChannel",beatBuddyChannel);
+        buildCommands();
     }
     public void setBeatBuddyVolume(int beatBuddyVolume) {
         this.beatBuddyVolume = beatBuddyVolume;
+        buildCommands();
     }
     public void setBeatBuddyIncludeSong(boolean beatBuddyIncludeSong) {
         this.beatBuddyIncludeSong = beatBuddyIncludeSong;
@@ -204,23 +321,31 @@ public class BeatBuddy {
     public void setBeatBuddyDrumKit(int beatBuddyDrumKit) {
         this.beatBuddyDrumKit = beatBuddyDrumKit;
     }
+    public void setBeatBuddyAerosMode(boolean beatBuddyAerosMode) {
+        this.beatBuddyAerosMode = beatBuddyAerosMode;
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean("beatBuddyAerosMode",beatBuddyAerosMode);
+    }
 
-    // Calculations
+    // Calculations for working out codes
     public String getSongCode(int folderNumber, int songNumber) {
-        // Folder code is two parts
+        // Folder code is two parts unless we are in AerosMode (no MSB)
         // Part 1 =FLOOR((B4-1)/128)
         // Part 2 =MOD(B4-1,128)
-        int part1Dec = (int)Math.floor((float)(folderNumber-1)/128f);
+        int part1Dec = 0;
+        if (!beatBuddyAerosMode) {
+            part1Dec = (int) Math.floor((float) (folderNumber - 1) / 128f);
+        }
         int part2Dec = Math.floorMod(folderNumber-1,128);
-        Log.d(TAG,"part1Dec:"+part1Dec+"  part2Dec:"+part2Dec);
 
         // Song number is simpler.  Just take away 1
         songNumber = songNumber - 1;
 
-        String code = mainActivityInterface.getMidi().buildMidiString("CC",beatBuddyChannel-1,0,part1Dec);
-        code += "\n" + mainActivityInterface.getMidi().buildMidiString("CC",beatBuddyChannel-1,32,part2Dec);
+        String code = "";
+        if (!beatBuddyAerosMode) {
+            code = mainActivityInterface.getMidi().buildMidiString("CC", beatBuddyChannel - 1, CC_Folder_MSB, part1Dec);
+        }
+        code += "\n" + mainActivityInterface.getMidi().buildMidiString("CC",beatBuddyChannel-1,CC_Folder_LSB,part2Dec);
         code += "\n" + mainActivityInterface.getMidi().buildMidiString("PC",beatBuddyChannel-1,-1,songNumber);
-        Log.d(TAG,"code:"+code);
         return code;
     }
 
@@ -230,19 +355,18 @@ public class BeatBuddy {
         // Part 2 =MOD(tempo,128)
         int part1Dec = (int)Math.floor((float)tempo/128f);
         int part2Dec = Math.floorMod(tempo,128);
-        String code = mainActivityInterface.getMidi().buildMidiString("CC",beatBuddyChannel-1,106,part1Dec);
-        code += "\n" + mainActivityInterface.getMidi().buildMidiString("CC",beatBuddyChannel-1,107,part2Dec);
-        Log.d(TAG,"code:"+code);
+        String code = mainActivityInterface.getMidi().buildMidiString("CC",beatBuddyChannel-1,CC_Tempo_MSB,part1Dec);
+        code += "\n" + mainActivityInterface.getMidi().buildMidiString("CC",beatBuddyChannel-1,CC_Tempo_LSB,part2Dec);
         return code;
     }
 
     public String getVolumeCode() {
         // Volumes will be between 0 and 100
-        return mainActivityInterface.getMidi().buildMidiString("CC",beatBuddyChannel-1,108,beatBuddyVolume);
+        return mainActivityInterface.getMidi().buildMidiString("CC",beatBuddyChannel-1,CC_Mix_vol,beatBuddyVolume);
     }
 
     public String getDrumKitCode() {
         // The drumKitCode will be between 1 and 128.  Decrease by 1 for MIDI
-        return mainActivityInterface.getMidi().buildMidiString("CC",beatBuddyChannel-1,116,beatBuddyDrumKit-1);
+        return mainActivityInterface.getMidi().buildMidiString("CC",beatBuddyChannel-1,CC_Drum_kit,beatBuddyDrumKit-1);
     }
 }

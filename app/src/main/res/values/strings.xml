@@ -26,6 +26,8 @@
     <string name="add_song_to_set">Add current song to set</string>
     <string name="add_songs">Add songs</string>
     <string name="added_to_set">has been added to the end of your current set.</string>
+    <string name="aeros_mode">Aeros mode</string>
+    <string name="aeros_mode_info">This restricts the number of folders to 128 in total.  The first 111 are designated as folders and the remaining 17 are designated as playlists</string>
     <string name="after">After</string>
     <string name="air_turn_long_press">AirTurn mode</string>
     <string name="air_turn_long_press_info">When using a pedal that does not send long press actions, you can simulate this by setting a desired long press time</string>
@@ -696,6 +698,7 @@
     <string name="pinch_to_zoom_info">Allow zooming in and out of a song in Performance mode using the pinch to zoom gesture</string>
     <string name="play_services_error">To use Google Cast, Fonts and Nearby Connections, you will need to install Google Play Services.</string>
     <string name="play_services_how">Show me how</string>
+    <string name="playlist">Playlist</string>
     <string name="plus_1" translatable="false">+1</string>
     <string name="popup_large">Large popups</string>
     <string name="popup_large_info">Use large popups for drop-down menus</string>

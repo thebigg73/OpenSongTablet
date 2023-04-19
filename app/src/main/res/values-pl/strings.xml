@@ -22,6 +22,8 @@
     <string name="add_song_to_set">"Dodać bieżący utwór, aby ustawić"</string>
     <string name="add_songs">Dodaj utwory</string>
     <string name="added_to_set">"został dodany do końca bieżącego zestawu."</string>
+    <string name="aeros_mode">Tryb Aeros</string>
+    <string name="aeros_mode_info">Ogranicza to liczbę folderów do 128, aby dopasować pedał Aeros Loop Studio.  Pierwsze 111 jest oznaczone jako foldery, a pozostałe 17 jako listy odtwarzania</string>
     <string name="after">Po</string>
     <string name="air_turn_long_press">Tryb długiego naciśnięcia AirTurn</string>
     <string name="air_turn_long_press_info">Używając pedału, który nie wysyła akcji długich naciśnięć, można to zasymulować, ustawiając żądany czas długiego naciśnięcia</string>
@@ -539,6 +541,7 @@
     <string name="pinch_to_zoom_info">Zezwalanie na powiększanie i pomniejszanie utworu w trybie Performance za pomocą gestu powiększania szczypania</string>
     <string name="play_services_error">Aby korzystać z Google Cast, czcionek i pobliskich połączeń, musisz zainstalować usługi Google Play.</string>
     <string name="play_services_how">Pokaż mi jak</string>
+    <string name="playlist">Lista odtwarzania</string>
     <string name="popup_large">Duże wyskakujące okienka</string>
     <string name="popup_large_info">Używaj dużych wyskakujących okienek do rozwijanych menu</string>
     <string name="portrait">Portret</string>

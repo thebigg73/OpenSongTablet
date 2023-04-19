@@ -22,6 +22,8 @@
     <string name="add_song_to_set">"Добавить песню в список"</string>
     <string name="add_songs">Добавить песни</string>
     <string name="added_to_set">"добавлено ​​в конец текущего списка."</string>
+    <string name="aeros_mode">Режим Aeros</string>
+    <string name="aeros_mode_info">Это ограничивает общее количество папок до 128, чтобы соответствовать педали Aeros Loop Studio.  Первые 111 обозначаются как папки, а остальные 17 — как списки воспроизведения</string>
     <string name="after">После</string>
     <string name="air_turn_long_press">Режим длительного нажатия AirTurn</string>
     <string name="air_turn_long_press_info">При использовании педали, не посылающая сигналы длительного нажатия, вы можете имитировать их, установив желаемое время длительного нажатия.</string>
@@ -539,6 +541,7 @@
     <string name="pinch_to_zoom_info">Увеличение или уменьшение масштаба песни в режиме выступления с помощью жеста сжатия двумя пальцами</string>
     <string name="play_services_error">Чтобы использовать Google Cast, Fonts и Nearby Connections, вам необходимо установить Google Play Services.</string>
     <string name="play_services_how">Показать, как сделать</string>
+    <string name="playlist">Список воспроизведения</string>
     <string name="popup_large">Большие всплывающие окна</string>
     <string name="popup_large_info">Использовать большие всплывающие окна для раскрывающихся меню</string>
     <string name="portrait">Портрет</string>

@@ -22,6 +22,8 @@
     <string name="add_song_to_set">Elkeen kan toegewys word aan liedjies soos metronomieë, transponeer, boekies, ens.</string>
     <string name="add_songs">Voeg liedjies by</string>
     <string name="added_to_set">"is by die einde van jou huidige stel."</string>
+    <string name="aeros_mode">Aeros af</string>
+    <string name="aeros_mode_info">Dit beperk die aantal vouers tot 128 in totaal om by die Aeros Loop Studio-pedaal te pas.  Die eerste 111 word as dopgehou aangedui en die oorblywende 17 word as snitlyste aangewys</string>
     <string name="after">Na</string>
     <string name="air_turn_long_press">AirTurn lang persmodus</string>
     <string name="air_turn_long_press_info">Wanneer jy \'n pedaal gebruik wat nie langdrukaksies stuur nie, kan jy dit simuleer deur \'n verlangde lang druktyd in te stel</string>
@@ -539,6 +541,7 @@
     <string name="pinch_to_zoom_info">Laat zoem in en uit \'n liedjie in Performance-modus met behulp van die knippie om gebaar in te zoem</string>
     <string name="play_services_error">Om Google Cast, lettertipes en verbindings in die buurt te gebruik, moet u Google Play Services installeer.</string>
     <string name="play_services_how">Wys my hoe</string>
+    <string name="playlist">Speellys</string>
     <string name="popup_large">Groot pop-ups</string>
     <string name="popup_large_info">Gebruik groot opspringers vir aftrekkieslyste</string>
     <string name="portrait">Portret</string>

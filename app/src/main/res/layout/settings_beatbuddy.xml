@@ -45,6 +45,42 @@
                 android:layout_height="wrap_content"
                 android:text="@string/song"
                 android:hint="@string/midi_message_include"/>
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                android:id="@+id/aerosMode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/aeros_mode"
+                android:hint="@string/aeros_mode_info"/>
+
+            <LinearLayout
+                android:id="@+id/aerosSliders"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+            <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+                android:id="@+id/aerosFolder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/folder"
+                android:valueFrom="1"
+                android:valueTo="128"
+                app:stepSize="1"
+                android:value="1"
+                app:adjustable="true"/>
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+                android:id="@+id/aerosSong"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/song"
+                android:valueFrom="1"
+                android:valueTo="128"
+                app:stepSize="1"
+                android:value="1"
+                app:adjustable="true"/>
+            </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/includeSongLayout"
                 android:layout_width="match_parent"

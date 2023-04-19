@@ -22,6 +22,8 @@
     <string name="add_song_to_set">"Song zum aktuellen Set zufügen"</string>
     <string name="add_songs">Lieder hinzufügen</string>
     <string name="added_to_set">"wurde an das aktuelle Set angefügt."</string>
+    <string name="aeros_mode">Aeros-Modus</string>
+    <string name="aeros_mode_info">Dadurch wird die Anzahl der Ordner auf insgesamt 128 begrenzt, um dem Aeros Loop Studio-Pedal zu entsprechen.  Die ersten 111 werden als Ordner und die restlichen 17 als Wiedergabelisten bezeichnet</string>
     <string name="after">Nach</string>
     <string name="air_turn_long_press">AirTurn-Modus für langes Drücken</string>
     <string name="air_turn_long_press_info">Wenn Sie ein Pedal verwenden, das keine langen Betätigungen sendet, können Sie dies simulieren, indem Sie eine gewünschte lange Betätigungszeit einstellen</string>
@@ -539,6 +541,7 @@
     <string name="pinch_to_zoom_info">Vergrößern und Verkleinern eines Musiktitels im Performance-Modus mit der Geste \"Zusammendrücken zum Zoomen\" zulassen</string>
     <string name="play_services_error">Um Google Cast, Schriftarten und Verbindungen in der Nähe verwenden zu können, müssen Sie Google Play Services installieren.</string>
     <string name="play_services_how">Zeig mir wie</string>
+    <string name="playlist">Wiedergabeliste</string>
     <string name="popup_large">Große Popups</string>
     <string name="popup_large_info">Verwenden Sie große Popups für Dropdown-Menüs</string>
     <string name="portrait">Porträt</string>

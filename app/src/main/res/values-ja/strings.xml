@@ -22,6 +22,8 @@
     <string name="add_song_to_set">"設定するには現在の曲を追加"</string>
     <string name="add_songs">曲を追加する</string>
     <string name="added_to_set">"あなたの現在のセットの最後に追加されました。"</string>
+    <string name="aeros_mode">Aeros モード</string>
+    <string name="aeros_mode_info">これにより、Aeros Loop Studioペダルに合わせてフォルダの数が合計128に制限されます。 最初の111個はフォルダとして指定され、残りの17個はプレイリストとして指定されます</string>
     <string name="after">後</string>
     <string name="air_turn_long_press">AirTurn長押しモード</string>
     <string name="air_turn_long_press_info">長押しアクションを送信しないペダルを使用する場合は、希望の長押し時間を設定することでこれをシミュレートできます。</string>
@@ -539,6 +541,7 @@
     <string name="pinch_to_zoom_info">ピンチツーズームジェスチャを使用してパフォーマンスモードで曲のズームインとズームアウトを許可する</string>
     <string name="play_services_error">Google Cast、Fonts、Nearby Connectionsを使用するには、GooglePlayサービスをインストールする必要があります。</string>
     <string name="play_services_how">どうするか教えて</string>
+    <string name="playlist">プレイリスト</string>
     <string name="popup_large">大きなポップアップ</string>
     <string name="popup_large_info">ドロップダウン メニューに大きなポップアップを使用する</string>
     <string name="portrait">ポートレート</string>

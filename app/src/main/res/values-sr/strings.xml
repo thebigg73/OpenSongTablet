@@ -22,6 +22,8 @@
     <string name="add_song_to_set">Dodati trenutnu pesmu na set listu</string>
     <string name="add_songs">Dodajte pesme</string>
     <string name="added_to_set">je dodata na kraj trenutne set liste.</string>
+    <string name="aeros_mode">Aeros režim</string>
+    <string name="aeros_mode_info">Ovo ograničava broj fascikli na ukupno 128 da bi se podudarale sa pedalom Aeros Loop Studija.  Prvih 111 su označeni kao fascikle , a preostalih 17 su označeni kao spiskovi numera</string>
     <string name="after">Posle</string>
     <string name="air_turn_long_press">AirTurn režim dugog pritiska</string>
     <string name="air_turn_long_press_info">Kada koristite pedalu koja ne šalje radnje dugog pritiska, ovo možete simulirati postavljanjem željenog vremena dugog pritiska</string>
@@ -539,6 +541,7 @@
     <string name="pinch_to_zoom_info">Dozvoljavanje uvećavanja i umanjivanja pesme u režimu performansi pomoću štipaljke za zumiranje pokreta</string>
     <string name="play_services_error">Da biste koristili Google Cast, fontove i veze u blizini, moraćete da instalirate Google Plai usluge.</string>
     <string name="play_services_how">Pokaži mi kako</string>
+    <string name="playlist">Spisak numera</string>
     <string name="popup_large">Veliki iskačući prozori</string>
     <string name="popup_large_info">Koristite velike iskačuće prozore za padajuće menije</string>
     <string name="portrait">Portret</string>

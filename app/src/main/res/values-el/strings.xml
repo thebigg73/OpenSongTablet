@@ -22,6 +22,8 @@
     <string name="add_song_to_set">"Πρόσθεσε το τρέχων τραγουδι σε λιστα"</string>
     <string name="add_songs">Προσθήκη τραγουδιών</string>
     <string name="added_to_set">"προστέθηκε στο τέλος της σειράς."</string>
+    <string name="aeros_mode">Λειτουργία Aeros</string>
+    <string name="aeros_mode_info">Αυτό περιορίζει τον αριθμό των φακέλων σε 128 συνολικά για να ταιριάζει με το πεντάλ του Aeros Loop Studio.  Οι πρώτοι 111 ορίζονται ως φάκελοι και οι υπόλοιποι 17 ορίζονται ως λίστες αναπαραγωγής</string>
     <string name="after">Μετά</string>
     <string name="air_turn_long_press">Λειτουργία μακρινής πτήσης AirTurn</string>
     <string name="air_turn_long_press_info">Όταν χρησιμοποιείτε ένα πεντάλ που δεν στέλνει ενέργειες παρατεταμένου πατήματος, μπορείτε να το προσομοιώσετε ορίζοντας τον επιθυμητό χρόνο παρατεταμένου πάτημας</string>
@@ -539,6 +541,7 @@
     <string name="pinch_to_zoom_info">Να επιτρέπεται η μεγέθυνση και σμίκρυνση ενός τραγουδιού στη λειτουργία απόδοσης με χρήση της χειρονομίας τσιμπήματος για ζουμ</string>
     <string name="play_services_error">Για να χρησιμοποιήσετε το Google Cast, τις γραμματοσειρές και τις κοντινές συνδέσεις, θα πρέπει να εγκαταστήσετε τις Υπηρεσίες Google Play.</string>
     <string name="play_services_how">Δείξε μου πώς</string>
+    <string name="playlist">Λίστα αναπαραγωγής</string>
     <string name="popup_large">Μεγάλα αναδυόμενα παράθυρα</string>
     <string name="popup_large_info">Χρησιμοποιήστε μεγάλα αναδυόμενα παράθυρα για αναπτυσσόμενα μενού</string>
     <string name="portrait">Πορτρέτο</string>
