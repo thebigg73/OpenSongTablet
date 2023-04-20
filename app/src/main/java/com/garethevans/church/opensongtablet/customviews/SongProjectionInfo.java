@@ -3,6 +3,7 @@ package com.garethevans.church.opensongtablet.customviews;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
@@ -61,14 +62,14 @@ public class SongProjectionInfo extends LinearLayoutCompat {
 
 
     // Adjust the layout depending on what is needed
-    public void setPresenterPrimaryScreen(boolean presenterPrimaryScreen) {
+    public void setPresenterPrimaryScreen(Context context, MainActivityInterface mainActivityInterface, boolean presenterPrimaryScreen) {
         // Used for the PresenterMode device screen - stick to Lato!
         this.presenterPrimaryScreen = presenterPrimaryScreen;
+        // Run the updates
+        setupLayout(context,mainActivityInterface,true);
+        textClock.setVisibility(View.GONE);
     }
     public void setupLayout(Context c, MainActivityInterface mainActivityInterface, boolean miniInfo) {
-        // Set up the text info bar fonts
-        setupFonts(mainActivityInterface);
-
         // Set the background color, logo and alignment based on mode
         if (miniInfo || presenterPrimaryScreen) {
             // We just want the text
@@ -86,6 +87,8 @@ public class SongProjectionInfo extends LinearLayoutCompat {
             smallText(mainActivityInterface, true);
             castSongInfo.setBackgroundColor(Color.TRANSPARENT);
         }
+        // Set up the text info bar fonts
+        setupFonts(mainActivityInterface);
     }
 
     // Updating the text in the view
@@ -158,6 +161,13 @@ public class SongProjectionInfo extends LinearLayoutCompat {
             songCCLI.setTextSize(mainActivityInterface.getPresenterSettings().getPresoCopyrightTextSize());
             textClock.setTextSize(mainActivityInterface.getPresenterSettings().getPresoClockSize());
         } else {
+            Typeface typeface = mainActivityInterface.getMyFonts().getAppDefault();
+            songTitle.setTypeface(typeface);
+            songAuthor.setTypeface(typeface);
+            songCopyright.setTypeface(typeface);
+            songCCLI.setTypeface(typeface);
+            textClock.setTypeface(typeface);
+
             songTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP,14);
             songAuthor.setTextSize(TypedValue.COMPLEX_UNIT_SP,12);
             songCopyright.setTextSize(TypedValue.COMPLEX_UNIT_SP,12);
@@ -250,15 +260,20 @@ public class SongProjectionInfo extends LinearLayoutCompat {
     }
 
     public void updateClockSettings(MainActivityInterface mainActivityInterface) {
-        mainActivityInterface.getTimeTools().setFormat(textClock,
-                false, clockTextSize,
-                mainActivityInterface.getPresenterSettings().getPresoShowClock(),
-                mainActivityInterface.getPresenterSettings().getPresoClock24h(),
-                mainActivityInterface.getPresenterSettings().getPresoClockSeconds());
-        // Change the visibility based on the preference (settings open is used for the toolbar clock)
-        Log.d(TAG,"updateClockSettings() wanted:"+mainActivityInterface.getPresenterSettings().getPresoShowClock());
-        textClock.postDelayed(() ->
-            textClock.setVisibility(mainActivityInterface.getPresenterSettings().getPresoShowClock()?View.VISIBLE:View.GONE),500);
+        if (!presenterPrimaryScreen) {
+            mainActivityInterface.getTimeTools().setFormat(textClock,
+                    false, clockTextSize,
+                    mainActivityInterface.getPresenterSettings().getPresoShowClock(),
+                    mainActivityInterface.getPresenterSettings().getPresoClock24h(),
+                    mainActivityInterface.getPresenterSettings().getPresoClockSeconds());
+            // Change the visibility based on the preference (settings open is used for the toolbar clock)
+            Log.d(TAG, "updateClockSettings() wanted:" + mainActivityInterface.getPresenterSettings().getPresoShowClock());
+            textClock.postDelayed(() ->
+                    textClock.setVisibility(mainActivityInterface.getPresenterSettings().getPresoShowClock() ? View.VISIBLE : View.GONE), 500);
+        } else {
+            textClock.postDelayed(() ->
+                    textClock.setVisibility(View.GONE), 500);
+        }
     }
 
     public boolean isNewInfo(String compareString) {

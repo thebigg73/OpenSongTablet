@@ -115,7 +115,7 @@ public class SongSectionsFragment extends Fragment {
             resetTimer();
             if (mainActivityInterface != null &&
                     mainActivityInterface.getSong() != null) {
-                myView.songInfo.setPresenterPrimaryScreen(true);
+                myView.songInfo.setPresenterPrimaryScreen(getContext(),mainActivityInterface,true);
                 myView.songInfo.setupFonts(mainActivityInterface);
                 myView.songInfo.setSongTitle(mainActivityInterface.getSong().getTitle());
                 myView.songInfo.setSongAuthor(mainActivityInterface.getSong().getAuthor());

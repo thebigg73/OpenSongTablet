@@ -227,6 +227,9 @@ public class SetTypeFace {
         return GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(c) == ConnectionResult.SUCCESS;
     }
 
+    public Typeface getAppDefault() {
+        return Typeface.createFromAsset(c.getAssets(), "font/lato.ttf");
+    }
     public ArrayList<String> getFontsFromGoogle() {
         ArrayList<String> fontNames;
         String response = null;

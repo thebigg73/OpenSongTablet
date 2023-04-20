@@ -909,7 +909,7 @@ public class SecondaryDisplay extends Presentation {
             showAllSections();
         } else {
             // Only need to show the current section (if it has been chosen)
-            if (mainActivityInterface.getSong().getCurrentSection()>=0) {
+            if (mainActivityInterface.getSong().getCurrentSection()>=0 && !mainActivityInterface.getMode().equals(c.getString(R.string.mode_presenter))) {
                 showSection(mainActivityInterface.getPresenterSettings().getCurrentSection());
             }
         }
@@ -1071,6 +1071,7 @@ public class SecondaryDisplay extends Presentation {
             }
         } catch (Exception e) {
             Log.d(TAG, "No song section at this point.");
+            e.printStackTrace();
         }
     }
 

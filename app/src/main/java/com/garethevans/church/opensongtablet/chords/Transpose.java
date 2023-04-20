@@ -720,9 +720,13 @@ public class Transpose {
     }
 
     public String capoKeyTranspose() {
-        capoKey = numberToKey(transposeNumber(keyToNumber(mainActivityInterface.getSong().getKey()),
-                "-1", Integer.parseInt("0" + mainActivityInterface.getSong().getCapo())));
-        return capoKey;
+        if (mainActivityInterface.getSong().getKey()!=null && mainActivityInterface.getSong().getCapo()!=null) {
+            capoKey = numberToKey(transposeNumber(keyToNumber(mainActivityInterface.getSong().getKey()),
+                    "-1", Integer.parseInt("0" + mainActivityInterface.getSong().getCapo())));
+            return capoKey;
+        } else {
+            return "";
+        }
     }
 
     private ArrayList<String> quickCapoKey(String key) {
