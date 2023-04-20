@@ -163,6 +163,7 @@ public class ThemeSetupFragment extends Fragment {
         myView.presoChordButton.setColor(mainActivityInterface.getMyThemeColors().getPresoChordColor());
         myView.presoInfoButton.setColor(mainActivityInterface.getMyThemeColors().getPresoInfoFontColor());
         myView.presoAlertButton.setColor(mainActivityInterface.getMyThemeColors().getPresoAlertColor());
+        myView.presoCapoButton.setColor(mainActivityInterface.getMyThemeColors().getPresoCapoColor());
         myView.presoShadowButton.setColor(mainActivityInterface.getMyThemeColors().getPresoShadowColor());
 
         myView.metronomeButton.setColor(mainActivityInterface.getMyThemeColors().getMetronomeColor());
@@ -198,6 +199,7 @@ public class ThemeSetupFragment extends Fragment {
         myView.extratextButton.setOnClickListener(v-> chooseColor("extraInfoTextColor"));
         myView.extrabackgroundButton.setOnClickListener(v-> chooseColor("extraInfoBgColor"));
         myView.presoAlertButton.setOnClickListener(v -> chooseColor("presoAlertColor"));
+        myView.presoCapoButton.setOnClickListener(v -> chooseColor("presoCapoColor"));
         myView.presoShadowButton.setOnClickListener(v -> chooseColor("presoShadowColor"));
         myView.resetTheme.setOnClickListener(v -> mainActivityInterface.displayAreYouSure("resetColors",myView.themeName.getText().toString() + ": "+reset_colours_string,null,"themeSetupFragment",this,null));
     }

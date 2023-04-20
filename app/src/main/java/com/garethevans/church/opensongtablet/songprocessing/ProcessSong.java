@@ -1792,7 +1792,7 @@ public class ProcessSong {
                                     linearLayout.addView(groupTable(line,
                                             mainActivityInterface.getMyThemeColors().getPresoFontColor(),
                                             mainActivityInterface.getMyThemeColors().getPresoChordColor(),
-                                            mainActivityInterface.getMyThemeColors().getLyricsCapoColor(),
+                                            mainActivityInterface.getMyThemeColors().getPresoCapoColor(),
                                             mainActivityInterface.getMyThemeColors().getHighlightChordColor(), true));
                                 } else {
                                     TableLayout tl = groupTable(line,

@@ -200,6 +200,7 @@ public class Preferences extends Activity {
     // custom1_presoShadowColor         int         The color for the presentation text shadow in the custom1 theme
     // custom1_presoInfoColor           int         The color for the presentation info text in the custom1 theme
     // custom1_presoAlertColor          int         The color for the presentation alert text in the custom1 theme
+    // custom1_presoCapoColor           int         The color for the presentation capo text in the custom1 theme
     // custom1_metronomeColor           int         The color for the metronome background in the custom1 theme
     // custom1_pageButtonsColor         int         The color for the page buttons info text in the custom1 theme
     // custom1_stickyTextColor          int         The color for the sticky note text info text in the custom1 theme
@@ -225,6 +226,7 @@ public class Preferences extends Activity {
     // custom2_presoShadowColor         int         The color for the presentation text shadow in the custom2 theme
     // custom2_presoInfoColor           int         The color for the presentation info text in the custom2 theme
     // custom2_presoAlertColor          int         The color for the presentation alert text in the custom2 theme
+    // custom2_presoCapoColor           int         The color for the presentation capo text in the custom2 theme
     // custom2_metronomeColor           int         The color for the metronome background in the custom2 theme
     // custom2_pageButtonsColor         int         The color for the page buttons info text in the custom2 theme
     // custom2_stickyTextColor          int         The color for the sticky note text info text in the custom2 theme
@@ -276,6 +278,7 @@ public class Preferences extends Activity {
     // dark_presoShadowColor            int         The color for the presentation text shadow in the dark theme
     // dark_presoInfoColor              int         The color for the presentation info text in the dark theme
     // dark_presoAlertColor             int         The color for the presentation alert text in the dark theme
+    // dark_presoCapoColor              int         The color for the presentation capo text in the dark theme
     // dark_metronomeColor              int         The color for the metronome background in the dark theme
     // dark_pageButtonsColor            int         The color for the page buttons info text in the dark theme
     // dark_stickyTextColor             int         The color for the sticky note text info text in the dark theme
@@ -359,6 +362,7 @@ public class Preferences extends Activity {
     // light_presoShadowColor           int         The color for the presentation text shadow in the light theme
     // light_presoInfoColor             int         The color for the presentation info text in the light theme
     // light_presoAlertColor            int         The color for the presentation alert text in the light theme
+    // light_presoCapoColor             int         The color for the presentation capo text in the light theme
     // light_metronomeColor             int         The color for the metronome background in the light theme
     // light_pageButtonsColor           int         The color for the page buttons info text in the light theme
     // light_stickyTextColor            int         The color for the sticky note text info text in the light theme

@@ -409,6 +409,9 @@ public class ChooseColorBottomSheet extends BottomSheetDialogFragment {
             case "presoAlertColor":
                 title = alert_string;
                 break;
+            case "presoCapoColor":
+                title = capo_chords_string;
+                break;
             case "presoShadowColor":
                 title = block_text_shadow_string;
                 break;

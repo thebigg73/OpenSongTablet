@@ -30,6 +30,7 @@ public class ThemeColors {
     private int presoChordColor;
     private int presoInfoFontColor;
     private int presoAlertColor;
+    private int presoCapoColor;
     private int presoShadowColor;
     private int metronomeColor;
     private int pageButtonsColor;
@@ -103,6 +104,9 @@ public class ThemeColors {
     }
     public void setPresoAlertColor(int i) {
         this.presoAlertColor = i;
+    }
+    public void setPresoCapoColor(int i) {
+        this.presoCapoColor = i;
     }
     public void setPresoShadowColor(int i) {
         this.presoShadowColor = i;
@@ -184,6 +188,9 @@ public class ThemeColors {
     public int getPresoAlertColor() {
         return presoAlertColor;
     }
+    public int getPresoCapoColor() {
+        return presoCapoColor;
+    }
     public int getPresoShadowColor() {
         return presoShadowColor;
     }
@@ -263,6 +270,7 @@ public class ThemeColors {
         mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"extraInfoTextColor",         white);
         mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"lyricsCapoColor",            red);
         mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"presoAlertColor",            red);
+        mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"presoCapoColor",             red);
         mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"presoHighlightChordColor",   transparent);
         mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"presoHighlightHeadingColor", transparent);
         mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"presoFontColor",             white);
@@ -357,6 +365,7 @@ public class ThemeColors {
         setPresoChordColor(mainActivityInterface.getPreferences().getMyPreferenceInt("dark_presoChordColor",             yellow));
         setPresoInfoFontColor(mainActivityInterface.getPreferences().getMyPreferenceInt("dark_presoInfoFontColor",       white));
         setPresoAlertColor(mainActivityInterface.getPreferences().getMyPreferenceInt("dark_presoAlertColor",             red));
+        setPresoCapoColor(mainActivityInterface.getPreferences().getMyPreferenceInt("dark_presoCapoColor",               red));
         setPresoShadowColor(mainActivityInterface.getPreferences().getMyPreferenceInt("dark_presoShadowColor",           translucentDark));
         setHighlightChordColor(mainActivityInterface.getPreferences().getMyPreferenceInt("dark_highlightChordColor",     transparent));
         setHighlightHeadingColor(mainActivityInterface.getPreferences().getMyPreferenceInt("dark_highlightHeadingColor", transparent));
@@ -384,6 +393,7 @@ public class ThemeColors {
         setPresoChordColor(mainActivityInterface.getPreferences().getMyPreferenceInt("light_presoChordColor",             yellow));
         setPresoInfoFontColor(mainActivityInterface.getPreferences().getMyPreferenceInt("light_presoInfoFontColor",       white));
         setPresoAlertColor(mainActivityInterface.getPreferences().getMyPreferenceInt("light_presoAlertColor",             red));
+        setPresoCapoColor(mainActivityInterface.getPreferences().getMyPreferenceInt("light_presoCapoColor",               red));
         setPresoShadowColor(mainActivityInterface.getPreferences().getMyPreferenceInt("light_presoShadowColor",           translucentLight));
         setHighlightChordColor(mainActivityInterface.getPreferences().getMyPreferenceInt("light_highlightChordColor",     transparent));
         setHighlightHeadingColor(mainActivityInterface.getPreferences().getMyPreferenceInt("light_highlightHeadingColor", transparent));
@@ -411,6 +421,7 @@ public class ThemeColors {
         setPresoChordColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom1_presoChordColor",           yellow));
         setPresoInfoFontColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom1_presoInfoFontColor",     white));
         setPresoAlertColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom1_presoAlertColor",           red));
+        setPresoCapoColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom1_presoCapoColor",             red));
         setPresoShadowColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom1_presoShadowColor",         translucentDark));
         setHighlightChordColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom1_highlightChordColor",   transparent));
         setHighlightHeadingColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom1_highlightHeadingColor",transparent));
@@ -439,6 +450,7 @@ public class ThemeColors {
         setPresoChordColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_presoChordColor",           yellow));
         setPresoInfoFontColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_presoInfoFontColor",     white));
         setPresoAlertColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_presoAlertColor",           red));
+        setPresoCapoColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_presoCapoColor",             red));
         setPresoShadowColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_presoShadowColor",         translucentLight));
         setHighlightChordColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_highlightChordColor",   transparent));
         setHighlightHeadingColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_highlightHeadingColor",transparent));
@@ -477,6 +489,8 @@ public class ThemeColors {
                 return getPresoInfoFontColor();
             case "presoAlertColor":
                 return getPresoAlertColor();
+            case "presoCapoColor":
+                return getPresoCapoColor();
             case "presoShadowColor":
                 return getPresoShadowColor();
             case "metronomeColor":

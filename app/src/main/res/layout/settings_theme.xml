@@ -187,6 +187,12 @@
                     android:text="@string/chords"/>
 
                 <com.garethevans.church.opensongtablet.customviews.ThemeItemColor
+                    android:id="@+id/presoCapoButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/capo"/>
+
+                <com.garethevans.church.opensongtablet.customviews.ThemeItemColor
                     android:id="@+id/presoInfoButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
