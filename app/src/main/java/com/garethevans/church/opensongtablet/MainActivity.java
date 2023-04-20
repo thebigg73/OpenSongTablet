@@ -592,7 +592,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     public void updateMargins() {
             Handler handler = new Handler(Looper.getMainLooper());
             handler.post(() -> {
-                if (settingsOpen) {
+                if (settingsOpen || whichMode.equals(mode_presenter)) {
                     myView.fragmentView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                 } else {
                     myView.fragmentView.setBackgroundColor(themeColors.getLyricsBackgroundColor());
@@ -1167,7 +1167,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         if (navController.getCurrentDestination()!=null) {
             navController.popBackStack(Objects.requireNonNull(navController.getCurrentDestination()).getId(), true);
         }
-        if (whichMode.equals(presenter)) {
+        if (whichMode.equals(mode_presenter)) {
             navigateToFragment(deeplink_presenter,0);
             myView.fragmentView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         } else {
@@ -1521,7 +1521,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         // GE had to add onResume string update otherwise this call failed if user changed languages
         if (settings.equals(item.toString())) {
             if (settingsOpen) {
-                myView.fragmentView.setBackgroundColor(themeColors.getLyricsBackgroundColor());
                 navHome();
             } else {
                 navigateToFragment(deeplink_preferences, 0);
