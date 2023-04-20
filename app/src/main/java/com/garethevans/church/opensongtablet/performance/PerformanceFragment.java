@@ -76,7 +76,8 @@ public class PerformanceFragment extends Fragment {
     private final Handler dealWithExtraStuffOnceSettledHandler = new Handler();
     private final Runnable dealWithExtraStuffOnceSettledRunnable = this::dealWithExtraStuffOnceSettled;
 
-    private String mainfoldername="", mode_performance="", mode_presenter="", mode_stage="", not_allowed="";
+    private String mainfoldername="", mode_performance="", mode_presenter="", mode_stage="",
+            not_allowed="", image_string="";
     private int sendSongDelay = 0;
     private final Handler sendSongAfterDelayHandler = new Handler(),
         autoHideHighlighterHandler = new Handler();
@@ -235,6 +236,7 @@ public class PerformanceFragment extends Fragment {
             mode_presenter = getString(R.string.mode_presenter);
             mode_stage = getString(R.string.mode_stage);
             not_allowed = getString(R.string.not_allowed);
+            image_string= getString(R.string.image);
         }
     }
 
@@ -257,8 +259,12 @@ public class PerformanceFragment extends Fragment {
         if (mainActivityInterface.getMode().equals(mode_performance)) {
             myView.mypage.setBackgroundColor(mainActivityInterface.getMyThemeColors().getLyricsBackgroundColor());
             myView.waterMark.setVisibility(View.VISIBLE);
+        } else if (mainActivityInterface.getMode().equals(mode_stage)) {
+            // Stage Mode - sections have correct colour, but the background is different - set to background colour with a reduced alpha
+            int newColor = mainActivityInterface.getMyThemeColors().adjustAlpha(mainActivityInterface.getMyThemeColors().getLyricsBackgroundColor(),0.9f);
+            myView.mypage.setBackgroundColor(newColor);
         } else {
-            // Stage Mode - sections have correct colour, but the background is different - set to colorPrimary
+            // Presenter mode, just use primary color
             myView.mypage.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
             myView.waterMark.setVisibility(View.GONE);
         }
@@ -1020,7 +1026,14 @@ public class PerformanceFragment extends Fragment {
             // Update the secondary display (if present)
             displayInterface.updateDisplay("newSongLoaded");
             displayInterface.updateDisplay("setSongInfo");
-            if (!mainActivityInterface.getSong().getFiletype().equals("XML") ||
+            if (mainActivityInterface.getMode().equals(mode_stage) &&
+                mainActivityInterface.getSong().getFiletype().equals("XML") &&
+                !mainActivityInterface.getSong().getFolder().contains("**Image") &&
+                    !mainActivityInterface.getSong().getFolder().contains("**"+image_string)) {
+                displayInterface.updateDisplay("setSongContent");
+                //mainActivityInterface.getPresenterSettings().setCurrentSection(0);
+                //displayInterface.updateDisplay("showSection");
+            } else if (!mainActivityInterface.getSong().getFiletype().equals("XML") ||
                 mainActivityInterface.getSong().getFolder().contains("**Image")) {
                 mainActivityInterface.getPresenterSettings().setCurrentSection(0);
                 displayInterface.updateDisplay("showSection");

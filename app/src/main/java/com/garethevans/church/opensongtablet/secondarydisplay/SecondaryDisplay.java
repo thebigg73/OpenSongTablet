@@ -179,12 +179,16 @@ public class SecondaryDisplay extends Presentation {
         v.setAlpha(0f);
     }
     public void updatePageBackgroundColor() {
-        if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_presenter))) {
+        if (!mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance))) {
             // In Presenter mode, we set the bottom layer as black (to allow black screen)
             // Any video, image or coloured backgrounds get their own layer above this (set elsewhere)
             myView.castFrameLayout.setBackgroundColor(Color.BLACK);
+            myView.pageHolder.setBackgroundColor(Color.TRANSPARENT);
+            changeBackground();
+
         } else {
-            // In Performance/Stage mode, we use the user settings from the theme
+            // In Performance mode, we use the user settings from the theme
+            myView.pageHolder.setBackgroundColor(mainActivityInterface.getMyThemeColors().getLyricsBackgroundColor());
             myView.songContent1.setBackgroundColor(mainActivityInterface.getMyThemeColors().getLyricsBackgroundColor());
             myView.songContent2.setBackgroundColor(mainActivityInterface.getMyThemeColors().getLyricsBackgroundColor());
             myView.castFrameLayout.setBackgroundColor(mainActivityInterface.getMyThemeColors().getLyricsBackgroundColor());
@@ -351,7 +355,7 @@ public class SecondaryDisplay extends Presentation {
         // There has been an update to the user's background or logo, so pull them in from preferences
         // (already updated in PresenterSettings)
         // This only runs in PresenterMode!  Performance/Stage Mode reflect the device theme
-        if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_presenter))) {
+        if (!mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance))) {
             // We can use either a drawable (for a solid colour) or a uri (for an image)
             // Get the current background to fade out and set the background to the next
             backgroundToFadeOut = null;
@@ -812,7 +816,8 @@ public class SecondaryDisplay extends Presentation {
         // Decide if this is an XML and proceed accordingly
         // PDF and IMG files don't need this
         if (mainActivityInterface.getSong().getFiletype().equals("XML") &&
-        !mainActivityInterface.getSong().getFolder().contains("**Image")) {
+        !mainActivityInterface.getSong().getFolder().contains("**Image") &&
+        !mainActivityInterface.getSong().getFolder().contains("**"+c.getString(R.string.image))) {
             setSectionViews();
         }
     }
@@ -820,9 +825,11 @@ public class SecondaryDisplay extends Presentation {
     public void setSongContentPrefs() {
         boldChordHeading = mainActivityInterface.getPreferences().getMyPreferenceBoolean("boldChordHeading", false);
         scaleChords = mainActivityInterface.getPreferences().getMyPreferenceFloat("scaleChords", 0.8f);
+        mainActivityInterface.getMyThemeColors().getDefaultColors();
         updatePageBackgroundColor();
+        myView.songProjectionInfo1.setupFonts(mainActivityInterface);
+        myView.songProjectionInfo2.setupFonts(mainActivityInterface);
         setSongContent();
-
     }
 
     private void setSectionViews() {
@@ -914,6 +921,8 @@ public class SecondaryDisplay extends Presentation {
                 viewsAvailable = mainActivityInterface.getSong().getPdfPageCount();
             } else {
                 viewsAvailable = mainActivityInterface.getSong().getPresoOrderSongSections().size();
+                Log.d(TAG,"View available:"+viewsAvailable);
+                Log.d(TAG,"position:"+position);
             }
             if ((stageOk || presenterOk || pdf || image || imageslide) && position!=-1) {
                 // If we edited the section temporarily, remove this position flag
@@ -921,6 +930,7 @@ public class SecondaryDisplay extends Presentation {
                     mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().setSectionEdited(-1);
                 }
                 mainActivityInterface.getSong().setCurrentSection(position);
+                mainActivityInterface.getPresenterSettings().setCurrentSection(position);
                 if (position >= 0 && position < viewsAvailable) {
                     // Check the song info status first
                     checkSongInfoShowHide();
@@ -939,7 +949,7 @@ public class SecondaryDisplay extends Presentation {
 
                     if (!pdf && !image && !imageslide) {
                         // Remove the view from any parent it might be attached to already (can only have 1)
-                            removeViewFromParent(secondaryViews.get(position));
+                        removeViewFromParent(secondaryViews.get(position));
 
                         // Get the size of the view
                         int width = secondaryWidths.get(position);
@@ -964,6 +974,7 @@ public class SecondaryDisplay extends Presentation {
                         // Translate the scaled views based on the alignment
                         int newWidth = (int) (width * best);
                         int newHeight = (int) (height * best);
+
                         translateView(secondaryViews.get(position), newWidth, newHeight, infoHeight, alertHeight);
                     }
 
@@ -1016,7 +1027,6 @@ public class SecondaryDisplay extends Presentation {
                         } else {
                             Log.d(TAG,"songContent1 not using image");
                             myView.songContent1.getCol1().setVisibility(View.VISIBLE);
-                            Glide.with(c).load((Bitmap)null).into(myView.songContent1.getImageView());
                             myView.songContent1.getImageView().setVisibility(View.GONE);
                             myView.songContent1.getCol1().addView(secondaryViews.get(position));
                         }
@@ -1040,7 +1050,6 @@ public class SecondaryDisplay extends Presentation {
                             Log.d(TAG,"songContent2 not using image");
                             myView.songContent2.getCol1().setVisibility(View.VISIBLE);
                             myView.songContent2.getImageView().setVisibility(View.GONE);
-                            Glide.with(c).load((Bitmap)null).into(myView.songContent2.getImageView());
                             myView.songContent2.getCol1().addView(secondaryViews.get(position));
                         }
                         myView.songContent1.setIsDisplaying(false);
@@ -1180,7 +1189,7 @@ public class SecondaryDisplay extends Presentation {
         mainActivityInterface.getProcessSong().processSongIntoSections(tempSong,true);
 
         try {
-            View newView = mainActivityInterface.getProcessSong().setSongInLayout(tempSong, false, true).get(0);
+            View newView = mainActivityInterface.getProcessSong().setSongInLayout(tempSong, false, !mainActivityInterface.getMode().equals(c.getString(R.string.performance_mode))).get(0);
             // Replace the old view with this one once it has been measured etc.
             newView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override

@@ -696,15 +696,15 @@ public class LoadSong {
         String where = folder + "/" + file;
         if (folder.equals(c.getString(R.string.mainfoldername)) || folder.equals("MAIN") || folder.equals("")) {
             where = file;
-        } else if (folder.contains("**" + c.getResources().getString(R.string.note))) {
+        } else if (folder.contains("**" + c.getResources().getString(R.string.note)) || folder.contains("**Note")) {
             where = "../Notes/_cache/" + file;
-        } else if (folder.contains("**" + c.getResources().getString(R.string.image))) {
+        } else if (folder.contains("**" + c.getResources().getString(R.string.image)) || folder.contains("**Image")) {
             where = "../Images/_cache/" + file;
-        } else if (folder.contains("**" + c.getResources().getString(R.string.scripture))) {
+        } else if (folder.contains("**" + c.getResources().getString(R.string.scripture)) || folder.contains("**Scripture")) {
             where = "../Scripture/_cache/" + file;
-        } else if (folder.contains("**" + c.getResources().getString(R.string.slide))) {
+        } else if (folder.contains("**" + c.getResources().getString(R.string.slide)) || folder.contains("**Slide")) {
             where = "../Slides/_cache/" + file;
-        } else if (folder.contains("**" + c.getResources().getString(R.string.variation))) {
+        } else if (folder.contains("**" + c.getResources().getString(R.string.variation)) || folder.contains("**Variation")) {
             where = "../Variations/" + file;
         }
         return where;

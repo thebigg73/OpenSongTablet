@@ -37,7 +37,7 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
     private String originalKey, newKey, setFolder, songFolder, setFilename;
     private String string_Key="", string_Transpose="", string_WebsiteChordsTranspose="",
         string_ChordFormatPreferredInfo="", string_DeeplinkChordSettings="", string_CopyOf="",
-        string_Standard="", string_DetectedAppearance="";
+        string_Standard="", string_DetectedAppearance="", string_variation="**Variation";
 
     public TransposeBottomSheet(boolean editSong) {
         // This is called from the EditSongFragment.  Receive temp lyrics and key
@@ -60,6 +60,7 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
         string_CopyOf = getString(R.string.copy_of);
         string_Standard = getString(R.string.chordformat_1_name);
         string_DetectedAppearance = getString(R.string.chordformat_1);
+        string_variation = "**"+context.getString(R.string.variation);
     }
 
     @NonNull
@@ -128,7 +129,7 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
             // Show the set options
             setFolder = mainActivityInterface.getCurrentSet().getFolder(position);
             setFilename = mainActivityInterface.getCurrentSet().getFilename(position);
-            if (setFolder.contains("**Variation")) {
+            if (setFolder.contains("**Variation") || setFolder.contains(string_variation)) {
                 // Hide variation creation and the set item transpose
                 myView.transposeVariation.setVisibility(View.GONE);
                 myView.transposeSetItem.setVisibility(View.GONE);
@@ -390,25 +391,25 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
                     mainActivityInterface.getCurrentSet().setKey(position, newKey);
                     Log.d(TAG, "setFolder:" + setFolder + "  songFolder:" + songFolder + "  position:" + position);
 
-                    if (songFolder.equals("**Variation") && !setFolder.contains("**Variation")) {
+                    if ((songFolder.equals("**Variation") || songFolder.equals(string_variation)) && (!setFolder.contains("**Variation") && !setFolder.contains(string_variation))) {
                         // This song is already a temp variation that is transposed
                         // We need to call the original file
                         mainActivityInterface.getSong().setFolder(setFolder);
                         mainActivityInterface.getSong().setFilename(setFilename);
                         mainActivityInterface.getLoadSong().doLoadSong(mainActivityInterface.getSong(), false);
                     }
-                    if (!setFolder.contains("**Variation") && !transposeSet && !transposeVariation) {
+                    if ((!setFolder.contains("**Variation") && !setFolder.contains(string_variation)) && !transposeSet && !transposeVariation) {
                         // If this is a normal song and want to actually transpose it normally, transpose and resave
                         mainActivityInterface.getSong().setFolder(setFolder);
                         mainActivityInterface.getTranspose().doTranspose(mainActivityInterface.getSong(),
                                 transposeDirection, transposeTimes, fromFormat, toFormat);
                         mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong(),true);
 
-                    } else if (!setFolder.contains("**Variation") && transposeVariation) {
+                    } else if ((!setFolder.contains("**Variation") && !setFolder.contains(string_variation)) && transposeVariation) {
                         // If this is a normal song, but want to convert to a variation
                         mainActivityInterface.getSetActions().makeVariation(position);
 
-                    } else if (setFolder.contains("Variation")) {
+                    } else if (setFolder.contains("Variation") || setFolder.contains(string_variation.replace("**",""))) {
                         // This song was already a variation (no option to transposeSet or transposeVariation)
                         mainActivityInterface.getTranspose().doTranspose(mainActivityInterface.getSong(),
                                 transposeDirection, transposeTimes, fromFormat, toFormat);

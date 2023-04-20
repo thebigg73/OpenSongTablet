@@ -629,6 +629,14 @@ public class ThemeColors {
         stickyBackgroundSplitAlpha = alpha / 255f;
     }
 
+    public int adjustAlpha(int color, float newAlpha) {
+        int alpha = Math.round((float)Color.alpha(color) * newAlpha);
+        int red = Color.red(color);
+        int green = Color.green(color);
+        int blue = Color.blue(color);
+        return Color.argb(alpha, red, green, blue);
+    }
+
     public int changePageButtonAlpha(float alpha) {
         int red = Color.red(pageButtonsColor);
         int green = Color.green(pageButtonsColor);

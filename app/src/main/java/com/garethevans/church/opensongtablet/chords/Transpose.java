@@ -260,7 +260,10 @@ public class Transpose {
 
     public String keyToNumber(String key) {
         // Swap the key with the chord number - use standard formatting=1
-        for (int z = 0; z < fromChords1.length; z++) key = key.replace(fromChords1[z], toChordsNums1[z]);
+        if (key!=null && fromChords1!=null && toChordsNums1!=null) {
+            for (int z = 0; z < fromChords1.length; z++)
+                key = key.replace(fromChords1[z], toChordsNums1[z]);
+        }
         return key;
     }
 

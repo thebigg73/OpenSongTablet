@@ -41,7 +41,7 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
     private String connected_display_string="", website_connected_display_string="",
             mode_performance_string="", mode_stage_string="";
     private String webAddress;
-    private ActivityResultLauncher<String> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.GetContent(),
+    private final ActivityResultLauncher<String> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.GetContent(),
             new ActivityResultCallback<Uri>() {
                 @Override
                 public void onActivityResult(Uri uri) {
@@ -297,15 +297,27 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
         myView.clockOn.setOnCheckedChangeListener((compoundButton, b) -> {
             mainActivityInterface.getPreferences().setMyPreferenceBoolean("presoShowClock",b);
             mainActivityInterface.getPresenterSettings().setPresoShowClock(b);
+            displayInterface.updateDisplay("initialiseInfoBarRequired");
+            displayInterface.updateDisplay("newSongLoaded");
+            displayInterface.updateDisplay("setInfoStyles");
+            displayInterface.updateDisplay("checkSongInfoShowHide");
             updateClockSettings();
         });
         myView.clock24hr.setOnCheckedChangeListener((compoundButton, b) -> {
             mainActivityInterface.getPreferences().setMyPreferenceBoolean("presoClock24h",b);
             mainActivityInterface.getPresenterSettings().setPresoClock24h(b);
+            displayInterface.updateDisplay("initialiseInfoBarRequired");
+            displayInterface.updateDisplay("newSongLoaded");
+            displayInterface.updateDisplay("setInfoStyles");
+            displayInterface.updateDisplay("checkSongInfoShowHide");
         });
         myView.clockSeconds.setOnCheckedChangeListener((compoundButton, b) -> {
             mainActivityInterface.getPreferences().setMyPreferenceBoolean("presoClockSeconds",b);
             mainActivityInterface.getPresenterSettings().setPresoClockSeconds(b);
+            displayInterface.updateDisplay("initialiseInfoBarRequired");
+            displayInterface.updateDisplay("newSongLoaded");
+            displayInterface.updateDisplay("setInfoStyles");
+            displayInterface.updateDisplay("checkSongInfoShowHide");
         });
         myView.clockTextSize.addOnSliderTouchListener(new SliderTouchListener("presoClockSize"));
         myView.clockTextSize.addOnChangeListener(new SliderChangeListener("presoClockSize"));
@@ -480,7 +492,10 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
                     mainActivityInterface.getPreferences().setMyPreferenceFloat(
                             prefName, slider.getValue());
                     mainActivityInterface.getPresenterSettings().setPresoClockSize(slider.getValue());
+                    displayInterface.updateDisplay("initialiseInfoBarRequired");
+                    displayInterface.updateDisplay("newSongLoaded");
                     displayInterface.updateDisplay("setInfoStyles");
+                    displayInterface.updateDisplay("checkSongInfoShowHide");
                     break;
                 case "presoTitleTextSize":
                     // The slider goes from 6 to 22

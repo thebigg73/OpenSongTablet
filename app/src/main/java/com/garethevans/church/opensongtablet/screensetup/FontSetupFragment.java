@@ -116,8 +116,8 @@ public class FontSetupFragment extends Fragment {
     private void setupDropDowns() {
         prepareExposedDropdown("fontLyric", myView.lyricFont, fontLyric);
         prepareExposedDropdown("fontChord", myView.chordFont, fontChord);
-        prepareExposedDropdown("fontSticky", myView.presoFont, fontSticky);
-        prepareExposedDropdown("fontPreso", myView.stickyFont, fontPreso);
+        prepareExposedDropdown("fontSticky", myView.stickyFont, fontSticky);
+        prepareExposedDropdown("fontPreso", myView.presoFont, fontPreso);
         prepareExposedDropdown("fontPresoInfo", myView.presoInfoFont, fontPresoInfo);
     }
 
@@ -161,11 +161,12 @@ public class FontSetupFragment extends Fragment {
                 myView.presoPreview.setBackground(ResourcesCompat.getDrawable(getContext().getResources(), R.drawable.preso_default_bg, null));
             }
             myView.presoLorem.setTextColor(mainActivityInterface.getMyThemeColors().getPresoFontColor());
+            myView.presoInfoLorem.setBackgroundColor(mainActivityInterface.getMyThemeColors().getPresoShadowColor());
             myView.presoInfoLorem.setTextColor(mainActivityInterface.getMyThemeColors().getPresoInfoFontColor());
-            myView.presoInfoLorem.setTextColor(mainActivityInterface.getMyThemeColors().getPresoInfoFontColor());
-            myView.presoLorem.setTextSize(24.0f);
-            myView.presoInfoLorem.setTextSize(24.0f * 0.5f);
-            myView.presoLorem.setGravity(mainActivityInterface.getPreferences().getMyPreferenceInt("presoInfoAlign", Gravity.CENTER));
+            myView.presoLorem.setTextSize(22.0f);
+            myView.presoInfoLorem.setTextSize(22.0f * 0.5f);
+            myView.presoLorem.setGravity(mainActivityInterface.getPreferences().getMyPreferenceInt("presoLyricsAlign", Gravity.CENTER_HORIZONTAL)|
+                    mainActivityInterface.getPreferences().getMyPreferenceInt("presoLyricsVAlign", Gravity.CENTER_VERTICAL));
             myView.presoInfoLorem.setGravity(mainActivityInterface.getPreferences().getMyPreferenceInt("presoInfoAlign", Gravity.END));
 
             // Set the sticky preview
@@ -202,6 +203,8 @@ public class FontSetupFragment extends Fragment {
 
                     // Change the values in other used locations
                     displayInterface.updateDisplay("setInfoStyles");
+                    displayInterface.updateDisplay("newSongLoaded");
+                    displayInterface.updateDisplay("setSongContent");
                 });
                 ExecutorService executorService = Executors.newSingleThreadExecutor();
                 executorService.execute(() -> {

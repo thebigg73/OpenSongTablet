@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.SettingsModeBinding;
+import com.garethevans.church.opensongtablet.interfaces.DisplayInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 public class ModeFragment extends Fragment {
@@ -19,6 +20,7 @@ public class ModeFragment extends Fragment {
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "ModeFragment";
     private MainActivityInterface mainActivityInterface;
+    private DisplayInterface displayInterface;
     private SettingsModeBinding myView;
     private String choose_app_mode="", website_app_mode="";
     private String webAddress;
@@ -33,6 +35,7 @@ public class ModeFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mainActivityInterface = (MainActivityInterface) context;
+        displayInterface = (DisplayInterface) context;
     }
 
     @Nullable
@@ -86,6 +89,7 @@ public class ModeFragment extends Fragment {
         // Because we are switching modes, we need to let the new fragment know that this is a first run
         // This means it will refresh settings and connected displays when it triggers
         mainActivityInterface.setFirstRun(true);
+        displayInterface.updateDisplay("setSongContentPrefs");
         mainActivityInterface.navHome();
     }
 

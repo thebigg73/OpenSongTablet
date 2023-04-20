@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageView;
@@ -30,6 +31,7 @@ public class SongProjectionInfo extends LinearLayoutCompat {
     private float clockTextSize;
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "SongProjectionInfo";
+    private final String performance_string;
 
     public SongProjectionInfo(@NonNull Context context, @Nullable @org.jetbrains.annotations.Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -53,6 +55,8 @@ public class SongProjectionInfo extends LinearLayoutCompat {
         miniLogo.setId(View.generateViewId());
         textClock.setId(View.generateViewId());
         capoIcon.setId(View.generateViewId());
+
+        performance_string = context.getString(R.string.mode_performance);
     }
 
 
@@ -130,15 +134,23 @@ public class SongProjectionInfo extends LinearLayoutCompat {
             songCCLI.setTypeface(mainActivityInterface.getMyFonts().getPresoInfoFont());
             textClock.setTypeface(mainActivityInterface.getMyFonts().getPresoInfoFont());
 
+            ColorStateList colorList;
+            int color;
+            if (mainActivityInterface.getMode().equals(performance_string)) {
+                color = mainActivityInterface.getMyThemeColors().getLyricsTextColor();
+            } else {
+                color = mainActivityInterface.getMyThemeColors().getPresoInfoFontColor();
+            }
+            Log.d(TAG,"compare color: black:"+Color.BLACK+"  white:"+Color.WHITE+"  color:"+color);
+            colorList = ColorStateList.valueOf(color);
             capoIcon.setTextColor(mainActivityInterface.getMyThemeColors().getPresoInfoFontColor());
-            ColorStateList colorList = ColorStateList.valueOf(mainActivityInterface.getMyThemeColors().getPresoInfoFontColor());
             TextViewCompat.setCompoundDrawableTintList(capoIcon, colorList);
 
-            songTitle.setTextColor(mainActivityInterface.getMyThemeColors().getPresoInfoFontColor());
-            songAuthor.setTextColor(mainActivityInterface.getMyThemeColors().getPresoInfoFontColor());
-            songCopyright.setTextColor(mainActivityInterface.getMyThemeColors().getPresoInfoFontColor());
-            songCCLI.setTextColor(mainActivityInterface.getMyThemeColors().getPresoInfoFontColor());
-            textClock.setTextColor(mainActivityInterface.getMyThemeColors().getPresoInfoFontColor());
+            songTitle.setTextColor(color);
+            songAuthor.setTextColor(color);
+            songCopyright.setTextColor(color);
+            songCCLI.setTextColor(color);
+            textClock.setTextColor(color);
 
             songTitle.setTextSize(mainActivityInterface.getPresenterSettings().getPresoTitleTextSize());
             songAuthor.setTextSize(mainActivityInterface.getPresenterSettings().getPresoAuthorTextSize());
@@ -156,6 +168,7 @@ public class SongProjectionInfo extends LinearLayoutCompat {
             capoIcon.setVisibility(View.GONE);
             textClock.setVisibility(View.GONE);
         }
+        updateClockSettings(mainActivityInterface);
     }
 
     public String getTextViewString(TextView textView) {
@@ -238,10 +251,14 @@ public class SongProjectionInfo extends LinearLayoutCompat {
 
     public void updateClockSettings(MainActivityInterface mainActivityInterface) {
         mainActivityInterface.getTimeTools().setFormat(textClock,
-                mainActivityInterface.getSettingsOpen(), clockTextSize,
+                false, clockTextSize,
                 mainActivityInterface.getPresenterSettings().getPresoShowClock(),
                 mainActivityInterface.getPresenterSettings().getPresoClock24h(),
                 mainActivityInterface.getPresenterSettings().getPresoClockSeconds());
+        // Change the visibility based on the preference (settings open is used for the toolbar clock)
+        Log.d(TAG,"updateClockSettings() wanted:"+mainActivityInterface.getPresenterSettings().getPresoShowClock());
+        textClock.postDelayed(() ->
+            textClock.setVisibility(mainActivityInterface.getPresenterSettings().getPresoShowClock()?View.VISIBLE:View.GONE),500);
     }
 
     public boolean isNewInfo(String compareString) {
