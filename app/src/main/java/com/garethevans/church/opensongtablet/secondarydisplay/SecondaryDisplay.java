@@ -184,14 +184,18 @@ public class SecondaryDisplay extends Presentation {
             // Any video, image or coloured backgrounds get their own layer above this (set elsewhere)
             myView.castFrameLayout.setBackgroundColor(Color.BLACK);
             myView.pageHolder.setBackgroundColor(Color.TRANSPARENT);
+            myView.songContent1.setBackgroundColor(Color.TRANSPARENT);
+            myView.songContent2.setBackgroundColor(Color.TRANSPARENT);
             changeBackground();
 
         } else {
+            Log.d(TAG,"Performance mode");
             // In Performance mode, we use the user settings from the theme
+            myView.castFrameLayout.setBackgroundColor(mainActivityInterface.getMyThemeColors().getLyricsBackgroundColor());
             myView.pageHolder.setBackgroundColor(mainActivityInterface.getMyThemeColors().getLyricsBackgroundColor());
             myView.songContent1.setBackgroundColor(mainActivityInterface.getMyThemeColors().getLyricsBackgroundColor());
             myView.songContent2.setBackgroundColor(mainActivityInterface.getMyThemeColors().getLyricsBackgroundColor());
-            myView.castFrameLayout.setBackgroundColor(mainActivityInterface.getMyThemeColors().getLyricsBackgroundColor());
+            changeBackground();
         }
     }
     private boolean canShowSong() {
@@ -323,7 +327,7 @@ public class SecondaryDisplay extends Presentation {
     // Set views depending on mode
     public void matchPresentationToMode() {
         // Get the settings that are appropriate.  This is called on first run
-        if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_presenter))) {
+        if (!mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance))) {
             // IV - Note that the Heading, Comment and tab are ignored in song load
             displayChords = mainActivityInterface.getPreferences().getMyPreferenceBoolean("presoShowChords",false);
             boldChordHeading = mainActivityInterface.getPreferences().getMyPreferenceBoolean("presoLyricsBold", false);
@@ -432,6 +436,9 @@ public class SecondaryDisplay extends Presentation {
                 }
                 loadVideo();
             }
+        } else {
+            myView.backgroundImage1.setVisibility(View.GONE);
+            myView.backgroundImage2.setVisibility(View.GONE);
         }
     }
     private void crossFadeBackgrounds() {
@@ -795,7 +802,6 @@ public class SecondaryDisplay extends Presentation {
         }
     }
 
-
     // The song content
     public void setSongContent() {
         // Just like we do with the song processing, we draw the sections to the test layout
@@ -825,11 +831,16 @@ public class SecondaryDisplay extends Presentation {
     public void setSongContentPrefs() {
         boldChordHeading = mainActivityInterface.getPreferences().getMyPreferenceBoolean("boldChordHeading", false);
         scaleChords = mainActivityInterface.getPreferences().getMyPreferenceFloat("scaleChords", 0.8f);
+
+        setInfoStyles();
+        changeInfoAlignment();
+
         mainActivityInterface.getMyThemeColors().getDefaultColors();
         updatePageBackgroundColor();
         myView.songProjectionInfo1.setupFonts(mainActivityInterface);
         myView.songProjectionInfo2.setupFonts(mainActivityInterface);
         setSongContent();
+
     }
 
     private void setSectionViews() {
@@ -1189,7 +1200,7 @@ public class SecondaryDisplay extends Presentation {
         mainActivityInterface.getProcessSong().processSongIntoSections(tempSong,true);
 
         try {
-            View newView = mainActivityInterface.getProcessSong().setSongInLayout(tempSong, false, !mainActivityInterface.getMode().equals(c.getString(R.string.performance_mode))).get(0);
+            View newView = mainActivityInterface.getProcessSong().setSongInLayout(tempSong, false, !mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance))).get(0);
             // Replace the old view with this one once it has been measured etc.
             newView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override
