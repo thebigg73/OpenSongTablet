@@ -1518,6 +1518,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        // GE had to add onResume string update otherwise this call failed if user changed languages
         if (settings.equals(item.toString())) {
             if (settingsOpen) {
                 myView.fragmentView.setBackgroundColor(themeColors.getLyricsBackgroundColor());
@@ -3344,6 +3345,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             checkDisplays();
 
         }
+        try {
+            // If the user changed language, the strings need updated
+            prepareStrings();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         super.onResume();
     }
 
