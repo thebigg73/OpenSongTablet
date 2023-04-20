@@ -799,6 +799,7 @@ public class SecondaryDisplay extends Presentation {
         // Then remove from the test layout and reattach to the song layout.
 
         Log.d(TAG,"setSongContent()");
+        Log.d(TAG,"fileType:"+mainActivityInterface.getSong().getFiletype());
         // Clear any existing views from the test layout.  We don't fade out existing song layout until we are ready
         myView.testLayout.removeAllViews();
         secondaryViews = null;
@@ -808,8 +809,10 @@ public class SecondaryDisplay extends Presentation {
         secondaryHeights = null;
         secondaryHeights = new ArrayList<>();
 
-        // Decide if this is an XML, PDF or IMG file and proceed accordingly
-        if (mainActivityInterface.getSong().getFiletype().equals("XML")) {
+        // Decide if this is an XML and proceed accordingly
+        // PDF and IMG files don't need this
+        if (mainActivityInterface.getSong().getFiletype().equals("XML") &&
+        !mainActivityInterface.getSong().getFolder().contains("**Image")) {
             setSectionViews();
         }
     }
@@ -817,6 +820,9 @@ public class SecondaryDisplay extends Presentation {
     public void setSongContentPrefs() {
         boldChordHeading = mainActivityInterface.getPreferences().getMyPreferenceBoolean("boldChordHeading", false);
         scaleChords = mainActivityInterface.getPreferences().getMyPreferenceFloat("scaleChords", 0.8f);
+        updatePageBackgroundColor();
+        setSongContent();
+
     }
 
     private void setSectionViews() {
@@ -851,6 +857,7 @@ public class SecondaryDisplay extends Presentation {
     }
 
     private void viewsAreReady() {
+        Log.d(TAG,"viewsAreReady()");
         // The views are ready so prepare to create the song page
         for (int x = 0; x < secondaryViews.size(); x++) {
             int width = secondaryViews.get(x).getMeasuredWidth();
@@ -879,6 +886,7 @@ public class SecondaryDisplay extends Presentation {
         // We can now remove the views from the test layout
         myView.testLayout.removeAllViews();
 
+        Log.d(TAG,"views are ready and about to show all sections");
         if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance))) {
             showAllSections();
         } else {
@@ -890,7 +898,7 @@ public class SecondaryDisplay extends Presentation {
     }
 
     public void showSection(final int position) {
-        Log.d(TAG,"position:"+position);
+        Log.d(TAG,"showSection() position:"+position);
         try {
             // Decide which view to show.  Do nothing if it is already showing
             boolean stageOk = mainActivityInterface.getMode().equals(c.getString(R.string.mode_stage));
@@ -907,8 +915,6 @@ public class SecondaryDisplay extends Presentation {
             } else {
                 viewsAvailable = mainActivityInterface.getSong().getPresoOrderSongSections().size();
             }
-            // TODO need to fix for Stage mode too - getSongSectionsAdapter not initialised
-
             if ((stageOk || presenterOk || pdf || image || imageslide) && position!=-1) {
                 // If we edited the section temporarily, remove this position flag
                 if (presenterOk) {
@@ -975,10 +981,13 @@ public class SecondaryDisplay extends Presentation {
                     } else if (imageslide) {
                         String[] bits = mainActivityInterface.getSong().getUser3().trim().split("\n");
                         if (bits.length>0 && bits.length>position) {
-                            bitmap = mainActivityInterface.getProcessSong().getBitmapFromUri(Uri.parse(bits[position]),0,0);
+                            Log.d(TAG,"bits[position]:"+bits[position]);
+                            Uri thisUri = mainActivityInterface.getStorageAccess().fixLocalisedUri(bits[position]);
+                            bitmap = mainActivityInterface.getProcessSong().getBitmapFromUri(thisUri,0,0);
                         } else {
                             bitmap = null;
                         }
+                        Log.d(TAG,"bitmap:"+bitmap);
 
                     } else {
                         bitmap = null;
@@ -994,7 +1003,9 @@ public class SecondaryDisplay extends Presentation {
 
                     if (!myView.songContent1.getIsDisplaying()) {
                         myView.songContent1.clearViews();
+                        Log.d(TAG,"songContent1 about to show");
                         if (image || pdf || imageslide) {
+                            Log.d(TAG,"songContent1 using image");
                             myView.songContent1.getCol1().setVisibility(View.GONE);
                             myView.songContent1.getCol2().setVisibility(View.GONE);
                             myView.songContent1.getCol3().setVisibility(View.GONE);
@@ -1003,7 +1014,9 @@ public class SecondaryDisplay extends Presentation {
                             Glide.with(c).load(bitmap).fitCenter().into(myView.songContent1.getImageView());
 
                         } else {
+                            Log.d(TAG,"songContent1 not using image");
                             myView.songContent1.getCol1().setVisibility(View.VISIBLE);
+                            Glide.with(c).load((Bitmap)null).into(myView.songContent1.getImageView());
                             myView.songContent1.getImageView().setVisibility(View.GONE);
                             myView.songContent1.getCol1().addView(secondaryViews.get(position));
                         }
@@ -1013,7 +1026,9 @@ public class SecondaryDisplay extends Presentation {
 
                     } else if (!myView.songContent2.getIsDisplaying()) {
                         myView.songContent2.clearViews();
+                        Log.d(TAG,"songContent2 about to show");
                         if (image || pdf || imageslide) {
+                            Log.d(TAG,"songContent2 using image");
                             myView.songContent2.getCol1().setVisibility(View.GONE);
                             myView.songContent2.getCol2().setVisibility(View.GONE);
                             myView.songContent2.getCol3().setVisibility(View.GONE);
@@ -1022,8 +1037,10 @@ public class SecondaryDisplay extends Presentation {
                             Glide.with(c).load(bitmap).fitCenter().into(myView.songContent2.getImageView());
 
                         } else {
+                            Log.d(TAG,"songContent2 not using image");
                             myView.songContent2.getCol1().setVisibility(View.VISIBLE);
                             myView.songContent2.getImageView().setVisibility(View.GONE);
+                            Glide.with(c).load((Bitmap)null).into(myView.songContent2.getImageView());
                             myView.songContent2.getCol1().addView(secondaryViews.get(position));
                         }
                         myView.songContent1.setIsDisplaying(false);
@@ -1072,6 +1089,7 @@ public class SecondaryDisplay extends Presentation {
         imageView.setLayoutParams(lp);
     }
     private void showAllSections() {
+        Log.d(TAG,"showAllSection()");
         // Available height needs to remember to leave space for the infobar which is always visible in this mode
         // The bar height is constant
         int infoHeight = Math.max(myView.songProjectionInfo1.getViewHeight(),myView.songProjectionInfo2.getViewHeight());
@@ -1087,6 +1105,8 @@ public class SecondaryDisplay extends Presentation {
             ViewGroup.LayoutParams lp = myView.songContent1.getLayoutParams();
             lp.width = MATCH_PARENT;
             lp.height = modeHeight;
+            // Since this is called for XML files only, hide the inage views
+            myView.songContent1.getImageView().setVisibility(View.GONE);
             myView.songContent1.setLayoutParams(lp);
             myView.songContent1.setIsDisplaying(true);
             myView.songContent2.setIsDisplaying(false);
@@ -1103,6 +1123,8 @@ public class SecondaryDisplay extends Presentation {
             ViewGroup.LayoutParams lp = myView.songContent2.getLayoutParams();
             lp.width = MATCH_PARENT;
             lp.height = modeHeight;
+            // Since this is called for XML files only, hide the inage views
+            myView.songContent2.getImageView().setVisibility(View.GONE);
             myView.songContent2.setLayoutParams(lp);
             myView.songContent2.setIsDisplaying(true);
             myView.songContent1.setIsDisplaying(false);

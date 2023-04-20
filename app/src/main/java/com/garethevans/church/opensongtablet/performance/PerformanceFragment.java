@@ -1020,7 +1020,13 @@ public class PerformanceFragment extends Fragment {
             // Update the secondary display (if present)
             displayInterface.updateDisplay("newSongLoaded");
             displayInterface.updateDisplay("setSongInfo");
-            displayInterface.updateDisplay("setSongContent");
+            if (!mainActivityInterface.getSong().getFiletype().equals("XML") ||
+                mainActivityInterface.getSong().getFolder().contains("**Image")) {
+                mainActivityInterface.getPresenterSettings().setCurrentSection(0);
+                displayInterface.updateDisplay("showSection");
+            } else {
+                displayInterface.updateDisplay("setSongContent");
+            }
 
             // If we opened the app with and intent/file, check if we need to import
             tryToImportIntent();

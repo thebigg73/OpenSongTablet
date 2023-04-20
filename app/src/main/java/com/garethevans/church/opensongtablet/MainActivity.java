@@ -3549,6 +3549,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                             case "setSongContent":
                                 secondaryDisplay.setSongContent();
                                 break;
+
                             case "contentAlignment":
                             case "showSection":
                                 secondaryDisplay.showSection(presenterSettings.getCurrentSection());
