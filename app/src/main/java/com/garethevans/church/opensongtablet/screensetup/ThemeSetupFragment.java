@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
 import com.garethevans.church.opensongtablet.databinding.SettingsThemeBinding;
+import com.garethevans.church.opensongtablet.interfaces.DisplayInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ import java.util.ArrayList;
 public class ThemeSetupFragment extends Fragment {
 
     private MainActivityInterface mainActivityInterface;
+    private DisplayInterface displayInterface;
     private SettingsThemeBinding myView;
 
     private String myTheme, theme_string="", website_themes_string="", presenter_mode_string="",
@@ -40,6 +42,7 @@ public class ThemeSetupFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mainActivityInterface = (MainActivityInterface) context;
+        displayInterface = (DisplayInterface) context;
     }
 
     @Override
@@ -122,6 +125,8 @@ public class ThemeSetupFragment extends Fragment {
                 mainActivityInterface.getPreferences().setMyPreferenceString("appTheme",myTheme);
                 updateColors();
                 updateButtons();
+                // Also update secondary screen
+                displayInterface.updateDisplay("setSongContentPrefs");
             }
 
             @Override
