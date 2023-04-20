@@ -153,7 +153,8 @@ public class ImageSlideAdapter  extends RecyclerView.Adapter<ImageSlideViewHolde
         int height = slideInfos.get(position).height;
         float alpha = slideInfos.get(position).alpha;
         CardView cardView = (CardView)holder.v;
-        if (mainActivityInterface.getMode().equals(mode_stage_string) && position == currentSection) {
+        if ((mainActivityInterface.getMode().equals(mode_stage_string) && position == currentSection) ||
+        mainActivityInterface.getMode().equals(mode_performance_string)) {
             alpha = 1.0f;
         }
         cardView.setAlpha(alpha);
