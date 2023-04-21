@@ -1163,4 +1163,7 @@ Check out the categories in the right hand options menu.
     <string name="youtube" translatable="false">YouTube</string>
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zoom_level">Zoom level</string>
+    <string name="chordinator">Uses chord extraction code from Chordinator Augmented from Paul Evans.  Used by permission.</string>
+    <string name="chordinator_info">This method will attempt to find chord sheets automatically, but it is unsuccessful, you can manually extract content.</string>
+
 </resources>

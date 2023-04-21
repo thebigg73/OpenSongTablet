@@ -29,14 +29,15 @@ import com.garethevans.church.opensongtablet.customslides.CustomSlide;
 import com.garethevans.church.opensongtablet.customviews.DrawNotes;
 import com.garethevans.church.opensongtablet.customviews.MyToolbar;
 import com.garethevans.church.opensongtablet.drummer.BeatBuddy;
+import com.garethevans.church.opensongtablet.drummer.Drummer;
 import com.garethevans.church.opensongtablet.export.ExportActions;
 import com.garethevans.church.opensongtablet.export.PrepareFormats;
 import com.garethevans.church.opensongtablet.filemanagement.LoadSong;
 import com.garethevans.church.opensongtablet.filemanagement.SaveSong;
 import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
+import com.garethevans.church.opensongtablet.importsongs.ImportOnlineFragment;
 import com.garethevans.church.opensongtablet.importsongs.WebDownload;
 import com.garethevans.church.opensongtablet.metronome.Metronome;
-import com.garethevans.church.opensongtablet.drummer.Drummer;
 import com.garethevans.church.opensongtablet.midi.Midi;
 import com.garethevans.church.opensongtablet.nearby.NearbyConnections;
 import com.garethevans.church.opensongtablet.pads.Pad;
@@ -230,6 +231,7 @@ public interface MainActivityInterface {
     void isWebConnected(Fragment fragment, int fragId, boolean isConnected);
     void songSelectDownloadPDF(Fragment fragment, int fragId, Uri uri, String filename);
     void openDocument(String location);
+    void chordinatorResult(ImportOnlineFragment importOnlineFragment, String songText);
 
     // General tools
     CustomAnimation getCustomAnimation();

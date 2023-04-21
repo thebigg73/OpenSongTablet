@@ -30,12 +30,33 @@
             android:layout_marginTop="16dp"
             android:hint="@string/website" />
 
+        <LinearLayout
+            android:id="@+id/googleInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/chordinatorCredit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/chordinator"/>
+
+            <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/chordinatorInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/chordinator_info"/>
+
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/clipboardInstructions"
+            android:id="@+id/clipboardInfo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="@string/clipboard_info"/>
+        </LinearLayout>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/searchButton"

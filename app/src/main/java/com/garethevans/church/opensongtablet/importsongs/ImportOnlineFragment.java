@@ -15,11 +15,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.ConsoleMessage;
 import android.webkit.RenderProcessGoneDetail;
 import android.webkit.URLUtil;
 import android.webkit.ValueCallback;
-import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
@@ -63,7 +61,7 @@ public class ImportOnlineFragment extends Fragment {
             "https://holychords.pro/search?name=", "https://www.boiteachansons.net/recherche/",
             "https://www.e-chords.com/search-all/","https://www.google.com/search?q="};
     private String webSearchFull, webAddressFinal, source, webString, userAgentDefault,
-            import_basic_string="", online_string="", website_song_online_string="",
+            import_basic_string="", online_string="", website_song_online_string="", unknown_string="",
             text_extract_check_string="", text_extract_website_string="", mainfoldername_string="",
             success_string="", error_string="", overwrite_string="", song_name_already_taken_string="";
     private Song newSong;
@@ -75,6 +73,7 @@ public class ImportOnlineFragment extends Fragment {
     private HolyChords holyChords;
     private Boiteachansons boiteachansons;
     private EChords eChords;
+    private Chordinator chordinator;
     private WebView webView;
     private String webAddress;
 
@@ -124,6 +123,7 @@ public class ImportOnlineFragment extends Fragment {
             error_string = getString(R.string.error);
             overwrite_string = getString(R.string.overwrite);
             song_name_already_taken_string = getString(R.string.song_name_already_taken);
+            unknown_string = getString(R.string.unknown);
         }
     }
 
@@ -139,6 +139,7 @@ public class ImportOnlineFragment extends Fragment {
         holyChords = new HolyChords();
         boiteachansons = new Boiteachansons();
         eChords = new EChords();
+        chordinator = new Chordinator();
     }
 
     private void setupViews() {
@@ -166,8 +167,9 @@ public class ImportOnlineFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                myView.clipboardInstructions.setVisibility(
+                myView.googleInfo.setVisibility(
                         myView.onlineSource.getText().toString().equals("Google") ? View.VISIBLE:View.GONE);
+                mainActivityInterface.getCheckInternet().setSearchSite(myView.onlineSource.getText().toString());
             }
         });
 
@@ -186,13 +188,13 @@ public class ImportOnlineFragment extends Fragment {
         }
         if (web) {
             myView.webLayout.post(() -> myView.webLayout.setVisibility(View.VISIBLE));
-            myView.grabText.post(() -> myView.grabText.setVisibility(myView.onlineSource.getText().toString().equals("Google")? View.GONE:View.VISIBLE));
+            myView.grabText.post(() -> myView.grabText.setVisibility(View.VISIBLE));
         } else {
             myView.webLayout.post(() -> myView.webLayout.setVisibility(View.GONE));
         }
         if (save) {
             myView.saveLayout.post(() -> myView.saveLayout.setVisibility(View.VISIBLE));
-            myView.saveButton.post(() -> myView.saveButton.setVisibility(myView.onlineSource.getText().toString().equals("Google")?View.GONE:View.VISIBLE));
+            myView.saveButton.post(() -> myView.saveButton.setVisibility(View.VISIBLE));
         } else {
             myView.saveLayout.post(() -> myView.saveLayout.setVisibility(View.GONE));
         }
@@ -214,14 +216,14 @@ public class ImportOnlineFragment extends Fragment {
                 webView = new WebView(getContext());
                 myView.webViewHolder.addView(webView);
             }
-            webView.setWebChromeClient(new WebChromeClient() {
+            /*webView.setWebChromeClient(new WebChromeClient() {
                 @Override
                 public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
                     Log.d(TAG, consoleMessage.message() + " -- From line " +
                             consoleMessage.lineNumber() + " of " + consoleMessage.sourceId());
                     return true;
                 }
-            });
+            });*/
             webView.setWebViewClient(new WebViewClient() {
                 @Override
                 public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -366,7 +368,7 @@ public class ImportOnlineFragment extends Fragment {
                     !mainActivityInterface.getCheckInternet().getSearchPhrase().isEmpty() &&
                     !webAddress.isEmpty()) {
                 changeLayouts(false, true, false);
-                myView.grabText.setVisibility(myView.onlineSource.getText().toString().equals("Google")? View.GONE:View.VISIBLE);
+                myView.grabText.setVisibility(View.VISIBLE);
                 if (getActivity()!=null && myView.grabText.getVisibility()==View.VISIBLE) {
                     myView.grabText.post(() -> mainActivityInterface.getShowCase().singleShowCase(getActivity(), myView.grabText, null, text_extract_check_string, false, "onlineTextSearch"));
                 }
@@ -416,14 +418,14 @@ public class ImportOnlineFragment extends Fragment {
     private final ValueCallback<String> webContent = new ValueCallback<String>() {
         @Override
         public void onReceiveValue(String value) {
-            Log.d(TAG,"value:"+value);
+            //Log.d(TAG,"value:"+value);
             JsonReader reader = new JsonReader(new StringReader(value));
             reader.setLenient(true);
 
             try {
                 if (reader.peek() == JsonToken.STRING) {
                     webString = reader.nextString();
-                    Log.d(TAG,"webString:"+webString);
+                    //Log.d(TAG,"webString:"+webString);
                 }
                 reader.close();
             } catch (IOException e) {
@@ -441,10 +443,10 @@ public class ImportOnlineFragment extends Fragment {
             webString = "";
         }
 
-        String[] lines = webString.split("\n");
+        /*String[] lines = webString.split("\n");
         for (String line:lines) {
             Log.d(TAG,"line: "+line);
-        }
+        }*/
 
         switch (source) {
             case "UltimateGuitar":
@@ -492,17 +494,28 @@ public class ImportOnlineFragment extends Fragment {
                     show = true;
                 }
                 break;
+            case "Google":
+                if (!webView.getUrl().contains("google") && !webView.getUrl().contains("songselect")) {
+                    chordinator.setTitle(myView.searchPhrase.getText().toString());
+                    chordinator.setArtist(unknown_string);
+                    chordinator.processHTML(this,mainActivityInterface,webString);
+                }
+                // show is processed on a separate thread and doSave called later
+                break;
         }
+        doShowSaveButton(show);
+        showDownloadProgress(false);
+    }
+
+    public void doShowSaveButton(boolean show) {
         if (show) {
             myView.saveButton.post(() -> {
-                if (getContext()!=null) {
+                if (getContext() != null) {
                     myView.grabText.hide();
-                    if (!myView.onlineSource.getText().toString().equals("Google")) {
-                        myView.saveButton.show();
-                        mainActivityInterface.getCustomAnimation().pulse(getContext(), myView.saveButton);
-                        mainActivityInterface.getShowCase().singleShowCase(getActivity(), myView.saveButton,
-                                null, text_extract_website_string, false, "textWebsite");
-                    }
+                    myView.saveButton.show();
+                    mainActivityInterface.getCustomAnimation().pulse(getContext(), myView.saveButton);
+                    mainActivityInterface.getShowCase().singleShowCase(getActivity(), myView.saveButton,
+                            null, text_extract_website_string, false, "textWebsite");
                 }
             });
 
@@ -510,25 +523,26 @@ public class ImportOnlineFragment extends Fragment {
             myView.saveButton.post(() -> {
                 myView.saveButton.hide();
                 myView.saveButton.clearAnimation();
-                if (!myView.onlineSource.getText().toString().equals("Google")) {
-                    myView.grabText.show();
-                }
+                myView.grabText.show();
             });
 
         }
-        showDownloadProgress(false);
     }
-
     private void processContent() {
         showDownloadProgress(true);
         newSong = new Song();
-
-        Log.d(TAG,"source:"+source);
         isPDF = false;
         boolean songSelectDownload = false;
         switch (source) {
             case "Google":
-                newSong.setTitle(myView.searchPhrase.getText().toString());
+                if (chordinator.getTitle()!=null && !chordinator.getTitle().isEmpty()) {
+                    newSong.setTitle(chordinator.getTitle());
+                } else {
+                    newSong.setTitle(myView.searchPhrase.getText().toString());
+                }
+                if (chordinator.getArtist()!=null && !chordinator.getArtist().isEmpty()) {
+                    newSong.setAuthor(chordinator.getArtist());
+                }
                 newSong.setLyrics(clipboardText);
                 break;
             case "UltimateGuitar":
@@ -541,13 +555,11 @@ public class ImportOnlineFragment extends Fragment {
                 newSong = chordie.processContent(mainActivityInterface,newSong,webString);
                 break;
             case "SongSelect":
-                Log.d(TAG,"getting here SongSelect");
                 if (webString.contains("<div id=\"LyricsText\"")) {
                     newSong = songSelect.processContentLyricsText(mainActivityInterface, newSong, webString);
                 } else  if (webString.contains("<span class=\"cproTitleLine\">")) {
                     newSong = songSelect.processContentChordPro(mainActivityInterface, newSong, webString);
                 }
-                Log.d(TAG,"newSong:"+newSong.getLyrics());
                 // Trigger the clicking of the download buttons
                 String what="";
                 if (webString.contains("id=\"downloadLyrics\"")) {
@@ -575,19 +587,15 @@ public class ImportOnlineFragment extends Fragment {
                 }
                 break;
             case "UkuTabs":
-                Log.d(TAG, "getting here UkuTabs");
                 newSong = ukuTabs.processContent(newSong,webString);
                 break;
             case "HolyChords":
-                Log.d(TAG, "getting here HolyChords");
                 newSong = holyChords.processContent(newSong,webString);
                 break;
             case "La Boîte à chansons":
-                Log.d(TAG,"getting here La Boîte à chansons");
                 newSong = boiteachansons.processContent(mainActivityInterface,newSong,webString);
                 break;
             case "eChords":
-                Log.d(TAG,"getting here eChords");
                 newSong = eChords.processContent(newSong,webString);
                 break;
         }
@@ -597,13 +605,17 @@ public class ImportOnlineFragment extends Fragment {
         }
     }
 
+    // Called from Chordinator via MainActivity
+    public void setClipboardText(String textFromChordinator) {
+        clipboardText = textFromChordinator;
+    }
+
     public void finishedDownloadPDF(Uri uri,String filename) {
         // This is sent from MainActivity after a pdf file was downloaded
         // Fix the views
         filename = filename.replace(".txt","");
         newSong.setFilename(newSong.getFilename().replace(".txt",""));
         newSong.setTitle(newSong.getTitle().replace(".txt",""));
-        Log.d(TAG,"finishedDownloadPDF uri:"+uri);
         if (uri!=null) {
             showDownloadProgress(false);
             changeLayouts(false, false, true);
@@ -678,7 +690,6 @@ public class ImportOnlineFragment extends Fragment {
         }
         newSong.setFiletype("PDF");
 
-        Log.d(TAG,"newSong filename:"+newSong.getFilename()+"  folder:"+newSong.getFolder()+"  lyrics:"+newSong.getLyrics());
         try {
             // Copy the file
             if (isPDF) {

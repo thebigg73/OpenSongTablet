@@ -2731,6 +2731,21 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
 
     @Override
+    public void chordinatorResult(ImportOnlineFragment importOnlineFragment, String songText) {
+        if (importOnlineFragment!=null && importOnlineFragment.isAdded()) {
+            try {
+                if (songText==null) {
+                    songText = "";
+                }
+                importOnlineFragment.setClipboardText(songText);
+                importOnlineFragment.doShowSaveButton(!songText.isEmpty());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
     public ShowToast getShowToast() {
         if (showToast==null) {
             showToast = new ShowToast(this,myView.getRoot());
