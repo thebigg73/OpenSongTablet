@@ -27,7 +27,17 @@
             <TableRow style="@style/DividerLine"/>
 
             <com.garethevans.church.opensongtablet.customviews.MaterialSlider
-                android:id="@+id/songMenuSubItemSize"
+                android:id="@+id/songMenuSubItemSizeAuthor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/size"
+                android:text="@string/song_menu_subtitle_size"
+                android:valueFrom="7.0"
+                android:valueTo="32.0" />
+            <TableRow style="@style/DividerLine"/>
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+                android:id="@+id/songMenuSubItemSizeFile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/size"

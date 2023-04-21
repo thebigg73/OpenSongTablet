@@ -31,7 +31,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> {
     private final boolean showChecked;
     private boolean songMenuSortTitles;
     private final float titleSize;
-    private final float subtitleSize;
+    private final float subtitleSizeAuthor, subtitleSizeFile;
 
     LinkedHashMap<String, Integer> linkedHashMap, linkedHashMap2;
 
@@ -51,7 +51,8 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> {
         songMenuSortTitles = mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuSortTitles", true);
         // Make the title text the same as the alphaIndex size
         titleSize = mainActivityInterface.getPreferences().getMyPreferenceFloat("songMenuItemSize",14f);
-        subtitleSize = mainActivityInterface.getPreferences().getMyPreferenceFloat("songMenuSubItemSize",12f);
+        subtitleSizeAuthor = mainActivityInterface.getPreferences().getMyPreferenceFloat("songMenuSubItemSizeAuthor",12f);
+        subtitleSizeFile = mainActivityInterface.getPreferences().getMyPreferenceFloat("songMenuSubItemSizeFile",12f);
     }
 
     public interface AdapterCallback {
@@ -147,19 +148,22 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> {
                 songItemViewHolder.itemTitle.setTextSize(titleSize);
                 songItemViewHolder.itemTitle.setText(displayname);
 
-
-                if (subtitleSize==7) {
+                if (subtitleSizeFile==7) {
                     // This is the 'off' value
-                    songItemViewHolder.itemAuthor.setVisibility(View.GONE);
                     songItemViewHolder.itemFolderNamePair.setVisibility(View.GONE);
                 } else {
                     // Set the path
                     songItemViewHolder.itemFolderNamePair.setVisibility(View.VISIBLE);
-                    songItemViewHolder.itemFolderNamePair.setTextSize(subtitleSize);
+                    songItemViewHolder.itemFolderNamePair.setTextSize(subtitleSizeFile);
                     songItemViewHolder.itemFolderNamePair.setText(folderNamePair);
+                }
 
+                if (subtitleSizeAuthor==7) {
+                    // This is the 'off' value
+                    songItemViewHolder.itemAuthor.setVisibility(View.GONE);
+                } else {
                     // Set the author if present
-                    songItemViewHolder.itemAuthor.setTextSize(subtitleSize);
+                    songItemViewHolder.itemAuthor.setTextSize(subtitleSizeAuthor);
                     if (author.isEmpty()) {
                         songItemViewHolder.itemAuthor.setVisibility(View.GONE);
                     } else {

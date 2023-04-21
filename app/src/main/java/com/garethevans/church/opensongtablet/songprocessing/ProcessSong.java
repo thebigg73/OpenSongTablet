@@ -202,118 +202,128 @@ public class ProcessSong {
 
     // These is used when loading and converting songs (ChordPro, badly formatted XML, etc).
     public String parseHTML(String s) {
-        if (s == null) {
-            return "";
+        try {
+            if (s == null) {
+                return "";
+            }
+            s = s.replace("&amp;apos;", "'").
+                    replace("&amp;quote;", "\"").
+                    replace("&amp;quot;", "\"").
+                    replace("&amp;lt;", "<").
+                    replace("&amp;gt;", ">").
+                    replace("&amp;", "&").
+                    replace("&lt;", "<").
+                    replace("&gt;", ">").
+                    replace("&apos;", "'").
+                    replace("&quote;", "\"").
+                    replace("&quot;", "\"").
+                    replace("&iquest;", "¿").
+                    replace("&Agrave;", "À").
+                    replace("&agrave;", "à").
+                    replace("&Aacute;", "Á").
+                    replace("&aacute;", "á").
+                    replace("&Acirc;;", "Â").
+                    replace("&acirc;;", "â").
+                    replace("&Atilde;", "Ã").
+                    replace("&atilde;", "ã").
+                    replace("&Aring;", "Å").
+                    replace("&aring;", "å").
+                    replace("&Auml;", "Ä").
+                    replace("&auml;", "ä").
+                    replace("&AElig;", "Æ").
+                    replace("&aelig;", "æ").
+                    replace("&Cacute;", "Ć").
+                    replace("&cacute;", "ć").
+                    replace("&Ccedil;", "Ç").
+                    replace("&ccedil;", "ç").
+                    replace("&Eacute;", "É").
+                    replace("&eacute;", "é").
+                    replace("&Ecirc;;", "Ê").
+                    replace("&ecirc;;", "ê").
+                    replace("&Egrave;", "È").
+                    replace("&egrave;", "è").
+                    replace("&Euml;", "Ë").
+                    replace("&euml;", "ë").
+                    replace("&Iacute;", "Í").
+                    replace("&iacute;", "í").
+                    replace("&Icirc;;", "Î").
+                    replace("&icirc;;", "î").
+                    replace("&Igrave;", "Ì").
+                    replace("&igrave;", "ì").
+                    replace("&Iuml;", "Ï").
+                    replace("&iuml;", "ï").
+                    replace("&Oacute;", "Ó").
+                    replace("&oacute;", "ó").
+                    replace("&Ocirc;;", "Ô").
+                    replace("&ocirc;;", "ô").
+                    replace("&Ograve;", "Ò").
+                    replace("&ograve;", "ò").
+                    replace("&Ouml;", "Ö").
+                    replace("&ouml;", "ö").
+                    replace("&szlig;", "ß").
+                    replace("&Uacute;", "Ú").
+                    replace("&uacute;", "ú").
+                    replace("&Ucirc;;", "Û").
+                    replace("&ucirc;;", "û").
+                    replace("&Ugrave;", "Ù").
+                    replace("&ugrave;", "ù").
+                    replace("&Uuml;", "Ü").
+                    replace("&uuml;", "ü").
+                    replace("&#039;", "'").
+                    replace("&#8217;", "'").
+                    replace("�??", "'").
+                    replace("�?", "'").
+                    replace("�", "'").
+                    replace("&nbsp;", " ");
+
+            // If UG has been bad, replace these bits:
+            s = s.replace("pre class=\"\"", "");
+
+        } catch (Exception | OutOfMemoryError e) {
+            e.printStackTrace();
+            s = "";
         }
-        s = s.replace("&amp;apos;", "'").
-                replace("&amp;quote;", "\"").
-                replace("&amp;quot;", "\"").
-                replace("&amp;lt;", "<").
-                replace("&amp;gt;", ">").
-                replace("&amp;", "&").
-                replace("&lt;", "<").
-                replace("&gt;", ">").
-                replace("&apos;", "'").
-                replace("&quote;", "\"").
-                replace("&quot;", "\"").
-                replace("&iquest;", "¿").
-                replace("&Agrave;", "À").
-                replace("&agrave;", "à").
-                replace("&Aacute;", "Á").
-                replace("&aacute;", "á").
-                replace("&Acirc;;", "Â").
-                replace("&acirc;;", "â").
-                replace("&Atilde;", "Ã").
-                replace("&atilde;", "ã").
-                replace("&Aring;", "Å").
-                replace("&aring;", "å").
-                replace("&Auml;", "Ä").
-                replace("&auml;", "ä").
-                replace("&AElig;", "Æ").
-                replace("&aelig;", "æ").
-                replace("&Cacute;", "Ć").
-                replace("&cacute;", "ć").
-                replace("&Ccedil;", "Ç").
-                replace("&ccedil;", "ç").
-                replace("&Eacute;", "É").
-                replace("&eacute;", "é").
-                replace("&Ecirc;;", "Ê").
-                replace("&ecirc;;", "ê").
-                replace("&Egrave;", "È").
-                replace("&egrave;", "è").
-                replace("&Euml;", "Ë").
-                replace("&euml;", "ë").
-                replace("&Iacute;", "Í").
-                replace("&iacute;", "í").
-                replace("&Icirc;;", "Î").
-                replace("&icirc;;", "î").
-                replace("&Igrave;", "Ì").
-                replace("&igrave;", "ì").
-                replace("&Iuml;", "Ï").
-                replace("&iuml;", "ï").
-                replace("&Oacute;", "Ó").
-                replace("&oacute;", "ó").
-                replace("&Ocirc;;", "Ô").
-                replace("&ocirc;;", "ô").
-                replace("&Ograve;", "Ò").
-                replace("&ograve;", "ò").
-                replace("&Ouml;", "Ö").
-                replace("&ouml;", "ö").
-                replace("&szlig;", "ß").
-                replace("&Uacute;", "Ú").
-                replace("&uacute;", "ú").
-                replace("&Ucirc;;", "Û").
-                replace("&ucirc;;", "û").
-                replace("&Ugrave;", "Ù").
-                replace("&ugrave;", "ù").
-                replace("&Uuml;", "Ü").
-                replace("&uuml;", "ü").
-                replace("&#039;", "'").
-                replace("&#8217;", "'").
-                replace("�??", "'").
-                replace("�?", "'").
-                replace("�", "'").
-                replace("&nbsp;", " ");
-
-        // If UG has been bad, replace these bits:
-        s = s.replace("pre class=\"\"", "");
-
         return s;
     }
 
     public String parseToHTMLEntities(String s) {
-        if (s == null) {
+        try {
+            if (s == null) {
+                s = "";
+            }
+            // Make sure all ss are unencoded to start with
+            // Now HTML encode everything that needs encoded
+            // Protected are < > &
+            // Change < to __lt;  We'll later replace the __ with &.  Do this to deal with &amp; separately
+            s = s.replace("<", "__lt;");
+            s = s.replace("&lt;", "__lt;");
+
+            // Change > to __gt;  We'll later replace the __ with &.  Do this to deal with &amp; separately
+            s = s.replace(">", "__gt;");
+            s = s.replace("&gt;", "__gt;");
+
+            // Change &apos; to ' as they don't need encoding in this format - also makes it compatible with desktop
+            s = s.replace("&apos;", "'");
+            //s = s.replace("\'", "'");
+
+            // Change " to __quot;  We'll later replace the __ with &.  Do this to deal with &amp; separately
+            s = s.replace("\"", "__quot;");
+            s = s.replace("&quot;", "__quot;");
+
+            // Now deal with the remaining ampersands
+            s = s.replace("&amp;", "&");  // Reset any that already encoded - all need encoded now
+            s = s.replace("&&", "&");     // Just in case we have wrongly encoded old ones e.g. &amp;&quot;
+            s = s.replace("&", "&amp;");  // Reencode all remaining ampersands
+
+            // Now replace the other protected encoded entities back with their leading ampersands
+            s = s.replace("__lt;", "&lt;");
+            s = s.replace("__gt;", "&gt;");
+            s = s.replace("__quot;", "&quot;");
+
+        } catch (Exception | OutOfMemoryError e) {
+            e.printStackTrace();
             s = "";
         }
-        // Make sure all ss are unencoded to start with
-        // Now HTML encode everything that needs encoded
-        // Protected are < > &
-        // Change < to __lt;  We'll later replace the __ with &.  Do this to deal with &amp; separately
-        s = s.replace("<", "__lt;");
-        s = s.replace("&lt;", "__lt;");
-
-        // Change > to __gt;  We'll later replace the __ with &.  Do this to deal with &amp; separately
-        s = s.replace(">", "__gt;");
-        s = s.replace("&gt;", "__gt;");
-
-        // Change &apos; to ' as they don't need encoding in this format - also makes it compatible with desktop
-        s = s.replace("&apos;", "'");
-        //s = s.replace("\'", "'");
-
-        // Change " to __quot;  We'll later replace the __ with &.  Do this to deal with &amp; separately
-        s = s.replace("\"", "__quot;");
-        s = s.replace("&quot;", "__quot;");
-
-        // Now deal with the remaining ampersands
-        s = s.replace("&amp;", "&");  // Reset any that already encoded - all need encoded now
-        s = s.replace("&&", "&");     // Just in case we have wrongly encoded old ones e.g. &amp;&quot;
-        s = s.replace("&", "&amp;");  // Reencode all remaining ampersands
-
-        // Now replace the other protected encoded entities back with their leading ampersands
-        s = s.replace("__lt;", "&lt;");
-        s = s.replace("__gt;", "&gt;");
-        s = s.replace("__quot;", "&quot;");
-
         return s;
     }
 
