@@ -207,11 +207,9 @@ public class SetActions {
     public int indexSongInSet(Song thisSong) {
         // Because set items can be stored with or without a specified key, we search for both
         String searchText = getSongForSetWork(thisSong);
-        Log.d(TAG,"searchText:"+searchText);
         Song noKeySong = new Song();
         noKeySong.setFolder(thisSong.getFolder());
         noKeySong.setFilename(thisSong.getFilename());
-        Log.d(TAG,"thisSong.getFolder:"+thisSong.getFolder());
         noKeySong.setKey("");
         String searchTextNoKeySpecified = getSongForSetWork(noKeySong);
         int position = mainActivityInterface.getCurrentSet().getSetItems().lastIndexOf(searchText);
@@ -248,8 +246,6 @@ public class SetActions {
             String searchTextAsVariation = getSongForSetWork("**Variation",varFilename,"").replace("******__**$","");
             String searchTextAsKeyChangeVar = getSongForSetWork(varFolder,varFilename,"").replace("******__**$","");
 
-            Log.d(TAG,"searchTextAsVariation:"+searchTextAsVariation);
-            Log.d(TAG,"searchTextAsKeyChangeVar:"+searchTextAsKeyChangeVar);
             for (int v = 0; v < mainActivityInterface.getCurrentSet().getSetItems().size(); v++) {
                 if (mainActivityInterface.getCurrentSet().getSetItems().get(v).contains(searchTextAsKeyChangeVar) ||
                         mainActivityInterface.getCurrentSet().getSetItems().get(v).contains(searchTextAsVariation)) {
