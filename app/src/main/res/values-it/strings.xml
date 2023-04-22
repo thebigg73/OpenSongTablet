@@ -375,6 +375,8 @@
     <string name="keep_multiline">Mantieni compatto multilinea</string>
     <string name="keep_multiline_info">Visualizza i brani contenenti versi combinati così come appaiono nella finestra di modifica del brano.</string>
     <string name="key">"Chiavetta"</string>
+    <string name="key_original">Chiave originale</string>
+    <string name="key_original_transpose">Ritrasporre il brano alla chiave originale</string>
     <string name="landscape">Paesaggio</string>
     <string name="language">"Lingua"</string>
     <string name="last_song">"Visualizzazione ultimo elemento nel set"</string>

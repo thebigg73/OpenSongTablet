@@ -35,10 +35,11 @@ public class CommonSQL {
     void updateTable(SQLiteDatabase db2) {
         // This is called if the database version changes.  It will attempt to add each column
         // It will throw an error if it already exists, but we will catch it
-        String[] columnNames = {SQLite.COLUMN_ID, SQLite.COLUMN_SONGID, SQLite.COLUMN_FILENAME, SQLite.COLUMN_FOLDER,
-                SQLite.COLUMN_TITLE, SQLite.COLUMN_AUTHOR, SQLite.COLUMN_COPYRIGHT, SQLite.COLUMN_LYRICS,
-                SQLite.COLUMN_HYMNNUM, SQLite.COLUMN_CCLI, SQLite.COLUMN_THEME, SQLite.COLUMN_ALTTHEME,
-                SQLite.COLUMN_USER1, SQLite.COLUMN_USER2, SQLite.COLUMN_USER3, SQLite.COLUMN_KEY,
+        String[] columnNames = {SQLite.COLUMN_ID, SQLite.COLUMN_SONGID, SQLite.COLUMN_FILENAME,
+                SQLite.COLUMN_FOLDER, SQLite.COLUMN_TITLE, SQLite.COLUMN_AUTHOR,
+                SQLite.COLUMN_COPYRIGHT, SQLite.COLUMN_LYRICS, SQLite.COLUMN_HYMNNUM,
+                SQLite.COLUMN_CCLI, SQLite.COLUMN_THEME, SQLite.COLUMN_ALTTHEME, SQLite.COLUMN_USER1,
+                SQLite.COLUMN_USER2, SQLite.COLUMN_USER3, SQLite.COLUMN_KEY, SQLite.COLUMN_KEY_ORIGINAL,
                 SQLite.COLUMN_TIMESIG, SQLite.COLUMN_AKA, SQLite.COLUMN_AUTOSCROLL_DELAY,
                 SQLite.COLUMN_AUTOSCROLL_LENGTH, SQLite.COLUMN_TEMPO, SQLite.COLUMN_PAD_FILE,
                 SQLite.COLUMN_PAD_LOOP, SQLite.COLUMN_MIDI, SQLite.COLUMN_MIDI_INDEX, SQLite.COLUMN_CAPO,
@@ -140,6 +141,7 @@ public class CommonSQL {
         values.put(SQLite.COLUMN_USER2, thisSong.getUser2());
         values.put(SQLite.COLUMN_USER3, thisSong.getUser3());
         values.put(SQLite.COLUMN_KEY, thisSong.getKey());
+        values.put(SQLite.COLUMN_KEY_ORIGINAL, thisSong.getKeyOriginal());
         values.put(SQLite.COLUMN_TIMESIG, thisSong.getTimesig());
         values.put(SQLite.COLUMN_AKA, thisSong.getAka());
         values.put(SQLite.COLUMN_AUTOSCROLL_DELAY, thisSong.getAutoscrolldelay());
@@ -386,6 +388,7 @@ public class CommonSQL {
                 thisSong.setUser2(getValue(cursor, SQLite.COLUMN_USER2));
                 thisSong.setUser3(getValue(cursor, SQLite.COLUMN_USER3));
                 thisSong.setKey(getValue(cursor, SQLite.COLUMN_KEY));
+                thisSong.setKeyOriginal(getValue(cursor, SQLite.COLUMN_KEY_ORIGINAL));
                 thisSong.setTimesig(getValue(cursor, SQLite.COLUMN_TIMESIG));
                 thisSong.setAka(getValue(cursor, SQLite.COLUMN_AKA));
                 thisSong.setAutoscrolldelay(getValue(cursor, SQLite.COLUMN_AUTOSCROLL_DELAY));

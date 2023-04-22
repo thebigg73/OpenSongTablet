@@ -34,10 +34,12 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
     private BottomSheetTransposeBinding myView;
     private MainActivityInterface mainActivityInterface;
     private int fromFormat, toFormat, prefFormat, transposeTimes, position;
-    private String originalKey, newKey, setFolder, songFolder, setFilename;
+    private String startKey, newKey, setFolder, songFolder, setFilename;
     private String string_Key="", string_Transpose="", string_WebsiteChordsTranspose="",
         string_ChordFormatPreferredInfo="", string_DeeplinkChordSettings="", string_CopyOf="",
-        string_Standard="", string_DetectedAppearance="", string_variation="**Variation";
+        string_Standard="", string_DetectedAppearance="", string_variation="**Variation",
+            originalkey_string=""
+    ;
 
     public TransposeBottomSheet(boolean editSong) {
         // This is called from the EditSongFragment.  Receive temp lyrics and key
@@ -61,6 +63,7 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
         string_Standard = getString(R.string.chordformat_1_name);
         string_DetectedAppearance = getString(R.string.chordformat_1);
         string_variation = "**"+context.getString(R.string.variation);
+        originalkey_string = getString(R.string.key_original);
     }
 
     @NonNull
@@ -152,20 +155,23 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
             myView.transposeCopy.setVisibility(View.VISIBLE);
         }
 
+        // If we have a key set and an original key set and they are different, show the transpose original
+        checkTransposeOriginal();
+
         myView.transposeSlider.setValue(0);
 
         // Get the key of the song if set
         if (editSong && mainActivityInterface.getTempSong()!=null) {
-            originalKey = mainActivityInterface.getTempSong().getKey();
+            startKey = mainActivityInterface.getTempSong().getKey();
         } else {
-            originalKey = mainActivityInterface.getSong().getKey();
+            startKey = mainActivityInterface.getSong().getKey();
         }
 
         try {
-            if (originalKey.isEmpty()) {
+            if (startKey.isEmpty()) {
                 myView.keyChangeTextView.setText(getTransposeKey("0"));
             } else {
-                myView.keyChangeTextView.setText(getTransposeKey(originalKey));
+                myView.keyChangeTextView.setText(getTransposeKey(startKey));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -224,10 +230,10 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
     }
 
     private String getTransposeKey(String newKey) {
-        if (originalKey==null || originalKey.isEmpty() || originalKey.equals("0")) {
+        if (startKey==null || startKey.isEmpty() || startKey.equals("0")) {
             return newKey;
         } else {
-            return string_Key + ": " + originalKey + "\n" +
+            return string_Key + ": " + startKey + "\n" +
                     string_Transpose + ": " + mainActivityInterface.getTranspose().convertToPreferredChord(newKey);
         }
     }
@@ -236,7 +242,7 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
         myView.transposeSlider.addOnChangeListener((slider, value, fromUser) -> {
             // Update the text
             String thisNewKey;
-            if (originalKey==null || originalKey.isEmpty() || originalKey.equals("0")) {
+            if (startKey==null || startKey.isEmpty() || startKey.equals("0")) {
                 if (value>0) {
                     thisNewKey = "+" + (int)value;
                 } else {
@@ -246,16 +252,17 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
                 newKey = "";
             } else {
                 // We need to get the transposed key
-                String keyToNum = mainActivityInterface.getTranspose().keyToNumber(originalKey);
+                String keyToNum = mainActivityInterface.getTranspose().keyToNumber(startKey);
                 if (value<0) {
                     newKey = mainActivityInterface.getTranspose().transposeNumber(keyToNum,"-1",(int)Math.abs(value));
                 } else if (value>0) {
                     newKey = mainActivityInterface.getTranspose().transposeNumber(keyToNum,"+1",(int)Math.abs(value));
                 } else {
-                    newKey = originalKey;
+                    newKey = startKey;
                 }
                 newKey = mainActivityInterface.getTranspose().numberToKey(newKey);
                 myView.keyChangeTextView.setText(getTransposeKey(newKey));
+                checkTransposeOriginal();
             }
         });
 
@@ -293,6 +300,17 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
                 myView.capoChange.setVisibility(View.INVISIBLE);
             }
         });
+
+        myView.transposeOriginal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Get the keynumber of the original key and current key (both are set for this button to be active and visible)
+                int transposeTimes = mainActivityInterface.getTranspose().getTransposeTimes(mainActivityInterface.getSong().getKey(),
+                        mainActivityInterface.getSong().getKeyOriginal());
+                myView.transposeSlider.setValue(transposeTimes);
+                Log.d(TAG,"transposeTimes:"+transposeTimes);
+            }
+        });
     }
 
     private void usePreferredChordFormat(boolean trueorfalse) {
@@ -323,6 +341,21 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
             myView.chordFormatFrom.setText(mainActivityInterface.getTranspose().getChordFormatNames().get(formattouse - 1));
             myView.chordFormatTo.setText(mainActivityInterface.getTranspose().getChordFormatNames().get(formattouse - 1));
         }
+    }
+
+    private void checkTransposeOriginal() {
+        boolean hasKey = mainActivityInterface.getSong().getKey()!=null &&
+                !mainActivityInterface.getSong().getKey().isEmpty();
+        boolean hasOriginalKey = mainActivityInterface.getSong().getKeyOriginal()!=null &&
+                !mainActivityInterface.getSong().getKeyOriginal().isEmpty();
+        boolean showTransposeOriginal = hasKey && hasOriginalKey &&
+                !mainActivityInterface.getSong().getKey().equals(mainActivityInterface.getSong().getKeyOriginal());
+        if (hasOriginalKey) {
+            myView.transposeOriginal.setText(originalkey_string+" ("+mainActivityInterface.getSong().getKeyOriginal()+")");
+        } else {
+            myView.transposeOriginal.setText(originalkey_string);
+        }
+        myView.transposeOriginal.setVisibility(showTransposeOriginal? View.VISIBLE:View.GONE);
     }
 
     private void getValues() {

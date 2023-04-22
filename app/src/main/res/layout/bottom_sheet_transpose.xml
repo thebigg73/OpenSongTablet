@@ -136,6 +136,17 @@
                     android:hint="@string/transpose_copy"
                     android:visibility="gone"/>
 
+                <TableRow style="@style/DividerLine" />
+
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                    android:id="@+id/transposeOriginal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/key_original"
+                    android:hint="@string/key_original_transpose"
+                    android:visibility="gone"/>
+                <TableRow style="@style/DividerLine" />
+
             </LinearLayout>
         </com.garethevans.church.opensongtablet.customviews.NestedScrollWithFAB>
 

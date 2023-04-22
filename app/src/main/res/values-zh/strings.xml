@@ -375,6 +375,8 @@
     <string name="keep_multiline">保持多线紧凑</string>
     <string name="keep_multiline_info">在歌曲编辑窗口中显示包含组合诗句的歌曲。</string>
     <string name="key">"图注"</string>
+    <string name="key_original">原始密钥</string>
+    <string name="key_original_transpose">将歌曲转置回原始键</string>
     <string name="landscape">景观</string>
     <string name="language">"语言"</string>
     <string name="last_song">"显示在设定最后一个项目"</string>

@@ -375,6 +375,8 @@
     <string name="keep_multiline">Mantenga la compacta multilínea</string>
     <string name="keep_multiline_info">Muestra las canciones que contienen versos combinados tal como aparecen en la ventana de edición de canciones.</string>
     <string name="key">"Clave"</string>
+    <string name="key_original">Tonalidad original</string>
+    <string name="key_original_transpose">Transponer la canción a la tonalidad original</string>
     <string name="landscape">Paisaje</string>
     <string name="language">"Lengua"</string>
     <string name="last_song">"Viendo último elemento de conjunto"</string>

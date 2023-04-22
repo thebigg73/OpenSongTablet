@@ -82,8 +82,11 @@ public class EditSongFragmentFeatures extends Fragment {
             ExposedDropDownArrayAdapter keyArrayAdapter = new ExposedDropDownArrayAdapter(getContext(),
                     myView.key, R.layout.view_exposed_dropdown_item, key_choice_string);
             myView.key.setAdapter(keyArrayAdapter);
+            myView.originalkey.setAdapter(keyArrayAdapter);
         }
         myView.key.setText(mainActivityInterface.getTempSong().getKey());
+        mainActivityInterface.getTranspose().checkOriginalKeySet(mainActivityInterface.getTempSong());
+        myView.originalkey.setText(mainActivityInterface.getTempSong().getKeyOriginal());
 
         // The capo
         ArrayList<String> capos = new ArrayList<>();

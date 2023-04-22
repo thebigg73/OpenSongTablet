@@ -29,6 +29,7 @@ public class Song implements Serializable {
     private String user2="";
     private String user3="";
     private String key="";
+    private String keyoriginal="";
     private String timesig="";
     private String tempo="";
     private String aka="";
@@ -123,6 +124,9 @@ public class Song implements Serializable {
     }
     public String getKey() {
         return key;
+    }
+    public String getKeyOriginal() {
+        return keyoriginal;
     }
     public String getTimesig() {return timesig;}
     public String getTempo() {
@@ -287,6 +291,9 @@ public class Song implements Serializable {
     public void setKey(String key) {
         this.key = key;
     }
+    public void setKeyOriginal(String keyoriginal) {
+        this.keyoriginal = keyoriginal;
+    }
     public void setTimesig(String timesig) {this.timesig = timesig;}
     public void setTempo(String tempo) {
         this.tempo = tempo;
@@ -405,12 +412,12 @@ public class Song implements Serializable {
         this.user2 = toCopy.user2;
         this.user3 = toCopy.user3;
         this.key = toCopy.key;
+        this.keyoriginal = toCopy.keyoriginal;
         this.timesig = toCopy.timesig;
         this.tempo = toCopy.tempo;
         this.aka = toCopy.aka;
         this.autoscrolldelay = toCopy.autoscrolldelay;
         this.autoscrolllength = toCopy.autoscrolllength;
-        this.tempo = toCopy.tempo;
         this.padfile = toCopy.padfile;
         this.padloop = toCopy.padloop;
         this.midi = toCopy.midi;

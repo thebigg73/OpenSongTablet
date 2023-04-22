@@ -375,6 +375,8 @@
     <string name="keep_multiline">Mehrzeilige Verse kompakt halten</string>
     <string name="keep_multiline_info">Zeigen Sie Songs mit kombinierten Strophen so an, wie sie im Song-Bearbeitungsfenster erscheinen.</string>
     <string name="key">"Tonart"</string>
+    <string name="key_original">Originalschlüssel</string>
+    <string name="key_original_transpose">Transponieren Sie den Song zurück in die ursprüngliche Tonart</string>
     <string name="landscape">Landschaft</string>
     <string name="language">"Sprache"</string>
     <string name="last_song">"Letzter Song im Set wird angezeigt"</string>

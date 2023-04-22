@@ -375,6 +375,8 @@
     <string name="keep_multiline">Udržujte multiline kompaktní</string>
     <string name="keep_multiline_info">Zobrazte skladby obsahující kombinované sloky tak, jak se objevují v okně úprav skladby.</string>
     <string name="key">"Klíč"</string>
+    <string name="key_original">Originální klíč</string>
+    <string name="key_original_transpose">Transponujte skladbu zpět do původní tóniny</string>
     <string name="landscape">Krajina</string>
     <string name="language">"Jazyk"</string>
     <string name="last_song">"Zobrazení poslední položku v sadě"</string>

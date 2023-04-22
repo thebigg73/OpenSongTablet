@@ -375,6 +375,8 @@
     <string name="keep_multiline">マルチラインコンパクトを保つ</string>
     <string name="keep_multiline_info">曲編集ウィンドウに表示されるように、結合された詩を含む曲を表示します。</string>
     <string name="key">"キー (key)"</string>
+    <string name="key_original">元のキー</string>
+    <string name="key_original_transpose">曲を元のキーに戻す</string>
     <string name="landscape">風景</string>
     <string name="language">"言語"</string>
     <string name="last_song">"セット内の最後の項目を表示します"</string>

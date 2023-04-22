@@ -375,6 +375,8 @@
     <string name="keep_multiline">"Gardez multiline compact "</string>
     <string name="keep_multiline_info">Affichez les chansons contenant des couplets combinés telles qu\'elles apparaissent dans la fenêtre d\'édition de chanson.</string>
     <string name="key">"Tonalité"</string>
+    <string name="key_original">Tonalaté d’origine</string>
+    <string name="key_original_transpose">Transposer la chanson à la tonalité d’origine</string>
     <string name="landscape">Paysage</string>
     <string name="language">"Langue"</string>
     <string name="last_song">"Derniere chanson de la liste affichée"</string>

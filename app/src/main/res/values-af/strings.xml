@@ -375,6 +375,8 @@
     <string name="keep_multiline">Hou multiline kompak</string>
     <string name="keep_multiline_info">Vertoon liedjies wat gekombineerde verse bevat soos dit in die liedjie wysig venster verskyn.</string>
     <string name="key">"Sleutel"</string>
+    <string name="key_original">Oorspronklike sleutel</string>
+    <string name="key_original_transpose">Transponeer die liedjie terug na die oorspronklike sleutel</string>
     <string name="landscape">Landskap</string>
     <string name="language">"Taal"</string>
     <string name="last_song">"Vertoon laaste item in stel"</string>

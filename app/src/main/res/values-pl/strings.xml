@@ -375,6 +375,8 @@
     <string name="keep_multiline">Zachowaj wielomiętową kompaktowość</string>
     <string name="keep_multiline_info">Wyświetlaj utwory zawierające połączone wersety, tak jak pojawiają się w oknie edycji utworu.</string>
     <string name="key">"Klucz"</string>
+    <string name="key_original">Oryginalny klucz</string>
+    <string name="key_original_transpose">Transponuj utwór z powrotem do oryginalnej tonacji</string>
     <string name="landscape">Krajobraz</string>
     <string name="language">"Język"</string>
     <string name="last_song">"Wyświetlanie ostatni element w zestawie"</string>

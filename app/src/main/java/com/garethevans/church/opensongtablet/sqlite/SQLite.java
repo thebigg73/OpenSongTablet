@@ -41,6 +41,7 @@ public class SQLite {
     hymnnum
     id
     key
+    keyoriginal
     linkaudio
     linkother
     linkweb
@@ -82,6 +83,7 @@ public class SQLite {
     public static final String COLUMN_USER2 = "user2";
     public static final String COLUMN_USER3 = "user3";
     public static final String COLUMN_KEY = "key";
+    public static final String COLUMN_KEY_ORIGINAL = "keyoriginal";
     public static final String COLUMN_TIMESIG = "timesig";
     public static final String COLUMN_AKA = "aka";
     public static final String COLUMN_AUTOSCROLL_DELAY = "autoscrolldelay";
@@ -123,6 +125,7 @@ public class SQLite {
                     + COLUMN_USER2 + " TEXT,"
                     + COLUMN_USER3 + " TEXT,"
                     + COLUMN_KEY + " TEXT,"
+                    + COLUMN_KEY_ORIGINAL + " TEXT,"
                     + COLUMN_TIMESIG + " TEXT,"
                     + COLUMN_AKA + " TEXT,"
                     + COLUMN_AUTOSCROLL_DELAY + " TEXT,"

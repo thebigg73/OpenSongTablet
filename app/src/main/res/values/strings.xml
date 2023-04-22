@@ -503,6 +503,8 @@
         <item>G#m</item>
         <item>Abm</item>
     </array>
+    <string name="key_original">Original key</string>
+    <string name="key_original_transpose">Transpose the song back to the original key</string>
     <string name="landscape">Landscape</string>
     <string name="language">Language</string>
     <array name="languagelist" translatable="false">

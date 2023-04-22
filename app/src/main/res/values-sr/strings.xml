@@ -375,6 +375,8 @@
     <string name="keep_multiline">Zadržite višeslojno kompaktno</string>
     <string name="keep_multiline_info">Prikažite pesme koje sadrže kombinovane stihove onako kako se pojavljuju u prozoru za uređivanje pesme.</string>
     <string name="key">Tonalitet</string>
+    <string name="key_original">Originalni ključ</string>
+    <string name="key_original_transpose">Vratite pesmu na originalni ključ</string>
     <string name="landscape">Pejzaž</string>
     <string name="language">Jezik</string>
     <string name="last_song">Prikazivanje poslednje stavke na set listi</string>

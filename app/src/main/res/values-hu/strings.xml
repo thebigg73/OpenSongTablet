@@ -375,6 +375,8 @@
     <string name="keep_multiline">Tartsa a többsoros kompakt</string>
     <string name="keep_multiline_info">A kombinált verseket tartalmazó dalok megjelenítése a dal szerkesztő ablakában.</string>
     <string name="key">"Kulcs"</string>
+    <string name="key_original">Eredeti kulcs</string>
+    <string name="key_original_transpose">Helyezze vissza a dalt az eredeti hangnemre</string>
     <string name="landscape">Tájkép</string>
     <string name="language">"Nyelv"</string>
     <string name="last_song">"Bemutatás utolsó eleme szett"</string>

@@ -392,6 +392,9 @@ public class LoadSong {
                             case "key":
                                 thisSong.setKey(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
                                 break;
+                            case "keyoriginal":
+                                thisSong.setKeyOriginal(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
+                                break;
                             case "aka":
                                 thisSong.setAka(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
                                 break;

@@ -375,6 +375,8 @@
     <string name="keep_multiline">"Håll multilinkompakt "</string>
     <string name="keep_multiline_info">Visa låtar som innehåller kombinerade verser som de visas i sångredigeringsfönstret.</string>
     <string name="key">"Nyckel"</string>
+    <string name="key_original">Ursprunglig nyckel</string>
+    <string name="key_original_transpose">Transponera låten tillbaka till originaltonarten</string>
     <string name="landscape">Landskap</string>
     <string name="language">"Språk"</string>
     <string name="last_song">"Visar sista föremålet"</string>

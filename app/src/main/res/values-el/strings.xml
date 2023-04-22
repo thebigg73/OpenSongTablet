@@ -375,6 +375,8 @@
     <string name="keep_multiline">Διατηρήστε συμπαγές πολυγραμμικό</string>
     <string name="keep_multiline_info">Εμφανίστε τραγούδια που περιέχουν συνδυασμένους στίχους όπως εμφανίζονται στο παράθυρο επεξεργασίας τραγουδιού.</string>
     <string name="key">"Key"</string>
+    <string name="key_original">Αρχικό κλειδί</string>
+    <string name="key_original_transpose">Επαναφορά του τραγουδιού στο αρχικό πλήκτρο</string>
     <string name="landscape">Τοπίο</string>
     <string name="language">"Γλώσσα"</string>
     <string name="last_song">"Εμφάνιση τελευταίου τραγουδιού στην σειρά"</string>

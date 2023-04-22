@@ -375,6 +375,8 @@
     <string name="keep_multiline">Mantenha o compacto multilinha</string>
     <string name="keep_multiline_info">Exiba músicas contendo versos combinados conforme aparecem na janela de edição de músicas.</string>
     <string name="key">"Tecla"</string>
+    <string name="key_original">Chave original</string>
+    <string name="key_original_transpose">Transpor a música de volta para a chave original</string>
     <string name="landscape">Paisagem</string>
     <string name="language">"Língua"</string>
     <string name="last_song">"Resultados último item em conjunto"</string>

@@ -220,11 +220,14 @@ public class Transpose {
         fromNash = null;
         capoKey = "";
 
+        // Check if we have an original key set, and if not, set with the current key
+        checkOriginalKeySet(thisSong);
+
         try {
-            String originalkey = thisSong.getKey();
+            String startKey = thisSong.getKey();
             // Update the key to the newly transposed version
-            if (originalkey != null && !originalkey.isEmpty()) {
-                thisSong.setKey(numberToKey(transposeNumber(keyToNumber(originalkey), transposeDirection, transposeTimes)));
+            if (startKey != null && !startKey.isEmpty()) {
+                thisSong.setKey(numberToKey(transposeNumber(keyToNumber(startKey), transposeDirection, transposeTimes)));
             }
 
             // Change the song format
@@ -945,4 +948,17 @@ public class Transpose {
         return chordFormatAppearances;
     }
 
+    public void checkOriginalKeySet(Song thisSong) {
+        // This looks to see if we have an original key set.
+        // If not, and we have a key, set it to that
+        if (!originalKeyIsSet(thisSong) &&
+            thisSong.getKey()!=null && !thisSong.getKey().isEmpty()) {
+            // Copy the current key as the original
+            thisSong.setKeyOriginal(thisSong.getKey());
+        }
+    }
+
+    public boolean originalKeyIsSet(Song thisSong) {
+        return thisSong.getKeyOriginal()!=null && !thisSong.getKeyOriginal().isEmpty();
+    }
 }

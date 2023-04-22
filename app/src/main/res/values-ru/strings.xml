@@ -375,6 +375,8 @@
     <string name="keep_multiline">Ужатие многострочного текста</string>
     <string name="keep_multiline_info">Отображение песен, содержащих совмещенные куплеты, в том виде, в котором они отображаются в окне редактирования песни.</string>
     <string name="key">Тональность</string>
+    <string name="key_original">Оригинальный ключ</string>
+    <string name="key_original_transpose">Транспонировать песню обратно в исходную тональность</string>
     <string name="landscape">Ландшафтный режим</string>
     <string name="language">Язык</string>
     <string name="last_song">Отображение последней песни</string>

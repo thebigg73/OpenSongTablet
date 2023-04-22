@@ -375,6 +375,8 @@
     <string name="keep_multiline">Тримайте багатостроковий компактний</string>
     <string name="keep_multiline_info">Відображати пісні, що містять комбіновані куплети, як вони з’являються у вікні редагування пісні.</string>
     <string name="key">Тональність</string>
+    <string name="key_original">Оригінальний ключ</string>
+    <string name="key_original_transpose">Транспонування пісні назад у вихідний ключ</string>
     <string name="landscape">Пейзаж</string>
     <string name="language">Мова</string>
     <string name="last_song">Показати останню пісню</string>
