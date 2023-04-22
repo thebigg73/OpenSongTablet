@@ -180,7 +180,9 @@
             <TableRow style="@style/DividerLine" />
 
             <TextView
+                android:id="@+id/helperText"
                 style="@style/helperText"
+                android:focusable="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/song_features_warning" />

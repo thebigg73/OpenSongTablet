@@ -56,7 +56,7 @@ public class EditSongFragmentFeatures extends Fragment {
         // Set up the listeners
         setupListeners();
 
-        myView.getRoot().requestFocus();
+        myView.helperText.requestFocus();
 
         return myView.getRoot();
     }
