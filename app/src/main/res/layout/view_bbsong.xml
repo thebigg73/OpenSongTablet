@@ -6,7 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="4dp">
+    android:paddingTop="4dp"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp">
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/bb_folder"

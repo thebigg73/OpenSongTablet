@@ -18,7 +18,7 @@ public class BBSongAdapter extends RecyclerView.Adapter<BBSongViewHolder> {
 
     private final MainActivityInterface mainActivityInterface;
     private final ArrayList<BBSong> foundSongs;
-    private final String folder_string, song_string, timesig_string, kit_string;
+    private final String folder_string, song_string, timesig_string, kit_string, success_string;
     private final String TAG = "BBSongAdapter";
     private final BottomSheetBeatBuddySongs bottomSheetBeatBuddySongs;
 
@@ -30,6 +30,7 @@ public class BBSongAdapter extends RecyclerView.Adapter<BBSongViewHolder> {
         song_string = c.getString(R.string.song);
         timesig_string = c.getString(R.string.time_signature);
         kit_string = c.getString(R.string.drum_kit);
+        success_string = c.getString(R.string.success);
     }
 
     @NonNull
@@ -59,6 +60,8 @@ public class BBSongAdapter extends RecyclerView.Adapter<BBSongViewHolder> {
             Log.d(TAG,"pos:"+pos);
             String songCode = mainActivityInterface.getBeatBuddy().getSongCode(bbSong.folder, bbSong.song);
             Log.d(TAG,"songCode:"+songCode);
+            String message = success_string + ": "+folder_string+" "+bbSong.folder+" / "+song_string+" "+bbSong.song;
+            mainActivityInterface.getShowToast().doItBottomSheet(message,bottomSheetBeatBuddySongs.getView());
             bottomSheetBeatBuddySongs.updateSong(bbSong.folder,bbSong.song);
             mainActivityInterface.getMidi().sendMidiHexSequence(songCode);
         });

@@ -258,10 +258,10 @@ public class LinksBottomSheet extends BottomSheetDialogFragment {
                 break;
         }
         if (mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong(),false)) {
-            mainActivityInterface.getShowToast().doIt(success_string);
+            mainActivityInterface.getShowToast().doItBottomSheet(success_string,myView.getRoot());
             Log.d(TAG,"Success");
         } else {
-            mainActivityInterface.getShowToast().doIt(error_string);
+            mainActivityInterface.getShowToast().doItBottomSheet(error_string,myView.getRoot());
         }
         mainActivityInterface.updateFragment(fragName, callingFragment, null);
     }

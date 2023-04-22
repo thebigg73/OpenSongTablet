@@ -100,7 +100,7 @@ public class TagsBottomSheet extends BottomSheetDialogFragment {
             tagsAdapter.insertThemeTag(newThemeString);
             myView.currentTags.smoothScrollToPosition(0);
         } else {
-            mainActivityInterface.getShowToast().doIt(theme_exists_string);
+            mainActivityInterface.getShowToast().doItBottomSheet(theme_exists_string,myView.getRoot());
         }
     }
     public void deleteTags(int position) {

@@ -119,7 +119,7 @@ public class ExportSongListBottomSheet extends BottomSheetDialogFragment {
                 printing = false;
                 prepareExport();
             } else {
-                mainActivityInterface.getShowToast().doIt(nothing_selected_string);
+                mainActivityInterface.getShowToast().doItBottomSheet(nothing_selected_string,myView.getRoot());
             }
         });
 
@@ -128,7 +128,7 @@ public class ExportSongListBottomSheet extends BottomSheetDialogFragment {
                 printing = true;
                 prepareExport();
             } else {
-                mainActivityInterface.getShowToast().doIt(nothing_selected_string);
+                mainActivityInterface.getShowToast().doItBottomSheet(nothing_selected_string, myView.getRoot());
             }
         });
     }

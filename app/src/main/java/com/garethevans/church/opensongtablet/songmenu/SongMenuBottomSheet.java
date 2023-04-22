@@ -123,7 +123,7 @@ public class SongMenuBottomSheet extends BottomSheetDialogFragment {
                 dismiss();
             } else {
                 dismiss();
-                mainActivityInterface.getShowToast().doIt(search_index_wait_string);
+                mainActivityInterface.getShowToast().doItBottomSheet(search_index_wait_string,myView.getRoot());
             }
         });
     }
@@ -180,7 +180,7 @@ public class SongMenuBottomSheet extends BottomSheetDialogFragment {
     }
 
     private void alertSuccess(String message) {
-        mainActivityInterface.getShowToast().doIt(message);
+        mainActivityInterface.getShowToast().doItBottomSheet(message,myView.getRoot());
 
         // Now send the call to update the set menu fragment
         mainActivityInterface.updateSetList();

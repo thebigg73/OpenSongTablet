@@ -157,7 +157,7 @@ public class PadsBottomSheet extends BottomSheetDialogFragment {
                     }
                 } catch (Exception e) {
                     // Link threw an error (likely invalid)
-                    mainActivityInterface.getShowToast().doIt(link_error_string);
+                    mainActivityInterface.getShowToast().doItBottomSheet(link_error_string,myView.getRoot());
                     myView.padLinkAudio.requestFocus();
                     e.printStackTrace();
                 }
@@ -225,7 +225,7 @@ public class PadsBottomSheet extends BottomSheetDialogFragment {
         myView.padPanic.setOnClickListener(v -> {
             padPlaying = false;
             mainActivityInterface.getPad().panicStop();
-            mainActivityInterface.getShowToast().doIt(panic_stop_string);
+            mainActivityInterface.getShowToast().doItBottomSheet(panic_stop_string,myView.getRoot());
             updateStartStopButton();
         });
         myView.padLinkAudio.setOnClickListener(v -> {
