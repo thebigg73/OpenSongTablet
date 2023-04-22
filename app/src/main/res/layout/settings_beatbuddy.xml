@@ -123,6 +123,13 @@
                 android:textColor="@color/red"
                 android:visibility="gone"/>
             </LinearLayout>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/songBrowser"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="8dp"
+                android:text="@string/search"/>
             <TableRow style="@style/DividerLine"/>
 
             <com.garethevans.church.opensongtablet.customviews.MaterialSwitch

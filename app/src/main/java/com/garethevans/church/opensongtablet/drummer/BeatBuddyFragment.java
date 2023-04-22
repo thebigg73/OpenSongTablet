@@ -25,9 +25,10 @@ import com.garethevans.church.opensongtablet.midi.MidiMessagesAdapter;
 import com.google.android.material.slider.Slider;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class BeatBuddyFragment extends Fragment {
-
 
     private MainActivityInterface mainActivityInterface;
     private SettingsBeatbuddyBinding myView;
@@ -42,6 +43,7 @@ public class BeatBuddyFragment extends Fragment {
     private int fromSongMessages_channel, fromSongMessages_folderMSB, fromSongMessages_folderLSB,
             fromSongMessages_songPC, fromSongMessages_tempoMSB, fromSongMessages_tempoLSB,
             fromSongMessages_volumeCC, fromSongMessages_drumKitCC;
+    private BBSQLite bbsqLite;
 
     private MidiMessagesAdapter midiMessagesAdapter = null;
 
@@ -68,9 +70,12 @@ public class BeatBuddyFragment extends Fragment {
             setupStrings();
             myView.currentSongMessages.setLayoutManager(new LinearLayoutManager(getContext()));
             midiMessagesAdapter = new MidiMessagesAdapter(getContext());
+            bbsqLite = new BBSQLite(getContext());
         }
+
         checkExistingMessages();
         setupViews();
+
         return myView.getRoot();
     }
 
@@ -257,6 +262,7 @@ public class BeatBuddyFragment extends Fragment {
         myView.songFolder.addTextChangedListener(new SongCommandChange());
         myView.songNumber.addTextChangedListener(new SongCommandChange());
         updateSongCommand();
+        myView.songBrowser.setOnClickListener((View.OnClickListener) view -> buildBBDefaultSongs());
 
         // Include volume
         myView.includeVolume.setChecked(mainActivityInterface.getBeatBuddy().getBeatBuddyIncludeVolume());
@@ -675,5 +681,33 @@ public class BeatBuddyFragment extends Fragment {
             midiInfos.add(midiInfo);
         }
         midiMessagesAdapter.updateMidiInfos(midiInfos);
+    }
+
+    private void buildBBDefaultSongs() {
+        // Built the default BB songs from the library
+        // Do this on a separate thread
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            if (bbsqLite!=null) {
+                BottomSheetBeatBuddySongs bottomSheetBeatBuddySongs = new BottomSheetBeatBuddySongs(
+                        BeatBuddyFragment.this,bbsqLite);
+                bottomSheetBeatBuddySongs.show(mainActivityInterface.getMyFragmentManager(),
+                        "BottomSheetBeatBuddySongs");
+            }
+        });
+    }
+
+    public void changeSong(int folder, int song) {
+        if (mainActivityInterface.getBeatBuddy().getBeatBuddyAerosMode()) {
+            if (folder<128) {
+                myView.aerosFolder.setValue(folder);
+            }
+            if (song<128) {
+                myView.aerosSong.setValue(song);
+            }
+        } else {
+            myView.songFolder.setText(folder+"");
+            myView.songNumber.setText(song+"");
+        }
     }
 }
