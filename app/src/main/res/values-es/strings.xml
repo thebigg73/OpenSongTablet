@@ -146,6 +146,8 @@
     <string name="chordformat_detected">"Formato acorde actual Detectado"</string>
     <string name="chordformat_preferred">"Convertir canción a mi formato acorde preferida"</string>
     <string name="chordformat_preferred_info">Suponga que el formato de acorde actual/detectado y deseado es</string>
+    <string name="chordinator">Utiliza código de extracción de acordes de Chordinator Augmented de Paul Evans.  Usado con permiso</string>
+    <string name="chordinator_info">Este método intentará encontrar hojas de acordes automáticamente, pero no tiene éxito, puede extraer contenido manualmente utilizando el método de selección y copia que se describe a continuación</string>
     <string name="chordline_scale">"Acordes de escala"</string>
     <string name="chords">Acordes</string>
     <string name="chords_found">Todos los acordes que se encuentran en la letra de la canción</string>
@@ -265,6 +267,7 @@
     <string name="ending">"Finalizando"</string>
     <string name="error">"Error"</string>
     <string name="error_song_not_saved">Hubo un error al guardar la canción.</string>
+    <string name="exclusive">Exclusivo</string>
     <string name="existing_found">Ya ha utilizado las siguientes ubicaciones de instalación. Aún necesitará localizar y configurar esto manualmente usando el botón rojo de arriba.</string>
     <string name="exit">Salida</string>
     <string name="exit_confirm">"¿Está seguro que desea salir del programa?"</string>

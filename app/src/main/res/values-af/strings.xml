@@ -146,6 +146,8 @@
     <string name="chordformat_detected">"Bespeur huidige koord formaat"</string>
     <string name="chordformat_preferred">"Skakel lied vir my voorkeur koord formaat"</string>
     <string name="chordformat_preferred_info">Aanvaar huidige/bespeurde en gewenste akkoordformaat is</string>
+    <string name="chordinator">Gebruik akkoordontginningskode van Chordinator Augmented van Paul Evans. Gebruik met toestemming</string>
+    <string name="chordinator_info">Hierdie metode sal probeer om akkoordblaaie outomaties te vind, maar dit is onsuksesvol, u kan die inhoud handmatig onttrek met behulp van die onderstaande kies- en kopieermetode</string>
     <string name="chordline_scale">"Skaal akkoorde"</string>
     <string name="chords">Akkoorde</string>
     <string name="chords_found">Alle akkoorde gevind in die liedjie lirieke</string>
@@ -265,6 +267,7 @@
     <string name="ending">Eindig</string>
     <string name="error">Fout</string>
     <string name="error_song_not_saved">Kon nie die liedjie stoor nie</string>
+    <string name="exclusive">Eksklusiewe</string>
     <string name="existing_found">Jy het al die volgende installeer plekke gebruik. U sal dit steeds met die hand van die rooi knoppie hierbo moet opspoor en instel.</string>
     <string name="exit">Verlaat</string>
     <string name="exit_confirm">"Is jy seker jy wil die program te verlaat?"</string>

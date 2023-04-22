@@ -146,6 +146,8 @@
     <string name="chordformat_detected">"Észlelt aktuális akkord formátumban"</string>
     <string name="chordformat_preferred">"Átalakítás dal az én pÁt kell ültetnireferált akkord formátum"</string>
     <string name="chordformat_preferred_info">Tegyük fel, hogy az aktuális/észlelt és a kívánt akkordformátum a következő</string>
+    <string name="chordinator">A Paul Evans Chordinator Augmented akkordkinyerési kódját használja.  Engedéllyel használva</string>
+    <string name="chordinator_info">Ez a módszer megpróbálja automatikusan megtalálni az akkordlapokat, de sikertelen, manuálisan kibonthatja a tartalmat az alább leírt kiválasztási és másolási módszerrel</string>
     <string name="chordline_scale">"Scale akkordok"</string>
     <string name="chords">Akkordok</string>
     <string name="chords_found">A dalszövegekben található összes akkord</string>
@@ -265,6 +267,7 @@
     <string name="ending">"Befejező"</string>
     <string name="error">"Hiba"</string>
     <string name="error_song_not_saved">Hiba történt a dal mentése közben</string>
+    <string name="exclusive">Exkluzív</string>
     <string name="existing_found">Már használta a következő telepítési helyeket. A fenti piros gombbal továbbra is meg kell találnia és beállítania ezt manuálisan.</string>
     <string name="exit">Kijárat</string>
     <string name="exit_confirm">"Biztos benne, hogy ki akar lépni a programot?"</string>

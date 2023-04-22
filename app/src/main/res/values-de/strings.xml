@@ -146,6 +146,8 @@
     <string name="chordformat_detected">"Aktuelles Akkord-Format ermitteln"</string>
     <string name="chordformat_preferred">"Song in mein bevorzugtes Akkord-Format konvertieren"</string>
     <string name="chordformat_preferred_info">Angenommen, das aktuelle/erkannte und gewünschte Akkordformat ist</string>
+    <string name="chordinator">Verwendet Akkordextraktionscode von Chordinator Augmented von Paul Evans.  Verwendung mit Genehmigung</string>
+    <string name="chordinator_info">Diese Methode versucht, Akkordblätter automatisch zu finden, aber es ist nicht erfolgreich, Sie können den Inhalt manuell mit der unten beschriebenen Auswahl- und Kopiermethode extrahieren</string>
     <string name="chordline_scale">"Skalierung Akkorde"</string>
     <string name="chords">Akkorde</string>
     <string name="chords_found">Alle Akkorde in den Liedtexten gefunden</string>
@@ -265,6 +267,7 @@
     <string name="ending">"Schluss"</string>
     <string name="error">"Fehler"</string>
     <string name="error_song_not_saved">Beim Speichern des Songs ist ein Fehler aufgetreten</string>
+    <string name="exclusive">Ausschließlich</string>
     <string name="existing_found">Sie haben bereits die folgenden Installationsverzeichnisse verwendet.  Sie müssen dies weiterhin manuell mit der roten Taste oben suchen und einstellen.</string>
     <string name="exit">Ausgang</string>
     <string name="exit_confirm">"Sind Sie sicher, dass Sie das Programm beenden möchten?"</string>

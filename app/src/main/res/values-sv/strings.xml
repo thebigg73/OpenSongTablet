@@ -146,6 +146,8 @@
     <string name="chordformat_detected">"Upptäckt nuvarande ackordformat"</string>
     <string name="chordformat_preferred">"Konvertera sång till mitt föredragna ackordformat"</string>
     <string name="chordformat_preferred_info">Antag att aktuellt/upptäckt och önskat ackordformat är</string>
+    <string name="chordinator">Använder ackordextraktionskod från Chordinator Augmented från Paul Evans.  Används med tillstånd</string>
+    <string name="chordinator_info">Den här metoden försöker hitta ackordark automatiskt, men den misslyckas, du kan extrahera innehåll manuellt med hjälp av markerings- och kopieringsmetoden som beskrivs nedan</string>
     <string name="chordline_scale">"Skala ackord"</string>
     <string name="chords">"Chords"</string>
     <string name="chords_found">Alla ackord som finns i låttexten</string>
@@ -265,6 +267,7 @@
     <string name="ending">"Slut"</string>
     <string name="error">"Fel"</string>
     <string name="error_song_not_saved">Det uppstod ett fel när låten skulle sparas</string>
+    <string name="exclusive">Exklusiv</string>
     <string name="existing_found">Du har redan använt följande installationsplatser. Du måste fortfarande hitta och ställa in detta manuellt med den röda knappen ovan.</string>
     <string name="exit">Utgång</string>
     <string name="exit_confirm">"Är du säker på att du vill avsluta programmet?"</string>

@@ -182,6 +182,8 @@
     <string name="chordformat_detected">Detected chord format</string>
     <string name="chordformat_preferred">Use preferred chord format</string>
     <string name="chordformat_preferred_info">Assume current/detected and desired chord format is</string>
+    <string name="chordinator">Uses chord extraction code from Chordinator Augmented from Paul Evans.  Used by permission</string>
+    <string name="chordinator_info">This method will attempt to find chord sheets automatically, but it is unsuccessful, you can manually extract content using the select and copy method described below</string>
     <string name="chordline_scale">Scale chords</string>
     <string name="chordpro" translatable="false">ChordPro</string>
     <string name="chords">Chords</string>
@@ -354,6 +356,7 @@
     <string name="ending">Ending</string>
     <string name="error">Error</string>
     <string name="error_song_not_saved">There was an error saving the song</string>
+    <string name="exclusive">Exclusive</string>
     <string name="existing_found">You have already used the following install locations.  You will still need to locate and set this manually using the red button above.</string>
     <string name="exit">Exit</string>
     <string name="exit_confirm">Are you sure you want to exit the program?</string>
@@ -1163,7 +1166,4 @@ Check out the categories in the right hand options menu.
     <string name="youtube" translatable="false">YouTube</string>
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zoom_level">Zoom level</string>
-    <string name="chordinator">Uses chord extraction code from Chordinator Augmented from Paul Evans.  Used by permission.</string>
-    <string name="chordinator_info">This method will attempt to find chord sheets automatically, but it is unsuccessful, you can manually extract content.</string>
-
 </resources>

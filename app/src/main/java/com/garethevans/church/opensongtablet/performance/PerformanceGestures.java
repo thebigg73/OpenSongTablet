@@ -374,6 +374,54 @@ public class PerformanceGestures {
                     beatBuddyTransitionNext();
                 }
                 break;
+            case "beatbuddytransprev":
+                if (isLongPress) {
+                    beatBuddyTransitionExit();
+                } else {
+                    beatBuddyTransitionPrev();
+                }
+                break;
+            case "beatbuddytransexit":
+                beatBuddyTransitionExit();
+                break;
+            case "beatbuddyxtrans1":
+                if (isLongPress) {
+                    beatBuddyExclusiveTransitionExit();
+                } else {
+                    beatBuddyExclusiveTransition1();
+                }
+                break;
+            case "beatbuddyxtrans2":
+                if (isLongPress) {
+                    beatBuddyExclusiveTransitionExit();
+                } else {
+                    beatBuddyExclusiveTransition2();
+                }
+                break;
+            case "beatbuddyxtrans3":
+                if (isLongPress) {
+                    beatBuddyExclusiveTransitionExit();
+                } else {
+                    beatBuddyExclusiveTransition3();
+                }
+                break;
+            case "beatbuddyxtransnext":
+                if (isLongPress) {
+                    beatBuddyExclusiveTransitionExit();
+                } else {
+                    beatBuddyExclusiveTransitionNext();
+                }
+                break;
+            case "beatbuddyxtransprev":
+                if (isLongPress) {
+                    beatBuddyExclusiveTransitionExit();
+                } else {
+                    beatBuddyExclusiveTransitionPrev();
+                }
+                break;
+            case "beatbuddyxtransexit":
+                beatBuddyExclusiveTransitionExit();
+                break;
             case "beatbuddyhalf":
                 if (isLongPress) {
                     beatBuddyHalfTimeExit();
@@ -941,8 +989,29 @@ public class PerformanceGestures {
     public void beatBuddyTransitionNext() {
         mainActivityInterface.getBeatBuddy().beatBuddyTransitionNext();
     }
+    public void beatBuddyTransitionPrev() {
+        mainActivityInterface.getBeatBuddy().beatBuddyTransitionPrev();
+    }
     public void beatBuddyTransitionExit() {
         mainActivityInterface.getBeatBuddy().beatBuddyTransitionExit();
+    }
+    public void beatBuddyExclusiveTransition1() {
+        mainActivityInterface.getBeatBuddy().beatBuddyExclusiveTransition1();
+    }
+    public void beatBuddyExclusiveTransition2() {
+        mainActivityInterface.getBeatBuddy().beatBuddyExclusiveTransition2();
+    }
+    public void beatBuddyExclusiveTransition3() {
+        mainActivityInterface.getBeatBuddy().beatBuddyExclusiveTransition3();
+    }
+    public void beatBuddyExclusiveTransitionNext() {
+        mainActivityInterface.getBeatBuddy().beatBuddyExclusiveTransitionNext();
+    }
+    public void beatBuddyExclusiveTransitionPrev() {
+        mainActivityInterface.getBeatBuddy().beatBuddyExclusiveTransitionPrev();
+    }
+    public void beatBuddyExclusiveTransitionExit() {
+        mainActivityInterface.getBeatBuddy().beatBuddyExclusiveTransitionExit();
     }
     public void beatBuddyHalfTime() {
         mainActivityInterface.getBeatBuddy().beatBuddyHalfTime();

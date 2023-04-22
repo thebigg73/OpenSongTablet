@@ -146,6 +146,8 @@
     <string name="chordformat_detected">Detektovati trenutni format akorda</string>
     <string name="chordformat_preferred">Prebaciti pesmu u moj omiljeni format akorda</string>
     <string name="chordformat_preferred_info">Pretpostavimo da je trenutni/otkriveni i željeni format akorda</string>
+    <string name="chordinator">Koristi kod za vađenje akorda iz Chordinatora Augmented od Paul Evans.  Koristi se po dozvoli</string>
+    <string name="chordinator_info">Ovaj metod će pokušati da automatski pronađe listove akorda, ali je neuspešan, možete ručno izdvojiti sadržaj pomoću dole opisanog metoda izbora i kopiranja</string>
     <string name="chordline_scale">Skaliranje akorda</string>
     <string name="chords">Akordi</string>
     <string name="chords_found">Svi akordi se nalaze u tekstu pesme</string>
@@ -265,6 +267,7 @@
     <string name="ending">Završni</string>
     <string name="error">Greška</string>
     <string name="error_song_not_saved">Došlo je do greške pri čuvanju pesme</string>
+    <string name="exclusive">Ekskluzivni</string>
     <string name="existing_found">Već ste iskoristili sledeće lokacije za instalaciju.  Ovo ćete ipak morati da locirate i podesite ručno koristeći gornji crveni taster.</string>
     <string name="exit">Izađi</string>
     <string name="exit_confirm">Da li ste sigurni da želite da izađete iz programa?</string>

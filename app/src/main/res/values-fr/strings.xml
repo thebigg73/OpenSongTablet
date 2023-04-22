@@ -146,6 +146,8 @@
     <string name="chordformat_detected">"Format d\'accords actuel détecté"</string>
     <string name="chordformat_preferred">"Convertir le chanson au format d\'accords préférés"</string>
     <string name="chordformat_preferred_info">Supposons que le format d\'accord actuel/détecté et souhaité est</string>
+    <string name="chordinator">Utilise le code d’extraction d’accords de Chordinator Augmented de Paul Evans.  Utilisé avec autorisation</string>
+    <string name="chordinator_info">Cette méthode tentera de trouver automatiquement les feuilles d’accords, mais elle échoue, vous pouvez extraire manuellement le contenu à l’aide de la méthode de sélection et de copie décrite ci-dessous</string>
     <string name="chordline_scale">"Cordes d'échelle"</string>
     <string name="chords">Accords</string>
     <string name="chords_found">Tous les accords trouvés dans les paroles de la chanson</string>
@@ -265,6 +267,7 @@
     <string name="ending">"Fin"</string>
     <string name="error">"Erreur"</string>
     <string name="error_song_not_saved">Une erreur s\'est produite lors de l\'enregistrement de la chanson</string>
+    <string name="exclusive">Exclusif</string>
     <string name="existing_found">Vous avez déjà utilisé les emplacements d\'installation suivants. Vous aurez toujours besoin de localiser et de régler ceci manuellement en utilisant le bouton rouge ci-dessus.</string>
     <string name="exit">Sortir</string>
     <string name="exit_confirm">"Etes-vous sûr de vouloir quitter le programme?"</string>

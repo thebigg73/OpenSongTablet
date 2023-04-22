@@ -146,6 +146,8 @@
     <string name="chordformat_detected">"检测当前的和弦格式"</string>
     <string name="chordformat_preferred">"转换歌曲到我的首选格式的和弦"</string>
     <string name="chordformat_preferred_info">假设当前/检测到的和所需的和弦格式是</string>
+    <string name="chordinator">使用来自Paul Evans的Chordinator Augmented 的和弦提取代码。 经许可使用</string>
+    <string name="chordinator_info">此方法将尝试自动查找和弦谱，但不成功，您可以使用下面描述的选择和复制方法手动提取内容</string>
     <string name="chordline_scale">"比例和弦"</string>
     <string name="chords">和弦</string>
     <string name="chords_found">歌词中找到的所有和弦</string>
@@ -265,6 +267,7 @@
     <string name="ending">"结尾"</string>
     <string name="error">"错误"</string>
     <string name="error_song_not_saved">保存歌曲时出错</string>
+    <string name="exclusive">独家</string>
     <string name="existing_found">您已经使用了以下安装位置。您仍然需要使用上面的红色按钮手动定位和设置。</string>
     <string name="exit">出口</string>
     <string name="exit_confirm">"您确定要退出程序？"</string>

@@ -146,6 +146,8 @@
     <string name="chordformat_detected">"Detected current chord format"</string>
     <string name="chordformat_preferred">"Μετατροπή τραγουδιού στην προτιμώμενη διαμόρφωση συγχορδιών"</string>
     <string name="chordformat_preferred_info">Ας υποθέσουμε ότι η τρέχουσα/ανιχνευθείσα και η επιθυμητή μορφή χορδής είναι</string>
+    <string name="chordinator">Χρησιμοποιεί κώδικα εξαγωγής συγχορδιών από το Chordinator Augmented από τον Paul Evans.  Χρησιμοποιείται με άδεια</string>
+    <string name="chordinator_info">Αυτή η μέθοδος θα προσπαθήσει να βρει αυτόματα φύλλα χορδών, αλλά δεν είναι επιτυχής, μπορείτε να εξαγάγετε περιεχόμενο με μη αυτόματο τρόπο χρησιμοποιώντας τη μέθοδο επιλογής και αντιγραφής που περιγράφεται παρακάτω</string>
     <string name="chordline_scale">"Χορδές κλίμακας"</string>
     <string name="chords">"Συγχορδίες"</string>
     <string name="chords_found">Όλες οι συγχορδίες που βρέθηκαν στους στίχους του τραγουδιού</string>
@@ -265,6 +267,7 @@
     <string name="ending">"Κατάληξη"</string>
     <string name="error">"Λάθος"</string>
     <string name="error_song_not_saved">Παρουσιάστηκε σφάλμα κατά την αποθήκευση του τραγουδιού</string>
+    <string name="exclusive">Αποκλειστικός</string>
     <string name="existing_found">Έχετε ήδη χρησιμοποιήσει τις ακόλουθες τοποθεσίες εγκατάστασης. Θα χρειαστεί να εντοπίσετε και να ρυθμίσετε αυτό το χέρι χρησιμοποιώντας το κόκκινο κουμπί παραπάνω.</string>
     <string name="exit">Εξοδος</string>
     <string name="exit_confirm">"Are you sure you want to exit the program?"</string>

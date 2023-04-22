@@ -28,7 +28,7 @@
       android:strokeWidth="0.0700042"
       android:fillColor="#ffffff"/>
   <path
-      android:pathData="m12.877,17.836q0.377,-0.144 0.774,-0.354 0.417,-0.21 0.794,-0.446 0.377,-0.249 0.695,-0.499 0.338,-0.262 0.556,-0.512l1.31,0l0,9.092l-1.708,0l0,-7.308q-0.338,0.236 -0.794,0.446 -0.437,0.21 -0.933,0.394z"
+      android:pathData="M12.696,18.281L19.422,18.281l0,1.6L12.696,19.881Z"
       android:strokeWidth="0.019"
       android:fillColor="#ffffff"/>
 </vector>

@@ -146,6 +146,8 @@
     <string name="chordformat_detected">"Опознанный формат аккордов"</string>
     <string name="chordformat_preferred">"Использовать аккорды в предпочтительном формате"</string>
     <string name="chordformat_preferred_info">Считать, что текущий/опознанный и желаемый формат аккордов будет таким:</string>
+    <string name="chordinator">Использует код извлечения аккордов из Chordinator Augmented от Пола Эванса.  Используется с разрешения</string>
+    <string name="chordinator_info">Этот метод попытается автоматически найти листы аккордов, но это не увенчается успехом, вы можете вручную извлечь содержимое, используя метод выбора и копирования, описанный ниже</string>
     <string name="chordline_scale">"Размер шрифта аккордов"</string>
     <string name="chords">Аккорды</string>
     <string name="chords_found">Все аккорды, найденные в тексте песни</string>
@@ -265,6 +267,7 @@
     <string name="ending">Концовка</string>
     <string name="error">Oшибка</string>
     <string name="error_song_not_saved">Не удалось сохранить песню</string>
+    <string name="exclusive">Исключительный</string>
     <string name="existing_found">Вы уже ранее использовали указанные места для сохранения. Вам нужно указать место сохранения вручную, нажав на красную кнопку выше.</string>
     <string name="exit">Выход</string>
     <string name="exit_confirm">Вы уверены, что хотите выйти?</string>

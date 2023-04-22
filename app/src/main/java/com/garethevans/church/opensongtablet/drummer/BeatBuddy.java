@@ -40,13 +40,12 @@ public class BeatBuddy {
     private final int CC_Tempo_LSB = 107;               // val 0-127 (BeatBuddy only listens for 40-127 though as min tempo is 40)
     @SuppressWarnings({"FieldCanBeLocal","unused"})
     private final int CC_Mix_vol = 108;                 // val 1-100
-
     @SuppressWarnings({"FieldCanBeLocal","unused"})
     private final int CC_HP_vol = 109;                  // val 1-100
     @SuppressWarnings({"FieldCanBeLocal","unused"})
     private final int CC_Accent_hit = 110;              // val 0-127 (any to trigger at that volume relative to output vol)
     @SuppressWarnings({"FieldCanBeLocal","unused"})
-    private final int CC_Pause_unpause = 111;           // val 0-127 (any to trigger)
+    private final int CC_Pause_unpause = 111;           // val 0=unpause, 1=pause, 2-127=toggle
     @SuppressWarnings({"FieldCanBeLocal","unused"})
     private final int CC_Drum_fill = 112;               // val 0-127 (any to trigger at that volume relative to output vol)
     @SuppressWarnings({"FieldCanBeLocal","unused"})

@@ -146,6 +146,8 @@
     <string name="chordformat_detected">Виявлено формат акорду</string>
     <string name="chordformat_preferred">Перетворення акордів в потрібний формат</string>
     <string name="chordformat_preferred_info">Припустимо, що поточний/виявлений і бажаний формат акорду є</string>
+    <string name="chordinator">Використовує код вилучення акордів з Chordinator Augmented від Paul Evans.  Використовується з дозволу</string>
+    <string name="chordinator_info">Цей метод спробує автоматично знайти аркуші акордів, але він невдалий, ви можете вручну витягти вміст за допомогою методу вибору та копіювання, описаного нижче</string>
     <string name="chordline_scale">Розмір акордів</string>
     <string name="chords">Акорди</string>
     <string name="chords_found">Усі акорди знайдено в тексті пісні</string>
@@ -265,6 +267,7 @@
     <string name="ending">закінчення</string>
     <string name="error">Помилка</string>
     <string name="error_song_not_saved">Під час збереження пісні сталася помилка</string>
+    <string name="exclusive">Монопольний</string>
     <string name="existing_found">Раніше ви використовували такі місця. Вам все ще потрібно буде знайти і встановити це вручну, використовуючи червону кнопку вище.</string>
     <string name="exit">Вихід</string>
     <string name="exit_confirm">Ви впевнені, що хочете вийти?</string>

@@ -278,6 +278,12 @@ public class PageButtons {
         prepareOption("beatbuddytrans2",c.getString(R.string.beat_buddy)+" "+c.getString(R.string.transition)+" 2",c.getString(R.string.start),c.getString(R.string.exit),R.drawable.beatbuddy_trans2);
         prepareOption("beatbuddytrans3",c.getString(R.string.beat_buddy)+" "+c.getString(R.string.transition)+" 3",c.getString(R.string.start),c.getString(R.string.exit),R.drawable.beatbuddy_trans3);
         prepareOption("beatbuddytransnext",c.getString(R.string.beat_buddy)+" "+c.getString(R.string.transition)+" "+c.getString(R.string.next),c.getString(R.string.start),c.getString(R.string.exit),R.drawable.beatbuddy_transnext);
+        prepareOption("beatbuddytransprev",c.getString(R.string.beat_buddy)+" "+c.getString(R.string.transition)+" "+c.getString(R.string.previous),c.getString(R.string.start),c.getString(R.string.exit),R.drawable.beatbuddy_transprev);
+        prepareOption("beatbuddyxtrans1",c.getString(R.string.beat_buddy)+" "+c.getString(R.string.exclusive)+" "+c.getString(R.string.transition)+" 1",c.getString(R.string.start),c.getString(R.string.exit),R.drawable.beatbuddy_trans1);
+        prepareOption("beatbuddyxtrans2",c.getString(R.string.beat_buddy)+" "+c.getString(R.string.exclusive)+" "+c.getString(R.string.transition)+" 2",c.getString(R.string.start),c.getString(R.string.exit),R.drawable.beatbuddy_trans2);
+        prepareOption("beatbuddyxtrans3",c.getString(R.string.beat_buddy)+" "+c.getString(R.string.exclusive)+" "+c.getString(R.string.transition)+" 3",c.getString(R.string.start),c.getString(R.string.exit),R.drawable.beatbuddy_trans3);
+        prepareOption("beatbuddyxtransnext",c.getString(R.string.beat_buddy)+" "+c.getString(R.string.exclusive)+" "+c.getString(R.string.transition)+" "+c.getString(R.string.next),c.getString(R.string.start),c.getString(R.string.exit),R.drawable.beatbuddy_transnext);
+        prepareOption("beatbuddyxtransprev",c.getString(R.string.beat_buddy)+" "+c.getString(R.string.exclusive)+" "+c.getString(R.string.transition)+" "+c.getString(R.string.previous),c.getString(R.string.start),c.getString(R.string.exit),R.drawable.beatbuddy_transprev);
         prepareOption("beatbuddyhalf",c.getString(R.string.beat_buddy)+" "+c.getString(R.string.half_time),c.getString(R.string.start),c.getString(R.string.exit),R.drawable.beatbuddy_halftime);
         prepareOption("beatbuddydouble",c.getString(R.string.beat_buddy)+" "+c.getString(R.string.double_time),c.getString(R.string.start),c.getString(R.string.exit),R.drawable.beatbuddy_doubletime);
 

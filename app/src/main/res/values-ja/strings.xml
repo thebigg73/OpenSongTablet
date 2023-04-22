@@ -146,6 +146,8 @@
     <string name="chordformat_detected">"検出された現在の和音フォーマット"</string>
     <string name="chordformat_preferred">"私の好みコード形式に曲を変換する"</string>
     <string name="chordformat_preferred_info">現在/検出され、必要なコード形式が</string>
+    <string name="chordinator">ポール・エヴァンスから拡張されたコーディネーターからのコード抽出コードを使用します。 許可を得て使用</string>
+    <string name="chordinator_info">このメソッドはコードシートを自動的に検索しようとしますが、失敗し、以下で説明する選択とコピーの方法を使用してコンテンツを手動で抽出できます</string>
     <string name="chordline_scale">"スケールコード"</string>
     <string name="chords">和音</string>
     <string name="chords_found">歌詞にあるすべてのコード</string>
@@ -265,6 +267,7 @@
     <string name="ending">"エンディング"</string>
     <string name="error">"エラー"</string>
     <string name="error_song_not_saved">曲の保存中にエラーが発生しました</string>
+    <string name="exclusive">排他的</string>
     <string name="existing_found">既に以下のインストール場所を使用しています。上記の赤いボタンを使って手動でこれを見つけて設定する必要があります。</string>
     <string name="exit">出口</string>
     <string name="exit_confirm">"あなたがプログラムを終了してもよろしいですか？"</string>

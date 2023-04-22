@@ -146,6 +146,8 @@
     <string name="chordformat_detected">"Zjištěno Současný formát akord"</string>
     <string name="chordformat_preferred">"Převést písničku do svého preferovaného formátu akordu"</string>
     <string name="chordformat_preferred_info">Předpokládejme, že aktuální/zjištěný a požadovaný formát akordu je</string>
+    <string name="chordinator">Používá kód extrakce akordů z Chordinator Augmented od Paul Evans.  oužito se svolením</string>
+    <string name="chordinator_info">Tato metoda se pokusí najít listy akordů automaticky, ale je neúspěšná, můžete ručně extrahovat obsah pomocí metody výběru a kopírování popsané níže</string>
     <string name="chordline_scale">"Měřítka akordů"</string>
     <string name="chords">Akord</string>
     <string name="chords_found">Všechny akordy nalezené v textu písně</string>
@@ -265,6 +267,7 @@
     <string name="ending">"Konec"</string>
     <string name="error">"Chyba"</string>
     <string name="error_song_not_saved">Při ukládání skladby došlo k chybě</string>
+    <string name="exclusive">Výhradní</string>
     <string name="existing_found">Již jste použili následující umístění instalace. Stále to budete muset vyhledat a nastavit ručně pomocí červeného tlačítka výše.</string>
     <string name="exit">Výstup</string>
     <string name="exit_confirm">"Jste si jisti, že chcete ukončit program?"</string>

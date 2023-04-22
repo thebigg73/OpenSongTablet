@@ -146,6 +146,8 @@
     <string name="chordformat_detected">"Wykryto Format akord prądu"</string>
     <string name="chordformat_preferred">"Konwersja piosenkę do mojego preferowanego formatu akordów"</string>
     <string name="chordformat_preferred_info">Załóżmy, że bieżący/wykryty i żądany format akordu to</string>
+    <string name="chordinator">Wykorzystuje kod ekstrakcji akordów z Chordinator Augmented od Paula Evansa.  Używane za zgodą</string>
+    <string name="chordinator_info">Ta metoda spróbuje automatycznie znaleźć arkusze akordów, ale nie powiedzie się, możesz ręcznie wyodrębnić zawartość za pomocą metody wyboru i kopiowania opisanej poniżej</string>
     <string name="chordline_scale">"Akordy skale"</string>
     <string name="chords">Akordy</string>
     <string name="chords_found">Wszystkie akordy znalezione w tekstach piosenek</string>
@@ -265,6 +267,7 @@
     <string name="ending">"Kończący się"</string>
     <string name="error">"Błąd"</string>
     <string name="error_song_not_saved">Podczas zapisywania utworu wystąpił błąd</string>
+    <string name="exclusive">Wyłączny</string>
     <string name="existing_found">Użyłeś już następujących lokalizacji instalacji. Nadal będziesz musiał zlokalizować i ustawić to ręcznie za pomocą czerwonego przycisku powyżej.</string>
     <string name="exit">Wyjście</string>
     <string name="exit_confirm">"Czy na pewno chcesz zamknąć program?"</string>
