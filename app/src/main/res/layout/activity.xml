@@ -107,7 +107,6 @@
         android:layout_gravity="start"
         android:background="@color/colorAltPrimary"
         android:clickable="true"
-        android:focusable="true"
         android:orientation="vertical">
 
         <RelativeLayout

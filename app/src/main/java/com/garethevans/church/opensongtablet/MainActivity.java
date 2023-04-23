@@ -855,7 +855,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 }
                 // Hide the keyboard
                 windowFlags.hideKeyboard();
-                myView.menuTop.versionCode.requestFocus();
             }
 
             @Override
@@ -1603,7 +1602,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         } else {
             songMenuFragment.scrollMenu(height);
         }
-        myView.menuTop.versionCode.requestFocus();
+        //myView.menuTop.versionCode.requestFocus();
     }
 
     // The song and set menu

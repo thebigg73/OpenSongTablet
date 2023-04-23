@@ -158,7 +158,6 @@ public class PadsBottomSheet extends BottomSheetDialogFragment {
                 } catch (Exception e) {
                     // Link threw an error (likely invalid)
                     mainActivityInterface.getShowToast().doItBottomSheet(link_error_string,myView.getRoot());
-                    myView.padLinkAudio.requestFocus();
                     e.printStackTrace();
                 }
             }

@@ -322,7 +322,7 @@ public class SetMenuFragment extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        getFocus();
+        //getFocus();
     }
     public void getFocus() {
         try {

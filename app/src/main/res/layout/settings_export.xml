@@ -231,8 +231,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/scrim"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
         android:visibility="gone" />
 
     <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
@@ -242,8 +240,6 @@
         android:layout_centerInParent="true"
         android:layout_margin="32dp"
         android:background="@drawable/popup_bg"
-        android:focusable="false"
-        android:focusableInTouchMode="false"
         android:gravity="center"
         android:hint="@string/processing"
         android:minHeight="120dp"
