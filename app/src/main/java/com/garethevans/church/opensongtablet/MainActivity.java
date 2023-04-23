@@ -2992,7 +2992,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void songSelectDownloadPDF(Fragment fragment, int fragId, Uri uri, String filename) {
-        Log.d(TAG,"songSelectDownloadPDF  fragment:"+fragment+"  fragID:"+fragId+"  uri:"+uri);
         if (fragment!=null && fragId==R.id.importOnlineFragment) {
             try {
                 ((ImportOnlineFragment)fragment).finishedDownloadPDF(uri, filename);

@@ -770,11 +770,10 @@ public class StorageAccess {
         boolean istext = false;
         if (uri != null && uri.getLastPathSegment() != null) {
             String name = uri.getLastPathSegment().toLowerCase(Locale.ROOT);
-            if ((!name.contains(".pdf") && !name.contains(".zip") &&
+            if (name.endsWith(".txt") ||
+                    (!name.contains(".pdf") && !name.contains(".zip") &&
                     !name.contains(".doc") && !name.contains(".docx") &&
-                    !name.contains(".png") &&
-                    !name.contains(".jpg") && !name.contains(".gif") &&
-                    !name.contains(".jpeg")) || name.endsWith(".txt")) {
+                    !filenameIsImage(name))) {
                 istext = true;
             }
         }
@@ -793,8 +792,7 @@ public class StorageAccess {
         if (file_ext.endsWith(".pdf")) {
             song.setFiletype("PDF");
             isImgOrPDF = true;
-        } else if (file_ext.endsWith(".jpg") || file_ext.endsWith(".bmp") ||
-                file_ext.endsWith(".png") || file_ext.endsWith(".gif")) {
+        } else if (filenameIsImage("addingextracharsfortest"+file_ext)) {
             song.setFiletype("IMG");
             isImgOrPDF = true;
         }
@@ -1826,7 +1824,14 @@ public class StorageAccess {
                 e.printStackTrace();
             }
         }
-        return songIds;
+        // Check we only have valid songIds
+        ArrayList<String> checkedSongIds = new ArrayList<>();
+        for (String songId:songIds) {
+            if (!badFileExtension(songId)) {
+                checkedSongIds.add(songId);
+            }
+        }
+        return checkedSongIds;
     }
     private ArrayList<String> listSongs_File(String mainfolder) {
         // We must be using an older version of Android, so stick with File access
@@ -1855,9 +1860,38 @@ public class StorageAccess {
                 }
             }
         }
-        return songIds;
+        // Check we only have valid songIds
+        ArrayList<String> checkedSongIds = new ArrayList<>();
+        for (String songId:songIds) {
+            if (!badFileExtension(songId)) {
+                checkedSongIds.add(songId);
+            }
+        }
+        return checkedSongIds;
     }
 
+    public boolean badFileExtension(String filename) {
+        filename = filename.toLowerCase();
+        // Check for ".xxx" or ".xxxx" extension that isn't wanted
+        if (filename.contains(".") &&
+                filename.length()>=5 &&
+                (filename.lastIndexOf(".")==filename.length()-4 ||
+                        filename.lastIndexOf(".")==filename.length()-5) &&
+                !filenameIsImage(filename) && !filename.endsWith(".pdf") &&
+                !filename.endsWith(".txt")) {
+            updateFileActivityLog("BAD file:"+filename+" should not be in an OpenSong song folder - please move it as soon as possible!");
+            return true;
+        }
+        return false;
+    }
+
+    public boolean filenameIsImage(String filename) {
+        filename = filename.toLowerCase();
+        return filename.endsWith(".jpg") || filename.endsWith(".jpeg") ||
+                filename.endsWith(".gif") || filename.endsWith(".bmp") ||
+                filename.endsWith(".png") || filename.endsWith(".webp") ||
+                filename.endsWith(".heif") || filename.endsWith(".heic");
+    }
 
     // Dealing with indexing the songs on the device
     public void writeSongIDFile(ArrayList<String> songIds) {
@@ -2010,7 +2044,7 @@ public class StorageAccess {
                     lollipopCreateFileForOutputStream(false, logUri, null, "Settings", "", "fileWriteActivity.txt");
                 }
                 OutputStream outputStream;
-                if (getFileSizeFromUri(logUri) > 500) {
+                if (getFileSizeFromUri(logUri) > 300) {
                     outputStream = c.getContentResolver().openOutputStream(logUri, "wt");
                 } else {
                     outputStream = c.getContentResolver().openOutputStream(logUri, "wa");
