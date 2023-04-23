@@ -43,6 +43,13 @@ public class LoadSong {
         String folder = thisSong.getFolder();
         String filename = thisSong.getFilename();
 
+        if (filename.equals(c.getString(R.string.welcome))) {
+            filename = "Welcome to OpenSongApp";
+            thisSong.setFilename(filename);
+        }
+        Log.d(TAG,"folder:"+folder);
+        Log.d(TAG,"filename:"+filename);
+
         // Clear the song object then add the folder filename back
         thisSong = new Song();
         thisSong.setFolder(folder);
@@ -63,7 +70,7 @@ public class LoadSong {
             return doLoadSongFile(thisSong, indexing);
         } else {
             Log.d(TAG, "Loading from the database");
-            if (thisSong.getFilename().equals("Welcome to OpenSongApp")) {
+            if (thisSong.getFilename().equals("Welcome to OpenSongApp") || thisSong.getFilename().endsWith(c.getString(R.string.welcome))) {
                 return mainActivityInterface.getSong().showWelcomeSong(c, thisSong);
             } else {
                 thisSong = mainActivityInterface.getSQLiteHelper().getSpecificSong(
@@ -113,6 +120,7 @@ public class LoadSong {
         uri = mainActivityInterface.getStorageAccess().getUriForItem(
                 where, thisSong.getFolder(), thisSong.getFilename());
 
+        Log.d(TAG,"uri:"+uri);
         if (mainActivityInterface.getStorageAccess().uriExists(uri)) {
             // If this is an image or a PDF (or DOC or ZIP), we don't load a song object from the file
             // Instead we use the database, but the user will have to wait!

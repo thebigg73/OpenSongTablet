@@ -234,6 +234,9 @@ public class PresenterFragment extends Fragment {
         mainActivityInterface.getProcessSong().processSongIntoSections(
                 mainActivityInterface.getSong(), true);
 
+        // Update the view log usage
+        mainActivityInterface.getStorageAccess().updateFileUsageLog(mainActivityInterface.getSong());
+
         // Get the song views
         getSongViews();
 

@@ -41,7 +41,7 @@ public class FixLocale {
                 userLocale = new Locale(deviceval);
 
                 // Save our preference
-                mainActivityInterface.getPreferences().setMyPreferenceString("language",deviceval);
+                //mainActivityInterface.getPreferences().setMyPreferenceString("language",deviceval);
             }
 
             // Load the appropriate translations

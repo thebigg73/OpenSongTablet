@@ -1042,6 +1042,9 @@ public class PerformanceFragment extends Fragment {
                 displayInterface.updateDisplay("setSongContent");
             }
 
+            // Update the view log usage
+            mainActivityInterface.getStorageAccess().updateFileUsageLog(mainActivityInterface.getSong());
+
             // If we opened the app with and intent/file, check if we need to import
             tryToImportIntent();
 

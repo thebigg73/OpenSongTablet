@@ -41,8 +41,10 @@ import java.io.OutputStream;
 import java.io.PushbackInputStream;
 import java.nio.charset.StandardCharsets;
 import java.text.Collator;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
@@ -467,6 +469,11 @@ public class StorageAccess {
         // This fixes incorrect folders that would cause problems
         String[] returnvals = new String[3];
         if (subfolder!=null && subfolder.startsWith("**")) {
+            // Change out translated versions
+            subfolder = subfolder.replace(c.getString(R.string.variation),"Variation");
+            //subfolder = subfolder.replace(c.getString(R.string.slide),"Slides");
+            subfolder = subfolder.replace(c.getString(R.string.scripture),"Scripture");
+            //subfolder = subfolder.replace(c.getString(R.string.note),"Note");
             // This is used when custom slides are created as part of a set, making the folder look more obvious
             subfolder = subfolder.replace("**", "../");
             subfolder = subfolder.replace("Images", "Images/_cache");
@@ -2042,6 +2049,40 @@ public class StorageAccess {
             if (logUri!=null) {
                 if (!uriExists(logUri)) {
                     lollipopCreateFileForOutputStream(false, logUri, null, "Settings", "", "fileWriteActivity.txt");
+                }
+                OutputStream outputStream;
+                if (getFileSizeFromUri(logUri) > 300) {
+                    outputStream = c.getContentResolver().openOutputStream(logUri, "wt");
+                } else {
+                    outputStream = c.getContentResolver().openOutputStream(logUri, "wa");
+                }
+                mainActivityInterface.getStorageAccess().writeFileFromString(logText + "\n", outputStream);
+            } else {
+                Log.d(TAG, "logUri was null");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateFileUsageLog(Song thisSong) {
+        // List the song being viewed
+        String topline = c.getString(R.string.date) + " " + c.getString(R.string.time) + " | " +
+                c.getString(R.string.time) + " | " +
+                c.getString(R.string.folder) + " | " +
+                c.getString(R.string.filename) + " | " +
+                c.getString(R.string.title);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        String logText = sdf.format(new Date()) + "," +
+                thisSong.getFolder() + "," +
+                thisSong.getFilename() + "," +
+                thisSong.getTitle();
+        try {
+            Uri logUri = getUriForItem("Settings","","fileHistory.txt");
+            if (logUri!=null) {
+                if (!uriExists(logUri)) {
+                    lollipopCreateFileForOutputStream(false, logUri, null, "Settings", "", "fileHistory.txt");
                 }
                 OutputStream outputStream;
                 if (getFileSizeFromUri(logUri) > 300) {
