@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.print.PrintManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -494,8 +493,6 @@ public class ExportFragment extends Fragment {
                 }
             }
 
-            Log.d(TAG,"includeSongs:"+includeSongs+"  screenShot:"+screenShot);
-            Log.d(TAG,"pdf:"+pdf+"  image:"+image+"  png:"+png+"  screenShot:"+screenShot);
             if ((includeSongs && (pdf || png || image || screenShot)) || setPDF || setPNG) {
                 // We need to render PDFs which get drawn and added one at a time
                 // From here on we need to be on the UI thread (ouch!)
@@ -545,8 +542,6 @@ public class ExportFragment extends Fragment {
             ids = new String[1];
         }
 
-        Log.d(TAG,"songsProcessed:"+songsProcessed+"  ids.length:"+ids.length+"  includeSongs:"+includeSongs);
-        Log.d(TAG,"pdf:"+pdf+"  png:"+png+"  screenShot:"+screenShot + "  songsToAdd:"+songsToAdd);
         if (songsProcessed>=ids.length || !includeSongs || (!pdf && !png && !screenShot && !image) || songsProcessed==songsToAdd) {
             initiateShare();
 
@@ -679,7 +674,6 @@ public class ExportFragment extends Fragment {
             // Put back as an image and then screenshotted!
             png = image && isXML;
 
-            Log.d(TAG,"screenShot:"+screenShot);
             if ((pdf && isXML) || (screenShot && isXML) || png) {
                 // Create PDF song on the fly and only initiate share once done
                 createOnTheFly(mainActivityInterface.getSong(),mainActivityInterface.getSong().getFilename()+".pdf");
@@ -701,13 +695,6 @@ public class ExportFragment extends Fragment {
             intent.putExtra(Intent.EXTRA_TEXT, textContent);
         }
 
-        for (int z=0;z<uris.size();z++) {
-            Log.d(TAG,"uri:"+uris.get(z));
-        }
-        for (int z=0;z<mimeTypes.size();z++) {
-            Log.d(TAG,"mimeType:"+mimeTypes.get(z));
-        }
-
         handler = new Handler(Looper.getMainLooper());
         handler.post(() -> {
             startActivity(Intent.createChooser(intent, shareTitle));
@@ -723,7 +710,6 @@ public class ExportFragment extends Fragment {
 
     // We can create nice views on the fly here by processing the Song, then populating the views
     private void createOnTheFly(Song thisSong, String pdfName) {
-        Log.d(TAG,"718: pdfName:"+pdfName);
         // Make sure any current headers/sections are wiped
         handler.post(()-> {
             try {
@@ -804,11 +790,7 @@ public class ExportFragment extends Fragment {
             public void onGlobalLayout() {
                 // The views are ready so lets measure them after clearing this listener
                 // If all the views are there, we can start measuring
-                Log.d(TAG,"myView.hiddenSections.getChildCount():"+myView.hiddenSections.getChildCount());
-                Log.d(TAG,"sectionViewsPDF.size():"+sectionViewsPDF.size());
-
                 if (myView.hiddenSections.getChildCount()>=sectionViewsPDF.size()) {
-                    Log.d(TAG,"Getting here");
                     myView.hiddenSections.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                     sectionsVTO.removeOnGlobalLayoutListener(this);
                     int maxWidth = 0;
@@ -825,7 +807,6 @@ public class ExportFragment extends Fragment {
 
                     boolean isSetFile = pdfName.equals(set_string +" " +setToExport+".pdf");
 
-                    Log.d(TAG,"isSetFile:"+isSetFile);
                     // If we are exporting a setPNG and this is the set, take a bitmap!
                     if (isSetFile && setPNG && !setPNGDone) {
                         try {
@@ -864,7 +845,6 @@ public class ExportFragment extends Fragment {
                         mimeTypes = new ArrayList<>();
                     }
 
-                    Log.d(TAG,"png:"+png+"  screenShot:"+screenShot+"  isSetFile:"+isSetFile);
                     if ((png || image) && !isSetFile) {
                         // Now take a bitmap of the layout for the song
                         myView.previewLayout.setVisibility(View.VISIBLE);
@@ -922,7 +902,6 @@ public class ExportFragment extends Fragment {
 
         // Add the section views and this will trigger the VTO
         for (int x=0; x<sectionViewsPDF.size(); x++) {
-            Log.d(TAG,"adding sectionView("+x+")");
             myView.hiddenSections.addView(sectionViewsPDF.get(x));
         }
     }
@@ -961,7 +940,6 @@ public class ExportFragment extends Fragment {
         sectionsVTO.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                Log.d(TAG,"myView.hiddenSections.getChildCount():"+myView.hiddenSections.getChildCount());
                 if (myView.hiddenSections.getChildCount()==sectionViewsScreenshot.size()) {
                     myView.hiddenSections.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                     sectionsVTO.removeOnGlobalLayoutListener(this);
@@ -969,10 +947,8 @@ public class ExportFragment extends Fragment {
                     for (int x = 0; x < sectionViewsScreenshot.size(); x++) {
                         int width = sectionViewsScreenshot.get(x).getMeasuredWidth();
                         int height = sectionViewsScreenshot.get(x).getMeasuredHeight();
-                        Log.d(TAG, "measuredSize of " + x + ":" + width + "x" + height);
                         sectionViewWidthsScreenshot.add(width);
                         sectionViewHeightsScreenshot.add(height);
-                        Log.d(TAG, "now do part 2");
                     }
                     createOnTheFlySectionsScreenshots2(pdfName);
                 }
@@ -981,7 +957,6 @@ public class ExportFragment extends Fragment {
         // Add the section views and this will trigger the VTO
         for (int x=0; x<sectionViewsScreenshot.size(); x++) {
             //sectionViewsScreenshot.get(x).getLayoutParams().width = ViewGroup.LayoutParams.MATCH_PARENT;
-            Log.d(TAG,"adding sectionViewScreenshot("+x+")");
             myView.hiddenSections.addView(sectionViewsScreenshot.get(x));
         }
     }
@@ -1003,8 +978,6 @@ public class ExportFragment extends Fragment {
             public void onGlobalLayout() {
                 // The views are ready so lets measure them after clearing this listener
                 // If all the views are there, we can start measuring
-                Log.d(TAG,"myView.hiddenSections.getChildCount():"+myView.hiddenSections.getChildCount());
-                Log.d(TAG,"sectionViewsScreenshot.size():"+sectionViewsScreenshot.size());
                 int col1Items = 0;
                 int col2Items = 0;
                 int col3Items = 0;
@@ -1019,10 +992,8 @@ public class ExportFragment extends Fragment {
                 }
 
                 int totalItems = col1Items + col2Items + col3Items;
-                Log.d(TAG,"col1Items:"+col1Items+"  col2Items:"+col2Items+"  col3Items:"+col3Items+"  totalItems:"+totalItems);
 
                 if (totalItems>=sectionViewsScreenshot.size()) {
-                    Log.d(TAG,"1036 Getting here");
                     myView.hiddenSections.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                     sectionsVTO.removeOnGlobalLayoutListener(this);
                     int maxWidth = 0;
@@ -1047,22 +1018,13 @@ public class ExportFragment extends Fragment {
                         mimeTypes = new ArrayList<>();
                     }
 
-                    Log.d(TAG,"png:"+png+"  screenShot:"+screenShot+"  isSetFile:"+isSetFile);
                     if ((png && !isSetFile) || (screenShot && !isSetFile)) {
                         // Now take a bitmap of the layout for the song
                         // Get the maximum width of the views
 
                         // If we are taking a screenshot, we need to set the song into columns
                         // Remove the views and set them in the layout
-                        // TODO remove the header and add that too
                         myView.hiddenSections.removeAllViews();
-                        // Get the screensizes
-                        Log.d(TAG,"width:"+availableWidth);
-                        Log.d(TAG,"height:height:"+availableHeight);
-                        Log.d(TAG,"sectionViewsScreenshot.size():"+sectionViewsScreenshot.size());
-                        for (int x=0;x<sectionViewWidthsScreenshot.size();x++) {
-                            Log.d(TAG,"["+x+"]:"+sectionViewWidthsScreenshot.get(x)+"x"+sectionViewHeightsPDF.get(x));
-                        }
                         myView.scaledPageHolder.setVisibility(View.VISIBLE);
 
                         setPNGContent = Bitmap.createBitmap(availableWidth, availableHeight, Bitmap.Config.ARGB_8888);
@@ -1117,15 +1079,10 @@ public class ExportFragment extends Fragment {
         // Remove any scaled header that exists
         myView.scaledHeader.removeAllViews();
         mainActivityInterface.getProcessSong().setMakingScaledScreenShot(true);
-        float[] scales = mainActivityInterface.getProcessSong().addViewsToScreen(sectionViewsScreenshot,
+        mainActivityInterface.getProcessSong().addViewsToScreen(sectionViewsScreenshot,
                 sectionViewWidthsScreenshot,sectionViewHeightsScreenshot,myView.scaledPageHolder,myView.scaledSongContent,myView.scaledHeader,availableWidth,availableHeight,
                 myView.scaledSongContent.getCol1(),myView.scaledSongContent.getCol2(),myView.scaledSongContent.getCol3(),false,getResources().getDisplayMetrics());
         mainActivityInterface.getProcessSong().setMakingScaledScreenShot(false);
-
-        for (float scale:scales) {
-            Log.d(TAG,"scale:"+scale);
-        }
-
     }
 
 
@@ -1212,7 +1169,7 @@ public class ExportFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        tidyOnClose();;
+        tidyOnClose();
     }
     private void tidyOnClose() {
         try {

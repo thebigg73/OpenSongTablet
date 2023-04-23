@@ -120,7 +120,6 @@ public class LoadSong {
         uri = mainActivityInterface.getStorageAccess().getUriForItem(
                 where, thisSong.getFolder(), thisSong.getFilename());
 
-        Log.d(TAG,"uri:"+uri);
         if (mainActivityInterface.getStorageAccess().uriExists(uri)) {
             // If this is an image or a PDF (or DOC or ZIP), we don't load a song object from the file
             // Instead we use the database, but the user will have to wait!
@@ -155,9 +154,6 @@ public class LoadSong {
                     }
                 }
 
-                if (thisSong.getFilename().equals("test.txt")) {
-                    Log.d(TAG,"test.txt   filetype:"+thisSong.getFiletype());
-                }
                 if (thisSong.getFiletype().equals("iOS")) {
                     // 3.  Run the OnSongConvert script (which converts then resaves)
                     mainActivityInterface.getConvertOnSong().convertTextToTags(uri, thisSong);
