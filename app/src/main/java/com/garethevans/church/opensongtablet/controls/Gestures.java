@@ -84,7 +84,7 @@ public class Gestures {
         addString("scrolldown",c.getString(R.string.scroll_down));
         addString("scrollup",c.getString(R.string.scroll_up));
         addString("next",c.getString(R.string.next));
-        addString("previous",c.getString(R.string.previous));
+        addString("prev",c.getString(R.string.previous));
         addString("randomsong",c.getString(R.string.random_song));
 
         addString("","");

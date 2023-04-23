@@ -919,6 +919,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         this.alreadyBackPressed = alreadyBackPressed;
     }
     public void interceptBackPressed() {
+        Log.d(TAG,"interceptBackPressed");
         if (alreadyBackPressed && !settingsOpen) {
             // Close the app
             confirmedAction(true,"exit",null,null,null,null);

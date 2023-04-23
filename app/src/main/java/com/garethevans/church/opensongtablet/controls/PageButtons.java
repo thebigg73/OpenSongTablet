@@ -6,7 +6,6 @@ package com.garethevans.church.opensongtablet.controls;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.LinearLayout;
 
@@ -166,7 +165,6 @@ public class PageButtons {
     private final AccelerateDecelerateInterpolator interpolator = new AccelerateDecelerateInterpolator();
 
     public void animatePageButton(boolean open) {
-        Log.d(TAG,"open:"+open);
         if (open) {
             if (actionButton.getRotation()==0) {
                 ViewCompat.animate(actionButton).rotation(45f).withLayer().setDuration(animationTime).
@@ -230,7 +228,7 @@ public class PageButtons {
         prepareOption("scrolldown",c.getString(R.string.scroll_down),c.getString(R.string.select),"",R.drawable.arrow_down);
         prepareOption("scrollup",c.getString(R.string.scroll_up),c.getString(R.string.select),"",R.drawable.arrow_up);
         prepareOption("next",c.getString(R.string.next),c.getString(R.string.select),"",R.drawable.arrow_right);
-        prepareOption("previous",c.getString(R.string.previous),c.getString(R.string.select),"",R.drawable.arrow_left);
+        prepareOption("prev",c.getString(R.string.previous),c.getString(R.string.select),"",R.drawable.arrow_left);
         prepareOption("randomsong",c.getString(R.string.random_song),c.getString(R.string.random_song),"",R.drawable.shuffle);
 
         prepareOption("","","","",R.drawable.help);

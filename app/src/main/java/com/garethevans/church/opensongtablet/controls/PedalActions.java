@@ -128,7 +128,7 @@ public class PedalActions {
         addString("scrolldown",c.getString(R.string.scroll_down));
         addString("scrollup",c.getString(R.string.scroll_up));
         addString("next",c.getString(R.string.next));
-        addString("previous",c.getString(R.string.previous));
+        addString("prev",c.getString(R.string.previous));
         addString("randomsong",c.getString(R.string.random_song));
 
         addString("","");
@@ -299,8 +299,9 @@ public class PedalActions {
         // Convert extra actions based on if song menu is open/closed
         // Also check for warning
         switch (desiredAction) {
-
+            case "prev":
             case "previous":
+                desiredAction = "prev";
                 // If the menu is open, scroll up
                 if (mainActivityInterface.getMenuOpen()) {
                     desiredAction = "scrollmenuup";

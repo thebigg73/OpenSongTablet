@@ -176,6 +176,7 @@ public class PerformanceGestures {
             case "next":
                 nextSong();
                 break;
+            case "prev":
             case "previous":
                 prevSong();
                 break;
