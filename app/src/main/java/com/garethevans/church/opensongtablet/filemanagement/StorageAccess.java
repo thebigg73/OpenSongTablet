@@ -2067,30 +2067,62 @@ public class StorageAccess {
 
     public void updateFileUsageLog(Song thisSong) {
         // List the song being viewed
-        String topline = c.getString(R.string.date) + " " + c.getString(R.string.time) + " | " +
-                c.getString(R.string.time) + " | " +
-                c.getString(R.string.folder) + " | " +
-                c.getString(R.string.filename) + " | " +
-                c.getString(R.string.title);
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-        String logText = sdf.format(new Date()) + "," +
-                thisSong.getFolder() + "," +
-                thisSong.getFilename() + "," +
-                thisSong.getTitle();
+
+        String logText = "\"" + sdf.format(new Date()) + "\"," +
+                "\"" + thisSong.getFolder().replaceAll("\"","'") + "\"," +
+                "\"" + thisSong.getFilename().replaceAll("\"","'") + "\"," +
+                "\"" + thisSong.getTitle().replaceAll("\"","'") + "\"," +
+                "\"" + thisSong.getAuthor().replaceAll("\"","'") + "\"," +
+                "\"" + thisSong.getCopyright().replaceAll("\"","'") + "\"," +
+                "\"" + thisSong.getCcli().replaceAll("\"","'") + "\"," +
+                "\"" + thisSong.getKey().replaceAll("\"","'") + "\"," +
+                "\"" + thisSong.getCapo().replaceAll("\"","'") + "\"," +
+                "\"" + thisSong.getAka().replaceAll("\"","'") + "\"," +
+                "\"" + thisSong.getTheme().replaceAll("\"","'") + "\"," +
+                "\"" + thisSong.getUser1().replaceAll("\"","'") + "\"," +
+                "\"" + thisSong.getUser2().replaceAll("\"","'") + "\"," +
+                "\"" + thisSong.getUser3().replaceAll("\"","'") + "\"," +
+                "\"" + thisSong.getHymnnum().replaceAll("\"","'") + "\"," +
+                "\"" + thisSong.getTempo().replaceAll("\"","'") + "\"," +
+                "\"" + thisSong.getTimesig().replaceAll("\"","'") + "\"";
+
+        String topline = "\"" + c.getString(R.string.date) + "/" +
+                c.getString(R.string.time) + "\"," +
+                "\"" + c.getString(R.string.folder) + "\"," +
+                "\"" + c.getString(R.string.filename) + "\"," +
+                "\"" + c.getString(R.string.title) + "\"," +
+                "\"" + c.getString(R.string.author) + "\"," +
+                "\"" + c.getString(R.string.copyright) + "\"," +
+                "\"" + c.getString(R.string.ccli) + "\"," +
+                "\"" + c.getString(R.string.key) + "\"," +
+                "\"" + c.getString(R.string.capo) + "\"," +
+                "\"" + c.getString(R.string.edit_song_aka) + "\"," +
+                "\"" + c.getString(R.string.tag) + "\"," +
+                "\"" + c.getString(R.string.user_1) + "\"," +
+                "\"" + c.getString(R.string.user_2) + "\"," +
+                "\"" + c.getString(R.string.user_3) + "\"," +
+                "\"" + c.getString(R.string.hymn_number) + "\"," +
+                "\"" + c.getString(R.string.tempo) + "\"," +
+                "\"" + c.getString(R.string.time_signature) + "\"";
+
+        String writeThis = logText;
         try {
-            Uri logUri = getUriForItem("Settings","","fileHistory.txt");
+            Uri logUri = getUriForItem("Settings","","fileHistory.csv");
             if (logUri!=null) {
                 if (!uriExists(logUri)) {
-                    lollipopCreateFileForOutputStream(false, logUri, null, "Settings", "", "fileHistory.txt");
+                    lollipopCreateFileForOutputStream(false, logUri, null, "Settings", "", "fileHistory.csv");
+                    writeThis = topline + "\n" + logText;
                 }
                 OutputStream outputStream;
                 if (getFileSizeFromUri(logUri) > 300) {
+                    writeThis = topline + "\n" + logText;
                     outputStream = c.getContentResolver().openOutputStream(logUri, "wt");
                 } else {
                     outputStream = c.getContentResolver().openOutputStream(logUri, "wa");
                 }
-                mainActivityInterface.getStorageAccess().writeFileFromString(logText + "\n", outputStream);
+                mainActivityInterface.getStorageAccess().writeFileFromString(writeThis + "\n", outputStream);
             } else {
                 Log.d(TAG, "logUri was null");
             }
