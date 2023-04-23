@@ -237,12 +237,17 @@ public class BeatBuddyFragment extends Fragment {
         myView.aerosSliders.setVisibility(
                 mainActivityInterface.getBeatBuddy().getBeatBuddyIncludeSong() &&
                         mainActivityInterface.getBeatBuddy().getBeatBuddyAerosMode()? View.VISIBLE:View.GONE);
+        myView.aerosMode.setVisibility(mainActivityInterface.getBeatBuddy().getBeatBuddyIncludeSong()?View.VISIBLE:View.GONE);
+        myView.songBrowser.setVisibility(mainActivityInterface.getBeatBuddy().getBeatBuddyIncludeSong()?View.VISIBLE:View.GONE);
+
         myView.includeSong.setOnCheckedChangeListener((buttonView, isChecked) -> {
             mainActivityInterface.getBeatBuddy().setBeatBuddyIncludeSong(isChecked);
             myView.includeSongLayout.setVisibility(isChecked &&
                     !mainActivityInterface.getBeatBuddy().getBeatBuddyAerosMode()? View.VISIBLE:View.GONE);
             myView.aerosSliders.setVisibility(isChecked &&
                     mainActivityInterface.getBeatBuddy().getBeatBuddyAerosMode()? View.VISIBLE:View.GONE);
+            myView.aerosMode.setVisibility(isChecked? View.VISIBLE:View.GONE);
+            myView.songBrowser.setVisibility(isChecked? View.VISIBLE:View.GONE);
             updateSongCommand();
             myView.includeSongErrors.setVisibility(isChecked &&
                     !mainActivityInterface.getBeatBuddy().getBeatBuddyAerosMode() ? View.VISIBLE:View.GONE);
@@ -262,7 +267,9 @@ public class BeatBuddyFragment extends Fragment {
         myView.songFolder.addTextChangedListener(new SongCommandChange());
         myView.songNumber.addTextChangedListener(new SongCommandChange());
         updateSongCommand();
-        myView.songBrowser.setOnClickListener((View.OnClickListener) view -> buildBBDefaultSongs());
+        myView.includeSongErrors.setVisibility(mainActivityInterface.getBeatBuddy().getBeatBuddyIncludeSong() &&
+                !mainActivityInterface.getBeatBuddy().getBeatBuddyAerosMode() ? View.VISIBLE:View.GONE);
+        myView.songBrowser.setOnClickListener(view -> buildBBDefaultSongs());
 
         // Include volume
         myView.includeVolume.setChecked(mainActivityInterface.getBeatBuddy().getBeatBuddyIncludeVolume());
