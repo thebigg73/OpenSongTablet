@@ -77,6 +77,7 @@ public class ProcessSong {
     private boolean multiLineVerseKeepCompact;
     private boolean multilineSong;
     private boolean forceColumns;
+    private boolean makingScaledScreenShot;
     private float fontSize, fontSizeMax, fontSizeMin, blockShadowAlpha,
             lineSpacing, scaleHeadings, scaleChords, scaleComments;
     private String songAutoScale;
@@ -2035,6 +2036,10 @@ public class ProcessSong {
         linearLayout.setPadding(0, 0, 0, 0);
     }
 
+    public void setMakingScaledScreenShot(boolean makingScaledScreenShot) {
+        this.makingScaledScreenShot = makingScaledScreenShot;
+    }
+
     private void scaleView(LinearLayout innerColumn, float scaleSize) {
         // IV - Cope with empty songs!
         if (scaleSize == Double.POSITIVE_INFINITY) {
@@ -2499,7 +2504,7 @@ public class ProcessSong {
         setMargins(innerCol1, 0, 0);
         column1.addView(innerCol1);
         columnVisibility(column1, column2, column3, true, false, false);
-        if (!presentation) {
+        if (!presentation && !makingScaledScreenShot) {
             mainActivityInterface.updateSizes((int) (maxWidth * scaleSize), (int) (totalHeight * scaleSize) + songSheetTitleHeight);
         }
     }
@@ -2603,7 +2608,7 @@ public class ProcessSong {
         setMargins(innerCol1, 0, padding);
         setMargins(innerCol2, padding, 0);
 
-        if (!presentation) {
+        if (!presentation && !makingScaledScreenShot) {
             mainActivityInterface.updateSizes(mainActivityInterface.getDisplayMetrics()[0],
                     Math.max(col1h,col2h) + songSheetTitleHeight);
         }
@@ -2729,7 +2734,7 @@ public class ProcessSong {
         setMargins(column2, padding, padding);
         setMargins(column3, padding,0);
 
-        if (!presentation) {
+        if (!presentation && !makingScaledScreenShot) {
             mainActivityInterface.updateSizes(mainActivityInterface.getDisplayMetrics()[0],
                     Math.max(col1h,Math.max(col2h,col3h)) + songSheetTitleHeight);
         }

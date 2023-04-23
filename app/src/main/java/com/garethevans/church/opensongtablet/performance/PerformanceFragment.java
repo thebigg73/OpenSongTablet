@@ -845,6 +845,7 @@ public class PerformanceFragment extends Fragment {
                 myView.pageHolder.getLayoutParams().width = availableWidth;
                 myView.pageHolder.getLayoutParams().height = availableHeight;
 
+                Log.d(TAG,"availableWidth:"+availableWidth);
                 float[] scaleInfo = mainActivityInterface.getProcessSong().addViewsToScreen(
                         mainActivityInterface.getSectionViews(),
                         mainActivityInterface.getSectionWidths(), mainActivityInterface.getSectionHeights(),

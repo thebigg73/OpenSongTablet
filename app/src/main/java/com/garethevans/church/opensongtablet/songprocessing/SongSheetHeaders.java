@@ -15,6 +15,8 @@ public class SongSheetHeaders {
     @SuppressWarnings("canbelocal")
     private final String TAG = "SongSheetHeaders";
     private final MainActivityInterface mainActivityInterface;
+    private LinearLayout linearLayout;
+    private boolean forExport;
 
     public SongSheetHeaders(Context c) {
         this.c = c;
@@ -48,7 +50,12 @@ public class SongSheetHeaders {
             String author = thisSong.getAuthor();
             String copyright = thisSong.getCopyright();
 
-            float defFontSize = 12.0f;
+            float defFontSize;
+            if (forExport) {
+                defFontSize = mainActivityInterface.getProcessSong().getDefFontSize();
+            } else {
+                defFontSize = 12f;
+            }
 
             if (title!=null && !title.isEmpty()) {
                 linearLayout.addView(getSongSheetTexts(title,typeface,textColor,defFontSize));
@@ -119,5 +126,9 @@ public class SongSheetHeaders {
         keyCapoTempo = keyCapoTempo.trim().replaceFirst("\\| ","");
 
         return keyCapoTempo;
+    }
+
+    public void setForExport(boolean forExport) {
+        this.forExport = forExport;
     }
 }
