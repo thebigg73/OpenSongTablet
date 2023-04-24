@@ -135,7 +135,6 @@
                     android:text="@string/duplicate_song"
                     android:hint="@string/transpose_copy"
                     android:visibility="gone"/>
-
                 <TableRow style="@style/DividerLine" />
 
                 <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
@@ -145,7 +144,8 @@
                     android:text="@string/key_original"
                     android:hint="@string/key_original_transpose"
                     android:visibility="gone"/>
-                <TableRow style="@style/DividerLine" />
+                <TableRow android:id="@+id/transposeOriginalDivider"
+                    style="@style/DividerLine" />
 
             </LinearLayout>
         </com.garethevans.church.opensongtablet.customviews.NestedScrollWithFAB>

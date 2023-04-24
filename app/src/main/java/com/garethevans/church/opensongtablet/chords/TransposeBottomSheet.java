@@ -356,6 +356,7 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
             myView.transposeOriginal.setText(originalkey_string);
         }
         myView.transposeOriginal.setVisibility(showTransposeOriginal? View.VISIBLE:View.GONE);
+        myView.transposeOriginalDivider.setVisibility(showTransposeOriginal? View.VISIBLE:View.GONE);
     }
 
     private void getValues() {
