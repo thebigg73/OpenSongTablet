@@ -49,7 +49,7 @@ public class SetManageFragment extends Fragment {
             website_set_rename_string="", website_set_delete_string="", export_string="",
             website_export_set_string="", set_saved_not_current_string="", load_string="",
             website_set_load_string="", new_category_string="", file_exists_string="",
-            success_string="", error_string="", deeplink_export_string="",
+            success_string="", error_string="", deeplink_export_string="", manage_sets_string="",
             search_index_wait_string="";
     private String webAddress;
 
@@ -111,6 +111,7 @@ public class SetManageFragment extends Fragment {
             error_string = getString(R.string.error);
             deeplink_export_string = getString(R.string.deeplink_export);
             search_index_wait_string = getString(R.string.search_index_wait);
+            manage_sets_string = getString(R.string.set_manage);
         }
     }
     private void checkForLoadSpecific() {
