@@ -197,12 +197,17 @@ public class WindowFlags {
     public void hideKeyboard() {
         // Delay a few millisecs and then hide
         Handler handler = new Handler(Looper.getMainLooper());
-        handler.postDelayed(() -> {
-            windowInsetsControllerCompat.hide(typeIme);
-        },500);
+        handler.postDelayed(() -> windowInsetsControllerCompat.hide(typeIme),500);
+    }
+
+    public void showKeyboard() {
+        // Show after a few millisecs
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.postDelayed(() -> windowInsetsControllerCompat.show(typeIme),1000);
     }
 
     public void adjustViewPadding(MainActivityInterface mainActivityInterface, View view) {
+        Log.d(TAG,"softKeyboardHeight:"+softKeyboardHeight);
         if (softKeyboardHeight > 0) {
             view.setPadding(0, 0, 0, softKeyboardHeight);
         } else {

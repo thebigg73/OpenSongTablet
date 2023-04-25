@@ -46,6 +46,7 @@
         <item name="android:windowTranslucentNavigation">true</item>
         <item name="navigationIconTint">@color/white</item>
         <item name="android:actionButtonStyle">@style/ActionButtonStyle</item>
+        <item name="android:defaultFocusHighlightEnabled" tools:targetApi="26">false</item>
         <!--
         <item name="android:windowFullscreen">true</item>
         -->

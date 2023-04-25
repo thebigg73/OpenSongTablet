@@ -3230,12 +3230,13 @@ public class ProcessSong {
         editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
         editText.setImeOptions(EditorInfo.IME_ACTION_NONE);
         editText.setHorizontallyScrolling(true);
+        editText.setVerticalScrollBarEnabled(false);
         editText.setAutoSizeTextTypeUniformWithConfiguration(8, 18, 1);
     }
 
     public void stretchEditBoxToLines(MyMaterialEditText editText, int minLines) {
         String[] lines = editText.getText().toString().split("\n");
-        int num = lines.length;
+        int num = lines.length+1;
         if (num > minLines) {
             editText.setLines(num);
             editText.setMinLines(num);

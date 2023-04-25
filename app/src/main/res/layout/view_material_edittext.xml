@@ -30,6 +30,7 @@
         android:gravity="start"
         android:padding="16dp"
         android:scrollHorizontally="true"
+        android:isScrollContainer="true"
         tools:text="The text" />
 </com.google.android.material.textfield.TextInputLayout>
 </LinearLayout>

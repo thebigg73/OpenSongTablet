@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,8 @@ import java.util.ArrayList;
 public class EditSongFragmentTags extends Fragment {
 
     private MainActivityInterface mainActivityInterface;
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
+    private final String TAG = "EditSongTags";
     private EditSongFragmentInterface editSongFragmentInterface;
     private EditSongTagsBinding myView;
     private TagsBottomSheet tagsBottomSheet;
@@ -39,6 +42,23 @@ public class EditSongFragmentTags extends Fragment {
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        try {
+            Log.d(TAG, "clearing focus");
+            myView.tags.clearFocus();
+            myView.aka.clearFocus();
+            myView.ccli.clearFocus();
+            myView.user1.clearFocus();
+            myView.user2.clearFocus();
+            myView.user3.clearFocus();
+            myView.hymnnum.clearFocus();
+            myView.presorder.clearFocus();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

@@ -45,6 +45,21 @@ public class EditSongFragmentMain extends Fragment  {
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        try {
+            Log.d(TAG, "clearing focus");
+            myView.title.clearFocus();
+            myView.author.clearFocus();
+            myView.copyright.clearFocus();
+            myView.folder.clearFocus();
+            myView.filename.clearFocus();
+            myView.songNotes.clearFocus();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 

@@ -111,7 +111,6 @@ public class StickyPopUp {
         stickyNotes.setTextSize(mainActivityInterface.getPreferences().getMyPreferenceFloat("stickyTextSize",14f));
         stickyNotes.setText(mainActivityInterface.getSong().getNotes());
         floatWindow.addView(stickyNotes);
-
         popupWindow.setContentView(floatWindow);
     }
 

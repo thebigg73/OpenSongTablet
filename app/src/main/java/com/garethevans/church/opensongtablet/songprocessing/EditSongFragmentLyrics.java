@@ -45,6 +45,16 @@ public class EditSongFragmentLyrics extends Fragment {
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        try {
+            myView.lyrics.clearFocus();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -58,7 +68,7 @@ public class EditSongFragmentLyrics extends Fragment {
         // Add listeners
         setupListeners();
 
-        myView.getRoot().requestFocus();
+        myView.lyrics.clearFocus();
 
         return myView.getRoot();
     }
@@ -105,7 +115,7 @@ public class EditSongFragmentLyrics extends Fragment {
             myView.ocr.setVisibility(View.GONE);
         }
 
-        int lines = Math.max(20,mainActivityInterface.getTempSong().getLyrics().split("\n").length);
+        int lines = Math.max(20,mainActivityInterface.getTempSong().getLyrics().split("\n").length+1);
 
         mainActivityInterface.getProcessSong().editBoxToMultiline(myView.lyrics);
         editTextSize = mainActivityInterface.getPreferences().getMyPreferenceFloat("editTextSize",14);
@@ -122,10 +132,12 @@ public class EditSongFragmentLyrics extends Fragment {
 
         myView.lyrics.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
+            }
 
             @Override
-            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {}
+            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+            }
 
             @Override
             public void afterTextChanged(Editable editable) {
@@ -141,8 +153,13 @@ public class EditSongFragmentLyrics extends Fragment {
                     // We were undoing/redoing, so we didn't do the above.  Now turn this off
                     addUndoStep = true;
                 }
+                int lines = Math.max(20, mainActivityInterface.getTempSong().getLyrics().split("\n").length);
+                mainActivityInterface.getProcessSong().stretchEditBoxToLines(myView.lyrics, lines);
             }
         });
+
+        myView.lyrics.setOnClickListener(view -> manualScrollTo());
+        myView.lyrics.setOnFocusChangeListener((view, b) -> manualScrollTo());
 
         myView.ocr.setOnClickListener(v -> {
 
@@ -161,6 +178,7 @@ public class EditSongFragmentLyrics extends Fragment {
 
         myView.settingsButton.setOnClickListener(v -> {
             cursorPos = myView.lyrics.getSelectionStart();
+            myView.lyrics.clearFocus();
             LyricsOptionsBottomSheet lyricsOptionsBottomSheet = new LyricsOptionsBottomSheet(this);
             lyricsOptionsBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"LyricsBottomSheet");
         });
@@ -176,6 +194,30 @@ public class EditSongFragmentLyrics extends Fragment {
 
         // Resize the bottom padding to the soft keyboard height or half the screen height for the soft keyboard (workaround)
         mainActivityInterface.getWindowFlags().adjustViewPadding(mainActivityInterface,myView.resizeForKeyboardLayout);
+    }
+
+    private void manualScrollTo () {
+        myView.lyrics.postDelayed(() -> {
+            int cursorStart = myView.lyrics.getSelectionStart();
+            Log.d(TAG, "onClicked().  cursorStart:" + cursorStart);
+            if (cursorStart > 0) {
+                // Get the text between the start and this position
+                String substring = myView.lyrics.getText().toString().substring(0, cursorStart);
+                // Get the number of lines to this position
+                int linesDown = substring.split("\n").length;
+                int totalLines = myView.lyrics.getMinLines();
+                float proportionOfView = (float) linesDown / (float) totalLines;
+                int heightOfView = myView.lyrics.getMeasuredHeight();
+                int scrollYneeded = (int) (heightOfView * proportionOfView);
+                if (heightOfView != 0) {
+                    int screenHeight = myView.parentView.getMeasuredHeight();
+                    screenHeight = Math.min(400,screenHeight/4);
+                    // Because selection is >0, the keyboard is open.
+                    // Make sure the view has scroll up by this proportion
+                    myView.nestedScrollView.scrollTo(0, scrollYneeded - screenHeight);
+                }
+            }
+        }, 50);
     }
 
     private void undoLyrics() {
@@ -229,13 +271,18 @@ public class EditSongFragmentLyrics extends Fragment {
         myView.lyrics.setTextSize(editTextSize);
     }
     public void insertSection(String bitToAdd, int moveCursorBy) {
+        // This comes from the bottom sheet
         // Try to get the current text position
         String text = myView.lyrics.getText().toString();
         if (text.length()>cursorPos && cursorPos!=-1) {
             text = text.substring(0, cursorPos) + bitToAdd + "\n" + text.substring(cursorPos);
             myView.lyrics.setText(text);
         }
+        // Setting the position should open the keyboard
+        myView.lyrics.requestFocus();
         myView.lyrics.setSelection(cursorPos+moveCursorBy);
+        mainActivityInterface.getWindowFlags().showKeyboard();
+        manualScrollTo();
     }
 
     public void transpose(String direction) {

@@ -855,6 +855,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 }
                 // Hide the keyboard
                 windowFlags.hideKeyboard();
+                // Set and remove focus (foot pedals can change this as using nav directions)
+                //myView.menuTop.versionCode.requestFocus();
+                //myView.menuTop.versionCode.postDelayed(() -> myView.menuTop.versionCode.clearFocus(),100);
             }
 
             @Override
@@ -865,6 +868,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 }
                 // Hide the keyboard
                 windowFlags.hideKeyboard();
+                // Set and remove focus (foot pedals can change this as using nav directions)
+                //myView.fragmentView.requestFocus();
+                //myView.fragmentView.postDelayed(() -> myView.fragmentView.clearFocus(),100);
+
             }
 
             @Override
@@ -2737,6 +2744,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 if (songText==null) {
                     songText = "";
                 }
+                songText = convertTextSong.convertText(songText);
                 importOnlineFragment.setClipboardText(songText);
                 importOnlineFragment.doShowSaveButton(!songText.isEmpty());
             } catch (Exception e) {
@@ -3364,6 +3372,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        myView.fragmentView.setFocusable(true);
+        myView.fragmentView.requestFocus();
+        myView.fragmentView.postDelayed(() -> {
+            myView.fragmentView.clearFocus();
+            myView.fragmentView.setFocusable(false);
+        },100);
 
         super.onResume();
     }

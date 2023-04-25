@@ -34,6 +34,9 @@ public class BBSQLite extends SQLiteOpenHelper {
                     + COLUMN_KIT + " INTEGER"
                     + ");";
 
+    // CSV file created will give 1,10000 Reasons,37611B1D,1,BB Worship
+    // Format is SONG_NUM,SONG_NAME,FOLDER_CODE,FOLDER_NUM,FOLDER_NAME
+    
     private final Context c;
     private static final int DATABASE_VERSION = 1;
     @SuppressWarnings("FieldCanBeLocal")

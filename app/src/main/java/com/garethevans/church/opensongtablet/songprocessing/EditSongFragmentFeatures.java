@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +44,31 @@ public class EditSongFragmentFeatures extends Fragment {
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        try {
+            Log.d(TAG, "clearing focus");
+            myView.key.clearFocus();
+            myView.originalkey.clearFocus();
+            myView.capo.clearFocus();
+            myView.pad.clearFocus();
+            myView.loop.clearFocus();
+            myView.tempo.clearFocus();
+            myView.timesig.clearFocus();
+            myView.tapTempo.clearFocus();
+            myView.durationMins.clearFocus();
+            myView.durationSecs.clearFocus();
+            myView.delay.clearFocus();
+            myView.midi.clearFocus();
+            myView.abc.clearFocus();
+            myView.customChords.clearFocus();
+            myView.linkType.clearFocus();
+            myView.linkValue.clearFocus();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
