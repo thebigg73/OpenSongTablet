@@ -132,6 +132,15 @@
                 android:hint="@string/appearance_change"/>
 
             <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                android:id="@+id/boldChorus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/bold_chorus"
+                android:hint="@string/appearance_change"/>
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
                 android:id="@+id/showChords"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

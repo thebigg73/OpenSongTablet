@@ -64,6 +64,7 @@ public class ProcessSong {
     //private boolean addSectionBox;
     private boolean blockShadow;
     private boolean displayBoldChordsHeadings;
+    private boolean displayBoldChorus;
     private boolean displayChords;
     private boolean displayLyrics;
     private boolean displayCapoChords;
@@ -106,6 +107,7 @@ public class ProcessSong {
         displayChords = mainActivityInterface.getPreferences().getMyPreferenceBoolean("displayChords", true);
         displayLyrics = mainActivityInterface.getPreferences().getMyPreferenceBoolean("displayLyrics", true);
         displayBoldChordsHeadings = mainActivityInterface.getPreferences().getMyPreferenceBoolean("displayBoldChordsHeadings", false);
+        displayBoldChorus = mainActivityInterface.getPreferences().getMyPreferenceBoolean("displayBoldChorus",false);
         songAutoScale = mainActivityInterface.getPreferences().getMyPreferenceString("songAutoScale", "W");
         songAutoScaleColumnMaximise = mainActivityInterface.getPreferences().getMyPreferenceBoolean("songAutoScaleColumnMaximise", true);
         songAutoScaleOverrideFull = mainActivityInterface.getPreferences().getMyPreferenceBoolean("songAutoScaleOverrideFull", true);
@@ -909,7 +911,7 @@ public class ProcessSong {
     }
 
     private TableLayout groupTable(String string, int lyricColor, int chordColor, int capoColor,
-                                   int highlightChordColor, boolean presentation) {
+                                   int highlightChordColor, boolean presentation, boolean boldText) {
         TableLayout tableLayout = newTableLayout();
         tableLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT));
 
@@ -1047,6 +1049,10 @@ public class ProcessSong {
                                     }
                                 }
                                 SpannableStringBuilder spannableString = getSpannableBracketString(str);
+                                if (boldText) {
+                                    textView.setPaintFlags(textView.getPaintFlags() | Paint.FAKE_BOLD_TEXT_FLAG);
+                                    textView.setTypeface(textView.getTypeface(),Typeface.BOLD);
+                                }
                                 textView.setText(spannableString);
                             } else {
                                 textView = null;
@@ -1395,7 +1401,8 @@ public class ProcessSong {
 
     private TextView lineText(String linetype,
                               String string, Typeface typeface, float size, int color,
-                              int highlightHeadingColor, int highlightChordColor, boolean presentation) {
+                              int highlightHeadingColor, int highlightChordColor,
+                              boolean presentation, boolean boldText) {
         TextView textView = newTextView(linetype, typeface, size, color);
 
         boolean applyFixExcessSpaces = (trimWordSpacing || presentation || !mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) &&
@@ -1426,6 +1433,10 @@ public class ProcessSong {
                 SpannableStringBuilder spannableString = getSpannableBracketString(str);
                 textView.setText(spannableString);
             }
+        }
+        if (boldText) {
+            textView.setPaintFlags(textView.getPaintFlags() | Paint.FAKE_BOLD_TEXT_FLAG);
+            textView.setTypeface(textView.getTypeface(),Typeface.BOLD);
         }
         return textView;
     }
@@ -1740,8 +1751,10 @@ public class ProcessSong {
         overallBackgroundColor = backgroundColor;
 
         for (int sect = 0; sect < song.getPresoOrderSongSections().size(); sect++) {
+
             String section = song.getPresoOrderSongSections().get(sect);
             if (!section.isEmpty()) {
+                boolean isChorusBold = false;
                 section = section.replace(columnbreak_string,"");
                 if (trimSections) {
                     // IV - End trim only as a section may start with a lyric line and have no header
@@ -1782,8 +1795,11 @@ public class ProcessSong {
                             }
                             backgroundColor = overallBackgroundColor;
                             if (!asPDF && !presentation && notLyricOrChord) {
-                                backgroundColor = getBGColor(line);
+                                int[] colors = getBGColor(line);
+                                backgroundColor = colors[0];
                                 if (l==0) {
+                                    isChorusBold = colors[1]==1 && displayBoldChorus;
+                                    Log.d(TAG,"isChorusBold:"+isChorusBold);
                                     overallBackgroundColor = backgroundColor;
                                 }
                             }
@@ -1799,19 +1815,21 @@ public class ProcessSong {
                                 // Has lyrics and chords
                                 if (asPDF) {
                                     linearLayout.addView(groupTable(line, Color.BLACK, Color.BLACK,
-                                            Color.BLACK, Color.TRANSPARENT, false));
+                                            Color.BLACK, Color.TRANSPARENT, false, isChorusBold));
                                 } else if (presentation) {
                                     linearLayout.addView(groupTable(line,
                                             mainActivityInterface.getMyThemeColors().getPresoFontColor(),
                                             mainActivityInterface.getMyThemeColors().getPresoChordColor(),
                                             mainActivityInterface.getMyThemeColors().getPresoCapoColor(),
-                                            mainActivityInterface.getMyThemeColors().getHighlightChordColor(), true));
+                                            mainActivityInterface.getMyThemeColors().getHighlightChordColor(),
+                                            true, isChorusBold));
                                 } else {
                                     TableLayout tl = groupTable(line,
                                             mainActivityInterface.getMyThemeColors().getLyricsTextColor(),
                                             mainActivityInterface.getMyThemeColors().getLyricsChordsColor(),
                                             mainActivityInterface.getMyThemeColors().getLyricsCapoColor(),
-                                            mainActivityInterface.getMyThemeColors().getHighlightChordColor(), false);
+                                            mainActivityInterface.getMyThemeColors().getHighlightChordColor(),
+                                            false,isChorusBold);
                                     tl.setBackgroundColor(backgroundColor);
                                     linearLayout.addView(tl);
                                 }
@@ -1826,7 +1844,7 @@ public class ProcessSong {
                                     TextView tv = lineText(linetype, line, typeface,
                                             size, textColor,
                                             mainActivityInterface.getMyThemeColors().getHighlightHeadingColor(),
-                                            mainActivityInterface.getMyThemeColors().getHighlightChordColor(), false);
+                                            mainActivityInterface.getMyThemeColors().getHighlightChordColor(), false, isChorusBold);
                                     tv.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                                     tv.setBackgroundColor(backgroundColor);
                                     linearLayout.addView(tv);
@@ -1839,7 +1857,8 @@ public class ProcessSong {
                                         line = fixLyricsOnlySpace(line);
                                     }
                                     linearLayout.addView(lineText(linetype, line, typeface,
-                                            size, textColor, Color.TRANSPARENT, Color.TRANSPARENT, presentation));
+                                            size, textColor, Color.TRANSPARENT, Color.TRANSPARENT,
+                                            presentation, isChorusBold));
                                 }
                             }
                         }
@@ -1850,7 +1869,8 @@ public class ProcessSong {
                             !mainActivityInterface.getMakePDF().getIsSetListPrinting() &&
                             sect != (song.getPresoOrderSongSections().size() - 1)) {
                         linearLayout.addView(lineText("lyric", "", getTypeface(false, "lyric"),
-                                getFontSize("lyric") / 2, Color.TRANSPARENT, Color.TRANSPARENT, Color.TRANSPARENT, false));
+                                getFontSize("lyric") / 2, Color.TRANSPARENT, Color.TRANSPARENT, Color.TRANSPARENT,
+                                false, isChorusBold));
                     }
 
                     linearLayout.setBackgroundColor(overallBackgroundColor);
@@ -1911,25 +1931,25 @@ public class ProcessSong {
         return f;
     }
 
-    private int getBGColor(String line) {
+    private int[] getBGColor(String line) {
         if (line.startsWith(";")) {
-            return mainActivityInterface.getMyThemeColors().getLyricsCommentColor();
+            return new int[]{mainActivityInterface.getMyThemeColors().getLyricsCommentColor(), 0};
         } else if (beautifyHeading(line).contains(c.getString(R.string.verse))) {
-            return mainActivityInterface.getMyThemeColors().getLyricsVerseColor();
+            return new int[]{mainActivityInterface.getMyThemeColors().getLyricsVerseColor(),0};
         } else if (beautifyHeading(line).contains(c.getString(R.string.prechorus))) {
-            return mainActivityInterface.getMyThemeColors().getLyricsPreChorusColor();
+            return new int[]{mainActivityInterface.getMyThemeColors().getLyricsPreChorusColor(),0};
         } else if (beautifyHeading(line).contains(c.getString(R.string.chorus))) {
-            return mainActivityInterface.getMyThemeColors().getLyricsChorusColor();
+            return new int[]{mainActivityInterface.getMyThemeColors().getLyricsChorusColor(),1};
         } else if (beautifyHeading(line).contains(c.getString(R.string.bridge))) {
-            return mainActivityInterface.getMyThemeColors().getLyricsBridgeColor();
+            return new int[]{mainActivityInterface.getMyThemeColors().getLyricsBridgeColor(),0};
         } else if (beautifyHeading(line).contains(c.getString(R.string.tag))) {
-            return mainActivityInterface.getMyThemeColors().getLyricsTagColor();
+            return new int[]{mainActivityInterface.getMyThemeColors().getLyricsTagColor(),0};
         } else if (beautifyHeading(line).contains(c.getString(R.string.custom))) {
-            return mainActivityInterface.getMyThemeColors().getLyricsCustomColor();
+            return new int[]{mainActivityInterface.getMyThemeColors().getLyricsCustomColor(),0};
         } else if (line.contains("[") && line.contains("]")) {
-            return mainActivityInterface.getMyThemeColors().getLyricsCustomColor();
+            return new int[]{mainActivityInterface.getMyThemeColors().getLyricsCustomColor(),0};
         } else {
-            return mainActivityInterface.getMyThemeColors().getLyricsVerseColor();
+            return new int[]{mainActivityInterface.getMyThemeColors().getLyricsVerseColor(),0};
         }
     }
 
@@ -1985,7 +2005,7 @@ public class ProcessSong {
         if (linetype.equals("heading")) {
             if (displayBoldChordsHeadings) {
                 // IV - Fake bold will be applied if the font does not support bold
-                textView.setPaintFlags(textView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG | Paint.FAKE_BOLD_TEXT_FLAG);
+                textView.setPaintFlags(textView.getPaintFlags() | Paint.FAKE_BOLD_TEXT_FLAG | Paint.UNDERLINE_TEXT_FLAG);
                 textView.setTypeface(textView.getTypeface(), Typeface.BOLD);
             } else {
                 textView.setPaintFlags(textView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
