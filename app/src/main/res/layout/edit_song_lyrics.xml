@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/parentView"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    android:layout_height="match_parent">
 
         <com.garethevans.church.opensongtablet.customviews.NestedScrollWithFAB
             android:id="@+id/nestedScrollView"
@@ -12,7 +11,10 @@
             android:layout_height="match_parent"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            app:layout_anchorGravity="bottom">
+            app:layout_anchorGravity="bottom"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:descendantFocusability="beforeDescendants">
 
             <RelativeLayout
                 android:id="@+id/resizeForKeyboardLayout"
