@@ -60,7 +60,7 @@ public class DisplayExtraFragment extends Fragment {
         }
 
         mainActivityInterface.updateToolbar(song_display_string);
-       webAddress = website_song_display_string;
+        webAddress = website_song_display_string;
 
 
         // Set up views
@@ -96,6 +96,7 @@ public class DisplayExtraFragment extends Fragment {
         myView.onscreenCapoHide.setChecked(getChecked("onscreenCapoHide", true));
         myView.onscreenPadHide.setChecked(getChecked("onscreenPadHide",true));
         myView.boldChordsHeadings.setChecked(getChecked("displayBoldChordsHeadings",false));
+        myView.boldChorus.setChecked(getChecked("displayBoldChorus",false));
         myView.showChords.setChecked(getChecked("displayChords",true));
         myView.showLyrics.setChecked(getChecked("displayLyrics",true));
         myView.presoOrder.setChecked(getChecked("usePresentationOrder",false));
@@ -201,6 +202,11 @@ public class DisplayExtraFragment extends Fragment {
         });
         myView.boldChordsHeadings.setOnCheckedChangeListener((buttonView, isChecked) -> {
             updateBooleanPreference("displayBoldChordsHeadings",isChecked,null);
+            mainActivityInterface.getProcessSong().updateProcessingPreferences();
+            displayInterface.updateDisplay("setSongContentPrefs");
+        });
+        myView.boldChorus.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            updateBooleanPreference("displayBoldChorus", isChecked, null);
             mainActivityInterface.getProcessSong().updateProcessingPreferences();
             displayInterface.updateDisplay("setSongContentPrefs");
         });
