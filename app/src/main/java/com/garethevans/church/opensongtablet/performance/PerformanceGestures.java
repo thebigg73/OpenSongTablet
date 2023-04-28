@@ -649,24 +649,7 @@ public class PerformanceGestures {
 
     // Scroll up/down
     public void scroll(boolean scrollDown) {
-        if (myZoomLayout != null && myZoomLayout.getVisibility() == View.VISIBLE) {
-            myZoomLayout.animateScrollBy(mainActivityInterface,
-                    mainActivityInterface.getGestures().getScrollDistance(), scrollDown);
-            // We will also send this to nearby devices if we are a host
-            mainActivityInterface.getNearbyConnections().sendScrollByPayload(scrollDown,
-                    mainActivityInterface.getGestures().getScrollDistance());
-        } else if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) &&
-                recyclerView != null && recyclerView.getVisibility() == View.VISIBLE) {
-            int height = (int)(mainActivityInterface.getGestures().getScrollDistance()*recyclerView.getHeight());
-            if (!scrollDown) {
-                height = - height;
-            }
-            recyclerView.smoothScrollBy(0,height);
-            // We will also send this to nearby devices if we are a host
-            mainActivityInterface.getNearbyConnections().sendScrollByPayload(scrollDown,
-                    mainActivityInterface.getGestures().getScrollDistance());
-
-        } else if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_stage)) &&
+        if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_stage)) &&
                 recyclerView != null && recyclerView.getVisibility() == View.VISIBLE) {
             int currentPosition = mainActivityInterface.getSong().getCurrentSection();
             int finalPosition = mainActivityInterface.getSong().getPresoOrderSongSections().size() - 1;
@@ -679,17 +662,11 @@ public class PerformanceGestures {
 
             if (scrollDown) {
                 if (currentPosition < finalPosition) {
-                    if (recyclerView.getLayoutManager() != null) {
-                        recyclerView.getLayoutManager().scrollToPosition(currentPosition + 1);
-                        newPosition++;
-                    }
+                    newPosition++;
                 }
             } else {
                 if (currentPosition > 0) {
-                    if (recyclerView.getLayoutManager() != null) {
-                        recyclerView.getLayoutManager().scrollToPosition(currentPosition - 1);
-                        newPosition--;
-                    }
+                    newPosition--;
                 }
             }
 
@@ -707,6 +684,24 @@ public class PerformanceGestures {
             }
 
 
+        } else if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) &&
+                recyclerView != null && recyclerView.getVisibility() == View.VISIBLE) {
+            int height = (int)(mainActivityInterface.getGestures().getScrollDistance()*recyclerView.getHeight());
+            if (!scrollDown) {
+                height = - height;
+            }
+            recyclerView.smoothScrollBy(0,height);
+            // We will also send this to nearby devices if we are a host
+            mainActivityInterface.getNearbyConnections().sendScrollByPayload(scrollDown,
+                    mainActivityInterface.getGestures().getScrollDistance());
+
+
+        } else if (myZoomLayout != null && myZoomLayout.getVisibility() == View.VISIBLE) {
+            myZoomLayout.animateScrollBy(mainActivityInterface,
+                    mainActivityInterface.getGestures().getScrollDistance(), scrollDown);
+            // We will also send this to nearby devices if we are a host
+            mainActivityInterface.getNearbyConnections().sendScrollByPayload(scrollDown,
+                    mainActivityInterface.getGestures().getScrollDistance());
         }
     }
 
