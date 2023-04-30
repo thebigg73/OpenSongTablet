@@ -821,4 +821,19 @@
     <string name="width">幅</string>
     <string name="words_and_music_by">言葉と音楽</string>
     <string name="zoom_level">ズームレベル</string>
+    <string name="bold_chorus">コーラスを太字で表示</string>
+    <string name="beat_buddy_import_project">ビートバディのプロジェクト情報をインポートする</string>
+    <string name="beat_buddy_import_project_info">これにより、BeatBuddyペダルからドラムキット、曲、フォルダを名前で選択/閲覧できます。</string>
+    <string name="beat_buddy_match">ソングマッチ</string>
+    <string name="beat_buddy_match_info">OpenSongApp の曲と BeatBuddy ペダルの曲を自動的に一致させる</string>
+    <string name="beat_buddy_import_options">BeatBuddy からプロジェクト情報をインポートするには、次の 2 つのオプションがあります。</string>
+    <string name="beat_buddy_import_options1">1. USBケーブルを使用してビートバディまたはビートバディSDカードをこのデバイスに接続し、ルート/メインフォルダを選択します</string>
+    <string name="beat_buddy_import_options2">2. 私の BeatBuddy Python スクリプト (ダウンロードページから入手可能) を使用して、コンピュータ上に作成された結合された MyBeatBuddyProject .csv ファイルをインポートします。 .csvファイルを直接インポートできます</string>
+    <string name="beat_buddy_import_options_choose">以下のオプションを選択して、インポートプロセスを開始します。</string>
+    <string name="browse_sd_card">以下のオプションを選択して、インポートプロセスを開始します。...</string>
+    <string name="beat_buddy_project_csv">プロジェクト.csvファイルのインポート</string>
+    <string name="beat_buddy_import_error">BeatBuddy プロジェクトのインポート中に問題が発生しました。 詳細については、ユーザーマニュアルを参照してください。</string>
+    <string name="imported_values">インポートされた値</string>
+    <string name="beat_buddy_auto">ビートバディの曲を自動的に送信する</string>
+    <string name="beat_buddy_auto_info">曲のファイル名、タイトル、フィールドとも呼ばれますBeatBuddyデータベースを比較します。 一致する曲が見つかった場合、フォルダと曲コードは自動的にMIDI経由で送信されます</string>
 </resources>

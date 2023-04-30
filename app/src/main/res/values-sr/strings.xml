@@ -821,4 +821,19 @@
     <string name="width">Širina</string>
     <string name="words_and_music_by">Reči i muzika</string>
     <string name="zoom_level">Nivo zumiranja</string>
+    <string name="bold_chorus">Prikaži refren podebljano</string>
+    <string name="beat_buddy_import_project">Uvoz BeatBuddy informacija o projektu</string>
+    <string name="beat_buddy_import_project_info">Ovo će vam omogućiti da izaberete/pregledate bubnjeve, pesme i fascikle po imenu sa vaše BeatBuddy pedale</string>
+    <string name="beat_buddy_match">Podudaranje pesama</string>
+    <string name="beat_buddy_match_info">Automatski uskladite svoje OpenSongApp pesme sa onima na vašoj BeatBuddy pedali</string>
+    <string name="beat_buddy_import_options">Imate dve opcije uvoza informacija o projektu iz beatBuddy-ja:</string>
+    <string name="beat_buddy_import_options1">1. Povežite BeatBuddy ili BeatBuddy SD karticu sa ovim uređajem pomoću USB kabla i izaberite osnovnu/glavnu fasciklu</string>
+    <string name="beat_buddy_import_options2">2. Uvezite kombinovani MyBeatBuddyProject.csv datoteku kreiranu na vašem računaru koristeći moju BeatBuddy python skriptu (dostupnu sa stranice za preuzimanje).  Možete direktno da uvezete .csv datoteku</string>
+    <string name="beat_buddy_import_options_choose">Izaberite dole navedenu željenu opciju da biste započeli proces uvoza.</string>
+    <string name="browse_sd_card">Izbor glavne fascikle SD kartice</string>
+    <string name="beat_buddy_project_csv">Uvoz datoteke .csv projekta</string>
+    <string name="beat_buddy_import_error">Došlo je do problema pri uvozu BeatBuddy projekta.  Za više informacija pogledajte korisničko uputstvo.</string>
+    <string name="imported_values">Uvezene vrednosti</string>
+    <string name="beat_buddy_auto">Automatski pošalji BeatBuddy pesmu</string>
+    <string name="beat_buddy_auto_info">Poredi vaše pesmu Filename, Title i Also known as fields with your BeatBuddy database.  Ako se uporedi pesma, fascikla i kôd pesme se automatski šalju preko MIDI-ja</string>
 </resources>

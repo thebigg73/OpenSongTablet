@@ -821,4 +821,19 @@
     <string name="width">Πλάτος</string>
     <string name="words_and_music_by">Λέξεις και μουσική από</string>
     <string name="zoom_level">Επίπεδο ζουμ</string>
+    <string name="bold_chorus">Εμφάνιση χορωδίας με έντονους χαρακτήρες</string>
+    <string name="beat_buddy_import_project">Εισαγωγή πληροφοριών έργου BeatBuddy</string>
+    <string name="beat_buddy_import_project_info">Αυτό θα σας επιτρέψει να επιλέξετε / περιηγηθείτε σε drumkit, τραγούδια και φακέλους με το όνομα από το πεντάλ BeatBuddy</string>
+    <string name="beat_buddy_match">Αγώνας τραγουδιού</string>
+    <string name="beat_buddy_match_info">Αυτόματη αντιστοίχιση των τραγουδιών OpenSongApp με αυτά στο πεντάλ BeatBuddy</string>
+    <string name="beat_buddy_import_options">Έχετε δύο επιλογές εισαγωγής πληροφοριών έργου από το BeatBuddy σας:</string>
+    <string name="beat_buddy_import_options1">1. Συνδέστε την κάρτα SD BeatBuddy ή BeatBuddy σε αυτήν τη συσκευή χρησιμοποιώντας ένα καλώδιο USB και επιλέξτε τον ριζικό / κύριο φάκελο</string>
+    <string name="beat_buddy_import_options2">2. Εισαγάγετε ένα συνδυασμένο αρχείο MyBeatBuddyProject.csv που δημιουργήθηκε στον υπολογιστή σας χρησιμοποιώντας το σενάριο python BeatBuddy (διαθέσιμο από τη σελίδα λήψεων).  Μπορείτε να εισαγάγετε απευθείας το αρχείο .csv</string>
+    <string name="beat_buddy_import_options_choose">Επιλέξτε την επιθυμητή επιλογή παρακάτω για να ξεκινήσετε τη διαδικασία εισαγωγής.</string>
+    <string name="browse_sd_card">Επιλέξτε τον κύριο φάκελο της κάρτας SD</string>
+    <string name="beat_buddy_project_csv">Εισαγωγή αρχείου .csv έργου</string>
+    <string name="beat_buddy_import_error">Παρουσιάστηκε πρόβλημα κατά την εισαγωγή του έργου BeatBuddy.  Ανατρέξτε στο εγχειρίδιο χρήσης για περισσότερες πληροφορίες.</string>
+    <string name="imported_values">Εισαγόμενες τιμές</string>
+    <string name="beat_buddy_auto">Αυτόματη αποστολή τραγουδιού BeatBuddy</string>
+    <string name="beat_buddy_auto_info">Συγκρίνει το τραγούδι σας Όνομα αρχείου, Τίτλος και Επίσης γνωστά ως πεδία με τη βάση δεδομένων BeatBuddy.  Εάν βρεθεί ένα αντίστοιχο τραγούδι, ο φάκελος και ο κωδικός τραγουδιού αποστέλλονται αυτόματα μέσω MIDI</string>
 </resources>

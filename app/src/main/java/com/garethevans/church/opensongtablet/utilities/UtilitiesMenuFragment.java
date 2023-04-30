@@ -34,7 +34,7 @@ public class UtilitiesMenuFragment extends Fragment {
 
         if (getContext()!=null) {
             mainActivityInterface.updateToolbar(getString(R.string.utilities));
-            beatBuddy_string = getString(R.string.deeplink_beatbuddy);
+            beatBuddy_string = getString(R.string.deeplink_beatbuddy_options);
         }
         // Set up listeners
         setupListeners();

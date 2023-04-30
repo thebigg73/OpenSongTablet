@@ -1,4 +1,4 @@
-package com.garethevans.church.opensongtablet.drummer;
+package com.garethevans.church.opensongtablet.beatbuddy;
 
 import android.content.Context;
 import android.util.Log;
@@ -45,26 +45,36 @@ public class BBSongAdapter extends RecyclerView.Adapter<BBSongViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull BBSongViewHolder holder, int position) {
         BBSong bbSong = foundSongs.get(position);
-        String folderString = folder_string+" "+bbSong.folder+": "+bbSong.foldername;
-        String songString = song_string+" "+bbSong.song+": "+bbSong.name;
+        String folderString = folder_string+" "+bbSong.folder_num+": "+bbSong.folder_name;
+        String songString = song_string+" "+bbSong.song_num+": "+bbSong.song_name;
         String signatureString = timesig_string+": "+bbSong.signature;
-        String kitString = kit_string+" "+bbSong.kit+": "+bbSong.kitname;
+        String kitString = kit_string+" "+bbSong.kit_num+": "+bbSong.kit_name;
 
-        holder.bb_folder.setText(folderString);
-        holder.bb_song.setText(songString);
-        holder.bb_timesig.setText(signatureString);
-        holder.bb_kit.setText(kitString);
+        boolean folderOk = bbSong.folder_num_name!=null && !bbSong.folder_num_name.isEmpty();
+        boolean songOk = bbSong.song_num_name!=null && !bbSong.song_num_name.isEmpty();
+        boolean timeOk = bbSong.signature!=null && !bbSong.signature.isEmpty();
+        boolean kitOk = bbSong.kit_num != -1;
+        holder.bb_folder.setVisibility(folderOk ? View.VISIBLE:View.GONE);
+        holder.bb_song.setVisibility(songOk ? View.VISIBLE:View.GONE);
+        holder.bb_timesig.setVisibility(timeOk ? View.VISIBLE:View.GONE);
+        holder.bb_kit.setVisibility(kitOk ? View.VISIBLE:View.GONE);
+        holder.bb_folder.setText(folderOk ? folderString:"");
+        holder.bb_song.setText(songOk ? songString:"");
+        holder.bb_timesig.setText(timeOk ? signatureString:"");
+        holder.bb_kit.setText(kitOk ? kitString:"");
 
         int pos = holder.getAbsoluteAdapterPosition();
-        holder.bb_layout.setOnClickListener(view -> {
-            Log.d(TAG,"pos:"+pos);
-            String songCode = mainActivityInterface.getBeatBuddy().getSongCode(bbSong.folder, bbSong.song);
-            Log.d(TAG,"songCode:"+songCode);
-            String message = success_string + ": "+folder_string+" "+bbSong.folder+" / "+song_string+" "+bbSong.song;
-            mainActivityInterface.getShowToast().doItBottomSheet(message,bottomSheetBeatBuddySongs.getView());
-            bottomSheetBeatBuddySongs.updateSong(bbSong.folder,bbSong.song);
-            mainActivityInterface.getMidi().sendMidiHexSequence(songCode);
-        });
+        if (folderOk && songOk) {
+            holder.bb_layout.setOnClickListener(view -> {
+                Log.d(TAG, "pos:" + pos);
+                String songCode = mainActivityInterface.getBeatBuddy().getSongCode(bbSong.folder_num, bbSong.song_num);
+                Log.d(TAG, "songCode:" + songCode);
+                String message = success_string + ": " + folder_string + " " + bbSong.folder_num + " / " + song_string + " " + bbSong.song_num;
+                mainActivityInterface.getShowToast().doItBottomSheet(message, bottomSheetBeatBuddySongs.getView());
+                bottomSheetBeatBuddySongs.updateSong(bbSong.folder_num, bbSong.song_num);
+                mainActivityInterface.getMidi().sendMidiHexSequence(songCode);
+            });
+        }
     }
 
     @Override

@@ -821,4 +821,19 @@
     <string name="width">Szerokość</string>
     <string name="words_and_music_by">Słowa i muzyka wg</string>
     <string name="zoom_level">Stopień przybliżenia</string>
+    <string name="bold_chorus">Wyświetl refren pogrubioną czcionką</string>
+    <string name="beat_buddy_import_project">Importowanie informacji o projekcie BeatBuddy</string>
+    <string name="beat_buddy_import_project_info">Umożliwi to wybieranie / przeglądanie zestawów perkusyjnych, utworów i folderów według nazwy z pedału BeatBuddy</string>
+    <string name="beat_buddy_match">Mecz piosenki</string>
+    <string name="beat_buddy_match_info">Automatycznie dopasuj utwory OpenSongApp do utworów na pedale BeatBuddy</string>
+    <string name="beat_buddy_import_options">Dostępne są dwie opcje importowania informacji o projekcie z BeatBuddy:</string>
+    <string name="beat_buddy_import_options1">1. Podłącz kartę SD BeatBuddy lub BeatBuddy do tego urządzenia za pomocą USB i wybierz folder główny / główny</string>
+    <string name="beat_buddy_import_options2">2. Zaimportuj połączony plik MyBeatBuddyProject.csv utworzony na komputerze przy użyciu mojego skryptu BeatBuddy python (dostępnego na stronie pobierania).  Plik .csv można zaimportować bezpośrednio</string>
+    <string name="beat_buddy_import_options_choose">Wybierz żądaną opcję poniżej, aby rozpocząć proces importowania.</string>
+    <string name="browse_sd_card">Wybierz główny folder karty SD</string>
+    <string name="beat_buddy_project_csv">Importowanie pliku .csv projektu</string>
+    <string name="beat_buddy_import_error">Wystąpił problem podczas importowania projektu BeatBuddy.  Więcej informacji można znaleźć w instrukcji obsługi.</string>
+    <string name="imported_values">Zaimportowane wartości</string>
+    <string name="beat_buddy_auto">Automatycznie wysyłaj piosenkę BeatBuddy</string>
+    <string name="beat_buddy_auto_info">Porównuje nazwę pliku, tytuł utworu i pola znane również jako z bazą danych BeatBuddy.  Jeśli zostanie znaleziony pasujący utwór, folder i kod utworu są automatycznie wysyłane przez MIDI</string>
 </resources>

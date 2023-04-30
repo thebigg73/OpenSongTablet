@@ -1,12 +1,15 @@
-package com.garethevans.church.opensongtablet.drummer;
+package com.garethevans.church.opensongtablet.beatbuddy;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+
+import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.songprocessing.Song;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -15,27 +18,62 @@ public class BBSQLite extends SQLiteOpenHelper {
 
     // This holds the default song list searchable from the app
     public final String DATABASE_NAME = "BeatBuddy.db";
-    public final String TABLE_NAME = "songs";
+    public final String TABLE_NAME_DEFAULT_SONGS = "defsongs";
+    public final String TABLE_NAME_DEFAULT_DRUMS = "defdrums";
+    public final String TABLE_NAME_MY_SONGS = "mysongs";
+    public final String TABLE_NAME_MY_DRUMS = "mydrums";
     public final String COLUMN_ID = "id";
-    public final String COLUMN_FOLDER = "folder";
-    public final String COLUMN_SONG = "song";
-    public final String COLUMN_NAME = "name";
+    public final String COLUMN_FOLDER_NUM = "foldernum";
+    public final String COLUMN_FOLDER_NAME = "foldername";
+    public final String COLUMN_FOLDER_CODE = "foldercode";
+    public final String COLUMN_SONG_NUM = "songnum";
+    public final String COLUMN_SONG_NAME = "songname";
+    public final String COLUMN_SONG_CODE = "songcode";
     public final String COLUMN_SIGNATURE = "signature";
-    public final String COLUMN_KIT = "kit";
+    public final String COLUMN_KIT_NUM = "kitnum";
+    public final String COLUMN_KIT_NAME = "kitname";
+    public final String COLUMN_KIT_CODE = "kitcode";
 
     // Create table SQL query.
-    public final String CREATE_TABLE =
-            "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " ("
+    public final String CREATE_TABLE_DEFAULT_SONGS =
+            "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_DEFAULT_SONGS + " ("
                     + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                    + COLUMN_FOLDER + " INTEGER,"
-                    + COLUMN_SONG + " INTEGER,"
-                    + COLUMN_NAME + " TEXT,"
+                    + COLUMN_FOLDER_NUM + " INTEGER,"
+                    + COLUMN_FOLDER_NAME + " TEXT,"
+                    + COLUMN_SONG_NUM + " INTEGER,"
+                    + COLUMN_SONG_NAME + " TEXT,"
                     + COLUMN_SIGNATURE + " TEXT,"
-                    + COLUMN_KIT + " INTEGER"
+                    + COLUMN_KIT_NUM + " INTEGER,"
+                    + COLUMN_KIT_NAME + " TEXT"
+                    + ");";
+    public final String CREATE_TABLE_MY_SONGS =
+            "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_MY_SONGS + " ("
+                    + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                    + COLUMN_SONG_CODE + " TEXT,"
+                    + COLUMN_SONG_NUM + " INTEGER,"
+                    + COLUMN_SONG_NAME + " TEXT,"
+                    + COLUMN_FOLDER_CODE + " TEXT,"
+                    + COLUMN_FOLDER_NUM + " INTEGER,"
+                    + COLUMN_FOLDER_NAME + " TEXT"
                     + ");";
 
-    // CSV file created will give 1,10000 Reasons,37611B1D,1,BB Worship
-    // Format is SONG_NUM,SONG_NAME,FOLDER_CODE,FOLDER_NUM,FOLDER_NAME
+    public final String CREATE_TABLE_DEFAULT_DRUMS =
+            "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_DEFAULT_DRUMS + " ("
+                    + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                    + COLUMN_KIT_NUM + " INTEGER,"
+                    + COLUMN_KIT_NAME + " TEXT"
+                    + ");";
+
+    public final String CREATE_TABLE_MY_DRUMS =
+            "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_MY_DRUMS + " ("
+                    + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                    + COLUMN_KIT_NUM + " INTEGER,"
+                    + COLUMN_KIT_NAME + " TEXT,"
+                    + COLUMN_KIT_CODE + " TEXT"
+                    + ");";
+
+    // CSV file created will give 23SA2FS.BBS,1,10000 Reasons,37611B1D,1,BB Worship
+    // Format is SONG_CODE,SONG_NUM,SONG_NAME,FOLDER_CODE,FOLDER_NUM,FOLDER_NAME
     
     private final Context c;
     private static final int DATABASE_VERSION = 1;
@@ -86,7 +124,6 @@ public class BBSQLite extends SQLiteOpenHelper {
 
     private ArrayList<BBSong> bbSongs;
 
-
     // The initialisers
     public BBSQLite(Context c) {
         // Don't create the database here as we don't want to recreate on each call.
@@ -100,23 +137,65 @@ public class BBSQLite extends SQLiteOpenHelper {
         // If the table doesn't exist, create it.
         if (db!=null) {
             try {
-                db.execSQL(CREATE_TABLE);
+                createTables(db);
                 buildDefaultDatabase();
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
+    public void checkDefaultDatabase() {
+        int defSongs = getDefSongsCount();
+        int defDrums = getDefDrumsCount();
+        if (defSongs<=0 || defDrums<=0) {
+            getDefaultSongs();
+            buildDefaultDatabase();
+        }
+    }
+
+    public int getMySongsCount() {
+        return getCount(TABLE_NAME_MY_SONGS);
+    }
+    public int getMyDrumsCount() {
+        return getCount(TABLE_NAME_MY_DRUMS);
+    }
+    public int getDefSongsCount() {
+        return getCount(TABLE_NAME_DEFAULT_SONGS);
+    }
+    public int getDefDrumsCount() {
+        return getCount(TABLE_NAME_DEFAULT_DRUMS);
+    }
+    public int getCount(String what) {
+        SQLiteDatabase db = getDB();
+        String query = "SELECT " + COLUMN_ID + " FROM " + what +";";
+        Cursor cursor = db.rawQuery(query, null);
+        int count = cursor.getCount();
+        closeCursor(cursor);
+        db.close();
+        return count;
+    }
+
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // Drop older table if existed
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME + ";");
-
+        dropTables(db);
         // Create tables again
         onCreate(db);
     }
 
+    private void createTables(SQLiteDatabase db) {
+        db.execSQL(CREATE_TABLE_DEFAULT_SONGS);
+        db.execSQL(CREATE_TABLE_MY_SONGS);
+        db.execSQL(CREATE_TABLE_DEFAULT_DRUMS);
+        db.execSQL(CREATE_TABLE_MY_DRUMS);
+    }
 
+    private void dropTables(SQLiteDatabase db) {
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_DEFAULT_SONGS + ";");
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_MY_SONGS + ";");
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_DEFAULT_DRUMS + ";");
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_MY_DRUMS + ";");
+    }
 
     // Create and reset the database
     public SQLiteDatabase getDB() {
@@ -124,7 +203,7 @@ public class BBSQLite extends SQLiteOpenHelper {
             File f = new File(c.getExternalFilesDir("Database"), DATABASE_NAME);
             SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(f, null);
             // Check if the table exists
-            db.execSQL(CREATE_TABLE);
+            createTables(db);
             return db;
         } catch (OutOfMemoryError | Exception e) {
             return null;
@@ -134,7 +213,7 @@ public class BBSQLite extends SQLiteOpenHelper {
         // This drops the table if it exists (wipes it ready to start again)
         if (db!=null) {
             try {
-                db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME + ";");
+                dropTables(db);
             } catch (OutOfMemoryError | Exception e) {
                 e.printStackTrace();
             }
@@ -146,6 +225,7 @@ public class BBSQLite extends SQLiteOpenHelper {
             onCreate(db);
         }
     }
+
     public void closeCursor(Cursor cursor) {
         if (cursor!=null) {
             try {
@@ -454,15 +534,15 @@ public class BBSQLite extends SQLiteOpenHelper {
 
     }
 
-    private BBSong addNewItem(int folder, int song, String name, String signature, int kit) {
+    private BBSong addNewItem(int folder_num, int song_num, String song_name, String signature, int kit_num) {
         BBSong bbSong = new BBSong();
-        bbSong.folder = folder;
-        bbSong.song = song;
-        bbSong.name = name;
+        bbSong.folder_num = folder_num;
+        bbSong.song_num = song_num;
+        bbSong.song_name = song_name;
         bbSong.signature = signature;
-        bbSong.kit = kit;
-        bbSong.foldername = getFolderNameForNumber(folder);
-        bbSong.kitname = getDrumKitForNumber(kit);
+        bbSong.kit_num = kit_num;
+        bbSong.folder_name = getFolderNameForNumber(folder_num);
+        bbSong.kit_name = getDrumKitForNumber(kit_num);
         return bbSong;
     }
 
@@ -478,55 +558,128 @@ public class BBSQLite extends SQLiteOpenHelper {
         // Insert new values or ignore rows that exist already
         for (BBSong bbSong : bbSongs) {
             ContentValues values = new ContentValues();
-            values.put(COLUMN_FOLDER, bbSong.folder);
-            values.put(COLUMN_SONG, bbSong.song);
-            values.put(COLUMN_NAME, bbSong.name);
+            values.put(COLUMN_FOLDER_NUM, bbSong.folder_num);
+            values.put(COLUMN_FOLDER_NAME, bbSong.folder_name);
+            values.put(COLUMN_SONG_NUM, bbSong.song_num);
+            values.put(COLUMN_SONG_NAME, bbSong.song_name);
             values.put(COLUMN_SIGNATURE, bbSong.signature);
-            values.put(COLUMN_KIT, bbSong.kit);
+            values.put(COLUMN_KIT_NUM, bbSong.kit_num);
+            values.put(COLUMN_KIT_NAME, bbSong.kit_name);
 
             // Insert the new row
             try {
-                db.insert(TABLE_NAME, null, values);
+                db.insert(TABLE_NAME_DEFAULT_SONGS, null, values);
             } catch (Exception e) {
-                Log.d(TAG, bbSong.name + " already exists in the table, not able to create.");
+                Log.d(TAG, bbSong.song_name + " already exists in the table, not able to create.");
+            }
+        }
+
+        // Insert the drums
+        for (String[] kits:defaultKits) {
+            ContentValues values = new ContentValues();
+            values.put(COLUMN_KIT_NUM, kits[0]);
+            values.put(COLUMN_KIT_NAME, kits[1]);
+
+            // Insert the new row
+            try {
+                db.insert(TABLE_NAME_DEFAULT_DRUMS, null, values);
+            } catch (Exception e) {
+                Log.d(TAG, kits[1] + " already exists in the table, not able to create.");
             }
         }
 
         db.close();
     }
 
-    public ArrayList<String> searchUniqueValues(String what) {
+    public void clearMySongs() {
         SQLiteDatabase db = getDB();
-        // Check we have populated the database
-        long numberOfRows = DatabaseUtils.queryNumEntries(db, TABLE_NAME);
-        if (numberOfRows==0) {
-            buildDefaultDatabase();
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_MY_SONGS + ";");
+        db.execSQL(CREATE_TABLE_MY_SONGS);
+        db.close();
+    }
+
+    public void addMySongs(ArrayList<String> song_codes, ArrayList<Integer> song_nums,
+                           ArrayList<String> song_names, ArrayList<String> folder_codes,
+                           ArrayList<Integer> folder_nums, ArrayList<String> folder_names) {
+        SQLiteDatabase db = getDB();
+        for (int x=0; x<song_nums.size(); x++) {
+            ContentValues values = new ContentValues();
+            values.put(COLUMN_SONG_CODE, song_codes.get(x));
+            values.put(COLUMN_SONG_NUM, song_nums.get(x));
+            values.put(COLUMN_SONG_NAME, song_names.get(x));
+            values.put(COLUMN_FOLDER_CODE, folder_codes.get(x));
+            values.put(COLUMN_FOLDER_NUM, folder_nums.get(x));
+            values.put(COLUMN_FOLDER_NAME, folder_names.get(x));
+
+            // Insert the new row
+            try {
+                db.insert(TABLE_NAME_MY_SONGS, null, values);
+            } catch (Exception e) {
+                Log.d(TAG, song_names.get(x) + " already exists in the table, not able to create.");
+            }
         }
+        db.close();
+    }
+
+    public void clearMyDrums() {
+        SQLiteDatabase db = getDB();
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_MY_DRUMS + ";");
+        db.execSQL(CREATE_TABLE_MY_DRUMS);
+        db.close();
+    }
+    public void addMyDrumKits(ArrayList<Integer> kit_nums, ArrayList<String> kit_names,
+                              ArrayList<String> kit_codes) {
+        SQLiteDatabase db = getDB();
+        for (int x = 0; x<kit_names.size(); x++) {
+            ContentValues values = new ContentValues();
+            values.put(COLUMN_KIT_NUM, kit_nums.get(x));
+            values.put(COLUMN_KIT_NAME, kit_names.get(x));
+            values.put(COLUMN_KIT_CODE, kit_codes.get(x));
+
+            // Insert the new row
+            try {
+                db.insert(TABLE_NAME_MY_DRUMS, null, values);
+            } catch (Exception e) {
+                Log.d(TAG, kit_names.get(x) + " already exists in the table, not able to create.");
+            }
+        }
+        db.close();
+    }
+
+    public ArrayList<String> searchUniqueValues(String whatColumns, String whichTable, String sortBy) {
+        SQLiteDatabase db = getDB();
 
         ArrayList<String> values = new ArrayList<>();
-        String q = "SELECT DISTINCT " + what + " FROM " + TABLE_NAME + " ORDER BY " +
-                what + " ASC";
+        String q = "SELECT DISTINCT " + whatColumns + " FROM " + whichTable + " ORDER BY " +
+                sortBy + " ASC";
 
         Cursor cursor = db.rawQuery(q, null);
         cursor.moveToFirst();
-        if (cursor.getColumnCount()>0 && cursor.getColumnIndex(what)==0) {
+        if (cursor.getColumnCount()>0 && cursor.getColumnIndex(sortBy)==0) {
             for (int x=0; x<cursor.getCount(); x++) {
                 cursor.moveToPosition(x);
                 String value;
                 int resultInt;
-                switch (what) {
-                    case COLUMN_FOLDER:
-                        resultInt = cursor.getInt(cursor.getColumnIndexOrThrow(what));
+                String resultStr;
+                switch (sortBy) {
+                    case COLUMN_FOLDER_NUM:
+                        resultInt = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_FOLDER_NUM));
+                        resultStr = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_FOLDER_NAME));
                         // Get the name from this number
-                        value = getFolderNameForNumber(resultInt);
+                        value = resultInt + ". " + resultStr;
                         break;
                     case COLUMN_SIGNATURE:
-                        value = cursor.getString(cursor.getColumnIndexOrThrow(what));
+                        value = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_SIGNATURE));
                         break;
-                    case COLUMN_KIT:
-                        resultInt = cursor.getInt(cursor.getColumnIndexOrThrow(what));
+                    case COLUMN_KIT_NUM:
+                        resultInt = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_KIT_NUM));
+                        if (whichTable.equals(TABLE_NAME_MY_DRUMS) || whichTable.equals(TABLE_NAME_DEFAULT_DRUMS)) {
+                            resultStr = ". " + cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_KIT_NAME));
+                        } else {
+                            resultStr = "";
+                        }
                         // Get the name from this number
-                        value = getDrumKitForNumber(resultInt);
+                        value = resultInt + resultStr;
                         break;
                     default:
                         value = "";
@@ -540,22 +693,169 @@ public class BBSQLite extends SQLiteOpenHelper {
         return values;
     }
 
+    public ArrayList<BBSong> getMySongsByFolder(String folderVal) {
+        try (SQLiteDatabase db = getDB()) {
+            // The folder will have both the folder number and the folder name
+            int folderNum = -1;
+            String folderName = "";
+            if (folderVal != null && folderVal.contains(". ")) {
+                folderVal = folderVal.replace(". ","___");
+                String[] bits = folderVal.split("___");
+                if (bits.length>1) {
+                    folderNum = Integer.parseInt(bits[0].replaceAll("\\D",""));
+                    folderName = bits[1];
+                }
+            }
+            ArrayList<BBSong> bbSongsFound = new ArrayList<>();
+            // To avoid SQL injections, we need to build the args
+            ArrayList<String> args = new ArrayList<>();
+            String selectQuery = "SELECT * FROM " + TABLE_NAME_MY_SONGS + " WHERE " +
+                    COLUMN_FOLDER_NUM + "= ? AND " + COLUMN_FOLDER_NAME + "= ? ORDER BY " + COLUMN_SONG_NUM + " COLLATE NOCASE ASC";
+            args.add(""+folderNum);
+            args.add(folderName);
+            String[] selectionArgs = new String[args.size()];
+            selectionArgs = args.toArray(selectionArgs);
+
+            if (folderNum>0) {
+                Cursor cursor = db.rawQuery(selectQuery, selectionArgs);
+
+                // looping through all rows and adding to list
+                if (cursor.moveToFirst()) {
+                    do {
+                        int folder_num = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_FOLDER_NUM));
+                        int song_num = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_SONG_NUM));
+                        String song_name = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_SONG_NAME));
+                        String folder_name = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_FOLDER_NAME));
+                        String song_code = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_SONG_CODE));
+                        String folder_code = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_FOLDER_CODE));
+                        BBSong bbSong = new BBSong();
+                        bbSong.folder_num = folder_num;
+                        bbSong.folder_name = folder_name;
+                        bbSong.folder_code = folder_code;
+                        if (bbSong.folder_num>0 && bbSong.folder_name!=null && !bbSong.folder_name.isEmpty()) {
+                            bbSong.folder_num_name = folder_num + ". " + folder_name;
+                        }
+                        bbSong.song_num = song_num;
+                        bbSong.song_name = song_name;
+                        if (bbSong.song_num>0 && bbSong.song_name!=null && !bbSong.song_name.isEmpty()) {
+                            bbSong.song_num_name = song_num + ". " + song_name;
+                        }
+                        bbSong.song_code = song_code;
+
+                        bbSongsFound.add(bbSong);
+                    }
+                    while (cursor.moveToNext());
+                }
+
+                // close cursor connection
+                closeCursor(cursor);
+            }
+
+            db.close();
+            //Return the songs
+            return bbSongsFound;
+        } catch (OutOfMemoryError | Exception e) {
+            Log.d(TAG,"Table/database error");
+            e.printStackTrace();
+            return new ArrayList<>();
+
+        }
+    }
+
+    // When loading a song, and option is checked, T
+    // The app will look for matching song names in the database
+    // If found, the song will be sent to the BeatBuddy automatically
+    public void checkAutoBeatBuddy(Context c,
+                                     MainActivityInterface mainActivityInterface, Song thisSong) {
+        String query;
+        if (mainActivityInterface.getBeatBuddy().getBeatBuddyUseImported()) {
+            query = "SELECT " + COLUMN_FOLDER_NUM + ", " +
+                    COLUMN_SONG_NUM + " FROM " + TABLE_NAME_MY_SONGS + " ";
+        } else {
+            query = "SELECT " + COLUMN_FOLDER_NUM + ", " +
+                    COLUMN_SONG_NUM + " FROM " + TABLE_NAME_DEFAULT_SONGS + " ";
+        }
+
+        // Get the search options
+        // Remove commas as they aren't allowed in the BeatBuddy naming system
+        String option1 = thisSong.getFilename();
+        if (option1!=null) {
+            option1 = option1.replace(",","");
+        }
+        String option2 = thisSong.getTitle();
+        if (option2!=null) {
+            option2 = option2.replace(",","");
+        }
+        String option3 = thisSong.getAka();
+        if (option3!=null) {
+            option3 = option3.replace(",","");
+        }
+        ArrayList<String> args = new ArrayList<>();
+        query += "WHERE " + COLUMN_SONG_NAME + "=?";
+        args.add(option1);
+
+        if (option2 != null && !option2.isEmpty()) {
+            query += " OR " + COLUMN_SONG_NAME + "=?";
+            args.add(option2);
+        }
+
+        if (option3 != null && !option3.isEmpty()) {
+            query += " OR " + COLUMN_SONG_NAME + "=?";
+            args.add(option3);
+        }
+
+        // Get matching songs (if any).
+        query += " ORDER BY " + COLUMN_FOLDER_NUM + " COLLATE NOCASE ASC";
+        String[] selectionArgs = new String[args.size()];
+        selectionArgs = args.toArray(selectionArgs);
+
+        SQLiteDatabase db = getDB();
+        Cursor cursor = db.rawQuery(query, selectionArgs);
+        if (cursor != null && cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            int folder_num = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_FOLDER_NUM));
+            int song_num = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_SONG_NUM));
+            String hexCode = mainActivityInterface.getBeatBuddy().getSongCode(folder_num, song_num);
+            Log.d(TAG, "hexCode:" + hexCode);
+            mainActivityInterface.getMidi().sendMidiHexSequence(hexCode);
+            String message = c.getString(R.string.beat_buddy) + " - " + c.getString(R.string.folder) + ":" + folder_num
+                    + " " + c.getString(R.string.song) + ":" + song_num;
+            mainActivityInterface.getShowToast().doIt(message);
+        }
+        closeCursor(cursor);
+        db.close();
+    }
+
+    // Only called by default songs
     public ArrayList<BBSong> getSongsByFilters(String folderVal, String timeSigVal, String kitVal) {
         try (SQLiteDatabase db = getDB()) {
             ArrayList<BBSong> bbSongsFound = new ArrayList<>();
+            // The folder will have both the folder number and the folder name
+            int folderNum = -1;
+            String folderName = "";
+            if (folderVal != null && folderVal.contains(". ")) {
+                folderVal = folderVal.replace(". ","___");
+                String[] bits = folderVal.split("___");
+                if (bits.length>1) {
+                    folderNum = Integer.parseInt(bits[0].replaceAll("\\D",""));
+                    folderName = bits[1];
+                }
+            }
+
             // To avoid SQL injections, we need to build the args
             ArrayList<String> args = new ArrayList<>();
             String sqlMatch = "";
             if (folderVal != null && !folderVal.isEmpty()) {
-                sqlMatch += COLUMN_FOLDER + "= ? AND ";
-                args.add(""+getNumberFromFolder(folderVal));
+                sqlMatch += COLUMN_FOLDER_NUM + "= ? AND " + COLUMN_FOLDER_NAME + "= ? ";
+                args.add(""+folderNum);
+                args.add(folderName);
             }
             if (timeSigVal != null && !timeSigVal.isEmpty()) {
                 sqlMatch += COLUMN_SIGNATURE + "= ? AND ";
                 args.add(timeSigVal);
             }
             if (kitVal != null && !kitVal.isEmpty()) {
-                sqlMatch += COLUMN_KIT + "= ?";
+                sqlMatch += COLUMN_KIT_NUM + "= ?";
                 args.add(""+getNumberFromKit(kitVal));
             }
 
@@ -566,12 +866,12 @@ public class BBSQLite extends SQLiteOpenHelper {
                 }
             }
 
-            String getOrderBySQL = "ORDER BY " + COLUMN_FOLDER + " COLLATE NOCASE ASC," +
-                    COLUMN_SONG + " ASC";
-            String getBasicSQLQueryStart = "SELECT " + COLUMN_FOLDER + ", " +
-                    COLUMN_SONG + ", " + COLUMN_NAME + ", " +
-                    COLUMN_SIGNATURE + ", " + COLUMN_KIT +
-                    " FROM " + TABLE_NAME + " ";
+            String getOrderBySQL = "ORDER BY " + COLUMN_FOLDER_NUM + " COLLATE NOCASE ASC," +
+                    COLUMN_SONG_NUM + " ASC";
+            String getBasicSQLQueryStart = "SELECT " + COLUMN_FOLDER_NUM + ", " +
+                    COLUMN_SONG_NUM + ", " + COLUMN_SONG_NAME + ", " +
+                    COLUMN_SIGNATURE + ", " + COLUMN_KIT_NUM +
+                    " FROM " + TABLE_NAME_DEFAULT_SONGS + " ";
             String selectQuery = getBasicSQLQueryStart.trim() + " " + sqlMatch.trim() + " " + getOrderBySQL.trim();
             String[] selectionArgs = new String[args.size()];
             selectionArgs = args.toArray(selectionArgs);
@@ -581,20 +881,27 @@ public class BBSQLite extends SQLiteOpenHelper {
             // looping through all rows and adding to list
             if (cursor.moveToFirst()) {
                 do {
-                    int folder = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_FOLDER));
-                    int song = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_SONG));
-                    String name = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NAME));
+                    int folder_num = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_FOLDER_NUM));
+                    String folder_name = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_FOLDER_NAME));
+                    int song_num = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_SONG_NUM));
+                    String song_name = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_SONG_NAME));
                     String signature = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_SIGNATURE));
-                    int kit = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_KIT));
+                    int kit_num = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_KIT_NUM));
 
                     BBSong bbSong = new BBSong();
-                    bbSong.folder = folder;
-                    bbSong.song = song;
-                    bbSong.name = name;
+                    bbSong.folder_num = folder_num;
+                    bbSong.folder_name = folder_name;
+                    bbSong.song_num = song_num;
+                    bbSong.song_name = song_name;
                     bbSong.signature = signature;
-                    bbSong.kit = kit;
-                    bbSong.foldername = getFolderNameForNumber(folder);
-                    bbSong.kitname = getDrumKitForNumber(kit);
+                    bbSong.kit_num = kit_num;
+                    bbSong.kit_name = getDrumKitForNumber(kit_num);
+                    if (bbSong.folder_num>0 && bbSong.folder_name!=null && !bbSong.folder_name.isEmpty()) {
+                        bbSong.folder_num_name = folder_num + ". " + folder_name;
+                    }
+                    if (bbSong.song_num>0 && bbSong.song_name!=null && !bbSong.song_name.isEmpty()) {
+                        bbSong.song_num_name = song_num + ". " + song_name;
+                    }
 
                     bbSongsFound.add(bbSong);
                 }
@@ -603,6 +910,8 @@ public class BBSQLite extends SQLiteOpenHelper {
 
             // close cursor connection
             closeCursor(cursor);
+
+            db.close();
 
             //Return the songs
             return bbSongsFound;
@@ -613,6 +922,20 @@ public class BBSQLite extends SQLiteOpenHelper {
         }
     }
 
+    public String lookupValue(String getColumn,
+                              String querySearch, String[] args) {
+
+        SQLiteDatabase db = getDB();
+        Cursor cursor = db.rawQuery(querySearch, args);
+        String value = "";
+        if (cursor != null && cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            value = cursor.getString(cursor.getColumnIndexOrThrow(getColumn));
+        }
+        closeCursor(cursor);
+        db.close();
+        return value;
+    }
     public String getFolderNameForNumber(int number) {
         for (String[] folder:defaultFolders) {
             if (folder[0].equals(""+number)) {
@@ -621,14 +944,7 @@ public class BBSQLite extends SQLiteOpenHelper {
         }
         return "";
     }
-    public int getNumberFromFolder(String foldername) {
-        for (String[] folder:defaultFolders) {
-            if (folder[1].equals(foldername)) {
-                return Integer.parseInt(folder[0]);
-            }
-        }
-        return -1;
-    }
+
 
     public int getNumberFromKit(String kitname) {
         for (String[] kit:defaultKits) {

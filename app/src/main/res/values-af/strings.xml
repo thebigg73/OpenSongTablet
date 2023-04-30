@@ -821,4 +821,19 @@
     <string name="width">Breedte</string>
     <string name="words_and_music_by">Woorde en musiek deur</string>
     <string name="zoom_level">Zoemvlak</string>
+    <string name="bold_chorus">Vertoon koor in vetdruk</string>
+    <string name="beat_buddy_import_project">Voer BeatBuddy-projekinligting in</string>
+    <string name="beat_buddy_import_project_info">Hiermee kan u tromme, liedjies en gidse op die naam van u BeatBuddy-pedaal kies / blaai</string>
+    <string name="beat_buddy_match">Liedjie wedstryd</string>
+    <string name="beat_buddy_match_info">Pas u OpenSongApp-liedjies outomaties by dié op u BeatBuddy-pedaal</string>
+    <string name="beat_buddy_import_options">U het twee opsies om projekinligting vanaf u BeatBuddy in te voer:</string>
+    <string name="beat_buddy_import_options1">1. Koppel die BeatBuddy- of BeatBuddy SD-kaart aan hierdie toestel met behulp van \'n USB-kabel en kies die root / main folder</string>
+    <string name="beat_buddy_import_options2">2. Voer \'n gekombineerde MyBeatBuddyProject .csv lêer in wat op u rekenaar geskep is met behulp van my BeatBuddy-python-script (beskikbaar op die aflaai-bladsy).  U kan die .csv lêer direk invoer</string>
+    <string name="beat_buddy_import_options_choose">Kies die gewenste opsie hieronder om die invoerproses te begin.</string>
+    <string name="browse_sd_card">Kies hoofmap van die SD -kaart</string>
+    <string name="beat_buddy_project_csv">Voer projek .csv lêer in</string>
+    <string name="beat_buddy_import_error">Daar was \'n probleem met die invoer van die BeatBuddy-projek.  Raadpleeg die gebruikershandleiding vir meer inligting.</string>
+    <string name="imported_values">Ingevoerde waardes</string>
+    <string name="beat_buddy_auto">Stuur outomaties BeatBuddy-liedjie</string>
+    <string name="beat_buddy_auto_info">Vergelyk u liedjie Lêernaam, titel en ook bekend as velde met u BeatBuddy-databasis.  As \'n bypassende liedjie gevind word, word die lêergids en liedjiekode outomaties via MIDI gestuur</string>
 </resources>

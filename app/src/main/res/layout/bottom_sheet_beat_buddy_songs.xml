@@ -24,6 +24,13 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <com.garethevans.church.opensongtablet.customviews.TextSlider
+                android:id="@+id/useDefaultOrImported"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:textLeft="@string/use_default"
+                app:textRight="@string/imported_values"/>
+
             <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
                 android:id="@+id/folder"
                 android:layout_width="match_parent"

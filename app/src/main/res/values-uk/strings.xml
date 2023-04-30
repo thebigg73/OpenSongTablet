@@ -821,4 +821,19 @@
     <string name="width">Ширина</string>
     <string name="words_and_music_by">Слова і музика</string>
     <string name="zoom_level">Рівень масштабування</string>
+    <string name="bold_chorus">Виділення приспіву жирним шрифтом</string>
+    <string name="beat_buddy_import_project">Імпорт інформації про проект BeatBuddy</string>
+    <string name="beat_buddy_import_project_info">Це дозволить вам вибирати/переглядати барабани, пісні та папки за назвою з вашої педалі BeatBuddy</string>
+    <string name="beat_buddy_match">Пісенний матч</string>
+    <string name="beat_buddy_match_info">Автоматично зіставляйте свої пісні OpenSongApp з піснями на педалі BeatBuddy</string>
+    <string name="beat_buddy_import_options">У вас є два варіанти імпорту інформації про проект з вашого BeatBuddy:</string>
+    <string name="beat_buddy_import_options1">1. Підключіть SD-карту BeatBuddy або BeatBuddy до цього пристрою за допомогою USB-кабелю та виберіть кореневу/головну папку</string>
+    <string name="beat_buddy_import_options2">2. Імпортуйте комбінований файл MyBeatBuddyProject.csv, створений на вашому комп\'ютері за допомогою мого сценарію python BeatBuddy (доступний на сторінці завантажень).  Файл .csv можна імпортувати безпосередньо</string>
+    <string name="beat_buddy_import_options_choose">Виберіть потрібний параметр нижче, щоб розпочати процес імпорту.</string>
+    <string name="browse_sd_card">Виберіть основну папку SD-карти</string>
+    <string name="beat_buddy_project_csv">Імпорт файлу проекту .csv</string>
+    <string name="beat_buddy_import_error">Виникла проблема з імпортом проекту BeatBuddy.  Будь ласка, зверніться до посібника користувача для отримання додаткової інформації.</string>
+    <string name="imported_values">Імпортовані значення</string>
+    <string name="beat_buddy_auto">Автоматично надсилати пісню BeatBuddy</string>
+    <string name="beat_buddy_auto_info">Порівнює вашу пісню Filename, Title і Також відомі як поля з вашою базою даних BeatBuddy.  Якщо знайдено відповідну пісню, папка та код пісні автоматично надсилаються через MIDI</string>
 </resources>

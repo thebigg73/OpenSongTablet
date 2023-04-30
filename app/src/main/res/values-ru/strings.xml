@@ -821,4 +821,19 @@
     <string name="width">Ширина</string>
     <string name="words_and_music_by">Слова и музыка</string>
     <string name="zoom_level">Уровень масштабирования</string>
+    <string name="bold_chorus">Отобразить припев жирным шрифтом</string>
+    <string name="beat_buddy_import_project">Импорт информации о проекте BeatBuddy</string>
+    <string name="beat_buddy_import_project_info">Это позволит вам выбирать/просматривать ударные установки, песни и папки по имени с педали BeatBuddy</string>
+    <string name="beat_buddy_match">Песенный матч</string>
+    <string name="beat_buddy_match_info">Автоматически сопоставляйте свои песни OpenSongApp с песнями на педали BeatBuddy</string>
+    <string name="beat_buddy_import_options">У вас есть два варианта импорта информации о проекте из вашего BeatBuddy:</string>
+    <string name="beat_buddy_import_options1">1. Подключите SD-карту BeatBuddy или BeatBuddy к этому устройству с помощью USB-кабеля и выберите корневую/основную папку.</string>
+    <string name="beat_buddy_import_options2">2. Импортируйте объединенный файл MyBeatBuddyProject.csv, созданный на вашем компьютере с помощью моего скрипта Python BeatBuddy (доступен на странице загрузок).  Вы можете импортировать файл .csv напрямую</string>
+    <string name="beat_buddy_import_options_choose">Выберите нужный вариант ниже, чтобы начать процесс импорта.</string>
+    <string name="browse_sd_card">Выберите основную папку SD-карты</string>
+    <string name="beat_buddy_project_csv">Импорт файла .csv проекта</string>
+    <string name="beat_buddy_import_error">Возникла проблема с импортом проекта BeatBuddy.  Пожалуйста, обратитесь к руководству пользователя для получения дополнительной информации.</string>
+    <string name="imported_values">Импортируемые значения</string>
+    <string name="beat_buddy_auto">Автоматически отправлять песню BeatBuddy</string>
+    <string name="beat_buddy_auto_info">Сравнивает имя файла вашей песни, название и поля, также известные как поля, с вашей базой данных BeatBuddy.  Если найдена подходящая песня, папка и код песни автоматически отправляются через MIDI</string>
 </resources>

@@ -821,4 +821,19 @@
     <string name="width">Largura</string>
     <string name="words_and_music_by">Palavras e música de</string>
     <string name="zoom_level">Nível de zoom</string>
+    <string name="bold_chorus">Exiba o refrão em negrito</string>
+    <string name="beat_buddy_import_project">Importar informações do projeto BeatBuddy</string>
+    <string name="beat_buddy_import_project_info">Isso permitirá que você selecione/procure baterias, músicas e pastas pelo nome do seu pedal BeatBuddy</string>
+    <string name="beat_buddy_match">Correspondência de música</string>
+    <string name="beat_buddy_match_info">Combine automaticamente as suas músicas OpenSongApp com as do seu pedal BeatBuddy</string>
+    <string name="beat_buddy_import_options">Você tem duas opções de importação de informações do projeto do seu BeatBuddy:</string>
+    <string name="beat_buddy_import_options1">1. Conecte o cartão SD BeatBuddy ou BeatBuddy a este dispositivo usando um cabo USB e selecione a pasta raiz / principal</string>
+    <string name="beat_buddy_import_options2">2. Importe um arquivo MyBeatBuddyProject.csv combinado criado em seu computador usando meu script python BeatBuddy (disponível na página de downloads).  Você pode importar o arquivo .csv diretamente</string>
+    <string name="beat_buddy_import_options_choose">Selecione a opção desejada abaixo para iniciar o processo de importação.</string>
+    <string name="browse_sd_card">Selecione a pasta principal do cartão SD</string>
+    <string name="beat_buddy_project_csv">Importar arquivo de .csv do projeto</string>
+    <string name="beat_buddy_import_error">Houve um problema ao importar o projeto BeatBuddy.  Consulte o manual do utilizador para obter mais informações.</string>
+    <string name="imported_values">Valores importados</string>
+    <string name="beat_buddy_auto">Enviar automaticamente a música do BeatBuddy</string>
+    <string name="beat_buddy_auto_info">Compara o nome do ficheiro da sua música, o título e também conhecidos como campos com a sua base de dados BeatBuddy.  Se uma música correspondente for encontrada, a pasta e o código da música são enviados automaticamente através do MIDI</string>
 </resources>

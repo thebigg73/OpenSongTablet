@@ -821,4 +821,19 @@
     <string name="width">Bredd</string>
     <string name="words_and_music_by">Ord och musik av</string>
     <string name="zoom_level">Zoomnivå</string>
+    <string name="bold_chorus">Visa refräng i fetstil</string>
+    <string name="beat_buddy_import_project">Importera BeatBuddy-projektinformation</string>
+    <string name="beat_buddy_import_project_info">Detta gör att du kan välja/bläddra bland trumset, låtar och mappar efter namn från din BeatBuddy-pedal</string>
+    <string name="beat_buddy_match">Låtmatch</string>
+    <string name="beat_buddy_match_info">Matcha automatiskt dina OpenSongApp-låtar med dem på din BeatBuddy-pedal</string>
+    <string name="beat_buddy_import_options">Du har två alternativ för att importera projektinformation från din BeatBuddy:</string>
+    <string name="beat_buddy_import_options1">1. Anslut BeatBuddy eller BeatBuddy SD-kortet till den här enheten med en USB-kabel och välj roten / huvudmappen</string>
+    <string name="beat_buddy_import_options2">2. Importera en kombinerad MyBeatBuddyProject.csv fil som skapats på din dator med mitt BeatBuddy python-skript (tillgängligt från nedladdningssidan).  Du kan importera .csv filen direkt</string>
+    <string name="beat_buddy_import_options_choose">Välj önskat alternativ nedan för att starta importprocessen.</string>
+    <string name="browse_sd_card">Välj huvudmapp för SD-kort</string>
+    <string name="beat_buddy_project_csv">Importera projekt .csv fil</string>
+    <string name="beat_buddy_import_error">Det gick inte att importera BeatBuddy-projektet.  Se användarhandboken för mer information.</string>
+    <string name="imported_values">Importerade värden</string>
+    <string name="beat_buddy_auto">Skicka automatiskt BeatBuddy-låt</string>
+    <string name="beat_buddy_auto_info">Jämför din låt Filnamn, Titel och Även känd som fält med din BeatBuddy-databas.  Om en matchande låt hittas skickas mappen och låtkoden automatiskt över MIDI</string>
 </resources>

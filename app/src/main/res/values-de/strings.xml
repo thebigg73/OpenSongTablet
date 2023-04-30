@@ -821,4 +821,19 @@
     <string name="width">Breite</string>
     <string name="words_and_music_by">Worte und Musik von</string>
     <string name="zoom_level">Zoomstufe</string>
+    <string name="bold_chorus">Chor fett anzeigen</string>
+    <string name="beat_buddy_import_project">BeatBuddy-Projektinformationen importieren</string>
+    <string name="beat_buddy_import_project_info">Auf diese Weise können Sie Drumkits, Songs und Ordner nach Namen von Ihrem BeatBuddy-Pedal auswählen/durchsuchen</string>
+    <string name="beat_buddy_match">Song-Match</string>
+    <string name="beat_buddy_match_info">Passen Sie Ihre OpenSongApp-Songs automatisch an die auf Ihrem BeatBuddy-Pedal an</string>
+    <string name="beat_buddy_import_options">Sie haben zwei Möglichkeiten, Projektinformationen aus Ihrem BeatBuddy zu importieren:</string>
+    <string name="beat_buddy_import_options1">1. Schließen Sie den BeatBuddy oder die BeatBuddy SD-Karte mit einem USB-Kabel an dieses Gerät an und wählen Sie den Stamm-/Hauptordner aus</string>
+    <string name="beat_buddy_import_options2">2. Importieren Sie eine kombinierte MyBeatBuddyProject.csv Datei, die auf Ihrem Computer mit meinem BeatBuddy-Python-Skript erstellt wurde (verfügbar auf der Download-Seite).  Sie können die .csv Datei direkt importieren</string>
+    <string name="beat_buddy_import_options_choose">Wählen Sie unten die gewünschte Option aus, um den Importvorgang zu starten.</string>
+    <string name="browse_sd_card">Wählen Sie den Hauptordner der SD-Karte</string>
+    <string name="beat_buddy_project_csv">Projekt .csv Datei importieren</string>
+    <string name="beat_buddy_import_error">Beim Importieren des BeatBuddy-Projekts ist ein Problem aufgetreten.  Weitere Informationen finden Sie in der Bedienungsanleitung.</string>
+    <string name="imported_values">Importierte Werte</string>
+    <string name="beat_buddy_auto">BeatBuddy-Song automatisch senden</string>
+    <string name="beat_buddy_auto_info">Vergleicht deine Song-Felder Dateiname, Titel und auch bekannt als Felder mit deiner BeatBuddy-Datenbank.  Wenn ein passender Song gefunden wird, werden der Ordner und der Songcode automatisch über MIDI gesendet</string>
 </resources>

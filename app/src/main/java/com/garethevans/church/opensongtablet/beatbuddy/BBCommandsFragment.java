@@ -1,4 +1,4 @@
-package com.garethevans.church.opensongtablet.drummer;
+package com.garethevans.church.opensongtablet.beatbuddy;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.MaterialSlider;
-import com.garethevans.church.opensongtablet.databinding.SettingsBeatbuddyBinding;
+import com.garethevans.church.opensongtablet.databinding.SettingsBeatbuddyCommandsBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.midi.MidiInfo;
 import com.garethevans.church.opensongtablet.midi.MidiItemTouchHelper;
@@ -28,10 +28,10 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class BeatBuddyFragment extends Fragment {
+public class BBCommandsFragment extends Fragment {
 
     private MainActivityInterface mainActivityInterface;
-    private SettingsBeatbuddyBinding myView;
+    private SettingsBeatbuddyCommandsBinding myView;
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "BeatBuddyFragment";
     private String not_set_string="", bpm_string="", folder_string="", song_string="", channel_string="",
@@ -44,6 +44,9 @@ public class BeatBuddyFragment extends Fragment {
             fromSongMessages_songPC, fromSongMessages_tempoMSB, fromSongMessages_tempoLSB,
             fromSongMessages_volumeCC, fromSongMessages_drumKitCC;
     private BBSQLite bbsqLite;
+    private String searchAerosFolder, searchAerosSong, searchDrumKit;
+    private int foundFolders, foundSongs;
+
 
     private MidiMessagesAdapter midiMessagesAdapter = null;
 
@@ -63,14 +66,14 @@ public class BeatBuddyFragment extends Fragment {
     @org.jetbrains.annotations.Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
-        myView = SettingsBeatbuddyBinding.inflate(inflater,container,false);
+        myView = SettingsBeatbuddyCommandsBinding.inflate(inflater,container,false);
 
         if (getContext()!=null) {
-            mainActivityInterface.updateToolbar(getString(R.string.beat_buddy));
+            mainActivityInterface.updateToolbar(getString(R.string.beat_buddy)+": "+getString(R.string.midi_commands));
+            bbsqLite = new BBSQLite(getContext());
             setupStrings();
             myView.currentSongMessages.setLayoutManager(new LinearLayoutManager(getContext()));
             midiMessagesAdapter = new MidiMessagesAdapter(getContext());
-            bbsqLite = new BBSQLite(getContext());
         }
 
         checkExistingMessages();
@@ -80,18 +83,21 @@ public class BeatBuddyFragment extends Fragment {
     }
 
     private void setupStrings() {
-            web_string = getString(R.string.website_beatbuddy);
-            not_set_string = getString(R.string.is_not_set);
-            bpm_string = getString(R.string.bpm);
-            folder_string = getString(R.string.folder);
-            song_string = getString(R.string.song);
-            success_string = getString(R.string.success);
-            channel_string = getString(R.string.midi_channel);
-            tempo_string = getString(R.string.tempo);
-            volume_string = getString(R.string.volume);
-            unknown_string = getString(R.string.unknown);
-            drumkit_string = getString(R.string.drum_kit);
-            playlist_string = getString(R.string.playlist);
+        web_string = getString(R.string.website_beatbuddy_commands);
+        not_set_string = getString(R.string.is_not_set);
+        bpm_string = getString(R.string.bpm);
+        folder_string = getString(R.string.folder);
+        song_string = getString(R.string.song);
+        success_string = getString(R.string.success);
+        channel_string = getString(R.string.midi_channel);
+        tempo_string = getString(R.string.tempo);
+        volume_string = getString(R.string.volume);
+        unknown_string = getString(R.string.unknown);
+        drumkit_string = getString(R.string.drum_kit);
+        playlist_string = getString(R.string.playlist);
+        searchAerosSong = bbsqLite.COLUMN_FOLDER_NUM + "=? AND " + bbsqLite.COLUMN_SONG_NUM + "=?";
+        searchAerosFolder = bbsqLite.COLUMN_FOLDER_NUM + "=?";
+        searchDrumKit = bbsqLite.COLUMN_KIT_NUM + "=?";
     }
 
     private void checkExistingMessages() {
@@ -224,6 +230,17 @@ public class BeatBuddyFragment extends Fragment {
         // Set the input method to numbers only.  Not using sliders as the folder can be huge number!
         myView.songFolder.setInputType(InputType.TYPE_CLASS_NUMBER);
         myView.songNumber.setInputType(InputType.TYPE_CLASS_NUMBER);
+
+        myView.beatBuddyUseImported.setChecked(mainActivityInterface.getBeatBuddy().getBeatBuddyUseImported());
+        myView.beatBuddyUseImported.setOnCheckedChangeListener((compoundButton, b) -> {
+            mainActivityInterface.getBeatBuddy().setBeatBuddyUseImported(b);
+            setSliderHintText(myView.aerosFolder,null,searchAerosFolder,true,
+                    bbsqLite.COLUMN_FOLDER_NAME, (int)myView.aerosFolder.getValue(),-1);
+            setSliderHintText(myView.aerosSong,song_string,searchAerosSong,true,
+                    bbsqLite.COLUMN_SONG_NAME, (int)myView.aerosFolder.getValue(),(int)myView.aerosSong.getValue());
+            setSliderHintText(myView.drumKit, drumkit_string, searchDrumKit, false,
+                    bbsqLite.COLUMN_KIT_NAME, (int)myView.drumKit.getValue(),-1);
+        });
 
         // If we are including song details
         myView.includeSong.setChecked(mainActivityInterface.getBeatBuddy().getBeatBuddyIncludeSong());
@@ -412,12 +429,15 @@ public class BeatBuddyFragment extends Fragment {
             slider.setHint(not_set_string);
             mainActivityInterface.getSong().setTempo("");
         } else if (prefName!=null && prefName.equals("aerosFolder")) {
-            if (value > 111) {
-                slider.setHint(playlist_string+"\n"+(value-111));
-            } else {
-                slider.setHint(folder_string+"\n"+ value);
-            }
+            setSliderHintText(myView.aerosFolder,null,searchAerosFolder,true,
+                    bbsqLite.COLUMN_FOLDER_NAME,value,-1);
+        } else if (prefName!=null && prefName.equals("aerosSong")) {
+            setSliderHintText(myView.aerosSong,song_string,searchAerosSong,true,
+                    bbsqLite.COLUMN_SONG_NAME,(int)myView.aerosFolder.getValue(),value);
             slider.setValue(value);
+        } else if (prefName!=null && prefName.equals("beatBuddyDrumKit")) {
+            setSliderHintText(myView.drumKit, drumkit_string, searchDrumKit, false,
+                    bbsqLite.COLUMN_KIT_NAME, (int)value, -1);
         } else {
             slider.setHint(value + labelEnd);
             slider.setValue(value);
@@ -426,7 +446,7 @@ public class BeatBuddyFragment extends Fragment {
             if (prefName!=null && prefName.equals("songTempo") && (value1<40||value1>300)) {
                 return not_set_string;
             } else if (prefName!=null && prefName.equals("aerosFolder")) {
-                if (value1 > 111) {
+                if (value > 111) {
                     return playlist_string+"\n"+(int)(value1-111);
                 } else {
                     return folder_string + "\n" + (int)value1;
@@ -511,15 +531,24 @@ public class BeatBuddyFragment extends Fragment {
                 mainActivityInterface.getSong().setTempo(value+"");
                 mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong(),false);
             } else if (prefName!=null && prefName.equals("aerosFolder")) {
-                if (value > 111) {
-                    materialSlider.setHint(playlist_string+"\n"+(int)(value-111));
-                } else {
-                    materialSlider.setHint(folder_string + "\n" + (int)value);
-                }
+                setSliderHintText(myView.aerosFolder, null, searchAerosFolder, true,
+                        bbsqLite.COLUMN_FOLDER_NAME, (int) value, -1);
+                setSliderHintText(myView.aerosSong,song_string,searchAerosSong,true,
+                        bbsqLite.COLUMN_SONG_NAME,(int)value,(int)myView.aerosSong.getValue());
+                slider.setValue(value);
+
+            } else if (prefName!=null && prefName.equals("aerosSong")) {
+                setSliderHintText(myView.aerosSong, song_string, searchAerosSong, true,
+                        bbsqLite.COLUMN_SONG_NAME, (int) myView.aerosFolder.getValue(), (int) value);
+
+            } else if (prefName!=null && prefName.equals("beatBuddyDrumKit")) {
+                setSliderHintText(myView.drumKit, drumkit_string, searchDrumKit, false,
+                        bbsqLite.COLUMN_KIT_NAME, (int) value, -1);
             } else {
                 // Just set the hint
                 materialSlider.setHint(((int) value) + labelEnd);
             }
+
 
             // Update the ones that are user prefs that aren't checked on save
             if (prefName.equals("beatBuddyChannel")) {
@@ -529,6 +558,44 @@ public class BeatBuddyFragment extends Fragment {
                 mainActivityInterface.getMidi().setMidiDelay((int)value);
             }
         }
+    }
+    private void setSliderHintText(MaterialSlider slider, String prefix, String querySearch ,
+                                   boolean songs, String getColumn, int value1, int value2) {
+        String hint;
+        String table;
+        if (songs) {
+            table = mainActivityInterface.getBeatBuddy().getBeatBuddyUseImported() ?
+                    bbsqLite.TABLE_NAME_MY_SONGS:bbsqLite.TABLE_NAME_DEFAULT_SONGS;
+        } else {
+            table = mainActivityInterface.getBeatBuddy().getBeatBuddyUseImported() ?
+                    bbsqLite.TABLE_NAME_MY_DRUMS:bbsqLite.TABLE_NAME_DEFAULT_DRUMS;
+        }
+        querySearch = "SELECT DISTINCT " + getColumn + " FROM " + table +" WHERE " + querySearch;
+        String[] args;
+        int value = value1;
+        if (value2!=-1) {
+            args = new String[]{""+value1,""+value2};
+            value = value2;
+        } else {
+            args = new String[]{""+value1};
+        }
+
+        if (slider==myView.aerosFolder) {
+            if (value1 > 111) {
+                hint = playlist_string + " " + (int) (value - 111);
+            } else {
+                hint = folder_string + " " + (int) value;
+            }
+        } else {
+            hint = prefix + " " + (int) value;
+        }
+
+        String lookedUpHint = bbsqLite.lookupValue(getColumn, querySearch, args);
+        if (!lookedUpHint.isEmpty()) {
+            lookedUpHint = ": "+lookedUpHint;
+        }
+        hint = hint.trim();
+        slider.setHint(hint+lookedUpHint);
     }
 
     private class SongCommandChange implements TextWatcher {
@@ -697,7 +764,7 @@ public class BeatBuddyFragment extends Fragment {
         executorService.execute(() -> {
             if (bbsqLite!=null) {
                 BottomSheetBeatBuddySongs bottomSheetBeatBuddySongs = new BottomSheetBeatBuddySongs(
-                        BeatBuddyFragment.this,bbsqLite);
+                        BBCommandsFragment.this,bbsqLite);
                 bottomSheetBeatBuddySongs.show(mainActivityInterface.getMyFragmentManager(),
                         "BottomSheetBeatBuddySongs");
             }

@@ -1,4 +1,4 @@
-package com.garethevans.church.opensongtablet.drummer;
+package com.garethevans.church.opensongtablet.beatbuddy;
 
 import android.view.View;
 import android.widget.LinearLayout;

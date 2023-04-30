@@ -821,4 +821,19 @@
     <string name="width">宽度</string>
     <string name="words_and_music_by">文字和音乐</string>
     <string name="zoom_level">缩放级别</string>
+    <string name="bold_chorus">以粗体显示合唱</string>
+    <string name="beat_buddy_import_project">导入 BeatBuddy 项目信息</string>
+    <string name="beat_buddy_import_project_info">这将允许您从 BeatBuddy 踏板中按名称选择/浏览鼓组、歌曲和文件夹</string>
+    <string name="beat_buddy_match">歌曲匹配</string>
+    <string name="beat_buddy_match_info">自动将您的OpenSongApp歌曲与BeatBuddy踏板上的歌曲相匹配</string>
+    <string name="beat_buddy_import_options">您有两种选择可以从 BeatBuddy 导入项目信息：</string>
+    <string name="beat_buddy_import_options1">1.使用USB电缆将BeatBuddy或BeatBuddy SD卡连接到此设备，然后选择根/主文件夹</string>
+    <string name="beat_buddy_import_options2">2. 使用我的 BeatBuddy python 脚本（可从下载页面获取）导入在您的计算机上创建的 MyBeatBuddyProject .csv 组合文件。 您可以直接导入.csv文件</string>
+    <string name="beat_buddy_import_options_choose">选择下面的所需选项以开始导入过程。</string>
+    <string name="browse_sd_card">选择SD卡主文件夹</string>
+    <string name="beat_buddy_project_csv">导入项目.csv文件</string>
+    <string name="beat_buddy_import_error">导入 BeatBuddy 项目时出现问题。 有关详细信息，请参阅用户手册。</string>
+    <string name="imported_values">导入的值</string>
+    <string name="beat_buddy_auto">自动发送 BeatBuddy 歌曲</string>
+    <string name="beat_buddy_auto_info">将您的歌曲文件名、标题和也称为字段与您的 BeatBuddy 数据库进行比较。 如果找到匹配的歌曲，文件夹和歌曲代码将自动通过 MIDI 发送</string>
 </resources>

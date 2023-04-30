@@ -1,9 +1,10 @@
-package com.garethevans.church.opensongtablet.drummer;
+package com.garethevans.church.opensongtablet.beatbuddy;
 
 import android.content.Context;
 import android.os.Build;
 
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.songprocessing.Song;
 
 public class BeatBuddy {
 
@@ -23,7 +24,7 @@ public class BeatBuddy {
             commandDoubleTimeExit, commandPauseToggle;
 
     private boolean beatBuddyIncludeSong, beatBuddyIncludeTempo, beatBuddyIncludeVolume,
-            beatBuddyIncludeDrumKit, beatBuddyAerosMode;
+            beatBuddyIncludeDrumKit, beatBuddyAerosMode, beatBuddyUseImported, beatBuddyAutoLookup;
 
     // The commond CC commands.  In one easy readable place!
     @SuppressWarnings({"FieldCanBeLocal","unused"})
@@ -86,7 +87,9 @@ public class BeatBuddy {
         beatBuddyIncludeTempo = mainActivityInterface.getPreferences().getMyPreferenceBoolean("beatBuddyIncludeTempo",false);
         beatBuddyIncludeVolume = mainActivityInterface.getPreferences().getMyPreferenceBoolean("beatBuddyIncludeVolume",false);
         beatBuddyIncludeDrumKit = mainActivityInterface.getPreferences().getMyPreferenceBoolean("beatBuddyIncludeDrumKit",false);
-        beatBuddyAerosMode = mainActivityInterface.getPreferences().getMyPreferenceBoolean("beatBuddyAerosMode",false);
+        beatBuddyAerosMode = mainActivityInterface.getPreferences().getMyPreferenceBoolean("beatBuddyAerosMode",true);
+        beatBuddyUseImported = mainActivityInterface.getPreferences().getMyPreferenceBoolean("beatBuddyUseImported",false);
+        beatBuddyAutoLookup = mainActivityInterface.getPreferences().getMyPreferenceBoolean("beatBuddyAutoLookup",true);
     }
 
     // Commands received from gestures and sent via MIDI to connected BeatBuddy
@@ -137,6 +140,15 @@ public class BeatBuddy {
                 mainActivityInterface.getMidi().buildMidiString("CC",beatBuddyChannel,CC_Pause_unpause,127));
     }
 
+    public void tryAutoSend(Context c,MainActivityInterface mainActivityInterface, Song thisSong) {
+        if (getBeatBuddyAutoLookup()) {
+            try (BBSQLite bbsqLite = new BBSQLite(c)) {
+                bbsqLite.checkAutoBeatBuddy(c, mainActivityInterface, thisSong);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
     // These are the controls called by the PerformanceGestures (pedals, page buttons or gestures)
     public void beatBuddyStart() {
         // Send a MIDI command to start the BeatBuddy
@@ -291,7 +303,12 @@ public class BeatBuddy {
     public boolean getBeatBuddyAerosMode() {
         return beatBuddyAerosMode;
     }
-
+    public boolean getBeatBuddyUseImported() {
+        return beatBuddyUseImported;
+    }
+    public boolean getBeatBuddyAutoLookup() {
+        return beatBuddyAutoLookup;
+    }
     public void setBeatBuddyChannel(int beatBuddyChannel) {
         this.beatBuddyChannel = beatBuddyChannel;
         mainActivityInterface.getPreferences().setMyPreferenceInt("beatBuddyChannel",beatBuddyChannel);
@@ -323,6 +340,14 @@ public class BeatBuddy {
     public void setBeatBuddyAerosMode(boolean beatBuddyAerosMode) {
         this.beatBuddyAerosMode = beatBuddyAerosMode;
         mainActivityInterface.getPreferences().setMyPreferenceBoolean("beatBuddyAerosMode",beatBuddyAerosMode);
+    }
+    public void setBeatBuddyUseImported(boolean beatBuddyUseImported) {
+        this.beatBuddyUseImported = beatBuddyUseImported;
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean("beatBuddyUseImported",beatBuddyUseImported);
+    }
+    public void setBeatBuddyAutoLookup(boolean beatBuddyAutoLookup) {
+        this.beatBuddyAutoLookup = beatBuddyAutoLookup;
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean("beatBuddyAutoLookup",beatBuddyAutoLookup);
     }
 
     // Calculations for working out codes
@@ -367,5 +392,9 @@ public class BeatBuddy {
     public String getDrumKitCode() {
         // The drumKitCode will be between 1 and 128.  Decrease by 1 for MIDI
         return mainActivityInterface.getMidi().buildMidiString("CC",beatBuddyChannel-1,CC_Drum_kit,beatBuddyDrumKit-1);
+    }
+    public String getDrumKitCode(int kitNum) {
+        // The drumKitCode will be between 1 and 128.  Decrease by 1 for MIDI
+        return mainActivityInterface.getMidi().buildMidiString("CC",beatBuddyChannel-1,CC_Drum_kit,kitNum-1);
     }
 }

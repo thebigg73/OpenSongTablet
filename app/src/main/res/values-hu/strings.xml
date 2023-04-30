@@ -821,4 +821,19 @@
     <string name="width">Szélesség</string>
     <string name="words_and_music_by">Szavak és zene</string>
     <string name="zoom_level">Nagyítási szint</string>
+    <string name="bold_chorus">A kórus félkövér szedése</string>
+    <string name="beat_buddy_import_project">BeatBuddy projektinformációk importálása</string>
+    <string name="beat_buddy_import_project_info">Ez lehetővé teszi a dobkészletek, dalok és mappák név szerinti kiválasztását/böngészését a BeatBuddy pedálról</string>
+    <string name="beat_buddy_match">Dal egyezés</string>
+    <string name="beat_buddy_match_info">Az OpenSongApp dalok automatikus egyeztetése a BeatBuddy pedálon lévőkkel</string>
+    <string name="beat_buddy_import_options">Két lehetősége van a projektinformációk importálására a BeatBuddy-ból:</string>
+    <string name="beat_buddy_import_options1">1. Csatlakoztassa a BeatBuddy vagy BeatBuddy SD kártyát ehhez az eszközhöz USB-kábellel, és válassza ki a gyökér / fő mappát</string>
+    <string name="beat_buddy_import_options2">2. Importáljon egy kombinált MyBeatBuddyProject.csv fájlt, amelyet a számítógépén hozott létre a BeatBuddy python szkriptemmel (elérhető a letöltések oldalon).  A .csv fájlt közvetlenül is importálhatja</string>
+    <string name="beat_buddy_import_options_choose">Válassza ki alább a kívánt lehetőséget az importálási folyamat megkezdéséhez.</string>
+    <string name="browse_sd_card">Válassza ki az SD-kártya fő mappáját</string>
+    <string name="beat_buddy_project_csv">Projekt.csv fájl importálása</string>
+    <string name="beat_buddy_import_error">Hiba történt a BeatBuddy projekt importálásakor.  További információkért olvassa el a felhasználói kézikönyvet.</string>
+    <string name="imported_values">Importált értékek</string>
+    <string name="beat_buddy_auto">BeatBuddy dal automatikus küldése</string>
+    <string name="beat_buddy_auto_info">Összehasonlítja a dalodat Fájlnév, cím és más néven mezők a BeatBuddy adatbázisoddal.  Ha talál egyező dalt, a mappa és a dal kódja automatikusan MIDI-n keresztül kerül elküldésre</string>
 </resources>

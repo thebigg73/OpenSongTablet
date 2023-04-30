@@ -821,4 +821,19 @@
     <string name="width">Largeur</string>
     <string name="words_and_music_by">Paroles et musique de</string>
     <string name="zoom_level">Le niveau de zoom</string>
+    <string name="bold_chorus">Afficher le refrain en gras</string>
+    <string name="beat_buddy_import_project">Importer des informations sur le projet BeatBuddy</string>
+    <string name="beat_buddy_import_project_info">Cela vous permettra de sélectionner/parcourir les kits de batterie, les chansons et les dossiers par nom à partir de votre pédale BeatBuddy.</string>
+    <string name="beat_buddy_match">Correspondance de chanson</string>
+    <string name="beat_buddy_match_info">Faites correspondre automatiquement vos chansons OpenSongApp à celles de votre pédale BeatBuddy</string>
+    <string name="beat_buddy_import_options">Vous avez deux options pour importer des informations de projet depuis votre BeatBuddy :</string>
+    <string name="beat_buddy_import_options1">1. Connectez la carte SD BeatBuddy ou BeatBuddy à cet appareil à l’aide d’un câble USB et sélectionnez le dossier racine / principal</string>
+    <string name="beat_buddy_import_options2">2. Importez un fichier combiné MyBeatBuddyProject.csv créé sur votre ordinateur à l’aide de mon script python BeatBuddy (disponible sur la page des téléchargements).  Vous pouvez importer le fichier .csv directement</string>
+    <string name="beat_buddy_import_options_choose">Sélectionnez l’option souhaitée ci-dessous pour commencer le processus d’importation.</string>
+    <string name="browse_sd_card">Sélectionnez le dossier principal de la carte SD</string>
+    <string name="beat_buddy_project_csv">Importer le fichier .csv du projet</string>
+    <string name="beat_buddy_import_error">Un problème est survenu lors de l’importation du projet BeatBuddy.  Veuillez vous référer au manuel d’utilisation pour plus d’informations.</string>
+    <string name="imported_values">Valeurs importées</string>
+    <string name="beat_buddy_auto">Envoyer automatiquement la chanson BeatBuddy</string>
+    <string name="beat_buddy_auto_info">Compare le nom de votre chanson, le titre et les champs également connus sous le nom de chanson avec votre base de données BeatBuddy.  Si une chanson correspondante est trouvée, le dossier et le code de la chanson sont envoyés automatiquement via MIDI</string>
 </resources>

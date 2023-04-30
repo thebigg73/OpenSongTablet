@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/DefaultView"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <com.garethevans.church.opensongtablet.customviews.NestedScrollWithFAB
         android:id="@+id/beatBuddyNestedScroll"
@@ -13,72 +13,83 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginBottom="100dp">
+            android:layout_marginBottom="100dp"
+            android:orientation="vertical">
 
             <com.garethevans.church.opensongtablet.customviews.MaterialSlider
                 android:id="@+id/beatBuddyChannel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/midi_channel"
+                android:value="1"
                 android:valueFrom="1"
                 android:valueTo="16"
-                app:stepSize="1"
-                android:value="1"
-                app:adjustable="true"/>
+                app:adjustable="true"
+                app:stepSize="1" />
+            <TableRow style="@style/DividerLine" />
+
 
             <com.garethevans.church.opensongtablet.customviews.MaterialSlider
                 android:id="@+id/midiDelay"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/midi_delay"
+                android:value="100"
                 android:valueFrom="0"
                 android:valueTo="1000"
-                app:stepSize="100"
-                android:value="100"
-                app:adjustable="true"/>
-            <TableRow style="@style/DividerLine"/>
+                app:adjustable="true"
+                app:stepSize="100" />
+            <TableRow style="@style/DividerLine" />
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                android:id="@+id/beatBuddyUseImported"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/imported_values"
+                android:hint="@string/beat_buddy_import_project_info"/>
+            <TableRow style="@style/DividerLine" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
                 android:id="@+id/includeSong"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/song"
-                android:hint="@string/midi_message_include"/>
+                android:hint="@string/midi_message_include"
+                android:text="@string/song" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
                 android:id="@+id/aerosMode"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/aeros_mode"
-                android:hint="@string/aeros_mode_info"/>
+                android:hint="@string/aeros_mode_info"
+                android:text="@string/aeros_mode" />
 
             <LinearLayout
                 android:id="@+id/aerosSliders"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-            <com.garethevans.church.opensongtablet.customviews.MaterialSlider
-                android:id="@+id/aerosFolder"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/folder"
-                android:valueFrom="1"
-                android:valueTo="128"
-                app:stepSize="1"
-                android:value="1"
-                app:adjustable="true"/>
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialSlider
-                android:id="@+id/aerosSong"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/song"
-                android:valueFrom="1"
-                android:valueTo="128"
-                app:stepSize="1"
-                android:value="1"
-                app:adjustable="true"/>
+                <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+                    android:id="@+id/aerosFolder"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/folder"
+                    android:value="1"
+                    android:valueFrom="1"
+                    android:valueTo="128"
+                    app:adjustable="true"
+                    app:stepSize="1" />
+
+                <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+                    android:id="@+id/aerosSong"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/song"
+                    android:value="1"
+                    android:valueFrom="1"
+                    android:valueTo="128"
+                    app:adjustable="true"
+                    app:stepSize="1" />
             </LinearLayout>
 
             <LinearLayout
@@ -86,123 +97,132 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+
                 <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                     android:id="@+id/songFolder"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="4dp"
-                    android:hint="@string/folder"/>
+                    android:layout_weight="1"
+                    android:hint="@string/folder" />
+
                 <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                     android:id="@+id/songNumber"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
-                    android:hint="@string/song"/>
-                </LinearLayout>
+                    android:layout_weight="1"
+                    android:hint="@string/song" />
+            </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/includeSongErrors"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/songFolderError"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/beat_buddy_folder_info"
-                android:textSize="@dimen/text_small"
-                android:textColor="@color/red"
-                android:visibility="gone"/>
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/songNumberError"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/beat_buddy_song_info"
-                android:textSize="@dimen/text_small"
-                android:textColor="@color/red"
-                android:visibility="gone"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/songFolderError"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/beat_buddy_folder_info"
+                    android:textColor="@color/red"
+                    android:textSize="@dimen/text_small"
+                    android:visibility="gone" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/songNumberError"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/beat_buddy_song_info"
+                    android:textColor="@color/red"
+                    android:textSize="@dimen/text_small"
+                    android:visibility="gone" />
             </LinearLayout>
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/songBrowser"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="8dp"
-                android:text="@string/search"/>
-            <TableRow style="@style/DividerLine"/>
+                android:text="@string/search" />
+
+            <TableRow style="@style/DividerLine" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
                 android:id="@+id/includeVolume"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/volume"
-                android:hint="@string/midi_message_include"/>
+                android:hint="@string/midi_message_include"
+                android:text="@string/volume" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialSlider
                 android:id="@+id/beatBuddyVolume"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@null"
+                android:value="100"
                 android:valueFrom="0"
                 android:valueTo="100"
-                app:stepSize="1"
-                android:value="100"
+                android:visibility="gone"
                 app:adjustable="true"
-                android:visibility="gone"/>
-            <TableRow style="@style/DividerLine"/>
+                app:stepSize="1" />
+
+            <TableRow style="@style/DividerLine" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
                 android:id="@+id/includeTempo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/tempo"
-                android:hint="@string/midi_message_include"/>
+                android:hint="@string/midi_message_include"
+                android:text="@string/tempo" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialSlider
                 android:id="@+id/songTempo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@null"
+                android:value="39"
                 android:valueFrom="39"
                 android:valueTo="300"
-                app:stepSize="1"
-                android:value="39"
+                android:visibility="gone"
                 app:adjustable="true"
-                android:visibility="gone"/>
-            <TableRow style="@style/DividerLine"/>
+                app:stepSize="1" />
+
+            <TableRow style="@style/DividerLine" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
                 android:id="@+id/includeDrumKit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/drum_kit"
-                android:hint="@string/midi_message_include"/>
+                android:hint="@string/midi_message_include"
+                android:text="@string/drum_kit" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialSlider
                 android:id="@+id/drumKit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@null"
+                android:value="1"
                 android:valueFrom="1"
                 android:valueTo="128"
-                app:stepSize="1"
-                android:value="1"
+                android:visibility="gone"
                 app:adjustable="true"
-                android:visibility="gone"/>
-            <TableRow style="@style/DividerLine"/>
+                app:stepSize="1" />
+            <TableRow style="@style/DividerLine" />
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/midi_messages"
-                android:hint="@string/midi_list_item" />
+                android:hint="@string/midi_list_item"
+                android:text="@string/midi_messages" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/currentSongMessages"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minHeight="100dp"/>
+                android:minHeight="100dp" />
 
         </LinearLayout>
     </com.garethevans.church.opensongtablet.customviews.NestedScrollWithFAB>
@@ -213,14 +233,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|start"
+        android:layout_marginBottom="16dp"
         android:text="@string/midi_test"
-        app:icon="@drawable/information"/>
+        app:icon="@drawable/information" />
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:id="@+id/addMidiCommands"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:text="@string/midi_add"
-            app:icon="@drawable/midi" />
+        android:id="@+id/addMidiCommands"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginBottom="16dp"
+        android:text="@string/midi_add"
+
+        app:icon="@drawable/midi" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -821,4 +821,19 @@
     <string name="width">Šířka</string>
     <string name="words_and_music_by">Slova a hudba od</string>
     <string name="zoom_level">Úroveň přiblížení</string>
+    <string name="bold_chorus">Zobrazit refrén tučně</string>
+    <string name="beat_buddy_import_project">Import informací o projektu BeatBuddy</string>
+    <string name="beat_buddy_import_project_info">To vám umožní vybrat / procházet bicí soupravy, skladby a složky podle názvu z vašeho pedálu BeatBuddy</string>
+    <string name="beat_buddy_match">Shoda písní</string>
+    <string name="beat_buddy_match_info">Automaticky přiřazujte své skladby OpenSongApp k těm, které máte na pedálu BeatBuddy</string>
+    <string name="beat_buddy_import_options">Máte dvě možnosti, jak importovat informace o projektu z vašeho BeatBuddy:</string>
+    <string name="beat_buddy_import_options1">1. Připojte kartu BeatBuddy nebo BeatBuddy SD k tomuto zařízení pomocí kabelu USB a vyberte kořenovou / hlavní složku</string>
+    <string name="beat_buddy_import_options2">2. Importujte kombinovaný soubor MyBeatBuddyProject.csv vytvořený v počítači pomocí skriptu pythonu my BeatBuddy (k dispozici na stránce ke stažení).  Soubor .csv můžete importovat přímo</string>
+    <string name="beat_buddy_import_options_choose">Výběrem požadované možnosti níže zahájíte proces importu.</string>
+    <string name="browse_sd_card">Vyberte hlavní složku SD karty</string>
+    <string name="beat_buddy_project_csv">Import souboru projektu .csv</string>
+    <string name="beat_buddy_import_error">Při importu projektu BeatBuddy došlo k potížím.  Další informace naleznete v uživatelské příručce.</string>
+    <string name="imported_values">Importované hodnoty</string>
+    <string name="beat_buddy_auto">Automaticky odeslat skladbu BeatBuddy</string>
+    <string name="beat_buddy_auto_info">Porovná vaše skladba Název souboru, Název a Také známé jako pole s databází BeatBuddy.  Pokud je nalezena odpovídající skladba, složka a kód skladby jsou automaticky odeslány přes MIDI</string>
 </resources>

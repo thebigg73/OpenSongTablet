@@ -280,7 +280,10 @@
     <string name="deeplink_alert" translatable="false">https://www.opensongapp.com/?p=alert</string>
     <string name="deeplink_autoscroll_settings" translatable="false">https://www.opensongapp.com/?p=settings/autoscroll</string>
     <string name="deeplink_backup" translatable="false">https://www.opensongapp.com/?p=settings/storage/backup</string>
-    <string name="deeplink_beatbuddy" translatable="false">https://www.opensongapp.com/?p=settings/utilities/beatbuddy</string>
+    <string name="deeplink_beatbuddy_options" translatable="false">https://www.opensongapp.com/?p=settings/utilities/beatbuddy/options</string>
+    <string name="deeplink_beatbuddy_commands" translatable="false">https://www.opensongapp.com/?p=settings/utilities/beatbuddy/commands</string>
+    <string name="deeplink_beatbuddy_import" translatable="false">https://www.opensongapp.com/?p=settings/utilities/beatbuddy/import</string>
+    <string name="deeplink_beatbuddy_match" translatable="false">https://www.opensongapp.com/?p=settings/utilities/beatbuddy/match</string>
     <string name="deeplink_bible" translatable="false">https://www.opensongapp.com/?p=settings/bible</string>
     <string name="deeplink_bootup" translatable="false">https://www.opensongapp.com/?p=bootup</string>
     <string name="deeplink_chords" translatable="false">https://www.opensongapp.com/?p=settings/actions/chords</string>
@@ -1092,7 +1095,8 @@ Check out the categories in the right hand options menu.
     <string name="website_app_mode" translatable="false">https://www.opensongapp.com/user-manual/app-mode</string>
     <string name="website_autoscroll" translatable="false">https://www.opensongapp.com/user-manual/songs/song-actions/autoscroll</string>
     <string name="website_backup" translatable="false">https://www.opensongapp.com/user-manual/songs/opensongapp-backup</string>
-    <string name="website_beatbuddy" translatable="false">https://www.opensongapp.com/user-manual/utilities/beatbuddy</string>
+    <string name="website_beatbuddy_commands" translatable="false">https://www.opensongapp.com/user-manual/utilities/beatbuddy/commands</string>
+    <string name="website_beatbuddy_import" translatable="false">https://www.opensongapp.com/user-manual/utilities/beatbuddy/import</string>
     <string name="website_bible_download" translatable="false">https://www.opensongapp.com/user-manual/sets/bible/download-bible</string>
     <string name="website_bible_offline" translatable="false">https://www.opensongapp.com/user-manual/sets/bible/search-offline</string>
     <string name="website_bible_online" translatable="false">https://www.opensongapp.com/user-manual/sets/bible/search-online</string>
@@ -1168,4 +1172,20 @@ Check out the categories in the right hand options menu.
     <string name="youtube" translatable="false">YouTube</string>
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zoom_level">Zoom level</string>
+    <string name="bold_chorus">Display chorus in bold</string>
+    <string name="beat_buddy_import_project">Import BeatBuddy project information</string>
+    <string name="beat_buddy_import_project_info">This will allow you to select/browse drumkits, songs and folders by name from your BeatBuddy pedal</string>
+    <string name="beat_buddy_match">Song match</string>
+    <string name="beat_buddy_match_info">Automatically match your OpenSongApp songs to those on your BeatBuddy pedal</string>
+    <string name="beat_buddy_import_options">You have two options of importing project information from your BeatBuddy:</string>
+    <string name="beat_buddy_import_options1">1. Connect the BeatBuddy or BeatBuddy SD card to this device using a USB cable and select the root/main folder</string>
+    <string name="beat_buddy_import_options2">2. Import a combined MyBeatBuddyProject.csv file created on your computer using my BeatBuddy python script (available from the downloads page).  You can import the .csv file directly</string>
+    <string name="beat_buddy_import_options_choose">Select the desired option below to begin the import process.</string>
+    <string name="browse_sd_card">Select SD card main folder</string>
+    <string name="beat_buddy_project_csv">Import project .csv file</string>
+    <string name="beat_buddy_import_error">There was a problem importing the BeatBuddy project.  Please refer to the user manual for more information.</string>
+    <string name="imported_values">Imported values</string>
+    <string name="beat_buddy_auto">Automatically send BeatBuddy song</string>
+    <string name="beat_buddy_auto_info">Compares your song \'Filename\', \'Title\' and \'Also known as\' fields with your BeatBuddy database.  If a matching song is found, the folder and song code are sent over MIDI automatically</string>
+    <string name="beat_buddy_database_reset">Empty the BeatBuddy database in the app.  This will restore the pedal defaults only.</string>
 </resources>

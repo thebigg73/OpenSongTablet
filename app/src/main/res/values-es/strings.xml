@@ -821,4 +821,19 @@
     <string name="width">Ancho</string>
     <string name="words_and_music_by">Palabras y música de</string>
     <string name="zoom_level">Nivel de zoom</string>
+    <string name="bold_chorus">Mostrar el coro en negrita</string>
+    <string name="beat_buddy_import_project">Importar información del proyecto BeatBuddy</string>
+    <string name="beat_buddy_import_project_info">Esto te permitirá seleccionar / navegar por baterías, canciones y carpetas por nombre desde tu pedal BeatBuddy.</string>
+    <string name="beat_buddy_match">Coincidencia de canciones</string>
+    <string name="beat_buddy_match_info">Haz coincidir automáticamente tus canciones de OpenSongApp con las de tu pedal BeatBuddy</string>
+    <string name="beat_buddy_import_options">Tienes dos opciones para importar información del proyecto desde tu BeatBuddy:</string>
+    <string name="beat_buddy_import_options1">1. Conecte la tarjeta SD BeatBuddy o BeatBuddy a este dispositivo con un cable USB y seleccione la carpeta raíz / principal</string>
+    <string name="beat_buddy_import_options2">2. Importe un archivo combinado MyBeatBuddyProject.csv creado en su computadora usando mi script Python BeatBuddy (disponible en la página de descargas).  Puede importar el archivo .csv directamente</string>
+    <string name="beat_buddy_import_options_choose">Seleccione la opción deseada a continuación para comenzar el proceso de importación.</string>
+    <string name="browse_sd_card">Seleccione la carpeta principal de la tarjeta SD</string>
+    <string name="beat_buddy_project_csv">Importar archivo de .csv de proyecto</string>
+    <string name="beat_buddy_import_error">Hubo un problema al importar el proyecto BeatBuddy.  Consulte el manual del usuario para obtener más información.</string>
+    <string name="imported_values">Valores importados</string>
+    <string name="beat_buddy_auto">Enviar automáticamente la canción de BeatBuddy</string>
+    <string name="beat_buddy_auto_info">Compara los campos Nombre de archivo, Título y También conocido como de tu canción con tu base de datos de BeatBuddy.  Si se encuentra una canción coincidente, la carpeta y el código de la canción se envían automáticamente a través de MIDI</string>
 </resources>

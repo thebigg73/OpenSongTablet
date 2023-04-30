@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/DefaultView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                android:id="@+id/songCommands"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/midi_commands"
+                android:hint="@string/beat_buddy_info"
+                app:size="large"/>
+            <TableRow style="@style/DividerLine" />
+
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                android:id="@+id/importCSV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/beat_buddy_import_project"
+                android:hint="@string/beat_buddy_import_project_info"
+                app:size="large"/>
+            <TableRow style="@style/DividerLine" />
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                android:id="@+id/beatBuddyAutoLookup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/beat_buddy_auto"
+                android:hint="@string/beat_buddy_auto_info"
+                app:size="large" />
+            <TableRow style="@style/DividerLine" />
+
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                android:id="@+id/resetDatabase"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/reset"
+                android:hint="@string/beat_buddy_database_reset"
+                app:size="large"/>
+            <TableRow style="@style/DividerLine" />
+
+            <!--<com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                android:id="@+id/matchSongs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/beat_buddy_match"
+                android:hint="@string/beat_buddy_match_info"
+                app:size="large"/>
+            <TableRow style="@style/DividerLine" />
+-->
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</LinearLayout>
