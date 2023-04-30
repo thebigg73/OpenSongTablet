@@ -160,7 +160,11 @@ public class SetMenuFragment extends Fragment {
     public void scrollToItem() {
         if (mainActivityInterface.getCurrentSet().getIndexSongInSet()>-1 &&
                 mainActivityInterface.getCurrentSet().getIndexSongInSet() < mainActivityInterface.getCurrentSet().getSetItems().size()) {
-            myView.myRecyclerView.post(() -> llm.scrollToPositionWithOffset(mainActivityInterface.getCurrentSet().getIndexSongInSet() , 0));
+            myView.myRecyclerView.post(() -> {
+                if (llm!=null) {
+                    llm.scrollToPositionWithOffset(mainActivityInterface.getCurrentSet().getIndexSongInSet(), 0);
+                }
+            });
         }
     }
 
@@ -323,13 +327,6 @@ public class SetMenuFragment extends Fragment {
             e.printStackTrace();
         }
         //getFocus();
-    }
-    public void getFocus() {
-        try {
-            myView.myRecyclerView.requestFocus();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     public void initialiseSetItem(int setPosition) {
