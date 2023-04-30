@@ -56,6 +56,7 @@ public class BackupOSBFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        mainActivityInterface.updateToolbar(string_backup);
         mainActivityInterface.updateToolbarHelp(webAddress);
     }
 
@@ -65,13 +66,13 @@ public class BackupOSBFragment extends Fragment {
         mainActivityInterface = (MainActivityInterface) context;
     }
 
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = StorageBackupBinding.inflate(inflater,container,false);
         prepareStrings();
 
-        mainActivityInterface.updateToolbar(string_backup);
         webAddress = string_website_backup;
 
         setupViews();

@@ -41,6 +41,7 @@ public class StorageManagementFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        mainActivityInterface.updateToolbar(storage_manage_string);
         mainActivityInterface.updateToolbarHelp(webAddress);
     }
 
@@ -56,7 +57,6 @@ public class StorageManagementFragment extends Fragment {
 
         prepareStrings();
 
-        mainActivityInterface.updateToolbar(storage_manage_string);
         webAddress = website_storage_overview_string;
 
         // Do this as separate tasks in a new thread

@@ -45,8 +45,7 @@ public class BBCommandsFragment extends Fragment {
             fromSongMessages_volumeCC, fromSongMessages_drumKitCC;
     private BBSQLite bbsqLite;
     private String searchAerosFolder, searchAerosSong, searchDrumKit;
-    private int foundFolders, foundSongs;
-
+    private String webAddress;
 
     private MidiMessagesAdapter midiMessagesAdapter = null;
 
@@ -59,7 +58,8 @@ public class BBCommandsFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        mainActivityInterface.updateToolbarHelp(web_string);
+        mainActivityInterface.updateToolbar(getString(R.string.beat_buddy)+": "+getString(R.string.midi_commands));
+        mainActivityInterface.updateToolbarHelp(webAddress);
     }
 
     @Nullable
@@ -68,10 +68,12 @@ public class BBCommandsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         myView = SettingsBeatbuddyCommandsBinding.inflate(inflater,container,false);
 
+        prepareStrings();
+
+        webAddress = web_string;
+
         if (getContext()!=null) {
-            mainActivityInterface.updateToolbar(getString(R.string.beat_buddy)+": "+getString(R.string.midi_commands));
             bbsqLite = new BBSQLite(getContext());
-            setupStrings();
             myView.currentSongMessages.setLayoutManager(new LinearLayoutManager(getContext()));
             midiMessagesAdapter = new MidiMessagesAdapter(getContext());
         }
@@ -82,22 +84,24 @@ public class BBCommandsFragment extends Fragment {
         return myView.getRoot();
     }
 
-    private void setupStrings() {
-        web_string = getString(R.string.website_beatbuddy_commands);
-        not_set_string = getString(R.string.is_not_set);
-        bpm_string = getString(R.string.bpm);
-        folder_string = getString(R.string.folder);
-        song_string = getString(R.string.song);
-        success_string = getString(R.string.success);
-        channel_string = getString(R.string.midi_channel);
-        tempo_string = getString(R.string.tempo);
-        volume_string = getString(R.string.volume);
-        unknown_string = getString(R.string.unknown);
-        drumkit_string = getString(R.string.drum_kit);
-        playlist_string = getString(R.string.playlist);
-        searchAerosSong = bbsqLite.COLUMN_FOLDER_NUM + "=? AND " + bbsqLite.COLUMN_SONG_NUM + "=?";
-        searchAerosFolder = bbsqLite.COLUMN_FOLDER_NUM + "=?";
-        searchDrumKit = bbsqLite.COLUMN_KIT_NUM + "=?";
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            web_string = getString(R.string.website_beatbuddy_commands);
+            not_set_string = getString(R.string.is_not_set);
+            bpm_string = getString(R.string.bpm);
+            folder_string = getString(R.string.folder);
+            song_string = getString(R.string.song);
+            success_string = getString(R.string.success);
+            channel_string = getString(R.string.midi_channel);
+            tempo_string = getString(R.string.tempo);
+            volume_string = getString(R.string.volume);
+            unknown_string = getString(R.string.unknown);
+            drumkit_string = getString(R.string.drum_kit);
+            playlist_string = getString(R.string.playlist);
+            searchAerosSong = bbsqLite.COLUMN_FOLDER_NUM + "=? AND " + bbsqLite.COLUMN_SONG_NUM + "=?";
+            searchAerosFolder = bbsqLite.COLUMN_FOLDER_NUM + "=?";
+            searchDrumKit = bbsqLite.COLUMN_KIT_NUM + "=?";
+        }
     }
 
     private void checkExistingMessages() {

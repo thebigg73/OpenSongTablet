@@ -18,12 +18,18 @@ public class UtilitiesMenuFragment extends Fragment {
 
     private MainActivityInterface mainActivityInterface;
     private SettingsUtilitiesBinding myView;
-    private String beatBuddy_string = "";
+    private String beatBuddy_string = "", utilities_string="";
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mainActivityInterface = (MainActivityInterface) context;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mainActivityInterface.updateToolbar(utilities_string);
     }
 
     @Nullable
@@ -32,16 +38,20 @@ public class UtilitiesMenuFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         myView = SettingsUtilitiesBinding.inflate(inflater,container,false);
 
-        if (getContext()!=null) {
-            mainActivityInterface.updateToolbar(getString(R.string.utilities));
-            beatBuddy_string = getString(R.string.deeplink_beatbuddy_options);
-        }
+        prepareStrings();
+
         // Set up listeners
         setupListeners();
 
         return myView.getRoot();
     }
 
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            utilities_string = getString(R.string.utilities);
+            beatBuddy_string = getString(R.string.deeplink_beatbuddy_options);
+        }
+    }
     private void setupListeners() {
         myView.soundMeter.setOnClickListener(v -> {
             SoundLevelBottomSheet soundLevelBottomSheet = new SoundLevelBottomSheet();

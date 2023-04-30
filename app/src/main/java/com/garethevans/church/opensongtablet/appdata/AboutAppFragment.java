@@ -29,15 +29,18 @@ public class AboutAppFragment extends Fragment {
         mainActivityInterface = (MainActivityInterface) context;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        mainActivityInterface.updateToolbar(about);
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsAboutBinding.inflate(inflater, container, false);
 
         prepareStrings();
-
-        // Update the toolbar
-        mainActivityInterface.updateToolbar(about);
 
         // Update menu text with version and language
         updateMenuText();

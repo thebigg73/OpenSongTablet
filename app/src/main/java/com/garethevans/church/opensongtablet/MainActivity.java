@@ -971,7 +971,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     navDestination.getId()==R.id.presenterFragment));
             // IV - We are changing so adjust option menu elements
             if (globalMenuItem != null) {
-                // IV - To smooth teardown, we clear elements left to right
+                // IV - To smooth teardown, we remove elements left to right
                 if (settingsOpen && !whichMode.equals(presenter)) {
                     myView.myToolbar.hideSongDetails(true);
                 }
@@ -995,12 +995,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         batteryStatus.showBatteryStuff(true);
                     }
                     // IV - Song details are added by song load
-                    // GE onResuming (open cast and return), not called, so quick check is worthwhile
-                    if (!whichMode.equals(getString(R.string.mode_presenter))) {
-                        updateToolbar(null);
-                    }
-
-                    // Return the pagebuttons to their expanded state
                 }
                 myView.myToolbar.requestLayout();
                 myView.myToolbar.setContentInsetStartWithNavigation(0);
@@ -1375,6 +1369,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         // Null titles are for the default song, author, etc.
         // Otherwise a new title is passed as a string (in a settings menu)
         //windowFlags.setImmersive(true);
+        //Log.d(TAG, "updateToolbar " + what);
         if (myView != null) {
             myView.myToolbar.setActionBar(what);
             myView.fragmentView.setTop(myView.myToolbar.getActionBarHeight(settingsOpen || menuOpen));
@@ -3008,10 +3003,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
 
     @Override
-    public void songSelectDownloadPDF(Fragment fragment, int fragId, Uri uri, String filename) {
+    public void songSelectDownload(Fragment fragment, int fragId, Uri uri, String filename) {
         if (fragment!=null && fragId==R.id.importOnlineFragment) {
             try {
-                ((ImportOnlineFragment)fragment).finishedDownloadPDF(uri, filename);
+                ((ImportOnlineFragment)fragment).finishedDownload(uri, filename);
             } catch (Exception e) {
                 e.printStackTrace();
             }

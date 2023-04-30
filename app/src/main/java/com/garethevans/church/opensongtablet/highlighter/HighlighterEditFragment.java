@@ -76,6 +76,7 @@ public class HighlighterEditFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        mainActivityInterface.updateToolbar(edit_string + " " + highlight_string);
         mainActivityInterface.updateToolbarHelp(webAddress);
     }
 
@@ -92,7 +93,6 @@ public class HighlighterEditFragment extends Fragment {
 
         prepareStrings();
 
-        mainActivityInterface.updateToolbar(edit_string + " " + highlight_string);
         webAddress = website_highlighter_string;
 
         // Set up views

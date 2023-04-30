@@ -34,11 +34,13 @@ public class FontSetupFragment extends Fragment {
     private String fontLyric, fontChord, fontPreso, fontPresoInfo, fontSticky, which;
     private MainActivityInterface mainActivityInterface;
     private DisplayInterface displayInterface;
+    private String font_choose_string="", website_fonts_string="";
     private String webAddress;
 
     @Override
     public void onResume() {
         super.onResume();
+        mainActivityInterface.updateToolbar(font_choose_string);
         mainActivityInterface.updateToolbarHelp(webAddress);
     }
 
@@ -54,10 +56,8 @@ public class FontSetupFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsFontsBinding.inflate(inflater, container, false);
 
-        if (getContext()!=null) {
-            mainActivityInterface.updateToolbar(getString(R.string.font_choose));
-            webAddress = getString(R.string.website_fonts);
-        }
+        prepareStrings();
+        webAddress = website_fonts_string;
 
         getPreferences();
         ExecutorService executorService = Executors.newSingleThreadExecutor();
@@ -92,6 +92,12 @@ public class FontSetupFragment extends Fragment {
         return myView.getRoot();
     }
 
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            font_choose_string = getString(R.string.font_choose);
+            website_fonts_string = getString(R.string.website_fonts);
+        }
+    }
     private void hideDropdowns(boolean hide) {
         int visibility = View.VISIBLE;
         if (hide) {

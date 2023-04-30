@@ -49,6 +49,7 @@ public class MetronomeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        mainActivityInterface.updateToolbar(metronome_string);
         mainActivityInterface.updateToolbarHelp(webAddress);
     }
 
@@ -65,7 +66,6 @@ public class MetronomeFragment extends Fragment {
 
         prepareStrings();
 
-        mainActivityInterface.updateToolbar(metronome_string);
         webAddress = website_metronome_string;
 
         // Set up the values for the exposeddropdowns

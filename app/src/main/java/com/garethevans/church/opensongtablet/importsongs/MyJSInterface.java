@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet.importsongs;
 
 import static android.content.Context.DOWNLOAD_SERVICE;
 
+import android.annotation.SuppressLint;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.net.Uri;
@@ -24,17 +25,18 @@ import java.io.OutputStream;
 
 public class MyJSInterface {
 
-    private final Context c;
-    private final MainActivityInterface mainActivityInterface;
-    private final Uri saveFile;
-    private final Fragment fragment;
-    private final String TAG = "MyJSInterface";
+    @SuppressLint("StaticFieldLeak")
+    private static Context c = null;
+    private static MainActivityInterface mainActivityInterface = null;
+    private static Uri saveFile = null;
+    private static Fragment fragment = null;
+    private static final String TAG = "MyJSInterface";
     private String filename;
 
     public MyJSInterface(Context c, Fragment fragment) {
-        this.c = c;
+        MyJSInterface.c = c;
         mainActivityInterface = (MainActivityInterface) c;
-        this.fragment = fragment;
+        MyJSInterface.fragment = fragment;
         saveFile = mainActivityInterface.getStorageAccess().getUriForItem("Received", "", "SongSelect.pdf");
         mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" MyJSInterface Create Received/SongSelect.pdf  deleteOld=true");
         mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(false, saveFile, null, "Received", "", "SongSelect.pdf");
@@ -88,7 +90,7 @@ public class MyJSInterface {
 
         Log.d(TAG, "Download blob complete");
 
-        mainActivityInterface.songSelectDownloadPDF(fragment, R.id.importOnlineFragment,saveFile,"SongSelect.pdf");
+        mainActivityInterface.songSelectDownload(fragment, R.id.importOnlineFragment,saveFile,"SongSelect.pdf");
     }
 
     public static String doNormalDownLoad(String url, String filename) {
@@ -108,7 +110,7 @@ public class MyJSInterface {
     }
 
     @JavascriptInterface
-    public void setDownload(String url, String filename) {
+    public static void setDownload(String url, String filename) {
         String cookie = CookieManager.getInstance().getCookie(url);
         Log.d("d", "url=" + url);
         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
@@ -134,7 +136,7 @@ public class MyJSInterface {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            mainActivityInterface.songSelectDownloadPDF(fragment, R.id.importOnlineFragment, saveFile, filename);
+        mainActivityInterface.songSelectDownload(fragment, R.id.importOnlineFragment, saveFile, filename);
 
     }
 }

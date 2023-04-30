@@ -51,8 +51,6 @@ public class ImportOnlineFragment extends Fragment {
     private ClipboardManager.OnPrimaryClipChangedListener clipboardManagerListener;
     private final String TAG = "ImportOnline";
     private String clipboardText = "";
-    private Uri downloadedFile = null;
-    private boolean isPDF;
     private final String[] sources = new String[]{"UltimateGuitar", "Chordie", "SongSelect",
             "WorshipTogether", "UkuTabs", "HolyChords", "La Boîte à chansons", "eChords", "Google"};
     private final String[] address = new String[]{"https://www.ultimate-guitar.com/search.php?search_type=title&value=",
@@ -76,10 +74,14 @@ public class ImportOnlineFragment extends Fragment {
     private Chordinator chordinator;
     private WebView webView;
     private String webAddress;
+    private String songSelectAutoDownload;
+    private Uri downloadUri;
+    private String downloadFilename;
 
     @Override
     public void onResume() {
         super.onResume();
+        mainActivityInterface.updateToolbar(import_basic_string + " " + online_string);
         mainActivityInterface.updateToolbarHelp(webAddress);
     }
 
@@ -96,7 +98,6 @@ public class ImportOnlineFragment extends Fragment {
 
         prepareStrings();
 
-        mainActivityInterface.updateToolbar(import_basic_string + " " + online_string);
         webAddress = website_song_online_string;
 
         // Setup helper
@@ -154,6 +155,7 @@ public class ImportOnlineFragment extends Fragment {
                     myView.onlineSource, R.layout.view_exposed_dropdown_item, sources);
             myView.onlineSource.setAdapter(exposedDropDownArrayAdapter);
         }
+
         if (mainActivityInterface.getCheckInternet().getSearchPhrase() != null) {
             myView.searchPhrase.setText(mainActivityInterface.getCheckInternet().getSearchPhrase());
         }
@@ -286,7 +288,7 @@ public class ImportOnlineFragment extends Fragment {
                         webView.loadUrl(MyJSInterface.getBase64StringFromBlobUrl(url));
                     } else {
                         Log.d(TAG,"normal download");
-                        webView.loadUrl(MyJSInterface.doNormalDownLoad(url,filename));
+                        MyJSInterface.setDownload(url,filename);
                     }
                 }
             });
@@ -315,7 +317,6 @@ public class ImportOnlineFragment extends Fragment {
             // This listener is to grab text saved to the clipboard manager
             if (getContext() != null) {
                 if (myView.onlineSource.getText()!=null && myView.onlineSource.getText().toString().equals("Google")) {
-                    source = "Google";
                     clipboardManager = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
                     clipboardManagerListener = () -> {
                         ClipData clipData = clipboardManager.getPrimaryClip();
@@ -350,13 +351,17 @@ public class ImportOnlineFragment extends Fragment {
                             setSearchSite(myView.onlineSource.getText().toString());
                 source = myView.onlineSource.getText().toString();
                 webView.post(() -> webView.getSettings().setUserAgentString(userAgentDefault));
-                if (source.equals("Chordie")) {
-                    extra = "&np=0&ps=10&wf=2221&s=RPD&wf=2221&wm=wrd&type=&sp=1&sy=1&cat=&ul=&np=0";
-                } else if (source.equals("UltimateGuitar")) {
-                    String newUA = "Mozilla/5.0 (X11; Linux i686; rv:64.0) Gecko/20100101 Firefox/64.0";
-                    webView.post(() -> webView.getSettings().setUserAgentString(newUA));
-                } else if (source.equals("Google")) {
-                    extra = " chords lyrics";
+                switch (source) {
+                    case "Chordie":
+                        extra = "&np=0&ps=10&wf=2221&s=RPD&wf=2221&wm=wrd&type=&sp=1&sy=1&cat=&ul=&np=0";
+                        break;
+                    case "UltimateGuitar":
+                        String newUA = "Mozilla/5.0 (X11; Linux i686; rv:64.0) Gecko/20100101 Firefox/64.0";
+                        webView.post(() -> webView.getSettings().setUserAgentString(newUA));
+                        break;
+                    case "Google":
+                        extra = " chords lyrics";
+                        break;
                 }
                 for (int x = 0; x < sources.length; x++) {
                     if (sources[x].equals(source)) {
@@ -439,14 +444,11 @@ public class ImportOnlineFragment extends Fragment {
 
     private void showSaveButton() {
         boolean show = false;
+        songSelectAutoDownload = "";
+        downloadFilename = "";
         if (webString==null) {
             webString = "";
         }
-
-        /*String[] lines = webString.split("\n");
-        for (String line:lines) {
-            Log.d(TAG,"line: "+line);
-        }*/
 
         switch (source) {
             case "UltimateGuitar":
@@ -467,10 +469,16 @@ public class ImportOnlineFragment extends Fragment {
                 }
                 break;
             case "SongSelect":
-                if (webString.contains("<div id=\"LyricsText\"") ||
-                        webString.contains("<span class=\"cproTitleLine\">") ||
-                        webString.contains(" id=\"sheetMusicDownloadButton\"")) {
+                // Process now, ahead of a potential save
+                if (webString.contains("<div id=\"LyricsText\"")) {
+                    newSong = songSelect.processContentLyricsText(mainActivityInterface, newSong, webString);
                     show = true;
+                } else  if (webString.contains("<span class=\"cproTitleLine\">")) {
+                    newSong = songSelect.processContentChordPro(getContext(), mainActivityInterface, newSong, webString);
+                    show = true;
+                } else {
+                    // IV - For sheet music pages, extract the song title as filename for any PDF download using the SongSelect download button
+                    newSong.setFilename(songSelect.getTitle(webString)+".pdf");
                 }
                 break;
             case "UkuTabs":
@@ -530,9 +538,6 @@ public class ImportOnlineFragment extends Fragment {
     }
     private void processContent() {
         showDownloadProgress(true);
-        newSong = new Song();
-        isPDF = false;
-        boolean songSelectDownload = false;
         switch (source) {
             case "Google":
                 if (chordinator.getTitle()!=null && !chordinator.getTitle().isEmpty()) {
@@ -555,34 +560,12 @@ public class ImportOnlineFragment extends Fragment {
                 newSong = chordie.processContent(mainActivityInterface,newSong,webString);
                 break;
             case "SongSelect":
-                if (webString.contains("<div id=\"LyricsText\"")) {
-                    newSong = songSelect.processContentLyricsText(mainActivityInterface, newSong, webString);
-                } else  if (webString.contains("<span class=\"cproTitleLine\">")) {
-                    newSong = songSelect.processContentChordPro(mainActivityInterface, newSong, webString);
-                }
-                // Trigger the clicking of the download buttons
-                String what="";
-                if (webString.contains("id=\"downloadLyrics\"")) {
-                    // Click on the downloadLyrics button
-                    what = "downloadLyrics";
-                    isPDF = false;
-                } else if (webString.contains("id=\"chordSheetDownloadButton\"")) {
-                    // Click on the PDF chord sheet download
-                    what = "chordSheetDownloadButton";
-                    isPDF = true;
-                } else if (webString.contains("id=\"sheetMusicDownloadButton\"")) {
-                    // Click on the PDF sheet download
-                    what = "sheetMusicDownloadButton";
-                    isPDF = true;
-                }
-                if (!what.isEmpty()) {
-                    String webLink = webView.getUrl();
-                    songSelectDownload = true;
-                    try {
-                        // Trigger the download of the pdf
-                        webView.loadUrl("javascript:document.getElementById('" + what + "').click()");
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                // IV - Setup for download.  Download code will handle save of any XML extract and the downloaded file
+                if (!mainActivityInterface.getCheckInternet().getSearchPhrase().startsWith("?")) {
+                    if (webString.contains("id=\"downloadLyrics\"")) {
+                        songSelectAutoDownload = "downloadLyrics";
+                    } else if (webString.contains("id=\"chordSheetDownloadButton\"")) {
+                        songSelectAutoDownload = "chordSheetDownloadButton";
                     }
                 }
                 break;
@@ -599,9 +582,15 @@ public class ImportOnlineFragment extends Fragment {
                 newSong = eChords.processContent(newSong,webString);
                 break;
         }
-        if (!songSelectDownload) {
-            showDownloadProgress(false);
+        if (songSelectAutoDownload.equals("")) {
             setupSaveLayout();
+        } else {
+            try {
+                // Click the SongSelect download button
+                webView.loadUrl("javascript:document.getElementById('" + songSelectAutoDownload + "').click()");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -610,31 +599,17 @@ public class ImportOnlineFragment extends Fragment {
         clipboardText = textFromChordinator;
     }
 
-    public void finishedDownloadPDF(Uri uri,String filename) {
-        // This is sent from MainActivity after a pdf file was downloaded
-        // Fix the views
-        filename = filename.replace(".txt","");
-        newSong.setFilename(newSong.getFilename().replace(".txt",""));
-        newSong.setTitle(newSong.getTitle().replace(".txt",""));
-        if (uri!=null) {
-            showDownloadProgress(false);
-            changeLayouts(false, false, true);
-            // Firstly use what has been entered into the name box by parsing the song
-            String currfilename = myView.saveFilename.getText().toString();
-            // If we don't have a good name, try to base it on the filename
-            if (currfilename.isEmpty() && uri.getLastPathSegment() != null) {
-                currfilename = filename;
-            }
-            setupSaveLayout();
-            myView.saveFilename.setText(currfilename);
-            String finalCurrfilename = currfilename;
-            myView.saveSong.setOnClickListener(v -> copyPDF(uri, finalCurrfilename));
-        }
+    public void finishedDownload(Uri uri,String filename) {
+        // This is called from MainActivity after a SongSelect file is downloaded
+        downloadUri = uri;
+        downloadFilename = filename;
+        setupSaveLayout();
     }
 
     private void setupSaveLayout() {
+        showDownloadProgress(false);
         // Set up the save layout
-        myView.saveFilename.post(() -> myView.saveFilename.setText(newSong.getTitle()));
+        myView.saveFilename.post(() -> myView.saveFilename.setText(newSong.getFilename()));
         // Get the folders available
         ArrayList<String> availableFolders = mainActivityInterface.getStorageAccess().getSongFolders(
                 mainActivityInterface.getStorageAccess().listSongs(), true, null);
@@ -643,17 +618,22 @@ public class ImportOnlineFragment extends Fragment {
                     myView.folderChoice, R.layout.view_exposed_dropdown_item, availableFolders);
             myView.folderChoice.setAdapter(exposedDropDownArrayAdapter);
         }
-        myView.folderChoice.setText(mainActivityInterface.getPreferences().
-                getMyPreferenceString("songFolder",mainfoldername_string));
+        String folder = mainActivityInterface.getPreferences().getMyPreferenceString("songFolder",mainfoldername_string);
+        if (folder.isEmpty()) {
+            folder = mainfoldername_string;
+        }
+        myView.folderChoice.setText(folder);
         changeLayouts(false,false,true);
         myView.saveSong.setOnClickListener(v -> saveTheSong());
-        showDownloadProgress(false);
     }
 
     // This is the save function for downloaded PDF files
     private void copyPDF(Uri inputUri, String filename) {
         // Prepare the output file
         String folder = mainActivityInterface.getPreferences().getMyPreferenceString("songFolder",mainfoldername_string);
+        if (folder.isEmpty()) {
+            folder = mainfoldername_string;
+        }
         if (myView.folderChoice.getText()!=null) {
             folder = myView.folderChoice.getText().toString();
         }
@@ -664,72 +644,41 @@ public class ImportOnlineFragment extends Fragment {
         // Set the folder
         newSong.setFolder(folder);
 
-        // If we have a pdfSong with extracted lyrics, save that too
-        if (isPDF && newSong.getLyrics()!=null && !newSong.getLyrics().trim().isEmpty()) {
-            String nonPDFFilename = filename.replace(".pdf","").replace(".PDF","");
-            newSong.setFilename(nonPDFFilename);
-            newSong.setTitle(nonPDFFilename);
-            newSong.setFiletype("XML");
-            // Set the main song otherwise it gets overwritten!
-            mainActivityInterface.getSong().setFilename(nonPDFFilename);
-            mainActivityInterface.getSong().setFolder(folder);
-            mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG + " write OpenSongSong from PDF " + filename + " to Songs/" + folder + "/" + nonPDFFilename);
-            mainActivityInterface.getSaveSong().doSave(newSong);
-            // Add to the database
-            mainActivityInterface.getSQLiteHelper().createSong(folder,nonPDFFilename);
-            mainActivityInterface.getSQLiteHelper().updateSong(newSong);
+        // Update the song pdf values
+        if (!filename.toLowerCase().endsWith(".pdf")) {
+            filename = filename + ".pdf";
         }
 
-        // Update the song pdf values
-        if (isPDF) {
-            if (!filename.toLowerCase().endsWith(".pdf")) {
-                filename = filename + ".pdf";
-            }
-            newSong.setTitle(filename);
-            newSong.setFilename(filename);
-        }
+        newSong.setTitle(filename);
+        newSong.setFilename(filename);
         newSong.setFiletype("PDF");
 
         try {
-            // Copy the file
-            if (isPDF) {
-                Uri outputUri = mainActivityInterface.getStorageAccess().getUriForItem("Songs",folder,filename);
-                mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" CopyPDF Songs/"+folder+"/"+filename+"  deleteOld=false");
-                mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(false, outputUri,null,"Songs",folder,filename);
-                OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(outputUri);
-                InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(inputUri);
-                mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG + " copyPDF copyFile from " + inputUri + " to Songs/" + folder + "/" + filename);
-                mainActivityInterface.getStorageAccess().copyFile(inputStream, outputStream);
-            } else {
-                // A text based song, so just create the song in OpenSong format
-                newSong.setFiletype("XML");
-                folder = newSong.getFolder();
-                filename = newSong.getFilename();
-                mainActivityInterface.getSong().setFolder(folder);
-                mainActivityInterface.getSong().setFilename(filename);
-                mainActivityInterface.getSaveSong().doSave(newSong);
-            }
-            // Update the current song for loading up
-            mainActivityInterface.getPreferences().setMyPreferenceString("songFolder",folder);
-            mainActivityInterface.getPreferences().setMyPreferenceString("songFilename",filename);
+            newSong.setTitle(filename);
+            newSong.setFilename(filename);
+            newSong.setFiletype("PDF");
+            newSong.setLyrics("");
+            Uri outputUri = mainActivityInterface.getStorageAccess().getUriForItem("Songs",folder,filename);
+            mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" CopyPDF Songs/"+folder+"/"+filename+"  deleteOld=false");
+            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(false, outputUri,null,"Songs",folder,filename);
+            OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(outputUri);
+            InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(inputUri);
+            mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG + " copyPDF copyFile from " + inputUri + " to Songs/" + folder + "/" + filename);
+            mainActivityInterface.getStorageAccess().copyFile(inputStream, outputStream);
 
+            // Send an instruction to update the song menu (no need for full reindex)
+            mainActivityInterface.updateSongMenu(newSong);
             // Update the main and nonopensong databases
             mainActivityInterface.getSQLiteHelper().createSong(folder,filename);
             mainActivityInterface.getSQLiteHelper().updateSong(newSong);
-            if (isPDF) {
-                mainActivityInterface.getNonOpenSongSQLiteHelper().createSong(folder, filename);
-                mainActivityInterface.getNonOpenSongSQLiteHelper().updateSong(newSong);
-            }
+            mainActivityInterface.getNonOpenSongSQLiteHelper().createSong(folder, filename);
+            mainActivityInterface.getNonOpenSongSQLiteHelper().updateSong(newSong);
 
             // Add a record to the CCLI log if we are automatically logging activity
             if (mainActivityInterface.getPreferences().getMyPreferenceBoolean(
                     "ccliAutomaticLogging",false)) {
                 mainActivityInterface.getCCLILog().addEntry(newSong,"1");
             }
-
-            // Let the user know and show the song
-            mainActivityInterface.getShowToast().doIt(success_string);
-            mainActivityInterface.navHome();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -769,34 +718,51 @@ public class ImportOnlineFragment extends Fragment {
     }
 
     public void continueSaving() {
-        // Set the current song to a this one as the song save process checks for a change of filename/folder
-        // As this would be detected, it would try to delete the old (currently viewed) file, which we don't want
-        mainActivityInterface.getSong().setFolder(newSong.getFolder());
-        mainActivityInterface.getSong().setFilename(newSong.getFilename());
+        if (newSong.getLyrics().equals("")) {
+            // IV - If we do not have an extracted song, save any SongSelect PDF download
+            if (source.equals("SongSelect") && downloadFilename.toLowerCase().endsWith(".pdf")) {
+                copyPDF(downloadUri, downloadFilename);
 
-        if (mainActivityInterface.getSaveSong().
-                doSave(newSong)) {
-            // Update the songid file (used later)
-            mainActivityInterface.getStorageAccess().writeSongIDFile(
-                    mainActivityInterface.getStorageAccess().getSongIDsFromFile());
-
-            // Set the current song to this
-            mainActivityInterface.getPreferences().
-                    setMyPreferenceString("songFolder", newSong.getFolder());
-            mainActivityInterface.getPreferences().
-                    setMyPreferenceString("songFilename", newSong.getFilename());
-
-            // Send an instruction to update the song menu (no need for full reindex)
-            mainActivityInterface.updateSongMenu(newSong);
-            mainActivityInterface.getShowToast().doIt(success_string);
-
-            mainActivityInterface.navHome();
+                // Set the current song to this
+                mainActivityInterface.getPreferences().setMyPreferenceString("songFolder", newSong.getFolder());
+                mainActivityInterface.getPreferences().setMyPreferenceString("songFilename", newSong.getFilename());
+                // Send an instruction to update the song menu (no need for full reindex)
+                mainActivityInterface.updateSongMenu(newSong);
+            }
         } else {
-            mainActivityInterface.getShowToast().doIt(error_string);
+            mainActivityInterface.getSong().setFolder(newSong.getFolder());
+            mainActivityInterface.getSong().setFilename(newSong.getFilename());
+
+            if (mainActivityInterface.getSaveSong().doSave(newSong)) {
+                // Update the songid file (used later)
+                mainActivityInterface.getStorageAccess().writeSongIDFile(
+                        mainActivityInterface.getStorageAccess().getSongIDsFromFile());
+
+                // Set the current song to this
+                mainActivityInterface.getPreferences().setMyPreferenceString("songFolder", newSong.getFolder());
+                mainActivityInterface.getPreferences().setMyPreferenceString("songFilename", newSong.getFilename());
+
+                // Send an instruction to update the song menu (no need for full reindex)
+                mainActivityInterface.updateSongMenu(newSong);
+            } else {
+                mainActivityInterface.getShowToast().doIt(error_string);
+                return;
+            }
+            // For SongSelect we handle PDF files. TXT and ChordPro files are not saved as we have extracted XML
+            if (source.equals("SongSelect") && downloadFilename.toLowerCase().endsWith(".pdf")) {
+                copyPDF(downloadUri, downloadFilename);
+
+                // Send an instruction to update the song menu (no need for full reindex)
+                mainActivityInterface.updateSongMenu(newSong);
+            }
         }
+        // Let the user know and show the song
+        mainActivityInterface.navHome();
+        mainActivityInterface.getShowToast().doIt(success_string);
     }
 
     private void showDownloadProgress(final boolean waiting) {
+        webView.post(() -> webView.setEnabled(!waiting));
         final int visibility;
         if (waiting) {
             visibility = View.VISIBLE;
@@ -807,9 +773,7 @@ public class ImportOnlineFragment extends Fragment {
         myView.saveButton.post(() -> myView.saveButton.setEnabled(!waiting));
         myView.backButton.post(() -> myView.backButton.setEnabled(!waiting));
         myView.closeSearch.post(() -> myView.closeSearch.setEnabled(!waiting));
-        webView.post(() -> webView.setEnabled(!waiting));
     }
-
 
     public void destroyWebView() {
 

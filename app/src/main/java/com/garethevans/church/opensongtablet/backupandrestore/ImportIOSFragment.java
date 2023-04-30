@@ -59,6 +59,7 @@ public class ImportIOSFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        mainActivityInterface.updateToolbar(onsong_import);
         mainActivityInterface.updateToolbarHelp(webAddress);
     }
 
@@ -76,8 +77,6 @@ public class ImportIOSFragment extends Fragment {
 
         prepareStrings();
 
-        // Update the title
-        mainActivityInterface.updateToolbar(onsong_import);
         webAddress = website_import_onsongbackup;
 
         myView.filename.setText(mainActivityInterface.getImportFilename());

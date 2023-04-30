@@ -20,11 +20,13 @@ public class PadSettingsFragment extends Fragment {
     private SettingsPadsBinding myView;
     private MainActivityInterface mainActivityInterface;
     private boolean padPlaying;
+    private String pad_string="", website_pad_string="";
     private String webAddress;
 
     @Override
     public void onResume() {
         super.onResume();
+        mainActivityInterface.updateToolbar(pad_string);
         mainActivityInterface.updateToolbarHelp(webAddress);
     }
 
@@ -39,15 +41,21 @@ public class PadSettingsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsPadsBinding.inflate(inflater, container, false);
 
-        if (getContext()!=null) {
-            mainActivityInterface.updateToolbar(getString(R.string.pad));
-            webAddress = getString(R.string.website_pad);
-        }
+        prepareStrings();
+
+        webAddress = website_pad_string;
+
         setListeners();
 
         return myView.getRoot();
     }
 
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            pad_string = getString(R.string.pad);
+            website_pad_string = getString(R.string.website_pad);
+        }
+    }
     private void setListeners() {
         myView.padCurrent.setOnClickListener(v -> {
             // Nav home then open the pad bottom sheet

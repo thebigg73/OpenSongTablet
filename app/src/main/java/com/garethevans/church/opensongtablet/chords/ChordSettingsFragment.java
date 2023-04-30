@@ -27,6 +27,7 @@ public class ChordSettingsFragment extends DialogFragment {
     @Override
     public void onResume() {
         super.onResume();
+        mainActivityInterface.updateToolbar(chords_string);
         mainActivityInterface.updateToolbarHelp(webAddress);
     }
 
@@ -43,7 +44,6 @@ public class ChordSettingsFragment extends DialogFragment {
 
         prepareStrings();
 
-        mainActivityInterface.updateToolbar(chords_string);
         webAddress = website_chords_string;
 
         // Set up listeners

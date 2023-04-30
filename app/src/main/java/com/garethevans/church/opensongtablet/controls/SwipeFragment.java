@@ -29,11 +29,6 @@ public class SwipeFragment extends Fragment {
     private SettingsSwipesBinding myView;
     private String webAddress;
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        mainActivityInterface.updateToolbarHelp(webAddress);
-    }
 
     // For simulated swipe animation
     private float startX, startY, newX, newY;
@@ -45,6 +40,13 @@ public class SwipeFragment extends Fragment {
         mainActivityInterface = (MainActivityInterface) context;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        mainActivityInterface.updateToolbar(swipe_string);
+        mainActivityInterface.updateToolbarHelp(webAddress);
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -52,7 +54,6 @@ public class SwipeFragment extends Fragment {
 
         prepareStrings();
 
-        mainActivityInterface.updateToolbar(swipe_string);
         webAddress = website_swipe_settings_string;
 
         // register this fragement

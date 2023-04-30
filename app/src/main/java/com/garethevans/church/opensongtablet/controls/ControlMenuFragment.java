@@ -21,6 +21,7 @@ public class ControlMenuFragment extends Fragment {
 
     private SettingsControlBinding myView;
     private MainActivityInterface mainActivityInterface;
+    private String controls_string="";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -28,14 +29,18 @@ public class ControlMenuFragment extends Fragment {
         mainActivityInterface = (MainActivityInterface) context;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        mainActivityInterface.updateToolbar(controls_string);
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsControlBinding.inflate(inflater,container,false);
 
-        if (getContext()!=null) {
-            mainActivityInterface.updateToolbar(getString(R.string.controls));
-        }
+        prepareStrings();
 
         // Set the listeners
         setListeners();
@@ -43,6 +48,11 @@ public class ControlMenuFragment extends Fragment {
         return myView.getRoot();
     }
 
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            controls_string = getString(R.string.controls);
+        }
+    }
     private void setListeners() {
         myView.pageButtons.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.pageButtonFragment));
         myView.pedals.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.pedalsFragment));

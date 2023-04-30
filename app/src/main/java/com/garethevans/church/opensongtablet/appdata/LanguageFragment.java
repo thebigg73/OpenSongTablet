@@ -31,15 +31,19 @@ public class LanguageFragment extends Fragment {
         mainActivityInterface = (MainActivityInterface) context;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Update the toolbar
+        mainActivityInterface.updateToolbar(language);
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsLanguageBinding.inflate(inflater, container, false);
 
         prepareStrings();
-
-        // Update the toolbar
-        mainActivityInterface.updateToolbar(language);
 
         // Build the radio group
         buildRadioGroup();

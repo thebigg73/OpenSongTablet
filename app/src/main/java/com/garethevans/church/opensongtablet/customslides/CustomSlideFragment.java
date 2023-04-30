@@ -49,12 +49,12 @@ public class CustomSlideFragment extends Fragment {
     private ActivityResultLauncher<Intent> addImagesLauncher;
     private String custom_slide_string="", website_custom_slide_string="", load_reusable_string="",
             file_chooser_string="";
-    private String webAddress;
 
     @Override
     public void onResume() {
         super.onResume();
-        mainActivityInterface.updateToolbarHelp(webAddress);
+        mainActivityInterface.updateToolbar(custom_slide_string);
+        mainActivityInterface.updateToolbarHelp(website_custom_slide_string);
     }
 
     @Override
@@ -69,9 +69,6 @@ public class CustomSlideFragment extends Fragment {
         myView = SettingsCustomSlideBinding.inflate(inflater, container, false);
 
         prepareStrings();
-
-        mainActivityInterface.updateToolbar(custom_slide_string);
-        webAddress = website_custom_slide_string;
 
         myView.nestedScrollView.setExtendedFabToAnimate(myView.addToSet);
 

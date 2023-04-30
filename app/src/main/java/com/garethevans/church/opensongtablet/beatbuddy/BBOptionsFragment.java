@@ -25,19 +25,19 @@ public class BBOptionsFragment extends Fragment {
     private SettingsBeatbuddyOptionsBinding myView;
     private String beat_buddy="", deeplink_beatbuddy_commands="", deeplink_beatbuddy_import="",
             website_beatbuddy="", not_available="", reset_string="", success_string="", error_string="";
+    private String webAddress;
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mainActivityInterface = (MainActivityInterface) context;
-        prepareStrings();
     }
 
     @Override
     public void onResume() {
         super.onResume();
         mainActivityInterface.updateToolbar(beat_buddy);
-        mainActivityInterface.updateToolbarHelp(website_beatbuddy);
+        mainActivityInterface.updateToolbarHelp(webAddress);
     }
 
     @Nullable
@@ -45,6 +45,10 @@ public class BBOptionsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         myView = SettingsBeatbuddyOptionsBinding.inflate(inflater, container, false);
+
+        prepareStrings();
+
+        webAddress = website_beatbuddy;
 
         // Check if the database exists as we will likely be using it soon...
         checkDatabase();

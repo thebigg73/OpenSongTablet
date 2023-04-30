@@ -43,14 +43,18 @@ public class MoveContentFragment extends Fragment {
         mainActivityInterface = (MainActivityInterface) context;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        mainActivityInterface.updateToolbar(folder_move_contents_string);
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = (StorageMoveBinding.inflate(inflater, container, false));
 
         prepareStrings();
-
-        mainActivityInterface.updateToolbar(folder_move_contents_string);
 
         if (getArguments()!=null && getArguments().containsKey("subdir")) {
             subfolder = getArguments().get("subdir").toString();

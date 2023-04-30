@@ -54,6 +54,7 @@ public class PedalsFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        mainActivityInterface.updateToolbar(pedal_string);
         mainActivityInterface.updateToolbarHelp(webAddress);
     }
 
@@ -71,7 +72,6 @@ public class PedalsFragment extends Fragment {
 
         prepareStrings();
 
-        mainActivityInterface.updateToolbar(pedal_string);
         webAddress = website_foot_pedal_string;
 
         // Register this fragment

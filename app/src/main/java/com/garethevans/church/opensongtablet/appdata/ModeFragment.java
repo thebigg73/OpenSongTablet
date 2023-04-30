@@ -28,6 +28,7 @@ public class ModeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        mainActivityInterface.updateToolbar(choose_app_mode);
         mainActivityInterface.updateToolbarHelp(webAddress);
     }
 
@@ -45,7 +46,6 @@ public class ModeFragment extends Fragment {
 
         prepareStrings();
 
-        mainActivityInterface.updateToolbar(choose_app_mode);
         webAddress = website_app_mode;
 
         // Highlight the current mode

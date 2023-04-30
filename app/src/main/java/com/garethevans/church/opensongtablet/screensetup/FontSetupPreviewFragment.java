@@ -39,6 +39,12 @@ public class FontSetupPreviewFragment extends DialogFragment {
         mainActivityInterface = (MainActivityInterface) context;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        mainActivityInterface.updateToolbar(font_browse_string);
+    }
+
     @SuppressLint("SetJavaScriptEnabled")
     @Nullable
     @Override
@@ -46,8 +52,6 @@ public class FontSetupPreviewFragment extends DialogFragment {
         myView = SettingsFontsPreviewBinding.inflate(inflater,container,false);
 
         prepareStrings();
-
-        mainActivityInterface.updateToolbar(font_browse_string);
 
         sampleText = lorem_string;
 

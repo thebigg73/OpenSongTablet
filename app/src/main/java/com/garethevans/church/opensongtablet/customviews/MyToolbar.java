@@ -306,6 +306,7 @@ public class MyToolbar extends MaterialToolbar {
     }
 
     public void hideSongDetails(boolean hide) {
+        hideView(setIcon,hide);
         hideView(title,hide);
         hideView(author,hide);
         hideView(key,hide);

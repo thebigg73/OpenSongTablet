@@ -46,6 +46,7 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
     @Override
     public void onResume() {
         super.onResume();
+        mainActivityInterface.updateToolbar(edit_string);
         mainActivityInterface.updateToolbarHelp(webAddress);
     }
 
@@ -76,9 +77,6 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
         myView = EditSongBinding.inflate(inflater, container, false);
 
         prepareStrings();
-
-        // Update the toolbar
-        mainActivityInterface.updateToolbar(edit_string);
         webAddress = website_edit_song_string;
 
         // Set up the updated song (a copy of the current song for editing)

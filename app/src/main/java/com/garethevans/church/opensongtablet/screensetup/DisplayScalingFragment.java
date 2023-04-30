@@ -20,11 +20,13 @@ public class DisplayScalingFragment extends Fragment {
 
     private MainActivityInterface mainActivityInterface;
     private SettingsDisplayScalingBinding myView;
+    private String scaling_string="", website_scaling_string="";
     private String webAddress;
 
     @Override
     public void onResume() {
         super.onResume();
+        mainActivityInterface.updateToolbar(scaling_string);
         mainActivityInterface.updateToolbarHelp(webAddress);
     }
 
@@ -38,10 +40,9 @@ public class DisplayScalingFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsDisplayScalingBinding.inflate(inflater,container,false);
-        if (getContext()!=null) {
-            mainActivityInterface.updateToolbar(getString(R.string.scaling));
-            webAddress = getString(R.string.website_scaling);
-        }
+
+        prepareStrings();
+        webAddress = website_scaling_string;
 
         // Set up the views
         setViews();
@@ -50,6 +51,13 @@ public class DisplayScalingFragment extends Fragment {
         setListeners();
 
         return myView.getRoot();
+    }
+
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            website_scaling_string = getString(R.string.website_scaling);
+            scaling_string = getString(R.string.scaling);
+        }
     }
 
     private void setViews() {

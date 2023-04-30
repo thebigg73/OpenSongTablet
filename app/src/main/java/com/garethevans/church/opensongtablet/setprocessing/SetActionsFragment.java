@@ -37,14 +37,18 @@ public class SetActionsFragment extends Fragment {
         mainActivityInterface = (MainActivityInterface) context;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        mainActivityInterface.updateToolbar(set_manage_string);
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         SettingsSetsBinding myView = SettingsSetsBinding.inflate(inflater, container, false);
 
         prepareStrings();
-
-        mainActivityInterface.updateToolbar(set_manage_string);
 
         initialiseLauncher();
 

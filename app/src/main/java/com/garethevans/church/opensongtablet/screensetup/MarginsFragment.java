@@ -22,11 +22,13 @@ public class MarginsFragment extends Fragment {
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "MarginsFragment";
     private SettingsMarginsBinding myView;
+    private String margins_string="", website_margins_string="";
     private String webAddress;
 
     @Override
     public void onResume() {
         super.onResume();
+        mainActivityInterface.updateToolbar(margins_string);
         mainActivityInterface.updateToolbarHelp(webAddress);
     }
 
@@ -42,10 +44,8 @@ public class MarginsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         myView = SettingsMarginsBinding.inflate(inflater, container, false);
 
-        if (getContext()!=null) {
-            mainActivityInterface.updateToolbar(getString(R.string.margins));
-            webAddress = getString(R.string.website_margins);
-        }
+        prepareStrings();
+        webAddress = website_margins_string;
 
         setupViews();
 
@@ -54,6 +54,12 @@ public class MarginsFragment extends Fragment {
         return myView.getRoot();
     }
 
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            margins_string = getString(R.string.margins);
+            website_margins_string = getString(R.string.website_margins);
+        }
+    }
     private void setupViews() {
         myView.ignoreCutouts.setChecked(mainActivityInterface.getWindowFlags().getIgnoreCutouts());
         myView.ignoreRoundedCorners.setChecked(mainActivityInterface.getWindowFlags().getIgnoreRoundedCorners());

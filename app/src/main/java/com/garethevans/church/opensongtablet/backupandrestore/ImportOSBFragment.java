@@ -67,6 +67,7 @@ public class ImportOSBFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        mainActivityInterface.updateToolbar(import_basic);
         mainActivityInterface.updateToolbarHelp(webAddress);
     }
 
@@ -83,7 +84,6 @@ public class ImportOSBFragment extends Fragment {
 
         prepareStrings();
 
-        mainActivityInterface.updateToolbar(import_basic);
         webAddress = website_restore;
 
         myView.nestedScrollView.setExtendedFabToAnimate(myView.createBackupFAB);

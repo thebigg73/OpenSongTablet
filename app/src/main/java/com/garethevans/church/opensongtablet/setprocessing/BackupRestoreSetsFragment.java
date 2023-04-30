@@ -54,12 +54,13 @@ public class BackupRestoreSetsFragment extends Fragment {
     private String restore_sets_string="", website_set_restore_string="", backup_string="",
             website_set_backup_string="", unknown_string="", backup_sets_string="",
             import_basic_string="", mainfoldername_string="", backup_info_string="",
-            success_string="", error_string="";
+            success_string="", error_string="", toolBarTitle="";
     private String webAddress;
 
     @Override
     public void onResume() {
         super.onResume();
+        mainActivityInterface.updateToolbar(toolBarTitle);
         mainActivityInterface.updateToolbarHelp(webAddress);
     }
 
@@ -86,13 +87,13 @@ public class BackupRestoreSetsFragment extends Fragment {
         }
 
         if (mainActivityInterface.getWhattodo().equals("restoresets")) {
-            mainActivityInterface.updateToolbar(restore_sets_string);
+            toolBarTitle = restore_sets_string;
             webAddress = website_set_restore_string;
             setupFileChooserListener();
             initialiseLauncher();
             openFilePicker();
         } else if (mainActivityInterface.getWhattodo().equals("intentlaunch")) {
-            mainActivityInterface.updateToolbar(restore_sets_string);
+            toolBarTitle = restore_sets_string;
             webAddress = website_set_restore_string;
             backupUri = mainActivityInterface.getImportUri();
             myView.backupName.setText(mainActivityInterface.getImportFilename());
@@ -100,9 +101,8 @@ public class BackupRestoreSetsFragment extends Fragment {
         } else {
             // Set up views
             setupViews();
-            mainActivityInterface.updateToolbar(backup_sets_string);
+            toolBarTitle = backup_sets_string;
             webAddress = website_set_backup_string;
-
         }
 
         myView.nestedScrollView.setExtendedFabToAnimate(myView.createBackupFAB);
@@ -177,7 +177,7 @@ public class BackupRestoreSetsFragment extends Fragment {
             String formattedDate = df.format(cal.getTime());
             myView.backupName.setText("OpenSongSetBackup_" + formattedDate + ".osbs");
 
-            mainActivityInterface.updateToolbar(backup_sets_string);
+            toolBarTitle = backup_sets_string;
 
             myView.overWrite.setVisibility(View.GONE);
 

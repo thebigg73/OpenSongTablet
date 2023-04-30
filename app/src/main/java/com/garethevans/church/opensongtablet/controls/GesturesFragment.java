@@ -36,6 +36,7 @@ public class GesturesFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        mainActivityInterface.updateToolbar(custom_gestures_string);
         mainActivityInterface.updateToolbarHelp(webAddress);
     }
 
@@ -52,7 +53,6 @@ public class GesturesFragment extends Fragment {
 
         prepareStrings();
 
-        mainActivityInterface.updateToolbar(custom_gestures_string);
         webAddress = website_custom_gestures_string;
 
         myView.allowPinchToZoom.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("allowPinchToZoom",true));

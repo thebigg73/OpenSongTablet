@@ -75,6 +75,7 @@ public class MidiFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        mainActivityInterface.updateToolbar(midi_string);
         mainActivityInterface.updateToolbarHelp(webAddress);
     }
 
@@ -92,7 +93,6 @@ public class MidiFragment extends Fragment {
 
         prepareStrings();
 
-        mainActivityInterface.updateToolbar(midi_string);
         webAddress = website_midi_connections_string;
 
         // Register this fragment with the main activity to deal with listeners

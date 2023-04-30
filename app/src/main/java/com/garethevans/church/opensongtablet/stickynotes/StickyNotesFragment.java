@@ -29,14 +29,18 @@ public class StickyNotesFragment extends Fragment {
         mainActivityInterface = (MainActivityInterface) context;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        mainActivityInterface.updateToolbar(song_notes_string);
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsStickynotesBinding.inflate(inflater,container,false);
 
         prepareStrings();
-
-        mainActivityInterface.updateToolbar(song_notes_string);
 
         // Set up the views
         setupViews();

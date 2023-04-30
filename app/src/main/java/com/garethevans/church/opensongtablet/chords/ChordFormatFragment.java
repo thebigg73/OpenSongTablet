@@ -36,6 +36,7 @@ public class ChordFormatFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        mainActivityInterface.updateToolbar(chord_settings_string);
         mainActivityInterface.updateToolbarHelp(webAddress);
     }
 
@@ -52,7 +53,6 @@ public class ChordFormatFragment extends Fragment {
 
         prepareStrings();
 
-        mainActivityInterface.updateToolbar(chord_settings_string);
         webAddress = website_chords_settings_string;
 
         // Set the initial values

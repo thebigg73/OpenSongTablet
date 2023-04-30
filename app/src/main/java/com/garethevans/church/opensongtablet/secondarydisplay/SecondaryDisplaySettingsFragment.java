@@ -59,6 +59,7 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        mainActivityInterface.updateToolbar(connected_display_string);
         mainActivityInterface.updateToolbarHelp(webAddress);
     }
 
@@ -76,8 +77,6 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
         myView = SettingsDisplayConnectedBinding.inflate(inflater,container,false);
 
         prepareStrings();
-
-        mainActivityInterface.updateToolbar(connected_display_string);
         webAddress = website_connected_display_string;
 
         // Update the currently chosen logo and backgrounds

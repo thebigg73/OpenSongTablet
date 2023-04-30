@@ -50,6 +50,7 @@ public class PageButtonFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        mainActivityInterface.updateToolbar(page_buttons_string);
         mainActivityInterface.updateToolbarHelp(webAddress);
     }
 
@@ -66,7 +67,6 @@ public class PageButtonFragment extends Fragment {
 
         prepareStrings();
 
-        mainActivityInterface.updateToolbar(page_buttons_string);
         webAddress = website_page_buttons_string;
 
         // Set up the page button icons

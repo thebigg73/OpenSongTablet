@@ -40,21 +40,20 @@ public class BBImportFragment extends Fragment {
     private ArrayList<String> folder_codes, folder_names, song_names, kit_names, kit_codes, song_codes;
     private ActivityResultLauncher<Intent> importCSVLauncher;
     private ActivityResultLauncher<Intent> folderChooser;
+    private String webAddress;
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mainActivityInterface = (MainActivityInterface) context;
-        prepareStrings();
         bbsqLite = new BBSQLite(getContext());
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        prepareStrings();
         mainActivityInterface.updateToolbar(beat_buddy_import_project);
-        mainActivityInterface.updateToolbarHelp(website_beatbuddy_import);
+        mainActivityInterface.updateToolbarHelp(webAddress);
     }
 
     @Nullable
@@ -62,7 +61,10 @@ public class BBImportFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         myView = SettingsBeatbuddyImportBinding.inflate(inflater, container, false);
+
         prepareStrings();
+
+        webAddress = website_beatbuddy_import;
 
         // Set up launcher
         setupLauncher();
@@ -118,7 +120,9 @@ public class BBImportFragment extends Fragment {
                         }
                         String drumKits = getConfigCSVText(sdCard,"DRUMSETS");
                         String songFolders = getConfigCSVText(sdCard,"SONGS");
-                        makeCSVFILE(drumKits,songFolders,sdCard);
+                        if (songFolders!=null && drumKits!=null) {
+                            makeCSVFILE(drumKits, songFolders, sdCard);
+                        }
                     }
                 });
     }

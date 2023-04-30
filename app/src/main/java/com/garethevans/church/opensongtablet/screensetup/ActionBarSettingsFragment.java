@@ -22,11 +22,13 @@ public class ActionBarSettingsFragment extends Fragment {
 
     private SettingsActionbarBinding myView;
     private MainActivityInterface mainActivityInterface;
+    private String actionbar_display_string="", website_actionbar_string="";
     private String webAddress;
 
     @Override
     public void onResume() {
         super.onResume();
+        mainActivityInterface.updateToolbar(actionbar_display_string);
         mainActivityInterface.updateToolbarHelp(webAddress);
 
         // IV - Set the battery/clock visible but not clickable (floatval 0)
@@ -48,10 +50,8 @@ public class ActionBarSettingsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsActionbarBinding.inflate(inflater,container,false);
 
-        if (getContext()!=null) {
-            mainActivityInterface.updateToolbar(getString(R.string.actionbar_display));
-            webAddress = getString(R.string.website_actionbar);
-        }
+        prepareStrings();
+        webAddress = website_actionbar_string;
 
         // Set up preferences and view settings
         setupPreferences();
@@ -61,6 +61,12 @@ public class ActionBarSettingsFragment extends Fragment {
         return myView.getRoot();
     }
 
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            actionbar_display_string = getString(R.string.actionbar_display);
+            website_actionbar_string = getString(R.string.website_actionbar);
+        }
+    }
     private void setupPreferences() {
         float titleTextSize = checkMin(mainActivityInterface.getPreferences().getMyPreferenceFloat("songTitleSize", 13),6);
         float authorTextSize = checkMin(mainActivityInterface.getPreferences().getMyPreferenceFloat("songAuthorSize", 11),6);

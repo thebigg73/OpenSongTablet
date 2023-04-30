@@ -50,6 +50,7 @@ public class CustomChordsFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        mainActivityInterface.updateToolbar(custom_chords_string);
         mainActivityInterface.updateToolbarHelp(webAddress);
     }
 
@@ -67,7 +68,6 @@ public class CustomChordsFragment extends Fragment {
 
         prepareStrings();
 
-        mainActivityInterface.updateToolbar(custom_chords_string);
         webAddress = website_chords_custom_string;
 
         myView.instrument.setFocusable(false);

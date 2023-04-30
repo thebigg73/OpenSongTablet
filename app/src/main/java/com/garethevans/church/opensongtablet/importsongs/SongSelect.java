@@ -1,10 +1,15 @@
 package com.garethevans.church.opensongtablet.importsongs;
 
+import android.content.Context;
 import android.os.Build;
 import android.text.Html;
 
+import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class SongSelect {
 
@@ -14,8 +19,7 @@ public class SongSelect {
     // Chord lines will have the chord identifier in them.  That can be removed
     // Text is html entitied - i.e. " is shown as &quot;, ' is shown as &#039;
 
-    public Song processContentChordPro(MainActivityInterface mainActivityInterface, Song newSong, String s) {
-        // Get the content we want
+    public Song processContentChordPro(Context c, MainActivityInterface mainActivityInterface, Song newSong, String s) {    // Get the content we want
         s = getSubstring(s,"<span class=\"cproSongHeader\">","<p class=\"disclaimer\">");
 
         newSong.setTitle(mainActivityInterface.getProcessSong().parseHTML(getTitle(s)));
@@ -25,7 +29,24 @@ public class SongSelect {
         newSong.setCcli(mainActivityInterface.getProcessSong().parseHTML(getCCLI(s)));
         newSong.setCopyright(mainActivityInterface.getProcessSong().parseHTML(getCopyright(s)));
         getTempoTimeSig(newSong,s);
-        newSong.setKey(getKey(s));
+        // Extract the key
+        String key = getKey(s);
+        // Key may be from import of a Solfege SongSelect song, transpose any Solfege key just in case
+        final String[] fromSongSelectSolfege =  "LA SI DO RE MI FA SOL".split(" ");
+        final String[] toStandard =  "A B C D E F G".split(" ");
+        for (int z = 0; z < fromSongSelectSolfege.length; z++) key = key.replace(fromSongSelectSolfege[z], toStandard[z]);
+        // Check the key is a Standard key - if not set no key
+        int index = -1;
+        List<String> key_choice = Arrays.asList(c.getResources().getStringArray(R.array.key_choice));
+        for (int w = 0; w < key_choice.size();w++) {
+            if (key.equals(key_choice.get(w))) {
+                index = w;
+            }
+        }
+        if (index == -1) {
+            key = "";
+        }
+        newSong.setKey(key);
 
         // IV - Handle lyrics with with one or more cproSongBody where split over pages
         StringBuilder lyricsBuilder = new StringBuilder();
@@ -58,7 +79,7 @@ public class SongSelect {
         return newSong;
     }
 
-    private String getTitle(String s) {
+    public String getTitle(String s) {
         // IV - Try chordpro style
         int start = s.indexOf("<span class=\"" +
                 "cproTitle\">");
@@ -234,6 +255,7 @@ public class SongSelect {
     }
 
     private String stripOutTags(String s) {
+        // As before, keep extra backslashes!
         s = s.replaceAll("\\<.*?\\>", "");
         return s;
     }

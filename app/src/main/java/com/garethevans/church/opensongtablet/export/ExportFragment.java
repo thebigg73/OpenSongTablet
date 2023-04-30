@@ -46,7 +46,7 @@ public class ExportFragment extends Fragment {
     private int headerLayoutWidth, headerLayoutHeight, songsToAdd, songsProcessed;
     private String setToExport = null, exportType, shareTitle, textContent, setContent, pngName,
             export_string="", website_export_set_string="", website_export_song_string="",
-            set_string="", song_string="", app_name_string="", screenshot_string="";
+            set_string="", song_string="", app_name_string="", screenshot_string="", toolBarTitle="";
     private boolean openSong = false, currentFormat = false, openSongApp = false, pdf = false, image = false,
             png = false, chordPro = false, onsong = false, text = false, setPDF = false, openSongSet = false,
             setPNG = false, openSongAppSet = false, includeSongs = false, textSet = false, isPrint,
@@ -61,6 +61,7 @@ public class ExportFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        mainActivityInterface.updateToolbar(toolBarTitle);
         mainActivityInterface.updateToolbarHelp(webAddress);
         resetSectionViews();
     }
@@ -96,9 +97,9 @@ public class ExportFragment extends Fragment {
             setData = mainActivityInterface.getExportActions().parseSets(setNames);
             textContent = setData[1];
             setContent = setData[1];
-            mainActivityInterface.updateToolbar(export_string+" ("+set_string+")");
+            toolBarTitle = export_string+" ("+set_string+")";
         } else {
-            mainActivityInterface.updateToolbar(export_string+" ("+song_string+")");
+            toolBarTitle = export_string+" ("+song_string+")";
             setContent = null;
         }
 

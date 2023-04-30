@@ -20,7 +20,8 @@ import java.util.concurrent.Executors;
 public class CheckInternet {
 
     private String searchPhrase;
-    private String searchSite = "Google";
+    // IV - Match with first entry in ImportOnlineFragment sources list
+    private String searchSite = "UltimateGuitar";
     private final String TAG = "CheckInternet";
 
     public boolean isNetworkConnected(Context c, MainActivityInterface mainActivityInterface) {

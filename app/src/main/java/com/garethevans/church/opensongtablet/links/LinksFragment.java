@@ -26,6 +26,7 @@ public class LinksFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        mainActivityInterface.updateToolbar(link_string);
         mainActivityInterface.updateToolbarHelp(webAddress);
     }
 
@@ -42,7 +43,6 @@ public class LinksFragment extends Fragment {
 
         prepareStrings();
 
-        mainActivityInterface.updateToolbar(link_string);
         webAddress = website_link_string;
 
         // Set views

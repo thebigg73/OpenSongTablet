@@ -50,6 +50,7 @@ public class BibleDownloadFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        mainActivityInterface.updateToolbar(download_string);
         mainActivityInterface.updateToolbarHelp(webAddress);
     }
 
@@ -66,7 +67,6 @@ public class BibleDownloadFragment extends Fragment {
 
         prepareStrings();
 
-        mainActivityInterface.updateToolbar(download_string);
         webAddress = website_bible_download_string;
 
         // Set up helpers

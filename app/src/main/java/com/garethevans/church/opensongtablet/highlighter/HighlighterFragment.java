@@ -26,6 +26,7 @@ public class HighlighterFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        mainActivityInterface.updateToolbar(highlight_string);
         mainActivityInterface.updateToolbarHelp(webAddress);
     }
 
@@ -42,7 +43,6 @@ public class HighlighterFragment extends Fragment {
 
         prepareStrings();
 
-        mainActivityInterface.updateToolbar(highlight_string);
         webAddress = website_highlighter_string;
 
         // Set current values

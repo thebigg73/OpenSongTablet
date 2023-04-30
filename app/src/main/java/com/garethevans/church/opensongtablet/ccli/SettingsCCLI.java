@@ -32,6 +32,7 @@ public class SettingsCCLI extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        mainActivityInterface.updateToolbar(ccli_string);
         mainActivityInterface.updateToolbarHelp(webAddress);
     }
 
@@ -50,7 +51,6 @@ public class SettingsCCLI extends Fragment {
 
         prepareStrings();
 
-        mainActivityInterface.updateToolbar(ccli_string);
         webAddress = website_ccli_string;
 
         // Set current Values

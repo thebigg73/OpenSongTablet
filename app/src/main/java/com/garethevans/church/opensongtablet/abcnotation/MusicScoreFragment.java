@@ -31,6 +31,7 @@ public class MusicScoreFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        mainActivityInterface.updateToolbar(music_score);
         mainActivityInterface.updateToolbarHelp(webAddress);
     }
 
@@ -45,7 +46,6 @@ public class MusicScoreFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsAbcnotationBinding.inflate(inflater, container, false);
         prepareStrings();
-        mainActivityInterface.updateToolbar(music_score);
         webAddress = website_music_score;
 
         requireActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);

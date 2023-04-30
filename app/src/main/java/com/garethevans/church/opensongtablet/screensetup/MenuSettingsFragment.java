@@ -20,12 +20,14 @@ public class MenuSettingsFragment extends Fragment {
 
     SettingsMenuBinding myView;
     MainActivityInterface mainActivityInterface;
-    private String off_string="", submenu_string="", author_string="", file_string="", folder_string="";
+    private String off_string="", submenu_string="", author_string="", file_string="",
+            folder_string="", menu_settings_string="", website_menu_settings_string="";
     private String webAddress;
 
     @Override
     public void onResume() {
         super.onResume();
+        mainActivityInterface.updateToolbar(menu_settings_string);
         mainActivityInterface.updateToolbarHelp(webAddress);
     }
 
@@ -40,9 +42,20 @@ public class MenuSettingsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsMenuBinding.inflate(inflater,container,false);
 
+        prepareStrings();
+        webAddress = website_menu_settings_string;
+
+        // Deal with the views
+        setupViews();
+        setupListeners();
+
+        return myView.getRoot();
+    }
+
+    private void prepareStrings() {
         if (getContext()!=null) {
-            mainActivityInterface.updateToolbar(getString(R.string.menu_settings));
-            mainActivityInterface.updateToolbarHelp(getString(R.string.website_menu_settings));
+            menu_settings_string = getString(R.string.menu_settings);
+            website_menu_settings_string = getString(R.string.website_menu_settings);
             off_string = getString(R.string.off);
             webAddress = getString(R.string.website_menu_settings);
             submenu_string = getString(R.string.song_menu_subtitle_size);
@@ -50,12 +63,6 @@ public class MenuSettingsFragment extends Fragment {
             folder_string = getString(R.string.folder);
             file_string = getString(R.string.file);
         }
-
-        // Deal with the views
-        setupViews();
-        setupListeners();
-
-        return myView.getRoot();
     }
 
     private void setupViews() {

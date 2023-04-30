@@ -27,11 +27,13 @@ public class ProfileFragment extends Fragment {
     private SettingsProfilesBinding myView;
     private MainActivityInterface mainActivityInterface;
     private ActivityResultLauncher<Intent> activityLoadResultLauncher, activitySaveResultLauncher;
+    private String profile_string="", website_profiles_string="";
     private String webAddress;
 
     @Override
     public void onResume() {
         super.onResume();
+        mainActivityInterface.updateToolbar(profile_string);
         mainActivityInterface.updateToolbarHelp(webAddress);
     }
 
@@ -46,10 +48,8 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsProfilesBinding.inflate(inflater,container,false);
 
-        if (getContext()!=null) {
-            mainActivityInterface.updateToolbar(getString(R.string.profile));
-            webAddress = getString(R.string.website_profiles);
-        }
+        prepareStrings();
+        webAddress = website_profiles_string;
 
         // Setup helpers
         setupHelpers();
@@ -61,6 +61,13 @@ public class ProfileFragment extends Fragment {
         setupListeners();
 
         return myView.getRoot();
+    }
+
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            profile_string = getString(R.string.profile);
+            website_profiles_string = getString(R.string.website_profiles);
+        }
     }
 
     private void setupHelpers() {

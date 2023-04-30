@@ -35,6 +35,7 @@ public class ThemeSetupFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        mainActivityInterface.updateToolbar(theme_string);
         mainActivityInterface.updateToolbarHelp(webAddress);
     }
 
@@ -50,8 +51,6 @@ public class ThemeSetupFragment extends Fragment {
         myView = SettingsThemeBinding.inflate(inflater,container,false);
 
         prepareStrings();
-
-        mainActivityInterface.updateToolbar(theme_string);
         webAddress = website_themes_string;
 
         String text = presenter_mode_string + " / " + stage_mode_string;

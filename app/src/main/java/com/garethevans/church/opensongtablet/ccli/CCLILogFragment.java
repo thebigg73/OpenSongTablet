@@ -36,14 +36,18 @@ public class CCLILogFragment extends Fragment {
         mainActivityInterface = (MainActivityInterface) context;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        mainActivityInterface.updateToolbar(ccli_string + " XML");
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsCcliLogBinding.inflate(inflater, container, false);
 
-        prepareString();
-
-        mainActivityInterface.updateToolbar(ccli_string + " XML");
+        prepareStrings();
 
         // Set up the default values
         Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Settings", "", "ActivityLog.xml");
@@ -63,7 +67,7 @@ public class CCLILogFragment extends Fragment {
         return myView.getRoot();
     }
 
-    private void prepareString() {
+    private void prepareStrings() {
         if (getContext()!=null) {
             ccli_string = getString(R.string.ccli);
             ccli_church_string = getString(R.string.ccli_church);

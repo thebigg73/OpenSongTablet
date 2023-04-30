@@ -868,7 +868,6 @@ public class PerformanceFragment extends Fragment {
                     heightAfterScale = (int)(heightBeforeScale * scaleFactor);
                     myView.pageHolder.getLayoutParams().width = widthAfterScale;
                 } else if (scaleInfo[0]==2) {
-
                     /*float[]{2,             // Number of columns
                     1    twoColumnScale,     // Overall best scale
                     2    columnBreak2,       // Break point

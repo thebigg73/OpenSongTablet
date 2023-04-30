@@ -1305,14 +1305,14 @@ public class ProcessSong {
         // What if sections aren't in the song (e.g. Intro V2 and Outro)
         // The other issue is that custom tags (e.g. Guitar Solo) can have spaces in them
 
+        ArrayList<String> newSections = new ArrayList<>();
+        ArrayList<String> newHeaders = new ArrayList<>();
+
         if (mainActivityInterface.getPresenterSettings().getUsePresentationOrder() &&
                 song.getPresentationorder() != null && !song.getPresentationorder().isEmpty() &&
             !(multiLineVerseKeepCompact && isMultiLineFormatSong(song.getLyrics()))) {
             try {
                 // Update to match the presentation order
-                ArrayList<String> newSections = new ArrayList<>();
-                ArrayList<String> newHeaders = new ArrayList<>();
-
                 StringBuilder tempPresentationOrder = new StringBuilder(song.getPresentationorder() + " ");
                 StringBuilder errors = new StringBuilder();
 
@@ -1384,16 +1384,16 @@ public class ProcessSong {
                     //        c.getString(R.string.edit_song), c.getString(R.string.deeplink_edit));
                     //informationBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "InformationBottomSheet");
                 }
-
-                song.setPresoOrderSongSections(newSections);
-                song.setPresoOrderSongHeadings(newHeaders);
             } catch (Exception e) {
                 // IV - An error has occurred so return what we have
-                song.setPresoOrderSongSections(song.getGroupedSections());
-                song.setPresoOrderSongHeadings(song.getSongSectionHeadings());
+                e.printStackTrace();
             }
+        }
+        // If a non empty presentation order then set, otherwise return normal order
+        if (newSections.size() > 0) {
+            song.setPresoOrderSongSections(newSections);
+            song.setPresoOrderSongHeadings(newHeaders);
         } else {
-            // Not using presentation order, so just return what we have
             song.setPresoOrderSongSections(song.getGroupedSections());
             song.setPresoOrderSongHeadings(song.getSongSectionHeadings());
         }

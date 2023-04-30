@@ -28,6 +28,7 @@ public class InlineSetFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        mainActivityInterface.updateToolbar(set_inline_string);
         mainActivityInterface.updateToolbarHelp(webAddress);
     }
 
@@ -44,8 +45,6 @@ public class InlineSetFragment extends Fragment {
         myView = SettingsSetsInlineBinding.inflate(inflater,container,false);
 
         prepareStrings();
-
-        mainActivityInterface.updateToolbar(set_inline_string);
         webAddress = website_inline_set_string;
 
         // Set up the views

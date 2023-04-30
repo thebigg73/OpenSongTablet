@@ -21,6 +21,7 @@ public class BibleSettingsFragment extends Fragment {
 
     private BibleSettingsBinding myView;
     private MainActivityInterface mainActivityInterface;
+    private String bible_string="";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -28,14 +29,18 @@ public class BibleSettingsFragment extends Fragment {
         mainActivityInterface = (MainActivityInterface) context;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        mainActivityInterface.updateToolbar(bible_string);
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = BibleSettingsBinding.inflate(inflater, container, false);
 
-        if (getContext()!=null) {
-            mainActivityInterface.updateToolbar(getString(R.string.bible));
-        }
+        prepareStrings();
 
         // Set up listeners
         setupListeners();
@@ -43,6 +48,11 @@ public class BibleSettingsFragment extends Fragment {
         return myView.getRoot();
     }
 
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            bible_string = getString(R.string.bible);
+        }
+    }
     private void setupListeners() {
         myView.downloadBible.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null, R.id.bibleDownloadFragment));
         myView.bibleOffline.setOnClickListener(v -> {

@@ -26,6 +26,7 @@ public class SongActionsMenuFragment extends Fragment {
     private SettingsSongactionsBinding myView;
     @SuppressWarnings({"FieldCanBeLocal","unused"})
     private final String TAG = "SongActionsMenuFrag";
+    private String song_actions_string="";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -33,11 +34,18 @@ public class SongActionsMenuFragment extends Fragment {
         mainActivityInterface = (MainActivityInterface) context;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        mainActivityInterface.updateToolbar(song_actions_string);
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsSongactionsBinding.inflate(inflater,container,false);
-        mainActivityInterface.updateToolbar(getString(R.string.song_actions));
+
+        prepareStrings();
 
         // Add the current song title to the menu
         addCurrentSong();
@@ -48,6 +56,11 @@ public class SongActionsMenuFragment extends Fragment {
         return myView.getRoot();
     }
 
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            song_actions_string = getString(R.string.song_actions);
+        }
+    }
     private void addCurrentSong() {
         String currentSong = mainActivityInterface.getSong().getTitle();
         if (currentSong!=null && !currentSong.isEmpty()) {

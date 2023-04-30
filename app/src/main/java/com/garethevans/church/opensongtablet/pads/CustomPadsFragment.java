@@ -32,6 +32,7 @@ public class CustomPadsFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        mainActivityInterface.updateToolbar(pad_string + " (" + custom_string + ")");
         mainActivityInterface.updateToolbarHelp(webAddress);
     }
 
@@ -48,7 +49,6 @@ public class CustomPadsFragment extends Fragment {
 
         prepareStrings();
 
-        mainActivityInterface.updateToolbar(pad_string + " (" + custom_string + ")");
         webAddress = website_pad_string;
 
         // Set up the file launcher listener

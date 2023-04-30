@@ -38,6 +38,7 @@ public class DisplayExtraFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        mainActivityInterface.updateToolbar(song_display_string);
         mainActivityInterface.updateToolbarHelp(webAddress);
     }
 
@@ -59,9 +60,7 @@ public class DisplayExtraFragment extends Fragment {
             getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         }
 
-        mainActivityInterface.updateToolbar(song_display_string);
         webAddress = website_song_display_string;
-
 
         // Set up views
         setViews();

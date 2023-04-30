@@ -29,6 +29,7 @@ public class AutoscrollSettingsFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        mainActivityInterface.updateToolbar(autoscroll);
         mainActivityInterface.updateToolbarHelp(webAddress);
     }
 
@@ -46,7 +47,6 @@ public class AutoscrollSettingsFragment extends Fragment {
 
         prepareStrings();
 
-        mainActivityInterface.updateToolbar(autoscroll);
         webAddress = website_autoscroll;
         // Set up the views
         setupViews();
