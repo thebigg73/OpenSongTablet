@@ -139,6 +139,8 @@ public class SaveSong {
             // Update the song xml ready for saving
             mainActivityInterface.getSong().setSongXML(mainActivityInterface.getProcessSong().getXML(thisSong));
 
+            Log.d(TAG,"thisSong.getFilename():"+thisSong.getFilename());
+            Log.d(TAG,"thisSong.getFiletype():"+thisSong.getFiletype());
             // Now save the song file and return the success!
             if (thisSong.getFiletype().equals("XML")) {
                 mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" updateSong Songs/"+thisSong.getFolder()+"/"+thisSong.getFilename());

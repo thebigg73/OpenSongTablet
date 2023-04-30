@@ -5,7 +5,6 @@ import android.content.Context;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.RoundedCorner;
 import android.view.Surface;
 import android.view.View;
@@ -173,7 +172,6 @@ public class WindowFlags {
         } else {
             navHeight = Math.max(navBars.bottom, Math.max(navBars.left, navBars.right));
         }
-        Log.d(TAG,"navHeight="+navHeight);
     }
 
     public void setGestureNavigation(boolean gestureNavigation) {
@@ -207,7 +205,6 @@ public class WindowFlags {
     }
 
     public void adjustViewPadding(MainActivityInterface mainActivityInterface, View view) {
-        Log.d(TAG,"softKeyboardHeight:"+softKeyboardHeight);
         if (softKeyboardHeight > 0) {
             view.setPadding(0, 0, 0, softKeyboardHeight);
         } else {
@@ -592,11 +589,6 @@ public class WindowFlags {
                 navHeight = 0;
             }
             nav = navHeight;
-            Log.d(TAG,"navHeight:"+nav);
-            Log.d(TAG,"mandatoryInset.bottom:"+mandatoryInset.bottom);
-            Log.d(TAG,"systemGestures.bottom:"+systemGestures.bottom);
-            Log.d(TAG,"systemBars.bottom:"+systemBars.bottom);
-
         }
         switch (navBarPosition) {
             case "b":

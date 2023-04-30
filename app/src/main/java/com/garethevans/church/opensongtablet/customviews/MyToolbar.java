@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -351,11 +350,6 @@ public class MyToolbar extends MaterialToolbar {
 
     // Get the actionbar height - fakes a height of 0 if autohiding
     public int getActionBarHeight(boolean forceShown) {
-        Log.d(TAG,"toolbarHeight:"+getHeight());
-        Log.d(TAG,"getY():"+getY());
-        Log.d(TAG,"getTop():"+getTop());
-        int[] loc = new int[2];
-        getLocationOnScreen(loc);
 
         if (hideActionBar && performanceMode && !forceShown) {
             return mainActivityInterface.getWindowFlags().getCustomMarginTop();

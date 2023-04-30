@@ -47,8 +47,6 @@ public class LoadSong {
             filename = "Welcome to OpenSongApp";
             thisSong.setFilename(filename);
         }
-        Log.d(TAG,"folder:"+folder);
-        Log.d(TAG,"filename:"+filename);
 
         // Clear the song object then add the folder filename back
         thisSong = new Song();

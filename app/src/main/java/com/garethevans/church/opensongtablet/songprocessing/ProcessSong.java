@@ -1799,7 +1799,6 @@ public class ProcessSong {
                                 backgroundColor = colors[0];
                                 if (l==0) {
                                     isChorusBold = colors[1]==1 && displayBoldChorus;
-                                    Log.d(TAG,"isChorusBold:"+isChorusBold);
                                     overallBackgroundColor = backgroundColor;
                                 }
                             }
