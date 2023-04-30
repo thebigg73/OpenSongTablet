@@ -19,11 +19,11 @@ import com.google.android.material.slider.Slider;
 public class MaterialSlider extends LinearLayout {
 
     private final Slider slider;
-    private final TextView titleTextView, valueTextView;
+    private final TextView titleTextView, valueTextView, bottomHintView;
     private final FloatingActionButton minusFAB, plusFAB;
     private final FrameLayout minusHolder, plusHolder;
     private final float stepSize;
-
+    private boolean adjustButtons;
     public MaterialSlider(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         inflate(context, R.layout.view_material_slider, this);
@@ -51,11 +51,12 @@ public class MaterialSlider extends LinearLayout {
         float height = a.getDimensionPixelSize(7,0);
         float radius = a.getDimensionPixelSize(8,0);
         int thumb = a.getColor(9,0);
-        boolean adjustButtons = a.getBoolean(10,false);
+        adjustButtons = a.getBoolean(10,false);
 
         slider = findViewById(R.id.slider);
         titleTextView = findViewById(R.id.titleText);
         valueTextView = findViewById(R.id.valueText);
+        bottomHintView = findViewById(R.id.bottomHint);
         minusHolder = findViewById(R.id.minusHolder);
         plusHolder = findViewById(R.id.plusHolder);
         minusFAB = findViewById(R.id.minus);
@@ -64,6 +65,7 @@ public class MaterialSlider extends LinearLayout {
         slider.setId(View.generateViewId());
         titleTextView.setId(View.generateViewId());
         valueTextView.setId(View.generateViewId());
+        bottomHintView.setId(View.generateViewId());
         minusHolder.setId(View.generateViewId());
         plusHolder.setId(View.generateViewId());
         minusFAB.setId(View.generateViewId());
@@ -155,21 +157,15 @@ public class MaterialSlider extends LinearLayout {
         }
     }
     public void setHint(String hint) {
-        if (hint!=null && !hint.isEmpty()) {
-            valueTextView.post(() -> {
-                if (valueTextView.getVisibility()!=View.VISIBLE) {
-                    valueTextView.setVisibility(View.VISIBLE);
-                }
-                valueTextView.setText(hint);
-            });
-
-        } else {
-            valueTextView.post(() -> {
-                if (valueTextView.getVisibility()!=View.GONE) {
-                    valueTextView.setVisibility(View.GONE);
-                }
-            });
-        }
+        // If we are using +/- buttons we use the bottomHint
+        bottomHintView.post(() -> {
+            bottomHintView.setVisibility(adjustButtons && hint!=null && !hint.isEmpty() ? View.VISIBLE:View.GONE);
+            bottomHintView.setText(adjustButtons && hint!=null && !hint.isEmpty() ? hint:"");
+        });
+        valueTextView.post(() -> {
+            valueTextView.setVisibility(!adjustButtons && hint!=null && !hint.isEmpty() ? View.VISIBLE:View.GONE);
+            valueTextView.setText(!adjustButtons && hint!=null && !hint.isEmpty() ? hint:"");
+        });
     }
     public void setText(String text) {
         titleTextView.setText(text);
@@ -212,8 +208,12 @@ public class MaterialSlider extends LinearLayout {
     }
 
     public void setAdjustableButtons(boolean adjustButtons) {
+        this.adjustButtons = adjustButtons;
         minusHolder.setVisibility(adjustButtons ? View.VISIBLE:View.GONE);
         plusHolder.setVisibility(adjustButtons ? View.VISIBLE:View.GONE);
+        plusHolder.setVisibility(adjustButtons ? View.VISIBLE:View.GONE);
+        valueTextView.setVisibility(adjustButtons ? View.GONE:View.VISIBLE);
+        bottomHintView.setVisibility(adjustButtons ? View.VISIBLE:View.GONE);
         minusFAB.setOnClickListener(v -> decreaseValue());
         plusFAB.setOnClickListener(v -> increaseValue());
         minusHolder.setOnClickListener(v -> {

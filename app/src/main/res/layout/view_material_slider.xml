@@ -83,6 +83,13 @@
             app:srcCompat="@drawable/plus"
             android:contentDescription="@string/plus_1"/>
         </FrameLayout>
-
     </LinearLayout>
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/bottomHint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/vlightgrey"
+        android:gravity="center_horizontal"
+        tools:text="Hint"
+        android:visibility="gone"/>
 </LinearLayout>
