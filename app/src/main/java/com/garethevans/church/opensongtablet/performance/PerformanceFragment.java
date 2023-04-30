@@ -845,7 +845,7 @@ public class PerformanceFragment extends Fragment {
                 myView.pageHolder.getLayoutParams().width = availableWidth;
                 myView.pageHolder.getLayoutParams().height = availableHeight;
 
-                Log.d(TAG,"availableWidth:"+availableWidth);
+                //Log.d(TAG,"availableWidth:"+availableWidth);
                 float[] scaleInfo = mainActivityInterface.getProcessSong().addViewsToScreen(
                         mainActivityInterface.getSectionViews(),
                         mainActivityInterface.getSectionWidths(), mainActivityInterface.getSectionHeights(),
@@ -1018,11 +1018,17 @@ public class PerformanceFragment extends Fragment {
             // Start the pad (if the pads are activated and the pad is valid)
             mainActivityInterface.getPad().autoStartPad();
 
-            // Update any midi commands (if any)
+            // Send BeatBuddy autosong
+            if (mainActivityInterface.getBeatBuddy().getBeatBuddyAutoLookup()) {
+                mainActivityInterface.getBeatBuddy().tryAutoSend(getContext(),mainActivityInterface,mainActivityInterface.getSong());
+            }
+
+            // Update any midi commands (if any) - additional to BeatBuddy so sent afterwards
             if (mainActivityInterface.getPreferences().getMyPreferenceBoolean("midiSendAuto", false)) {
                 mainActivityInterface.getMidi().buildSongMidiMessages();
                 mainActivityInterface.getMidi().sendSongMessages();
             }
+
 
             // Update the secondary display (if present)
             displayInterface.updateDisplay("newSongLoaded");

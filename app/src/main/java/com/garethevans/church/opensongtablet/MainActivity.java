@@ -54,6 +54,7 @@ import com.garethevans.church.opensongtablet.appdata.FixLocale;
 import com.garethevans.church.opensongtablet.appdata.SetTypeFace;
 import com.garethevans.church.opensongtablet.appdata.VersionNumber;
 import com.garethevans.church.opensongtablet.autoscroll.Autoscroll;
+import com.garethevans.church.opensongtablet.beatbuddy.BBOptionsFragment;
 import com.garethevans.church.opensongtablet.bible.Bible;
 import com.garethevans.church.opensongtablet.ccli.CCLILog;
 import com.garethevans.church.opensongtablet.ccli.SettingsCCLI;
@@ -72,7 +73,7 @@ import com.garethevans.church.opensongtablet.customslides.CustomSlideFragment;
 import com.garethevans.church.opensongtablet.customviews.DrawNotes;
 import com.garethevans.church.opensongtablet.customviews.MyToolbar;
 import com.garethevans.church.opensongtablet.databinding.ActivityBinding;
-import com.garethevans.church.opensongtablet.drummer.BeatBuddy;
+import com.garethevans.church.opensongtablet.beatbuddy.BeatBuddy;
 import com.garethevans.church.opensongtablet.drummer.Drummer;
 import com.garethevans.church.opensongtablet.export.ExportActions;
 import com.garethevans.church.opensongtablet.export.PrepareFormats;
@@ -2500,6 +2501,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     updateFragment(fragName,callingFragment,null);
                     allowToast = false;
                     break;
+
+                case "resetBeatBuddyDatabase":
+                    // Reset the BeatBuddy database
+                    if (callingFragment!=null && callingFragment.isAdded()) {
+                        ((BBOptionsFragment)callingFragment).resetDatabase();
+                        allowToast = false;
+                        break;
+                    }
             }
             if (allowToast && result && showToast!=null && getResources()!=null) {
                 // Don't show toast for exit, but other successful actions
