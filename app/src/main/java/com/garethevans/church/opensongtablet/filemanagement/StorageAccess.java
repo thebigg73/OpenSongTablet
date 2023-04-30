@@ -135,7 +135,6 @@ public class StorageAccess {
     private Uri homeFolder_SAF(String uriTree_String) {
         // When using a document tree, the uri needed for DocumentsContract is more complex than the uri chosen.
         // Create a document file to get a contract uri
-
         Uri uri = Uri.parse(uriTree_String);
         if (uri != null) {
             DocumentFile df = documentFileFromRootUri(uri, uriTree_String);
@@ -225,6 +224,18 @@ public class StorageAccess {
     private String createOrCheckRootFolders_SAF(Uri uri) {
         uriTreeHome = homeFolder(uri);
 
+        Log.d(TAG,"createOrCheckRootFolders()  uri:"+uri+"  uriTree:"+uriTree);
+        // Look to see if uriTreeHome actually exists
+        DocumentFile documentFile = DocumentFile.fromTreeUri(c,uri);
+        DocumentFile openSongDf = documentFile.findFile(appFolder);
+        if (openSongDf==null) {
+            openSongDf = documentFile.createDirectory(appFolder);
+            uriTreeHome = openSongDf.getUri();
+        } else {
+            uriTreeHome = openSongDf.getUri();
+        }
+        setUriTreeHome(uriTreeHome);
+        /*Log.d(TAG,"createOrCheckRootFolders()  uriTreeHome:"+uriTreeHome);
         // Check the OpenSong folder exists (may be specified in the uriTree and/or uriTreeHome
         if (uriTree != null && uriTree.getLastPathSegment() != null &&
                 (!uriTree.getLastPathSegment().endsWith("OpenSong") || !uriTree.getLastPathSegment().endsWith("OpenSong/"))) {
@@ -236,7 +247,7 @@ public class StorageAccess {
                     Log.d(TAG, "Unable to create OpenSong folder at " + uriTree);
                 }
             }
-        }
+        }*/
 
         // Go through the main folders and try to create them
         for (String folder : rootFolders) {
@@ -969,7 +980,6 @@ public class StorageAccess {
         if (lollipopOrLater()) {
             return DocumentsContract.buildChildDocumentsUriUsingTree(uri, id);
         } else {
-
             return DocumentsContract.buildChildDocumentsUri(uri.getAuthority(), id);
         }
     }
@@ -1004,8 +1014,9 @@ public class StorageAccess {
         // Return any subfolder and change the 'Songs' folder as required
         ArrayList<String> fixedFolders = new ArrayList<>();
         String where = "Songs";
-        if (folderToCheck.contains("../")) {
+        if (folderToCheck.contains("../")||folderToCheck.contains("**")) {
             where = folderToCheck.replace("../","");
+            where = where.replace("**","");
             if (where.contains("_cache")) {
                 folderToCheck = "_cache";
                 where = where.substring(0,where.indexOf("/_cache"));
