@@ -120,6 +120,7 @@ public class EditSongFragmentTags extends Fragment {
             }
         });
         myView.tags.addTextChangedListener(new MyTextWatcher("tags"));
+        myView.aka.addTextChangedListener(new MyTextWatcher("aka"));
         myView.ccli.addTextChangedListener(new MyTextWatcher("ccli"));
         myView.user1.addTextChangedListener(new MyTextWatcher("user1"));
         myView.user2.addTextChangedListener(new MyTextWatcher("user2"));
@@ -150,7 +151,9 @@ public class EditSongFragmentTags extends Fragment {
                     mainActivityInterface.getProcessSong().stretchEditBoxToLines(myView.tags,2);
                     break;
                 case "aka":
+                    Log.d(TAG,"Setting aka:"+editable.toString());
                     mainActivityInterface.getTempSong().setAka(editable.toString());
+                    break;
                 case "user1":
                     mainActivityInterface.getTempSong().setUser1(editable.toString());
                     break;
