@@ -45,8 +45,6 @@ public class MyRecyclerView extends RecyclerView  implements RecyclerView.Smooth
     private int mActivePointerId;
     private boolean allowPinchToZoom;
     private boolean gestureControl;
-
-
     private final LinearInterpolator linearInterpolator = new LinearInterpolator();
     private final ScrollListener scrollListener;
     private final ItemTouchListener itemTouchListener;

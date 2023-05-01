@@ -333,9 +333,7 @@ public class SongSectionsFragment extends Fragment {
 
     public void scrollToPosition(int position) {
         if (myView!=null) {
-            myView.recyclerView.post(() -> {
-                myView.recyclerView.smoothScrollToPosition(position);
-            });
+            myView.recyclerView.post(() -> myView.recyclerView.smoothScrollToPosition(position));
         }
     }
 

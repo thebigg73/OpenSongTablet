@@ -1945,7 +1945,6 @@ public class StorageAccess {
         songIDFile = new File(c.getExternalFilesDir("Database"), "SongIds.txt");
         try {
             Log.d(TAG,"Creating new songIDFile success="+songIDFile.createNewFile());
-            Log.d(TAG,"content:"+stringBuilder.toString());
             OutputStream outputStream = getOutputStream(Uri.fromFile(songIDFile));
             if (outputStream != null) {
                 writeFileFromString(stringBuilder.toString(), outputStream);
