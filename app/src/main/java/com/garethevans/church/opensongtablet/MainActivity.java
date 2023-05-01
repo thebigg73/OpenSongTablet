@@ -971,7 +971,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     navDestination.getId()==R.id.presenterFragment));
             // IV - We are changing so adjust option menu elements
             if (globalMenuItem != null) {
-                // IV - To smooth teardown, we remove elements left to right
+                // IV - To smooth teardown, we clear elements left to right
                 if (settingsOpen && !whichMode.equals(presenter)) {
                     myView.myToolbar.hideSongDetails(true);
                 }
@@ -995,6 +995,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         batteryStatus.showBatteryStuff(true);
                     }
                     // IV - Song details are added by song load
+                    // GE onResuming (open cast and return), not called, so quick check is worthwhile
+                    if (!whichMode.equals(getString(R.string.mode_presenter))) {
+                        updateToolbar(null);
+                    }
                 }
                 myView.myToolbar.requestLayout();
                 myView.myToolbar.setContentInsetStartWithNavigation(0);
