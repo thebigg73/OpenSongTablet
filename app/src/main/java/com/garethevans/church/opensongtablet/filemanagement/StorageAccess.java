@@ -148,7 +148,7 @@ public class StorageAccess {
             // If uri doesn't end with /OpenSong/, fix that
             if (uri != null && uri.getLastPathSegment() != null && !uri.getLastPathSegment().endsWith("OpenSong")) {
                 String s = uri.toString();
-                s = s + "%2FOpenSong";
+                s = s + "%2F"+appFolder;
                 uri = Uri.parse(s);
             }
         }
@@ -160,9 +160,9 @@ public class StorageAccess {
         // Now get rid of the file start as it'll get added again later
         uriTree_String = uriTree_String.replace("file://", "");
 
-        if (!uriTree_String.endsWith("OpenSong") && !uriTree_String.endsWith("OpenSong/")) {
-            uriTree_String = uriTree_String + "/OpenSong/";
-            uriTree_String = uriTree_String.replace("//OpenSong/", "/OpenSong/");
+        if (!uriTree_String.endsWith(appFolder) && !uriTree_String.endsWith(appFolder+"/")) {
+            uriTree_String = uriTree_String + "/" + appFolder +"/";
+            uriTree_String = uriTree_String.replace("//"+appFolder+"/", "/"+appFolder+"/");
 
 
             f = new File(uriTree_String);
@@ -226,13 +226,20 @@ public class StorageAccess {
 
         // Look to see if uriTreeHome actually exists
         DocumentFile documentFile = DocumentFile.fromTreeUri(c,uri);
-        DocumentFile openSongDf = documentFile.findFile(appFolder);
-        if (openSongDf==null) {
-            openSongDf = documentFile.createDirectory(appFolder);
-            uriTreeHome = openSongDf.getUri();
-        } else {
-            uriTreeHome = openSongDf.getUri();
+        if (documentFile!=null && documentFile.exists() && documentFile.getUri().toString().endsWith(appFolder)) {
+            // This is the correct uriTreeHome
+            Log.d(TAG,"We already have the correct uriTreeHome");
+            uriTreeHome = documentFile.getUri();
+        } else if (documentFile!=null) {
+            DocumentFile openSongDf = documentFile.findFile(appFolder);
+            if (openSongDf == null) {
+                openSongDf = documentFile.createDirectory(appFolder);
+                uriTreeHome = openSongDf.getUri();
+            } else {
+                uriTreeHome = openSongDf.getUri();
+            }
         }
+
         setUriTreeHome(uriTreeHome);
         Log.d(TAG,"createOrCheckRootFolders()  uri:"+uri+"  uriTree:"+uriTree+" uriTreeHome:"+uriTreeHome);
 
@@ -550,7 +557,7 @@ public class StorageAccess {
         filename = filename.replaceAll("[*?<>&!#$+\":{}@\\\\]", " "); // Removes bad characters - leave ' and / though
         filename = filename.replaceAll("\\s{2,}", " ");  // Removes double spaces
         // Don't allow the name OpenSong
-        filename = filename.replace("OpenSong","Open_Song");
+        filename = filename.replace(appFolder,"Open_Song");
         return filename.trim();  // Returns the trimmed value
     }
     public Uri fixLocalisedUri(String uriString) {
@@ -1806,6 +1813,7 @@ public class StorageAccess {
         ArrayList<String> songIds = new ArrayList<>();
         Uri uri = getUriForItem("Songs", "", "");
 
+        Log.d(TAG,"listSongs_SAF() at uri:"+uri);
         // Now get a documents contract at this location
         String songFolderId = getDocumentsContractId(uri);
 
@@ -1937,6 +1945,7 @@ public class StorageAccess {
         songIDFile = new File(c.getExternalFilesDir("Database"), "SongIds.txt");
         try {
             Log.d(TAG,"Creating new songIDFile success="+songIDFile.createNewFile());
+            Log.d(TAG,"content:"+stringBuilder.toString());
             OutputStream outputStream = getOutputStream(Uri.fromFile(songIDFile));
             if (outputStream != null) {
                 writeFileFromString(stringBuilder.toString(), outputStream);

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.util.Log;
 import android.view.View;
 
 import com.garethevans.church.opensongtablet.R;
@@ -28,6 +29,8 @@ public class SongListBuildIndex {
     private boolean currentlyIndexing = false;
     private final Context c;
     private final MainActivityInterface mainActivityInterface;
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
+    private final String TAG = "SongListBuildIndex";
 
     public SongListBuildIndex(Context c) {
         this.c = c;
@@ -64,6 +67,7 @@ public class SongListBuildIndex {
     public String fullIndex(MaterialTextView progressText) {
         // The basic database was created on boot.
         // Now comes the time consuming bit that fully indexes the songs into the database
+        Log.d(TAG,"starting full index");
         currentlyIndexing = true;
         progressText.post(() -> {
             progressText.setText("0%");
@@ -78,6 +82,7 @@ public class SongListBuildIndex {
 
             Cursor cursor = db.rawQuery(altquery, null);
 
+            Log.d(TAG,"cursor.getCount():"+cursor.getCount());
             if (cursor.getCount()>0) {
                 // Get the total song number
                 int totalSongs = cursor.getCount();

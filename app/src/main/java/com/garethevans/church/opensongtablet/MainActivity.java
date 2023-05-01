@@ -1689,6 +1689,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 if (songListBuildIndex!=null && songMenuFragment!=null && songMenuFragment.getProgressText()!=null) {
                     songListBuildIndex.setIndexComplete(false);
                     songListBuildIndex.fullIndex(songMenuFragment.getProgressText());
+                } else {
+                    // Try again in a short while
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            songListBuildIndex.fullIndex(songMenuFragment.getProgressText());
+                        }
+                    },1000);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
