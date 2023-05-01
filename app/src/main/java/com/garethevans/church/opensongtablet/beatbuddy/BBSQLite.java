@@ -76,7 +76,7 @@ public class BBSQLite extends SQLiteOpenHelper {
     // Format is SONG_CODE,SONG_NUM,SONG_NAME,FOLDER_CODE,FOLDER_NUM,FOLDER_NAME
     
     private final Context c;
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     @SuppressWarnings("FieldCanBeLocal")
     private final String TAG = "BBLite";
 
@@ -829,6 +829,7 @@ public class BBSQLite extends SQLiteOpenHelper {
     // Only called by default songs
     public ArrayList<BBSong> getSongsByFilters(String folderVal, String timeSigVal, String kitVal) {
         try (SQLiteDatabase db = getDB()) {
+            Log.d(TAG,"folderVal:"+folderVal+"  timeSigVal:"+timeSigVal+"  kitVal:"+kitVal);
             ArrayList<BBSong> bbSongsFound = new ArrayList<>();
             // The folder will have both the folder number and the folder name
             int folderNum = -1;
@@ -846,7 +847,7 @@ public class BBSQLite extends SQLiteOpenHelper {
             ArrayList<String> args = new ArrayList<>();
             String sqlMatch = "";
             if (folderVal != null && !folderVal.isEmpty()) {
-                sqlMatch += COLUMN_FOLDER_NUM + "= ? AND " + COLUMN_FOLDER_NAME + "= ? ";
+                sqlMatch += COLUMN_FOLDER_NUM + "= ? AND " + COLUMN_FOLDER_NAME + "= ? AND ";
                 args.add(""+folderNum);
                 args.add(folderName);
             }
@@ -856,7 +857,12 @@ public class BBSQLite extends SQLiteOpenHelper {
             }
             if (kitVal != null && !kitVal.isEmpty()) {
                 sqlMatch += COLUMN_KIT_NUM + "= ?";
-                args.add(""+getNumberFromKit(kitVal));
+                if (kitVal.replaceAll("\\d","").trim().isEmpty()) {
+                    // Was a number already (default)
+                    args.add(kitVal);
+                } else {
+                    args.add("" + getNumberFromKit(kitVal));
+                }
             }
 
             if (!sqlMatch.isEmpty()) {
@@ -868,13 +874,16 @@ public class BBSQLite extends SQLiteOpenHelper {
 
             String getOrderBySQL = "ORDER BY " + COLUMN_FOLDER_NUM + " COLLATE NOCASE ASC," +
                     COLUMN_SONG_NUM + " ASC";
-            String getBasicSQLQueryStart = "SELECT " + COLUMN_FOLDER_NUM + ", " +
+            String getBasicSQLQueryStart = "SELECT " + COLUMN_FOLDER_NAME + ", " +
+                    COLUMN_FOLDER_NUM + ", " +
                     COLUMN_SONG_NUM + ", " + COLUMN_SONG_NAME + ", " +
                     COLUMN_SIGNATURE + ", " + COLUMN_KIT_NUM +
                     " FROM " + TABLE_NAME_DEFAULT_SONGS + " ";
             String selectQuery = getBasicSQLQueryStart.trim() + " " + sqlMatch.trim() + " " + getOrderBySQL.trim();
             String[] selectionArgs = new String[args.size()];
             selectionArgs = args.toArray(selectionArgs);
+
+            Log.d(TAG,"selectQuery:"+selectQuery);
 
             Cursor cursor = db.rawQuery(selectQuery, selectionArgs);
 

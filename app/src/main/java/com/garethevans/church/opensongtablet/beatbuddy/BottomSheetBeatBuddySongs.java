@@ -23,7 +23,6 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import com.google.android.material.slider.Slider;
 
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
@@ -87,23 +86,10 @@ public class BottomSheetBeatBuddySongs extends BottomSheetDialogFragment {
         myView.folder.addTextChangedListener(new MyTextWatcher());
         myView.timeSignature.addTextChangedListener(new MyTextWatcher());
         myView.drumKit.addTextChangedListener(new MyTextWatcher());
-        myView.useDefaultOrImported.addOnChangeListener((slider, value, fromUser) -> {
-            mainActivityInterface.getBeatBuddy().setBeatBuddyUseImported(value==1);
+        myView.beatBuddyUseImported.setOnCheckedChangeListener((compoundButton, b) -> {
+            mainActivityInterface.getBeatBuddy().setBeatBuddyUseImported(b);
             myView.folder.setText("");
             changeViewsDefaultOrImported();
-        });
-        myView.useDefaultOrImported.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
-            @Override
-            public void onStartTrackingTouch(@NonNull Slider slider) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(@NonNull Slider slider) {
-                mainActivityInterface.getBeatBuddy().setBeatBuddyUseImported(myView.useDefaultOrImported.getValue()==1);
-                myView.folder.setText("");
-                changeViewsDefaultOrImported();
-            }
         });
     }
     private void setupExposedDropDowns() {
@@ -123,7 +109,7 @@ public class BottomSheetBeatBuddySongs extends BottomSheetDialogFragment {
                 myUniqueFolders = bbsqLite.searchUniqueValues(bbsqLite.COLUMN_FOLDER_NUM + "," +
                         bbsqLite.COLUMN_FOLDER_NAME, bbsqLite.TABLE_NAME_MY_SONGS, bbsqLite.COLUMN_FOLDER_NUM);
 
-                myView.useDefaultOrImported.setSliderPos(mainActivityInterface.getBeatBuddy().getBeatBuddyUseImported() ? 1:0);
+                myView.beatBuddyUseImported.setChecked(mainActivityInterface.getBeatBuddy().getBeatBuddyUseImported());
 
                 foldersAdapter = new ExposedDropDownArrayAdapter(
                         getContext(), myView.folder, R.layout.view_exposed_dropdown_item, uniqueFolders);
@@ -193,7 +179,9 @@ public class BottomSheetBeatBuddySongs extends BottomSheetDialogFragment {
     }
 
     public void updateSong(int folder, int song) {
-        // Called from bottomsheet
-        callingFragment.changeSong(folder,song);
+        // Called from bottomsheet back to commands
+        if (callingFragment!=null) {
+            callingFragment.changeSong(folder, song);
+        }
     }
 }

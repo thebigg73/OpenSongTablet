@@ -32,6 +32,15 @@
                 app:size="large"/>
             <TableRow style="@style/DividerLine" />
 
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                android:id="@+id/beatBuddyBrowse"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/show_songs"
+                android:hint="@string/beat_buddy_browse_info"
+                app:size="large" />
+            <TableRow style="@style/DividerLine" />
+
             <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
                 android:id="@+id/beatBuddyAutoLookup"
                 android:layout_width="match_parent"

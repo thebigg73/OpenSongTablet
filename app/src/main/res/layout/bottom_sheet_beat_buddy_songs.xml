@@ -24,12 +24,13 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <com.garethevans.church.opensongtablet.customviews.TextSlider
-                android:id="@+id/useDefaultOrImported"
+            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                android:id="@+id/beatBuddyUseImported"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:textLeft="@string/use_default"
-                app:textRight="@string/imported_values"/>
+                android:padding="8dp"
+                android:text="@string/imported_values"
+                android:hint="@string/beat_buddy_import_project_info"/>
 
             <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
                 android:id="@+id/folder"

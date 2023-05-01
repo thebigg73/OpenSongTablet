@@ -2,7 +2,6 @@ package com.garethevans.church.opensongtablet.customviews;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 
 import androidx.annotation.NonNull;
@@ -38,7 +37,6 @@ public class NestedScrollWithFAB extends NestedScrollView {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_SCROLL:
                 case MotionEvent.ACTION_MOVE:
-                    Log.d(TAG,"FAB scroll");
                     if (fab!=null) {
                         fab.hide();
                     }

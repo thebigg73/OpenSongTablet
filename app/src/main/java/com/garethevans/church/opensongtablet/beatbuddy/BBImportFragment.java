@@ -295,9 +295,13 @@ public class BBImportFragment extends Fragment {
                     }
                 }
             }
+            mainActivityInterface.getShowToast().doIt(success_string);
+            mainActivityInterface.getBeatBuddy().setBeatBuddyUseImported(true);
         } else {
             myView.outcome.setText(error_string);
             myView.outcome.setHint(beat_buddy_import_error);
+            mainActivityInterface.getShowToast().doIt(error_string);
+            mainActivityInterface.getBeatBuddy().setBeatBuddyUseImported(false);
         }
     }
 
@@ -450,6 +454,7 @@ public class BBImportFragment extends Fragment {
             myView.outcome.setText(error_string);
             myView.outcome.setHint(beat_buddy_import_error);
             mainActivityInterface.getShowToast().doIt(error_string);
+            mainActivityInterface.getBeatBuddy().setBeatBuddyUseImported(false);
         } else {
             bbsqLite.clearMySongs();
             bbsqLite.clearMyDrums();
@@ -458,6 +463,7 @@ public class BBImportFragment extends Fragment {
             myView.outcome.setText(success_string);
             myView.outcome.setHint(stringBuilder.toString());
             mainActivityInterface.getShowToast().doIt(success_string);
+            mainActivityInterface.getBeatBuddy().setBeatBuddyUseImported(true);
         }
     }
 

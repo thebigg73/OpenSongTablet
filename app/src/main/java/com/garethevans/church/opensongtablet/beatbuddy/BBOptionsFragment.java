@@ -17,6 +17,9 @@ import com.garethevans.church.opensongtablet.databinding.SettingsBeatbuddyOption
 import com.garethevans.church.opensongtablet.filemanagement.AreYouSureBottomSheet;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 public class BBOptionsFragment extends Fragment {
 
     @SuppressWarnings({"unused","FieldCanBeLocal"})
@@ -62,7 +65,7 @@ public class BBOptionsFragment extends Fragment {
             beat_buddy = getString(R.string.beat_buddy);
             deeplink_beatbuddy_commands = getString(R.string.deeplink_beatbuddy_commands);
             deeplink_beatbuddy_import = getString(R.string.deeplink_beatbuddy_import);
-            website_beatbuddy = getString(R.string.website_beatbuddy_commands);
+            website_beatbuddy = getString(R.string.website_beatbuddy);
             not_available = getString(R.string.not_available);
             reset_string = getString(R.string.beat_buddy_database_reset);
             success_string = getString(R.string.success);
@@ -96,6 +99,16 @@ public class BBOptionsFragment extends Fragment {
                     null,"BBOptionsFragment",this, null);
             areYouSureBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"AreYouSure");
         });
+        myView.beatBuddyBrowse.setOnClickListener((view) -> {
+            ExecutorService executorService = Executors.newSingleThreadExecutor();
+            executorService.execute(() -> {
+                BBSQLite bbsqLite = new BBSQLite(getContext());
+                    BottomSheetBeatBuddySongs bottomSheetBeatBuddySongs = new BottomSheetBeatBuddySongs(
+                            null,bbsqLite);
+                    bottomSheetBeatBuddySongs.show(mainActivityInterface.getMyFragmentManager(),
+                            "BottomSheetBeatBuddySongs");
+            });
+        });
         //myView.matchSongs.setOnClickListener((view) -> mainActivityInterface.navigateToFragment(deeplink_beatbuddy_match,0));
     }
 
@@ -112,5 +125,4 @@ public class BBOptionsFragment extends Fragment {
             }
         }
     }
-
 }

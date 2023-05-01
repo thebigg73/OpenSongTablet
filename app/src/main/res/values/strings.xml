@@ -1113,6 +1113,7 @@ Check out the categories in the right hand options menu.
     <string name="website_app_mode" translatable="false">https://www.opensongapp.com/user-manual/app-mode</string>
     <string name="website_autoscroll" translatable="false">https://www.opensongapp.com/user-manual/songs/song-actions/autoscroll</string>
     <string name="website_backup" translatable="false">https://www.opensongapp.com/user-manual/songs/opensongapp-backup</string>
+    <string name="website_beatbuddy" translatable="false">https://www.opensongapp.com/user-manual/utilities/beatbuddy/options</string>
     <string name="website_beatbuddy_commands" translatable="false">https://www.opensongapp.com/user-manual/utilities/beatbuddy/commands</string>
     <string name="website_beatbuddy_import" translatable="false">https://www.opensongapp.com/user-manual/utilities/beatbuddy/import</string>
     <string name="website_bible_download" translatable="false">https://www.opensongapp.com/user-manual/sets/bible/download-bible</string>
@@ -1190,4 +1191,5 @@ Check out the categories in the right hand options menu.
     <string name="youtube" translatable="false">YouTube</string>
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zoom_level">Zoom level</string>
+    <string name="beat_buddy_browse_info">Browse the songs on the BeatBuddy (using the default project or imported project)</string>
 </resources>
