@@ -78,8 +78,21 @@
     <string name="banjo5">Banjo (5)</string>
     <string name="battery">Battery</string>
     <string name="beat_buddy" translatable="false">BeatBuddy</string>
+    <string name="beat_buddy_auto">Automatically send BeatBuddy song</string>
+    <string name="beat_buddy_auto_info">Compares your song \'Filename\', \'Title\' and \'Also known as\' fields with your BeatBuddy database.  If a matching song is found, the folder and song code are sent over MIDI automatically</string>
+    <string name="beat_buddy_database_reset">Clear the BeatBuddy database in the app.  This will restore the pedal defaults only.</string>
     <string name="beat_buddy_folder_info">Folder must be a number between 1 and 16384</string>
+    <string name="beat_buddy_import_error">There was a problem importing the BeatBuddy project.  Please refer to the user manual for more information.</string>
+    <string name="beat_buddy_import_options">You have two options of importing project information from your BeatBuddy:</string>
+    <string name="beat_buddy_import_options1">1. Connect the BeatBuddy or BeatBuddy SD card to this device using a USB cable and select the root/main folder</string>
+    <string name="beat_buddy_import_options2">2. Import a combined MyBeatBuddyProject.csv file created on your computer using my BeatBuddy python script (available from the downloads page).  You can import the .csv file directly</string>
+    <string name="beat_buddy_import_options_choose">Select the desired option below to begin the import process.</string>
+    <string name="beat_buddy_import_project">Import BeatBuddy project information</string>
+    <string name="beat_buddy_import_project_info">This will allow you to select/browse drumkits, songs and folders by name from your BeatBuddy pedal</string>
     <string name="beat_buddy_info">Edit and save song commands for use with a BeatBuddy pedal</string>
+    <string name="beat_buddy_match">Song match</string>
+    <string name="beat_buddy_match_info">Automatically match your OpenSongApp songs to those on your BeatBuddy pedal</string>
+    <string name="beat_buddy_project_csv">Import project .csv file</string>
     <string name="beat_buddy_song_info">Song must be a number between 1 and 128</string>
     <string name="beat_tick">Beat 1 (tick)</string>
     <string name="beat_tock">Beat 2 (tock)</string>
@@ -104,12 +117,14 @@
     <string name="block_text_shadow_info">Apply a background shadow to the lyrics to improve readability</string>
     <string name="blue">Blue</string>
     <string name="bold_chords_headings">Display chords and headings in bold</string>
+    <string name="bold_chorus">Display chorus in bold</string>
     <string name="book">Book</string>
     <string name="both">Both</string>
     <string name="bottom">Bottom</string>
     <string name="bpm" translatable="false">bpm</string>
     <string name="bridge">Bridge</string>
     <string name="bridge_background">Bridge background</string>
+    <string name="browse_sd_card">Select SD card main folder</string>
     <string name="button">Button</string>
     <string name="camera">Camera</string>
     <string name="camera_info">Take a photograph of a songsheet</string>
@@ -280,10 +295,10 @@
     <string name="deeplink_alert" translatable="false">https://www.opensongapp.com/?p=alert</string>
     <string name="deeplink_autoscroll_settings" translatable="false">https://www.opensongapp.com/?p=settings/autoscroll</string>
     <string name="deeplink_backup" translatable="false">https://www.opensongapp.com/?p=settings/storage/backup</string>
-    <string name="deeplink_beatbuddy_options" translatable="false">https://www.opensongapp.com/?p=settings/utilities/beatbuddy/options</string>
     <string name="deeplink_beatbuddy_commands" translatable="false">https://www.opensongapp.com/?p=settings/utilities/beatbuddy/commands</string>
     <string name="deeplink_beatbuddy_import" translatable="false">https://www.opensongapp.com/?p=settings/utilities/beatbuddy/import</string>
     <string name="deeplink_beatbuddy_match" translatable="false">https://www.opensongapp.com/?p=settings/utilities/beatbuddy/match</string>
+    <string name="deeplink_beatbuddy_options" translatable="false">https://www.opensongapp.com/?p=settings/utilities/beatbuddy/options</string>
     <string name="deeplink_bible" translatable="false">https://www.opensongapp.com/?p=settings/bible</string>
     <string name="deeplink_bootup" translatable="false">https://www.opensongapp.com/?p=bootup</string>
     <string name="deeplink_chords" translatable="false">https://www.opensongapp.com/?p=settings/actions/chords</string>
@@ -452,6 +467,7 @@
     <string name="import_main">Import or create songs</string>
     <string name="import_osb">Restore songs from OpenSongApp backup file (*.osb)</string>
     <string name="import_other" translatable="false">OpenSong, OnSong, PDF, txt, ChoPro</string>
+    <string name="imported_values">Imported values</string>
     <string name="inc_autoscroll_speed">Increase Autoscroll Speed</string>
     <string name="info_text">Info text</string>
     <string name="info_text_autohide">Automatically hide information bar</string>
@@ -690,10 +706,12 @@
     <string name="pedal_avoid_repeat">Show a warning before moving to the next song</string>
     <string name="pedal_avoid_repeat_info">Useful to avoid accidental presses</string>
     <string name="pedal_controls">Set up foot pedal buttons and actions</string>
+    <string name="pedal_down">Pedal down (press)</string>
     <string name="pedal_instructions">Click on a pedal button below to assign it to a keyboard button or midi note and assign actions to it. Most Bluetooth pedals send keyboard commands (e.g. arrow up/down).</string>
     <string name="pedal_midi_warning">To use a midi pedal, make sure you have connected it using the midi settings in the app first.</string>
     <string name="pedal_scroll_before_move">Try to scroll before changing songs</string>
     <string name="pedal_scroll_before_move_info">Allows next/previous pedals to also function as scroll pedals</string>
+    <string name="pedal_up">Pedal up (release)</string>
     <string name="pedal_waiting">Waiting for button…</string>
     <string name="pedal_warning">Confirm song change by pressing the pedal again after this warning closes</string>
     <string name="performance_mode">Performance mode</string>
@@ -1172,22 +1190,4 @@ Check out the categories in the right hand options menu.
     <string name="youtube" translatable="false">YouTube</string>
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zoom_level">Zoom level</string>
-    <string name="bold_chorus">Display chorus in bold</string>
-    <string name="beat_buddy_import_project">Import BeatBuddy project information</string>
-    <string name="beat_buddy_import_project_info">This will allow you to select/browse drumkits, songs and folders by name from your BeatBuddy pedal</string>
-    <string name="beat_buddy_match">Song match</string>
-    <string name="beat_buddy_match_info">Automatically match your OpenSongApp songs to those on your BeatBuddy pedal</string>
-    <string name="beat_buddy_import_options">You have two options of importing project information from your BeatBuddy:</string>
-    <string name="beat_buddy_import_options1">1. Connect the BeatBuddy or BeatBuddy SD card to this device using a USB cable and select the root/main folder</string>
-    <string name="beat_buddy_import_options2">2. Import a combined MyBeatBuddyProject.csv file created on your computer using my BeatBuddy python script (available from the downloads page).  You can import the .csv file directly</string>
-    <string name="beat_buddy_import_options_choose">Select the desired option below to begin the import process.</string>
-    <string name="browse_sd_card">Select SD card main folder</string>
-    <string name="beat_buddy_project_csv">Import project .csv file</string>
-    <string name="beat_buddy_import_error">There was a problem importing the BeatBuddy project.  Please refer to the user manual for more information.</string>
-    <string name="imported_values">Imported values</string>
-    <string name="beat_buddy_auto">Automatically send BeatBuddy song</string>
-    <string name="beat_buddy_auto_info">Compares your song \'Filename\', \'Title\' and \'Also known as\' fields with your BeatBuddy database.  If a matching song is found, the folder and song code are sent over MIDI automatically</string>
-    <string name="beat_buddy_database_reset">Empty the BeatBuddy database in the app.  This will restore the pedal defaults only.</string>
-    <string name="pedal_down">Pedal down (press)</string>
-    <string name="pedal_up">Pedal up (release)</string>
 </resources>
