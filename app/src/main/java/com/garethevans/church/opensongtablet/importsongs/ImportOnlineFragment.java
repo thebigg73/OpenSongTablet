@@ -762,17 +762,19 @@ public class ImportOnlineFragment extends Fragment {
     }
 
     private void showDownloadProgress(final boolean waiting) {
-        webView.post(() -> webView.setEnabled(!waiting));
-        final int visibility;
-        if (waiting) {
-            visibility = View.VISIBLE;
-        } else {
-            visibility = View.GONE;
+        if (myView!=null) {
+            webView.post(() -> webView.setEnabled(!waiting));
+            final int visibility;
+            if (waiting) {
+                visibility = View.VISIBLE;
+            } else {
+                visibility = View.GONE;
+            }
+            myView.progressBar.post(() -> myView.progressBar.setVisibility(visibility));
+            myView.saveButton.post(() -> myView.saveButton.setEnabled(!waiting));
+            myView.backButton.post(() -> myView.backButton.setEnabled(!waiting));
+            myView.closeSearch.post(() -> myView.closeSearch.setEnabled(!waiting));
         }
-        myView.progressBar.post(() -> myView.progressBar.setVisibility(visibility));
-        myView.saveButton.post(() -> myView.saveButton.setEnabled(!waiting));
-        myView.backButton.post(() -> myView.backButton.setEnabled(!waiting));
-        myView.closeSearch.post(() -> myView.closeSearch.setEnabled(!waiting));
     }
 
     public void destroyWebView() {
