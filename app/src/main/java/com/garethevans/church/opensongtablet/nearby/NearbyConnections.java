@@ -286,14 +286,12 @@ public class NearbyConnections implements NearbyInterface {
                             (Void unused) -> {
                                 // We're advertising!
                                 updateConnectionLog(c.getString(R.string.connections_advertise_name) + " " + getUserNickname());
-                                Log.d(TAG,"Advertising: "+getUserNickname());
                                 isAdvertising = true;
                             })
                     .addOnFailureListener(
                             (Exception e) -> {
                                 // We were unable to start advertising.
                                 updateConnectionLog(c.getString(R.string.connections_failure) + " " + getUserNickname());
-                                Log.d(TAG, "startAdvertising() - failure: " + e);
                             });
         }
     }
@@ -310,7 +308,6 @@ public class NearbyConnections implements NearbyInterface {
                                     // We're discovering!
                                     updateConnectionLog(c.getResources().getString(R.string.connections_discover));
                                     isDiscovering = true;
-                                    Log.d(TAG, "startDiscovery() - success");
                                 })
                         .addOnFailureListener(
                                 (Exception e) -> {
@@ -328,7 +325,6 @@ public class NearbyConnections implements NearbyInterface {
             try {
                 Nearby.getConnectionsClient(c).stopAdvertising();
                 updateConnectionLog(c.getString(R.string.connections_service_stop));
-                Log.d(TAG, "stopAdvertising() - success");
             } catch (Exception e) {
                 Log.d(TAG, "stopAdvertising() - failure: " + e);
             }
@@ -340,7 +336,6 @@ public class NearbyConnections implements NearbyInterface {
             try {
                 Nearby.getConnectionsClient(c).stopDiscovery();
                 updateConnectionLog(c.getString(R.string.connections_discover_stop));
-                Log.d(TAG,"stopDiscovery() - success");
             } catch (Exception e) {
                 Log.d(TAG, "stopDiscovery() - failure: " + e);
             }
@@ -392,8 +387,6 @@ public class NearbyConnections implements NearbyInterface {
             @Override
             public void onConnectionResult(@NonNull String endpointId, @NonNull ConnectionResolution connectionResolution) {
                 String endpointString = getEndpointString(endpointId,getNameMatchingId(endpointId));
-                Log.d(TAG,"endpointString:"+endpointString);
-                Log.d(TAG,"Connection result: "+connectionResolution.getStatus().getStatusMessage());
                 switch (connectionResolution.getStatus().getStatusCode()) {
                     case ConnectionsStatusCodes.STATUS_OK:
                     case ConnectionsStatusCodes.STATUS_ALREADY_CONNECTED_TO_ENDPOINT:
@@ -1344,7 +1337,6 @@ public class NearbyConnections implements NearbyInterface {
 
     // Updates the connnection log with this message.  This also updates the connected devices note
     private void updateConnectionLog(String newMessage) {
-        Log.d(TAG,"Connection Log update: "+newMessage);
         if (newMessage != null && mainActivityInterface != null) {
             connectionLog += newMessage + "\n";
             try {

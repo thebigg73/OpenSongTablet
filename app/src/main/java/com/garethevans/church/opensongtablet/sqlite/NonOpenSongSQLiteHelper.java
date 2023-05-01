@@ -56,21 +56,24 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
             InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(userDB);
             OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(appDB);
             mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" importDatabase copyFile from "+userDB+" to "+appDB);
-            Log.d(TAG,"User database copied in: "+mainActivityInterface.getStorageAccess().copyFile(inputStream,outputStream));
+            Log.d(TAG,"Initialise database: User database copied in from "+userDB+" to "+ appDB + " to appCache: "+mainActivityInterface.getStorageAccess().copyFile(inputStream,outputStream));
         } else {
             mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" importDatabse Create Settings/"+SQLite.NON_OS_DATABASE_NAME+" deleteOld=false");
             mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(false, userDB,null,"Settings","",
                     SQLite.NON_OS_DATABASE_NAME);
-            Log.d(TAG,"Copy appDB to userDB: "+copyUserDatabase());
+            Log.d(TAG,"Create new "+SQLite.NON_OS_DATABASE_NAME+" at OpenSong/Settings/ and copy to appCache - success: "+copyUserDatabase());
         }
     }
 
     public boolean copyUserDatabase() {
-        // This copies the app persistent database into the user's OpenSong folder
+        // This copies the app persistent database (app cache) into the user's OpenSong/Settings folder
+        // GE It should only need done at app close, since it is never used directly
         InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(appDB);
         OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(userDB);
-        mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" copyPDF copyFile from "+appDB+" to "+userDB);
-        return mainActivityInterface.getStorageAccess().copyFile(inputStream,outputStream);
+        mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" copyNonOpenSongAppDB copyFile from "+appDB+" to "+userDB);
+        boolean copied = mainActivityInterface.getStorageAccess().copyFile(inputStream,outputStream);
+        Log.d(TAG,"Shut down calls "+SQLite.NON_OS_DATABASE_NAME+" from "+appDB+" to "+userDB+" - success:"+copied);
+        return copied;
     }
 
     @Override

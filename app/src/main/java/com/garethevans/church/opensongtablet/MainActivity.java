@@ -3394,6 +3394,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     protected void onPause() {
         super.onPause();
+        // Copy the persistent database from app storage to user storage
+        nonOpenSongSQLiteHelper.copyUserDatabase();
     }
 
     @Override

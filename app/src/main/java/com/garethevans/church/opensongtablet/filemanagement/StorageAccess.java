@@ -224,7 +224,6 @@ public class StorageAccess {
     private String createOrCheckRootFolders_SAF(Uri uri) {
         uriTreeHome = homeFolder(uri);
 
-        Log.d(TAG,"createOrCheckRootFolders()  uri:"+uri+"  uriTree:"+uriTree);
         // Look to see if uriTreeHome actually exists
         DocumentFile documentFile = DocumentFile.fromTreeUri(c,uri);
         DocumentFile openSongDf = documentFile.findFile(appFolder);
@@ -235,7 +234,10 @@ public class StorageAccess {
             uriTreeHome = openSongDf.getUri();
         }
         setUriTreeHome(uriTreeHome);
-        /*Log.d(TAG,"createOrCheckRootFolders()  uriTreeHome:"+uriTreeHome);
+        Log.d(TAG,"createOrCheckRootFolders()  uri:"+uri+"  uriTree:"+uriTree+" uriTreeHome:"+uriTreeHome);
+
+        /* Replaced this code to help track issue where OpenSong directory keeps being created
+        Log.d(TAG,"createOrCheckRootFolders()  uriTreeHome:"+uriTreeHome);
         // Check the OpenSong folder exists (may be specified in the uriTree and/or uriTreeHome
         if (uriTree != null && uriTree.getLastPathSegment() != null &&
                 (!uriTree.getLastPathSegment().endsWith("OpenSong") || !uriTree.getLastPathSegment().endsWith("OpenSong/"))) {
