@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,7 +40,8 @@ public class PedalsFragment extends Fragment {
     private boolean longPressCapable = false;
     private long downTime, upTime;
     private String currentMidiCode, pedal_string="", website_foot_pedal_string="", midi_pedal_string="",
-            pedal_midi_warning_string="", is_not_set_string="", pedal_waiting_string="";
+            pedal_midi_warning_string="", is_not_set_string="", pedal_waiting_string="",
+            pedal_up_string="", pedal_down_string="", short_press_string="", long_press_string="";
     private int currentListening;
     private int currentPedalCode;
     private int[] defKeyCodes;
@@ -104,6 +106,8 @@ public class PedalsFragment extends Fragment {
         // Set AirTurnMode actions
         airTurnModeActions();
 
+
+        // Stop anything from getting focus (otherwise arrows trigger movements
         return myView.getRoot();
     }
 
@@ -115,6 +119,10 @@ public class PedalsFragment extends Fragment {
             pedal_midi_warning_string = getString(R.string.pedal_midi_warning);
             is_not_set_string = getString(R.string.is_not_set);
             pedal_waiting_string = getString(R.string.pedal_waiting);
+            short_press_string = getString(R.string.action_short_press);
+            long_press_string = getString(R.string.long_press);
+            pedal_down_string = getString(R.string.pedal_down);
+            pedal_up_string = getString(R.string.pedal_up);
         }
     }
     @Override
@@ -187,6 +195,31 @@ public class PedalsFragment extends Fragment {
         for (int l = 1; l <= 8; l++) {
             doDropDowns(l, false);
         }
+
+        // Now check for beatBuddy transitions on the short pedal
+        // If found, the long press is adjusted to the exit command
+        // The hints are also changed to pedal down/up
+        try {
+            String actionCode1 = getActionCodeFromAction(myView.shortButton1Text.getText().toString());
+            String actionCode2 = getActionCodeFromAction(myView.shortButton2Text.getText().toString());
+            String actionCode3 = getActionCodeFromAction(myView.shortButton3Text.getText().toString());
+            String actionCode4 = getActionCodeFromAction(myView.shortButton4Text.getText().toString());
+            String actionCode5 = getActionCodeFromAction(myView.shortButton5Text.getText().toString());
+            String actionCode6 = getActionCodeFromAction(myView.shortButton6Text.getText().toString());
+            String actionCode7 = getActionCodeFromAction(myView.shortButton7Text.getText().toString());
+            String actionCode8 = getActionCodeFromAction(myView.shortButton8Text.getText().toString());
+
+            checkBeatBuddyTransistions(myView.shortButton1Text, myView.longButton1Text, actionCode1);
+            checkBeatBuddyTransistions(myView.shortButton2Text, myView.longButton2Text, actionCode2);
+            checkBeatBuddyTransistions(myView.shortButton3Text, myView.longButton3Text, actionCode3);
+            checkBeatBuddyTransistions(myView.shortButton4Text, myView.longButton4Text, actionCode4);
+            checkBeatBuddyTransistions(myView.shortButton5Text, myView.longButton5Text, actionCode5);
+            checkBeatBuddyTransistions(myView.shortButton6Text, myView.longButton6Text, actionCode6);
+            checkBeatBuddyTransistions(myView.shortButton7Text, myView.longButton7Text, actionCode7);
+            checkBeatBuddyTransistions(myView.shortButton8Text, myView.longButton8Text, actionCode8);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void doDropDowns(int which, boolean isShort) {
@@ -205,6 +238,50 @@ public class PedalsFragment extends Fragment {
         }
         exposedDropDown.setText(getActionFromActionCode(currVal));
         exposedDropDown.addTextChangedListener(new MyTextWatcher(currVal,which,isShort));
+    }
+
+    private ExposedDropDown getShortExposedDropdownByNum(int which) {
+        switch (which) {
+            case 1:
+            default:
+                return myView.shortButton1Text;
+            case 2:
+                return myView.shortButton2Text;
+            case 3:
+                return myView.shortButton3Text;
+            case 4:
+                return myView.shortButton4Text;
+            case 5:
+                return myView.shortButton5Text;
+            case 6:
+                return myView.shortButton6Text;
+            case 7:
+                return myView.shortButton7Text;
+            case 8:
+                return myView.shortButton8Text;
+        }
+    }
+
+    private ExposedDropDown getLongExposedDropdownByNum(int which) {
+        switch (which) {
+            case 1:
+            default:
+                return myView.longButton1Text;
+            case 2:
+                return myView.longButton2Text;
+            case 3:
+                return myView.longButton3Text;
+            case 4:
+                return myView.longButton4Text;
+            case 5:
+                return myView.longButton5Text;
+            case 6:
+                return myView.longButton6Text;
+            case 7:
+                return myView.longButton7Text;
+            case 8:
+                return myView.longButton8Text;
+        }
     }
 
     private String getActionCodeFromAction(String s) {
@@ -238,9 +315,9 @@ public class PedalsFragment extends Fragment {
         currentMidiCode = mainActivityInterface.getPedalActions().getMidiCode(which);
         buttonCodes[which].setText(pedal_waiting_string);
         buttonMidis[which].setText(pedal_waiting_string);
-        buttonCodes[which].setFocusable(true);
-        buttonCodes[which].setFocusableInTouchMode(true);
-        buttonCodes[which].requestFocus();
+        //buttonCodes[which].setFocusable(true);
+        //buttonCodes[which].setFocusableInTouchMode(true);
+        //buttonCodes[which].requestFocus();
         pageButtonWaiting = new Handler();
         stopListening = () -> {
             buttonCodes[which].setText(charFromInt(currentPedalCode));
@@ -275,10 +352,13 @@ public class PedalsFragment extends Fragment {
         myView.airTurnLongPressTime.addOnSliderTouchListener(new MySliderTouchListener("airTurnLongPressTime"));
     }
 
+
+
     // Key listeners called from MainActivity
     // Key down to register button in this fragment.
     // Key up and long press to detect if this is possible for test
     public void keyDownListener(int keyCode) {
+        Log.d(TAG,"keyCode:"+keyCode+"  currentListening:"+currentListening);
         if (currentListening > 0) {
             // Get a text version of the keyCode
             String pedalText = charFromInt(keyCode);
@@ -369,16 +449,22 @@ public class PedalsFragment extends Fragment {
         }
     }
 
+
+
     private class MyTextWatcher implements TextWatcher {
 
         String val;
         int which;
         boolean shortPress;
+        ExposedDropDown shortPressDropdown;
+        ExposedDropDown longPressDropdown;
 
         MyTextWatcher(String val, int which, boolean shortPress) {
             this.val = val;
             this.shortPress = shortPress;
             this.which = which;
+            shortPressDropdown = getShortExposedDropdownByNum(which);
+            longPressDropdown = getLongExposedDropdownByNum(which);
         }
 
         @Override
@@ -393,8 +479,54 @@ public class PedalsFragment extends Fragment {
         @Override
         public void afterTextChanged(Editable s) {
             // Save the value via the pedalactions
-            mainActivityInterface.getPedalActions().setPedalPreference(which,shortPress,getActionCodeFromAction(val));
+            String actionCode = getActionCodeFromAction(val);
+            mainActivityInterface.getPedalActions().setPedalPreference(which,shortPress,actionCode);
+            // If this is a short press and it is a beat buddy transition, set the long press
+            // (actually action up) to the transition exit
+            if (shortPress) {
+                checkBeatBuddyTransistions(shortPressDropdown, longPressDropdown, actionCode);
+            }
         }
+    }
+
+    // Check if we have BeatBuddy transistions set
+    private void checkBeatBuddyTransistions(ExposedDropDown shortPressDropdown,
+                                            ExposedDropDown longPressDropdown,
+                                            String actionCode) {
+        String shortHint;
+        String longHint;
+        String longTextOverride;
+        boolean longEnabled;
+
+        if (actionCode.startsWith("beatbuddytrans")) {
+            shortHint = pedal_down_string;
+            longHint = pedal_up_string;
+            longTextOverride = getActionFromActionCode("beatbuddytransexit");
+            longEnabled = false;
+        } else if (actionCode.startsWith("beatbuddyxtrans")) {
+            shortHint = pedal_down_string;
+            longHint = pedal_up_string;
+            longTextOverride = getActionFromActionCode("beatbuddyxtransexit");
+            longEnabled = false;
+        } else {
+            shortHint = short_press_string;
+            longHint = long_press_string;
+            longTextOverride = null;
+            longEnabled = true;
+        }
+
+        shortPressDropdown.post(() -> {
+            Log.d(TAG, "Setting the short hint as: " + shortHint);
+            shortPressDropdown.setHint(shortHint);
+        });
+        longPressDropdown.post(() -> {
+            Log.d(TAG, "Setting the long hint as: " + longHint);
+            longPressDropdown.setHint(longHint);
+            if (longTextOverride != null) {
+                longPressDropdown.setText(longTextOverride);
+            }
+            longPressDropdown.setEnabled(longEnabled);
+        });
     }
 
     private void setPedalPreference(int which, int pedalCode, String pedalMidi) {

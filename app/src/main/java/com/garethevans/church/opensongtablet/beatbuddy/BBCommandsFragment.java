@@ -68,15 +68,15 @@ public class BBCommandsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         myView = SettingsBeatbuddyCommandsBinding.inflate(inflater,container,false);
 
-        prepareStrings();
-
-        webAddress = web_string;
-
         if (getContext()!=null) {
             bbsqLite = new BBSQLite(getContext());
             myView.currentSongMessages.setLayoutManager(new LinearLayoutManager(getContext()));
             midiMessagesAdapter = new MidiMessagesAdapter(getContext());
         }
+
+        prepareStrings();
+
+        webAddress = web_string;
 
         checkExistingMessages();
         setupViews();

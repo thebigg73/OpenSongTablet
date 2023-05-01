@@ -45,6 +45,7 @@ public class PedalActions {
     public Boolean[] pedalDown = new Boolean[9];
     public Long[] pedalDownTime = new Long[9];
     public Boolean[] pedalWasLongPressed = new Boolean[9];
+    private boolean beatBuddyDownRegistered = false;
 
     public final int[] defPedalCodes = new int[]{-1,21,22,19,20,92,93,-1,-1};
     public final String[] defPedalMidis = new String[]{"","C3","D3","E3","F3","G3","A3","B3","C4"};
@@ -227,15 +228,36 @@ public class PedalActions {
     }
 
     public void commonEventDown(int keyCode, String keyMidi) {
-        // Using AirTurnMode for keyboard pedal, deal with this separately, otherwise, do nothing
-        if (airTurnMode && (keyMidi==null || keyMidi.isEmpty())) {
+        // We only check commands if this is a BeatBuddy transistion or we are in AirTurnMode
+        int pedal = getButtonNumber(keyCode, keyMidi);
+        String desiredAction = getDesiredAction(true, pedal);
+        if (desiredAction!=null && !beatBuddyDownRegistered && (desiredAction.startsWith("beatbuddytrans") ||
+                desiredAction.startsWith("beatbuddyxtrans")) &&
+                !desiredAction.contains("exit")) {
+            // Send this command now
+            beatBuddyDownRegistered = true;
+            Log.d(TAG,"send the beatbuddy down command");
+            whichEventTriggered(true,keyCode,keyMidi);
+        } else if (airTurnMode && (keyMidi==null || keyMidi.isEmpty())) {
+            // Using AirTurnMode for keyboard pedal, deal with this separately, otherwise, do nothing
             doAirTurnDetectionDown(keyCode);
         }
     }
 
     public void commonEventUp(int keyCode, String keyMidi) {
+        Log.d(TAG,"Common event up:"+keyCode);
         // Using AirTurnMode for keyboard pedal, deal with this separately, otherwise, send the action
-        if (airTurnMode && (keyMidi==null || keyMidi.isEmpty())) {
+        // TODO check for BeatBuddy transition send.  Do this straight away
+        int pedal = getButtonNumber(keyCode, keyMidi);
+        String desiredAction = getDesiredAction(true, pedal);
+        if (desiredAction!=null && (desiredAction.startsWith("beatbuddytrans") ||
+                desiredAction.startsWith("beatbuddyxtrans")) &&
+                !desiredAction.contains("exit")) {
+            // Send this command now
+            beatBuddyDownRegistered = false;
+            Log.d(TAG,"send the beatbuddy up command");
+            whichEventTriggered(false,keyCode,keyMidi);
+        } else if (airTurnMode && (keyMidi==null || keyMidi.isEmpty())) {
             doAirTurnDetectionUp(keyCode);
         } else {
             whichEventTriggered(true, keyCode, keyMidi);
@@ -243,7 +265,9 @@ public class PedalActions {
     }
 
     public void commonEventLong(int keyCode, String keyMidi) {
-        whichEventTriggered(false,keyCode,keyMidi);
+        if (!beatBuddyDownRegistered) {
+            whichEventTriggered(false, keyCode, keyMidi);
+        }
     }
 
     public void whichEventTriggered(boolean shortpress, int keyCode, String keyMidi) {

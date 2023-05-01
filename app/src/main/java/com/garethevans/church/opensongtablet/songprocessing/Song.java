@@ -4,6 +4,7 @@ package com.garethevans.church.opensongtablet.songprocessing;
 // Used whenever the app queries or works with a lyrics, key, author, etc.
 
 import android.content.Context;
+import android.util.SparseIntArray;
 
 import com.garethevans.church.opensongtablet.R;
 
@@ -62,6 +63,7 @@ public class Song implements Serializable {
     private ArrayList<String> presoOrderSongHeadings;
     private ArrayList<String> groupedSections;
     private ArrayList<String> lyricsUndos = new ArrayList<>();
+    private SparseIntArray lyricsUndoCursorPos;
     private int lyricsUndosPos = -1;
     private int currentSection = 0;
     private boolean isImageSlide;
@@ -198,6 +200,9 @@ public class Song implements Serializable {
     }
     public int getLyricsUndosPos() {
         return lyricsUndosPos;
+    }
+    public SparseIntArray getLyricsUndoCursorPos() {
+        return lyricsUndoCursorPos;
     }
     public boolean getIsImageSlide() {return isImageSlide;}
     public int getPdfPageCurrent() {return pdfPageCurrent;}
@@ -348,6 +353,13 @@ public class Song implements Serializable {
         }
         lyricsUndos.add(position,value);
     }
+    public void setLyricsUndoCursorPos(int position,int cursorpos) {
+        if (lyricsUndoCursorPos==null) {
+            lyricsUndoCursorPos = new SparseIntArray();
+        }
+        lyricsUndoCursorPos.put(position,cursorpos);
+    }
+
     public void setLyricsUndosPos(int lyricsUndosPos) {
         this.lyricsUndosPos = lyricsUndosPos;
     }

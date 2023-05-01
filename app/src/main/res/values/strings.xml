@@ -1188,4 +1188,6 @@ Check out the categories in the right hand options menu.
     <string name="beat_buddy_auto">Automatically send BeatBuddy song</string>
     <string name="beat_buddy_auto_info">Compares your song \'Filename\', \'Title\' and \'Also known as\' fields with your BeatBuddy database.  If a matching song is found, the folder and song code are sent over MIDI automatically</string>
     <string name="beat_buddy_database_reset">Empty the BeatBuddy database in the app.  This will restore the pedal defaults only.</string>
+    <string name="pedal_down">Pedal down (press)</string>
+    <string name="pedal_up">Pedal up (release)</string>
 </resources>

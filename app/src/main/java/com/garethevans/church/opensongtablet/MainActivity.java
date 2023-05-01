@@ -1609,7 +1609,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         } else {
             songMenuFragment.scrollMenu(height);
         }
-        //myView.menuTop.versionCode.requestFocus();
     }
 
     // The song and set menu
@@ -3388,13 +3387,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        myView.fragmentView.setFocusable(true);
-        myView.fragmentView.requestFocus();
-        myView.fragmentView.postDelayed(() -> {
-            myView.fragmentView.clearFocus();
-            myView.fragmentView.setFocusable(false);
-        },100);
 
         super.onResume();
     }

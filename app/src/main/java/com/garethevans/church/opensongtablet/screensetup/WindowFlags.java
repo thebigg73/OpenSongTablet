@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet.screensetup;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
@@ -149,9 +150,18 @@ public class WindowFlags {
 
     public void edgeToEdge() {
         // This sets the app as edge to edge (better than fullscreen)
-        WindowCompat.setDecorFitsSystemWindows(w, false);
-        w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        //WindowCompat.setDecorFitsSystemWindows(w, false);
+        /*w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);*/
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            w.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            w.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            w.setStatusBarColor(Color.TRANSPARENT);
+            w.setNavigationBarColor(Color.TRANSPARENT);
+        } else {
+            w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+                    WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        }
     }
 
     private void setSystemBarHeights() {

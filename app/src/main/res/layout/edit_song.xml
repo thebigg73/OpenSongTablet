@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginTop="0dp"
-    android:layout_marginBottom="0dp"
-    android:fitsSystemWindows="true">
+    android:layout_marginBottom="0dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,15 +17,15 @@
             style="@style/menuTabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorAltPrimary" />
+            android:background="@color/colorPrimary" />
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewpager"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1" />
-    </LinearLayout>
 
+    </LinearLayout>
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/saveChanges"
         android:layout_width="wrap_content"
@@ -38,4 +37,5 @@
         android:visibility="visible"
         android:minHeight="@dimen/design_fab_size_normal"
         app:icon="@drawable/save" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

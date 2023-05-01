@@ -32,5 +32,6 @@
     <color name="white">#FFFFFF</color>
     <color name="yellow">#FFFF00</color>
     <color name="darkyellow">#BBBB00</color>
+    <color name="translucentgrey">#55555555</color>
 
 </resources>

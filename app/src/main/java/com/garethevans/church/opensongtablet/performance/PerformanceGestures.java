@@ -5,6 +5,7 @@ package com.garethevans.church.opensongtablet.performance;
 import android.content.Context;
 import android.os.Build;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 
 import com.garethevans.church.opensongtablet.R;
@@ -53,6 +54,7 @@ public class PerformanceGestures {
 
 
     public void doAction(String action, boolean isLongPress) {
+        Log.d(TAG,"action:"+action+"  isLongPress:"+isLongPress);
         // Get the action we are trying to run
         switch(action) {
             case "pageButtons":

@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -40,9 +39,6 @@ public class EditSongFragmentMain extends Fragment  {
         super.onAttach(context);
         mainActivityInterface = (MainActivityInterface) context;
         editSongFragmentInterface = (EditSongFragmentInterface) context;
-        if (getActivity()!=null) {
-            getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-        }
     }
 
     @Override

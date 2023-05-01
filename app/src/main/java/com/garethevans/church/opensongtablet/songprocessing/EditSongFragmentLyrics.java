@@ -40,9 +40,6 @@ public class EditSongFragmentLyrics extends Fragment {
         super.onAttach(context);
         mainActivityInterface = (MainActivityInterface) context;
         editSongFragmentInterface = (EditSongFragmentInterface) context;
-        if (getActivity()!=null) {
-            getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-        }
     }
 
     @Override
@@ -147,6 +144,7 @@ public class EditSongFragmentLyrics extends Fragment {
                     int lyricsUndosPos = mainActivityInterface.getTempSong().getLyricsUndosPos() + 1;
                     mainActivityInterface.getTempSong().setLyricsUndos(lyricsUndosPos, editable.toString());
                     mainActivityInterface.getTempSong().setLyricsUndosPos(lyricsUndosPos);
+                    mainActivityInterface.getTempSong().setLyricsUndoCursorPos(lyricsUndosPos, myView.lyrics.getSelectionStart());
                     // Enable/disable the undo and redo button
                     validUndoRedo(lyricsUndosPos);
                 } else {
@@ -228,6 +226,10 @@ public class EditSongFragmentLyrics extends Fragment {
             mainActivityInterface.getTempSong().setLyricsUndosPos(lyricsUndosPos);
             addUndoStep = false;
             myView.lyrics.setText(mainActivityInterface.getTempSong().getLyricsUndos().get(lyricsUndosPos));
+            int cursorPos = mainActivityInterface.getTempSong().getLyricsUndoCursorPos().get(lyricsUndosPos,0);
+            if (cursorPos>=0 && cursorPos<myView.lyrics.getText().length()) {
+                myView.lyrics.setSelection(cursorPos);
+            }
         }
         validUndoRedo(lyricsUndosPos);
     }
@@ -239,6 +241,10 @@ public class EditSongFragmentLyrics extends Fragment {
             addUndoStep = false;
             mainActivityInterface.getTempSong().setLyricsUndosPos(lyricsUndosPos);
             myView.lyrics.setText(mainActivityInterface.getTempSong().getLyricsUndos().get(lyricsUndosPos));
+            int cursorPos = mainActivityInterface.getTempSong().getLyricsUndoCursorPos().get(lyricsUndosPos,0);
+            if (cursorPos>=0 && cursorPos<myView.lyrics.getText().length()) {
+                myView.lyrics.setSelection(cursorPos);
+            }
         }
         validUndoRedo(lyricsUndosPos);
     }
