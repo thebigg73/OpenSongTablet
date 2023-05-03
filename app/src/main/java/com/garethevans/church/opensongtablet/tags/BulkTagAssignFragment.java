@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,8 +34,9 @@ public class BulkTagAssignFragment extends Fragment {
     private String folderSearchVal = "", artistSearchVal = "", keySearchVal = "", tagSearchVal = "",
             filterSearchVal = "", titleSearchVal = "", thisTag = "", tag_song_string="",
             website_tags_string="", new_category_string="", tag_string="", filter_songs_string="",
-            tag_to_use_string="", tag_new_string="", tag_search_string="";
+            tag_to_use_string="", tag_new_string="", tag_search_string="", rename_string="";
     private String[] key_choice_string={};
+    private String currentTagName;
     private boolean songListSearchByFolder, songListSearchByArtist, songListSearchByKey,
             songListSearchByTag, songListSearchByFilter, songListSearchByTitle, showForThisTag;
     private TagSongListAdapter tagSongListAdapter;
@@ -83,6 +85,7 @@ public class BulkTagAssignFragment extends Fragment {
             tag_to_use_string = getString(R.string.tag_to_use);
             tag_new_string = getString(R.string.tag_new);
             tag_search_string = getString(R.string.tag_search);
+            rename_string = getString(R.string.rename);
         }
     }
     private void setupViews() {
@@ -159,9 +162,18 @@ public class BulkTagAssignFragment extends Fragment {
         });
         myView.addNewTag.setOnClickListener(v -> {
             TextInputBottomSheet textInputBottomSheet = new TextInputBottomSheet(this,
-                    "BulkTagAssignFragment", new_category_string,tag_string,
+                    "BulkTagAssignFragment", new_category_string, tag_string,
                     null,null,null,true);
             textInputBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"textInputBottomSheet");
+        });
+
+        myView.renameThisTag.hide();
+        myView.renameThisTag.setOnClickListener(v -> {
+            currentTagName = myView.thisTag.getText().toString();
+            TextInputBottomSheet textInputBottomSheet = new TextInputBottomSheet(this,
+                        "BulkTagAssignFragmentRename", currentTagName, rename_string,
+                        null, null, null, true);
+                textInputBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"TextInputBottomSheet");
         });
     }
 
@@ -314,6 +326,12 @@ public class BulkTagAssignFragment extends Fragment {
                         myView.filters.tagSearch.setText(string);
                         tagSearchVal = string;
                     }
+                    if (myView.thisTag.getText()!=null && !myView.thisTag.getText().toString().isEmpty()) {
+                        // Show the rename button
+                        myView.renameThisTag.show();
+                    } else {
+                        myView.renameThisTag.hide();
+                    }
                     break;
             }
             prepareResults();
@@ -328,5 +346,11 @@ public class BulkTagAssignFragment extends Fragment {
         thisTag = newTag;
         newValues.add(newTag);
         setupTagsToAddRemove();
+    }
+    public void renameTag(String newTagName) {
+        // Go through the database and replace existing tags with the new one
+        newValues = mainActivityInterface.getSQLiteHelper().renameThemeTags(currentTagName,newTagName);
+        Log.d(TAG,"oldTagNam:"+currentTagName+"  newTagName:"+newTagName);
+        setupViews();
     }
 }

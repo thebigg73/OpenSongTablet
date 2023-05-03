@@ -3280,6 +3280,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     case "BulkTagAssignFragment":
                         ((BulkTagAssignFragment) fragment).addNewTag(value);
                         break;
+                    case "BulkTagAssignFragmentRename":
+                        ((BulkTagAssignFragment) fragment).renameTag(value);
+                        break;
                 }
             } catch (Exception e) {
                 e.printStackTrace();

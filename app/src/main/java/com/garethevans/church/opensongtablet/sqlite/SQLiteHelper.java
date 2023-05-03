@@ -188,6 +188,14 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             return new ArrayList<>();
         }
     }
+    public ArrayList<String> renameThemeTags(String oldTag, String newTag) {
+        // Rename matching tags if found and don't already exist
+        try (SQLiteDatabase db = getDB(); SQLiteDatabase db2 = mainActivityInterface.getNonOpenSongSQLiteHelper().getDB()) {
+            return mainActivityInterface.getCommonSQL().renameThemeTags(db, db2, oldTag, newTag);
+        } catch (OutOfMemoryError | Exception e) {
+            return new ArrayList<>();
+        }
+    }
     public String songsWithThemeTags(String tag) {
         try (SQLiteDatabase db = getDB()) {
             return mainActivityInterface.getCommonSQL().getSongsWithThemeTag(db, tag);

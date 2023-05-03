@@ -522,6 +522,65 @@ public class CommonSQL {
         Collections.sort(themeTags);
         return themeTags;
     }
+    public ArrayList<String> renameThemeTags(SQLiteDatabase db, SQLiteDatabase db2, String oldTag, String newTag) {
+        String q = "SELECT " + SQLite.COLUMN_SONGID + ", " +
+                SQLite.COLUMN_FILETYPE + ", " +SQLite.COLUMN_THEME +
+                " FROM " + SQLite.TABLE_NAME + " WHERE " + SQLite.COLUMN_THEME + " LIKE ?";
+        String[] arg = new String[]{"%"+oldTag+"%"};
+
+        Cursor cursor = db.rawQuery(q, arg);
+
+        Log.d(TAG,"cursor.getCount():"+cursor.getCount());
+        if (cursor!=null && cursor.getColumnCount()>0) {
+            cursor.moveToFirst();
+            for (int x=0; x<cursor.getCount(); x++) {
+                cursor.moveToPosition(x);
+                String songid = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_SONGID));
+                String filetype = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_FILETYPE));
+                String themes = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_THEME));
+                StringBuilder stringBuilder = new StringBuilder();
+                Log.d(TAG,"songid:"+songid);
+                Log.d(TAG,"themes:"+themes);
+                if (themes!=null && themes.contains(";")) {
+                    String[] themeBits = themes.split(";");
+                    for (String bit:themeBits) {
+                        Log.d(TAG,"bit.trim():"+bit.trim());
+                        Log.d(TAG,"oldTag.trim():"+oldTag.trim());
+                        if (!bit.trim().equals(oldTag.trim())) {
+                            stringBuilder.append(bit).append(";");
+                        }
+                    }
+                    // Add the new tag
+                    stringBuilder.append(newTag);
+                    themes = stringBuilder.toString();
+                } else if (themes!=null && !themes.isEmpty() && themes.trim().equals(oldTag.trim())) {
+                    themes = newTag;
+                }
+                Log.d(TAG,"new themes:"+themes);
+                // Put the fixed themes back into the database
+                ContentValues contentValues = new ContentValues();
+                contentValues.put(SQLite.COLUMN_THEME,themes);
+                db.update(SQLite.TABLE_NAME,contentValues,SQLite.COLUMN_SONGID+"=?",new String[]{songid});
+
+                // If this is a pdf or img, update the persistent database
+                if (filetype!=null && !filetype.isEmpty() &&
+                        (filetype.equals("PDF") || filetype.equals("IMG"))) {
+                    db2.update(SQLite.TABLE_NAME,contentValues,SQLite.COLUMN_SONGID+"=?",new String[]{songid});
+                    Log.d(TAG,"updating persistent database");
+
+                } else {
+                    // Update the song file (don't do for PDF or IMG obviously
+                    Log.d(TAG,"updating song file");
+                    mainActivityInterface.getSong().setTheme(themes);
+                    mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong(), false);
+                }
+            }
+        }
+        closeCursor(cursor);
+
+        // Now get the new unique tags
+        return getUniqueThemeTags(db);
+    }
 
     public String getSongsWithThemeTag(SQLiteDatabase db, String tag) {
         StringBuilder songsFound = new StringBuilder();
