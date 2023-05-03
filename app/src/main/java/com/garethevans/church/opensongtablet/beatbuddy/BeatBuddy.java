@@ -13,6 +13,7 @@ public class BeatBuddy {
 
     final private MainActivityInterface mainActivityInterface;
     final private String TAG = "BeatBuddy";
+    private boolean halfTimeOn = false, doubleTimeOn = false;
 
     // Control options are:
     private int beatBuddyChannel = 1, beatBuddyVolume = 100, beatBuddyDrumKit = 1;
@@ -370,7 +371,7 @@ public class BeatBuddy {
         }
         code += "\n" + mainActivityInterface.getMidi().buildMidiString("CC",beatBuddyChannel-1,CC_Folder_LSB,part2Dec);
         code += "\n" + mainActivityInterface.getMidi().buildMidiString("PC",beatBuddyChannel-1,-1,songNumber);
-        return code;
+        return code.trim();
     }
 
     public String getTempoCode(int tempo) {

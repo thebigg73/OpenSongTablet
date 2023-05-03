@@ -383,6 +383,7 @@ public class MidiFragment extends Fragment {
     // Scan for devices (USB or Bluetooth)
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void startScan() {
+        Log.d(TAG,"startScan");
         if (getActivity()!=null) {
             // Try to initialise the midi manager
             mainActivityInterface.getMidi().setMidiManager((MidiManager) getActivity().getSystemService(Context.MIDI_SERVICE));

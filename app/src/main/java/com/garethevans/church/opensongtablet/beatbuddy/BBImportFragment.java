@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +25,8 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class BBImportFragment extends Fragment {
 
@@ -94,10 +95,18 @@ public class BBImportFragment extends Fragment {
                 try {
                     Intent data = result.getData();
                     if (data != null) {
-                        InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(result.getData().getData());
-                        String content = mainActivityInterface.getStorageAccess().readTextFileToString(inputStream);
-                        mainActivityInterface.setImportUri(data.getData());
-                        processMyBeatBuddyProject(content);
+                        myView.importBBProgress.post(() -> myView.importBBProgress.setVisibility(View.VISIBLE));
+
+                        // Do this on a new thread
+                        ExecutorService executorService = Executors.newSingleThreadExecutor();
+                        executorService.execute(() -> {
+                            InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(result.getData().getData());
+                            String content = mainActivityInterface.getStorageAccess().readTextFileToString(inputStream);
+                            mainActivityInterface.setImportUri(data.getData());
+
+                            processMyBeatBuddyProject(content);
+                            myView.importBBProgress.post(() -> myView.importBBProgress.setVisibility(View.GONE));
+                        });
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -118,11 +127,20 @@ public class BBImportFragment extends Fragment {
                                 sdCard = df.getUri();
                             }
                         }
-                        String drumKits = getConfigCSVText(sdCard,"DRUMSETS");
-                        String songFolders = getConfigCSVText(sdCard,"SONGS");
-                        if (songFolders!=null && drumKits!=null) {
-                            makeCSVFILE(drumKits, songFolders, sdCard);
-                        }
+
+                        myView.importBBProgress.post(() -> myView.importBBProgress.setVisibility(View.VISIBLE));
+
+                        // Do this on a new thread
+                        ExecutorService executorService = Executors.newSingleThreadExecutor();
+                        Uri finalSdCard = sdCard;
+                        executorService.execute(() -> {
+                            String drumKits = getConfigCSVText(finalSdCard,"DRUMSETS");
+                            String songFolders = getConfigCSVText(finalSdCard,"SONGS");
+                            if (songFolders!=null && drumKits!=null) {
+                                makeCSVFILE(drumKits, songFolders, finalSdCard);
+                            }
+                            myView.importBBProgress.post(() -> myView.importBBProgress.setVisibility(View.GONE));
+                        });
                     }
                 });
     }
@@ -208,7 +226,7 @@ public class BBImportFragment extends Fragment {
                                         int songNum = Integer.parseInt(numname[0].replaceAll("\\D",""));
                                         String songName = numname[1];
                                         String songCode = bits[0];
-                                        String midiCode = mainActivityInterface.getBeatBuddy().getSongCode(folderNum,songNum);
+                                        String midiCode = mainActivityInterface.getBeatBuddy().getSongCode(folderNum,songNum).trim();
                                         // Now add to the array and the result
                                         folder_codes.add(folderCode);
                                         folder_nums.add(folderNum);
@@ -236,7 +254,6 @@ public class BBImportFragment extends Fragment {
             }
         }
 
-        Log.d(TAG,"drumkits:"+drumkits);
         // Process the drumkits
         if (drumkits!=null) {
             newCSVText.append("\"___DRUMKITS___\"\n")
@@ -256,7 +273,7 @@ public class BBImportFragment extends Fragment {
                         String kitCode = kitinfo[0];
                         int kitNum = Integer.parseInt(kitbits[0].replaceAll("\\D", ""));
                         String kitName = kitbits[1];
-                        String midiCode = mainActivityInterface.getBeatBuddy().getDrumKitCode(kitNum);
+                        String midiCode = mainActivityInterface.getBeatBuddy().getDrumKitCode(kitNum).trim();
                         kit_nums.add(kitNum);
                         kit_names.add(kitName);
                         kit_codes.add(kitCode);
@@ -348,7 +365,6 @@ public class BBImportFragment extends Fragment {
 
     private void processMyBeatBuddyProject(String content) {
         // We now have the MyBeatBuddyProject.csv file
-        Log.d(TAG,"content:"+content);
         // First up, split up into the two parts - songs and drums
         boolean error = content==null || content.isEmpty();
         StringBuilder stringBuilder = new StringBuilder();
@@ -356,13 +372,9 @@ public class BBImportFragment extends Fragment {
         if (!error) {
             content = content.replace("\n\"___DRUMKITS___\"\n","___SPLITHERE___");
             String[] bits = content.split("___SPLITHERE___");
-            Log.d(TAG,"bits.length:"+bits.length);
             if (bits.length==2) {
                 // Split the song parts up by line and then add them to the database
                 String[] songEntries = bits[0].trim().split("\"\n");
-                for (String songEntry:songEntries) {
-                    Log.d(TAG,"songEntry:"+songEntry);
-                }
                 if (songEntries.length>1) {
                     // Each line will be in the format of:
                     // "SONG_CODE","SONG_NUM","SONG_NAME","FOLDER_CODE","FOLDER_NUM","FOLDER_NAME","MIDI_CODE"
@@ -372,9 +384,6 @@ public class BBImportFragment extends Fragment {
                     newCSVText.append("\"SONG_CODE\",\"SONG_NUM\",\"SONG_NAME\",\"FOLDER_CODE\",\"FOLDER_NUM\",\"FOLDER_NAME\",\"MIDI_CODE\"").append("\n");
                     for (int x=1; x<songEntries.length; x++) {
                         String[] songArray = songEntries[x].split(",");
-                        for (String song:songArray) {
-                            Log.d(TAG,"songbit:"+song);
-                        }
                         if (songArray.length==7) {
                             try {
                                 String SONG_CODE = songArray[0].replace("\"","");
@@ -400,12 +409,10 @@ public class BBImportFragment extends Fragment {
                                 error = true;
                             }
                         } else {
-                            Log.d(TAG,"388 songsarray!=7");
                             error = true;
                         }
                     }
                 } else {
-                    Log.d(TAG,"392 songentries=0");
                     error = true;
                 }
                 // Split the drum info up by line and then add them to the database
@@ -436,16 +443,13 @@ public class BBImportFragment extends Fragment {
                                 error = true;
                             }
                         } else {
-                            Log.d(TAG,"424 kitarray!=7");
                             error = true;
                         }
                     }
                 } else {
-                    Log.d(TAG,"429 kitentries=0");
                     error = true;
                 }
             } else {
-                Log.d(TAG,"433 bitslength!=2");
                 error = true;
             }
         }

@@ -98,11 +98,11 @@ public class AppPermissions {
         if (Build.VERSION.SDK_INT >= 33) {
             return new String[]{Manifest.permission.BLUETOOTH_SCAN, Manifest.permission.BLUETOOTH_CONNECT,
                     Manifest.permission.BLUETOOTH_SCAN};
-        } else if (Build.VERSION.SDK_INT > 30) {
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             return new String[]{Manifest.permission.BLUETOOTH_SCAN, Manifest.permission.BLUETOOTH_CONNECT,
-                    Manifest.permission.BLUETOOTH_SCAN, Manifest.permission.ACCESS_FINE_LOCATION};
+                    Manifest.permission.ACCESS_FINE_LOCATION};
         } else {
-            return null;
+            return new String[]{Manifest.permission.ACCESS_FINE_LOCATION};
         }
     }
 

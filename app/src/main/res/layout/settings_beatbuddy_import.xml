@@ -1,75 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/DefaultView"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.core.widget.NestedScrollView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/importOptions"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/beat_buddy_import_options"
-                android:layout_marginBottom="8dp"/>
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/importOptions1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/beat_buddy_import_options1"
-                android:layout_margin="8dp"/>
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/importOptions2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/beat_buddy_import_options2"
-                android:layout_margin="8dp"/>
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/importOptionsChoose"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/beat_buddy_import_options_choose"
-                android:layout_marginBottom="8dp"/>
+            android:layout_height="match_parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/browseSD"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    android:text="@string/browse_sd_card"
-                    android:layout_marginTop="8dp"
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/importOptions"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
-                    android:layout_marginEnd="8dp"/>
+                    android:text="@string/beat_buddy_import_options" />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/importCSV"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    android:text="@string/beat_buddy_project_csv"
-                    android:layout_marginTop="8dp"
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/importOptions1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:text="@string/beat_buddy_import_options1" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/importOptions2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:text="@string/beat_buddy_import_options2" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/importOptionsChoose"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
-                    android:layout_marginStart="8dp"/>
+                    android:text="@string/beat_buddy_import_options_choose" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/browseSD"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:layout_weight="1"
+                        android:text="@string/browse_sd_card" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/importCSV"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:layout_weight="1"
+                        android:text="@string/beat_buddy_project_csv" />
+
+                </LinearLayout>
+
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                    android:id="@+id/outcome"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
 
             </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+    </LinearLayout>
 
-            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
-                android:id="@+id/outcome"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
-</LinearLayout>
+    <ProgressBar
+        android:id="@+id/importBBProgress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
+</RelativeLayout>

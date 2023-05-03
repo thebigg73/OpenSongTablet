@@ -234,7 +234,9 @@ public class StorageAccess {
             DocumentFile openSongDf = documentFile.findFile(appFolder);
             if (openSongDf == null) {
                 openSongDf = documentFile.createDirectory(appFolder);
-                uriTreeHome = openSongDf.getUri();
+                if (openSongDf!=null) {
+                    uriTreeHome = openSongDf.getUri();
+                }
             } else {
                 uriTreeHome = openSongDf.getUri();
             }
@@ -242,6 +244,7 @@ public class StorageAccess {
 
         setUriTreeHome(uriTreeHome);
         Log.d(TAG,"createOrCheckRootFolders()  uri:"+uri+"  uriTree:"+uriTree+" uriTreeHome:"+uriTreeHome);
+
 
         /* Replaced this code to help track issue where OpenSong directory keeps being created
         Log.d(TAG,"createOrCheckRootFolders()  uriTreeHome:"+uriTreeHome);
@@ -257,6 +260,8 @@ public class StorageAccess {
                 }
             }
         }*/
+
+        // TODO HERE
 
         // Go through the main folders and try to create them
         for (String folder : rootFolders) {
@@ -860,6 +865,7 @@ public class StorageAccess {
 
 
     // Get references to the files and folders
+    // This is used for files we know exist already
     public Uri getUriForItem(String folder, String subfolder, String filename) {
             String[] fixedfolders = fixFoldersAndFiles(folder, subfolder, filename);
         if (lollipopOrLater()) {
@@ -871,52 +877,53 @@ public class StorageAccess {
     @SuppressLint("NewApi")
     private Uri getUriForItem_SAF(String folder, String subfolder, String filename) {
         // Get the home folder as our start point
+        Uri returnUri = uriTreeHome;
         if (uriTreeHome == null) {
             uriTreeHome = homeFolder(null);
-        }
-        Uri uri = uriTreeHome;
-
-        // Now point to the specific folder (Songs, Sets, Backgrounds, etc.)
-        if (folder != null && !folder.isEmpty() && uri != null) {
-            uri = Uri.withAppendedPath(uri, Uri.encode(folder));
+            returnUri = uriTreeHome;
         }
 
-        // Now go through the subfolder(s)
-        if (subfolder != null && !subfolder.equals(c.getString(R.string.mainfoldername)) && !subfolder.equals("MAIN") && uri != null) {
-            String[] sfs = subfolder.split("/");
-            for (String sf : sfs) {
-                if (sf != null && !sf.equals("") && !sf.equals(c.getString(R.string.mainfoldername)) && !sf.equals("MAIN")) {
-                    uri = Uri.withAppendedPath(uri, Uri.encode(sf));
+        // Figure out the uri at the folder location
+        DocumentFile documentFile = DocumentFile.fromTreeUri(c,uriTreeHome);
+        if (documentFile!=null) {
+            StringBuilder appendLocation = new StringBuilder();
+            // We know this exists already, so should the default folders
+            // These are checked at boot using createOrCheckRootFolders()
+            if (folder != null && !folder.isEmpty()) {
+                folder = folder.replace("/", "");
+                appendLocation.append(folder).append("/");
+            }
+
+            // Now go through the subfolder(s)
+            if (subfolder != null && !subfolder.equals(c.getString(R.string.mainfoldername)) && !subfolder.equals("MAIN")) {
+                String[] sfs = subfolder.split("/");
+                for (String sf : sfs) {
+                    if (sf != null && !sf.equals("") && !sf.equals(c.getString(R.string.mainfoldername)) && !sf.equals("MAIN")) {
+                        appendLocation.append(sf).append("/");
+                    }
                 }
             }
-        }
 
-        // Now add the filename
-        if (filename != null && !filename.equals("") && uri != null) {
-            // Might have sent subfolder info
-            String[] sfs = filename.split("/");
-            for (String sf : sfs) {
-                if (sf != null && !sf.equals("") && !sf.equals(c.getString(R.string.mainfoldername)) && !sf.equals("MAIN")) {
-                    uri = Uri.withAppendedPath(uri, Uri.encode(sf));
+            // Now add the filename
+            if (filename != null && !filename.equals("")) {
+                // Might have sent subfolder info
+                String[] sfs = filename.split("/");
+                for (String sf : sfs) {
+                    if (sf != null && !sf.equals("") && !sf.equals(c.getString(R.string.mainfoldername)) && !sf.equals("MAIN")) {
+                        appendLocation.append(sf).append("/");
+                    }
                 }
             }
-        }
-
-        // Now return the Uri in encoded format
-        if (uri != null) {
-
-            String uristring = uri.toString();
-
-            int pos = uristring.lastIndexOf("OpenSong/");
-            if (pos > 0) {
-                String start = uristring.substring(0, pos);
-                String end = uristring.substring(pos);
-                end = end.replace("/", "%2F");
-                uristring = start + end;
-                uri = Uri.parse(uristring);
+            // Now we need to fix the appended location
+            String appendLocationString = appendLocation.toString();
+            appendLocationString = appendLocationString.replace("//","/");
+            if (appendLocationString.endsWith("/")) {
+                appendLocationString = appendLocationString.substring(0,appendLocationString.lastIndexOf("/"));
             }
+
+            returnUri = Uri.parse(uriTreeHome + "%2F" + Uri.encode(appendLocationString));
         }
-        return uri;
+        return returnUri;
     }
     private Uri getUriForItem_File(String folder, String subfolder, String filename) {
         String s = stringForFile(folder);
@@ -929,6 +936,7 @@ public class StorageAccess {
         }
         return Uri.fromFile(f);
     }
+
     public InputStream getInputStream(Uri uri) {
         if (c!=null && c.getContentResolver()!=null && uri!=null) {
             try {
@@ -1067,6 +1075,13 @@ public class StorageAccess {
     }
     public void lollipopCreateFileForOutputStream(boolean deleteOld, Uri uri, String mimeType,
                                                   String folder, String subfolder, String filename) {
+        Log.d(TAG,"lollipopCreateFileForOutputStream() deleteOld:"+deleteOld);
+        Log.d(TAG,"lollipopCreateFileForOutputStream() uri:"+uri);
+        Log.d(TAG,"lollipopCreateFileForOutputStream() mimeType:"+mimeType);
+        Log.d(TAG,"lollipopCreateFileForOutputStream() folder:"+folder);
+        Log.d(TAG,"lollipopCreateFileForOutputStream() subfolder:"+subfolder);
+        Log.d(TAG,"lollipopCreateFileForOutputStream() filename:"+filename);
+        Log.d(TAG,"lollipopCreateFileForOutputStream() uriExists():"+uriExists(uri));
         // deleteOld will remove any existing file before creating a new one (avoids artefacts) - xml files only
         // We will only delete when the file isn't empty or null, otherwise folders are cleared!
         if (lollipopOrLater()) {
@@ -1076,7 +1091,12 @@ public class StorageAccess {
                 deleteFile_SAF(uri);
             }
             // Create the new file
-            createFile(mimeType, folder, subfolder, filename);
+            if (!uriExists(uri)) {
+                Log.d(TAG,"uri "+uri+" doesn't exist, so create it");
+                createFile(mimeType, folder, subfolder, filename);
+            } else {
+                Log.d(TAG,"uri "+uri+" already exists!");
+            }
 
         } else {
             // Check it exists
@@ -1366,9 +1386,9 @@ public class StorageAccess {
                 docContractCreate(uriTreeHome, null, filename);
 
             } else if (!uriExists(uritest)) {
-
                 boolean created = false;
-                if(mimeType == null || uriExists(parentUri)) {
+                if (mimeType == null || uriExists(parentUri)) {
+                    // Just a document at this location, so create
                     created = docContractCreate(parentUri, mimeType, completefilename);
                 }
 
