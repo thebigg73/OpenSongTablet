@@ -59,6 +59,9 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
             deeplink_manage_storage_string="";
     private String[] key_choice_string={};
     private boolean songMenuSortTitles;
+    private final Handler waitBeforeSearchHandler = new Handler();
+    private final Runnable waitBeforeSearchRunnable = this::prepareSearch;
+
 
     private MainActivityInterface mainActivityInterface;
 
@@ -729,9 +732,11 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                     titleSearchVal = value;
                     break;
             }
-            prepareSearch();
+            waitBeforeSearchHandler.removeCallbacks(waitBeforeSearchRunnable);
+            waitBeforeSearchHandler.postDelayed(waitBeforeSearchRunnable,500);
         }
     }
+
 
     public void scrollMenu(int height) {
         try {
