@@ -884,46 +884,50 @@ public class StorageAccess {
         }
 
         // Figure out the uri at the folder location
-        DocumentFile documentFile = DocumentFile.fromTreeUri(c,uriTreeHome);
-        if (documentFile!=null) {
-            StringBuilder appendLocation = new StringBuilder();
-            // We know this exists already, so should the default folders
-            // These are checked at boot using createOrCheckRootFolders()
-            if (folder != null && !folder.isEmpty()) {
-                folder = folder.replace("/", "");
-                appendLocation.append(folder).append("/");
-            }
+        if (uriTree!=null) {
+            DocumentFile documentFile = DocumentFile.fromTreeUri(c, uriTreeHome);
+            if (documentFile != null) {
+                StringBuilder appendLocation = new StringBuilder();
+                // We know this exists already, so should the default folders
+                // These are checked at boot using createOrCheckRootFolders()
+                if (folder != null && !folder.isEmpty()) {
+                    folder = folder.replace("/", "");
+                    appendLocation.append(folder).append("/");
+                }
 
-            // Now go through the subfolder(s)
-            if (subfolder != null && !subfolder.equals(c.getString(R.string.mainfoldername)) && !subfolder.equals("MAIN")) {
-                String[] sfs = subfolder.split("/");
-                for (String sf : sfs) {
-                    if (sf != null && !sf.equals("") && !sf.equals(c.getString(R.string.mainfoldername)) && !sf.equals("MAIN")) {
-                        appendLocation.append(sf).append("/");
+                // Now go through the subfolder(s)
+                if (subfolder != null && !subfolder.equals(c.getString(R.string.mainfoldername)) && !subfolder.equals("MAIN")) {
+                    String[] sfs = subfolder.split("/");
+                    for (String sf : sfs) {
+                        if (sf != null && !sf.equals("") && !sf.equals(c.getString(R.string.mainfoldername)) && !sf.equals("MAIN")) {
+                            appendLocation.append(sf).append("/");
+                        }
                     }
                 }
-            }
 
-            // Now add the filename
-            if (filename != null && !filename.equals("")) {
-                // Might have sent subfolder info
-                String[] sfs = filename.split("/");
-                for (String sf : sfs) {
-                    if (sf != null && !sf.equals("") && !sf.equals(c.getString(R.string.mainfoldername)) && !sf.equals("MAIN")) {
-                        appendLocation.append(sf).append("/");
+                // Now add the filename
+                if (filename != null && !filename.equals("")) {
+                    // Might have sent subfolder info
+                    String[] sfs = filename.split("/");
+                    for (String sf : sfs) {
+                        if (sf != null && !sf.equals("") && !sf.equals(c.getString(R.string.mainfoldername)) && !sf.equals("MAIN")) {
+                            appendLocation.append(sf).append("/");
+                        }
                     }
                 }
-            }
-            // Now we need to fix the appended location
-            String appendLocationString = appendLocation.toString();
-            appendLocationString = appendLocationString.replace("//","/");
-            if (appendLocationString.endsWith("/")) {
-                appendLocationString = appendLocationString.substring(0,appendLocationString.lastIndexOf("/"));
-            }
+                // Now we need to fix the appended location
+                String appendLocationString = appendLocation.toString();
+                appendLocationString = appendLocationString.replace("//", "/");
+                if (appendLocationString.endsWith("/")) {
+                    appendLocationString = appendLocationString.substring(0, appendLocationString.lastIndexOf("/"));
+                }
 
-            returnUri = Uri.parse(uriTreeHome + "%2F" + Uri.encode(appendLocationString));
+                returnUri = Uri.parse(uriTreeHome + "%2F" + Uri.encode(appendLocationString));
+            }
+            return returnUri;
+        } else {
+            return null;
         }
-        return returnUri;
     }
     private Uri getUriForItem_File(String folder, String subfolder, String filename) {
         String s = stringForFile(folder);
