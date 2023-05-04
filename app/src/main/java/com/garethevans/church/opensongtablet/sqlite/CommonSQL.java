@@ -523,19 +523,20 @@ public class CommonSQL {
         return themeTags;
     }
     public ArrayList<String> renameThemeTags(SQLiteDatabase db, SQLiteDatabase db2, String oldTag, String newTag) {
-        String q = "SELECT " + SQLite.COLUMN_SONGID + ", " +
-                SQLite.COLUMN_FILETYPE + ", " +SQLite.COLUMN_THEME +
+        String q = "SELECT " + SQLite.COLUMN_SONGID + ", " + SQLite.COLUMN_FOLDER + ", " +
+                SQLite.COLUMN_FILENAME + ", " + SQLite.COLUMN_FILETYPE + ", " +SQLite.COLUMN_THEME +
                 " FROM " + SQLite.TABLE_NAME + " WHERE " + SQLite.COLUMN_THEME + " LIKE ?";
         String[] arg = new String[]{"%"+oldTag+"%"};
 
         Cursor cursor = db.rawQuery(q, arg);
 
-        Log.d(TAG,"cursor.getCount():"+cursor.getCount());
         if (cursor!=null && cursor.getColumnCount()>0) {
             cursor.moveToFirst();
             for (int x=0; x<cursor.getCount(); x++) {
                 cursor.moveToPosition(x);
                 String songid = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_SONGID));
+                String folder = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_FOLDER));
+                String filename = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_FILENAME));
                 String filetype = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_FILETYPE));
                 String themes = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_THEME));
                 StringBuilder stringBuilder = new StringBuilder();
@@ -544,15 +545,15 @@ public class CommonSQL {
                 if (themes!=null && themes.contains(";")) {
                     String[] themeBits = themes.split(";");
                     for (String bit:themeBits) {
-                        Log.d(TAG,"bit.trim():"+bit.trim());
-                        Log.d(TAG,"oldTag.trim():"+oldTag.trim());
-                        if (!bit.trim().equals(oldTag.trim())) {
+                        if (!bit.trim().equals(oldTag.trim()) && !bit.trim().isEmpty()) {
                             stringBuilder.append(bit).append(";");
                         }
                     }
                     // Add the new tag
                     stringBuilder.append(newTag);
                     themes = stringBuilder.toString();
+                    themes = themes.replace(";;",";");
+                    themes = themes.replace("; ;",";");
                 } else if (themes!=null && !themes.isEmpty() && themes.trim().equals(oldTag.trim())) {
                     themes = newTag;
                 }
@@ -571,8 +572,9 @@ public class CommonSQL {
                 } else {
                     // Update the song file (don't do for PDF or IMG obviously
                     Log.d(TAG,"updating song file");
-                    mainActivityInterface.getSong().setTheme(themes);
-                    mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong(), false);
+                    Song tempSong = getSpecificSong(db,folder,filename);
+                    tempSong.setTheme(themes);
+                    mainActivityInterface.getSaveSong().updateSong(tempSong, false);
                 }
             }
         }

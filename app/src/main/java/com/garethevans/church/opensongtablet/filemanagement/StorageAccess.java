@@ -228,7 +228,6 @@ public class StorageAccess {
         DocumentFile documentFile = DocumentFile.fromTreeUri(c,uri);
         if (documentFile!=null && documentFile.exists() && documentFile.getUri().toString().endsWith(appFolder)) {
             // This is the correct uriTreeHome
-            Log.d(TAG,"We already have the correct uriTreeHome");
             uriTreeHome = documentFile.getUri();
         } else if (documentFile!=null) {
             DocumentFile openSongDf = documentFile.findFile(appFolder);
@@ -243,7 +242,6 @@ public class StorageAccess {
         }
 
         setUriTreeHome(uriTreeHome);
-        Log.d(TAG,"createOrCheckRootFolders()  uri:"+uri+"  uriTree:"+uriTree+" uriTreeHome:"+uriTreeHome);
 
 
         /* Replaced this code to help track issue where OpenSong directory keeps being created
@@ -1079,13 +1077,6 @@ public class StorageAccess {
     }
     public void lollipopCreateFileForOutputStream(boolean deleteOld, Uri uri, String mimeType,
                                                   String folder, String subfolder, String filename) {
-        Log.d(TAG,"lollipopCreateFileForOutputStream() deleteOld:"+deleteOld);
-        Log.d(TAG,"lollipopCreateFileForOutputStream() uri:"+uri);
-        Log.d(TAG,"lollipopCreateFileForOutputStream() mimeType:"+mimeType);
-        Log.d(TAG,"lollipopCreateFileForOutputStream() folder:"+folder);
-        Log.d(TAG,"lollipopCreateFileForOutputStream() subfolder:"+subfolder);
-        Log.d(TAG,"lollipopCreateFileForOutputStream() filename:"+filename);
-        Log.d(TAG,"lollipopCreateFileForOutputStream() uriExists():"+uriExists(uri));
         // deleteOld will remove any existing file before creating a new one (avoids artefacts) - xml files only
         // We will only delete when the file isn't empty or null, otherwise folders are cleared!
         if (lollipopOrLater()) {
@@ -1837,7 +1828,6 @@ public class StorageAccess {
         ArrayList<String> songIds = new ArrayList<>();
         Uri uri = getUriForItem("Songs", "", "");
 
-        Log.d(TAG,"listSongs_SAF() at uri:"+uri);
         // Now get a documents contract at this location
         String songFolderId = getDocumentsContractId(uri);
 
