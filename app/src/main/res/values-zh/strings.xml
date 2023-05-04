@@ -73,6 +73,7 @@
     <string name="battery">"电池"</string>
     <string name="beat_buddy_auto">自动发送 BeatBuddy 歌曲</string>
     <string name="beat_buddy_auto_info">将您的歌曲文件名、标题和也称为字段与您的 BeatBuddy 数据库进行比较。 如果找到匹配的歌曲，文件夹和歌曲代码将自动通过 MIDI 发送</string>
+    <string name="beat_buddy_browse_info">浏览 BeatBuddy 上的歌曲（使用默认项目或导入的项目）</string>
     <string name="beat_buddy_database_reset">清除应用程序中的 BeatBuddy 数据库。 这将仅恢复踏板默认值。</string>
     <string name="beat_buddy_folder_info">文件夹必须是介于 1 和 16384 之间的数字</string>
     <string name="beat_buddy_import_error">导入 BeatBuddy 项目时出现问题。 有关详细信息，请参阅用户手册。</string>
@@ -454,10 +455,15 @@
     <string name="metronome_duration">节拍器持续时间（巴）</string>
     <string name="metronome_info">调整节拍器设置</string>
     <string name="microphone">麦克风</string>
+    <string name="midi_action">MIDI 动作</string>
+    <string name="midi_action_assign">分配给 MIDI 动作</string>
+    <string name="midi_action_info">选择应为此代码分配的 MIDI 操作</string>
     <string name="midi_add">"添加命令"</string>
     <string name="midi_auto">"自动发送MIDI"</string>
     <string name="midi_bluetooth">"连接蓝牙设备"</string>
     <string name="midi_channel">"渠道"</string>
+    <string name="midi_code_current">当前分配给动作的 MIDI 代码</string>
+    <string name="midi_code_new">新的 MIDI 代码</string>
     <string name="midi_commands">"编辑歌曲命令"</string>
     <string name="midi_controller">"控制器更改"</string>
     <string name="midi_delay">消息之间的 MIDI 延迟</string>

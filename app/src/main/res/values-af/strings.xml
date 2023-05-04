@@ -73,6 +73,7 @@
     <string name="battery">"Battery"</string>
     <string name="beat_buddy_auto">Stuur outomaties BeatBuddy-liedjie</string>
     <string name="beat_buddy_auto_info">Vergelyk u liedjie Lêernaam, titel en ook bekend as velde met u BeatBuddy-databasis.  As \'n bypassende liedjie gevind word, word die lêergids en liedjiekode outomaties via MIDI gestuur</string>
+    <string name="beat_buddy_browse_info">Blaai deur die liedjies op die BeatBuddy (met behulp van die standaardprojek of ingevoerde projek)</string>
     <string name="beat_buddy_database_reset">Maak die BeatBuddy-databasis in die app skoon. Dit sal slegs die standaard van die pedaal herstel.</string>
     <string name="beat_buddy_folder_info">Vouer moet \'n nommer tussen 1 en 16384 wees</string>
     <string name="beat_buddy_import_error">Daar was \'n probleem met die invoer van die BeatBuddy-projek.  Raadpleeg die gebruikershandleiding vir meer inligting.</string>
@@ -454,10 +455,15 @@
     <string name="metronome_duration">Metronoomduur (mate)</string>
     <string name="metronome_info">Pas die metronoominstellings aan</string>
     <string name="microphone">Mikrofoon</string>
+    <string name="midi_action">MIDI-aksie</string>
+    <string name="midi_action_assign">Ken toe aan \'n MIDI-aksie</string>
+    <string name="midi_action_info">Kies aan watter MIDI-aksie hierdie kode toegeken moet word</string>
     <string name="midi_add">"Voeg opdrag by"</string>
     <string name="midi_auto">"Outomaties stuur MIDI"</string>
     <string name="midi_bluetooth">"Koppel Bluetooth-toestel"</string>
     <string name="midi_channel">Kanaal</string>
+    <string name="midi_code_current">MIDI-kode wat tans aan aksie toegewys is</string>
+    <string name="midi_code_new">Nuwe MIDI-kode</string>
     <string name="midi_commands">"Wys liedjies opdragte"</string>
     <string name="midi_controller">"Kontroleerder verander"</string>
     <string name="midi_delay">MIDI vertraging tussen boodskappe</string>

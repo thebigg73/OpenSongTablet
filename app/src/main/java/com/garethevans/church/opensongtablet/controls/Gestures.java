@@ -151,6 +151,14 @@ public class Gestures {
         addString("beatbuddyhalfexit",c.getString(R.string.beat_buddy)+" "+c.getString(R.string.half_time)+" "+c.getString(R.string.exit));
         addString("beatbuddydouble",c.getString(R.string.beat_buddy)+" "+c.getString(R.string.double_time));
         addString("beatbuddydoubleexit",c.getString(R.string.beat_buddy)+" "+c.getString(R.string.double_time)+" "+c.getString(R.string.exit));
+        addString("midiaction1",c.getString(R.string.midi_action)+" "+1);
+        addString("midiaction2",c.getString(R.string.midi_action)+" "+2);
+        addString("midiaction3",c.getString(R.string.midi_action)+" "+3);
+        addString("midiaction4",c.getString(R.string.midi_action)+" "+4);
+        addString("midiaction5",c.getString(R.string.midi_action)+" "+5);
+        addString("midiaction6",c.getString(R.string.midi_action)+" "+6);
+        addString("midiaction7",c.getString(R.string.midi_action)+" "+7);
+        addString("midiaction8",c.getString(R.string.midi_action)+" "+8);
 
         addString("","");
 

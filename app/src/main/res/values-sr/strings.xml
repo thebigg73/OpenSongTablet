@@ -73,6 +73,7 @@
     <string name="battery">Baterija</string>
     <string name="beat_buddy_auto">Automatski pošalji BeatBuddy pesmu</string>
     <string name="beat_buddy_auto_info">Poredi vaše pesmu Filename, Title i Also known as fields with your BeatBuddy database.  Ako se uporedi pesma, fascikla i kôd pesme se automatski šalju preko MIDI-ja</string>
+    <string name="beat_buddy_browse_info">Pregledajte pesme na BeatBuddy (koristeći podrazumevani projekat ili uvezeni projekat)</string>
     <string name="beat_buddy_database_reset">Obriši BeatBuddy bazu podataka u aplikaciji.  Ovo će vratiti samo podrazumevane vrednosti pedala.</string>
     <string name="beat_buddy_folder_info">Fascikla mora biti broj između 1 i 16384</string>
     <string name="beat_buddy_import_error">Došlo je do problema pri uvozu BeatBuddy projekta.  Za više informacija pogledajte korisničko uputstvo.</string>
@@ -454,10 +455,15 @@
     <string name="metronome_duration">Metronome trajanje (barovi)</string>
     <string name="metronome_info">Podesite podešavanja metronoma</string>
     <string name="microphone">Mikrofon</string>
+    <string name="midi_action">MIDI radnja</string>
+    <string name="midi_action_assign">Dodeljivanje MIDI radnji</string>
+    <string name="midi_action_info">Odaberite koja MIDI radnja treba da bude dodeljena ovoj šifre</string>
     <string name="midi_add">Dodavanje MIDI komande</string>
     <string name="midi_auto">Automatsko slanje MIDI</string>
     <string name="midi_bluetooth">Povezivanje Bluetooth MIDI uređaja</string>
     <string name="midi_channel">MIDI Kanal</string>
+    <string name="midi_code_current">MIDI kôd koji je trenutno dodeljen radnji</string>
+    <string name="midi_code_new">Novi MIDI kôd</string>
     <string name="midi_commands">Uređivanje MIDI komandi</string>
     <string name="midi_controller">Promena MIDI kontrolera</string>
     <string name="midi_delay">MIDI odlaganje između poruka</string>

@@ -73,6 +73,7 @@
     <string name="battery">"Batería"</string>
     <string name="beat_buddy_auto">Enviar automáticamente la canción de BeatBuddy</string>
     <string name="beat_buddy_auto_info">Compara los campos Nombre de archivo, Título y También conocido como de tu canción con tu base de datos de BeatBuddy.  Si se encuentra una canción coincidente, la carpeta y el código de la canción se envían automáticamente a través de MIDI</string>
+    <string name="beat_buddy_browse_info">Explorar las canciones en el BeatBuddy (usando el proyecto predeterminado o el proyecto importado)</string>
     <string name="beat_buddy_database_reset">Borre la base de datos de BeatBuddy en la aplicación.  Esto restaurará solo los valores predeterminados del pedal.</string>
     <string name="beat_buddy_folder_info">La carpeta debe tener un número entre 1 y 16384</string>
     <string name="beat_buddy_import_error">Hubo un problema al importar el proyecto BeatBuddy.  Consulte el manual del usuario para obtener más información.</string>
@@ -454,10 +455,15 @@
     <string name="metronome_duration">Duración del metrónomo (barras)</string>
     <string name="metronome_info">Ajustar la configuración del metrónomo</string>
     <string name="microphone">Micrófono</string>
+    <string name="midi_action">Acción MIDI</string>
+    <string name="midi_action_assign">Asignar a una acción MIDI</string>
+    <string name="midi_action_info">Elija a qué acción MIDI se le debe asignar este código</string>
     <string name="midi_add">"Agregar comando"</string>
     <string name="midi_auto">"Auto enviar MIDI"</string>
     <string name="midi_bluetooth">"Conecte el dispositivo Bluetooth"</string>
     <string name="midi_channel">"Canal"</string>
+    <string name="midi_code_current">Código MIDI actualmente asignado a la acción</string>
+    <string name="midi_code_new">Nuevo código MIDI</string>
     <string name="midi_commands">"Editar comandos de canciones"</string>
     <string name="midi_controller">"Cambio de controlador"</string>
     <string name="midi_delay">Retardo MIDI entre mensajes</string>

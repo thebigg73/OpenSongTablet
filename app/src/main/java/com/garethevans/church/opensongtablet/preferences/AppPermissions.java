@@ -102,7 +102,7 @@ public class AppPermissions {
             return new String[]{Manifest.permission.BLUETOOTH_SCAN, Manifest.permission.BLUETOOTH_CONNECT,
                     Manifest.permission.ACCESS_FINE_LOCATION};
         } else {
-            return new String[]{Manifest.permission.ACCESS_FINE_LOCATION};
+            return new String[]{Manifest.permission.ACCESS_COARSE_LOCATION};
         }
     }
 

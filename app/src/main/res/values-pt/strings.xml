@@ -73,6 +73,7 @@
     <string name="battery">"Bateria"</string>
     <string name="beat_buddy_auto">Enviar automaticamente a música do BeatBuddy</string>
     <string name="beat_buddy_auto_info">Compara o nome do ficheiro da sua música, o título e também conhecidos como campos com a sua base de dados BeatBuddy.  Se uma música correspondente for encontrada, a pasta e o código da música são enviados automaticamente através do MIDI</string>
+    <string name="beat_buddy_browse_info">Navegue pelas músicas no BeatBuddy (usando o projeto padrão ou o projeto importado)</string>
     <string name="beat_buddy_database_reset">Limpe o banco de dados BeatBuddy no aplicativo.  Isso restaurará apenas os padrões do pedal.</string>
     <string name="beat_buddy_folder_info">A pasta deve ter um número entre 1 e 16384</string>
     <string name="beat_buddy_import_error">Houve um problema ao importar o projeto BeatBuddy.  Consulte o manual do utilizador para obter mais informações.</string>
@@ -454,10 +455,15 @@
     <string name="metronome_duration">Duração do metrônomo (barras)</string>
     <string name="metronome_info">Ajuste as configurações do metrônomo</string>
     <string name="microphone">Microfone</string>
+    <string name="midi_action">Ação MIDI</string>
+    <string name="midi_action_assign">Atribuir a uma ação MIDI</string>
+    <string name="midi_action_info">Escolha qual ação MIDI deve ser atribuída a este código</string>
     <string name="midi_add">"Adicionar comando"</string>
     <string name="midi_auto">"MIDI de envio automático"</string>
     <string name="midi_bluetooth">"Conecte o dispositivo Bluetooth"</string>
     <string name="midi_channel">"Canal"</string>
+    <string name="midi_code_current">Código MIDI atualmente atribuído à ação</string>
+    <string name="midi_code_new">Novo código MIDI</string>
     <string name="midi_commands">"Editar comandos de música"</string>
     <string name="midi_controller">"Alteração do controlador"</string>
     <string name="midi_delay">Atraso MIDI entre mensagens</string>

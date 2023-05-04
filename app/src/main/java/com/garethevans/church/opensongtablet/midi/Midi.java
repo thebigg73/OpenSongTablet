@@ -43,6 +43,67 @@ public class Midi {
         this.c = c;
         mainActivityInterface = (MainActivityInterface) c;
         midiDelay = mainActivityInterface.getPreferences().getMyPreferenceInt("midiDelay", 100);
+        midiAction1 = mainActivityInterface.getPreferences().getMyPreferenceString("midiAction1", "0xC9 0x24 0x64");
+        midiAction2 = mainActivityInterface.getPreferences().getMyPreferenceString("midiAction2", "0xC9 0x26 0x64");
+        midiAction3 = mainActivityInterface.getPreferences().getMyPreferenceString("midiAction3", "0xC9 0x2A 0x64");
+        midiAction4 = mainActivityInterface.getPreferences().getMyPreferenceString("midiAction4", "0xC9 0x2E 0x64");
+        midiAction5 = mainActivityInterface.getPreferences().getMyPreferenceString("midiAction5", "0xC9 0x30 0x64");
+        midiAction6 = mainActivityInterface.getPreferences().getMyPreferenceString("midiAction6", "0xC9 0x2F 0x64");
+        midiAction7 = mainActivityInterface.getPreferences().getMyPreferenceString("midiAction7", "0xC9 0x2B 0x64");
+        midiAction8 = mainActivityInterface.getPreferences().getMyPreferenceString("midiAction8", "0xC9 0x37 0x64");
+    }
+
+    public String getMidiAction(int which) {
+        switch (which) {
+            case 1:
+            default:
+                return midiAction1;
+            case 2:
+                return midiAction2;
+            case 3:
+                return midiAction3;
+            case 4:
+                return midiAction4;
+            case 5:
+                return midiAction5;
+            case 6:
+                return midiAction6;
+            case 7:
+                return midiAction7;
+            case 8:
+                return midiAction8;
+        }
+    }
+
+    public void setMidiAction(int which, String what) {
+        String pref = "midiAction"+which;
+        mainActivityInterface.getPreferences().setMyPreferenceString(pref,what);
+        switch (which) {
+            case 1:
+                midiAction1 = what;
+                break;
+            case 2:
+                midiAction2 = what;
+                break;
+            case 3:
+                midiAction3 = what;
+                break;
+            case 4:
+                midiAction4 = what;
+                break;
+            case 5:
+                midiAction5 = what;
+                break;
+            case 6:
+                midiAction6 = what;
+                break;
+            case 7:
+                midiAction7 = what;
+                break;
+            case 8:
+                midiAction8 = what;
+                break;
+        }
     }
 
     private ArrayList<String> songMidiMessages = new ArrayList<>();
@@ -80,6 +141,8 @@ public class Midi {
             "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B",
             "C", "C#", "D", "D#", "E");
     private final List<String> midiCommands = Arrays.asList("NoteOn", "NoteOff", "PC", "CC", "MSB", "LSB");
+
+    private String midiAction1, midiAction2, midiAction3, midiAction4, midiAction5, midiAction6, midiAction7, midiAction8;
 
     private final List<String> guitarStringStartNotes = Arrays.asList("E3", "A3", "D4", "G4", "B4", "E5");
     private final List<String> ukuleleStringStartNotes = Arrays.asList("G5", "C5", "E5", "A5");

@@ -445,6 +445,30 @@ public class PerformanceGestures {
             case "beatbuddydoubleexit":
                 beatBuddyDoubleTimeExit();
                 break;
+            case "midiaction1":
+                midiAction(1);
+                break;
+            case "midiaction2":
+                midiAction(2);
+                break;
+            case "midiaction3":
+                midiAction(3);
+                break;
+            case "midiaction4":
+                midiAction(4);
+                break;
+            case "midiaction5":
+                midiAction(5);
+                break;
+            case "midiaction6":
+                midiAction(6);
+                break;
+            case "midiaction7":
+                midiAction(7);
+                break;
+            case "midiaction8":
+                midiAction(8);
+                break;
 
             // Utilities
             case "soundlevel":
@@ -1022,6 +1046,9 @@ public class PerformanceGestures {
     }
     public void beatBuddyDoubleTimeExit() {
         mainActivityInterface.getBeatBuddy().beatBuddyDoubleTimeExit();
+    }
+    public void midiAction(int which) {
+        mainActivityInterface.getMidi().sendMidiHexSequence(mainActivityInterface.getMidi().getMidiAction(which));
     }
 
     // The checks

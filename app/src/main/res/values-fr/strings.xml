@@ -73,6 +73,7 @@
     <string name="battery">"Batterie"</string>
     <string name="beat_buddy_auto">Envoyer automatiquement la chanson BeatBuddy</string>
     <string name="beat_buddy_auto_info">Compare le nom de votre chanson, le titre et les champs également connus sous le nom de chanson avec votre base de données BeatBuddy.  Si une chanson correspondante est trouvée, le dossier et le code de la chanson sont envoyés automatiquement via MIDI</string>
+    <string name="beat_buddy_browse_info">Parcourez les chansons sur le BeatBuddy (en utilisant le projet par défaut ou le projet importé)</string>
     <string name="beat_buddy_database_reset">Effacez la base de données BeatBuddy dans l’application.  Cela restaurera uniquement les valeurs par défaut de la pédale.</string>
     <string name="beat_buddy_folder_info">Le dossier doit être un nombre compris entre 1 et 16384</string>
     <string name="beat_buddy_import_error">Un problème est survenu lors de l’importation du projet BeatBuddy.  Veuillez vous référer au manuel d’utilisation pour plus d’informations.</string>
@@ -454,10 +455,15 @@
     <string name="metronome_duration">Durée du métronome (barres)</string>
     <string name="metronome_info">Ajuster les paramètres du métronome</string>
     <string name="microphone">Microphone</string>
+    <string name="midi_action">Action MIDI</string>
+    <string name="midi_action_assign">Affectation à une action MIDI</string>
+    <string name="midi_action_info">Choisissez l’action MIDI à laquelle ce code doit être attribué</string>
     <string name="midi_add">"Ajouter une commande"</string>
     <string name="midi_auto">"Envoi automatique MIDI"</string>
     <string name="midi_bluetooth">"Connectez l'appareil Bluetooth"</string>
     <string name="midi_channel">"Canal"</string>
+    <string name="midi_code_current">Code MIDI actuellement affecté à l’action</string>
+    <string name="midi_code_new">Nouveau code MIDI</string>
     <string name="midi_commands">"Modifier les commandes de morceau"</string>
     <string name="midi_controller">"Changement de contrôleur"</string>
     <string name="midi_delay">Délai MIDI entre les messages</string>

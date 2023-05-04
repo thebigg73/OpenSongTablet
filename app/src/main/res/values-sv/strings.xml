@@ -73,6 +73,7 @@
     <string name="battery">"Batteri"</string>
     <string name="beat_buddy_auto">Skicka automatiskt BeatBuddy-låt</string>
     <string name="beat_buddy_auto_info">Jämför din låt Filnamn, Titel och Även känd som fält med din BeatBuddy-databas.  Om en matchande låt hittas skickas mappen och låtkoden automatiskt över MIDI</string>
+    <string name="beat_buddy_browse_info">Bläddra bland låtarna på BeatBuddy (med standardprojektet eller det importerade projektet)</string>
     <string name="beat_buddy_database_reset">Rensa BeatBuddy-databasen i appen.  Detta återställer endast pedalstandardinställningarna.</string>
     <string name="beat_buddy_folder_info">Mappen måste vara ett nummer mellan 1 och 16384</string>
     <string name="beat_buddy_import_error">Det gick inte att importera BeatBuddy-projektet.  Se användarhandboken för mer information.</string>
@@ -454,10 +455,15 @@
     <string name="metronome_duration">Metronome varaktighet (staplar)</string>
     <string name="metronome_info">Justera metronominställningarna</string>
     <string name="microphone">Mikrofon</string>
+    <string name="midi_action">MIDI-åtgärd</string>
+    <string name="midi_action_assign">Tilldela till en MIDI-åtgärd</string>
+    <string name="midi_action_info">Välj vilken MIDI-åtgärd som ska tilldelas den här koden</string>
     <string name="midi_add">"Lägg till kommando"</string>
     <string name="midi_auto">"Auto skicka MIDI"</string>
     <string name="midi_bluetooth">"Anslut Bluetooth-enhet"</string>
     <string name="midi_channel">Kanalisera</string>
+    <string name="midi_code_current">MIDI-kod som för närvarande är tilldelad till åtgärd</string>
+    <string name="midi_code_new">Ny MIDI-kod</string>
     <string name="midi_commands">"Redigera låtkommandon"</string>
     <string name="midi_controller">"Controller förändring"</string>
     <string name="midi_delay">MIDI-fördröjning mellan meddelanden</string>
