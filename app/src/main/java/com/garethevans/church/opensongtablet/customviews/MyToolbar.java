@@ -164,19 +164,6 @@ public class MyToolbar extends MaterialToolbar {
             // We are in the Performance/Stage mode
             float mainsize = mainActivityInterface.getPreferences().getMyPreferenceFloat("songTitleSize",13.0f);
 
-            // If we are in a set, show the icon
-            int positionInSet = mainActivityInterface.getSetActions().indexSongInSet(mainActivityInterface.getSong());
-            if (positionInSet>-1) {
-                // Check the set menu fragment to see if we need to highlight
-                // This happens if we just loaded a song (not clicking on the set item in the menu)
-                mainActivityInterface.checkSetMenuItemHighlighted(positionInSet);
-                setIcon.setVisibility(View.VISIBLE);
-                mainActivityInterface.getCurrentSet().setIndexSongInSet(positionInSet);
-            } else {
-                setIcon.setVisibility(View.GONE);
-                mainActivityInterface.getCurrentSet().setIndexSongInSet(-1);
-            }
-
             if (title != null && mainActivityInterface.getSong().getTitle() != null) {
                 title.setTextSize(mainsize);
                 String text = mainActivityInterface.getSong().getTitle();
@@ -184,8 +171,21 @@ public class MyToolbar extends MaterialToolbar {
                     text = "*" + text;
                 }
                 title.setText(text);
+                // If we are in a set, show the icon
+                int positionInSet = mainActivityInterface.getSetActions().indexSongInSet(mainActivityInterface.getSong());
+                if (positionInSet>-1) {
+                    // Check the set menu fragment to see if we need to highlight
+                    // This happens if we just loaded a song (not clicking on the set item in the menu)
+                    mainActivityInterface.checkSetMenuItemHighlighted(positionInSet);
+                    mainActivityInterface.getCurrentSet().setIndexSongInSet(positionInSet);
+                    hideView(setIcon,text.equals(""));
+                } else {
+                    mainActivityInterface.getCurrentSet().setIndexSongInSet(-1);
+                    hideView(setIcon,true);
+                }
                 hideView(title, false);
-            } else if (title!=null) {
+            } else {
+                hideView(setIcon,true);
                 hideView(title, true);
             }
             if (author != null && mainActivityInterface.getSong().getAuthor() != null &&
@@ -258,9 +258,7 @@ public class MyToolbar extends MaterialToolbar {
 
         } else {
             // We are in a different fragment, so hide the song info stuff
-            if (setIcon!=null) {
-                setIcon.setVisibility(View.GONE);
-            }
+            hideView(setIcon,true);
             if (title != null) {
                 title.setOnClickListener(null);
                 title.setOnLongClickListener(null);

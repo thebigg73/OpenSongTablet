@@ -30,6 +30,13 @@ public class SettingsCategories extends Fragment {
             mode_stage_string="", stage_mode_string="", performance_mode_string="",
             play_services_error_string="", midi_description_string="", not_available_string="",
             location_string="", permissions_refused_string="";
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mainActivityInterface.updateToolbar(settings_string);
+    }
+
     @Override
     public void onAttach(@NonNull Context context) {
         mainActivityInterface = (MainActivityInterface) context;
@@ -44,8 +51,6 @@ public class SettingsCategories extends Fragment {
         myView = SettingsCategoriesBinding.inflate(inflater, container, false);
 
         prepareStrings();
-
-        mainActivityInterface.updateToolbar(settings_string);
 
         // Hide the features not available to this device
         hideUnavailable();

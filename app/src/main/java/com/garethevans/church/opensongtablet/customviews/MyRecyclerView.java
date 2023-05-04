@@ -9,14 +9,12 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.animation.LinearInterpolator;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
-
+import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-
 import java.util.ArrayList;
 
 public class MyRecyclerView extends RecyclerView  implements RecyclerView.SmoothScroller.ScrollVectorProvider{
@@ -241,7 +239,8 @@ public class MyRecyclerView extends RecyclerView  implements RecyclerView.Smooth
         public boolean onInterceptTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
 
             final int action = e.getAction();
-            if (allowPinchToZoom) {
+            if (allowPinchToZoom &&
+                    !(mainActivityInterface.getMode().equals(getContext().getString(R.string.mode_stage)) && mainActivityInterface.getSong().getFiletype().equals("XML"))) {
                 mScaleDetector.onTouchEvent(e);
             }
             float x;

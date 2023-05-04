@@ -966,19 +966,20 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         NavigationUI.setupActionBarWithNavController(this,navController,appBarConfiguration);
         NavigationUI.setupWithNavController(myView.myToolbar, navController, appBarConfiguration);
         navController.addOnDestinationChangedListener((navController, navDestination, bundle) -> {
-            // IV - We set settingsOpen based on the navDestination
-            settingsOpen = !((navDestination.getId()==R.id.performanceFragment ||
-                    navDestination.getId()==R.id.presenterFragment));
             // IV - We are changing so adjust option menu elements
             if (globalMenuItem != null) {
-                // IV - To smooth teardown, we clear elements left to right
-                if (settingsOpen && !whichMode.equals(presenter)) {
+                // IV - To smooth teardown, we clear song detail elements left to right
+                if (!settingsOpen) {
                     myView.myToolbar.hideSongDetails(true);
                 }
                 myView.myToolbar.batteryholderVisibility(false, false);
                 batteryStatus.showBatteryStuff(false);
                 updateToolbarHelp(null);
                 globalMenuItem.findItem(R.id.mirror_menu_item).setVisible(false);
+
+                // IV - We set settingsOpen based on the new navDestination
+                settingsOpen = !((navDestination.getId()==R.id.performanceFragment ||
+                        navDestination.getId()==R.id.presenterFragment));
 
                 // IV - To smooth build, we add elements right to left
                 if (settingsOpen) {
@@ -1690,12 +1691,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     songListBuildIndex.fullIndex(songMenuFragment.getProgressText());
                 } else {
                     // Try again in a short while
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            songListBuildIndex.fullIndex(songMenuFragment.getProgressText());
-                        }
-                    },1000);
+                    new Handler().postDelayed(() -> songListBuildIndex.fullIndex(songMenuFragment.getProgressText()),1000);
                 }
             } catch (Exception e) {
                 e.printStackTrace();

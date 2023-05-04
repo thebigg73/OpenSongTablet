@@ -23,6 +23,12 @@ public class DisplayMenuFragment extends Fragment {
             deeplink_margins_string="";
 
     @Override
+    public void onResume() {
+        super.onResume();
+        mainActivityInterface.updateToolbar(display_string);
+    }
+
+    @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mainActivityInterface = (MainActivityInterface) context;
@@ -34,8 +40,6 @@ public class DisplayMenuFragment extends Fragment {
         myView = SettingsDisplayBinding.inflate(inflater,container,false);
 
         prepareStrings();
-
-        mainActivityInterface.updateToolbar(display_string);
 
         // Set defaults
         setDefaults();

@@ -49,6 +49,11 @@ public class ImportFileFragment extends Fragment {
     private ExposedDropDownArrayAdapter exposedDropDownArrayAdapter;
 
     @Override
+    public void onResume() {
+        super.onResume();
+        mainActivityInterface.updateToolbar(import_from_file_string);
+    }
+    @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mainActivityInterface = (MainActivityInterface) context;
@@ -62,7 +67,6 @@ public class ImportFileFragment extends Fragment {
 
         prepareStrings();
 
-        mainActivityInterface.updateToolbar(import_from_file_string);
         myView.nestedScrollView.setExtendedFabToAnimate(myView.importButton);
 
         // Get a note of the original folder/filename

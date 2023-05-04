@@ -534,6 +534,7 @@ public class PerformanceFragment extends Fragment {
                 recyclerLayoutManager.setSizes(pdfPageAdapter.getHeights(), availableHeight);
                 myView.recyclerView.setPadding(myView.inlineSetList.getInlineSetWidth(),0,0,0);
                 myView.recyclerView.setMaxScrollY(heightAfterScale - availableHeight);
+                myView.recyclerView.toggleScale();
 
                 // Do the slide in
                 myView.recyclerView.setVisibility(View.VISIBLE);
@@ -644,6 +645,7 @@ public class PerformanceFragment extends Fragment {
                 heightAfterScale = heightBeforeScale;
                 recyclerLayoutManager.setSizes(imageSlideAdapter.getHeights(),availableHeight);
                 myView.recyclerView.setMaxScrollY(heightAfterScale - availableHeight);
+                myView.recyclerView.toggleScale();
 
                 // Slide in
                 myView.recyclerView.setVisibility(View.VISIBLE);
@@ -818,6 +820,7 @@ public class PerformanceFragment extends Fragment {
                         //Log.d(TAG, "Song QOS adjustment: " + Math.max(0, QOSAdjustment) + " (" + (doSongLoadQOSTime - QOSAdjustment) + ")");
 
                         myView.recyclerView.setVisibility(View.VISIBLE);
+                        myView.recyclerView.toggleScale();
 
                         new Handler().postDelayed(() -> {
                             myView.recyclerView.startAnimation(animSlideIn);
