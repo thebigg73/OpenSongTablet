@@ -1020,13 +1020,14 @@ public class PerformanceFragment extends Fragment {
             // Start the pad (if the pads are activated and the pad is valid)
             mainActivityInterface.getPad().autoStartPad();
 
-            // Send BeatBuddy autosong
-            if (mainActivityInterface.getBeatBuddy().getBeatBuddyAutoLookup()) {
-                mainActivityInterface.getBeatBuddy().tryAutoSend(getContext(),mainActivityInterface,mainActivityInterface.getSong());
-            }
-
-            // Update any midi commands (if any) - additional to BeatBuddy so sent afterwards
+            // Update any midi commands (if any)
             if (mainActivityInterface.getPreferences().getMyPreferenceBoolean("midiSendAuto", false)) {
+
+                // Send BeatBuddy autosong if required
+                if (mainActivityInterface.getBeatBuddy().getBeatBuddyAutoLookup()) {
+                    mainActivityInterface.getBeatBuddy().tryAutoSend(getContext(),mainActivityInterface,mainActivityInterface.getSong());
+                }
+                // These are addition to beatbuddy, so sent afterwards
                 mainActivityInterface.getMidi().buildSongMidiMessages();
                 mainActivityInterface.getMidi().sendSongMessages();
             }

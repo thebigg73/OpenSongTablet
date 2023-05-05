@@ -13,7 +13,6 @@ public class BeatBuddy {
 
     final private MainActivityInterface mainActivityInterface;
     final private String TAG = "BeatBuddy";
-    private boolean halfTimeOn = false, doubleTimeOn = false;
 
     // Control options are:
     private int beatBuddyChannel = 1, beatBuddyVolume = 100, beatBuddyDrumKit = 1;

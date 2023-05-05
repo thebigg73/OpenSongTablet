@@ -783,12 +783,16 @@ public class BBSQLite extends SQLiteOpenHelper {
             option1 = option1.replace(",","");
         }
         String option2 = thisSong.getTitle();
-        if (option2!=null) {
+        if (option2!=null && !option2.isEmpty()) {
             option2 = option2.replace(",","");
         }
         String option3 = thisSong.getAka();
         if (option3!=null) {
             option3 = option3.replace(",","");
+        }
+        String option4 = thisSong.getUser3();
+        if (option4!=null) {
+            option4 = option4.replace(",","");
         }
         ArrayList<String> args = new ArrayList<>();
         query += "WHERE " + COLUMN_SONG_NAME + "=?";
@@ -804,6 +808,11 @@ public class BBSQLite extends SQLiteOpenHelper {
             args.add(option3);
         }
 
+        if (option4 != null && !option4.isEmpty()) {
+            query += " OR " + COLUMN_SONG_NAME + "=?";
+            args.add(option4);
+        }
+
         // Get matching songs (if any).
         query += " ORDER BY " + COLUMN_FOLDER_NUM + " COLLATE NOCASE ASC";
         String[] selectionArgs = new String[args.size()];
@@ -816,6 +825,14 @@ public class BBSQLite extends SQLiteOpenHelper {
             int folder_num = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_FOLDER_NUM));
             int song_num = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_SONG_NUM));
             String hexCode = mainActivityInterface.getBeatBuddy().getSongCode(folder_num, song_num);
+            // If we have a song tempo set, send that too
+            if (thisSong.getTempo()!=null && !thisSong.getTempo().isEmpty()) {
+                String tempo = thisSong.getTempo().replaceAll("\\D","");
+                if (!tempo.trim().isEmpty()) {
+                    int bpm = Integer.parseInt(tempo);
+                    hexCode += "\n" + mainActivityInterface.getBeatBuddy().getTempoCode(bpm);
+                }
+            }
             Log.d(TAG, "hexCode:" + hexCode);
             mainActivityInterface.getMidi().sendMidiHexSequence(hexCode);
             String message = c.getString(R.string.beat_buddy) + " - " + c.getString(R.string.folder) + ":" + folder_num
