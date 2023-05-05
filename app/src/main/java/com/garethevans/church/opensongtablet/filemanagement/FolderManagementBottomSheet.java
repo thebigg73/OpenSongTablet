@@ -108,7 +108,7 @@ public class FolderManagementBottomSheet extends BottomSheetDialogFragment {
             myView.renameFolder.setVisibility(View.GONE);
             myView.deleteSubdirectory.setVisibility(View.GONE);
             myView.changeLocation.setOnClickListener(new ActionClickListener("resetStorage"));
-            myView.exportSongList.setVisibility(View.VISIBLE);
+
         } else if (songs) {
             String s = "OpenSong/Songs";
             myView.dialogHeading.setText(s);
@@ -117,14 +117,7 @@ public class FolderManagementBottomSheet extends BottomSheetDialogFragment {
             myView.moveContents.setOnClickListener(new ActionClickListener("moveContents"));
             myView.deleteSubdirectory.setVisibility(View.GONE);
             myView.createSubdirectory.setOnClickListener(new ActionClickListener("createItem"));
-            myView.exportSongList.setVisibility(View.VISIBLE);
-            myView.exportSongList.setOnClickListener(v -> {
-                if (getActivity()!=null) {
-                    ExportSongListBottomSheet exportSongListBottomSheet = new ExportSongListBottomSheet();
-                    exportSongListBottomSheet.show(getActivity().getSupportFragmentManager(), "ExportSongListBottomSheet");
-                    dismiss();
-                }
-            });
+
 
         } else {
             String s = "OpenSong/Songs/" + subdir;
@@ -134,8 +127,16 @@ public class FolderManagementBottomSheet extends BottomSheetDialogFragment {
             myView.moveContents.setOnClickListener(new ActionClickListener("moveContents"));
             myView.renameFolder.setOnClickListener(new ActionClickListener("renameFolder"));
             myView.deleteSubdirectory.setOnClickListener(new ActionClickListener("deleteItem"));
-            myView.exportSongList.setVisibility(View.VISIBLE);
         }
+
+        myView.exportSongList.setVisibility(View.VISIBLE);
+        myView.exportSongList.setOnClickListener(v -> {
+            if (getActivity()!=null) {
+                ExportSongListBottomSheet exportSongListBottomSheet = new ExportSongListBottomSheet();
+                exportSongListBottomSheet.show(getActivity().getSupportFragmentManager(), "ExportSongListBottomSheet");
+                dismiss();
+            }
+        });
     }
 
     private class ActionClickListener implements View.OnClickListener {

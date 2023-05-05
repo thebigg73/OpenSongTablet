@@ -1030,6 +1030,7 @@ public class StorageAccess {
     private boolean docContractCreate(Uri uri, String mimeType, String name) {
         if (uri!=null && name!=null && !name.isEmpty()) {
             try {
+                updateFileActivityLog("\ndocContractCreate() called.  uri:"+uri+"  mimeType:"+mimeType+"  name:"+name);
                 return DocumentsContract.createDocument(c.getContentResolver(), uri, mimeType, name) != null;
             } catch (Exception e) {
                 Log.d(TAG, "Error creating " + name + " at " + uri);
@@ -1103,6 +1104,7 @@ public class StorageAccess {
                                                   String folder, String subfolder, String filename) {
         // deleteOld will remove any existing file before creating a new one (avoids artefacts) - xml files only
         // We will only delete when the file isn't empty or null, otherwise folders are cleared!
+
         if (lollipopOrLater()) {
             // Only need to do this for Lollipop or later
             if (uriExists(uri) && deleteOld && filename != null && !filename.isEmpty()) {
@@ -1304,8 +1306,12 @@ public class StorageAccess {
         subfolder = removeStartAndEndSlashes(subfolder);
         filename = removeStartAndEndSlashes(filename);
 
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("createFile() called for folder:").append(folder)
+                .append("  subfolder:").append(subfolder).append("  filename:").append(filename);
         Uri uritest = getUriForItem(folder, subfolder, filename);
 
+        stringBuilder.append("\nuritest:").append(uritest);
         if (mimeType != null && mimeType.equals(DocumentsContract.Document.MIME_TYPE_DIR)) {
             // Check the filename is empty.  If not, add it to the subfolder
             // If something is sent as a filename, add it to the subfolder
@@ -1331,6 +1337,7 @@ public class StorageAccess {
             foldertocreate = removeStartAndEndSlashes(foldertocreate);
 
             parentUri = getUriForItem(folder, subfolder, "");
+            stringBuilder.append("\nFolder creation required.\nparentUri:").append(parentUri);
 
             // Only create if it doesn't exist
             /*if (!uriExists(uritest)) {
@@ -1354,8 +1361,13 @@ public class StorageAccess {
                 boolean created = false;
                 if (uriExists(parentUri)) {
                     created = docContractCreate(parentUri, mimeType, foldertocreate);
+                    stringBuilder.append("\nuritest didn't exist, but parentUri did so creating:")
+                            .append("docContractCreate(").append(parentUri).append(",")
+                            .append(mimeType).append(",").append(foldertocreate).append(")");
                 }
                 if (!created) {
+                    stringBuilder.append("\ncreated:false.  parent didn't exist?");
+
                     // Error (likely parent directory doesn't exist
                     // Go through each folder and create the ones we need starting
                     String[] bits = subfolder.split("/");
@@ -1366,6 +1378,10 @@ public class StorageAccess {
                         newUri.buildUpon().appendPath(s).build();
                         if (!uriExists(newUri)) {
                             docContractCreate(parentUri, mimeType, s);
+                            stringBuilder.append("\ntry again, docContractCreate(").
+                                    append(parentUri).append(",").append(mimeType)
+                                    .append(",").append(s).append(")");
+
                         }
                         bit = bit + "/" + s;
                     }
@@ -1396,43 +1412,65 @@ public class StorageAccess {
 
             parentUri = getUriForItem(folder, completesubfolder, "");
 
+            stringBuilder.append("\nFile creation required.\nparentUri:").append(parentUri);
+            stringBuilder.append("\nfolder:").append(folder).append("  completesubfolder:")
+                    .append(completesubfolder).append("  completefilename:").append(completefilename);
+
             if (uriTreeHome == null) {
                 uriTreeHome = homeFolder(null);
             }
 
-            if (folder.isEmpty() && completesubfolder.isEmpty()) {
-                // A temp file in the root folder
-                docContractCreate(uriTreeHome, null, filename);
+            if (!filename.isEmpty() && completefilename != null && !completefilename.isEmpty()) {
+                if (folder.isEmpty() && completesubfolder.isEmpty()) {
+                    // A temp file in the root folder
+                    docContractCreate(uriTreeHome, null, filename);
+                    stringBuilder.append("\nTemp file in the root folder:").append(filename);
 
-            } else if (!uriExists(uritest)) {
-                boolean created = false;
-                if (mimeType == null || uriExists(parentUri)) {
-                    // Just a document at this location, so create
-                    created = docContractCreate(parentUri, mimeType, completefilename);
-                }
 
-                if (!created) {
-                    // Error (likely parent directory doesn't exist)
-                    // Go through each folder and create the ones we need starting at the 'folder'
-                    String[] bits = completesubfolder.split("/");
-                    String bit = "";
-                    for (String s : bits) {
-                        parentUri = getUriForItem(folder, bit, "");
-                        if (mimeType == null && uriExists(parentUri)) {
-                            docContractCreate(parentUri, DocumentsContract.Document.MIME_TYPE_DIR, s);
-                        }
-                        bit = bit + "/" + s;
+                } else if (!uriExists(uritest)) {
+                    boolean created = false;
+                    if (mimeType == null && uriExists(parentUri)) {
+                        // Just a document at this location, so create
+                        created = docContractCreate(parentUri, mimeType, completefilename);
+                        stringBuilder.append("\nJust create the document.\nparentUri:").append(parentUri)
+                                .append("  completefilename:").append(completefilename);
+
                     }
-                    // Try again!
-                    parentUri = getUriForItem(folder, completesubfolder, "");
-                    if(mimeType == null || uriExists(parentUri)) {
-                        return docContractCreate(parentUri, mimeType, completefilename);
-                    } else {
-                        return false;
+
+                    if (!created) {
+                        // Error (likely parent directory doesn't exist)
+                        // Go through each folder and create the ones we need starting at the 'folder'
+                        String[] bits = completesubfolder.split("/");
+                        String bit = "";
+                        for (String s : bits) {
+                            parentUri = getUriForItem(folder, bit, "");
+                            Uri checkUri = null;
+                            if (parentUri!=null && !s.isEmpty()) {
+                                checkUri = Uri.withAppendedPath(parentUri, s);
+                            }
+                            if (mimeType == null && uriExists(parentUri) && (checkUri==null || !uriExists(checkUri))) {
+                                stringBuilder.append("\nCreate sub directory.\nparentUri:").append(parentUri)
+                                        .append("  create subdir:").append(s);
+                                docContractCreate(parentUri, DocumentsContract.Document.MIME_TYPE_DIR, s);
+                            }
+                            bit = bit + "/" + s;
+                        }
+                        // Try again!
+                        parentUri = getUriForItem(folder, completesubfolder, "");
+                        if (mimeType == null || uriExists(parentUri)) {
+                            stringBuilder.append("\nTry again to create the document.\nparentUri:").append(parentUri)
+                                    .append("  completefilename:").append(completefilename);
+                            updateFileActivityLog(stringBuilder.toString());
+                            return docContractCreate(parentUri, mimeType, completefilename);
+                        } else {
+                            updateFileActivityLog(stringBuilder.toString());
+                            return false;
+                        }
                     }
                 }
             }
         }
+        updateFileActivityLog(stringBuilder.toString());
         return true;
     }
     private boolean createFile_File(String folder, String subfolder, String filename) {
@@ -2102,25 +2140,30 @@ public class StorageAccess {
     }
 
 
+    private boolean creatingLogFile = false;
     public void updateFileActivityLog(String logText) {
-        try {
-            Uri logUri = getUriForItem("Settings","","fileWriteActivity.txt");
-            if (logUri!=null) {
-                if (!uriExists(logUri)) {
-                    lollipopCreateFileForOutputStream(false, logUri, null, "Settings", "", "fileWriteActivity.txt");
-                }
-                OutputStream outputStream;
-                if (getFileSizeFromUri(logUri) > 300) {
-                    outputStream = c.getContentResolver().openOutputStream(logUri, "wt");
+        if (!creatingLogFile) {
+            try {
+                Uri logUri = getUriForItem("Settings", "", "fileWriteActivity.txt");
+                if (logUri != null) {
+                    if (!uriExists(logUri)) {
+                        creatingLogFile = true;
+                        lollipopCreateFileForOutputStream(false, logUri, null, "Settings", "", "fileWriteActivity.txt");
+                        creatingLogFile = false;
+                    }
+                    OutputStream outputStream;
+                    if (getFileSizeFromUri(logUri) > 300) {
+                        outputStream = c.getContentResolver().openOutputStream(logUri, "wt");
+                    } else {
+                        outputStream = c.getContentResolver().openOutputStream(logUri, "wa");
+                    }
+                    mainActivityInterface.getStorageAccess().writeFileFromString(logText + "\n", outputStream);
                 } else {
-                    outputStream = c.getContentResolver().openOutputStream(logUri, "wa");
+                    Log.d(TAG, "logUri was null");
                 }
-                mainActivityInterface.getStorageAccess().writeFileFromString(logText + "\n", outputStream);
-            } else {
-                Log.d(TAG, "logUri was null");
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
