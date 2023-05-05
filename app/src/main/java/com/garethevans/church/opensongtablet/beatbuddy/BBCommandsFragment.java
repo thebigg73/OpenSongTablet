@@ -36,7 +36,7 @@ public class BBCommandsFragment extends Fragment {
     private final String TAG = "BeatBuddyFragment";
     private String not_set_string="", bpm_string="", folder_string="", song_string="", channel_string="",
         success_string="", tempo_string="", volume_string="", unknown_string="", drumkit_string="",
-            web_string="", playlist_string="";
+            web_string="", playlist_string="", beat_buddy_string="";
     private ArrayList<String> messageDescriptions;
     private ArrayList<String> messageBeatBuddy;
     private String songCommand, tempoCommand, volumeCommand, drumKitCommand, beatBuddyCommands;
@@ -58,7 +58,7 @@ public class BBCommandsFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        mainActivityInterface.updateToolbar(getString(R.string.beat_buddy)+": "+getString(R.string.midi_commands));
+        mainActivityInterface.updateToolbar(beat_buddy_string + ": "+getString(R.string.midi_commands));
         mainActivityInterface.updateToolbarHelp(webAddress);
     }
 
@@ -98,6 +98,7 @@ public class BBCommandsFragment extends Fragment {
             unknown_string = getString(R.string.unknown);
             drumkit_string = getString(R.string.drum_kit);
             playlist_string = getString(R.string.playlist);
+            beat_buddy_string = getString(R.string.beat_buddy);
             searchAerosSong = bbsqLite.COLUMN_FOLDER_NUM + "=? AND " + bbsqLite.COLUMN_SONG_NUM + "=?";
             searchAerosFolder = bbsqLite.COLUMN_FOLDER_NUM + "=?";
             searchDrumKit = bbsqLite.COLUMN_KIT_NUM + "=?";

@@ -45,6 +45,11 @@ public class ImportOptionsFragment extends Fragment {
             deeplink_import_osb_string="", network_error_string="";
 
     @Override
+    public void onResume() {
+        super.onResume();
+        mainActivityInterface.updateToolbar(import_main_string);
+    }
+    @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mainActivityInterface = (MainActivityInterface) context;
@@ -56,8 +61,6 @@ public class ImportOptionsFragment extends Fragment {
         myView = SettingsImportBinding.inflate(inflater,container,false);
 
         prepareStrings();
-
-        mainActivityInterface.updateToolbar(import_main_string);
 
         // Set up launcher
         setupLauncher();
