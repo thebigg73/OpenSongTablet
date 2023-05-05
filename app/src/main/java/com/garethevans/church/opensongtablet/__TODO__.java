@@ -10,4 +10,13 @@ public class __TODO__ {
     // BUGS FROM LIVE TEST
     // SongSelect only recognising Chord pages (not score?)
     // Presenter mode not working with images
+
+
+    /*
+    CheckRoots: thisFolder(Backups) uri:content://com.android.externalstorage.documents/tree/primary%3ADocuments
+CheckRoots - rootFolders:folder:Backgrounds  uri:content://com.android.externalstorage.documents/tree/primary%3ADocuments/document/primary%3ADocuments%2FOpenSong%2FBackgrounds - didn't exist, so created
+
+
+CheckRoots - rootFolders:folder:Backgrounds  uri:content://com.android.externalstorage.documents/tree/primary%3ADocuments/document/primary%3ADocuments%2FOpenSong%2FBackgrounds - didn't exist, so created
+     */
 }

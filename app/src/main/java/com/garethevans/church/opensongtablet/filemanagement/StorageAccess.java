@@ -235,9 +235,11 @@ public class StorageAccess {
                 openSongDf = documentFile.createDirectory(appFolder);
                 if (openSongDf!=null) {
                     uriTreeHome = openSongDf.getUri();
+                    documentFile = openSongDf;
                 }
             } else {
                 uriTreeHome = openSongDf.getUri();
+                documentFile = openSongDf;
             }
         }
 
@@ -264,60 +266,91 @@ public class StorageAccess {
 
         StringBuilder stringBuilder = new StringBuilder();
 
+        Log.d(TAG,"uriTreeHome:"+uriTreeHome);
         // Go through the main folders and try to create them
-        for (String folder : rootFolders) {
-            try {
-                Uri thisFolder = getUriForItem(folder, "", "");
-                stringBuilder.append("folder:").append(folder).append("  uri:").append(thisFolder);
-                if (!uriExists(thisFolder)) {
-                    DocumentsContract.createDocument(c.getContentResolver(), uriTreeHome, DocumentsContract.Document.MIME_TYPE_DIR, folder);
-                    updateFileActivityLog("CheckRoots: thisFolder("+folder+") uri:"+uri);
-                    stringBuilder.append(" - didn't exist, so created\n");
-                } else {
-                    stringBuilder.append(" - already existed, so do nothing\n");
-                }
-            } catch (Exception e) {
-                Log.d(TAG, folder + " error creating");
-                stringBuilder.append(" - error creating\n");
-            }
-        }
+        // We have a reference to the OpenSong/ folder now from above
+        if (documentFile!=null) {
+            for (String folder : rootFolders) {
+                try {
+                    DocumentFile dfFolder = documentFile.findFile(folder);
+                    stringBuilder.append("\nTry with docFile instead..  Looking for:").append(folder);
+                    if (dfFolder==null || !dfFolder.exists()) {
+                        stringBuilder.append(" - Not found, so create");
+                        DocumentFile thisDF = documentFile.createDirectory(folder);
+                        stringBuilder.append("\nCreated at:").append(thisDF.getUri());
 
-        updateFileActivityLog("CheckRoots - rootFolders:"+stringBuilder);
-
-        stringBuilder = new StringBuilder();
-
-        stringBuilder.append("\nNow the _cache folders\n");
-
-        // Now for the cache folders
-        for (String folder : cacheFolders) {
-            String[] bits = folder.split("/");
-            try {
-                Uri dirUri = getUriForItem(bits[0], "", "");
-                Uri thisFolder = getUriForItem(bits[0], bits[1], "");
-                stringBuilder.append("dirUri:").append(dirUri).append("  bits[0]:").append(bits[0]);
-                stringBuilder.append("thisFolder:").append(thisFolder).append("  bits[0]/bits[1]").append(bits[1]);
-                if (!uriExists(thisFolder)) {
-                    try {
-                        stringBuilder.append(" - doesn't exist, so creating - newuri:");
-                        Uri nu = DocumentsContract.createDocument(c.getContentResolver(), dirUri, DocumentsContract.Document.MIME_TYPE_DIR, bits[1]);
-                        stringBuilder.append(nu);
-                    } catch (Exception e3) {
-                        Log.d(TAG, "Error creating folder at " + thisFolder);
-                        stringBuilder.append(" - error creating\n");
+                    } else {
+                        stringBuilder.append(" - Found, so skip:").append(dfFolder.getUri());
                     }
-                } else {
-                    stringBuilder.append(" - already exists\n");
+                    /*Uri thisFolder = getUriForItem(folder, "", "");
+                    stringBuilder.append("folder:").append(folder).append("  uri:").append(thisFolder);
+                    if (!uriExists(thisFolder)) {
+                        DocumentsContract.createDocument(c.getContentResolver(), uriTreeHome, DocumentsContract.Document.MIME_TYPE_DIR, folder);
+                        stringBuilder.append(" - didn't exist, so created\n");
+                    } else {
+                        stringBuilder.append(" - already existed, so do nothing\n");
+                    }*/
+                } catch (Exception e) {
+                    Log.d(TAG, folder + " error creating");
+                    stringBuilder.append(" - error creating\n");
                 }
-            } catch (Exception e2) {
-                Log.d(TAG, "Error creating cache: " + folder);
             }
+
+            updateFileActivityLog("CheckRoots - rootFolders:" + stringBuilder);
+
+            stringBuilder = new StringBuilder();
+
+            stringBuilder.append("\nNow the _cache folders\n");
+
+            // Now for the cache folders
+            for (String folder : cacheFolders) {
+                String[] bits = folder.split("/");
+                stringBuilder.append("\nChecking cache folder:").append(folder);
+                try {
+                    // The main folder exists (dealt with above).  Get a reference
+                    DocumentFile dfFolder = documentFile.findFile(bits[0]);
+                    if (dfFolder!=null) {
+                        DocumentFile dfSubFolder = dfFolder.findFile(bits[1]);
+                        if (dfSubFolder==null || !dfSubFolder.exists()) {
+                            stringBuilder.append(" - parent folder exists, so create _cache");
+                            DocumentFile thisDF = dfFolder.createDirectory(bits[1]);
+                            stringBuilder.append("\nCreated at:").append(thisDF.getUri());
+                        } else {
+                            stringBuilder.append(" - _cache folder already exists, so skip:").append(dfSubFolder.getUri());
+                        }
+                    } else {
+                        stringBuilder.append(" - parent folder didn't exist, so can't create _cache");
+                    }
+
+                    /*Uri dirUri = getUriForItem(bits[0], "", "");
+                    Uri thisFolder = getUriForItem(bits[0], bits[1], "");
+                    stringBuilder.append("dirUri:").append(dirUri).append("  bits[0]:").append(bits[0]);
+                    stringBuilder.append("thisFolder:").append(thisFolder).append("  bits[0]/bits[1]").append(bits[1]);
+                    if (!uriExists(thisFolder)) {
+                        try {
+                            stringBuilder.append(" - doesn't exist, so creating - newuri:");
+                            Uri nu = DocumentsContract.createDocument(c.getContentResolver(), dirUri, DocumentsContract.Document.MIME_TYPE_DIR, bits[1]);
+                            stringBuilder.append(nu);
+                        } catch (Exception e3) {
+                            Log.d(TAG, "Error creating folder at " + thisFolder);
+                            stringBuilder.append(" - error creating\n");
+                        }
+                    } else {
+                        stringBuilder.append(" - already exists\n");
+                    }*/
+                } catch (Exception e2) {
+                    Log.d(TAG, "Error creating cache: " + folder);
+                }
+            }
+
+            updateFileActivityLog("CheckRoots - rootFolders_cache:" + stringBuilder);
+
+            // Now copy the assets if they aren't already there
+            copyAssets();
+            return "Success";
+        } else {
+            return "Failure";
         }
-
-        updateFileActivityLog("CheckRoots - rootFolders_cache:"+stringBuilder);
-
-        // Now copy the assets if they aren't already there
-        copyAssets();
-        return "Success";
     }
     private void copyAssets() {
         try {
