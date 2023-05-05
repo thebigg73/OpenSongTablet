@@ -73,6 +73,7 @@
     <string name="battery">"Baterie"</string>
     <string name="beat_buddy_auto">Automaticky odeslat skladbu BeatBuddy</string>
     <string name="beat_buddy_auto_info">Porovná vaše skladba Název souboru, Název a Také známé jako pole s databází BeatBuddy.  Pokud je nalezena odpovídající skladba, složka a kód skladby jsou automaticky odeslány přes MIDI</string>
+    <string name="beat_buddy_browse_info">Procházení skladeb na BeatBuddy (pomocí výchozího projektu nebo importovaného projektu)</string>
     <string name="beat_buddy_database_reset">Vymažte databázi BeatBuddy v aplikaci.  Tím se obnoví pouze výchozí nastavení pedálu.</string>
     <string name="beat_buddy_folder_info">Složka musí mít číslo mezi 1 a 16384</string>
     <string name="beat_buddy_import_error">Při importu projektu BeatBuddy došlo k potížím.  Další informace naleznete v uživatelské příručce.</string>
@@ -454,10 +455,15 @@
     <string name="metronome_duration">Trvání metronomu (bary)</string>
     <string name="metronome_info">Upravte nastavení metronomu</string>
     <string name="microphone">Mikrofon</string>
+    <string name="midi_action">MIDI akce</string>
+    <string name="midi_action_assign">Přiřazení k akci MIDI</string>
+    <string name="midi_action_info">Zvolte, které MIDI akci má být přiřazen tento kód</string>
     <string name="midi_add">"Přidat příkaz"</string>
     <string name="midi_auto">"Automatické odesílání MIDI"</string>
     <string name="midi_bluetooth">"Připojte zařízení Bluetooth"</string>
     <string name="midi_channel">"Kanál"</string>
+    <string name="midi_code_current">MIDI kód aktuálně přiřazený k akci</string>
+    <string name="midi_code_new">Nový MIDI kód</string>
     <string name="midi_commands">"Upravit příkazy ke skladbě"</string>
     <string name="midi_controller">"Změna řadiče"</string>
     <string name="midi_delay">MIDI zpoždění mezi zprávami</string>

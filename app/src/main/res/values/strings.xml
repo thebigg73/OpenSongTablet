@@ -80,6 +80,7 @@
     <string name="beat_buddy" translatable="false">BeatBuddy</string>
     <string name="beat_buddy_auto">Automatically send BeatBuddy song</string>
     <string name="beat_buddy_auto_info">Compares your song \'Filename\', \'Title\' and \'Also known as\' fields with your BeatBuddy database.  If a matching song is found, the folder and song code are sent over MIDI automatically</string>
+    <string name="beat_buddy_browse_info">Browse the songs on the BeatBuddy (using the default project or imported project)</string>
     <string name="beat_buddy_database_reset">Clear the BeatBuddy database in the app.  This will restore the pedal defaults only.</string>
     <string name="beat_buddy_folder_info">Folder must be a number between 1 and 16384</string>
     <string name="beat_buddy_import_error">There was a problem importing the BeatBuddy project.  Please refer to the user manual for more information.</string>
@@ -605,10 +606,15 @@
     <string name="metronome_info">Adjust the metronome settings</string>
     <string name="microphone">Microphone</string>
     <string name="midi" translatable="false">MIDI</string>
+    <string name="midi_action">MIDI action</string>
+    <string name="midi_action_assign">Assign to an MIDI action</string>
+    <string name="midi_action_info">Choose which MIDI action should be assigned this code</string>
     <string name="midi_add">Add command</string>
     <string name="midi_auto">Auto send MIDI</string>
     <string name="midi_bluetooth">Connect Bluetooth device</string>
     <string name="midi_channel">Channel</string>
+    <string name="midi_code_current">MIDI code currently assigned to action</string>
+    <string name="midi_code_new">New MIDI code</string>
     <string name="midi_commands">Edit song commands</string>
     <string name="midi_controller">Controller change</string>
     <string name="midi_delay">MIDI delay between messages</string>
@@ -1149,6 +1155,7 @@ Check out the categories in the right hand options menu.
     <string name="website_menu_settings" translatable="false">https://www.opensongapp.com/user-manual/display/menu</string>
     <string name="website_menu_song" translatable="false">https://www.opensongapp.com/user-manual/songs/song-menu</string>
     <string name="website_metronome" translatable="false">https://www.opensongapp.com/user-manual/songs/song-actions/metronome</string>
+    <string name="website_midi_actions" translatable="false">https://www.opensongapp.com/user-manual/midi/midi-actions/</string>
     <string name="website_midi_connections" translatable="false">https://www.opensongapp.com/user-manual/midi/midi-settings</string>
     <string name="website_midi_song" translatable="false">https://www.opensongapp.com/user-manual/midi/song-midi-messages</string>
     <string name="website_music_score" translatable="false">https://www.opensongapp.com/user-manual/songs/song-actions/music-score</string>
@@ -1191,5 +1198,4 @@ Check out the categories in the right hand options menu.
     <string name="youtube" translatable="false">YouTube</string>
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zoom_level">Zoom level</string>
-    <string name="beat_buddy_browse_info">Browse the songs on the BeatBuddy (using the default project or imported project)</string>
 </resources>

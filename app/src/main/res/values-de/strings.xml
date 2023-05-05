@@ -73,6 +73,7 @@
     <string name="battery">"Batterie"</string>
     <string name="beat_buddy_auto">BeatBuddy-Song automatisch senden</string>
     <string name="beat_buddy_auto_info">Vergleicht deine Song-Felder Dateiname, Titel und auch bekannt als Felder mit deiner BeatBuddy-Datenbank.  Wenn ein passender Song gefunden wird, werden der Ordner und der Songcode automatisch über MIDI gesendet</string>
+    <string name="beat_buddy_browse_info">Durchsuchen Sie die Songs auf dem BeatBuddy (mit dem Standardprojekt oder dem importierten Projekt)</string>
     <string name="beat_buddy_database_reset">Löschen Sie die BeatBuddy-Datenbank in der App.  Dadurch werden nur die Standardeinstellungen des Pedals wiederhergestellt.</string>
     <string name="beat_buddy_folder_info">Der Ordner muss eine Zahl zwischen 1 und 16384 haben</string>
     <string name="beat_buddy_import_error">Beim Importieren des BeatBuddy-Projekts ist ein Problem aufgetreten.  Weitere Informationen finden Sie in der Bedienungsanleitung.</string>
@@ -454,10 +455,15 @@
     <string name="metronome_duration">Metronomdauer (Takte)</string>
     <string name="metronome_info">Passen Sie die Metronomeinstellungen an</string>
     <string name="microphone">Mikrofon</string>
+    <string name="midi_action">MIDI-Aktion</string>
+    <string name="midi_action_assign">Zuweisen zu einer MIDI-Aktion</string>
+    <string name="midi_action_info">Wählen Sie aus, welcher MIDI-Aktion dieser Code zugewiesen werden soll</string>
     <string name="midi_add">"MIDI-Befehl hinzufügen"</string>
     <string name="midi_auto">"MIDI automatisch senden"</string>
     <string name="midi_bluetooth">"Bluetooth-Gerät verbinden"</string>
     <string name="midi_channel">"Kanal"</string>
+    <string name="midi_code_current">MIDI-Code, der derzeit der Aktion zugewiesen ist</string>
+    <string name="midi_code_new">Neuer MIDI-Code</string>
     <string name="midi_commands">"Song-Befehle bearbeiten"</string>
     <string name="midi_controller">"Controllerwechsel"</string>
     <string name="midi_delay">MIDI-Verzögerung zwischen den Nachrichten</string>

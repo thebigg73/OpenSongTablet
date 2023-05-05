@@ -73,6 +73,7 @@
     <string name="battery">"Bateria"</string>
     <string name="beat_buddy_auto">Automatycznie wysyłaj piosenkę BeatBuddy</string>
     <string name="beat_buddy_auto_info">Porównuje nazwę pliku, tytuł utworu i pola znane również jako z bazą danych BeatBuddy.  Jeśli zostanie znaleziony pasujący utwór, folder i kod utworu są automatycznie wysyłane przez MIDI</string>
+    <string name="beat_buddy_browse_info">Przeglądaj utwory na BeatBuddy (używając domyślnego projektu lub zaimportowanego projektu)</string>
     <string name="beat_buddy_database_reset">Wyczyść bazę danych BeatBuddy w aplikacji.  Spowoduje to przywrócenie tylko domyślnych ustawień pedału.</string>
     <string name="beat_buddy_folder_info">Folder musi mieć numer z zakresu od 1 do 16384</string>
     <string name="beat_buddy_import_error">Wystąpił problem podczas importowania projektu BeatBuddy.  Więcej informacji można znaleźć w instrukcji obsługi.</string>
@@ -454,10 +455,15 @@
     <string name="metronome_duration">Czas trwania metronomu (słupki)</string>
     <string name="metronome_info">Dostosuj ustawienia metronomu</string>
     <string name="microphone">Mikrofon</string>
+    <string name="midi_action">Działanie MIDI</string>
+    <string name="midi_action_assign">Przypisywanie do operacji MIDI</string>
+    <string name="midi_action_info">Wybierz, do której akcji MIDI ma być przypisany ten kod</string>
     <string name="midi_add">"Dodaj polecenie"</string>
     <string name="midi_auto">"Automatycznie wysyłaj MIDI"</string>
     <string name="midi_bluetooth">"Podłącz urządzenie Bluetooth"</string>
     <string name="midi_channel">"Kanał"</string>
+    <string name="midi_code_current">Kod MIDI aktualnie przypisany do akcji</string>
+    <string name="midi_code_new">Nowy kod MIDI</string>
     <string name="midi_commands">"Edytuj polecenia piosenki"</string>
     <string name="midi_controller">"Zmiana sterownika"</string>
     <string name="midi_delay">Opóźnienie MIDI między wiadomościami</string>

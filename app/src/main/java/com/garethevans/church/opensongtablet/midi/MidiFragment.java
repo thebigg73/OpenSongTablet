@@ -236,9 +236,13 @@ public class MidiFragment extends Fragment {
             @Override
             public void onStopTrackingTouch(@NonNull Slider slider) {
                 mainActivityInterface.getMidi().setMidiDelay((int)myView.midiDelay.getValue());
+                myView.midiDelay.setHint((int)myView.midiDelay.getValue()+"ms");
             }
         });
-        myView.midiDelay.addOnChangeListener((slider, value, fromUser) -> mainActivityInterface.getMidi().setMidiDelay((int)myView.midiDelay.getValue()));
+        myView.midiDelay.addOnChangeListener((slider, value, fromUser) -> {
+            mainActivityInterface.getMidi().setMidiDelay((int)myView.midiDelay.getValue());
+            myView.midiDelay.setHint((int)myView.midiDelay.getValue()+"ms");
+        });
     }
 
     // Set the view visibilities
@@ -354,6 +358,14 @@ public class MidiFragment extends Fragment {
             } else if (!isChecked && mainActivityInterface.getMidi().getMidiDevice() != null &&
                     mainActivityInterface.getMidi().getMidiOutputPort() != null) {
                 mainActivityInterface.getMidi().disableMidiListener();
+            }
+        });
+
+        myView.midiAssign.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MidiActionBottomSheet midiActionBottomSheet = new MidiActionBottomSheet(myView.midiCode.getText().toString());
+                midiActionBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"MidiActionBottomSheet");
             }
         });
     }

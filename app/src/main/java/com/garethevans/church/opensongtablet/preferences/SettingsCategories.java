@@ -29,7 +29,7 @@ public class SettingsCategories extends Fragment {
     private String settings_string="", mode_presenter_string="", presenter_mode_string="",
             mode_stage_string="", stage_mode_string="", performance_mode_string="",
             play_services_error_string="", midi_description_string="", not_available_string="",
-            location_string="", permissions_refused_string="";
+            location_string="", permissions_refused_string="", wait_string="";
 
     @Override
     public void onResume() {
@@ -80,6 +80,7 @@ public class SettingsCategories extends Fragment {
             not_available_string = getString(R.string.not_available);
             location_string = getString(R.string.location);
             permissions_refused_string = getString(R.string.permissions_refused);
+            wait_string = getString(R.string.search_index_wait);
         }
     }
     private void hideUnavailable() {
@@ -145,7 +146,13 @@ public class SettingsCategories extends Fragment {
     private void setListeners() {
         myView.storageButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null, R.id.storage_graph));
         myView.displayButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null, R.id.display_graph));
-        myView.actionsButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null, R.id.actions_graph));
+        myView.actionsButton.setOnClickListener(v -> {
+            if (mainActivityInterface.getSongListBuildIndex().getIndexComplete()) {
+                mainActivityInterface.navigateToFragment(null, R.id.actions_graph);
+            } else {
+                mainActivityInterface.getShowToast().doIt(wait_string);
+            }
+        });
         myView.setActionsButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null, R.id.set_graph));
         myView.gesturesButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null, R.id.control_graph));
         myView.connectButton.setOnClickListener(v -> {

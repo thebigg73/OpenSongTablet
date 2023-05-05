@@ -73,6 +73,7 @@
     <string name="battery">"Akkumulátor"</string>
     <string name="beat_buddy_auto">BeatBuddy dal automatikus küldése</string>
     <string name="beat_buddy_auto_info">Összehasonlítja a dalodat Fájlnév, cím és más néven mezők a BeatBuddy adatbázisoddal.  Ha talál egyező dalt, a mappa és a dal kódja automatikusan MIDI-n keresztül kerül elküldésre</string>
+    <string name="beat_buddy_browse_info">Böngésszen a BeatBuddy dalai között (az alapértelmezett projekt vagy az importált projekt használatával)</string>
     <string name="beat_buddy_database_reset">Törölje a BeatBuddy adatbázist az alkalmazásban.  Ez csak a pedál alapértelmezett beállításait állítja vissza.</string>
     <string name="beat_buddy_folder_info">A mappának 1 és 16384 közötti számnak kell lennie</string>
     <string name="beat_buddy_import_error">Hiba történt a BeatBuddy projekt importálásakor.  További információkért olvassa el a felhasználói kézikönyvet.</string>
@@ -454,10 +455,15 @@
     <string name="metronome_duration">Metronóm időtartam (sávok)</string>
     <string name="metronome_info">Módosítsa a metronóm beállításait</string>
     <string name="microphone">Mikrofon</string>
+    <string name="midi_action">MIDI akció</string>
+    <string name="midi_action_assign">Hozzárendelés MIDI-művelethez</string>
+    <string name="midi_action_info">Válassza ki, hogy melyik MIDI-művelethez legyen hozzárendelve ez a kód</string>
     <string name="midi_add">"Parancs hozzáadása"</string>
     <string name="midi_auto">"Automatikus MIDI küldése"</string>
     <string name="midi_bluetooth">"Bluetooth-eszköz csatlakoztatása"</string>
     <string name="midi_channel">"Csatorna"</string>
+    <string name="midi_code_current">A művelethez jelenleg hozzárendelt MIDI-kód</string>
+    <string name="midi_code_new">Új MIDI-kód</string>
     <string name="midi_commands">"Zeneszerzőparancsok szerkesztése"</string>
     <string name="midi_controller">"Vezérlőváltás"</string>
     <string name="midi_delay">MIDI-késleltetés az üzenetek között</string>

@@ -73,6 +73,7 @@
     <string name="battery">Aкумулятор</string>
     <string name="beat_buddy_auto">Автоматично надсилати пісню BeatBuddy</string>
     <string name="beat_buddy_auto_info">Порівнює вашу пісню Filename, Title і Також відомі як поля з вашою базою даних BeatBuddy.  Якщо знайдено відповідну пісню, папка та код пісні автоматично надсилаються через MIDI</string>
+    <string name="beat_buddy_browse_info">Перегляньте пісні на BeatBuddy (використовуючи проект за замовчуванням або імпортований проект)</string>
     <string name="beat_buddy_database_reset">Очистіть базу даних BeatBuddy в додатку.  Це відновить лише стандартні педалі.</string>
     <string name="beat_buddy_folder_info">Папка має містити номер від 1 до 16384</string>
     <string name="beat_buddy_import_error">Виникла проблема з імпортом проекту BeatBuddy.  Будь ласка, зверніться до посібника користувача для отримання додаткової інформації.</string>
@@ -454,10 +455,15 @@
     <string name="metronome_duration">Тривалість метронома (бари)</string>
     <string name="metronome_info">Налаштуйте параметри метронома</string>
     <string name="microphone">Мікрофон</string>
+    <string name="midi_action">Дія MIDI</string>
+    <string name="midi_action_assign">Призначення дії MIDI</string>
+    <string name="midi_action_info">Виберіть, якій дії MIDI слід присвоїти цей код</string>
     <string name="midi_add">Додати команду</string>
     <string name="midi_auto">Автоматичне надсилання MIDI</string>
     <string name="midi_bluetooth">Підключити пристрій Bluetooth</string>
     <string name="midi_channel">Kанал</string>
+    <string name="midi_code_current">MIDI-код в даний час призначається дії</string>
+    <string name="midi_code_new">Новий MIDI-код</string>
     <string name="midi_commands">Редагування команд пісні</string>
     <string name="midi_controller">Зміна контролера</string>
     <string name="midi_delay">MIDI-затримка між повідомленнями</string>

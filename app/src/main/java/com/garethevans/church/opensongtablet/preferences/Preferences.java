@@ -388,6 +388,14 @@ public class Preferences extends Activity {
     // metronomeTockVol                 float       The volume of the metronome tick (def:0.6f)
     // metronomeShowVisual              boolean     Should the metronome be visual (flash action bar) (def:false)
     // midiAsPedal                      boolean     Should the midi device trigger pedal commands (def:false)
+    // midiAction1                      String      Midi message allocated to midiAction1 assignable to action/pedal (def:0x99 0x24 0x64) - bass drum
+    // midiAction2                      String      Midi message allocated to midiAction2 assignable to action/pedal (def:0x99 0x26 0x64) - snare drum
+    // midiAction3                      String      Midi message allocated to midiAction3 assignable to action/pedal (def:0x99 0x2A 0x64) - closed hat
+    // midiAction4                      String      Midi message allocated to midiAction4 assignable to action/pedal (def:0x99 0x2E 0x64) - open hat
+    // midiAction5                      String      Midi message allocated to midiAction5 assignable to action/pedal (def:0x99 0x30 0x64) - tom 1
+    // midiAction6                      String      Midi message allocated to midiAction6 assignable to action/pedal (def:0x99 0x2F 0x64) - tom 2
+    // midiAction7                      String      Midi message allocated to midiAction7 assignable to action/pedal (def:0x99 0x2B 0x64) - tom 3
+    // midiAction8                      String      Midi message allocated to midiAction8 assignable to action/pedal (def:0x99 0x37 0x64) - crash
     // midiSendAuto                     boolean     Should the midi info in the song be sent on song load automatically (def:false)
     // multiLineVerseKeepCompact        boolean     Should multiline verses be kept compact (def:false)
     // navBarKeepSpace                  boolean     Should the app avoid writing in the bottom navbar space (def:false)

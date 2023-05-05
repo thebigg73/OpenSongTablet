@@ -73,6 +73,7 @@
     <string name="battery">"Batteria"</string>
     <string name="beat_buddy_auto">Invia automaticamente la canzone BeatBuddy</string>
     <string name="beat_buddy_auto_info">Confronta i campi Nome file, Titolo e Conosciuto come brano con il database BeatBuddy.  Se viene trovato un brano corrispondente, la cartella e il codice del brano vengono inviati automaticamente tramite MIDI</string>
+    <string name="beat_buddy_browse_info">Sfoglia i brani su BeatBuddy (usando il progetto predefinito o il progetto importato)</string>
     <string name="beat_buddy_database_reset">Cancella il database BeatBuddy nell\'app.  Ciò ripristinerà solo le impostazioni predefinite del pedale.</string>
     <string name="beat_buddy_folder_info">La cartella deve essere un numero compreso tra 1 e 16384</string>
     <string name="beat_buddy_import_error">Si è verificato un problema durante l\'importazione del progetto BeatBuddy.  Si prega di fare riferimento al manuale dell\'utente per ulteriori informazioni.</string>
@@ -454,10 +455,15 @@
     <string name="metronome_duration">Metronóm időtartam (sávok)…</string>
     <string name="metronome_info">Regola le impostazioni del metronomo</string>
     <string name="microphone">Microfono</string>
+    <string name="midi_action">Azione MIDI</string>
+    <string name="midi_action_assign">Assegnare a un\'azione MIDI</string>
+    <string name="midi_action_info">Scegliere a quale azione MIDI assegnare questo codice</string>
     <string name="midi_add">"Aggiungi comando"</string>
     <string name="midi_auto">"Auto invia MIDI"</string>
     <string name="midi_bluetooth">"Connetti dispositivo Bluetooth"</string>
     <string name="midi_channel">"Canale"</string>
+    <string name="midi_code_current">Codice MIDI attualmente assegnato all\'azione</string>
+    <string name="midi_code_new">Nuovo codice MIDI</string>
     <string name="midi_commands">"Modifica i comandi del brano"</string>
     <string name="midi_controller">"Cambio del controller"</string>
     <string name="midi_delay">Ritardo MIDI tra i messaggi</string>

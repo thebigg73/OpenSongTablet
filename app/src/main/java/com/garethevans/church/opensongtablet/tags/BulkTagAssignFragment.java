@@ -2,9 +2,9 @@ package com.garethevans.church.opensongtablet.tags;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +24,8 @@ import com.garethevans.church.opensongtablet.preferences.TextInputBottomSheet;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class BulkTagAssignFragment extends Fragment {
 
@@ -89,6 +91,8 @@ public class BulkTagAssignFragment extends Fragment {
         }
     }
     private void setupViews() {
+        myView.progressBar.setVisibility(View.VISIBLE);
+
         // Initialise the recyclerview
         initialiseRecyclerView();
 
@@ -104,6 +108,8 @@ public class BulkTagAssignFragment extends Fragment {
         inactivecolor = getResources().getColor(R.color.transparent);
         // This bit also prepares the songList
         fixButtons();
+
+        myView.progressBar.setVisibility(View.GONE);
     }
 
     private void setupListeners() {
@@ -347,10 +353,20 @@ public class BulkTagAssignFragment extends Fragment {
         newValues.add(newTag);
         setupTagsToAddRemove();
     }
+
     public void renameTag(String newTagName) {
+        myView.progressBar.setVisibility(View.VISIBLE);
         // Go through the database and replace existing tags with the new one
-        newValues = mainActivityInterface.getSQLiteHelper().renameThemeTags(currentTagName,newTagName);
-        Log.d(TAG,"oldTagNam:"+currentTagName+"  newTagName:"+newTagName);
-        setupViews();
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            if (getContext()!=null) {
+                Handler handler = new Handler(getContext().getMainLooper());
+                newValues = mainActivityInterface.getSQLiteHelper().renameThemeTags(currentTagName, newTagName);
+                if (myView!=null && getContext()!=null) {
+                    handler.post(this::setupViews);
+                }
+            }
+        });
+
     }
 }

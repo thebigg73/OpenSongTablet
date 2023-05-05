@@ -284,6 +284,14 @@ public class PageButtons {
         prepareOption("beatbuddyxtransprev",c.getString(R.string.beat_buddy)+" "+c.getString(R.string.exclusive)+" "+c.getString(R.string.transition)+" "+c.getString(R.string.previous),c.getString(R.string.start),c.getString(R.string.exit),R.drawable.beatbuddy_transprev);
         prepareOption("beatbuddyhalf",c.getString(R.string.beat_buddy)+" "+c.getString(R.string.half_time),c.getString(R.string.start),c.getString(R.string.exit),R.drawable.beatbuddy_halftime);
         prepareOption("beatbuddydouble",c.getString(R.string.beat_buddy)+" "+c.getString(R.string.double_time),c.getString(R.string.start),c.getString(R.string.exit),R.drawable.beatbuddy_doubletime);
+        prepareOption("midiaction1",c.getString(R.string.midi_action)+" "+1,c.getString(R.string.select),"",R.drawable.midi1);
+        prepareOption("midiaction2",c.getString(R.string.midi_action)+" "+2,c.getString(R.string.select),"",R.drawable.midi2);
+        prepareOption("midiaction3",c.getString(R.string.midi_action)+" "+3,c.getString(R.string.select),"",R.drawable.midi3);
+        prepareOption("midiaction4",c.getString(R.string.midi_action)+" "+4,c.getString(R.string.select),"",R.drawable.midi4);
+        prepareOption("midiaction5",c.getString(R.string.midi_action)+" "+5,c.getString(R.string.select),"",R.drawable.midi5);
+        prepareOption("midiaction6",c.getString(R.string.midi_action)+" "+6,c.getString(R.string.select),"",R.drawable.midi6);
+        prepareOption("midiaction7",c.getString(R.string.midi_action)+" "+7,c.getString(R.string.select),"",R.drawable.midi7);
+        prepareOption("midiaction8",c.getString(R.string.midi_action)+" "+8,c.getString(R.string.select),"",R.drawable.midi8);
 
         prepareOption("","","","",R.drawable.help);
 

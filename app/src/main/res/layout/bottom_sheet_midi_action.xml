@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/FullscreenBottomSheet"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <com.garethevans.church.opensongtablet.customviews.DialogHeader
+        android:id="@+id/dialogHeading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/midi_action_assign" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/midi_action_info"/>
+
+            <androidx.gridlayout.widget.GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:rowCount="2"
+                app:columnCount="4">
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/action1"
+                    android:text="1"
+                    android:layout_margin="4dp"
+                    tools:ignore="HardcodedText" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/action2"
+                    android:text="2"
+                    android:layout_margin="4dp"
+                    tools:ignore="HardcodedText" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/action3"
+                    android:text="3"
+                    android:layout_margin="4dp"
+                    tools:ignore="HardcodedText" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/action4"
+                    android:text="4"
+                    android:layout_margin="4dp"
+                    tools:ignore="HardcodedText" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/action5"
+                    android:text="5"
+                    android:layout_margin="4dp"
+                    tools:ignore="HardcodedText" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/action6"
+                    android:text="6"
+                    android:layout_margin="4dp"
+                    tools:ignore="HardcodedText" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/action7"
+                    android:text="7"
+                    android:layout_margin="4dp"
+                    tools:ignore="HardcodedText" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/action8"
+                    android:text="8"
+                    android:layout_margin="4dp"
+                    tools:ignore="HardcodedText" />
+            </androidx.gridlayout.widget.GridLayout>
+
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                android:id="@+id/currentCode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/midi_code_current"/>
+            <TableRow style="@style/DividerLine"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
+                android:id="@+id/newCode"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|top"
+                android:hint="@string/midi_code_new"/>
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/saveMidiCode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|center_vertical"
+                android:layout_marginStart="16dp"
+                android:text="@string/save"
+                app:icon="@drawable/save"/>
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</LinearLayout>

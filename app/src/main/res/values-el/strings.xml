@@ -73,6 +73,7 @@
     <string name="battery">"μπαταρία"</string>
     <string name="beat_buddy_auto">Αυτόματη αποστολή τραγουδιού BeatBuddy</string>
     <string name="beat_buddy_auto_info">Συγκρίνει το τραγούδι σας Όνομα αρχείου, Τίτλος και Επίσης γνωστά ως πεδία με τη βάση δεδομένων BeatBuddy.  Εάν βρεθεί ένα αντίστοιχο τραγούδι, ο φάκελος και ο κωδικός τραγουδιού αποστέλλονται αυτόματα μέσω MIDI</string>
+    <string name="beat_buddy_browse_info">Περιηγηθείτε στα τραγούδια στο BeatBuddy (χρησιμοποιώντας το προεπιλεγμένο έργο ή το εισαγόμενο έργο)</string>
     <string name="beat_buddy_database_reset">Διαγράψτε τη βάση δεδομένων BeatBuddy στην εφαρμογή.  Αυτό θα επαναφέρει μόνο τις προεπιλογές πεντάλ.</string>
     <string name="beat_buddy_folder_info">Ο φάκελος πρέπει να είναι ένας αριθμός μεταξύ 1 και 16384</string>
     <string name="beat_buddy_import_error">Παρουσιάστηκε πρόβλημα κατά την εισαγωγή του έργου BeatBuddy.  Ανατρέξτε στο εγχειρίδιο χρήσης για περισσότερες πληροφορίες.</string>
@@ -454,10 +455,15 @@
     <string name="metronome_duration">Διάρκεια μετρονόμου (bars)</string>
     <string name="metronome_info">Προσαρμόστε τις ρυθμίσεις του μετρονόμου</string>
     <string name="microphone">Μικρόφωνο</string>
+    <string name="midi_action">Δράση MIDI</string>
+    <string name="midi_action_assign">Ανάθεση σε ενέργεια MIDI</string>
+    <string name="midi_action_info">Επιλέξτε σε ποια ενέργεια MIDI θα πρέπει να εκχωρηθεί αυτός ο κωδικός</string>
     <string name="midi_add">"Προσθήκη εντολής"</string>
     <string name="midi_auto">"Αυτόματη αποστολή MIDI"</string>
     <string name="midi_bluetooth">"Συνδέστε τη συσκευή Bluetooth"</string>
     <string name="midi_channel">"Κανάλι"</string>
+    <string name="midi_code_current">Κωδικός MIDI που έχει εκχωρηθεί αυτήν τη στιγμή στην ενέργεια</string>
+    <string name="midi_code_new">Νέος κωδικός MIDI</string>
     <string name="midi_commands">"Επεξεργασία εντολών τραγουδιού"</string>
     <string name="midi_controller">"Εναλλαγή ελεγκτή"</string>
     <string name="midi_delay">Καθυστέρηση MIDI μεταξύ μηνυμάτων</string>
