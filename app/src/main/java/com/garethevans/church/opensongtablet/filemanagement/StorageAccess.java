@@ -260,18 +260,33 @@ public class StorageAccess {
         }*/
 
         // TODO HERE
+        updateFileActivityLog("CheckRoots: uriTreeHome:"+uriTreeHome);
+
+        StringBuilder stringBuilder = new StringBuilder();
 
         // Go through the main folders and try to create them
         for (String folder : rootFolders) {
             try {
                 Uri thisFolder = getUriForItem(folder, "", "");
+                stringBuilder.append("folder:").append(folder).append("  uri:").append(thisFolder);
                 if (!uriExists(thisFolder)) {
                     DocumentsContract.createDocument(c.getContentResolver(), uriTreeHome, DocumentsContract.Document.MIME_TYPE_DIR, folder);
+                    updateFileActivityLog("CheckRoots: thisFolder("+folder+") uri:"+uri);
+                    stringBuilder.append(" - didn't exist, so created\n");
+                } else {
+                    stringBuilder.append(" - already existed, so do nothing\n");
                 }
             } catch (Exception e) {
                 Log.d(TAG, folder + " error creating");
+                stringBuilder.append(" - error creating\n");
             }
         }
+
+        updateFileActivityLog("CheckRoots - rootFolders:"+stringBuilder);
+
+        stringBuilder = new StringBuilder();
+
+        stringBuilder.append("\nNow the _cache folders\n");
 
         // Now for the cache folders
         for (String folder : cacheFolders) {
@@ -279,17 +294,26 @@ public class StorageAccess {
             try {
                 Uri dirUri = getUriForItem(bits[0], "", "");
                 Uri thisFolder = getUriForItem(bits[0], bits[1], "");
+                stringBuilder.append("dirUri:").append(dirUri).append("  bits[0]:").append(bits[0]);
+                stringBuilder.append("thisFolder:").append(thisFolder).append("  bits[0]/bits[1]").append(bits[1]);
                 if (!uriExists(thisFolder)) {
                     try {
-                        DocumentsContract.createDocument(c.getContentResolver(), dirUri, DocumentsContract.Document.MIME_TYPE_DIR, bits[1]);
+                        stringBuilder.append(" - doesn't exist, so creating - newuri:");
+                        Uri nu = DocumentsContract.createDocument(c.getContentResolver(), dirUri, DocumentsContract.Document.MIME_TYPE_DIR, bits[1]);
+                        stringBuilder.append(nu);
                     } catch (Exception e3) {
                         Log.d(TAG, "Error creating folder at " + thisFolder);
+                        stringBuilder.append(" - error creating\n");
                     }
+                } else {
+                    stringBuilder.append(" - already exists\n");
                 }
             } catch (Exception e2) {
                 Log.d(TAG, "Error creating cache: " + folder);
             }
         }
+
+        updateFileActivityLog("CheckRoots - rootFolders_cache:"+stringBuilder);
 
         // Now copy the assets if they aren't already there
         copyAssets();
@@ -1004,7 +1028,7 @@ public class StorageAccess {
     }
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private boolean docContractCreate(Uri uri, String mimeType, String name) {
-        if (uri!=null) {
+        if (uri!=null && name!=null && !name.isEmpty()) {
             try {
                 return DocumentsContract.createDocument(c.getContentResolver(), uri, mimeType, name) != null;
             } catch (Exception e) {

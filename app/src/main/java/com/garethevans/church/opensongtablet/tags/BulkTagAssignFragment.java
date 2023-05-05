@@ -362,7 +362,9 @@ public class BulkTagAssignFragment extends Fragment {
             if (getContext()!=null) {
                 Handler handler = new Handler(getContext().getMainLooper());
                 newValues = mainActivityInterface.getSQLiteHelper().renameThemeTags(currentTagName, newTagName);
-                handler.post(this::setupViews);
+                if (myView!=null && getContext()!=null) {
+                    handler.post(this::setupViews);
+                }
             }
         });
 
