@@ -29,6 +29,8 @@ public class Song implements Serializable {
     private String user1="";
     private String user2="";
     private String user3="";
+    private String beatbuddysong="";
+    private String beatbuddykit="";
     private String key="";
     private String keyoriginal="";
     private String timesig="";
@@ -123,6 +125,12 @@ public class Song implements Serializable {
     }
     public String getUser3() {
         return user3;
+    }
+    public String getBeatbuddysong() {
+        return beatbuddysong;
+    }
+    public String getBeatbuddykit() {
+        return beatbuddykit;
     }
     public String getKey() {
         return key;
@@ -293,6 +301,12 @@ public class Song implements Serializable {
     public void setUser3(String user3) {
         this.user3 = user3;
     }
+    public void setBeatbuddysong(String beatbuddysong) {
+        this.beatbuddysong = beatbuddysong;
+    }
+    public void setBeatbuddykit(String beatbuddykit) {
+        this.beatbuddykit = beatbuddykit;
+    }
     public void setKey(String key) {
         this.key = key;
     }
@@ -423,6 +437,8 @@ public class Song implements Serializable {
         this.user1 = toCopy.user1;
         this.user2 = toCopy.user2;
         this.user3 = toCopy.user3;
+        this.beatbuddysong = toCopy.beatbuddysong;
+        this.beatbuddykit = toCopy.beatbuddykit;
         this.key = toCopy.key;
         this.keyoriginal = toCopy.keyoriginal;
         this.timesig = toCopy.timesig;
