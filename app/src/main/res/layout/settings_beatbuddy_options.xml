@@ -32,6 +32,15 @@
                 app:size="large"/>
             <TableRow style="@style/DividerLine" />
 
+            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                android:id="@+id/useImported"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/imported_values"
+                android:hint="@string/beat_buddy_import_project_info"
+                app:size="large"/>
+            <TableRow style="@style/DividerLine"/>
+
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:id="@+id/beatBuddyBrowse"
                 android:layout_width="match_parent"
@@ -59,15 +68,6 @@
                 app:size="large"/>
             <TableRow style="@style/DividerLine" />
 
-            <!--<com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
-                android:id="@+id/matchSongs"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/beat_buddy_match"
-                android:hint="@string/beat_buddy_match_info"
-                app:size="large"/>
-            <TableRow style="@style/DividerLine" />
--->
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </LinearLayout>

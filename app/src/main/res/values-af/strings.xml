@@ -88,6 +88,7 @@
     <string name="beat_buddy_match_info">Pas u OpenSongApp-liedjies outomaties by dié op u BeatBuddy-pedaal</string>
     <string name="beat_buddy_project_csv">Voer projek .csv lêer in</string>
     <string name="beat_buddy_song_info">Lied moet \'n getal tussen 1 en 128 wees</string>
+    <string name="beat_buddy_song_list_info">Tik op \'n item om die MIDI-kode voor te berei en te stuur. Alternatiewelik, druk lank om die naam van hierdie BeatBuddy-item op u liedjie te stoor (gebruik wanneer u BeatBuddy-liedjie outomaties stuur). Hierdie metode stem altyd ooreen met die liedjienaam, ongeag watter lêergids of liedjienommer dit is</string>
     <string name="beat_tick">Klop 1 (merk)</string>
     <string name="beat_tock">Klop 2 (tock)</string>
     <string name="beats">Slae</string>

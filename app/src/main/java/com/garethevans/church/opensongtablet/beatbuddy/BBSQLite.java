@@ -767,80 +767,92 @@ public class BBSQLite extends SQLiteOpenHelper {
     // If found, the song will be sent to the BeatBuddy automatically
     public void checkAutoBeatBuddy(Context c,
                                      MainActivityInterface mainActivityInterface, Song thisSong) {
-        String query;
-        if (mainActivityInterface.getBeatBuddy().getBeatBuddyUseImported()) {
-            query = "SELECT " + COLUMN_FOLDER_NUM + ", " +
-                    COLUMN_SONG_NUM + " FROM " + TABLE_NAME_MY_SONGS + " ";
-        } else {
-            query = "SELECT " + COLUMN_FOLDER_NUM + ", " +
-                    COLUMN_SONG_NUM + " FROM " + TABLE_NAME_DEFAULT_SONGS + " ";
-        }
-
-        // Get the search options
-        // Remove commas as they aren't allowed in the BeatBuddy naming system
-        String option1 = thisSong.getFilename();
-        if (option1!=null) {
-            option1 = option1.replace(",","");
-        }
-        String option2 = thisSong.getTitle();
-        if (option2!=null && !option2.isEmpty()) {
-            option2 = option2.replace(",","");
-        }
-        String option3 = thisSong.getAka();
-        if (option3!=null) {
-            option3 = option3.replace(",","");
-        }
-        String option4 = thisSong.getUser3();
-        if (option4!=null) {
-            option4 = option4.replace(",","");
-        }
-        ArrayList<String> args = new ArrayList<>();
-        query += "WHERE " + COLUMN_SONG_NAME + "=?";
-        args.add(option1);
-
-        if (option2 != null && !option2.isEmpty()) {
-            query += " OR " + COLUMN_SONG_NAME + "=?";
-            args.add(option2);
-        }
-
-        if (option3 != null && !option3.isEmpty()) {
-            query += " OR " + COLUMN_SONG_NAME + "=?";
-            args.add(option3);
-        }
-
-        if (option4 != null && !option4.isEmpty()) {
-            query += " OR " + COLUMN_SONG_NAME + "=?";
-            args.add(option4);
-        }
-
-        // Get matching songs (if any).
-        query += " ORDER BY " + COLUMN_FOLDER_NUM + " COLLATE NOCASE ASC";
-        String[] selectionArgs = new String[args.size()];
-        selectionArgs = args.toArray(selectionArgs);
-
-        SQLiteDatabase db = getDB();
-        Cursor cursor = db.rawQuery(query, selectionArgs);
-        if (cursor != null && cursor.getCount() > 0) {
-            cursor.moveToFirst();
-            int folder_num = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_FOLDER_NUM));
-            int song_num = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_SONG_NUM));
-            String hexCode = mainActivityInterface.getBeatBuddy().getSongCode(folder_num, song_num);
-            // If we have a song tempo set, send that too
-            if (thisSong.getTempo()!=null && !thisSong.getTempo().isEmpty()) {
-                String tempo = thisSong.getTempo().replaceAll("\\D","");
-                if (!tempo.trim().isEmpty()) {
-                    int bpm = Integer.parseInt(tempo);
-                    hexCode += "\n" + mainActivityInterface.getBeatBuddy().getTempoCode(bpm);
-                }
+        // No point unless we have a valid MIDI connection!
+        if (mainActivityInterface.getMidi().getMidiDevice()!=null) {
+            String query;
+            if (mainActivityInterface.getBeatBuddy().getBeatBuddyUseImported()) {
+                query = "SELECT " + COLUMN_FOLDER_NUM + ", " +
+                        COLUMN_SONG_NUM + " FROM " + TABLE_NAME_MY_SONGS + " ";
+            } else {
+                query = "SELECT " + COLUMN_FOLDER_NUM + ", " +
+                        COLUMN_SONG_NUM + " FROM " + TABLE_NAME_DEFAULT_SONGS + " ";
             }
-            Log.d(TAG, "hexCode:" + hexCode);
-            mainActivityInterface.getMidi().sendMidiHexSequence(hexCode);
-            String message = c.getString(R.string.beat_buddy) + " - " + c.getString(R.string.folder) + ":" + folder_num
-                    + " " + c.getString(R.string.song) + ":" + song_num;
-            mainActivityInterface.getShowToast().doIt(message);
+
+            // Get the search options
+            // Remove commas as they aren't allowed in the BeatBuddy naming system
+            String option1 = thisSong.getFilename();
+            if (option1 != null) {
+                option1 = option1.replace(",", "");
+            }
+            String option2 = thisSong.getTitle();
+            if (option2 != null && !option2.isEmpty()) {
+                option2 = option2.replace(",", "");
+            }
+            String option3 = thisSong.getAka();
+            if (option3 != null) {
+                option3 = option3.replace(",", "");
+            }
+            String option4 = thisSong.getBeatbuddysong();
+            if (option4 != null) {
+                option4 = option4.replace(",", "");
+            }
+
+            ArrayList<String> args = new ArrayList<>();
+            query += "WHERE " + COLUMN_SONG_NAME + "=?";
+            args.add(option1);
+
+            if (option2 != null && !option2.isEmpty()) {
+                query += " OR " + COLUMN_SONG_NAME + "=?";
+                args.add(option2);
+            }
+
+            if (option3 != null && !option3.isEmpty()) {
+                query += " OR " + COLUMN_SONG_NAME + "=?";
+                args.add(option3);
+            }
+
+            if (option4 != null && !option4.isEmpty()) {
+                query += " OR " + COLUMN_SONG_NAME + "=?";
+                args.add(option4);
+            }
+
+            // Get matching songs (if any).
+            query += " ORDER BY " + COLUMN_FOLDER_NUM + " COLLATE NOCASE ASC";
+            String[] selectionArgs = new String[args.size()];
+            selectionArgs = args.toArray(selectionArgs);
+
+            SQLiteDatabase db = getDB();
+            Cursor cursor = db.rawQuery(query, selectionArgs);
+            if (cursor != null && cursor.getCount() > 0) {
+                cursor.moveToFirst();
+                int folder_num = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_FOLDER_NUM));
+                int song_num = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_SONG_NUM));
+                String hexCode = mainActivityInterface.getBeatBuddy().getSongCode(folder_num, song_num);
+                // If we have a drum kit set, send that too
+                if (thisSong.getBeatbuddykit() != null && !thisSong.getBeatbuddykit().isEmpty()) {
+                    int kitNum = getNumberFromKit(thisSong.getBeatbuddykit());
+                    if (kitNum > 0) {
+                        Log.d(TAG, "kitNum:" + kitNum + "  kitName:" + thisSong.getBeatbuddykit());
+                        hexCode += "\n" + mainActivityInterface.getBeatBuddy().getDrumKitCode(kitNum);
+                    }
+                }
+                // If we have a song tempo set, send that too
+                if (thisSong.getTempo() != null && !thisSong.getTempo().isEmpty()) {
+                    String tempo = thisSong.getTempo().replaceAll("\\D", "");
+                    if (!tempo.trim().isEmpty()) {
+                        int bpm = Integer.parseInt(tempo);
+                        hexCode += "\n" + mainActivityInterface.getBeatBuddy().getTempoCode(bpm);
+                    }
+                }
+                Log.d(TAG, "hexCode:" + hexCode);
+                mainActivityInterface.getMidi().sendMidiHexSequence(hexCode);
+                String message = c.getString(R.string.beat_buddy) + " - " + c.getString(R.string.folder) + ":" + folder_num
+                        + " " + c.getString(R.string.song) + ":" + song_num;
+                mainActivityInterface.getShowToast().doIt(message);
+            }
+            closeCursor(cursor);
+            db.close();
         }
-        closeCursor(cursor);
-        db.close();
     }
 
     // Only called by default songs
@@ -948,6 +960,40 @@ public class BBSQLite extends SQLiteOpenHelper {
         }
     }
 
+    public ArrayList<String> getUnique(String whatColumn, String whichTable) {
+        ArrayList<String> values = new ArrayList<>();
+        try (SQLiteDatabase db = getDB()) {
+
+            String q = "SELECT DISTINCT " + whatColumn + " FROM " + whichTable + " ORDER BY " +
+                    whatColumn + " ASC";
+
+            Cursor cursor = db.rawQuery(q, null);
+            cursor.moveToFirst();
+            if (cursor.getColumnCount()>0 && cursor.getColumnIndex(whatColumn)==0) {
+                for (int x=0; x<cursor.getCount(); x++) {
+                    cursor.moveToPosition(x);
+                    String value;
+                    switch (whatColumn) {
+                        case COLUMN_SONG_NAME:
+                            value = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_SONG_NAME));
+                            break;
+                        case COLUMN_KIT_NAME:
+                            value = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_KIT_NAME));
+                            break;
+                        default:
+                            value = "";
+                    }
+                    if (!value.isEmpty()) {
+                        values.add(value);
+                    }
+                }
+            }
+            closeCursor(cursor);
+            values.add(0,"");
+            db.close();
+            return values;
+        }
+    }
     public String lookupValue(String getColumn,
                               String querySearch, String[] args) {
 

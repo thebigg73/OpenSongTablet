@@ -3414,9 +3414,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             autoscroll.stopTimers();
         }
 
-        // Copy the persistent database from app storage to user storage
-        nonOpenSongSQLiteHelper.copyUserDatabase();
-
         // Clear out any temporarily copied intent files
         File tempLoc = new File(getExternalFilesDir("Import"),"Intent");
         File[] files = tempLoc.listFiles();

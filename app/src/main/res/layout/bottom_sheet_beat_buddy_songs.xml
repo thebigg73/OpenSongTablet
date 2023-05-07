@@ -61,6 +61,13 @@
                     android:padding="8dp"/>
             </LinearLayout>
 
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/beat_buddy_song_list_info"
+                android:padding="8dp"/>
+            <TableRow style="@style/DividerLine"/>
+
             <com.garethevans.church.opensongtablet.customviews.MyRecyclerView
                 android:id="@+id/songsFound"
                 android:layout_width="match_parent"

@@ -88,6 +88,7 @@
     <string name="beat_buddy_match_info">Automaticky přiřazujte své skladby OpenSongApp k těm, které máte na pedálu BeatBuddy</string>
     <string name="beat_buddy_project_csv">Import souboru projektu .csv</string>
     <string name="beat_buddy_song_info">Píseň musí mít číslo mezi 1 a 128</string>
+    <string name="beat_buddy_song_list_info">Ťuknutím na položku připravte a odešlete MIDI kód. Případně dlouhým stisknutím uložíte název této položky BeatBuddy do vaší skladby (používá se při automatickém odesílání skladby BeatBuddy). Tato metoda vždy odpovídá názvu skladby bez ohledu na to, o jakou složku nebo číslo skladby se jedná</string>
     <string name="beat_tick">Porazit 1 (zaškrtnout)</string>
     <string name="beat_tock">Beat 2 (tak)</string>
     <string name="beats">Beats</string>

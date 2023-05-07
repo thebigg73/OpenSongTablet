@@ -109,7 +109,8 @@ public class BBOptionsFragment extends Fragment {
                             "BottomSheetBeatBuddySongs");
             });
         });
-        //myView.matchSongs.setOnClickListener((view) -> mainActivityInterface.navigateToFragment(deeplink_beatbuddy_match,0));
+        myView.useImported.setChecked(mainActivityInterface.getBeatBuddy().getBeatBuddyUseImported());
+        myView.useImported.setOnCheckedChangeListener((compoundButton, b) -> mainActivityInterface.getBeatBuddy().setBeatBuddyUseImported(b));
     }
 
     public void resetDatabase() {

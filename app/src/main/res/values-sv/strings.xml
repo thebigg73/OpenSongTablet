@@ -88,6 +88,7 @@
     <string name="beat_buddy_match_info">Matcha automatiskt dina OpenSongApp-låtar med dem på din BeatBuddy-pedal</string>
     <string name="beat_buddy_project_csv">Importera projekt .csv fil</string>
     <string name="beat_buddy_song_info">Låten måste vara ett tal mellan 1 och 128</string>
+    <string name="beat_buddy_song_list_info">Tryck på ett objekt för att förbereda och skicka MIDI-koden. Alternativt kan du trycka länge för att spara namnet på detta BeatBuddy-objekt till din låt (används när du automatiskt skickar BeatBuddy-låt). Den här metoden matchar alltid låtnamnet oavsett vilken mapp eller vilket låtnummer det är</string>
     <string name="beat_tick">Slå 1 (bocka)</string>
     <string name="beat_tock">Beat 2 (tock)</string>
     <string name="beats">Takter</string>

@@ -424,6 +424,7 @@ public class MidiFragment extends Fragment {
             for (MidiDeviceInfo md : usbMidiDevices) {
                 String manuf = unknown_string;
                 String device = unknown_string;
+                Log.d(TAG,"md:"+md);
                 try {
                     device = md.getProperties().getString(MidiDeviceInfo.PROPERTY_NAME);
                     manuf = md.getProperties().getString(MidiDeviceInfo.PROPERTY_MANUFACTURER);

@@ -88,6 +88,7 @@
     <string name="beat_buddy_match_info">Automatycznie dopasuj utwory OpenSongApp do utworów na pedale BeatBuddy</string>
     <string name="beat_buddy_project_csv">Importowanie pliku .csv projektu</string>
     <string name="beat_buddy_song_info">Utwór musi być liczbą z zakresu od 1 do 128</string>
+    <string name="beat_buddy_song_list_info">Stuknij element, aby przygotować i wysłać kod MIDI. Alternatywnie, naciśnij i przytrzymaj przycisk, aby zapisać nazwę tego elementu BeatBuddy do utworu (używanego podczas automatycznego wysyłania utworu BeatBuddy). Ta metoda zawsze pasuje do nazwy utworu, niezależnie od tego, który to folder lub numer utworu</string>
     <string name="beat_tick">Pokonaj 1 (zaznacz)</string>
     <string name="beat_tock">Pokonaj 2 (tak)</string>
     <string name="beats">Uderzenia</string>

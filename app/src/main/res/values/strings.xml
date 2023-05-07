@@ -95,6 +95,7 @@
     <string name="beat_buddy_match_info">Automatically match your OpenSongApp songs to those on your BeatBuddy pedal</string>
     <string name="beat_buddy_project_csv">Import project .csv file</string>
     <string name="beat_buddy_song_info">Song must be a number between 1 and 128</string>
+    <string name="beat_buddy_song_list_info">Tap an item to prepare and send the MIDI code. Alternatively, long press to save the name of this BeatBuddy item to your song (used when automatically sending BeatBuddy song).  This method always matches the song name regardless of which folder or song number it is</string>
     <string name="beat_tick">Beat 1 (tick)</string>
     <string name="beat_tock">Beat 2 (tock)</string>
     <string name="beats">Beats</string>

@@ -206,7 +206,7 @@
                 android:text="@null"
                 android:value="1"
                 android:valueFrom="1"
-                android:valueTo="128"
+                android:valueTo="127"
                 android:visibility="gone"
                 app:adjustable="true"
                 app:stepSize="1" />

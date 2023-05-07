@@ -390,8 +390,8 @@ public class BeatBuddy {
     }
 
     public String getDrumKitCode() {
-        // The drumKitCode will be between 1 and 128.  Decrease by 1 for MIDI
-        return mainActivityInterface.getMidi().buildMidiString("CC",beatBuddyChannel-1,CC_Drum_kit,beatBuddyDrumKit-1);
+        // The drumKitCode will be between 1 and 127.  // Not decreased to start at 0
+        return mainActivityInterface.getMidi().buildMidiString("CC",beatBuddyChannel-1,CC_Drum_kit,beatBuddyDrumKit);
     }
     public String getDrumKitCode(int kitNum) {
         // The drumKitCode will be between 1 and 128.  Decrease by 1 for MIDI

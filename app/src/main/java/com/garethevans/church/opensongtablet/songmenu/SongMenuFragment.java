@@ -56,7 +56,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
             new_folder_info_string="", filter_by_artist_string="", filter_by_edit_string="",
             filter_by_key_string="", filter_by_tag_string="", tag_song_info_string="",
             filter_by_this_value_string="", filter_by_title_string="", deeplink_tags_string="",
-            deeplink_manage_storage_string="";
+            deeplink_manage_storage_string="", mainfolder_string="";
     private String[] key_choice_string={};
     private boolean songMenuSortTitles;
     private final Handler waitBeforeSearchHandler = new Handler();
@@ -118,6 +118,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
             filter_by_title_string = getString(R.string.filter_by_title);
             deeplink_manage_storage_string = getString(R.string.deeplink_manage_storage);
             deeplink_tags_string = getString(R.string.deeplink_tags);
+            mainfolder_string = getString(R.string.mainfoldername);
         }
     }
 
@@ -203,6 +204,11 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         executorService.execute(() -> {
             Handler handler = new Handler(Looper.getMainLooper());
             foundFolders = mainActivityInterface.getSQLiteHelper().getFolders();
+
+            // We always want MAIN as the top folder (regardless of alphabetical sort position)
+            foundFolders.remove(mainfolder_string);
+            foundFolders.add(0,mainfolder_string);
+
             if (getContext()!=null) {
                 handler.post(() -> {
                     if (getContext()!=null) {
