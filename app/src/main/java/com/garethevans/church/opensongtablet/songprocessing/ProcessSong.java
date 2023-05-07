@@ -170,6 +170,8 @@ public class ProcessSong {
         myNEWXML += "  <user1>" + parseToHTMLEntities(thisSong.getUser1()) + "</user1>\n";
         myNEWXML += "  <user2>" + parseToHTMLEntities(thisSong.getUser2()) + "</user2>\n";
         myNEWXML += "  <user3>" + parseToHTMLEntities(thisSong.getUser3()) + "</user3>\n";
+        myNEWXML += "  <beatbuddysong>" + parseToHTMLEntities(thisSong.getBeatbuddysong()) + "</beatbuddysong>\n";
+        myNEWXML += "  <beatbuddykit>" + parseToHTMLEntities(thisSong.getBeatbuddykit()) + "</beatbuddykit>\n";
         myNEWXML += "  <key>" + parseToHTMLEntities(thisSong.getKey()) + "</key>\n";
         myNEWXML += "  <keyoriginal>" + parseToHTMLEntities(thisSong.getKeyOriginal()) + "</keyoriginal>\n";
         myNEWXML += "  <aka>" + parseToHTMLEntities(thisSong.getAka()) + "</aka>\n";
