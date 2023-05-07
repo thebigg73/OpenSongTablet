@@ -43,14 +43,14 @@ public class Midi {
         this.c = c;
         mainActivityInterface = (MainActivityInterface) c;
         midiDelay = mainActivityInterface.getPreferences().getMyPreferenceInt("midiDelay", 100);
-        midiAction1 = mainActivityInterface.getPreferences().getMyPreferenceString("midiAction1", "0xC9 0x24 0x64");
-        midiAction2 = mainActivityInterface.getPreferences().getMyPreferenceString("midiAction2", "0xC9 0x26 0x64");
-        midiAction3 = mainActivityInterface.getPreferences().getMyPreferenceString("midiAction3", "0xC9 0x2A 0x64");
-        midiAction4 = mainActivityInterface.getPreferences().getMyPreferenceString("midiAction4", "0xC9 0x2E 0x64");
-        midiAction5 = mainActivityInterface.getPreferences().getMyPreferenceString("midiAction5", "0xC9 0x30 0x64");
-        midiAction6 = mainActivityInterface.getPreferences().getMyPreferenceString("midiAction6", "0xC9 0x2F 0x64");
-        midiAction7 = mainActivityInterface.getPreferences().getMyPreferenceString("midiAction7", "0xC9 0x2B 0x64");
-        midiAction8 = mainActivityInterface.getPreferences().getMyPreferenceString("midiAction8", "0xC9 0x37 0x64");
+        midiAction1 = mainActivityInterface.getPreferences().getMyPreferenceString("midiAction1", "0x99 0x24 0x64");
+        midiAction2 = mainActivityInterface.getPreferences().getMyPreferenceString("midiAction2", "0x99 0x26 0x64");
+        midiAction3 = mainActivityInterface.getPreferences().getMyPreferenceString("midiAction3", "0x99 0x2A 0x64");
+        midiAction4 = mainActivityInterface.getPreferences().getMyPreferenceString("midiAction4", "0x99 0x2E 0x64");
+        midiAction5 = mainActivityInterface.getPreferences().getMyPreferenceString("midiAction5", "0x99 0x30 0x64");
+        midiAction6 = mainActivityInterface.getPreferences().getMyPreferenceString("midiAction6", "0x99 0x2F 0x64");
+        midiAction7 = mainActivityInterface.getPreferences().getMyPreferenceString("midiAction7", "0x99 0x2B 0x64");
+        midiAction8 = mainActivityInterface.getPreferences().getMyPreferenceString("midiAction8", "0x99 0x37 0x64");
     }
 
     public String getMidiAction(int which) {
