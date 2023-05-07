@@ -2,6 +2,8 @@ package com.garethevans.church.opensongtablet.songprocessing;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -14,12 +16,16 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.beatbuddy.BBSQLite;
+import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
 import com.garethevans.church.opensongtablet.databinding.EditSongTagsBinding;
 import com.garethevans.church.opensongtablet.interfaces.EditSongFragmentInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.tags.TagsBottomSheet;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class EditSongFragmentTags extends Fragment {
 
@@ -97,9 +103,12 @@ public class EditSongFragmentTags extends Fragment {
         myView.hymnnum.setText(mainActivityInterface.getTempSong().getHymnnum());
         myView.presorder.setFocusable(false);
         myView.presorder.setText(mainActivityInterface.getTempSong().getPresentationorder());
-
+        myView.useImported.setChecked(mainActivityInterface.getBeatBuddy().getBeatBuddyUseImported());
+        myView.beatBuddySong.setText(mainActivityInterface.getTempSong().getBeatbuddysong());
+        myView.beatBuddyKit.setText(mainActivityInterface.getTempSong().getBeatbuddykit());
         // Resize the bottom padding to the soft keyboard height or half the screen height for the soft keyboard (workaround)
         mainActivityInterface.getWindowFlags().adjustViewPadding(mainActivityInterface,myView.resizeForKeyboardLayout);
+        checkBeatBuddyValues();
     }
 
     private void setupListeners() {
@@ -127,8 +136,50 @@ public class EditSongFragmentTags extends Fragment {
         myView.user3.addTextChangedListener(new MyTextWatcher("user3"));
         myView.hymnnum.addTextChangedListener(new MyTextWatcher("hymnnum"));
 
+        myView.useImported.setOnCheckedChangeListener((compoundButton, b) -> {
+            mainActivityInterface.getBeatBuddy().setBeatBuddyUseImported(b);
+            checkBeatBuddyValues();
+        });
+
+        myView.beatBuddySong.addTextChangedListener(new MyTextWatcher("beatbuddysong"));
+        myView.beatBuddyKit.addTextChangedListener(new MyTextWatcher("beatbuddykit"));
+
         // Scroll listener
         myView.nestedScrollView.setExtendedFabToAnimate(editSongFragmentInterface.getSaveButton());
+    }
+
+    private void checkBeatBuddyValues() {
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            Handler handler = new Handler(Looper.getMainLooper());
+            // Decide which songs and kits to use
+            if (getContext()!=null) {
+                try (BBSQLite bbsqLite = new BBSQLite(getContext())) {
+                    String tableSongs = bbsqLite.TABLE_NAME_DEFAULT_SONGS;
+                    String tableKits = bbsqLite.TABLE_NAME_DEFAULT_DRUMS;
+                    if (mainActivityInterface.getBeatBuddy().getBeatBuddyUseImported()) {
+                        tableSongs = bbsqLite.TABLE_NAME_MY_SONGS;
+                        tableKits = bbsqLite.TABLE_NAME_MY_DRUMS;
+                    }
+                    ArrayList<String> songs = bbsqLite.getUnique(bbsqLite.COLUMN_SONG_NAME, tableSongs);
+                    ArrayList<String> kits = bbsqLite.getUnique(bbsqLite.COLUMN_KIT_NAME, tableKits);
+                    handler.post(() -> {
+                        ExposedDropDownArrayAdapter songsAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.beatBuddySong, R.layout.view_exposed_dropdown_item, songs);
+                        ExposedDropDownArrayAdapter kitsAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.beatBuddyKit, R.layout.view_exposed_dropdown_item, kits);
+                        myView.beatBuddySong.setAdapter(songsAdapter);
+                        myView.beatBuddyKit.setAdapter(kitsAdapter);
+                        // If we don't have a value, look for one and auto add it
+                        if (songs.contains(mainActivityInterface.getTempSong().getFilename().replace(",",""))) {
+                            mainActivityInterface.getTempSong().setBeatbuddysong(mainActivityInterface.getTempSong().getFilename().replace(",",""));
+                        } else if (songs.contains(mainActivityInterface.getTempSong().getTitle().replace(",",""))) {
+                            mainActivityInterface.getTempSong().setBeatbuddysong(mainActivityInterface.getTempSong().getTitle().replace(",",""));
+                        }
+                        myView.beatBuddySong.setText(mainActivityInterface.getTempSong().getBeatbuddysong());
+                        myView.beatBuddyKit.setText(mainActivityInterface.getTempSong().getBeatbuddykit());
+                    });
+                }
+            }
+        });
     }
     private class MyTextWatcher implements TextWatcher {
 
@@ -168,6 +219,12 @@ public class EditSongFragmentTags extends Fragment {
                     break;
                 case "presorder":
                     mainActivityInterface.getTempSong().setPresentationorder(editable.toString());
+                    break;
+                case "beatbuddysong":
+                    mainActivityInterface.getTempSong().setBeatbuddysong(editable.toString());
+                    break;
+                case "beatbuddykit":
+                    mainActivityInterface.getTempSong().setBeatbuddykit(editable.toString());
                     break;
             }
         }

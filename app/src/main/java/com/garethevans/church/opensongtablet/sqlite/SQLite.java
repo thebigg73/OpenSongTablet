@@ -30,6 +30,8 @@ public class SQLite {
     author
     autoscrolldelay
     autoscrolllength
+    beatbuddysong
+    beatbuddykit
     capo
     capoprint
     ccli
@@ -82,6 +84,8 @@ public class SQLite {
     public static final String COLUMN_USER1 = "user1";
     public static final String COLUMN_USER2 = "user2";
     public static final String COLUMN_USER3 = "user3";
+    public static final String COLUMN_BEATBUDDY_SONG = "beatbuddysong";
+    public static final String COLUMN_BEATBUDDY_KIT = "beatbuddykit";
     public static final String COLUMN_KEY = "key";
     public static final String COLUMN_KEY_ORIGINAL = "keyoriginal";
     public static final String COLUMN_TIMESIG = "timesig";
@@ -124,6 +128,8 @@ public class SQLite {
                     + COLUMN_USER1 + " TEXT,"
                     + COLUMN_USER2 + " TEXT,"
                     + COLUMN_USER3 + " TEXT,"
+                    + COLUMN_BEATBUDDY_SONG + " TEXT,"
+                    + COLUMN_BEATBUDDY_KIT + " TEXT,"
                     + COLUMN_KEY + " TEXT,"
                     + COLUMN_KEY_ORIGINAL + " TEXT,"
                     + COLUMN_TIMESIG + " TEXT,"

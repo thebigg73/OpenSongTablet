@@ -39,7 +39,8 @@ public class CommonSQL {
                 SQLite.COLUMN_FOLDER, SQLite.COLUMN_TITLE, SQLite.COLUMN_AUTHOR,
                 SQLite.COLUMN_COPYRIGHT, SQLite.COLUMN_LYRICS, SQLite.COLUMN_HYMNNUM,
                 SQLite.COLUMN_CCLI, SQLite.COLUMN_THEME, SQLite.COLUMN_ALTTHEME, SQLite.COLUMN_USER1,
-                SQLite.COLUMN_USER2, SQLite.COLUMN_USER3, SQLite.COLUMN_KEY, SQLite.COLUMN_KEY_ORIGINAL,
+                SQLite.COLUMN_USER2, SQLite.COLUMN_USER3, SQLite.COLUMN_BEATBUDDY_SONG,
+                SQLite.COLUMN_BEATBUDDY_KIT, SQLite.COLUMN_KEY, SQLite.COLUMN_KEY_ORIGINAL,
                 SQLite.COLUMN_TIMESIG, SQLite.COLUMN_AKA, SQLite.COLUMN_AUTOSCROLL_DELAY,
                 SQLite.COLUMN_AUTOSCROLL_LENGTH, SQLite.COLUMN_TEMPO, SQLite.COLUMN_PAD_FILE,
                 SQLite.COLUMN_PAD_LOOP, SQLite.COLUMN_MIDI, SQLite.COLUMN_MIDI_INDEX, SQLite.COLUMN_CAPO,
@@ -140,6 +141,8 @@ public class CommonSQL {
         values.put(SQLite.COLUMN_USER1, thisSong.getUser1());
         values.put(SQLite.COLUMN_USER2, thisSong.getUser2());
         values.put(SQLite.COLUMN_USER3, thisSong.getUser3());
+        values.put(SQLite.COLUMN_BEATBUDDY_SONG, thisSong.getBeatbuddysong());
+        values.put(SQLite.COLUMN_BEATBUDDY_KIT, thisSong.getBeatbuddykit());
         values.put(SQLite.COLUMN_KEY, thisSong.getKey());
         values.put(SQLite.COLUMN_KEY_ORIGINAL, thisSong.getKeyOriginal());
         values.put(SQLite.COLUMN_TIMESIG, thisSong.getTimesig());
@@ -387,6 +390,8 @@ public class CommonSQL {
                 thisSong.setUser1(getValue(cursor, SQLite.COLUMN_USER1));
                 thisSong.setUser2(getValue(cursor, SQLite.COLUMN_USER2));
                 thisSong.setUser3(getValue(cursor, SQLite.COLUMN_USER3));
+                thisSong.setBeatbuddysong(getValue(cursor, SQLite.COLUMN_BEATBUDDY_SONG));
+                thisSong.setBeatbuddykit(getValue(cursor, SQLite.COLUMN_BEATBUDDY_KIT));
                 thisSong.setKey(getValue(cursor, SQLite.COLUMN_KEY));
                 thisSong.setKeyOriginal(getValue(cursor, SQLite.COLUMN_KEY_ORIGINAL));
                 thisSong.setTimesig(getValue(cursor, SQLite.COLUMN_TIMESIG));

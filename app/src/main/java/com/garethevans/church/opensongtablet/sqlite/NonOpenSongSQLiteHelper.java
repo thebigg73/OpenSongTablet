@@ -36,7 +36,7 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
     }
 
     // Database Version
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 5;
 
     public SQLiteDatabase getDB() {
         // The version we use has to be in local app storage unfortunately.  We can copy this though
@@ -208,6 +208,20 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
             Cursor cursor = tempDB.rawQuery("SELECT * FROM " + SQLite.TABLE_NAME + " LIMIT 0", null);
             if (cursor.getColumnIndex(SQLite.COLUMN_KEY_ORIGINAL) == -1) {
                 tempDB.execSQL("ALTER TABLE " + SQLite.TABLE_NAME + " ADD " + SQLite.COLUMN_KEY_ORIGINAL + " TEXT");
+            }
+            cursor.close();
+        };
+        try (SQLiteDatabase tempDB = SQLiteDatabase.openOrCreateDatabase(dbPath, null)) {
+            Cursor cursor = tempDB.rawQuery("SELECT * FROM " + SQLite.TABLE_NAME + " LIMIT 0", null);
+            if (cursor.getColumnIndex(SQLite.COLUMN_BEATBUDDY_SONG) == -1) {
+                tempDB.execSQL("ALTER TABLE " + SQLite.TABLE_NAME + " ADD " + SQLite.COLUMN_BEATBUDDY_SONG + " TEXT");
+            }
+            cursor.close();
+        };
+        try (SQLiteDatabase tempDB = SQLiteDatabase.openOrCreateDatabase(dbPath, null)) {
+            Cursor cursor = tempDB.rawQuery("SELECT * FROM " + SQLite.TABLE_NAME + " LIMIT 0", null);
+            if (cursor.getColumnIndex(SQLite.COLUMN_BEATBUDDY_KIT) == -1) {
+                tempDB.execSQL("ALTER TABLE " + SQLite.TABLE_NAME + " ADD " + SQLite.COLUMN_BEATBUDDY_KIT + " TEXT");
             }
             cursor.close();
         };
