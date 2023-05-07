@@ -194,7 +194,11 @@ public class BootUpFragment extends Fragment {
     private void updateMessage() {
         if (getActivity()!=null && getContext()!=null) {
             try {
-                myView.currentAction.post(() -> myView.currentAction.setText(message));
+                myView.currentAction.post(() -> {
+                    if (myView!=null) {
+                        myView.currentAction.setText(message);
+                    }
+                });
             } catch (Exception e) {
                 e.printStackTrace();
             }
