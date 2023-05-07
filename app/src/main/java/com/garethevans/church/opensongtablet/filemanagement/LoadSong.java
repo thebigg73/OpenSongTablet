@@ -395,6 +395,12 @@ public class LoadSong {
                                 case "user3":
                                     thisSong.setUser3(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
                                     break;
+                                case "beatbuddysong":
+                                    thisSong.setBeatbuddysong(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
+                                    break;
+                                case "beatbuddykit":
+                                    thisSong.setBeatbuddykit(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
+                                    break;
                                 case "key":
                                     thisSong.setKey(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
                                     break;

@@ -67,6 +67,8 @@ public class StorageAccess {
             "OpenSong Scripture/_cache", "Scripture/_cache", "Slides/_cache", "Variations/_cache"};
     private Uri uriTree = null, uriTreeHome = null; // This is the home folder.  Set as required from preferences.
 
+    private DocumentFile uriTreeDF, songsDF;
+
     // These are used primarily on start up to initialise stuff
     private String getStoragePreference() {
         return mainActivityInterface.getPreferences().getMyPreferenceString("uriTree", null);
@@ -217,6 +219,9 @@ public class StorageAccess {
                 }
             }
         }
+
+        uriTreeDF = DocumentFile.fromFile(rootFolder);
+        songsDF = DocumentFile.fromFile(new File(rootFolder,"Songs"));
         copyAssets();
         return "Success";
     }
@@ -224,6 +229,11 @@ public class StorageAccess {
     private String createOrCheckRootFolders_SAF(Uri uri) {
         uriTreeHome = homeFolder(uri);
 
+        // Prepare for the fileWriteActivity.txt log
+        StringBuilder stringBuilder = new StringBuilder();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault());
+        stringBuilder.append("--------------------\nBootup:")
+                .append(sdf.format(new Date())).append("\n").append(TAG);
         // Look to see if uriTreeHome actually exists
         DocumentFile documentFile = DocumentFile.fromTreeUri(c,uri);
         if (documentFile!=null && documentFile.exists() && documentFile.getUri().toString().endsWith(appFolder)) {
@@ -243,8 +253,10 @@ public class StorageAccess {
             }
         }
 
-        setUriTreeHome(uriTreeHome);
+        // Keep a reference to the OpenSongs/ documentFile
+        uriTreeDF = documentFile;
 
+        setUriTreeHome(uriTreeHome);
 
         /* Replaced this code to help track issue where OpenSong directory keeps being created
         Log.d(TAG,"createOrCheckRootFolders()  uriTreeHome:"+uriTreeHome);
@@ -261,27 +273,30 @@ public class StorageAccess {
             }
         }*/
 
-        // TODO HERE
-        updateFileActivityLog("CheckRoots: uriTreeHome:"+uriTreeHome);
-
-        StringBuilder stringBuilder = new StringBuilder();
-
         Log.d(TAG,"uriTreeHome:"+uriTreeHome);
         // Go through the main folders and try to create them
         // We have a reference to the OpenSong/ folder now from above
         if (documentFile!=null) {
+            stringBuilder.append("\nuriTreeHome:").append(documentFile.getUri());
             for (String folder : rootFolders) {
                 try {
                     DocumentFile dfFolder = documentFile.findFile(folder);
-                    stringBuilder.append("\nTry with docFile instead..  Looking for:").append(folder);
+                    stringBuilder.append("\nLooking for:").append(folder);
                     if (dfFolder==null || !dfFolder.exists()) {
                         stringBuilder.append(" - Not found, so create");
                         DocumentFile thisDF = documentFile.createDirectory(folder);
-                        stringBuilder.append("\nCreated at:").append(thisDF.getUri());
+                        if (thisDF!=null) {
+                            stringBuilder.append(":").append(thisDF.getUri());
+                        } else {
+                            stringBuilder.append(" - failed as thisDF==null");
+                        }
 
                     } else {
                         stringBuilder.append(" - Found, so skip:").append(dfFolder.getUri());
                     }
+
+                    // Document contracts wasn't doing this for some users for some reason
+                    // It seemed to be that the uriExists() call was always false and recreated folders
                     /*Uri thisFolder = getUriForItem(folder, "", "");
                     stringBuilder.append("folder:").append(folder).append("  uri:").append(thisFolder);
                     if (!uriExists(thisFolder)) {
@@ -296,11 +311,9 @@ public class StorageAccess {
                 }
             }
 
-            updateFileActivityLog("CheckRoots - rootFolders:" + stringBuilder);
-
-            stringBuilder = new StringBuilder();
-
-            stringBuilder.append("\nNow the _cache folders\n");
+            // Now we know we have the main folders, get a permanent reference to OpenSong/Songs
+            songsDF = uriTreeDF.findFile("Songs");
+            stringBuilder.append("\nRoot folders done, now check _cache folder");
 
             // Now for the cache folders
             for (String folder : cacheFolders) {
@@ -314,7 +327,11 @@ public class StorageAccess {
                         if (dfSubFolder==null || !dfSubFolder.exists()) {
                             stringBuilder.append(" - parent folder exists, so create _cache");
                             DocumentFile thisDF = dfFolder.createDirectory(bits[1]);
-                            stringBuilder.append("\nCreated at:").append(thisDF.getUri());
+                            if (thisDF!=null) {
+                                stringBuilder.append(" - created:").append(thisDF.getUri());
+                            } else {
+                                stringBuilder.append(" - tried to create, but failed:").append(bits[1]);
+                            }
                         } else {
                             stringBuilder.append(" - _cache folder already exists, so skip:").append(dfSubFolder.getUri());
                         }
@@ -340,15 +357,20 @@ public class StorageAccess {
                     }*/
                 } catch (Exception e2) {
                     Log.d(TAG, "Error creating cache: " + folder);
+                    stringBuilder.append("\nError creating cache:").append(folder);
                 }
             }
 
-            updateFileActivityLog("CheckRoots - rootFolders_cache:" + stringBuilder);
+            // Update the log
+            updateFileActivityLog(stringBuilder.toString());
 
             // Now copy the assets if they aren't already there
             copyAssets();
             return "Success";
         } else {
+            // Update the log
+            stringBuilder.append("\nuriTreeHome not set/working");
+            updateFileActivityLog(stringBuilder.toString());
             return "Failure";
         }
     }
@@ -388,6 +410,12 @@ public class StorageAccess {
         }
     }
 
+    public DocumentFile getUriTreeDF() {
+        return uriTreeDF;
+    }
+    public DocumentFile getSongsDF() {
+        return songsDF;
+    }
 
 
     // Deal with parsing, creating, editing file and folder names
@@ -931,7 +959,35 @@ public class StorageAccess {
     }
     @SuppressLint("NewApi")
     private Uri getUriForItem_SAF(String folder, String subfolder, String filename) {
+
         // Get the home folder as our start point
+        if (uriTreeHome == null) {
+            uriTreeHome = homeFolder(null);
+        }
+
+        if (uriTreeHome!=null) {
+            String uriTreeHomeId = DocumentsContract.getTreeDocumentId(uriTreeHome);
+            String path = "";
+            if (!uriTreeHomeId.endsWith(appFolder)) {
+                path = "/" + appFolder;
+            }
+            if (folder!=null && !folder.isEmpty()) {
+                path += "/" + folder;
+            }
+            if (subfolder!=null && !subfolder.isEmpty() &&
+                    !subfolder.equals(c.getString(R.string.mainfoldername)) &&
+                    !subfolder.equals("MAIN")) {
+                path += "/" + subfolder;
+            }
+            if (filename!=null && !filename.isEmpty()) {
+                path += "/" + filename;
+            }
+            return DocumentsContract.buildDocumentUriUsingTree(uriTreeHome, DocumentsContract.getTreeDocumentId(uriTreeHome) + path);
+        } else {
+            return null;
+        }
+
+        /*// Get the home folder as our start point
         Uri returnUri = uriTreeHome;
         if (uriTreeHome == null) {
             uriTreeHome = homeFolder(null);
@@ -979,10 +1035,11 @@ public class StorageAccess {
 
                 returnUri = Uri.parse(uriTreeHome + "%2F" + Uri.encode(appendLocationString));
             }
+            Log.d(TAG,"returnUri:"+returnUri);
             return returnUri;
         } else {
             return null;
-        }
+        }*/
     }
     private Uri getUriForItem_File(String folder, String subfolder, String filename) {
         String s = stringForFile(folder);
@@ -1063,7 +1120,7 @@ public class StorageAccess {
     private boolean docContractCreate(Uri uri, String mimeType, String name) {
         if (uri!=null && name!=null && !name.isEmpty()) {
             try {
-                updateFileActivityLog("\ndocContractCreate() called.  uri:"+uri+"  mimeType:"+mimeType+"  name:"+name);
+                //updateFileActivityLog("\ndocContractCreate() called.  uri:"+uri+"  mimeType:"+mimeType+"  name:"+name);
                 return DocumentsContract.createDocument(c.getContentResolver(), uri, mimeType, name) != null;
             } catch (Exception e) {
                 Log.d(TAG, "Error creating " + name + " at " + uri);
@@ -1146,10 +1203,8 @@ public class StorageAccess {
             }
             // Create the new file
             if (!uriExists(uri)) {
-                Log.d(TAG,"uri "+uri+" doesn't exist, so create it");
+                //Log.d(TAG,"uri "+uri+" doesn't exist, so create it");
                 createFile(mimeType, folder, subfolder, filename);
-            } else {
-                Log.d(TAG,"uri "+uri+" already exists!");
             }
 
         } else {
@@ -2015,7 +2070,7 @@ public class StorageAccess {
                 (filename.lastIndexOf(".")==filename.length()-4 ||
                         filename.lastIndexOf(".")==filename.length()-5) &&
                 !filenameIsImage(filename) && !filename.endsWith(".pdf") &&
-                !filename.endsWith(".txt")) {
+                !filename.endsWith(".txt") && !filename.endsWith(".xml")) {
             updateFileActivityLog("BAD file:"+filename+" should not be in an OpenSong song folder - please move it as soon as possible!");
             return true;
         }
@@ -2172,9 +2227,9 @@ public class StorageAccess {
         return count;
     }
 
-
     private boolean creatingLogFile = false;
     public void updateFileActivityLog(String logText) {
+        logText = logText.trim();
         if (!creatingLogFile) {
             try {
                 Uri logUri = getUriForItem("Settings", "", "fileWriteActivity.txt");
@@ -2185,7 +2240,7 @@ public class StorageAccess {
                         creatingLogFile = false;
                     }
                     OutputStream outputStream;
-                    if (getFileSizeFromUri(logUri) > 300) {
+                    if (getFileSizeFromUri(logUri) > 900) {
                         outputStream = c.getContentResolver().openOutputStream(logUri, "wt");
                     } else {
                         outputStream = c.getContentResolver().openOutputStream(logUri, "wa");

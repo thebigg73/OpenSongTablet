@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.provider.DocumentsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +17,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.documentfile.provider.DocumentFile;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
@@ -127,39 +127,45 @@ public class ImportOSBFragment extends Fragment {
     }
 
     private void initialiseLauncher() {
-        // Initialise the launcher
-        activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-            if (result.getResultCode() == Activity.RESULT_OK) {
-                try {
-                    Intent data = result.getData();
-                    if (data != null) {
-                        Uri contentUri = data.getData();
-                        String importFilename = mainActivityInterface.getStorageAccess().getFileNameFromUri(importUri);
-                        if (importFilename.endsWith(".osb")) {
-                            myView.importTitle.setText(importFilename);
-                            importUri = contentUri;
-                            setupValues();
-                            findFolders();
-                        } else {
-                            myView.backupName.setText(unknown);
-                            myView.progressText.setText(unknown);
-                            importUri = null;
-                            foundFolders = null;
-                            myView.foundFoldersListView.removeAllViews();
-                            okToLoad(); // Will be false!
+        if (activityResultLauncher == null) {
+            // Initialise the launcher
+            activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    try {
+                        Intent data = result.getData();
+                        if (data != null) {
+                            Uri contentUri = data.getData();
+                            importFilename = mainActivityInterface.getStorageAccess().getFileNameFromUri(contentUri);
+                            if (importFilename.endsWith(".osb")) {
+                                importUri = contentUri;
+                                setupValues();
+                                findFolders();
+                            } else {
+                                setFilename(unknown);
+                                myView.backupName.setText(unknown);
+                                myView.progressText.setText(unknown);
+                                importUri = null;
+                                foundFolders = null;
+                                myView.foundFoldersListView.removeAllViews();
+                                okToLoad(); // Will be false!
+                            }
                         }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
-            }
-        });
+            });
+        }
+    }
+
+    private void setFilename(String thisFilename) {
+        importFilename = thisFilename;
     }
 
     private void setupValues() {
         myView.importTitle.setText(import_osb);
-        myView.backupName.setText(importFilename);
         myView.backupName.setEnabled(true);
+        myView.backupName.setText(importFilename);
         myView.backupName.setFocusable(false);
         myView.overWrite.setVisibility(View.VISIBLE);
         myView.foundFoldersListView.removeAllViews();
@@ -371,6 +377,7 @@ public class ImportOSBFragment extends Fragment {
 
             // Go through the checked folders and check they exist on the local storage
             // If not, create them
+            StringBuilder stringBuilder = new StringBuilder();
             for (String folder : checkedFolders) {
                 handler.post(() -> {
                     if (alive) {
@@ -383,7 +390,6 @@ public class ImportOSBFragment extends Fragment {
                     ArrayList<String> allBits = new ArrayList<>();
                     if (folder.contains("/")) {
                         String[] bits = folder.split("/");
-                        StringBuilder stringBuilder = new StringBuilder();
                         for (String bit:bits) {
                             stringBuilder.append(bit);
                             allBits.add(stringBuilder.toString());
@@ -392,21 +398,41 @@ public class ImportOSBFragment extends Fragment {
                     } else {
                         allBits.add(folder);
                     }
+
+                    DocumentFile df = mainActivityInterface.getStorageAccess().getSongsDF();
                     for (String folderBit:allBits) {
-                        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Songs",folderBit,"");
+                        if (df!=null && !folderBit.equals(mainfoldername) && !folderBit.equals("MAIN")) {
+                            DocumentFile subdf = df.findFile(folderBit);
+                            if (subdf == null || !subdf.exists()) {
+                                df.createDirectory(folderBit);
+                                df = df.findFile(folderBit);
+                                if (df != null) {
+                                    stringBuilder.append(TAG).append(" create folders ").append(df.getUri()).append("\n");
+                                } else {
+                                    stringBuilder.append(TAG).append(" failed to create folder: ").append(folderBit).append("\n");
+                                }
+                            } else {
+                                stringBuilder.append(TAG).append(" folder already exists: ").append(folderBit).append("\n");
+                            }
+                        }
+
+                        /*Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Songs",folderBit,"");
                         Log.d(TAG,"folder uri:"+uri);
                         if (!mainActivityInterface.getStorageAccess().uriExists(uri)) {
                             Log.d(TAG,"Doesn't exist, so make it");
-                            mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG + " doImport createFile Songs/" + folderBit);
                             mainActivityInterface.getStorageAccess().createFile(DocumentsContract.Document.MIME_TYPE_DIR,
                                 "Songs", folderBit, "");
-                        }
+                        }*/
                     }
+
                 }
             }
-
+            if (!stringBuilder.toString().isEmpty()) {
+                mainActivityInterface.getStorageAccess().updateFileActivityLog("\n" + stringBuilder + "\n");
+            }
 
             // Now deal with the zip entries
+            stringBuilder = new StringBuilder();
             try {
                 byte[] buffer = new byte[8192];
                 while ((ze = zipInputStream.getNextEntry()) != null) {
@@ -444,7 +470,7 @@ public class ImportOSBFragment extends Fragment {
                                     (!ze.getName().equals(SQLite.NON_OS_DATABASE_NAME) && checkedFolders.contains(filefolder)) ||
                                     (filefolder.equals("_Highlighter") && myView.includeHighlighter.isChecked());
                         }
-                        if (alive && wantit && (!exists || canoverwrite || isDB)) {
+                        if (alive && wantit && (!exists || canoverwrite || isDB) && !ze.getName().startsWith(".")) {
                             // We want it and either it doesn't exist, or we've selected overwriting
                             // Update the display
                             zipProgress++;
@@ -465,18 +491,18 @@ public class ImportOSBFragment extends Fragment {
                             if (!exists && alive) {
                                 if (ze.getName().contains("_Highlighter/")) {
                                     filename = ze.getName().replace("_Highlighter/","");
-                                    mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" Create Highlighter/"+filename+"  deleteOld=false");
+                                    stringBuilder.append("\n").append(TAG).append(" Create Highlighlighter/").append(filename);
                                     mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(
                                             false, file_uri,null,"Highlighter","",filename);
                                 } else if (ze.getName().equals(SQLite.NON_OS_DATABASE_NAME)) {
                                     // the file_uri is actually pointing to the app folder as we will save it there then SQL insert or replace in the existing DB
                                     Uri final_file_uri = mainActivityInterface.getStorageAccess().getUriForItem("Settings","",SQLite.NON_OS_DATABASE_NAME);
-                                    mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" Create Settings/"+SQLite.NON_OS_DATABASE_NAME+"  deleteOld=false");
+                                    stringBuilder.append("\n").append(TAG).append(" Create Settings/").append(SQLite.NON_OS_DATABASE_NAME);
                                     mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(
                                             false, final_file_uri,null,"Settings","",SQLite.NON_OS_DATABASE_NAME);
                                 } else {
                                     filename = ze.getName().replace(filefolder, "").replace("/", "");
-                                    mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" Create Songs/"+filefolder+"/"+filename+"  deleteOld=true");
+                                    stringBuilder.append("\n").append(TAG).append(" Create Songs/").append(filefolder).append("/"+filename);
                                     mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(
                                             true, file_uri, null, "Songs", filefolder, filename);
                                 }
@@ -531,6 +557,9 @@ public class ImportOSBFragment extends Fragment {
 
                     zipInputStream.closeEntry();
                 }
+                if (!stringBuilder.toString().isEmpty()) {
+                    mainActivityInterface.getStorageAccess().updateFileActivityLog("\n" + stringBuilder + "\n");
+                }
 
                 if (alive) {
                     // Deal with the database
@@ -538,7 +567,6 @@ public class ImportOSBFragment extends Fragment {
                         // We will use SQL to merge the database to our existing one
                         // If we are allowing overwrite, we use REPLACE, if not we use INSERT OR IGNORE
                         String dbPath = tempDBFile.getPath();
-                        Log.d(TAG,"dbPath="+dbPath);
                         mainActivityInterface.getNonOpenSongSQLiteHelper().importDB(dbPath,canoverwrite);
                         tempDBFile = null;
                     }
