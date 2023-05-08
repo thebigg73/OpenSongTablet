@@ -1,8 +1,4 @@
 package com.garethevans.church.opensongtablet.secondarydisplay;
-// TODO
-// Info bar not working
-// Clicking on the first section crossfades with a blank view?
-// Clicking on a section when logo is on shouldn't start the timer, but a logo off with content should
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 
@@ -50,7 +46,6 @@ import java.util.TimerTask;
 // All common preferences are stored in the Presentation/PresentationSettings.java class
 // Colors are stored in ScreenSetup/ThemeColors.java class
 
-// TODO TIDY UP
 public class SecondaryDisplay extends Presentation {
 
     private final Context c;
@@ -62,27 +57,19 @@ public class SecondaryDisplay extends Presentation {
     private ArrayList<Integer> secondaryWidths, secondaryHeights;
     private DisplayMetrics displayMetrics;
 
-    // Default variables
-    private float scaleChords, scaleHeadings, scaleComments, lineSpacing;
     private Timer waitUntilTimer;
     private TimerTask waitUntilTimerTask;
     private int waitingOnViewsToDraw;
     private int showWhichBackground = 0;  //0=not set, 1=image1, 2=image2, 3=surface1, 4=surface2
     private int showWhichVideo = 0;
     private final int logoSplashTime = 3000;
-    private int defaultPadding;
     private int availableScreenWidth;
     private int availableScreenHeight;
-    private int horizontalSize;
-    private int verticalSize;
 
     private boolean firstRun = true;
     private boolean isNewSong;
     private String currentInfoText;
-    private boolean waitForVideo;
     private boolean infoBarRequired=false;
-    private boolean boldChordHeading;
-    private boolean displayChords;
     private boolean invertXY;
 
     private ViewTreeObserver.OnGlobalLayoutListener testSongInfoVTO;
@@ -222,6 +209,8 @@ public class SecondaryDisplay extends Presentation {
         display.getRealMetrics(metrics);
         invertXY = mainActivityInterface.getPresenterSettings().getCastRotation() == 90.0f ||
                 mainActivityInterface.getPresenterSettings().getCastRotation() == 270.0f;
+        int horizontalSize;
+        int verticalSize;
         if (invertXY) {
             // Switch width for height and vice versa
             horizontalSize = metrics.heightPixels;
@@ -327,16 +316,6 @@ public class SecondaryDisplay extends Presentation {
     // Set views depending on mode
     public void matchPresentationToMode() {
         // Get the settings that are appropriate.  This is called on first run
-        if (!mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance))) {
-            // IV - Note that the Heading, Comment and tab are ignored in song load
-            displayChords = mainActivityInterface.getPreferences().getMyPreferenceBoolean("presoShowChords",false);
-            boldChordHeading = mainActivityInterface.getPreferences().getMyPreferenceBoolean("presoLyricsBold", false);
-        } else {
-            scaleHeadings = mainActivityInterface.getPreferences().getMyPreferenceFloat("scaleHeadings", 0.8f);
-            scaleComments = mainActivityInterface.getPreferences().getMyPreferenceFloat("scaleComments", 0.8f);
-            displayChords = mainActivityInterface.getPreferences().getMyPreferenceBoolean("displayChords", true);
-            boldChordHeading = mainActivityInterface.getPreferences().getMyPreferenceBoolean("boldChordHeading", false);
-        }
         infoBarRequired = true;
         hideCols2and3();
     }
@@ -375,7 +354,7 @@ public class SecondaryDisplay extends Presentation {
 
             // If this is the first time, showWhichBackground==0
             backgroundToFadeIn = null;
-            waitForVideo = false;
+            boolean waitForVideo = false;
             if (mainActivityInterface.getPresenterSettings().getBackgroundToUse().startsWith("img") ||
                     mainActivityInterface.getPresenterSettings().getBackgroundToUse().equals("color")) {
                 if (showWhichBackground < 2) {
@@ -827,11 +806,7 @@ public class SecondaryDisplay extends Presentation {
             setSectionViews();
         }
     }
-    // TODO Update this when prefs change
     public void setSongContentPrefs() {
-        boldChordHeading = mainActivityInterface.getPreferences().getMyPreferenceBoolean("boldChordHeading", false);
-        scaleChords = mainActivityInterface.getPreferences().getMyPreferenceFloat("scaleChords", 0.8f);
-
         setInfoStyles();
         changeInfoAlignment();
 
@@ -840,7 +815,6 @@ public class SecondaryDisplay extends Presentation {
         myView.songProjectionInfo1.setupFonts(mainActivityInterface);
         myView.songProjectionInfo2.setupFonts(mainActivityInterface);
         setSongContent();
-
     }
 
     private void setSectionViews() {
@@ -1079,11 +1053,9 @@ public class SecondaryDisplay extends Presentation {
         LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams)imageView.getLayoutParams();
         switch (mainActivityInterface.getPresenterSettings().getPresoLyricsAlign()) {
             case Gravity.START:
-            case Gravity.LEFT:
                 lp.gravity = Gravity.START;
                 break;
             case Gravity.END:
-            case Gravity.RIGHT:
                 lp.gravity = Gravity.END;
                 break;
             case Gravity.CENTER:

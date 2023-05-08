@@ -2574,7 +2574,7 @@ public class ProcessSong {
 
         // Make the inner column big enough for the unscaled content
         // Need to consider scaling <1.  If I did this now, the views get cropped
-        // TODO as with column 1, adding height just in case of cropping
+        // As with column 1, adding height just in case of cropping
         innerCol1.getLayoutParams().width = col1_2Width;
         innerCol1.getLayoutParams().height = col1_2Height+1000;
         innerCol2.getLayoutParams().width = col2_2Width;
@@ -2617,7 +2617,7 @@ public class ProcessSong {
         // Don't adjust the width, as this is set by weights in the layout
         int col1h = (int) (col1_2Height*col1_2ScaleBest);
         int col2h = (int) (col2_2Height*col2_2ScaleBest);
-        // TODO as with column 1 adding extra height
+        // As with column 1 adding extra height
         column1.getLayoutParams().height = col1h+1000;
         column2.getLayoutParams().height = col2h+1000;
 
@@ -2685,7 +2685,7 @@ public class ProcessSong {
 
         // Make the inner column big enough for the unscaled content
         // Need to consider scaling <1.  If I did this now, the views get cropped
-        // TODO as with column 1 adding extra height
+        // As with column 1 adding extra height
         innerCol1.getLayoutParams().width = col1_3Width;
         innerCol1.getLayoutParams().height = col1_3Height+1000;
         innerCol2.getLayoutParams().width = col2_3Width;
@@ -2740,7 +2740,7 @@ public class ProcessSong {
         int col1h = (int) (col1_3Height*col1_3ScaleBest);
         int col2h = (int) (col2_3Height*col2_3ScaleBest);
         int col3h = (int) (col3_3Height*col3_3ScaleBest);
-        // TODO as with column 1 adding extra height
+        // As with column 1 adding extra height
         innerCol1.getLayoutParams().height = col1h+1000;
         innerCol2.getLayoutParams().height = col2h+1000;
         innerCol3.getLayoutParams().height = col3h+1000;
@@ -3013,7 +3013,6 @@ public class ProcessSong {
     public Bitmap trimBitmap(Bitmap bmp) {
         boolean trimMargins = false;
         if (trimMargins) {
-            // TODO Auto-generated method stub
             int color = Color.WHITE | Color.TRANSPARENT;
 
             long dtMili = System.currentTimeMillis();

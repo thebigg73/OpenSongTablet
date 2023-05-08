@@ -249,7 +249,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private SecondaryDisplay[] secondaryDisplays;
     private Display[] connectedDisplays;
     private int prevNumConnectedDisplays = 0;
-    private ImageView screenMirror, screenHelp;
+    private ImageView screenHelp;
 
     // Variables used
     private ArrayList<View> targets;
@@ -349,7 +349,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     private String deeplink_import_osb="", deeplink_sets_backup_restore="", deeplink_onsong="",
             deeplink_import_file="", unknown="", mainfoldername="MAIN", deeplink_page_buttons="",
-            website_menu_set="", website_menu_song="", exit_confirm="", storage_change="",
+            website_menu_set="", website_menu_song="", exit_confirm="",
             error="", deeplink_presenter="", deeplink_performance="", extra_settings="",
             action_button_info="", song_sections="", logo_info="", blank_screen_info="",
             black_screen_info="", project_panic="", song_title="", long_press="", edit_song="",
@@ -372,7 +372,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             website_menu_set = getString(R.string.website_menu_set);
             website_menu_song = getString(R.string.website_menu_song);
             exit_confirm = getString(R.string.exit_confirm);
-            storage_change = getString(R.string.storage_change);
             error = getString(R.string.error);
             deeplink_presenter = getString(R.string.deeplink_presenter);
             deeplink_performance = getString(R.string.deeplink_performance);
@@ -856,9 +855,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 }
                 // Hide the keyboard
                 windowFlags.hideKeyboard();
-                // Set and remove focus (foot pedals can change this as using nav directions)
-                //myView.menuTop.versionCode.requestFocus();
-                //myView.menuTop.versionCode.postDelayed(() -> myView.menuTop.versionCode.clearFocus(),100);
             }
 
             @Override
@@ -869,10 +865,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 }
                 // Hide the keyboard
                 windowFlags.hideKeyboard();
-                // Set and remove focus (foot pedals can change this as using nav directions)
-                //myView.fragmentView.requestFocus();
-                //myView.fragmentView.postDelayed(() -> myView.fragmentView.clearFocus(),100);
-
             }
 
             @Override
@@ -1373,8 +1365,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     public void updateToolbar(String what) {
         // Null titles are for the default song, author, etc.
         // Otherwise a new title is passed as a string (in a settings menu)
-        //windowFlags.setImmersive(true);
-        //Log.d(TAG, "updateToolbar " + what);
         if (myView != null) {
             myView.myToolbar.setActionBar(what);
             myView.fragmentView.setTop(myView.myToolbar.getActionBarHeight(settingsOpen || menuOpen));
@@ -1548,7 +1538,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     public boolean onCreateOptionsMenu(@NonNull Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.mainactivitymenu, menu);
-        screenMirror = (ImageView) menu.findItem(R.id.mirror_menu_item).getActionView();
+        ImageView screenMirror = (ImageView) menu.findItem(R.id.mirror_menu_item).getActionView();
         screenMirror.setImageDrawable(VectorDrawableCompat.create(getResources(),R.drawable.cast,getTheme()));
         screenMirror.setOnClickListener(view -> startActivity(new Intent("android.settings.CAST_SETTINGS")));
         screenHelp = (ImageView) menu.findItem(R.id.help_menu_item).getActionView();
@@ -2407,7 +2397,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                             song.getFolder(), song.getFilename());
                     // Now remove from the SQL database
                     if (song.getFiletype().equals("PDF") || song.getFiletype().equals("IMG")) {
-                        nonOpenSongSQLiteHelper.deleteSong(song.getFolder(),song.getFilename());
+                        boolean deleted = nonOpenSongSQLiteHelper.deleteSong(song.getFolder(),song.getFilename());
+                        Log.d(TAG,"deleted:"+deleted);
                     }
                     sqLiteHelper.deleteSong(song.getFolder(),song.getFilename());
                     // Set the welcome song
@@ -3211,7 +3202,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void goToPreviousPage() {
-        // TODO - Check this works
         // Received from nearbyAction
         if (song.getFiletype().equals("PDF") && song.getPdfPageCurrent() > 0) {
             if (presenterValid()) {
@@ -3223,7 +3213,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
     @Override
     public void goToNextPage() {
-        // TODO - Check this works
         // Received from nearbyAction
         if (song.getFiletype().equals("PDF") && song.getPdfPageCount()>0 &&
                 song.getPdfPageCurrent() < song.getPdfPageCount()-1) {

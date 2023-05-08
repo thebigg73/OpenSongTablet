@@ -370,7 +370,6 @@ public class SetActions {
         // TODO Check references for set name that gets saved.  Especially if we have merged sets.
     }
 
-
     public String niceCustomLocationFromFolder(String folderLocation) {
         // This gives a nice output for the folderLocation for viewing
         folderLocation = folderLocation.replace(customLocBasic,"");
@@ -758,7 +757,9 @@ public class SetActions {
                 .append(" # - ")
                 .append(tempSong.getFilename())
                 .append("\"")
-                .append(" type=\"custom\" print=\"true\" seconds=\"\" loop=\"\" transition=\"\" prefKey=\""+tempSong.getKey()+"\">\n")
+                .append(" type=\"custom\" print=\"true\" seconds=\"\" loop=\"\" transition=\"\" prefKey=\"")
+                .append(tempSong.getKey())
+                .append("\">\n")
                 .append("    ")
                 .append(emptyTagCheck("title",tempSong.getTitle()))
                 .append("\n    ")

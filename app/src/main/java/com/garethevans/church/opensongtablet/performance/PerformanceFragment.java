@@ -1042,8 +1042,6 @@ public class PerformanceFragment extends Fragment {
                 !mainActivityInterface.getSong().getFolder().contains("**Image") &&
                     !mainActivityInterface.getSong().getFolder().contains("**"+image_string)) {
                 displayInterface.updateDisplay("setSongContent");
-                //mainActivityInterface.getPresenterSettings().setCurrentSection(0);
-                //displayInterface.updateDisplay("showSection");
             } else if (!mainActivityInterface.getSong().getFiletype().equals("XML") ||
                 mainActivityInterface.getSong().getFolder().contains("**Image")) {
                 mainActivityInterface.getPresenterSettings().setCurrentSection(0);
