@@ -993,74 +993,49 @@
     <string name="user_guide">User guide</string>
     <string name="user_guide_lyrics" translatable="false">"[Intro]
  Welcome to OpenSongApp!
- This is an information page to show you some of the features of the app.
- OpenSongApp has many more features across three modes:
-     • Performance Mode – use your Android device as a song book on stage
-     • Stage Mode – control stage display monitors or hook up to a projector
-     • Presentation Mode – hook up to a projector and display lyrics
+ This page shows you some of the features of the app.
+ OpenSongApp has three operating modes:
+ • Performance Mode – behave like a traditional song book
+ • Stage Mode – control stage display monitors/projector
+ • Presenter Mode – full control of a projector
 
 [Menus]
- The left hand slide out song and set menu:
-        • Show all songs and folders on the device
-        • Allows searching and filtering of songs
-        • Show the current editable set
+ Song and set menus are accessed using the hamburger icon
+ The settings menus allow you to access all the app settings
 
- The settings menu: all options/settings.
- The page buttons let you access special song features:
- backing track, auto scroll, metronome, chords, notes, links, and more!
-
-[Get help with all of the cool features…]
- To find out all of the app features,
- please check out the online help pages
- Use \'Help (Online)\' in the options menu under the \'Other\' category to
- visit http://www.opensongapp.com
+[Get help]
+ Click on the ? icon in the app or visit the online manual:
+ https://www.opensongapp.com
 
 [Adding songs]
  You can manually create any song you like.
- The app only comes with this \'song\' by default due to copyright.
-        You can start a song by import from other services:
-     • Desktop OpenSong – I highly recommend syncing using Dropbox
-     • ChordPro files
-     • Ultimate Guitar website (using the import feature)
-     • Chordie website (using the import feature)
-     • SongSelect .usr files
-     • some iOS app song files
- and then edit it to get your OpenSong version.
- Use \'Find new songs\' in the options menu.
+ The app does not come with any songs due to copyright.
+ You can start a song by import from other services:
+ • Desktop OpenSong – I recommend syncing using Dropbox
+ • ChordPro files
+ • Online sources (Ultimate Guitar, Chordie, SongSelect, etc)
+ • some iOS app song files
+ Use the + button in the songs menu to see your options
 
- Songs are stored on your device in OpenSong format
- (XML files without the .xml etension) in the /OpenSong/Songs folder.
- This folder is the storage location you chose when you first ran the app.
- Check out the \'Storage\' category of the options menu to see where this is.
-
+ Songs are stored in OpenSong format (xml files)
+ These are stored in the /OpenSong/Songs folder.
 
 [Edit the song]
- Click on the song title in the menu to preview it.
- This also allows you to quickly edit the song.
+ By default, double tap on the screen to edit a song.
+ Alternatively, click on the song title.
 
 [Chords at work]
  This song has been set as having a key of G.
 .G     D      Em           C      G         G7
  Chord lines (above) start with a full stop/period (.)
  You can set capo display and transpose the chords easily,
- this is done from the \'Chords\' category in the options menu.
- Nashville, European and Do Ré Mi chords are understood.
+ Multiple chord formats are understood.
 
 [Scaling]
  By default OpenSongApp scales to song width.
- You can change the \'Display\' \'Autoscale\' options
- in the options menu.
+ Change this using Settings > Display > Scaling setting
 
-[Sets]
- Add songs to sets using the song/sets menu.
-
-[Customising]
- You can customise themes, fonts, pedals, etc.
- These customisations can be saved as profiles.\n\n
-Check out the categories in the right hand options menu.
-;
- HERE IS AN EXAMPLE OF A SONG
- Edit this song and look at \'Lyrics\' to see how it was done!
+;HERE IS AN EXAMPLE OF A SONG
 
 [Intro]
 .||: G  | D/F#  | Em7  | D  :||

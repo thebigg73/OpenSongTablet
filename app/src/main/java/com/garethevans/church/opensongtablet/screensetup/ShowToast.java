@@ -25,11 +25,13 @@ public class ShowToast {
     private Handler handlerHide;
     private Runnable runnableShow;
     private long messageEndTime = 0;
-    private final long showTime = 3000;
+    private final long showTime = 2500;
+    private String currentMessage = "";
     private Runnable runnableHide = new Runnable() {
         @Override
         public void run() {
             try {
+                currentMessage = "";
                 popupWindow.dismiss();
             } catch (Exception e) {
                 Log.d(TAG,"Couldn't dismiss popupWindow");
@@ -55,7 +57,9 @@ public class ShowToast {
 
     public void doIt(final String message) {
         try {
-            if (message != null && !message.isEmpty()) {
+            // Only proceed if the message is valid and isn't currently shown
+            if (message != null && !message.isEmpty() && !message.equals(currentMessage)) {
+                currentMessage = message;
                 // Toasts with custom layouts are deprecated and look ugly!
                 // Use a more customisable popup window
 
@@ -71,7 +75,7 @@ public class ShowToast {
                 }
 
                 runnableShow = () -> {
-                    if (textToast!=null && popupWindow!=null) {
+                    if (textToast != null && popupWindow != null) {
                         try {
                             textToast.setText(message);
                             popupWindow.showAtLocation(anchor, Gravity.CENTER, 0, 0);
@@ -86,14 +90,16 @@ public class ShowToast {
                 handlerShow = new Handler(Looper.getMainLooper());
                 handlerShow.postDelayed(runnableShow, delayTime);
             }
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     public void doItBottomSheet(final String message, View bsAnchor) {
         try {
-            if (message != null && !message.isEmpty()) {
+            // Only proceed if the message is valid and isn't currently shown
+            if (message != null && !message.isEmpty() && !message.equals(currentMessage)) {
+                currentMessage = message;
                 // Toasts with custom layouts are deprecated and look ugly!
                 // Use a more customisable popup window
 
@@ -109,7 +115,7 @@ public class ShowToast {
                 }
 
                 runnableShow = () -> {
-                    if (textToast!=null && popupWindow!=null) {
+                    if (textToast != null && popupWindow != null) {
                         try {
                             textToast.setText(message);
                             popupWindow.showAtLocation(bsAnchor, Gravity.CENTER, 0, 0);
@@ -123,8 +129,9 @@ public class ShowToast {
                 };
                 handlerShow = new Handler(Looper.getMainLooper());
                 handlerShow.postDelayed(runnableShow, delayTime);
+
             }
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
