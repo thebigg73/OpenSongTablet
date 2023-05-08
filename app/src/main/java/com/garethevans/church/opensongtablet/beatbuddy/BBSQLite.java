@@ -829,25 +829,29 @@ public class BBSQLite extends SQLiteOpenHelper {
                 int song_num = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_SONG_NUM));
                 String hexCode = mainActivityInterface.getBeatBuddy().getSongCode(folder_num, song_num);
                 // If we have a drum kit set, send that too
+                String kitString = "";
                 if (thisSong.getBeatbuddykit() != null && !thisSong.getBeatbuddykit().isEmpty()) {
                     int kitNum = getNumberFromKit(thisSong.getBeatbuddykit());
                     if (kitNum > 0) {
                         Log.d(TAG, "kitNum:" + kitNum + "  kitName:" + thisSong.getBeatbuddykit());
+                        kitString = kitNum + ". " + thisSong.getBeatbuddykit();
                         hexCode += "\n" + mainActivityInterface.getBeatBuddy().getDrumKitCode(kitNum);
                     }
                 }
                 // If we have a song tempo set, send that too
+                String tempoString = "";
                 if (thisSong.getTempo() != null && !thisSong.getTempo().isEmpty()) {
                     String tempo = thisSong.getTempo().replaceAll("\\D", "");
                     if (!tempo.trim().isEmpty()) {
                         int bpm = Integer.parseInt(tempo);
+                        tempoString = c.getString(R.string.tempo) + ": " + bpm;
                         hexCode += "\n" + mainActivityInterface.getBeatBuddy().getTempoCode(bpm);
                     }
                 }
                 Log.d(TAG, "hexCode:" + hexCode);
                 mainActivityInterface.getMidi().sendMidiHexSequence(hexCode);
-                String message = c.getString(R.string.beat_buddy) + " - " + c.getString(R.string.folder) + ":" + folder_num
-                        + " " + c.getString(R.string.song) + ":" + song_num;
+                String message = c.getString(R.string.beat_buddy) + " - " + c.getString(R.string.folder) + ": " + folder_num
+                        + " " + c.getString(R.string.song) + ": " + song_num + kitString + tempoString;
                 mainActivityInterface.getShowToast().doIt(message);
             }
             closeCursor(cursor);

@@ -161,7 +161,9 @@ public class CurrentSet {
                         value = setFolders.get(position);
                         break;
                     case "filename":
-                        value = setFilenames.get(position);
+                        if (setFilenames!=null && setFilenames.size()>position) {
+                            value = setFilenames.get(position);
+                        }
                         break;
                     case "key":
                         value = setKeys.get(position);

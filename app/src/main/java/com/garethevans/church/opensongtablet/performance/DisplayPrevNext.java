@@ -76,6 +76,10 @@ public class DisplayPrevNext {
         this.next = next;
         this.prevFAB = prevFAB;
         this.nextFAB = nextFAB;
+        this.prevFAB.setFocusable(false);
+        this.prevFAB.setFocusableInTouchMode(false);
+        this.nextFAB.setFocusable(false);
+        this.nextFAB.setFocusableInTouchMode(false);
         updateShow();
         updateColors();
     }
