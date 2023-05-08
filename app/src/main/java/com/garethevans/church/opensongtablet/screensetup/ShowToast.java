@@ -17,6 +17,7 @@ import com.google.android.material.textview.MaterialTextView;
 public class ShowToast {
 
     private final View anchor;
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "ShowToast";
     private final PopupWindow popupWindow;
     private final MaterialTextView textToast;
@@ -24,6 +25,7 @@ public class ShowToast {
     private Handler handlerHide;
     private Runnable runnableShow;
     private long messageEndTime = 0;
+    private final long showTime = 3000;
     private Runnable runnableHide = new Runnable() {
         @Override
         public void run() {
@@ -47,6 +49,8 @@ public class ShowToast {
         popupWindow.setFocusable(false);
         popupWindow.setBackgroundDrawable(null);
         textToast = view.findViewById(R.id.textToast);
+        textToast.setOnClickListener(tv -> popupWindow.dismiss());
+
     }
 
     public void doIt(final String message) {
@@ -61,7 +65,7 @@ public class ShowToast {
                 if (currTime > messageEndTime) {
                     // Good to go now
                     delayTime = 0;
-                    messageEndTime = currTime + 2000;
+                    messageEndTime = currTime + showTime;
                 } else {
                     delayTime = messageEndTime - currTime + 500;
                 }
@@ -71,9 +75,9 @@ public class ShowToast {
                         try {
                             textToast.setText(message);
                             popupWindow.showAtLocation(anchor, Gravity.CENTER, 0, 0);
-                            messageEndTime = System.currentTimeMillis() + 2000;
+                            messageEndTime = System.currentTimeMillis() + showTime;
                             handlerHide = new Handler(Looper.getMainLooper());
-                            handlerHide.postDelayed(runnableHide, 2000);
+                            handlerHide.postDelayed(runnableHide, showTime);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -99,7 +103,7 @@ public class ShowToast {
                 if (currTime > messageEndTime) {
                     // Good to go now
                     delayTime = 0;
-                    messageEndTime = currTime + 2000;
+                    messageEndTime = currTime + showTime;
                 } else {
                     delayTime = messageEndTime - currTime + 500;
                 }
@@ -109,9 +113,9 @@ public class ShowToast {
                         try {
                             textToast.setText(message);
                             popupWindow.showAtLocation(bsAnchor, Gravity.CENTER, 0, 0);
-                            messageEndTime = System.currentTimeMillis() + 2000;
+                            messageEndTime = System.currentTimeMillis() + showTime;
                             handlerHide = new Handler(Looper.getMainLooper());
-                            handlerHide.postDelayed(runnableHide, 2000);
+                            handlerHide.postDelayed(runnableHide, showTime);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
