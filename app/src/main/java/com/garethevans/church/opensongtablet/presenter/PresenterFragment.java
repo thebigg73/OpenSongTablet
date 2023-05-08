@@ -36,13 +36,13 @@ public class PresenterFragment extends Fragment {
     private final String TAG = "PresenterFragment";
     private boolean landscape;
     private String presenter_mode_string="", mainfoldername_string="", song_string="",
-            extra_settings_string="";
+            extra_settings_string="", nearby_large_file_string;
     private int sendSongDelay = 0;
     private final Handler sendSongAfterDelayHandler = new Handler();
     private final Runnable sendSongAfterDelayRunnable = () -> {
         // IV - The send is always called by the 'if' and will return true if a large file has been sent
         if (mainActivityInterface.getNearbyConnections().sendSongPayload()) {
-            //TODO v5 disaplayed a message saying the song is large?
+            mainActivityInterface.getShowToast().doIt(nearby_large_file_string);
         }
         sendSongDelay = 3000;
     };
@@ -149,6 +149,7 @@ public class PresenterFragment extends Fragment {
             mainfoldername_string = getString(R.string.mainfoldername);
             song_string = getString(R.string.song);
             extra_settings_string = getString(R.string.extra_settings);
+            nearby_large_file_string = getString(R.string.nearby_large_file);
         }
     }
     @Override

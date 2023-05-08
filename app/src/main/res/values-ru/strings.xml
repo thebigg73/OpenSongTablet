@@ -492,6 +492,7 @@
     <string name="my_church">"Импорт семплов церкви"</string>
     <string name="nearby_host_menu_only">Ожидание только новых клиентов, когда эта страница видна</string>
     <string name="nearby_host_menu_only_info">Запросы на подключение не будут отображаться, если вы не находитесь на этой странице</string>
+    <string name="nearby_large_file">К этому большому файлу с песней открыт доступ</string>
     <string name="network_error">Ошибка сети</string>
     <string name="new_category">Новая категория</string>
     <string name="new_folder">Создать новую папку</string>

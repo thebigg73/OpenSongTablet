@@ -492,6 +492,7 @@
     <string name="my_church">"Εισάγετε δείγματα τραγουδιών της Εκκλησίας"</string>
     <string name="nearby_host_menu_only">Ακούστε νέους πελάτες μόνο όταν αυτή η σελίδα είναι ορατή</string>
     <string name="nearby_host_menu_only_info">Τα αιτήματα σύνδεσης δεν θα εμφανίζονται εκτός εάν βρίσκεστε σε αυτήν τη σελίδα</string>
+    <string name="nearby_large_file">Αυτό το μεγάλο αρχείο τραγουδιού κοινοποιείται</string>
     <string name="network_error">"Σφάλμα δικτύου"</string>
     <string name="new_category">"Νέα κατηγορία"</string>
     <string name="new_folder">"Δημιουργία νέου φακέλου τραγουδιού"</string>

@@ -647,6 +647,7 @@
     <string name="my_church">Import Church sample songs</string>
     <string name="nearby_host_menu_only">Only listen for new clients when this page is visible</string>
     <string name="nearby_host_menu_only_info">Connection requests will not be shown unless you are on this page</string>
+    <string name="nearby_large_file">This large song file is being shared</string>
     <string name="network_error">Network error</string>
     <string name="new_category">New category</string>
     <string name="new_folder">Create new song folder</string>

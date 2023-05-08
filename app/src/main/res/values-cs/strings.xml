@@ -492,6 +492,7 @@
     <string name="my_church">"Importovat církevní vzorové písně"</string>
     <string name="nearby_host_menu_only">Poslouchat nové klienty, pouze když je tato stránka viditelná</string>
     <string name="nearby_host_menu_only_info">Požadavky na připojení nebudou zobrazeny, dokud nebudete na této stránce</string>
+    <string name="nearby_large_file">Tento velký soubor písní je sdílen</string>
     <string name="network_error">"Chyba sítě"</string>
     <string name="new_category">"Nová kategorie"</string>
     <string name="new_folder">"Vytvořit novou složku písně"</string>

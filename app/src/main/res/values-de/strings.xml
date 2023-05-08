@@ -492,6 +492,7 @@
     <string name="my_church">"Kirchen Beispielsongs importieren"</string>
     <string name="nearby_host_menu_only">Warten Sie nur auf neue Clients, wenn diese Seite sichtbar ist</string>
     <string name="nearby_host_menu_only_info">Verbindungsanfragen werden nur angezeigt, wenn Sie sich auf dieser Seite befinden</string>
+    <string name="nearby_large_file">Diese große Songdatei wird geteilt</string>
     <string name="network_error">"Netzwerkfehler"</string>
     <string name="new_category">"Neue Kategorie"</string>
     <string name="new_folder">"Neuen Song-Ordner erstellen"</string>

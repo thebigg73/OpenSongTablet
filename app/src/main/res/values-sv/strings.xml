@@ -492,6 +492,7 @@
     <string name="my_church">"Importera kyrkans provlåtar"</string>
     <string name="nearby_host_menu_only">Lyssna bara på nya klienter när den här sidan är synlig</string>
     <string name="nearby_host_menu_only_info">Anslutningsförfrågningar kommer inte att visas om du inte är på den här sidan</string>
+    <string name="nearby_large_file">Denna stora låtfil delas</string>
     <string name="network_error">"Nätverksfel"</string>
     <string name="new_category">"Ny kategori"</string>
     <string name="new_folder">"Skapa ny låtmapp"</string>

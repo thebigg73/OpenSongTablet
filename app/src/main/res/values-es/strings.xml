@@ -492,6 +492,7 @@
     <string name="my_church">"Canciones de la muestra de la iglesia de la importación"</string>
     <string name="nearby_host_menu_only">Solo escuche a los nuevos clientes cuando esta página esté visible</string>
     <string name="nearby_host_menu_only_info">Las solicitudes de conexión no se mostrarán a menos que esté en esta página</string>
+    <string name="nearby_large_file">Este archivo de canción grande se está compartiendo</string>
     <string name="network_error">"Error de red"</string>
     <string name="new_category">"Nueva categoría"</string>
     <string name="new_folder">"Crear carpeta nueva canción"</string>

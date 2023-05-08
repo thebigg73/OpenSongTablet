@@ -492,6 +492,7 @@
     <string name="my_church">"Import Church exemple de chansons"</string>
     <string name="nearby_host_menu_only">N\'écoutez les nouveaux clients que lorsque cette page est visible</string>
     <string name="nearby_host_menu_only_info">Les demandes de connexion ne seront pas affichées sauf si vous êtes sur cette page</string>
+    <string name="nearby_large_file">Ce gros fichier de chanson est en cours de partage</string>
     <string name="network_error">"Erreur de réseau"</string>
     <string name="new_category">"Nouvelle catégorie"</string>
     <string name="new_folder">"Créer un nouveau dossier de la chanson"</string>

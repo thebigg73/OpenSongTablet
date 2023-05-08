@@ -77,14 +77,14 @@ public class PerformanceFragment extends Fragment {
     private final Runnable dealWithExtraStuffOnceSettledRunnable = this::dealWithExtraStuffOnceSettled;
 
     private String mainfoldername="", mode_performance="", mode_presenter="", mode_stage="",
-            not_allowed="", image_string="";
+            not_allowed="", image_string="", nearby_large_file_string="";
     private int sendSongDelay = 0;
     private final Handler sendSongAfterDelayHandler = new Handler(),
         autoHideHighlighterHandler = new Handler();
     private final Runnable sendSongAfterDelayRunnable = () -> {
         // IV - The send is always called by the 'if' and will return true if a large file has been sent
         if (mainActivityInterface.getNearbyConnections().sendSongPayload()) {
-            //TODO v5 displayed a message saying the song is large?
+            mainActivityInterface.getShowToast().doIt(nearby_large_file_string);
         }
         sendSongDelay = 3000;
     };
@@ -237,6 +237,7 @@ public class PerformanceFragment extends Fragment {
             mode_stage = getString(R.string.mode_stage);
             not_allowed = getString(R.string.not_allowed);
             image_string= getString(R.string.image);
+            nearby_large_file_string = getString(R.string.nearby_large_file);
         }
     }
 
@@ -1250,11 +1251,11 @@ public class PerformanceFragment extends Fragment {
 
     public void toggleScale() {
         // IV - View may no longer be valid
-        if (myView.recyclerView != null && myView.recyclerView.getVisibility() == View.VISIBLE) {
+        if (myView!=null && myView.recyclerView.getVisibility() == View.VISIBLE) {
             // Resets the zoom
             myView.recyclerView.toggleScale();
         } else {
-            if (myView.zoomLayout != null) {
+            if (myView != null) {
                 // Toggles between different zooms
                 myView.zoomLayout.toggleScale();
             }

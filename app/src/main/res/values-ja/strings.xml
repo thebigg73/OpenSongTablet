@@ -492,6 +492,7 @@
     <string name="my_church">"教会のサンプル曲をインポートする"</string>
     <string name="nearby_host_menu_only">このページが表示されている場合にのみ、新しいクライアントをリッスンします</string>
     <string name="nearby_host_menu_only_info">このページを表示していない限り、接続要求は表示されません</string>
+    <string name="nearby_large_file">この大きな曲ファイルは共有されています</string>
     <string name="network_error">"ネットワークエラー"</string>
     <string name="new_category">"新しいカテゴリ"</string>
     <string name="new_folder">"新曲のフォルダを作成します"</string>

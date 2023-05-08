@@ -492,6 +492,7 @@
     <string name="my_church">"Importar músicas de amostra da Igreja"</string>
     <string name="nearby_host_menu_only">Escute novos clientes apenas quando esta página estiver visível</string>
     <string name="nearby_host_menu_only_info">As solicitações de conexão não serão mostradas a menos que você esteja nesta página</string>
+    <string name="nearby_large_file">Este grande arquivo de música está sendo compartilhado</string>
     <string name="network_error">"Erro de rede"</string>
     <string name="new_category">"Nova categoria"</string>
     <string name="new_folder">"Criar uma pasta nova canção"</string>

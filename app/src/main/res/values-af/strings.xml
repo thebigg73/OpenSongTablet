@@ -493,6 +493,7 @@
     <string name="nearby_host_menu_only">Luister net na nuwe kliënte wanneer hierdie bladsy sigbaar is</string>
     <string name="nearby_host_menu_only_info">Verbindingsversoeke sal nie gewys word nie, tensy jy op hierdie bladsy is</string>
     <string name="network_error">"Netwerk fout"</string>
+    <string name="nearby_large_file">Hierdie groot liedlêer word gedeel</string>
     <string name="new_category">"Nuwe kategorie"</string>
     <string name="new_folder">"Skep nuwe lied gids"</string>
     <string name="new_folder_add">"Nuwe gids"</string>

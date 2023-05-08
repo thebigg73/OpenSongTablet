@@ -492,6 +492,7 @@
     <string name="my_church">Імпорт пісень з файлу церкви</string>
     <string name="nearby_host_menu_only">Слухайте тільки нових клієнтів, коли ця сторінка видно</string>
     <string name="nearby_host_menu_only_info">Запити на підключення не відображатимуться, якщо ви не перебуваєте на цій сторінці</string>
+    <string name="nearby_large_file">Цей великий файл пісні ділиться</string>
     <string name="network_error">Помилка мережі</string>
     <string name="new_category">Нова категорія</string>
     <string name="new_folder">Створення нової папки</string>

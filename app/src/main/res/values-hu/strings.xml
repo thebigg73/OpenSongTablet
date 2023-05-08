@@ -492,6 +492,7 @@
     <string name="my_church">"Import Church minta dalok"</string>
     <string name="nearby_host_menu_only">Csak akkor hallgasson új ügyfelekre, ha ez az oldal látható</string>
     <string name="nearby_host_menu_only_info">A csatlakozási kérelmek csak akkor jelennek meg, ha ezen az oldalon tartózkodik</string>
+    <string name="nearby_large_file">Ezt a nagy dalfájlt megosztják</string>
     <string name="network_error">"Hálózati hiba"</string>
     <string name="new_category">Új kategória</string>
     <string name="new_folder">"Hozzon létre új dalt mappa"</string>

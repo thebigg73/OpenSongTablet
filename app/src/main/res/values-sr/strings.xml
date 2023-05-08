@@ -492,6 +492,7 @@
     <string name="my_church">Uvoz primera crkvenih pesama</string>
     <string name="nearby_host_menu_only">Slušajte nove klijente samo kada je ova stranica vidljiva</string>
     <string name="nearby_host_menu_only_info">Zahtevi za povezivanje neće biti prikazani osim ako niste na ovoj stranici</string>
+    <string name="nearby_large_file">Ova velika datoteka pesme se deli</string>
     <string name="network_error">Pogreška mreže</string>
     <string name="new_category">Nova kategorija</string>
     <string name="new_folder">Napraviti novu fasciklu pesama</string>

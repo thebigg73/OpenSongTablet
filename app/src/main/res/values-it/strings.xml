@@ -492,6 +492,7 @@
     <string name="my_church">"Importare canzoni di esempio Church"</string>
     <string name="nearby_host_menu_only">Ascolta i nuovi clienti solo quando questa pagina è visibile</string>
     <string name="nearby_host_menu_only_info">Le richieste di connessione non verranno mostrate a meno che tu non sia in questa pagina</string>
+    <string name="nearby_large_file">Questo file di grandi dimensioni è stato condiviso</string>
     <string name="network_error">"Errore di rete"</string>
     <string name="new_category">"Nuova categoria"</string>
     <string name="new_folder">"Crea nuova cartella canzone"</string>

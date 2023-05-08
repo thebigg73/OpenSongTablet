@@ -492,6 +492,7 @@
     <string name="my_church">"Importuj przykładowe piosenki z Kościoła"</string>
     <string name="nearby_host_menu_only">Nasłuchuj nowych klientów tylko wtedy, gdy ta strona jest widoczna</string>
     <string name="nearby_host_menu_only_info">Żądania połączenia nie będą wyświetlane, chyba że jesteś na tej stronie</string>
+    <string name="nearby_large_file">Udostępniam ten duży plik utworu</string>
     <string name="network_error">"Błąd sieci"</string>
     <string name="new_category">"Nowa kategoria"</string>
     <string name="new_folder">"Utwórz nowy folder piosenkę"</string>
