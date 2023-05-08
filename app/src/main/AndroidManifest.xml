@@ -130,6 +130,8 @@
                 <!--<action android:name="android.intent.action.SEND" />-->
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.OPENABLE" />
                 <data android:scheme="file"/>
                 <data android:scheme="content"/>
                 <data android:host="*"/>
@@ -149,48 +151,61 @@
                 <data android:pathPattern=".*\\..*\\.osb"/>
                 <data android:pathPattern=".*\\..*\\..*\\.osb"/>
                 <data android:pathPattern=".*\\..*\\..*\\..*\\.osb"/>
+                <data android:pathSuffix=".osb" />
                 <data android:pathPattern=".*\\.osbs"/>
                 <data android:pathPattern=".*\\..*\\.osbs"/>
                 <data android:pathPattern=".*\\..*\\..*\\.osbs"/>
                 <data android:pathPattern=".*\\..*\\..*\\..*\\.osbs"/>
+                <data android:pathSuffix=".osbs" />
                 <data android:pathPattern=".*\\.ost"/>
                 <data android:pathPattern=".*\\..*\\.ost"/>
                 <data android:pathPattern=".*\\..*\\..*\\.ost"/>
                 <data android:pathPattern=".*\\..*\\..*\\..*\\.ost"/>
+                <data android:pathSuffix=".ost" />
                 <data android:pathPattern=".*\\.osts"/>
                 <data android:pathPattern=".*\\..*\\.osts"/>
                 <data android:pathPattern=".*\\..*\\..*\\.osts"/>
                 <data android:pathPattern=".*\\..*\\..*\\..*\\.osts"/>
+                <data android:pathSuffix=".osts" />
                 <data android:pathPattern=".*\\.onsong"/>
                 <data android:pathPattern=".*\\..*\\.onsong"/>
                 <data android:pathPattern=".*\\..*\\..*\\.onsong"/>
                 <data android:pathPattern=".*\\..*\\..*\\..*\\.onsong"/>
+                <data android:pathSuffix=".onsong" />
                 <data android:pathPattern=".*\\.backup"/>
                 <data android:pathPattern=".*\\..*\\.backup"/>
                 <data android:pathPattern=".*\\..*\\..*\\.backup"/>
                 <data android:pathPattern=".*\\..*\\..*\\..*\\.backup"/>
+                <data android:pathSuffix=".backup" />
                 <data android:pathPattern=".*\\.chordpro"/>
                 <data android:pathPattern=".*\\..*\\.chordpro"/>
                 <data android:pathPattern=".*\\..*\\..*\\.chordpro"/>
                 <data android:pathPattern=".*\\..*\\..*\\..*\\.chordpro"/>
+                <data android:pathSuffix=".chordpro" />
                 <data android:pathPattern=".*\\.chopro"/>
                 <data android:pathPattern=".*\\..*\\.chopro"/>
                 <data android:pathPattern=".*\\..*\\..*\\.chopro"/>
                 <data android:pathPattern=".*\\..*\\..*\\..*\\.chopro"/>
+                <data android:pathSuffix=".chopro" />
                 <data android:pathPattern=".*\\.cho"/>
                 <data android:pathPattern=".*\\..*\\.cho"/>
                 <data android:pathPattern=".*\\..*\\..*\\.cho"/>
                 <data android:pathPattern=".*\\..*\\..*\\..*\\.cho"/>
+                <data android:pathSuffix=".cho" />
                 <data android:pathPattern=".*\\.pro"/>
                 <data android:pathPattern=".*\\..*\\.pro"/>
                 <data android:pathPattern=".*\\..*\\..*\\.pro"/>
                 <data android:pathPattern=".*\\..*\\..*\\..*\\.pro"/>
+                <data android:pathSuffix=".pro" />
+                <data android:pathPattern=".*"/>
 
                 <!-- I could include this to allow opening song files with no extensions, however,
                      this would then allow all files to be matched, which would annoy people
-                <data android:pathPattern=".*"/>
+
                 <data android:mimeType="*/*"/>
+                <data android:pathPattern=".*"/>
                 -->
+
 
             </intent-filter>
 
