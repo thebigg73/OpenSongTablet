@@ -834,7 +834,7 @@ public class BBSQLite extends SQLiteOpenHelper {
                     int kitNum = getNumberFromKit(thisSong.getBeatbuddykit());
                     if (kitNum > 0) {
                         Log.d(TAG, "kitNum:" + kitNum + "  kitName:" + thisSong.getBeatbuddykit());
-                        kitString = kitNum + ". " + thisSong.getBeatbuddykit();
+                        kitString = "\n" + kitNum + ". " + thisSong.getBeatbuddykit();
                         hexCode += "\n" + mainActivityInterface.getBeatBuddy().getDrumKitCode(kitNum);
                     }
                 }
@@ -844,14 +844,43 @@ public class BBSQLite extends SQLiteOpenHelper {
                     String tempo = thisSong.getTempo().replaceAll("\\D", "");
                     if (!tempo.trim().isEmpty()) {
                         int bpm = Integer.parseInt(tempo);
-                        tempoString = c.getString(R.string.tempo) + ": " + bpm;
+                        tempoString = "\n" + c.getString(R.string.tempo) + ": " + bpm;
                         hexCode += "\n" + mainActivityInterface.getBeatBuddy().getTempoCode(bpm);
                     }
                 }
+                String timesigString = "";
+                // If valid the timeSig isn't empty, contains '/' and will have two non-empty bits when split
+                if (thisSong.getTimesig() != null && thisSong.getTimesig().contains("/")) {
+                    String[] timeSigBits = thisSong.getTimesig().split("/");
+                    Log.d(TAG,"timeSigBits.length():"+timeSigBits.length);
+                    if (timeSigBits.length == 2 && timeSigBits[0].length() > 0 && timeSigBits[1].length() > 0) {
+                        String numerator = timeSigBits[0].replaceAll("\\D", "");
+                        String denominator = timeSigBits[1].replaceAll("\\D", "");
+                        if (!numerator.isEmpty() && !denominator.isEmpty()) {
+                            int num = Integer.parseInt(numerator);
+                            int denom = Integer.parseInt(denominator);
+                            Log.d(TAG,"num:"+num+"  denom:"+denom);
+                            // Check the denominator is a factor of 2
+                            double n = Math.log(denom) / Math.log(2);
+                            if ((int) (Math.ceil(n)) == (int) (Math.floor(n))) {
+                                // Ok, good to proceed.  Prepare the code
+                                // Numerator is simply the hex equiv
+                                // Denominator is the double calculated from 2^n
+                                Log.d(TAG,"n:"+n);
+                                hexCode += "\n0xF0 0x7F 0x7F 0x03 0x02 0x04 " +
+                                        "0x" + String.format("%02X", num) + " " +
+                                        "0x" + String.format("%02X", (int)n) +
+                                        " 0x18 0x08 0xF7";
+                                timesigString = "\n" +  c.getString(R.string.time_signature) + ": "+thisSong.getTimesig();
+                            }
+                        }
+                    }
+                }
+
                 Log.d(TAG, "hexCode:" + hexCode);
                 mainActivityInterface.getMidi().sendMidiHexSequence(hexCode);
                 String message = c.getString(R.string.beat_buddy) + " - " + c.getString(R.string.folder) + ": " + folder_num
-                        + " " + c.getString(R.string.song) + ": " + song_num + kitString + tempoString;
+                        + " " + c.getString(R.string.song) + ": " + song_num + kitString + tempoString + timesigString;
                 mainActivityInterface.getShowToast().doIt(message);
             }
             closeCursor(cursor);

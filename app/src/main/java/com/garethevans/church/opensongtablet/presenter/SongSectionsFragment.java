@@ -37,9 +37,7 @@ public class SongSectionsFragment extends Fragment {
     private Timer timer;
     private TimerTask timerTask;
     private ImageSlideAdapter imageSlideAdapter;
-    private LinearLayoutManager linearLayoutManager;
     private String deeplink_edit_string="", start_string="", is_not_set_string="", stop_string="";
-    private boolean trimWordSpacing;
 
     @Override
     public void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
@@ -72,7 +70,7 @@ public class SongSectionsFragment extends Fragment {
 
         // Set up song info layout to only show minimal info in simple format
         if (getContext()!=null) {
-            linearLayoutManager = new LinearLayoutManager(getContext());
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
             myView.recyclerView.setLayoutManager(linearLayoutManager);
             myView.recyclerView.setHasFixedSize(true);
             myView.songInfo.setupLayout(getContext(), mainActivityInterface, false);
@@ -105,7 +103,6 @@ public class SongSectionsFragment extends Fragment {
             start_string = getString(R.string.start);
             is_not_set_string = getString(R.string.is_not_set);
             stop_string = getString(R.string.stop);
-            trimWordSpacing = mainActivityInterface.getPreferences().getMyPreferenceBoolean("trimWordSpacing", true);
         }
     }
     public void showSongInfo() {
