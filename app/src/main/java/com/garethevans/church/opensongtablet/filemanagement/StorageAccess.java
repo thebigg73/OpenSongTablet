@@ -1191,7 +1191,11 @@ public class StorageAccess {
                 location[0] = "Slides";
                 location[1] = "_cache";
             }
+            if (folder.contains("_cache")) {
+                location[1] = "_cache";
+            }
         }
+
         return location;
     }
     public void lollipopCreateFileForOutputStream(boolean deleteOld, Uri uri, String mimeType,
