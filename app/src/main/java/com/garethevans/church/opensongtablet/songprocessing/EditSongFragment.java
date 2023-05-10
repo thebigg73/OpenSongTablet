@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -218,11 +217,6 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
                 mainActivityInterface.getTempSong().setTitle(mainActivityInterface.getTempSong().getFilename());
             }
 
-            // We need to check we aren't saving variations, etc.
-            if (mainActivityInterface.getWhattodo().equals("editActualVariation")) {
-
-            }
-            Log.d(TAG,"folder/filename:"+mainActivityInterface.getTempSong().getFolder()+" / "+mainActivityInterface.getTempSong().getFilename());
             if (oktoproceed && mainActivityInterface.getSaveSong().doSave(mainActivityInterface.getTempSong())) {
                 // If successful, go back to the home page.  Otherwise stay here and await user decision from toast
                 handler.post(() -> mainActivityInterface.navHome());
