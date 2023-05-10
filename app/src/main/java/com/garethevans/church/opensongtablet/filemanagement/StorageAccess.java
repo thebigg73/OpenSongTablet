@@ -80,7 +80,6 @@ public class StorageAccess {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
     }
 
-
     // This gets the uri for the uriTreeHome (the uri of the ..../OpenSong folder
     // This may or may not be the same as uriTree as this could be the parent folder
     public Uri homeFolder(Uri uri) {
@@ -258,22 +257,6 @@ public class StorageAccess {
 
         setUriTreeHome(uriTreeHome);
 
-        /* Replaced this code to help track issue where OpenSong directory keeps being created
-        Log.d(TAG,"createOrCheckRootFolders()  uriTreeHome:"+uriTreeHome);
-        // Check the OpenSong folder exists (may be specified in the uriTree and/or uriTreeHome
-        if (uriTree != null && uriTree.getLastPathSegment() != null &&
-                (!uriTree.getLastPathSegment().endsWith("OpenSong") || !uriTree.getLastPathSegment().endsWith("OpenSong/"))) {
-            // We need to check the uri points to the OpenSong folder
-            if (!uriExists(uriTreeHome)) {
-                try {
-                    uriTreeHome = DocumentsContract.createDocument(c.getContentResolver(), uriTree, DocumentsContract.Document.MIME_TYPE_DIR, "OpenSong");
-                } catch (Exception e) {
-                    Log.d(TAG, "Unable to create OpenSong folder at " + uriTree);
-                }
-            }
-        }*/
-
-        Log.d(TAG,"uriTreeHome:"+uriTreeHome);
         // Go through the main folders and try to create them
         // We have a reference to the OpenSong/ folder now from above
         if (documentFile!=null) {
@@ -295,16 +278,6 @@ public class StorageAccess {
                         stringBuilder.append(" - Found, so skip:").append(dfFolder.getUri());
                     }
 
-                    // Document contracts wasn't doing this for some users for some reason
-                    // It seemed to be that the uriExists() call was always false and recreated folders
-                    /*Uri thisFolder = getUriForItem(folder, "", "");
-                    stringBuilder.append("folder:").append(folder).append("  uri:").append(thisFolder);
-                    if (!uriExists(thisFolder)) {
-                        DocumentsContract.createDocument(c.getContentResolver(), uriTreeHome, DocumentsContract.Document.MIME_TYPE_DIR, folder);
-                        stringBuilder.append(" - didn't exist, so created\n");
-                    } else {
-                        stringBuilder.append(" - already existed, so do nothing\n");
-                    }*/
                 } catch (Exception e) {
                     Log.d(TAG, folder + " error creating");
                     stringBuilder.append(" - error creating\n");
@@ -339,22 +312,6 @@ public class StorageAccess {
                         stringBuilder.append(" - parent folder didn't exist, so can't create _cache");
                     }
 
-                    /*Uri dirUri = getUriForItem(bits[0], "", "");
-                    Uri thisFolder = getUriForItem(bits[0], bits[1], "");
-                    stringBuilder.append("dirUri:").append(dirUri).append("  bits[0]:").append(bits[0]);
-                    stringBuilder.append("thisFolder:").append(thisFolder).append("  bits[0]/bits[1]").append(bits[1]);
-                    if (!uriExists(thisFolder)) {
-                        try {
-                            stringBuilder.append(" - doesn't exist, so creating - newuri:");
-                            Uri nu = DocumentsContract.createDocument(c.getContentResolver(), dirUri, DocumentsContract.Document.MIME_TYPE_DIR, bits[1]);
-                            stringBuilder.append(nu);
-                        } catch (Exception e3) {
-                            Log.d(TAG, "Error creating folder at " + thisFolder);
-                            stringBuilder.append(" - error creating\n");
-                        }
-                    } else {
-                        stringBuilder.append(" - already exists\n");
-                    }*/
                 } catch (Exception e2) {
                     Log.d(TAG, "Error creating cache: " + folder);
                     stringBuilder.append("\nError creating cache:").append(folder);
@@ -410,9 +367,6 @@ public class StorageAccess {
         }
     }
 
-    public DocumentFile getUriTreeDF() {
-        return uriTreeDF;
-    }
     public DocumentFile getSongsDF() {
         return songsDF;
     }
@@ -986,60 +940,6 @@ public class StorageAccess {
         } else {
             return null;
         }
-
-        /*// Get the home folder as our start point
-        Uri returnUri = uriTreeHome;
-        if (uriTreeHome == null) {
-            uriTreeHome = homeFolder(null);
-            returnUri = uriTreeHome;
-        }
-
-        // Figure out the uri at the folder location
-        if (uriTree!=null) {
-            DocumentFile documentFile = DocumentFile.fromTreeUri(c, uriTreeHome);
-            if (documentFile != null) {
-                StringBuilder appendLocation = new StringBuilder();
-                // We know this exists already, so should the default folders
-                // These are checked at boot using createOrCheckRootFolders()
-                if (folder != null && !folder.isEmpty()) {
-                    folder = folder.replace("/", "");
-                    appendLocation.append(folder).append("/");
-                }
-
-                // Now go through the subfolder(s)
-                if (subfolder != null && !subfolder.equals(c.getString(R.string.mainfoldername)) && !subfolder.equals("MAIN")) {
-                    String[] sfs = subfolder.split("/");
-                    for (String sf : sfs) {
-                        if (sf != null && !sf.equals("") && !sf.equals(c.getString(R.string.mainfoldername)) && !sf.equals("MAIN")) {
-                            appendLocation.append(sf).append("/");
-                        }
-                    }
-                }
-
-                // Now add the filename
-                if (filename != null && !filename.equals("")) {
-                    // Might have sent subfolder info
-                    String[] sfs = filename.split("/");
-                    for (String sf : sfs) {
-                        if (sf != null && !sf.equals("") && !sf.equals(c.getString(R.string.mainfoldername)) && !sf.equals("MAIN")) {
-                            appendLocation.append(sf).append("/");
-                        }
-                    }
-                }
-                // Now we need to fix the appended location
-                String appendLocationString = appendLocation.toString();
-                appendLocationString = appendLocationString.replace("//", "/");
-                if (appendLocationString.endsWith("/")) {
-                    appendLocationString = appendLocationString.substring(0, appendLocationString.lastIndexOf("/"));
-                }
-
-                returnUri = Uri.parse(uriTreeHome + "%2F" + Uri.encode(appendLocationString));
-            }
-            Log.d(TAG,"returnUri:"+returnUri);
-            return returnUri;
-        } else {
-            return null;
-        }*/
     }
     private Uri getUriForItem_File(String folder, String subfolder, String filename) {
         String s = stringForFile(folder);
@@ -1141,30 +1041,9 @@ public class StorageAccess {
         String[] fixLocations = getActualFoldersFromNice(thisSong.getFolder());
         //ArrayList<String> newLocation = fixNonSongs(thisSong.getFolder());
         // Write the string file
-        Log.d(TAG,"fixedFolders:"+fixLocations[0]+ " / " +
-                fixLocations[1] + " / " + thisSong.getFilename());
         return doStringWriteToFile(fixLocations[0], fixLocations[1],
                 thisSong.getFilename(),
                 mainActivityInterface.getProcessSong().getXML(thisSong));
-    }
-    public ArrayList<String> fixNonSongs(String folderToCheck) {
-        // Return any subfolder and change the 'Songs' folder as required
-        ArrayList<String> fixedFolders = new ArrayList<>();
-        String where = "Songs";
-        if (folderToCheck.contains("../") || folderToCheck.contains("**")) {
-            where = folderToCheck.replace("../","");
-            where = where.replace("**","");
-            if (where.contains("_cache")) {
-                folderToCheck = "_cache";
-                where = where.substring(0,where.indexOf("/_cache"));
-            } else {
-                //where = folderToCheck;
-                folderToCheck = "";
-            }
-        }
-        fixedFolders.add(where);
-        fixedFolders.add(folderToCheck);
-        return fixedFolders;
     }
 
     public String[] getActualFoldersFromNice(String folder) {
@@ -1195,7 +1074,6 @@ public class StorageAccess {
                 location[1] = "_cache";
             }
         }
-
         return location;
     }
     public void lollipopCreateFileForOutputStream(boolean deleteOld, Uri uri, String mimeType,
@@ -1386,16 +1264,16 @@ public class StorageAccess {
         }
     }
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public boolean createFile(String mimeType, String folder, String subfolder, String filename) {
+    public void createFile(String mimeType, String folder, String subfolder, String filename) {
         String[] fixedfolders = fixFoldersAndFiles(folder, subfolder, filename);
         if (lollipopOrLater()) {
-            return createFile_SAF(mimeType, fixedfolders[0], fixedfolders[1], fixedfolders[2]);
+            createFile_SAF(mimeType, fixedfolders[0], fixedfolders[1], fixedfolders[2]);
         } else {
-            return createFile_File(fixedfolders[0], fixedfolders[1], fixedfolders[2]);
+            createFile_File(fixedfolders[0], fixedfolders[1], fixedfolders[2]);
         }
     }
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    private boolean createFile_SAF(String mimeType, String folder, String subfolder, String filename) {
+    private void createFile_SAF(String mimeType, String folder, String subfolder, String filename) {
         // Try this instead
         Uri parentUri;
         folder = removeStartAndEndSlashes(folder);
@@ -1436,22 +1314,6 @@ public class StorageAccess {
             stringBuilder.append("\nFolder creation required.\nparentUri:").append(parentUri);
 
             // Only create if it doesn't exist
-            /*if (!uriExists(uritest)) {
-                if (!docContractCreate(parentUri, mimeType, foldertocreate)) {
-                    // Error (likely parent directory doesn't exist
-                    boolean created = false;
-                    // Go through each folder and create the ones we need starting
-                    String[] bits = subfolder.split("/");
-                    String bit = "";
-                    for (String s : bits) {
-                        parentUri = getUriForItem(folder, bit, "");
-                        docContractCreate(parentUri, mimeType, s);
-                        bit = bit + "/" + s;
-                    }
-                }
-            }*/
-
-            // Only create if it doesn't exist
             // From #187 Millerthegorilla
             if (!uriExists(uritest)) {
                 boolean created = false;
@@ -1461,6 +1323,7 @@ public class StorageAccess {
                             .append("docContractCreate(").append(parentUri).append(",")
                             .append(mimeType).append(",").append(foldertocreate).append(")");
                 }
+
                 if (!created) {
                     stringBuilder.append("\ncreated:false.  parent didn't exist?");
 
@@ -1527,7 +1390,7 @@ public class StorageAccess {
                     boolean created = false;
                     if (mimeType == null && uriExists(parentUri)) {
                         // Just a document at this location, so create
-                        created = docContractCreate(parentUri, mimeType, completefilename);
+                        created = docContractCreate(parentUri, null, completefilename);
                         stringBuilder.append("\nJust create the document.\nparentUri:").append(parentUri)
                                 .append("  completefilename:").append(completefilename);
 
@@ -1557,19 +1420,19 @@ public class StorageAccess {
                             stringBuilder.append("\nTry again to create the document.\nparentUri:").append(parentUri)
                                     .append("  completefilename:").append(completefilename);
                             updateFileActivityLog(stringBuilder.toString());
-                            return docContractCreate(parentUri, mimeType, completefilename);
+                            docContractCreate(parentUri, mimeType, completefilename);
+                            return;
                         } else {
                             updateFileActivityLog(stringBuilder.toString());
-                            return false;
+                            return;
                         }
                     }
                 }
             }
         }
         updateFileActivityLog(stringBuilder.toString());
-        return true;
     }
-    private boolean createFile_File(String folder, String subfolder, String filename) {
+    private void createFile_File(String folder, String subfolder, String filename) {
         boolean stuffCreated = false;
         String filepath = stringForFile(folder);
         File f = new File(filepath);
@@ -1591,7 +1454,8 @@ public class StorageAccess {
             try {
                 if (f.exists() && uriExists(uri)) {
                     // IV - Delete any existing file (does not touch folder)
-                    Log.d(TAG,"Removing preexisting file: filename - "+ f.delete());
+                    boolean deleted = f.delete();
+                    Log.d(TAG,"Removing preexisting file: filename - "+ deleted);
                 }
                 stuffCreated = f.createNewFile();
             } catch (Exception e) {
@@ -1599,7 +1463,7 @@ public class StorageAccess {
                 stuffCreated = false;
             }
         }
-        return stuffCreated;
+        Log.d(TAG,"stuffCreated:"+stuffCreated);
     }
     public boolean deleteFile(Uri uri) {
         if (lollipopOrLater()) {
@@ -1697,18 +1561,19 @@ public class StorageAccess {
             }
         }
     }
-    public boolean renameFileFromUri(Uri oldUri, Uri newUri, String newFolder, String newSubfolder, String newName) {
+    public void renameFileFromUri(Uri oldUri, Uri newUri, String newFolder, String newSubfolder, String newName) {
         if (lollipopOrLater()) {
-            return renameFileFromUri_SAF(oldUri, newUri, newFolder, newSubfolder, newName);
+            renameFileFromUri_SAF(oldUri, newUri, newFolder, newSubfolder, newName);
         } else {
-            return renameFileFromUri_File(oldUri, newUri);
+            renameFileFromUri_File(oldUri, newUri);
         }
     }
-    private boolean renameFileFromUri_File(Uri oldUri, Uri newUri) {
+    private void renameFileFromUri_File(Uri oldUri, Uri newUri) {
         File file = new File(oldUri.getPath());
-        return file.renameTo(new File(newUri.getPath()));
+        boolean renamed = file.renameTo(new File(newUri.getPath()));
+        Log.d(TAG,"renamed:"+renamed);
     }
-    private boolean renameFileFromUri_SAF(Uri oldUri, Uri newUri, String newFolder, String newSubfolder, String newName) {
+    private void renameFileFromUri_SAF(Uri oldUri, Uri newUri, String newFolder, String newSubfolder, String newName) {
         // Don't use document file rename as it can end badly if there is an issue
         // This can rename the root folder.  So instead copy the old file contents
         // Write the new file and delete the old one
@@ -1725,9 +1590,6 @@ public class StorageAccess {
             // Likely the inputStream or outputStream was null, so don't delete the old file!
             mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" renameFileFromUri_SAF deleteFile "+oldUri);
             deleteFile(oldUri);
-            return true;
-        } else {
-            return false;
         }
     }
     public String getFileNameFromUri(Uri uri) {
