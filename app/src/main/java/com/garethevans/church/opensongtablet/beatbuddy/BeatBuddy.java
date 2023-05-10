@@ -12,6 +12,7 @@ public class BeatBuddy {
     // These are edited by the BeatBuddyFragment
 
     final private MainActivityInterface mainActivityInterface;
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
     final private String TAG = "BeatBuddy";
 
     // Control options are:
