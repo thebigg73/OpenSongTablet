@@ -939,13 +939,13 @@ public class PerformanceGestures {
 
     // Toggle auto MIDI send on/off
     public void toggleMidiSend() {
-        boolean newPref = !mainActivityInterface.getPreferences().getMyPreferenceBoolean("midiSendAuto",false);
+        boolean newPref = !mainActivityInterface.getMidi().getMidiSendAuto();
         if (newPref) {
             mainActivityInterface.getShowToast().doIt(c.getString(R.string.midi_auto)+": "+c.getString(R.string.on));
         } else {
             mainActivityInterface.getShowToast().doIt(c.getString(R.string.midi_auto)+": "+c.getString(R.string.off));
         }
-        mainActivityInterface.getPreferences().setMyPreferenceBoolean("midiSendAuto",newPref);
+        mainActivityInterface.getMidi().setMidiSendAuto(newPref);
     }
 
     // Get the bible settings

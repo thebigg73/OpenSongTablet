@@ -348,6 +348,10 @@ public class BeatBuddy {
     public void setBeatBuddyAutoLookup(boolean beatBuddyAutoLookup) {
         this.beatBuddyAutoLookup = beatBuddyAutoLookup;
         mainActivityInterface.getPreferences().setMyPreferenceBoolean("beatBuddyAutoLookup",beatBuddyAutoLookup);
+        // If we switch this on manually, also switch on the send MIDI automatically as they are linked
+        if (beatBuddyAutoLookup) {
+            mainActivityInterface.getMidi().setMidiSendAuto(true);
+        }
     }
 
     // Calculations for working out codes

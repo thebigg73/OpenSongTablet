@@ -51,6 +51,7 @@ public class Midi {
         midiAction6 = mainActivityInterface.getPreferences().getMyPreferenceString("midiAction6", "0x99 0x2F 0x64");
         midiAction7 = mainActivityInterface.getPreferences().getMyPreferenceString("midiAction7", "0x99 0x2B 0x64");
         midiAction8 = mainActivityInterface.getPreferences().getMyPreferenceString("midiAction8", "0x99 0x37 0x64");
+        midiSendAuto = mainActivityInterface.getPreferences().getMyPreferenceBoolean("midiSendAuto",true);
     }
 
     public String getMidiAction(int which) {
@@ -114,7 +115,7 @@ public class Midi {
     private String midiDeviceName = "", midiDeviceAddress = "";
     private int midiInstrument;
     private String instrumentLetter;
-    private boolean usePianoNotes;
+    private boolean usePianoNotes, midiSendAuto;
     private ArrayList<String> midiNotesOnArray, midiNotesOffArray;
     private final String allOff = "7F B0 7B 00 ";
     private long noteOnDelta, noteOffDelta;
@@ -187,6 +188,14 @@ public class Midi {
 
     public int getMidiDelay() {
         return midiDelay;
+    }
+
+    public boolean getMidiSendAuto() {
+        return midiSendAuto;
+    }
+    public void setMidiSendAuto(boolean midiSendAuto) {
+        this.midiSendAuto = midiSendAuto;
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean("midiSendAuto",midiSendAuto);
     }
 
     public void setMidiDevice(MidiDevice midiDevice) {

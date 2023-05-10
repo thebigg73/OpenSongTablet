@@ -335,7 +335,7 @@ public class MidiFragment extends Fragment {
         myView.searchDevices.setOnClickListener(v -> startScan());
         myView.testMidiDevice.setOnClickListener(v -> sendTestNote());
         myView.disconnectMidiDevice.setOnClickListener(v -> disconnectDevices());
-        myView.autoSendBluetooth.setOnCheckedChangeListener(((buttonView, isChecked) -> mainActivityInterface.getPreferences().setMyPreferenceBoolean("midiSendAuto", isChecked)));
+        myView.autoSendBluetooth.setOnCheckedChangeListener(((buttonView, isChecked) -> mainActivityInterface.getMidi().setMidiSendAuto(isChecked)));
         myView.midiAsPedal.setOnCheckedChangeListener(((buttonView, isChecked) -> {
             mainActivityInterface.getPreferences().setMyPreferenceBoolean("midiAsPedal", isChecked);
             mainActivityInterface.getPedalActions().setMidiAsPedal(isChecked);

@@ -296,7 +296,7 @@ public class PresenterFragment extends Fragment {
         // If a song has MIDI messages and we're intent on sending it automatically, do that
         // The MIDI class checks for valid connections
         // Update any midi commands (if any)
-        if (mainActivityInterface.getPreferences().getMyPreferenceBoolean("midiSendAuto",false)) {
+        if (mainActivityInterface.getMidi().getMidiSendAuto()) {
             mainActivityInterface.getMidi().buildSongMidiMessages();
             mainActivityInterface.getMidi().sendSongMessages();
         }

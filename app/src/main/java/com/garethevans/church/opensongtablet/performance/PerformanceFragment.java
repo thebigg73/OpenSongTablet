@@ -1022,7 +1022,7 @@ public class PerformanceFragment extends Fragment {
             mainActivityInterface.getPad().autoStartPad();
 
             // Update any midi commands (if any)
-            if (mainActivityInterface.getPreferences().getMyPreferenceBoolean("midiSendAuto", false)) {
+            if (mainActivityInterface.getMidi().getMidiSendAuto()) {
 
                 // Send BeatBuddy autosong if required
                 if (mainActivityInterface.getBeatBuddy().getBeatBuddyAutoLookup()) {
