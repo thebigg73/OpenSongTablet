@@ -686,7 +686,7 @@
     <string name="set_x_margin">"Tamaño del margen horizontal"</string>
     <string name="set_y_margin">"Tamaño del margen vertical"</string>
     <string name="settings">"Ajustes OpenSong"</string>
-    <string name="share">Cuota</string>
+    <string name="share">Compartir</string>
     <string name="show">Mostrar</string>
     <string name="show_capo">"Mostrar acordes capo"</string>
     <string name="show_chords">"Mostrar acordes"</string>
