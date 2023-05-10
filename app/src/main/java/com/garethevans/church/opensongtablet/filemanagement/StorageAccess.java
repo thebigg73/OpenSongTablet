@@ -1138,9 +1138,12 @@ public class StorageAccess {
         // This is called from the SaveSong class and uses the sent Song object
         // First get the song uri
         // Because it may not be in the songs folder, lets check!
-        ArrayList<String> newLocation = fixNonSongs(thisSong.getFolder());
+        String[] fixLocations = getActualFoldersFromNice(thisSong.getFolder());
+        //ArrayList<String> newLocation = fixNonSongs(thisSong.getFolder());
         // Write the string file
-        return doStringWriteToFile(newLocation.get(0), newLocation.get(1),
+        Log.d(TAG,"fixedFolders:"+fixLocations[0]+ " / " +
+                fixLocations[1] + " / " + thisSong.getFilename());
+        return doStringWriteToFile(fixLocations[0], fixLocations[1],
                 thisSong.getFilename(),
                 mainActivityInterface.getProcessSong().getXML(thisSong));
     }
@@ -1148,21 +1151,22 @@ public class StorageAccess {
         // Return any subfolder and change the 'Songs' folder as required
         ArrayList<String> fixedFolders = new ArrayList<>();
         String where = "Songs";
-        if (folderToCheck.contains("../")||folderToCheck.contains("**")) {
+        if (folderToCheck.contains("../") || folderToCheck.contains("**")) {
             where = folderToCheck.replace("../","");
             where = where.replace("**","");
             if (where.contains("_cache")) {
                 folderToCheck = "_cache";
                 where = where.substring(0,where.indexOf("/_cache"));
             } else {
+                //where = folderToCheck;
                 folderToCheck = "";
-                where = folderToCheck;
             }
         }
         fixedFolders.add(where);
         fixedFolders.add(folderToCheck);
         return fixedFolders;
     }
+
     public String[] getActualFoldersFromNice(String folder) {
         String[] location = new String[2];
         location[0] = "Songs";

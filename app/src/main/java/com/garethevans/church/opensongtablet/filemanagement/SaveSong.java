@@ -8,8 +8,6 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 
-import java.util.ArrayList;
-
 public class SaveSong {
 
     private final Context c;
@@ -42,7 +40,8 @@ public class SaveSong {
 
             // The folder may not be in 'Songs'.  If this is the case, it starts with ../
             // This is most common if a user wants to save a received song (set/nearby)
-            ArrayList<String> oldLocation = mainActivityInterface.getStorageAccess().fixNonSongs(oldFolder);
+            //ArrayList<String> oldLocation = mainActivityInterface.getStorageAccess().fixNonSongs(oldFolder);
+            String[] oldLocation = mainActivityInterface.getStorageAccess().getActualFoldersFromNice(oldFolder);
 
             // Write the changes to the current Song object
             mainActivityInterface.setSong(newSong);
@@ -53,12 +52,12 @@ public class SaveSong {
                 if (newSong.getFiletype().equals("PDF") || newSong.getFiletype().equals("IMG")) {
                     // If it isn't an XML file, also update the persistent database
                     mainActivityInterface.getNonOpenSongSQLiteHelper().renameSong(
-                            oldLocation.get(0), newSong.getFolder(), oldLocation.get(1), newSong.getFilename());
+                            oldLocation[0], newSong.getFolder(), oldLocation[1], newSong.getFilename());
                     // Copy the pdf/img file now
                     mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" doSave move "
                             +oldFolder+"/"+oldFilename+" to "+newSong.getFolder()+"/"+newSong.getFilename());
-                    mainActivityInterface.getStorageAccess().copyFromTo(oldLocation.get(0),
-                            oldLocation.get(1), oldFilename,"Songs",
+                    mainActivityInterface.getStorageAccess().copyFromTo(oldLocation[0],
+                            oldLocation[1], oldFilename,"Songs",
                             newSong.getFolder(),newSong.getFilename());
                 }
 
@@ -89,9 +88,9 @@ public class SaveSong {
             // Now, if the save was successful and the folder/filename changes, delete the old stuff
             if ((folderChange || filenameChange) && saveSuccessful) {
                 // If there wasn't an old song, don't try to delete it otherwise we delete the Songs folder!
-                if (oldFilename!=null && !oldFilename.isEmpty() && oldLocation.get(0)!=null && oldLocation.get(1)!=null) {
+                if (oldFilename!=null && !oldFilename.isEmpty() && oldLocation[0]!=null && oldLocation[1]!=null) {
                     Uri oldUri = mainActivityInterface.getStorageAccess().
-                            getUriForItem(oldLocation.get(0), oldLocation.get(1), oldFilename);
+                            getUriForItem(oldLocation[0], oldLocation[1], oldFilename);
                     mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" doSave deleteFile "+oldUri);
                     mainActivityInterface.getStorageAccess().deleteFile(oldUri);
                 }
@@ -139,6 +138,7 @@ public class SaveSong {
             // Update the song xml ready for saving
             mainActivityInterface.getSong().setSongXML(mainActivityInterface.getProcessSong().getXML(thisSong));
 
+            Log.d(TAG,"thisSong.getFolder():"+thisSong.getFolder());
             Log.d(TAG,"thisSong.getFilename():"+thisSong.getFilename());
             Log.d(TAG,"thisSong.getFiletype():"+thisSong.getFiletype());
             // Now save the song file and return the success!
