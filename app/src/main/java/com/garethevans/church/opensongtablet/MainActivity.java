@@ -434,7 +434,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 importFilename = storageAccess.getFileNameFromUri(importUri);
                 if (inputStream != null) {
                     File tempLoc = new File(getExternalFilesDir("Import"), "Intent");
-
                     if (!tempLoc.mkdirs()) {
                         Log.d(TAG, "Error creating folder:" + tempLoc);
                     }
@@ -453,6 +452,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         setWhattodo("intentlaunch");
                         Log.d(TAG, "Opening import set backup");
                         dealingWithIntent = deeplink_sets_backup_restore;
+                    } else if (importFilename.toLowerCase(Locale.ROOT).endsWith(".ost")) {
+                        // OpenSong song
+                        Log.d(TAG, "Opening import song");
+                        setWhattodo("intentlaunch");
+                        dealingWithIntent = deeplink_import_file;
                     } else if (importFilename.toLowerCase(Locale.ROOT).endsWith(".osts")) {
                         // OpenSong set
                         Log.d(TAG, "Opening import set");

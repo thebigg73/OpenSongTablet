@@ -69,7 +69,7 @@ public class ImportFileFragment extends Fragment {
 
         myView.nestedScrollView.setExtendedFabToAnimate(myView.importButton);
 
-        // Get a note of the original folder/filename
+        // Get a note of the original song folder/filename
         originalFolder = mainActivityInterface.getSong().getFolder();
         originalFilename = mainActivityInterface.getSong().getFilename();
         // Hide everything other than the progress bar while we process the song
