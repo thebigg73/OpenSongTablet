@@ -61,6 +61,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     private boolean songMenuSortTitles;
     private final Handler waitBeforeSearchHandler = new Handler();
     private final Runnable waitBeforeSearchRunnable = this::prepareSearch;
+    private String longClickFilename = "";
 
 
     private MainActivityInterface mainActivityInterface;
@@ -348,7 +349,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     }
 
     private void showActionDialog() {
-        SongMenuBottomSheet songMenuBottomSheet = new SongMenuBottomSheet();
+        SongMenuBottomSheet songMenuBottomSheet = new SongMenuBottomSheet(longClickFilename);
         songMenuBottomSheet.show(getParentFragmentManager(), "songMenuActions");
     }
 
@@ -587,9 +588,10 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
 
     @Override
     public void onItemLongClicked(int position, String folder, String filename, String key) {
+        longClickFilename = filename;
         mainActivityInterface.getWindowFlags().hideKeyboard();
         mainActivityInterface.doSongLoad(folder, filename,false);
-        songListLayoutManager.scrollToPositionWithOffset(position,0);
+        new Handler(Looper.getMainLooper()).postDelayed(() -> songListLayoutManager.scrollToPositionWithOffset(position,0),1000);
         showActionDialog();
     }
 
