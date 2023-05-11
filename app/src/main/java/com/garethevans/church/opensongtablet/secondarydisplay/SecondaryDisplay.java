@@ -612,7 +612,9 @@ public class SecondaryDisplay extends Presentation {
             String copyright = mainActivityInterface.getSong().getCopyright();
             if (copyright != null && !copyright.isEmpty()) {
                 if (!copyright.contains("©")) {
-                    copyright = "©" + copyright;
+                    if (!copyright.contains("©") && !copyright.contains(c.getString(R.string.copyright))) {
+                        copyright = "© " + copyright;
+                    }
                 }
             } else {
                 copyright = "";
@@ -1207,7 +1209,7 @@ public class SecondaryDisplay extends Presentation {
     private void crossFadeContent(View contentToFadeOut, View contentToFadeIn) {
         if (contentToFadeOut!=null) {
             mainActivityInterface.getCustomAnimation().faderAnimation(contentToFadeOut,
-                    mainActivityInterface.getPresenterSettings().getPresoTransitionTime(),
+                    mainActivityInterface.getPresenterSettings().getPresoTransitionTime() * 2 / 3,
                     contentToFadeOut.getAlpha(), 0f);
 
         } else {

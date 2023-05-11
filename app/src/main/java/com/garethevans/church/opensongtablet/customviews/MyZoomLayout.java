@@ -294,7 +294,7 @@ public class MyZoomLayout extends FrameLayout {
         resetLayout();
     }
 
-    private void resetLayout() {
+    public void resetLayout() {
         scaleFactor = 1.0f;
         focusX = 0;
         focusY = 0;

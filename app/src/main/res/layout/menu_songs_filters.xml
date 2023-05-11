@@ -13,8 +13,8 @@
         app:endIconMode="clear_text"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
-        android:paddingTop="4dp"
-        android:paddingBottom="4dp"/>
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"/>
 
     <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
         android:id="@+id/filterSearch"
@@ -24,8 +24,8 @@
         app:endIconMode="clear_text"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
-        android:paddingTop="4dp"
-        android:paddingBottom="4dp"/>
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"/>
 
     <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
         android:id="@+id/keySearch"
@@ -34,8 +34,8 @@
         android:hint="@string/key"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
-        android:paddingTop="4dp"
-        android:paddingBottom="4dp"/>
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"/>
 
     <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
         android:id="@+id/artistSearch"
@@ -46,7 +46,7 @@
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
         android:paddingTop="2dp"
-        android:paddingBottom="4dp"/>
+        android:paddingBottom="2dp"/>
 
     <LinearLayout
         android:id="@+id/folderLayout"
@@ -62,8 +62,8 @@
         android:hint="@string/folder"
         android:paddingStart="16dp"
         android:paddingEnd="4dp"
-        android:paddingTop="4dp"
-        android:paddingBottom="4dp"/>
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"/>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/manageFolders"
@@ -73,9 +73,12 @@
             android:contentDescription="@string/new_folder_info"
             android:layout_gravity="bottom"
             android:layout_marginBottom="4dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="10dp"
             app:useCompatPadding="false"
+            android:elevation="0dp"
+            app:backgroundTint="@color/transparent"
+            app:borderWidth="0dp"
+            app:elevation="0dp"
             app:fabSize="mini"/>
     </LinearLayout>
 
@@ -94,8 +97,8 @@
         app:endIconMode="clear_text"
         android:paddingStart="16dp"
         android:paddingEnd="4dp"
-        android:paddingTop="4dp"
-        android:paddingBottom="4dp"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
         android:layout_gravity="bottom" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -106,9 +109,12 @@
             android:contentDescription="@string/tag_song_info"
             android:layout_gravity="bottom"
             android:layout_marginBottom="4dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="10dp"
             app:useCompatPadding="false"
+            android:elevation="0dp"
+            app:backgroundTint="@color/transparent"
+            app:borderWidth="0dp"
+            app:elevation="0dp"
             app:fabSize="mini"/>
     </LinearLayout>
 </LinearLayout>

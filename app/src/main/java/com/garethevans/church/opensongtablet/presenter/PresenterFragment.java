@@ -61,6 +61,12 @@ public class PresenterFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        mainActivityInterface.updateToolbar(presenter_mode_string);
+    }
+
+    @Override
     public void onDetach() {
         super.onDetach();
         mainActivityInterface.registerFragment(null,"Presenter");
@@ -75,8 +81,6 @@ public class PresenterFragment extends Fragment {
         myView = ModePresenterBinding.inflate(inflater,container,false);
 
         prepareStrings();
-
-        mainActivityInterface.updateToolbar(presenter_mode_string);
 
         // Get the orientation
         landscape = this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;

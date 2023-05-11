@@ -897,10 +897,19 @@ public class ProcessSong {
                 sb.append("\n").append(fixWordStretch(lines[i]));
             }
         }
-        String fixed = sb.toString();
+        // IV - Lines are added with leading \n, the first needs to be removed.
+        String fixed = sb.toString().replaceFirst("\n","");
 
-        // IV - Lines are added with leading \n, the first needs to be removed.  We restore section breaks.
-        return fixed.replaceFirst("\n","");
+        // IV - We make section breaks \n\n§
+        fixed = fixed.replace (groupline_string + "\n§", groupline_string + "\n\n§").
+                replace("]\n§","]\n\n§");
+        if (fixed.startsWith("§")) {
+            fixed = "\n\n" + fixed;
+        } else if (fixed.startsWith("\n§")) {
+            fixed = "\n" + fixed;
+        }
+
+        return fixed;
     }
 
     private boolean shouldNextLineBeAdded(int nl, String[] lines, boolean incnormallyricline) {
@@ -1666,23 +1675,16 @@ public class ProcessSong {
         // The song sections are not the views (which can have sections repeated using presentationOrder)
         // The grouped sections are used for alignments
 
-        // IV - Handle empty lyrics and fix a trimmed leading section marker
+        // IV - If empty, process as an empty section
         if (lyrics.equals("")) {
             lyrics = "\n\n§[]";
-        } else if (lyrics.startsWith("§")) {
-            lyrics = "\n\n" + lyrics;
-        } else if (lyrics.startsWith("\n§")) {
-            lyrics = "\n" + lyrics;
         }
 
         songSections = new ArrayList<>();
         ArrayList<String> groupedSections = new ArrayList<>();
 
-       // Remove a new line added by section processing which is not from the song
-        lyrics = lyrics.replace("\n§","§");
-
-        // IV - Ignore empty sections.  Sections which have a header only are needed.
-        for (String thisSection : lyrics.split("\n§")) {
+        // IV - At this point a section break is '\n\n§'. Ignore empty sections.  Sections which have a header only are needed.
+        for (String thisSection : lyrics.split("\n\n§")) {
             if (thisSection != null && !thisSection.trim().isEmpty()) {
                 groupedSections.add(thisSection);
                 songSections.add(thisSection.replace(groupline_string, "\n"));
