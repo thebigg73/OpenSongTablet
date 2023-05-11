@@ -386,7 +386,7 @@ public class Midi {
             }
         }
     }
-    public void sendMidiHexSequence(String sequence) {
+    public int sendMidiHexSequence(String sequence) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
                 sequence!=null && !sequence.isEmpty()) {
             String[] messages = sequence.split("\n");
@@ -397,6 +397,9 @@ public class Midi {
                     sendMidi(returnBytesFromHexText(messages[finalX]));
                 }, (long) midiDelay * x);
             }
+            return midiDelay * messages.length;
+        } else {
+            return 0;
         }
     }
 

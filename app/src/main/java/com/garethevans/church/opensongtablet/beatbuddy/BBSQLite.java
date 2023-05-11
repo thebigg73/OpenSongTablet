@@ -765,10 +765,11 @@ public class BBSQLite extends SQLiteOpenHelper {
     // When loading a song, and option is checked, T
     // The app will look for matching song names in the database
     // If found, the song will be sent to the BeatBuddy automatically
-    public void checkAutoBeatBuddy(Context c,
+    public int checkAutoBeatBuddy(Context c,
                                      MainActivityInterface mainActivityInterface, Song thisSong) {
+        int delay = 0;
         // No point unless we have a valid MIDI connection!
-        if (mainActivityInterface.getMidi().getMidiDevice()!=null) {
+        //if (mainActivityInterface.getMidi().getMidiDevice()!=null) {
             String query;
             if (mainActivityInterface.getBeatBuddy().getBeatBuddyUseImported()) {
                 query = "SELECT " + COLUMN_FOLDER_NUM + ", " +
@@ -852,21 +853,18 @@ public class BBSQLite extends SQLiteOpenHelper {
                 // If valid the timeSig isn't empty, contains '/' and will have two non-empty bits when split
                 if (thisSong.getTimesig() != null && thisSong.getTimesig().contains("/")) {
                     String[] timeSigBits = thisSong.getTimesig().split("/");
-                    Log.d(TAG,"timeSigBits.length():"+timeSigBits.length);
                     if (timeSigBits.length == 2 && timeSigBits[0].length() > 0 && timeSigBits[1].length() > 0) {
                         String numerator = timeSigBits[0].replaceAll("\\D", "");
                         String denominator = timeSigBits[1].replaceAll("\\D", "");
                         if (!numerator.isEmpty() && !denominator.isEmpty()) {
                             int num = Integer.parseInt(numerator);
                             int denom = Integer.parseInt(denominator);
-                            Log.d(TAG,"num:"+num+"  denom:"+denom);
                             // Check the denominator is a factor of 2
                             double n = Math.log(denom) / Math.log(2);
                             if ((int) (Math.ceil(n)) == (int) (Math.floor(n))) {
                                 // Ok, good to proceed.  Prepare the code
                                 // Numerator is simply the hex equiv
                                 // Denominator is the double calculated from 2^n
-                                Log.d(TAG,"n:"+n);
                                 hexCode += "\n0xF0 0x7F 0x7F 0x03 0x02 0x04 " +
                                         "0x" + String.format("%02X", num) + " " +
                                         "0x" + String.format("%02X", (int)n) +
@@ -877,15 +875,15 @@ public class BBSQLite extends SQLiteOpenHelper {
                     }
                 }
 
-                Log.d(TAG, "hexCode:" + hexCode);
-                mainActivityInterface.getMidi().sendMidiHexSequence(hexCode);
+                delay = mainActivityInterface.getMidi().sendMidiHexSequence(hexCode);
                 String message = c.getString(R.string.beat_buddy) + " - " + c.getString(R.string.folder) + ": " + folder_num
                         + " " + c.getString(R.string.song) + ": " + song_num + kitString + tempoString + timesigString;
                 mainActivityInterface.getShowToast().doIt(message);
             }
             closeCursor(cursor);
             db.close();
-        }
+        //}
+        return delay;
     }
 
     // Only called by default songs

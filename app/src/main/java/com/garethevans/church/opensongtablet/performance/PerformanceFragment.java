@@ -1024,13 +1024,17 @@ public class PerformanceFragment extends Fragment {
             // Update any midi commands (if any)
             if (mainActivityInterface.getMidi().getMidiSendAuto()) {
 
+                int delay = 0;
                 // Send BeatBuddy autosong if required
                 if (mainActivityInterface.getBeatBuddy().getBeatBuddyAutoLookup()) {
-                    mainActivityInterface.getBeatBuddy().tryAutoSend(getContext(),mainActivityInterface,mainActivityInterface.getSong());
+                    delay = mainActivityInterface.getBeatBuddy().tryAutoSend(getContext(),mainActivityInterface,mainActivityInterface.getSong());
                 }
-                // These are addition to beatbuddy, so sent afterwards
-                mainActivityInterface.getMidi().buildSongMidiMessages();
-                mainActivityInterface.getMidi().sendSongMessages();
+
+                new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                    // These are addition to beatbuddy, so sent afterwards
+                    mainActivityInterface.getMidi().buildSongMidiMessages();
+                    mainActivityInterface.getMidi().sendSongMessages();
+                }, delay);
             }
 
 
