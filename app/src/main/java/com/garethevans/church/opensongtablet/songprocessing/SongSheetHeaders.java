@@ -65,7 +65,7 @@ public class SongSheetHeaders {
             }
             if (copyright!=null && !copyright.isEmpty()) {
                 if (!copyright.contains("©") && !copyright.contains(c.getString(R.string.copyright))) {
-                    copyright = "©"+copyright;
+                    copyright = "© "+copyright;
                 }
                 linearLayout.addView(getSongSheetTexts(copyright,typeface,textColor,defFontSize*commentScaling));
             }

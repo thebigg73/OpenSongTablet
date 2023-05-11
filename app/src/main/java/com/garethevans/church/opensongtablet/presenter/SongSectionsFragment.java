@@ -118,8 +118,8 @@ public class SongSectionsFragment extends Fragment {
                 myView.songInfo.setSongAuthor(mainActivityInterface.getSong().getAuthor());
                 String copyright = mainActivityInterface.getSong().getCopyright();
                 if (copyright != null && !copyright.isEmpty()) {
-                    if (!copyright.contains("©")) {
-                        copyright = "©" + copyright;
+                    if (!copyright.contains("©") && !copyright.contains(getString(R.string.copyright))) {
+                        copyright = "© " + copyright;
                     }
                 } else {
                     copyright = "";
@@ -137,6 +137,11 @@ public class SongSectionsFragment extends Fragment {
                     loop = mainActivityInterface.getSong().getUser2().equals("true");
                 }
                 myView.imageSlideLoop.setChecked(loop);
+                myView.songInfo.setOnClickListener(view -> {
+                    if (!mainActivityInterface.getSong().getFolder().contains("**Image")) {
+                        mainActivityInterface.navigateToFragment(deeplink_edit_string, 0);
+                    }
+                });
                 myView.songInfo.setOnLongClickListener(view -> {
                     if (!mainActivityInterface.getSong().getFolder().contains("**Image")) {
                         mainActivityInterface.navigateToFragment(deeplink_edit_string, 0);

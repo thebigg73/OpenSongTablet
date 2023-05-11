@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
@@ -177,6 +178,12 @@ public class SongProjectionInfo extends LinearLayoutCompat {
             miniLogo.setVisibility(View.GONE);
             capoIcon.setVisibility(View.GONE);
             textClock.setVisibility(View.GONE);
+
+            // IV - Restrict extra detail to 1 line
+            songAuthor.setLines(1);
+            songAuthor.setEllipsize(TextUtils.TruncateAt.END);
+            songCopyright.setLines(1);
+            songCopyright.setEllipsize(TextUtils.TruncateAt.END);
         }
         updateClockSettings(mainActivityInterface);
     }

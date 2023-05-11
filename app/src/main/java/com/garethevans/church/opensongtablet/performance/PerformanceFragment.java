@@ -535,6 +535,7 @@ public class PerformanceFragment extends Fragment {
                 recyclerLayoutManager.setSizes(pdfPageAdapter.getHeights(), availableHeight);
                 myView.recyclerView.setPadding(myView.inlineSetList.getInlineSetWidth(),0,0,0);
                 myView.recyclerView.setMaxScrollY(heightAfterScale - availableHeight);
+                //IV - Reset zoom
                 myView.recyclerView.toggleScale();
 
                 // Do the slide in
@@ -571,6 +572,9 @@ public class PerformanceFragment extends Fragment {
         }
 
         myView.zoomLayout.setPageSize(availableWidth, availableHeight);
+        //IV - Reset zoom
+        myView.zoomLayout.resetLayout();
+        myView.zoomLayout.toggleScale();
 
         if (widthBeforeScale>0 && heightBeforeScale>0) {
             String scaleMethod = mainActivityInterface.getPreferences().getMyPreferenceString("songAutoScale", "W");
@@ -646,6 +650,7 @@ public class PerformanceFragment extends Fragment {
                 heightAfterScale = heightBeforeScale;
                 recyclerLayoutManager.setSizes(imageSlideAdapter.getHeights(),availableHeight);
                 myView.recyclerView.setMaxScrollY(heightAfterScale - availableHeight);
+                //IV - Reset zoom
                 myView.recyclerView.toggleScale();
 
                 // Slide in
@@ -821,6 +826,7 @@ public class PerformanceFragment extends Fragment {
                         //Log.d(TAG, "Song QOS adjustment: " + Math.max(0, QOSAdjustment) + " (" + (doSongLoadQOSTime - QOSAdjustment) + ")");
 
                         myView.recyclerView.setVisibility(View.VISIBLE);
+                        //IV - Reset zoom
                         myView.recyclerView.toggleScale();
 
                         new Handler().postDelayed(() -> {
@@ -846,6 +852,10 @@ public class PerformanceFragment extends Fragment {
                 myView.highlighterView.setVisibility(View.GONE);
 
                 myView.zoomLayout.setPageSize(availableWidth, availableHeight);
+                //IV - Reset zoom
+                myView.zoomLayout.resetLayout();
+                myView.zoomLayout.toggleScale();
+
                 myView.pageHolder.getLayoutParams().width = availableWidth;
                 myView.pageHolder.getLayoutParams().height = availableHeight;
 

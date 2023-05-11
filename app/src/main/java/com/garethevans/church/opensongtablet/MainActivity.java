@@ -968,8 +968,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         navController.addOnDestinationChangedListener((navController, navDestination, bundle) -> {
             // IV - We are changing so adjust option menu elements
             if (globalMenuItem != null) {
-                // IV - To smooth teardown, we clear song detail elements left to right
-                if (!settingsOpen) {
+                // IV - To smooth teardown, we clear performance mode song detail elements left to right
+                if (!settingsOpen && whichMode.equals(mode_performance)) {
                     myView.myToolbar.hideSongDetails(true);
                 }
                 myView.myToolbar.batteryholderVisibility(false, false);
