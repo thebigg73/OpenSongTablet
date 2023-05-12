@@ -74,6 +74,8 @@ public class SongSectionsFragment extends Fragment {
             myView.recyclerView.setLayoutManager(linearLayoutManager);
             myView.recyclerView.setHasFixedSize(true);
             myView.songInfo.setupLayout(getContext(), mainActivityInterface, false);
+            mainActivityInterface.getPerformanceGestures().setPresenterRecyclerView(myView.recyclerView);
+
         }
 
         // Set the presentation order

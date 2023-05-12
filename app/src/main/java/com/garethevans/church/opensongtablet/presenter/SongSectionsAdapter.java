@@ -329,4 +329,5 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
     public void setSectionEdited(int sectionEdited) {
         this.sectionEdited = sectionEdited;
     }
+
 }
