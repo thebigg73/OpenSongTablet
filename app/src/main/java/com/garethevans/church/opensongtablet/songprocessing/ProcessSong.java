@@ -1377,14 +1377,9 @@ public class ProcessSong {
                     }
                 }
 
-                // Display any errors as a bottom sheet (may need time to read)
                 if (!errors.toString().trim().isEmpty()) {
                     // Use a toast which is less intrusive during live performance - Inform but do not demand a reponse. For example, not using a verse section may be valid.
                     mainActivityInterface.getShowToast().doIt(c.getString(R.string.presentation_order) + ": " + c.getString(R.string.error) + "?");
-                    //InformationBottomSheet informationBottomSheet = new InformationBottomSheet(
-                    //        c.getString(R.string.presentation_order), errors.toString().trim(),
-                    //        c.getString(R.string.edit_song), c.getString(R.string.deeplink_edit));
-                    //informationBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "InformationBottomSheet");
                 }
             } catch (Exception e) {
                 // IV - An error has occurred so return what we have

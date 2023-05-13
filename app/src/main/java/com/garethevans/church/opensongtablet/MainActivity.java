@@ -1567,7 +1567,27 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         getMenuInflater().inflate(R.menu.mainactivitymenu, menu);
         ImageView screenMirror = (ImageView) menu.findItem(R.id.mirror_menu_item).getActionView();
         screenMirror.setImageDrawable(VectorDrawableCompat.create(getResources(), R.drawable.cast, getTheme()));
-        screenMirror.setOnClickListener(view -> startActivity(new Intent("android.settings.CAST_SETTINGS")));
+        screenMirror.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    startActivity(new Intent("android.settings.WIFI_DISPLAY_SETTINGS"));
+                } catch (ActivityNotFoundException e) {
+                    Log.d(TAG,"android.settings.WIFI_DISPLAY_SETTINGS not an option");
+                    //e.printStackTrace();
+                    try {
+                        startActivity(new Intent("com.samsung.wfd.LAUNCH_WFD_PICKER_DLG"));
+                    } catch (Exception e2) {
+                        Log.d(TAG,"com.samsung.wfd.LAUNCH_WFD_PICKER_DLG not an option");
+                        try {
+                            startActivity(new Intent("android.settings.CAST_SETTINGS"));
+                        } catch (Exception e3) {
+                            showToast.doIt(error);
+                        }
+                    }
+                }
+            }
+        });
         screenHelp = (ImageView) menu.findItem(R.id.help_menu_item).getActionView();
         screenHelp.setImageDrawable(VectorDrawableCompat.create(getResources(), R.drawable.help_outline, getTheme()));
         globalMenuItem = menu;
