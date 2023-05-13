@@ -13,4 +13,7 @@ The app online manual can be found at https://www.opensongapp.com
 To use (and install) this code, copy the git address (https://github.com/thebigg73/OpenSongTablet.git).  Open Android Studio and select File > New > Project from Version Control.  Paste in the git address.
 You can then run on an emulator or plugged in Android device as appropriate.
 
+The master branch represents the stable version of the app (currently v5.6.0).  This is not likely to be further updated.
+All new developments (v6+) are currently in the MaterialApp branch.
+
 Gareth Evans
