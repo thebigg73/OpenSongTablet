@@ -769,7 +769,7 @@ public class BBSQLite extends SQLiteOpenHelper {
                                      MainActivityInterface mainActivityInterface, Song thisSong) {
         int delay = 0;
         // No point unless we have a valid MIDI connection!
-        //if (mainActivityInterface.getMidi().getMidiDevice()!=null) {
+        if (mainActivityInterface.getMidi().getMidiDevice()!=null) {
             String query;
             if (mainActivityInterface.getBeatBuddy().getBeatBuddyUseImported()) {
                 query = "SELECT " + COLUMN_FOLDER_NUM + ", " +
@@ -882,7 +882,7 @@ public class BBSQLite extends SQLiteOpenHelper {
             }
             closeCursor(cursor);
             db.close();
-        //}
+        }
         return delay;
     }
 
