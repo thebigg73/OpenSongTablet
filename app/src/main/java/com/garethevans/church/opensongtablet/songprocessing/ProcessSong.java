@@ -1860,8 +1860,6 @@ public class ProcessSong {
                         }
                     }
 
-                    Log.d(TAG,"addSectionSpace:"+addSectionSpace);
-
                     // IV - Support add section space feature for stage mode. This is done in column processing for performance mode.
                     if (addSectionSpace && mainActivityInterface.getMode().equals(c.getString(R.string.mode_stage)) &&
                             !mainActivityInterface.getMakePDF().getIsSetListPrinting() &&
