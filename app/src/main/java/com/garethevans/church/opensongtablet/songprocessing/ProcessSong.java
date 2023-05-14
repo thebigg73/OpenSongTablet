@@ -1627,9 +1627,16 @@ public class ProcessSong {
 
         // 11. Handle section trimming
         // IV - Trim but not if performance primary screen and trimsections is off
-        if (!mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance))  ||
+        // GE - more complex #233.  If we are in Stage or Presenter then yes, trim
+        // If we are in performance mode, we trim if we have requested it
+        boolean stageOrPresenter = mainActivityInterface.getMode().equals(c.getString(R.string.mode_stage)) ||
+                mainActivityInterface.getMode().equals(c.getString(R.string.mode_presenter));
+        boolean performance = mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance));
+        if (stageOrPresenter || (performance && trimSections)) {
+        /*if (!mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance))  ||
                 (!presentation && trimSections)) {
-            lyrics = lyrics
+        */
+                lyrics = lyrics
                     // We protect the leading space of lyric lines
                     // --- Simplify empty lyric lines... the replace is needed twice
                     .replace("\n \n","\n\n")
@@ -1853,8 +1860,10 @@ public class ProcessSong {
                         }
                     }
 
+                    Log.d(TAG,"addSectionSpace:"+addSectionSpace);
+
                     // IV - Support add section space feature for stage mode. This is done in column processing for performance mode.
-                    if (addSectionSpace & !presentation && mainActivityInterface.getMode().equals(c.getString(R.string.mode_stage)) &&
+                    if (addSectionSpace && mainActivityInterface.getMode().equals(c.getString(R.string.mode_stage)) &&
                             !mainActivityInterface.getMakePDF().getIsSetListPrinting() &&
                             sect != (song.getPresoOrderSongSections().size() - 1)) {
                         linearLayout.addView(lineText("lyric", "", getTypeface(false, "lyric"),
@@ -2085,7 +2094,12 @@ public class ProcessSong {
         // Do not add to the last view in a column though!
         int sectionSpace = 0;
         int totalSectionSpace = 0;
-        if (!presentation && addSectionSpace && !mainActivityInterface.getMakePDF().getIsSetListPrinting()) {
+        // GE #233 more complex.
+        boolean performance = mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance));
+        boolean stageOrPresenter = (mainActivityInterface.getMode().equals(c.getString(R.string.mode_stage)) ||
+                mainActivityInterface.getMode().equals(c.getString(R.string.mode_presenter))) && !presentation;
+
+        if ((performance || stageOrPresenter) && addSectionSpace && !mainActivityInterface.getMakePDF().getIsSetListPrinting()) {
             sectionSpace = (int) (0.75 * TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, defFontSize, c.getResources().getDisplayMetrics()));
             if (sectionHeights.size() > 1) {
                 totalSectionSpace = sectionSpace * (sectionHeights.size() - 1);
