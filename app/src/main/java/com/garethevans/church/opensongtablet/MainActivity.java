@@ -671,7 +671,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
             if (myView != null) {
                 myView.fragmentView.setPadding(margins[0], Math.max(topPadding, bottomOfToolbar), margins[2], margins[3]);
-                myView.songMenuLayout.setPadding(margins[0], Math.max(topPadding, bottomOfToolbar) - myView.menuTop.menuTop.getBottom() - 12, 0, margins[3]);
+                myView.songMenuLayout.setPadding(margins[0], Math.max(topPadding, bottomOfToolbar) - myView.menuTop.menuTop.getBottom() + 36, 0, margins[3]);
                 myView.songMenuLayout.findViewById(R.id.menu_top).setPadding(windowFlags.getMarginToolbarLeft(), 0, 0, 0);
             }
         });
@@ -745,9 +745,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
         // Set up song / set menu tabs
         setUpSongMenuTabs();
-
-        // Set the version in the menu
-        versionNumber.updateMenuVersionNumber(this, myView.menuTop.versionCode);
 
         // Set up page buttons
         setListeners();
@@ -1690,7 +1687,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 super.onPageSelected(position);
             }
         });
-        myView.menuTop.versionCode.setOnClickListener(v -> closeDrawer(true));
         myView.menuTop.backButton.setOnClickListener(v -> closeDrawer(true));
     }
 

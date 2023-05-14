@@ -10,7 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="?attr/actionBarSize"
-        android:layout_gravity="center_vertical"
         android:paddingStart="0dp"
         android:paddingEnd="8dp"
         android:paddingTop="4dp"
@@ -19,39 +18,31 @@
         <ImageView
             android:id="@+id/backButton"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="52dp"
             app:srcCompat="@drawable/arrow_left"
             android:contentDescription="@string/close"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"/>
 
-        <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
-            android:id="@+id/versionCode"
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabs"
+            style="@style/menuTabs"
             android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:background="@color/colorAltPrimary"
-            android:gravity="center_vertical|end"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
-            android:layout_gravity="center_vertical"
-            android:foregroundGravity="center_vertical"/>
+            android:layout_gravity="top|bottom"
+            android:layout_weight="1"
+            android:paddingTop="4dp" />
 
         <ImageView
             android:id="@+id/menuHelp"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="52dp"
             app:srcCompat="@drawable/help_outline"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
             android:contentDescription="@string/help"
-            android:layout_gravity="center_vertical"/>
+            android:layout_gravity="top"
+            android:foregroundGravity="right" />
     </LinearLayout>
-
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tabs"
-        style="@style/menuTabs"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorAltPrimary" />
 </LinearLayout>
