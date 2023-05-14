@@ -17,6 +17,7 @@ import com.garethevans.church.opensongtablet.chords.TransposeBottomSheet;
 import com.garethevans.church.opensongtablet.customviews.MyRecyclerView;
 import com.garethevans.church.opensongtablet.customviews.MyZoomLayout;
 import com.garethevans.church.opensongtablet.interfaces.ActionInterface;
+import com.garethevans.church.opensongtablet.interfaces.DisplayInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.midi.MidiSongBottomSheet;
 import com.garethevans.church.opensongtablet.pads.PadsBottomSheet;
@@ -33,6 +34,7 @@ public class PerformanceGestures {
 
     private final Context c;
     private final MainActivityInterface mainActivityInterface;
+    private final DisplayInterface displayInterface;
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "PerformanceGestures";
     private final ActionInterface actionInterface;
@@ -45,6 +47,7 @@ public class PerformanceGestures {
         this.c = c;
         mainActivityInterface = (MainActivityInterface) c;
         actionInterface = (ActionInterface) c;
+        displayInterface = (DisplayInterface) c;
     }
     public void setZoomLayout(MyZoomLayout myZoomLayout) {
         this.myZoomLayout = myZoomLayout;
@@ -304,6 +307,9 @@ public class PerformanceGestures {
                 break;
             case "refreshsong":
                 loadSong();
+                break;
+            case "showlogo":
+                showLogo();
                 break;
 
 
@@ -873,6 +879,12 @@ public class PerformanceGestures {
     // Custom chords
     public void customChords() {
         mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_chords_custom),0);
+    }
+
+    // Toggle the show logo on the secondary screen
+    public void showLogo() {
+        mainActivityInterface.getPresenterSettings().setLogoOn(!mainActivityInterface.getPresenterSettings().getLogoOn());
+        displayInterface.updateDisplay("showLogo");
     }
 
     // Toggle between native, capo and both

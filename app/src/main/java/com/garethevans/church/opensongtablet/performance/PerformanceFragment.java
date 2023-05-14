@@ -278,6 +278,8 @@ public class PerformanceFragment extends Fragment {
         boolean allowPinchToZoom = mainActivityInterface.getPreferences().getMyPreferenceBoolean("allowPinchToZoom",true);
         myView.zoomLayout.setAllowPinchToZoom(allowPinchToZoom);
         myView.recyclerView.setAllowPinchToZoom(allowPinchToZoom);
+        mainActivityInterface.getPresenterSettings().setLogoOn(false);
+        displayInterface.updateDisplay("showLogo");
     }
 
     public void tryToImportIntent() {

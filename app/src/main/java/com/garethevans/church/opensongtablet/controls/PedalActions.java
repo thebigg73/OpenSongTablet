@@ -165,6 +165,7 @@ public class PedalActions {
         addString("pdfpage",c.getString(R.string.select_page));
         addString("invertpdf",c.getString(R.string.invert_PDF));
         addString("fonts",c.getString(R.string.font_choose));
+        addString("showlogo",c.getString(R.string.show_logo) + " (" + c.getString(R.string.connected_display) + ")");
 
         addString("","");
 

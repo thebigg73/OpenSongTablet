@@ -125,6 +125,11 @@ public class PresenterFragment extends Fragment {
             mainActivityInterface.fullIndex();
         }
 
+        // Set the switches
+        mainActivityInterface.getPresenterSettings().setLogoOn(true);
+        displayInterface.updateDisplay("showLogo");
+        prepareViews();
+
         // Set up the main action listeners for the switches
         setupListeners();
 
@@ -145,6 +150,15 @@ public class PresenterFragment extends Fragment {
         }
 
         return myView.getRoot();
+    }
+
+    private void prepareViews() {
+        myView.showLogo.setChecked(mainActivityInterface.getPresenterSettings().getLogoOn());
+        myView.blankScreen.setChecked(mainActivityInterface.getPresenterSettings().getBlankscreenOn());
+        myView.blackScreen.setChecked(mainActivityInterface.getPresenterSettings().getBlackscreenOn());
+        myView.showLogoSide.setChecked(mainActivityInterface.getPresenterSettings().getLogoOn());
+        myView.blankScreenSide.setChecked(mainActivityInterface.getPresenterSettings().getBlankscreenOn());
+        myView.blackScreenSide.setChecked(mainActivityInterface.getPresenterSettings().getBlackscreenOn());
     }
 
     private void prepareStrings() {

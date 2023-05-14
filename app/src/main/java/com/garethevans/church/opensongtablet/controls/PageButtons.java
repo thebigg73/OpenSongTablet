@@ -261,6 +261,7 @@ public class PageButtons {
         prepareOption("invertpdf",c.getString(R.string.invert_PDF),c.getString(R.string.select),"",R.drawable.invert_colors);
         prepareOption("fonts",c.getString(R.string.font_choose),c.getString(R.string.select),"",R.drawable.text);
         prepareOption("refreshsong",c.getString(R.string.refresh_song),c.getString(R.string.select),"",R.drawable.redo);
+        prepareOption("showlogo",c.getString(R.string.show_logo) + " (" + c.getString(R.string.connected_display) + ")",c.getString(R.string.logo_info),"",R.drawable.projector);
 
         prepareOption("","","","",R.drawable.help);
 
