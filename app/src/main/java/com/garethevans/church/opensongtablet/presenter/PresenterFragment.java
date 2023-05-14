@@ -126,7 +126,6 @@ public class PresenterFragment extends Fragment {
         }
 
         // Set the switches
-        mainActivityInterface.getPresenterSettings().setLogoOn(true);
         displayInterface.updateDisplay("showLogo");
         prepareViews();
 
