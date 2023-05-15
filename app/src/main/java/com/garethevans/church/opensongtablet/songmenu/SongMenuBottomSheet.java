@@ -29,6 +29,11 @@ public class SongMenuBottomSheet extends BottomSheetDialogFragment {
             deeplink_song_actions_string="", deeplink_import_string="", search_index_wait_string="",
             added_to_set_string="", variation_string="";
 
+    private final String songTitle;
+    SongMenuBottomSheet(String songTitle) {
+        this.songTitle = songTitle;
+    }
+
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -79,7 +84,6 @@ public class SongMenuBottomSheet extends BottomSheetDialogFragment {
     }
     private void setupViews() {
         // Set up the song title
-        String songTitle = mainActivityInterface.getSong().getTitle();
         if (!mainActivityInterface.getProcessSong().isValidSong(mainActivityInterface.getSong())) {
             myView.songSpecificActions.setVisibility(View.GONE);
             myView.otherOptions.setVisibility(View.GONE);

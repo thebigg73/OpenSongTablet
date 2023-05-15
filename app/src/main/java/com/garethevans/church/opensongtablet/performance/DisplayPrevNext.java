@@ -260,6 +260,7 @@ public class DisplayPrevNext {
             mainActivityInterface.getShowToast().doIt(c.getString(R.string.last_song));
         }
     }
+
     public void moveToPrev() {
         swipeDirection = "L2R";
         if (prevIndex != -1) {

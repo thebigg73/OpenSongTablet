@@ -141,13 +141,16 @@ public class BeatBuddy {
                 mainActivityInterface.getMidi().buildMidiString("CC",beatBuddyChannel,CC_Pause_unpause,127));
     }
 
-    public void tryAutoSend(Context c,MainActivityInterface mainActivityInterface, Song thisSong) {
+    public int tryAutoSend(Context c,MainActivityInterface mainActivityInterface, Song thisSong) {
         if (getBeatBuddyAutoLookup()) {
             try (BBSQLite bbsqLite = new BBSQLite(c)) {
-                bbsqLite.checkAutoBeatBuddy(c, mainActivityInterface, thisSong);
+                return bbsqLite.checkAutoBeatBuddy(c, mainActivityInterface, thisSong);
             } catch (Exception e) {
                 e.printStackTrace();
+                return 0;
             }
+        } else {
+            return 0;
         }
     }
     // These are the controls called by the PerformanceGestures (pedals, page buttons or gestures)
@@ -395,11 +398,11 @@ public class BeatBuddy {
     }
 
     public String getDrumKitCode() {
-        // The drumKitCode will be between 1 and 127.  // Not decreased to start at 0
+        // The drumKitCode will be between 1 and 127.
         return mainActivityInterface.getMidi().buildMidiString("CC",beatBuddyChannel-1,CC_Drum_kit,beatBuddyDrumKit);
     }
     public String getDrumKitCode(int kitNum) {
-        // The drumKitCode will be between 1 and 128.  Decrease by 1 for MIDI
-        return mainActivityInterface.getMidi().buildMidiString("CC",beatBuddyChannel-1,CC_Drum_kit,kitNum-1);
+        // The drumKitCode will be between 1 and 127.
+        return mainActivityInterface.getMidi().buildMidiString("CC",beatBuddyChannel-1,CC_Drum_kit,kitNum);
     }
 }

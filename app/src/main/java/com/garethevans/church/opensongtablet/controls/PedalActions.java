@@ -100,6 +100,7 @@ public class PedalActions {
         addString("inlinesetsettings",c.getString(R.string.set_inline)+ settings);
         addString("addtoset",c.getString(R.string.add_song_to_set));
         addString("addtosetvariation",c.getString(R.string.variation_make));
+        addString("exportset",c.getString(R.string.export_current_set));
 
         addString("","");
 
@@ -164,6 +165,7 @@ public class PedalActions {
         addString("pdfpage",c.getString(R.string.select_page));
         addString("invertpdf",c.getString(R.string.invert_PDF));
         addString("fonts",c.getString(R.string.font_choose));
+        addString("showlogo",c.getString(R.string.show_logo) + " (" + c.getString(R.string.connected_display) + ")");
 
         addString("","");
 

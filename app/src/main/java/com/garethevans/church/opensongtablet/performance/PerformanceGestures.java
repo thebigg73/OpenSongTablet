@@ -8,6 +8,8 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.autoscroll.AutoscrollBottomSheet;
 import com.garethevans.church.opensongtablet.chords.ChordFingeringBottomSheet;
@@ -15,11 +17,13 @@ import com.garethevans.church.opensongtablet.chords.TransposeBottomSheet;
 import com.garethevans.church.opensongtablet.customviews.MyRecyclerView;
 import com.garethevans.church.opensongtablet.customviews.MyZoomLayout;
 import com.garethevans.church.opensongtablet.interfaces.ActionInterface;
+import com.garethevans.church.opensongtablet.interfaces.DisplayInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.midi.MidiSongBottomSheet;
 import com.garethevans.church.opensongtablet.pads.PadsBottomSheet;
 import com.garethevans.church.opensongtablet.pdf.PDFPageAdapter;
 import com.garethevans.church.opensongtablet.pdf.PDFPageBottomSheet;
+import com.garethevans.church.opensongtablet.presenter.SongSectionsAdapter;
 import com.garethevans.church.opensongtablet.songmenu.RandomSongBottomSheet;
 import com.garethevans.church.opensongtablet.stage.StageSectionAdapter;
 import com.garethevans.church.opensongtablet.utilities.SoundLevelBottomSheet;
@@ -30,17 +34,20 @@ public class PerformanceGestures {
 
     private final Context c;
     private final MainActivityInterface mainActivityInterface;
+    private final DisplayInterface displayInterface;
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "PerformanceGestures";
     private final ActionInterface actionInterface;
     private MyZoomLayout myZoomLayout;
     private MyRecyclerView recyclerView;
+    private RecyclerView presenterRecyclerView;
 
     // Initialise
     public PerformanceGestures(Context c) {
         this.c = c;
         mainActivityInterface = (MainActivityInterface) c;
         actionInterface = (ActionInterface) c;
+        displayInterface = (DisplayInterface) c;
     }
     public void setZoomLayout(MyZoomLayout myZoomLayout) {
         this.myZoomLayout = myZoomLayout;
@@ -50,6 +57,9 @@ public class PerformanceGestures {
         if (mainActivityInterface!=null) {
             this.recyclerView.initialiseRecyclerView(mainActivityInterface);
         }
+    }
+    public void setPresenterRecyclerView(RecyclerView presenterRecyclerView) {
+        this.presenterRecyclerView = presenterRecyclerView;
     }
 
 
@@ -85,7 +95,13 @@ public class PerformanceGestures {
             case "addtosetvariation":
                 addToSetAsVariation();
                 break;
-
+            case "exportset":
+                if (isLongPress) {
+                    manageSets();
+                } else {
+                    exportSet();
+                }
+                break;
 
             // Song actions
             case "pad":
@@ -170,9 +186,11 @@ public class PerformanceGestures {
                 songMenu();
                 break;
             case "scrolldown":
+            case "down":
                 scroll(true);
                 break;
             case "scrollup":
+            case "up":
                 scroll(false);
                 break;
             case "next":
@@ -289,6 +307,9 @@ public class PerformanceGestures {
                 break;
             case "refreshsong":
                 loadSong();
+                break;
+            case "showlogo":
+                showLogo();
                 break;
 
 
@@ -579,6 +600,15 @@ public class PerformanceGestures {
         mainActivityInterface.updateCheckForThisSong(mainActivityInterface.getSong());
     }
 
+    public void exportSet() {
+        mainActivityInterface.setWhattodo("exportset");
+        mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_sets_manage),0);
+    }
+
+    public void manageSets() {
+        mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_sets),0);
+    }
+
     // Redraw the lyrics page
     public void loadSong() {
         mainActivityInterface.doSongLoad(mainActivityInterface.getSong().getFolder(),mainActivityInterface.getSong().getFilename(),true);
@@ -621,7 +651,19 @@ public class PerformanceGestures {
         if (mainActivityInterface.getPedalActions().getPedalScrollBeforeMove() && canScroll(true)) {
             scroll(true);
         } else {
-            mainActivityInterface.getDisplayPrevNext().moveToNext();
+            if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_presenter))) {
+                int pos = mainActivityInterface.getCurrentSet().getIndexSongInSet();
+                if (pos==-1) {
+                    pos = mainActivityInterface.getSetActions().indexSongInSet(mainActivityInterface.getSong());
+                }
+                if (pos>-1 && pos<mainActivityInterface.getCurrentSet().getSetItems().size()) {
+                    mainActivityInterface.loadSongFromSet(pos+1);
+                } else {
+                    mainActivityInterface.getShowToast().doIt(c.getString(R.string.last_song));
+                }
+            } else {
+                mainActivityInterface.getDisplayPrevNext().moveToNext();
+            }
         }
     }
 
@@ -630,7 +672,19 @@ public class PerformanceGestures {
         if (mainActivityInterface.getPedalActions().getPedalScrollBeforeMove() && canScroll(false)) {
             scroll(false);
         } else {
-            mainActivityInterface.getDisplayPrevNext().moveToPrev();
+            if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_presenter))) {
+                int pos = mainActivityInterface.getCurrentSet().getIndexSongInSet();
+                if (pos==-1) {
+                    pos = mainActivityInterface.getSetActions().indexSongInSet(mainActivityInterface.getSong());
+                }
+                if (pos>0) {
+                    mainActivityInterface.loadSongFromSet(pos-1);
+                } else {
+                    mainActivityInterface.getShowToast().doIt(c.getString(R.string.first_song));
+                }
+            } else {
+                mainActivityInterface.getDisplayPrevNext().moveToPrev();
+            }
         }
     }
 
@@ -651,12 +705,12 @@ public class PerformanceGestures {
                 int currentPos, finalPos;
                 if (mainActivityInterface.getSong().getFiletype().equals("PDF")) {
                     currentPos = mainActivityInterface.getSong().getPdfPageCurrent();
-                    finalPos = mainActivityInterface.getSong().getPdfPageCount()-1;
+                    finalPos = mainActivityInterface.getSong().getPdfPageCount() - 1;
                 } else {
                     currentPos = mainActivityInterface.getSong().getCurrentSection();
-                    finalPos = mainActivityInterface.getSong().getPresoOrderSongSections().size()-1;
+                    finalPos = mainActivityInterface.getSong().getPresoOrderSongSections().size() - 1;
                 }
-                if (scrollDown && currentPos<finalPos) {
+                if (scrollDown && currentPos < finalPos) {
                     return true;
                 } else {
                     return !scrollDown && currentPos > 0;
@@ -668,6 +722,20 @@ public class PerformanceGestures {
                     return !scrollDown && !recyclerView.getScrolledToTop();
                 }
             }
+        } else if (presenterRecyclerView!=null) {
+            int currentPos, finalPos;
+            if (mainActivityInterface.getSong().getFiletype().equals("PDF")) {
+                currentPos = mainActivityInterface.getSong().getPdfPageCurrent();
+                finalPos = mainActivityInterface.getSong().getPdfPageCount() - 1;
+            } else {
+                currentPos = mainActivityInterface.getSong().getCurrentSection();
+                finalPos = mainActivityInterface.getSong().getPresoOrderSongSections().size() - 1;
+            }
+            if (scrollDown && currentPos < finalPos) {
+                return true;
+            } else {
+                return !scrollDown && currentPos > 0;
+            }
         } else {
             return false;
         }
@@ -675,7 +743,48 @@ public class PerformanceGestures {
 
     // Scroll up/down
     public void scroll(boolean scrollDown) {
-        if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_stage)) &&
+        Log.d(TAG,"getMode():"+mainActivityInterface.getMode());
+        Log.d(TAG,"recyclerView:"+recyclerView);
+
+        Log.d(TAG,"scrollDown:"+scrollDown);
+        if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_presenter)) &&
+                presenterRecyclerView!=null) {
+            int currentPosition = mainActivityInterface.getSong().getCurrentSection();
+            int finalPosition = mainActivityInterface.getSong().getPresoOrderSongSections().size() - 1;
+
+            if (mainActivityInterface.getSong().getFiletype().equals("PDF")) {
+                currentPosition = mainActivityInterface.getSong().getPdfPageCurrent();
+                finalPosition = mainActivityInterface.getSong().getPdfPageCount() - 1;
+            }
+
+            Log.d(TAG,"currentPosition:"+currentPosition+"  finalPosition:"+finalPosition);
+
+            int newPosition = currentPosition;
+
+            if (scrollDown) {
+                if (currentPosition < finalPosition) {
+                    newPosition++;
+                }
+            } else {
+                if (currentPosition > 0) {
+                    newPosition--;
+                }
+            }
+
+            if (mainActivityInterface.getSong().getFiletype().equals("PDF")) {
+                mainActivityInterface.getSong().setPdfPageCurrent(newPosition);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP &&
+                        presenterRecyclerView.getAdapter()!=null) {
+                    ((PDFPageAdapter)recyclerView.getAdapter()).clickOnSection(newPosition);
+                }
+            } else {
+                mainActivityInterface.getSong().setCurrentSection(newPosition);
+                if (presenterRecyclerView.getAdapter()!=null) {
+                    ((SongSectionsAdapter)presenterRecyclerView.getAdapter()).itemSelected(newPosition);
+                }
+            }
+
+        } else if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_stage)) &&
                 recyclerView != null && recyclerView.getVisibility() == View.VISIBLE) {
             int currentPosition = mainActivityInterface.getSong().getCurrentSection();
             int finalPosition = mainActivityInterface.getSong().getPresoOrderSongSections().size() - 1;
@@ -770,6 +879,12 @@ public class PerformanceGestures {
     // Custom chords
     public void customChords() {
         mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_chords_custom),0);
+    }
+
+    // Toggle the show logo on the secondary screen
+    public void showLogo() {
+        mainActivityInterface.getPresenterSettings().setLogoOn(!mainActivityInterface.getPresenterSettings().getLogoOn());
+        displayInterface.updateDisplay("showLogo");
     }
 
     // Toggle between native, capo and both

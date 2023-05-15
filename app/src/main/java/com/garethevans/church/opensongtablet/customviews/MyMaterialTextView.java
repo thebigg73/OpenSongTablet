@@ -140,16 +140,18 @@ public class MyMaterialTextView extends LinearLayout {
     }
 
     public void setText(String mainText) {
-        if (mainText==null) {
-            textView.setVisibility(View.GONE);
-        } else {
-            textView.setVisibility(View.VISIBLE);
-        }
-        textView.setText(mainText);
+        textView.post(() -> {
+            if (mainText==null) {
+                textView.setVisibility(View.GONE);
+            } else {
+                textView.setVisibility(View.VISIBLE);
+            }
+            textView.setText(mainText);
+        });
     }
 
     public void setTextColor(int color) {
-        textView.setTextColor(color);
+        textView.post(() -> textView.setTextColor(color));
     }
 
     public void showCheckMark(boolean isChecked) {

@@ -209,6 +209,7 @@ public class PageButtons {
         prepareOption("set",c.getString(R.string.set_current),c.getString(R.string.show),"",R.drawable.list_number);
         prepareOption("inlineset",c.getString(R.string.set_inline),c.getString(R.string.show) + " / " + c.getString(R.string.hide),c.getString(R.string.settings),R.drawable.inline_set);
         prepareOption("addtoset",c.getString(R.string.add_song_to_set),c.getString(R.string.set_add),c.getString(R.string.variation_make),R.drawable.set_add);
+        prepareOption("exportset",c.getString(R.string.export_current_set),c.getString(R.string.select),c.getString(R.string.set_manage),R.drawable.share);
 
         prepareOption("","","","",R.drawable.help);
 
@@ -260,6 +261,7 @@ public class PageButtons {
         prepareOption("invertpdf",c.getString(R.string.invert_PDF),c.getString(R.string.select),"",R.drawable.invert_colors);
         prepareOption("fonts",c.getString(R.string.font_choose),c.getString(R.string.select),"",R.drawable.text);
         prepareOption("refreshsong",c.getString(R.string.refresh_song),c.getString(R.string.select),"",R.drawable.redo);
+        prepareOption("showlogo",c.getString(R.string.show_logo) + " (" + c.getString(R.string.connected_display) + ")",c.getString(R.string.logo_info),"",R.drawable.projector);
 
         prepareOption("","","","",R.drawable.help);
 
