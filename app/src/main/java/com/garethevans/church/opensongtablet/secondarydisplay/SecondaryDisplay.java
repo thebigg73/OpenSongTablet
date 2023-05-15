@@ -689,11 +689,8 @@ public class SecondaryDisplay extends Presentation {
                             myView.songProjectionInfo1.setSongAuthor(finalAuthor);
                             myView.songProjectionInfo1.setSongCopyright(finalCopyright);
                             myView.songProjectionInfo1.setSongCCLI(finalCcli);
-                            if (!mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance))) {
-                                myView.songProjectionInfo1.setCapo(finalCapo);
-                            } else {
-                                myView.songProjectionInfo1.setCapo(null);
-                            }
+                            // GE - Capo should be shown in all modes
+                            myView.songProjectionInfo1.setCapo(finalCapo);
                             myView.songProjectionInfo1.setViewHeight(height);
 
                         } else {
@@ -701,11 +698,8 @@ public class SecondaryDisplay extends Presentation {
                             myView.songProjectionInfo2.setSongAuthor(finalAuthor);
                             myView.songProjectionInfo2.setSongCopyright(finalCopyright);
                             myView.songProjectionInfo2.setSongCCLI(finalCcli);
-                            if (!mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance))) {
-                                myView.songProjectionInfo2.setCapo(finalCapo);
-                            } else {
-                                myView.songProjectionInfo2.setCapo(null);
-                            }
+                            // GE - Capo should be shown in all modes
+                            myView.songProjectionInfo2.setCapo(finalCapo);
                             myView.songProjectionInfo2.setViewHeight(height);
                         }
                         myView.testSongInfo.getViewTreeObserver().removeOnGlobalLayoutListener(this);

@@ -8,12 +8,12 @@
     android:layout_margin="0dp"
     android:padding="0dp">
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/miniLogo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginStart="24dp"
+            android:layout_marginStart="0dp"
             android:layout_marginEnd="24dp"
             android:contentDescription="@string/logo"
             app:srcCompat="@drawable/logo" />

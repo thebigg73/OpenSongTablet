@@ -124,6 +124,7 @@ public class SongProjectionInfo extends LinearLayoutCompat {
     }
 
     private void showMiniLogo(boolean show) {
+        Log.d(TAG,"showMiniLogo("+show+")");
         if (show) {
             miniLogo.setVisibility(View.VISIBLE);
         } else {
