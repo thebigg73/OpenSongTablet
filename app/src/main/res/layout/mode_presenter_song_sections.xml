@@ -14,27 +14,25 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="top"
-            android:paddingTop="8dp"
-            android:paddingStart="4dp" />
+            android:padding="8dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="8dp">
 
             <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
                 android:id="@+id/presentationOrder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
-                android:paddingStart="4dp"
                 android:text="@string/presentation_order" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
                 android:id="@+id/imageSlideLoop"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="4dp"
                 android:text="@string/loop_slide_pages" />
         </LinearLayout>
 
@@ -44,7 +42,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:visibility="visible"
-            android:paddingStart="4dp"
+            android:padding="8dp"
             android:layout_marginBottom="8dp">
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText

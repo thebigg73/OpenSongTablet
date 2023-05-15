@@ -2,7 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/DefaultView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -45,7 +44,7 @@
             android:layout_marginStart="8dp"
             android:background="@color/colorAltPrimary"
             android:orientation="vertical"
-            android:padding="8dp">
+            android:padding="16dp">
 
             <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/showLogoSide"
@@ -106,6 +105,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:padding="16dp"
             android:orientation="vertical">
 
             <com.google.android.material.switchmaterial.SwitchMaterial

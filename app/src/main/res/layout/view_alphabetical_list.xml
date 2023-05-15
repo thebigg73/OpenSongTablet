@@ -10,5 +10,6 @@
     android:textColor="#aaaaaa"
     android:minHeight="48dp"
     android:minWidth="48dp"
-    android:text="A"
-    xmlns:android="http://schemas.android.com/apk/res/android" />
+    tools:text="A"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" />

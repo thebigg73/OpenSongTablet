@@ -4,7 +4,7 @@
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
     android:minWidth="8dp"
-    android:paddingTop="40dp"
+    android:paddingTop="32dp"
     android:scrollbars="none">
 
     <LinearLayout
