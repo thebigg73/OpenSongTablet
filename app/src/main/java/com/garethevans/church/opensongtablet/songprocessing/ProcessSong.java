@@ -1435,6 +1435,7 @@ public class ProcessSong {
             textView.setPaintFlags(textView.getPaintFlags() | Paint.FAKE_BOLD_TEXT_FLAG);
             textView.setTypeface(textView.getTypeface(),Typeface.BOLD);
         }
+
         return textView;
     }
 
@@ -1764,11 +1765,6 @@ public class ProcessSong {
                     linearLayout.setGravity(mainActivityInterface.getPresenterSettings().getPresoLyricsAlign());
                 }
 
-                if (!mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) && blockShadow) {
-                    linearLayout.setBackgroundColor(mainActivityInterface.getMyThemeColors().getPresoShadowColor());
-                    linearLayout.setBackgroundColor(getColorWithAlpha(mainActivityInterface.
-                            getMyThemeColors().getPresoShadowColor(), blockShadowAlpha));
-                }
 
                 // Add this section to the array (so it can be called later for presentation)
                 if (!section.trim().isEmpty()) {
@@ -1869,7 +1865,17 @@ public class ProcessSong {
                                 false, isChorusBold));
                     }
 
-                    linearLayout.setBackgroundColor(overallBackgroundColor);
+
+                    Log.d(TAG,"blockShadow:"+blockShadow);
+                    if (presentation && !mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) && blockShadow) {
+                        //linearLayout.setBackgroundColor(Color.RED);
+                        //linearLayout.setBackgroundColor(mainActivityInterface.getMyThemeColors().getPresoShadowColor());
+                        linearLayout.setBackgroundColor(getColorWithAlpha(mainActivityInterface.
+                                    getMyThemeColors().getPresoShadowColor(), blockShadowAlpha));
+                        Log.d(TAG,"blockShadowAlpha:"+blockShadowAlpha);
+                    } else {
+                        linearLayout.setBackgroundColor(overallBackgroundColor);
+                    }
                     sectionColors.add(overallBackgroundColor);
                     sectionViews.add(linearLayout);
                 }

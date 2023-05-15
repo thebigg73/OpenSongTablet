@@ -3681,7 +3681,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
                             case "contentAlignment":
                             case "showSection":
-                                secondaryDisplay.showSection(presenterSettings.getCurrentSection());
+                                secondaryDisplay.showSection(song.getCurrentSection());
                                 break;
                             case "editView":
                                 secondaryDisplay.editView();
@@ -3699,6 +3699,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                                 break;
 
                             // The screen setup
+                            case "measureAvailableSizes":
+                                secondaryDisplay.measureAvailableSizes();
+                                secondaryDisplay.viewsAreReady();
+                                break;
                             case "setScreenSizes":
                                 secondaryDisplay.setScreenSizes();
                                 break;
@@ -3742,10 +3746,18 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         int sections;
         if (song.getFiletype().equals("PDF") || song.getFolder().contains("**Image")) {
             sections = song.getPdfPageCount();
+            if (position < sections) {
+                song.setPdfPageCurrent(position);
+            }
         } else if (song.getFiletype().equals("IMG")) {
             sections = 1;
+            song.setPdfPageCount(0);
+            song.setCurrentSection(0);
         } else {
             sections = song.getPresoOrderSongSections().size();
+            if (position < sections) {
+                song.setCurrentSection(position);
+            }
         }
 
         if (secondaryDisplays != null) {

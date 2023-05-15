@@ -64,13 +64,14 @@ public class SecondaryDisplay extends Presentation {
     private int showWhichVideo = 0;
     private final int logoSplashTime = 3000;
     private int availableScreenWidth;
-    private int availableScreenHeight;
+    private int availableScreenHeight, horizontalSize, verticalSize;
 
     private boolean firstRun = true;
     private boolean isNewSong;
     private String currentInfoText;
     private boolean infoBarRequired=false;
     private boolean invertXY;
+    private final int castPadding;
 
     private ViewTreeObserver.OnGlobalLayoutListener testSongInfoVTO;
 
@@ -90,6 +91,11 @@ public class SecondaryDisplay extends Presentation {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+        if (c != null) {
+            castPadding = (int) (8f * c.getResources().getDisplayMetrics().density + 0.5f); // 0.5f for rounding
+        } else {
+            castPadding = 8;
         }
     }
 
@@ -209,8 +215,6 @@ public class SecondaryDisplay extends Presentation {
         display.getRealMetrics(metrics);
         invertXY = mainActivityInterface.getPresenterSettings().getCastRotation() == 90.0f ||
                 mainActivityInterface.getPresenterSettings().getCastRotation() == 270.0f;
-        int horizontalSize;
-        int verticalSize;
         if (invertXY) {
             // Switch width for height and vice versa
             horizontalSize = metrics.heightPixels;
@@ -241,14 +245,10 @@ public class SecondaryDisplay extends Presentation {
         myView.mainLogo.setRotation(mainActivityInterface.getPresenterSettings().getCastRotation());
 
         // Available size has to take into consideration any padding
+        measureAvailableSizes();
 
-        availableScreenWidth = horizontalSize - Math.round((2 * (displayMetrics.density * mainActivityInterface.getPresenterSettings().getPresoXMargin())));
-        availableScreenHeight = verticalSize - Math.round((2 * (displayMetrics.density*mainActivityInterface.getPresenterSettings().getPresoYMargin())));
-
-        updateViewSizes(myView.pageHolder);
 
         // These bits are dependent on the screen size, so are called here initially
-        changeMargins();
         changeLogo();
         matchPresentationToMode();
         setSongInfo();
@@ -298,17 +298,39 @@ public class SecondaryDisplay extends Presentation {
             showLogo(true, timedHide);
         }
     }
+
+    public void measureAvailableSizes() {
+        availableScreenWidth = horizontalSize - Math.round((2 * mainActivityInterface.getPresenterSettings().getPresoXMargin())) - 2*castPadding;
+        availableScreenHeight = verticalSize - Math.round((2 * mainActivityInterface.getPresenterSettings().getPresoYMargin())) - 2*castPadding;
+        Log.d(TAG,"horizontalSize:"+horizontalSize+"  margin:"+mainActivityInterface.getPresenterSettings().getPresoXMargin());
+        Log.d(TAG,"availableScreenWidth:"+availableScreenWidth);
+
+        updateViewSizes(myView.pageHolder);
+        changeMargins();
+    }
+
     private void changeMargins() {
         myView.pageHolder.setPadding(mainActivityInterface.getPresenterSettings().getPresoXMargin(),
                 mainActivityInterface.getPresenterSettings().getPresoYMargin(),
                 mainActivityInterface.getPresenterSettings().getPresoXMargin(),
                 mainActivityInterface.getPresenterSettings().getPresoYMargin());
+        Log.d(TAG,"view padding L:"+myView.pageHolder.getPaddingStart());
+        Log.d(TAG,"view padding R:"+myView.pageHolder.getPaddingEnd());
+        Log.d(TAG,"view padding T:"+myView.pageHolder.getPaddingTop());
+        Log.d(TAG,"view padding B:"+myView.pageHolder.getPaddingBottom());
+        myView.songContent1.setPadding(castPadding,castPadding,castPadding,castPadding);
+        myView.songContent2.setPadding(castPadding,castPadding,castPadding,castPadding);
+        myView.imageView1.setPadding(castPadding,castPadding,castPadding,castPadding);
+        myView.imageView2.setPadding(castPadding,castPadding,castPadding,castPadding);
+        myView.songProjectionInfo1.setPadding(castPadding,0,castPadding,0);
+        myView.songProjectionInfo2.setPadding(castPadding,0,castPadding,0);
     }
     private void updateViewSizes(View view) {
         if (view == myView.pageHolder) {
             FrameLayout.LayoutParams fllp = (FrameLayout.LayoutParams)view.getLayoutParams();
-            fllp.width = availableScreenWidth;
-            fllp.height = availableScreenHeight;
+            Log.d(TAG,"updateViewSizes() availableScreenWidth:"+availableScreenWidth);
+            fllp.width = availableScreenWidth + 2*castPadding + 2*mainActivityInterface.getPresenterSettings().getPresoXMargin();
+            fllp.height = availableScreenHeight + 2*castPadding + 2*mainActivityInterface.getPresenterSettings().getPresoYMargin();
             view.setLayoutParams(fllp);
         }
     }
@@ -789,8 +811,6 @@ public class SecondaryDisplay extends Presentation {
         // Then measure them, work out the best orientation and scaling
         // Then remove from the test layout and reattach to the song layout.
 
-        Log.d(TAG,"setSongContent()");
-        Log.d(TAG,"fileType:"+mainActivityInterface.getSong().getFiletype());
         // Clear any existing views from the test layout.  We don't fade out existing song layout until we are ready
         myView.testLayout.removeAllViews();
         secondaryViews = null;
@@ -850,13 +870,15 @@ public class SecondaryDisplay extends Presentation {
         }
     }
 
-    private void viewsAreReady() {
+    public void viewsAreReady() {
         Log.d(TAG,"viewsAreReady()");
         // The views are ready so prepare to create the song page
         for (int x = 0; x < secondaryViews.size(); x++) {
             int width = secondaryViews.get(x).getMeasuredWidth();
             int height = secondaryViews.get(x).getMeasuredHeight();
             secondaryWidths.add(x, width);
+            Log.d(TAG,"viewsAreReady()  secondaryWidths["+x+"]:"+width);
+
             secondaryHeights.add(x, height);
 
             // Calculate the scale factor for each section individually
@@ -891,7 +913,12 @@ public class SecondaryDisplay extends Presentation {
         }
     }
 
+    public void updateSection() {
+        showSection(mainActivityInterface.getPresenterSettings().getCurrentSection());
+    }
+
     public void showSection(final int position) {
+        measureAvailableSizes();
         Log.d(TAG,"showSection() position:"+position);
         try {
             // Decide which view to show.  Do nothing if it is already showing
@@ -946,8 +973,8 @@ public class SecondaryDisplay extends Presentation {
                         float max_y = (float) (availableScreenHeight - infoHeight - alertHeight) / (float) height;
 
                         float best = Math.min(max_x, max_y);
-                        if (best > (mainActivityInterface.getPresenterSettings().getFontSizePresoMax() / 14f)) {
-                            best = mainActivityInterface.getPresenterSettings().getFontSizePresoMax() / 14f;
+                        if (best > (mainActivityInterface.getPresenterSettings().getFontSizePresoMax() / mainActivityInterface.getProcessSong().getDefFontSize())) {
+                            best = mainActivityInterface.getPresenterSettings().getFontSizePresoMax() / mainActivityInterface.getProcessSong().getDefFontSize();
                         }
 
                         secondaryViews.get(position).setPivotX(0f);
@@ -1133,6 +1160,7 @@ public class SecondaryDisplay extends Presentation {
             ((ViewGroup)view.getParent()).removeView(view);
         }
     }
+
     @SuppressLint("RtlHardcoded")
     private void translateView(View view, int newWidth, int newHeight, int infoHeight, int alertHeight) {
         switch (mainActivityInterface.getPresenterSettings().getPresoLyricsAlign()) {
@@ -1162,6 +1190,8 @@ public class SecondaryDisplay extends Presentation {
                 view.setTranslationY((int) ((availableScreenHeight - infoHeight - alertHeight - newHeight) / 2f));
                 break;
         }
+        Log.d(TAG,"translationX:"+view.getTranslationX());
+
     }
 
     // If we edited a view from PresenterMode via the bottom sheet for a song section
@@ -1184,6 +1214,7 @@ public class SecondaryDisplay extends Presentation {
                     // Get the sizes
                     int position = mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().getSectionEdited();
                     secondaryWidths.set(position,newView.getMeasuredWidth());
+                    Log.d(TAG,"secondaryWidths["+position+"]:"+newView.getMeasuredWidth());
                     secondaryHeights.set(position,newView.getMeasuredHeight());
                     // Remove the view from the test layout and add it to the array list
                     myView.testLayout.removeAllViews();

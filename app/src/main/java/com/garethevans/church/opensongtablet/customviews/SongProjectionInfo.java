@@ -293,4 +293,9 @@ public class SongProjectionInfo extends LinearLayoutCompat {
             return true;
         }
     }
+
+    @Override
+    public void setPadding(int left, int top, int right, int bottom) {
+        castSongInfo.setPadding(left,top,right,bottom);
+    }
 }

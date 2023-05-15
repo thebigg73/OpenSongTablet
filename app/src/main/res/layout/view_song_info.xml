@@ -14,6 +14,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
             android:contentDescription="@string/logo"
             app:srcCompat="@drawable/logo" />
 
@@ -33,9 +34,9 @@
             android:layout_weight="1"
             android:orientation="vertical"
             android:layout_margin="0dp"
-            android:paddingStart="24dp"
+            android:paddingStart="0dp"
             android:paddingTop="4dp"
-            android:paddingEnd="24dp"
+            android:paddingEnd="0dp"
             android:paddingBottom="8dp">
 
             <TextView
