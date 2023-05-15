@@ -686,7 +686,7 @@ public class PerformanceFragment extends Fragment {
         // Prepare the song sheet header if required, if not, make it null
         if (mainActivityInterface.getPreferences().getMyPreferenceBoolean("songSheet", false)) {
             mainActivityInterface.setSongSheetTitleLayout(mainActivityInterface.getSongSheetHeaders().getSongSheet(
-                    mainActivityInterface.getSong(), mainActivityInterface.getProcessSong().getScaleComments(), false));
+                    mainActivityInterface.getSong(), mainActivityInterface.getProcessSong().getScaleComments(), mainActivityInterface.getMyThemeColors().getLyricsTextColor()));
         } else {
             mainActivityInterface.setSongSheetTitleLayout(null);
         }

@@ -756,7 +756,7 @@ public class ExportFragment extends Fragment {
         });
         // Now draw it here for measuring via the VTO
         headerLayoutPDF = mainActivityInterface.getSongSheetHeaders().getSongSheet(thisSong,
-                scaleComments, true);
+                scaleComments, Color.BLACK);
         if (headerLayoutPDF!=null) {
             myView.hiddenHeader.addView(headerLayoutPDF);
         } else {
@@ -912,7 +912,7 @@ public class ExportFragment extends Fragment {
         if (mainActivityInterface.getPreferences().getMyPreferenceBoolean("songSheet",false)) {
             mainActivityInterface.getSongSheetHeaders().setForExport(false);
             mainActivityInterface.setSongSheetTitleLayout(mainActivityInterface.getSongSheetHeaders().getSongSheet(thisSong,
-                    scaleComments, !screenShot));
+                    scaleComments, screenShot ? mainActivityInterface.getMyThemeColors().getLyricsTextColor() : Color.BLACK));
             mainActivityInterface.getSongSheetHeaders().setForExport(true);
         }
 

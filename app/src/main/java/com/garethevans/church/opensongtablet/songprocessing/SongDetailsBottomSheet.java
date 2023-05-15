@@ -67,20 +67,15 @@ public class SongDetailsBottomSheet extends BottomSheetDialogFragment {
         } else {
             myView.textExtract.setVisibility(View.GONE);
         }
-        myView.title.setHint(mainActivityInterface.getSong().getTitle());
-        myView.author.setHint(mainActivityInterface.getSong().getAuthor());
-        String key = mainActivityInterface.getSong().getKey();
-        if (!mainActivityInterface.getToolbar().getCapoString().isEmpty()) {
-            key += " [" + getString(R.string.capo) + " " + mainActivityInterface.getToolbar().getCapoString() + "]";
-        }
-        myView.key.setHint(key);
-        myView.copyright.setHint(mainActivityInterface.getSong().getCopyright());
         myView.ccli.setHint(mainActivityInterface.getSong().getCcli());
         myView.presentationOrder.setHint(mainActivityInterface.getSong().getPresentationorder());
         myView.hymnnum.setHint(mainActivityInterface.getSong().getHymnnum());
         myView.notes.setHint(mainActivityInterface.getSong().getNotes());
         myView.lyrics.setHintMonospace();
         myView.lyrics.setHint(mainActivityInterface.getSong().getLyrics());
+        myView.songSheet.removeAllViews();
+        myView.songSheet.addView(mainActivityInterface.getSongSheetHeaders().getSongSheet(
+                mainActivityInterface.getSong(), 0.9f, getResources().getColor(R.color.vlightgrey)));
     }
 
     private void setupListeners() {

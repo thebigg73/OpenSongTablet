@@ -24,35 +24,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="16dp">
 
-                <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
                     android:text="@string/title" />
 
-                <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
-                    android:id="@+id/author"
+                <LinearLayout
+                    android:id="@+id/songSheet"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:text="@string/author" />
-
-                <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
-                    android:id="@+id/key"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:text="@string/key" />
-
-                <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
-                    android:id="@+id/copyright"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:text="@string/copyright" />
+                    android:orientation="vertical"
+                    android:visibility="visible" />
 
                 <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                     android:id="@+id/ccli"
