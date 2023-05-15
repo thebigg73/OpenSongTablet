@@ -448,13 +448,16 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                 final Map<String, Integer> map = songListAdapter.getAlphaIndex(songsFound);
                 Set<String> setString = map.keySet();
                 List<String> indexList = new ArrayList<>(setString);
-                float tvSize = mainActivityInterface.getPreferences().getMyPreferenceFloat("songMenuAlphaIndexSize", 14.0f);
+                int i = (int) mainActivityInterface.getPreferences().getMyPreferenceFloat("songMenuAlphaIndexSize", 14.0f);
                 for (int p = 0; p < indexList.size(); p++) {
                     String index = indexList.get(p);
                     if (getActivity() != null) {
                         textView = (TextView) View.inflate(getActivity(), R.layout.view_alphabetical_list, null);
                         if (textView != null) {
-                            textView.setTextSize(tvSize);
+                            textView.setTextSize(i);
+                            textView.setPadding(i, i, i, i);
+                            textView.setMinimumWidth(16);
+                            textView.setMinimumHeight(16);
                             textView.setText(index);
                             int finalP = p;
                             textView.setOnClickListener(view -> {
@@ -514,33 +517,38 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
             List<String> indexList = new ArrayList<>(setString);
             for (String index : indexList) {
                 textView = (TextView) View.inflate(getActivity(), R.layout.view_alphabetical_list, null);
-                textView.setTextSize(mainActivityInterface.getPreferences().getMyPreferenceFloat("songMenuAlphaIndexSize", 14.0f));
-                int i = (int) mainActivityInterface.getPreferences().getMyPreferenceFloat("songMenuAlphaIndexSize", 14.0f) * 2;
-                textView.setPadding(i, i, i, i);
-                textView.setMinimumWidth(16);
-                textView.setMinimumHeight(16);
-                textView.setText(index);
-                textView.setOnClickListener(view -> {
-                    TextView selectedIndex = (TextView) view;
-                    try {
-                        if (selectedIndex.getText() != null &&
-                                songListLayoutManager != null) {
-                            String myval = selectedIndex.getText().toString();
+                if (textView != null) {
+                    int i = (int) mainActivityInterface.getPreferences().getMyPreferenceFloat("songMenuAlphaIndexSize", 14.0f);
+                    textView.setTextSize(i);
+                    textView.setPadding(i, i, i, i);
+                    textView.setMinimumWidth(16);
+                    textView.setMinimumHeight(16);
+                    // IV - Display the 2 char index over 1 or 2 lines.  The trim removes trailing '\n ' giving one line when the second char of the index is a space.
+                    String indexlines = (index.charAt(0) + "\n" + index.charAt(1)).trim();
+                    textView.setText(indexlines);
+                    textView.setOnClickListener(view -> {
+                        TextView selectedIndex = (TextView) view;
+                        try {
+                            if (selectedIndex.getText() != null &&
+                                    songListLayoutManager != null) {
+                                // IV - Recover the 2 char index from the 1 or 2 lines of displayed text
+                                String myval = (selectedIndex.getText().toString().replace("\n", "") + " ").substring(0,2);
 
-                            if (!map2.isEmpty()) {
-                                Integer obj = map2.get(myval);
-                                if (obj != null) {
-                                    songListLayoutManager.scrollToPositionWithOffset(obj, 0);
+                                if (!map2.isEmpty()) {
+                                    Integer obj = map2.get(myval);
+                                    if (obj != null) {
+                                        songListLayoutManager.scrollToPositionWithOffset(obj, 0);
+                                    }
                                 }
+                                displayIndex();
+                                mainActivityInterface.getWindowFlags().hideKeyboard();
                             }
-                            displayIndex();
-                            mainActivityInterface.getWindowFlags().hideKeyboard();
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                });
-                myView.songmenualpha.sideIndex.addView(textView);
+                    });
+                    myView.songmenualpha.sideIndex.addView(textView);
+                }
             }
             changeAlphabeticalVisibility(mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuAlphaIndexShow", true));
             myView.songmenualpha.sideIndex.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
