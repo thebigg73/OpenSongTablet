@@ -11,5 +11,6 @@ public interface DisplayInterface {
 
     // Performance and Stage Mode tasks
     void performanceShowSection(int position);
+    boolean getIsSecondaryDisplaying();
 
 }

@@ -287,8 +287,16 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
     }
 
     public void clickOnSection(int position) {
-        fakeClick = true;
-        sectionSelected(position);
+        // TODO TEST
+        Log.d(TAG,"TEST:  position:"+position+"  pageInfos.size():"+pageInfos.size());
+        if (displayInterface.getIsSecondaryDisplaying() &&
+                pageInfos.size()>=position) {
+            fakeClick = true;
+            sectionSelected(position);
+        } else if (pageInfos.size() > position) {
+            fakeClick = true;
+            sectionSelected(position);
+        }
     }
 
     public void sectionSelected(int position) {
@@ -302,9 +310,11 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
 
                 // Only do this alpha change if we aren't in Performance mode
                 if (!mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance))) {
-                    itemHighlighted.put(currentSection,false);
-                    //pageInfos.get(currentSection).alpha = alphaoff;
-                    notifyItemChanged(currentSection, alphaChange);
+                    if (pageInfos.size()>currentSection) {
+                        itemHighlighted.put(currentSection, false);
+                        //pageInfos.get(currentSection).alpha = alphaoff;
+                        notifyItemChanged(currentSection, alphaChange);
+                    }
 
                     // Now update the newly selected position
                     //pageInfos.get(position).alpha = 1.0f;

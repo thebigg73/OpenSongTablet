@@ -278,6 +278,7 @@ public interface MainActivityInterface {
     void toggleScale();
     void updateMargins();
     int[] getViewMargins();
+    boolean getIsSecondaryDisplaying();
 
     // Song sheet titles
     void setSongSheetTitleLayout(LinearLayout linearLayout);

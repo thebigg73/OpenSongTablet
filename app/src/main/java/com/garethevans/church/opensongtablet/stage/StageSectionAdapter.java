@@ -241,7 +241,13 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
     }
 
     public void clickOnSection(int position) {
-        if (sectionInfos.size()>position) {
+        // TODO TEST
+        Log.d(TAG,"TEST:  position:"+position+"  sectionInfos.size():"+sectionInfos.size());
+        if (displayInterface.getIsSecondaryDisplaying() &&
+                sectionInfos.size()>=position) {
+            fakeClick = true;
+            sectionSelected(position);
+        } else if (sectionInfos.size() > position) {
             fakeClick = true;
             sectionSelected(position);
         }
@@ -256,8 +262,10 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
 
         try {
             if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_stage))) {
-                sectionInfos.get(currentSection).alpha = alphaoff;
-                notifyItemChanged(currentSection, alphaChange);
+                if (sectionInfos.size()>currentSection) {
+                    sectionInfos.get(currentSection).alpha = alphaoff;
+                    notifyItemChanged(currentSection, alphaChange);
+                }
 
                 // Now update the newly selected position
                 if (position >= 0 && position < sectionInfos.size()) {

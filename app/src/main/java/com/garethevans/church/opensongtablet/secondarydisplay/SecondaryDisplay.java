@@ -947,7 +947,13 @@ public class SecondaryDisplay extends Presentation {
                 }
                 mainActivityInterface.getSong().setCurrentSection(position);
                 mainActivityInterface.getPresenterSettings().setCurrentSection(position);
-                if (position >= 0 && position < viewsAvailable) {
+
+                int tempViewsAvailable = viewsAvailable;
+                if (mainActivityInterface.getIsSecondaryDisplaying()) {
+                    tempViewsAvailable = viewsAvailable+1;
+                }
+
+                if (position >= 0 && position < tempViewsAvailable) {
                     // Check the song info status first
                     checkSongInfoShowHide();
 
@@ -965,33 +971,36 @@ public class SecondaryDisplay extends Presentation {
 
                     if (!pdf && !image && !imageslide) {
                         // Remove the view from any parent it might be attached to already (can only have 1)
-                        removeViewFromParent(secondaryViews.get(position));
+                        if (position<secondaryViews.size()) {
+                            removeViewFromParent(secondaryViews.get(position));
 
-                        // Get the size of the view
-                        int width = secondaryWidths.get(position);
-                        int height = secondaryHeights.get(position);
+                            // Get the size of the view
+                            int width = secondaryWidths.get(position);
+                            int height = secondaryHeights.get(position);
 
-                        float max_x = (float) availableScreenWidth / (float) width;
-                        float max_y = (float) (availableScreenHeight - infoHeight - alertHeight) / (float) height;
+                            float max_x = (float) availableScreenWidth / (float) width;
+                            float max_y = (float) (availableScreenHeight - infoHeight - alertHeight) / (float) height;
 
-                        float best = Math.min(max_x, max_y);
-                        if (best > (mainActivityInterface.getPresenterSettings().getFontSizePresoMax() / mainActivityInterface.getProcessSong().getDefFontSize())) {
-                            best = mainActivityInterface.getPresenterSettings().getFontSizePresoMax() / mainActivityInterface.getProcessSong().getDefFontSize();
+                            float best = Math.min(max_x, max_y);
+                            if (best > (mainActivityInterface.getPresenterSettings().getFontSizePresoMax() / mainActivityInterface.getProcessSong().getDefFontSize())) {
+                                best = mainActivityInterface.getPresenterSettings().getFontSizePresoMax() / mainActivityInterface.getProcessSong().getDefFontSize();
+                            }
+
+                            secondaryViews.get(position).setPivotX(0f);
+                            secondaryViews.get(position).setPivotY(0f);
+                            secondaryViews.get(position).setScaleX(best);
+                            secondaryViews.get(position).setScaleY(best);
+
+                            // We can now prepare the new view and animate in/out the views as long as the logo is off
+                            // and the blank screen isn't on
+
+                            // Translate the scaled views based on the alignment
+                            int newWidth = (int) (width * best);
+                            int newHeight = (int) (height * best);
+
+                            translateView(secondaryViews.get(position), newWidth, newHeight, infoHeight, alertHeight);
+
                         }
-
-                        secondaryViews.get(position).setPivotX(0f);
-                        secondaryViews.get(position).setPivotY(0f);
-                        secondaryViews.get(position).setScaleX(best);
-                        secondaryViews.get(position).setScaleY(best);
-
-                        // We can now prepare the new view and animate in/out the views as long as the logo is off
-                        // and the blank screen isn't on
-
-                        // Translate the scaled views based on the alignment
-                        int newWidth = (int) (width * best);
-                        int newHeight = (int) (height * best);
-
-                        translateView(secondaryViews.get(position), newWidth, newHeight, infoHeight, alertHeight);
                     }
 
                     Bitmap bitmap;
@@ -1044,7 +1053,11 @@ public class SecondaryDisplay extends Presentation {
                             Log.d(TAG,"songContent1 not using image");
                             myView.songContent1.getCol1().setVisibility(View.VISIBLE);
                             myView.songContent1.getImageView().setVisibility(View.GONE);
-                            myView.songContent1.getCol1().addView(secondaryViews.get(position));
+                            if (position < secondaryViews.size()) {
+                                myView.songContent1.getCol1().addView(secondaryViews.get(position));
+                            } else {
+                                myView.songContent1.getCol1().addView(new View(c));
+                            }
                         }
                         myView.songContent1.setIsDisplaying(true);
                         myView.songContent2.setIsDisplaying(false);
@@ -1066,7 +1079,11 @@ public class SecondaryDisplay extends Presentation {
                             Log.d(TAG,"songContent2 not using image");
                             myView.songContent2.getCol1().setVisibility(View.VISIBLE);
                             myView.songContent2.getImageView().setVisibility(View.GONE);
-                            myView.songContent2.getCol1().addView(secondaryViews.get(position));
+                            if (position < secondaryViews.size()) {
+                                myView.songContent2.getCol1().addView(secondaryViews.get(position));
+                            } else {
+                                myView.songContent2.getCol1().addView(new View(c));
+                            }
                         }
                         myView.songContent1.setIsDisplaying(false);
                         myView.songContent2.setIsDisplaying(true);

@@ -710,7 +710,8 @@ public class PerformanceGestures {
                     currentPos = mainActivityInterface.getSong().getCurrentSection();
                     finalPos = mainActivityInterface.getSong().getPresoOrderSongSections().size() - 1;
                 }
-                if (scrollDown && currentPos < finalPos) {
+                // TODO TEST
+                if (scrollDown && currentPos <= finalPos) {
                     return true;
                 } else {
                     return !scrollDown && currentPos > 0;
@@ -795,8 +796,13 @@ public class PerformanceGestures {
             }
             int newPosition = currentPosition;
 
+            // TODO TEST
+            Log.d(TAG,"TEST: currentPosition:"+currentPosition+"  finalPosition:"+finalPosition);
             if (scrollDown) {
-                if (currentPosition < finalPosition) {
+                if (displayInterface.getIsSecondaryDisplaying() &&
+                            currentPosition <= finalPosition) {
+                    newPosition++;
+                } else if (currentPosition < finalPosition) {
                     newPosition++;
                 }
             } else {
