@@ -26,6 +26,7 @@ public class SongSheetHeaders {
     public LinearLayout getSongSheet(Song thisSong, float commentScaling,  int textColor) {
         // Rather than assuming it is the current song, we get passed the song current or otherwise
         // This allows on the fly processing of other songs not processed (e.g. as part of a set)
+        // IV - Uses SongSelect tricks of bold, simple separators and field names - to enhance readability
         linearLayout = new LinearLayout(c);
         linearLayout.setOrientation(LinearLayout.VERTICAL);
         linearLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -63,7 +64,10 @@ public class SongSheetHeaders {
         String keyCapoTempo = getKeyCapoTempo(thisSong);
 
         if (!keyCapoTempo.isEmpty()) {
-            linearLayout.addView(getSongSheetTexts(keyCapoTempo.trim(),typeface,textColor,defFontSize*commentScaling));
+            TextView textView = getSongSheetTexts(keyCapoTempo.trim(),typeface,textColor,defFontSize*commentScaling);
+            textView.setPaintFlags(textView.getPaintFlags() | Paint.FAKE_BOLD_TEXT_FLAG);
+            textView.setTypeface(textView.getTypeface(),Typeface.BOLD);
+            linearLayout.addView(textView);
         }
 
         // Add a section space to the bottom of the songSheet
@@ -96,20 +100,20 @@ public class SongSheetHeaders {
         String keyCapoTempo = "";
 
         if (capo!=null && !capo.isEmpty()) {
-            keyCapoTempo += "| " + c.getString(R.string.capo) + ": " + capo + " ";
+            keyCapoTempo += "| " + c.getString(R.string.capo) + " - " + capo + " ";
             keyCapoTempo += ("(" + mainActivityInterface.getTranspose().capoKeyTranspose() + ") ").replace(" ()","");
         }
 
         if (key!=null && !key.isEmpty()) {
-            keyCapoTempo += "| " + c.getString(R.string.key) + ": " + key + " ";
+            keyCapoTempo += "| " + c.getString(R.string.key) + " - " + key + " ";
         }
 
         if (tempo!=null && !tempo.isEmpty()) {
-            keyCapoTempo += "| " + c.getString(R.string.tempo) + ": " + tempo + " bpm ";
+            keyCapoTempo += "| " + c.getString(R.string.tempo) + " - " + tempo + " ";
         }
 
         if (timesig!=null && !timesig.isEmpty()) {
-            keyCapoTempo += "| " + c.getString(R.string.time_signature) + ": " + timesig + " ";
+            keyCapoTempo += "| " + c.getString(R.string.time) + " - " + timesig + " ";
         }
 
         keyCapoTempo = keyCapoTempo.trim().replaceFirst("\\| ","");
