@@ -22,6 +22,7 @@ import com.garethevans.church.opensongtablet.databinding.ModePresenterSongSectio
 import com.garethevans.church.opensongtablet.interfaces.DisplayInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.pdf.PDFPageAdapter;
+import com.garethevans.church.opensongtablet.songprocessing.SongDetailsBottomSheet;
 
 import java.util.ArrayList;
 import java.util.Timer;
@@ -141,7 +142,10 @@ public class SongSectionsFragment extends Fragment {
                 myView.imageSlideLoop.setChecked(loop);
                 myView.songInfo.setOnClickListener(view -> {
                     if (!mainActivityInterface.getSong().getFolder().contains("**Image")) {
-                        mainActivityInterface.navigateToFragment(deeplink_edit_string, 0);
+                        if (!mainActivityInterface.getSong().getTitle().equals("Welcome to OpenSongApp")) {
+                            SongDetailsBottomSheet songDetailsBottomSheet = new SongDetailsBottomSheet();
+                            songDetailsBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "songDetailsBottomSheet");
+                        }
                     }
                 });
                 myView.songInfo.setOnLongClickListener(view -> {
