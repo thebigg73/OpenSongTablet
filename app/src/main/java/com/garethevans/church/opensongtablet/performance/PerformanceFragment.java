@@ -65,6 +65,8 @@ public class PerformanceFragment extends Fragment {
     private int widthAfterScale;
     private int heightAfterScale;
     private boolean processingTestView;
+    private boolean songChange;
+    private boolean metronomeWasRunning;
     private float scaleFactor = 1.0f;
     private ModePerformanceBinding myView;
     private Animation animSlideIn, animSlideOut;
@@ -361,8 +363,17 @@ public class PerformanceFragment extends Fragment {
                 processingTestView = true;
                 // Loading the song is dealt with in this fragment as specific actions are required
 
+                // IV - Set a boolean indicating song change
+                songChange = !mainActivityInterface.getSong().getFilename().equals(filename) || !mainActivityInterface.getSong().getFolder().equals(folder);
+
                 // Remove capo
                 mainActivityInterface.updateOnScreenInfo("capoHide");
+
+                // IV - Deal with stop of metronome
+                metronomeWasRunning = mainActivityInterface.getMetronome().getIsRunning();
+                if (songChange && metronomeWasRunning) {
+                    mainActivityInterface.getMetronome().stopMetronome();
+                }
 
                 // Stop any autoscroll if required
                 boolean autoScrollActivated = mainActivityInterface.getAutoscroll().getAutoscrollActivated();
@@ -391,6 +402,15 @@ public class PerformanceFragment extends Fragment {
                             // Now reset the song object (doesn't change what's already drawn on the screen)
                             mainActivityInterface.setSong(mainActivityInterface.getLoadSong().doLoadSong(
                                     mainActivityInterface.getSong(), false));
+
+                            handler.post(() -> {
+                                if (myView != null) {
+                                    // Set the default color
+                                    myView.pageHolder.setBackgroundColor(mainActivityInterface.getMyThemeColors().getLyricsBackgroundColor());
+                                    // Update the toolbar with the song detail (null).
+                                    mainActivityInterface.updateToolbar(null);
+                                }
+                            });
 
                             // IV - Reset current values to 0
                             if (mainActivityInterface.getSong().getFiletype().equals("PDF")) {
@@ -466,15 +486,7 @@ public class PerformanceFragment extends Fragment {
             // This is called on the UI thread above via the handler from mainLooper()
             // Reset the song views
             mainActivityInterface.setSectionViews(null);
-
-            // Reset the song sheet titles and views
             removeViews();
-
-            // Set the default color
-            myView.pageHolder.setBackgroundColor(mainActivityInterface.getMyThemeColors().getLyricsBackgroundColor());
-
-            // Update the toolbar with the song (null).  This also sets the positionInSet in SetActions
-            mainActivityInterface.updateToolbar(null);
 
             // If we are in a set, send that info to the inline set custom view to see if it should draw
             myView.inlineSetList.checkVisibility();
@@ -1017,12 +1029,9 @@ public class PerformanceFragment extends Fragment {
                 mainActivityInterface.getAutoscroll().startAutoscroll();
             }
 
-            // Deal with the metronome
-            boolean metronomeWasRunning =  mainActivityInterface.getMetronome().getIsRunning();
-            if (metronomeWasRunning) {
-                mainActivityInterface.getMetronome().stopMetronome();
-            }
-            if (mainActivityInterface.getMetronome().getMetronomeAutoStart() && metronomeWasRunning) {
+            // Deal with auto start of metronome
+            if (mainActivityInterface.getMetronome().getMetronomeAutoStart() &&
+                    songChange && metronomeWasRunning) {
                 mainActivityInterface.getMetronome().startMetronome();
             }
 
