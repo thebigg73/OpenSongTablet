@@ -16,19 +16,21 @@ import com.garethevans.church.opensongtablet.appdata.CheckInternet;
 import com.garethevans.church.opensongtablet.appdata.SetTypeFace;
 import com.garethevans.church.opensongtablet.appdata.VersionNumber;
 import com.garethevans.church.opensongtablet.autoscroll.Autoscroll;
+import com.garethevans.church.opensongtablet.beatbuddy.BeatBuddy;
 import com.garethevans.church.opensongtablet.bible.Bible;
 import com.garethevans.church.opensongtablet.ccli.CCLILog;
 import com.garethevans.church.opensongtablet.chords.ChordDirectory;
 import com.garethevans.church.opensongtablet.chords.ChordDisplayProcessing;
 import com.garethevans.church.opensongtablet.chords.Transpose;
+import com.garethevans.church.opensongtablet.controls.CommonControls;
 import com.garethevans.church.opensongtablet.controls.Gestures;
+import com.garethevans.church.opensongtablet.controls.HotZones;
 import com.garethevans.church.opensongtablet.controls.PageButtons;
 import com.garethevans.church.opensongtablet.controls.PedalActions;
 import com.garethevans.church.opensongtablet.controls.Swipes;
 import com.garethevans.church.opensongtablet.customslides.CustomSlide;
 import com.garethevans.church.opensongtablet.customviews.DrawNotes;
 import com.garethevans.church.opensongtablet.customviews.MyToolbar;
-import com.garethevans.church.opensongtablet.beatbuddy.BeatBuddy;
 import com.garethevans.church.opensongtablet.drummer.Drummer;
 import com.garethevans.church.opensongtablet.export.ExportActions;
 import com.garethevans.church.opensongtablet.export.PrepareFormats;
@@ -177,11 +179,13 @@ public interface MainActivityInterface {
     void expandActionButton();
 
     // Controls
+    CommonControls getCommonControls();
     PedalActions getPedalActions();
     Gestures getGestures();
     PerformanceGestures getPerformanceGestures();
     Swipes getSwipes();
     void enableSwipe(String which, boolean canSwipe);
+    HotZones getHotZones();
 
     // Navigation
     void navHome();

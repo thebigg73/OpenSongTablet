@@ -58,5 +58,6 @@ public class ControlMenuFragment extends Fragment {
         myView.pedals.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.pedalsFragment));
         myView.customGestures.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.gesturesFragment));
         myView.swipe.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.swipeFragment));
+        myView.hotZones.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.hotZonesSettingsFragment));
     }
 }

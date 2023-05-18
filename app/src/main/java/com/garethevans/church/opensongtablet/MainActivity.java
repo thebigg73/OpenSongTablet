@@ -63,7 +63,9 @@ import com.garethevans.church.opensongtablet.chords.ChordDirectory;
 import com.garethevans.church.opensongtablet.chords.ChordDisplayProcessing;
 import com.garethevans.church.opensongtablet.chords.CustomChordsFragment;
 import com.garethevans.church.opensongtablet.chords.Transpose;
+import com.garethevans.church.opensongtablet.controls.CommonControls;
 import com.garethevans.church.opensongtablet.controls.Gestures;
+import com.garethevans.church.opensongtablet.controls.HotZones;
 import com.garethevans.church.opensongtablet.controls.PageButtons;
 import com.garethevans.church.opensongtablet.controls.PedalActions;
 import com.garethevans.church.opensongtablet.controls.PedalsFragment;
@@ -182,6 +184,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private CheckInternet checkInternet;
     private ChordDirectory chordDirectory;
     private ChordDisplayProcessing chordDisplayProcessing;
+    private CommonControls commonControls;
     private CommonSQL commonSQL;
     private ConvertChoPro convertChoPro;
     private ConvertOnSong convertOnSong;
@@ -195,6 +198,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private ExportActions exportActions;
     private FixLocale fixLocale;
     private Gestures gestures;
+    private HotZones hotZones;
     private LoadSong loadSong;
     private MakePDF makePDF;
     private Metronome metronome;
@@ -556,6 +560,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         setActions = getSetActions();
 
         // Song actions/features
+        hotZones = getHotZones();
+        commonControls = getCommonControls();
         performanceGestures = getPerformanceGestures();
         pageButtons = getPageButtons();
         midi = getMidi();
@@ -2783,6 +2789,20 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
 
 
+    @Override
+    public CommonControls getCommonControls() {
+        if (commonControls == null) {
+            commonControls = new CommonControls(this);
+        }
+        return commonControls;
+    }
+    @Override
+    public HotZones getHotZones() {
+        if (hotZones == null) {
+            hotZones = new HotZones(this);
+        }
+        return hotZones;
+    }
     @Override
     public PedalActions getPedalActions() {
         if (pedalActions == null) {

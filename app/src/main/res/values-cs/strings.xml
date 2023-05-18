@@ -342,6 +342,7 @@
     <string name="font_choose_description">Změňte písma zobrazení písní</string>
     <string name="font_choose_list">Vyberte písmo ze seznamu níže</string>
     <string name="font_presentation">"Prezentační font"</string>
+    <string name="font_presentation_bold">Zobrazení prezentovaných textů pomocí tučného textu</string>
     <string name="font_presentation_info">"Písmo informací o prezentaci"</string>
     <string name="format_text_bold">Tučně</string>
     <string name="format_text_bolditalic">Tučně kurzíva</string>
@@ -360,6 +361,12 @@
     <string name="hide">Skrýt</string>
     <string name="highlight">"Zvýrazňovač"</string>
     <string name="highlight_info">Upravit poznámky / anotace zvýrazňovače</string>
+    <string name="hot_zone_bottom_center">Dolní střed</string>
+    <string name="hot_zone_rationale">Ostatní oblasti obrazovky jsou vyhrazeny pro tlačítka stránek, informace o skladbě a nejsou k dispozici.  Horké zóny budou blokovat další akce v těchto oblastech</string>
+    <string name="hot_zone_top_center">Horní centrum</string>
+    <string name="hot_zone_top_left">Vlevo nahoře</string>
+    <string name="hot_zones">Horké zóny</string>
+    <string name="hot_zones_info">Přiřazení vlastních akcí k oblastem obrazovky</string>
     <string name="hymn_number">"Číslo Hymn"</string>
     <string name="ignore_cutouts">Ignorujte výřezy</string>
     <string name="ignore_cutouts_info">Pokud má vaše zařízení zářezy (výřezy na displeji), můžete aplikaci vynutit, aby přes tento prostor stále kreslila. Než opustíte tuto stránku, ujistěte se, že stále vidíte tlačítka nabídky, jinak se může stát, že nebudete mít přístup k nastavení aplikace!</string>

@@ -342,6 +342,7 @@
     <string name="font_choose_description">Zmień czcionki wyświetlania utworów</string>
     <string name="font_choose_list">Wybierz czcionkę z poniższej listy</string>
     <string name="font_presentation">"Czcionka prezentacji"</string>
+    <string name="font_presentation_bold">Wyświetlanie prezentowanych tekstów tekstu za pomocą pogrubionego tekstu</string>
     <string name="font_presentation_info">"Czcionka informacji prezentacji"</string>
     <string name="format_text_bold">Pogrubienie</string>
     <string name="format_text_bolditalic">Pogrubienie italski</string>
@@ -360,6 +361,12 @@
     <string name="hide">Ukryć</string>
     <string name="highlight">"Zakreślacz"</string>
     <string name="highlight_info">Edytuj notatki / adnotacje z wyróżnieniem</string>
+    <string name="hot_zone_bottom_center">Środek dolny</string>
+    <string name="hot_zone_rationale">Inne obszary ekranu są zarezerwowane dla przycisków strony, informacji o utworze i nie są dostępne.  Strefy gorące zablokują inne działania w tych obszarach</string>
+    <string name="hot_zone_top_center">Górny środek</string>
+    <string name="hot_zone_top_left">Lewy górny róg</string>
+    <string name="hot_zones">Strefy gorące</string>
+    <string name="hot_zones_info">Przypisywanie akcji niestandardowych do obszarów ekranu</string>
     <string name="hymn_number">"Numer hymn"</string>
     <string name="ignore_cutouts">Ignoruj wycięcia</string>
     <string name="ignore_cutouts_info">Jeśli Twoje urządzenie ma wycięcia (wycięcia w wyświetlaczu), możesz wymusić, aby aplikacja nadal rysowała w tym miejscu. Upewnij się, że nadal widzisz przyciski menu, zanim opuścisz tę stronę, w przeciwnym razie możesz nie mieć dostępu do ustawień aplikacji!</string>

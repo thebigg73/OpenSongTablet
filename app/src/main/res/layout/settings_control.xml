@@ -50,6 +50,16 @@
                 android:hint="@string/swipe_info"
                 app:size="large"/>
             <TableRow style="@style/DividerLine" />
+
+
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                android:id="@+id/hotZones"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/hot_zones"
+                android:hint="@string/hot_zones_info"
+                app:size="large"/>
+            <TableRow style="@style/DividerLine" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </LinearLayout>

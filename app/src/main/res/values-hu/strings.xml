@@ -342,6 +342,7 @@
     <string name="font_choose_description">Változtassa meg a dal megjelenítési betűtípusát</string>
     <string name="font_choose_list">Válasszon egy betűtípust az alábbi listából</string>
     <string name="font_presentation">"Bemutató font"</string>
+    <string name="font_presentation_bold">Bemutatott dalszövegek megjelenítése félkövér szöveggel</string>
     <string name="font_presentation_info">"Bemutató információ font"</string>
     <string name="format_text_bold">Bátor</string>
     <string name="format_text_bolditalic">Bátor Dőlt</string>
@@ -360,6 +361,12 @@
     <string name="hide">Elrejt</string>
     <string name="highlight">"Kiemelő"</string>
     <string name="highlight_info">Kiemelő jegyzetek / megjegyzések szerkesztése</string>
+    <string name="hot_zone_bottom_center">Alsó közép</string>
+    <string name="hot_zone_rationale">A képernyő más területei az oldalgombok és a dalinformációk számára vannak fenntartva, és nem érhetők el.  A forró zónák blokkolják az egyéb műveleteket ezeken a területeken</string>
+    <string name="hot_zone_top_center">Felső középen</string>
+    <string name="hot_zone_top_left">Bal felső sarokban</string>
+    <string name="hot_zones">Forró zónák</string>
+    <string name="hot_zones_info">Egyéni műveletek hozzárendelése a képernyő területeihez</string>
     <string name="hymn_number">"Hymn szám"</string>
     <string name="ignore_cutouts">A kivágások figyelmen kívül hagyása</string>
     <string name="ignore_cutouts_info">Ha az eszközén vannak bevágások (kivágások a kijelzőn), akkor kényszerítheti az alkalmazást, hogy továbbra is rajzoljon ezen a területen. Mielőtt elhagyja ezt az oldalt, győződjön meg róla, hogy továbbra is látja a menügombokat, ellenkező esetben előfordulhat, hogy nem tudja elérni az alkalmazás beállításait!</string>

@@ -342,6 +342,7 @@
     <string name="font_choose_description">更改歌曲显示字体</string>
     <string name="font_choose_list">从下面的列表中选择一种字体</string>
     <string name="font_presentation">"演示字体"</string>
+    <string name="font_presentation_bold">使用粗体文本显示呈现的歌词</string>
     <string name="font_presentation_info">"演示信息字体"</string>
     <string name="format_text_bold">大胆的</string>
     <string name="format_text_bolditalic">大胆的 斜体</string>
@@ -360,6 +361,12 @@
     <string name="hide">隐藏</string>
     <string name="highlight">"荧光笔"</string>
     <string name="highlight_info">编辑荧光笔注释/注释</string>
+    <string name="hot_zone_bottom_center">底部中心</string>
+    <string name="hot_zone_rationale">屏幕的其他区域保留用于页面按钮、歌曲信息，不可用。 热区将阻止这些区域的其他操作</string>
+    <string name="hot_zone_top_center">顶部中心</string>
+    <string name="hot_zone_top_left">左上角</string>
+    <string name="hot_zones">热区</string>
+    <string name="hot_zones_info">将自定义操作分配给屏幕区域</string>
     <string name="hymn_number">"圣诗"</string>
     <string name="ignore_cutouts">忽略切口</string>
     <string name="ignore_cutouts_info">如果您的设备有凹口（显示切口），您可以强制应用程序仍然绘制此空间。离开此页面之前，请确保您仍然可以看到菜单按钮，否则您可能无法访问应用程序设置！</string>

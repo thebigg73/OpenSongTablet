@@ -342,6 +342,7 @@
     <string name="font_choose_description">Ändern Sie die Schriftarten für die Songanzeige</string>
     <string name="font_choose_list">Wählen Sie eine Schriftart aus der folgenden Liste aus</string>
     <string name="font_presentation">"Schriftart für Präsentation"</string>
+    <string name="font_presentation_bold">Zeigen Sie präsentierte Liedtexte mit fettem Text an</string>
     <string name="font_presentation_info">"Schriftart für Informationen während der Präsentation"</string>
     <string name="format_text_bold">Fett gedruckt</string>
     <string name="format_text_bolditalic">Fett gedruckt Kursiv</string>
@@ -360,6 +361,12 @@
     <string name="hide">Ausblenden</string>
     <string name="highlight">"Textmarker"</string>
     <string name="highlight_info">Textmarker-Notizen / Anmerkungen bearbeiten</string>
+    <string name="hot_zone_bottom_center">Unten mittig</string>
+    <string name="hot_zone_rationale">Andere Bereiche des Bildschirms sind für Seitenschaltflächen und Songinformationen reserviert und stehen nicht zur Verfügung.  Heiße Zonen blockieren andere Aktionen in diesen Bereichen</string>
+    <string name="hot_zone_top_center">Oben mittig</string>
+    <string name="hot_zone_top_left">Oben links</string>
+    <string name="hot_zones">Heiße Zonen</string>
+    <string name="hot_zones_info">Zuweisen von benutzerdefinierten Aktionen zu Bereichen des Bildschirms</string>
     <string name="hymn_number">"Liederbuch Nummer"</string>
     <string name="ignore_cutouts">Ausschnitte ignorieren</string>
     <string name="ignore_cutouts_info">Wenn Ihr Gerät Kerben (Displayausschnitte) hat, können Sie die App zwingen, trotzdem über diesen Bereich zu zeichnen. Stellen Sie sicher, dass Sie die Menüschaltflächen noch sehen können, bevor Sie diese Seite verlassen, da Sie sonst möglicherweise nicht auf die App-Einstellungen zugreifen können!</string>

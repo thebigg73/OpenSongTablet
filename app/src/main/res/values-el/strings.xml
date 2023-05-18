@@ -342,6 +342,7 @@
     <string name="font_choose_description">Αλλαγή γραμματοσειρών εμφάνισης τραγουδιών</string>
     <string name="font_choose_list">Επιλέξτε μια γραμματοσειρά από την παρακάτω λίστα</string>
     <string name="font_presentation">"Παρουσίαση γραμματοσειράς"</string>
+    <string name="font_presentation_bold">Άλλες περιοχές της οθόνης προορίζονται για κουμπιά σελίδας, πληροφορίες τραγουδιού και δεν είναι διαθέσιμες.  Οι θερμές ζώνες θα εμποδίσουν άλλες ενέργειες σε αυτές τις περιοχές</string>
     <string name="font_presentation_info">"Γραμματοσειρά πληροφοριών παρουσίασης"</string>
     <string name="format_text_bold">Τολμηρός</string>
     <string name="format_text_bolditalic">Τολμηρός Πλάγια</string>
@@ -360,6 +361,12 @@
     <string name="hide">Κρύβω</string>
     <string name="highlight">"Υψηλός φωτισμός"</string>
     <string name="highlight_info">Επεξεργασία σημειώσεων / σχολιασμών επισήμανσης</string>
+    <string name="hot_zone_bottom_center">Κάτω κέντρο</string>
+    <string name="hot_zone_rationale">Άλλες περιοχές της οθόνης προορίζονται για κουμπιά σελίδας, πληροφορίες τραγουδιού και δεν είναι διαθέσιμες.  Οι θερμές ζώνες θα εμποδίσουν άλλες ενέργειες σε αυτές τις περιοχές</string>
+    <string name="hot_zone_top_center">Πάνω κέντρο</string>
+    <string name="hot_zone_top_left">Πάνω αριστερά</string>
+    <string name="hot_zones">Θερμές ζώνες</string>
+    <string name="hot_zones_info">Αντιστοίχιση προσαρμοσμένων ενεργειών σε περιοχές της οθόνης</string>
     <string name="hymn_number">"Hymn number"</string>
     <string name="ignore_cutouts">Αγνοήστε τις αποκοπές</string>
     <string name="ignore_cutouts_info">Εάν η συσκευή σας έχει εγκοπές (αποκοπή οθόνης), μπορείτε να αναγκάσετε την εφαρμογή να συνεχίσει να τραβήξει πάνω από αυτό το διάστημα. Βεβαιωθείτε ότι εξακολουθείτε να βλέπετε τα κουμπιά μενού προτού φύγετε από αυτήν τη σελίδα, διαφορετικά ενδέχεται να μην έχετε πρόσβαση στις ρυθμίσεις της εφαρμογής!</string>

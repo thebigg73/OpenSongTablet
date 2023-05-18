@@ -251,6 +251,7 @@ public class PerformanceFragment extends Fragment {
             mainActivityInterface.getPerformanceGestures().setZoomLayout(myView.zoomLayout);
             mainActivityInterface.getPerformanceGestures().setRecyclerView(myView.recyclerView);
             myView.recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+            mainActivityInterface.getHotZones().initialiseHotZones(myView.hotZoneTopLeft, myView.hotZoneTopCenter, myView.hotZoneBottomCenter);
         }
     }
     private void loadPreferences() {

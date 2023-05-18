@@ -57,4 +57,8 @@
     <dimen name="text_small">12.0sp</dimen>
     <dimen name="text_xsmall">10.0sp</dimen>
 
+    <!-- For the hot zones -->
+    <dimen name="hot_zone_width">96dp</dimen>
+    <dimen name="hot_zone_height">144dp</dimen>
+
 </resources>

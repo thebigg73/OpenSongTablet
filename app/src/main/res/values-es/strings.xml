@@ -342,6 +342,7 @@
     <string name="font_choose_description">Cambiar las fuentes de visualización de canciones</string>
     <string name="font_choose_list">Elija una fuente de la lista a continuación</string>
     <string name="font_presentation">"Fuente de presentación"</string>
+    <string name="font_presentation_bold">Mostrar letras presentadas usando texto en negrita</string>
     <string name="font_presentation_info">"Fuente de información de presentación"</string>
     <string name="format_text_bold">Audaz</string>
     <string name="format_text_bolditalic">Audaz Itálico</string>
@@ -360,6 +361,12 @@
     <string name="hide">Esconder</string>
     <string name="highlight">"Resaltador"</string>
     <string name="highlight_info">Editar notas/anotaciones de resaltado</string>
+    <string name="hot_zone_bottom_center">Parte inferior central</string>
+    <string name="hot_zone_rationale">Otras áreas de la pantalla están reservadas para botones de página, información de canciones y no están disponibles.  Las zonas calientes bloquearán otras acciones en estas áreas</string>
+    <string name="hot_zone_top_center">Centro superior</string>
+    <string name="hot_zone_top_left">Arriba a la izquierda</string>
+    <string name="hot_zones">Zonas calientes</string>
+    <string name="hot_zones_info">Asignar acciones personalizadas a áreas de la pantalla</string>
     <string name="hymn_number">"Número Himno"</string>
     <string name="ignore_cutouts">Omitir recortes</string>
     <string name="ignore_cutouts_info">Si su dispositivo tiene muescas (recortes de pantalla), puede forzar a la aplicación a dibujar sobre este espacio.  Asegúrese de que aún puede ver los botones de menú antes de salir de esta página, de lo contrario, es posible que no pueda acceder a la configuración de la aplicación.</string>

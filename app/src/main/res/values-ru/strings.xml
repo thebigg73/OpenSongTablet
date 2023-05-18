@@ -342,6 +342,7 @@
     <string name="font_choose_description">Изменить шрифты отображения песни</string>
     <string name="font_choose_list">Выберите шрифт из списка ниже</string>
     <string name="font_presentation">Шрифт презентации</string>
+    <string name="font_presentation_bold">Отображение представленных текстов песен с помощью полужирного текста</string>
     <string name="font_presentation_info">Шрифт информационного текста в презентации</string>
     <string name="format_text_bold">Полужирный</string>
     <string name="format_text_bolditalic">Полужирный+курсив</string>
@@ -360,6 +361,12 @@
     <string name="hide">Спрятать</string>
     <string name="highlight">Маркер</string>
     <string name="highlight_info">Редактировать заметки/аннотации, подписанные маркером</string>
+    <string name="hot_zone_bottom_center">Внизу по центру</string>
+    <string name="hot_zone_rationale">Другие области экрана зарезервированы для кнопок страниц, информации о песнях и недоступны.  Горячие зоны будут блокировать другие действия в этих областях</string>
+    <string name="hot_zone_top_center">Вверху по центру</string>
+    <string name="hot_zone_top_left">Слева вверху</string>
+    <string name="hot_zones">Горячие зоны</string>
+    <string name="hot_zones_info">Назначение пользовательских действий областям экрана</string>
     <string name="hymn_number">Номер гимна</string>
     <string name="ignore_cutouts">Игнорировать вырезы дисплея</string>
     <string name="ignore_cutouts_info">Если на вашем устройстве есть выемки (вырезы дисплея), вы можете заставить приложение по-прежнему рисовать в этом месте. Прежде чем покинуть эту страницу, убедитесь, что вы все еще видите кнопки меню, иначе вы не сможете получить доступ к настройкам приложения!</string>

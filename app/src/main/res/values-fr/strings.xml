@@ -342,6 +342,7 @@
     <string name="font_choose_description">Changer les polices d\'affichage des chansons</string>
     <string name="font_choose_list">Choisissez une police dans la liste ci-dessous</string>
     <string name="font_presentation">"Police de présentation"</string>
+    <string name="font_presentation_bold">Afficher les paroles présentées en gras</string>
     <string name="font_presentation_info">"Police d'informations de présentation"</string>
     <string name="format_text_bold">Audacieux</string>
     <string name="format_text_bolditalic">Audacieux Italique</string>
@@ -360,6 +361,12 @@
     <string name="hide">Cacher</string>
     <string name="highlight">"Surligneur"</string>
     <string name="highlight_info">Modifier les notes/annotations du surligneur</string>
+    <string name="hot_zone_bottom_center">En bas au centre</string>
+    <string name="hot_zone_rationale">D’autres zones de l’écran sont réservées aux boutons de page, aux informations sur les chansons et ne sont pas disponibles.  Les zones chaudes bloqueront d’autres actions dans ces zones</string>
+    <string name="hot_zone_top_center">Haut centre</string>
+    <string name="hot_zone_top_left">En haut à gauche</string>
+    <string name="hot_zones">Zones chaudes</string>
+    <string name="hot_zones_info">Affecter des actions personnalisées à des zones de l’écran</string>
     <string name="hymn_number">"Numéro d\'hymne"</string>
     <string name="ignore_cutouts">Ignorer les découpes</string>
     <string name="ignore_cutouts_info">Si votre appareil a des encoches (découpes d\'affichage), vous pouvez forcer l\'application à continuer à dessiner sur cet espace. Assurez-vous que vous pouvez toujours voir les boutons de menu avant de quitter cette page, sinon vous ne pourrez peut-être pas accéder aux paramètres de l\'application !</string>

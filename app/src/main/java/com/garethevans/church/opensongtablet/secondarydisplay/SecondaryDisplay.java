@@ -920,180 +920,188 @@ public class SecondaryDisplay extends Presentation {
     }
 
     public void showSection(final int position) {
-        measureAvailableSizes();
-        Log.d(TAG,"showSection() position:"+position);
-        try {
-            // Decide which view to show.  Do nothing if it is already showing
-            boolean stageOk = mainActivityInterface.getMode().equals(c.getString(R.string.mode_stage));
-            boolean presenterOk = mainActivityInterface.getMode().equals(c.getString(R.string.mode_presenter)) &&
-                    mainActivityInterface.getPresenterSettings().getSongSectionsAdapter()!=null;
-            boolean image = mainActivityInterface.getSong().getFiletype().equals("IMG");
-            boolean pdf = mainActivityInterface.getSong().getFiletype().equals("PDF");
-            boolean imageslide = mainActivityInterface.getSong().getFolder().contains("**Image");
-            int viewsAvailable;
-            if (image) {
-                viewsAvailable = 1;
-            } else if (pdf || imageslide) {
-                viewsAvailable = mainActivityInterface.getSong().getPdfPageCount();
-            } else {
-                viewsAvailable = mainActivityInterface.getSong().getPresoOrderSongSections().size();
-                Log.d(TAG,"View available:"+viewsAvailable);
-                Log.d(TAG,"position:"+position);
-            }
-            if ((stageOk || presenterOk || pdf || image || imageslide) && position!=-1) {
-                // If we edited the section temporarily, remove this position flag
-                if (presenterOk) {
-                    mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().setSectionEdited(-1);
+        if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) &&
+                !mainActivityInterface.getSong().getFiletype().equals("IMG") &&
+                !mainActivityInterface.getSong().getFiletype().equals("PDF")) {
+            showAllSections();
+        } else {
+            measureAvailableSizes();
+            Log.d(TAG, "showSection() position:" + position);
+            try {
+                // Decide which view to show.  Do nothing if it is already showing
+                boolean stageOk = mainActivityInterface.getMode().equals(c.getString(R.string.mode_stage));
+                boolean presenterOk = mainActivityInterface.getMode().equals(c.getString(R.string.mode_presenter)) &&
+                        mainActivityInterface.getPresenterSettings().getSongSectionsAdapter() != null;
+                boolean image = mainActivityInterface.getSong().getFiletype().equals("IMG");
+                boolean pdf = mainActivityInterface.getSong().getFiletype().equals("PDF");
+                boolean imageslide = mainActivityInterface.getSong().getFolder().contains("**Image");
+                int viewsAvailable;
+                if (image) {
+                    viewsAvailable = 1;
+                } else if (pdf || imageslide) {
+                    viewsAvailable = mainActivityInterface.getSong().getPdfPageCount();
+                } else {
+                    viewsAvailable = mainActivityInterface.getSong().getPresoOrderSongSections().size();
+                    Log.d(TAG, "View available:" + viewsAvailable);
+                    Log.d(TAG, "position:" + position);
                 }
-                mainActivityInterface.getSong().setCurrentSection(position);
-                mainActivityInterface.getPresenterSettings().setCurrentSection(position);
-
-                int tempViewsAvailable = viewsAvailable;
-                if (mainActivityInterface.getIsSecondaryDisplaying()) {
-                    tempViewsAvailable = viewsAvailable+1;
-                }
-
-                if (position >= 0 && position < tempViewsAvailable) {
-                    // Check the song info status first
-                    checkSongInfoShowHide();
-
-                    // Get the measured height of the song info bar
-                    int infoHeight = 0;
-                    if (myView.songProjectionInfo1.getIsDisplaying()) {
-                        infoHeight = myView.songProjectionInfo1.getViewHeight();
-                    } else if (myView.songProjectionInfo2.getIsDisplaying()) {
-                        infoHeight = myView.songProjectionInfo2.getViewHeight();
+                if ((stageOk || presenterOk || pdf || image || imageslide) && position != -1) {
+                    // If we edited the section temporarily, remove this position flag
+                    if (presenterOk) {
+                        mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().setSectionEdited(-1);
                     }
-                    if (infoHeight == 0) {
-                        infoHeight = myView.testSongInfo.getViewHeight();
+                    mainActivityInterface.getSong().setCurrentSection(position);
+                    mainActivityInterface.getPresenterSettings().setCurrentSection(position);
+
+                    int tempViewsAvailable = viewsAvailable;
+                    if (mainActivityInterface.getIsSecondaryDisplaying()) {
+                        tempViewsAvailable = viewsAvailable + 1;
                     }
-                    int alertHeight = myView.alertBar.getViewHeight();
 
-                    if (!pdf && !image && !imageslide) {
-                        // Remove the view from any parent it might be attached to already (can only have 1)
-                        if (position<secondaryViews.size()) {
-                            removeViewFromParent(secondaryViews.get(position));
+                    if (position >= 0 && position < tempViewsAvailable) {
+                        // Check the song info status first
+                        checkSongInfoShowHide();
 
-                            // Get the size of the view
-                            int width = secondaryWidths.get(position);
-                            int height = secondaryHeights.get(position);
-
-                            float max_x = (float) availableScreenWidth / (float) width;
-                            float max_y = (float) (availableScreenHeight - infoHeight - alertHeight) / (float) height;
-
-                            float best = Math.min(max_x, max_y);
-                            if (best > (mainActivityInterface.getPresenterSettings().getFontSizePresoMax() / mainActivityInterface.getProcessSong().getDefFontSize())) {
-                                best = mainActivityInterface.getPresenterSettings().getFontSizePresoMax() / mainActivityInterface.getProcessSong().getDefFontSize();
-                            }
-
-                            secondaryViews.get(position).setPivotX(0f);
-                            secondaryViews.get(position).setPivotY(0f);
-                            secondaryViews.get(position).setScaleX(best);
-                            secondaryViews.get(position).setScaleY(best);
-
-                            // We can now prepare the new view and animate in/out the views as long as the logo is off
-                            // and the blank screen isn't on
-
-                            // Translate the scaled views based on the alignment
-                            int newWidth = (int) (width * best);
-                            int newHeight = (int) (height * best);
-
-                            translateView(secondaryViews.get(position), newWidth, newHeight, infoHeight, alertHeight);
-
+                        // Get the measured height of the song info bar
+                        int infoHeight = 0;
+                        if (myView.songProjectionInfo1.getIsDisplaying()) {
+                            infoHeight = myView.songProjectionInfo1.getViewHeight();
+                        } else if (myView.songProjectionInfo2.getIsDisplaying()) {
+                            infoHeight = myView.songProjectionInfo2.getViewHeight();
                         }
-                    }
+                        if (infoHeight == 0) {
+                            infoHeight = myView.testSongInfo.getViewHeight();
+                        }
+                        int alertHeight = myView.alertBar.getViewHeight();
 
-                    Bitmap bitmap;
-                    if (pdf) {
-                        bitmap = mainActivityInterface.getProcessSong().getBitmapFromPDF(mainActivityInterface.getSong().getFolder(),
-                                mainActivityInterface.getSong().getFilename(),position,availableScreenWidth,
-                                availableScreenHeight - infoHeight - alertHeight,"Y");
-                    } else if (image) {
-                        bitmap = mainActivityInterface.getProcessSong().getBitmapFromUri(
-                                mainActivityInterface.getStorageAccess().getUriForItem("Songs",
-                                        mainActivityInterface.getSong().getFolder(),
-                                        mainActivityInterface.getSong().getFilename()),
-                                0,0);
-                    } else if (imageslide) {
-                        String[] bits = mainActivityInterface.getSong().getUser3().trim().split("\n");
-                        if (bits.length>0 && bits.length>position) {
-                            Log.d(TAG,"bits[position]:"+bits[position]);
-                            Uri thisUri = mainActivityInterface.getStorageAccess().fixLocalisedUri(bits[position]);
-                            bitmap = mainActivityInterface.getProcessSong().getBitmapFromUri(thisUri,0,0);
+                        if (!pdf && !image && !imageslide) {
+                            // Remove the view from any parent it might be attached to already (can only have 1)
+                            if (position < secondaryViews.size()) {
+                                removeViewFromParent(secondaryViews.get(position));
+
+                                // Get the size of the view
+                                int width = secondaryWidths.get(position);
+                                int height = secondaryHeights.get(position);
+
+                                float max_x = (float) availableScreenWidth / (float) width;
+                                float max_y = (float) (availableScreenHeight - infoHeight - alertHeight) / (float) height;
+
+                                float best = Math.min(max_x, max_y);
+                                if (best > (mainActivityInterface.getPresenterSettings().getFontSizePresoMax() / mainActivityInterface.getProcessSong().getDefFontSize())) {
+                                    best = mainActivityInterface.getPresenterSettings().getFontSizePresoMax() / mainActivityInterface.getProcessSong().getDefFontSize();
+                                }
+
+                                secondaryViews.get(position).setPivotX(0f);
+                                secondaryViews.get(position).setPivotY(0f);
+                                if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance))) {
+                                    secondaryViews.get(position).setScaleX(1);
+                                    secondaryViews.get(position).setScaleY(1);
+                                } else {
+                                    secondaryViews.get(position).setScaleX(best);
+                                    secondaryViews.get(position).setScaleY(best);
+
+                                    // Translate the scaled views based on the alignment
+                                    int newWidth = (int) (width * best);
+                                    int newHeight = (int) (height * best);
+
+                                    translateView(secondaryViews.get(position), newWidth, newHeight, infoHeight, alertHeight);
+
+                                }
+                            }
+                        }
+
+                        Bitmap bitmap;
+                        if (pdf) {
+                            bitmap = mainActivityInterface.getProcessSong().getBitmapFromPDF(mainActivityInterface.getSong().getFolder(),
+                                    mainActivityInterface.getSong().getFilename(), position, availableScreenWidth,
+                                    availableScreenHeight - infoHeight - alertHeight, "Y");
+                        } else if (image) {
+                            bitmap = mainActivityInterface.getProcessSong().getBitmapFromUri(
+                                    mainActivityInterface.getStorageAccess().getUriForItem("Songs",
+                                            mainActivityInterface.getSong().getFolder(),
+                                            mainActivityInterface.getSong().getFilename()),
+                                    0, 0);
+                        } else if (imageslide) {
+                            String[] bits = mainActivityInterface.getSong().getUser3().trim().split("\n");
+                            if (bits.length > 0 && bits.length > position) {
+                                Log.d(TAG, "bits[position]:" + bits[position]);
+                                Uri thisUri = mainActivityInterface.getStorageAccess().fixLocalisedUri(bits[position]);
+                                bitmap = mainActivityInterface.getProcessSong().getBitmapFromUri(thisUri, 0, 0);
+                            } else {
+                                bitmap = null;
+                            }
+                            Log.d(TAG, "bitmap:" + bitmap);
+
                         } else {
                             bitmap = null;
                         }
-                        Log.d(TAG,"bitmap:"+bitmap);
 
-                    } else {
-                        bitmap = null;
-                    }
-
-                    if (!image && !pdf && !imageslide &&
-                            secondaryViews!=null && secondaryViews.size()>position &&
-                            secondaryViews.get(position)!=null &&
-                            secondaryViews.get(position).getParent()!=null) {
-                        ((ViewGroup)secondaryViews.get(position).getParent()).removeView(
-                                secondaryViews.get(position));
-                    }
-
-                    if (!myView.songContent1.getIsDisplaying()) {
-                        myView.songContent1.clearViews();
-                        Log.d(TAG,"songContent1 about to show");
-                        if (image || pdf || imageslide) {
-                            Log.d(TAG,"songContent1 using image");
-                            myView.songContent1.getCol1().setVisibility(View.GONE);
-                            myView.songContent1.getCol2().setVisibility(View.GONE);
-                            myView.songContent1.getCol3().setVisibility(View.GONE);
-                            myView.songContent1.getImageView().setVisibility(View.VISIBLE);
-                            fixGravity(myView.songContent1.getImageView());
-                            Glide.with(c).load(bitmap).fitCenter().into(myView.songContent1.getImageView());
-
-                        } else {
-                            Log.d(TAG,"songContent1 not using image");
-                            myView.songContent1.getCol1().setVisibility(View.VISIBLE);
-                            myView.songContent1.getImageView().setVisibility(View.GONE);
-                            if (position < secondaryViews.size()) {
-                                myView.songContent1.getCol1().addView(secondaryViews.get(position));
-                            } else {
-                                myView.songContent1.getCol1().addView(new View(c));
-                            }
+                        if (!image && !pdf && !imageslide &&
+                                secondaryViews != null && secondaryViews.size() > position &&
+                                secondaryViews.get(position) != null &&
+                                secondaryViews.get(position).getParent() != null) {
+                            ((ViewGroup) secondaryViews.get(position).getParent()).removeView(
+                                    secondaryViews.get(position));
                         }
-                        myView.songContent1.setIsDisplaying(true);
-                        myView.songContent2.setIsDisplaying(false);
-                        crossFadeContent(myView.songContent2, myView.songContent1);
 
-                    } else if (!myView.songContent2.getIsDisplaying()) {
-                        myView.songContent2.clearViews();
-                        Log.d(TAG,"songContent2 about to show");
-                        if (image || pdf || imageslide) {
-                            Log.d(TAG,"songContent2 using image");
-                            myView.songContent2.getCol1().setVisibility(View.GONE);
-                            myView.songContent2.getCol2().setVisibility(View.GONE);
-                            myView.songContent2.getCol3().setVisibility(View.GONE);
-                            myView.songContent2.getImageView().setVisibility(View.VISIBLE);
-                            fixGravity(myView.songContent2.getImageView());
-                            Glide.with(c).load(bitmap).fitCenter().into(myView.songContent2.getImageView());
+                        if (!myView.songContent1.getIsDisplaying()) {
+                            myView.songContent1.clearViews();
+                            Log.d(TAG, "songContent1 about to show");
+                            if (image || pdf || imageslide) {
+                                Log.d(TAG, "songContent1 using image");
+                                myView.songContent1.getCol1().setVisibility(View.GONE);
+                                myView.songContent1.getCol2().setVisibility(View.GONE);
+                                myView.songContent1.getCol3().setVisibility(View.GONE);
+                                myView.songContent1.getImageView().setVisibility(View.VISIBLE);
+                                fixGravity(myView.songContent1.getImageView());
+                                Glide.with(c).load(bitmap).fitCenter().into(myView.songContent1.getImageView());
 
-                        } else {
-                            Log.d(TAG,"songContent2 not using image");
-                            myView.songContent2.getCol1().setVisibility(View.VISIBLE);
-                            myView.songContent2.getImageView().setVisibility(View.GONE);
-                            if (position < secondaryViews.size()) {
-                                myView.songContent2.getCol1().addView(secondaryViews.get(position));
                             } else {
-                                myView.songContent2.getCol1().addView(new View(c));
+                                Log.d(TAG, "songContent1 not using image");
+                                myView.songContent1.getCol1().setVisibility(View.VISIBLE);
+                                myView.songContent1.getImageView().setVisibility(View.GONE);
+                                if (position < secondaryViews.size()) {
+                                    myView.songContent1.getCol1().addView(secondaryViews.get(position));
+                                } else {
+                                    myView.songContent1.getCol1().addView(new View(c));
+                                }
                             }
+                            myView.songContent1.setIsDisplaying(true);
+                            myView.songContent2.setIsDisplaying(false);
+                            crossFadeContent(myView.songContent2, myView.songContent1);
+
+                        } else if (!myView.songContent2.getIsDisplaying()) {
+                            myView.songContent2.clearViews();
+                            Log.d(TAG, "songContent2 about to show");
+                            if (image || pdf || imageslide) {
+                                Log.d(TAG, "songContent2 using image");
+                                myView.songContent2.getCol1().setVisibility(View.GONE);
+                                myView.songContent2.getCol2().setVisibility(View.GONE);
+                                myView.songContent2.getCol3().setVisibility(View.GONE);
+                                myView.songContent2.getImageView().setVisibility(View.VISIBLE);
+                                fixGravity(myView.songContent2.getImageView());
+                                Glide.with(c).load(bitmap).fitCenter().into(myView.songContent2.getImageView());
+
+                            } else {
+                                Log.d(TAG, "songContent2 not using image");
+                                myView.songContent2.getCol1().setVisibility(View.VISIBLE);
+                                myView.songContent2.getImageView().setVisibility(View.GONE);
+                                if (position < secondaryViews.size()) {
+                                    myView.songContent2.getCol1().addView(secondaryViews.get(position));
+                                } else {
+                                    myView.songContent2.getCol1().addView(new View(c));
+                                }
+                            }
+                            myView.songContent1.setIsDisplaying(false);
+                            myView.songContent2.setIsDisplaying(true);
+                            crossFadeContent(myView.songContent1, myView.songContent2);
                         }
-                        myView.songContent1.setIsDisplaying(false);
-                        myView.songContent2.setIsDisplaying(true);
-                        crossFadeContent(myView.songContent1, myView.songContent2);
                     }
                 }
+            } catch (Exception e) {
+                Log.d(TAG, "No song section at this point.");
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            Log.d(TAG, "No song section at this point.");
-            e.printStackTrace();
         }
     }
 

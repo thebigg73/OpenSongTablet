@@ -342,6 +342,7 @@
     <string name="font_choose_description">Promenite fontove prikaza pesama</string>
     <string name="font_choose_list">Izaberite font sa donje liste</string>
     <string name="font_presentation">Font prikaza</string>
+    <string name="font_presentation_bold">Prikazivanje predstavljenih tekstova pesama pomoću podebljanog teksta</string>
     <string name="font_presentation_info">Font informacija kod prikaza</string>
     <string name="format_text_bold">Odvažan</string>
     <string name="format_text_bolditalic">Odvažan Kurziv</string>
@@ -360,6 +361,12 @@
     <string name="hide">Sakriti</string>
     <string name="highlight">Alat za isticanje</string>
     <string name="highlight_info">Uredite beleške/napomene u markeru</string>
+    <string name="hot_zone_bottom_center">Donji centar</string>
+    <string name="hot_zone_rationale">Druge oblasti ekrana rezervisane su za dugmad stranice, informacije o pesmi i nisu dostupne.  Vruće zone će blokirati druge akcije u ovim oblastima</string>
+    <string name="hot_zone_top_center">Gornji centar</string>
+    <string name="hot_zone_top_left">Gore levo</string>
+    <string name="hot_zones">Vruće zone</string>
+    <string name="hot_zones_info">Dodeljivanje prilagođenih radnji oblastima ekrana</string>
     <string name="hymn_number">Broj himne</string>
     <string name="ignore_cutouts">Zanemari isečeće</string>
     <string name="ignore_cutouts_info">Ako uređaj ima rezače (isečci ekrana), možete da naterate aplikaciju da i dalje prevlači preko ovog prostora.  Uverite se da i dalje možete da vidite dugmad menija pre nego što napustite ovu stranicu, jer u suprotnom možda nećete moći da pristupite postavkama aplikacije!</string>

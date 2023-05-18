@@ -120,5 +120,27 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:background="@color/colorPrimary"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         app:elevation="8dp"/>
+
+    <View
+        android:id="@+id/hotZoneTopLeft"
+        android:layout_width="@dimen/hot_zone_width"
+        android:layout_height="@dimen/hot_zone_height"
+        android:layout_alignParentStart="true"
+        android:layout_toEndOf="@id/inlineSetList" />
+    <View
+        android:id="@+id/hotZoneTopCenter"
+        android:layout_width="@dimen/hot_zone_width"
+        android:layout_height="@dimen/hot_zone_height"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"/>
+    <View
+        android:id="@+id/hotZoneBottomCenter"
+        android:layout_width="@dimen/hot_zone_width"
+        android:layout_height="@dimen/hot_zone_height"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"/>
+
 </RelativeLayout>

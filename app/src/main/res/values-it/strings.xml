@@ -342,6 +342,7 @@
     <string name="font_choose_description">Cambia i caratteri di visualizzazione dei brani</string>
     <string name="font_choose_list">Scegli un carattere dall\'elenco sottostante</string>
     <string name="font_presentation">"Font di presentazione"</string>
+    <string name="font_presentation_bold">Visualizzare i testi presentati utilizzando il grassetto</string>
     <string name="font_presentation_info">"Font di informazioni di presentazione"</string>
     <string name="format_text_bold">Grassetto</string>
     <string name="format_text_bolditalic">Grassetto Corsivo</string>
@@ -360,6 +361,12 @@
     <string name="hide">Nascondere</string>
     <string name="highlight">"Evidenziatore"</string>
     <string name="highlight_info">Modifica note/annotazioni dell\'evidenziatore</string>
+    <string name="hot_zone_bottom_center">In basso al centro</string>
+    <string name="hot_zone_rationale">Altre aree dello schermo sono riservate ai pulsanti di pagina, alle informazioni sui brani e non sono disponibili.  Le zone calde bloccheranno altre azioni in queste aree</string>
+    <string name="hot_zone_top_center">In alto al centro</string>
+    <string name="hot_zone_top_left">In alto a sinistra</string>
+    <string name="hot_zones">Zone calde</string>
+    <string name="hot_zones_info">Assegnare azioni personalizzate alle aree dello schermo</string>
     <string name="hymn_number">"Numero Hymn"</string>
     <string name="ignore_cutouts">Ignora i ritagli</string>
     <string name="ignore_cutouts_info">Se il tuo dispositivo ha delle tacche (ritagli del display), puoi forzare l\'app a disegnare ancora su questo spazio. Assicurati di poter ancora vedere i pulsanti del menu prima di lasciare questa pagina, altrimenti potresti non essere in grado di accedere alle impostazioni dell\'app!</string>

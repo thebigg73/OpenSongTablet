@@ -416,6 +416,9 @@
                 <action
                     android:id="@+id/action_controlMenuFragment_to_swipeFragment"
                     app:destination="@id/swipeFragment" />
+                <action
+                    android:id="@+id/action_controlMenuFragment_to_hotZonesSettingsFragment"
+                    app:destination="@id/hotZonesSettingsFragment" />
             </fragment>
 
             <!-- Pedal settings -->
@@ -454,6 +457,15 @@
                 <deepLink
                     android:id="@+id/deepLinkSwipe"
                     app:uri="@string/deeplink_swipe" />
+            </fragment>
+            <fragment
+                android:id="@+id/hotZonesSettingsFragment"
+                android:name="com.garethevans.church.opensongtablet.controls.HotZonesSettingsFragment"
+                android:label="HotZonesSettingsFragment"
+                tools:layout="@layout/settings_hot_zones">
+                <deepLink
+                    android:id="@+id/deepLinkHotZones"
+                    app:uri="@string/website_hot_zones"/>
             </fragment>
 
         </navigation>

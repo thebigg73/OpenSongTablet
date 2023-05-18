@@ -342,6 +342,7 @@
     <string name="font_choose_description">曲の表示フォントを変更する</string>
     <string name="font_choose_list">以下のリストからフォントを選択してください</string>
     <string name="font_presentation">"プレゼンテーションフォント"</string>
+    <string name="font_presentation_bold">画面の他の領域は、ページボタン、曲情報用に予約されており、利用できません。 ホットゾーンは、これらの領域での他のアクションをブロックします</string>
     <string name="font_presentation_info">"プレゼンテーション情報フォント"</string>
     <string name="format_text_bold">大胆な</string>
     <string name="format_text_bolditalic">大胆な イタリック</string>
@@ -360,6 +361,12 @@
     <string name="hide">隠す</string>
     <string name="highlight">"蛍光ペン"</string>
     <string name="highlight_info">蛍光ペンのメモ/注釈を編集する</string>
+    <string name="hot_zone_bottom_center">中央下</string>
+    <string name="hot_zone_rationale">画面の他の領域は、ページボタン、曲情報用に予約されており、利用できません。 ホットゾーンは、これらの領域での他のアクションをブロックします</string>
+    <string name="hot_zone_top_center">トップセンター</string>
+    <string name="hot_zone_top_left">左上</string>
+    <string name="hot_zones">ホットゾーン</string>
+    <string name="hot_zones_info">画面の領域にカスタムアクションを割り当てる</string>
     <string name="hymn_number">"賛美歌番号"</string>
     <string name="ignore_cutouts">カットアウトを無視</string>
     <string name="ignore_cutouts_info">デバイスにノッチ (ディスプレイ カットアウト) がある場合は、アプリにこのスペースを強制的に描画させることができます。このページを離れる前に、メニュー ボタンが表示されていることを確認してください。そうしないと、アプリの設定にアクセスできなくなる可能性があります。</string>

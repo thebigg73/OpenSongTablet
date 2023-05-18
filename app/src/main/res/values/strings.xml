@@ -1123,6 +1123,7 @@
     <string name="website_forum" translatable="false">https://groups.google.com/g/opensongapp</string>
     <string name="website_github" translatable="false">https://github.com/thebigg73/OpenSongTablet</string>
     <string name="website_highlighter" translatable="false">https://www.opensongapp.com/user-manual/songs/song-actions/highlighter</string>
+    <string name="website_hot_zones" translatable="false">https://www.opensongapp.com/user-manual/controls/hot-zones</string>
     <string name="website_import_onsongbackup" translatable="false">https://www.opensongapp.com/user-manual/songs/ios-onsong</string>
     <string name="website_inline_set" translatable="false">https://www.opensongapp.com/user-manual/display/inline-set</string>
     <string name="website_latest" translatable="false">https://www.opensongapp.com/updates/latest-updates</string>
@@ -1176,4 +1177,10 @@
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zoom_level">Zoom level</string>
     <string name="font_presentation_bold">Display presented lyrics using bold text</string>
+    <string name="hot_zones">Hot zones</string>
+    <string name="hot_zones_info">Assign custom actions to areas of the screen</string>
+    <string name="hot_zone_top_left">Top left</string>
+    <string name="hot_zone_top_center">Top center</string>
+    <string name="hot_zone_bottom_center">Bottom center</string>
+    <string name="hot_zone_rationale">Other areas of the screen are reserved for page buttons, song information and are not available.  Hot zones will block other actions in these areas</string>
 </resources>
