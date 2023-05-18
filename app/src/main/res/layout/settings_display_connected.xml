@@ -331,6 +331,13 @@
                 android:hint="@string/show_chords_info"
                 android:text="@string/show_chords" />
 
+            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                android:id="@+id/presoLyricsBold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/format_text_bold"
+                android:hint="@string/font_presentation_bold"/>
+
             <com.garethevans.church.opensongtablet.customviews.TextThreeSlider
                 android:id="@+id/contentHorizontalAlign"
                 android:layout_width="match_parent"

@@ -17,7 +17,8 @@ public class PresenterSettings {
     private final Context c;
     private final MainActivityInterface mainActivityInterface;
     private boolean alertOn, logoOn=true, blackscreenOn, blankscreenOn, hideInfoBar, presoShowChords,
-            usePresentationOrder, presoShowClock, presoClock24h, presoClockSeconds, startedProjection;
+            usePresentationOrder, presoShowClock, presoClock24h, presoClockSeconds, startedProjection,
+            presoLyricsBold;
     private Uri logo, backgroundImage1, backgroundImage2, backgroundVideo1, backgroundVideo2;
     private int backgroundColor, presoTransitionTime, presoXMargin, presoYMargin, presoInfoAlign,
         presoLyricsAlign, presoLyricsVAlign, currentSection=-1;
@@ -146,6 +147,10 @@ public class PresenterSettings {
     }
     public void setPresoClockSeconds(boolean presoClockSeconds) {
         this.presoClockSeconds = presoClockSeconds;
+    }
+    public void setPresoLyricsBold(boolean presoLyricsBold) {
+        this.presoLyricsBold = presoLyricsBold;
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean("presoLyricsBold",presoLyricsBold);
     }
 
     public void setStartedProjection(boolean clickedOnSection) {
@@ -280,6 +285,9 @@ public class PresenterSettings {
     public boolean getPresoClockSeconds() {
         return presoClockSeconds;
     }
+    public boolean getPresoLyricsBold() {
+        return presoLyricsBold;
+    }
 
 
     // The helpers for this class
@@ -326,6 +334,7 @@ public class PresenterSettings {
         setPresoShowChords(mainActivityInterface.getPreferences().getMyPreferenceBoolean("presoShowChords", false));
         setFontSizePresoMax(mainActivityInterface.getPreferences().getMyPreferenceFloat("fontSizePresoMax", 40f));
         setUsePresentationOrder(mainActivityInterface.getPreferences().getMyPreferenceBoolean("usePresentationOrder", false));
+        setPresoLyricsBold(mainActivityInterface.getPreferences().getMyPreferenceBoolean("presoLyricsBold",false));
     }
     public void getInfoPreferences() {
         setPresoInfoBarAlpha(mainActivityInterface.getPreferences().getMyPreferenceFloat("presoInfoBarAlpha",0.5f));

@@ -1004,7 +1004,7 @@ public class ProcessSong {
             int startpos = 0;
             for (int endpos : pos) {
                 if (endpos != 0 && endpos>startpos && endpos<lines[t].length() + 1) {
-                    TextView textView = newTextView(linetype, typeface, size, color);
+                    TextView textView = newTextView(presentation, linetype, typeface, size, color);
                     String str = lines[t].substring(startpos, endpos);
                     if (startpos == 0) {
                         str = trimOutLineIdentifiers(linetype, str);
@@ -1400,7 +1400,7 @@ public class ProcessSong {
                               String string, Typeface typeface, float size, int color,
                               int highlightHeadingColor, int highlightChordColor,
                               boolean presentation, boolean boldText) {
-        TextView textView = newTextView(linetype, typeface, size, color);
+        TextView textView = newTextView(presentation, linetype, typeface, size, color);
 
         boolean applyFixExcessSpaces = (trimWordSpacing || presentation || !mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) &&
                 (!multiLineVerseKeepCompact && !multilineSong));
@@ -1868,8 +1868,6 @@ public class ProcessSong {
 
                     Log.d(TAG,"blockShadow:"+blockShadow);
                     if (presentation && !mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) && blockShadow) {
-                        //linearLayout.setBackgroundColor(Color.RED);
-                        //linearLayout.setBackgroundColor(mainActivityInterface.getMyThemeColors().getPresoShadowColor());
                         linearLayout.setBackgroundColor(getColorWithAlpha(mainActivityInterface.
                                     getMyThemeColors().getPresoShadowColor(), blockShadowAlpha));
                         Log.d(TAG,"blockShadowAlpha:"+blockShadowAlpha);
@@ -1984,7 +1982,7 @@ public class ProcessSong {
         return linearLayout;
     }
 
-    private TextView newTextView(String linetype, Typeface typeface, float size, int color) {
+    private TextView newTextView(boolean presentation, String linetype, Typeface typeface, float size, int color) {
         TextView textView = new TextView(c);
         if (trimLines && Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
             int trimval;
@@ -2013,7 +2011,8 @@ public class ProcessSong {
                 textView.setPaintFlags(textView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
             }
         }
-        if ((linetype.equals("chord") || linetype.equals("capoline")) && displayBoldChordsHeadings) {
+        if (((linetype.equals("chord") || linetype.equals("capoline")) && displayBoldChordsHeadings) ||
+                (presentation && mainActivityInterface.getPresenterSettings().getPresoLyricsBold())) {
             // IV - Fake bold will be applied if the font does not support bold
             textView.setPaintFlags(textView.getPaintFlags() | Paint.FAKE_BOLD_TEXT_FLAG);
             textView.setTypeface(textView.getTypeface(), Typeface.BOLD);

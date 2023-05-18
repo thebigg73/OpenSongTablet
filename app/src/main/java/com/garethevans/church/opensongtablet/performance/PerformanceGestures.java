@@ -796,9 +796,8 @@ public class PerformanceGestures {
             }
             int newPosition = currentPosition;
 
-            // TODO TEST
-            Log.d(TAG,"TEST: currentPosition:"+currentPosition+"  finalPosition:"+finalPosition);
             if (scrollDown) {
+                // GE only need to allow extra blank fake section if presenting
                 if (displayInterface.getIsSecondaryDisplaying() &&
                             currentPosition <= finalPosition) {
                     newPosition++;
