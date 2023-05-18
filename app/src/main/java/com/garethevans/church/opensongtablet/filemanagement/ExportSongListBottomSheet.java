@@ -3,6 +3,7 @@ package com.garethevans.church.opensongtablet.filemanagement;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -274,7 +275,7 @@ public class ExportSongListBottomSheet extends BottomSheetDialogFragment {
                 }
             });
             myView.headerLayout.addView(mainActivityInterface.getSongSheetHeaders().getSongSheet(outputSong,
-                    1f, true));
+                    1f, Color.BLACK));
         });
     }
 

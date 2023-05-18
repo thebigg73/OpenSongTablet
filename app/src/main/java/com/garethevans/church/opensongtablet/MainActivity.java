@@ -3650,7 +3650,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public boolean getIsSecondaryDisplaying() {
-        return secondaryDisplays.length>0;
+        return secondaryDisplays != null && secondaryDisplays.length > 0;
     }
 
     @Override

@@ -61,26 +61,43 @@ public class SongDetailsBottomSheet extends BottomSheetDialogFragment {
     }
 
     private void setupViews() {
+        myView.songSheet.removeAllViews();
+        myView.songSheet.addView(mainActivityInterface.getSongSheetHeaders().getSongSheet(
+                mainActivityInterface.getSong(), 0.9f, getResources().getColor(R.color.vlightgrey)));
+        String val;
+        val = mainActivityInterface.getSong().getCcli();
+        if (val==null || val.isEmpty()) {
+            myView.ccli.setVisibility(View.GONE);
+        } else {
+            myView.ccli.setHint(val);
+        }
+        val = mainActivityInterface.getSong().getPresentationorder();
+        if (val==null || val.isEmpty()) {
+            myView.presentationOrder.setVisibility(View.GONE);
+        } else {
+            myView.presentationOrder.setHint(val);
+        }
+        val = mainActivityInterface.getSong().getHymnnum();
+        if (val==null || val.isEmpty()) {
+            myView.hymnnum.setVisibility(View.GONE);
+        } else {
+            myView.hymnnum.setHint(val);
+        }
+        val = mainActivityInterface.getSong().getNotes();
+        if (val==null || val.isEmpty()) {
+            myView.notes.setVisibility(View.GONE);
+        } else {
+            myView.notes.setHint(val);
+        }
+        myView.lyrics.setHintMonospace();
+        myView.lyrics.setHint(mainActivityInterface.getSong().getLyrics());
+
         if (mainActivityInterface.getSong().getFiletype().equals("PDF") ||
                 mainActivityInterface.getSong().getFiletype().equals("IMG")) {
             myView.textExtract.setVisibility(View.VISIBLE);
         } else {
             myView.textExtract.setVisibility(View.GONE);
         }
-        myView.title.setHint(mainActivityInterface.getSong().getTitle());
-        myView.author.setHint(mainActivityInterface.getSong().getAuthor());
-        String key = mainActivityInterface.getSong().getKey();
-        if (!mainActivityInterface.getToolbar().getCapoString().isEmpty()) {
-            key += " [" + getString(R.string.capo) + " " + mainActivityInterface.getToolbar().getCapoString() + "]";
-        }
-        myView.key.setHint(key);
-        myView.copyright.setHint(mainActivityInterface.getSong().getCopyright());
-        myView.ccli.setHint(mainActivityInterface.getSong().getCcli());
-        myView.presentationOrder.setHint(mainActivityInterface.getSong().getPresentationorder());
-        myView.hymnnum.setHint(mainActivityInterface.getSong().getHymnnum());
-        myView.notes.setHint(mainActivityInterface.getSong().getNotes());
-        myView.lyrics.setHintMonospace();
-        myView.lyrics.setHint(mainActivityInterface.getSong().getLyrics());
     }
 
     private void setupListeners() {

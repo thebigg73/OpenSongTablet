@@ -1,6 +1,7 @@
 package com.garethevans.church.opensongtablet.export;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.graphics.pdf.PdfDocument;
 import android.net.Uri;
 import android.os.Bundle;
@@ -113,7 +114,7 @@ public class MultipagePrinterAdapter extends PrintDocumentAdapter {
 
         // Now draw it here for measuring via the VTO
         exportFragment.setHeaderLayoutPDF(mainActivityInterface.getSongSheetHeaders().getSongSheet(thisSong,
-                scaleComments,true));
+                scaleComments, Color.BLACK));
         if (exportFragment.getHeaderLayout()==null) {
             exportFragment.setHeaderLayoutPDF(new LinearLayout(exportFragment.getHiddenHeader().getContext()));
         }

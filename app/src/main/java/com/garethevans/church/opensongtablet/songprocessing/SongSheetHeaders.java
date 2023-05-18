@@ -1,7 +1,7 @@
 package com.garethevans.church.opensongtablet.songprocessing;
 
 import android.content.Context;
-import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -23,63 +23,56 @@ public class SongSheetHeaders {
         mainActivityInterface = (MainActivityInterface) c;
     }
 
-    public LinearLayout getSongSheet(Song thisSong, float commentScaling, boolean forPDF) {
-
+    public LinearLayout getSongSheet(Song thisSong, float commentScaling,  int textColor) {
         // Rather than assuming it is the current song, we get passed the song current or otherwise
         // This allows on the fly processing of other songs not processed (e.g. as part of a set)
+        // IV - Uses SongSelect tricks of bold, simple separators and field names - to enhance readability
+        linearLayout = new LinearLayout(c);
+        linearLayout.setOrientation(LinearLayout.VERTICAL);
+        linearLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
+        Typeface typeface = mainActivityInterface.getMyFonts().getLyricFont();
 
-        LinearLayout linearLayout = null;
+        // This will generate a separate LinearLayout containing the songsheet info
+        String title = thisSong.getTitle();
+        String author = thisSong.getAuthor();
+        String copyright = thisSong.getCopyright();
 
-        if (forPDF || (mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) &&
-                mainActivityInterface.getPreferences().getMyPreferenceBoolean("songSheet",false))) {
+        float defFontSize;
+        if (forExport) {
+            defFontSize = mainActivityInterface.getProcessSong().getDefFontSize();
+        } else {
+            defFontSize = 12f;
+        }
 
-            linearLayout = new LinearLayout(c);
-            linearLayout.setOrientation(LinearLayout.VERTICAL);
-            linearLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT));
-            Typeface typeface = mainActivityInterface.getMyFonts().getLyricFont();
-
-            // This will generate a separate LinearLayout containing the songsheet info
-            int textColor;
-            if (forPDF) {
-                textColor = Color.BLACK;
-            } else {
-                textColor = mainActivityInterface.getMyThemeColors().getLyricsTextColor();
+        if (title!=null && !title.isEmpty()) {
+            TextView textView = getSongSheetTexts(title,typeface,textColor,defFontSize);
+            textView.setPaintFlags(textView.getPaintFlags() | Paint.FAKE_BOLD_TEXT_FLAG);
+            textView.setTypeface(textView.getTypeface(),Typeface.BOLD);
+            linearLayout.addView(textView);
+        }
+        if (author!=null && !author.isEmpty()) {
+            linearLayout.addView(getSongSheetTexts(author,typeface,textColor,defFontSize*commentScaling));
+        }
+        if (copyright!=null && !copyright.isEmpty()) {
+            if (!copyright.contains("©") && !copyright.contains(c.getString(R.string.copyright))) {
+                copyright = "© "+copyright;
             }
-            String title = thisSong.getTitle();
-            String author = thisSong.getAuthor();
-            String copyright = thisSong.getCopyright();
+            linearLayout.addView(getSongSheetTexts(copyright,typeface,textColor,defFontSize*commentScaling));
+        }
 
-            float defFontSize;
-            if (forExport) {
-                defFontSize = mainActivityInterface.getProcessSong().getDefFontSize();
-            } else {
-                defFontSize = 12f;
-            }
+        String keyCapoTempo = getKeyCapoTempo(thisSong);
 
-            if (title!=null && !title.isEmpty()) {
-                linearLayout.addView(getSongSheetTexts(title,typeface,textColor,defFontSize));
-            }
-            if (author!=null && !author.isEmpty()) {
-                linearLayout.addView(getSongSheetTexts(author,typeface,textColor,defFontSize*commentScaling));
-            }
-            if (copyright!=null && !copyright.isEmpty()) {
-                if (!copyright.contains("©") && !copyright.contains(c.getString(R.string.copyright))) {
-                    copyright = "© "+copyright;
-                }
-                linearLayout.addView(getSongSheetTexts(copyright,typeface,textColor,defFontSize*commentScaling));
-            }
+        if (!keyCapoTempo.isEmpty()) {
+            TextView textView = getSongSheetTexts(keyCapoTempo.trim(),typeface,textColor,defFontSize*commentScaling);
+            textView.setPaintFlags(textView.getPaintFlags() | Paint.FAKE_BOLD_TEXT_FLAG);
+            textView.setTypeface(textView.getTypeface(),Typeface.BOLD);
+            linearLayout.addView(textView);
+        }
 
-            String keyCapoTempo = getKeyCapoTempo(thisSong);
-
-            if (!keyCapoTempo.isEmpty()) {
-                linearLayout.addView(getSongSheetTexts(keyCapoTempo.trim(),typeface,textColor,defFontSize*commentScaling));
-            }
-
-            // Add a section space to the bottom of the songSheet
-            if (linearLayout.getChildCount()>0) {
-                linearLayout.addView(getSongSheetTexts("",typeface,textColor,defFontSize*commentScaling*0.5f));
-            }
+        // Add a section space to the bottom of the songSheet
+        if (linearLayout.getChildCount()>0) {
+            linearLayout.addView(getSongSheetTexts("",typeface,textColor,defFontSize*commentScaling*0.5f));
         }
 
         if (linearLayout!=null && linearLayout.getChildCount()==0) {
@@ -107,20 +100,20 @@ public class SongSheetHeaders {
         String keyCapoTempo = "";
 
         if (capo!=null && !capo.isEmpty()) {
-            keyCapoTempo += "| " + c.getString(R.string.capo) + ": " + capo + " ";
+            keyCapoTempo += "| " + c.getString(R.string.capo) + " - " + capo + " ";
             keyCapoTempo += ("(" + mainActivityInterface.getTranspose().capoKeyTranspose() + ") ").replace(" ()","");
         }
 
         if (key!=null && !key.isEmpty()) {
-            keyCapoTempo += "| " + c.getString(R.string.key) + ": " + key + " ";
+            keyCapoTempo += "| " + c.getString(R.string.key) + " - " + key + " ";
         }
 
         if (tempo!=null && !tempo.isEmpty()) {
-            keyCapoTempo += "| " + c.getString(R.string.tempo) + ": " + tempo + " bpm ";
+            keyCapoTempo += "| " + c.getString(R.string.tempo) + " - " + tempo + " ";
         }
 
         if (timesig!=null && !timesig.isEmpty()) {
-            keyCapoTempo += "| " + c.getString(R.string.time_signature) + ": " + timesig + " ";
+            keyCapoTempo += "| " + c.getString(R.string.time) + " - " + timesig + " ";
         }
 
         keyCapoTempo = keyCapoTempo.trim().replaceFirst("\\| ","");
