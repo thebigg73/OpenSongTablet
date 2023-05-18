@@ -1866,11 +1866,9 @@ public class ProcessSong {
                     }
 
 
-                    Log.d(TAG,"blockShadow:"+blockShadow);
                     if (presentation && !mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) && blockShadow) {
                         linearLayout.setBackgroundColor(getColorWithAlpha(mainActivityInterface.
                                     getMyThemeColors().getPresoShadowColor(), blockShadowAlpha));
-                        Log.d(TAG,"blockShadowAlpha:"+blockShadowAlpha);
                     } else {
                         linearLayout.setBackgroundColor(overallBackgroundColor);
                     }
@@ -2110,9 +2108,15 @@ public class ProcessSong {
         }
 
         // Work out the maximum scale allowed by preferred max scale font size
-        float maxFontScale = fontSizeMax / defFontSize;
+        float maxFontScale;
+        if (presentation) {
+            maxFontScale = mainActivityInterface.getPresenterSettings().getFontSizePresoMax() / defFontSize;
+        } else {
+            maxFontScale = fontSizeMax / defFontSize;
+        }
 
         // Work out the minimum scale allowed by preferred min scale font size
+        // Not used for presentations
         float minFontScale = fontSizeMin / defFontSize;
 
         // Firstly, work out the scaling for one column
@@ -2292,7 +2296,7 @@ public class ProcessSong {
 
             // If we have override to width, then check we are above the minimum font size
             // If not, we revert to the oneColumn logic
-            if (threeColumnScale >= minFontScale || !songAutoScaleOverrideFull) {
+            if (presentation || threeColumnScale >= minFontScale || !songAutoScaleOverrideFull) {
                 returnFloats = new float[]{3,// Number of columns
                         threeColumnScale,   // Overall best scale
                         columnBreak3_a,     // Break point 1
@@ -2320,7 +2324,7 @@ public class ProcessSong {
 
             // If we have override to width, then check we are above the minimum font size
             // If not, we revert to the oneColumn logic
-            if (twoColumnScale >= minFontScale || !songAutoScaleOverrideFull) {
+            if (presentation || twoColumnScale >= minFontScale || !songAutoScaleOverrideFull) {
                 returnFloats = new float[]{2,// Number of columns
                         twoColumnScale,     // Overall best scale
                         columnBreak2,       // Break point
