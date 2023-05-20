@@ -342,6 +342,12 @@ public class Preferences extends Activity {
     // hideActionBarTime                int         How long should the action bar be visible for before hiding (def:1200)
     // hideInfoBar                      boolean     Should the info bar (Presenter mode only) autohide after initial display + minimum time (def: true)
     // hideLyricsBox                    boolean     Should we hide the box around the lyrics (def:false)
+    // hotZoneBottomCenterShort         String      The action for short pressing on this hot zone (def:scrolldown)
+    // hotZoneBottomCenterLong          String      The action for short pressing on this hot zone (def:"")
+    // hotZoneTopCenterShort            String      The action for short pressing on this hot zone (def:scrollup)
+    // hotZoneTopCenterLong             String      The action for short pressing on this hot zone (def:"")
+    // hotZoneTopLeftShort              String      The action for short pressing on this hot zone (def:"")
+    // hotZoneTopLeftLong               String      The action for short pressing on this hot zone (def:"")
     // ignorePlayServicesWarning        boolean     Has the user ticked the box to not show this again (def:false);
     // inlineSet                        boolean     Should we show the inline setlist (def:false)
     // inlineSetPresenter               boolean     Should we show the inline setlist for Presenter mode (def:true)

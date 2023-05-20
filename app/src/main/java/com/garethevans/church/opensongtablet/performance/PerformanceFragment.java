@@ -1024,6 +1024,7 @@ public class PerformanceFragment extends Fragment {
 
     private void dealWithExtraStuffOnceSettled() {
         if (getContext()!=null && myView!=null) {
+            mainActivityInterface.getHotZones().checkScrollButtonOn(myView.zoomLayout,myView.recyclerView);
             // Send the autoscroll information (if required)
             mainActivityInterface.getAutoscroll().initialiseSongAutoscroll(heightAfterScale, availableHeight);
             if (mainActivityInterface.getAutoscroll().getShouldAutostart()) {
@@ -1253,6 +1254,7 @@ public class PerformanceFragment extends Fragment {
                     mainActivityInterface.getDisplayPrevNext().showAndHide();
                     mainActivityInterface.updateOnScreenInfo("showhide");
                     mainActivityInterface.showActionBar();
+                    mainActivityInterface.getHotZones().checkScrollButtonOn(myView.zoomLayout,myView.recyclerView);
                     // Check for updating send nearby to
                     if (mainActivityInterface.getNearbyConnections().hasValidConnections() &&
                             mainActivityInterface.getNearbyConnections().getIsHost() &&
@@ -1328,6 +1330,7 @@ public class PerformanceFragment extends Fragment {
         }
         mainActivityInterface.getPresenterSettings().setCurrentSection(position);
         displayInterface.updateDisplay("showSection");
+        mainActivityInterface.getHotZones().checkScrollButtonOn(myView.zoomLayout,myView.recyclerView);
     }
 
     // If a nearby host initiated a section change

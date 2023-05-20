@@ -185,6 +185,7 @@ public class MyRecyclerView extends RecyclerView  implements RecyclerView.Smooth
         return scrolledToBottom;
     }
 
+
     public void setGestureDetector(GestureDetector gestureDetector) {
         this.gestureDetector = gestureDetector;
     }
@@ -226,6 +227,7 @@ public class MyRecyclerView extends RecyclerView  implements RecyclerView.Smooth
             mainActivityInterface.getDisplayPrevNext().showAndHide();
             mainActivityInterface.updateOnScreenInfo("showcapo");
             mainActivityInterface.showActionBar();
+            mainActivityInterface.getHotZones().checkScrollButtonOn(null,this);
         }
     }
 
@@ -320,6 +322,8 @@ public class MyRecyclerView extends RecyclerView  implements RecyclerView.Smooth
 //                isUserTouching = false;
 //            }
 
+            mainActivityInterface.getHotZones().checkScrollButtonOn(null,MyRecyclerView.this);
+
             // Deal with performance mode gestures
             if (gestureDetector!=null) {
                 return gestureDetector.onTouchEvent(e);
@@ -388,5 +392,10 @@ public class MyRecyclerView extends RecyclerView  implements RecyclerView.Smooth
         }
     }
 
-
+    public int getScrollPos() {
+        return ((RecyclerLayoutManager)getLayoutManager()).getScrollY();
+    }
+    public int getScrollYMax() {
+        return ((RecyclerLayoutManager)getLayoutManager()).getScrollYMax();
+    }
 }

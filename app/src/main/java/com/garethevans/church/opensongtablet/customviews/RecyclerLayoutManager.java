@@ -69,6 +69,9 @@ public class RecyclerLayoutManager extends LinearLayoutManager {
     public int getScrollY() {
         return scrolledY;
     }
+    public int getScrollYMax() {
+        return size-screenSize-4;
+    }
 
     @Override
     public PointF computeScrollVectorForPosition(int targetPosition) {
