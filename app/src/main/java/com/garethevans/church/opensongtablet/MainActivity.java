@@ -12,6 +12,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
@@ -1583,7 +1584,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     } catch (Exception e2) {
                         Log.d(TAG,"com.samsung.wfd.LAUNCH_WFD_PICKER_DLG not an option");
                         try {
-                            startActivity(new Intent("android.settings.CAST_SETTINGS"));
+                            if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP) {
+                                startActivity(new Intent(Settings.ACTION_CAST_SETTINGS));
+                            } else {
+                                startActivity(new Intent("android.settings.CAST_SETTINGS"));
+                            }
                         } catch (Exception e3) {
                             showToast.doIt(error);
                         }
