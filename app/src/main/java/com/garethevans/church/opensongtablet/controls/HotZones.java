@@ -3,7 +3,6 @@ package com.garethevans.church.opensongtablet.controls;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.View;
 
 import com.garethevans.church.opensongtablet.R;
@@ -184,28 +183,19 @@ public class HotZones {
     public void checkScrollButtonOn(MyZoomLayout myZoomLayout, MyRecyclerView myRecyclerView) {
         this.myZoomLayout = myZoomLayout;
         this.myRecyclerView = myRecyclerView;
-        Log.d(TAG,"checkScrollButtonOn()  usingScrollZones:"+usingScrollZones+"  checkedAfterTime:"+checkedAfterTime);
         if (usingScrollZones) {
             checkScrollRequiredHandler.removeCallbacks(checkScrollRequiredRunnable);
             boolean scrolledToTop = false;
             boolean scrolledToBottom = false;
             if (mainActivityInterface.getSong().getFiletype().equals("XML") && myZoomLayout!=null) {
                 // Check the scroll position of the MyZoomLayout
-                Log.d(TAG,"scrollY():"+myZoomLayout.getScrollY());
-                Log.d(TAG,"scrollPos:"+myZoomLayout.getScrollPos());
-                Log.d(TAG,"maxScrollY:"+myZoomLayout.getMaxScrollY());
                 scrolledToTop = myZoomLayout.getScrollPos()<=0;
                 scrolledToBottom = myZoomLayout.getScrollPos()==myZoomLayout.getMaxScrollY();
             } else if (myRecyclerView!=null) {
                 // Check the position of recyclerview scroll
-                Log.d(TAG,"scrollY():"+myRecyclerView.getScrollPos());
-                Log.d(TAG,"scrollYMax():"+myRecyclerView.getScrollYMax());
                 scrolledToTop = myRecyclerView.getScrollPos()<=0;
                 scrolledToBottom = myRecyclerView.getScrollPos()>=myRecyclerView.getScrollYMax();
             }
-            Log.d(TAG,"scrolledToTop:"+scrolledToTop+"  scrolledToBottom:"+scrolledToBottom);
-            Log.d(TAG,"hotZoneTopCenterShort:"+hotZoneTopCenterShort+"  hotZoneTopCenterLong:"+hotZoneTopCenterLong);
-            Log.d(TAG,"isScrollOnlyZone (TC):"+isScrollOnlyZone(hotZoneTopCenterShort,hotZoneTopCenterLong,"scrollup"));
             if (isScrollOnlyZone(hotZoneTopLeftShort,hotZoneTopLeftLong,"scrollup")) {
                 hotZoneTopLeftView.setVisibility(scrolledToTop ? View.GONE:View.VISIBLE);
             } else if (isScrollOnlyZone(hotZoneTopLeftShort,hotZoneTopLeftLong,"scrolldown")) {

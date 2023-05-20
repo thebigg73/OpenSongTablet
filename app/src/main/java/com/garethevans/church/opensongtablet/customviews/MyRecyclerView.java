@@ -316,12 +316,6 @@ public class MyRecyclerView extends RecyclerView  implements RecyclerView.Smooth
 
             }
 
-//            if (e.getAction() == MotionEvent.ACTION_DOWN || e.getAction() == MotionEvent.ACTION_BUTTON_PRESS) {
-//                isUserTouching = true;
-//            } else if (e.getAction() == MotionEvent.ACTION_UP || e.getAction() == MotionEvent.ACTION_BUTTON_RELEASE || e.getAction() == MotionEvent.ACTION_CANCEL) {
-//                isUserTouching = false;
-//            }
-
             mainActivityInterface.getHotZones().checkScrollButtonOn(null,MyRecyclerView.this);
 
             // Deal with performance mode gestures
@@ -393,9 +387,25 @@ public class MyRecyclerView extends RecyclerView  implements RecyclerView.Smooth
     }
 
     public int getScrollPos() {
-        return ((RecyclerLayoutManager)getLayoutManager()).getScrollY();
+        if (getLayoutManager()!=null) {
+            try {
+                return ((RecyclerLayoutManager) getLayoutManager()).getScrollY();
+            } catch (Exception e) {
+                return 0;
+            }
+        } else {
+            return 0;
+        }
     }
     public int getScrollYMax() {
-        return ((RecyclerLayoutManager)getLayoutManager()).getScrollYMax();
+        if (getLayoutManager()!=null) {
+            try {
+                return ((RecyclerLayoutManager) getLayoutManager()).getScrollYMax();
+            } catch (Exception e) {
+                return 0;
+            }
+        } else {
+            return 0;
+        }
     }
 }
