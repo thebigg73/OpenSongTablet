@@ -90,7 +90,7 @@ public class HotZones {
     }
 
     public void setHotZoneTopLeftShort(String text) {
-        mainActivityInterface.getPreferences().setMyPreferenceString("hotZoneTLS",text);
+        mainActivityInterface.getPreferences().setMyPreferenceString("hotZoneTopLeftShort",text);
         this.hotZoneTopLeftShort = text;
     }
     public void setHotZoneTopLeftLong(String text) {
