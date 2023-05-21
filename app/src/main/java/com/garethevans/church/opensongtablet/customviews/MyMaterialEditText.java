@@ -1,36 +1,46 @@
 package com.garethevans.church.opensongtablet.customviews;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.Parcelable;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.text.method.DigitsKeyListener;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
 import android.view.inputmethod.EditorInfo;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 
 import com.garethevans.church.opensongtablet.R;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 public class MyMaterialEditText extends LinearLayout implements View.OnTouchListener {
-
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
+    private final String TAG = "MyMaterialEditText";
     private final TextInputEditText editText;
     private final TextInputLayout textInputLayout;
     private final boolean restoreState;
     private final float xxlarge, xlarge, large, medium, small, xsmall;
     private int endIconMode;
+    private Window window;
 
     // By default this is a single line edit text
     // For multiline, the number of lines has to be specified (maxLines/lines)
@@ -48,6 +58,13 @@ public class MyMaterialEditText extends LinearLayout implements View.OnTouchList
         medium = context.getResources().getDimension(R.dimen.text_medium);
         small = context.getResources().getDimension(R.dimen.text_small);
         xsmall = context.getResources().getDimension(R.dimen.text_xsmall);
+
+        try {
+            window = ((Activity) context).getWindow();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        setLongClickKeyboard();
     }
     public MyMaterialEditText(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -164,6 +181,13 @@ public class MyMaterialEditText extends LinearLayout implements View.OnTouchList
         editText.setImeOptions(imeOptions);
 
         a.recycle();
+
+        try {
+            window = ((Activity) context).getWindow();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        setLongClickKeyboard();
     }
 
 
@@ -317,5 +341,44 @@ public class MyMaterialEditText extends LinearLayout implements View.OnTouchList
 
     public void setTypeface(Typeface typeface) {
         editText.setTypeface(typeface);
+    }
+
+    private void setLongClickKeyboard() {
+        // Sets long clicking on the text view to open the keyboard (forced)
+        if (window!=null) {
+
+            WindowInsetsControllerCompat windowInsetsControllerCompat = WindowCompat.getInsetsController(window, window.getDecorView());
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                editText.setShowSoftInputOnFocus(true);
+            }
+            editText.setOnFocusChangeListener((view, b) -> {
+                Handler handler = new Handler(Looper.getMainLooper());
+                if (b) {
+                    handler.postDelayed(() -> {
+                        windowInsetsControllerCompat.show(WindowInsetsCompat.Type.ime());
+                        Log.d(TAG,"Showing keyboard");
+                    }, 500);
+                } else {
+                    handler.postDelayed(() -> {
+                        windowInsetsControllerCompat.hide(WindowInsetsCompat.Type.ime());
+                        Log.d(TAG,"Hide keyboard");
+                    }, 500);
+                }
+            });
+            editText.setOnLongClickListener(view -> {
+                // Show after a few millisecs
+                Handler handler = new Handler(Looper.getMainLooper());
+                handler.postDelayed(() -> {
+                    windowInsetsControllerCompat.hide(WindowInsetsCompat.Type.ime());
+                    Log.d(TAG,"Hiding keyboard");
+                }, 500);
+                handler.postDelayed(() -> {
+                    windowInsetsControllerCompat.show(WindowInsetsCompat.Type.ime());
+                    Log.d(TAG,"Showing keyboard");
+                }, 1000);
+                return false;
+            });
+        }
     }
 }
