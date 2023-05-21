@@ -108,12 +108,10 @@
 
     <ProgressBar
         android:id="@+id/progressBar"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="@dimen/progress_bar_size"
+        android:layout_height="@dimen/progress_bar_size"
         android:layout_gravity="center"
         android:indeterminate="true"
-        android:scaleX="0.4"
-        android:scaleY="0.4"
         android:padding="10dp"
         app:layout_anchor="@+id/relativeLayout"
         app:layout_anchorGravity="center" />

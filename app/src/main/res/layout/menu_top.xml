@@ -1,48 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
+    android:id="@+id/menuTop"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingStart="0dp"
+    android:paddingTop="0dp"
+    android:paddingEnd="8dp">
 
-    <LinearLayout
-        android:id="@+id/menuTop"
-        android:layout_width="match_parent"
+    <ImageView
+        android:id="@+id/backButton"
+        android:layout_width="wrap_content"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_gravity="top"
+        android:layout_marginTop="8dp"
+        android:contentDescription="@string/close"
+        android:padding="16dp"
+        app:srcCompat="@drawable/arrow_left" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabs"
+        style="@style/menuTabs"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:minHeight="?attr/actionBarSize"
-        android:paddingStart="0dp"
-        android:paddingEnd="8dp"
-        android:paddingTop="4dp"
-        android:orientation="horizontal">
+        android:layout_gravity="top|bottom"
+        android:layout_weight="1"
+        android:background="@color/colorAltPrimary"
+        android:paddingTop="4dp" />
 
-        <ImageView
-            android:id="@+id/backButton"
-            android:layout_width="wrap_content"
-            android:layout_height="52dp"
-            app:srcCompat="@drawable/arrow_left"
-            android:contentDescription="@string/close"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"/>
-
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabs"
-            style="@style/menuTabs"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="@color/colorAltPrimary"
-            android:layout_gravity="top|bottom"
-            android:layout_weight="1"
-            android:paddingTop="4dp" />
-
-        <ImageView
-            android:id="@+id/menuHelp"
-            android:layout_width="wrap_content"
-            android:layout_height="52dp"
-            app:srcCompat="@drawable/help_outline"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:contentDescription="@string/help"
-            android:layout_gravity="top"
-            android:foregroundGravity="right" />
-    </LinearLayout>
+    <ImageView
+        android:id="@+id/menuHelp"
+        android:layout_width="wrap_content"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_marginTop="8dp"
+        android:contentDescription="@string/help"
+        android:foregroundGravity="right"
+        android:padding="16dp"
+        app:srcCompat="@drawable/help_outline" />
 </LinearLayout>
+

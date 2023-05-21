@@ -1571,27 +1571,23 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         getMenuInflater().inflate(R.menu.mainactivitymenu, menu);
         ImageView screenMirror = (ImageView) menu.findItem(R.id.mirror_menu_item).getActionView();
         screenMirror.setImageDrawable(VectorDrawableCompat.create(getResources(), R.drawable.cast, getTheme()));
-        screenMirror.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        screenMirror.setOnClickListener(view -> {
+            try {
+                startActivity(new Intent("android.settings.WIFI_DISPLAY_SETTINGS"));
+            } catch (ActivityNotFoundException e) {
+                Log.d(TAG,"android.settings.WIFI_DISPLAY_SETTINGS not an option");
                 try {
-                    startActivity(new Intent("android.settings.WIFI_DISPLAY_SETTINGS"));
-                } catch (ActivityNotFoundException e) {
-                    Log.d(TAG,"android.settings.WIFI_DISPLAY_SETTINGS not an option");
-                    //e.printStackTrace();
+                    startActivity(new Intent("com.samsung.wfd.LAUNCH_WFD_PICKER_DLG"));
+                } catch (Exception e2) {
+                    Log.d(TAG,"com.samsung.wfd.LAUNCH_WFD_PICKER_DLG not an option");
                     try {
-                        startActivity(new Intent("com.samsung.wfd.LAUNCH_WFD_PICKER_DLG"));
-                    } catch (Exception e2) {
-                        Log.d(TAG,"com.samsung.wfd.LAUNCH_WFD_PICKER_DLG not an option");
-                        try {
-                            if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP) {
-                                startActivity(new Intent(Settings.ACTION_CAST_SETTINGS));
-                            } else {
-                                startActivity(new Intent("android.settings.CAST_SETTINGS"));
-                            }
-                        } catch (Exception e3) {
-                            showToast.doIt(error);
+                        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP) {
+                            startActivity(new Intent(Settings.ACTION_CAST_SETTINGS));
+                        } else {
+                            startActivity(new Intent("android.settings.CAST_SETTINGS"));
                         }
+                    } catch (Exception e3) {
+                        showToast.doIt(error);
                     }
                 }
             }

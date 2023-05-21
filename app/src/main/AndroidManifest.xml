@@ -94,10 +94,6 @@
             android:name="com.google.android.gms.nearby.connection.SERVICE_ID"
             android:value="@string/service_id" />
 
-        <meta-data
-            android:name="com.google.android.gms.cast.framework.OPTIONS_PROVIDER_CLASS_NAME"
-            android:value="com.garethevans.church.opensongtablet.secondarydisplay.CastOptionsProvider" />
-
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.garethevans.church.opensongtablet.fileprovider"
