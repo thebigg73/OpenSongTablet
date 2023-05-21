@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="42dp">
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/songtitleTitle"
@@ -11,8 +11,7 @@
         android:layout_weight="1"
         android:text="@string/song"
         android:textStyle="bold"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp" />
+        android:layout_gravity="center_vertical" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/setCheckTitle"
@@ -23,6 +22,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
+        android:layout_gravity="center"
         android:gravity="center"
         android:minWidth="48dp"/>
 </LinearLayout>

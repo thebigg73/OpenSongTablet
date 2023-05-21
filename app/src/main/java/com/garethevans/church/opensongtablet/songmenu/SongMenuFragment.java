@@ -457,8 +457,6 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                         if (textView != null) {
                             textView.setTextSize(i);
                             textView.setPadding(i, i, i, i);
-                            textView.setMinimumWidth(16);
-                            textView.setMinimumHeight(16);
                             textView.setText(index);
                             int finalP = p;
                             textView.setOnClickListener(view -> {
@@ -522,8 +520,6 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                     int i = (int) mainActivityInterface.getPreferences().getMyPreferenceFloat("songMenuAlphaIndexSize", 14.0f);
                     textView.setTextSize(i);
                     textView.setPadding(i, i, i, i);
-                    textView.setMinimumWidth(16);
-                    textView.setMinimumHeight(16);
                     // IV - Display the 2 char index over 1 or 2 lines.  The trim removes trailing '\n ' giving one line when the second char of the index is a space.
                     String indexlines = (index.charAt(0) + "\n" + index.charAt(1)).trim();
                     textView.setText(indexlines);

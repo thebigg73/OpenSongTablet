@@ -37,8 +37,8 @@
                 android:layout_height="match_parent"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
-                android:layout_marginTop="2dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="0dp"
                 android:orientation="horizontal">
 
                 <include
@@ -64,6 +64,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:clipToPadding="false"
+                            android:layout_margin="0dp"
+                            android:paddingTop="0dp"
                             android:paddingBottom="64dp"
                             android:orientation="vertical"/>
                         </FrameLayout>
