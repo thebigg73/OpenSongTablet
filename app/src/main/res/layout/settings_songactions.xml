@@ -195,6 +195,16 @@
                 android:hint="@string/search"
                 app:size="large"/>
             <TableRow style="@style/DividerLine" />
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                android:id="@+id/graceTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/grace_time"
+                android:hint="@string/grace_time_info"
+                app:size="large"/>
+            <TableRow style="@style/DividerLine" />
+
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </LinearLayout>

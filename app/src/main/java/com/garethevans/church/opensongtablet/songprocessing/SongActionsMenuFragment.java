@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -78,6 +79,7 @@ public class SongActionsMenuFragment extends Fragment {
             newText = getString(R.string.youtube) + " " + getString(R.string.music);
             myView.youTubeMusic.setText(newText);
         }
+        myView.graceTime.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("graceTime",true));
     }
 
     private void setListeners() {
@@ -140,6 +142,12 @@ public class SongActionsMenuFragment extends Fragment {
         myView.youTube.setOnClickListener(v -> searchSong("YouTube"));
         myView.youTubeMusic.setOnClickListener(v -> searchSong("YouTubeMusic"));
         myView.spotify.setOnClickListener(v -> searchSong("Spotify"));
+        myView.graceTime.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                mainActivityInterface.getPreferences().setMyPreferenceBoolean("graceTime",b);
+            }
+        });
     }
 
     private void searchSong(String where) {

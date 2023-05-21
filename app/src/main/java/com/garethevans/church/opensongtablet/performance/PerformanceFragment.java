@@ -80,7 +80,7 @@ public class PerformanceFragment extends Fragment {
 
     private String mainfoldername="", mode_performance="", mode_presenter="", mode_stage="",
             not_allowed="", image_string="", nearby_large_file_string="";
-    private int sendSongDelay = 0;
+    private int sendSongDelay = 0, graceTime = 2000;
     private final Handler sendSongAfterDelayHandler = new Handler(),
         autoHideHighlighterHandler = new Handler();
     private final Runnable sendSongAfterDelayRunnable = () -> {
@@ -119,6 +119,9 @@ public class PerformanceFragment extends Fragment {
     public void onResume() {
         super.onResume();
         displayInterface.checkDisplays();
+        if (getContext()!=null && mainActivityInterface!=null) {
+            graceTime = mainActivityInterface.getPreferences().getMyPreferenceBoolean("graceTime",true) ? 2000 : 50;
+        }
     }
 
     @Override
@@ -1019,7 +1022,7 @@ public class PerformanceFragment extends Fragment {
         // For pads, once settled on a song the user has 2s grace to prep to play the song before cross fade.
         // A good time to change capo!
         dealWithExtraStuffOnceSettledHandler.removeCallbacks((dealWithExtraStuffOnceSettledRunnable));
-        dealWithExtraStuffOnceSettledHandler.postDelayed(dealWithExtraStuffOnceSettledRunnable, 2000);
+        dealWithExtraStuffOnceSettledHandler.postDelayed(dealWithExtraStuffOnceSettledRunnable, graceTime);
     }
 
     private void dealWithExtraStuffOnceSettled() {

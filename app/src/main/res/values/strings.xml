@@ -1183,4 +1183,6 @@
     <string name="hot_zone_top_center">Top center</string>
     <string name="hot_zone_bottom_center">Bottom center</string>
     <string name="hot_zone_rationale">Other areas of the screen are reserved for page buttons, song information and are not available.  Hot zones will block other actions in these areas</string>
+    <string name="grace_time">Allow song grace time</string>
+    <string name="grace_time_info">This allows you to browse songs quickly and only sends information to other connected devices after a grace time period of 2s.</string>
 </resources>
