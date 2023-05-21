@@ -3727,7 +3727,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                             // The screen setup
                             case "measureAvailableSizes":
                                 secondaryDisplay.measureAvailableSizes();
-                                secondaryDisplay.viewsAreReady();
+                                //secondaryDisplay.viewsAreReady();
                                 break;
                             case "setScreenSizes":
                                 secondaryDisplay.setScreenSizes();

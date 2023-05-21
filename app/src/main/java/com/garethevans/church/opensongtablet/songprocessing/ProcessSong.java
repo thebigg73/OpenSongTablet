@@ -917,10 +917,13 @@ public class ProcessSong {
         TableLayout tableLayout = newTableLayout();
         tableLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT));
 
+        boolean performancePresentation = presentation && mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance));
+
         // If we have a capo and want to show capo chords, duplicate and transpose the chord line
         String capoText = mainActivityInterface.getSong().getCapo();
         boolean hasCapo = capoText!=null && !capoText.isEmpty();
-        if (hasCapo && (displayCapoChords || displayCapoAndNativeChords)) {
+
+        if (hasCapo && (displayCapoChords || displayCapoAndNativeChords) && !(performancePresentation && !mainActivityInterface.getPresenterSettings().getPresoShowChords())) {
             int capo = Integer.parseInt(capoText);
             String chordbit = string.substring(0,string.indexOf(groupline_string));
             chordbit = mainActivityInterface.getTranspose().transposeChordForCapo(capo,chordbit).replaceFirst(".","˄");
@@ -955,7 +958,8 @@ public class ProcessSong {
         ArrayList<Integer> pos = new ArrayList<>();
 
         // IV - If we are not displaying chords, handle the line as a whole
-        if (!displayChords) {
+        Log.d(TAG,"performancePresentation:"+performancePresentation);
+        if (!displayChords || (performancePresentation && !mainActivityInterface.getPresenterSettings().getPresoShowChords())) {
             pos.add(0);
         } else {
             if (lines.length > 1) {
@@ -984,7 +988,7 @@ public class ProcessSong {
         // Now we have the sizes, split into individual TextViews inside a TableRow for each line
         for (int t = 0; t < lines.length; t++) {
             TableRow tableRow = newTableRow();
-            if (presentation) {
+            if (presentation && !performancePresentation) {
                 tableRow.setGravity(mainActivityInterface.getPresenterSettings().getPresoLyricsAlign());
             }
             linetype = getLineType(lines[t]);
@@ -998,7 +1002,7 @@ public class ProcessSong {
                 lines[t] = trimOutLineIdentifiers(linetype, lines[t]);
             }
 
-            Typeface typeface = getTypeface(presentation, linetype);
+            Typeface typeface = getTypeface(presentation && !performancePresentation, linetype);
             float size = getFontSize(linetype);
             int color = getFontColor(linetype, lyricColor, chordColor, capoColor);
             int startpos = 0;
@@ -1014,7 +1018,7 @@ public class ProcessSong {
                     switch (linetype) {
                         case "chord":
                             // Only show this if we want chords and if there is a capo, we want both capo and native
-                            if (displayChords && (!hasCapo || displayCapoAndNativeChords || !displayCapoChords)) {
+                            if (displayChords && (!hasCapo || displayCapoAndNativeChords || !displayCapoChords) && !(performancePresentation && !mainActivityInterface.getPresenterSettings().getPresoShowChords())) {
                                 if (highlightChordColor != 0x00000000) {
                                     textView.setText(new SpannableString(highlightChords(str,
                                             highlightChordColor)));
@@ -1027,7 +1031,7 @@ public class ProcessSong {
                             break;
                         case "capoline":
                             // Only show this if we want chords and if there is a capo and showcapo
-                            if (displayChords && hasCapo && (displayCapoChords || displayCapoAndNativeChords)) {
+                            if (displayChords && hasCapo && (displayCapoChords || displayCapoAndNativeChords)  && !(performancePresentation && !mainActivityInterface.getPresenterSettings().getPresoShowChords())) {
                                 if (highlightChordColor != 0x00000000) {
                                     textView.setText(new SpannableString(highlightChords(str,
                                             highlightChordColor)));
@@ -1405,7 +1409,7 @@ public class ProcessSong {
         boolean applyFixExcessSpaces = (trimWordSpacing || presentation || !mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) &&
                 (!multiLineVerseKeepCompact && !multilineSong));
 
-        if (presentation) {
+        if (presentation && !mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance))) {
             textView.setGravity(mainActivityInterface.getPresenterSettings().getPresoLyricsAlign());
         }
         String str = trimOutLineIdentifiers(linetype, string);
@@ -1659,6 +1663,7 @@ public class ProcessSong {
 
         // 13. Go through the lyrics, filter lines needed for this mode/display chords combination.
         // Returns wanted line types and group lines that should be in a table for alignment purposes
+        Log.d(TAG,"presentation:"+presentation+"  mainActivityInterface.getPresenterSettings().getPresoShowChords():"+mainActivityInterface.getPresenterSettings().getPresoShowChords());
         if (presentation) {
             lyrics = filterAndGroupLines(lyrics, mainActivityInterface.getPresenterSettings().getPresoShowChords());
         } else {
@@ -1714,8 +1719,9 @@ public class ProcessSong {
         ArrayList<View> sectionViews = new ArrayList<>();
         ArrayList<Integer> sectionColors = new ArrayList<>();
 
+        boolean performancePresentation = presentation && mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance));
         // First we process the song (could be the loaded song, or a temp song - that's why we take a reference)
-        processSongIntoSections(song, presentation);
+        processSongIntoSections(song, presentation && !performancePresentation);
 
         // IV - Initialise transpose capo key  - might be needed
         mainActivityInterface.getTranspose().capoKeyTranspose();
@@ -1736,7 +1742,7 @@ public class ProcessSong {
         int backgroundColor;
         int overallBackgroundColor;
         int textColor;
-        if (presentation) {
+        if (presentation && !performancePresentation) {
             backgroundColor = Color.TRANSPARENT;
             textColor = mainActivityInterface.getMyThemeColors().getPresoFontColor();
         } else if (asPDF) {
@@ -1761,7 +1767,7 @@ public class ProcessSong {
                 LinearLayout linearLayout = newLinearLayout(); // transparent color
                 linearLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 
-                if (presentation) {
+                if (presentation && !performancePresentation) {
                     linearLayout.setGravity(mainActivityInterface.getPresenterSettings().getPresoLyricsAlign());
                 }
 
@@ -1777,7 +1783,7 @@ public class ProcessSong {
                             // Get the text stylings
                             String linetype = getLineType(line);
                             boolean notLyricOrChord = linetype.equals("heading") || linetype.equals("comment") || linetype.equals("tab");
-                            if (presentation && !mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance))) {
+                            if (presentation && !performancePresentation) {
                                 if (notLyricOrChord) {
                                     // Do not use these lines with the second screen
                                     continue;
@@ -1787,7 +1793,7 @@ public class ProcessSong {
                                 }
                             }
                             backgroundColor = overallBackgroundColor;
-                            if (!asPDF && !presentation && notLyricOrChord) {
+                            if (!asPDF && (!presentation || performancePresentation) && notLyricOrChord) {
                                 int[] colors = getBGColor(line);
                                 backgroundColor = colors[0];
                                 if (l==0) {
@@ -1795,9 +1801,9 @@ public class ProcessSong {
                                     overallBackgroundColor = backgroundColor;
                                 }
                             }
-                            Typeface typeface = getTypeface(presentation, linetype);
+                            Typeface typeface = getTypeface(presentation && !performancePresentation, linetype);
                             float size = getFontSize(linetype);
-                            if (!asPDF && !presentation) {
+                            if (!asPDF && (!presentation || performancePresentation)) {
                                 textColor = getFontColor(linetype, mainActivityInterface.getMyThemeColors().
                                         getLyricsTextColor(), mainActivityInterface.getMyThemeColors().getLyricsChordsColor(),
                                         mainActivityInterface.getMyThemeColors().getLyricsCapoColor());
@@ -1808,7 +1814,7 @@ public class ProcessSong {
                                 if (asPDF) {
                                     linearLayout.addView(groupTable(line, Color.BLACK, Color.BLACK,
                                             Color.BLACK, Color.TRANSPARENT, false, isChorusBold));
-                                } else if (presentation) {
+                                } else if (presentation && !performancePresentation) {
                                     linearLayout.addView(groupTable(line,
                                             mainActivityInterface.getMyThemeColors().getPresoFontColor(),
                                             mainActivityInterface.getMyThemeColors().getPresoChordColor(),
@@ -1821,12 +1827,12 @@ public class ProcessSong {
                                             mainActivityInterface.getMyThemeColors().getLyricsChordsColor(),
                                             mainActivityInterface.getMyThemeColors().getLyricsCapoColor(),
                                             mainActivityInterface.getMyThemeColors().getHighlightChordColor(),
-                                            false,isChorusBold);
+                                            presentation,isChorusBold);
                                     tl.setBackgroundColor(backgroundColor);
                                     linearLayout.addView(tl);
                                 }
                             } else {
-                                if (!presentation && !asPDF && (!line.isEmpty() || mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)))) {
+                                if ((!presentation || performancePresentation) && !asPDF && (!line.isEmpty() || mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)))) {
                                     // IV - Remove typical word splits, white space and trim - beautify!
                                     // IV - Similar logic is used in other places - if changed find and make changes to all
                                     if (!displayChords) {
@@ -1836,7 +1842,7 @@ public class ProcessSong {
                                     TextView tv = lineText(linetype, line, typeface,
                                             size, textColor,
                                             mainActivityInterface.getMyThemeColors().getHighlightHeadingColor(),
-                                            mainActivityInterface.getMyThemeColors().getHighlightChordColor(), false, isChorusBold);
+                                            mainActivityInterface.getMyThemeColors().getHighlightChordColor(), performancePresentation, isChorusBold);
                                     tv.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                                     tv.setBackgroundColor(backgroundColor);
                                     linearLayout.addView(tv);
@@ -2595,22 +2601,26 @@ public class ProcessSong {
 
         for (int i = 0; i < columnBreak2; i++) {
             // Make all the views the same width as each other
-            sectionViews.get(i).getLayoutParams().width = col1_2Width;
-            // If this isn't the last view in the column, add the sectionSpace
-            if (i!=columnBreak2-1) {
-                sectionViews.get(i).setPadding(0,0,0,sectionSpace);
-            }
-            // Add the views to the scaled inner column
-            if (childNotInLinearLayoutParent(sectionViews.get(i))) {
-                innerCol1.addView(sectionViews.get(i));
+            if (i<sectionViews.size()) {
+                sectionViews.get(i).getLayoutParams().width = col1_2Width;
+                // If this isn't the last view in the column, add the sectionSpace
+                if (i != columnBreak2 - 1) {
+                    sectionViews.get(i).setPadding(0, 0, 0, sectionSpace);
+                }
+                // Add the views to the scaled inner column
+                if (childNotInLinearLayoutParent(sectionViews.get(i))) {
+                    innerCol1.addView(sectionViews.get(i));
+                }
             }
         }
         for (int i = columnBreak2; i < sectionViews.size(); i++) {
             // Make all the views the same width as each other
+            sectionViews.size();
             sectionViews.get(i).getLayoutParams().width = col2_2Width;
+
             // If this isn't the last view in the column, add the sectionSpace
-            if (i!=sectionViews.size()-1) {
-                sectionViews.get(i).setPadding(0,0,0,sectionSpace);
+            if (i != sectionViews.size() - 1) {
+                sectionViews.get(i).setPadding(0, 0, 0, sectionSpace);
             }
             // Add the views to the scaled inner column
             if (childNotInLinearLayoutParent(sectionViews.get(i))) {
@@ -2704,34 +2714,40 @@ public class ProcessSong {
 
         for (int i = 0; i < columnBreak3_a; i++) {
             // Make all the views the same width as each other
-            sectionViews.get(i).getLayoutParams().width = col1_3Width;
-            // If this isn't the last view in the column, add the sectionSpace
-            if (i!=columnBreak3_a-1) {
-                sectionViews.get(i).setPadding(0,0,0,sectionSpace);
-            }
-            // Add the views to the scaled inner column
-            if (childNotInLinearLayoutParent(sectionViews.get(i))) {
-                innerCol1.addView(sectionViews.get(i));
+            if (i<sectionViews.size()) {
+                sectionViews.get(i).getLayoutParams().width = col1_3Width;
+                // If this isn't the last view in the column, add the sectionSpace
+                if (i != columnBreak3_a - 1) {
+                    sectionViews.get(i).setPadding(0, 0, 0, sectionSpace);
+                }
+                // Add the views to the scaled inner column
+                if (childNotInLinearLayoutParent(sectionViews.get(i))) {
+                    innerCol1.addView(sectionViews.get(i));
+                }
             }
         }
         for (int i = columnBreak3_a; i<columnBreak3_b; i++) {
             // Make all the views the same width as each other
-            sectionViews.get(i).getLayoutParams().width = col2_3Width;
-            // If this isn't the last view in the column, add the sectionSpace
-            if (i!=columnBreak3_b-1) {
-                sectionViews.get(i).setPadding(0,0,0,sectionSpace);
-            }
-            // Add the views to the scaled inner column
-            if (childNotInLinearLayoutParent(sectionViews.get(i))) {
-                innerCol2.addView(sectionViews.get(i));
+            if (i<sectionViews.size()) {
+                sectionViews.get(i).getLayoutParams().width = col2_3Width;
+                // If this isn't the last view in the column, add the sectionSpace
+                if (i != columnBreak3_b - 1) {
+                    sectionViews.get(i).setPadding(0, 0, 0, sectionSpace);
+                }
+                // Add the views to the scaled inner column
+                if (childNotInLinearLayoutParent(sectionViews.get(i))) {
+                    innerCol2.addView(sectionViews.get(i));
+                }
             }
         }
         for (int i = columnBreak3_b; i < sectionViews.size(); i++) {
             // Make all the views the same width as each other
+            sectionViews.size();
             sectionViews.get(i).getLayoutParams().width = col3_3Width;
+
             // If this isn't the last view in the column, add the sectionSpace
-            if (i!=sectionViews.size()-1) {
-                sectionViews.get(i).setPadding(0,0,0,sectionSpace);
+            if (i != sectionViews.size() - 1) {
+                sectionViews.get(i).setPadding(0, 0, 0, sectionSpace);
             }
             // Add the views to the scaled inner column
             if (childNotInLinearLayoutParent(sectionViews.get(i))) {

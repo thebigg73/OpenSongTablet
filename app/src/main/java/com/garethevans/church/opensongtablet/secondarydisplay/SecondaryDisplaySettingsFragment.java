@@ -329,12 +329,17 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
         myView.maxFontSize.addOnChangeListener(new SliderChangeListener("fontSizePresoMax"));
 
         myView.showChords.setOnCheckedChangeListener((compoundButton, b) -> {
-            mainActivityInterface.getPreferences().setMyPreferenceBoolean("presoShowChords",b);
-                mainActivityInterface.getPresenterSettings().setPresoShowChords(b);
-                mainActivityInterface.updateFragment("presenterFragmentSongSections",null,null);
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean("presoShowChords", b);
+            mainActivityInterface.getPresenterSettings().setPresoShowChords(b);
+            mainActivityInterface.updateFragment("presenterFragmentSongSections", null, null);
+
             displayInterface.updateDisplay("setSongContent");
+
             new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                displayInterface.updateDisplay("showSection");
+                if (!mainActivityInterface.getMode().equals(mode_performance_string)) {
+                    displayInterface.updateDisplay("showSection");
+                }
+
                 try {
                     if (mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().getItemCount() > 0) {
                         mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().notifyItemRangeChanged(0,
@@ -343,7 +348,7 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
                 } catch (Exception e) {
                     Log.d(TAG, "No song section adapter at this point.");
                 }
-            },500);
+            }, 500);
         });
         myView.contentHorizontalAlign.addOnSliderTouchListener(new SliderTouchListener("presoLyricsAlign"));
         myView.contentHorizontalAlign.addOnChangeListener(new SliderChangeListener("presoLyricsAlign"));
@@ -353,15 +358,27 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
         myView.blockShadow.setOnCheckedChangeListener((compoundButton, b) -> {
             mainActivityInterface.getPreferences().setMyPreferenceBoolean("blockShadow",b);
             mainActivityInterface.getProcessSong().updateProcessingPreferences();
-            displayInterface.updateDisplay("setSongContent");
-            new Handler(Looper.getMainLooper()).postDelayed(() -> displayInterface.updateDisplay("showSection"),500);
+            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                displayInterface.updateDisplay("setSongContent");
+            },200);
+            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                if (!mainActivityInterface.getMode().equals(mode_performance_string)) {
+                    displayInterface.updateDisplay("showSection");
+                }
+            },800);
         });
         myView.blockShadowAlpha.addOnChangeListener(new SliderChangeListener("blockShadowAlpha"));
         myView.blockShadowAlpha.addOnSliderTouchListener(new SliderTouchListener("blockShadowAlpha"));
         myView.presoLyricsBold.setOnCheckedChangeListener((compoundButton, b) -> {
             mainActivityInterface.getPresenterSettings().setPresoLyricsBold(b);
-            displayInterface.updateDisplay("setSongContent");
-            new Handler(Looper.getMainLooper()).postDelayed(() -> displayInterface.updateDisplay("showSection"),500);
+            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                displayInterface.updateDisplay("setSongContent");
+            },200);
+            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                if (!mainActivityInterface.getMode().equals(mode_performance_string)) {
+                    displayInterface.updateDisplay("showSection");
+                }
+            },800);
         });
     }
 
@@ -467,7 +484,13 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
                             prefName, slider.getValue());
                     mainActivityInterface.getPresenterSettings().setCastRotation(slider.getValue());
                     displayInterface.updateDisplay("changeRotation");
-                    new Handler(Looper.getMainLooper()).postDelayed(() -> displayInterface.updateDisplay("showSection"),200);
+                    new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                        if (mainActivityInterface.getMode().equals(mode_performance_string)) {
+                            displayInterface.updateDisplay("setSongContent");
+                        } else {
+                            displayInterface.updateDisplay("showSection");
+                        }
+                    },200);
 
                     break;
                 case "presoXMargin":
@@ -480,8 +503,14 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
                     } else {
                         mainActivityInterface.getPresenterSettings().setPresoYMargin((int)slider.getValue());
                     }
-                    displayInterface.updateDisplay("measureAvailableSizes");
-                    displayInterface.updateDisplay("showSection");
+                    new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                        displayInterface.updateDisplay("measureAvailableSizes");
+                        if (mainActivityInterface.getMode().equals(mode_performance_string)) {
+                            displayInterface.updateDisplay("setSongContent");
+                        } else {
+                            displayInterface.updateDisplay("showSection");
+                        }
+                    },200);
                     break;
                 case "presoBackgroundAlpha":
                     // The slider goes from 0 to 100
@@ -497,7 +526,11 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
                     mainActivityInterface.getPresenterSettings().setFontSizePresoMax(slider.getValue());
                     new Handler(Looper.getMainLooper()).postDelayed(() -> {
                         displayInterface.updateDisplay("measureAvailableSizes");
-                        displayInterface.updateDisplay("showSection");
+                        if (mainActivityInterface.getMode().equals(mode_performance_string)) {
+                            displayInterface.updateDisplay("setSongContent");
+                        } else {
+                            displayInterface.updateDisplay("showSection");
+                        }
                     },200);
                     break;
                 case "blockShadowAlpha":

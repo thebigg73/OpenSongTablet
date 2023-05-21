@@ -14,6 +14,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
@@ -34,6 +35,7 @@ import androidx.core.content.res.ResourcesCompat;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.customviews.SongContent;
 import com.garethevans.church.opensongtablet.databinding.CastScreenBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
@@ -845,7 +847,7 @@ public class SecondaryDisplay extends Presentation {
         boolean isPresentation = !mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance));
         secondaryViews = mainActivityInterface.getProcessSong().
                 setSongInLayout(mainActivityInterface.getSong(),
-                        false, isPresentation);
+                        false, true);
 
         // Draw them to the screen test layout for measuring
         waitingOnViewsToDraw = secondaryViews.size();
@@ -923,7 +925,14 @@ public class SecondaryDisplay extends Presentation {
         if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) &&
                 !mainActivityInterface.getSong().getFiletype().equals("IMG") &&
                 !mainActivityInterface.getSong().getFiletype().equals("PDF")) {
-            showAllSections();
+            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    viewsAreReady();
+                    showAllSections();
+                }
+            },1000);
+
         } else {
             measureAvailableSizes();
             Log.d(TAG, "showSection() position:" + position);
@@ -1105,6 +1114,20 @@ public class SecondaryDisplay extends Presentation {
         }
     }
 
+    private void resetScale(SongContent songContent) {
+        if (songContent.getCol1().getChildCount()>0) {
+            songContent.getCol1().getChildAt(0).setScaleX(1f);
+            songContent.getCol1().getChildAt(0).setScaleY(1f);
+        }
+        if (songContent.getCol2().getChildCount()>0) {
+            songContent.getCol2().getChildAt(0).setScaleX(1f);
+            songContent.getCol2().getChildAt(0).setScaleY(1f);
+        }
+        if (songContent.getCol3().getChildCount()>0) {
+            songContent.getCol3().getChildAt(0).setScaleX(1f);
+            songContent.getCol3().getChildAt(0).setScaleY(1f);
+        }
+    }
     private void fixGravity(ImageView imageView) {
         LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams)imageView.getLayoutParams();
         switch (mainActivityInterface.getPresenterSettings().getPresoLyricsAlign()) {
@@ -1145,6 +1168,7 @@ public class SecondaryDisplay extends Presentation {
         int modeHeight = availableScreenHeight - infoHeight;
         isNewSong = true;
         if (!myView.songContent1.getIsDisplaying()) {
+             //resetScale(myView.songContent1);
              mainActivityInterface.getProcessSong().addViewsToScreen(
                     secondaryViews, secondaryWidths, secondaryHeights, myView.allContent,
                     myView.songContent1, null, availableScreenWidth, modeHeight,
@@ -1163,6 +1187,7 @@ public class SecondaryDisplay extends Presentation {
             checkSongInfoShowHide();
 
         } else if (!myView.songContent2.getIsDisplaying()) {
+            //resetScale(myView.songContent2);
             mainActivityInterface.getProcessSong().addViewsToScreen(
                     secondaryViews, secondaryWidths, secondaryHeights, myView.allContent,
                     myView.songContent2, null, availableScreenWidth, modeHeight,
