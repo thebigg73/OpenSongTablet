@@ -42,7 +42,7 @@ public class SetListItemTouchHelper extends ItemTouchHelper.Callback {
             SetListAdapter setListAdapter = (SetListAdapter)recyclerView.getAdapter();
             if (setListAdapter.getSelectedPosition()>=0 && setListAdapter.getSelectedPosition()<setListAdapter.getItemCount()) {
                 Log.d(TAG,"trying to highlight position");
-                viewHolder.itemView.postDelayed(setListAdapter::recoverCurrentSetPosition,200);
+                viewHolder.itemView.postDelayed(setListAdapter::recoverCurrentSetPosition,500);
             }
         }
     }
