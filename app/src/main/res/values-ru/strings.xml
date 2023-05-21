@@ -128,6 +128,7 @@
     <string name="capo_fret">Каподастр</string>
     <string name="capo_hide">Автоскрытие каподастра</string>
     <string name="capo_style">Обозначение лада каподастра цифрой</string>
+    <string name="cast_info_string">OpenSongApp использует зеркальное отображение экрана для отображения на втором экране. Если приложение не может открыть страницу настроек трансляции с доступными устройствами, вам придется вручную запустить зеркальное отображение экрана на вашем устройстве перед запуском OpenSongApp. Затем приложение будет использовать подключенный экран</string>
     <string name="category">Kатегория</string>
     <string name="cavaquinho">Кавакиньо</string>
     <string name="ccli_automatic">"Авто запись статистики использования"</string>
@@ -254,6 +255,7 @@
     <string name="date">Дата</string>
     <string name="dec_autoscroll_speed">Уменьшить скорость автопрокрутки</string>
     <string name="default_autoscroll">Время автопрокрутки по умолчанию</string>
+    <string name="default_presentation_text">Включение текста презентации по умолчанию</string>
     <string name="delete">Удаление</string>
     <string name="delete_folder_info">Удалить подкаталог песни</string>
     <string name="delete_folder_warning">Если вы удалите этот подкаталог, это также приведет к удалению всех песен или папок, которые в нем содержатся. Вы не можете отменить это изменение!</string>
@@ -352,6 +354,8 @@
     <string name="forum">Форум</string>
     <string name="forum_description">Сообщайте об ошибках, получайте помощь и делайте запрос на новые функции</string>
     <string name="github_description">Участвовать в разработке приложений</string>
+    <string name="grace_time">Разрешить время для благодати песни</string>
+    <string name="grace_time_info">Это позволяет быстро просматривать песни и отправлять информацию на другие подключенные устройства только по истечении льготного периода времени в 2 секунды.</string>
     <string name="green">Зеленый</string>
     <string name="guitar">Гитара</string>
     <string name="half_time">Перерыв</string>

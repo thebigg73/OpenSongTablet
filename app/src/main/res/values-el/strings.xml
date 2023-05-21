@@ -128,6 +128,7 @@
     <string name="capo_fret">"Capo fret"</string>
     <string name="capo_hide">Αυτόματη απόκρυψη capo</string>
     <string name="capo_style">"Capo fret ως αριθμητικό"</string>
+    <string name="cast_info_string">OpenSongApp χρησιμοποιώντας κατοπτρισμό οθόνης για εμφάνιση σε δεύτερη οθόνη. Εάν η εφαρμογή δεν μπορεί να ανοίξει τη σελίδα ρυθμίσεων μετάδοσης που εμφανίζει τις διαθέσιμες συσκευές, θα πρέπει να ξεκινήσετε με μη αυτόματο τρόπο τον κατοπτρισμό οθόνης στη συσκευή σας πριν εκτελέσετε το OpenSongApp. Στη συνέχεια, η εφαρμογή θα χρησιμοποιήσει τη συνδεδεμένη οθόνη</string>
     <string name="category">"Κατηγορία"</string>
     <string name="cavaquinho">"Cavaquinho"</string>
     <string name="ccli_automatic">"Δημιουργήστε αυτόματα στατιστικά στοιχεία χρήσης"</string>
@@ -254,6 +255,7 @@
     <string name="date">"Ημερομηνία"</string>
     <string name="dec_autoscroll_speed">"Μειώστε την ταχύτητα αυτόματης κύλισης"</string>
     <string name="default_autoscroll">"Προεπιλεγμένοι χρόνοι αυτοματης κύλισης"</string>
+    <string name="default_presentation_text">Συμπερίληψη προεπιλεγμένου κειμένου παρουσίασης</string>
     <string name="delete">"Διαγραφή"</string>
     <string name="delete_folder_info">Διαγραφή υποκαταλόγου τραγουδιών</string>
     <string name="delete_folder_warning">Εάν διαγράψετε αυτόν τον υποκατάλογο, θα διαγραφούν επίσης και τυχόν τραγούδια ή φάκελοι που περιέχει. Δεν μπορείτε να αναιρέσετε αυτήν την αλλαγή! Βεβαιωθείτε ότι έχετε δημιουργήσει και αποθηκεύσει αντίγραφα ασφαλείας ΟΛΩΝ των αρχείων σας πριν συνεχίσετε!!!</string>
@@ -352,6 +354,8 @@
     <string name="forum">Δικαστήριο</string>
     <string name="forum_description">Αναφέρετε σφάλματα, λάβετε βοήθεια και ζητήστε λειτουργίες</string>
     <string name="github_description">Συνεισφέρετε στην ανάπτυξη εφαρμογών</string>
+    <string name="grace_time">Επιτρέψτε χρόνο χάριτος τραγουδιού</string>
+    <string name="grace_time_info">Αυτό σας επιτρέπει να περιηγείστε γρήγορα στα τραγούδια και να στέλνετε πληροφορίες μόνο σε άλλες συνδεδεμένες συσκευές μετά από μια χρονική περίοδο χάριτος 2 δευτερολέπτων.</string>
     <string name="green">Πράσινος</string>
     <string name="guitar">"Κιθάρα"</string>
     <string name="half_time">Ημίχρονο</string>

@@ -128,6 +128,7 @@
     <string name="capo_fret">"卡波烦恼"</string>
     <string name="capo_hide">自动隐藏变调夹</string>
     <string name="capo_style">"投诉警察课担心数字"</string>
+    <string name="cast_info_string">OpenSongApp使用屏幕镜像显示在第二个屏幕上。如果应用程序无法打开显示可用设备的投射设置页面，则必须在运行 OpenSongApp 之前在设备上手动启动屏幕镜像。然后，该应用程序将使用连接的屏幕</string>
     <string name="category">"类别"</string>
     <string name="cavaquinho">"Cavaquinho"</string>
     <string name="ccli_automatic">"自动记录使用情况统计"</string>
@@ -254,6 +255,7 @@
     <string name="date">"日期"</string>
     <string name="dec_autoscroll_speed">"降低自动滚动速度"</string>
     <string name="default_autoscroll">"默认自动滚屏次"</string>
+    <string name="default_presentation_text">包括默认演示文稿文本</string>
     <string name="delete">"删除"</string>
     <string name="delete_folder_info">删除歌曲子目录</string>
     <string name="delete_folder_warning">如果删除此子目录，这还将删除它包含的所有歌曲或文件夹。 您无法撤消此更改！</string>
@@ -352,6 +354,8 @@
     <string name="forum">论坛</string>
     <string name="forum_description">报告错误、获取帮助和请求功能</string>
     <string name="github_description">为应用程序开发做出贡献</string>
+    <string name="grace_time">允许歌曲宽限时间</string>
+    <string name="grace_time_info">这使您可以快速浏览歌曲，并且仅在宽限期为 2 秒后将信息发送到其他连接的设备。</string>
     <string name="green">绿</string>
     <string name="guitar">吉他</string>
     <string name="half_time">中场休息</string>

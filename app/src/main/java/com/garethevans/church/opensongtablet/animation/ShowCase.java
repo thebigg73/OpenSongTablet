@@ -28,8 +28,8 @@ public class ShowCase {
         }
     }
 
-    public void singleShowCase(Activity c, View target, String dismiss, String info, boolean rect, String id) {
-        singleShowCaseBuilder(c,target,dismiss,info,rect,id).setMaskColour(showcaseColor).setContentTextColor(white).build().show(c);
+    public boolean singleShowCase(Activity c, View target, String dismiss, String info, boolean rect, String id) {
+        return singleShowCaseBuilder(c,target,dismiss,info,rect,id).setMaskColour(showcaseColor).setContentTextColor(white).build().show(c);
     }
 
     public MaterialShowcaseView.Builder getSingleShowCaseBuilderForListener(Activity c, View target,

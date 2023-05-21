@@ -18,7 +18,7 @@ public class PresenterSettings {
     private final MainActivityInterface mainActivityInterface;
     private boolean alertOn, logoOn=true, blackscreenOn, blankscreenOn, hideInfoBar, presoShowChords,
             usePresentationOrder, presoShowClock, presoClock24h, presoClockSeconds, startedProjection,
-            presoLyricsBold;
+            presoLyricsBold, defaultPresentationText;
     private Uri logo, backgroundImage1, backgroundImage2, backgroundVideo1, backgroundVideo2;
     private int backgroundColor, presoTransitionTime, presoXMargin, presoYMargin, presoInfoAlign,
         presoLyricsAlign, presoLyricsVAlign, currentSection=-1;
@@ -151,6 +151,9 @@ public class PresenterSettings {
     public void setPresoLyricsBold(boolean presoLyricsBold) {
         this.presoLyricsBold = presoLyricsBold;
         mainActivityInterface.getPreferences().setMyPreferenceBoolean("presoLyricsBold",presoLyricsBold);
+    }
+    public void setDefaultPresentationText(boolean defaultPresentationText) {
+        this.defaultPresentationText = defaultPresentationText;
     }
 
     public void setStartedProjection(boolean clickedOnSection) {
@@ -288,6 +291,9 @@ public class PresenterSettings {
     public boolean getPresoLyricsBold() {
         return presoLyricsBold;
     }
+    public boolean getDefaultPresentationText() {
+        return defaultPresentationText;
+    }
 
 
     // The helpers for this class
@@ -347,15 +353,13 @@ public class PresenterSettings {
         setPresoClockSize(mainActivityInterface.getPreferences().getMyPreferenceFloat("presoClockSize",12f));
         setPresoClock24h(mainActivityInterface.getPreferences().getMyPreferenceBoolean("presoClock24h",true));
         setPresoClockSeconds(mainActivityInterface.getPreferences().getMyPreferenceBoolean("presoClockSeconds",true));
+        setDefaultPresentationText(mainActivityInterface.getPreferences().getMyPreferenceBoolean("defaultPresentationText",true));
     }
     public void getAlertPreferences() {
         setPresoAlertText(mainActivityInterface.getPreferences().getMyPreferenceString("presoAlertText",""));
         setPresoAlertTextSize(mainActivityInterface.getPreferences().getMyPreferenceFloat("presoAlertTextSize", 12f));
     }
 
-    public boolean getStartedProjection() {
-        return startedProjection;
-    }
     private Uri getUriFromString(String uriString, String backupString) {
         Uri uri = null;
         if (uriString!=null && !uriString.isEmpty()) {

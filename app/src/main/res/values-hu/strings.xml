@@ -128,6 +128,7 @@
     <string name="capo_fret">"Capo bosszankodik"</string>
     <string name="capo_hide">Capo automatikus elrejtése</string>
     <string name="capo_style">"Capo megdöbbenés számmal"</string>
+    <string name="cast_info_string">OpenSongApp képernyőtükrözést használ egy második képernyőn való megjelenítéshez. Ha az alkalmazás nem tudja megnyitni az elérhető eszközöket megjelenítő átküldési beállítások oldalt, akkor az OpenSongApp futtatása előtt manuálisan kell elindítania a képernyőtükrözést az eszközön. Az alkalmazás ezután a csatlakoztatott képernyőt használja</string>
     <string name="category">"Kategória"</string>
     <string name="cavaquinho">"Cavaquinho"</string>
     <string name="ccli_automatic">"Automatikusan rögzítse a használati statisztikákat"</string>
@@ -254,6 +255,7 @@
     <string name="date">"Dátum"</string>
     <string name="dec_autoscroll_speed">"Csökkentse az Autoscroll sebességet"</string>
     <string name="default_autoscroll">"Alapértelmezett Auto.görgetés alkalommal"</string>
+    <string name="default_presentation_text">A bemutató alapértelmezett szövegének belefoglalása</string>
     <string name="delete">"Töröl"</string>
     <string name="delete_folder_info">Törölje a dal alkönyvtárát</string>
     <string name="delete_folder_warning">Ha törli ezt az alkönyvtárat, akkor a benne lévő dalok és mappák is törlődnek. Ez a módosítás nem vonható vissza! Kérjük, győződjön meg róla, hogy az ÖSSZES fájlról biztonsági másolatot készített és mentett, mielőtt továbblép!!!</string>
@@ -352,6 +354,8 @@
     <string name="forum">Fórum</string>
     <string name="forum_description">Jelentse be a hibákat, kérjen segítséget és kérjen funkciókat</string>
     <string name="github_description">Hozzájáruljon az alkalmazások fejlesztéséhez</string>
+    <string name="grace_time">Hagyjon türelmi időt a daloknak</string>
+    <string name="grace_time_info">Ez lehetővé teszi a dalok gyors böngészését, és csak 2 másodperces türelmi idő után küld információkat más csatlakoztatott eszközökre.</string>
     <string name="green">Zöld</string>
     <string name="guitar">Gitár</string>
     <string name="half_time">Félidő</string>

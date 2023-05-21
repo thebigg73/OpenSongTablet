@@ -128,6 +128,7 @@
     <string name="capo_fret">"Capo fret"</string>
     <string name="capo_hide">Capotasto autohide</string>
     <string name="capo_style">"Capo fret come numero"</string>
+    <string name="cast_info_string">OpenSongApp utilizzando il mirroring dello schermo per la visualizzazione su un secondo schermo. Se l\'app non è in grado di aprire la pagina delle impostazioni di trasmissione che mostra i dispositivi disponibili, sarà necessario avviare manualmente il mirroring dello schermo sul dispositivo prima di eseguire OpenSongApp. L\'app utilizzerà quindi lo schermo connesso</string>
     <string name="category">"Categoria"</string>
     <string name="cavaquinho">"Cavaquinho"</string>
     <string name="ccli_automatic">"Registra automaticamente le statistiche di utilizzo"</string>
@@ -254,6 +255,7 @@
     <string name="date">"Data"</string>
     <string name="dec_autoscroll_speed">"Diminuire la velocità di scorrimento automatico"</string>
     <string name="default_autoscroll">"Tempi Autoscroll Predefinito"</string>
+    <string name="default_presentation_text">Includi testo di presentazione predefinito</string>
     <string name="delete">"Cancellare"</string>
     <string name="delete_folder_info">Elimina la sottodirectory del brano</string>
     <string name="delete_folder_warning">Se elimini questa sottodirectory, verranno eliminati anche i brani o le cartelle in essa contenuti. Non puoi annullare questa modifica! Assicurati di aver eseguito e salvato i backup di TUTTI i tuoi file prima di procedere!!!</string>
@@ -352,6 +354,8 @@
     <string name="forum">Forum</string>
     <string name="forum_description">Segnala bug, ottieni aiuto e richiedi funzionalità</string>
     <string name="github_description">Contribuisci allo sviluppo di app</string>
+    <string name="grace_time">Consenti tempo di grazia del brano</string>
+    <string name="grace_time_info">Ciò consente di sfogliare rapidamente i brani e invia informazioni solo ad altri dispositivi collegati dopo un periodo di tolleranza di 2 secondi.</string>
     <string name="green">Verde</string>
     <string name="guitar">Chitarra</string>
     <string name="half_time">Intervallo</string>

@@ -128,6 +128,7 @@
     <string name="capo_fret">"Capo frette"</string>
     <string name="capo_hide">Masquer automatiquement le capodastre</string>
     <string name="capo_style">"Capo fret en chiffres"</string>
+    <string name="cast_info_string">OpenSongApp utilise la mise en miroir d’écran pour afficher sur un deuxième écran. Si l’application ne parvient pas à ouvrir votre page de paramètres de diffusion affichant les appareils disponibles, vous devrez démarrer manuellement la mise en miroir de l’écran sur votre appareil avant d’exécuter OpenSongApp. L’application utilisera alors l’écran connecté</string>
     <string name="category">"Catégorie"</string>
     <string name="cavaquinho">"Cavaquinho"</string>
     <string name="ccli_automatic">"Enregistrer les statistiques d'utilisation automatiquement"</string>
@@ -254,6 +255,7 @@
     <string name="date">"Rendez-vous amoureux"</string>
     <string name="dec_autoscroll_speed">"Diminuer la vitesse de l'auto-défilement"</string>
     <string name="default_autoscroll">"Durée du défilement automatique"</string>
+    <string name="default_presentation_text">Inclure le texte de présentation par défaut</string>
     <string name="delete">"Effacer"</string>
     <string name="delete_folder_info">Supprimer le sous-répertoire de chansons</string>
     <string name="delete_folder_warning">Si vous supprimez ce sous-répertoire, cela supprimera également tous les morceaux ou dossiers qu\'il contient. Vous ne pouvez pas annuler ce changement ! Assurez-vous d\'avoir effectué et enregistré des sauvegardes de TOUS vos fichiers avant de continuer !!!</string>
@@ -352,6 +354,8 @@
     <string name="forum">Forum</string>
     <string name="forum_description">Signaler des bugs, obtenir de l\'aide et demander des fonctionnalités</string>
     <string name="github_description">Contribuer au développement de l\'application</string>
+    <string name="grace_time">Autoriser le temps de grâce de la chanson</string>
+    <string name="grace_time_info">Cela vous permet de parcourir rapidement les chansons et n’envoie des informations à d’autres appareils connectés qu’après une période de grâce de 2s.</string>
     <string name="green">Vert</string>
     <string name="guitar">Guitare</string>
     <string name="half_time">Mi-temps</string>

@@ -41,7 +41,8 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
     private DisplayInterface displayInterface;
     private SettingsDisplayConnectedBinding myView;
     private String connected_display_string="", website_connected_display_string="",
-            mode_performance_string="", mode_stage_string="";
+            mode_performance_string="", mode_stage_string="", words_and_music_by_string="",
+            used_by_permission_string="";
     private String webAddress;
     private final ActivityResultLauncher<String> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.GetContent(),
             new ActivityResultCallback<Uri>() {
@@ -102,6 +103,8 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
             website_connected_display_string = getString(R.string.website_connected_display);
             mode_performance_string = getString(R.string.mode_performance);
             mode_stage_string = getString(R.string.mode_stage);
+            words_and_music_by_string = getString(R.string.words_and_music_by);
+            used_by_permission_string = getString(R.string.used_by_permision);
         }
     }
     public void updateLogo() {
@@ -239,6 +242,9 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
         myView.blockShadowAlpha.setLabelFormatter(value -> ((int)value)+"%");
 
         myView.presoLyricsBold.setChecked(mainActivityInterface.getPresenterSettings().getPresoLyricsBold());
+
+        myView.defaultPresentationText.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("defaultPresentationText",true));
+        myView.defaultPresentationText.setHint(words_and_music_by_string + " / " + used_by_permission_string);
     }
     @SuppressLint("ClickableViewAccessibility")
     private void setListeners() {
@@ -358,9 +364,7 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
         myView.blockShadow.setOnCheckedChangeListener((compoundButton, b) -> {
             mainActivityInterface.getPreferences().setMyPreferenceBoolean("blockShadow",b);
             mainActivityInterface.getProcessSong().updateProcessingPreferences();
-            new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                displayInterface.updateDisplay("setSongContent");
-            },200);
+            new Handler(Looper.getMainLooper()).postDelayed(() -> displayInterface.updateDisplay("setSongContent"),200);
             new Handler(Looper.getMainLooper()).postDelayed(() -> {
                 if (!mainActivityInterface.getMode().equals(mode_performance_string)) {
                     displayInterface.updateDisplay("showSection");
@@ -371,14 +375,21 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
         myView.blockShadowAlpha.addOnSliderTouchListener(new SliderTouchListener("blockShadowAlpha"));
         myView.presoLyricsBold.setOnCheckedChangeListener((compoundButton, b) -> {
             mainActivityInterface.getPresenterSettings().setPresoLyricsBold(b);
-            new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                displayInterface.updateDisplay("setSongContent");
-            },200);
+            new Handler(Looper.getMainLooper()).postDelayed(() -> displayInterface.updateDisplay("setSongContent"),200);
             new Handler(Looper.getMainLooper()).postDelayed(() -> {
                 if (!mainActivityInterface.getMode().equals(mode_performance_string)) {
                     displayInterface.updateDisplay("showSection");
                 }
             },800);
+        });
+        myView.defaultPresentationText.setOnCheckedChangeListener((compoundButton, b) -> {
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean("defaultPresentationText",b);
+            mainActivityInterface.getPresenterSettings().setDefaultPresentationText(b);
+            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                displayInterface.updateDisplay("newSongLoaded");
+                displayInterface.updateDisplay("setSongInfo");
+            },200);
+            new Handler(Looper.getMainLooper()).postDelayed(() -> displayInterface.updateDisplay("checkSongInfoShowHide"),500);
         });
     }
 

@@ -128,6 +128,7 @@
     <string name="capo_fret">"Capo kabbeling"</string>
     <string name="capo_hide">Verberg kapo outomaties</string>
     <string name="capo_style">"Capo fret as syfer"</string>
+    <string name="cast_info_string">OpenSongApp using screen mirroring to display on a second screen.  If the app is unable open your cast settings page showing available devices, you will have to manually start screen mirroring on your device before running OpenSongApp.  The app will then use the connected screen</string>
     <string name="category">"kategorie"</string>
     <string name="cavaquinho">"Cavaquinho"</string>
     <string name="ccli_automatic">"Rekord gebruik statistieke outomaties"</string>
@@ -254,6 +255,7 @@
     <string name="date">Datum</string>
     <string name="dec_autoscroll_speed">"Verminder Autoscroll Spoed"</string>
     <string name="default_autoscroll">"Default autoscroll keer"</string>
+    <string name="default_presentation_text">Sluit standaard aanbiedingsteks in</string>
     <string name="delete">"Verwyder"</string>
     <string name="delete_folder_info">Vee liedjie subgids uit</string>
     <string name="delete_folder_warning">As u hierdie subgids verwyder, sal dit ook liedjies of vouers wat daarin is, verwyder. U kan nie hierdie verandering ongedaan maak nie!</string>
@@ -352,6 +354,8 @@
     <string name="forum">Forum</string>
     <string name="forum_description">Rapporteer foute, kry hulp en versoek kenmerke</string>
     <string name="github_description">Dra by tot toepassingsontwikkeling</string>
+    <string name="grace_time">Laat lied grasietyd toe</string>
+    <string name="grace_time_info">Hiermee kan u vinnig deur liedjies blaai en slegs inligting na ander gekoppelde toestelle stuur na \'n grasietydperk van 2\'s.</string>
     <string name="green">Groen</string>
     <string name="guitar">Guitar</string>
     <string name="half_time">Halftyd</string>

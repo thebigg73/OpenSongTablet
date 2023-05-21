@@ -128,6 +128,7 @@
     <string name="capo_fret">Capodaster</string>
     <string name="capo_hide">Autohide capo</string>
     <string name="capo_style">Capo se smije kao brojčanik</string>
+    <string name="cast_info_string">OpenSongApp koristi preslikavanje ekrana za prikazivanje na drugom ekranu. Ako aplikacija ne može da otvori stranicu sa postavkama gipsa koja prikazuje dostupne uređaje, moraćete ručno da započnete preslikavanje ekrana na uređaju pre nego što pokrenete OpenSongApp. Aplikacija će zatim koristiti povezani ekran</string>
     <string name="category">Kategorija</string>
     <string name="cavaquinho">Cavakuinho</string>
     <string name="ccli_automatic">Auto snimanje statistike korišćenja CCLI</string>
@@ -254,6 +255,7 @@
     <string name="date">Datum</string>
     <string name="dec_autoscroll_speed">Smanjiti brzinu automatskog pomeranja</string>
     <string name="default_autoscroll">Unapred postavljena vremena za autoskrol</string>
+    <string name="default_presentation_text">Uključi podrazumevani tekst prezentacije</string>
     <string name="delete">Obrisati</string>
     <string name="delete_folder_info">Izbrišite poddirektorijum pesme</string>
     <string name="delete_folder_warning">Ako izbrišete ovaj poddirektorijum, izbrisaće se i sve pesme ili fascikle koje sadrži. Ne možete da opozovete ovu promenu!</string>
@@ -352,6 +354,8 @@
     <string name="forum">Forum</string>
     <string name="forum_description">Prijavite greške, potražite pomoć i zatražite funkcije</string>
     <string name="github_description">Doprineti razvoju aplikacija</string>
+    <string name="grace_time">Dozvoli vreme za molitvu pesme</string>
+    <string name="grace_time_info">Ovo vam omogućava da brzo pregledate pesme i šaljete informacije samo drugim povezanim uređajima nakon grejs vremenskog perioda od 2s.</string>
     <string name="green">Zelena</string>
     <string name="guitar">Gitara</string>
     <string name="half_time">Poluvreme</string>

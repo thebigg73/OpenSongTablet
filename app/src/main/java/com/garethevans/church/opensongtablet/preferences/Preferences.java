@@ -290,6 +290,7 @@ public class Preferences extends Activity {
     // dark_extraInfoBgColor            int         The color for the extra info background in the dark theme
     // dark_highlightChordColor         int         The color to highlight chords (i.e. background). (def:tranparent/0x00000000)
     // dark_highlightHeadingColor       int         The color to highlight headings (i.e. background). (def:tranparent/0x00000000)
+    // defaultPresentationText          boolean     Should the 'Words and music by' and 'Used by permission' be included (def:true)
     // deviceId                         String      The device name for Nearby Connections (def:Bluetooth name/device manufacturer+model)
     // displayCapoChords                boolean     Should capo chords be shown (def:true)
     // displayCapoAndNativeChords       boolean     Should both chords be shown at once (def:false)
@@ -338,6 +339,7 @@ public class Preferences extends Activity {
     // forceColumns                     boolean     When full autoscale is on and a song has !-- page breaks, use these to force column breaks (def:true)
     // gestureDoubleTap                 String      The action for double tapping on the song screen (def:editsong)
     // gestureLongPress                 String      The action for long pressing on the song screen (def:addtoset)
+    // graceTime                        boolean     Should the default 2 second grace time after song load be respected (def:true)
     // hideActionBar                    boolean     Should the action bar auto hide (def:false)
     // hideActionBarTime                int         How long should the action bar be visible for before hiding (def:1200)
     // hideInfoBar                      boolean     Should the info bar (Presenter mode only) autohide after initial display + minimum time (def: true)

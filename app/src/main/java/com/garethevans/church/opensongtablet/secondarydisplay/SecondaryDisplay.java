@@ -35,7 +35,6 @@ import androidx.core.content.res.ResourcesCompat;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.customviews.SongContent;
 import com.garethevans.church.opensongtablet.databinding.CastScreenBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
@@ -627,9 +626,12 @@ public class SecondaryDisplay extends Presentation {
             if (title == null || title.isEmpty()) {
                 title = mainActivityInterface.getSong().getFilename();
             }
-            String ccliLine = c.getString(R.string.used_by_permision);
+            String ccliLine = mainActivityInterface.getPresenterSettings().getDefaultPresentationText() ? c.getString(R.string.used_by_permision):"";
             if (!mainActivityInterface.getPresenterSettings().getCcliLicence().isEmpty()) {
-                ccliLine += ".  CCLI " +
+                if (mainActivityInterface.getPresenterSettings().getDefaultPresentationText()) {
+                    ccliLine += ".  ";
+                }
+                ccliLine += "CCLI " +
                         c.getString(R.string.ccli_licence) + " " + mainActivityInterface.
                         getPresenterSettings().getCcliLicence();
             }
@@ -644,7 +646,7 @@ public class SecondaryDisplay extends Presentation {
                 copyright = "";
             }
             String author = mainActivityInterface.getSong().getAuthor();
-            if (author != null && !author.isEmpty()) {
+            if (author != null && !author.isEmpty() && mainActivityInterface.getPresenterSettings().getDefaultPresentationText()) {
                 author = c.getString(R.string.words_and_music_by) + " " + author;
             }
             currentInfoText = title + author + copyright + ccliLine;
@@ -795,6 +797,7 @@ public class SecondaryDisplay extends Presentation {
         }
     }
     private boolean songInfoChanged() {
+        Log.d(TAG,"currentInfoText:"+currentInfoText);
         if (myView.songProjectionInfo1.getIsDisplaying() &&
                 myView.songProjectionInfo1.isNewInfo(currentInfoText)) {
             Log.d(TAG,"info1 is new text");
@@ -844,7 +847,6 @@ public class SecondaryDisplay extends Presentation {
     }
 
     private void setSectionViews() {
-        boolean isPresentation = !mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance));
         secondaryViews = mainActivityInterface.getProcessSong().
                 setSongInLayout(mainActivityInterface.getSong(),
                         false, true);
@@ -917,20 +919,13 @@ public class SecondaryDisplay extends Presentation {
         }
     }
 
-    public void updateSection() {
-        showSection(mainActivityInterface.getPresenterSettings().getCurrentSection());
-    }
-
     public void showSection(final int position) {
         if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) &&
                 !mainActivityInterface.getSong().getFiletype().equals("IMG") &&
                 !mainActivityInterface.getSong().getFiletype().equals("PDF")) {
-            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    viewsAreReady();
-                    showAllSections();
-                }
+            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                viewsAreReady();
+                showAllSections();
             },1000);
 
         } else {
@@ -1114,20 +1109,6 @@ public class SecondaryDisplay extends Presentation {
         }
     }
 
-    private void resetScale(SongContent songContent) {
-        if (songContent.getCol1().getChildCount()>0) {
-            songContent.getCol1().getChildAt(0).setScaleX(1f);
-            songContent.getCol1().getChildAt(0).setScaleY(1f);
-        }
-        if (songContent.getCol2().getChildCount()>0) {
-            songContent.getCol2().getChildAt(0).setScaleX(1f);
-            songContent.getCol2().getChildAt(0).setScaleY(1f);
-        }
-        if (songContent.getCol3().getChildCount()>0) {
-            songContent.getCol3().getChildAt(0).setScaleX(1f);
-            songContent.getCol3().getChildAt(0).setScaleY(1f);
-        }
-    }
     private void fixGravity(ImageView imageView) {
         LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams)imageView.getLayoutParams();
         switch (mainActivityInterface.getPresenterSettings().getPresoLyricsAlign()) {

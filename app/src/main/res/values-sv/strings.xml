@@ -128,6 +128,7 @@
     <string name="capo_fret">"Capo Fret"</string>
     <string name="capo_hide">Autohide capo</string>
     <string name="capo_style">"Capo fret som tal"</string>
+    <string name="cast_info_string">OpenSongApp använder skärmspegling för att visa på en andra skärm. Om appen inte kan öppna din cast-inställningssida som visar tillgängliga enheter måste du manuellt starta skärmspegling på din enhet innan du kör OpenSongApp. Appen använder sedan den anslutna skärmen</string>
     <string name="category">"Kategori"</string>
     <string name="cavaquinho">Cavaquinho</string>
     <string name="ccli_automatic">"Spela in användningsstatistik automatiskt"</string>
@@ -254,6 +255,7 @@
     <string name="date">"Datum"</string>
     <string name="dec_autoscroll_speed">"Minska Autoscroll Speed"</string>
     <string name="default_autoscroll">"Standard autoscroll gånger"</string>
+    <string name="default_presentation_text">Inkludera standardpresentationstext</string>
     <string name="delete">"Radera"</string>
     <string name="delete_folder_info">Ta bort låtens underkatalog</string>
     <string name="delete_folder_warning">Om du tar bort den här underkatalogen raderas också alla låtar eller mappar som den innehåller. Du kan inte ångra den här ändringen!</string>
@@ -352,6 +354,8 @@
     <string name="forum">Forum</string>
     <string name="forum_description">Rapportera fel, få hjälp och begär funktioner</string>
     <string name="github_description">Bidra till apputveckling</string>
+    <string name="grace_time">Tillåt låtens nådetid</string>
+    <string name="grace_time_info">Detta gör att du kan bläddra bland låtar snabbt och skickar bara information till andra anslutna enheter efter en respitperiod på 2 sekunder.</string>
     <string name="green">Grön</string>
     <string name="guitar">"Gitarr"</string>
     <string name="half_time">Halvtid</string>

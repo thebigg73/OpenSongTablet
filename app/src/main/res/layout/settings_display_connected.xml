@@ -371,6 +371,13 @@
                 android:text="@string/opacity"
                 android:valueFrom="10"
                 android:valueTo="100" />
+            <TableRow style="@style/DividerLine"/>
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                android:id="@+id/defaultPresentationText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/default_presentation_text"/>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </FrameLayout>

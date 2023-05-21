@@ -150,6 +150,7 @@
     <string name="capo_fret">Capo fret</string>
     <string name="capo_hide">Autohide capo</string>
     <string name="capo_style">Capo fret as numeral</string>
+    <string name="cast_info_string">OpenSongApp using screen mirroring to display on a second screen.  If the app is unable open your cast settings page showing available devices, you will have to manually start screen mirroring on your device before running OpenSongApp.  The app will then use the connected screen</string>
     <string name="cast_namespace" translatable="false">urn:x-cast:com.garethevans.church.opensongtablet</string>
     <string name="category">Category</string>
     <string name="cavaquinho">Cavaquinho</string>
@@ -346,6 +347,7 @@
     <string name="deeplink_tags" translatable="false">https://www.opensongapp.com/?p=settings/actions/tags</string>
     <string name="deeplink_theme" translatable="false">https://www.opensongapp.com/?p=settings/display/theme</string>
     <string name="default_autoscroll">Default autoscroll times</string>
+    <string name="default_presentation_text">Include default presentation text</string>
     <string name="delete">Delete</string>
     <string name="delete_folder_info">Delete song subdirectory</string>
     <string name="delete_folder_warning">If you delete this subdirectory, this will also delete any songs or folders that it contains.  You cannot undo this change!\n\nPlease make sure you have made and saved backups of ALL your files before proceeding!!!</string>
@@ -434,6 +436,7 @@
     <string name="font_choose_description">Change song display fonts</string>
     <string name="font_choose_list">Choose a font from the list below</string>
     <string name="font_presentation">Presentation font</string>
+    <string name="font_presentation_bold">Display presented lyrics using bold text</string>
     <string name="font_presentation_info">Presentation information font</string>
     <string name="format_text_bold">Bold</string>
     <string name="format_text_bolditalic">Bold italic</string>
@@ -444,6 +447,8 @@
     <string name="forum_description">Report bugs, get help and request features</string>
     <string name="github" translatable="false">GitHub</string>
     <string name="github_description">Contribute to app development</string>
+    <string name="grace_time">Allow song grace time</string>
+    <string name="grace_time_info">This allows you to browse songs quickly and only sends information to other connected devices after a grace time period of 2s.</string>
     <string name="green">Green</string>
     <string name="guitar">Guitar</string>
     <string name="half_time">Half time</string>
@@ -453,6 +458,12 @@
     <string name="hide">Hide</string>
     <string name="highlight">Highlighter</string>
     <string name="highlight_info">Edit highlighter notes / annotations</string>
+    <string name="hot_zone_bottom_center">Bottom center</string>
+    <string name="hot_zone_rationale">Other areas of the screen are reserved for page buttons, song information and are not available.  Hot zones will block other actions in these areas</string>
+    <string name="hot_zone_top_center">Top center</string>
+    <string name="hot_zone_top_left">Top left</string>
+    <string name="hot_zones">Hot zones</string>
+    <string name="hot_zones_info">Assign custom actions to areas of the screen</string>
     <string name="hymn_number">Hymn number</string>
     <string name="ignore_cutouts">Ignore cutouts</string>
     <string name="ignore_cutouts_info">If your device has notches (display cutouts), you can force the app to still draw over this space.  Make sure you can still see the menu buttons before you leave this page, otherwise you might not be able to access the app settings!</string>
@@ -1034,7 +1045,7 @@
 
 [Scaling]
  By default OpenSongApp scales to song width.
- Change this using Settings > Display > Scaling setting
+ Change this using Settings &gt; Display &gt; Scaling setting
 
 ;HERE IS AN EXAMPLE OF A SONG
 
@@ -1176,13 +1187,4 @@
     <string name="youtube" translatable="false">YouTube</string>
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zoom_level">Zoom level</string>
-    <string name="font_presentation_bold">Display presented lyrics using bold text</string>
-    <string name="hot_zones">Hot zones</string>
-    <string name="hot_zones_info">Assign custom actions to areas of the screen</string>
-    <string name="hot_zone_top_left">Top left</string>
-    <string name="hot_zone_top_center">Top center</string>
-    <string name="hot_zone_bottom_center">Bottom center</string>
-    <string name="hot_zone_rationale">Other areas of the screen are reserved for page buttons, song information and are not available.  Hot zones will block other actions in these areas</string>
-    <string name="grace_time">Allow song grace time</string>
-    <string name="grace_time_info">This allows you to browse songs quickly and only sends information to other connected devices after a grace time period of 2s.</string>
 </resources>

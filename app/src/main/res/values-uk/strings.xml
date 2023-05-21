@@ -128,6 +128,7 @@
     <string name="capo_fret">Каподастр лад</string>
     <string name="capo_hide">Автоприховування капо</string>
     <string name="capo_style">Лад каподастра вказано цифрою</string>
+    <string name="cast_info_string">OpenSongApp використовує дзеркальне відображення екрана для відображення на другому екрані. Якщо програма не може відкрити сторінку налаштувань трансляції, на якій відображаються доступні пристрої, вам доведеться вручну запустити дзеркальне відображення екрана на своєму пристрої, перш ніж запускати OpenSongApp. Після цього додаток використовуватиме підключений екран</string>
     <string name="category">Kатегорія</string>
     <string name="cavaquinho">Cavaquinho</string>
     <string name="ccli_automatic">Автоматичний запис статистики використання</string>
@@ -254,6 +255,7 @@
     <string name="date">Дата</string>
     <string name="dec_autoscroll_speed">Зменшити швидкість автопрокрутки</string>
     <string name="default_autoscroll">Автопрокрутка за замовчуванням</string>
+    <string name="default_presentation_text">Включення тексту презентації за промовчанням</string>
     <string name="delete">Видалення</string>
     <string name="delete_folder_info">Видалити підкаталог пісень</string>
     <string name="delete_folder_warning">Якщо ви видалите цей підкаталог, це також видалить усі пісні та папки, які він містить. Ви не можете скасувати цю зміну!  Будь ласка, переконайтеся, що ви зробили та зберегли резервні копії УСІХ ваших файлів, перш ніж продовжити!!!</string>
@@ -352,6 +354,8 @@
     <string name="forum">Форум</string>
     <string name="forum_description">Повідомляйте про помилки, отримуйте допомогу та запитуйте функції</string>
     <string name="github_description">Допомагайте розробці додатків</string>
+    <string name="grace_time">Дозвольте пісні благодатний час</string>
+    <string name="grace_time_info">Це дозволяє швидко переглядати пісні та надсилати інформацію лише на інші підключені пристрої після пільгового періоду часу 2 секунди.</string>
     <string name="green">Зелений</string>
     <string name="guitar">Гітара</string>
     <string name="half_time">Половина часу</string>

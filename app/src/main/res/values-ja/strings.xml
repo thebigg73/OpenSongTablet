@@ -128,6 +128,7 @@
     <string name="capo_fret">"カポフレット"</string>
     <string name="capo_hide">カポを自動非表示</string>
     <string name="capo_style">"カポは数字でフレットする"</string>
+    <string name="cast_info_string">画面ミラーリングを使用してセカンドスクリーンに表示するOpenSongApp。アプリがキャスト設定ページを開くことができず、使用可能なデバイスを表示できない場合は、OpenSongAppを実行する前に、デバイスで画面ミラーリングを手動で開始する必要があります。その後、アプリは接続された画面を使用します</string>
     <string name="category">"カテゴリー"</string>
     <string name="cavaquinho">"カバキーニョ"</string>
     <string name="ccli_automatic">"使用状況の統計情報を自動的に記録する"</string>
@@ -254,6 +255,7 @@
     <string name="date">"日付"</string>
     <string name="dec_autoscroll_speed">"オートスクロール速度を下げる"</string>
     <string name="default_autoscroll">"デフォルトの自動スクロール時間"</string>
+    <string name="default_presentation_text">既定のプレゼンテーション テキストを含める</string>
     <string name="delete">"デリート"</string>
     <string name="delete_folder_info">曲のサブディレクトリを削除する</string>
     <string name="delete_folder_warning">このサブディレクトリを削除すると、それに含まれるすべての曲またはフォルダも削除されます。 この変更を元に戻すことはできません！ 続行する前に、すべてのファイルのバックアップを作成して保存したことを確認してください!!!</string>
@@ -352,6 +354,8 @@
     <string name="forum">フォーラム</string>
     <string name="forum_description">バグを報告し、ヘルプを入手し、機能をリクエストする</string>
     <string name="github_description">アプリ開発に貢献する</string>
+    <string name="grace_time">曲の猶予時間を許可する</string>
+    <string name="grace_time_info">これにより、曲をすばやく閲覧でき、2秒の猶予期間後にのみ、接続されている他のデバイスに情報を送信できます。</string>
     <string name="green">緑</string>
     <string name="guitar">ギター</string>
     <string name="half_time">ハーフタイム</string>

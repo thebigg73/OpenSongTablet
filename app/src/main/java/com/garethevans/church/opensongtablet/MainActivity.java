@@ -362,7 +362,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             song_actions = "", settings = "", deeplink_preferences = "", song_string = "", set_string = "",
             search_index_start = "", search_index_end = "", deeplink_metronome = "", variation = "",
             mode_presenter = "", mode_performance = "", success = "", okay = "", pad_playback_info = "",
-            no_suitable_application = "", indexing_string = "", deeplink_edit = "";
+            no_suitable_application = "", indexing_string = "", deeplink_edit = "", cast_info_string = "";
 
     private void prepareStrings() {
         // To avoid null context for long tasks throwing error when getting strings
@@ -411,6 +411,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             pad_playback_info = getString(R.string.pad_playback_info);
             no_suitable_application = getString(R.string.no_suitable_application);
             indexing_string = getString(R.string.search_index_wait);
+            cast_info_string = getString(R.string.cast_info_string);
         }
     }
 
@@ -1572,22 +1573,24 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         ImageView screenMirror = (ImageView) menu.findItem(R.id.mirror_menu_item).getActionView();
         screenMirror.setImageDrawable(VectorDrawableCompat.create(getResources(), R.drawable.cast, getTheme()));
         screenMirror.setOnClickListener(view -> {
-            try {
-                startActivity(new Intent("android.settings.WIFI_DISPLAY_SETTINGS"));
-            } catch (ActivityNotFoundException e) {
-                Log.d(TAG,"android.settings.WIFI_DISPLAY_SETTINGS not an option");
+            if (!getShowCase().singleShowCase(this,screenMirror,null,cast_info_string,true,"castInfo")) {
                 try {
-                    startActivity(new Intent("com.samsung.wfd.LAUNCH_WFD_PICKER_DLG"));
-                } catch (Exception e2) {
-                    Log.d(TAG,"com.samsung.wfd.LAUNCH_WFD_PICKER_DLG not an option");
+                    startActivity(new Intent("android.settings.WIFI_DISPLAY_SETTINGS"));
+                } catch (ActivityNotFoundException e) {
+                    Log.d(TAG, "android.settings.WIFI_DISPLAY_SETTINGS not an option");
                     try {
-                        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP) {
-                            startActivity(new Intent(Settings.ACTION_CAST_SETTINGS));
-                        } else {
-                            startActivity(new Intent("android.settings.CAST_SETTINGS"));
+                        startActivity(new Intent("com.samsung.wfd.LAUNCH_WFD_PICKER_DLG"));
+                    } catch (Exception e2) {
+                        Log.d(TAG, "com.samsung.wfd.LAUNCH_WFD_PICKER_DLG not an option");
+                        try {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                startActivity(new Intent(Settings.ACTION_CAST_SETTINGS));
+                            } else {
+                                startActivity(new Intent("android.settings.CAST_SETTINGS"));
+                            }
+                        } catch (Exception e3) {
+                            showToast.doIt(error);
                         }
-                    } catch (Exception e3) {
-                        showToast.doIt(error);
                     }
                 }
             }

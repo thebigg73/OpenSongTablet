@@ -128,6 +128,7 @@
     <string name="capo_fret">"Capo próg"</string>
     <string name="capo_hide">Automatycznie ukryj capo</string>
     <string name="capo_style">"Capo progu jako numer"</string>
+    <string name="cast_info_string">OpenSongApp używa kopii lustrzanej ekranu do wyświetlania na drugim ekranie. Jeśli aplikacja nie może otworzyć strony ustawień przesyłania pokazującej dostępne urządzenia, musisz ręcznie rozpocząć dublowanie ekranu na urządzeniu przed uruchomieniem OpenSongApp. Aplikacja użyje podłączonego ekranu</string>
     <string name="category">"Kategoria"</string>
     <string name="cavaquinho">"Cavaquinho"</string>
     <string name="ccli_automatic">"Nagraj statystyki użytkowania automatycznie"</string>
@@ -254,6 +255,7 @@
     <string name="date">"Data"</string>
     <string name="dec_autoscroll_speed">"Zmniejsz prędkość automatycznego przewijania"</string>
     <string name="default_autoscroll">"Czasy domyślne AutoScroll"</string>
+    <string name="default_presentation_text">Dołącz domyślny tekst prezentacji</string>
     <string name="delete">"Usunąć"</string>
     <string name="delete_folder_info">Usuń podkatalog utworów</string>
     <string name="delete_folder_warning">Jeśli usuniesz ten podkatalog, usunie to również wszystkie zawarte w nim utwory lub foldery. Tej zmiany nie można cofnąć!</string>
@@ -352,6 +354,8 @@
     <string name="forum">Forum</string>
     <string name="forum_description">Zgłaszaj błędy, uzyskaj pomoc i poproś o funkcje</string>
     <string name="github_description">Przyczyń się do rozwoju aplikacji</string>
+    <string name="grace_time">Pozwól na czas karencji piosenki</string>
+    <string name="grace_time_info">Pozwala to na szybkie przeglądanie utworów i wysyłanie informacji do innych podłączonych urządzeń dopiero po okresie prolongaty wynoszącym 2 sekundy.</string>
     <string name="green">Zielony</string>
     <string name="guitar">Gitara</string>
     <string name="half_time">Połowa etatu</string>

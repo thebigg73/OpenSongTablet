@@ -2793,8 +2793,8 @@ public class ProcessSong {
     private boolean childNotInLinearLayoutParent(View v) {
         if (v!=null) {
             try {
-                if (((LinearLayout)v.getParent())!=null) {
-                    ((LinearLayout)(LinearLayout) v.getParent()).removeView(v);
+                if (v.getParent() !=null) {
+                    ((LinearLayout) v.getParent()).removeView(v);
                 }
                 return true;
             } catch (Exception e) {
