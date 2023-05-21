@@ -16,6 +16,7 @@ import com.garethevans.church.opensongtablet.interfaces.SetItemTouchInterface;
 public class SetListItemTouchHelper extends ItemTouchHelper.Callback {
 
     private final SetItemTouchInterface setItemTouchInterface;
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "SetListItemTouchHelper";
 
     public SetListItemTouchHelper(SetListAdapter setListAdapter) {
@@ -34,7 +35,15 @@ public class SetListItemTouchHelper extends ItemTouchHelper.Callback {
         super.clearView(recyclerView, viewHolder);
         // Change the color back to normal if lollipop+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            viewHolder.itemView.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(viewHolder.itemView.getContext(), R.color.colorAltPrimary)));
+            viewHolder.itemView.post(() -> viewHolder.itemView.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(viewHolder.itemView.getContext(), R.color.colorAltPrimary))));
+        }
+        // Check we rehighlight the set item
+        if (recyclerView.getAdapter()!=null) {
+            SetListAdapter setListAdapter = (SetListAdapter)recyclerView.getAdapter();
+            if (setListAdapter.getSelectedPosition()>=0 && setListAdapter.getSelectedPosition()<setListAdapter.getItemCount()) {
+                Log.d(TAG,"trying to highlight position");
+                viewHolder.itemView.postDelayed(setListAdapter::recoverCurrentSetPosition,200);
+            }
         }
     }
 
@@ -76,10 +85,6 @@ public class SetListItemTouchHelper extends ItemTouchHelper.Callback {
         //Remove item
         int fromPosition = viewHolder.getAbsoluteAdapterPosition();
         setItemTouchInterface.onItemSwiped(fromPosition);
-    }
-
-    public void startDrag(RecyclerView.ViewHolder v) {
-        Log.d(TAG,"startDrag v="+v);
     }
 
 }

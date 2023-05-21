@@ -3,6 +3,7 @@ package com.garethevans.church.opensongtablet.setmenu;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.os.Build;
+import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +34,7 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
     private final SparseBooleanArray highlightedArray = new SparseBooleanArray();
     private final float titleSize;
     private final float subtitleSizeAuthor, subtitleSizeFile;
+    private int currentSelectedPosition = -1;
 
     public void setTouchHelper(ItemTouchHelper itemTouchHelper) {
         this.itemTouchHelper = itemTouchHelper;
@@ -216,6 +218,7 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
         updateHighlightedItem(position);
         mainActivityInterface.initialiseInlineSetItem(position);
         mainActivityInterface.loadSongFromSet(position);
+        currentSelectedPosition = position;
     }
 
     @Override
@@ -256,6 +259,7 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
             currentPosition = setPosition;
             highlightedArray.put(currentPosition, true);
             notifyItemChanged(currentPosition, "highlightItem");
+            currentSelectedPosition = setPosition;
 
             mainActivityInterface.initialiseInlineSetItem(setPosition);
 
@@ -283,4 +287,17 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
         // Update the inline set too
         mainActivityInterface.updateInlineSetAdded(setItemInfo);
     }
+
+    public int getSelectedPosition() {
+        Log.d(TAG,"currentSelectedPosition:"+currentSelectedPosition);
+        return currentSelectedPosition;
+    }
+
+    public void recoverCurrentSetPosition() {
+        // Get the set position as we might have moved things around
+        int position = mainActivityInterface.getSetActions().indexSongInSet(mainActivityInterface.getSong());
+        Log.d(TAG,"position:"+position);
+        notifyItemChanged(position,"highlightItem");
+    }
+
 }
