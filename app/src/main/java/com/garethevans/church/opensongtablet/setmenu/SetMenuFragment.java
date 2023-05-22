@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,8 @@ import java.util.concurrent.Executors;
 
 public class SetMenuFragment extends Fragment {
 
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
+    private final String TAG = "SetMenuFragment";
     private MenuSetsBinding myView;
     private LinearLayoutManager llm;
     private SetListAdapter setListAdapter;
@@ -158,6 +161,7 @@ public class SetMenuFragment extends Fragment {
     }
 
     public void scrollToItem() {
+        Log.d(TAG,"scrollToItem()");
         if (mainActivityInterface.getCurrentSet().getIndexSongInSet()>-1 &&
                 mainActivityInterface.getCurrentSet().getIndexSongInSet() < mainActivityInterface.getCurrentSet().getSetItems().size()) {
             myView.myRecyclerView.post(() -> {
@@ -229,6 +233,7 @@ public class SetMenuFragment extends Fragment {
     }
 
     public void updateItem(int position) {
+        Log.d(TAG,"updateItem("+position+")");
         if (position>=0) {
             try {
                 String folder = mainActivityInterface.getCurrentSet().getFolder(position);
@@ -250,6 +255,13 @@ public class SetMenuFragment extends Fragment {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    public void clearOldHighlight(int position) {
+        Log.d(TAG,"clearOldHighlight:"+position);
+        if (setListAdapter!=null) {
+            setListAdapter.clearOldHighlight(position);
         }
     }
 

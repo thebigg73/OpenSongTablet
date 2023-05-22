@@ -958,7 +958,6 @@ public class ProcessSong {
         ArrayList<Integer> pos = new ArrayList<>();
 
         // IV - If we are not displaying chords, handle the line as a whole
-        Log.d(TAG,"performancePresentation:"+performancePresentation);
         if (!displayChords || (performancePresentation && !mainActivityInterface.getPresenterSettings().getPresoShowChords())) {
             pos.add(0);
         } else {
@@ -1663,7 +1662,6 @@ public class ProcessSong {
 
         // 13. Go through the lyrics, filter lines needed for this mode/display chords combination.
         // Returns wanted line types and group lines that should be in a table for alignment purposes
-        Log.d(TAG,"presentation:"+presentation+"  mainActivityInterface.getPresenterSettings().getPresoShowChords():"+mainActivityInterface.getPresenterSettings().getPresoShowChords());
         if (presentation) {
             lyrics = filterAndGroupLines(lyrics, mainActivityInterface.getPresenterSettings().getPresoShowChords());
         } else {

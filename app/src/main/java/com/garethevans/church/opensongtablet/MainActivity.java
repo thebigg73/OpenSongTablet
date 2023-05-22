@@ -2348,6 +2348,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         String songKey;
 
         // Update the index in the set
+        // Remove highlighting from the old position
+        setMenuFragment.clearOldHighlight(currentSet.getIndexSongInSet());
         currentSet.setIndexSongInSet(position);
         setMenuFragment.updateItem(position);
 

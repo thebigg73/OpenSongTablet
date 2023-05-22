@@ -3,7 +3,6 @@ package com.garethevans.church.opensongtablet.setmenu;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.os.Build;
-import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,8 +32,7 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
     private ArrayList<SetItemInfo> setList;
     private final SparseBooleanArray highlightedArray = new SparseBooleanArray();
     private final float titleSize;
-    private final float subtitleSizeAuthor, subtitleSizeFile;
-    private int currentSelectedPosition = -1;
+    private final float subtitleSizeFile;
 
     public void setTouchHelper(ItemTouchHelper itemTouchHelper) {
         this.itemTouchHelper = itemTouchHelper;
@@ -46,7 +44,7 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
         offColor = context.getResources().getColor(R.color.colorAltPrimary);
         // Make the title text the same as the alphaIndex size
         titleSize = mainActivityInterface.getPreferences().getMyPreferenceFloat("songMenuItemSize",14f);
-        subtitleSizeAuthor = mainActivityInterface.getPreferences().getMyPreferenceFloat("songMenuSubItemSizeAuthor",12f);
+        // subtitleSizeAuthor = mainActivityInterface.getPreferences().getMyPreferenceFloat("songMenuSubItemSizeAuthor",12f);
         subtitleSizeFile = mainActivityInterface.getPreferences().getMyPreferenceFloat("songMenuSubItemSizeFile",12f);
     }
 
@@ -218,7 +216,6 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
         updateHighlightedItem(position);
         mainActivityInterface.initialiseInlineSetItem(position);
         mainActivityInterface.loadSongFromSet(position);
-        currentSelectedPosition = position;
     }
 
     @Override
@@ -259,8 +256,6 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
             currentPosition = setPosition;
             highlightedArray.put(currentPosition, true);
             notifyItemChanged(currentPosition, "highlightItem");
-            currentSelectedPosition = setPosition;
-
             mainActivityInterface.initialiseInlineSetItem(setPosition);
 
             return true;
@@ -271,7 +266,19 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
     public void itemRemoved(int position) {
         setList.remove(position);
         notifyItemRemoved(position);
-        // Go through the setList from this position and sort the numbers
+        int currentSetPosition = mainActivityInterface.getCurrentSet().getIndexSongInSet();
+        // If item is removed before the current item, we need to adjust that down too
+        if (position<currentSetPosition && position>-1) {
+            highlightedArray.put(currentSetPosition,false);
+            highlightedArray.put(currentSetPosition-1, true);
+            mainActivityInterface.getCurrentSet().setIndexSongInSet(currentSetPosition-1);
+        } else if (position == currentSetPosition) {
+            // Remove the current set position as no longer valid
+            highlightedArray.put(currentSetPosition,false);
+            mainActivityInterface.getCurrentSet().setIndexSongInSet(-1);
+        }
+
+            // Go through the setList from this position and sort the numbers
         for (int x = position; x < setList.size(); x++) {
             setList.get(x).songitem = (x + 1) + ".";
             notifyItemChanged(x);
@@ -289,15 +296,17 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
     }
 
     public int getSelectedPosition() {
-        Log.d(TAG,"currentSelectedPosition:"+currentSelectedPosition);
-        return currentSelectedPosition;
+        return mainActivityInterface.getCurrentSet().getIndexSongInSet();
     }
 
     public void recoverCurrentSetPosition() {
         // Get the set position as we might have moved things around
-        int position = mainActivityInterface.getSetActions().indexSongInSet(mainActivityInterface.getSong());
-        Log.d(TAG,"position:"+position);
-        notifyItemChanged(position,"highlightItem");
+        notifyItemChanged(mainActivityInterface.getCurrentSet().getIndexSongInSet(),"highlightItem");
     }
 
+    public void clearOldHighlight(int position) {
+        highlightedArray.put(position,false);
+        notifyItemChanged(position,"highlightItem");
+        currentPosition = position;
+    }
 }
