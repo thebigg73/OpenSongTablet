@@ -460,8 +460,9 @@ public class SecondaryDisplay extends Presentation {
         layoutParams.width = size;
         layoutParams.height = size;
         myView.mainLogo.setLayoutParams(layoutParams);
+        Uri logoUri = mainActivityInterface.getPresenterSettings().getLogo();
         RequestOptions requestOptions = new RequestOptions().fitCenter().override(size,size);
-        Glide.with(c).load(mainActivityInterface.getPresenterSettings().getLogo()).apply(requestOptions).into(myView.mainLogo);
+        myView.mainLogo.post(() -> Glide.with(c).load(logoUri).apply(requestOptions).into(myView.mainLogo));
     }
     public void showLogo(boolean show, boolean timedHide) {
         // Fade in/out the logo based on the setting

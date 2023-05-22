@@ -17,7 +17,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -44,20 +43,22 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
             mode_performance_string="", mode_stage_string="", words_and_music_by_string="",
             used_by_permission_string="";
     private String webAddress;
-    private final ActivityResultLauncher<String> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.GetContent(),
-            new ActivityResultCallback<Uri>() {
-                @Override
-                public void onActivityResult(Uri uri) {
-                    // Handle the returned Uri
-                    if (uri != null) {
-                        String localised = mainActivityInterface.getStorageAccess().fixUriToLocal(uri);
-                        mainActivityInterface.getPresenterSettings().setLogo(uri);
-                        mainActivityInterface.getPreferences().setMyPreferenceString("customLogo", localised);
-                        displayInterface.updateDisplay("changeLogo");
-                        updateLogo();
-                    }
-                }
-            });
+    private final ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        if (result != null && result.getData() != null) {
+            Uri uri = result.getData().getData();
+            // Handle the returned Uri
+            if (uri != null && getActivity() != null) {
+                getActivity().getContentResolver().takePersistableUriPermission(uri,
+                        Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                String localised = mainActivityInterface.getStorageAccess().fixUriToLocal(uri);
+                mainActivityInterface.getPresenterSettings().setLogo(uri);
+                mainActivityInterface.getPreferences().setMyPreferenceString("customLogo", localised);
+                displayInterface.updateDisplay("changeLogo");
+                updateLogo();
+            }
+        }
+    });
+
 
     @Override
     public void onResume() {
@@ -260,6 +261,8 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
             Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
             intent.addCategory(Intent.CATEGORY_OPENABLE);
             intent.setType("image/*");
+            intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION |
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
             // Optionally, specify a URI for the file that should appear in the
             // system file picker when it loads.
@@ -267,7 +270,7 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
                 intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI,
                         mainActivityInterface.getStorageAccess().getUriForItem("Backgrounds", "", ""));
             }
-            activityResultLauncher.launch("image/*");
+            activityResultLauncher.launch(intent);
         });
 
         myView.presoBackgroundAlpha.addOnSliderTouchListener(new SliderTouchListener("presoBackgroundAlpha"));

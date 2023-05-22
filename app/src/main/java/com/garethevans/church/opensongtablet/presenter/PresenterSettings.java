@@ -16,6 +16,8 @@ public class PresenterSettings {
 
     private final Context c;
     private final MainActivityInterface mainActivityInterface;
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
+    private final String TAG = "PresenterSettings";
     private boolean alertOn, logoOn=true, blackscreenOn, blankscreenOn, hideInfoBar, presoShowChords,
             usePresentationOrder, presoShowClock, presoClock24h, presoClockSeconds, startedProjection,
             presoLyricsBold, defaultPresentationText;
@@ -362,14 +364,15 @@ public class PresenterSettings {
 
     private Uri getUriFromString(String uriString, String backupString) {
         Uri uri = null;
-        if (uriString!=null && !uriString.isEmpty()) {
+        if (uriString!=null && uriString.startsWith("../")) {
             uri = mainActivityInterface.getStorageAccess().
                     fixLocalisedUri(uriString);
+        } else if (uriString!=null) {
+            uri = Uri.parse(uriString);
         }
         if ((backupString!=null && !backupString.isEmpty()) &&
                 (uri==null || !mainActivityInterface.getStorageAccess().uriExists(uri))) {
-            uri = mainActivityInterface.getStorageAccess().
-                    fixLocalisedUri(backupString);
+            uri = mainActivityInterface.getStorageAccess().fixLocalisedUri(backupString);
         }
         return uri;
     }

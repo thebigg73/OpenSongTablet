@@ -85,6 +85,8 @@ public class CustomAnimation {
                 e.printStackTrace();
             }
             v.postDelayed(runnable,(int)(time));
+            // GE Additional command to panic check
+            v.postDelayed(runnable,(int)(time+500));
         }
     }
 
