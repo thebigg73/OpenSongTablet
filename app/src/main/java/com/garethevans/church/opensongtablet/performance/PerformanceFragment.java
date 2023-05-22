@@ -80,7 +80,10 @@ public class PerformanceFragment extends Fragment {
 
     private String mainfoldername="", mode_performance="", mode_presenter="", mode_stage="",
             not_allowed="", image_string="", nearby_large_file_string="";
-    private int sendSongDelay = 0, graceTime = 2000;
+    private int sendSongDelay = 0;
+    @SuppressWarnings("FieldCanBeLocal")
+    // GE - hidden this option, but reserving the right to reinstate even just for me
+    private int graceTime = 2000;
     private final Handler sendSongAfterDelayHandler = new Handler(),
         autoHideHighlighterHandler = new Handler();
     private final Runnable sendSongAfterDelayRunnable = () -> {
@@ -119,9 +122,10 @@ public class PerformanceFragment extends Fragment {
     public void onResume() {
         super.onResume();
         displayInterface.checkDisplays();
+        /* GE - hidden this option, but reserving the right to reinstate even just for me
         if (getContext()!=null && mainActivityInterface!=null) {
             graceTime = mainActivityInterface.getPreferences().getMyPreferenceBoolean("graceTime",true) ? 2000 : 50;
-        }
+        }*/
     }
 
     @Override
