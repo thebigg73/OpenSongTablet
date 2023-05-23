@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.print.PrintManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -813,6 +814,7 @@ public class ExportFragment extends Fragment {
                         try {
                             // The header should still be in place
                             // Now take a bitmap of the layout
+                            // Check how many columns are used for the bitmap
                             setPNGContent = Bitmap.createBitmap(maxWidth, myView.previewLayout.getHeight(), Bitmap.Config.ARGB_8888);
                             Canvas canvas = new Canvas(setPNGContent);
                             myView.previewLayout.draw(canvas);
@@ -962,6 +964,8 @@ public class ExportFragment extends Fragment {
         }
     }
 
+    float[] scaleInfo;
+
     public void createOnTheFlySectionsScreenshots2(String pdfName) {
         int[] screenSizes = mainActivityInterface.getDisplayMetrics();
         int screenWidth = screenSizes[0];
@@ -972,6 +976,8 @@ public class ExportFragment extends Fragment {
         int availableWidth = screenWidth - viewPadding[0] - viewPadding[1];
         int availableHeight = screenHeight - viewPadding[2] - viewPadding[3];
 
+
+
         // Now we have the views, add them to the temp layout and set up a view tree listener to measure
         ViewTreeObserver sectionsVTO = myView.scaledSongContent.getViewTreeObserver();
         sectionsVTO.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -979,9 +985,15 @@ public class ExportFragment extends Fragment {
             public void onGlobalLayout() {
                 // The views are ready so lets measure them after clearing this listener
                 // If all the views are there, we can start measuring
+                for (float i:scaleInfo) {
+                    Log.d(TAG,"scaleInfo:"+i);
+                }
                 int col1Items = 0;
                 int col2Items = 0;
                 int col3Items = 0;
+                Log.d(TAG,"myView.scaledSongContent.getCol1().getWidth():"+myView.scaledSongContent.getCol1().getWidth());
+                Log.d(TAG,"myView.scaledSongContent.getCol2().getWidth():"+myView.scaledSongContent.getCol2().getWidth());
+                Log.d(TAG,"myView.scaledSongContent.getCol3().getWidth():"+myView.scaledSongContent.getCol3().getWidth());
                 if (myView.scaledSongContent.getCol1().getChildCount()>0) {
                     col1Items = ((LinearLayout)myView.scaledSongContent.getCol1().getChildAt(0)).getChildCount();
                 }
@@ -1019,7 +1031,9 @@ public class ExportFragment extends Fragment {
                         mimeTypes = new ArrayList<>();
                     }
 
-                    if ((png && !isSetFile) || (screenShot && !isSetFile)) {
+
+                    boolean takingScreenShot = (png && !isSetFile) || (screenShot && !isSetFile);
+                    if (takingScreenShot) {
                         // Now take a bitmap of the layout for the song
                         // Get the maximum width of the views
 
@@ -1071,7 +1085,9 @@ public class ExportFragment extends Fragment {
                         // We have exported a song as a print layout
                         doPrint(false);
                     } else {
-                        renderPDFSongs();
+                        int delay = takingScreenShot ? 100:20;
+                        // GE added this via a delayed runnable otherwise the repeated layout didn't get time to reset.
+                        new Handler(Looper.getMainLooper()).postDelayed(() -> renderPDFSongs(),delay);
                     }
                 }
             }
@@ -1080,7 +1096,7 @@ public class ExportFragment extends Fragment {
         // Remove any scaled header that exists
         myView.scaledHeader.removeAllViews();
         mainActivityInterface.getProcessSong().setMakingScaledScreenShot(true);
-        mainActivityInterface.getProcessSong().addViewsToScreen(sectionViewsScreenshot,
+        scaleInfo = mainActivityInterface.getProcessSong().addViewsToScreen(sectionViewsScreenshot,
                 sectionViewWidthsScreenshot,sectionViewHeightsScreenshot,myView.scaledPageHolder,myView.scaledSongContent,myView.scaledHeader,availableWidth,availableHeight,
                 myView.scaledSongContent.getCol1(),myView.scaledSongContent.getCol2(),myView.scaledSongContent.getCol3(),false,getResources().getDisplayMetrics());
         mainActivityInterface.getProcessSong().setMakingScaledScreenShot(false);
