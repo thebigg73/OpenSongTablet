@@ -427,7 +427,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                 songListAdapter = new SongListAdapter(getContext(),
                         songsFound, SongMenuFragment.this);
                 myView.songListRecyclerView.setAdapter(songListAdapter);
-                displayIndex(true);
+                displayIndex();
                 myView.progressBar.setVisibility(View.GONE);
                 buttonsEnabled(true);
                 // Update the filter row values
@@ -438,12 +438,9 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         }
     }
 
-    public void displayIndex(boolean songChange) {
+    public void displayIndex() {
         if (mainActivityInterface!=null && getContext()!=null) {
             try {
-                if (songChange) {
-                    alphalistposition = -1;
-                }
                 myView.songmenualpha.sideIndex.removeAllViews();
                 TextView textView;
                 final Map<String, Integer> map = songListAdapter.getAlphaIndex(songsFound);
@@ -535,7 +532,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                                         songListLayoutManager.scrollToPositionWithOffset(obj, 0);
                                     }
                                 }
-                                displayIndex(false);
+                                displayIndex();
                                 mainActivityInterface.getWindowFlags().hideKeyboard();
                             }
                         } catch (Exception e) {
@@ -583,8 +580,6 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         // Default the slide animations to be next (R2L)
         mainActivityInterface.getDisplayPrevNext().setSwipeDirection("R2L");
         mainActivityInterface.doSongLoad(folder, filename,true);
-        songListLayoutManager.scrollToPositionWithOffset(position,0);
-        displayIndex(true);
     }
 
     @Override
@@ -592,10 +587,6 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         longClickFilename = filename;
         mainActivityInterface.getWindowFlags().hideKeyboard();
         mainActivityInterface.doSongLoad(folder, filename,false);
-        new Handler(Looper.getMainLooper()).postDelayed(() -> {
-            songListLayoutManager.scrollToPositionWithOffset(position, 0);
-            displayIndex(true);
-        }, 1000);
         showActionDialog();
     }
 
@@ -656,8 +647,30 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                 if (songListLayoutManager!=null) {
                     handler.post(() -> {
                         try {
-                            displayIndex(true);
-                            songListLayoutManager.scrollToPositionWithOffset(songListAdapter.getPositionOfSong(song),0);
+                            // IV - On song change, like v5, use a song list filtered by folder only
+                            // If folder filter is not active then this is all songs
+                            if ((titleSearchVal  + filterSearchVal + keySearchVal + artistSearchVal + tagSearchVal).equals(("")) &&
+                                folderSearchVal.equals(song.getFolder())) {
+                                songListLayoutManager.scrollToPositionWithOffset(songListAdapter.getPositionOfSong(song), 0);
+                                // IV - Reset to a 1 char alphabetic index
+                                alphalistposition = -1;
+                                displayIndex();
+                            } else {
+                                myView.filters.titleSearch.setText("");
+                                myView.filters.filterSearch.setText("");
+                                myView.filters.keySearch.setText("");
+                                myView.filters.artistSearch.setText("");
+                                myView.filters.folderSearch.setText(song.getFolder());
+                                myView.filters.tagSearch.setText("");
+                                waitBeforeSearchHandler.removeCallbacks(waitBeforeSearchRunnable);
+                                waitBeforeSearchHandler.postDelayed(waitBeforeSearchRunnable,200);
+                                new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                                    songListLayoutManager.scrollToPositionWithOffset(songListAdapter.getPositionOfSong(song), 0);
+                                    // IV - Reset to a 1 char alphabetic index
+                                    alphalistposition = -1;
+                                    displayIndex();
+                                }, 300);
+                            }
                         } catch (Exception e) {
                         e.printStackTrace();
                     }
