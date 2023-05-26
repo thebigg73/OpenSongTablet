@@ -441,8 +441,6 @@ public class PerformanceFragment extends Fragment {
                                 resetSendSongAfterDelayHandler.postDelayed(resetSendSongAfterDelayRunnable, 3500);
                             }
 
-                            mainActivityInterface.moveToSongInSongMenu();
-
                             // Now slide out the song and after a delay start the next bit of the processing
                             if (myView != null) {
                                 myView.recyclerView.post(() -> {
@@ -1019,6 +1017,8 @@ public class PerformanceFragment extends Fragment {
 
         // Load up the sticky notes if the user wants them
         dealWithStickyNotes(false, false);
+
+        mainActivityInterface.moveToSongInSongMenu();
 
         // Run this only when the user has stopped on a song after 2s.
         // This is important for pad use - the pad will not change while the user rapidly changes songs.
