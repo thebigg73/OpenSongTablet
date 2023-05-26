@@ -397,10 +397,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                handler.post(() -> {
-                    updateSongList();
-                    displayIndex();
-                });
+                handler.post(this::updateSongList);
             });
         }
     }
@@ -430,7 +427,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                 songListAdapter = new SongListAdapter(getContext(),
                         songsFound, SongMenuFragment.this);
                 myView.songListRecyclerView.setAdapter(songListAdapter);
-                displayIndex();
+                displayIndex(true);
                 myView.progressBar.setVisibility(View.GONE);
                 buttonsEnabled(true);
                 // Update the filter row values
@@ -441,9 +438,12 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         }
     }
 
-    public void displayIndex() {
+    public void displayIndex(boolean songChange) {
         if (mainActivityInterface!=null && getContext()!=null) {
             try {
+                if (songChange) {
+                    alphalistposition = -1;
+                }
                 myView.songmenualpha.sideIndex.removeAllViews();
                 TextView textView;
                 final Map<String, Integer> map = songListAdapter.getAlphaIndex(songsFound);
@@ -526,8 +526,8 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                         try {
                             if (selectedIndex.getText() != null &&
                                     songListLayoutManager != null) {
-                                // IV - Recover the 2 char index from the 1 or 2 lines of displayed text
-                                String myval = (selectedIndex.getText().toString().replace("\n", "") + " ").substring(0,2);
+                                // IV - Recover the 2 char index from the 1 or 2 chars of displayed text
+                                String myval = (selectedIndex.getText().toString() + " ").substring(0,2);
 
                                 if (!map2.isEmpty()) {
                                     Integer obj = map2.get(myval);
@@ -535,7 +535,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                                         songListLayoutManager.scrollToPositionWithOffset(obj, 0);
                                     }
                                 }
-                                displayIndex();
+                                displayIndex(false);
                                 mainActivityInterface.getWindowFlags().hideKeyboard();
                             }
                         } catch (Exception e) {
@@ -584,8 +584,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         mainActivityInterface.getDisplayPrevNext().setSwipeDirection("R2L");
         mainActivityInterface.doSongLoad(folder, filename,true);
         songListLayoutManager.scrollToPositionWithOffset(position,0);
-        // Make sure the alphabetical index shows single letters
-        displayIndex();
+        displayIndex(true);
     }
 
     @Override
@@ -593,7 +592,10 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         longClickFilename = filename;
         mainActivityInterface.getWindowFlags().hideKeyboard();
         mainActivityInterface.doSongLoad(folder, filename,false);
-        new Handler(Looper.getMainLooper()).postDelayed(() -> songListLayoutManager.scrollToPositionWithOffset(position,0),1000);
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+            songListLayoutManager.scrollToPositionWithOffset(position, 0);
+            displayIndex(true);
+        }, 1000);
         showActionDialog();
     }
 
@@ -654,10 +656,11 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                 if (songListLayoutManager!=null) {
                     handler.post(() -> {
                         try {
+                            displayIndex(true);
                             songListLayoutManager.scrollToPositionWithOffset(songListAdapter.getPositionOfSong(song),0);
                         } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+                        e.printStackTrace();
+                    }
                     });
                 }
             });
