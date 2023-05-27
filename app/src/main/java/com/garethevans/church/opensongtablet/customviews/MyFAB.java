@@ -7,7 +7,6 @@ import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
@@ -23,6 +22,7 @@ public class MyFAB extends FrameLayout {
 
     private final FloatingActionButton myFAB;
     private final RelativeLayout myFABHolder;
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "MyFAB";
 
     public MyFAB(@NonNull Context context, @Nullable @org.jetbrains.annotations.Nullable AttributeSet attrs) {
@@ -72,7 +72,6 @@ public class MyFAB extends FrameLayout {
             @Override
             public void onAnimationStart(Animator animation) {
                 myFABHolder.setVisibility(View.VISIBLE);
-                Log.d(TAG,"setting visibility to VISIBLE");
                 super.onAnimationEnd(animation);
             }
         });
@@ -80,20 +79,31 @@ public class MyFAB extends FrameLayout {
             @Override
             public void onAnimationEnd(Animator animation) {
                 myFABHolder.setVisibility(View.GONE);
-                Log.d(TAG,"setting visibility to GONE");
                 super.onAnimationEnd(animation);
             }
         });
     }
 
+    final FloatingActionButton.OnVisibilityChangedListener addVisibilityChanged = new FloatingActionButton.OnVisibilityChangedListener() {
+        public void onShown(final FloatingActionButton fab) {
+            super.onShown(fab);
+            myFABHolder.setVisibility(View.VISIBLE);
+        }
+        public void onHidden(final FloatingActionButton fab) {
+            super.onHidden(fab);
+            myFABHolder.setVisibility(View.GONE);
+        }
+    };
+
     public void hide() {
         // Hide the FAB and then set the frame layout to gone after the animation time
-        myFAB.hide();
+        myFAB.hide(addVisibilityChanged);
     }
 
     public void show() {
         // Show the FAB and also make the frame layout visible
-        myFAB.show();
+        myFABHolder.setVisibility(View.VISIBLE);
+        myFAB.show(addVisibilityChanged);
     }
 
     public void setOnClickListener(OnClickListener onClickListener) {
