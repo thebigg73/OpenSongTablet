@@ -648,9 +648,12 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                     handler.post(() -> {
                         try {
                             // IV - On song change, like v5, use a song list filtered by folder only
-                            // If folder filter is not active then this is all songs
-                            if ((titleSearchVal  + filterSearchVal + keySearchVal + artistSearchVal + tagSearchVal).equals(("")) &&
-                                folderSearchVal.equals(song.getFolder())) {
+                            if (("" + myView.filters.titleSearch.getText()  +
+                                myView.filters.filterSearch.getText() +
+                                myView.filters.keySearch.getText() +
+                                myView.filters.artistSearch.getText() +
+                                myView.filters.tagSearch.getText()).equals(("")) &&
+                                myView.filters.folderSearch.getText().toString().equals(song.getFolder())) {
                                 songListLayoutManager.scrollToPositionWithOffset(songListAdapter.getPositionOfSong(song), 0);
                                 // IV - Reset to a 1 char alphabetic index
                                 alphalistposition = -1;
