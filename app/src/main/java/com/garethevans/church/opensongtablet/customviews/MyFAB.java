@@ -7,6 +7,7 @@ import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
@@ -71,6 +72,7 @@ public class MyFAB extends FrameLayout {
             @Override
             public void onAnimationStart(Animator animation) {
                 myFABHolder.setVisibility(View.VISIBLE);
+                Log.d(TAG,"setting visibility to VISIBLE");
                 super.onAnimationEnd(animation);
             }
         });
@@ -78,6 +80,7 @@ public class MyFAB extends FrameLayout {
             @Override
             public void onAnimationEnd(Animator animation) {
                 myFABHolder.setVisibility(View.GONE);
+                Log.d(TAG,"setting visibility to GONE");
                 super.onAnimationEnd(animation);
             }
         });

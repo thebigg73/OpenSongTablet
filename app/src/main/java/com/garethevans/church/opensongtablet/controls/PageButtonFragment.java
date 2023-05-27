@@ -44,7 +44,8 @@ public class PageButtonFragment extends Fragment {
     private ExposedDropDownArrayAdapter arrayAdapter;
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "PageButtonFragment";
-    private String page_buttons_string="", website_page_buttons_string="", button_string="", visible_string="";
+    private String page_buttons_string="", website_page_buttons_string="", button_string="",
+            visible_string="", performance_mode_string="", autohide_info_string="";
     private String webAddress;
 
     @Override
@@ -81,6 +82,8 @@ public class PageButtonFragment extends Fragment {
             website_page_buttons_string = getString(R.string.website_page_buttons);
             button_string = getString(R.string.button);
             visible_string = getString(R.string.visible);
+            performance_mode_string = getString(R.string.performance_mode);
+            autohide_info_string = getString(R.string.info_text_autohide_info);
 
         }
     }
@@ -89,6 +92,7 @@ public class PageButtonFragment extends Fragment {
         executorService.execute(() -> {
             Handler handler = new Handler(Looper.getMainLooper());
             handler.post(() -> {
+                myView.pageButtonHide.setHint(autohide_info_string + " ("+performance_mode_string+")");
                 myView.pageButtonMini.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("pageButtonMini",false));
                 myView.pageButtonMini.setOnCheckedChangeListener((buttonView, isChecked) -> {
                     mainActivityInterface.getPreferences().setMyPreferenceBoolean("pageButtonMini",isChecked);

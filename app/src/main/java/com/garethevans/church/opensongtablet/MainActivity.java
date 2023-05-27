@@ -361,7 +361,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             song_sections_project = "", menu_song_info = "", menu_set_info = "", add_songs = "",
             song_actions = "", settings = "", deeplink_preferences = "", song_string = "", set_string = "",
             search_index_start = "", search_index_end = "", deeplink_metronome = "", variation = "",
-            mode_presenter = "", mode_performance = "", success = "", okay = "", pad_playback_info = "",
+            mode_presenter = "", mode_performance = "", mode_stage = "", success = "", okay = "", pad_playback_info = "",
             no_suitable_application = "", indexing_string = "", deeplink_edit = "", cast_info_string = "";
 
     private void prepareStrings() {
@@ -406,6 +406,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             variation = getString(R.string.variation);
             mode_presenter = getString(R.string.mode_presenter);
             mode_performance = getString(R.string.mode_performance);
+            mode_stage = getString(R.string.mode_stage);
             success = getString(R.string.success);
             okay = getString(R.string.okay);
             pad_playback_info = getString(R.string.pad_playback_info);
@@ -813,7 +814,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 h.postDelayed(() -> pageButtonActive = true, pageButtons.getAnimationTime());
                 animatePageButtons();
             }
-            if (!pageButtonActive && pageButtons.getPageButtonHide()) {
+            if (!pageButtonActive && pageButtons.getPageButtonHide() && !whichMode.equals(mode_stage)) {
                 myView.actionFAB.postDelayed(hideActionButtonRunnable, 3000);
             }
         });
@@ -1327,14 +1328,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 if (hideActionButtonRunnable != null) {
                     myView.actionFAB.removeCallbacks(hideActionButtonRunnable);
                 }
-                myView.actionFAB.setVisibility(View.GONE);
                 myView.pageButtonRight.bottomButtons.setVisibility(View.GONE);
                 myView.onScreenInfo.getInfo().setVisibility(View.GONE);
                 myView.nextPrevInfo.nextPrevInfoLayout.setVisibility(View.GONE);
                 myView.nextPrevInfo.nextPrevInfoFABLayout.setVisibility(View.GONE);
 
             } else {
-                myView.actionFAB.setVisibility(View.VISIBLE);
                 if (hideActionButtonRunnable == null) {
                     setHideActionButtonRunnable();
                 }
@@ -2102,14 +2101,20 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 myView.onScreenInfo.updateAlpha(this, this);
                 break;
             case "showhide":
-                myView.onScreenInfo.showHideViews(this);
-                if (pageButtons.getPageButtonHide() && !pageButtons.getPageButtonActivated()) {
-                    if (hideActionButtonRunnable == null) {
-                        setHideActionButtonRunnable();
-                    }
-                    myView.actionFAB.removeCallbacks(hideActionButtonRunnable);
+                if (hideActionButtonRunnable == null) {
+                    setHideActionButtonRunnable();
+                }
+                myView.actionFAB.removeCallbacks(hideActionButtonRunnable);
+                if (whichMode.equals(mode_stage)) {
                     myView.actionFAB.show();
-                    myView.actionFAB.postDelayed(hideActionButtonRunnable, 3000);
+                } else {
+                    myView.onScreenInfo.showHideViews(this);
+                    if (pageButtons.getPageButtonHide() && !pageButtons.getPageButtonActivated()) {
+                        myView.actionFAB.postDelayed(() -> {
+                            myView.actionFAB.show();
+                        }, 50);
+                        myView.actionFAB.postDelayed(hideActionButtonRunnable, 3000);
+                    }
                 }
                 break;
             case "setpreferences":
