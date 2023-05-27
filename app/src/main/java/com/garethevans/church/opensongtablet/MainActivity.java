@@ -1020,6 +1020,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         closeDrawer(true);  // Only the Performance and Presenter fragments allow this.  Switched on in these fragments
         actionButtonWasExpanded = myView.actionFAB.getRotation() != 0;
         hideActionButton(true);
+
         if (deepLink != null && deepLink.equals(deeplink_edit) && songListBuildIndex.getCurrentlyIndexing()) {
             showToast.doIt(indexing_string);
         } else {
@@ -1328,6 +1329,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 if (hideActionButtonRunnable != null) {
                     myView.actionFAB.removeCallbacks(hideActionButtonRunnable);
                 }
+                myView.actionFAB.hide();
                 myView.pageButtonRight.bottomButtons.setVisibility(View.GONE);
                 myView.onScreenInfo.getInfo().setVisibility(View.GONE);
                 myView.nextPrevInfo.nextPrevInfoLayout.setVisibility(View.GONE);
@@ -1340,6 +1342,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 if (pageButtons.getPageButtonHide() && pageButtons.getPageButtonActivated()) {
                     myView.actionFAB.postDelayed(hideActionButtonRunnable, 3000);
                 }
+                myView.actionFAB.show();
                 myView.pageButtonRight.bottomButtons.setVisibility(View.VISIBLE);
 
                 myView.onScreenInfo.getInfo().setVisibility(View.VISIBLE);
@@ -2105,7 +2108,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     setHideActionButtonRunnable();
                 }
                 myView.actionFAB.removeCallbacks(hideActionButtonRunnable);
-                if (whichMode.equals(mode_stage)) {
+                if (whichMode.equals(mode_stage) && !settingsOpen) {
                     myView.actionFAB.show();
                 } else {
                     myView.onScreenInfo.showHideViews(this);
