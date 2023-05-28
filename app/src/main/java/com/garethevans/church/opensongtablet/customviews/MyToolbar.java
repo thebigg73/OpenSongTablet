@@ -345,6 +345,7 @@ public class MyToolbar extends MaterialToolbar {
     // Flash on/off for metronome
     public void doFlash(int colorBar) {
         setBackground(new ColorDrawable(colorBar));
+        //Log.d(TAG,"flash bar");
     }
 
     // Get the actionbar height - fakes a height of 0 if autohiding

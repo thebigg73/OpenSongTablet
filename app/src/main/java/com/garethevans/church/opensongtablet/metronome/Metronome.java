@@ -332,7 +332,10 @@ public class Metronome {
         metronomeTimerTask = new TimerTask() {
             public void run() {
                 metronomeTimerHandler.post(() -> {
-                    Log.d(TAG,"since start: "+(System.currentTimeMillis()-startTime)+"  Expected gap:"+beatTimeLength);
+                    // For proof of scheduler
+                    // Expected time is a running total of start time + beatTimeLength each loop
+                    long t= System.currentTimeMillis();
+                    Log.d(TAG,"time slip(ms):"+(t-startTime)+"  System.currenTimeMillis():"+System.currentTimeMillis()+"  this event should be at:"+startTime + "  beatTimeLength:"+beatTimeLength);
                     if (beat>beats) {
                         beat = 1;
                     }
@@ -366,6 +369,7 @@ public class Metronome {
                         // Stop the metronome (beats and visual)
                         stopMetronome();
                     }
+                    startTime += beatTimeLength;
                 });
             }
         };

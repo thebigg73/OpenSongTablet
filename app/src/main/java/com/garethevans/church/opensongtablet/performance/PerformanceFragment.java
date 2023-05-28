@@ -83,7 +83,7 @@ public class PerformanceFragment extends Fragment {
     private int sendSongDelay = 0;
     @SuppressWarnings("FieldCanBeLocal")
     // GE - hidden this option, but reserving the right to reinstate even just for me
-    private int graceTime = 2000;
+    private final int graceTime = 2000;
     private final Handler sendSongAfterDelayHandler = new Handler(),
         autoHideHighlighterHandler = new Handler();
     private final Runnable sendSongAfterDelayRunnable = () -> {
