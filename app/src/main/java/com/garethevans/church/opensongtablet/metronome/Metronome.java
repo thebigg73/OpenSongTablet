@@ -7,9 +7,9 @@ import android.graphics.Color;
 import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.media.SoundPool;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 
 import androidx.core.graphics.ColorUtils;
 
@@ -34,7 +34,7 @@ public class Metronome {
     private final String TAG = "Metronome";
     private int beat, beats, divisions, beatTimeLength, beatsRequired, beatsRunningTotal,
             metronomeFlashOnColor, metronomeFlashOffColor, metronomeFlashOnColorDarker,
-            tickClip, tockClip;
+            tickClip, tockClip, sampleRate, framesPerBuffer;
     private float volumeTickLeft = 1.0f, volumeTickRight = 1.0f, volumeTockLeft = 1.0f,
             volumeTockRight = 1.0f, meterTimeDivision = 1.0f;
     private boolean visualMetronome = false, isRunning = false, validTimeSig = false,
@@ -142,8 +142,28 @@ public class Metronome {
     }
 
     private void setupSoundPool() {
-        int maxStreams = 4;
-        if (mainActivityInterface.getStorageAccess().lollipopOrLater()) {
+        int maxStreams = 2;
+        AudioManager am = (AudioManager) c.getSystemService(Context.AUDIO_SERVICE);
+        String sampleRateStr = am.getProperty(AudioManager.PROPERTY_OUTPUT_SAMPLE_RATE);
+        sampleRate = Integer.parseInt(sampleRateStr);
+        if (sampleRate == 0) {
+            sampleRate = 44100; // Use a default value if property not found
+        }
+        String framesPerBufferStr = am.getProperty(AudioManager.PROPERTY_OUTPUT_FRAMES_PER_BUFFER);
+        framesPerBuffer = Integer.parseInt(framesPerBufferStr);
+        if (framesPerBuffer == 0) {
+            framesPerBuffer = 256; // Use default
+        }
+        //Log.d(TAG,"sampleRate:"+sampleRate+"  framesPerBuffer:"+framesPerBuffer);
+        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.N) {
+            AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                    .setUsage(AudioAttributes.USAGE_MEDIA)
+                    .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                    .setFlags(AudioAttributes.FLAG_LOW_LATENCY)
+                    .build();
+            soundPool = new SoundPool.Builder().setMaxStreams(maxStreams)
+                    .setAudioAttributes(audioAttributes).build();
+        } else if (mainActivityInterface.getStorageAccess().lollipopOrLater()) {
             AudioAttributes audioAttributes = new AudioAttributes.Builder()
                     .setUsage(AudioAttributes.USAGE_MEDIA)
                     .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
@@ -302,7 +322,7 @@ public class Metronome {
                 tickBeats.add(13);
             }
         }
-        Log.d(TAG,"tickBeats:"+tickBeats);
+        //Log.d(TAG,"tickBeats:"+tickBeats);
     }
     public void setBarsAndBeats() {
         int barsRequired = mainActivityInterface.getPreferences().getMyPreferenceInt("metronomeLength", 0);
@@ -336,7 +356,7 @@ public class Metronome {
                     // For proof of scheduler
                     // Expected time is a running total of start time + beatTimeLength each loop
                     long t= System.currentTimeMillis();
-                    Log.d(TAG,"time slip(ms):"+(t-startTime)+"  System.currenTimeMillis():"+System.currentTimeMillis()+"  this event should be at:"+startTime + "  beatTimeLength:"+beatTimeLength);
+                    //Log.d(TAG,"time slip(ms):"+(t-startTime)+"  System.currenTimeMillis():"+System.currentTimeMillis()+"  this event should be at:"+startTime + "  beatTimeLength:"+beatTimeLength);
                     if (beat>beats) {
                         beat = 1;
                     }
