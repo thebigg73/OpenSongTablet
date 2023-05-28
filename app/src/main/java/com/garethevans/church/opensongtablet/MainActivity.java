@@ -2113,9 +2113,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 } else {
                     myView.onScreenInfo.showHideViews(this);
                     if (pageButtons.getPageButtonHide() && !pageButtons.getPageButtonActivated()) {
-                        myView.actionFAB.postDelayed(() -> {
-                            myView.actionFAB.show();
-                        }, 50);
+                        myView.actionFAB.postDelayed(() -> myView.actionFAB.show(), 50);
                         myView.actionFAB.postDelayed(hideActionButtonRunnable, 3000);
                     }
                 }
