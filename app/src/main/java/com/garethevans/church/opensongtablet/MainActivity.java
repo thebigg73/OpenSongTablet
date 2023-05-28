@@ -3523,6 +3523,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         super.onPause();
         // Copy the persistent database from app storage to user storage
         nonOpenSongSQLiteHelper.copyUserDatabase();
+        if (autoscroll != null) {
+            autoscroll.stopTimers();
+        }
+        if (metronome != null) {
+            metronome.stopTimers(true);
+        }
     }
 
     @Override
