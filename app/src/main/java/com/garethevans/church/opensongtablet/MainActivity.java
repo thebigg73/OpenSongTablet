@@ -1020,6 +1020,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         closeDrawer(true);  // Only the Performance and Presenter fragments allow this.  Switched on in these fragments
         actionButtonWasExpanded = myView.actionFAB.getRotation() != 0;
         hideActionButton(true);
+        // Stop the autoscroll if running
+        if (autoscroll!=null) {
+            autoscroll.stopAutoscroll();
+        }
 
         if (deepLink != null && deepLink.equals(deeplink_edit) && songListBuildIndex.getCurrentlyIndexing()) {
             showToast.doIt(indexing_string);
