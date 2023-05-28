@@ -221,7 +221,7 @@ public class Metronome {
                     replace("Moderate", "100").
                     replace("Slow", "80").
                     replace("Very Slow", "60").
-                    replaceAll("[\\D]", "");
+                    replaceAll("\\D", "");
             try {
                 tempo = (short) Integer.parseInt(t);
                 validTempo = true;
@@ -446,7 +446,7 @@ public class Metronome {
                     beatVisual++;
                     visualTime += beatTimeLength;
                 });
-            };
+            }
         };
         visualTime = System.currentTimeMillis() + buffer;
         visualTimer.scheduleAtFixedRate(visualTimerTask,0,beatTimeLength);
