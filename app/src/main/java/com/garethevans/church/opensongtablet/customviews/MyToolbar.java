@@ -467,15 +467,15 @@ public class MyToolbar extends MaterialToolbar {
         metronomeLayout.setVisibility(View.GONE);
     }
 
-    public void highlightBeat(int beat, int colorOn) {
+    public void highlightBeat(int beat, int colorOn, long bufferFix) {
         // Highlight the beat
-        beatView.get(beat).setBackgroundColor(colorOn);
+        beatView.get(beat).postDelayed(() -> beatView.get(beat).setBackgroundColor(colorOn),bufferFix);
         if (beat==1) {
             // Hide the last beat
-            beatView.get(beats).setBackgroundColor(Color.TRANSPARENT);
+            beatView.get(beats).postDelayed(() -> beatView.get(beats).setBackgroundColor(Color.TRANSPARENT),bufferFix);
         } else {
             // Hide the previous beat
-            beatView.get(beat-1).setBackgroundColor(Color.TRANSPARENT);
+            beatView.get(beat-1).postDelayed(() -> beatView.get(beat-1).setBackgroundColor(Color.TRANSPARENT),bufferFix);
         }
     }
 }

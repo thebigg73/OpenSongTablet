@@ -10,7 +10,6 @@ import android.media.SoundPool;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 
 import androidx.core.graphics.ColorUtils;
 
@@ -30,6 +29,7 @@ public class Metronome {
     // This object holds all of the metronome activity
     private final Context c;
     private final MainActivityInterface mainActivityInterface;
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "Metronome";
     private int beat;
     private int beats;
@@ -42,6 +42,8 @@ public class Metronome {
     private int metronomeFlashOnColorDarker;
     private int tickClip;
     private int tockClip;
+    private long audioTime, visualTime;
+    private final long buffer = 100;
     private float volumeTickLeft = 1.0f, volumeTickRight = 1.0f, volumeTockLeft = 1.0f,
             volumeTockRight = 1.0f, meterTimeDivision = 1.0f;
     private boolean audioMetronome = true, visualMetronome = false, isRunningVisual = false, isRunningAudio, validTimeSig = false,
@@ -327,7 +329,6 @@ public class Metronome {
                 tickBeats.add(13);
             }
         }
-        //Log.d(TAG,"tickBeats:"+tickBeats);
     }
     public void setBarsAndBeats() {
         int barsRequired = mainActivityInterface.getPreferences().getMyPreferenceInt("metronomeLength", 0);
@@ -364,41 +365,52 @@ public class Metronome {
         metronomeTimerTask = new TimerTask() {
             public void run() {
                 metronomeTimerHandler.post(() -> {
-                    // For proof of scheduler
                     // Expected time is a running total of start time + beatTimeLength each loop
-                    long t = System.currentTimeMillis();
-                    long latency = t-startTime;
-                    Log.d(TAG,"latency (ms):"+latency+"  System.currenTimeMillis():"+System.currentTimeMillis()+"  this event should be at:"+startTime + "  beatTimeLength:"+beatTimeLength);
-                    if (beat>beats) {
+                    // Build in a time buffer of 100ms and subtract the latency from this
+                    // What is left is a post delay task
+                    long sysTime = System.currentTimeMillis();
+                    // Latency is always positive as the sysTime will always be on or after the audioTime
+                    long latency = sysTime - (audioTime - buffer);
+                    final long bufferFix = buffer - latency;
+                    if (beat > beats) {
                         beat = 1;
                     }
-                    // If more than 60ms out - skip beat (too far out)
-                    if (Math.abs(t-startTime)<=60) {
-                        if (tickBeats.contains(beat)) {
+                    if (soundPool != null && tickBeats.contains(beat)) {
+                        new Handler().postDelayed(() -> {
                             if (soundPool != null) {
-                                soundPool.play(tickClip, volumeTickLeft, volumeTickRight, 0, 0, 1);
+                                try {
+                                    soundPool.play(tickClip, volumeTickLeft, volumeTickRight, 0, 0, 1);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
                             }
-                        } else {
+                        }, bufferFix);
+                    } else if (soundPool != null) {
+                        new Handler().postDelayed(() -> {
                             if (soundPool != null) {
-                                soundPool.play(tockClip, volumeTockLeft, volumeTockRight, 0, 0, 1);
+                                try {
+                                    soundPool.play(tockClip, volumeTockLeft, volumeTockRight, 0, 0, 1);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
                             }
-                        }
+                        }, bufferFix);
                     }
-                    beat ++;
-                    beatsRunningTotal ++;
 
-                    if (beatsRequired>0 && beatsRunningTotal>beatsRequired) {
+                    beat++;
+                    beatsRunningTotal++;
+
+                    if (beatsRequired > 0 && beatsRunningTotal > beatsRequired) {
                         // Stop the metronome (beats and visual)
                         stopMetronome();
                     }
-                    startTime += beatTimeLength;
+                    audioTime += beatTimeLength;
                 });
             }
         };
-        startTime = System.currentTimeMillis();
+        audioTime = System.currentTimeMillis() + buffer;
         metronomeTimer.scheduleAtFixedRate(metronomeTimerTask, 0, beatTimeLength);
     }
-    private long startTime;
     private void timerVisual() {
         // The flash on and off are handled separately.
         // This timer off is runs half way through the beat to turn the flash off
@@ -406,24 +418,41 @@ public class Metronome {
         isRunningVisual = true;
         visualTimerTask = new TimerTask() {
             public void run() {
-                if (beatVisual>beats) {
-                    beatVisual = 1;
-                }
-                visualTimerHandler.removeCallbacks(visualTimerTask);
-                if (tickBeats.contains(beatVisual)) {
-                    mainActivityInterface.getToolbar().highlightBeat(beatVisual,metronomeFlashOnColor);
-                } else {
-                    mainActivityInterface.getToolbar().highlightBeat(beatVisual,metronomeFlashOnColorDarker);
-                }
-                beatVisual ++;
-            }
+                visualTimerHandler.post(() -> {
+                    // Build in a time buffer of 100ms and subtract the latency from this
+                    // What is left is a post delay task
+                    long sysTime = System.currentTimeMillis();
+                    // Latency is always positive as the sysTime will always be on or after the audioTime
+                    long latency = sysTime - (visualTime - buffer);
+                    final long bufferFix = buffer - latency;
+                    if (beatVisual > beats) {
+                        beatVisual = 1;
+                    }
+                    visualTimerHandler.removeCallbacks(visualTimerTask);
+                    final int thisBeat = beatVisual;
+                    if (tickBeats.contains(beatVisual)) {
+                        try {
+                            mainActivityInterface.getToolbar().highlightBeat(thisBeat, metronomeFlashOnColor, bufferFix);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        try {
+                            mainActivityInterface.getToolbar().highlightBeat(thisBeat, metronomeFlashOnColorDarker, bufferFix);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    beatVisual++;
+                    visualTime += beatTimeLength;
+                });
+            };
         };
+        visualTime = System.currentTimeMillis() + buffer;
         visualTimer.scheduleAtFixedRate(visualTimerTask,0,beatTimeLength);
     }
 
     public void stopTimers(boolean nullTimer) {
-        Log.d(TAG,"stop called");
-
         // Stop the metronome timer stuff
         if (metronomeTimerTask != null) {
             metronomeTimerTask.cancel();
@@ -450,6 +479,12 @@ public class Metronome {
         }
         isRunningVisual = false;
         isRunningAudio = false;
+
+        try {
+            mainActivityInterface.getToolbar().hideMetronomeBar();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void initialiseTapTempo(MaterialButton tapButton, ExposedDropDown timeSigView,
