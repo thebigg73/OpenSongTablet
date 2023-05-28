@@ -113,23 +113,19 @@
                     android:text="@string/metronome_autostart"
                     android:hint="@string/metronome_autostart_info"/>
 
-                <com.garethevans.church.opensongtablet.customviews.TextThreeSlider
-                    android:id="@+id/metronomePan"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="16dp"
-                    app:label="@string/pan"
-                    app:textL="@string/pan_left"
-                    app:textC="@string/pan_center"
-                    app:textR="@string/pan_right"
-                    app:chosen="1"/>
-
                 <com.google.android.material.switchmaterial.SwitchMaterial
                     android:id="@+id/visualMetronome"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/visual_metronome" />
+                    android:text="@string/visual_metronome"
+                    android:layout_marginBottom="16dp"/>
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/audioMetronome"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/audio"
+                    android:layout_marginBottom="16dp"/>
 
                 <com.garethevans.church.opensongtablet.customviews.MaterialSlider
                     android:id="@+id/maxBars"
@@ -141,6 +137,24 @@
                     android:value="0"
                     android:valueFrom="0"
                     android:valueTo="64" />
+
+                <LinearLayout
+                    android:id="@+id/audioSettings"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                <com.garethevans.church.opensongtablet.customviews.TextThreeSlider
+                    android:id="@+id/metronomePan"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    app:label="@string/pan"
+                    app:textL="@string/pan_left"
+                    app:textC="@string/pan_center"
+                    app:textR="@string/pan_right"
+                    app:chosen="1"/>
                 <TableRow style="@style/DividerLine" />
 
                 <com.google.android.material.textview.MaterialTextView
@@ -193,6 +207,7 @@
                     android:value="80"
                     android:valueFrom="0"
                     android:valueTo="100" />
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </com.garethevans.church.opensongtablet.customviews.NestedScrollWithFAB>

@@ -196,6 +196,10 @@ public class MetronomeFragment extends Fragment {
         // Set the visual metronome
         myView.visualMetronome.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("metronomeShowVisual",false));
 
+        // Set the visual metronome
+        myView.audioMetronome.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("metronomeAudio",true));
+        myView.audioSettings.setVisibility(myView.visualMetronome.isChecked() ? View.VISIBLE:View.GONE);
+
         // Get the max bars required
         myView.maxBars.setHint(getMaxBars(mainActivityInterface.getPreferences().getMyPreferenceInt("metronomeLength",0)));
 
@@ -259,6 +263,13 @@ public class MetronomeFragment extends Fragment {
         myView.visualMetronome.setOnCheckedChangeListener((compoundButton, isChecked) -> {
             mainActivityInterface.getPreferences().setMyPreferenceBoolean("metronomeShowVisual",isChecked);
             mainActivityInterface.getMetronome().setVisualMetronome();
+            mainActivityInterface.getMetronome().stopMetronome();
+        });
+        myView.audioMetronome.setOnCheckedChangeListener((compoundButton, isChecked) -> {
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean("metronomeAudio",isChecked);
+            mainActivityInterface.getMetronome().setAudioMetronome();
+            myView.audioSettings.setVisibility(isChecked ? View.VISIBLE:View.GONE);
+            mainActivityInterface.getMetronome().stopMetronome();
         });
         myView.metronomeAutoStart.setOnCheckedChangeListener((compoundButton, isChecked) ->
                 mainActivityInterface.getMetronome().setMetronomeAutoStart(isChecked));

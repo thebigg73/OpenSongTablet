@@ -44,15 +44,14 @@ public class Metronome {
     private int tockClip;
     private float volumeTickLeft = 1.0f, volumeTickRight = 1.0f, volumeTockLeft = 1.0f,
             volumeTockRight = 1.0f, meterTimeDivision = 1.0f;
-    private boolean visualMetronome = false, isRunning = false, validTimeSig = false,
+    private boolean audioMetronome = true, visualMetronome = false, isRunningVisual = false, isRunningAudio, validTimeSig = false,
             validTempo = false, tickPlayerReady, tockPlayerReady, metronomeAutoStart;
     private String tickSound, tockSound;
     private SoundPool soundPool;
-    private Timer metronomeTimer, visualTimerOn, visualTimerOff;
-    private TimerTask metronomeTimerTask, visualTimerTaskOn, visualTimerTaskOff;
+    private Timer metronomeTimer, visualTimer;
+    private TimerTask metronomeTimerTask, visualTimerTask;
     private final Handler metronomeTimerHandler = new Handler();
-    private final Handler visualTimerHandlerOn = new Handler();
-    private final Handler visualTimerHandlerOff = new Handler();
+    private final Handler visualTimerHandler = new Handler();
     private ArrayList<Integer> tickBeats;
 
     private ExposedDropDown beatsView, divisionsView, timeSigView, tempoView;
@@ -74,7 +73,7 @@ public class Metronome {
         mainActivityInterface.getToolbar().setUpMetronomeBar(beats);
 
         // If the metronome is valid and not running, start. If not stop
-        if (metronomeValid() && !isRunning){
+        if (metronomeValid() && !getIsRunning()){
             // Get the tick and tock sounds ready
             setupPlayers();
         } else {
@@ -82,7 +81,8 @@ public class Metronome {
         }
     }
     public void stopMetronome() {
-        isRunning = false;
+        isRunningAudio = false;
+        isRunningVisual = false;
         stopTimers(false);
 
         // Make sure the action bar resets to the off color
@@ -99,6 +99,10 @@ public class Metronome {
 
     // Set up the metronome values (tempo, time signature, user preferences, etc)
     private void initialiseMetronome() {
+        // Does the user want an audio metronome?
+        audioMetronome = mainActivityInterface.getPreferences().
+                getMyPreferenceBoolean("metronomeAudio", true);
+
         // Does the user want the visual metronome?
         setVisualMetronome();
 
@@ -180,6 +184,10 @@ public class Metronome {
         metronomeFlashOnColor = mainActivityInterface.getMyThemeColors().getMetronomeColor();
         metronomeFlashOnColorDarker = ColorUtils.blendARGB(metronomeFlashOnColor, Color.BLACK, 0.3f);
     }
+    public void setAudioMetronome() {
+        audioMetronome = mainActivityInterface.getPreferences().getMyPreferenceBoolean("metronomeAudio",true);
+    }
+
     public void setVolumes() {
         String pan = mainActivityInterface.getPreferences().getMyPreferenceString("metronomePan","C");
         float tickVol = mainActivityInterface.getPreferences().getMyPreferenceFloat("metronomeTickVol",0.8f);
@@ -331,21 +339,26 @@ public class Metronome {
         return validTempo && validTimeSig;
     }
     public boolean getIsRunning() {
-        return isRunning;
+        return isRunningAudio || isRunningVisual;
     }
     private void checkPlayersReady() {
         // Called when the mediaPlayer are prepared
         if (tickPlayerReady && tockPlayerReady) {
-            timerMetronome();
+            if (audioMetronome) {
+                timerMetronome();
+            }
             if (visualMetronome) {
                 timerVisual();
+            }
+            if (!audioMetronome && !visualMetronome) {
+                stopMetronome();
             }
         }
     }
 
     // The metronome timers and runnables
     private void timerMetronome() {
-        isRunning = true;
+        isRunningAudio = true;
         metronomeTimer = new Timer();
 
         metronomeTimerTask = new TimerTask() {
@@ -389,15 +402,14 @@ public class Metronome {
     private void timerVisual() {
         // The flash on and off are handled separately.
         // This timer off is runs half way through the beat to turn the flash off
-        visualTimerOn = new Timer();
-        visualTimerOff = new Timer();
-        visualTimerTaskOn = new TimerTask() {
+        visualTimer = new Timer();
+        isRunningVisual = true;
+        visualTimerTask = new TimerTask() {
             public void run() {
                 if (beatVisual>beats) {
                     beatVisual = 1;
                 }
-                visualTimerHandlerOn.removeCallbacks(visualTimerTaskOn);
-                visualTimerHandlerOff.removeCallbacks(visualTimerTaskOff);
+                visualTimerHandler.removeCallbacks(visualTimerTask);
                 if (tickBeats.contains(beatVisual)) {
                     mainActivityInterface.getToolbar().highlightBeat(beatVisual,metronomeFlashOnColor);
                 } else {
@@ -406,12 +418,12 @@ public class Metronome {
                 beatVisual ++;
             }
         };
-
-        visualTimerOn.scheduleAtFixedRate(visualTimerTaskOn,0,beatTimeLength);
+        visualTimer.scheduleAtFixedRate(visualTimerTask,0,beatTimeLength);
     }
 
     public void stopTimers(boolean nullTimer) {
         Log.d(TAG,"stop called");
+
         // Stop the metronome timer stuff
         if (metronomeTimerTask != null) {
             metronomeTimerTask.cancel();
@@ -423,28 +435,21 @@ public class Metronome {
         }
 
         // Stop the visual metronome timer stuff
-        if (visualTimerTaskOn!=null) {
-            visualTimerTaskOn.cancel();
-            visualTimerTaskOn = null;
+        if (visualTimerTask!=null) {
+            visualTimerTask.cancel();
+            visualTimerTask = null;
         }
-        if (visualTimerTaskOff!=null) {
-            visualTimerTaskOff.cancel();
-            visualTimerTaskOff = null;
-        }
-        if (visualTimerOn != null) {
-            visualTimerOn.cancel();
-            visualTimerOn.purge();
-        }
-        if (visualTimerOff != null) {
-            visualTimerOff.cancel();
-            visualTimerOff.purge();
+        if (visualTimer != null) {
+            visualTimer.cancel();
+            visualTimer.purge();
         }
 
         if (nullTimer) {
             metronomeTimer = null;
-            visualTimerOn = null;
-            visualTimerOff = null;
+            visualTimer = null;
         }
+        isRunningVisual = false;
+        isRunningAudio = false;
     }
 
     public void initialiseTapTempo(MaterialButton tapButton, ExposedDropDown timeSigView,
