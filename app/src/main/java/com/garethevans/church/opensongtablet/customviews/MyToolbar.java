@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -345,7 +346,7 @@ public class MyToolbar extends MaterialToolbar {
     // Flash on/off for metronome
     public void doFlash(int colorBar) {
         setBackground(new ColorDrawable(colorBar));
-        //Log.d(TAG,"flash bar");
+        Log.d(TAG,"flash bar");
     }
 
     // Get the actionbar height - fakes a height of 0 if autohiding

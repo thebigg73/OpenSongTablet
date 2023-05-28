@@ -41,10 +41,11 @@ public class Metronome {
             validTempo = false, tickPlayerReady, tockPlayerReady, metronomeAutoStart;
     private String tickSound, tockSound;
     private SoundPool soundPool;
-    private Timer metronomeTimer, visualTimer;
-    private TimerTask metronomeTimerTask, visualTimerTask;
+    private Timer metronomeTimer, visualTimerOn, visualTimerOff;
+    private TimerTask metronomeTimerTask, visualTimerTaskOn, visualTimerTaskOff;
     private final Handler metronomeTimerHandler = new Handler();
-    private final Handler visualTimerHandler = new Handler();
+    private final Handler visualTimerHandlerOn = new Handler();
+    private final Handler visualTimerHandlerOff = new Handler();
     private ArrayList<Integer> tickBeats;
 
     private ExposedDropDown beatsView, divisionsView, timeSigView, tempoView;
@@ -351,9 +352,9 @@ public class Metronome {
                     beat ++;
                     beatsRunningTotal ++;
 
-                    if (visualMetronome) {
+                    /*if (visualMetronome) {
                         // Because this is aysnc, beat is 1 less
-                        ExecutorService executorService = Executors.newSingleThreadExecutor();
+                        *//*ExecutorService executorService = Executors.newSingleThreadExecutor();
                         executorService.execute(() -> {
                             Handler handler = new Handler(Looper.getMainLooper());
                             handler.post(() -> {
@@ -363,8 +364,8 @@ public class Metronome {
                                     mainActivityInterface.getToolbar().doFlash(metronomeFlashOnColorDarker);
                                 }
                             });
-                        });
-                    }
+                        });*//*
+                    }*/
                     if (beatsRequired>0 && beatsRunningTotal>beatsRequired) {
                         // Stop the metronome (beats and visual)
                         stopMetronome();
@@ -379,19 +380,30 @@ public class Metronome {
     }
     private long startTime;
     private void timerVisual() {
-        // The flash on is handled in the metronome.
-        // This timer is runs half way through the beat to turn the flash off
-        visualTimer = new Timer();
-        visualTimerTask = new TimerTask() {
+        // The flash on and off are handled separately.
+        // This timer off is runs half way through the beat to turn the flash off
+        visualTimerOn = new Timer();
+        visualTimerOff = new Timer();
+        visualTimerTaskOn = new TimerTask() {
+            public void run() {
+                if (tickBeats.contains(beat - 1)) {
+                    mainActivityInterface.getToolbar().doFlash(metronomeFlashOnColor);
+                } else {
+                    mainActivityInterface.getToolbar().doFlash(metronomeFlashOnColorDarker);
+                }
+            }
+        };
+        visualTimerTaskOff = new TimerTask() {
             public void run() {
                 if (activity != null) {
-                    visualTimerHandler.post(() -> activity.runOnUiThread(() -> mainActivityInterface.getToolbar().doFlash(metronomeFlashOffColor)));
+                    visualTimerHandlerOff.post(() -> activity.runOnUiThread(() -> mainActivityInterface.getToolbar().doFlash(metronomeFlashOffColor)));
                 } else {
                     Log.d(TAG,"activity is null");
                 }
             }
         };
-        visualTimer.scheduleAtFixedRate(visualTimerTask, beatTimeLength/2, beatTimeLength);
+        visualTimerOn.scheduleAtFixedRate(visualTimerTaskOn,0,beatTimeLength);
+        visualTimerOff.scheduleAtFixedRate(visualTimerTaskOff, beatTimeLength/2, beatTimeLength);
     }
 
     public void stopTimers(boolean nullTimer) {
@@ -406,18 +418,27 @@ public class Metronome {
         }
 
         // Stop the visual metronome timer stuff
-        if (visualTimerTask!=null) {
-            visualTimerTask.cancel();
-            visualTimerTask = null;
+        if (visualTimerTaskOn!=null) {
+            visualTimerTaskOn.cancel();
+            visualTimerTaskOn = null;
         }
-        if (visualTimer != null) {
-            visualTimer.cancel();
-            visualTimer.purge();
+        if (visualTimerTaskOff!=null) {
+            visualTimerTaskOff.cancel();
+            visualTimerTaskOff = null;
+        }
+        if (visualTimerOn != null) {
+            visualTimerOn.cancel();
+            visualTimerOn.purge();
+        }
+        if (visualTimerOff != null) {
+            visualTimerOff.cancel();
+            visualTimerOff.purge();
         }
 
         if (nullTimer) {
             metronomeTimer = null;
-            visualTimer = null;
+            visualTimerOn = null;
+            visualTimerOff = null;
         }
     }
 
