@@ -386,20 +386,24 @@ public class Metronome {
         visualTimerOff = new Timer();
         visualTimerTaskOn = new TimerTask() {
             public void run() {
+                visualTimerHandlerOn.removeCallbacks(visualTimerTaskOn);
+                visualTimerHandlerOff.removeCallbacks(visualTimerTaskOff);
                 if (tickBeats.contains(beat - 1)) {
-                    mainActivityInterface.getToolbar().doFlash(metronomeFlashOnColor);
+                    visualTimerHandlerOn.post(() -> mainActivityInterface.getToolbar().doFlash(metronomeFlashOnColor));
+
                 } else {
-                    mainActivityInterface.getToolbar().doFlash(metronomeFlashOnColorDarker);
+                    visualTimerHandlerOn.post(() -> mainActivityInterface.getToolbar().doFlash(metronomeFlashOnColorDarker));
                 }
             }
         };
         visualTimerTaskOff = new TimerTask() {
             public void run() {
-                if (activity != null) {
+                visualTimerHandlerOff.post(() -> mainActivityInterface.getToolbar().doFlash(metronomeFlashOffColor));
+                /*if (activity != null) {
                     visualTimerHandlerOff.post(() -> activity.runOnUiThread(() -> mainActivityInterface.getToolbar().doFlash(metronomeFlashOffColor)));
                 } else {
                     Log.d(TAG,"activity is null");
-                }
+                }*/
             }
         };
         visualTimerOn.scheduleAtFixedRate(visualTimerTaskOn,0,beatTimeLength);
@@ -415,6 +419,11 @@ public class Metronome {
         if (metronomeTimer != null) {
             metronomeTimer.cancel();
             metronomeTimer.purge();
+        }
+        try {
+            mainActivityInterface.getToolbar().doFlash(metronomeFlashOffColor);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         // Stop the visual metronome timer stuff
