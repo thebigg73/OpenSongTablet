@@ -24,19 +24,24 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 
 public class Metronome {
 
     // This object holds all of the metronome activity
-
     private final Context c;
     private final MainActivityInterface mainActivityInterface;
-    private final Activity activity;  // For run on UI updates
     private final String TAG = "Metronome";
-    private int beat, beats, beatVisual, divisions, beatTimeLength=0, beatsRequired, beatsRunningTotal,
-            metronomeFlashOnColor, metronomeFlashOffColor, metronomeFlashOnColorDarker,
-            tickClip, tockClip, sampleRate, framesPerBuffer;
+    private int beat;
+    private int beats;
+    private int beatVisual;
+    private int divisions;
+    private int beatTimeLength=0;
+    private int beatsRequired;
+    private int beatsRunningTotal;
+    private int metronomeFlashOnColor;
+    private int metronomeFlashOnColorDarker;
+    private int tickClip;
+    private int tockClip;
     private float volumeTickLeft = 1.0f, volumeTickRight = 1.0f, volumeTockLeft = 1.0f,
             volumeTockRight = 1.0f, meterTimeDivision = 1.0f;
     private boolean visualMetronome = false, isRunning = false, validTimeSig = false,
@@ -49,7 +54,6 @@ public class Metronome {
     private final Handler visualTimerHandlerOn = new Handler();
     private final Handler visualTimerHandlerOff = new Handler();
     private ArrayList<Integer> tickBeats;
-    private Runnable turnOffActionBar;
 
     private ExposedDropDown beatsView, divisionsView, timeSigView, tempoView;
     private long old_time = 0L;
@@ -59,22 +63,15 @@ public class Metronome {
 
 
     public Metronome(Activity activity) {
-        this.activity = activity;
         c = (Context) activity;
         mainActivityInterface = (MainActivityInterface) c;
         metronomeAutoStart = mainActivityInterface.getPreferences().getMyPreferenceBoolean("metronomeAutoStart",false);
-        turnOffActionBar = () -> {
-            try {
-                mainActivityInterface.getToolbar().doFlash(metronomeFlashOffColor);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        };
     }
     // The call to start and stop the metronome called from MainActivity
     public void startMetronome() {
         // Initialise the varibles
         initialiseMetronome();
+        mainActivityInterface.getToolbar().setUpMetronomeBar(beats);
 
         // If the metronome is valid and not running, start. If not stop
         if (metronomeValid() && !isRunning){
@@ -89,14 +86,15 @@ public class Metronome {
         stopTimers(false);
 
         // Make sure the action bar resets to the off color
-        new Handler(Looper.getMainLooper()).postDelayed(turnOffActionBar,beatTimeLength);
-        new Handler(Looper.getMainLooper()).postDelayed(turnOffActionBar,beatTimeLength*2L);
+        new Handler(Looper.getMainLooper()).postDelayed(() -> mainActivityInterface.getToolbar().hideMetronomeBar(),beatTimeLength);
+        new Handler(Looper.getMainLooper()).postDelayed(() -> mainActivityInterface.getToolbar().hideMetronomeBar(),beatTimeLength*2L);
 
         // Clean up the soundPool
         if (soundPool!=null) {
             soundPool.release();
             soundPool = null;
         }
+        mainActivityInterface.getToolbar().hideMetronomeBar();
     }
 
     // Set up the metronome values (tempo, time signature, user preferences, etc)
@@ -155,18 +153,6 @@ public class Metronome {
 
     private void setupSoundPool() {
         int maxStreams = 8;
-        AudioManager am = (AudioManager) c.getSystemService(Context.AUDIO_SERVICE);
-        String sampleRateStr = am.getProperty(AudioManager.PROPERTY_OUTPUT_SAMPLE_RATE);
-        sampleRate = Integer.parseInt(sampleRateStr);
-        if (sampleRate == 0) {
-            sampleRate = 44100; // Use a default value if property not found
-        }
-        String framesPerBufferStr = am.getProperty(AudioManager.PROPERTY_OUTPUT_FRAMES_PER_BUFFER);
-        framesPerBuffer = Integer.parseInt(framesPerBufferStr);
-        if (framesPerBuffer == 0) {
-            framesPerBuffer = 256; // Use default
-        }
-        //Log.d(TAG,"sampleRate:"+sampleRate+"  framesPerBuffer:"+framesPerBuffer);
         if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.N) {
             AudioAttributes audioAttributes = new AudioAttributes.Builder()
                     .setUsage(AudioAttributes.USAGE_MEDIA)
@@ -191,7 +177,6 @@ public class Metronome {
         visualMetronome = mainActivityInterface.getPreferences().
                 getMyPreferenceBoolean("metronomeShowVisual", false);
 
-        metronomeFlashOffColor = c.getResources().getColor(R.color.colorAltPrimary);
         metronomeFlashOnColor = mainActivityInterface.getMyThemeColors().getMetronomeColor();
         metronomeFlashOnColorDarker = ColorUtils.blendARGB(metronomeFlashOnColor, Color.BLACK, 0.3f);
     }
@@ -216,7 +201,7 @@ public class Metronome {
     }
     public void setSongValues() {
         // First up the tempo
-        int tempo = 0;
+        int tempo;
         validTempo = false;
         String t = mainActivityInterface.getSong().getTempo();
         try {
@@ -398,7 +383,6 @@ public class Metronome {
             }
         };
         startTime = System.currentTimeMillis();
-        ScheduledExecutorService scheduledExecutorService;
         metronomeTimer.scheduleAtFixedRate(metronomeTimerTask, 0, beatTimeLength);
     }
     private long startTime;
@@ -415,22 +399,15 @@ public class Metronome {
                 visualTimerHandlerOn.removeCallbacks(visualTimerTaskOn);
                 visualTimerHandlerOff.removeCallbacks(visualTimerTaskOff);
                 if (tickBeats.contains(beatVisual)) {
-                    visualTimerHandlerOn.post(() -> mainActivityInterface.getToolbar().doFlash(metronomeFlashOnColor));
+                    mainActivityInterface.getToolbar().highlightBeat(beatVisual,metronomeFlashOnColor);
                 } else {
-                    visualTimerHandlerOn.post(() -> mainActivityInterface.getToolbar().doFlash(metronomeFlashOnColorDarker));
+                    mainActivityInterface.getToolbar().highlightBeat(beatVisual,metronomeFlashOnColorDarker);
                 }
                 beatVisual ++;
             }
         };
-        visualTimerTaskOff = new TimerTask() {
-            public void run() {
-                visualTimerHandlerOn.removeCallbacks(visualTimerTaskOn);
-                visualTimerHandlerOff.removeCallbacks(visualTimerTaskOff);
-                visualTimerHandlerOff.post(turnOffActionBar);
-            }
-        };
+
         visualTimerOn.scheduleAtFixedRate(visualTimerTaskOn,0,beatTimeLength);
-        visualTimerOff.scheduleAtFixedRate(visualTimerTaskOff, beatTimeLength/2, beatTimeLength);
     }
 
     public void stopTimers(boolean nullTimer) {

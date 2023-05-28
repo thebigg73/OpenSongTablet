@@ -1,12 +1,13 @@
 package com.garethevans.church.opensongtablet.customviews;
 
 import android.content.Context;
-import android.graphics.drawable.ColorDrawable;
+import android.graphics.Color;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextClock;
 import android.widget.TextView;
 
@@ -19,6 +20,8 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.SongDetailsBottomSheet;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.textview.MaterialTextView;
+
+import java.util.ArrayList;
 
 
 public class MyToolbar extends MaterialToolbar {
@@ -38,11 +41,14 @@ public class MyToolbar extends MaterialToolbar {
     private final TextClock clock;
     private final ImageView setIcon, batteryimage;
     private final FrameLayout songandauthor;
+    private final LinearLayout metronomeLayout;
+    private final ArrayList<View> beatView;
     private final com.google.android.material.textview.MaterialTextView batterycharge;
     private Handler delayActionBarHide;
     private Runnable hideActionBarRunnable;
     private int actionBarHideTime = 1200, additionalTopPadding = 0;
     private float clockTextSize;
+    private int beats = 4;
     private boolean clock24hFormat, clockOn, hideActionBar, clockSeconds, performanceMode;
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "MyToolbar";
@@ -74,6 +80,27 @@ public class MyToolbar extends MaterialToolbar {
         batterycharge = v.findViewById(R.id.batterycharge);
         songandauthor = v.findViewById(R.id.songandauthor);
         clock = v.findViewById(R.id.digitalclock);
+        metronomeLayout = v.findViewById(R.id.metronomeLayout);
+        beatView = new ArrayList<>();
+        beatView.add(null);
+        beatView.add(v.findViewById(R.id.beat1));
+        beatView.add(v.findViewById(R.id.beat2));
+        beatView.add(v.findViewById(R.id.beat3));
+        beatView.add(v.findViewById(R.id.beat4));
+        beatView.add(v.findViewById(R.id.beat5));
+        beatView.add(v.findViewById(R.id.beat6));
+        beatView.add(v.findViewById(R.id.beat7));
+        beatView.add(v.findViewById(R.id.beat8));
+        beatView.add(v.findViewById(R.id.beat9));
+        beatView.add(v.findViewById(R.id.beat10));
+        beatView.add(v.findViewById(R.id.beat11));
+        beatView.add(v.findViewById(R.id.beat12));
+        beatView.add(v.findViewById(R.id.beat13));
+        beatView.add(v.findViewById(R.id.beat14));
+        beatView.add(v.findViewById(R.id.beat15));
+        beatView.add(v.findViewById(R.id.beat16));
+
+        metronomeLayout.setVisibility(View.GONE);
 
         batteryholder.setOnClickListener(v1 -> {
             mainActivityInterface.showActionBar();
@@ -342,11 +369,6 @@ public class MyToolbar extends MaterialToolbar {
         delayActionBarHide.removeCallbacks(hideActionBarRunnable);
     }
 
-    // Flash on/off for metronome
-    public void doFlash(int colorBar) {
-        setBackground(new ColorDrawable(colorBar));
-        //Log.d(TAG,"flash bar");
-    }
 
     // Get the actionbar height - fakes a height of 0 if autohiding
     public int getActionBarHeight(boolean forceShown) {
@@ -414,4 +436,46 @@ public class MyToolbar extends MaterialToolbar {
         return isShown();
     }
 
+    public void setUpMetronomeBar(int beats) {
+        this.beats = beats;
+        if (beats==0) {
+            // Something wrong, so hide all
+            for (int x = 1; x <= 16; x++) {
+                beatView.get(x).setVisibility(View.GONE);
+            }
+            metronomeLayout.setVisibility(View.GONE);
+        } else {
+            // Make the ones we need visible, but transparent
+            for (int x = 1; x <= beats; x++) {
+                beatView.get(x).setBackgroundColor(Color.TRANSPARENT);
+                beatView.get(x).setVisibility(View.VISIBLE);
+            }
+            // Hide the ones we don't need
+            for (int x = beats + 1; x <= 16; x++) {
+                beatView.get(x).setBackgroundColor(Color.TRANSPARENT);
+                beatView.get(x).setVisibility(View.GONE);
+            }
+            metronomeLayout.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public void hideMetronomeBar() {
+        for (int x=1; x<=16; x++) {
+            beatView.get(x).setBackgroundColor(Color.TRANSPARENT);
+            beatView.get(x).setVisibility(View.GONE);
+        }
+        metronomeLayout.setVisibility(View.GONE);
+    }
+
+    public void highlightBeat(int beat, int colorOn) {
+        // Highlight the beat
+        beatView.get(beat).setBackgroundColor(colorOn);
+        if (beat==1) {
+            // Hide the last beat
+            beatView.get(beats).setBackgroundColor(Color.TRANSPARENT);
+        } else {
+            // Hide the previous beat
+            beatView.get(beat-1).setBackgroundColor(Color.TRANSPARENT);
+        }
+    }
 }

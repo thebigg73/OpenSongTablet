@@ -23,6 +23,115 @@
         android:layout_height="wrap_content"
         android:minHeight="?attr/actionBarSize">
 
+        <LinearLayout
+            android:id="@+id/metronomeLayout"
+            android:layout_width="0dp"
+            app:layout_constraintHorizontal_weight="1"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="@id/songtitle_ab"
+            app:layout_constraintEnd_toStartOf="@+id/batterySpace"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <View
+                android:id="@+id/beat1"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent" />
+
+            <View
+                android:id="@+id/beat2"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent" />
+
+            <View
+                android:id="@+id/beat3"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent" />
+
+            <View
+                android:id="@+id/beat4"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent" />
+
+            <View
+                android:id="@+id/beat5"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent" />
+
+            <View
+                android:id="@+id/beat6"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent" />
+
+            <View
+                android:id="@+id/beat7"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent" />
+
+            <View
+                android:id="@+id/beat8"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent" />
+
+            <View
+                android:id="@+id/beat9"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent" />
+
+            <View
+                android:id="@+id/beat10"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent" />
+
+            <View
+                android:id="@+id/beat11"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent" />
+
+            <View
+                android:id="@+id/beat12"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent" />
+
+            <View
+                android:id="@+id/beat13"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent" />
+
+            <View
+                android:id="@+id/beat14"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent" />
+
+            <View
+                android:id="@+id/beat15"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent" />
+
+            <View
+                android:id="@+id/beat16"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+
         <ImageView
             android:id="@+id/setIcon"
             android:layout_width="16dp"
@@ -30,7 +139,7 @@
             android:contentDescription="@string/set"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/songtitle_ab"
+            app:layout_constraintTop_toTopOf="@+id/songtitle_ab"
             app:layout_constraintBottom_toBottomOf="@+id/songtitle_ab"
             app:srcCompat="@drawable/check" />
 
@@ -180,5 +289,6 @@
             app:layout_constraintEnd_toEndOf="@id/batteryholder"
             app:layout_constraintTop_toBottomOf="@id/batterycharge"
             app:layout_constraintBottom_toBottomOf="@id/batteryholder"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.appbar.MaterialToolbar>
