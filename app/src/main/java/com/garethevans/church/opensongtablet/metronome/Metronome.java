@@ -10,6 +10,7 @@ import android.media.SoundPool;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 
 import androidx.core.graphics.ColorUtils;
 
@@ -23,6 +24,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 
 public class Metronome {
 
@@ -32,7 +34,7 @@ public class Metronome {
     private final MainActivityInterface mainActivityInterface;
     private final Activity activity;  // For run on UI updates
     private final String TAG = "Metronome";
-    private int beat, beats, divisions, beatTimeLength, beatsRequired, beatsRunningTotal,
+    private int beat, beats, beatVisual, divisions, beatTimeLength, beatsRequired, beatsRunningTotal,
             metronomeFlashOnColor, metronomeFlashOffColor, metronomeFlashOnColorDarker,
             tickClip, tockClip, sampleRate, framesPerBuffer;
     private float volumeTickLeft = 1.0f, volumeTickRight = 1.0f, volumeTockLeft = 1.0f,
@@ -42,6 +44,7 @@ public class Metronome {
     private String tickSound, tockSound;
     private SoundPool soundPool;
     private Timer metronomeTimer, visualTimerOn, visualTimerOff;
+    private ScheduledExecutorService metronomeService, visualOnService, visualOffService;
     private TimerTask metronomeTimerTask, visualTimerTaskOn, visualTimerTaskOff;
     private final Handler metronomeTimerHandler = new Handler();
     private final Handler visualTimerHandlerOn = new Handler();
@@ -96,6 +99,7 @@ public class Metronome {
         // Reset the beats
         beatsRunningTotal = 1;
         beat = 1;
+        beatVisual = 1;
 
         // Get the volume and pan of the metronome and bars required
         setVolumes();
@@ -142,7 +146,7 @@ public class Metronome {
     }
 
     private void setupSoundPool() {
-        int maxStreams = 2;
+        int maxStreams = 8;
         AudioManager am = (AudioManager) c.getSystemService(Context.AUDIO_SERVICE);
         String sampleRateStr = am.getProperty(AudioManager.PROPERTY_OUTPUT_SAMPLE_RATE);
         sampleRate = Integer.parseInt(sampleRateStr);
@@ -350,42 +354,35 @@ public class Metronome {
     private void timerMetronome() {
         isRunning = true;
         metronomeTimer = new Timer();
+        metronomeService = Executors.newScheduledThreadPool(1);
+
         metronomeTimerTask = new TimerTask() {
             public void run() {
                 metronomeTimerHandler.post(() -> {
                     // For proof of scheduler
                     // Expected time is a running total of start time + beatTimeLength each loop
-                    long t= System.currentTimeMillis();
-                    //Log.d(TAG,"time slip(ms):"+(t-startTime)+"  System.currenTimeMillis():"+System.currentTimeMillis()+"  this event should be at:"+startTime + "  beatTimeLength:"+beatTimeLength);
+                    long t = System.currentTimeMillis();
+                    long latency = t-startTime;
+                    Log.d(TAG,"latency (ms):"+latency+"  System.currenTimeMillis():"+System.currentTimeMillis()+"  this event should be at:"+startTime + "  beatTimeLength:"+beatTimeLength);
                     if (beat>beats) {
                         beat = 1;
                     }
-                    if (tickBeats.contains(beat)) {
-                        if (soundPool!=null) {
-                            soundPool.play(tickClip, volumeTickLeft, volumeTickRight, 0, 0, 1);
-                        }
-                    } else {
-                        if (soundPool!=null) {
-                            soundPool.play(tockClip, volumeTockLeft, volumeTockRight, 0, 0, 1);
+                    Log.d(TAG,"latency:"+latency);
+                    // If more than 60ms out - skip beat (too far out)
+                    if (Math.abs(t-startTime)<=60) {
+                        if (tickBeats.contains(beat)) {
+                            if (soundPool != null) {
+                                soundPool.play(tickClip, volumeTickLeft, volumeTickRight, 0, 0, 1);
+                            }
+                        } else {
+                            if (soundPool != null) {
+                                soundPool.play(tockClip, volumeTockLeft, volumeTockRight, 0, 0, 1);
+                            }
                         }
                     }
                     beat ++;
                     beatsRunningTotal ++;
 
-                    /*if (visualMetronome) {
-                        // Because this is aysnc, beat is 1 less
-                        *//*ExecutorService executorService = Executors.newSingleThreadExecutor();
-                        executorService.execute(() -> {
-                            Handler handler = new Handler(Looper.getMainLooper());
-                            handler.post(() -> {
-                                if (tickBeats.contains(beat-1)) {
-                                    mainActivityInterface.getToolbar().doFlash(metronomeFlashOnColor);
-                                } else {
-                                    mainActivityInterface.getToolbar().doFlash(metronomeFlashOnColorDarker);
-                                }
-                            });
-                        });*//*
-                    }*/
                     if (beatsRequired>0 && beatsRunningTotal>beatsRequired) {
                         // Stop the metronome (beats and visual)
                         stopMetronome();
@@ -395,7 +392,7 @@ public class Metronome {
             }
         };
         startTime = System.currentTimeMillis();
-
+        ScheduledExecutorService scheduledExecutorService;
         metronomeTimer.scheduleAtFixedRate(metronomeTimerTask, 0, beatTimeLength);
     }
     private long startTime;
@@ -406,14 +403,17 @@ public class Metronome {
         visualTimerOff = new Timer();
         visualTimerTaskOn = new TimerTask() {
             public void run() {
+                if (beatVisual>beats) {
+                    beatVisual = 1;
+                }
                 visualTimerHandlerOn.removeCallbacks(visualTimerTaskOn);
                 visualTimerHandlerOff.removeCallbacks(visualTimerTaskOff);
-                if (tickBeats.contains(beat)) {
+                if (tickBeats.contains(beatVisual)) {
                     visualTimerHandlerOn.post(() -> mainActivityInterface.getToolbar().doFlash(metronomeFlashOnColor));
-
                 } else {
                     visualTimerHandlerOn.post(() -> mainActivityInterface.getToolbar().doFlash(metronomeFlashOnColorDarker));
                 }
+                beatVisual ++;
             }
         };
         visualTimerTaskOff = new TimerTask() {
