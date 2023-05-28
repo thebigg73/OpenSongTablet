@@ -408,7 +408,7 @@ public class Metronome {
             public void run() {
                 visualTimerHandlerOn.removeCallbacks(visualTimerTaskOn);
                 visualTimerHandlerOff.removeCallbacks(visualTimerTaskOff);
-                if (tickBeats.contains(beat - 1)) {
+                if (tickBeats.contains(beat)) {
                     visualTimerHandlerOn.post(() -> mainActivityInterface.getToolbar().doFlash(metronomeFlashOnColor));
 
                 } else {
