@@ -34,7 +34,7 @@ public class Metronome {
     private final MainActivityInterface mainActivityInterface;
     private final Activity activity;  // For run on UI updates
     private final String TAG = "Metronome";
-    private int beat, beats, beatVisual, divisions, beatTimeLength, beatsRequired, beatsRunningTotal,
+    private int beat, beats, beatVisual, divisions, beatTimeLength=0, beatsRequired, beatsRunningTotal,
             metronomeFlashOnColor, metronomeFlashOffColor, metronomeFlashOnColorDarker,
             tickClip, tockClip, sampleRate, framesPerBuffer;
     private float volumeTickLeft = 1.0f, volumeTickRight = 1.0f, volumeTockLeft = 1.0f,
@@ -44,12 +44,12 @@ public class Metronome {
     private String tickSound, tockSound;
     private SoundPool soundPool;
     private Timer metronomeTimer, visualTimerOn, visualTimerOff;
-    private ScheduledExecutorService metronomeService, visualOnService, visualOffService;
     private TimerTask metronomeTimerTask, visualTimerTaskOn, visualTimerTaskOff;
     private final Handler metronomeTimerHandler = new Handler();
     private final Handler visualTimerHandlerOn = new Handler();
     private final Handler visualTimerHandlerOff = new Handler();
     private ArrayList<Integer> tickBeats;
+    private Runnable turnOffActionBar;
 
     private ExposedDropDown beatsView, divisionsView, timeSigView, tempoView;
     private long old_time = 0L;
@@ -63,6 +63,13 @@ public class Metronome {
         c = (Context) activity;
         mainActivityInterface = (MainActivityInterface) c;
         metronomeAutoStart = mainActivityInterface.getPreferences().getMyPreferenceBoolean("metronomeAutoStart",false);
+        turnOffActionBar = () -> {
+            try {
+                mainActivityInterface.getToolbar().doFlash(metronomeFlashOffColor);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        };
     }
     // The call to start and stop the metronome called from MainActivity
     public void startMetronome() {
@@ -79,10 +86,11 @@ public class Metronome {
     }
     public void stopMetronome() {
         isRunning = false;
-        // Make sure the action bar resets to the off color
-        mainActivityInterface.getToolbar().doFlash(metronomeFlashOffColor);
-
         stopTimers(false);
+
+        // Make sure the action bar resets to the off color
+        new Handler(Looper.getMainLooper()).postDelayed(turnOffActionBar,beatTimeLength);
+        new Handler(Looper.getMainLooper()).postDelayed(turnOffActionBar,beatTimeLength*2L);
 
         // Clean up the soundPool
         if (soundPool!=null) {
@@ -354,7 +362,6 @@ public class Metronome {
     private void timerMetronome() {
         isRunning = true;
         metronomeTimer = new Timer();
-        metronomeService = Executors.newScheduledThreadPool(1);
 
         metronomeTimerTask = new TimerTask() {
             public void run() {
@@ -367,7 +374,6 @@ public class Metronome {
                     if (beat>beats) {
                         beat = 1;
                     }
-                    Log.d(TAG,"latency:"+latency);
                     // If more than 60ms out - skip beat (too far out)
                     if (Math.abs(t-startTime)<=60) {
                         if (tickBeats.contains(beat)) {
@@ -418,12 +424,9 @@ public class Metronome {
         };
         visualTimerTaskOff = new TimerTask() {
             public void run() {
-                visualTimerHandlerOff.post(() -> mainActivityInterface.getToolbar().doFlash(metronomeFlashOffColor));
-                /*if (activity != null) {
-                    visualTimerHandlerOff.post(() -> activity.runOnUiThread(() -> mainActivityInterface.getToolbar().doFlash(metronomeFlashOffColor)));
-                } else {
-                    Log.d(TAG,"activity is null");
-                }*/
+                visualTimerHandlerOn.removeCallbacks(visualTimerTaskOn);
+                visualTimerHandlerOff.removeCallbacks(visualTimerTaskOff);
+                visualTimerHandlerOff.post(turnOffActionBar);
             }
         };
         visualTimerOn.scheduleAtFixedRate(visualTimerTaskOn,0,beatTimeLength);
@@ -431,6 +434,7 @@ public class Metronome {
     }
 
     public void stopTimers(boolean nullTimer) {
+        Log.d(TAG,"stop called");
         // Stop the metronome timer stuff
         if (metronomeTimerTask != null) {
             metronomeTimerTask.cancel();
@@ -439,11 +443,6 @@ public class Metronome {
         if (metronomeTimer != null) {
             metronomeTimer.cancel();
             metronomeTimer.purge();
-        }
-        try {
-            mainActivityInterface.getToolbar().doFlash(metronomeFlashOffColor);
-        } catch (Exception e) {
-            e.printStackTrace();
         }
 
         // Stop the visual metronome timer stuff
@@ -519,7 +518,6 @@ public class Metronome {
                 startMetronome();
             }
         };
-
     }
 
     public void tapTempo() {
