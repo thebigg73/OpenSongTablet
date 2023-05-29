@@ -405,4 +405,17 @@ public class BeatBuddy {
         // The drumKitCode will be between 1 and 127.
         return mainActivityInterface.getMidi().buildMidiString("CC",beatBuddyChannel-1,CC_Drum_kit,kitNum);
     }
+
+    public int getCC_Transition() {
+        return CC_Transition;
+    }
+    public int getCC_Exclusive_transition() {
+        return CC_Exclusive_transition;
+    }
+    public int getCC_Half_time() {
+        return CC_Half_time;
+    }
+    public int getCC_Double_time() {
+        return CC_Double_time;
+    }
 }

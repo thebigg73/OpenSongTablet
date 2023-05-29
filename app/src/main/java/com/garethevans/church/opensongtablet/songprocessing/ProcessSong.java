@@ -22,6 +22,7 @@ import android.text.SpannableStringBuilder;
 import android.text.style.BackgroundColorSpan;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.SparseArray;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -1716,6 +1717,7 @@ public class ProcessSong {
     public ArrayList<View> setSongInLayout(Song song, boolean asPDF, boolean presentation) {
         ArrayList<View> sectionViews = new ArrayList<>();
         ArrayList<Integer> sectionColors = new ArrayList<>();
+        SparseArray<String> sectionMIDI = new SparseArray<>();
 
         boolean performancePresentation = presentation && mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance));
         // First we process the song (could be the loaded song, or a temp song - that's why we take a reference)
@@ -1753,9 +1755,28 @@ public class ProcessSong {
         overallBackgroundColor = backgroundColor;
 
         for (int sect = 0; sect < song.getPresoOrderSongSections().size(); sect++) {
-
             String section = song.getPresoOrderSongSections().get(sect);
             if (!section.isEmpty()) {
+                // Look for MIDI inline commands - these start with ;MIDI or raw as ;0x
+                if (section.contains(";MIDI") || section.contains(";0x")) {
+                    Log.d(TAG,"sect:"+sect+"  has ;MIDI");
+                    String[] lines = section.split("\n");
+                    StringBuilder midiString = new StringBuilder();
+                    StringBuilder newSectionString = new StringBuilder();
+                    for (String line:lines) {
+                        if (line.startsWith(";MIDI") || line.startsWith(";0x")) {
+                            midiString.append(mainActivityInterface.getMidi().
+                                    checkForShortHandMIDI(line.replace(";",""))).append("\n");
+                        } else {
+                            newSectionString.append(line).append("\n");
+                        }
+                    }
+                    // Section is returned without MIDI lines
+                    // MIDI lines are converted from shorthand into MIDI array matching sections
+                    section = newSectionString.toString();
+                    sectionMIDI.put(sect,midiString.toString());
+                }
+
                 boolean isChorusBold = false;
                 section = section.replace(columnbreak_string,"");
                 if (trimSections) {

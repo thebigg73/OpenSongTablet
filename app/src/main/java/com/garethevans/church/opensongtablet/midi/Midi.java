@@ -33,6 +33,7 @@ public class Midi {
     private final Context c;
     private final MainActivityInterface mainActivityInterface;
     private PedalMidiReceiver pedalMidiReceiver;
+    private ShortHandMidi shortHandMidi;
     @SuppressWarnings({"FieldCanBeLocal","unused"})
     private final String TAG = "Midi";
     private MediaPlayer midiMediaPlayer;
@@ -52,6 +53,7 @@ public class Midi {
         midiAction7 = mainActivityInterface.getPreferences().getMyPreferenceString("midiAction7", "0x99 0x2B 0x64");
         midiAction8 = mainActivityInterface.getPreferences().getMyPreferenceString("midiAction8", "0x99 0x37 0x64");
         midiSendAuto = mainActivityInterface.getPreferences().getMyPreferenceBoolean("midiSendAuto",true);
+        shortHandMidi = new ShortHandMidi(c);
     }
 
     public String getMidiAction(int which) {
@@ -888,6 +890,10 @@ public class Midi {
 
     public String getAllOff() {
         return allOff;
+    }
+
+    public String checkForShortHandMIDI(String textToCheck) {
+        return shortHandMidi.convertShorthandToMIDI(textToCheck);
     }
 }
 
