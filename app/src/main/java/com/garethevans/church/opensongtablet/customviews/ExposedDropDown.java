@@ -1,7 +1,9 @@
 package com.garethevans.church.opensongtablet.customviews;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.res.TypedArray;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -168,10 +170,16 @@ public class ExposedDropDown extends TextInputLayout {
         arrayList = objects;
     }
 
+    private Context unwrap(Context context) {
+        while (!(context instanceof Activity) && context != null) {
+            context = ((ContextWrapper) context).getBaseContext();
+        }
+        return (Context) context;
+    }
     public void setPopupSize() {
         MainActivityInterface mainActivityInterface = null;
         try {
-            mainActivityInterface = (MainActivityInterface) c;
+            mainActivityInterface = (MainActivityInterface) unwrap(c);
         } catch (Exception e) {
             e.printStackTrace();
         }

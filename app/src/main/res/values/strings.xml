@@ -1136,6 +1136,7 @@
     <string name="website_highlighter" translatable="false">https://www.opensongapp.com/user-manual/songs/song-actions/highlighter</string>
     <string name="website_hot_zones" translatable="false">https://www.opensongapp.com/user-manual/controls/hot-zones</string>
     <string name="website_import_onsongbackup" translatable="false">https://www.opensongapp.com/user-manual/songs/ios-onsong</string>
+    <string name="website_inline_midi" translatable="false">https://www.opensongapp.com/user-manual/midi/inline-midi-commands</string>
     <string name="website_inline_set" translatable="false">https://www.opensongapp.com/user-manual/display/inline-set</string>
     <string name="website_latest" translatable="false">https://www.opensongapp.com/updates/latest-updates</string>
     <string name="website_link" translatable="false">https://www.opensongapp.com/user-manual/songs/song-actions/link</string>
@@ -1187,4 +1188,7 @@
     <string name="youtube" translatable="false">YouTube</string>
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zoom_level">Zoom level</string>
+    <string name="inline_midi">Inline MIDI commands</string>
+    <string name="inline_midi_info">MIDI commands that can be triggered by clicking on a song section</string>
+    <string name="part">Part</string>
 </resources>

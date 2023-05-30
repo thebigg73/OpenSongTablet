@@ -4,6 +4,7 @@ package com.garethevans.church.opensongtablet.songprocessing;
 // Used whenever the app queries or works with a lyrics, key, author, etc.
 
 import android.content.Context;
+import android.util.SparseArray;
 import android.util.SparseIntArray;
 
 import com.garethevans.church.opensongtablet.R;
@@ -66,6 +67,7 @@ public class Song implements Serializable {
     private ArrayList<String> groupedSections;
     private ArrayList<String> lyricsUndos = new ArrayList<>();
     private SparseIntArray lyricsUndoCursorPos;
+    private SparseArray<String> inlineMidiMessages = new SparseArray<>();
     private int lyricsUndosPos = -1;
     private int currentSection = 0;
     private boolean isImageSlide;
@@ -254,6 +256,9 @@ public class Song implements Serializable {
     public boolean getEditingAsChoPro() {
         return editingAsChoPro;
     }
+    public SparseArray<String> getInlineMidiMessages() {
+        return inlineMidiMessages;
+    }
 
     // The setters
     public void setId(int id) {
@@ -415,6 +420,12 @@ public class Song implements Serializable {
     }
     public void setEditingAsChoPro(boolean editingAsChoPro) {
         this.editingAsChoPro = editingAsChoPro;
+    }
+    public void addInlineMidiMessage(int index,String message) {
+        if (inlineMidiMessages==null) {
+            inlineMidiMessages = new SparseArray<>();
+        }
+        inlineMidiMessages.put(index,message);
     }
 
     // The constructor to create a new song object

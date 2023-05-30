@@ -22,7 +22,6 @@ import android.text.SpannableStringBuilder;
 import android.text.style.BackgroundColorSpan;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.util.SparseArray;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -76,6 +75,7 @@ public class ProcessSong {
     private boolean songAutoScaleOverrideWidth;
     private boolean trimLines;
     private boolean trimSections;
+    private boolean hideInlineMidi;
     private boolean multiLineVerseKeepCompact;
     private boolean multilineSong;
     private boolean forceColumns;
@@ -128,6 +128,7 @@ public class ProcessSong {
         bracketsStyle = mainActivityInterface.getPreferences().getMyPreferenceInt("bracketsStyle",Typeface.NORMAL);
         curlyBrackets = mainActivityInterface.getPreferences().getMyPreferenceBoolean("curlyBrackets",true);
         forceColumns = mainActivityInterface.getPreferences().getMyPreferenceBoolean("forceColumns",true);
+        hideInlineMidi = mainActivityInterface.getPreferences().getMyPreferenceBoolean("hideInlineMidi",false);
     }
 
     public boolean showingCapo(String capo) {
@@ -1717,7 +1718,6 @@ public class ProcessSong {
     public ArrayList<View> setSongInLayout(Song song, boolean asPDF, boolean presentation) {
         ArrayList<View> sectionViews = new ArrayList<>();
         ArrayList<Integer> sectionColors = new ArrayList<>();
-        SparseArray<String> sectionMIDI = new SparseArray<>();
 
         boolean performancePresentation = presentation && mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance));
         // First we process the song (could be the loaded song, or a temp song - that's why we take a reference)
@@ -1765,8 +1765,12 @@ public class ProcessSong {
                     StringBuilder newSectionString = new StringBuilder();
                     for (String line:lines) {
                         if (line.startsWith(";MIDI") || line.startsWith(";0x")) {
+                            // Get the midi string and check for shorthand
                             midiString.append(mainActivityInterface.getMidi().
-                                    checkForShortHandMIDI(line.replace(";",""))).append("\n");
+                                    checkForShortHandMIDI(line.replace(";","")));
+                            if (!hideInlineMidi) {
+                                newSectionString.append(line).append("\n");
+                            }
                         } else {
                             newSectionString.append(line).append("\n");
                         }
@@ -1774,7 +1778,7 @@ public class ProcessSong {
                     // Section is returned without MIDI lines
                     // MIDI lines are converted from shorthand into MIDI array matching sections
                     section = newSectionString.toString();
-                    sectionMIDI.put(sect,midiString.toString());
+                    song.addInlineMidiMessage(sect,midiString.toString());
                 }
 
                 boolean isChorusBold = false;
@@ -1899,6 +1903,16 @@ public class ProcessSong {
                     }
                     sectionColors.add(overallBackgroundColor);
                     sectionViews.add(linearLayout);
+                }
+
+                // If this section has inline MIDI commands, add an on click listener
+                // Only do this if it is an XML song and we are in performance mode
+                // Stage mode (for XML files) will use the section adapter listener instead
+                if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) &&
+                        song.getFiletype().equals("XML") &&
+                        !song.getInlineMidiMessages().get(sect,"").isEmpty()) {
+                    final String message = song.getInlineMidiMessages().get(sect,"");
+                    linearLayout.setOnClickListener(view -> mainActivityInterface.getMidi().sendMidiHexSequence(message));
                 }
             }
         }

@@ -33,6 +33,14 @@
             <TableRow style="@style/DividerLine" />
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                android:id="@+id/insertInlineMidi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/inline_midi_info"
+                android:text="@string/inline_midi" />
+            <TableRow style="@style/DividerLine" />
+
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:id="@+id/insertColumnBreak"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

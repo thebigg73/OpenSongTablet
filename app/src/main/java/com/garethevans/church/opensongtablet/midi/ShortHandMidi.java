@@ -1,6 +1,7 @@
 package com.garethevans.church.opensongtablet.midi;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
@@ -26,7 +27,9 @@ public class ShortHandMidi {
     // BBH = BeatBuddy half time, BBHX = BeatBuddy half time exit,
     // BBD = BeatBuddy double time, BBDX = BeatBuddy double time exit,
     // BBBPM{40-300} = BeatBuddy tempo change, BBV{0-100} BeatBuddy volume
-    // BBF{1-127} = BeatBuddy folder, BBS{1-127} = BeatBuddy song
+    // BBS{1-127}/{1-127} = BeatBuddy folder/song
+    // BBI = BeatBuddy intro, BBO = BeatBuddy outro, BBP = BeatBuddy pause
+    // BBF = BeatBuddy fill, BBA = BeatBuddy accent
 
     // Examples
     // MIDI9:CC106:100      MIDI channel 9, controller change 106, value 100
@@ -48,6 +51,7 @@ public class ShortHandMidi {
     }
 
     public String convertShorthandToMIDI(String textToCheck) {
+        Log.d(TAG,"processing:"+textToCheck);
         // The MIDI messages might be fine to go.  We only need to act/check if we find (MIDI and :)
         if (textToCheck.contains("MIDI") && textToCheck.contains(":")) {
             // Split the lines up
@@ -69,89 +73,89 @@ public class ShortHandMidi {
 
                        } else if (bit.contains("NO")) {
                            commandPart1 = "0x9";
-                           commandPart2 = valueToHex(valueFromString(bit,"NO"));
+                           commandPart2 = valueToHex(valueFromString(bit,"NO"),false);
 
                        } else if (bit.contains("NX")) {
                            commandPart1 = "0x8";
-                           commandPart2 = valueToHex(valueFromString(bit,"NX"));
+                           commandPart2 = valueToHex(valueFromString(bit,"NX"),false);
 
                        } else if (bit.contains("PC")) {
                            commandPart1 = "0xC";
-                           commandPart2 = valueToHex(valueFromString(bit,"PC"));
+                           commandPart2 = valueToHex(valueFromString(bit,"PC"),false);
 
                        } else if (bit.contains("CC")) {
                            commandPart1 = "0xB";
-                           commandPart2 = valueToHex(valueFromString(bit,"CC"));
+                           commandPart2 = valueToHex(valueFromString(bit,"CC"),false);
 
                        } else if (bit.contains("MSB")) {
                            commandPart1 = "0xB";
-                           commandPart2 = valueToHex(0);
-                           commandPart3 = valueToHex(valueFromString(bit,"MSB"));
+                           commandPart2 = valueToHex(0,false);
+                           commandPart3 = valueToHex(valueFromString(bit,"MSB"),false);
 
                        } else if (bit.contains("LSB")) {
                            commandPart1 = "0xB";
                            commandPart2 = "0x20";
-                           commandPart3 = valueToHex(valueFromString(bit,"LSB"));
+                           commandPart3 = valueToHex(valueFromString(bit,"LSB"),false);
 
                        } else if (bit.contains("BBTX")) {
                            commandPart1 = "0xB";
-                           commandPart2 = valueToHex(mainActivityInterface.getBeatBuddy().getCC_Transition());
-                           commandPart3 = valueToHex(0);
+                           commandPart2 = valueToHex(mainActivityInterface.getBeatBuddy().getCC_Transition(),false);
+                           commandPart3 = valueToHex(0,false);
 
                        } else if (bit.contains("BBTN")) {
                            commandPart1 = "0xB";
-                           commandPart2 = valueToHex(mainActivityInterface.getBeatBuddy().getCC_Transition());
-                           commandPart3 = valueToHex(127);
+                           commandPart2 = valueToHex(mainActivityInterface.getBeatBuddy().getCC_Transition(),false);
+                           commandPart3 = valueToHex(127,false);
 
                        } else if (bit.contains("BBTP")) {
                            commandPart1 = "0xB";
-                           commandPart2 = valueToHex(mainActivityInterface.getBeatBuddy().getCC_Transition());
-                           commandPart3 = valueToHex(126);
+                           commandPart2 = valueToHex(mainActivityInterface.getBeatBuddy().getCC_Transition(),false);
+                           commandPart3 = valueToHex(126,false);
 
                        } else if (bit.contains("BBTEX")) {
                            commandPart1 = "0xB";
-                           commandPart2 = valueToHex(mainActivityInterface.getBeatBuddy().getCC_Exclusive_transition());
-                           commandPart3 = valueToHex(0);
+                           commandPart2 = valueToHex(mainActivityInterface.getBeatBuddy().getCC_Exclusive_transition(),false);
+                           commandPart3 = valueToHex(0,false);
 
                        } else if (bit.contains("BBTEN")) {
                            commandPart1 = "0xB";
-                           commandPart2 = valueToHex(mainActivityInterface.getBeatBuddy().getCC_Exclusive_transition());
-                           commandPart3 = valueToHex(127);
+                           commandPart2 = valueToHex(mainActivityInterface.getBeatBuddy().getCC_Exclusive_transition(),false);
+                           commandPart3 = valueToHex(127,false);
 
                        } else if (bit.contains("BBTEP")) {
                            commandPart1 = "0xB";
-                           commandPart2 = valueToHex(mainActivityInterface.getBeatBuddy().getCC_Exclusive_transition());
-                           commandPart3 = valueToHex(126);
+                           commandPart2 = valueToHex(mainActivityInterface.getBeatBuddy().getCC_Exclusive_transition(),false);
+                           commandPart3 = valueToHex(126,false);
 
                        } else if (bit.contains("BBTE")) {
                            commandPart1 = "0xB";
-                           commandPart2 = valueToHex(mainActivityInterface.getBeatBuddy().getCC_Exclusive_transition());
-                           commandPart3 = valueToHex(valueFromString(bit,"BBTE"));
+                           commandPart2 = valueToHex(mainActivityInterface.getBeatBuddy().getCC_Exclusive_transition(),false);
+                           commandPart3 = valueToHex(valueFromString(bit,"BBTE"),false);
 
                        } else if (bit.contains("BBT")) {
                            commandPart1 = "0xB";
-                           commandPart2 = valueToHex(mainActivityInterface.getBeatBuddy().getCC_Transition());
-                           commandPart3 = valueToHex(valueFromString(bit,"BBT"));
+                           commandPart2 = valueToHex(mainActivityInterface.getBeatBuddy().getCC_Transition(),false);
+                           commandPart3 = valueToHex(valueFromString(bit,"BBT"),false);
 
                        } else if (bit.contains("BBHX")) {
                            commandPart1 = "0xB";
-                           commandPart2 = valueToHex(mainActivityInterface.getBeatBuddy().getCC_Half_time());
-                           commandPart3 = valueToHex(0);
+                           commandPart2 = valueToHex(mainActivityInterface.getBeatBuddy().getCC_Half_time(),false);
+                           commandPart3 = valueToHex(0,false);
 
                        } else if (bit.contains("BBH")) {
                            commandPart1 = "0xB";
-                           commandPart2 = valueToHex(mainActivityInterface.getBeatBuddy().getCC_Half_time());
-                           commandPart3 = valueToHex(1);
+                           commandPart2 = valueToHex(mainActivityInterface.getBeatBuddy().getCC_Half_time(),false);
+                           commandPart3 = valueToHex(1,false);
 
                        } else if (bit.contains("BBDX")) {
                            commandPart1 = "0xB";
-                           commandPart2 = valueToHex(mainActivityInterface.getBeatBuddy().getCC_Double_time());
-                           commandPart3 = valueToHex(0);
+                           commandPart2 = valueToHex(mainActivityInterface.getBeatBuddy().getCC_Double_time(),false);
+                           commandPart3 = valueToHex(0,false);
 
                        } else if (bit.contains("BBD")) {
                            commandPart1 = "0xB";
-                           commandPart2 = valueToHex(mainActivityInterface.getBeatBuddy().getCC_Double_time());
-                           commandPart3 = valueToHex(1);
+                           commandPart2 = valueToHex(mainActivityInterface.getBeatBuddy().getCC_Double_time(),false);
+                           commandPart3 = valueToHex(1,false);
 
                        } else if (bit.contains("BBBPM")) {
                            // This has two different messages combined
@@ -169,14 +173,14 @@ public class ShortHandMidi {
 
                        } else if (bit.contains("BBS") && bit.contains("/")) {
                            // This has two different messages combined
-                           bit = bit.replace("BBS","");
+                           bit = bit.replace("BBS", "");
                            String[] folderAndSong = bit.split("/");
-                           if (folderAndSong.length==2) {
-                               if (!folderAndSong[0].replaceAll("\\D","").isEmpty() &&
-                                       !folderAndSong[1].replaceAll("\\D","").isEmpty()) {
-                                   int folder = Integer.parseInt(folderAndSong[0].replaceAll("\\D",""));
-                                   int song = Integer.parseInt(folderAndSong[1].replaceAll("\\D",""));
-                                   if (!midiChannel.isEmpty() && valueFromHex(midiChannel)>=0) {
+                           if (folderAndSong.length == 2) {
+                               if (!folderAndSong[0].replaceAll("\\D", "").isEmpty() &&
+                                       !folderAndSong[1].replaceAll("\\D", "").isEmpty()) {
+                                   int folder = Integer.parseInt(folderAndSong[0].replaceAll("\\D", ""));
+                                   int song = Integer.parseInt(folderAndSong[1].replaceAll("\\D", ""));
+                                   if (!midiChannel.isEmpty() && valueFromHex(midiChannel) >= 0) {
                                        // Temporarily change the BeatBuddy saved channel
                                        int savedChannel = mainActivityInterface.getBeatBuddy().getBeatBuddyChannel();
                                        mainActivityInterface.getBeatBuddy().setBeatBuddyChannel(valueFromHex(midiChannel));
@@ -188,9 +192,40 @@ public class ShortHandMidi {
                                }
                            }
 
+                       } else if (bit.contains("BBV")) {
+                           commandPart1 = "0xB";
+                           commandPart2 = valueToHex(mainActivityInterface.getBeatBuddy().getCC_Mix_vol(),false);
+                           commandPart3 = valueToHex(valueFromString(bit,"BBV"),false);
+
+                       } else if (bit.contains("BBI")) {
+                           commandPart1 = "0xB";
+                           commandPart2 = valueToHex(mainActivityInterface.getBeatBuddy().getCC_Intro(),false);
+                           commandPart3 = valueToHex(1, false);
+
+                       } else if (bit.contains("BBO")) {
+                           commandPart1 = "0xB";
+                           commandPart2 = valueToHex(mainActivityInterface.getBeatBuddy().getCC_Outro(),false);
+                           commandPart3 = valueToHex(1,false);
+
+                       } else if (bit.contains("BBP")) {
+                           commandPart1 = "0xB";
+                           commandPart2 = valueToHex(mainActivityInterface.getBeatBuddy().getCC_Pause_unpause(),false);
+                           commandPart3 = valueToHex(127,false);
+
+                       } else if (bit.contains("BBF")) {
+                           commandPart1 = "0xB";
+                           commandPart2 = valueToHex(mainActivityInterface.getBeatBuddy().getCC_Drum_fill(),false);
+                           commandPart3 = valueToHex(Math.round((mainActivityInterface.getBeatBuddy().getBeatBuddyVolume() / 100f) * 127f),false);
+
+                       } else if (bit.contains("BBA")) {
+                           commandPart1 = "0xB";
+                           commandPart2 = valueToHex(mainActivityInterface.getBeatBuddy().getCC_Accent_hit(),false);
+                           commandPart3 = valueToHex(Math.round((mainActivityInterface.getBeatBuddy().getBeatBuddyVolume() / 100f) * 127f),false);
+
+
                        } else if (!bit.isEmpty() && !bit.replaceAll("\\D","").isEmpty()) {
                            // This is the value part - the other bits were gathered already (hopefully!)
-                           commandPart3 = valueToHex(valueFromString(bit,""));
+                           commandPart3 = valueToHex(valueFromString(bit,""),false);
                        }
                     }
 
@@ -219,6 +254,7 @@ public class ShortHandMidi {
 
                         fixedLines.append(newCommand).append("\n");
 
+                        Log.d(TAG,"converted to:"+newCommand);
                     } else {
                         // Just put the line back as there was an issue
                         fixedLines.append(line).append("\n");
@@ -229,7 +265,6 @@ public class ShortHandMidi {
                     fixedLines.append(line).append("\n");
                 }
             }
-
             return fixedLines.toString();
 
         } else {
@@ -248,10 +283,12 @@ public class ShortHandMidi {
         }
     }
 
-    private String valueToHex(int value) {
-        if (value >= 0) {
+    private String valueToHex(int value, boolean decreaseNum) {
+        if (decreaseNum) {
             // Decrease the number to match computer numbering starting at 0
             value = value - 1;
+        }
+        if (value >= 0) {
             return "0x" + String.format("%02X", value);
         } else {
             return "";
@@ -259,9 +296,9 @@ public class ShortHandMidi {
     }
 
     private String valueToHexSingle(int value) {
-        if (value>=1) {
-            // Decrease the number to match computer numbering starting at 0
+        // Decrease the number to match computer numbering starting at 0
             value = value - 1;
+        if (value>=0) {
             return Integer.toHexString(value).toUpperCase(Locale.ROOT);
         } else {
             return "";

@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.BottomSheetEditSongLyricsBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.midi.InlineMidiBottomSheet;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -23,6 +24,7 @@ public class LyricsOptionsBottomSheet extends BottomSheetDialogFragment {
 
     private BottomSheetEditSongLyricsBinding myView;
     private MainActivityInterface mainActivityInterface;
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "LyricsBottomSheet";
     private int colorOn, colorOff;
     private final EditSongFragmentLyrics openingFragment;
@@ -99,6 +101,11 @@ public class LyricsOptionsBottomSheet extends BottomSheetDialogFragment {
         myView.insertSection.setOnClickListener(v -> {
             openingFragment.insertSection("[]",1);
             this.dismiss();
+        });
+        myView.insertInlineMidi.setOnClickListener(view -> {
+            InlineMidiBottomSheet inlineMidiBottomSheet = new InlineMidiBottomSheet(openingFragment);
+            inlineMidiBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"InlineMIDIMessages");
+            dismiss();
         });
         myView.insertColumnBreak.setOnClickListener(v -> {
             openingFragment.insertSection("!--",4);

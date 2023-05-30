@@ -418,4 +418,19 @@ public class BeatBuddy {
     public int getCC_Double_time() {
         return CC_Double_time;
     }
+    public int getCC_Pause_unpause() {
+        return CC_Pause_unpause;
+    }
+    public int getCC_Intro() {
+        return CC_Intro;
+    }
+    public int getCC_Outro() {
+        return CC_Outro;
+    }
+    public int getCC_Drum_fill() {
+        return CC_Drum_fill;
+    }
+    public int getCC_Accent_hit() {
+        return CC_Accent_hit;
+    }
 }
