@@ -647,33 +647,14 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                 if (songListLayoutManager!=null) {
                     handler.post(() -> {
                         try {
-                            // IV - On song change, like v5, use a song list filtered by folder only
-                            if (("" + myView.filters.titleSearch.getText()  +
-                                myView.filters.filterSearch.getText() +
-                                myView.filters.keySearch.getText() +
-                                myView.filters.artistSearch.getText() +
-                                myView.filters.tagSearch.getText()).equals(("")) &&
-                                myView.filters.folderSearch.getText().toString().equals(song.getFolder())) {
-                                songListLayoutManager.scrollToPositionWithOffset(songListAdapter.getPositionOfSong(song), 0);
-                                // IV - Reset to a 1 char alphabetic index
-                                alphalistposition = -1;
-                                displayIndex();
-                            } else {
-                                myView.filters.titleSearch.setText("");
-                                myView.filters.filterSearch.setText("");
-                                myView.filters.keySearch.setText("");
-                                myView.filters.artistSearch.setText("");
-                                myView.filters.folderSearch.setText(song.getFolder());
-                                myView.filters.tagSearch.setText("");
-                                waitBeforeSearchHandler.removeCallbacks(waitBeforeSearchRunnable);
-                                waitBeforeSearchHandler.postDelayed(waitBeforeSearchRunnable,200);
-                                new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                                    songListLayoutManager.scrollToPositionWithOffset(songListAdapter.getPositionOfSong(song), 0);
-                                    // IV - Reset to a 1 char alphabetic index
-                                    alphalistposition = -1;
-                                    displayIndex();
-                                }, 300);
+                            int position = songListAdapter.getPositionOfSong(song);
+                            if (position == -1) {
+                                position = 0;
                             }
+                            songListLayoutManager.scrollToPositionWithOffset(position,0);
+                            // IV - Reset to a 1 char alphabetic index
+                            alphalistposition = -1;
+                            displayIndex();
                         } catch (Exception e) {
                         e.printStackTrace();
                     }
