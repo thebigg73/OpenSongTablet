@@ -393,6 +393,8 @@
     <string name="info_text_autohide_info">Απόκρυψη μόλις εμφανιστούν οι πληροφορίες και παρέλθει ένας ελάχιστος χρόνος</string>
     <string name="info_text_background">Φόντο για γραμμή πληροφοριών</string>
     <string name="information">Πληροφορίες</string>
+    <string name="inline_midi">Ενσωματωμένες εντολές MIDI</string>
+    <string name="inline_midi_info">Εντολές MIDI που μπορούν να ενεργοποιηθούν κάνοντας κλικ σε μια ενότητα τραγουδιού</string>
     <string name="instrument">"Όργανο"</string>
     <string name="instrumental">"Ενόργανος"</string>
     <string name="interlude">"Διάλειμμα"</string>
@@ -559,6 +561,7 @@
     <string name="pan_right">σωστά</string>
     <string name="panic">Πανικός</string>
     <string name="panic_stop">Όλη η έξοδος σταμάτησε</string>
+    <string name="part">Μέρος</string>
     <string name="pause">Παύση</string>
     <string name="paypal_description">Στείλτε μου μια δωρεά εάν βρίσκετε την εφαρμογή χρήσιμη</string>
     <string name="pedal">"Πετάλι"</string>

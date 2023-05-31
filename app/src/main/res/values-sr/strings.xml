@@ -393,6 +393,8 @@
     <string name="info_text_autohide_info">Sakrijte kada se informacije prikažu i kada protekne minimalno vreme</string>
     <string name="info_text_background">Pozadina za traku sa informacijama</string>
     <string name="information">Информације</string>
+    <string name="inline_midi">Umetnute MIDI komande</string>
+    <string name="inline_midi_info">MIDI komande koje se mogu aktivirati klikom na odeljak pesme</string>
     <string name="instrument">Instrument</string>
     <string name="instrumental">Instrumental</string>
     <string name="interlude">Međuigra</string>
@@ -559,6 +561,7 @@
     <string name="pan_right">Jel tako</string>
     <string name="panic">Panika</string>
     <string name="panic_stop">Sav izlaz je zaustavljen</string>
+    <string name="part">Deo</string>
     <string name="pause">Pauza</string>
     <string name="paypal_description">Pošaljite mi donaciju ako smatrate da je aplikacija korisna</string>
     <string name="pedal">Pedala</string>

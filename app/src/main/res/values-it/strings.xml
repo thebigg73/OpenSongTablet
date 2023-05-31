@@ -393,6 +393,8 @@
     <string name="info_text_autohide_info">Nascondi una volta che le informazioni sono state visualizzate ed è trascorso un tempo minimo</string>
     <string name="info_text_background">Sfondo per la barra delle informazioni</string>
     <string name="information">Informazione</string>
+    <string name="inline_midi">Comandi MIDI in linea</string>
+    <string name="inline_midi_info">Comandi MIDI che possono essere attivati cliccando su una sezione del brano</string>
     <string name="instrument">Strumento</string>
     <string name="instrumental">"Strumentale"</string>
     <string name="interlude">"Interludio"</string>
@@ -559,6 +561,7 @@
     <string name="pan_right">Destro</string>
     <string name="panic">Panico</string>
     <string name="panic_stop">Tutta l\'uscita è stata interrotta</string>
+    <string name="part">Parte</string>
     <string name="pause">Pausa</string>
     <string name="paypal_description">Inviami una donazione se trovi utile l\'app</string>
     <string name="pedal">"Pedale"</string>

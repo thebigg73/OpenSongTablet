@@ -134,7 +134,9 @@ public class SongMenuBottomSheet extends BottomSheetDialogFragment {
 
     private void navigateTo(String deepLink) {
         mainActivityInterface.closeDrawer(true);
-        mainActivityInterface.navigateToFragment(deepLink, 0);
+        if (deepLink!=null) {
+            mainActivityInterface.navigateToFragment(deepLink, 0);
+        }
         dismiss();
     }
 

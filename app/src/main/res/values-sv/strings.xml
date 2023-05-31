@@ -393,6 +393,8 @@
     <string name="info_text_autohide_info">Göm när informationen har visats och en minsta tid har förflutit</string>
     <string name="info_text_background">Bakgrund för informationsfältet</string>
     <string name="information">Information</string>
+    <string name="inline_midi">Textbundna MIDI-kommandon</string>
+    <string name="inline_midi_info">MIDI-kommandon som kan utlösas genom att klicka på en låtsektion</string>
     <string name="instrument">"Instrument"</string>
     <string name="instrumental">"Instrumental"</string>
     <string name="interlude">"Mellanspel"</string>
@@ -559,6 +561,7 @@
     <string name="pan_right">Höger</string>
     <string name="panic">Panik</string>
     <string name="panic_stop">All utmatning stoppades</string>
+    <string name="part">Del</string>
     <string name="pause">Paus</string>
     <string name="paypal_description">Skicka mig en donation om du tycker att appen är användbar</string>
     <string name="pedal">"Trampa"</string>

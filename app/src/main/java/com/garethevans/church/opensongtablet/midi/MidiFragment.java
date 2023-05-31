@@ -361,12 +361,9 @@ public class MidiFragment extends Fragment {
             }
         });
 
-        myView.midiAssign.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                MidiActionBottomSheet midiActionBottomSheet = new MidiActionBottomSheet(myView.midiCode.getText().toString());
-                midiActionBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"MidiActionBottomSheet");
-            }
+        myView.midiAssign.setOnClickListener(view -> {
+            MidiActionBottomSheet midiActionBottomSheet = new MidiActionBottomSheet(myView.midiCode.getText().toString());
+            midiActionBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"MidiActionBottomSheet");
         });
     }
 
@@ -815,23 +812,24 @@ public class MidiFragment extends Fragment {
     }
     private void buildList() {
         midiInfos = new ArrayList<>();
-
-        String[] bits = mainActivityInterface.getSong().getMidi().trim().split("\n");
-        for (String command : bits) {
-            if (command != null && !command.isEmpty() && getActivity() != null) {
-                // Get a human readable version of the midi code
-                String readable = mainActivityInterface.getMidi().getReadableStringFromHex(command);
-                MidiInfo midiInfo = new MidiInfo();
-                midiInfo.midiCommand = command;
-                midiInfo.readableCommand = readable;
-                midiInfos.add(midiInfo);
+        if (mainActivityInterface.getSong().getMidi()!=null) {
+            String[] bits = mainActivityInterface.getSong().getMidi().trim().split("\n");
+            for (String command : bits) {
+                if (command != null && !command.isEmpty() && getActivity() != null) {
+                    // Get a human readable version of the midi code
+                    String readable = mainActivityInterface.getMidi().getReadableStringFromHex(command);
+                    MidiInfo midiInfo = new MidiInfo();
+                    midiInfo.midiCommand = command;
+                    midiInfo.readableCommand = readable;
+                    midiInfos.add(midiInfo);
+                }
             }
-        }
 
-        myView.recyclerView.post(() -> {
-            midiMessagesAdapter.updateMidiInfos(midiInfos);
-            myView.recyclerView.setVisibility(View.VISIBLE);
-        });
+            myView.recyclerView.post(() -> {
+                midiMessagesAdapter.updateMidiInfos(midiInfos);
+                myView.recyclerView.setVisibility(View.VISIBLE);
+            });
+        }
     }
 
     @Override

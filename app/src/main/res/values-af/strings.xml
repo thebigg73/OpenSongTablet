@@ -393,6 +393,8 @@
     <string name="info_text_autohide_info">Versteek sodra die inligting vertoon is en \'n minimum tyd verloop het</string>
     <string name="info_text_background">Agtergrond vir inligtingbalk</string>
     <string name="information">Inligting</string>
+    <string name="inline_midi">Inlyn MIDI opdragte</string>
+    <string name="inline_midi_info">MIDI-opdragte wat geaktiveer kan word deur op \'n liedjie-afdeling te klik</string>
     <string name="instrument">Instrument</string>
     <string name="instrumental">"instrumentele"</string>
     <string name="interlude">"Interlude"</string>
@@ -559,6 +561,7 @@
     <string name="pan_right">Reg</string>
     <string name="panic">Paniek</string>
     <string name="panic_stop">Alle uitset het gestop</string>
+    <string name="part">Deel</string>
     <string name="pause">Pouse</string>
     <string name="paypal_description">Stuur vir my \'n skenking as jy die toepassing nuttig vind</string>
     <string name="pedal">"Pedal"</string>

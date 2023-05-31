@@ -393,6 +393,8 @@
     <string name="info_text_autohide_info">Elrejtés, ha az információ megjelent, és egy minimális idő letelt</string>
     <string name="info_text_background">Az információs sáv háttere</string>
     <string name="information">Információ</string>
+    <string name="inline_midi">Beágyazott MIDI-parancsok</string>
+    <string name="inline_midi_info">MIDI-parancsok, amelyek egy dalszakaszra kattintva indíthatók el</string>
     <string name="instrument">Eszköz</string>
     <string name="instrumental">"Hangszeres"</string>
     <string name="interlude">"Közjáték"</string>
@@ -559,6 +561,7 @@
     <string name="pan_right">Jobb</string>
     <string name="panic">Pánik</string>
     <string name="panic_stop">Minden kimenet leállt</string>
+    <string name="part">Rész</string>
     <string name="pause">Szünet</string>
     <string name="paypal_description">Ha hasznosnak találja az alkalmazást, küldjön adományt</string>
     <string name="pedal">"Pedál"</string>

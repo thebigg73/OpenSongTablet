@@ -393,6 +393,8 @@
     <string name="info_text_autohide_info">Ausblenden, sobald die Informationen angezeigt wurden und eine Mindestzeit verstrichen ist</string>
     <string name="info_text_background">Hintergrund für die Informationsleiste</string>
     <string name="information">Information</string>
+    <string name="inline_midi">Inline-MIDI-Befehle</string>
+    <string name="inline_midi_info">MIDI-Befehle, die durch Klicken auf einen Songabschnitt ausgelöst werden können</string>
     <string name="instrument">Instrument</string>
     <string name="instrumental">"Instrumental"</string>
     <string name="interlude">"Interlude"</string>
@@ -559,6 +561,7 @@
     <string name="pan_right">Richtig</string>
     <string name="panic">Panik</string>
     <string name="panic_stop">Alle Ausgaben wurden gestoppt</string>
+    <string name="part">Teil</string>
     <string name="pause">Pause</string>
     <string name="paypal_description">Senden Sie mir eine Spende, wenn Sie die App nützlich finden</string>
     <string name="pedal">"Pedal"</string>

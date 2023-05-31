@@ -487,6 +487,8 @@
     <string name="info_text_autohide_info">Hide once the information has been displayed and a minimum time has elapsed</string>
     <string name="info_text_background">Background for information bar</string>
     <string name="information">Information</string>
+    <string name="inline_midi">Inline MIDI commands</string>
+    <string name="inline_midi_info">MIDI commands that can be triggered by clicking on a song section</string>
     <string name="instrument">Instrument</string>
     <string name="instrumental">Instrumental</string>
     <string name="interlude">Interlude</string>
@@ -717,6 +719,7 @@
     <string name="pan_right">Right</string>
     <string name="panic">Panic</string>
     <string name="panic_stop">All output stopped</string>
+    <string name="part">Part</string>
     <string name="pause">Pause</string>
     <string name="paypal" translatable="false">PayPal</string>
     <string name="paypal_description">Send me a donation if you find the app useful</string>
@@ -1188,7 +1191,4 @@
     <string name="youtube" translatable="false">YouTube</string>
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zoom_level">Zoom level</string>
-    <string name="inline_midi">Inline MIDI commands</string>
-    <string name="inline_midi_info">MIDI commands that can be triggered by clicking on a song section</string>
-    <string name="part">Part</string>
 </resources>

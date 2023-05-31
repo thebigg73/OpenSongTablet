@@ -1030,9 +1030,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         } else {
             runOnUiThread(() -> {
                 try {
-                    if (deepLink != null) {
+                    if (deepLink != null && navController!=null) {
                         navController.navigate(Uri.parse(deepLink));
-                    } else {
+                    } else if (navController!=null) {
                         navController.navigate(id);
                     }
                 } catch (Exception e) {

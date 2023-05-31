@@ -393,6 +393,8 @@
     <string name="info_text_autohide_info">Ocultar uma vez que as informações foram exibidas e um tempo mínimo decorrido</string>
     <string name="info_text_background">Plano de fundo para a barra de informações</string>
     <string name="information">Em formação</string>
+    <string name="inline_midi">Comandos MIDI embutidos</string>
+    <string name="inline_midi_info">Comandos MIDI que podem ser acionados clicando em uma seção de música</string>
     <string name="instrument">Instrumento</string>
     <string name="instrumental">"Instrumental"</string>
     <string name="interlude">"Interlúdio"</string>
@@ -559,6 +561,7 @@
     <string name="pan_right">Certo</string>
     <string name="panic">Pânico</string>
     <string name="panic_stop">Todas as saídas foram interrompidas</string>
+    <string name="part">Peça</string>
     <string name="pause">Pausa</string>
     <string name="paypal_description">Envie-me uma doação se você achar o aplicativo útil</string>
     <string name="pedal">"Pedal"</string>

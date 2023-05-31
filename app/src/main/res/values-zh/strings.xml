@@ -393,6 +393,8 @@
     <string name="info_text_autohide_info">显示信息并经过最短时间后隐藏</string>
     <string name="info_text_background">信息栏背景</string>
     <string name="information">信息</string>
+    <string name="inline_midi">内联 MIDI 命令</string>
+    <string name="inline_midi_info">可以通过单击歌曲部分触发的 MIDI 命令</string>
     <string name="instrument">仪器</string>
     <string name="instrumental">"仪器的"</string>
     <string name="interlude">"插曲"</string>
@@ -559,6 +561,7 @@
     <string name="pan_right">对</string>
     <string name="panic">恐慌</string>
     <string name="panic_stop">所有输出停止</string>
+    <string name="part">部分</string>
     <string name="pause">暂停</string>
     <string name="paypal_description">如果您觉得该应用有用，请给我捐款</string>
     <string name="pedal">"踏板"</string>

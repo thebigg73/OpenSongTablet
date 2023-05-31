@@ -393,6 +393,8 @@
     <string name="info_text_autohide_info">Скрыть после отображения информации и истечения минимального времени</string>
     <string name="info_text_background">Фон информационной панели</string>
     <string name="information">Информация</string>
+    <string name="inline_midi">Встроенные MIDI-команды</string>
+    <string name="inline_midi_info">MIDI-команды, которые можно запустить, щелкнув раздел песни</string>
     <string name="instrument">Инструмент</string>
     <string name="instrumental">Инструментал</string>
     <string name="interlude">Интерлюдия</string>
@@ -559,6 +561,7 @@
     <string name="pan_right">Правый</string>
     <string name="panic">Аварийный стоп</string>
     <string name="panic_stop">Аварийное выключение вывода звука</string>
+    <string name="part">Часть</string>
     <string name="pause">Пауза</string>
     <string name="paypal_description">Пожалуйста, сделайте пожертвование автору, если приложение оказалось для Вас полезным</string>
     <string name="pedal">Педаль</string>

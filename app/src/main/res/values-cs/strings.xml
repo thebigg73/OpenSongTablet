@@ -393,6 +393,8 @@
     <string name="info_text_autohide_info">Skrýt po zobrazení informací a uplynutí minimální doby</string>
     <string name="info_text_background">Pozadí pro informační lištu</string>
     <string name="information">Informace</string>
+    <string name="inline_midi">Vložené MIDI příkazy</string>
+    <string name="inline_midi_info">MIDI příkazy, které lze spustit kliknutím na sekci skladby</string>
     <string name="instrument">Nástroj</string>
     <string name="instrumental">"Instrumentální"</string>
     <string name="interlude">"Mezihra"</string>
@@ -559,6 +561,7 @@
     <string name="pan_right">Že jo</string>
     <string name="panic">Panika</string>
     <string name="panic_stop">Veškerý výstup se zastavil</string>
+    <string name="part">Část</string>
     <string name="pause">Pauza</string>
     <string name="paypal_description">Pošlete mi dar, pokud shledáte aplikaci užitečnou</string>
     <string name="pedal">"Pedál"</string>
