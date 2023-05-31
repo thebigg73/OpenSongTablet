@@ -53,7 +53,7 @@
                     <include
                         layout="@layout/menu_songs_listtitles"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="40dp" />
 
                     <FrameLayout
                         android:layout_width="match_parent"

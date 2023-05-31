@@ -679,8 +679,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             }
 
             if (myView != null) {
-                myView.fragmentView.setPadding(margins[0], Math.max(topPadding, bottomOfToolbar), margins[2], margins[3]);
-                myView.songMenuLayout.setPadding(margins[0], Math.max(topPadding, bottomOfToolbar) - myView.menuTop.menuTop.getBottom() + 36, 0, margins[3]);
+                myView.fragmentView.setPadding(margins[0], Math.max(margins[1] + additionalTop, Math.max(topPadding, bottomOfToolbar)), margins[2], margins[3]);
+                myView.songMenuLayout.setPadding(margins[0], margins[1] + additionalTop, 0, margins[3]);
                 myView.songMenuLayout.findViewById(R.id.menu_top).setPadding(windowFlags.getMarginToolbarLeft(), 0, 0, 0);
             }
         });

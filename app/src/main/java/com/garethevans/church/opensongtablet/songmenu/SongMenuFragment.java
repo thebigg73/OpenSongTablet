@@ -397,10 +397,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                handler.post(() -> {
-                    updateSongList();
-                    displayIndex();
-                });
+                handler.post(this::updateSongList);
             });
         }
     }
@@ -456,7 +453,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                         textView = (TextView) View.inflate(getActivity(), R.layout.view_alphabetical_list, null);
                         if (textView != null) {
                             textView.setTextSize(i);
-                            textView.setPadding(i, i, i, i);
+                            textView.setMinimumWidth(i * 5);
                             textView.setText(index);
                             int finalP = p;
                             textView.setOnClickListener(view -> {
@@ -519,17 +516,15 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                 if (textView != null) {
                     int i = (int) mainActivityInterface.getPreferences().getMyPreferenceFloat("songMenuAlphaIndexSize", 14.0f);
                     textView.setTextSize(i);
-                    textView.setPadding(i, i, i, i);
-                    // IV - Display the 2 char index over 1 or 2 lines.  The trim removes trailing '\n ' giving one line when the second char of the index is a space.
-                    String indexlines = (index.charAt(0) + "\n" + index.charAt(1)).trim();
-                    textView.setText(indexlines);
+                    textView.setMinimumWidth(i * 5);
+                    textView.setText(index.trim());
                     textView.setOnClickListener(view -> {
                         TextView selectedIndex = (TextView) view;
                         try {
                             if (selectedIndex.getText() != null &&
                                     songListLayoutManager != null) {
-                                // IV - Recover the 2 char index from the 1 or 2 lines of displayed text
-                                String myval = (selectedIndex.getText().toString().replace("\n", "") + " ").substring(0,2);
+                                // IV - Recover the 2 char index from the 1 or 2 chars of displayed text
+                                String myval = (selectedIndex.getText().toString() + " ").substring(0,2);
 
                                 if (!map2.isEmpty()) {
                                     Integer obj = map2.get(myval);
@@ -585,9 +580,6 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         // Default the slide animations to be next (R2L)
         mainActivityInterface.getDisplayPrevNext().setSwipeDirection("R2L");
         mainActivityInterface.doSongLoad(folder, filename,true);
-        songListLayoutManager.scrollToPositionWithOffset(position,0);
-        // Make sure the alphabetical index shows single letters
-        displayIndex();
     }
 
     @Override
@@ -595,7 +587,6 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         longClickFilename = filename;
         mainActivityInterface.getWindowFlags().hideKeyboard();
         mainActivityInterface.doSongLoad(folder, filename,false);
-        new Handler(Looper.getMainLooper()).postDelayed(() -> songListLayoutManager.scrollToPositionWithOffset(position,0),1000);
         showActionDialog();
     }
 
@@ -656,10 +647,17 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                 if (songListLayoutManager!=null) {
                     handler.post(() -> {
                         try {
-                            songListLayoutManager.scrollToPositionWithOffset(songListAdapter.getPositionOfSong(song),0);
+                            int position = songListAdapter.getPositionOfSong(song);
+                            if (position == -1) {
+                                position = 0;
+                            }
+                            songListLayoutManager.scrollToPositionWithOffset(position,0);
+                            // IV - Reset to a 1 char alphabetic index
+                            alphalistposition = -1;
+                            displayIndex();
                         } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+                        e.printStackTrace();
+                    }
                     });
                 }
             });
