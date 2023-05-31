@@ -1,7 +1,6 @@
 package com.garethevans.church.opensongtablet.midi;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
@@ -51,7 +50,6 @@ public class ShortHandMidi {
     }
 
     public String convertShorthandToMIDI(String textToCheck) {
-        Log.d(TAG,"processing:"+textToCheck);
         // The MIDI messages might be fine to go.  We only need to act/check if we find (MIDI and :)
         if (textToCheck.contains("MIDI") && textToCheck.contains(":")) {
             // Split the lines up
@@ -254,7 +252,6 @@ public class ShortHandMidi {
 
                         fixedLines.append(newCommand).append("\n");
 
-                        Log.d(TAG,"converted to:"+newCommand);
                     } else {
                         // Just put the line back as there was an issue
                         fixedLines.append(line).append("\n");

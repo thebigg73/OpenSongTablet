@@ -1758,8 +1758,9 @@ public class ProcessSong {
             String section = song.getPresoOrderSongSections().get(sect);
             if (!section.isEmpty()) {
                 // Look for MIDI inline commands - these start with ;MIDI or raw as ;0x
-                if (section.contains(";MIDI") || section.contains(";0x")) {
-                    Log.d(TAG,"sect:"+sect+"  has ;MIDI");
+                if (song.getFiletype().equals("XML") &&
+                        !mainActivityInterface.getMode().equals(c.getString(R.string.mode_presenter)) &&
+                        section.contains(";MIDI") || section.contains(";0x")) {
                     String[] lines = section.split("\n");
                     StringBuilder midiString = new StringBuilder();
                     StringBuilder newSectionString = new StringBuilder();
