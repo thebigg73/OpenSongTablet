@@ -1,5 +1,7 @@
 package com.garethevans.church.opensongtablet.controls;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -24,13 +26,24 @@ public class GestureListener extends GestureDetector.SimpleOnGestureListener {
 
     @Override
     public boolean onDoubleTapEvent(MotionEvent e) {
-        doubleTapping = true;
-        return performAction(mainActivityInterface.getGestures().getDoubleTap());
+        // Make sure this isn't sent while we are already dealing with it
+        if (!doubleTapping) {
+            doubleTapping = true;
+            // Turn off record of double tapping in 200ms
+            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    doubleTapping = false;
+                }
+            },200);
+            return performAction(mainActivityInterface.getGestures().getDoubleTap());
+        } else {
+            return true;
+        }
     }
 
     @Override
     public void onLongPress(MotionEvent e) {
-
         super.onLongPress(e);
         if (doubleTapping) {
             doubleTapping = false;
