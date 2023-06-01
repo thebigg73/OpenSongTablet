@@ -29,7 +29,7 @@ public class EditSongFragmentFeatures extends Fragment {
     private String whichLink = "audio", pad_auto_string="", link_audio_string="", off_string="",
             tempo_string="", bpm_string="", link_youtube_string="", link_web_string="",
             link_file_string="", custom_string="", link_string="";
-    @SuppressWarnings("unused")
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "EditSongFeatures";
     private String[] key_choice_string={};
 
@@ -101,10 +101,12 @@ public class EditSongFragmentFeatures extends Fragment {
     private void setupValues() {
         // The key
         if (getContext()!=null) {
-            ExposedDropDownArrayAdapter keyArrayAdapter = new ExposedDropDownArrayAdapter(getContext(),
+            ExposedDropDownArrayAdapter keyArrayAdapter1 = new ExposedDropDownArrayAdapter(getContext(),
                     myView.key, R.layout.view_exposed_dropdown_item, key_choice_string);
-            myView.key.setAdapter(keyArrayAdapter);
-            myView.originalkey.setAdapter(keyArrayAdapter);
+            ExposedDropDownArrayAdapter keyArrayAdapter2 = new ExposedDropDownArrayAdapter(getContext(),
+                    myView.originalkey, R.layout.view_exposed_dropdown_item, key_choice_string);
+            myView.key.setAdapter(keyArrayAdapter1);
+            myView.originalkey.setAdapter(keyArrayAdapter2);
         }
         myView.key.setText(mainActivityInterface.getTempSong().getKey());
         mainActivityInterface.getTranspose().checkOriginalKeySet(mainActivityInterface.getTempSong());

@@ -1635,6 +1635,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         }
         // Hide the keyboard
         windowFlags.hideKeyboard();
+
+        // Check if we need to hide the actionbar
+        showActionBar();
     }
 
     @Override
