@@ -1191,4 +1191,8 @@
     <string name="youtube" translatable="false">YouTube</string>
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zoom_level">Zoom level</string>
+    <string name="indexing_info">Indexing songs is required if you have edited, created or deleted songs outwith OpenSongApp (including synchronising devices).  You can skip this if required and speed up the boot process.</string>
+    <string name="indexing_string">Index songs</string>
+    <string name="skip">Skip</string>
+    <string name="continue_text">Continue</string>
 </resources>

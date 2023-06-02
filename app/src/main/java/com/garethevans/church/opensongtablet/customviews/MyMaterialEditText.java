@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet.customviews;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.os.Build;
@@ -183,7 +184,7 @@ public class MyMaterialEditText extends LinearLayout implements View.OnTouchList
         a.recycle();
 
         try {
-            window = ((Activity) context).getWindow();
+            window = ((Activity) unwrap(context)).getWindow();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -194,6 +195,13 @@ public class MyMaterialEditText extends LinearLayout implements View.OnTouchList
     public void setEndIconMode(int endIconMode) {
         this.endIconMode = endIconMode;
         textInputLayout.setEndIconMode(endIconMode);
+    }
+
+    private Context unwrap(Context context) {
+        while (!(context instanceof Activity) && context != null) {
+            context = ((ContextWrapper) context).getBaseContext();
+        }
+        return context;
     }
 
     public void setText(String text) {

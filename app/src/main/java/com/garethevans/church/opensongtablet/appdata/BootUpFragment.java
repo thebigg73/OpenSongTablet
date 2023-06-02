@@ -95,7 +95,9 @@ public class BootUpFragment extends Fragment {
     // Checks made before starting the app
     public void startOrSetUp() {
         if (storageIsCorrectlySet()) {
-            startBootProcess();
+            //startBootProcess();
+            BootUpIndexBottomSheet bootUpIndexBottomSheet = new BootUpIndexBottomSheet(this);
+            bootUpIndexBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"BootUpIndexing");
         } else {
             requireStorageCheck();
         }
@@ -125,7 +127,7 @@ public class BootUpFragment extends Fragment {
         }
     }
 
-    private void startBootProcess() {
+    public void startBootProcess(boolean needIndex) {
         // Start the boot process
         if (getContext() != null) {
             ExecutorService executorService = Executors.newSingleThreadExecutor();
@@ -137,7 +139,7 @@ public class BootUpFragment extends Fragment {
                     } else {
                         message = "Processing: Storage";
                     }
-                    mainActivityInterface.getSongListBuildIndex().setIndexRequired(true);
+                    mainActivityInterface.getSongListBuildIndex().setIndexRequired(needIndex);
                     updateMessage();
 
                     // Get the last used song and folder.  If the song failed to load, reset to default
@@ -157,7 +159,9 @@ public class BootUpFragment extends Fragment {
                         }
                         updateMessage();
 
-                        mainActivityInterface.quickSongMenuBuild();
+                        if (needIndex) {
+                            mainActivityInterface.quickSongMenuBuild();
+                        }
 
                         // Finished indexing
                         if (getContext()!=null) {

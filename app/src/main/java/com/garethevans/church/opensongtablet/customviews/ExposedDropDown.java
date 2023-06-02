@@ -174,7 +174,7 @@ public class ExposedDropDown extends TextInputLayout {
         while (!(context instanceof Activity) && context != null) {
             context = ((ContextWrapper) context).getBaseContext();
         }
-        return (Context) context;
+        return context;
     }
     public void setPopupSize() {
         MainActivityInterface mainActivityInterface = null;
