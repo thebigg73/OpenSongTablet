@@ -227,6 +227,7 @@
     <string name="connections_service_stop">"Zastavte službu"</string>
     <string name="connections_song_sections_info">Listen for song section changes</string>
     <string name="content">"Obsah"</string>
+    <string name="continue_text">Pokračovat</string>
     <string name="controls">Řízení</string>
     <string name="controls_description">Nožní pedály a gesta na obrazovce</string>
     <string name="copy_chord">Kopírovat akordy mezi sekcemi</string>
@@ -388,6 +389,8 @@
     <string name="import_osb">Obnovení skladeb ze záložního souboru OpenSongApp (*.osb)</string>
     <string name="imported_values">Importované hodnoty</string>
     <string name="inc_autoscroll_speed">"Zvyšte rychlost Autoscroll Speed"</string>
+    <string name="indexing_info">Indexování skladeb je vyžadováno, pokud jste upravili, vytvořili nebo odstranili skladby mimo OpenSongApp (včetně synchronizačních zařízení) nebo pokud se jedná o novou instalaci.  Pokud se nic nezměnilo, můžete to přeskočit a urychlit proces zavádění.</string>
+    <string name="indexing_string">Rejstřík skladeb</string>
     <string name="info_text">Informační text</string>
     <string name="info_text_autohide">Automaticky skrýt informační lištu</string>
     <string name="info_text_autohide_info">Skrýt po zobrazení informací a uplynutí minimální doby</string>
@@ -716,6 +719,7 @@
     <string name="simple_color_info">Jednobarevné pozadí</string>
     <string name="simple_note">"Simple note / zástupný"</string>
     <string name="size">"Velikost"</string>
+    <string name="skip">Přeskočit</string>
     <string name="slide">"Stránka"</string>
     <string name="slide_add_page">"Vložit novou stránku na vlastní snímek"</string>
     <string name="small_buttons">Malá tlačítka</string>

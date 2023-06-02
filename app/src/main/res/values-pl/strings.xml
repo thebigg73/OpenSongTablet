@@ -227,6 +227,7 @@
     <string name="connections_service_stop">"Zatrzymaj usługę"</string>
     <string name="connections_song_sections_info">Posłuchaj zmian w sekcji piosenki</string>
     <string name="content">"Treść"</string>
+    <string name="continue_text">Kontynuować</string>
     <string name="controls">Kontrola</string>
     <string name="controls_description">Pedały nożne i gesty na ekranie</string>
     <string name="copy_chord">Kopiuj akordy między sekcjami</string>
@@ -388,6 +389,8 @@
     <string name="import_osb">Przywróć utwory z pliku kopii zapasowej OpenSongApp (*.osb)</string>
     <string name="imported_values">Zaimportowane wartości</string>
     <string name="inc_autoscroll_speed">"Zwiększ prędkość autoskalowania"</string>
+    <string name="indexing_info">Indeksowanie utworów jest wymagane, jeśli edytowałeś, utworzyłeś lub usunąłeś utwory poza OpenSongApp (w tym synchronizacja urządzeń) lub jeśli jest to nowa instalacja.  Możesz to pominąć, jeśli nic się nie zmieniło i przyspieszyć proces rozruchu.</string>
+    <string name="indexing_string">Indeks utworów</string>
     <string name="info_text">Tekst informacyjny</string>
     <string name="info_text_autohide">Automatycznie ukryj pasek informacyjny</string>
     <string name="info_text_autohide_info">Ukryj po wyświetleniu informacji i upływie minimalnego czasu</string>
@@ -716,6 +719,7 @@
     <string name="simple_color_info">Jednokolorowe tło</string>
     <string name="simple_note">"Proste nuty / zastępczy"</string>
     <string name="size">"Rozmiar"</string>
+    <string name="skip">Pominąć</string>
     <string name="slide">"Paź"</string>
     <string name="slide_add_page">"Włóż nową stronę obyczajowa slajdu"</string>
     <string name="small_buttons">Małe guziki</string>

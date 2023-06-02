@@ -227,6 +227,7 @@
     <string name="connections_service_stop">"Service d'arrêt"</string>
     <string name="connections_song_sections_info">Écoutez les changements de section de chanson</string>
     <string name="content">"Contenu"</string>
+    <string name="continue_text">Continuer</string>
     <string name="controls">Contrôle</string>
     <string name="controls_description">Pédales et gestes à l\'écran</string>
     <string name="copy_chord">Copier des accords entre les sections</string>
@@ -388,6 +389,8 @@
     <string name="import_osb">Restaurer les chansons à partir du fichier de sauvegarde OpenSongApp (*.osb)</string>
     <string name="imported_values">Valeurs importées</string>
     <string name="inc_autoscroll_speed">"Augmenter la vitesse de défilement automatique"</string>
+    <string name="indexing_info">L’indexation des chansons est requise si vous avez modifié, créé ou supprimé des chansons en dehors d’OpenSongApp (y compris les appareils de synchronisation) ou s’il s’agit d’une nouvelle installation.  Vous pouvez ignorer cette opération si rien n’a changé et accélérer le processus de démarrage.</string>
+    <string name="indexing_string">Chansons d’index</string>
     <string name="info_text">Texte d\'information</string>
     <string name="info_text_autohide">Masquer automatiquement la barre d\'informations</string>
     <string name="info_text_autohide_info">Cacher une fois que les informations ont été affichées et qu\'un temps minimum s\'est écoulé</string>
@@ -716,6 +719,7 @@
     <string name="simple_color_info">Un fond unicolore</string>
     <string name="simple_note">"Note simple  / espace réservé"</string>
     <string name="size">"Taille"</string>
+    <string name="skip">Sautiller</string>
     <string name="slide">"Page"</string>
     <string name="slide_add_page">"Insérer un nouvelle page de diaporamas personnalisés"</string>
     <string name="small_buttons">Petits boutons</string>

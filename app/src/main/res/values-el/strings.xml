@@ -227,6 +227,7 @@
     <string name="connections_service_stop">"Σταματήστε την υπηρεσία"</string>
     <string name="connections_song_sections_info">Ακούστε για αλλαγές στην ενότητα τραγουδιών</string>
     <string name="content">"Περιεχόμενο"</string>
+    <string name="continue_text">Συνεχίζω</string>
     <string name="controls">Ελεγχος</string>
     <string name="controls_description">Πεντάλ ποδιών και χειρονομίες οθόνης</string>
     <string name="copy_chord">Αντιγράψτε τις συγχορδίες μεταξύ των ενοτήτων</string>
@@ -388,6 +389,8 @@
     <string name="import_osb">Επαναφορά τραγουδιών από το αντίγραφο ασφαλείας του OpenSongApp (*.osb)</string>
     <string name="imported_values">Εισαγόμενες τιμές</string>
     <string name="inc_autoscroll_speed">"Αυξήστε την ταχύτητα αυτόματης κύλισης"</string>
+    <string name="indexing_info">Η ευρετηρίαση τραγουδιών απαιτείται εάν έχετε επεξεργαστεί, δημιουργήσει ή διαγράψει τραγούδια εκτός του OpenSongApp (συμπεριλαμβανομένων των συσκευών συγχρονισμού) ή εάν πρόκειται για νέα εγκατάσταση.  Μπορείτε να το παραλείψετε εάν δεν έχει αλλάξει τίποτα και να επιταχύνετε τη διαδικασία εκκίνησης.</string>
+    <string name="indexing_string">Τραγούδια ευρετηρίου</string>
     <string name="info_text">Κείμενο πληροφοριών</string>
     <string name="info_text_autohide">Αυτόματη απόκρυψη γραμμής πληροφοριών</string>
     <string name="info_text_autohide_info">Απόκρυψη μόλις εμφανιστούν οι πληροφορίες και παρέλθει ένας ελάχιστος χρόνος</string>
@@ -716,6 +719,7 @@
     <string name="simple_color_info">Μονόχρωμο φόντο</string>
     <string name="simple_note">"Simple note / placeholder"</string>
     <string name="size">"Size"</string>
+    <string name="skip">Πήδημα</string>
     <string name="slide">"Διαφάνεια"</string>
     <string name="slide_add_page">"Insert new page to custom slide"</string>
     <string name="small_buttons">Μικρά κουμπιά</string>

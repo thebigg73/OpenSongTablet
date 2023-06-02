@@ -265,6 +265,7 @@
     <string name="connections_service_stop">Stop service</string>
     <string name="connections_song_sections_info">Listen for song section changes</string>
     <string name="content">Content</string>
+    <string name="continue_text">Continue</string>
     <string name="controls">Controls</string>
     <string name="controls_description">Foot pedals and screen gestures</string>
     <string name="copy_chord">Copy chords between sections</string>
@@ -482,6 +483,8 @@
     <string name="import_other" translatable="false">OpenSong, OnSong, PDF, txt, ChoPro</string>
     <string name="imported_values">Imported values</string>
     <string name="inc_autoscroll_speed">Increase Autoscroll Speed</string>
+    <string name="indexing_info">Indexing songs is required if you have edited, created or deleted songs outwith OpenSongApp (including synchronising devices) or if this is a new installation.  You can skip this if nothing has changed and speed up the boot process.</string>
+    <string name="indexing_string">Index songs</string>
     <string name="info_text">Info text</string>
     <string name="info_text_autohide">Automatically hide information bar</string>
     <string name="info_text_autohide_info">Hide once the information has been displayed and a minimum time has elapsed</string>
@@ -880,6 +883,7 @@
     <string name="simple_color_info">A single colour background</string>
     <string name="simple_note">Simple note / placeholder</string>
     <string name="size">Size</string>
+    <string name="skip">Skip</string>
     <string name="slide">Slide</string>
     <string name="slide_add_page">Insert new page to custom slide</string>
     <string name="small_buttons">Small buttons</string>
@@ -1191,8 +1195,4 @@
     <string name="youtube" translatable="false">YouTube</string>
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zoom_level">Zoom level</string>
-    <string name="indexing_info">Indexing songs is required if you have edited, created or deleted songs outwith OpenSongApp (including synchronising devices).  You can skip this if required and speed up the boot process.</string>
-    <string name="indexing_string">Index songs</string>
-    <string name="skip">Skip</string>
-    <string name="continue_text">Continue</string>
 </resources>

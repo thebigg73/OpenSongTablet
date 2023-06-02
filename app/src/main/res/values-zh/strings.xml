@@ -227,6 +227,7 @@
     <string name="connections_service_stop">"停止服务"</string>
     <string name="connections_song_sections_info">聆听歌曲部分的变化</string>
     <string name="content">"内容"</string>
+    <string name="continue_text">继续</string>
     <string name="controls">控制</string>
     <string name="controls_description">脚踏板和屏幕手势</string>
     <string name="copy_chord">在部分之间复制和弦</string>
@@ -388,6 +389,8 @@
     <string name="import_osb">从 OpenSongApp 备份文件 (*.osb) 恢复歌曲</string>
     <string name="imported_values">导入的值</string>
     <string name="inc_autoscroll_speed">"增加自动滚动速度"</string>
+    <string name="indexing_info">如果您使用 OpenSongApp 编辑、创建或删除歌曲（包括同步设备）或者这是新安装，则需要索引歌曲。 如果没有任何变化，您可以跳过此操作并加快启动过程。</string>
+    <string name="indexing_string">索引歌曲</string>
     <string name="info_text">信息文本</string>
     <string name="info_text_autohide">自动隐藏信息栏</string>
     <string name="info_text_autohide_info">显示信息并经过最短时间后隐藏</string>
@@ -716,6 +719,7 @@
     <string name="simple_color_info">单色背景</string>
     <string name="simple_note">"简单的音符/占位"</string>
     <string name="size">"尺寸"</string>
+    <string name="skip">跳</string>
     <string name="slide">"页面"</string>
     <string name="slide_add_page">"插入新的页面自定义幻灯片"</string>
     <string name="small_buttons">小按钮</string>

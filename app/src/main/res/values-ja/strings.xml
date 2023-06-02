@@ -227,6 +227,7 @@
     <string name="connections_service_stop">"サービスを停止する"</string>
     <string name="connections_song_sections_info">曲のセクションの変更を聞く</string>
     <string name="content">"コンテンツ"</string>
+    <string name="continue_text">続ける</string>
     <string name="controls">コントロール</string>
     <string name="controls_description">フットペダルと画面ジェスチャー</string>
     <string name="copy_chord">セクション間でコードをコピーする</string>
@@ -388,6 +389,8 @@
     <string name="import_osb">OpenSongAppバックアップファイル（* .osb）から曲を復元する</string>
     <string name="imported_values">インポートされた値</string>
     <string name="inc_autoscroll_speed">"オートスクロールスピードを上げる"</string>
+    <string name="indexing_info">OpenSongApp(同期デバイスを含む)で曲を編集、作成、または削除した場合、またはこれが新規インストールの場合は、曲のインデックス作成が必要です。 何も変更されていない場合はこれをスキップして、起動プロセスを高速化できます。</string>
+    <string name="indexing_string">インデックス曲</string>
     <string name="info_text">情報テキスト</string>
     <string name="info_text_autohide">情報バーを自動的に非表示</string>
     <string name="info_text_autohide_info">情報が表示され、最小時間が経過したら非表示にします</string>
@@ -716,6 +719,7 @@
     <string name="simple_color_info">単色の背景</string>
     <string name="simple_note">"シンプルなノート/プレースホルダ"</string>
     <string name="size">"サイズ"</string>
+    <string name="skip">スキップ</string>
     <string name="slide">"ページ"</string>
     <string name="slide_add_page">"カスタムスライドに新しいページを挿入"</string>
     <string name="small_buttons">小さなボタン</string>

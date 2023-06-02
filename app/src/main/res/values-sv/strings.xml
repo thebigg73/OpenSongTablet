@@ -227,6 +227,7 @@
     <string name="connections_service_stop">"Stoppa tjänsten"</string>
     <string name="connections_song_sections_info">Lyssna efter ändringar i sångsektionen</string>
     <string name="content">"Innehåll"</string>
+    <string name="continue_text">Fortsätta</string>
     <string name="controls">Kontrollera</string>
     <string name="controls_description">Fotpedaler och skärmgester</string>
     <string name="copy_chord">Kopiera ackord mellan avsnitten</string>
@@ -388,6 +389,8 @@
     <string name="import_osb">Återställ låtar från OpenSongApp backup-fil (*.osb)</string>
     <string name="imported_values">Importerade värden</string>
     <string name="inc_autoscroll_speed">"Öka Autoscroll Speed"</string>
+    <string name="indexing_info">Indexering av låtar krävs om du har redigerat, skapat eller tagit bort låtar utanför OpenSongApp (inklusive synkroniseringsenheter) eller om det här är en ny installation.  Du kan hoppa över detta om ingenting har förändrats och påskynda startprocessen.</string>
+    <string name="indexing_string">Indexera låtar</string>
     <string name="info_text">Infotext</string>
     <string name="info_text_autohide">Dölj informationsfältet automatiskt</string>
     <string name="info_text_autohide_info">Göm när informationen har visats och en minsta tid har förflutit</string>
@@ -716,6 +719,7 @@
     <string name="simple_color_info">En enfärgad bakgrund</string>
     <string name="simple_note">"Enkel anteckning / platshållare"</string>
     <string name="size">"Storlek"</string>
+    <string name="skip">Skippa</string>
     <string name="slide">"Glida"</string>
     <string name="slide_add_page">"Infoga ny sida till anpassad bild"</string>
     <string name="small_buttons">Små knappar</string>

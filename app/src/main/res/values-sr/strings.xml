@@ -227,6 +227,7 @@
     <string name="connections_service_stop">Zaustavljanje servisa</string>
     <string name="connections_song_sections_info">Slušajte promene odeljka pesama</string>
     <string name="content">Sadržaj</string>
+    <string name="continue_text">Nastavite</string>
     <string name="controls">Kontrole</string>
     <string name="controls_description">Nožne pedale i pokreti ekrana</string>
     <string name="copy_chord">Kopirajte akorde između sekcija</string>
@@ -388,6 +389,8 @@
     <string name="import_osb">Vratite pesme iz rezervne kopije OpenSongApp datoteke (*.osb)</string>
     <string name="imported_values">Uvezene vrednosti</string>
     <string name="inc_autoscroll_speed">Uvećati brzinu automatskog pomeranja</string>
+    <string name="indexing_info">Indeksiranje pesama je potrebno ako ste uredili, kreirali ili izbrisali pesme sa OpenSongApp (uključujući uređaje za sinhronizaciju) ili ako je ovo nova instalacija.  Ovo možete preskočiti ako se ništa nije promenilo i ubrzati proces pokretanja sistema.</string>
+    <string name="indexing_string">Indeksiranje pesama</string>
     <string name="info_text">Info tekst</string>
     <string name="info_text_autohide">Automatski sakrijte traku sa informacijama</string>
     <string name="info_text_autohide_info">Sakrijte kada se informacije prikažu i kada protekne minimalno vreme</string>
@@ -716,6 +719,7 @@
     <string name="simple_color_info">Jednobojna pozadina</string>
     <string name="simple_note">Jednostavna beleška / rezervisano mesto</string>
     <string name="size">Veličina</string>
+    <string name="skip">Preskoči</string>
     <string name="slide">Slajd</string>
     <string name="slide_add_page">Ubaciti novu stranu za ručni slajd</string>
     <string name="small_buttons">Mala dugmad</string>

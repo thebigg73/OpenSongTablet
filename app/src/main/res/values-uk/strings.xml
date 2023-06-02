@@ -227,6 +227,7 @@
     <string name="connections_service_stop">Зупинити службу</string>
     <string name="connections_song_sections_info">Слухайте зміни розділу пісні</string>
     <string name="content">Зміст</string>
+    <string name="continue_text">Продовжити</string>
     <string name="controls">Елементи керування</string>
     <string name="controls_description">Ножні педалі та екранні жести</string>
     <string name="copy_chord">Копіюйте акорди між розділами</string>
@@ -388,6 +389,8 @@
     <string name="import_osb">Відновлення пісень із файлу резервної копії OpenSongApp (*.osb)</string>
     <string name="imported_values">Імпортовані значення</string>
     <string name="inc_autoscroll_speed">Збільшити швидкість автопрокрутки</string>
+    <string name="indexing_info">Індексування пісень необхідне, якщо ви редагували, створювали або видаляли пісні за допомогою OpenSongApp (включаючи пристрої синхронізації) або якщо це нова інсталяція.  Ви можете пропустити це, якщо нічого не змінилося і прискорити процес завантаження.</string>
+    <string name="indexing_string">Покажчик пісень</string>
     <string name="info_text">Інформаційний текст</string>
     <string name="info_text_autohide">Автоматично приховувати інформаційну панель</string>
     <string name="info_text_autohide_info">Приховати, коли інформація відобразиться і мине мінімальний час</string>
@@ -716,6 +719,7 @@
     <string name="simple_color_info">Одноколірний фон</string>
     <string name="simple_note">Просте примітка / заповнення</string>
     <string name="size">Розмір</string>
+    <string name="skip">Пропустити</string>
     <string name="slide">Слайд</string>
     <string name="slide_add_page">Вставте нову сторінку слайд користувача</string>
     <string name="small_buttons">Маленькі кнопки</string>

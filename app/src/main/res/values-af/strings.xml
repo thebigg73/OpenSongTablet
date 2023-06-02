@@ -227,6 +227,7 @@
     <string name="connections_service_stop">"Stop diens"</string>
     <string name="connections_song_sections_info">Luister vir veranderinge in die liedjie-afdeling</string>
     <string name="content">"Inhoud"</string>
+    <string name="continue_text">Voortgaan</string>
     <string name="controls">Beheer</string>
     <string name="controls_description">Voetpedale en skermbewegings</string>
     <string name="copy_chord">Kopieer akkoorde tussen afdelings</string>
@@ -388,6 +389,8 @@
     <string name="import_osb">Herstel liedjies vanaf OpenSongApp-rugsteunlêer (*.osb)</string>
     <string name="imported_values">Ingevoerde waardes</string>
     <string name="inc_autoscroll_speed">"Verhoog Autoscroll Spoed"</string>
+    <string name="indexing_info">Indeksering van liedjies is nodig as u liedjies met OpenSongApp (insluitend sinchronisasietoestelle) geredigeer, geskep of uitgevee het, of as dit \'n nuwe installasie is. U kan dit oorslaan as niks verander het nie en die opstartproses bespoedig.</string>
+    <string name="indexing_string">Indeks liedjies</string>
     <string name="info_text">Inligtingsteks</string>
     <string name="info_text_autohide">Versteek inligtingbalk outomaties</string>
     <string name="info_text_autohide_info">Versteek sodra die inligting vertoon is en \'n minimum tyd verloop het</string>
@@ -716,6 +719,7 @@
     <string name="simple_color_info">Een kleur agtergrond</string>
     <string name="simple_note">"Eenvoudige noot / plekhouer"</string>
     <string name="size">"Grootte"</string>
+    <string name="skip">Slaan</string>
     <string name="slide">"Page"</string>
     <string name="slide_add_page">"Voeg nuwe bladsy om persoonlike slide"</string>
     <string name="small_buttons">Klein knoppies</string>

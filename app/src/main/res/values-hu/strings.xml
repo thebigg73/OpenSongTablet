@@ -227,6 +227,7 @@
     <string name="connections_service_stop">"stop szolgáltatás"</string>
     <string name="connections_song_sections_info">Hallgassa meg a dalszakasz változásait</string>
     <string name="content">"Tartalom"</string>
+    <string name="continue_text">Folytatódik</string>
     <string name="controls">Vezérlők</string>
     <string name="controls_description">Lábpedálok és képernyőmozdulatok</string>
     <string name="copy_chord">Akkordok másolása a szakaszok között</string>
@@ -388,6 +389,8 @@
     <string name="import_osb">Zeneszámok visszaállítása az OpenSongApp biztonsági mentési fájlból (*.osb)</string>
     <string name="imported_values">Importált értékek</string>
     <string name="inc_autoscroll_speed">"Növelje az Autoscroll sebességet"</string>
+    <string name="indexing_info">A dalok indexelése akkor szükséges, ha az OpenSongApp segítségével szerkesztett, létrehozott vagy törölt dalokat (beleértve a szinkronizáló eszközöket is), vagy ha ez egy új telepítés.  Ezt kihagyhatja, ha semmi sem változott, és felgyorsíthatja a rendszerindítási folyamatot.</string>
+    <string name="indexing_string">Dalok indexelése</string>
     <string name="info_text">Információs szöveg</string>
     <string name="info_text_autohide">Az információs sáv automatikus elrejtése</string>
     <string name="info_text_autohide_info">Elrejtés, ha az információ megjelent, és egy minimális idő letelt</string>
@@ -716,6 +719,7 @@
     <string name="simple_color_info">Egyszínű háttér</string>
     <string name="simple_note">"Egyszerű jegyzet / helykitöltő"</string>
     <string name="size">"Méret"</string>
+    <string name="skip">Átugrik</string>
     <string name="slide">"Oldal"</string>
     <string name="slide_add_page">"Helyezze be az új oldalt egyedi dia"</string>
     <string name="small_buttons">Kis gombok</string>

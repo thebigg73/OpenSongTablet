@@ -227,6 +227,7 @@
     <string name="connections_service_stop">"Dienst anhalten"</string>
     <string name="connections_song_sections_info">Achten Sie auf Änderungen in Songabschnitten</string>
     <string name="content">"Inhalt"</string>
+    <string name="continue_text">Fortsetzen</string>
     <string name="controls">Steuerung</string>
     <string name="controls_description">Fußpedale und Bildschirmgesten</string>
     <string name="copy_chord">Kopieren Sie Akkorde zwischen Abschnitten</string>
@@ -388,6 +389,8 @@
     <string name="import_osb">Songs aus der OpenSongApp-Sicherungsdatei (*.osb) wiederherstellen</string>
     <string name="imported_values">Importierte Werte</string>
     <string name="inc_autoscroll_speed">"Autoscroll-Geschwindigkeit erhöhen"</string>
+    <string name="indexing_info">Die Indizierung von Songs ist erforderlich, wenn Sie Songs außerhalb von OpenSongApp bearbeitet, erstellt oder gelöscht haben (einschließlich der Synchronisierung von Geräten) oder wenn es sich um eine Neuinstallation handelt.  Sie können dies überspringen, wenn sich nichts geändert hat, und den Bootvorgang beschleunigen.</string>
+    <string name="indexing_string">Lieder indizieren</string>
     <string name="info_text">Infotext</string>
     <string name="info_text_autohide">Informationsleiste automatisch ausblenden</string>
     <string name="info_text_autohide_info">Ausblenden, sobald die Informationen angezeigt wurden und eine Mindestzeit verstrichen ist</string>
@@ -716,6 +719,7 @@
     <string name="simple_color_info">Ein einfarbiger Hintergrund</string>
     <string name="simple_note">"Einfache Notiz / Platzhalter"</string>
     <string name="size">"Größe"</string>
+    <string name="skip">Hüpfen</string>
     <string name="slide">"Folie"</string>
     <string name="slide_add_page">"Neue Seite in benutzerdefinierte Folie einfügen"</string>
     <string name="small_buttons">Kleine Knöpfe</string>
