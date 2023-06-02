@@ -27,6 +27,7 @@ public class BootUpIndexBottomSheet extends BottomSheetDialogFragment {
     private final BootUpFragment bootUpFragment;
     private String indexing_string="", continue_string="";
     private Timer timer;
+    private TimerTask timerTask;
     private int countdownNumber = 5;
 
     public BootUpIndexBottomSheet(BootUpFragment bootUpFragment) {
@@ -75,24 +76,21 @@ public class BootUpIndexBottomSheet extends BottomSheetDialogFragment {
     }
 
     private void setupListeners() {
-        myView.continueButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                bootUpFragment.startBootProcess(true);
-                dismiss();
-            }
+        myView.continueButton.setOnClickListener(view -> {
+            bootUpFragment.startBootProcess(true);
+            dismiss();
         });
-        myView.skipButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                bootUpFragment.startBootProcess(false);
-                dismiss();
-            }
+        myView.skipButton.setOnClickListener(view -> {
+            timerTask.cancel();
+            timer.purge();
+            timer = null;
+            bootUpFragment.startBootProcess(false);
+            dismiss();
         });
     }
 
     private void setTimer() {
-        TimerTask timerTask = new TimerTask() {
+        timerTask = new TimerTask() {
             @Override
             public void run() {
                 String message = continue_string + " ("+countdownNumber+")";

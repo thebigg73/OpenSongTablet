@@ -30,12 +30,7 @@ public class GestureListener extends GestureDetector.SimpleOnGestureListener {
         if (!doubleTapping) {
             doubleTapping = true;
             // Turn off record of double tapping in 200ms
-            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    doubleTapping = false;
-                }
-            },200);
+            new Handler(Looper.getMainLooper()).postDelayed(() -> doubleTapping = false,200);
             return performAction(mainActivityInterface.getGestures().getDoubleTap());
         } else {
             return true;

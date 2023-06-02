@@ -10,10 +10,15 @@ import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
 import android.widget.AutoCompleteTextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
@@ -29,25 +34,31 @@ public class ExposedDropDown extends TextInputLayout {
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "ExposedDropDown";
     private Context c;
-    private final int delay = 50;
     private boolean largePopups;
-    private boolean multiselect = false;
     private ArrayList<String> arrayList = null;
-    private final float xxlarge, xlarge, large, medium, small, xsmall;
+    private WindowInsetsCompat windowInsetsCompat;
+    private final WindowInsetsControllerCompat windowInsetsControllerCompat;
+    private Window window;
 
     @SuppressLint("ClickableViewAccessibility")
     public ExposedDropDown(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         this.c = context;
 
-        inflate(context, R.layout.view_exposed_dropdown,this);
+        try {
+            window = ((Activity) unwrap(context)).getWindow();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-        xxlarge = context.getResources().getDimension(R.dimen.text_xxlarge);
-        xlarge = context.getResources().getDimension(R.dimen.text_xlarge);
-        large = context.getResources().getDimension(R.dimen.text_large);
-        medium = context.getResources().getDimension(R.dimen.text_medium);
-        small = context.getResources().getDimension(R.dimen.text_small);
-        xsmall = context.getResources().getDimension(R.dimen.text_xsmall);
+        inflate(context, R.layout.view_exposed_dropdown,this);
+        ViewCompat.setOnApplyWindowInsetsListener(this, (v, insets) -> {
+            windowInsetsCompat = insets;
+            return insets;
+                });
+        windowInsetsControllerCompat = WindowCompat.getInsetsController(window, window.getDecorView());
+
+
 
         identifyViews();
 
@@ -71,7 +82,17 @@ public class ExposedDropDown extends TextInputLayout {
         textInputLayout.setPadding(0,0,0,0);
         a.recycle();
         autoCompleteTextView.setOnTouchListener(new MyTouchListener());
-        textInputLayout.setEndIconOnClickListener(v -> autoCompleteTextView.post(() -> {
+        textInputLayout.setEndIconOnClickListener(v -> autoCompleteTextView.post(this::doClickAction));
+
+        autoCompleteTextView.setOnClickListener(view -> doClickAction());
+    }
+
+    private void doClickAction() {
+        if (windowInsetsCompat != null && windowInsetsCompat.isVisible(WindowInsetsCompat.Type.ime()) &&
+                windowInsetsControllerCompat != null) {
+            windowInsetsControllerCompat.hide(WindowInsetsCompat.Type.ime());
+        }
+
         setPopupSize();
         if (autoCompleteTextView.isPopupShowing()) {
             autoCompleteTextView.dismissDropDown();
@@ -81,35 +102,23 @@ public class ExposedDropDown extends TextInputLayout {
             autoCompleteTextView.postDelayed(() -> {
                 autoCompleteTextView.showDropDown();
                 keepPosition();
-            },delay);
+            },100);
         }
-        }));
     }
-
     private class MyTouchListener implements OnTouchListener {
 
         @SuppressLint("ClickableViewAccessibility")
         @Override
         public boolean onTouch(View v, MotionEvent event) {
-            if (event.getAction()==MotionEvent.ACTION_DOWN ||
-            event.getAction()==MotionEvent.ACTION_BUTTON_PRESS) {
-                setPopupSize();
-            } else if (event.getAction()==MotionEvent.ACTION_UP ||
-            event.getAction()==MotionEvent.ACTION_BUTTON_RELEASE) {
-                autoCompleteTextView.post(() -> {
-                    if (autoCompleteTextView.isPopupShowing()) {
-                        autoCompleteTextView.dismissDropDown();
-                    } else {
-                        autoCompleteTextView.dismissDropDown();
-                        // Delay the showing..
-                        autoCompleteTextView.postDelayed(() -> {
-                            autoCompleteTextView.showDropDown();
-                            keepPosition();
-                        },delay);
-                    }
-                });
+            if (windowInsetsCompat != null && windowInsetsCompat.isVisible(WindowInsetsCompat.Type.ime()) &&
+                    windowInsetsControllerCompat != null) {
+                windowInsetsControllerCompat.hide(WindowInsetsCompat.Type.ime());
             }
-            return true;
+            if (event.getAction() == MotionEvent.ACTION_DOWN ||
+                    event.getAction() == MotionEvent.ACTION_BUTTON_PRESS) {
+                setPopupSize();
+            }
+            return false;
         }
     }
 
@@ -207,9 +216,4 @@ public class ExposedDropDown extends TextInputLayout {
             }
         }
     }
-
-    public void setMultiselect(boolean multiselect) {
-        this.multiselect = multiselect;
-    }
-
 }

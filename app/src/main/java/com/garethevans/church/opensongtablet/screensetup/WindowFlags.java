@@ -46,7 +46,6 @@ public class WindowFlags {
 
      */
 
-    private final Context c;
     private final Window w;
     private final MainActivityInterface mainActivityInterface;
     private final WindowInsetsControllerCompat windowInsetsControllerCompat;
@@ -78,7 +77,6 @@ public class WindowFlags {
 
     // This is called once when the class is instantiated.
     public WindowFlags(Context c, Window w) {
-        this.c = c;
         this.w = w;
         mainActivityInterface = (MainActivityInterface) c;
         windowInsetsControllerCompat = WindowCompat.getInsetsController(w, w.getDecorView());
@@ -204,14 +202,18 @@ public class WindowFlags {
 
     public void hideKeyboard() {
         // Delay a few millisecs and then hide
-        Handler handler = new Handler(Looper.getMainLooper());
-        handler.postDelayed(() -> windowInsetsControllerCompat.hide(typeIme),500);
+        if (insetsCompat.isVisible(WindowInsetsCompat.Type.ime())) {
+            Handler handler = new Handler(Looper.getMainLooper());
+            handler.postDelayed(() -> windowInsetsControllerCompat.hide(typeIme), 500);
+        }
     }
 
     public void showKeyboard() {
         // Show after a few millisecs
-        Handler handler = new Handler(Looper.getMainLooper());
-        handler.postDelayed(() -> windowInsetsControllerCompat.show(typeIme),1000);
+        if (!insetsCompat.isVisible(WindowInsetsCompat.Type.ime())) {
+            Handler handler = new Handler(Looper.getMainLooper());
+            handler.postDelayed(() -> windowInsetsControllerCompat.show(typeIme), 1000);
+        }
     }
 
     public void adjustViewPadding(MainActivityInterface mainActivityInterface, View view) {
@@ -639,5 +641,9 @@ public class WindowFlags {
     public void setIgnoreRoundedCorners(boolean ignoreRoundedCorners) {
         this.ignoreRoundedCorners = ignoreRoundedCorners;
         mainActivityInterface.getPreferences().setMyPreferenceBoolean("ignoreRoundedCorners",ignoreRoundedCorners);
+    }
+
+    public boolean isKeyboardShowing() {
+        return insetsCompat.isVisible(WindowInsetsCompat.Type.ime());
     }
 }

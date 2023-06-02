@@ -25,6 +25,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
@@ -39,9 +40,9 @@ public class MyMaterialEditText extends LinearLayout implements View.OnTouchList
     private final TextInputEditText editText;
     private final TextInputLayout textInputLayout;
     private final boolean restoreState;
-    private final float xxlarge, xlarge, large, medium, small, xsmall;
     private int endIconMode;
     private Window window;
+    private WindowInsetsCompat windowInsetsCompat;
 
     // By default this is a single line edit text
     // For multiline, the number of lines has to be specified (maxLines/lines)
@@ -53,13 +54,6 @@ public class MyMaterialEditText extends LinearLayout implements View.OnTouchList
         textInputLayout = new TextInputLayout(context);
         restoreState = true;
 
-        xxlarge = context.getResources().getDimension(R.dimen.text_xxlarge);
-        xlarge = context.getResources().getDimension(R.dimen.text_xlarge);
-        large = context.getResources().getDimension(R.dimen.text_large);
-        medium = context.getResources().getDimension(R.dimen.text_medium);
-        small = context.getResources().getDimension(R.dimen.text_small);
-        xsmall = context.getResources().getDimension(R.dimen.text_xsmall);
-
         try {
             window = ((Activity) context).getWindow();
         } catch (Exception e) {
@@ -70,13 +64,6 @@ public class MyMaterialEditText extends LinearLayout implements View.OnTouchList
     public MyMaterialEditText(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         inflate(context, R.layout.view_material_edittext, this);
-
-        xxlarge = context.getResources().getDimension(R.dimen.text_xxlarge);
-        xlarge = context.getResources().getDimension(R.dimen.text_xlarge);
-        large = context.getResources().getDimension(R.dimen.text_large);
-        medium = context.getResources().getDimension(R.dimen.text_medium);
-        small = context.getResources().getDimension(R.dimen.text_small);
-        xsmall = context.getResources().getDimension(R.dimen.text_xsmall);
 
         int[] set = new int[]{android.R.attr.text,
                 android.R.attr.hint,
@@ -352,6 +339,10 @@ public class MyMaterialEditText extends LinearLayout implements View.OnTouchList
     }
 
     private void setLongClickKeyboard() {
+        ViewCompat.setOnApplyWindowInsetsListener(this, (v, insets) -> {
+            windowInsetsCompat = insets;
+            return insets;
+        });
         // Sets long clicking on the text view to open the keyboard (forced)
         if (window!=null) {
 
@@ -364,15 +355,19 @@ public class MyMaterialEditText extends LinearLayout implements View.OnTouchList
                 Handler handler = new Handler(Looper.getMainLooper());
                 if (b) {
                     handler.postDelayed(() -> {
-                        windowInsetsControllerCompat.show(WindowInsetsCompat.Type.ime());
-                        Log.d(TAG,"Showing keyboard");
+                        if (windowInsetsCompat!=null && !windowInsetsCompat.isVisible(WindowInsetsCompat.Type.ime())) {
+                            windowInsetsControllerCompat.show(WindowInsetsCompat.Type.ime());
+                            Log.d(TAG, "Showing keyboard");
+                        }
                     }, 500);
-                } else {
+                }/* else {
                     handler.postDelayed(() -> {
-                        windowInsetsControllerCompat.hide(WindowInsetsCompat.Type.ime());
+                        if (windowInsetsCompat!=null && windowInsetsCompat.isVisible(WindowInsetsCompat.Type.ime())) {
+                            windowInsetsControllerCompat.hide(WindowInsetsCompat.Type.ime());
+                        }
                         Log.d(TAG,"Hide keyboard");
                     }, 500);
-                }
+                }*/
             });
             editText.setOnLongClickListener(view -> {
                 // Show after a few millisecs

@@ -215,7 +215,6 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                     if (getContext()!=null) {
                         folderArrayAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.filters.folderSearch, R.layout.view_exposed_dropdown_item, foundFolders);
                         myView.filters.folderSearch.setAdapter(folderArrayAdapter);
-                        myView.filters.folderSearch.setMultiselect(true);
                         myView.filters.folderSearch.addTextChangedListener(new MyTextWatcher("folder"));
                         int pos = foundFolders.indexOf(mainActivityInterface.getSong().getFolder());
                         if (pos >= 0) {
@@ -688,9 +687,6 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
             }
         }
         return songsFound;
-    }
-    public void setSongsFound(ArrayList<Song> songsFound) {
-        this.songsFound = songsFound;
     }
     public ArrayList<Song> getSongs() {
         return songsFound;

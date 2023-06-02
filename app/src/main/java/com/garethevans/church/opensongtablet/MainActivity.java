@@ -709,7 +709,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
             // If we have opened the soft keyboard we can get the height
             boolean imeVisible = insets.isVisible(WindowInsetsCompat.Type.ime());
-            if (windowFlags.getSoftKeyboardHeight() == 0 && imeVisible) {
+            if (imeVisible) {
                 windowFlags.setSoftKeyboardHeight(insets.getInsets(WindowInsetsCompat.Type.ime()).bottom);
             }
 
