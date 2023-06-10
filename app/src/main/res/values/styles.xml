@@ -304,7 +304,8 @@
         <item name="tabIndicatorHeight">8dp</item>
         <item name="tabIndicatorFullWidth">true</item>
         <item name="tabIconTint">@color/white</item>
-        <item name="tabPadding">0dp</item>
+        <item name="tabPaddingTop">16dp</item>
+        <item name="tabPaddingBottom">12dp</item>
         <item name="tabMode">fixed</item>
         <item name="tabGravity">fill</item>
         <item name="tabMaxWidth">0dp</item>
