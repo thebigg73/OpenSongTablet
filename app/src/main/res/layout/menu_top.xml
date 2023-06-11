@@ -22,13 +22,13 @@
         android:layout_height="wrap_content"
         android:layout_gravity="top"
         android:layout_weight="1"
-        android:background="@color/colorAltPrimary"
-        android:paddingTop="6dp" />
+        android:background="@color/colorAltPrimary" />
 
     <ImageView
         android:id="@+id/menuHelp"
         android:layout_width="wrap_content"
         android:layout_height="?attr/actionBarSize"
+        android:layout_gravity="top"
         android:contentDescription="@string/help"
         android:foregroundGravity="right"
         android:padding="16dp"
