@@ -54,6 +54,9 @@ public class Metronome {
     private TimerTask metronomeTimerTask, visualTimerTask;
     private final Handler metronomeTimerHandler = new Handler();
     private final Handler visualTimerHandler = new Handler();
+    private Handler tickHandler, tockHandler;
+    private final Runnable tickRunnable;
+    private final Runnable tockRunnable;
     private ArrayList<Integer> tickBeats;
 
     private ExposedDropDown beatsView, divisionsView, timeSigView, tempoView;
@@ -61,13 +64,45 @@ public class Metronome {
     private int total_calc_bpm = 0, total_counts = 0;
     private Handler tapTempoHandlerCheck, tapTempoHandlerReset;
     private Runnable tapTempoRunnableCheck, tapTempoRunnableReset;
+    //private AudioManager audioManager;
 
 
     public Metronome(Activity activity) {
-        c = (Context) activity;
+        c = activity;
         mainActivityInterface = (MainActivityInterface) c;
         metronomeAutoStart = mainActivityInterface.getPreferences().getMyPreferenceBoolean("metronomeAutoStart",false);
+        //audioManager = (AudioManager) c.getSystemService(Context.AUDIO_SERVICE);
+        tickRunnable = () -> {
+            if (soundPool != null) {
+                try {
+                    soundPool.play(tickClip, volumeTickLeft, volumeTickRight, 0, 0, 1);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        tockRunnable = () -> {
+            if (soundPool != null) {
+                try {
+                    soundPool.play(tockClip, volumeTockLeft, volumeTockRight, 0, 0, 1);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        AudioManager myAudioMgr = (AudioManager) c.getSystemService(Context.AUDIO_SERVICE);
+        String sampleRateStr = myAudioMgr.getProperty(AudioManager.PROPERTY_OUTPUT_SAMPLE_RATE);
+        int defaultSampleRate = Integer.parseInt(sampleRateStr);
+        String framesPerBurstStr = myAudioMgr.getProperty(AudioManager.PROPERTY_OUTPUT_FRAMES_PER_BUFFER);
+        int defaultFramesPerBurst = Integer.parseInt(framesPerBurstStr);
+
+        setDefaultStreamValues(defaultSampleRate, defaultFramesPerBurst);
     }
+
+    private static native void setDefaultStreamValues(int defaultSampleRate,
+                                                             int defaultFramesPerBurst);
+
+
     // The call to start and stop the metronome called from MainActivity
     public void startMetronome() {
         // Initialise the varibles
@@ -345,6 +380,9 @@ public class Metronome {
     private void checkPlayersReady() {
         // Called when the mediaPlayer are prepared
         if (tickPlayerReady && tockPlayerReady) {
+            tickHandler = new Handler();
+            tockHandler = new Handler();
+
             if (audioMetronome) {
                 timerMetronome();
             }
@@ -376,25 +414,10 @@ public class Metronome {
                         beat = 1;
                     }
                     if (soundPool != null && tickBeats.contains(beat)) {
-                        new Handler().postDelayed(() -> {
-                            if (soundPool != null) {
-                                try {
-                                    soundPool.play(tickClip, volumeTickLeft, volumeTickRight, 0, 0, 1);
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }, bufferFix);
+                        tickHandler.postDelayed(tickRunnable,bufferFix);
+
                     } else if (soundPool != null) {
-                        new Handler().postDelayed(() -> {
-                            if (soundPool != null) {
-                                try {
-                                    soundPool.play(tockClip, volumeTockLeft, volumeTockRight, 0, 0, 1);
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }, bufferFix);
+                        tockHandler.postDelayed(tockRunnable,bufferFix);
                     }
 
                     beat++;
@@ -453,6 +476,12 @@ public class Metronome {
     }
 
     public void stopTimers(boolean nullTimer) {
+        try {
+            tickHandler.removeCallbacks(tickRunnable);
+            tockHandler.removeCallbacks(tockRunnable);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         // Stop the metronome timer stuff
         if (metronomeTimerTask != null) {
             metronomeTimerTask.cancel();

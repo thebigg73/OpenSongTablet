@@ -1,0 +1,29 @@
+{
+  "buildFiles": [
+    "/Users/gareth/StudioProjects/OpenSongTablet/app/src/main/cpp/CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "/Users/gareth/Library/Android/sdk/cmake/3.22.1/bin/ninja",
+      "-C",
+      "/Users/gareth/StudioProjects/OpenSongTablet/app/.cxx/Debug/3v183ze6/arm64-v8a",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "/Users/gareth/Library/Android/sdk/cmake/3.22.1/bin/ninja",
+    "-C",
+    "/Users/gareth/StudioProjects/OpenSongTablet/app/.cxx/Debug/3v183ze6/arm64-v8a",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {
+    "lowlatencyaudio::@6890427a1f51a3e7e1df": {
+      "artifactName": "lowlatencyaudio",
+      "abi": "arm64-v8a",
+      "output": "/Users/gareth/StudioProjects/OpenSongTablet/app/build/intermediates/cxx/Debug/3v183ze6/obj/arm64-v8a/liblowlatencyaudio.so",
+      "runtimeFiles": [
+        "/Users/gareth/.gradle/caches/transforms-3/0c0d8f4dcde507cc74daace5e8fb494b/transformed/jetified-oboe-1.7.0/prefab/modules/oboe/libs/android.arm64-v8a/liboboe.so"
+      ]
+    }
+  }
+}

@@ -26,9 +26,18 @@ public class EditSongFragmentFeatures extends Fragment {
     private EditSongFeaturesBinding myView;
     private MainActivityInterface mainActivityInterface;
     private EditSongFragmentInterface editSongFragmentInterface;
-    private String whichLink = "audio", pad_auto_string="", link_audio_string="", off_string="",
-            tempo_string="", bpm_string="", link_youtube_string="", link_web_string="",
-            link_file_string="", custom_string="", link_string="";
+    private String whichLink = "audio";
+    private String pad_auto_string="";
+    private String link_audio_string="";
+    private String off_string="";
+    private String tempo_string="";
+    private String bpm_string="";
+    private String link_youtube_string="";
+    private String link_web_string="";
+    private String link_file_string="";
+    private String custom_string="";
+    private String link_string="";
+    private String online_search_string="";
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "EditSongFeatures";
     private String[] key_choice_string={};
@@ -96,6 +105,9 @@ public class EditSongFragmentFeatures extends Fragment {
             link_file_string = getString(R.string.link_file);
             custom_string = getString(R.string.custom);
             link_string = getString(R.string.link);
+            String search_string = getString(R.string.search);
+            String online_string = getString(R.string.online);
+            online_search_string = search_string +" ("+ online_string +")";
         }
     }
     private void setupValues() {
@@ -108,6 +120,8 @@ public class EditSongFragmentFeatures extends Fragment {
             myView.key.setAdapter(keyArrayAdapter1);
             myView.originalkey.setAdapter(keyArrayAdapter2);
         }
+        myView.searchOnline.setText(online_search_string);
+
         myView.key.setText(mainActivityInterface.getTempSong().getKey());
         mainActivityInterface.getTranspose().checkOriginalKeySet(mainActivityInterface.getTempSong());
         myView.originalkey.setText(mainActivityInterface.getTempSong().getKeyOriginal());
@@ -266,6 +280,10 @@ public class EditSongFragmentFeatures extends Fragment {
         mainActivityInterface.getProcessSong().stretchEditBoxToLines(myView.midi, 2);
     }
     private void setupListeners() {
+        myView.searchOnline.setOnClickListener(view -> {
+            GetBPMBottomSheet getBPMBottomSheet = new GetBPMBottomSheet(EditSongFragmentFeatures.this);
+            getBPMBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"GetBPMBottomSheet");
+        });
         // The simple text only fields
         myView.key.addTextChangedListener(new MyTextWatcher("key"));
         myView.capo.addTextChangedListener(new MyTextWatcher("capo"));
@@ -404,6 +422,20 @@ public class EditSongFragmentFeatures extends Fragment {
         } else {
             return "";
         }
+    }
+
+
+    // From the online search bottom sheet
+    public void updateKey(String foundKey) {
+        myView.key.setText(foundKey);
+    }
+    public void updateTempo(int tempo) {
+        myView.tempo.setText(""+tempo);
+    }
+
+    public void updateDuration(int mins, int secs) {
+        myView.durationMins.setText(mins+"");
+        myView.durationSecs.setText(secs+"");
     }
 
     @Override

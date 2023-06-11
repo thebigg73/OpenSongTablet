@@ -276,6 +276,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     private Intent fileOpenIntent;
 
+    static {
+        System.loadLibrary("lowlatencyaudio");
+    }
+
     // Set up the activity
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

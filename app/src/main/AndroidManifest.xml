@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:installLocation="auto">
 
+    <uses-sdk tools:overrideLibrary="com.google.oboe"/>
+
     <uses-feature
         android:name="android.hardware.touchscreen"
         android:required="false" />

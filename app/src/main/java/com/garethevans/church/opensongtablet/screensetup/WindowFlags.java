@@ -202,7 +202,7 @@ public class WindowFlags {
 
     public void hideKeyboard() {
         // Delay a few millisecs and then hide
-        if (insetsCompat.isVisible(WindowInsetsCompat.Type.ime())) {
+        if (insetsCompat!=null && insetsCompat.isVisible(WindowInsetsCompat.Type.ime())) {
             Handler handler = new Handler(Looper.getMainLooper());
             handler.postDelayed(() -> windowInsetsControllerCompat.hide(typeIme), 500);
         }

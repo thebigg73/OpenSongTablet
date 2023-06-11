@@ -21,6 +21,13 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/searchOnline"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/search"
+                android:visibility="gone"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -30,11 +37,11 @@
                 <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
                     android:id="@+id/key"
                     android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="match_parent"
                     android:layout_marginStart="0dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginBottom="8dp"
-                    android:layout_weight="1"
                     android:hint="@string/key"
                     android:focusable="false"
                     android:focusableInTouchMode="false"/>
@@ -42,11 +49,11 @@
                 <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
                     android:id="@+id/originalkey"
                     android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="match_parent"
                     android:layout_marginStart="0dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginBottom="8dp"
-                    android:layout_weight="1"
                     android:hint="@string/key_original"
                     android:focusable="false"
                     android:focusableInTouchMode="false"/>
@@ -54,11 +61,11 @@
                 <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
                     android:id="@+id/capo"
                     android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="match_parent"
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="0dp"
                     android:layout_marginBottom="8dp"
-                    android:layout_weight="1"
                     android:hint="@string/capo"
                     android:focusable="false"
                     android:focusableInTouchMode="false"/>
@@ -73,12 +80,12 @@
                 <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
                     android:id="@+id/pad"
                     android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="match_parent"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginBottom="8dp"
-                    android:layout_weight="1"
                     android:hint="@string/pad"
                     android:focusable="false"
                     android:focusableInTouchMode="false"/>
@@ -86,12 +93,12 @@
                 <com.google.android.material.switchmaterial.SwitchMaterial
                     android:id="@+id/loop"
                     android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="match_parent"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="0dp"
                     android:layout_marginBottom="8dp"
-                    android:layout_weight="1"
                     android:text="@string/loop"
                     android:focusable="false"
                     android:focusableInTouchMode="false"/>
@@ -107,12 +114,12 @@
                 <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
                     android:id="@+id/tempo"
                     android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="match_parent"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginBottom="8dp"
-                    android:layout_weight="1"
                     android:hint="@string/tempo"
                     android:inputType="number"
                     android:focusable="false"
@@ -121,12 +128,12 @@
                 <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
                     android:id="@+id/timesig"
                     android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="match_parent"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="0dp"
                     android:layout_marginBottom="8dp"
-                    android:layout_weight="1"
                     android:hint="@string/time_signature"
                     android:focusable="false"
                     android:focusableInTouchMode="false"/>

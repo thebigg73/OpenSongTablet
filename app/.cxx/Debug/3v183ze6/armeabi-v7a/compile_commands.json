@@ -1,0 +1,7 @@
+[
+{
+  "directory": "/Users/gareth/StudioProjects/OpenSongTablet/app/.cxx/Debug/3v183ze6/armeabi-v7a",
+  "command": "/Users/gareth/Library/Android/sdk/ndk/25.1.8937393/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++ --target=armv7-none-linux-androideabi19 --sysroot=/Users/gareth/Library/Android/sdk/ndk/25.1.8937393/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -Dlowlatencyaudio_EXPORTS -isystem /Users/gareth/.gradle/caches/transforms-3/0c0d8f4dcde507cc74daace5e8fb494b/transformed/jetified-oboe-1.7.0/prefab/modules/oboe/include -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security   -fno-limit-debug-info  -fPIC -o CMakeFiles/lowlatencyaudio.dir/lowlatencyaudio.cpp.o -c /Users/gareth/StudioProjects/OpenSongTablet/app/src/main/cpp/lowlatencyaudio.cpp",
+  "file": "/Users/gareth/StudioProjects/OpenSongTablet/app/src/main/cpp/lowlatencyaudio.cpp"
+}
+]

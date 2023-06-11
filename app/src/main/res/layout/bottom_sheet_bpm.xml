@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/FullscreenBottomSheet"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.garethevans.church.opensongtablet.customviews.DialogHeader
+        android:id="@+id/dialogHeading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/tempo" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="@dimen/progress_bar_size"
+        android:layout_height="@dimen/progress_bar_size"/>
+
+    <WebView
+        android:id="@+id/webView"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:visibility="gone"/>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <androidx.gridlayout.widget.GridLayout
+            android:id="@+id/gridLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:rowCount="2"
+            app:columnCount="3">
+
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                android:id="@+id/keyInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="8dp"
+                app:layout_gravity="center_horizontal"
+                app:layout_columnWeight="1"
+                android:text="@string/tempo"/>
+
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                android:id="@+id/durationInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="8dp"
+                app:layout_gravity="center_horizontal"
+                app:layout_columnWeight="1"
+                android:text="@string/song_duration"/>
+
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                android:id="@+id/tempoInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="8dp"
+                app:layout_gravity="center_horizontal"
+                app:layout_columnWeight="1"
+                android:text="@string/tempo"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/keyButton"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="8dp"
+                app:layout_gravity="center_horizontal"
+                android:text="@string/copy_of"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/durationButton"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="8dp"
+                app:layout_gravity="center_horizontal"
+                android:text="@string/copy_of"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/tempoButton"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="8dp"
+                app:layout_gravity="center_horizontal"
+                android:text="@string/copy_of"/>
+
+        </androidx.gridlayout.widget.GridLayout>
+    </androidx.core.widget.NestedScrollView>
+</LinearLayout>

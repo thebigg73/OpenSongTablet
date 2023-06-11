@@ -124,7 +124,7 @@ public class SetTypeFace {
         } else {
             getGoogleFont(fontPresoInfo,"fontPresoInfo",null,presoInfoFontHandler);
         }
-        setMonoFont(Typeface.MONOSPACE);
+        setMonoFont(Typeface.createFromAsset(c.getAssets(),"font/robotomono.ttf"));
     }
 
     public void changeFont(String which, String fontName, Handler handler) {
