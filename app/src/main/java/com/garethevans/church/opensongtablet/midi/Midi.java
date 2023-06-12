@@ -896,7 +896,3 @@ public class Midi {
         return shortHandMidi.convertShorthandToMIDI(textToCheck);
     }
 }
-
-
-
-

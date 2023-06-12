@@ -477,8 +477,12 @@ public class Metronome {
 
     public void stopTimers(boolean nullTimer) {
         try {
-            tickHandler.removeCallbacks(tickRunnable);
-            tockHandler.removeCallbacks(tockRunnable);
+            if (tickHandler!=null && tickRunnable!=null) {
+                tickHandler.removeCallbacks(tickRunnable);
+            }
+            if (tockHandler!=null && tockRunnable!=null) {
+                tockHandler.removeCallbacks(tockRunnable);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
