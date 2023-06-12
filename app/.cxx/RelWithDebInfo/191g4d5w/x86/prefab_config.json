@@ -1,7 +1,0 @@
-{
-  "enabled": true,
-  "prefabPath": "/Users/gareth/.gradle/caches/modules-2/files-2.1/com.google.prefab/cli/2.0.0/f2702b5ca13df54e3ca92f29d6b403fb6285d8df/cli-2.0.0-all.jar",
-  "packages": [
-    "/Users/gareth/.gradle/caches/transforms-3/0c0d8f4dcde507cc74daace5e8fb494b/transformed/jetified-oboe-1.7.0/prefab"
-  ]
-}
