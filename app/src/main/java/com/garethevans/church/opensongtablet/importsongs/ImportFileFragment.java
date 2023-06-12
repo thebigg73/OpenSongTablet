@@ -205,18 +205,25 @@ public class ImportFileFragment extends Fragment {
                 newSong.setFiletype("IMG");
             }
         } else {
+            // Because ost files aren't normally allowed (BAD extension) in the song folder
+            // This would cause the file to be read as text if it has this extension
+            // We set a pass go variable for now so that isn't checked again when reading the import
+            mainActivityInterface.getLoadSong().setImportingFile(true);
+            if (mainActivityInterface.getImportFilename().endsWith(".ost")) {
+                newSong.setFiletype("XML");
+            }
             try {
                 newSong.setFolder("**Variation/_cache");
                 newSong = mainActivityInterface.getLoadSong().doLoadSongFile(newSong,false);
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            mainActivityInterface.getLoadSong().setImportingFile(false);
             myView.content.post(()-> {
                         myView.content.setText(newSong.getTitle());
                         myView.content.setHintMonospace();
                         myView.content.setHint(newSong.getLyrics());
                     });
-
             // Because we have loaded the song (sort of), we need to reset the mainActivity.getSong()
             // As this will have been changed by the load process
             mainActivityInterface.getSong().setFolder(originalFolder);

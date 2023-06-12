@@ -444,11 +444,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 inputStream = getContentResolver().openInputStream(importUri);
                 importFilename = storageAccess.getFileNameFromUri(importUri);
                 if (inputStream != null) {
-                    File tempLoc = new File(getExternalFilesDir("Import"), "Intent");
-                    if (!tempLoc.mkdirs()) {
-                        Log.d(TAG, "Error creating folder:" + tempLoc);
-                    }
-                    File tempFile = new File(tempLoc, importFilename);
+                    File tempFile = new File(getExternalFilesDir("Import"), importFilename);
                     FileOutputStream outputStream = new FileOutputStream(tempFile);
                     storageAccess.updateFileActivityLog(TAG + " dealWithIntent CopyFile " + importUri + " to " + tempFile);
                     storageAccess.copyFile(inputStream, outputStream);

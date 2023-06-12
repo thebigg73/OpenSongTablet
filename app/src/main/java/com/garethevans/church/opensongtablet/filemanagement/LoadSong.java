@@ -24,6 +24,7 @@ public class LoadSong {
     private final MainActivityInterface mainActivityInterface;
     private Uri uri;
     private ArrayList<Song> songsToFix;
+    private boolean importingFile = false;
 
     public LoadSong(Context c) {
         this.c = c;
@@ -112,7 +113,11 @@ public class LoadSong {
         String where = "Songs";
 
         // Determine the filetype by extension - the best songs are xml (OpenSong formatted).
-        thisSong.setFiletype(getFileTypeByExtension(thisSong.getFilename()));
+        // If we are importing and ost file, we have already set this if appropriate to XML
+        // Normally this is bad, but not as we are importing from a temp location
+        if (!importingFile) {
+            thisSong.setFiletype(getFileTypeByExtension(thisSong.getFilename()));
+        }
 
         // Get the uri for the song - we know it exists as we found it!
         uri = mainActivityInterface.getStorageAccess().getUriForItem(
@@ -132,6 +137,7 @@ public class LoadSong {
                     // Don't update the songLoadSuccess as this isn't what the user really wants
 
                 } else if (thisSong.getFiletype().equals("XML")) {
+                    Log.d(TAG,"loading xml");
                     // 2. We have an XML file (likely)
                     utf = getUTF(thisSong.getFolder(),
                             thisSong.getFilename(), thisSong.getFiletype());
@@ -324,7 +330,8 @@ public class LoadSong {
     public Song readFileAsXML(Song thisSong, String where, Uri uri, String utf) {
 
         // Don't do this if we have an unrecognised song format
-        if (!mainActivityInterface.getStorageAccess().badFileExtension(thisSong.getFilename())) {
+        // Check for the import pass go allowance
+        if ((importingFile && thisSong.getFiletype().equals("XML")) || !mainActivityInterface.getStorageAccess().badFileExtension(thisSong.getFilename())) {
             // Extract all of the key bits of the song
             if (mainActivityInterface.getStorageAccess().uriIsFile(uri)) {
                 try {
@@ -802,5 +809,9 @@ public class LoadSong {
         }
 
         return nextkey;
+    }
+
+    public void setImportingFile(boolean importingFile) {
+        this.importingFile = importingFile;
     }
 }
