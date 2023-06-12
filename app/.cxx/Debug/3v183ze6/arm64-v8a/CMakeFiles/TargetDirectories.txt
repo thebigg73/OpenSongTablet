@@ -1,3 +1,0 @@
-/Users/gareth/StudioProjects/OpenSongTablet/app/.cxx/Debug/3v183ze6/arm64-v8a/CMakeFiles/lowlatencyaudio.dir
-/Users/gareth/StudioProjects/OpenSongTablet/app/.cxx/Debug/3v183ze6/arm64-v8a/CMakeFiles/edit_cache.dir
-/Users/gareth/StudioProjects/OpenSongTablet/app/.cxx/Debug/3v183ze6/arm64-v8a/CMakeFiles/rebuild_cache.dir

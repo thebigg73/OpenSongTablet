@@ -1,5 +1,0 @@
-# ninja log v5
-318	356	1686384125157881374	/Users/gareth/StudioProjects/OpenSongTablet/app/build/intermediates/cxx/Debug/3v183ze6/obj/armeabi-v7a/liblowlatencyaudio.so	d44323750a7e02e6
-0	318	1686384125119738065	CMakeFiles/lowlatencyaudio.dir/lowlatencyaudio.cpp.o	a70fda9ea52f1a7f
-11	440	1686399019389210504	CMakeFiles/lowlatencyaudio.dir/lowlatencyaudio.cpp.o	a70fda9ea52f1a7f
-440	597	1686399019548956227	/Users/gareth/StudioProjects/OpenSongTablet/app/build/intermediates/cxx/Debug/3v183ze6/obj/armeabi-v7a/liblowlatencyaudio.so	d44323750a7e02e6
