@@ -32,11 +32,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_margin="8dp"
+        android:layout_margin="12dp"
         android:contentDescription="@string/save_changes"
         android:text="@string/save"
         android:visibility="visible"
-        android:minHeight="@dimen/design_fab_size_normal"
+        android:minHeight="56dp"
         app:icon="@drawable/save" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
