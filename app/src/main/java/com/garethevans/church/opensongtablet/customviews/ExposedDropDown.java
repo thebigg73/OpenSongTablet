@@ -83,8 +83,8 @@ public class ExposedDropDown extends TextInputLayout {
         textInputLayout.setPadding(0,0,0,0);
         a.recycle();
         autoCompleteTextView.setOnTouchListener(new MyTouchListener());
-        textInputLayout.setEndIconOnClickListener(v -> autoCompleteTextView.post(this::doClickAction));
-        autoCompleteTextView.setOnClickListener(view -> doClickAction());
+        //textInputLayout.setEndIconOnClickListener(v -> autoCompleteTextView.post(this::doClickAction));
+        //autoCompleteTextView.setOnClickListener(view -> doClickAction());
     }
 
     private void doClickAction() {
@@ -115,10 +115,12 @@ public class ExposedDropDown extends TextInputLayout {
                     windowInsetsControllerCompat != null) {
                 windowInsetsControllerCompat.hide(WindowInsetsCompat.Type.ime());
             }
+            // Prepare the size of the popup
             if (event.getAction() == MotionEvent.ACTION_DOWN ||
                     event.getAction() == MotionEvent.ACTION_BUTTON_PRESS) {
                 setPopupSize();
             }
+            // Show the popup
             if (event.getAction() == MotionEvent.ACTION_UP ||
                     event.getAction() == MotionEvent.ACTION_BUTTON_RELEASE) {
                 textInputLayout.postDelayed(ExposedDropDown.this::doClickAction,100);

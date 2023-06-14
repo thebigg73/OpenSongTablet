@@ -132,6 +132,7 @@
         <!-- The box -->
         <item name="boxBackgroundMode">outline</item>
         <item name="boxStrokeWidth">1dp</item>
+        <item name="boxStrokeWidthFocused">1dp</item>
         <item name="boxStrokeColor">@color/white</item>
     </style>
     <style name="ExposedMaterialOverlay" parent="">
