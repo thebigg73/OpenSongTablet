@@ -156,8 +156,8 @@ public class EditSongFragmentLyrics extends Fragment {
             }
         });
 
-        myView.lyrics.setOnClickListener(view -> manualScrollTo());
-        myView.lyrics.setOnFocusChangeListener((view, b) -> manualScrollTo());
+        //myView.lyrics.setOnClickListener(view -> manualScrollTo());
+        //myView.lyrics.setOnFocusChangeListener((view, b) -> manualScrollTo());
 
         myView.ocr.setOnClickListener(v -> {
 
@@ -195,6 +195,7 @@ public class EditSongFragmentLyrics extends Fragment {
     }
 
     private void manualScrollTo () {
+
         myView.lyrics.postDelayed(() -> {
             int cursorStart = myView.lyrics.getSelectionStart();
             Log.d(TAG, "onClicked().  cursorStart:" + cursorStart);

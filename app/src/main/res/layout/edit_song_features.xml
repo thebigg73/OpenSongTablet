@@ -10,10 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:descendantFocusability="beforeDescendants"
-        android:focusable="true"
-        android:focusableInTouchMode="true">
+        android:layout_marginEnd="8dp">
 
         <LinearLayout
             android:id="@+id/resizeForKeyboardLayout"
@@ -42,9 +39,7 @@
                     android:layout_marginStart="0dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginBottom="8dp"
-                    android:hint="@string/key"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false"/>
+                    android:hint="@string/key" />
 
                 <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
                     android:id="@+id/originalkey"
@@ -54,9 +49,7 @@
                     android:layout_marginStart="0dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginBottom="8dp"
-                    android:hint="@string/key_original"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false"/>
+                    android:hint="@string/key_original" />
 
                 <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
                     android:id="@+id/capo"
@@ -66,9 +59,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="0dp"
                     android:layout_marginBottom="8dp"
-                    android:hint="@string/capo"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false"/>
+                    android:hint="@string/capo" />
             </LinearLayout>
 
             <LinearLayout
@@ -86,9 +77,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginBottom="8dp"
-                    android:hint="@string/pad"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false"/>
+                    android:hint="@string/pad" />
 
                 <com.google.android.material.switchmaterial.SwitchMaterial
                     android:id="@+id/loop"
@@ -99,9 +88,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="0dp"
                     android:layout_marginBottom="8dp"
-                    android:text="@string/loop"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false"/>
+                    android:text="@string/loop" />
             </LinearLayout>
             <TableRow style="@style/DividerLine"/>
 
@@ -121,9 +108,7 @@
                     android:layout_marginEnd="8dp"
                     android:layout_marginBottom="8dp"
                     android:hint="@string/tempo"
-                    android:inputType="number"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false" />
+                    android:inputType="number" />
 
                 <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
                     android:id="@+id/timesig"
@@ -134,9 +119,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="0dp"
                     android:layout_marginBottom="8dp"
-                    android:hint="@string/time_signature"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false"/>
+                    android:hint="@string/time_signature" />
             </LinearLayout>
 
             <com.google.android.material.button.MaterialButton
@@ -146,9 +129,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
                 android:padding="16dp"
-                android:text="@string/tap_tempo"
-                android:focusable="false"
-                android:focusableInTouchMode="false"/>
+                android:text="@string/tap_tempo" />
             <TableRow style="@style/DividerLine"/>
 
             <com.google.android.material.textview.MaterialTextView
@@ -208,7 +189,6 @@
             <TextView
                 android:id="@+id/helperText"
                 style="@style/helperText"
-                android:focusable="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/song_features_warning" />
@@ -271,9 +251,7 @@
                     android:layout_marginEnd="8dp"
                     android:layout_marginBottom="8dp"
                     android:layout_weight="0.5"
-                    android:hint="@string/link"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false"/>
+                    android:hint="@string/link" />
 
                 <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                     android:id="@+id/linkValue"

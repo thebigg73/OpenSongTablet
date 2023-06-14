@@ -325,6 +325,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             // Make sure the song title is there
             updateToolbar(null);
 
+            // Clear the saved instance state - we've finished with everything we need.
+            savedInstanceState.clear();
+
         } else {
             rebooted = false;
         }
@@ -3474,7 +3477,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
-        //songsFound = songMenuFragment.getSongs();
         outState.putBoolean("bootUpCompleted", bootUpCompleted);
         outState.putBoolean("indexComplete", songListBuildIndex.getIndexComplete());
 

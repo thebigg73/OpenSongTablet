@@ -131,6 +131,7 @@
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewpager"
+            android:saveEnabled="false"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </LinearLayout>

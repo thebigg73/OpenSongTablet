@@ -9,10 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:descendantFocusability="beforeDescendants"
-        android:focusable="true"
-        android:focusableInTouchMode="true">
+        android:layout_marginEnd="8dp">
 
         <LinearLayout
             android:id="@+id/resizeForKeyboardLayout"
@@ -60,9 +57,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
                     android:layout_weight="0.4"
-                    android:hint="@string/folder"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false"/>
+                    android:hint="@string/folder" />
 
                 <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                     android:id="@+id/filename"
@@ -74,9 +69,7 @@
                     android:layout_marginBottom="8dp"
                     android:layout_weight="0.6"
                     app:endIconMode="clear_text"
-                    android:hint="@string/filename"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false"/>
+                    android:hint="@string/filename" />
             </LinearLayout>
 
             <TableRow style="@style/DividerLine" />

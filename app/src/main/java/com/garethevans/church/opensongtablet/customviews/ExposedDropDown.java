@@ -8,6 +8,7 @@ import android.content.res.TypedArray;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -83,7 +84,6 @@ public class ExposedDropDown extends TextInputLayout {
         a.recycle();
         autoCompleteTextView.setOnTouchListener(new MyTouchListener());
         textInputLayout.setEndIconOnClickListener(v -> autoCompleteTextView.post(this::doClickAction));
-
         autoCompleteTextView.setOnClickListener(view -> doClickAction());
     }
 
@@ -97,7 +97,8 @@ public class ExposedDropDown extends TextInputLayout {
         if (autoCompleteTextView.isPopupShowing()) {
             autoCompleteTextView.dismissDropDown();
         } else {
-            autoCompleteTextView.dismissDropDown();
+            //autoCompleteTextView.dismissDropDown();
+            Log.d(TAG,"clicked");
             // Delay the showing..
             autoCompleteTextView.postDelayed(() -> {
                 autoCompleteTextView.showDropDown();
@@ -117,6 +118,10 @@ public class ExposedDropDown extends TextInputLayout {
             if (event.getAction() == MotionEvent.ACTION_DOWN ||
                     event.getAction() == MotionEvent.ACTION_BUTTON_PRESS) {
                 setPopupSize();
+            }
+            if (event.getAction() == MotionEvent.ACTION_UP ||
+                    event.getAction() == MotionEvent.ACTION_BUTTON_RELEASE) {
+                textInputLayout.postDelayed(ExposedDropDown.this::doClickAction,100);
             }
             return false;
         }
@@ -152,11 +157,11 @@ public class ExposedDropDown extends TextInputLayout {
 
     public void setText(String text) {
         autoCompleteTextView.setText(text);
-        autoCompleteTextView.clearFocus();
+        //autoCompleteTextView.clearFocus();
     }
     public void setHint(String hint) {
         textInputLayout.setHint(hint);
-        textInputLayout.clearFocus();
+        //textInputLayout.clearFocus();
     }
     public void setAdapter(ExposedDropDownArrayAdapter arrayAdapter) {
         autoCompleteTextView.setAdapter(arrayAdapter);

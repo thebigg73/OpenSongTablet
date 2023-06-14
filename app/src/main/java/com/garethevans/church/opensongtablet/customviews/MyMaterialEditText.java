@@ -59,7 +59,7 @@ public class MyMaterialEditText extends LinearLayout implements View.OnTouchList
         } catch (Exception e) {
             e.printStackTrace();
         }
-        setLongClickKeyboard();
+        //setLongClickKeyboard();
     }
     public MyMaterialEditText(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -175,7 +175,7 @@ public class MyMaterialEditText extends LinearLayout implements View.OnTouchList
         } catch (Exception e) {
             e.printStackTrace();
         }
-        setLongClickKeyboard();
+        //setLongClickKeyboard();
     }
 
 
