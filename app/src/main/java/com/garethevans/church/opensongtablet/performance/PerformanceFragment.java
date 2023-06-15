@@ -421,9 +421,11 @@ public class PerformanceFragment extends Fragment {
                             });
 
                             // IV - Reset current values to 0
-                            if (mainActivityInterface.getSong().getFiletype().equals("PDF")) {
+                            if (mainActivityInterface.getSong()!=null &&
+                                    mainActivityInterface.getSong().getFiletype()!=null &&
+                                    mainActivityInterface.getSong().getFiletype().equals("PDF")) {
                                 mainActivityInterface.getSong().setPdfPageCurrent(0);
-                            } else {
+                            } else if (mainActivityInterface.getSong()!=null){
                                 mainActivityInterface.getSong().setCurrentSection(0);
                                 mainActivityInterface.getPresenterSettings().setCurrentSection(0);
                             }

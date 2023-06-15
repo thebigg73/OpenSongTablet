@@ -94,12 +94,17 @@ public class BootUpIndexBottomSheet extends BottomSheetDialogFragment {
             @Override
             public void run() {
                 String message = continue_string + " ("+countdownNumber+")";
-                myView.continueButton.setText(message);
+                if (myView!=null) {
+                    myView.continueButton.post(() -> myView.continueButton.setText(message));
+                }
+
                 if (countdownNumber==1) {
                     this.cancel();
                     timer.purge();
                     timer = null;
-                    myView.continueButton.performClick();
+                    if (myView!=null) {
+                        myView.continueButton.post(() -> myView.continueButton.performClick());
+                    }
                 } else {
                     countdownNumber --;
                 }
