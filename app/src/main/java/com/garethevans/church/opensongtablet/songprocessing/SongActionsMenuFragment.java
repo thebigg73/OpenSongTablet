@@ -16,6 +16,7 @@ import com.garethevans.church.opensongtablet.databinding.SettingsSongactionsBind
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.midi.MidiSongBottomSheet;
 import com.garethevans.church.opensongtablet.preferences.TextInputBottomSheet;
+import com.google.android.material.textview.MaterialTextView;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -26,7 +27,7 @@ public class SongActionsMenuFragment extends Fragment {
     private SettingsSongactionsBinding myView;
     @SuppressWarnings({"FieldCanBeLocal","unused"})
     private final String TAG = "SongActionsMenuFrag";
-    private String song_actions_string="";
+    private String song_actions_string="", search_index_wait_string="";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -59,6 +60,7 @@ public class SongActionsMenuFragment extends Fragment {
     private void prepareStrings() {
         if (getContext()!=null) {
             song_actions_string = getString(R.string.song_actions);
+            search_index_wait_string = getString(R.string.search_index_wait);
         }
     }
     private void addCurrentSong() {
@@ -124,7 +126,14 @@ public class SongActionsMenuFragment extends Fragment {
         myView.notation.setOnClickListener(v -> actionAllowed(R.id.musicScoreFragment));
         myView.tags.setOnClickListener(v -> {
             if (mainActivityInterface.getSongListBuildIndex().getCurrentlyIndexing()) {
-                mainActivityInterface.getShowToast().doIt(getString(R.string.search_index_wait));
+                String progressText = "";
+                if (mainActivityInterface.getSongMenuFragment()!=null) {
+                    MaterialTextView progressView = mainActivityInterface.getSongMenuFragment().getProgressText();
+                    if (progressView!=null && progressView.getText()!=null) {
+                        progressText = " " + progressView.getText().toString();
+                    }
+                }
+                mainActivityInterface.getShowToast().doIt(search_index_wait_string+progressText);
             } else {
                 mainActivityInterface.navigateToFragment(getString(R.string.deeplink_tags), 0);
             }
