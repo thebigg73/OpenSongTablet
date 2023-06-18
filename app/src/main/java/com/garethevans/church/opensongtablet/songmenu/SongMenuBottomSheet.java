@@ -18,6 +18,7 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.android.material.textview.MaterialTextView;
 
 public class SongMenuBottomSheet extends BottomSheetDialogFragment {
 
@@ -127,7 +128,14 @@ public class SongMenuBottomSheet extends BottomSheetDialogFragment {
                 dismiss();
             } else {
                 dismiss();
-                mainActivityInterface.getShowToast().doItBottomSheet(search_index_wait_string,myView.getRoot());
+                String progressText = "";
+                if (mainActivityInterface.getSongMenuFragment()!=null) {
+                    MaterialTextView progressView = mainActivityInterface.getSongMenuFragment().getProgressText();
+                    if (progressView!=null && progressView.getText()!=null) {
+                        progressText = " " + progressView.getText().toString();
+                    }
+                }
+                mainActivityInterface.getShowToast().doItBottomSheet(search_index_wait_string+progressText,myView.getRoot());
             }
         });
     }

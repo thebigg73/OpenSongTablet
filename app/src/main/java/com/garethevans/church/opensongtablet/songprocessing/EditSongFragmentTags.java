@@ -22,6 +22,7 @@ import com.garethevans.church.opensongtablet.databinding.EditSongTagsBinding;
 import com.garethevans.church.opensongtablet.interfaces.EditSongFragmentInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.tags.TagsBottomSheet;
+import com.google.android.material.textview.MaterialTextView;
 
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
@@ -119,7 +120,14 @@ public class EditSongFragmentTags extends Fragment {
                     tagsBottomSheet.show(getActivity().getSupportFragmentManager(), "ThemesBottomSheet");
                 }
             } else {
-                mainActivityInterface.getShowToast().doIt(search_index_wait_string);
+                String progressText = "";
+                if (mainActivityInterface.getSongMenuFragment()!=null) {
+                    MaterialTextView progressView = mainActivityInterface.getSongMenuFragment().getProgressText();
+                    if (progressView!=null && progressView.getText()!=null) {
+                        progressText = " " + progressView.getText().toString();
+                    }
+                }
+                mainActivityInterface.getShowToast().doIt(search_index_wait_string+progressText);
             }
 
         });

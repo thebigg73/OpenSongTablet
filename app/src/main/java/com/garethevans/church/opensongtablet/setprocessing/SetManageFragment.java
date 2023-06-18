@@ -24,6 +24,7 @@ import com.garethevans.church.opensongtablet.databinding.SettingsSetsManageBindi
 import com.garethevans.church.opensongtablet.filemanagement.AreYouSureBottomSheet;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.preferences.TextInputBottomSheet;
+import com.google.android.material.textview.MaterialTextView;
 
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -514,7 +515,14 @@ public class SetManageFragment extends Fragment {
             mainActivityInterface.setWhattodo("exportset:" + chosenSets);
             mainActivityInterface.navigateToFragment(deeplink_export_string, 0);
         } else {
-            mainActivityInterface.getShowToast().doIt(search_index_wait_string);
+            String progressText = "";
+            if (mainActivityInterface.getSongMenuFragment()!=null) {
+                MaterialTextView progressView = mainActivityInterface.getSongMenuFragment().getProgressText();
+                if (progressView!=null && progressView.getText()!=null) {
+                    progressText = " " + progressView.getText().toString();
+                }
+            }
+            mainActivityInterface.getShowToast().doIt(search_index_wait_string + progressText);
         }
     }
 

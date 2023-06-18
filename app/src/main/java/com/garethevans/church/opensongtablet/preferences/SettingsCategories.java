@@ -20,6 +20,7 @@ import com.garethevans.church.opensongtablet.databinding.SettingsCategoriesBindi
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.material.textview.MaterialTextView;
 
 public class SettingsCategories extends Fragment {
 
@@ -150,7 +151,14 @@ public class SettingsCategories extends Fragment {
             if (mainActivityInterface.getSongListBuildIndex().getIndexComplete()) {
                 mainActivityInterface.navigateToFragment(null, R.id.actions_graph);
             } else {
-                mainActivityInterface.getShowToast().doIt(wait_string);
+                String progressText = "";
+                if (mainActivityInterface.getSongMenuFragment()!=null) {
+                    MaterialTextView progressView = mainActivityInterface.getSongMenuFragment().getProgressText();
+                    if (progressView!=null && progressView.getText()!=null) {
+                        progressText = " " + progressView.getText().toString();
+                    }
+                }
+                mainActivityInterface.getShowToast().doIt(wait_string + progressText);
             }
         });
         myView.setActionsButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null, R.id.set_graph));
