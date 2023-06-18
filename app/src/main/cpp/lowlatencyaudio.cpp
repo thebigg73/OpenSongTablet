@@ -1,3 +1,4 @@
+/*
 #include <jni.h>
 #include <string>
 #include <sys/types.h>
@@ -17,15 +18,16 @@ using namespace oboe;
 std::shared_ptr<AudioStream> mAudioStream;
 static const char* TAG = "lowlatencyaudio";
 
+*/
+//extern "C" JNIEXPORT jstring JNICALL
+//Java_com_garethevans_church_opensongtablet_metronome_Metronome_stringFromJNI(
+//        JNIEnv* env,
+//        jobject /* this */) {
+//    std::string hello = "Hello from C++";
+//    return env->NewStringUTF(hello.c_str());
+//}
 
-extern "C" JNIEXPORT jstring JNICALL
-Java_com_garethevans_church_opensongtablet_metronome_Metronome_stringFromJNI(
-        JNIEnv* env,
-        jobject /* this */) {
-    std::string hello = "Hello from C++";
-    return env->NewStringUTF(hello.c_str());
-}
-
+/*
 // JNI functions are "C" calling convention
 extern "C" {
 
@@ -60,3 +62,4 @@ Java_com_garethevans_church_opensongtablet_metronome_Metronome_setDefaultStreamV
 
 
 }
+*/

@@ -278,9 +278,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private Intent fileOpenIntent;
     private int availableWidth=-1, availableHeight=-1;
 
-    static {
+    // Used if implementing Oboe using C++ injection
+    /*static {
         System.loadLibrary("lowlatencyaudio");
-    }
+    }*/
 
     // Set up the activity
     @Override

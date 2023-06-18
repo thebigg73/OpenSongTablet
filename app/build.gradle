@@ -36,14 +36,14 @@ android {
         targetSdkVersion 33
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
-        versionCode 347
-        versionName '6.0.0_beta22'
-        externalNativeBuild {
+        versionCode 348
+        versionName '6.0.0_beta23'
+        /*externalNativeBuild {
             cmake {
                 arguments "-DANDROID_STL=c++_shared"
                 cppFlags ''
             }
-        }
+        }*/
     }
 
     buildscript {
@@ -71,12 +71,12 @@ android {
     }
 
     namespace 'com.garethevans.church.opensongtablet'
-    externalNativeBuild {
+    /*externalNativeBuild {
         cmake {
             path file('src/main/cpp/CMakeLists.txt')
             version '3.22.1'
         }
-    }
+    }*/
 }
 
 dependencies {
@@ -110,7 +110,7 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.15.1'                             // For better setting of images
     annotationProcessor 'com.github.bumptech.glide:compiler:4.15.1'                     // For better setting of images
     implementation 'com.github.deano2390:MaterialShowcaseView:1.3.7'                    // To highlight new features in the app
-    implementation 'com.google.oboe:oboe:1.7.0'                                         // Low latency audio
+    //implementation 'com.google.oboe:oboe:1.7.0'                                         // Low latency audio
 
     // To include jar libraries
     implementation fileTree(dir: 'libs', include: ['*.jar'])

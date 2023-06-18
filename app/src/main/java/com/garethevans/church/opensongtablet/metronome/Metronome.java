@@ -10,6 +10,7 @@ import android.media.SoundPool;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 
 import androidx.core.graphics.ColorUtils;
 
@@ -96,7 +97,9 @@ public class Metronome {
         String framesPerBurstStr = myAudioMgr.getProperty(AudioManager.PROPERTY_OUTPUT_FRAMES_PER_BUFFER);
         int defaultFramesPerBurst = Integer.parseInt(framesPerBurstStr);
 
-        setDefaultStreamValues(defaultSampleRate, defaultFramesPerBurst);
+        Log.d(TAG,"defaultSampleRate:"+defaultSampleRate+"  defaultFramesPerBurst:"+defaultFramesPerBurst);
+        // If using Oboe (must be called in MainActivity.java)
+        //setDefaultStreamValues(defaultSampleRate, defaultFramesPerBurst);
     }
 
     private static native void setDefaultStreamValues(int defaultSampleRate,

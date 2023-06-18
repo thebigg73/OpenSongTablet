@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+/*
 #ifndef OPENSONGTABLET_AUDIOSOURCE_H
 #define OPENSONGTABLET_AUDIOSOURCE_H
 
@@ -35,3 +36,4 @@ struct AudioProperties {
 
 
 #endif //OPENSONGTABLET_AUDIOSOURCE_H
+*/
