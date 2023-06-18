@@ -725,12 +725,12 @@ public class ProcessSong {
     // When processing the lyrics, chords+lyrics or chords+comments or multiple chords+chords are processed
     // as groups of lines and returned as a TableLayout containing two or more rows to allow alignment
 
-    private String trimOutLineIdentifiers(String linetype, String string) {
+    private String trimOutLineIdentifiers(Song thisSong, String linetype, String string) {
         switch (linetype) {
             case "heading":
                 string = beautifyHeading(string);
-                if (!mainActivityInterface.getSong().getSongSectionHeadings().contains(string)) {
-                    mainActivityInterface.getSong().getSongSectionHeadings().add(string);
+                if (!thisSong.getSongSectionHeadings().contains(string)) {
+                    thisSong.getSongSectionHeadings().add(string);
                 }
                 break;
             case "chord":
@@ -914,7 +914,7 @@ public class ProcessSong {
         }
     }
 
-    private TableLayout groupTable(String string, int lyricColor, int chordColor, int capoColor,
+    private TableLayout groupTable(Song thisSong, String string, int lyricColor, int chordColor, int capoColor,
                                    int highlightChordColor, boolean presentation, boolean boldText) {
         TableLayout tableLayout = newTableLayout();
         tableLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -922,7 +922,7 @@ public class ProcessSong {
         boolean performancePresentation = presentation && mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance));
 
         // If we have a capo and want to show capo chords, duplicate and transpose the chord line
-        String capoText = mainActivityInterface.getSong().getCapo();
+        String capoText = thisSong.getCapo();
         boolean hasCapo = capoText!=null && !capoText.isEmpty();
 
         if (hasCapo && (displayCapoChords || displayCapoAndNativeChords) && !(performancePresentation && !mainActivityInterface.getPresenterSettings().getPresoShowChords())) {
@@ -1000,7 +1000,7 @@ public class ProcessSong {
                 lines[t] = beautifyHeading(lines[t]);
             }
             if (linetype.equals("comment") & lines[t].startsWith(";")) {
-                lines[t] = trimOutLineIdentifiers(linetype, lines[t]);
+                lines[t] = trimOutLineIdentifiers(thisSong, linetype, lines[t]);
             }
 
             Typeface typeface = getTypeface(presentation && !performancePresentation, linetype);
@@ -1012,7 +1012,7 @@ public class ProcessSong {
                     TextView textView = newTextView(presentation, linetype, typeface, size, color);
                     String str = lines[t].substring(startpos, endpos);
                     if (startpos == 0) {
-                        str = trimOutLineIdentifiers(linetype, str);
+                        str = trimOutLineIdentifiers(thisSong, linetype, str);
                     }
                     // If this is a chord line that either has highlighting, or needs to to include capo chords
                     // We process separately, otherwise it is handled in the last default 'else'
@@ -1401,7 +1401,7 @@ public class ProcessSong {
         }
     }
 
-    private TextView lineText(String linetype,
+    private TextView lineText(Song thisSong, String linetype,
                               String string, Typeface typeface, float size, int color,
                               int highlightHeadingColor, int highlightChordColor,
                               boolean presentation, boolean boldText) {
@@ -1413,7 +1413,7 @@ public class ProcessSong {
         if (presentation && !mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance))) {
             textView.setGravity(mainActivityInterface.getPresenterSettings().getPresoLyricsAlign());
         }
-        String str = trimOutLineIdentifiers(linetype, string);
+        String str = trimOutLineIdentifiers(thisSong, linetype, string);
         if (linetype.equals("heading") && highlightHeadingColor != 0x00000000) {
             Spannable span = new SpannableString(str);
             int x = 0;
@@ -1507,6 +1507,17 @@ public class ProcessSong {
 
         // 3. Make sure new column/breaks aren't pulled into separate sections
         // Do this by trimming whitespace before them
+        // In performance mode, we want new section so split is easier as it could be in the middle of a section
+        if (lyrics.contains("!--") && mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance))) {
+            lyrics = lyrics.replace("!--","!--\n[]\n");
+            // Now remove this blank section if the next item was a new section already
+            lyrics = lyrics.replace("!--\n[]\n[","!--\n[");
+            lyrics = lyrics.replace("!--\n[]\n\n[","!--\n\n[");
+            lyrics = lyrics.replace("!--\n[]\n \n[","!--\n\n[");
+            lyrics = lyrics.replace("!--\n[]\n\n\n[","!--\n\n\n[");
+            lyrics = lyrics.replace("!--\n[]\n \n \n[","!--\n\n\n[");
+        }
+        // Get rid of blank space before the column breaks
         if (lyrics.contains("!--")) {
             lyrics = lyrics.replaceAll("\\s+!--","!--");
         }
@@ -1526,7 +1537,7 @@ public class ProcessSong {
 
         // 6. Prepare for double new line section split - needed for all except scripture or performance primary (not presentation) screen
         String doubleNewlineSplit = "\n\n";
-        if (!mainActivityInterface.getSong().getFolder().contains(c.getResources().getString(R.string.scripture)) &&
+        if (!song.getFolder().contains(c.getResources().getString(R.string.scripture)) &&
                 !(mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) && !presentation )) {
             doubleNewlineSplit = "§";
         }
@@ -1836,17 +1847,17 @@ public class ProcessSong {
                             if (line.contains(groupline_string)) {
                                 // Has lyrics and chords
                                 if (asPDF) {
-                                    linearLayout.addView(groupTable(line, Color.BLACK, Color.BLACK,
+                                    linearLayout.addView(groupTable(song, line, Color.BLACK, Color.BLACK,
                                             Color.BLACK, Color.TRANSPARENT, false, isChorusBold));
                                 } else if (presentation && !performancePresentation) {
-                                    linearLayout.addView(groupTable(line,
+                                    linearLayout.addView(groupTable(song, line,
                                             mainActivityInterface.getMyThemeColors().getPresoFontColor(),
                                             mainActivityInterface.getMyThemeColors().getPresoChordColor(),
                                             mainActivityInterface.getMyThemeColors().getPresoCapoColor(),
                                             mainActivityInterface.getMyThemeColors().getHighlightChordColor(),
                                             true, isChorusBold));
                                 } else {
-                                    TableLayout tl = groupTable(line,
+                                    TableLayout tl = groupTable(song, line,
                                             mainActivityInterface.getMyThemeColors().getLyricsTextColor(),
                                             mainActivityInterface.getMyThemeColors().getLyricsChordsColor(),
                                             mainActivityInterface.getMyThemeColors().getLyricsCapoColor(),
@@ -1863,7 +1874,7 @@ public class ProcessSong {
                                         // IV - Remove typical word splits, white space and trim - beautify!
                                         line = fixLyricsOnlySpace(line);
                                     }
-                                    TextView tv = lineText(linetype, line, typeface,
+                                    TextView tv = lineText(song, linetype, line, typeface,
                                             size, textColor,
                                             mainActivityInterface.getMyThemeColors().getHighlightHeadingColor(),
                                             mainActivityInterface.getMyThemeColors().getHighlightChordColor(), performancePresentation, isChorusBold);
@@ -1878,7 +1889,7 @@ public class ProcessSong {
                                         // IV - Remove typical word splits, white space and trim - beautify!
                                         line = fixLyricsOnlySpace(line);
                                     }
-                                    linearLayout.addView(lineText(linetype, line, typeface,
+                                    linearLayout.addView(lineText(song, linetype, line, typeface,
                                             size, textColor, Color.TRANSPARENT, Color.TRANSPARENT,
                                             presentation, isChorusBold));
                                 }
@@ -1890,7 +1901,7 @@ public class ProcessSong {
                     if (addSectionSpace && mainActivityInterface.getMode().equals(c.getString(R.string.mode_stage)) &&
                             !mainActivityInterface.getMakePDF().getIsSetListPrinting() &&
                             sect != (song.getPresoOrderSongSections().size() - 1)) {
-                        linearLayout.addView(lineText("lyric", "", getTypeface(false, "lyric"),
+                        linearLayout.addView(lineText(song, "lyric", "", getTypeface(false, "lyric"),
                                 getFontSize("lyric") / 2, Color.TRANSPARENT, Color.TRANSPARENT, Color.TRANSPARENT,
                                 false, isChorusBold));
                     }
@@ -2411,7 +2422,7 @@ public class ProcessSong {
 
     // These are called from the VTO listener - draw the stuff to the screen as 1,2 or 3 columns
     // This then returns the best (largest) scaling size as a float
-    public float[] addViewsToScreen(ArrayList<View> sectionViews,
+    public float[] addViewsToScreen(Song thisSong, ArrayList<View> sectionViews,
                                     ArrayList<Integer> sectionWidths, ArrayList<Integer> sectionHeights,
                                     RelativeLayout pageHolder, LinearLayout songView,
                                     LinearLayout songSheetView, int availableWidth, int availableHeight,
@@ -2470,12 +2481,12 @@ public class ProcessSong {
         int split1 = -1;
         int split2 = -1;
         ArrayList<Integer> sectionswithbreak = new ArrayList<>();
-        if (thisAutoScale.equals("Y") && forceColumns && mainActivityInterface.getSong().getLyrics().contains("!--")) {
+        if (thisAutoScale.equals("Y") && forceColumns && (thisSong.getLyrics().contains("!--")||thisSong.getLyrics().contains(columnbreak_string))) {
             // The song sections will have the page break at the start.
             // Count the columns forced (max of 3 though!!!).
             // Need to count the sections
-            for (int x=0; x<mainActivityInterface.getSong().getPresoOrderSongSections().size();x++) {
-                String section = mainActivityInterface.getSong().getPresoOrderSongSections().get(x);
+            for (int x=0; x<thisSong.getPresoOrderSongSections().size();x++) {
+                String section = thisSong.getPresoOrderSongSections().get(x);
                 if (section.contains(columnbreak_string)) {
                     sectionswithbreak.add(x+1); // Add afterwards
                     if (split1==-1) {
@@ -2484,6 +2495,7 @@ public class ProcessSong {
                         split2 = x+1;
                     }
                 }
+
             }
             if (!sectionswithbreak.isEmpty()) {
                 doForceColumns = true;

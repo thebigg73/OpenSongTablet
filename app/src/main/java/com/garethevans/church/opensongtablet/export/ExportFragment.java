@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.print.PrintManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,7 +46,8 @@ public class ExportFragment extends Fragment {
     private int headerLayoutWidth, headerLayoutHeight, songsToAdd, songsProcessed;
     private String setToExport = null, exportType, shareTitle, textContent, setContent, pngName,
             export_string="", website_export_set_string="", website_export_song_string="",
-            set_string="", song_string="", app_name_string="", screenshot_string="", toolBarTitle="";
+            set_string="", song_string="", app_name_string="", screenshot_string="", toolBarTitle="",
+            mode_performance_string="";
     private boolean openSong = false, currentFormat = false, openSongApp = false, pdf = false, image = false,
             png = false, chordPro = false, onsong = false, text = false, setPDF = false, openSongSet = false,
             setPNG = false, openSongAppSet = false, includeSongs = false, textSet = false, isPrint,
@@ -148,6 +148,7 @@ public class ExportFragment extends Fragment {
             song_string = getString(R.string.song);
             app_name_string = getString(R.string.app_name);
             screenshot_string = getString(R.string.screenshot).toLowerCase();
+            mode_performance_string = getString(R.string.mode_performance);
         }
     }
 
@@ -953,7 +954,7 @@ public class ExportFragment extends Fragment {
                         sectionViewWidthsScreenshot.add(width);
                         sectionViewHeightsScreenshot.add(height);
                     }
-                    createOnTheFlySectionsScreenshots2(pdfName);
+                    createOnTheFlySectionsScreenshots2(thisSong, pdfName);
                 }
             }
         });
@@ -966,17 +967,23 @@ public class ExportFragment extends Fragment {
 
     float[] scaleInfo;
 
-    public void createOnTheFlySectionsScreenshots2(String pdfName) {
-        int[] screenSizes = mainActivityInterface.getDisplayMetrics();
-        int screenWidth = screenSizes[0];
-        int screenHeight = screenSizes[1];
-
-        int[] viewPadding = mainActivityInterface.getViewMargins();
-
-        int availableWidth = screenWidth - viewPadding[0] - viewPadding[1];
-        int availableHeight = screenHeight - viewPadding[2] - viewPadding[3];
-
-
+    public void createOnTheFlySectionsScreenshots2(Song thisSong, String pdfName) {
+        // Get the sizes from the performance fragment if possible (due to different paddings)
+        int availableWidth;
+        int availableHeight;
+        if (mainActivityInterface.getMode().equals(mode_performance_string)
+                && mainActivityInterface.getAvailableSizes()!=null) {
+            int[] sizes = mainActivityInterface.getAvailableSizes();
+            availableWidth = sizes[0];
+            availableHeight = sizes[1];
+        } else {
+            int[] screenSizes = mainActivityInterface.getDisplayMetrics();
+            int screenWidth = screenSizes[0];
+            int screenHeight = screenSizes[1];
+            int[] viewPadding = mainActivityInterface.getViewMargins();
+            availableWidth = screenWidth - viewPadding[0] - viewPadding[1];
+            availableHeight = screenHeight - viewPadding[2] - viewPadding[3];
+        }
 
         // Now we have the views, add them to the temp layout and set up a view tree listener to measure
         ViewTreeObserver sectionsVTO = myView.scaledSongContent.getViewTreeObserver();
@@ -985,15 +992,9 @@ public class ExportFragment extends Fragment {
             public void onGlobalLayout() {
                 // The views are ready so lets measure them after clearing this listener
                 // If all the views are there, we can start measuring
-                for (float i:scaleInfo) {
-                    Log.d(TAG,"scaleInfo:"+i);
-                }
                 int col1Items = 0;
                 int col2Items = 0;
                 int col3Items = 0;
-                Log.d(TAG,"myView.scaledSongContent.getCol1().getWidth():"+myView.scaledSongContent.getCol1().getWidth());
-                Log.d(TAG,"myView.scaledSongContent.getCol2().getWidth():"+myView.scaledSongContent.getCol2().getWidth());
-                Log.d(TAG,"myView.scaledSongContent.getCol3().getWidth():"+myView.scaledSongContent.getCol3().getWidth());
                 if (myView.scaledSongContent.getCol1().getChildCount()>0) {
                     col1Items = ((LinearLayout)myView.scaledSongContent.getCol1().getChildAt(0)).getChildCount();
                 }
@@ -1096,7 +1097,7 @@ public class ExportFragment extends Fragment {
         // Remove any scaled header that exists
         myView.scaledHeader.removeAllViews();
         mainActivityInterface.getProcessSong().setMakingScaledScreenShot(true);
-        scaleInfo = mainActivityInterface.getProcessSong().addViewsToScreen(sectionViewsScreenshot,
+        scaleInfo = mainActivityInterface.getProcessSong().addViewsToScreen(thisSong, sectionViewsScreenshot,
                 sectionViewWidthsScreenshot,sectionViewHeightsScreenshot,myView.scaledPageHolder,myView.scaledSongContent,myView.scaledHeader,availableWidth,availableHeight,
                 myView.scaledSongContent.getCol1(),myView.scaledSongContent.getCol2(),myView.scaledSongContent.getCol3(),false,getResources().getDisplayMetrics());
         mainActivityInterface.getProcessSong().setMakingScaledScreenShot(false);

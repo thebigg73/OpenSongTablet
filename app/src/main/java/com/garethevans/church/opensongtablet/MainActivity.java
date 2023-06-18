@@ -155,6 +155,7 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+import com.google.android.material.textview.MaterialTextView;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -275,6 +276,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private Runnable hideActionButtonRunnable;
 
     private Intent fileOpenIntent;
+    private int availableWidth=-1, availableHeight=-1;
 
     static {
         System.loadLibrary("lowlatencyaudio");
@@ -1029,7 +1031,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         }
 
         if (deepLink != null && deepLink.equals(deeplink_edit) && songListBuildIndex.getCurrentlyIndexing()) {
-            showToast.doIt(indexing_string);
+            String progressText = "";
+            if (songMenuFragment!=null) {
+                MaterialTextView progressView = songMenuFragment.getProgressText();
+                if (progressView!=null && progressView.getText()!=null) {
+                    progressText = " " + progressView.getText().toString();
+                }
+            }
+            showToast.doIt(indexing_string + progressText);
         } else {
             runOnUiThread(() -> {
                 try {
@@ -1728,6 +1737,24 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             }
         });
         return songMenuFragment != null;
+    }
+    @Override
+    public SongMenuFragment getSongMenuFragment() {
+        return songMenuFragment;
+    }
+
+    @Override
+    public int[] getAvailableSizes() {
+        if (availableWidth>-1 && availableHeight>-1) {
+            return new int[]{availableWidth, availableHeight};
+        } else {
+            return null;
+        }
+    }
+    @Override
+    public void setAvailableSizes(int availableWidth, int availableHeight) {
+        this.availableWidth = availableWidth;
+        this.availableHeight = availableHeight;
     }
 
     @Override

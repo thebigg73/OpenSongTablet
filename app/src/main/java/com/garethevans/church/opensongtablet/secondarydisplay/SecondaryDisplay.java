@@ -1152,6 +1152,7 @@ public class SecondaryDisplay extends Presentation {
         if (!myView.songContent1.getIsDisplaying()) {
              //resetScale(myView.songContent1);
              mainActivityInterface.getProcessSong().addViewsToScreen(
+                     mainActivityInterface.getSong(),
                     secondaryViews, secondaryWidths, secondaryHeights, myView.allContent,
                     myView.songContent1, null, availableScreenWidth, modeHeight,
                     myView.songContent1.getCol1(), myView.songContent1.getCol2(),
@@ -1171,6 +1172,7 @@ public class SecondaryDisplay extends Presentation {
         } else if (!myView.songContent2.getIsDisplaying()) {
             //resetScale(myView.songContent2);
             mainActivityInterface.getProcessSong().addViewsToScreen(
+                    mainActivityInterface.getSong(),
                     secondaryViews, secondaryWidths, secondaryHeights, myView.allContent,
                     myView.songContent2, null, availableScreenWidth, modeHeight,
                     myView.songContent2.getCol1(), myView.songContent2.getCol2(),

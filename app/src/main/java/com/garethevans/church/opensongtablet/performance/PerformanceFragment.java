@@ -508,6 +508,8 @@ public class PerformanceFragment extends Fragment {
             availableWidth = screenWidth - viewPadding[0] - viewPadding[1] - myView.inlineSetList.getInlineSetWidth();
             availableHeight = screenHeight - viewPadding[2] - viewPadding[3];
 
+            mainActivityInterface.setAvailableSizes(availableWidth,availableHeight);
+
             widthBeforeScale = 0;
             heightBeforeScale = 0;
 
@@ -881,8 +883,8 @@ public class PerformanceFragment extends Fragment {
                 myView.pageHolder.getLayoutParams().width = availableWidth;
                 myView.pageHolder.getLayoutParams().height = availableHeight;
 
-                //Log.d(TAG,"availableWidth:"+availableWidth);
                 float[] scaleInfo = mainActivityInterface.getProcessSong().addViewsToScreen(
+                        mainActivityInterface.getSong(),
                         mainActivityInterface.getSectionViews(),
                         mainActivityInterface.getSectionWidths(), mainActivityInterface.getSectionHeights(),
                         myView.pageHolder, myView.songView, myView.songSheetTitle,
@@ -965,14 +967,16 @@ public class PerformanceFragment extends Fragment {
                         int topPadding = 0;
 
                         // IV - We need to request layout to get songsheet information added ahead of animate in. Odd!
-                        myView.pageHolder.requestLayout();
-                        myView.pageHolder.setVisibility(View.VISIBLE);
-                        myView.pageHolder.startAnimation(animSlideIn);
+                        if (myView!=null) {
+                            myView.pageHolder.requestLayout();
+                            myView.pageHolder.setVisibility(View.VISIBLE);
+                            myView.pageHolder.startAnimation(animSlideIn);
 
-                        dealWithStuffAfterReady(false);
+                            dealWithStuffAfterReady(false);
 
-                        // Try to take a screenshot ready for any highlighter actions that may be called
-                        getScreenshot(myView.pageHolder.getWidth(), myView.pageHolder.getHeight()-myView.songSheetTitle.getHeight(), topPadding);
+                            // Try to take a screenshot ready for any highlighter actions that may be called
+                            getScreenshot(myView.pageHolder.getWidth(), myView.pageHolder.getHeight() - myView.songSheetTitle.getHeight(), topPadding);
+                        }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

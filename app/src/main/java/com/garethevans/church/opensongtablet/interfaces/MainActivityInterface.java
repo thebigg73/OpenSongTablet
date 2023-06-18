@@ -59,6 +59,7 @@ import com.garethevans.church.opensongtablet.setmenu.SetItemInfo;
 import com.garethevans.church.opensongtablet.setprocessing.CurrentSet;
 import com.garethevans.church.opensongtablet.setprocessing.SetActions;
 import com.garethevans.church.opensongtablet.songmenu.SongListBuildIndex;
+import com.garethevans.church.opensongtablet.songmenu.SongMenuFragment;
 import com.garethevans.church.opensongtablet.songprocessing.ConvertChoPro;
 import com.garethevans.church.opensongtablet.songprocessing.ConvertOnSong;
 import com.garethevans.church.opensongtablet.songprocessing.ConvertTextSong;
@@ -158,6 +159,7 @@ public interface MainActivityInterface {
     boolean getMenuOpen();
     boolean getSettingsOpen();
     void updateCheckForThisSong(Song thisSong);
+    SongMenuFragment getSongMenuFragment();
 
     // Action bar
     MyToolbar getToolbar();
@@ -250,6 +252,8 @@ public interface MainActivityInterface {
     void setWhattodo(String whattodo);
     WindowFlags getWindowFlags();
     void setAlreadyBackPressed(boolean alreadyBackPressed);
+    int[] getAvailableSizes();
+    void setAvailableSizes(int availableWidth, int availableHeight);
 
     // CCLI
     CCLILog getCCLILog();
