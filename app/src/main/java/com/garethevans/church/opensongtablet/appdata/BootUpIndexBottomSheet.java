@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet.appdata;
 
 import android.app.Dialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.Lifecycle;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.BottomSheetBootupIndexingBinding;
@@ -37,6 +39,12 @@ public class BootUpIndexBottomSheet extends BottomSheetDialogFragment {
     @Override
     public void onResume() {
         super.onResume();
+        if (countdownNumber != 5) {
+            // We were in progress of counting down, so resume
+            Log.d(TAG,"Try to resume");
+            countdownNumber = 5;
+            setTimer();
+        }
         myView.dialogHeading.setText(indexing_string);
     }
 
@@ -52,6 +60,7 @@ public class BootUpIndexBottomSheet extends BottomSheetDialogFragment {
         });
         return dialog;
     }
+
 
     @Nullable
     @org.jetbrains.annotations.Nullable
@@ -78,14 +87,24 @@ public class BootUpIndexBottomSheet extends BottomSheetDialogFragment {
     private void setupListeners() {
         myView.continueButton.setOnClickListener(view -> {
             bootUpFragment.startBootProcess(true);
-            dismiss();
+            if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
+                try {
+                    dismiss();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         });
         myView.skipButton.setOnClickListener(view -> {
             timerTask.cancel();
             timer.purge();
             timer = null;
             bootUpFragment.startBootProcess(false);
-            dismiss();
+            try {
+                dismiss();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         });
     }
 

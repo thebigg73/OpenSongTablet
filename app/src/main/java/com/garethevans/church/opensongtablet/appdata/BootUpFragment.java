@@ -161,6 +161,9 @@ public class BootUpFragment extends Fragment {
 
                         if (needIndex) {
                             mainActivityInterface.quickSongMenuBuild();
+                        } else {
+                            mainActivityInterface.getSongListBuildIndex().setCurrentlyIndexing(false);
+                            mainActivityInterface.getSongListBuildIndex().setIndexComplete(true);
                         }
 
                         // Finished indexing
