@@ -1,6 +1,7 @@
 package com.garethevans.church.opensongtablet.appdata;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -31,6 +32,7 @@ public class BootUpIndexBottomSheet extends BottomSheetDialogFragment {
     private Timer timer;
     private TimerTask timerTask;
     private int countdownNumber = 5;
+    boolean actionChosen = false;
 
     public BootUpIndexBottomSheet(BootUpFragment bootUpFragment) {
         this.bootUpFragment = bootUpFragment;
@@ -86,6 +88,7 @@ public class BootUpIndexBottomSheet extends BottomSheetDialogFragment {
 
     private void setupListeners() {
         myView.continueButton.setOnClickListener(view -> {
+            actionChosen = true;
             bootUpFragment.startBootProcess(true);
             if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
                 try {
@@ -96,6 +99,7 @@ public class BootUpIndexBottomSheet extends BottomSheetDialogFragment {
             }
         });
         myView.skipButton.setOnClickListener(view -> {
+            actionChosen = true;
             timerTask.cancel();
             timer.purge();
             timer = null;
@@ -133,4 +137,11 @@ public class BootUpIndexBottomSheet extends BottomSheetDialogFragment {
         timer.scheduleAtFixedRate(timerTask,1000,1000);
     }
 
+    @Override
+    public void onDismiss(@NonNull DialogInterface dialog) {
+        super.onDismiss(dialog);
+        if (!actionChosen) {
+            bootUpFragment.startBootProcess(true);
+        }
+    }
 }
