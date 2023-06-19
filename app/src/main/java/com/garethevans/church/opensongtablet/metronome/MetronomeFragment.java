@@ -162,6 +162,8 @@ public class MetronomeFragment extends Fragment {
             myView.tickSound.setAdapter(tickAdapter);
             myView.tockSound.setAdapter(tockAdapter);
         }
+
+        mainActivityInterface.getMetronome().newSongLoaded();
     }
 
     private void addSoundItem(String filename, String description) {
@@ -343,6 +345,8 @@ public class MetronomeFragment extends Fragment {
         mainActivityInterface.getMetronome().setVolumes();
     }
     private void restartMetronome() {
+        mainActivityInterface.getMetronome().initialiseMetronome();
+        mainActivityInterface.getMetronome().newSongLoaded();
         if (mainActivityInterface.getMetronome().getIsRunning()) {
             mainActivityInterface.getMetronome().stopMetronome();
             mainActivityInterface.getMetronome().startMetronome();
@@ -485,7 +489,11 @@ public class MetronomeFragment extends Fragment {
                 case "metronomeTickSound":
                 case "metronomeTockSound":
                     position = soundNames.indexOf(exposedDropDown.getText().toString());
-                    mainActivityInterface.getPreferences().setMyPreferenceString(preference,soundFiles.get(position));
+                    if (preference.equals("metronomeTickSound")) {
+                        mainActivityInterface.getMetronome().updateTickSound(soundFiles.get(position));
+                    } else {
+                        mainActivityInterface.getMetronome().updateTockSound(soundFiles.get(position));
+                    }
                     restartMetronome();
                     break;
             }

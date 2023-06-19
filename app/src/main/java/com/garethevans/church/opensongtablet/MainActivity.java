@@ -2052,6 +2052,17 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
 
     @Override
+    public void midiStartStopReceived(boolean start) {
+        if (beatBuddy.getMetronomeSyncWithBeatBuddy() && midi.getMidiDevice()!=null) {
+            if (start && metronome.metronomeValid() && !metronome.getIsRunning()) {
+                metronome.startMetronome();
+            } else if (!start) {
+                metronome.stopMetronome();
+            }
+        }
+    }
+
+    @Override
     public Midi getMidi() {
         if (midi == null) {
             midi = new Midi(this);
@@ -3550,6 +3561,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             e.printStackTrace();
         }
 
+        // Prepapre the metronome
+        if (metronome!=null) {
+            metronome.initialiseMetronome();
+        }
         super.onResume();
     }
 
@@ -3609,6 +3624,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
         // Turn off nearby
         nearbyConnections.turnOffNearby();
+
+        if (metronome!=null) {
+            metronome.releaseSoundPool();
+        }
 
         // Keep a reference to connections if needed as bundle
 

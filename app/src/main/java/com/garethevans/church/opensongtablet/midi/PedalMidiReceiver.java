@@ -22,6 +22,7 @@ public class PedalMidiReceiver extends MidiReceiver {
     private final String TAG = "PedalMidiReceiver";
     private ArrayList<Byte> receivedMessage;
 
+
     PedalMidiReceiver (Midi midi, MainActivityInterface mainActivityInterface) {
         this.midi = midi;
         this.mainActivityInterface = mainActivityInterface;
@@ -49,6 +50,7 @@ public class PedalMidiReceiver extends MidiReceiver {
             boolean actionLong = false;
 
             long upTime;
+
             if (byte1>=144 && byte1<=159) {
                 if (byte3 > 0) {
                     Log.d(TAG, "Note on channel=" + ((byte1 - 144) + 1));
@@ -69,7 +71,7 @@ public class PedalMidiReceiver extends MidiReceiver {
             } else if (byte1>=128 && byte1<=143) {
                 // This is a note off.  Don't need this
                 Log.d(TAG,"Note off channel="+((byte1-128)+1));
-                upTime = System.currentTimeMillis();
+                //upTime = System.currentTimeMillis();
                 actionUp = true;
             }
 
@@ -85,6 +87,19 @@ public class PedalMidiReceiver extends MidiReceiver {
             Log.d(TAG, "note="+note);
 
             mainActivityInterface.registerMidiAction(actionDown,actionUp,actionLong,note);
+
+        } else if (msg.length >= 2) {
+            // TODO consider implementing this
+            Log.d(TAG,"possible MIDI start/stop");
+            // Could be a MIDI start (0xFA) or stop (0xFC)
+            /*int byte1 = msg[1] & 0xFF;
+            String hexCode = "0x" + String.format("%02X", byte1);
+            Log.d(TAG,"byte1:"+byte1+"  hexCode="+hexCode);
+            if (hexCode.equals("0xFA")) {
+                mainActivityInterface.midiStartStopReceived(true);
+            } else if (hexCode.equals("0xFC")) {
+                mainActivityInterface.midiStartStopReceived(false);
+            }*/
         }
     }
 
@@ -92,6 +107,7 @@ public class PedalMidiReceiver extends MidiReceiver {
         receivedMessage = new ArrayList<>();
     }
 
+    @SuppressWarnings("unused")
     public ArrayList<Byte> getReceivedMessage() {
         return receivedMessage;
     }

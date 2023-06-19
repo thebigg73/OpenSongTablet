@@ -25,7 +25,8 @@ public class BeatBuddy {
             commandDoubleTimeExit, commandPauseToggle;
 
     private boolean beatBuddyIncludeSong, beatBuddyIncludeTempo, beatBuddyIncludeVolume,
-            beatBuddyIncludeDrumKit, beatBuddyAerosMode, beatBuddyUseImported, beatBuddyAutoLookup;
+            beatBuddyIncludeDrumKit, beatBuddyAerosMode, beatBuddyUseImported, beatBuddyAutoLookup,
+            metronomeSyncWithBeatBuddy;
 
     // The commond CC commands.  In one easy readable place!
     @SuppressWarnings({"FieldCanBeLocal","unused"})
@@ -91,6 +92,7 @@ public class BeatBuddy {
         beatBuddyAerosMode = mainActivityInterface.getPreferences().getMyPreferenceBoolean("beatBuddyAerosMode",true);
         beatBuddyUseImported = mainActivityInterface.getPreferences().getMyPreferenceBoolean("beatBuddyUseImported",false);
         beatBuddyAutoLookup = mainActivityInterface.getPreferences().getMyPreferenceBoolean("beatBuddyAutoLookup",true);
+        metronomeSyncWithBeatBuddy = mainActivityInterface.getPreferences().getMyPreferenceBoolean("metronomeSyncWithBeatBuddy",false);
     }
 
     // Commands received from gestures and sent via MIDI to connected BeatBuddy
@@ -313,6 +315,9 @@ public class BeatBuddy {
     public boolean getBeatBuddyAutoLookup() {
         return beatBuddyAutoLookup;
     }
+    public boolean getMetronomeSyncWithBeatBuddy() {
+        return metronomeSyncWithBeatBuddy;
+    }
     public void setBeatBuddyChannel(int beatBuddyChannel) {
         this.beatBuddyChannel = beatBuddyChannel;
         mainActivityInterface.getPreferences().setMyPreferenceInt("beatBuddyChannel",beatBuddyChannel);
@@ -356,6 +361,10 @@ public class BeatBuddy {
         if (beatBuddyAutoLookup) {
             mainActivityInterface.getMidi().setMidiSendAuto(true);
         }
+    }
+    public void setMetronomeSyncWithBeatBuddy(boolean metronomeSyncWithBeatBuddy) {
+        this.metronomeSyncWithBeatBuddy = metronomeSyncWithBeatBuddy;
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean("metronomeSyncWithBeatBuddy",metronomeSyncWithBeatBuddy);
     }
 
     // Calculations for working out codes

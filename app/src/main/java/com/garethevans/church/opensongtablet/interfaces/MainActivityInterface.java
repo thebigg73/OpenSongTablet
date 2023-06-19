@@ -111,6 +111,7 @@ public interface MainActivityInterface {
 
     // Metronome
     Metronome getMetronome();
+    void midiStartStopReceived(boolean start);
 
     // Pads
     Pad getPad();

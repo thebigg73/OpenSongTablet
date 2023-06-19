@@ -65,18 +65,17 @@ public class Metronome {
     private int total_calc_bpm = 0, total_counts = 0;
     private Handler tapTempoHandlerCheck, tapTempoHandlerReset;
     private Runnable tapTempoRunnableCheck, tapTempoRunnableReset;
-    //private AudioManager audioManager;
-
+    private final String sampleRateAsset;
 
     public Metronome(Activity activity) {
         c = activity;
         mainActivityInterface = (MainActivityInterface) c;
         metronomeAutoStart = mainActivityInterface.getPreferences().getMyPreferenceBoolean("metronomeAutoStart",false);
-        //audioManager = (AudioManager) c.getSystemService(Context.AUDIO_SERVICE);
         tickRunnable = () -> {
             if (soundPool != null) {
                 try {
                     soundPool.play(tickClip, volumeTickLeft, volumeTickRight, 0, 0, 1);
+                    //soundPool.stop(tockClip);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -86,6 +85,7 @@ public class Metronome {
             if (soundPool != null) {
                 try {
                     soundPool.play(tockClip, volumeTockLeft, volumeTockRight, 0, 0, 1);
+                    //soundPool.stop(tickClip);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -96,26 +96,30 @@ public class Metronome {
         int defaultSampleRate = Integer.parseInt(sampleRateStr);
         String framesPerBurstStr = myAudioMgr.getProperty(AudioManager.PROPERTY_OUTPUT_FRAMES_PER_BUFFER);
         int defaultFramesPerBurst = Integer.parseInt(framesPerBurstStr);
+        if (defaultSampleRate==48000) {
+            sampleRateAsset = "_48";
+        } else {
+            sampleRateAsset = "_44";
+        }
+        initialiseMetronome();
 
         Log.d(TAG,"defaultSampleRate:"+defaultSampleRate+"  defaultFramesPerBurst:"+defaultFramesPerBurst);
         // If using Oboe (must be called in MainActivity.java)
         //setDefaultStreamValues(defaultSampleRate, defaultFramesPerBurst);
     }
 
+    @SuppressWarnings("unused")
     private static native void setDefaultStreamValues(int defaultSampleRate,
                                                              int defaultFramesPerBurst);
 
 
     // The call to start and stop the metronome called from MainActivity
     public void startMetronome() {
-        // Initialise the varibles
-        initialiseMetronome();
-        mainActivityInterface.getToolbar().setUpMetronomeBar(beats);
-
         // If the metronome is valid and not running, start. If not stop
         if (metronomeValid() && !getIsRunning()){
             // Get the tick and tock sounds ready
-            setupPlayers();
+            newSongLoaded();
+            checkPlayersReady();
         } else {
             stopMetronome();
         }
@@ -129,38 +133,44 @@ public class Metronome {
         new Handler(Looper.getMainLooper()).postDelayed(() -> mainActivityInterface.getToolbar().hideMetronomeBar(),beatTimeLength);
         new Handler(Looper.getMainLooper()).postDelayed(() -> mainActivityInterface.getToolbar().hideMetronomeBar(),beatTimeLength*2L);
 
-        // Clean up the soundPool
-        if (soundPool!=null) {
-            soundPool.release();
-            soundPool = null;
-        }
         mainActivityInterface.getToolbar().hideMetronomeBar();
     }
 
     // Set up the metronome values (tempo, time signature, user preferences, etc)
-    private void initialiseMetronome() {
+    // Called from MainActivity#onResume initialisation of metronome and if changing sound values
+    public void initialiseMetronome() {
         // Does the user want an audio metronome?
-        audioMetronome = mainActivityInterface.getPreferences().
-                getMyPreferenceBoolean("metronomeAudio", true);
+        setAudioMetronome();
 
         // Does the user want the visual metronome?
         setVisualMetronome();
 
+        // Get the volume and pan of the metronome and bars required
+        setVolumes();
+
+        newSongLoaded();
+
+        setupPlayers();
+    }
+
+    public void newSongLoaded() {
         // Reset the beats
         beatsRunningTotal = 1;
         beat = 1;
         beatVisual = 1;
-
-        // Get the volume and pan of the metronome and bars required
-        setVolumes();
 
         // Get the song tempo and time signatures
         setSongValues();
 
         // Get the bars and beats required
         setBarsAndBeats();
+
+        // Set up the visual beat bar
+        mainActivityInterface.getToolbar().setUpMetronomeBar(beats);
     }
-    private void setupPlayers() {
+
+    // This is called on MainActivity.onResume() and if metronome sounds are changed
+    public void setupPlayers() {
         tickPlayerReady = false;
         tockPlayerReady = false;
 
@@ -170,11 +180,11 @@ public class Metronome {
 
         try {
             if (tickSound!=null && !tickSound.isEmpty()) {
-                AssetFileDescriptor tickFile = c.getAssets().openFd("metronome/" + tickSound + ".mp3");
+                AssetFileDescriptor tickFile = c.getAssets().openFd("metronome/" + tickSound + sampleRateAsset + ".wav");
                 tickClip = soundPool.load(tickFile,0);
             }
             if (tockSound!=null && !tockSound.isEmpty()) {
-                AssetFileDescriptor tockFile = c.getAssets().openFd("metronome/" + tockSound + ".mp3");
+                AssetFileDescriptor tockFile = c.getAssets().openFd("metronome/" + tockSound + sampleRateAsset + ".wav");
                 tockClip = soundPool.load(tockFile,0);
             }
             soundPool.setOnLoadCompleteListener((soundPool, i, i1) -> {
@@ -183,7 +193,7 @@ public class Metronome {
                 } else if (i == tockClip) {
                     tockPlayerReady = true;
                 }
-                checkPlayersReady();
+                //checkPlayersReady();
             });
         } catch (Exception e) {
             e.printStackTrace();
@@ -195,8 +205,17 @@ public class Metronome {
         tockSound = mainActivityInterface.getPreferences().getMyPreferenceString("metronomeTockSound", "digital_low");
     }
 
+    public void updateTickSound(String tickSound) {
+        this.tickSound = tickSound;
+        mainActivityInterface.getPreferences().setMyPreferenceString("metronomeTickSound",tickSound);
+    }
+    public void updateTockSound(String tockSound) {
+        this.tockSound = tockSound;
+        mainActivityInterface.getPreferences().setMyPreferenceString("metronomeTockSound",tockSound);
+    }
+
     private void setupSoundPool() {
-        int maxStreams = 8;
+        int maxStreams = 2;
         if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.N) {
             AudioAttributes audioAttributes = new AudioAttributes.Builder()
                     .setUsage(AudioAttributes.USAGE_MEDIA)
@@ -217,6 +236,8 @@ public class Metronome {
                     AudioManager.STREAM_MUSIC, 0);
         }
     }
+
+
     public void setVisualMetronome() {
         visualMetronome = mainActivityInterface.getPreferences().
                 getMyPreferenceBoolean("metronomeShowVisual", false);
@@ -413,6 +434,7 @@ public class Metronome {
                     // Latency is always positive as the sysTime will always be on or after the audioTime
                     long latency = sysTime - (audioTime - buffer);
                     final long bufferFix = buffer - latency;
+
                     if (beat > beats) {
                         beat = 1;
                     }
@@ -435,7 +457,9 @@ public class Metronome {
             }
         };
         audioTime = System.currentTimeMillis() + buffer;
-        metronomeTimer.scheduleAtFixedRate(metronomeTimerTask, 0, beatTimeLength);
+        if (beatTimeLength>0) {
+            metronomeTimer.scheduleAtFixedRate(metronomeTimerTask, 0, beatTimeLength);
+        }
     }
     private void timerVisual() {
         // The flash on and off are handled separately.
@@ -475,7 +499,9 @@ public class Metronome {
             }
         };
         visualTime = System.currentTimeMillis() + buffer;
-        visualTimer.scheduleAtFixedRate(visualTimerTask,0,beatTimeLength);
+        if (beatTimeLength>0) {
+            visualTimer.scheduleAtFixedRate(visualTimerTask, 0, beatTimeLength);
+        }
     }
 
     public void stopTimers(boolean nullTimer) {
@@ -646,4 +672,14 @@ public class Metronome {
     public boolean getMetronomeAutoStart() {
         return metronomeAutoStart;
     }
+
+    // Called onDestroy
+    public void releaseSoundPool() {
+        // Clean up the soundPool
+        if (soundPool!=null) {
+            soundPool.release();
+            soundPool = null;
+        }
+    }
+
 }
