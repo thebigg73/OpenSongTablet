@@ -100,9 +100,6 @@ public class BootUpIndexBottomSheet extends BottomSheetDialogFragment {
         });
         myView.skipButton.setOnClickListener(view -> {
             actionChosen = true;
-            timerTask.cancel();
-            timer.purge();
-            timer = null;
             bootUpFragment.startBootProcess(false);
             try {
                 dismiss();
@@ -142,6 +139,18 @@ public class BootUpIndexBottomSheet extends BottomSheetDialogFragment {
         super.onDismiss(dialog);
         if (!actionChosen) {
             bootUpFragment.startBootProcess(true);
+        }
+        // Try to end/cancel any timers
+        try {
+            if (timerTask!=null) {
+                timerTask.cancel();
+            }
+            if (timer!=null) {
+                timer.purge();
+            }
+            timer = null;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
