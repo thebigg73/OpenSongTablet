@@ -473,12 +473,7 @@ public class SecondaryDisplay extends Presentation {
 
         } else {
             crossFadeContent(myView.mainLogo,myView.allContent);
-            if (canShowSong()) {
-                mainActivityInterface.getPresenterSettings().setStartedProjection(true);
-                if (infoBarRequired) {
-                    setupTimers();
-                }
-            }
+            recoverScreenContent();
         }
 
         if (timedHide) {
@@ -487,12 +482,7 @@ public class SecondaryDisplay extends Presentation {
                 mainActivityInterface.getPresenterSettings().setLogoOn(false);
                 crossFadeContent(myView.mainLogo,myView.allContent);
                 Log.d(TAG,"timed hiding of logo");
-                if (canShowSong()) {
-                    mainActivityInterface.getPresenterSettings().setStartedProjection(true);
-                    if (infoBarRequired) {
-                        setupTimers();
-                    }
-                }
+                recoverScreenContent();
             },logoSplashTime);
         }
     }
@@ -506,12 +496,7 @@ public class SecondaryDisplay extends Presentation {
             mainActivityInterface.getPresenterSettings().setStartedProjection(false);
         } else {
             mainActivityInterface.getCustomAnimation().faderAnimation(myView.pageHolder, time, 0f, 1f);
-            if (canShowSong()) {
-                mainActivityInterface.getPresenterSettings().setStartedProjection(true);
-                if (infoBarRequired) {
-                    setupTimers();
-                }
-            }
+            recoverScreenContent();
         }
     }
     public void showBlankScreen() {
@@ -524,26 +509,30 @@ public class SecondaryDisplay extends Presentation {
             mainActivityInterface.getCustomAnimation().faderAnimation(myView.songProjectionInfo2, time, 1f, 0f);
             mainActivityInterface.getPresenterSettings().setStartedProjection(false);
         } else {
-            if (canShowSong()) {
-                mainActivityInterface.getPresenterSettings().setStartedProjection(true);
+            recoverScreenContent();
+        }
+    }
 
-                int time = mainActivityInterface.getPresenterSettings().getPresoTransitionTime();
+    private void recoverScreenContent() {
+        if (canShowSong()) {
+            mainActivityInterface.getPresenterSettings().setStartedProjection(true);
 
-                if (myView.songContent1.getIsDisplaying()) {
-                    mainActivityInterface.getCustomAnimation().faderAnimation(myView.songContent1, time, 0f, 1f);
+            int time = mainActivityInterface.getPresenterSettings().getPresoTransitionTime();
+
+            if (myView.songContent1.getIsDisplaying()) {
+                mainActivityInterface.getCustomAnimation().faderAnimation(myView.songContent1, time, 0f, 1f);
+            }
+            if (myView.songContent2.getIsDisplaying()) {
+                mainActivityInterface.getCustomAnimation().faderAnimation(myView.songContent2, time, 0f, 1f);
+            }
+            if (infoBarRequired) {
+                if (myView.songProjectionInfo1.getIsDisplaying()  && myView.songProjectionInfo1.getHeight() > 0) {
+                    mainActivityInterface.getCustomAnimation().faderAnimation(myView.songProjectionInfo1, time, 0f, 1f);
                 }
-                if (myView.songContent2.getIsDisplaying()) {
-                    mainActivityInterface.getCustomAnimation().faderAnimation(myView.songContent2, time, 0f, 1f);
+                if (myView.songProjectionInfo2.getIsDisplaying() && myView.songProjectionInfo2.getHeight() > 0) {
+                    mainActivityInterface.getCustomAnimation().faderAnimation(myView.songProjectionInfo2, time, 0f, 1f);
                 }
-                if (infoBarRequired) {
-                    if (myView.songProjectionInfo1.getIsDisplaying()  && myView.songProjectionInfo1.getHeight() > 0) {
-                        mainActivityInterface.getCustomAnimation().faderAnimation(myView.songProjectionInfo1, time, 0f, 1f);
-                    }
-                    if (myView.songProjectionInfo2.getIsDisplaying() && myView.songProjectionInfo2.getHeight() > 0) {
-                        mainActivityInterface.getCustomAnimation().faderAnimation(myView.songProjectionInfo2, time, 0f, 1f);
-                    }
-                    setupTimers();
-                }
+                setupTimers();
             }
         }
     }
