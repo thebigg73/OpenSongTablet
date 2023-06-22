@@ -1412,6 +1412,13 @@ public class ProcessSong {
 
         if (presentation && !mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance))) {
             textView.setGravity(mainActivityInterface.getPresenterSettings().getPresoLyricsAlign());
+            // IV - Pad the string with space to ensure good block shadow
+            // IV - Start with a non breaking space which will not be removed
+            if (string.startsWith(" ")) {
+                string = string.replaceFirst(" ","\u00A0") + " ";
+            } else {
+                string = string + '\u00A0' + string + " ";
+            }
         }
         String str = trimOutLineIdentifiers(thisSong, linetype, string);
         if (linetype.equals("heading") && highlightHeadingColor != 0x00000000) {
@@ -1898,7 +1905,8 @@ public class ProcessSong {
                     }
 
                     // IV - Support add section space feature for stage mode. This is done in column processing for performance mode.
-                    if (addSectionSpace && mainActivityInterface.getMode().equals(c.getString(R.string.mode_stage)) &&
+                    if (!presentation &&
+                            addSectionSpace && mainActivityInterface.getMode().equals(c.getString(R.string.mode_stage)) &&
                             !mainActivityInterface.getMakePDF().getIsSetListPrinting() &&
                             sect != (song.getPresoOrderSongSections().size() - 1)) {
                         linearLayout.addView(lineText(song, "lyric", "", getTypeface(false, "lyric"),

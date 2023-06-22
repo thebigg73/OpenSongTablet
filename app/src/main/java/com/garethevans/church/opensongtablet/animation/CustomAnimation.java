@@ -24,70 +24,20 @@ public class CustomAnimation {
                 v.animate().cancel();
             }
 
-            int finalVisibility;
-            boolean fadeIn = endAlpha>startAlpha;
-
-            v.setAlpha(startAlpha);
-            v.setVisibility(View.VISIBLE);
-            if (fadeIn) {
-                finalVisibility = View.VISIBLE;
+            // IV - Animate the view to the end alpha
+            if (endAlpha>startAlpha) {
+                // Fade up - set the initial alpha and make visible so we see the fade in animation
+                v.setAlpha(startAlpha);
+                v.setVisibility(View.VISIBLE);
+                v.animate().alpha(endAlpha).setDuration(time).setInterpolator(new LinearInterpolator()).start();
             } else {
-                finalVisibility = View.GONE;
+                // Fade down - always from the current alpha
+                v.animate().alpha(endAlpha).setDuration(time/2).setInterpolator(new LinearInterpolator()).start();
             }
-            AnimatorListenerAdapter animatorListenerAdapter;
-            animatorListenerAdapter = new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    super.onAnimationEnd(animation);
-                    v.setVisibility(finalVisibility);
-                }
-            };
-
-            // For a correct fade out, the view should already be in the faded in state:
-            // - The initial visibility should already be VISIBLE
-            // - The alpha should already be 1f (completely faded in), but certainly more than 0;
-            boolean fadeOut = (!fadeIn && (v.getVisibility()==View.VISIBLE) && v.getAlpha() > 0) || endAlpha<startAlpha;
-
-            // If either of these are true, we can animate, but if not, just move to the final state
-
-            if (fadeIn) {
-                // Good to go - set the initial alpha and visibility to VISIBLE so we see the animation
-                //v.setAlpha(startAlpha);
-                //v.setVisibility(View.VISIBLE);
-
-                // Animate the content view to the end alpha
-                // For fade out, the final step is also to add the listener to change visibility to GONE at the end
-                //v.animate().alpha(endAlpha).setDuration(time).setInterpolator(new AccelerateInterpolator()).setListener(animatorListenerAdapter).start();
-                //v.animate().alpha(endAlpha).setDuration(time).setInterpolator(new LinearInterpolator()).setListener(animatorListenerAdapter).start();
-                v.animate().alpha(endAlpha).setDuration(time).setInterpolator(new LinearInterpolator()).setListener(animatorListenerAdapter).start();
-
-            } else if (fadeOut) {
-                v.animate().alpha(endAlpha).setDuration(time/2).setInterpolator(new LinearInterpolator()).setListener(animatorListenerAdapter).start();
-            } else {
-                // Just set the alpha and visibility as the end (without animation)
-                v.setAlpha(endAlpha);
-                v.setVisibility(finalVisibility);
-            }
-
-            // Set a panic for a short time after animation end
-            final Runnable runnable = () -> {
-                if (v.getAlpha()!=endAlpha) {
-                    v.setAlpha(endAlpha);
-                }
-                if (v.getVisibility()!=finalVisibility) {
-                    v.setVisibility(finalVisibility);
-                }
-            };
-
-            try {
-                v.removeCallbacks(runnable);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            v.postDelayed(runnable,(int)(time));
-            // GE Additional command to panic check
-            v.postDelayed(runnable,(int)(time+500));
         }
+        // IV - Panic removed as causing issues
+        // The use of separate views for fadeIn and fadeOut might make panic unecessary
+        // Testing if OK
     }
 
     public void fadeActionButton(MyFAB fab, float fadeTo) {

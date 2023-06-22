@@ -89,13 +89,16 @@ public class ImageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
             mainActivityInterface.getSong().setShowstartofpdf(true);
             if (mainActivityInterface.getStorageAccess().uriExists(pdfPageItemInfo.uri)) {
                 Bitmap bitmap = mainActivityInterface.getProcessSong().getSongBitmap(folder, filename);
-                pdfPageItemInfo.width = bitmap.getWidth();
-                pdfPageItemInfo.height = bitmap.getHeight();
+                // IV - If we have been able to get a bitmap from the file
+                if (bitmap != null) {
+                    pdfPageItemInfo.width = bitmap.getWidth();
+                    pdfPageItemInfo.height = bitmap.getHeight();
+                    bitmap.recycle();
+                }
                 // Set the song load success
                 mainActivityInterface.getPreferences().setMyPreferenceBoolean("songLoadSuccess", true);
                 mainActivityInterface.getPreferences().setMyPreferenceString("songFilename", mainActivityInterface.getSong().getFilename());
                 mainActivityInterface.getPreferences().setMyPreferenceString("songFolder", mainActivityInterface.getSong().getFolder());
-                bitmap.recycle();
             } else {
                 pdfPageItemInfo.uri = null;
             }
