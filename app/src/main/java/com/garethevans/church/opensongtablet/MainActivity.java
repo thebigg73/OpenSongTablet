@@ -479,7 +479,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         // OnSong backup file
                         Log.d(TAG, "Opening import onsong backup");
                         dealingWithIntent = deeplink_onsong;
-                    } else if (getStorageAccess().isSpecificFileExtension("image", importFilename)) {
+                    } else if (getStorageAccess().isSpecificFileExtension("imageorpdf", importFilename) ||
+                            getStorageAccess().isSpecificFileExtension("chordpro", importFilename) ||
+                            getStorageAccess().isSpecificFileExtension("text", importFilename) ||
+                            getStorageAccess().isSpecificFileExtension("onsong", importFilename)) {
                         // Set, song, pdf or image files are initially sent to the import file
                         Log.d(TAG, "Opening pdf, etc");
                         dealingWithIntent = deeplink_import_file;

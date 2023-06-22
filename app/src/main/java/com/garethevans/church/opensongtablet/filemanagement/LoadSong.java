@@ -814,4 +814,7 @@ public class LoadSong {
     public void setImportingFile(boolean importingFile) {
         this.importingFile = importingFile;
     }
+    public boolean getImportingFile() {
+        return importingFile;
+    }
 }

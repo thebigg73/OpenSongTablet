@@ -27,14 +27,13 @@ public class ConvertChoPro {
     private String ccli;
     private String tempo;
     private String time_sig;
+    private String duration;
     private String lyrics;
     private String oldSongFileName;
     private String newSongFileName;
     private String songSubFolder;
     private String[] lines;
     private StringBuilder parsedLines;
-
-    private Uri newUri;
 
     public ConvertChoPro(Context c) {
         this.c = c;
@@ -112,6 +111,7 @@ public class ConvertChoPro {
         ccli = "";
         tempo = "";
         time_sig = "";
+        duration = "";
         oldSongFileName = "";
         newSongFileName = "";
         songSubFolder = "";
@@ -134,6 +134,7 @@ public class ConvertChoPro {
         s = s.replace("{su:", "{subtitle:");
         s = s.replace("{su :", "{subtitle:");
         s = s.replace("{comments :", "{comments:");
+        s = s.replace("{duration :","{duration:");
         s = s.replace("{c:", "{comments:");
         s = s.replace("{c :", "{comments:");
         s = s.replace("{sot", "{start_of_tab");
@@ -213,6 +214,31 @@ public class ConvertChoPro {
             } else if (line.contains("{ccli:")) {
                 // Extract the ccli (not really a chordpro tag, but works for songselect and worship together
                 ccli = removeTags(line, "{ccli:");
+                line = "";
+
+            } else if (line.contains("{duration:")) {
+                duration = removeTags(line, "{duration:");
+                int secs = 0;
+                if (duration.contains(":")) {
+                    String[] split = duration.split(":");
+                    if (split.length>1) {
+                        int mins = 0;
+                        String minsString = split[0].replaceAll("\\D","");
+                        String secsString = split[1].replaceAll("\\D","");
+                        if (!minsString.isEmpty()) {
+                            mins = Integer.parseInt(minsString);
+                        }
+                        if (!secsString.isEmpty()) {
+                            secs = Integer.parseInt(secsString);
+                        }
+                        secs = (mins * 60) + secs;
+                    }
+                } else if (!duration.replaceAll("\\D","").isEmpty()) {
+                    secs = Integer.parseInt(duration.replaceAll("\\D",""));
+                }
+                if (secs!=0) {
+                    duration = "" + secs;
+                }
                 line = "";
 
             } else if (line.contains("{key:")) {
@@ -644,6 +670,7 @@ public class ConvertChoPro {
         thisSong.setAuthor(author.trim());
         thisSong.setCopyright(copyright.trim());
         thisSong.setTempo(tempo.trim());
+        thisSong.setAutoscrolllength(duration.trim());
         thisSong.setTimesig(time_sig.trim());
         thisSong.setCcli(ccli.trim());
         thisSong.setKey(key.trim());
@@ -1073,10 +1100,6 @@ public class ConvertChoPro {
         newlyrics = new StringBuilder(newlyrics.toString().replace("{", " {"));
 
         return newlyrics.toString();
-    }
-
-    public Uri getNewUri() {
-        return newUri;
     }
 
 }
