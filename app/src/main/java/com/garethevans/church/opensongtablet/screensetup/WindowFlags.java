@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.RoundedCorner;
 import android.view.Surface;
 import android.view.View;
@@ -202,7 +203,7 @@ public class WindowFlags {
 
     public void hideKeyboard() {
         // Delay a few millisecs and then hide
-        if (insetsCompat!=null && insetsCompat.isVisible(WindowInsetsCompat.Type.ime())) {
+        if (insetsCompat!=null) {
             Handler handler = new Handler(Looper.getMainLooper());
             handler.postDelayed(() -> windowInsetsControllerCompat.hide(typeIme), 500);
         }
