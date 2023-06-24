@@ -473,7 +473,7 @@ public class SecondaryDisplay extends Presentation {
 
         } else {
             crossFadeContent(myView.mainLogo,myView.allContent);
-            recoverScreenContent();
+            recoverSongContent();
         }
 
         if (timedHide) {
@@ -482,7 +482,7 @@ public class SecondaryDisplay extends Presentation {
                 mainActivityInterface.getPresenterSettings().setLogoOn(false);
                 crossFadeContent(myView.mainLogo,myView.allContent);
                 Log.d(TAG,"timed hiding of logo");
-                recoverScreenContent();
+                recoverSongContent();
             },logoSplashTime);
         }
     }
@@ -496,7 +496,7 @@ public class SecondaryDisplay extends Presentation {
             mainActivityInterface.getPresenterSettings().setStartedProjection(false);
         } else {
             mainActivityInterface.getCustomAnimation().faderAnimation(myView.pageHolder, time, 0f, 1f);
-            recoverScreenContent();
+            recoverSongContent();
         }
     }
     public void showBlankScreen() {
@@ -509,11 +509,11 @@ public class SecondaryDisplay extends Presentation {
             mainActivityInterface.getCustomAnimation().faderAnimation(myView.songProjectionInfo2, time, 1f, 0f);
             mainActivityInterface.getPresenterSettings().setStartedProjection(false);
         } else {
-            recoverScreenContent();
+            recoverSongContent();
         }
     }
 
-    private void recoverScreenContent() {
+    private void recoverSongContent() {
         if (canShowSong()) {
             mainActivityInterface.getPresenterSettings().setStartedProjection(true);
 
@@ -532,7 +532,10 @@ public class SecondaryDisplay extends Presentation {
                 if (myView.songProjectionInfo2.getIsDisplaying() && myView.songProjectionInfo2.getHeight() > 0) {
                     mainActivityInterface.getCustomAnimation().faderAnimation(myView.songProjectionInfo2, time, 0f, 1f);
                 }
-                setupTimers();
+                // IV - If hiding info bar, consider starting a hide timer
+                if (mainActivityInterface.getPresenterSettings().getHideInfoBar()) {
+                    setupTimers();
+                }
             }
         }
     }
@@ -549,48 +552,57 @@ public class SecondaryDisplay extends Presentation {
     private void setupTimers() {
         // If we are in Performance mode, don't do this
         if (!mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) &&
-                canShowSong() && !isNewSong) {
+                canShowSong() && waitUntilTimerTask==null) {
             cancelInfoTimers();
-            waitUntilTimer = new Timer();
-            waitUntilTimerTask = new TimerTask() {
-                @Override
-                public void run() {
-                    // Switch off infoBarRequired and cancel the timer
-                    if (mainActivityInterface.getPresenterSettings().getHideInfoBar()) {
-                        infoBarRequired = false;
-                        try {
-                            waitUntilTimer.cancel();
-                            waitUntilTimerTask.cancel();
-                        } catch (Exception e) {
-                            e.printStackTrace();
+            // IV - After a short delay to allow display to render
+            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                if (myView.songProjectionInfo1.getAlpha() > 0f || myView.songProjectionInfo2.getAlpha() > 0f) {
+                    waitUntilTimer = new Timer();
+                    waitUntilTimerTask = new TimerTask() {
+                        @Override
+                        public void run() {
+                            // Switch off infoBarRequired and cancel the timer
+                            if (mainActivityInterface.getPresenterSettings().getHideInfoBar()) {
+                                infoBarRequired = false;
+                                Log.d(TAG, "hide timer ended - infoBarRequired: " + infoBarRequired);
+                                try {
+                                    waitUntilTimer.cancel();
+                                    waitUntilTimerTask.cancel();
+                                    waitUntilTimerTask = null;
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
                         }
-                        Log.d(TAG, "timer over - infoBarRequired=" + infoBarRequired);
-                    }
+                    };
+                    // The time that the info bar is required for
+                    int untilTimeWait = 20000;
+                    Log.d(TAG, "hide timer started");
+                    waitUntilTimer.schedule(waitUntilTimerTask, untilTimeWait);
                 }
-            };
-            // The time that the info bar is required for
-            int untilTimeWait = 20000;
-            Log.d(TAG, "timer set to hide info");
-            waitUntilTimer.schedule(waitUntilTimerTask, untilTimeWait);
+            },100);
+        } else {
+            Log.d(TAG, "hide timer start not needed");
         }
     }
     private void cancelInfoTimers() {
         // If we are in Performance mode, don't do this
         if (!mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance))) {
-            Log.d(TAG,"cancelTimers");
             // If the info timers are set up, cancel them before we try to set new ones
             if (waitUntilTimer!=null) {
+                Log.d(TAG, "hide timer cancelled");
                 try {
                     waitUntilTimer.cancel();
                 } catch (Exception e) {
-                    Log.d(TAG,"Unable to cancel infobar wait timer");
+                    Log.d(TAG,"hide timer wait timer could not be cancelled");
                 }
             }
             if (waitUntilTimerTask!=null) {
                 try {
                     waitUntilTimerTask.cancel();
+                    waitUntilTimerTask = null;
                 } catch (Exception e) {
-                    Log.d(TAG,"Unable to cancel info bar wait timertask");
+                    Log.d(TAG,"hide timer wait timertask could not be cancelled");
                 }
             }
         }
@@ -709,6 +721,12 @@ public class SecondaryDisplay extends Presentation {
                         myView.testSongInfo.getViewTreeObserver().removeOnGlobalLayoutListener(testSongInfoVTO);
                     }
                     myView.testSongInfo.requestLayout();
+
+                    // IV - If hiding info bar, consider starting a hide timer
+                    if (mainActivityInterface.getPresenterSettings().getHideInfoBar()) {
+                        cancelInfoTimers();
+                        infoBarRequired = true;
+                    }
                 }
             };
             // Draw the test song info bar so we can measure it with a VTO
@@ -730,16 +748,25 @@ public class SecondaryDisplay extends Presentation {
         infoBarRequired = true;
     }
     public void checkSongInfoShowHide() {
-        View infoToHide = songInfoHideCheck();
-        Log.d(TAG,"infoBarRequired:"+infoBarRequired);
+        Log.d(TAG,"infoBarRequired: "+infoBarRequired + ", isNewSong: " + isNewSong + ", songInfoChanged: " + songInfoChanged());
         if (infoBarRequired) {
             if (songInfoChanged() || isNewSong) {
                 // Get the info to show, this also changes the isDisplaying() property of both
-                View infoToShow = songInfoShowCheck();
-                crossFadeContent(infoToHide, infoToShow);
+                crossFadeContent(songInfoHideCheck(), songInfoShowCheck());
+            }
+            // IV - If hiding info bar, consider starting a hide timer
+            if (mainActivityInterface.getPresenterSettings().getHideInfoBar()) {
+                setupTimers();
             }
         } else {
-            crossFadeContent(infoToHide, null);
+            // IV - Info bar is not required - make sure both views are faded
+            int time = mainActivityInterface.getPresenterSettings().getPresoTransitionTime();
+            if (myView.songProjectionInfo1.getAlpha()!=0f) {
+                mainActivityInterface.getCustomAnimation().faderAnimation(myView.songProjectionInfo1, time, 1f, 0f);
+            }
+            if (myView.songProjectionInfo2.getAlpha()!=0f) {
+                mainActivityInterface.getCustomAnimation().faderAnimation(myView.songProjectionInfo2, time, 1f, 0f);
+            }
         }
     }
     private View songInfoHideCheck() {
@@ -755,15 +782,9 @@ public class SecondaryDisplay extends Presentation {
     }
     private View songInfoShowCheck() {
         // If required (new song loaded and not already showing), indicate to show the info bar
-        if (isNewSong ||
+        if ((isNewSong && songInfoChanged()) ||
                 mainActivityInterface.getPresenterSettings().getCurrentSection()>-1 ||
                 mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance))) {
-
-            // If the hide option is active set a timer to do the hide
-            if (mainActivityInterface.getPresenterSettings().getHideInfoBar()) {
-                Log.d(TAG, "set timer for hide");
-                setupTimers();
-            }
 
             if (!myView.songProjectionInfo1.getIsDisplaying()) {
                 myView.songProjectionInfo1.setIsDisplaying(true);
@@ -1152,7 +1173,7 @@ public class SecondaryDisplay extends Presentation {
             myView.songContent1.setLayoutParams(lp);
             myView.songContent1.setIsDisplaying(true);
             myView.songContent2.setIsDisplaying(false);
-            crossFadeContent(myView.songContent2,myView.songContent1);
+            crossFadeContent(myView.songContent2, myView.songContent1);
             checkSongInfoShowHide();
 
         } else if (!myView.songContent2.getIsDisplaying()) {

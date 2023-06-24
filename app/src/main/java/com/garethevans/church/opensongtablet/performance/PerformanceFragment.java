@@ -863,7 +863,13 @@ public class PerformanceFragment extends Fragment {
                         }, Math.max(0, QOSAdjustment));
                     }
                 });
-                myView.recyclerView.post(() -> myView.recyclerView.setAdapter(stageSectionAdapter));
+                myView.recyclerView.post(() -> {
+                    try {
+                        myView.recyclerView.setAdapter(stageSectionAdapter);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
 
 
             } else {
