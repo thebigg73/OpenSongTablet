@@ -553,7 +553,6 @@ public class SecondaryDisplay extends Presentation {
         // If we are in Performance mode, don't do this
         if (!mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) &&
                 canShowSong() && waitUntilTimerTask==null) {
-            cancelInfoTimers();
             // IV - After a short delay to allow display to render
             new Handler(Looper.getMainLooper()).postDelayed(() -> {
                 if (myView.songProjectionInfo1.getAlpha() > 0f || myView.songProjectionInfo2.getAlpha() > 0f) {
@@ -722,11 +721,8 @@ public class SecondaryDisplay extends Presentation {
                     }
                     myView.testSongInfo.requestLayout();
 
-                    // IV - If hiding info bar, consider starting a hide timer
-                    if (mainActivityInterface.getPresenterSettings().getHideInfoBar()) {
-                        cancelInfoTimers();
-                        infoBarRequired = true;
-                    }
+                    cancelInfoTimers();
+                    infoBarRequired = true;
                 }
             };
             // Draw the test song info bar so we can measure it with a VTO
