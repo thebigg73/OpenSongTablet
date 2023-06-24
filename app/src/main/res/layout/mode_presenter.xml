@@ -55,20 +55,20 @@
                 android:text="@string/show_logo" />
 
             <com.google.android.material.switchmaterial.SwitchMaterial
-                android:id="@+id/blankScreenSide"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:checked="false"
-                android:padding="0dp"
-                android:text="@string/blank_screen" />
-
-            <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/blackScreenSide"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:checked="false"
                 android:padding="0dp"
                 android:text="@string/black_screen" />
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/blankScreenSide"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                android:padding="0dp"
+                android:text="@string/blank_screen" />
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -117,20 +117,20 @@
                 android:text="@string/show_logo" />
 
             <com.google.android.material.switchmaterial.SwitchMaterial
-                android:id="@+id/blankScreen"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:checked="false"
-                android:padding="0dp"
-                android:text="@string/blank_screen" />
-
-            <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/blackScreen"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:checked="false"
                 android:padding="0dp"
                 android:text="@string/black_screen" />
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/blankScreen"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                android:padding="0dp"
+                android:text="@string/blank_screen" />
         </LinearLayout>
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton

@@ -162,6 +162,14 @@ public class SongProjectionInfo extends LinearLayoutCompat {
             songCopyright.setTextSize(mainActivityInterface.getPresenterSettings().getPresoCopyrightTextSize());
             songCCLI.setTextSize(mainActivityInterface.getPresenterSettings().getPresoCopyrightTextSize());
             textClock.setTextSize(mainActivityInterface.getPresenterSettings().getPresoClockSize());
+
+            // IV - Ensure Standard line wrap for extra details
+            songAuthor.setMaxLines(Integer.MAX_VALUE);
+            songAuthor.setEllipsize(null);
+            songCopyright.setMaxLines(Integer.MAX_VALUE);
+            songCopyright.setEllipsize(null);
+            songCCLI.setMaxLines(Integer.MAX_VALUE);
+            songCCLI.setEllipsize(null);
         } else {
             Typeface typeface = mainActivityInterface.getMyFonts().getAppDefault();
             songTitle.setTypeface(typeface);
@@ -169,6 +177,13 @@ public class SongProjectionInfo extends LinearLayoutCompat {
             songCopyright.setTypeface(typeface);
             songCCLI.setTypeface(typeface);
             textClock.setTypeface(typeface);
+
+            // IV - A dialog uses white text
+            int color = android.R.color.white;
+            songTitle.setTextColor(getResources().getColor(color));
+            songAuthor.setTextColor(getResources().getColor(color));
+            songCopyright.setTextColor(getResources().getColor(color));
+            songCCLI.setTextColor(getResources().getColor(color));
 
             songTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP,14);
             songAuthor.setTextSize(TypedValue.COMPLEX_UNIT_SP,12);

@@ -214,6 +214,7 @@ public class PresenterFragment extends Fragment {
             }
 
             myView.viewPager.setAdapter(pageAdapter);
+            myView.viewPager.setUserInputEnabled(false);
             new TabLayoutMediator(myView.presenterTabs, myView.viewPager, (tab, position) -> {
                 switch (position) {
                     case 0:
@@ -297,6 +298,7 @@ public class PresenterFragment extends Fragment {
         mainActivityInterface.getPresenterSettings().setStartedProjection(false);
 
         // Prepare the song content views - doesn't show them though
+        displayInterface.updateDisplay("newSongLoaded");
         displayInterface.updateDisplay("setSongContent");
 
         if (songSectionsFragment!=null) {
@@ -359,7 +361,7 @@ public class PresenterFragment extends Fragment {
             displayInterface.checkDisplays();
         });
         myView.panicSide.setOnClickListener(view -> {
-            myView.showLogo.setChecked(true);
+            myView.showLogoSide.setChecked(true);
             displayInterface.checkDisplays();
         });
     }
@@ -392,7 +394,7 @@ public class PresenterFragment extends Fragment {
             } else if ((landscape && compoundButton==myView.blankScreenSide) || compoundButton==myView.blankScreen) {
                 mainActivityInterface.getPresenterSettings().setBlankscreenOn(b);
                 displayInterface.updateDisplay("showBlankscreen");
-            } else if ((landscape && compoundButton==myView.blackScreenSide) || compoundButton==myView.blackScreen) {
+                } else if ((landscape && compoundButton==myView.blackScreenSide) || compoundButton==myView.blackScreen) {
                 mainActivityInterface.getPresenterSettings().setBlackscreenOn(b);
                 displayInterface.updateDisplay("showBlackscreen");
             }
@@ -409,6 +411,11 @@ public class PresenterFragment extends Fragment {
         } catch (Exception e) {
             // Continue
         }
+    }
+
+    public void setBlankScreenUnChecked() {
+        myView.blankScreenSide.setChecked(false);
+        myView.blankScreen.setChecked(false);
     }
 
     // Inline set

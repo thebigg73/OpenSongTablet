@@ -863,7 +863,13 @@ public class PerformanceFragment extends Fragment {
                         }, Math.max(0, QOSAdjustment));
                     }
                 });
-                myView.recyclerView.post(() -> myView.recyclerView.setAdapter(stageSectionAdapter));
+                myView.recyclerView.post(() -> {
+                    try {
+                        myView.recyclerView.setAdapter(stageSectionAdapter);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
 
 
             } else {
@@ -1016,6 +1022,22 @@ public class PerformanceFragment extends Fragment {
             mainActivityInterface.getNearbyConnections().resetHostPendingSection();
         }
 
+        // Update the secondary display (if present)
+        displayInterface.updateDisplay("newSongLoaded");
+        displayInterface.updateDisplay("setSongInfo");
+        if (mainActivityInterface.getMode().equals(mode_stage) &&
+                mainActivityInterface.getSong().getFiletype().equals("XML") &&
+                !mainActivityInterface.getSong().getFolder().contains("**Image") &&
+                !mainActivityInterface.getSong().getFolder().contains("**"+image_string)) {
+            displayInterface.updateDisplay("setSongContent");
+        } else if (!mainActivityInterface.getSong().getFiletype().equals("XML") ||
+                mainActivityInterface.getSong().getFolder().contains("**Image")) {
+            mainActivityInterface.getPresenterSettings().setCurrentSection(0);
+            displayInterface.updateDisplay("showSection");
+        } else {
+            displayInterface.updateDisplay("setSongContent");
+        }
+
         // Now deal with the highlighter file
         if (mainActivityInterface.getMode().equals(mode_performance)) {
             dealWithHighlighterFile(widthAfterScale, heightAfterScale);
@@ -1071,23 +1093,6 @@ public class PerformanceFragment extends Fragment {
                     mainActivityInterface.getMidi().buildSongMidiMessages();
                     mainActivityInterface.getMidi().sendSongMessages();
                 }, delay);
-            }
-
-
-            // Update the secondary display (if present)
-            displayInterface.updateDisplay("newSongLoaded");
-            displayInterface.updateDisplay("setSongInfo");
-            if (mainActivityInterface.getMode().equals(mode_stage) &&
-                mainActivityInterface.getSong().getFiletype().equals("XML") &&
-                !mainActivityInterface.getSong().getFolder().contains("**Image") &&
-                    !mainActivityInterface.getSong().getFolder().contains("**"+image_string)) {
-                displayInterface.updateDisplay("setSongContent");
-            } else if (!mainActivityInterface.getSong().getFiletype().equals("XML") ||
-                mainActivityInterface.getSong().getFolder().contains("**Image")) {
-                mainActivityInterface.getPresenterSettings().setCurrentSection(0);
-                displayInterface.updateDisplay("showSection");
-            } else {
-                displayInterface.updateDisplay("setSongContent");
             }
 
             // Update the view log usage
