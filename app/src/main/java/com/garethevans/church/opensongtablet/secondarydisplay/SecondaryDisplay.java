@@ -114,7 +114,7 @@ public class SecondaryDisplay extends Presentation {
         initialiseVideoSurfaces();
 
         // Initialise view visibilities
-        initialiseViewVisibity();
+        initialiseViewVisibility();
 
         // Set the info bars to match the mode
         setInfoStyles();
@@ -141,7 +141,7 @@ public class SecondaryDisplay extends Presentation {
         myView.textureView1.setSurfaceTextureListener(new MySurfaceTextureAvailable(1));
         myView.textureView2.setSurfaceTextureListener(new MySurfaceTextureAvailable(2));
     }
-    private void initialiseViewVisibity() {
+    private void initialiseViewVisibility() {
         // Views that need to be measured need to be VISIBLE or INVISIBLE.
         // This is the test pane for all modes
         myView.testLayout.setVisibility(View.INVISIBLE);
