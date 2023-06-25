@@ -367,6 +367,11 @@ public class EditSongFragmentLyrics extends Fragment {
         // Break the song into sections for copying, not quite the same as used in ProcessSong
         String allLyrics = myView.lyrics.getText().toString();
 
+        // If we are editing as choPro, we need to convert to OpenSong first
+        if (mainActivityInterface.getTempSong().getEditingAsChoPro()) {
+            allLyrics = mainActivityInterface.getConvertChoPro().fromChordProToOpenSong(allLyrics);
+        }
+
         String splitIdentifier = "___SPLITHERE___";
 
         // Add the splitIdentifier to section headers
@@ -390,7 +395,19 @@ public class EditSongFragmentLyrics extends Fragment {
 
     public void doCopyChords(String oldText, String newText) {
         String textToAdjust = myView.lyrics.getText().toString();
+        // If we are editing as choPro, we need to get as OpenSong format
+        if (mainActivityInterface.getTempSong().getEditingAsChoPro()) {
+            textToAdjust = mainActivityInterface.getConvertChoPro().fromChordProToOpenSong(textToAdjust);
+        }
+
+        // Do the changes
         textToAdjust = textToAdjust.replace(oldText.trim(),newText.trim());
+
+        // If we are editing as choPro, we need to convert back
+        if (mainActivityInterface.getTempSong().getEditingAsChoPro()) {
+            textToAdjust = mainActivityInterface.getConvertChoPro().fromOpenSongToChordPro(textToAdjust);
+        }
+
         myView.lyrics.setText(textToAdjust);
     }
 

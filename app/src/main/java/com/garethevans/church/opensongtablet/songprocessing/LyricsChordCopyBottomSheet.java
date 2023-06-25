@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -133,6 +134,8 @@ public class LyricsChordCopyBottomSheet  extends BottomSheetDialogFragment {
             String textToWorkOn = sections[positionTo];
             myView.copyIntoBefore.setHint(textToWorkOn);
 
+            Log.d(TAG,"positionFrom:"+positionFrom+"  positionTo:"+positionTo);
+            Log.d(TAG,"textToworkOn:"+textToWorkOn);
             // Now the logic to do the copy!!  Split into lines and work on one at a time
             ArrayList<String> linesToImprove = new ArrayList<>(Arrays.asList(textToWorkOn.split("\n")));
             ArrayList<String> linesToCopy = new ArrayList<>(Arrays.asList((sectionsWithChords.get(positionFrom).split("\n"))));
