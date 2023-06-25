@@ -86,6 +86,7 @@ public class LyricsOptionsBottomSheet extends BottomSheetDialogFragment {
     }
 
     private void openSongOrChoProButtonColor() {
+        mainActivityInterface.getTempSong().setEditingAsChoPro(mainActivityInterface.getPreferences().getMyPreferenceBoolean("editAsChordPro",false));
         if (mainActivityInterface.getTempSong().getEditingAsChoPro()) {
             myView.choPro.setBackgroundTintList(ColorStateList.valueOf(colorOn));
             myView.openSong.setBackgroundTintList(ColorStateList.valueOf(colorOff));
@@ -119,6 +120,7 @@ public class LyricsOptionsBottomSheet extends BottomSheetDialogFragment {
             // Only do this if we aren't editing as OpenSong already
             if (mainActivityInterface.getTempSong().getEditingAsChoPro()) {
                 mainActivityInterface.getTempSong().setEditingAsChoPro(false);
+                mainActivityInterface.getPreferences().setMyPreferenceBoolean("editAsChordPro",false);
                 openSongOrChoProButtonColor();
                 openingFragment.convertToOpenSong();
                 this.dismiss();
@@ -128,6 +130,7 @@ public class LyricsOptionsBottomSheet extends BottomSheetDialogFragment {
             // Only do this if we aren't editing as ChordPro already
             if (!mainActivityInterface.getTempSong().getEditingAsChoPro()) {
                 mainActivityInterface.getTempSong().setEditingAsChoPro(true);
+                mainActivityInterface.getPreferences().setMyPreferenceBoolean("editAsChordPro",true);
                 openSongOrChoProButtonColor();
                 openingFragment.convertToChoPro();
                 this.dismiss();

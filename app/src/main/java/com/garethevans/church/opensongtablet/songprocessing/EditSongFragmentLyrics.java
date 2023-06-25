@@ -88,15 +88,15 @@ public class EditSongFragmentLyrics extends Fragment {
         if (mainActivityInterface.getTempSong()==null) {
             mainActivityInterface.setTempSong(mainActivityInterface.getSong());
         }
+        boolean editAsChordPro = mainActivityInterface.getPreferences().getMyPreferenceBoolean("editAsChordPro",false);
+        mainActivityInterface.getTempSong().setEditingAsChoPro(editAsChordPro);
+        Log.d(TAG,"editAsChordPro:"+editAsChordPro);
         if (mainActivityInterface.getTempSong()!=null && !mainActivityInterface.getTempSong().getEditingAsChoPro()) {
             mainActivityInterface.getTranspose().checkChordFormat(mainActivityInterface.getTempSong());
         } else if (mainActivityInterface.getTempSong()!=null) {
-            String choProLyrics = mainActivityInterface.getTempSong().getLyrics();
-            // Convert to OpenSong to detect the chord format
-            String openSongLyrics = mainActivityInterface.getConvertChoPro().fromChordProToOpenSong(choProLyrics);
-            // Set the lyrics back to the temp song
-            mainActivityInterface.getTempSong().setLyrics(openSongLyrics);
-            // Now detect the chord format
+            // Get the lyrics as choPro
+            String choProLyrics = mainActivityInterface.getConvertChoPro().fromOpenSongToChordPro(mainActivityInterface.getTempSong().getLyrics());
+            // Now detect the chord format from the lyrics
             mainActivityInterface.getTranspose().checkChordFormat(mainActivityInterface.getTempSong());
             // Now set the lyrics back as chordpro
             mainActivityInterface.getTempSong().setLyrics(choProLyrics);
