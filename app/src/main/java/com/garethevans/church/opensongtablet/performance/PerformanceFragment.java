@@ -520,20 +520,22 @@ public class PerformanceFragment extends Fragment {
             // - **Image    Custom image slide (multiple images).  Same as PDF
             // - XML        OpenSong song.  Views need to be drawn and measured. Stage mode uses recyclerView, Performance, the pageHolder
 
-            if (mainActivityInterface.getSong().getFiletype().equals("PDF") &&
-                    android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-                preparePDFView();
+            if (mainActivityInterface.getSong()!=null && mainActivityInterface.getSong().getFiletype()!=null) {
+                if (mainActivityInterface.getSong().getFiletype().equals("PDF") &&
+                        android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                    preparePDFView();
 
-            } else if (mainActivityInterface.getSong().getFiletype().equals("IMG")) {
-                prepareIMGView();
+                } else if (mainActivityInterface.getSong().getFiletype().equals("IMG")) {
+                    prepareIMGView();
 
-            } else if (mainActivityInterface.getSong().getFolder().contains("**Image")) {
-                prepareSlideImageView();
+                } else if (mainActivityInterface.getSong().getFolder().contains("**Image")) {
+                    prepareSlideImageView();
 
-            } else if (mainActivityInterface.getSong().getFiletype().equals("XML") ||
-                    (mainActivityInterface.getSong().getFiletype().equals("PDF") &&
-                            android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP)) {
-                prepareXMLView();
+                } else if (mainActivityInterface.getSong().getFiletype().equals("XML") ||
+                        (mainActivityInterface.getSong().getFiletype().equals("PDF") &&
+                                android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP)) {
+                    prepareXMLView();
+                }
             }
         }
     }

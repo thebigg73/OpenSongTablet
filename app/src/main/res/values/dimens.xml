@@ -1,26 +1,4 @@
 <resources>
-    <!-- For the fastscroll recyclerview -->
-    <dimen name="fastscroll_bubble_radius">44dp</dimen>
-    <dimen name="fastscroll_bubble_size">88dp</dimen>
-    <dimen name="fastscroll_bubble_text_size">48sp</dimen>
-    <dimen name="fastscroll_bubble_padding">16dp</dimen>
-
-    <dimen name="fastscroll_bubble_radius_small">32dp</dimen>
-    <dimen name="fastscroll_bubble_size_small">64dp</dimen>
-    <dimen name="fastscroll_bubble_text_size_small">36sp</dimen>
-    <dimen name="fastscroll_bubble_padding_small">12dp</dimen>
-
-    <dimen name="fastscroll_handle_height">40dp</dimen>
-    <dimen name="fastscroll_handle_width">4dp</dimen>
-    <dimen name="fastscroll_handle_radius">4dp</dimen>
-
-    <dimen name="fastscroll_track_width">4dp</dimen>
-
-    <dimen name="fastscroll_scrollbar_margin_top">8dp</dimen>
-    <dimen name="fastscroll_scrollbar_margin_bottom">8dp</dimen>
-    <dimen name="fastscroll_scrollbar_padding_start">2dp</dimen>
-    <dimen name="fastscroll_scrollbar_padding_end">2dp</dimen>
-
     <!-- For the chord diagrams -->
     <dimen name="fingering_width">12dp</dimen>
     <dimen name="fingering_padding">0dp</dimen>
@@ -44,7 +22,7 @@
     <integer name="slide_out_time">10</integer>
     <integer name="slide_in_time">200</integer>
 
-    <dimen name="exposed_dropdown_height">200dp</dimen>
+    <dimen name="exposed_dropdown_height">400dp</dimen>
 
     <!-- For the text -->
     <dimen name="text_menu_title">16sp</dimen>
