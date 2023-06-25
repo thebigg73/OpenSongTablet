@@ -8,7 +8,6 @@ import android.content.res.TypedArray;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -213,17 +212,18 @@ public class ExposedDropDown extends TextInputLayout {
                     // Get the location of the popup position and negatively offset this minus the toolbar height
                     int[] location = new int[2];
                     autoCompleteTextView.getLocationOnScreen(location);
-                    int height = mainActivityInterface.getDisplayMetrics()[1] - (mainActivityInterface.getToolbar().getActionBarHeight(false) * 2);
+                    autoCompleteTextView.setDropDownVerticalOffset(-textInputLayout.getHeight());
+                    int maxHeight = mainActivityInterface.getDisplayMetrics()[1];
                     int y = location[1];
-                    autoCompleteTextView.setDropDownVerticalOffset(-y);
-                    autoCompleteTextView.setDropDownHeight(height);
+                    int heightLeft = maxHeight - y;
+                    autoCompleteTextView.setDropDownHeight(heightLeft);
                     sizeSet = true;
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             } else if (mainActivityInterface != null) {
                 try {
-                    autoCompleteTextView.setDropDownVerticalOffset(-autoCompleteTextView.getHeight());
+                    autoCompleteTextView.setDropDownVerticalOffset(-textInputLayout.getHeight());
                     int newHeight = (int) getContext().getResources().getDimension(R.dimen.exposed_dropdown_height);
                     autoCompleteTextView.setDropDownHeight(newHeight);
                     sizeSet = true;
