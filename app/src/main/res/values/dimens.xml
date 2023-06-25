@@ -62,6 +62,6 @@
     <dimen name="hot_zone_height">144dp</dimen>
 
     <!-- Bigger progress bar -->
-    <dimen name="progress_bar_size">192dp</dimen>
+    <dimen name="progress_bar_size">128dp</dimen>
 
 </resources>

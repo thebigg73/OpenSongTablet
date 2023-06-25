@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet.beatbuddy;
 
 import android.content.Context;
 import android.os.Build;
+import android.util.Log;
 
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
@@ -79,6 +80,18 @@ public class BeatBuddy {
         this.mainActivityInterface = (MainActivityInterface) c;
         setPrefs();
         buildCommands();
+        checkDatabase(c);
+    }
+
+    private void checkDatabase(Context c) {
+        // If the database file does not exist, create it
+        if (c!=null) {
+            try (BBSQLite bbsqLite = new BBSQLite(c)) {
+                bbsqLite.checkDefaultDatabase();
+                Log.d(TAG, "myDrums:" + bbsqLite.getMyDrumsCount());
+                Log.d(TAG, "mySongs:" + bbsqLite.getMySongsCount());
+            }
+        }
     }
 
     // Load in the user preferences.  These can be changed from the helper class fragment

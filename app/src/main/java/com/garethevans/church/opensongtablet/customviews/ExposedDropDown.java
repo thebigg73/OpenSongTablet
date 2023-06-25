@@ -35,7 +35,7 @@ public class ExposedDropDown extends TextInputLayout {
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "ExposedDropDown";
     private Context c;
-    private boolean largePopups;
+    private boolean largePopups, sizeSet=false, dealingWithAlready=false;
     private ArrayList<String> arrayList = null;
     private WindowInsetsCompat windowInsetsCompat;
     private final WindowInsetsControllerCompat windowInsetsControllerCompat;
@@ -83,49 +83,57 @@ public class ExposedDropDown extends TextInputLayout {
         textInputLayout.setPadding(0,0,0,0);
         a.recycle();
         autoCompleteTextView.setOnTouchListener(new MyTouchListener());
-        //textInputLayout.setEndIconOnClickListener(v -> autoCompleteTextView.post(this::doClickAction));
-        //autoCompleteTextView.setOnClickListener(view -> doClickAction());
+        textInputLayout.setEndIconOnClickListener(v -> doClickAction());
     }
 
     private void doClickAction() {
-        if (windowInsetsCompat != null && windowInsetsCompat.isVisible(WindowInsetsCompat.Type.ime()) &&
-                windowInsetsControllerCompat != null) {
-            windowInsetsControllerCompat.hide(WindowInsetsCompat.Type.ime());
-        }
+        if (!dealingWithAlready) {
+            dealingWithAlready = true;
 
-        setPopupSize();
-        if (autoCompleteTextView.isPopupShowing()) {
-            autoCompleteTextView.dismissDropDown();
-        } else {
-            //autoCompleteTextView.dismissDropDown();
-            Log.d(TAG,"clicked");
-            // Delay the showing..
-            autoCompleteTextView.postDelayed(() -> {
-                autoCompleteTextView.showDropDown();
-                keepPosition();
-            },100);
+            if (windowInsetsCompat != null && windowInsetsCompat.isVisible(WindowInsetsCompat.Type.ime()) &&
+                    windowInsetsControllerCompat != null) {
+                windowInsetsControllerCompat.hide(WindowInsetsCompat.Type.ime());
+            }
+
+            setPopupSize();
+            if (autoCompleteTextView.isPopupShowing()) {
+                autoCompleteTextView.dismissDropDown();
+            } else {
+                // Delay the showing..
+                autoCompleteTextView.postDelayed(() -> {
+                    autoCompleteTextView.showDropDown();
+                    keepPosition();
+                    dealingWithAlready = false;
+                }, 100);
+            }
         }
     }
+
     private class MyTouchListener implements OnTouchListener {
 
         @SuppressLint("ClickableViewAccessibility")
         @Override
         public boolean onTouch(View v, MotionEvent event) {
+            // Set the popup size
+            if ((event.getAction() == MotionEvent.ACTION_DOWN ||
+                event.getAction() == MotionEvent.ACTION_BUTTON_PRESS) &&
+                    largePopups && !sizeSet) {
+                setPopupSize();
+            }
+
+            // If the keyboard is showing, hide it
             if (windowInsetsCompat != null && windowInsetsCompat.isVisible(WindowInsetsCompat.Type.ime()) &&
                     windowInsetsControllerCompat != null) {
                 windowInsetsControllerCompat.hide(WindowInsetsCompat.Type.ime());
             }
-            // Prepare the size of the popup
-            if (event.getAction() == MotionEvent.ACTION_DOWN ||
-                    event.getAction() == MotionEvent.ACTION_BUTTON_PRESS) {
-                setPopupSize();
-            }
+
             // Show the popup
             if (event.getAction() == MotionEvent.ACTION_UP ||
                     event.getAction() == MotionEvent.ACTION_BUTTON_RELEASE) {
-                textInputLayout.postDelayed(ExposedDropDown.this::doClickAction,100);
+                textInputLayout.postDelayed(ExposedDropDown.this::doClickAction, 100);
             }
-            return false;
+
+            return true;
         }
     }
 
@@ -209,17 +217,21 @@ public class ExposedDropDown extends TextInputLayout {
                     int y = location[1];
                     autoCompleteTextView.setDropDownVerticalOffset(-y);
                     autoCompleteTextView.setDropDownHeight(height);
+                    sizeSet = true;
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            } else {
+            } else if (mainActivityInterface != null) {
                 try {
                     autoCompleteTextView.setDropDownVerticalOffset(-autoCompleteTextView.getHeight());
                     int newHeight = (int) getContext().getResources().getDimension(R.dimen.exposed_dropdown_height);
                     autoCompleteTextView.setDropDownHeight(newHeight);
+                    sizeSet = true;
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            } else {
+                sizeSet = false;
             }
         }
     }

@@ -4,45 +4,15 @@
     android:id="@+id/mainpage"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
-    android:fitsSystemWindows="true">
-
-    <LinearLayout
-        android:id="@+id/headerText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:background="@color/colorAltPrimary"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
-
-        <com.google.android.material.textview.MaterialTextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="0dp"
-            android:layout_weight="1"
-            android:drawablePadding="8dp"
-            android:gravity="center_vertical"
-            android:padding="8dp"
-            android:text="@string/storage_change"
-            android:textSize="22sp" />
-
-        <ImageView
-            android:id="@+id/webHelp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:padding="16dp"
-            app:srcCompat="@drawable/help_outline"
-            android:contentDescription="@string/help" />
-    </LinearLayout>
+    android:background="@color/colorPrimary">
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/startApp"
-        android:layout_below="@+id/headerText">
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
 
         <LinearLayout
             android:id="@+id/page"

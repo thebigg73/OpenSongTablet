@@ -62,6 +62,10 @@ public class BootUpFragment extends Fragment {
         myView = BootupLogoBinding.inflate(inflater, container, false);
         mainActivityInterface.registerFragment(this,"BootUpFragment");
 
+        mainActivityInterface.setSettingsOpen(false);
+        mainActivityInterface.disableActionBarStuff(false);
+        mainActivityInterface.hideActionBar();
+
         // Lock the navigation drawer and hide the actionbar and floating action button
         hideMenus();
 

@@ -3,6 +3,7 @@ package com.garethevans.church.opensongtablet.interfaces;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import androidx.fragment.app.Fragment;
@@ -159,6 +160,7 @@ public interface MainActivityInterface {
     void scrollOpenMenu(boolean scrollDown);
     boolean getMenuOpen();
     boolean getSettingsOpen();
+    void setSettingsOpen(boolean settingsOpen);
     void updateCheckForThisSong(Song thisSong);
     SongMenuFragment getSongMenuFragment();
 
@@ -168,6 +170,7 @@ public interface MainActivityInterface {
     void hideActionBar();
     void showActionBar();
     void removeActionBar(boolean remove);
+    ImageView disableActionBarStuff(boolean disable);
     void updateToolbar(String what);
     void updateToolbarHelp(String webAddress);
     void updateActionBarSettings(String prefName, float floatval, boolean isvisible);

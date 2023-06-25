@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -57,11 +58,17 @@ public class SetStorageLocationFragment extends Fragment {
     private ArrayList<String> locations;
     private File folder;
     private final String TAG = "SetStorageLocFrag";
-    private String website_storage_set_string="", storage_reset_string="", start_string="",
-            help_string="", existing_found_string="", storage_ext_string="", mainfoldername_string="",
-            deeplink_bootup_string="", storage_notwritable_string="";
+    private String storage_reset_string="";
+    private String start_string="";
+    private String existing_found_string="";
+    private String storage_ext_string="";
+    private String mainfoldername_string="";
+    private String deeplink_bootup_string="";
+    private String storage_notwritable_string="";
+    private String storage_change_string="";
     ActivityResultLauncher<Intent> folderChooser;
     ActivityResultLauncher<String> storagePermission;
+    private ImageView screenHelp;
 
     private StorageChooseBinding myView;
     private String webAddress;
@@ -69,9 +76,10 @@ public class SetStorageLocationFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (mainActivityInterface.getWhattodo().equals("storageOk")) {
-            mainActivityInterface.updateToolbarHelp(webAddress);
-        }
+        mainActivityInterface.setSettingsOpen(true);
+        mainActivityInterface.updateToolbarHelp(webAddress);
+        mainActivityInterface.updateToolbar(storage_change_string);
+        checkToolbarView();
     }
 
     @Override
@@ -86,22 +94,6 @@ public class SetStorageLocationFragment extends Fragment {
         myView = StorageChooseBinding.inflate(inflater, container, false);
 
         prepareStrings();
-
-        // However, if we are just wanting to check/change the storage,
-        // we don't want the extra title bar
-        if (mainActivityInterface.getWhattodo().equals("storageOk")) {
-            mainActivityInterface.updateMargins();
-            mainActivityInterface.showActionBar();
-            mainActivityInterface.setWhattodo("");
-            myView.headerText.setVisibility(View.GONE);
-            webAddress = website_storage_set_string;
-
-        } else {
-            myView.mainpage.postDelayed(()-> {
-                mainActivityInterface.hideActionBar();
-                mainActivityInterface.removeActionBar(true);
-            },500);
-        }
 
         // Set up the views
         initialiseViews();
@@ -121,8 +113,7 @@ public class SetStorageLocationFragment extends Fragment {
         // Check we have the required storage permission
         // If we have it, this will update the text, if not it will ask for permission
         checkStatus();
-
-        //mainActivityInterface.getAppActionBar().translateAwayActionBar(true);
+        checkToolbarView();
 
         // Showcase
         storageShowcase();
@@ -130,60 +121,60 @@ public class SetStorageLocationFragment extends Fragment {
         return myView.getRoot();
     }
 
+    private void checkToolbarView() {
+        mainActivityInterface.setSettingsOpen(true);
+        screenHelp = mainActivityInterface.disableActionBarStuff(!mainActivityInterface.getWhattodo().equals("storageOk"));
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+            mainActivityInterface.updateToolbarHelp(webAddress);
+            mainActivityInterface.updateToolbar(storage_change_string);
+            screenHelp = mainActivityInterface.disableActionBarStuff(!mainActivityInterface.getWhattodo().equals("storageOk"));
+        },100);
+    }
+
     private void prepareStrings() {
         if (getContext()!=null) {
-            website_storage_set_string = getString(R.string.website_storage_set);
+            String website_storage_set_string = getString(R.string.website_storage_set);
             storage_reset_string = getString(R.string.storage_reset);
             start_string = getString(R.string.start);
-            help_string = getString(R.string.help);
             existing_found_string = getString(R.string.existing_found);
             storage_ext_string = getString(R.string.storage_ext);
             mainfoldername_string = getString(R.string.mainfoldername);
             deeplink_bootup_string = getString(R.string.deeplink_bootup);
             storage_notwritable_string = getString(R.string.storage_notwritable);
+            storage_change_string = getString(R.string.storage_change);
+            webAddress = website_storage_set_string;
         }
     }
     private void storageShowcase() {
-        if (getActivity()!=null) {
-            MaterialShowcaseView.Builder builder = mainActivityInterface.getShowCase().
-                    getSingleShowCaseBuilderForListener(getActivity(), myView.setStorage,
-                            null, storage_reset_string, true, "storageReset");
-            builder.setListener(new IShowcaseListener() {
-                @Override
-                public void onShowcaseDisplayed(MaterialShowcaseView showcaseView) {
-                }
+        // Wait 1 second for all views
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+            if (getActivity()!=null) {
+                MaterialShowcaseView.Builder builder = mainActivityInterface.getShowCase().
+                        getSingleShowCaseBuilderForListener(getActivity(), myView.setStorage,
+                                null, storage_reset_string, true, "storageReset");
+                builder.setListener(new IShowcaseListener() {
+                    @Override
+                    public void onShowcaseDisplayed(MaterialShowcaseView showcaseView) {
 
-                @Override
-                public void onShowcaseDismissed(MaterialShowcaseView showcaseView) {
-                    webHelpShowcase();
-                }
-            });
-            builder.build().show(getActivity());
-        }
+                    }
+
+                    @Override
+                    public void onShowcaseDismissed(MaterialShowcaseView showcaseView) {
+                        // Try to show the help showcase
+                        if (screenHelp!=null) {
+                            mainActivityInterface.getShowCase().singleShowCase(getActivity(), screenHelp, null, getString(R.string.help), false, "webHelp");
+                        }
+                    }
+                });
+                builder.build().show(getActivity());
+            }
+        },1000);
+
     }
     private void startShowcase() {
         if (myView.startApp.getVisibility()==View.VISIBLE && getActivity()!=null) {
             mainActivityInterface.getShowCase().singleShowCase(getActivity(), myView.startApp,
                     null, start_string, true, "startApp");
-        }
-    }
-
-    private void webHelpShowcase() {
-        if (getActivity()!=null) {
-            MaterialShowcaseView.Builder builder = mainActivityInterface.getShowCase().
-                    getSingleShowCaseBuilderForListener(getActivity(), myView.webHelp,
-                            null, help_string, false, "webHelp");
-            builder.setListener(new IShowcaseListener() {
-                @Override
-                public void onShowcaseDisplayed(MaterialShowcaseView showcaseView) {
-                }
-
-                @Override
-                public void onShowcaseDismissed(MaterialShowcaseView showcaseView) {
-                    startShowcase();
-                }
-            });
-            builder.build().show(getActivity());
         }
     }
 
@@ -194,8 +185,6 @@ public class SetStorageLocationFragment extends Fragment {
             mainActivityInterface.hideActionButton(true);
         }
 
-        //mainActivityInterface.getAppActionBar().translateAwayActionBar(true);
-        //myView.getRoot().setTranslationY(-mainActivityInterface.getAppActionBar().getActionBarHeight());
         // Set up the storage location currently set in an edit box that acts like a button only
         myView.chosenLocation.setFocusable(false);
         myView.chosenLocation.setClickable(true);
@@ -203,7 +192,6 @@ public class SetStorageLocationFragment extends Fragment {
         myView.chosenLocation.setOnClickListener(t -> myView.setStorage.performClick());
 
         // Set the listeners for the buttons
-        myView.webHelp.setOnClickListener(v -> mainActivityInterface.openDocument(website_storage_set_string));
         myView.infoButton.setOnClickListener(v -> {
             if (getActivity()!=null) {
                 BottomSheetDialogFragment dialog = new SetStorageBottomSheet();
@@ -459,6 +447,8 @@ public class SetStorageLocationFragment extends Fragment {
         }
     }
     private void goToSongs() {
+        mainActivityInterface.updateToolbar("");
+        mainActivityInterface.setSettingsOpen(false);
         mainActivityInterface.navigateToFragment(deeplink_bootup_string,0);
     }
     private void pulseButton(View v) {

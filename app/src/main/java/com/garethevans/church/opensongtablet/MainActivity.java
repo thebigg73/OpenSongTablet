@@ -607,6 +607,18 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
 
     @Override
+    public ImageView disableActionBarStuff(boolean disable) {
+        // Called from storage selection
+        if (getSupportActionBar()!=null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(!disable);
+        }
+        if (globalMenuItem!=null) {
+            globalMenuItem.findItem(R.id.settings_menu_item).setVisible(!disable);
+        }
+        return screenHelp;
+    }
+
+    @Override
     public void showActionBar() {
         myView.myToolbar.showActionBar(settingsOpen);
         updateMargins();
@@ -1436,7 +1448,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         screenHelp.setOnClickListener(v -> openDocument(webAddress));
                         globalMenuItem.findItem(R.id.help_menu_item).setVisible(true);
                         // For the first run, show the showcase as well
-                        showCase.singleShowCase(this, screenHelp, null, getString(R.string.help), false, "webHelp");
+                        if (!isCurrentFragment(R.id.setStorageLocationFragment)) {
+                            showCase.singleShowCase(this, screenHelp, null, getString(R.string.help), false, "webHelp");
+                        }
                     }
                 }, 50);
             } else {
@@ -1664,6 +1678,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public boolean getSettingsOpen() {
         return settingsOpen;
+    }
+
+    @Override
+    public void setSettingsOpen(boolean settingsOpen) {
+        this.settingsOpen = settingsOpen;
     }
 
     @Override
