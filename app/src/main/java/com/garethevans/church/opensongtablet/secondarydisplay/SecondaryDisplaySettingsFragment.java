@@ -295,8 +295,7 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
         myView.hideInfoBar.setOnCheckedChangeListener((compoundButton, b) -> {
             mainActivityInterface.getPreferences().setMyPreferenceBoolean("hideInfoBar",b);
             mainActivityInterface.getPresenterSettings().setHideInfoBar(b);
-            displayInterface.updateDisplay("initialiseInfoBarRequired");
-            displayInterface.updateDisplay("checkSongInfoShowHide");
+            refreshSection();
         });
 
         myView.titleTextSize.addOnChangeListener(new SliderChangeListener("presoTitleTextSize"));
@@ -309,27 +308,18 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
         myView.clockOn.setOnCheckedChangeListener((compoundButton, b) -> {
             mainActivityInterface.getPreferences().setMyPreferenceBoolean("presoShowClock",b);
             mainActivityInterface.getPresenterSettings().setPresoShowClock(b);
-            displayInterface.updateDisplay("initialiseInfoBarRequired");
-            displayInterface.updateDisplay("newSongLoaded");
-            displayInterface.updateDisplay("setInfoStyles");
-            displayInterface.updateDisplay("checkSongInfoShowHide");
+            refreshSection();
             updateClockSettings();
         });
         myView.clock24hr.setOnCheckedChangeListener((compoundButton, b) -> {
             mainActivityInterface.getPreferences().setMyPreferenceBoolean("presoClock24h",b);
             mainActivityInterface.getPresenterSettings().setPresoClock24h(b);
-            displayInterface.updateDisplay("initialiseInfoBarRequired");
-            displayInterface.updateDisplay("newSongLoaded");
-            displayInterface.updateDisplay("setInfoStyles");
-            displayInterface.updateDisplay("checkSongInfoShowHide");
+            refreshSection();
         });
         myView.clockSeconds.setOnCheckedChangeListener((compoundButton, b) -> {
             mainActivityInterface.getPreferences().setMyPreferenceBoolean("presoClockSeconds",b);
             mainActivityInterface.getPresenterSettings().setPresoClockSeconds(b);
-            displayInterface.updateDisplay("initialiseInfoBarRequired");
-            displayInterface.updateDisplay("newSongLoaded");
-            displayInterface.updateDisplay("setInfoStyles");
-            displayInterface.updateDisplay("checkSongInfoShowHide");
+            refreshSection();
         });
         myView.clockTextSize.addOnSliderTouchListener(new SliderTouchListener("presoClockSize"));
         myView.clockTextSize.addOnChangeListener(new SliderChangeListener("presoClockSize"));
@@ -367,32 +357,18 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
         myView.blockShadow.setOnCheckedChangeListener((compoundButton, b) -> {
             mainActivityInterface.getPreferences().setMyPreferenceBoolean("blockShadow",b);
             mainActivityInterface.getProcessSong().updateProcessingPreferences();
-            new Handler(Looper.getMainLooper()).postDelayed(() -> displayInterface.updateDisplay("setSongContent"),200);
-            new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                if (!mainActivityInterface.getMode().equals(mode_performance_string)) {
-                    displayInterface.updateDisplay("showSection");
-                }
-            },800);
+            refreshSection();
         });
         myView.blockShadowAlpha.addOnChangeListener(new SliderChangeListener("blockShadowAlpha"));
         myView.blockShadowAlpha.addOnSliderTouchListener(new SliderTouchListener("blockShadowAlpha"));
         myView.presoLyricsBold.setOnCheckedChangeListener((compoundButton, b) -> {
             mainActivityInterface.getPresenterSettings().setPresoLyricsBold(b);
-            new Handler(Looper.getMainLooper()).postDelayed(() -> displayInterface.updateDisplay("setSongContent"),200);
-            new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                if (!mainActivityInterface.getMode().equals(mode_performance_string)) {
-                    displayInterface.updateDisplay("showSection");
-                }
-            },800);
+            refreshSection();
         });
         myView.defaultPresentationText.setOnCheckedChangeListener((compoundButton, b) -> {
             mainActivityInterface.getPreferences().setMyPreferenceBoolean("defaultPresentationText",b);
             mainActivityInterface.getPresenterSettings().setDefaultPresentationText(b);
-            new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                displayInterface.updateDisplay("newSongLoaded");
-                displayInterface.updateDisplay("setSongInfo");
-            },200);
-            new Handler(Looper.getMainLooper()).postDelayed(() -> displayInterface.updateDisplay("checkSongInfoShowHide"),500);
+            refreshSection();
         });
     }
 
@@ -429,8 +405,6 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
         }
     }
     private int sliderPositionToGravity(boolean vertical, int position) {
-
-
         switch (position) {
             case 0:
                 if (vertical) {
@@ -634,6 +608,7 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
                             "presoInfoAlign", gravity);
                     mainActivityInterface.getPresenterSettings().setPresoInfoAlign(gravity);
                     displayInterface.updateDisplay("changeInfoAlignment");
+                    refreshSection();
                     break;
                 case "presoLyricsAlign":
                     // The slider goes from 0 to 2.  We need to look up the gravity
@@ -641,8 +616,7 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
                     mainActivityInterface.getPreferences().setMyPreferenceInt(
                             "presoLyricsAlign", gravity);
                     mainActivityInterface.getPresenterSettings().setPresoLyricsAlign(gravity);
-                    displayInterface.updateDisplay("setSongContent");
-                    new Handler(Looper.getMainLooper()).postDelayed(() -> displayInterface.updateDisplay("showSection"),500);
+                    refreshSection();
                     break;
                 case "presoLyricsVAlign":
                     // The slider goes from 0 to 2.  We need to look up the gravity
@@ -650,8 +624,7 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
                     mainActivityInterface.getPreferences().setMyPreferenceInt(
                             "presoLyricsVAlign", gravity);
                     mainActivityInterface.getPresenterSettings().setPresoLyricsVAlign(gravity);
-                    displayInterface.updateDisplay("setSongContent");
-                    new Handler(Looper.getMainLooper()).postDelayed(() -> displayInterface.updateDisplay("showSection"),500);
+                    refreshSection();
                     break;
                 case "fontSizePresoMax":
                     // The slider goes from 10 to 100 as the font size
@@ -680,5 +653,17 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
             }
         }
     }
-
+    private void refreshSection () {
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+            displayInterface.updateDisplay("newSongLoaded");
+            displayInterface.updateDisplay("setSongContent");
+            displayInterface.updateDisplay("setSongInfo");
+            displayInterface.updateDisplay("initialiseInfoBarRequired");
+        },200);
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+            if (!mainActivityInterface.getMode().equals(mode_performance_string)) {
+                displayInterface.updateDisplay("showSection");
+            }
+        },800);
+    }
 }

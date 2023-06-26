@@ -66,6 +66,7 @@ public class ProcessSong {
     private boolean displayBoldChordsHeadings;
     private boolean displayBoldChorus;
     private boolean displayChords;
+    private boolean presoShowChords;
     private boolean displayLyrics;
     private boolean displayCapoChords;
     private boolean displayCapoAndNativeChords;
@@ -109,6 +110,7 @@ public class ProcessSong {
         displayLyrics = mainActivityInterface.getPreferences().getMyPreferenceBoolean("displayLyrics", true);
         displayBoldChordsHeadings = mainActivityInterface.getPreferences().getMyPreferenceBoolean("displayBoldChordsHeadings", false);
         displayBoldChorus = mainActivityInterface.getPreferences().getMyPreferenceBoolean("displayBoldChorus",false);
+        presoShowChords = mainActivityInterface.getPreferences().getMyPreferenceBoolean("presoShowChords", true);
         songAutoScale = mainActivityInterface.getPreferences().getMyPreferenceString("songAutoScale", "W");
         songAutoScaleColumnMaximise = mainActivityInterface.getPreferences().getMyPreferenceBoolean("songAutoScaleColumnMaximise", true);
         songAutoScaleOverrideFull = mainActivityInterface.getPreferences().getMyPreferenceBoolean("songAutoScaleOverrideFull", true);
@@ -847,7 +849,7 @@ public class ProcessSong {
     }
 
     // Keep only wanted lines and group lines that should be in a table for alignment purposes
-    public String filterAndGroupLines(String string, boolean displayChords) {
+    public String filterAndGroupLines(String string, boolean showChords) {
         // IV - If no content then return an empty string
         if (string == null || string.trim().isEmpty()) {
             return "";
@@ -858,7 +860,7 @@ public class ProcessSong {
 
         // Go through each line and when displaying chords add lines together as groups ('groupline_string' between bits, \n for new group)
         for (int i=0; i<lines.length; i++) {
-            if (lines[i].startsWith(".") && displayChords) {
+            if (lines[i].startsWith(".") && showChords) {
                 // This is a chord line = this needs to be part of a group
                 sb.append("\n").append(lines[i]).append(groupline_string);
                 // If the next line is a lyric or comment add this to the group and stop there
@@ -882,7 +884,7 @@ public class ProcessSong {
                         sb.append(fixWordStretch(lines[i])).append(groupline_string);
                     }
                 }
-            } else if (lines[i].startsWith(" ") && !displayChords && displayLyrics) {
+            } else if (lines[i].startsWith(" ") && !showChords && displayLyrics) {
                 // IV - When displaying lyrics only - remove typical word splits, white space and trim - beautify!
                 sb.append("\n ").append(fixLyricsOnlySpace(lines[i]));
             } else if (lines[i].contains("§") || (displayLyrics && !lines[i].startsWith("."))) {
@@ -920,12 +922,14 @@ public class ProcessSong {
         tableLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT));
 
         boolean performancePresentation = presentation && mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance));
+        boolean showChords = (presentation && presoShowChords) ||
+                (!presentation && displayChords);
 
         // If we have a capo and want to show capo chords, duplicate and transpose the chord line
         String capoText = thisSong.getCapo();
         boolean hasCapo = capoText!=null && !capoText.isEmpty();
 
-        if (hasCapo && (displayCapoChords || displayCapoAndNativeChords) && !(performancePresentation && !mainActivityInterface.getPresenterSettings().getPresoShowChords())) {
+        if (hasCapo && (displayCapoChords || displayCapoAndNativeChords) && !(performancePresentation && !presoShowChords)) {
             int capo = Integer.parseInt(capoText);
             String chordbit = string.substring(0,string.indexOf(groupline_string));
             chordbit = mainActivityInterface.getTranspose().transposeChordForCapo(capo,chordbit).replaceFirst(".","˄");
@@ -960,7 +964,7 @@ public class ProcessSong {
         ArrayList<Integer> pos = new ArrayList<>();
 
         // IV - If we are not displaying chords, handle the line as a whole
-        if (!displayChords || (performancePresentation && !mainActivityInterface.getPresenterSettings().getPresoShowChords())) {
+        if (!showChords || (performancePresentation && !presoShowChords)) {
             pos.add(0);
         } else {
             if (lines.length > 1) {
@@ -1013,13 +1017,22 @@ public class ProcessSong {
                     String str = lines[t].substring(startpos, endpos);
                     if (startpos == 0) {
                         str = trimOutLineIdentifiers(thisSong, linetype, str);
+                        if (presentation && !mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance))) {
+                            // IV - Pad the start of line with space (line already has trailing space) to ensure good block shadow
+                            // IV - Start with a non breaking space which will not be removed
+                            if (str.startsWith(" ")) {
+                                str = str.replaceFirst(" ","\u00A0");
+                            } else {
+                                str = '\u00A0' + str;
+                            }
+                        }
                     }
                     // If this is a chord line that either has highlighting, or needs to to include capo chords
                     // We process separately, otherwise it is handled in the last default 'else'
                     switch (linetype) {
                         case "chord":
                             // Only show this if we want chords and if there is a capo, we want both capo and native
-                            if (displayChords && (!hasCapo || displayCapoAndNativeChords || !displayCapoChords) && !(performancePresentation && !mainActivityInterface.getPresenterSettings().getPresoShowChords())) {
+                            if (showChords && (!hasCapo || displayCapoAndNativeChords || !displayCapoChords) && !(performancePresentation && !presoShowChords)) {
                                 if (highlightChordColor != 0x00000000) {
                                     textView.setText(new SpannableString(highlightChords(str,
                                             highlightChordColor)));
@@ -1032,7 +1045,7 @@ public class ProcessSong {
                             break;
                         case "capoline":
                             // Only show this if we want chords and if there is a capo and showcapo
-                            if (displayChords && hasCapo && (displayCapoChords || displayCapoAndNativeChords)  && !(performancePresentation && !mainActivityInterface.getPresenterSettings().getPresoShowChords())) {
+                            if (showChords && hasCapo && (displayCapoChords || displayCapoAndNativeChords)  && !(performancePresentation && !presoShowChords)) {
                                 if (highlightChordColor != 0x00000000) {
                                     textView.setText(new SpannableString(highlightChords(str,
                                             highlightChordColor)));
@@ -1047,7 +1060,7 @@ public class ProcessSong {
                             if (displayLyrics) {
                                 str = str.replace("_","");
                                 str = str.replaceAll("[|]"," ");
-                                if (!displayChords) {
+                                if (!showChords) {
                                     // IV - Remove typical word splits, white space and beautify!
                                     str = fixLyricsOnlySpace(str);
                                 } else {
@@ -1417,7 +1430,7 @@ public class ProcessSong {
             if (string.startsWith(" ")) {
                 string = string.replaceFirst(" ","\u00A0") + " ";
             } else {
-                string = string + '\u00A0' + string + " ";
+                string = '\u00A0' + string + " ";
             }
         }
         String str = trimOutLineIdentifiers(thisSong, linetype, string);
@@ -1531,7 +1544,7 @@ public class ProcessSong {
 
         // 4. Prepare for line splits: | are relevant to Presenter mode only without chord display
         String lineSplit = " ";
-        if (presentation && !mainActivityInterface.getPresenterSettings().getPresoShowChords()) {
+        if (presentation && !presoShowChords) {
             lineSplit = "\n";
         }
 
@@ -1683,7 +1696,7 @@ public class ProcessSong {
         // 13. Go through the lyrics, filter lines needed for this mode/display chords combination.
         // Returns wanted line types and group lines that should be in a table for alignment purposes
         if (presentation) {
-            lyrics = filterAndGroupLines(lyrics, mainActivityInterface.getPresenterSettings().getPresoShowChords());
+            lyrics = filterAndGroupLines(lyrics, presoShowChords);
         } else {
             lyrics = filterAndGroupLines(lyrics, displayChords);
         }
@@ -1740,6 +1753,9 @@ public class ProcessSong {
         boolean performancePresentation = presentation && mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance));
         // First we process the song (could be the loaded song, or a temp song - that's why we take a reference)
         processSongIntoSections(song, presentation && !performancePresentation);
+
+        boolean showChords = (presentation && presoShowChords) ||
+                (!presentation && displayChords);
 
         // IV - Initialise transpose capo key  - might be needed
         mainActivityInterface.getTranspose().capoKeyTranspose();
@@ -1877,7 +1893,7 @@ public class ProcessSong {
                                 if ((!presentation || performancePresentation) && !asPDF && (!line.isEmpty() || mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)))) {
                                     // IV - Remove typical word splits, white space and trim - beautify!
                                     // IV - Similar logic is used in other places - if changed find and make changes to all
-                                    if (!displayChords) {
+                                    if (!showChords) {
                                         // IV - Remove typical word splits, white space and trim - beautify!
                                         line = fixLyricsOnlySpace(line);
                                     }
@@ -1892,7 +1908,7 @@ public class ProcessSong {
                                     // PDF or presentation
                                     // IV - Remove typical word splits, white space and trim - beautify!
                                     // IV - Similar logic is used in other places - if changed find and make changes to all
-                                    if (!displayChords) {
+                                    if (!showChords) {
                                         // IV - Remove typical word splits, white space and trim - beautify!
                                         line = fixLyricsOnlySpace(line);
                                     }

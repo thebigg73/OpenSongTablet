@@ -565,9 +565,11 @@ public class SecondaryDisplay extends Presentation {
                                 infoBarRequired = false;
                                 Log.d(TAG, "hide timer ended - infoBarRequired: " + infoBarRequired);
                                 try {
-                                    waitUntilTimer.cancel();
-                                    waitUntilTimerTask.cancel();
-                                    waitUntilTimerTask = null;
+                                    if (waitUntilTimerTask != null) {
+                                        waitUntilTimer.cancel();
+                                        waitUntilTimerTask.cancel();
+                                        waitUntilTimerTask = null;
+                                    }
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
@@ -575,7 +577,7 @@ public class SecondaryDisplay extends Presentation {
                         }
                     };
                     // The time that the info bar is required for
-                    int untilTimeWait = 20000;
+                    int untilTimeWait = 10000;
                     Log.d(TAG, "hide timer started");
                     waitUntilTimer.schedule(waitUntilTimerTask, untilTimeWait);
                 }
@@ -742,6 +744,22 @@ public class SecondaryDisplay extends Presentation {
     public void initialiseInfoBarRequired() {
         cancelInfoTimers();
         infoBarRequired = true;
+        // IV - Recover any currently hidden info bar for song redisplays
+        int time = mainActivityInterface.getPresenterSettings().getPresoTransitionTime();
+        if (!songInfoChanged()) {
+            if (myView.songProjectionInfo1.getIsDisplaying() &&
+                    myView.songProjectionInfo1.getHeight() > 0 &&
+                    myView.songProjectionInfo1.getAlpha() != 1f) {
+                Log.d(TAG, "init recovery info 1");
+                mainActivityInterface.getCustomAnimation().faderAnimation(myView.songProjectionInfo1, time, 0f, 1f);
+            }
+            if (myView.songProjectionInfo2.getIsDisplaying() &&
+                    myView.songProjectionInfo2.getHeight() > 0 &&
+                    myView.songProjectionInfo2.getAlpha() != 1f) {
+                Log.d(TAG, "init recovery info 2");
+                mainActivityInterface.getCustomAnimation().faderAnimation(myView.songProjectionInfo2, time, 0f, 1f);
+            }
+        }
     }
     public void checkSongInfoShowHide() {
         Log.d(TAG,"infoBarRequired: "+infoBarRequired + ", isNewSong: " + isNewSong + ", songInfoChanged: " + songInfoChanged());
@@ -916,6 +934,13 @@ public class SecondaryDisplay extends Presentation {
                 showSection(mainActivityInterface.getPresenterSettings().getCurrentSection());
             }
         }
+        Log.d(TAG,"hide timer check");
+        new Handler().postDelayed(() -> {
+            // IV - If hiding info bar, consider starting a hide timer
+            if (mainActivityInterface.getPresenterSettings().getHideInfoBar()) {
+                setupTimers();
+            }
+        },100);
     }
 
     public void showSection(final int position) {

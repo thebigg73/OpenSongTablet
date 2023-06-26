@@ -2196,8 +2196,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 myView.onScreenInfo.showCapo(false);
                 break;
             case "setblankScreenUnChecked":
-                presenterFragment.setBlankScreenUnChecked();
-                getPresenterSettings().setBlankscreenOn(false);
+                if (presenterFragment != null) {
+                    presenterFragment.setBlankScreenUnChecked();
+                    getPresenterSettings().setBlankscreenOn(false);
+                }
                 break;
         }
     }
