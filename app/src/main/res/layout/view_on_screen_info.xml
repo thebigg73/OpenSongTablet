@@ -5,7 +5,8 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_centerHorizontal="false"
-    android:layout_margin="8dp"
+    android:layout_marginStart="8dp"
+    android:layout_marginEnd="8dp"
     android:background="@drawable/rounded_dialog_node"
     android:orientation="vertical">
 
@@ -19,7 +20,17 @@
         android:padding="4dp"
         android:layout_gravity="end"
         android:clickable="true"
+        android:focusable="true"
         android:visibility="gone">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/autoscrollIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleX="0.75"
+            android:scaleY="0.75"
+            app:drawableStartCompat="@drawable/autoscroll"
+            android:clickable="false"/>
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/autoscrollTime"
@@ -27,7 +38,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:gravity="center_vertical"
-            app:drawableStartCompat="@drawable/autoscroll"
             android:clickable="false"/>
 
         <com.google.android.material.textview.MaterialTextView
@@ -49,7 +59,17 @@
         android:padding="4dp"
         android:layout_gravity="end"
         android:clickable="true"
+        android:focusable="true"
         android:visibility="gone">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/padIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleX="0.75"
+            android:scaleY="0.75"
+            app:drawableStartCompat="@drawable/amplifier"
+            android:clickable="false"/>
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/padTime"
@@ -57,7 +77,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:gravity="center_vertical"
-            app:drawableStartCompat="@drawable/amplifier"
             android:clickable="false"/>
 
         <com.google.android.material.textview.MaterialTextView
@@ -70,13 +89,32 @@
     </LinearLayout>
 
     <!-- The capo information. Shows for 3 secs, then hides but reshown on touchevent-->
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/capoInfo"
+    <LinearLayout
+        android:id="@+id/capo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_margin="2dp"
         android:padding="4dp"
-        android:visibility="gone"
-        app:drawableStartCompat="@drawable/capo" />
+        android:layout_gravity="end"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/capoIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleX="0.75"
+            android:scaleY="0.75"
+            app:drawableStartCompat="@drawable/capo"
+            android:clickable="false"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/capoInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"/>
+    </LinearLayout>
 </LinearLayout>

@@ -38,6 +38,7 @@ public class Pad {
     private final MaterialTextView padTime;
     private final MaterialTextView padTotalTime;
     private int padLength;
+    private int colorOn;
     private float pad1VolDrop, pad2VolDrop;
     private boolean padsActivated = false;
     private CharSequence padPauseTime;
@@ -75,6 +76,7 @@ public class Pad {
         // IV - managePads will fade all running pads
         // managePads will start the new pad if/when a pad player is free
         padsActivated = true;
+        colorOn = mainActivityInterface.getMyThemeColors().getExtraInfoTextColor();
         managePads();
     }
 
@@ -321,35 +323,35 @@ public class Pad {
             pad1FadeTimerTask = new TimerTask() {
                 @Override
                 public void run() {
-                    pad1FadeTimerHandler.post(() -> {
-                        if (!(pad1VolL == 0 && pad1VolR == 0)) {
-                            // IV - Fading
-                            // IV - If quick fade has been requested
-                            if (padInQuickFade == 1) {
-                                Log.d(TAG, "managePads Pad1 Quick fade started");
-                                pad1VolDrop = pad1VolDrop * 3;
-                                padInQuickFade = -1;
-                            }
-                            // IV - Give a gentle end to the fade
-                            if (Math.max(pad1VolL,pad1VolR) < 0.05f) {
-                                pad1VolDrop = 0.01f;
-                            }
-                            // IV - Set lower volume. pad1VolL and pad1VolR are set to the new values.
-                            setVolume(1, newVol(pad1VolL, pad1VolDrop), newVol(pad1VolR, pad1VolDrop));
-                        } else {
-                            // IV - Faded
-                            stopAndReset(1);
-                            Log.d(TAG, "managePads Pad1 stopped");
-                            // If both pads are fading this is the first to finish, start the new pad if needed
-                            if (pad2FadeTimerTask !=null && padsActivated) {
-                                Log.d(TAG, "managePads Pad1 start requested after quick fade");
-                                loadAndStart(1);
-                            }
-                            padInQuickFade = 0;
-                            Log.d(TAG, "managePads Pad1 endFadeTimer");
-                            new Handler().post(() -> endFadeTimer(1));
+                pad1FadeTimerHandler.post(() -> {
+                    if (!(pad1VolL == 0 && pad1VolR == 0)) {
+                        // IV - Fading
+                        // IV - If quick fade has been requested
+                        if (padInQuickFade == 1) {
+                            Log.d(TAG, "managePads Pad1 Quick fade started");
+                            pad1VolDrop = pad1VolDrop * 3;
+                            padInQuickFade = -1;
                         }
-                    });
+                        // IV - Give a gentle end to the fade
+                        if (Math.max(pad1VolL,pad1VolR) < 0.05f) {
+                            pad1VolDrop = 0.01f;
+                        }
+                        // IV - Set lower volume. pad1VolL and pad1VolR are set to the new values.
+                        setVolume(1, newVol(pad1VolL, pad1VolDrop), newVol(pad1VolR, pad1VolDrop));
+                    } else {
+                        // IV - Faded
+                        stopAndReset(1);
+                        Log.d(TAG, "managePads Pad1 stopped");
+                        // If both pads are fading this is the first to finish, start the new pad if needed
+                        if (pad2FadeTimerTask !=null && padsActivated) {
+                            Log.d(TAG, "managePads Pad1 start requested after quick fade");
+                            loadAndStart(1);
+                        }
+                        padInQuickFade = 0;
+                        Log.d(TAG, "managePads Pad1 endFadeTimer");
+                        new Handler().post(() -> endFadeTimer(1));
+                    }
+                });
                 }
             };
 
@@ -550,7 +552,7 @@ public class Pad {
                             if (pad1Pause || pad2Pause) {
                                 padTime.setText(padPauseTime);
                                 if (padTime.getCurrentTextColor() == Color.TRANSPARENT) {
-                                    padTime.setTextColor(Color.WHITE);
+                                    padTime.setTextColor(colorOn);
                                 } else {
                                     padTime.setTextColor(Color.TRANSPARENT);
                                 }
@@ -568,7 +570,7 @@ public class Pad {
                                     // Nothing to do
                                 }
                                 padTime.setText(text);
-                                padTime.setTextColor(Color.WHITE);
+                                padTime.setTextColor(colorOn);
                             }
                         }
                     });
