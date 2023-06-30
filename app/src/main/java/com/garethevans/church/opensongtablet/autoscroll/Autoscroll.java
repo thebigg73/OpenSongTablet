@@ -335,7 +335,6 @@ public class Autoscroll {
         } else {
             scrollWidth = songWidth - displayWidth;
             scrollHeight = songHeight - displayHeight;
-            Log.d(TAG,"songWidth:"+songWidth+"  songHeight:"+songHeight);
             myRecyclerView.setMaxScrollY(songHeight-displayHeight);
         }
 

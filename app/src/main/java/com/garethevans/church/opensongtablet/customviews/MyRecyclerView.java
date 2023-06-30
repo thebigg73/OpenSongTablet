@@ -142,6 +142,10 @@ public class MyRecyclerView extends RecyclerView  implements RecyclerView.Smooth
 
         if (!isUserTouching) {
             smoothScrollBy(scrollXAmount,scrollYAmount,linearInterpolator,duration);
+        } else {
+            mainActivityInterface.getDisplayPrevNext().showAndHide();
+            mainActivityInterface.updateOnScreenInfo("showhide");
+            mainActivityInterface.showActionBar();
         }
     }
 

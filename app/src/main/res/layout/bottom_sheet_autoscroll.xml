@@ -10,7 +10,7 @@
     <com.garethevans.church.opensongtablet.customviews.DialogHeader
         android:id="@+id/dialogHeading"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:text="@string/autoscroll" />
 
     <androidx.core.widget.NestedScrollView
@@ -48,7 +48,8 @@
                     android:hint="@string/time_mins"
                     android:layout_marginEnd="4dp"
                     android:inputType="number"
-                    app:suffixText="m"/>
+                    app:suffixText="m"
+                    android:layout_gravity="start"/>
 
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
@@ -65,17 +66,19 @@
                     android:hint="@string/time_secs"
                     android:layout_marginStart="4dp"
                     android:inputType="number"
-                    app:suffixText="s"/>
+                    app:suffixText="s"
+                    android:layout_gravity="start"/>
 
                 <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                     android:id="@+id/delay"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_marginStart="22dp"
-                    android:layout_weight="1.5"
+                    android:layout_weight="1"
                     android:hint="@string/autoscroll_delay"
                     android:inputType="number"
-                    app:suffixText="s" />
+                    app:suffixText="s"
+                    android:layout_gravity="start"/>
             </LinearLayout>
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
