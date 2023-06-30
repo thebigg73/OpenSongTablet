@@ -195,6 +195,7 @@ public class WindowFlags {
     // This is set from the mainActivity and is used to move views up
     public void setSoftKeyboardHeight(int softKeyboardHeight) {
         this.softKeyboardHeight = softKeyboardHeight;
+        Log.d(TAG,"keyboardHeight:"+softKeyboardHeight);
     }
 
     public int getSoftKeyboardHeight() {

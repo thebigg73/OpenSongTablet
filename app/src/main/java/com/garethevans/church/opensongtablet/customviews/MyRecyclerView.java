@@ -68,6 +68,7 @@ public class MyRecyclerView extends RecyclerView  implements RecyclerView.Smooth
         floatScrollXPos = 0;
         floatScrollYPos = 0;
         mScaleDetector = new ScaleGestureDetector(getContext(), new ScaleListener());
+        setFitsSystemWindows(false);
     }
 
     public MyRecyclerView(@NonNull Context context, @Nullable @org.jetbrains.annotations.Nullable AttributeSet attrs) {
@@ -81,6 +82,7 @@ public class MyRecyclerView extends RecyclerView  implements RecyclerView.Smooth
         floatScrollXPos = 0;
         floatScrollYPos = 0;
         mScaleDetector = new ScaleGestureDetector(getContext(), new ScaleListener());
+        setFitsSystemWindows(false);
     }
 
     public void setAllowPinchToZoom(boolean allowPinchToZoom) {

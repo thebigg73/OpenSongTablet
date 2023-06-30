@@ -237,8 +237,12 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
         if (mainActivityInterface.getGestures().getPdfLandscapeView() &&
                 mainActivityInterface.getOrientation() == Configuration.ORIENTATION_LANDSCAPE) {
             pdfHorizontalScale = (float) viewHeight / (float) height;
+            holder.v.getLayoutParams().height = viewHeight;
+            holder.pdfPageImage.getLayoutParams().height = viewHeight;
         } else {
             pdfHorizontalScale = 1f;
+            holder.v.getLayoutParams().height = height;
+            holder.pdfPageImage.getLayoutParams().height = height;
         }
 
         holder.pdfPageImage.getLayoutParams().width = (int)(width*pdfHorizontalScale);
