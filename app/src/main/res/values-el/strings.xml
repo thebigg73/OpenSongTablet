@@ -567,6 +567,8 @@
     <string name="part">Μέρος</string>
     <string name="pause">Παύση</string>
     <string name="paypal_description">Στείλτε μου μια δωρεά εάν βρίσκετε την εφαρμογή χρήσιμη</string>
+    <string name="pdf_horizontal">Εμφάνιση σελίδων PDF οριζόντια</string>
+    <string name="pdf_horizontal_info">Όταν η αυτόματη κλίμακα έχει οριστεί σε πλήρη και η συσκευή βρίσκεται σε οριζόντιο προσανατολισμό, οι σελίδες PDF θα εμφανίζονται δίπλα-δίπλα (κλιμακούμενες κατά ύψος)</string>
     <string name="pedal">"Πετάλι"</string>
     <string name="pedal_avoid_repeat">Εμφάνιση προειδοποίησης πριν μεταβείτε στο επόμενο τραγούδι</string>
     <string name="pedal_avoid_repeat_info">Χρήσιμο για την αποφυγή τυχαίων πατημάτων</string>

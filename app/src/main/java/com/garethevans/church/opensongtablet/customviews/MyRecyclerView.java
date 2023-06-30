@@ -3,32 +3,40 @@ package com.garethevans.church.opensongtablet.customviews;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.PointF;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.animation.LinearInterpolator;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.pdf.PDFPageAdapter;
+
 import java.util.ArrayList;
 
-public class MyRecyclerView extends RecyclerView  implements RecyclerView.SmoothScroller.ScrollVectorProvider{
+public class MyRecyclerView extends RecyclerView  implements RecyclerView.SmoothScroller.ScrollVectorProvider {
 
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "MyRecyclerView";
     private MainActivityInterface mainActivityInterface;
     private boolean isUserTouching;
     private boolean scrolledToTop=true;
+    private boolean scrolledToStart=true;
+    // Also left
     private boolean scrolledToBottom=false;
+    private boolean scrolledToEnd=false;
     private int maxScrollY;
     private GestureDetector gestureDetector;
     private final ScaleGestureDetector mScaleDetector;
-    private float floatScrollPos;
+    private float floatScrollXPos, floatScrollYPos;
 
     // For pinch to zoom hopefully
     private float mScaleFactor = 1.f;
@@ -57,7 +65,8 @@ public class MyRecyclerView extends RecyclerView  implements RecyclerView.Smooth
         setClipChildren(false);
         setClipToPadding(false);
         setItemAnimator(null);
-        floatScrollPos = 0;
+        floatScrollXPos = 0;
+        floatScrollYPos = 0;
         mScaleDetector = new ScaleGestureDetector(getContext(), new ScaleListener());
     }
 
@@ -69,7 +78,8 @@ public class MyRecyclerView extends RecyclerView  implements RecyclerView.Smooth
         addOnItemTouchListener(itemTouchListener);
         setOverScrollMode(OVER_SCROLL_NEVER);
         setClipChildren(false);
-        floatScrollPos = 0;
+        floatScrollXPos = 0;
+        floatScrollYPos = 0;
         mScaleDetector = new ScaleGestureDetector(getContext(), new ScaleListener());
     }
 
@@ -88,6 +98,8 @@ public class MyRecyclerView extends RecyclerView  implements RecyclerView.Smooth
     public boolean getIsUserTouching() {
         return isUserTouching;
     }
+
+    // Is the scroll at the top/start
     public void scrollToTop() {
         try {
             scrollToPosition(0);
@@ -96,26 +108,40 @@ public class MyRecyclerView extends RecyclerView  implements RecyclerView.Smooth
         }
         scrolledToTop = true;
         scrolledToBottom = false;
-        floatScrollPos = 0;
+        floatScrollXPos = 0;
+        floatScrollYPos = 0;
     }
 
-    public void doScrollBy(float dy, int duration) {
+    // Scroll by a set number of pixels (horizontally or vertically)
+    public void doScrollBy(float dxy, int duration) {
         // Only do this if we aren't touching the screen!
         // Because scroll is an int, but getting passed a float, we need to keep track
         // If we fall behind (or ahead), add this on when it becomes above 1f
 
-        int currentActual = (int)floatScrollPos;
+        int currentXActual = (int)floatScrollXPos;
+        int currentYActual = (int)floatScrollYPos;
 
-        float currentWanted = floatScrollPos;
+        float currentXWanted = floatScrollXPos;
+        float currentYWanted = floatScrollYPos;
 
         // How far behind are we?  Add this on
-        float behind = (currentWanted - currentActual);
+        float behindX = (currentXWanted - currentXActual);
+        float behindY = (currentYWanted - currentYActual);
 
-        floatScrollPos += dy;
+        int scrollXAmount = 0;
+        int scrollYAmount = 0;
+        if (mainActivityInterface.getGestures().getPdfLandscapeView()) {
+            // We must be scrolling horizontally
+            floatScrollXPos += dxy;
+            scrollXAmount = (int)(dxy+behindX);
+        } else {
+            // We must be scrolling vertically (normal)
+            floatScrollYPos += dxy;
+            scrollYAmount = (int)(dxy+behindY);
+        }
 
-        int scrollAmount = (int)(dy+behind);
         if (!isUserTouching) {
-            smoothScrollBy(0,scrollAmount,linearInterpolator,duration);
+            smoothScrollBy(scrollXAmount,scrollYAmount,linearInterpolator,duration);
         }
     }
 
@@ -123,6 +149,11 @@ public class MyRecyclerView extends RecyclerView  implements RecyclerView.Smooth
         SmoothScroller smoothScroller = new LinearSmoothScroller(c) {
             @Override
             protected int getVerticalSnapPreference() {
+                return LinearSmoothScroller.SNAP_TO_START;
+            }
+
+            @Override
+            protected int getHorizontalSnapPreference() {
                 return LinearSmoothScroller.SNAP_TO_START;
             }
 
@@ -139,34 +170,57 @@ public class MyRecyclerView extends RecyclerView  implements RecyclerView.Smooth
     public void doSmoothScrollTo(RecyclerLayoutManager recyclerLayoutManager, int position) {
         try {
             // Try to work out scrolling amount
-            // Get the top of each view by taking running total of the heights
+            // If vertical, get the top of each view by taking running total of the heights
             // e.g. child 1 is at the height of child 0
             // Child 2 is at the height of child 0 + child 1
-            int rollingTotal = 0;
+            // If horizontal, get the left of each view by taking running totals of the widths
+            // e.g. child 1 is at the width of child 1
+            int rollingHTotal = 0;
+            int rollingVTotal = 0;
+            ArrayList<Integer> xPositions = new ArrayList<>();
             ArrayList<Integer> yPositions = new ArrayList<>();
-            for (int y : recyclerLayoutManager.getChildSizes()) {
-                yPositions.add(rollingTotal);
-                rollingTotal += y;
+            for (int z=0; z<recyclerLayoutManager.getChildVSizes().size(); z++) {
+                int hSize = recyclerLayoutManager.getChildHSizes().get(z);
+                int vSize = recyclerLayoutManager.getChildVSizes().get(z);
+                xPositions.add(rollingHTotal);
+                yPositions.add(rollingVTotal);
+                rollingHTotal += hSize;
+                rollingVTotal += vSize;
             }
 
+            int viewWidth;
             int viewHeight;
-            int spaceAbove = (int)((1.0f - mainActivityInterface.getPreferences().getMyPreferenceFloat("stageModeScale",0.8f)) * getHeight());
-            // Work out the space to try to leave above the view
-            if (recyclerLayoutManager.getChildSizes().size()>position) {
-                viewHeight = recyclerLayoutManager.getChildSizes().get(position);
+            int spaceRight = (int)((1.0f - mainActivityInterface.getPreferences().getMyPreferenceFloat("stageModeScale",0.8f)) * getWidth());
+            int spaceAbove = (int)((1.0f - mainActivityInterface.getPreferences().getMyPreferenceFloat("stageModeScale", 0.8f)) * getHeight());
+
+            // Work out the space to try to leave above/to the right the view
+            if (recyclerLayoutManager.getChildVSizes().size()>position) {
+                viewWidth = recyclerLayoutManager.getChildHSizes().get(position);
+                viewHeight = recyclerLayoutManager.getChildVSizes().get(position);
+                spaceRight = (getWidth() - viewWidth)/2;
                 spaceAbove = (int) ((1.0f - mainActivityInterface.getPreferences().getMyPreferenceFloat("stageModeScale",0.8f)) * (getHeight() - viewHeight));
             }
 
             // Get the current scroll position, the position we need to get to and how far this is
-            int currScroll = recyclerLayoutManager.getScrollY();
+            int currXScroll = computeHorizontalScrollOffset();
+            int currYScroll = computeVerticalScrollOffset();
             if (yPositions.size()>0 && yPositions.size()>position) {
+                int scrollToX = xPositions.get(position);
                 int scrollToY = yPositions.get(position);
-                int scrollAmount = scrollToY - currScroll - spaceAbove;
+                int scrollXAmount = scrollToX - currXScroll - spaceRight;
+                int scrollYAmount = scrollToY - currYScroll - spaceAbove;
+
+                if (mainActivityInterface.getGestures().getPdfLandscapeView()) {
+                    scrollYAmount = 0;
+                } else {
+                    scrollXAmount = 0;
+                }
 
                 // Do the scrolling, but not if small movement
-                if (Math.abs(scrollAmount) > 25) {
-                    smoothScrollBy(0, scrollAmount);
+                if (Math.abs(scrollXAmount) > 25 || Math.abs(scrollYAmount) > 25) {
+                    smoothScrollBy(scrollXAmount, scrollYAmount);
                 }
+
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -178,13 +232,24 @@ public class MyRecyclerView extends RecyclerView  implements RecyclerView.Smooth
     }
 
     public boolean getScrolledToTop() {
-        return scrolledToTop;
+        if (mainActivityInterface.getGestures().getPdfLandscapeView()) {
+            // Scrolling horizontally
+            return scrolledToStart;
+        } else {
+            // Scrolling vertically
+            return scrolledToTop;
+        }
     }
 
     public boolean getScrolledToBottom() {
-        return scrolledToBottom;
+        if (mainActivityInterface.getGestures().getPdfLandscapeView()) {
+            // Scrolling horizontally
+            return scrolledToEnd;
+        } else {
+            // Scrolling vertically
+            return scrolledToBottom;
+        }
     }
-
 
     public void setGestureDetector(GestureDetector gestureDetector) {
         this.gestureDetector = gestureDetector;
@@ -216,10 +281,23 @@ public class MyRecyclerView extends RecyclerView  implements RecyclerView.Smooth
             super.onScrolled(recyclerView, dx, dy);
 
             if (isUserTouching) {
-                floatScrollPos = floatScrollPos + dy;
+                floatScrollXPos = floatScrollXPos + dx;
+                floatScrollYPos = floatScrollYPos + dy;
             }
             scrolledToTop = recyclerView.computeVerticalScrollOffset() == 0;
-            scrolledToBottom = (maxScrollY-recyclerView.computeVerticalScrollOffset()) <= 1;
+            scrolledToStart = recyclerView.computeHorizontalScrollExtent() == 0;
+            scrolledToBottom = (maxScrollY-recyclerView.computeVerticalScrollOffset()-(4f* mainActivityInterface.getDisplayDensity())) <= 1;
+            if (recyclerView.getLayoutManager()!=null && recyclerView.getLayoutManager() instanceof RecyclerLayoutManager) {
+                int firstVisiblePosition = ((RecyclerLayoutManager) recyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
+                int lastVisiblePosition = ((RecyclerLayoutManager) recyclerView.getLayoutManager()).findLastCompletelyVisibleItemPosition();
+                scrolledToStart = firstVisiblePosition == 0;
+                scrolledToEnd = lastVisiblePosition == mainActivityInterface.getSong().getPdfPageCount() - 1;
+            } else {
+                scrolledToEnd = false;
+                scrolledToStart = false;
+            }
+            mainActivityInterface.getGestures().setPdfStart(scrolledToStart);
+            mainActivityInterface.getGestures().setPdfEnd(scrolledToEnd);
         }
     }
     private void onTouchAction() {
@@ -374,7 +452,8 @@ public class MyRecyclerView extends RecyclerView  implements RecyclerView.Smooth
         if (!gestureControl) {
             isUserTouching = false;
             gestureControl = true;
-            scrollTo(0,0);
+            scrollToTop();
+            //scrollTo(0,0);
             // Set a timer to enable it again
             postDelayed(() -> gestureControl = false,600);
             // This is called from a gesture or page button
@@ -387,20 +466,41 @@ public class MyRecyclerView extends RecyclerView  implements RecyclerView.Smooth
     }
 
     public int getScrollPos() {
-        if (getLayoutManager()!=null) {
+        float scale = 1f;
+        if (getAdapter()!=null && getAdapter() instanceof PDFPageAdapter && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            scale = ((PDFPageAdapter) getAdapter()).getPdfHorizontalScale();
+        }
+        int pos;
+        if (getLayoutManager()!=null && getLayoutManager() instanceof RecyclerLayoutManager) {
             try {
-                return ((RecyclerLayoutManager) getLayoutManager()).getScrollY();
+                if (mainActivityInterface.getGestures().getPdfLandscapeView()) {
+                    // Scrolling horizontally
+                    pos = computeHorizontalScrollExtent();
+                } else {
+                    // Scrolling vertically
+                    pos = computeVerticalScrollOffset();
+                }
             } catch (Exception e) {
-                return 0;
+                pos = 0;
             }
         } else {
-            return 0;
+            pos = 0;
         }
+        pos = (int)(pos * scale);
+        mainActivityInterface.getGestures().setPdfStart(scrolledToStart);
+        mainActivityInterface.getGestures().setPdfEnd(scrolledToEnd);
+        return pos;
     }
     public int getScrollYMax() {
-        if (getLayoutManager()!=null) {
+        if (getLayoutManager()!=null && getLayoutManager() instanceof RecyclerLayoutManager) {
             try {
-                return ((RecyclerLayoutManager) getLayoutManager()).getScrollYMax();
+                if (mainActivityInterface.getGestures().getPdfLandscapeView()) {
+                    // Scrolling horizontally
+                    return ((RecyclerLayoutManager) getLayoutManager()).getScrollXMax();
+                } else {
+                    // Scrolling vertically
+                    return ((RecyclerLayoutManager) getLayoutManager()).getScrollYMax();
+                }
             } catch (Exception e) {
                 return 0;
             }
@@ -408,4 +508,6 @@ public class MyRecyclerView extends RecyclerView  implements RecyclerView.Smooth
             return 0;
         }
     }
+
+
 }

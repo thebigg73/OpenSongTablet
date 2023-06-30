@@ -128,6 +128,7 @@ public class DisplayExtraFragment extends Fragment {
         }
         myView.bracketsStyle.setText(getBracketStringFromValue(mainActivityInterface.getPreferences().getMyPreferenceInt("bracketsStyle",Typeface.NORMAL)));
         myView.curlyBrackets.setChecked(getChecked("curlyBrackets",true));
+        myView.pdfHorizontal.setChecked(getChecked("pdfLandscapeView",true));
     }
 
     private int getBracketValueFromString(String string) {
@@ -309,6 +310,7 @@ public class DisplayExtraFragment extends Fragment {
                 mainActivityInterface.getPreferences().setMyPreferenceString("filterText",newText);
             }
         });
+        myView.pdfHorizontal.setOnCheckedChangeListener((compoundButton, b) -> mainActivityInterface.getPreferences().setMyPreferenceBoolean("pdfLandscapeView", b));
     }
 
     private void updateBooleanPreference(String prefName, boolean isChecked, View viewToShowHide) {

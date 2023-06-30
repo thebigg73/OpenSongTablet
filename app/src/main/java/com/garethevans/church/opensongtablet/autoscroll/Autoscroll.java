@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -24,11 +25,12 @@ public class Autoscroll {
 
     private final Context c;
     private final MainActivityInterface mainActivityInterface;
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "Autoscroll", mode_performance;
     private boolean isAutoscrolling, autoscrollOK, isPaused = false, showOn = true, alreadyFiguredOut,
             autoscrollAutoStart, autoscrollActivated = false, autoscrollUseDefaultTime,
             onscreenAutoscrollHide, usingZoomLayout;
-    private int songDelay, songDuration, displayHeight, songHeight, scrollTime, flashCount,
+    private int songDelay, songDuration, displayWidth, displayHeight, songWidth, songHeight, scrollTime, flashCount,
             autoscrollDefaultSongLength, autoscrollDefaultSongPreDelay, colorOn;
     private final int flashTime = 600, updateTime = 60;
     private float scrollIncrement, scrollPosition, scrollCount, scrollIncrementScale;
@@ -75,8 +77,10 @@ public class Autoscroll {
         }
     }
     // Receive the view sizes from PerformanceFragment so we can calculate the autoscroll
-    public void initialiseSongAutoscroll(int songHeight, int displayHeight) {
+    public void initialiseSongAutoscroll(int songWidth, int songHeight, int displayWidth, int displayHeight) {
+        this.displayWidth = displayWidth;
         this.displayHeight = displayHeight;
+        this.songWidth = songWidth;
         this.songHeight = songHeight;
         alreadyFiguredOut = false;
         autoscrollView.setOnClickListener(view -> {
@@ -323,22 +327,40 @@ public class Autoscroll {
         // The total scroll amount is the height of the view - the screen height.
         // If this is less than 0, no scrolling is required.
         int scrollHeight;
+        int scrollWidth;
         if (usingZoomLayout) {
             //songHeight = myZoomLayout.getHeight();
+            scrollWidth = (int) (songWidth * myZoomLayout.getScaleFactor()) - displayWidth;
             scrollHeight = (int) (songHeight * myZoomLayout.getScaleFactor()) - displayHeight;
         } else {
+            scrollWidth = songWidth - displayWidth;
             scrollHeight = songHeight - displayHeight;
-            myRecyclerView.setMaxScrollY((songHeight-displayHeight));
+            Log.d(TAG,"songWidth:"+songWidth+"  songHeight:"+songHeight);
+            myRecyclerView.setMaxScrollY(songHeight-displayHeight);
         }
 
-        if (scrollHeight>0) {
-            // The scroll happens every 60ms (updateTime).
-            // The number of times this will happen is calculated as follows
-            float numberScrolls = ((songDuration-songDelay)*1000f)/updateTime;
-            // The scroll distance for each scroll is calculated as follows
-            scrollIncrement = (float)scrollHeight / numberScrolls;
+        if (mainActivityInterface.getGestures().getPdfLandscapeView()) {
+            // Horizontal scrolling
+            if (scrollWidth > 0) {
+                // The scroll happens every 60ms (updateTime).
+                // The number of times this will happen is calculated as follows
+                float numberScrolls = ((songDuration - songDelay) * 1000f) / updateTime;
+                // The scroll distance for each scroll is calculated as follows
+                scrollIncrement = (float) scrollWidth / numberScrolls;
+            } else {
+                scrollIncrement = 0;
+            }
         } else {
-            scrollIncrement = 0;
+            // Vertical scrolling
+            if (scrollHeight > 0) {
+                // The scroll happens every 60ms (updateTime).
+                // The number of times this will happen is calculated as follows
+                float numberScrolls = ((songDuration - songDelay) * 1000f) / updateTime;
+                // The scroll distance for each scroll is calculated as follows
+                scrollIncrement = (float) scrollHeight / numberScrolls;
+            } else {
+                scrollIncrement = 0;
+            }
         }
 
         flashCount = 0;

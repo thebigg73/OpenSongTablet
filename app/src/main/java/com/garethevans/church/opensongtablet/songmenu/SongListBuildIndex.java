@@ -73,6 +73,7 @@ public class SongListBuildIndex {
             progressText.setText("0%");
             progressText.setVisibility(View.VISIBLE);
         });
+
         StringBuilder returnString = new StringBuilder();
         try (SQLiteDatabase db = mainActivityInterface.getSQLiteHelper().getDB()) {
             // Go through each entry in the database and get the folder and filename.
@@ -166,6 +167,7 @@ public class SongListBuildIndex {
             indexRequired = false;
             indexComplete = true;
             mainActivityInterface.getSetActions().checkMissingKeys();
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean("indexSkipAllowed",true);
             returnString.append(c.getString(R.string.search_index_end)).append("\n");
             mainActivityInterface.refreshSong();
 

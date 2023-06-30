@@ -100,8 +100,12 @@ public class BootUpFragment extends Fragment {
     public void startOrSetUp() {
         if (storageIsCorrectlySet()) {
             //startBootProcess();
-            BootUpIndexBottomSheet bootUpIndexBottomSheet = new BootUpIndexBottomSheet(this);
-            bootUpIndexBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"BootUpIndexing");
+            if (mainActivityInterface.getPreferences().getMyPreferenceBoolean("indexSkipAllowed",false)) {
+                BootUpIndexBottomSheet bootUpIndexBottomSheet = new BootUpIndexBottomSheet(this);
+                bootUpIndexBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "BootUpIndexing");
+            } else {
+                startBootProcess(true);
+            }
         } else {
             requireStorageCheck();
         }
@@ -164,6 +168,7 @@ public class BootUpFragment extends Fragment {
                         updateMessage();
 
                         if (needIndex) {
+                            mainActivityInterface.getPreferences().setMyPreferenceBoolean("indexSkipAllowed",false);
                             mainActivityInterface.quickSongMenuBuild();
                         } else {
                             mainActivityInterface.getSongListBuildIndex().setCurrentlyIndexing(false);

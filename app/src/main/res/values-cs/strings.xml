@@ -567,6 +567,8 @@
     <string name="part">Část</string>
     <string name="pause">Pauza</string>
     <string name="paypal_description">Pošlete mi dar, pokud shledáte aplikaci užitečnou</string>
+    <string name="pdf_horizontal">Zobrazení stránek PDF vodorovně</string>
+    <string name="pdf_horizontal_info">Když je automatické škálování nastavené na plnou a zařízení je v orientaci na šířku, stránky PDF se zobrazí vedle sebe (měřítko podle výšky)</string>
     <string name="pedal">"Pedál"</string>
     <string name="pedal_avoid_repeat">Zobrazit varování před přechodem na další skladbu</string>
     <string name="pedal_avoid_repeat_info">Užitečné, aby se zabránilo náhodnému stisknutí</string>

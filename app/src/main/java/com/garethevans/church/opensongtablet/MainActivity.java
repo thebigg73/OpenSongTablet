@@ -3541,6 +3541,16 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
 
     @Override
+    public int getOrientation() {
+        try {
+            return getResources().getConfiguration().orientation;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Configuration.ORIENTATION_PORTRAIT;
+        }
+    }
+
+    @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putBoolean("bootUpCompleted", bootUpCompleted);
         outState.putBoolean("indexComplete", songListBuildIndex.getIndexComplete());

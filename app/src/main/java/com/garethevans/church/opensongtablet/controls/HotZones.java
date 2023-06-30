@@ -187,7 +187,8 @@ public class HotZones {
             checkScrollRequiredHandler.removeCallbacks(checkScrollRequiredRunnable);
             boolean scrolledToTop = false;
             boolean scrolledToBottom = false;
-            if (mainActivityInterface.getSong().getFiletype().equals("XML") && myZoomLayout!=null) {
+            if (mainActivityInterface.getSong().getFiletype()!=null &&
+                    mainActivityInterface.getSong().getFiletype().equals("XML") && myZoomLayout!=null) {
                 // Check the scroll position of the MyZoomLayout
                 scrolledToTop = myZoomLayout.getScrollPos()<=0;
                 scrolledToBottom = myZoomLayout.getScrollPos()==myZoomLayout.getMaxScrollY();

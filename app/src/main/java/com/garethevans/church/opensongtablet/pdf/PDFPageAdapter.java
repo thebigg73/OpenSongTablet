@@ -1,12 +1,12 @@
 package com.garethevans.church.opensongtablet.pdf;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.pdf.PdfRenderer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.ParcelFileDescriptor;
-import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,11 +36,13 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
     private final Context c;
     private ArrayList<PDFPageItemInfo> pageInfos;
     private SparseBooleanArray itemHighlighted;
-    private ArrayList<Float> floatSizes;
+    private ArrayList<Float> floatVSizes, floatHSizes;
     private final int viewWidth, viewHeight;
     private String pdfFolder, pdfFilename;
     private Uri pdfUri;
-    private int totalPages, inlineSetWidth;
+    private int totalPages;
+    private final int inlineSetWidth;
+    private float floatWidth;
     private float floatHeight;
     private final float alphaoff = 0.4f;
     private final String scaleType;
@@ -50,6 +52,8 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
     private boolean fakeClick;
     @SuppressWarnings({"FieldCanBeLocal","unused"})
     private final String TAG = "PDFPageAdapter";
+    private float pdfHorizontalScale = 1;
+
 
     public PDFPageAdapter(Context c, MainActivityInterface mainActivityInterface,
                           DisplayInterface displayInterface, int viewWidth, int viewHeight, int inlineSetWidth) {
@@ -65,9 +69,13 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
     }
 
     private void setSongInfo() {
+        floatWidth = 0;
         floatHeight = 0;
+        float scaledWidth = 0;
+        float scaleFactor;
         pageInfos = new ArrayList<>();
-        floatSizes = new ArrayList<>();
+        floatHSizes = new ArrayList<>();
+        floatVSizes = new ArrayList<>();
         itemHighlighted = new SparseBooleanArray();
 
         pdfFolder = mainActivityInterface.getSong().getFolder();
@@ -98,37 +106,50 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
                     pageInfo.pageNumText = (x + 1) + "/" + totalPages;
                     int width = page.getWidth();
                     int height = page.getHeight();
-                    float scaleFactor;
                     if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_stage))) {
                         float x_scale = (float)(viewWidth-inlineSetWidth)/(float)width;
                         float y_scale = (float)(viewHeight-mainActivityInterface.getToolbar().getActionBarHeight(mainActivityInterface.needActionBar()))/(float)height;
                         scaleFactor = Math.min(x_scale,y_scale);
                     } else {
                         if (scaleType.equals("Y") && width > 0 && height > 0) {
-                            scaleFactor = Math.min((float) (viewWidth-inlineSetWidth) / (float) width, (float) viewHeight / (float) height);
+                            scaleFactor = Math.min((float) (viewWidth - inlineSetWidth) / (float) width, (float) viewHeight / (float) height);
                         } else if (scaleType.equals("W")) {
                             scaleFactor = (float) (viewWidth-inlineSetWidth) / (float) width;
                         } else {
                             scaleFactor = 1f;
                         }
                     }
+                    // If we are using horizontal PDF view, then change the scale factor
+                    if (mainActivityInterface.getGestures().getPdfLandscapeView() &&
+                            scaleType.equals("Y") &&
+                            mainActivityInterface.getOrientation() == Configuration.ORIENTATION_LANDSCAPE) {
+                        scaleFactor = (float) viewHeight / (float) height;
+                    }
 
-                    // Add up the heights
-                    float itemHeight = height * scaleFactor + (4f * density);
-                    floatHeight += itemHeight ;
-                    floatSizes.add(itemHeight);
+                    float itemWidth = width * scaleFactor;
+                    floatWidth += itemWidth;
+                    floatHSizes.add(itemWidth);
 
-                    pageInfo.width = (int) (width * scaleFactor);
-                    pageInfo.height = (int) itemHeight;
+                    scaledWidth += itemWidth;
+
+                    // Add up the heights and include bottom margin of 4dp
+                    float itemHeight = (height * scaleFactor) + (4f * density);
+                    floatHeight += itemHeight;
+                    floatVSizes.add(itemHeight);
+
+                    pageInfo.width = Math.round(itemWidth);
+                    pageInfo.height = Math.round(itemHeight);
 
                     pageInfos.add(pageInfo);
                     page.close();
 
-                    // Set the song load success
-                    mainActivityInterface.getPreferences().setMyPreferenceBoolean("songLoadSuccess", true);
-                    mainActivityInterface.getPreferences().setMyPreferenceString("songFilename", mainActivityInterface.getSong().getFilename());
-                    mainActivityInterface.getPreferences().setMyPreferenceString("songFolder", mainActivityInterface.getSong().getFolder());
                 }
+                // Set the song load success
+                mainActivityInterface.getPreferences().setMyPreferenceBoolean("songLoadSuccess", true);
+                mainActivityInterface.getPreferences().setMyPreferenceString("songFilename", mainActivityInterface.getSong().getFilename());
+                mainActivityInterface.getPreferences().setMyPreferenceString("songFolder", mainActivityInterface.getSong().getFolder());
+
+                mainActivityInterface.getGestures().setPdfAllVisible(scaledWidth<=viewWidth);
             }
 
             try {
@@ -210,13 +231,26 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
             }
         });
 
+        // By default PDF pages are set to scale by width
+        // If we have full autoscale and have switched on horizontal PDFs
+        // and we are in a landscape layout, then do that
+        if (mainActivityInterface.getGestures().getPdfLandscapeView() &&
+                mainActivityInterface.getOrientation() == Configuration.ORIENTATION_LANDSCAPE) {
+            pdfHorizontalScale = (float) viewHeight / (float) height;
+        } else {
+            pdfHorizontalScale = 1f;
+        }
+
+        holder.pdfPageImage.getLayoutParams().width = (int)(width*pdfHorizontalScale);
+        holder.v.getLayoutParams().width = (int)(width*pdfHorizontalScale);
+
         Bitmap pdfPageBitmap = mainActivityInterface.getProcessSong().getBitmapFromPDF(
                 pdfFolder,pdfFilename,pageNum,width,height,mainActivityInterface.getPreferences().getMyPreferenceString("songAutoScale","W"));
         // If we want to enable PDF trimming of whitespace
         //Bitmap newPageBitmap= mainActivityInterface.getProcessSong().trimBitmap(pdfPageBitmap);
         holder.pdfPageImage.post(()-> {
             try {
-                Glide.with(c).load(pdfPageBitmap).override(width, height).into(holder.pdfPageImage);
+                Glide.with(c).load(pdfPageBitmap).override((int)(width*pdfHorizontalScale), (int)(height*pdfHorizontalScale)).into(holder.pdfPageImage);
                 holder.pdfPageImage.setOnClickListener(view -> {
                     if (fakeClick) {
                         fakeClick = false;
@@ -276,6 +310,9 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
         return totalPages;
     }
 
+    public int getWidth() {
+        return (int) floatWidth;
+    }
     public int getHeight() {
         return (int) floatHeight;
     }
@@ -287,8 +324,6 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
     }
 
     public void clickOnSection(int position) {
-        // TODO TEST
-        Log.d(TAG,"TEST:  position:"+position+"  pageInfos.size():"+pageInfos.size());
         if (displayInterface.getIsSecondaryDisplaying() &&
                 pageInfos.size()>=position) {
             fakeClick = true;
@@ -322,8 +357,6 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
                     notifyItemChanged(position, alphaChange);
                 }
 
-                Log.d(TAG,"position:"+position);
-
                 // If stage mode or a pdf, update the presenter and send a nearby payload
                 if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_stage)) ||
                     mainActivityInterface.getSong().getFiletype().equals("PDF")) {
@@ -349,6 +382,13 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
     }
 
     public ArrayList<Float> getHeights() {
-        return floatSizes;
+        return floatVSizes;
     }
+    public ArrayList<Float> getWidths() {
+        return floatHSizes;
+    }
+    public float getPdfHorizontalScale() {
+        return pdfHorizontalScale;
+    }
+
 }

@@ -5,7 +5,6 @@ package com.garethevans.church.opensongtablet.performance;
 import android.content.Context;
 import android.os.Build;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -64,7 +63,6 @@ public class PerformanceGestures {
 
 
     public void doAction(String action, boolean isLongPress) {
-        Log.d(TAG,"action:"+action+"  isLongPress:"+isLongPress);
         // Get the action we are trying to run
         switch(action) {
             case "pageButtons":
@@ -710,9 +708,12 @@ public class PerformanceGestures {
                     currentPos = mainActivityInterface.getSong().getCurrentSection();
                     finalPos = mainActivityInterface.getSong().getPresoOrderSongSections().size() - 1;
                 }
-                // TODO TEST
-                if (scrollDown && currentPos <= finalPos) {
+                if (scrollDown && currentPos <= finalPos && displayInterface.getIsSecondaryDisplaying()) {
                     return true;
+                } else if (scrollDown && currentPos<finalPos) {
+                    return true;
+                } else if (scrollDown && currentPos==finalPos) {
+                    return false;
                 } else {
                     return !scrollDown && currentPos > 0;
                 }
@@ -744,10 +745,6 @@ public class PerformanceGestures {
 
     // Scroll up/down
     public void scroll(boolean scrollDown) {
-        Log.d(TAG,"getMode():"+mainActivityInterface.getMode());
-        Log.d(TAG,"recyclerView:"+recyclerView);
-
-        Log.d(TAG,"scrollDown:"+scrollDown);
         if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_presenter)) &&
                 presenterRecyclerView!=null) {
             int currentPosition = mainActivityInterface.getSong().getCurrentSection();
@@ -757,8 +754,6 @@ public class PerformanceGestures {
                 currentPosition = mainActivityInterface.getSong().getPdfPageCurrent();
                 finalPosition = mainActivityInterface.getSong().getPdfPageCount() - 1;
             }
-
-            Log.d(TAG,"currentPosition:"+currentPosition+"  finalPosition:"+finalPosition);
 
             int newPosition = currentPosition;
 
@@ -775,7 +770,8 @@ public class PerformanceGestures {
             if (mainActivityInterface.getSong().getFiletype().equals("PDF")) {
                 mainActivityInterface.getSong().setPdfPageCurrent(newPosition);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP &&
-                        presenterRecyclerView.getAdapter()!=null) {
+                        presenterRecyclerView.getAdapter()!=null &&
+                        recyclerView.getAdapter()!=null) {
                     ((PDFPageAdapter)recyclerView.getAdapter()).clickOnSection(newPosition);
                 }
             } else {
@@ -814,26 +810,44 @@ public class PerformanceGestures {
                 mainActivityInterface.getSong().setPdfPageCurrent(newPosition);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP &&
                         recyclerView.getAdapter()!=null) {
-                    ((PDFPageAdapter)recyclerView.getAdapter()).clickOnSection(newPosition);
+                    try {
+                        ((PDFPageAdapter) recyclerView.getAdapter()).clickOnSection(newPosition);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             } else {
                 mainActivityInterface.getSong().setCurrentSection(newPosition);
                 if (recyclerView.getAdapter()!=null) {
-                    ((StageSectionAdapter)recyclerView.getAdapter()).clickOnSection(newPosition);
+                    try {
+                        ((StageSectionAdapter) recyclerView.getAdapter()).clickOnSection(newPosition);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
 
 
         } else if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) &&
                 recyclerView != null && recyclerView.getVisibility() == View.VISIBLE) {
-            int height = (int)(mainActivityInterface.getGestures().getScrollDistance()*recyclerView.getHeight());
-            if (!scrollDown) {
-                height = - height;
+            if (mainActivityInterface.getGestures().getPdfLandscapeView()) {
+                // Scroll horizontally
+                int width = (int) (mainActivityInterface.getGestures().getScrollDistance() * recyclerView.getWidth());
+                if (!scrollDown) {
+                    width = -width;
+                }
+                recyclerView.smoothScrollBy(width,0);
+            } else {
+                // Scroll vertically
+                int height = (int) (mainActivityInterface.getGestures().getScrollDistance() * recyclerView.getHeight());
+                if (!scrollDown) {
+                    height = -height;
+                }
+                recyclerView.smoothScrollBy(0, height);
+                // We will also send this to nearby devices if we are a host
+                mainActivityInterface.getNearbyConnections().sendScrollByPayload(scrollDown,
+                        mainActivityInterface.getGestures().getScrollDistance());
             }
-            recyclerView.smoothScrollBy(0,height);
-            // We will also send this to nearby devices if we are a host
-            mainActivityInterface.getNearbyConnections().sendScrollByPayload(scrollDown,
-                    mainActivityInterface.getGestures().getScrollDistance());
 
 
         } else if (myZoomLayout != null && myZoomLayout.getVisibility() == View.VISIBLE) {
@@ -1184,5 +1198,4 @@ public class PerformanceGestures {
             return false;
         }
     }
-
 }

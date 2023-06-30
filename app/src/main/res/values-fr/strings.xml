@@ -567,6 +567,8 @@
     <string name="part">Partie</string>
     <string name="pause">Pause</string>
     <string name="paypal_description">Envoyez-moi un don si vous trouvez l\'application utile</string>
+    <string name="pdf_horizontal">Affichage horizontal des pages PDF</string>
+    <string name="pdf_horizontal_info">Lorsque la mise à l’échelle automatique est réglée sur plein et que l’appareil est en orientation paysage Les pages PDF seront affichées côte à côte (mises à l’échelle en hauteur)</string>
     <string name="pedal">"Pédale"</string>
     <string name="pedal_avoid_repeat">Afficher un avertissement avant de passer à la chanson suivante</string>
     <string name="pedal_avoid_repeat_info">Utile pour éviter les appuis accidentels</string>

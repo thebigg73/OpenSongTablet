@@ -59,18 +59,30 @@ public class GestureListener extends GestureDetector.SimpleOnGestureListener {
     @Override
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
                            float velocityY) {
+        boolean okForPrev = (mainActivityInterface.getGestures().getPdfLandscapeView() &&
+                (mainActivityInterface.getGestures().getPdfAllVisible() ||
+                        mainActivityInterface.getGestures().getPdfStart())) ||
+                !mainActivityInterface.getGestures().getPdfLandscapeView();
+
+        boolean okForNext = (mainActivityInterface.getGestures().getPdfLandscapeView() &&
+                (mainActivityInterface.getGestures().getPdfAllVisible() ||
+                        mainActivityInterface.getGestures().getPdfEnd())) ||
+                !mainActivityInterface.getGestures().getPdfLandscapeView();
+
         try {
             if (Math.abs(e1.getY() - e2.getY()) > swipeMaxDistanceYError) {
                 return false;
 
             } else if (mainActivityInterface.getGestures().getSwipeEnabled() &&
+                    okForNext &&
                     e1.getX() - e2.getX() > swipeMinimumDistance
                     && Math.abs(velocityX) > swipeMinimumVelocity) {
-                mainActivityInterface.getDisplayPrevNext().setSwipeDirection("R2L");
-                mainActivityInterface.getDisplayPrevNext().moveToNext();
+                    mainActivityInterface.getDisplayPrevNext().setSwipeDirection("R2L");
+                    mainActivityInterface.getDisplayPrevNext().moveToNext();
                 return true;
 
             } else if (mainActivityInterface.getGestures().getSwipeEnabled() &&
+                    okForPrev &&
                     e2.getX() - e1.getX() > swipeMinimumDistance
                     && Math.abs(velocityX) > swipeMinimumVelocity) {
                 mainActivityInterface.getDisplayPrevNext().setSwipeDirection("L2R");

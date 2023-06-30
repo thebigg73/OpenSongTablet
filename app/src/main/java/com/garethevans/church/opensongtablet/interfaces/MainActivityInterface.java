@@ -89,6 +89,7 @@ public interface MainActivityInterface {
     void setMode(String whichMode);
     void setFirstRun(boolean firstRun);
     boolean getFirstRun();
+    int getOrientation();
 
     // Preferences and settings
     Preferences getPreferences();

@@ -567,6 +567,8 @@
     <string name="part">Część</string>
     <string name="pause">Pauza</string>
     <string name="paypal_description">Wyślij mi darowiznę, jeśli aplikacja okaże się przydatna</string>
+    <string name="pdf_horizontal">Wyświetlanie stron PDF w poziomie</string>
+    <string name="pdf_horizontal_info">Gdy automatyczne skalowanie jest ustawione na pełne, a urządzenie jest w orientacji poziomej, strony PDF będą wyświetlane obok siebie (skalowane według wysokości)</string>
     <string name="pedal">"Pedał"</string>
     <string name="pedal_avoid_repeat">Pokaż ostrzeżenie przed przejściem do następnego utworu</string>
     <string name="pedal_avoid_repeat_info">Przydatne, aby uniknąć przypadkowych naciśnięć</string>

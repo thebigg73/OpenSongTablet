@@ -567,6 +567,8 @@
     <string name="part">部分</string>
     <string name="pause">暂停</string>
     <string name="paypal_description">如果您觉得该应用有用，请给我捐款</string>
+    <string name="pdf_horizontal">水平显示 PDF 页面</string>
+    <string name="pdf_horizontal_info">当自动缩放设置为完整且设备处于横向时，PDF 页面将并排显示（按高度缩放）</string>
     <string name="pedal">"踏板"</string>
     <string name="pedal_avoid_repeat">在移至下一首歌曲之前显示警告</string>
     <string name="pedal_avoid_repeat_info">有助于避免意外按下</string>

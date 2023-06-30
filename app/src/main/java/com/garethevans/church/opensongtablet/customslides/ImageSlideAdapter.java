@@ -30,10 +30,10 @@ public class ImageSlideAdapter  extends RecyclerView.Adapter<ImageSlideViewHolde
     private final MainActivityInterface mainActivityInterface;
     private final DisplayInterface displayInterface;
     private ArrayList<ImageSlideItemInfo> slideInfos;
-    private ArrayList<Float> floatSizes;
+    private ArrayList<Float> floatHSizes, floatVSizes;
     private final int viewWidth, viewHeight;
     private int totalPages;
-    private float floatHeight;
+    private float floatWidth, floatHeight;
     private final String scaleType, mode_performance_string, mode_stage_string, mode_presenter_string;
     private final float density;
     private int currentSection = 0;
@@ -55,9 +55,11 @@ public class ImageSlideAdapter  extends RecyclerView.Adapter<ImageSlideViewHolde
     }
 
     private void setSongInfo() {
+        floatWidth = 0;
         floatHeight = 0;
         slideInfos = new ArrayList<>();
-        floatSizes = new ArrayList<>();
+        floatHSizes = new ArrayList<>();
+        floatVSizes = new ArrayList<>();
 
         // The images are references in user3
         String[] images = mainActivityInterface.getSong().getUser3().trim().split("\n");
@@ -111,10 +113,15 @@ public class ImageSlideAdapter  extends RecyclerView.Adapter<ImageSlideViewHolde
                 scaleFactor = 1f;
             }
 
+            // Add up the widths
+            float itemWidth = width * scaleFactor + (4f * density);
+            floatWidth += itemWidth;
+            floatHSizes.add(itemWidth);
+
             // Add up the heights
             float itemHeight = height * scaleFactor + (4f * density);
             floatHeight += itemHeight;
-            floatSizes.add(itemHeight);
+            floatVSizes.add(itemHeight);
 
             slideInfo.width = (int) (width * scaleFactor);
             slideInfo.height = (int) itemHeight;
@@ -178,6 +185,9 @@ public class ImageSlideAdapter  extends RecyclerView.Adapter<ImageSlideViewHolde
         return totalPages;
     }
 
+    public int getWidth() {
+        return (int) floatWidth;
+    }
     public int getHeight() {
         return (int) floatHeight;
     }
@@ -216,8 +226,11 @@ public class ImageSlideAdapter  extends RecyclerView.Adapter<ImageSlideViewHolde
         }
     }
 
+    public ArrayList<Float> getWidths() {
+        return floatHSizes;
+    }
     public ArrayList<Float> getHeights() {
-        return floatSizes;
+        return floatVSizes;
     }
 
     public Uri getUri(int position) {

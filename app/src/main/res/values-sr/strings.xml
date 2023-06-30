@@ -567,6 +567,8 @@
     <string name="part">Deo</string>
     <string name="pause">Pauza</string>
     <string name="paypal_description">Pošaljite mi donaciju ako smatrate da je aplikacija korisna</string>
+    <string name="pdf_horizontal">Horizontalno prikazivanje PDF stranica</string>
+    <string name="pdf_horizontal_info">Kada je autoscale podešen na pun, a uređaj u položenom položaju PDF stranice će biti prikazane jedna pored druge (razmera po visini)</string>
     <string name="pedal">Pedala</string>
     <string name="pedal_avoid_repeat">Prikaži upozorenje pre prelaska na sledeću pesmu</string>
     <string name="pedal_avoid_repeat_info">Korisno da se izbegne slučajna pritiskanja</string>

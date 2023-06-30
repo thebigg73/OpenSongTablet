@@ -29,8 +29,8 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
     private final Context c;
     private final DisplayInterface displayInterface;
     private final ArrayList<StageSectionInfo> sectionInfos;
-    private final ArrayList<Float> floatSizes;
-    private float floatHeight = 0;
+    private final ArrayList<Float> floatHSizes, floatVSizes;
+    private float floatHeight = 0, floatWidth = 0;
     private int currentSection = 0;
     private final float maxFontSize, stageModeScale;
     private final String alphaChange = "alpha";
@@ -54,7 +54,8 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
         maxFontSize = mainActivityInterface.getPreferences().getMyPreferenceFloat("fontSizeMax",50f);
         stageModeScale = mainActivityInterface.getPreferences().getMyPreferenceFloat("stageModeScale",0.8f);
         sectionInfos = new ArrayList<>();
-        floatSizes = new ArrayList<>();
+        floatHSizes = new ArrayList<>();
+        floatVSizes = new ArrayList<>();
         setSongInfo();
         this.inlineSetWidth = inlineSetWidth;
 
@@ -79,6 +80,7 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
 
     private void setSongInfo() {
         // Prepare the info for each section
+        floatWidth = 0;
         floatHeight = 0;
 
         if (availableWidth==0 || availableHeight==0) {
@@ -103,10 +105,13 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
             // Check the scale isn't bigger than the maximum font size
             scale = Math.min(scale,(maxFontSize / defFontSize));
 
-            float itemHeight = sectionHeight * scale + (spacing);
+            float itemWidth = sectionWidth * scale + (spacing);
+            floatWidth += itemWidth;
+            floatHSizes.add(itemWidth);
 
+            float itemHeight = sectionHeight * scale + (spacing);
             floatHeight += itemHeight;
-            floatSizes.add(itemHeight);
+            floatVSizes.add(itemHeight);
 
             stageSectionInfo.section = x;
             stageSectionInfo.width = sectionWidth;
@@ -230,6 +235,9 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
         return mainActivityInterface.getSectionViews().size();
     }
 
+    public int getWidth() {
+        return (int) floatWidth;
+    }
     public int getHeight() {
         return (int) floatHeight;
     }
@@ -242,7 +250,6 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
 
     public void clickOnSection(int position) {
         // TODO TEST
-        Log.d(TAG,"TEST:  position:"+position+"  sectionInfos.size():"+sectionInfos.size());
         if (displayInterface.getIsSecondaryDisplaying() &&
                 sectionInfos.size()>=position) {
             fakeClick = true;
@@ -296,8 +303,11 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
         }
     }
 
+    public ArrayList<Float> getWidths() {
+        return floatHSizes;
+    }
     public ArrayList<Float> getHeights() {
-        return floatSizes;
+        return floatVSizes;
     }
 
 }

@@ -2943,16 +2943,16 @@ public class ProcessSong {
         if (!mainActivityInterface.getSong().getShowstartofpdf()) {
             // This is to deal with swiping backwards through songs, show the last page first!
             page = mainActivityInterface.getSong().getPdfPageCount() - 1;
-            mainActivityInterface.getSong().setShowstartofpdf(true);
-            mainActivityInterface.getSong().setCurrentSection(mainActivityInterface.getSong().getPdfPageCount() - 1);
+            //mainActivityInterface.getSong().setShowstartofpdf(true);
+            //mainActivityInterface.getSong().setCurrentSection(mainActivityInterface.getSong().getPdfPageCount() - 1);
         }
         if (page >= mainActivityInterface.getSong().getPdfPageCount()) {
-            mainActivityInterface.getSong().setPdfPageCurrent(0);
-            mainActivityInterface.getSong().setCurrentSection(0);
+            //mainActivityInterface.getSong().setPdfPageCurrent(0);
+            //mainActivityInterface.getSong().setCurrentSection(0);
             page = 0;
         } else {
-            mainActivityInterface.getSong().setPdfPageCurrent(page);
-            mainActivityInterface.getSong().setCurrentSection(page);
+            //mainActivityInterface.getSong().setPdfPageCurrent(page);
+            //mainActivityInterface.getSong().setCurrentSection(page);
         }
         return page;
     }

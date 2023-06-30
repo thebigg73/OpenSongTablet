@@ -246,7 +246,6 @@ public class PedalActions {
                 !desiredAction.contains("exit")) {
             // Send this command now
             beatBuddyDownRegistered = true;
-            Log.d(TAG,"send the beatbuddy down command");
             whichEventTriggered(true,keyCode,keyMidi);
         } else if (!airTurnMode && desiredAction!=null && desiredAction.startsWith("midiaction")) {
             // Midi action so do it now
@@ -259,7 +258,6 @@ public class PedalActions {
     }
 
     public void commonEventUp(int keyCode, String keyMidi) {
-        Log.d(TAG,"Common event up:"+keyCode);
         // If we already triggered the action with key down, skip
         if (actionUpTriggered) {
             actionUpTriggered = false;
@@ -272,7 +270,6 @@ public class PedalActions {
                     !desiredAction.contains("exit")) {
                 // Send this command now
                 beatBuddyDownRegistered = false;
-                Log.d(TAG, "send the beatbuddy up command");
                 whichEventTriggered(false, keyCode, keyMidi);
             } else if (airTurnMode && (keyMidi == null || keyMidi.isEmpty())) {
                 doAirTurnDetectionUp(keyCode);

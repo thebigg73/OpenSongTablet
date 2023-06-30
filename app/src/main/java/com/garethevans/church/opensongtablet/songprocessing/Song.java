@@ -13,6 +13,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Song implements Serializable {
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
+    private final String TAG = "Song";
 
     // The holders
     private int id;
@@ -383,14 +385,17 @@ public class Song implements Serializable {
         this.lyricsUndosPos = lyricsUndosPos;
     }
     public void setIsImageSlide(boolean isImageSlide) {this.isImageSlide = isImageSlide;}
-    public void setPdfPageCurrent(int pdfPageCurrent) {this.pdfPageCurrent = pdfPageCurrent;}
+    public void setPdfPageCurrent(int pdfPageCurrent) {
+        this.pdfPageCurrent = pdfPageCurrent;
+    }
     public void setPdfPageCount(int pdfPageCount) {
         this.pdfPageCount = pdfPageCount;
     }
     public void setShowstartofpdf(boolean showstartofpdf) {
         this.showstartofpdf = showstartofpdf;
     }
-    public void setCurrentSection(int currentSection) {this.currentSection = currentSection;}
+    public void setCurrentSection(int currentSection) {
+        this.currentSection = currentSection;}
     public void setDetectedChordFormat(int detectedChordFormat) {
         this.detectedChordFormat = detectedChordFormat;
     }

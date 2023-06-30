@@ -209,7 +209,7 @@ public class PageButtons {
         prepareOption("set",c.getString(R.string.set_current),c.getString(R.string.show),"",R.drawable.list_number);
         prepareOption("inlineset",c.getString(R.string.set_inline),c.getString(R.string.show) + " / " + c.getString(R.string.hide),c.getString(R.string.settings),R.drawable.inline_set);
         prepareOption("addtoset",c.getString(R.string.add_song_to_set),c.getString(R.string.set_add),c.getString(R.string.variation_make),R.drawable.set_add);
-        prepareOption("exportset",c.getString(R.string.export_current_set),c.getString(R.string.select),c.getString(R.string.set_manage),R.drawable.share);
+        prepareOption("exportset",c.getString(R.string.export_current_set),c.getString(R.string.select),c.getString(R.string.set_manage),R.drawable.share_all);
 
         prepareOption("","","","",R.drawable.help);
 

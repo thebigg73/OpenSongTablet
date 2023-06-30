@@ -176,6 +176,15 @@
                 android:text="@string/curly_brackets_hide"
                 android:hint="@string/curly_brackets_hide_info"/>
 
+            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                android:id="@+id/pdfHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/pdf_horizontal"
+                android:hint="@string/pdf_horizontal_info"/>
+
             <TableRow style="@style/DividerLine" />
 
             <!--Section trimming and spaces-->

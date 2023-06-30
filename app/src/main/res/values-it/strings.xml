@@ -567,6 +567,8 @@
     <string name="part">Parte</string>
     <string name="pause">Pausa</string>
     <string name="paypal_description">Inviami una donazione se trovi utile l\'app</string>
+    <string name="pdf_horizontal">Visualizzare le pagine PDF orizzontalmente</string>
+    <string name="pdf_horizontal_info">Quando la scalabilità automatica è impostata su completa e il dispositivo è in orientamento orizzontale, le pagine PDF verranno visualizzate affiancate (ridimensionate in base all\'altezza)</string>
     <string name="pedal">"Pedale"</string>
     <string name="pedal_avoid_repeat">Mostra un avviso prima di passare al brano successivo</string>
     <string name="pedal_avoid_repeat_info">Utile per evitare pressioni accidentali</string>

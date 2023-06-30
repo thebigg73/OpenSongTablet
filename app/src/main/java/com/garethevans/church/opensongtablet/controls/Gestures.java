@@ -17,7 +17,7 @@ public class Gestures {
     private final MainActivityInterface mainActivityInterface;
     private String doubleTap;
     private String longPress;
-    private boolean swipeEnabled;
+    private boolean swipeEnabled, pdfLandscapeView, pdfAllVisible, pdfStart, pdfEnd;
     private float scrollDistance;
 
     // Initialise the class
@@ -69,4 +69,35 @@ public class Gestures {
         mainActivityInterface.getPreferences().setMyPreferenceBoolean(which, bool);
     }
 
+    // If we enable this option and have a PDF file and are in landscape and full autoscale
+    // We need to note this as we have to disable normal swipe gestures side to side
+    // This is set in Performance Mode before loading a song as false
+    // Then if the criteria matches, it is set to true
+    // The PerformanceGestures check this (as do other scrolling tasks in the recyclerview adapters)
+    public void setPdfLandscapeView(boolean pdfLandscapeView) {
+        this.pdfLandscapeView = pdfLandscapeView;
+    }
+    public boolean getPdfLandscapeView() {
+        return pdfLandscapeView;
+    }
+    public void setPdfAllVisible(boolean pdfAllVisible) {
+        this.pdfAllVisible = pdfAllVisible;
+    }
+    public boolean getPdfAllVisible() {
+        return pdfAllVisible;
+    }
+    public void setPdfStart(boolean pdfStart) {
+        // From the recyclerView when we have a scroll position of 0
+        this.pdfStart = pdfStart;
+    }
+    public boolean getPdfStart() {
+        return pdfStart;
+    }
+    public void setPdfEnd(boolean pdfEnd) {
+        // From the recyclerView when we have a scroll position of the max allowed for the view
+        this.pdfEnd = pdfEnd;
+    }
+    public boolean getPdfEnd() {
+        return pdfEnd;
+    }
 }

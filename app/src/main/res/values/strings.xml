@@ -727,6 +727,8 @@
     <string name="paypal" translatable="false">PayPal</string>
     <string name="paypal_description">Send me a donation if you find the app useful</string>
     <string name="pdf" translatable="false">PDF</string>
+    <string name="pdf_horizontal">Display PDF pages horizontally</string>
+    <string name="pdf_horizontal_info">When autoscale is set to full and the device is in landscape orientation PDF pages will be shown side by side (scaled by height)</string>
     <string name="pedal">Pedal</string>
     <string name="pedal_avoid_repeat">Show a warning before moving to the next song</string>
     <string name="pedal_avoid_repeat_info">Useful to avoid accidental presses</string>

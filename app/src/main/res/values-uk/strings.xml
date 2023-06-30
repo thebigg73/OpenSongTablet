@@ -567,6 +567,8 @@
     <string name="part">Частина</string>
     <string name="pause">Пауза</string>
     <string name="paypal_description">Надішліть мені пожертву, якщо ви вважаєте додаток корисним</string>
+    <string name="pdf_horizontal">Горизонтальне відображення PDF-сторінок</string>
+    <string name="pdf_horizontal_info">Якщо автомасштабування встановлено на повне, а пристрій перебуває в альбомній орієнтації, сторінки PDF відображатимуться поруч (масштабуються за висотою)</string>
     <string name="pedal">Педаль</string>
     <string name="pedal_avoid_repeat">Показувати попередження перед переходом до наступної пісні</string>
     <string name="pedal_avoid_repeat_info">Корисно, щоб уникнути випадкових натискань</string>

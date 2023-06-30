@@ -23,7 +23,6 @@ import android.view.animation.AnimationUtils;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -257,7 +256,8 @@ public class PerformanceFragment extends Fragment {
             abcPopup = new ABCPopup(getContext());
             mainActivityInterface.getPerformanceGestures().setZoomLayout(myView.zoomLayout);
             mainActivityInterface.getPerformanceGestures().setRecyclerView(myView.recyclerView);
-            myView.recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+            //myView.recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+            myView.recyclerView.setLayoutManager(new RecyclerLayoutManager(getContext()));
             mainActivityInterface.getHotZones().initialiseHotZones(myView.hotZoneTopLeft, myView.hotZoneTopCenter, myView.hotZoneBottomCenter);
         }
     }
@@ -520,6 +520,12 @@ public class PerformanceFragment extends Fragment {
             // - **Image    Custom image slide (multiple images).  Same as PDF
             // - XML        OpenSong song.  Views need to be drawn and measured. Stage mode uses recyclerView, Performance, the pageHolder
 
+            // Reset the recycler view to vertical by default
+            recyclerLayoutManager.setOrientation(RecyclerLayoutManager.VERTICAL);
+
+            // Set as not using pdfLandscape by default
+            mainActivityInterface.getGestures().setPdfLandscapeView(false);
+
             if (mainActivityInterface.getSong()!=null && mainActivityInterface.getSong().getFiletype()!=null) {
                 if (mainActivityInterface.getSong().getFiletype().equals("PDF") &&
                         android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
@@ -548,21 +554,37 @@ public class PerformanceFragment extends Fragment {
         myView.songView.setVisibility(View.GONE);
         myView.zoomLayout.setVisibility(View.GONE);
 
+        if (mainActivityInterface.getPreferences().getMyPreferenceBoolean("pdfLandscapeView",true) &&
+                mainActivityInterface.getPreferences().getMyPreferenceString("songAutoScale", "Y").equals("Y") &&
+                mainActivityInterface.getOrientation() == Configuration.ORIENTATION_LANDSCAPE &&
+                recyclerLayoutManager!=null) {
+            recyclerLayoutManager.setOrientation(RecyclerLayoutManager.HORIZONTAL);
+            // We can't allow swiping to move songs - set a record of this mode
+            mainActivityInterface.getGestures().setPdfLandscapeView(true);
+        } else if (recyclerLayoutManager!=null) {
+            recyclerLayoutManager.setOrientation(RecyclerLayoutManager.VERTICAL);
+            mainActivityInterface.getGestures().setPdfLandscapeView(false);
+        }
+
         if (getContext()!=null) {
             pdfPageAdapter = new PDFPageAdapter(getContext(), mainActivityInterface, displayInterface,
                     availableWidth, availableHeight, myView.inlineSetList.getInlineSetWidth());
         }
+
         myView.recyclerView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
                 myView.recyclerView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                widthBeforeScale = pdfPageAdapter.getWidth();
+                widthAfterScale = widthBeforeScale;
                 heightBeforeScale = pdfPageAdapter.getHeight();
                 heightAfterScale = heightBeforeScale;
-                recyclerLayoutManager.setSizes(pdfPageAdapter.getHeights(), availableHeight);
+                recyclerLayoutManager.setSizes(pdfPageAdapter.getWidths(), pdfPageAdapter.getHeights(), availableWidth, availableHeight);
                 myView.recyclerView.setPadding(myView.inlineSetList.getInlineSetWidth(),0,0,0);
                 myView.recyclerView.setMaxScrollY(heightAfterScale - availableHeight);
                 //IV - Reset zoom
                 myView.recyclerView.toggleScale();
+
 
                 // Do the slide in
                 myView.recyclerView.setVisibility(View.VISIBLE);
@@ -672,9 +694,11 @@ public class PerformanceFragment extends Fragment {
             @Override
             public void onGlobalLayout() {
                 myView.recyclerView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                widthBeforeScale = imageSlideAdapter.getWidth();
+                widthAfterScale = widthBeforeScale;
                 heightBeforeScale = imageSlideAdapter.getHeight();
                 heightAfterScale = heightBeforeScale;
-                recyclerLayoutManager.setSizes(imageSlideAdapter.getHeights(),availableHeight);
+                recyclerLayoutManager.setSizes(imageSlideAdapter.getWidths(), imageSlideAdapter.getHeights(), availableWidth, availableHeight);
                 myView.recyclerView.setMaxScrollY(heightAfterScale - availableHeight);
                 //IV - Reset zoom
                 myView.recyclerView.toggleScale();
@@ -837,10 +861,12 @@ public class PerformanceFragment extends Fragment {
                     public void onGlobalLayout() {
                         myView.recyclerView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
 
+                        widthBeforeScale = stageSectionAdapter.getWidth();
+                        widthAfterScale = widthBeforeScale;
                         heightBeforeScale = stageSectionAdapter.getHeight();
                         heightAfterScale = heightBeforeScale;
 
-                        recyclerLayoutManager.setSizes(stageSectionAdapter.getHeights(), availableHeight);
+                        recyclerLayoutManager.setSizes(stageSectionAdapter.getWidths(), stageSectionAdapter.getHeights(), availableWidth, availableHeight);
                         myView.recyclerView.setHasFixedSize(false);
                         myView.recyclerView.setMaxScrollY(heightAfterScale - availableHeight);
                         myView.recyclerView.setPadding(myView.inlineSetList.getInlineSetWidth(),0,0,0);
@@ -1063,7 +1089,7 @@ public class PerformanceFragment extends Fragment {
         if (getContext()!=null && myView!=null) {
             mainActivityInterface.getHotZones().checkScrollButtonOn(myView.zoomLayout,myView.recyclerView);
             // Send the autoscroll information (if required)
-            mainActivityInterface.getAutoscroll().initialiseSongAutoscroll(heightAfterScale, availableHeight);
+            mainActivityInterface.getAutoscroll().initialiseSongAutoscroll(widthAfterScale, heightAfterScale, availableWidth, availableHeight);
             if (mainActivityInterface.getAutoscroll().getShouldAutostart()) {
                 mainActivityInterface.getAutoscroll().startAutoscroll();
             }

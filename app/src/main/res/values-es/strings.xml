@@ -567,6 +567,8 @@
     <string name="part">Parte</string>
     <string name="pause">Pausa</string>
     <string name="paypal_description">Envíame una donación si encuentras útil la aplicación</string>
+    <string name="pdf_horizontal">Mostrar páginas PDF horizontalmente</string>
+    <string name="pdf_horizontal_info">Cuando el escalado automático está configurado en completo y el dispositivo está en orientación horizontal, las páginas PDF se mostrarán una al lado de la otra (escaladas por altura)</string>
     <string name="pedal">"Pedal"</string>
     <string name="pedal_avoid_repeat">Mostrar una advertencia antes de pasar a la siguiente canción</string>
     <string name="pedal_avoid_repeat_info">Útil para evitar pulsaciones accidentales</string>
