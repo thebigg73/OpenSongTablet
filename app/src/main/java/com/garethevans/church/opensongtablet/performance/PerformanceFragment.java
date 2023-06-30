@@ -198,6 +198,11 @@ public class PerformanceFragment extends Fragment {
         // MainActivity initialisation has firstRun set as true.
         // Check for connected displays now we have loaded preferences, etc
         if (mainActivityInterface.getFirstRun()) {
+            // IV - Make sure second screen overlays are off
+            mainActivityInterface.getPresenterSettings().setBlankscreenOn(false);
+            displayInterface.updateDisplay("showBlankscreen");
+            mainActivityInterface.getPresenterSettings().setBlackscreenOn(false);
+            displayInterface.updateDisplay("showBlackscreen");
             displayInterface.checkDisplays();
             mainActivityInterface.setFirstRun(false);
         }
@@ -1053,6 +1058,7 @@ public class PerformanceFragment extends Fragment {
         // Update the secondary display (if present)
         displayInterface.updateDisplay("newSongLoaded");
         displayInterface.updateDisplay("setSongInfo");
+        displayInterface.updateDisplay("initialiseInfoBarRequired");
         if (mainActivityInterface.getMode().equals(mode_stage) &&
                 mainActivityInterface.getSong().getFiletype().equals("XML") &&
                 !mainActivityInterface.getSong().getFolder().contains("**Image") &&

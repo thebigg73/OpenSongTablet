@@ -136,6 +136,11 @@ public class PresenterFragment extends Fragment {
         // MainActivity initialisation has firstRun set as true.
         // Check for connected displays now we have loaded preferences, etc
         if (mainActivityInterface.getFirstRun()) {
+            // IV - Make sure second screen overlays are off
+            mainActivityInterface.getPresenterSettings().setBlankscreenOn(false);
+            displayInterface.updateDisplay("showBlankscreen");
+            mainActivityInterface.getPresenterSettings().setBlackscreenOn(false);
+            displayInterface.updateDisplay("showBlackscreen");
             displayInterface.checkDisplays();
             displayInterface.updateDisplay("changeBackground");
             mainActivityInterface.setFirstRun(false);
@@ -174,14 +179,15 @@ public class PresenterFragment extends Fragment {
         super.onConfigurationChanged(newConfig);
         // Change the new orientation views (before we declare the orientation has changed)
         // Doing this first means that the listeners of the new views aren't called
+        // IV - We were landscape - setup for move to portrait
         if (landscape) {
-            myView.showLogoSide.setChecked(mainActivityInterface.getPresenterSettings().getLogoOn());
-            myView.blankScreenSide.setChecked(mainActivityInterface.getPresenterSettings().getBlankscreenOn());
-            myView.blackScreenSide.setChecked(mainActivityInterface.getPresenterSettings().getBlackscreenOn());
-        } else {
             myView.showLogo.setChecked(mainActivityInterface.getPresenterSettings().getLogoOn());
             myView.blankScreen.setChecked(mainActivityInterface.getPresenterSettings().getBlankscreenOn());
             myView.blackScreen.setChecked(mainActivityInterface.getPresenterSettings().getBlackscreenOn());
+        } else {
+            myView.showLogoSide.setChecked(mainActivityInterface.getPresenterSettings().getLogoOn());
+            myView.blankScreenSide.setChecked(mainActivityInterface.getPresenterSettings().getBlankscreenOn());
+            myView.blackScreenSide.setChecked(mainActivityInterface.getPresenterSettings().getBlackscreenOn());
         }
         // Now register the new orientation so the oncheckchanged listeners work
         landscape = newConfig.orientation==Configuration.ORIENTATION_LANDSCAPE;
@@ -262,6 +268,7 @@ public class PresenterFragment extends Fragment {
         // Set up the new song for the secondary display.  Doesn't necessarily show it yet though
         displayInterface.updateDisplay("newSongLoaded");
         displayInterface.updateDisplay("setSongInfo");
+        displayInterface.updateDisplay("initialiseInfoBarRequired");
 
         // IV - Reset current values to 0
         if (mainActivityInterface.getSong().getFiletype().equals("PDF")) {

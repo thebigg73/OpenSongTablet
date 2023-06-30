@@ -19,11 +19,15 @@ import com.google.android.material.textview.MaterialTextView;
 public class OnScreenInfo extends LinearLayout {
 
     private final LinearLayout info;
+    private final LinearLayout capo;
+    private final MaterialTextView capoIcon;
     private final MaterialTextView capoInfo;
     private final LinearLayout autoscroll;
+    private final MaterialTextView autoscrollIcon;
     private final MaterialTextView autoscrollTime;
     private final MaterialTextView autoscrollTotalTime;
     private final LinearLayout pad;
+    private final MaterialTextView padIcon;
     private final MaterialTextView padTime;
     private final MaterialTextView padTotalTime;
     private boolean capoInfoNeeded, capoPulsing, autoHideCapo, autoHidePad, autoHideAutoscroll;
@@ -35,8 +39,8 @@ public class OnScreenInfo extends LinearLayout {
         @Override
         public void run() {
             if (!capoPulsing && capoInfoNeeded) {
-                capoInfo.setVisibility(View.GONE);
-                capoInfo.clearAnimation();
+                capo.setVisibility(View.GONE);
+                capo.clearAnimation();
             }
         }
     };
@@ -45,8 +49,8 @@ public class OnScreenInfo extends LinearLayout {
         public void run() {
             if (capoInfoNeeded) {
                 capoInfo.post(() -> {
-                    capoInfo.setVisibility(View.VISIBLE);
-                    capoInfo.clearAnimation();
+                    capo.setVisibility(View.VISIBLE);
+                    capo.clearAnimation();
                 });
                 capoInfo.removeCallbacks(hideCapoRunnable);
                 capoInfo.postDelayed(hideCapoRunnable,delayTime);
@@ -57,7 +61,7 @@ public class OnScreenInfo extends LinearLayout {
         @Override
         public void run() {
             if (autoHideAutoscroll) {
-                pad.setVisibility(View.GONE);
+                autoscroll.setVisibility(View.GONE);
             }
         }
     };
@@ -76,11 +80,15 @@ public class OnScreenInfo extends LinearLayout {
         inflate(context, R.layout.view_on_screen_info, this);
 
         info = findViewById(R.id.info);
+        capo = findViewById(R.id.capo);
+        capoIcon = findViewById(R.id.capoIcon);
         capoInfo = findViewById(R.id.capoInfo);
         autoscroll = findViewById(R.id.autoscroll);
+        autoscrollIcon = findViewById(R.id.autoscrollIcon);
         autoscrollTime = findViewById(R.id.autoscrollTime);
         autoscrollTotalTime = findViewById(R.id.autoscrollTotalTime);
         pad = findViewById(R.id.pad);
+        padIcon = findViewById(R.id.padIcon);
         padTime = findViewById(R.id.padTime);
         padTotalTime = findViewById(R.id.padTotalTime);
     }
@@ -106,8 +114,11 @@ public class OnScreenInfo extends LinearLayout {
         capoInfo.setTextColor(textColor);
         autoscrollTime.setTextColor(textColor);
         autoscrollTotalTime.setTextColor(textColor);
+        TextViewCompat.setCompoundDrawableTintList(autoscrollIcon, ColorStateList.valueOf(textColor));
         TextViewCompat.setCompoundDrawableTintList(autoscrollTime, ColorStateList.valueOf(textColor));
+        TextViewCompat.setCompoundDrawableTintList(padIcon, ColorStateList.valueOf(textColor));
         TextViewCompat.setCompoundDrawableTintList(padTime, ColorStateList.valueOf(textColor));
+        TextViewCompat.setCompoundDrawableTintList(capoIcon, ColorStateList.valueOf(textColor));
         TextViewCompat.setCompoundDrawableTintList(capoInfo, ColorStateList.valueOf(textColor));
     }
 
@@ -116,26 +127,25 @@ public class OnScreenInfo extends LinearLayout {
                 mainActivityInterface.getProcessSong().showingCapo(mainActivityInterface.getSong().getCapo());
         if (capoInfoNeeded) {
             capoInfo.setText(mainActivityInterface.getToolbar().getCapoString());
-            capoInfo.setVisibility(View.VISIBLE);
-            capoInfo.setAlpha(mainActivityInterface.getMyThemeColors().getExtraInfoBgSplitAlpha());
+            capo.setVisibility(View.VISIBLE);
             capoInfo.post(() -> {
                 capoInfo.setPivotX(capoInfo.getWidth() / 2f);
                 capoInfo.setPivotY(capoInfo.getHeight() / 2f);
                 capoPulsing = true;
-                mainActivityInterface.getCustomAnimation().pulse(c, capoInfo);
+                mainActivityInterface.getCustomAnimation().pulse(c, capo);
             });
             capoInfo.postDelayed(() -> {
-                capoInfo.clearAnimation();
+                capo.clearAnimation();
                 if (autoHideCapo) {
-                    capoInfo.setVisibility(View.GONE);
+                    capo.setVisibility(View.GONE);
                 }
                 capoPulsing = false;
             }, delayTime);
         } else {
             capoPulsing = false;
             capoInfo.setText("");
-            capoInfo.clearAnimation();
-            capoInfo.setVisibility(View.GONE);
+            capo.clearAnimation();
+            capo.setVisibility(View.GONE);
         }
     }
 
@@ -144,9 +154,9 @@ public class OnScreenInfo extends LinearLayout {
         if (capoInfoNeeded && autoHideCapo) {
             capoInfo.post(showCapoRunnable);
         } else if (capoInfoNeeded) {
-            capoInfo.setVisibility(View.VISIBLE);
+            capo.setVisibility(View.VISIBLE);
         } else {
-            capoInfo.setVisibility(View.GONE);
+            capo.setVisibility(View.GONE);
         }
         if (mainActivityInterface.getPad().isPadPrepared()) {
             pad.setVisibility(View.VISIBLE);
@@ -177,9 +187,9 @@ public class OnScreenInfo extends LinearLayout {
 
     public void showCapo(boolean show) {
         if (show && capoInfoNeeded) {
-            capoInfo.post(() -> capoInfo.setVisibility(View.VISIBLE));
+            capo.post(() -> capo.setVisibility(View.VISIBLE));
         } else if (!show) {
-            capoInfo.post(() -> capoInfo.setVisibility(View.GONE));
+            capo.post(() -> capo.setVisibility(View.GONE));
         }
     }
 }

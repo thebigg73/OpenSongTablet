@@ -2196,8 +2196,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 myView.onScreenInfo.showCapo(false);
                 break;
             case "setblankScreenUnChecked":
-                presenterFragment.setBlankScreenUnChecked();
-                getPresenterSettings().setBlankscreenOn(false);
+                if (presenterFragment != null) {
+                    presenterFragment.setBlankScreenUnChecked();
+                    getPresenterSettings().setBlankscreenOn(false);
+                }
                 break;
         }
     }
@@ -2754,7 +2756,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         } else if (autoscroll.getIsAutoscrolling()) {
             autoscroll.stopAutoscroll();
         } else {
-            if (song.getAutoscrolllength() == null || song.getAutoscrolllength().isEmpty()) {
+            if (song.getAutoscrolllength() == null || song.getAutoscrolllength().isEmpty() &&
+                    !(getPreferences().getMyPreferenceBoolean("autoscrollUseDefaultTime", true))) {
                 performanceGestures.autoscrollSettings();
             } else {
                 autoscroll.startAutoscroll();

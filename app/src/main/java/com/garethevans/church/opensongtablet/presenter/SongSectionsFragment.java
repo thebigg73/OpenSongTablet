@@ -85,6 +85,7 @@ public class SongSectionsFragment extends Fragment {
             mainActivityInterface.getPreferences().setMyPreferenceBoolean("usePresentationOrder", b);
             mainActivityInterface.getPresenterSettings().setUsePresentationOrder(b);
             mainActivityInterface.updateFragment("presenterFragmentSongSections", getParentFragment(), null);
+            displayInterface.updateDisplay("setSongContent");
         });
         updatePresentationOrder();
 
