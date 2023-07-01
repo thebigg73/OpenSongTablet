@@ -3504,7 +3504,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-
         if (bootUpCompleted) {
             try {
                 // Get the language
