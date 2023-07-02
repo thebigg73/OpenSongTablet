@@ -54,7 +54,7 @@ public class ImportOnlineFragment extends Fragment {
     private final String[] sources = new String[]{"UltimateGuitar", "Chordie", "SongSelect",
             "WorshipTogether", "UkuTabs", "HolyChords", "La Boîte à chansons", "eChords", "Google"};
     private final String[] address = new String[]{"https://www.ultimate-guitar.com/search.php?search_type=title&value=",
-            "https://www.chordie.com/results.php?q=", "https://songselect.ccli.com/Search/Results?SearchText=",
+            "https://www.chordie.com/results.php?q=", "https://songselect.ccli.com/search/results?search=",
             "https://www.worshiptogether.com/search-results/#?cludoquery=", "https://ukutabs.com/?s=",
             "https://holychords.pro/search?name=", "https://www.boiteachansons.net/recherche/",
             "https://www.e-chords.com/search-all/","https://www.google.com/search?q="};
