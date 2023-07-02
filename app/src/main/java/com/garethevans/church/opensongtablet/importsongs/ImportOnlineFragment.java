@@ -218,14 +218,7 @@ public class ImportOnlineFragment extends Fragment {
                 webView = new WebView(getContext());
                 myView.webViewHolder.addView(webView);
             }
-            /*webView.setWebChromeClient(new WebChromeClient() {
-                @Override
-                public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
-                    Log.d(TAG, consoleMessage.message() + " -- From line " +
-                            consoleMessage.lineNumber() + " of " + consoleMessage.sourceId());
-                    return true;
-                }
-            });*/
+
             webView.setWebViewClient(new WebViewClient() {
                 @Override
                 public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -259,6 +252,9 @@ public class ImportOnlineFragment extends Fragment {
                     return true; // The app continues executing.
                 }
             });
+            // Set fake user agent
+            userAgentDefault = "Mozilla/5.0 (Linux; Android 13) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.5735.196 Mobile Safari/537.36";
+            userAgentDefault = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 Edg/114.0.1823.67";
             if (userAgentDefault == null) {
                 userAgentDefault = webView.getSettings().getUserAgentString();
                 Log.d(TAG, "userAgentString=" + userAgentDefault);
@@ -412,7 +408,11 @@ public class ImportOnlineFragment extends Fragment {
             webString = "";
             webView.post(() -> {
                 try {
-                    webView.evaluateJavascript("javascript:document.getElementsByTagName('html')[0].innerHTML", webContent);
+                    String script = "javascript:document.getElementsByTagName('html')[0].innerHTML";
+                    // For SongSelect:
+                    // Unfortunately though there are child nodes that would need dealing with!
+                    //String script="javascript:document.getElementById('ChordSheetViewerContainer').shadowRoot.innerHTML";
+                    webView.evaluateJavascript(script, webContent);
                 } catch (Exception e) {
                         e.printStackTrace();
                 }
@@ -430,13 +430,15 @@ public class ImportOnlineFragment extends Fragment {
             try {
                 if (reader.peek() == JsonToken.STRING) {
                     webString = reader.nextString();
-                    //Log.d(TAG,"webString:"+webString);
                 }
                 reader.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
             webString = webString.replace("\r","\n");
+            for (String line:webString.split("><")) {
+                Log.d(TAG,"line:"+line+"><");
+            }
             showSaveButton();
         }
     };
@@ -449,6 +451,8 @@ public class ImportOnlineFragment extends Fragment {
         if (webString==null) {
             webString = "";
         }
+
+        Log.d(TAG,"source:"+source);
 
         switch (source) {
             case "UltimateGuitar":
@@ -527,6 +531,13 @@ public class ImportOnlineFragment extends Fragment {
                 }
             });
 
+        } else if (source.equals("SongSelect")) {
+            // Due to SongSelect using ShadowDOM, remove this option
+            myView.saveButton.post(() -> {
+                myView.saveButton.hide();
+                myView.saveButton.clearAnimation();
+                myView.grabText.hide();
+            });
         } else {
             myView.saveButton.post(() -> {
                 myView.saveButton.hide();
