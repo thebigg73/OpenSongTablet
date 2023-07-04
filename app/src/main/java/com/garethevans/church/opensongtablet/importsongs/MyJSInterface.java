@@ -28,7 +28,7 @@ public class MyJSInterface {
     @SuppressLint("StaticFieldLeak")
     private static Context c = null;
     private static MainActivityInterface mainActivityInterface = null;
-    private static Uri saveFile = null;
+    private static Uri saveFile = null, saveFileTxt = null;
     private static Fragment fragment = null;
     private static final String TAG = "MyJSInterface";
     private String filename;
@@ -39,8 +39,10 @@ public class MyJSInterface {
         mainActivityInterface = (MainActivityInterface) c;
         MyJSInterface.fragment = fragment;
         saveFile = mainActivityInterface.getStorageAccess().getUriForItem("Received", "", "SongSelect.pdf");
+        saveFileTxt = mainActivityInterface.getStorageAccess().getUriForItem("Received", "", "SongSelect.txt");
         mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" MyJSInterface Create Received/SongSelect.pdf  deleteOld=true");
         mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(false, saveFile, null, "Received", "", "SongSelect.pdf");
+        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(false, saveFileTxt, null, "Received", "", "SongSelect.txt");
     }
 
     public static String getBase64StringFromBlobUrl(String blobUrl) {
@@ -99,72 +101,6 @@ public class MyJSInterface {
                 "    }\n" +
                 "   HTMLOUT.getShadowHTML(shadowHTML);\n" +
                 "};";
-
-        /*return "function getShadow() {\n" +
-                "        var shadowHTML = '';\n" +
-                "        var nodes = document.querySelector('#ChordSheetViewerContainer').shadowRoot.querySelectorAll('*');\n" +
-                "        for (let el of nodes) {\n" +
-                "            shadowHTML += el.outerHTML;\n" +
-                "        }\n" +
-                "        HTMLOUT.getShadowHTML(shadowHTML);\n" +
-                "    }";*/
-        /*return "var shadowHTML='';\n" +
-                "var foundShadow = document.getElementById('ChordSheetViewerContainer);\n" +
-                "if (foundShadow!=null) {\n" +
-                "   var slots = foundShadow.shadowRoot.querySelectorAll('div');\n" +
-                "   var nodes = slots[0].assignedNodes({flatten: true});\n" +
-                "   for (let el of nodes) {\n" +
-                "       shadowHTML += el.outerHTML;\n" +
-                "   }\n" +
-                "   HTMLOUT.getShadowHTML(shadowHTML);\n" +
-                "}\n" +
-                "function getShadowHTML() {\n" +
-                "   HTMLOUT.getShadowHTML(shadowHTML);\n" +
-                "}\n";
-*/
-        /*return  "\nvar shadowHTML = '';\n" +
-                "var getShadowDomHtml = (shadowRoot) => {\n" +
-                "    shadowHTML = '';\n" +
-                "    for (let el of shadowRoot.childNodes) {\n" +
-                "        shadowHTML += el.nodeValue || el.outerHTML;\n" +
-                "    }\n" +
-                "    console.log('shadowHTML:'+shadowHTML);\n" +
-                "HTMLOUT.getShadowHTML(shadowHTML);"+
-                "};\n" +
-                "\n" +
-                "// Recursively replaces shadow DOMs with their HTML.\n" +
-                "var replaceShadowDomsWithHtml = (rootElement) => {\n" +
-                "    for (let el of rootElement.querySelectorAll('*')) {\n" +
-                "        if (el.shadowRoot) {\n" +
-                "            replaceShadowDomsWithHtml(shadowRoot);\n" +
-                "            el.innerHTML += getShadowDomHtml(el.shadowRoot);\n" +
-                "        }\n" +
-                "    }\n" +
-                "};\n" +
-                "function getShadowHTML() {\n" +
-                "   HTMLOUT.getShadowHTML(shadowHTML);" +
-                "}\n" +
-                "replaceShadowDomsWithHtml(document.body);";
-*/
-        /*
-        const getShadowDomHtml = (shadowRoot) => {
-    let shadowHTML = '';
-    for (let el of shadowRoot.childNodes) {
-        shadowHTML += el.nodeValue || el.outerHTML;
-    }
-    console.log(shadowHTML);
-};
-
-// Recursively replaces shadow DOMs with their HTML.
-const replaceShadowDomsWithHtml = (rootElement) => {
-    for (let el of rootElement.querySelectorAll('*')) {
-        if (el.shadowRoot) {
-            replaceShadowDomsWithHtml(shadowRoot);
-            el.innerHTML += getShadowDomHtml(el.shadowRoot);
-        }
-    }
-};
-         */
     }
 
     @JavascriptInterface
@@ -181,47 +117,20 @@ const replaceShadowDomsWithHtml = (rootElement) => {
         shadowHTML = "";
     }
 
-        /*
-
-      const recursiveWalk = (node, func) => {
-    const done = func(node);
-    if (done) {
-        return true;
-    }
-
-    if ('shadowRoot' in node && node.shadowRoot) {
-        const done = recursiveWalk(node.shadowRoot, func);
-        if (done) {
-            return true;
-        }
-    }
-    node = node.firstChild;
-
-    while (node) {
-        const done = recursiveWalk(node, func);
-        if (done) {
-            return true;
-        }
-        node = node.nextSibling;
-    }
-}
-
-let html = '';
-
-recursiveWalk(document.body, function (node) {
-    html += node.nodeValue || node.outerHTML;
-});
-
-console.log(html);
-         */
-
     public void setFilename(String filename) {
         this.filename = filename;
     }
 
     private void convertBase64StringToPdfAndStoreIt(String base64PDf) throws IOException {
         Log.d(TAG, base64PDf);
-        byte[] pdfAsBytes = Base64.decode(base64PDf.replaceFirst("^data:application/pdf;base64,", ""), 0);
+        String songFilename = "SongSelect.pdf";
+        if (base64PDf.contains("data:text/plain;base64,")) {
+            saveFile = saveFileTxt;
+            songFilename = "SongSelect.txt";
+        }
+        String baseCode = base64PDf.replaceFirst("^data:application/pdf;base64,", "").
+                replaceFirst("^data:text/plain;base64,","");
+        byte[] pdfAsBytes = Base64.decode(baseCode, 0);
         Log.d(TAG, "saveFile=" + saveFile);
         OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(saveFile);
         outputStream.write(pdfAsBytes);
@@ -229,7 +138,7 @@ console.log(html);
 
         Log.d(TAG, "Download blob complete");
 
-        mainActivityInterface.songSelectDownload(fragment, R.id.importOnlineFragment,saveFile,"SongSelect.pdf");
+        mainActivityInterface.songSelectDownload(fragment, R.id.importOnlineFragment,saveFile,songFilename);
     }
 
     public static String doNormalDownLoad(String url, String filename) {

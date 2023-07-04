@@ -503,6 +503,11 @@ public class ImportOnlineFragment extends Fragment {
                     } else if (webString.contains("<span class=\"cproTitleLine\">")) {
                         newSong = songSelect.processContentChordPro(getContext(), mainActivityInterface, newSong, webString);
                         songSelectShow = true;
+                    } else if (webString.contains(" class=\"svg-holder show\"")) {
+                        // Likely to be a pdf download
+                        // IV - For sheet music pages, extract the song title as filename for any PDF download using the SongSelect download button
+                        newSong.setFilename(songSelect.getTitle(webString) + ".pdf");
+                        songSelectShow = true;
                     } else {
                         // IV - For sheet music pages, extract the song title as filename for any PDF download using the SongSelect download button
                         newSong.setFilename(songSelect.getTitle(webString) + ".pdf");
