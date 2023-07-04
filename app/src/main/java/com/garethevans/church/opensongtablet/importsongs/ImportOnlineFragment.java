@@ -15,9 +15,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.ConsoleMessage;
 import android.webkit.RenderProcessGoneDetail;
 import android.webkit.URLUtil;
 import android.webkit.ValueCallback;
+import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
@@ -219,6 +221,15 @@ public class ImportOnlineFragment extends Fragment {
                 myView.webViewHolder.addView(webView);
             }
 
+            // For logging
+            webView.setWebChromeClient(new WebChromeClient() {
+                @Override
+                public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
+                    android.util.Log.d("WebView", consoleMessage.message());
+                    return true;
+                }
+            });
+
             webView.setWebViewClient(new WebViewClient() {
                 @Override
                 public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -408,11 +419,13 @@ public class ImportOnlineFragment extends Fragment {
             webString = "";
             webView.post(() -> {
                 try {
-                    String script = "javascript:document.getElementsByTagName('html')[0].innerHTML";
-                    // For SongSelect:
-                    // Unfortunately though there are child nodes that would need dealing with!
-                    //String script="javascript:document.getElementById('ChordSheetViewerContainer').shadowRoot.innerHTML";
+                    String script = "javascript:document.getElementsByTagName('html')[0].innerHTML;";
+                    // If we are using SongSelect, we need to flatten the shadowDOM
+                    if (source.equals("SongSelect")) {
+                        script += " " + MyJSInterface.flattenShadowRoot();
+                    }
                     webView.evaluateJavascript(script, webContent);
+
                 } catch (Exception e) {
                         e.printStackTrace();
                 }
@@ -436,9 +449,10 @@ public class ImportOnlineFragment extends Fragment {
                 e.printStackTrace();
             }
             webString = webString.replace("\r","\n");
-            for (String line:webString.split("><")) {
-                Log.d(TAG,"line:"+line+"><");
+            for (String line:webString.split("\n")) {
+                Log.d(TAG,"line:"+line);
             }
+            webView.loadUrl("javascript:document.body.addEventListener('load', replaceShadowDomsWithHtml(document.body));");
             showSaveButton();
         }
     };
@@ -473,17 +487,29 @@ public class ImportOnlineFragment extends Fragment {
                 }
                 break;
             case "SongSelect":
-                // Process now, ahead of a potential save
-                if (webString.contains("<div id=\"LyricsText\"")) {
-                    newSong = songSelect.processContentLyricsText(mainActivityInterface, newSong, webString);
-                    show = true;
-                } else  if (webString.contains("<span class=\"cproTitleLine\">")) {
-                    newSong = songSelect.processContentChordPro(getContext(), mainActivityInterface, newSong, webString);
-                    show = true;
-                } else {
-                    // IV - For sheet music pages, extract the song title as filename for any PDF download using the SongSelect download button
-                    newSong.setFilename(songSelect.getTitle(webString)+".pdf");
-                }
+                webView.postDelayed(() -> {
+                    // Get the flattened content (after initialising it)
+                    MyJSInterface.resetFlattenedWebString();
+                    webView.loadUrl("javascript:replaceShadowDomsWithHtml(document.body);");
+                    // Process now, ahead of a potential save
+                    boolean songSelectShow = false;
+                    // Get the flattened content if it isn't empty
+                    if (!MyJSInterface.getFlattenedWebString().isEmpty()) {
+                        webString = MyJSInterface.getFlattenedWebString();
+                    }
+                    if (webString.contains("<div id=\"LyricsText\"")) {
+                        newSong = songSelect.processContentLyricsText(mainActivityInterface, newSong, webString);
+                        songSelectShow = true;
+                    } else if (webString.contains("<span class=\"cproTitleLine\">")) {
+                        newSong = songSelect.processContentChordPro(getContext(), mainActivityInterface, newSong, webString);
+                        songSelectShow = true;
+                    } else {
+                        // IV - For sheet music pages, extract the song title as filename for any PDF download using the SongSelect download button
+                        newSong.setFilename(songSelect.getTitle(webString) + ".pdf");
+                    }
+                    doShowSaveButton(songSelectShow);
+                },3000);
+
                 break;
             case "UkuTabs":
                 if (webString.contains("class=\"ukutabschord\"") ||
@@ -531,13 +557,6 @@ public class ImportOnlineFragment extends Fragment {
                 }
             });
 
-        } else if (source.equals("SongSelect")) {
-            // Due to SongSelect using ShadowDOM, remove this option
-            myView.saveButton.post(() -> {
-                myView.saveButton.hide();
-                myView.saveButton.clearAnimation();
-                myView.grabText.hide();
-            });
         } else {
             myView.saveButton.post(() -> {
                 myView.saveButton.hide();
