@@ -90,6 +90,7 @@
                     android:layout_margin="8dp"
                     android:contentDescription="@string/close"
                     app:srcCompat="@drawable/arrow_left"
+                    app:fabSize="mini"
                     app:useCompatPadding="false" />
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -100,6 +101,7 @@
                     android:layout_margin="8dp"
                     android:contentDescription="@string/close"
                     app:srcCompat="@drawable/close"
+                    app:fabSize="mini"
                     app:useCompatPadding="false" />
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -110,7 +112,7 @@
                     android:layout_margin="8dp"
                     android:contentDescription="@string/save"
                     app:srcCompat="@drawable/download"
-                    android:visibility="gone"
+                    app:fabSize="mini"
                     app:useCompatPadding="false" />
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -121,7 +123,7 @@
                     android:layout_margin="8dp"
                     android:contentDescription="@string/text_extract_check"
                     app:srcCompat="@drawable/search"
-                    android:visibility="visible"
+                    app:fabSize="mini"
                     app:useCompatPadding="false"/>
             </FrameLayout>
 

@@ -746,7 +746,7 @@ public class SecondaryDisplay extends Presentation {
         infoBarRequired = true;
         // IV - Recover any currently hidden info bar for song redisplays
         int time = mainActivityInterface.getPresenterSettings().getPresoTransitionTime();
-        if (!songInfoChanged()) {
+        if (!songInfoChanged() && canShowSong()) {
             if (myView.songProjectionInfo1.getIsDisplaying() &&
                     myView.songProjectionInfo1.getHeight() > 0 &&
                     myView.songProjectionInfo1.getAlpha() != 1f) {
@@ -763,7 +763,7 @@ public class SecondaryDisplay extends Presentation {
     }
     public void checkSongInfoShowHide() {
         Log.d(TAG,"infoBarRequired: "+infoBarRequired + ", isNewSong: " + isNewSong + ", songInfoChanged: " + songInfoChanged());
-        if (infoBarRequired) {
+        if (infoBarRequired  && canShowSong()) {
             if (songInfoChanged() || isNewSong) {
                 // Get the info to show, this also changes the isDisplaying() property of both
                 crossFadeContent(songInfoHideCheck(), songInfoShowCheck());
@@ -1129,9 +1129,7 @@ public class SecondaryDisplay extends Presentation {
                     }
                 }
                 // IV - Turn off the blank screen button
-                if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_presenter))) {
-                    mainActivityInterface.updateOnScreenInfo("setblankScreenUnChecked");
-                }
+                mainActivityInterface.updateOnScreenInfo("setblankScreenUnChecked");
             } catch (Exception e) {
                 Log.d(TAG, "No song section at this point.");
                 e.printStackTrace();

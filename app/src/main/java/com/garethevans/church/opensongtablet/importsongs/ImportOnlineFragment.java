@@ -417,11 +417,18 @@ public class ImportOnlineFragment extends Fragment {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             webString = "";
-            webView.post(() -> {
+
+            // IV - SongSelect uses shadow DOM content, delay to allow this to fully populate
+            int delay = 0;
+            if (source.equals("SongSelect")) {
+                delay = 3000;
+            }
+            webView.postDelayed(() -> {
                 try {
                     String script = "javascript:document.getElementsByTagName('html')[0].innerHTML;";
-                    // If we are using SongSelect, we need to flatten the shadowDOM
+                    // If we are using SongSelect, we need to flatten shadow DOM
                     if (source.equals("SongSelect")) {
+                        MyJSInterface.resetFlattenedWebString();
                         script += " " + MyJSInterface.flattenShadowRoot();
                     }
                     webView.evaluateJavascript(script, webContent);
@@ -429,7 +436,7 @@ public class ImportOnlineFragment extends Fragment {
                 } catch (Exception e) {
                         e.printStackTrace();
                 }
-            });
+            },delay);
         });
     }
 
@@ -452,7 +459,6 @@ public class ImportOnlineFragment extends Fragment {
             for (String line:webString.split("\n")) {
                 Log.d(TAG,"line:"+line);
             }
-            webView.loadUrl("javascript:document.body.addEventListener('load', replaceShadowDomsWithHtml(document.body));");
             showSaveButton();
         }
     };
@@ -487,34 +493,19 @@ public class ImportOnlineFragment extends Fragment {
                 }
                 break;
             case "SongSelect":
-                webView.postDelayed(() -> {
-                    // Get the flattened content (after initialising it)
-                    MyJSInterface.resetFlattenedWebString();
-                    webView.loadUrl("javascript:replaceShadowDomsWithHtml(document.body);");
-                    // Process now, ahead of a potential save
-                    boolean songSelectShow = false;
-                    // Get the flattened content if it isn't empty
-                    if (!MyJSInterface.getFlattenedWebString().isEmpty()) {
-                        webString = MyJSInterface.getFlattenedWebString();
-                    }
-                    if (webString.contains("<div id=\"LyricsText\"")) {
-                        newSong = songSelect.processContentLyricsText(mainActivityInterface, newSong, webString);
-                        songSelectShow = true;
-                    } else if (webString.contains("<span class=\"cproTitleLine\">")) {
-                        newSong = songSelect.processContentChordPro(getContext(), mainActivityInterface, newSong, webString);
-                        songSelectShow = true;
-                    } else if (webString.contains(" class=\"svg-holder show\"")) {
-                        // Likely to be a pdf download
-                        // IV - For sheet music pages, extract the song title as filename for any PDF download using the SongSelect download button
-                        newSong.setFilename(songSelect.getTitle(webString) + ".pdf");
-                        songSelectShow = true;
-                    } else {
-                        // IV - For sheet music pages, extract the song title as filename for any PDF download using the SongSelect download button
-                        newSong.setFilename(songSelect.getTitle(webString) + ".pdf");
-                    }
-                    doShowSaveButton(songSelectShow);
-                },3000);
+                // Get the flattened content
+                webString = MyJSInterface.getFlattenedWebString();
 
+                if (webString.contains("class=\"music-sheet\"")) {
+                    newSong = songSelect.processContentLyricsText(mainActivityInterface, newSong, webString);
+                    show = true;
+                } else if (webString.contains("<span class=\"cproTitleLine\">")) {
+                    newSong = songSelect.processContentChordPro(getContext(), mainActivityInterface, newSong, webString);
+                    show = true;
+                } else {
+                    // IV - Set a song name for possible use with SongSelect web page download buttons
+                    newSong.setFilename(songSelect.getTitle(webString));
+                }
                 break;
             case "UkuTabs":
                 if (webString.contains("class=\"ukutabschord\"") ||
@@ -597,8 +588,8 @@ public class ImportOnlineFragment extends Fragment {
             case "SongSelect":
                 // IV - Setup for download.  Download code will handle save of any XML extract and the downloaded file
                 if (!mainActivityInterface.getCheckInternet().getSearchPhrase().startsWith("?")) {
-                    if (webString.contains("id=\"downloadLyrics\"")) {
-                        songSelectAutoDownload = "downloadLyrics";
+                    if (webString.contains("id=\"lyricsDownloadButton\"")) {
+                        songSelectAutoDownload = "lyricsDownloadButton";
                     } else if (webString.contains("id=\"chordSheetDownloadButton\"")) {
                         songSelectAutoDownload = "chordSheetDownloadButton";
                     }
