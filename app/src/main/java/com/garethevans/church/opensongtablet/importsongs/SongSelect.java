@@ -81,77 +81,72 @@ public class SongSelect {
 
     public String getTitle(String s) {
         // IV - Try chordpro style
-        int start = s.indexOf("<span class=\"" +
-                "cproTitle\">");
-        int end = s.indexOf("</span>",start);
+        int start = s.indexOf("<span class=\"cproTitle\">");
+        start = start > -1 ? start + 24 : -1;
+        int end = s.indexOf("</span>", start);
 
         // IV - Try song viewer style
         if (start == -1) {
-            start = s.indexOf("<h2 class=\"song-viewer-title\">");
-            end = s.indexOf("</h2>",start);
+            start = s.indexOf("class=\"song-header\">");
+            start = start > -1 ? start + 20 : -1;
+            end = s.indexOf("</h2>", start);
         }
 
         // IV - Try page style
         if (start == -1) {
-            start = s.indexOf("<div class=\"content-title\">");
-            if (start > -1) {
-                start = s.indexOf("<h1>", start);
-                end = s.indexOf("</h1>", start);
-            }
+            start = s.indexOf("data-title=\"");
+            start = start > -1 ? start + 12 : -1;
+            end = s.indexOf("\"", start);
         }
 
-        if (start>-1 && end>-1 && end>start) {
-            start = s.indexOf(">",start) + 1;
-            String t = s.substring(start,end);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                t = Html.fromHtml(t, 0).toString();
-            } else {
-                t = Html.fromHtml(t).toString();
-            }
-            return t.trim();
+        if (start > -1 && end > -1 && end > start) {
+            return parseFromHTML(s.substring(start, end));
         } else {
             return "Not available";
         }
     }
-
+    
     private String getAuthor(String s) {
         // Extract the author
+        String author = "";
+
         // IV - Try chordpro style
         int start = s.indexOf("<span class=\"cproAuthors\">");
         int end = s.indexOf("</span>",start);
+        if (start>-1 && end>-1 && end>start) {
+            start = s.indexOf(">", start) + 1;
+            author = s.substring(start, end);
+        }
 
         // IV - Try song viewer style
         if (start == -1) {
-            start = s.indexOf("<p class=\"contributor\">");
-            end = s.indexOf("</p>",start);
+            if (s.contains("class=\"song-footer\">")) {
+                // IV - Footer has div for logo, author, copyright - code steps to relevant div
+                author = getSubstring(s, "class=\"song-footer\">", "href=") + "¬";
+                author = getSubstring(author, "</div><div", "¬") + "¬";
+                author = getSubstring(author, "</div><div", "</div>");
+                author = stripOutTags("<div" + author);
+            } else {
+                return "";
+            }
         }
 
-        if (start>-1 && end>-1 && end>start) {
-            start = s.indexOf(">",start) + 1;
-            // IV - Remove line breaks, replace non breaking spaces, replace use of | as separator with comma
-            String a = s.substring(start,end).
-                    replaceAll("<br>",", ").
-                    replace("</li><li>",", ").
-                    replace("<li>","").
-                    replace ("</li>","").
-                    replaceAll("&nbsp;"," ").
-                    replaceAll("\u00A0"," ").
-                    replaceAll("\\Q |\\E",",");
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                a = Html.fromHtml(a, 0).toString();
-            } else {
-                a = Html.fromHtml(a).toString();
-            }
-            return a.trim();
-        } else {
-            return "";
-        }
+        // IV - Remove line breaks, replace non breaking spaces, replace use of | as separator with comma
+        author = author.replaceAll("<br>",", ").
+                replace("</li><li>",", ").
+                replace("<li>","").
+                replace ("</li>","").
+                replaceAll("&nbsp;"," ").
+                replaceAll("\u00A0"," ").
+                replaceAll("\\Q |\\E",",");
+
+        return parseFromHTML(author);
     }
 
     private String getKey(String s) {
         String key = "";
         int start = s.indexOf("<code class=\"cproSongKey\"");
-        if (start>0) {
+        if (start > 0) {
             int pos1 = s.indexOf(">",start);
             int pos2 = s.indexOf("</code>", pos1);
             if (pos1 > 0 && pos2 > pos1) {
@@ -168,34 +163,51 @@ public class SongSelect {
                 replace("BPM", "").
                 replace("Bpm", ""));
         newSong.setTimesig(getSubstring(s,"Time -",null).trim().
-                replace("&nbsp;"," "));
+                replace("&nbsp;",""));
     }
 
     private String getCopyright(String s) {
         // IV - Same class for chordpro and song viewer styles
         if (s.contains("<ul class=\"copyright\">")) {
-            s = getSubstring(s, "<ul class=\"copyright\">", "</ul>").
-            // IV - Remove line breaks, copyright, replace non breaking spaces, replace use of | as separator with comma and remove '(Admin. by)' content
-                    replace("</li><li>",", ").
-                    replace("<li>","").
-                    replace ("</li>","").
-                    replace("©","").
-                    replaceAll("&nbsp;"," ").
-                    replaceAll("\u00A0"," ").
-                    replaceAll("\\Q |\\E",",").
-                    replaceAll(" \\(Admin\\..*?\\)","");
-            return s.trim();
+            s = getSubstring(s, "<ul class=\"copyright\">", "</ul>");
+        } else if (s.contains("class=\"song-footer\">")) {
+            // IV - Footer has div for logo, author, copyright - code steps to relevant div
+            s = getSubstring(s, "class=\"song-footer\">", "href=") + "¬";
+            s = getSubstring(s, "</div><div", "¬") + "¬";
+            s = getSubstring(s, "</div><div", "¬") + "¬";
+            s = getSubstring(s, "</div><div", "</div>");
+            s = stripOutTags("<div"+ s);
         } else {
             return "";
         }
+
+        // IV - Remove line breaks, copyright, replace non breaking spaces, replace use of | as separator with comma and remove '(Admin. by)' content
+        s = s.replace("</li><li>",", ").
+                replace("<li>","").
+                replace ("</li>","").
+                replace("©","").
+                replaceAll("&nbsp;"," ").
+                replaceAll("\u00A0"," ").
+                replaceAll("\\Q |\\E",",").
+                replaceAll(" \\(Admin\\..*?\\)","");
+        return s.trim();
     }
 
     private String getCCLI(String s) {
-        // IV - Same class for chordpro and song viewer styles
-        // IV - Step over leading words
-        String ccli;
+        String ccli = "";
         int start;
-        ccli = getSubstring(s,"<p class=\"songnumber\">CCLI Song #","</p>").trim();
+
+        // IV - Tries to handle local variants
+        if (s.contains("CCLI Song #")) {
+            ccli = stripOutTags("<" + getSubstring(s, "CCLI Song #", "</"));
+        } else if (s.contains("Número de la canción CCLI")) {
+            ccli = stripOutTags("<" + getSubstring(s, "Número de la canción CCLI", "</"));
+        } else if (s.contains("Música CCLI")) {
+            ccli = stripOutTags("<" + getSubstring(s, "Música CCLI", "</"));
+        }
+        ccli = ccli.trim();
+
+        // IV - Step over leading words
         while (ccli.contains(" ")) {
             start = ccli.indexOf(" ");
             ccli = ccli.substring(start + 1);
@@ -261,30 +273,22 @@ public class SongSelect {
     }
 
     public Song processContentLyricsText(MainActivityInterface mainActivityInterface, Song newSong, String s) {
-        int start;
-        int end;
-
-        start = s.indexOf("<div class=\"song-viewer lyrics\" id=\"song-viewer\">");
-        end = s.indexOf("</div>", start);
+        int start = s.indexOf("sheet-container\">");
+        int end = s.indexOf("</main><footer", start);
         if (start > -1 && end > -1 && end > start) {
             start = s.indexOf(">", start) + 1;
             String lyrics = s.substring(start, end).trim();
-            // IV - Drop the bottom copyright info
-            end = lyrics.indexOf("<div class=\"copyright-info\">");
-            if (end > -1) {
-                lyrics = lyrics.substring(0, end);
-            }
-            // IV - Mark a song viewer part as a tag
-            lyrics = lyrics.replaceAll("<h3 class=\"song-viewer-part\">", "<h3 class=\"song-viewer-part\">#[").
-                    replaceAll("</h3>", "]</h3>");
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                lyrics = Html.fromHtml(lyrics, 0).toString();
-            } else {
-                lyrics = Html.fromHtml(lyrics).toString();
-            }
-            // IV - Remove extra line after tag
-            lyrics = lyrics.replaceAll("]\n\n", "]\n");
-
+ 
+            // IV - Mark each Song viewer part as a section
+            lyrics = lyrics.replaceAll("(?<=<h3).*?(?=>)", "") // Remove text between <h3 and >
+                    .replaceAll("<h3>", "<h3>#[")
+                    .replaceAll("</h3>", "]</h3>");
+            lyrics = parseFromHTML(lyrics);
+ 
+            // IV - Handle blank lines
+            lyrics = lyrics.replaceAll("\n\n", "\n")
+                    .replace("\n#[", "\n\n#[");
+ 
             // The first line is the title normally
             end = lyrics.indexOf("\n");
             if (end > -1) {
@@ -303,5 +307,13 @@ public class SongSelect {
         newSong.setCopyright(mainActivityInterface.getProcessSong().parseHTML(getCopyright(s)));
 
         return newSong;
+    }
+
+    private String parseFromHTML(String html) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            return Html.fromHtml(html, 0).toString().trim();
+        } else {
+            return Html.fromHtml(html).toString().trim();
+        }
     }
 }

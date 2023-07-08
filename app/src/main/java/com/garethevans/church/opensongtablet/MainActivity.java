@@ -2198,8 +2198,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             case "setblankScreenUnChecked":
                 if (presenterFragment != null) {
                     presenterFragment.setBlankScreenUnChecked();
-                    getPresenterSettings().setBlankscreenOn(false);
                 }
+                getPresenterSettings().setBlankscreenOn(false);
                 break;
         }
     }

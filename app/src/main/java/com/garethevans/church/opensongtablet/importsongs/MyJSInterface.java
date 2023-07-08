@@ -81,6 +81,7 @@ public class MyJSInterface {
 
     @JavascriptInterface
     public static String flattenShadowRoot() {
+        // IV - Return all content with the shadow DOM expanded
         return "var shadowHTML = '';\n" +
                 "// Returns HTML of given shadow DOM.\n" +
                 "function getShadowDomHtml(shadowRoot) {\n" +
@@ -99,12 +100,14 @@ public class MyJSInterface {
                 "            el.innerHTML += getShadowDomHtml(el.shadowRoot);\n" +
                 "        }\n" +
                 "    }\n" +
-                "   HTMLOUT.getShadowHTML(shadowHTML);\n" +
-                "};";
+                "   shadowHTML = document.documentElement.outerHTML;\n" +
+                "   HTMLOUT.setShadowHTML(shadowHTML);\n" +
+                "}\n" +
+                "replaceShadowDomsWithHtml(document.body);";
     }
 
     @JavascriptInterface
-    public static String getShadowHTML(String shadowHTML) {
+    public static String setShadowHTML(String shadowHTML) {
         Log.d(TAG,"shadowHTML:"+shadowHTML);
         MyJSInterface.shadowHTML = shadowHTML;
         return shadowHTML;
