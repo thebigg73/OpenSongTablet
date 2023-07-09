@@ -167,9 +167,10 @@ public class SongSelect {
     }
 
     private String getCopyright(String s) {
-        // IV - Same class for chordpro and song viewer styles
+        // IV - Try chordpro style
         if (s.contains("<ul class=\"copyright\">")) {
             s = getSubstring(s, "<ul class=\"copyright\">", "</ul>");
+        // IV - Try song viewer style
         } else if (s.contains("class=\"song-footer\">")) {
             // IV - Footer has div for logo, author, copyright - code steps to relevant div
             s = getSubstring(s, "class=\"song-footer\">", "href=") + "¬";
@@ -195,19 +196,20 @@ public class SongSelect {
 
     private String getCCLI(String s) {
         String ccli = "";
-        int start;
-
-        // IV - Tries to handle local variants
-        if (s.contains("CCLI Song #")) {
-            ccli = stripOutTags("<" + getSubstring(s, "CCLI Song #", "</"));
-        } else if (s.contains("Número de la canción CCLI")) {
-            ccli = stripOutTags("<" + getSubstring(s, "Número de la canción CCLI", "</"));
-        } else if (s.contains("Música CCLI")) {
-            ccli = stripOutTags("<" + getSubstring(s, "Música CCLI", "</"));
+        // IV - Try chordpro style
+        if (s.contains("<p class=\"songnumber\">")) {
+            ccli = stripOutTags(getSubstring(s, "<p class=\"songnumber\">", "</p>"));
+        // IV - Try song viewer style
+        } else if (s.contains("class=\"song-footer\">")) {
+            // IV - Footer has div for logo, author, copyright - code steps to relevant div
+            ccli = getSubstring(s, "class=\"song-footer\">", "href=") + "¬";
+            ccli = getSubstring(ccli, "</div><div", "</div>");
+            ccli = stripOutTags("<" + ccli);
+        } else {
+            return "";
         }
-        ccli = ccli.trim();
-
-        // IV - Step over leading words
+        int start;
+        // IV - Tries to handle local variants, assumes the song number is at the end so removes leading words
         while (ccli.contains(" ")) {
             start = ccli.indexOf(" ");
             ccli = ccli.substring(start + 1);
