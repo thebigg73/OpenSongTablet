@@ -7,6 +7,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.JsonReader;
@@ -418,25 +419,28 @@ public class ImportOnlineFragment extends Fragment {
         executorService.execute(() -> {
             webString = "";
 
-            // IV - SongSelect uses shadow DOM content, delay to allow this to fully populate
-            int delay = 0;
-            if (source.equals("SongSelect")) {
-                delay = 3000;
-            }
-            webView.postDelayed(() -> {
+            webView.post(() -> {
                 try {
-                    String script = "javascript:document.getElementsByTagName('html')[0].innerHTML;";
-                    // If we are using SongSelect, we need to flatten shadow DOM
+                    String script = "";
                     if (source.equals("SongSelect")) {
                         MyJSInterface.resetFlattenedWebString();
-                        script += " " + MyJSInterface.flattenShadowRoot();
+                        // IV - SongSelect viewers use shadow DOM content, allow time to fully populate and then extract
+                        if (webView.getOriginalUrl().endsWith("/viewchordsheet") || webView.getOriginalUrl().endsWith("/viewlyrics")) {
+                            script = MyJSInterface.flattenShadowRoot();
+                            String finalScript = script;
+                            new Handler().postDelayed(() -> webView.evaluateJavascript(finalScript, webContent), 5000);
+                        } else {
+                            script = "javascript:document.getElementsByTagName('html')[0].innerHTML;";
+                            webView.evaluateJavascript(script, webContent);
+                        }
+                    } else {
+                        script = "javascript:document.getElementsByTagName('html')[0].innerHTML;";
+                        webView.evaluateJavascript(script, webContent);
                     }
-                    webView.evaluateJavascript(script, webContent);
-
                 } catch (Exception e) {
-                        e.printStackTrace();
+                    e.printStackTrace();
                 }
-            },delay);
+            });
         });
     }
 
@@ -804,36 +808,42 @@ public class ImportOnlineFragment extends Fragment {
     }
 
     public void destroyWebView() {
-
-        // Make sure you remove the WebView from its parent view before doing anything.
-        myView.webViewHolder.removeAllViews();
-
-        if (webView!=null) {
-            webView.clearHistory();
-
-            // NOTE: clears RAM cache, if you pass true, it will also clear the disk cache.
-            // Probably not a great idea to pass true if you have other WebViews still alive.
-            webView.clearCache(true);
-
-            // Loading a blank page is optional, but will ensure that the WebView isn't doing anything when you destroy it.
-            webView.loadUrl("about:blank");
-
-            webView.onPause();
-            webView.removeAllViews();
-            webView.destroyDrawingCache();
-
-            // NOTE: This pauses JavaScript execution for ALL WebViews,
-            // do not use if you have other WebViews still alive.
-            // If you create another WebView after calling this,
-            // make sure to call mWebView.resumeTimers().
-            webView.pauseTimers();
-
-            // NOTE: This can occasionally cause a segfault below API 17 (4.2)
-            webView.destroy();
-
-            // Null out the reference so that you don't end up re-using it.
-            webView = null;
+        try {
+            // Make sure you remove the WebView from its parent view before doing anything.
+            myView.webViewHolder.removeAllViews();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
+        try {
+            if (webView!=null) {
+                webView.clearHistory();
+
+                // NOTE: clears RAM cache, if you pass true, it will also clear the disk cache.
+                // Probably not a great idea to pass true if you have other WebViews still alive.
+                webView.clearCache(true);
+
+                // Loading a blank page is optional, but will ensure that the WebView isn't doing anything when you destroy it.
+                webView.loadUrl("about:blank");
+
+                webView.onPause();
+                webView.removeAllViews();
+                webView.destroyDrawingCache();
+
+                // NOTE: This pauses JavaScript execution for ALL WebViews,
+                // do not use if you have other WebViews still alive.
+                // If you create another WebView after calling this,
+                // make sure to call mWebView.resumeTimers().
+                webView.pauseTimers();
+
+                // NOTE: This can occasionally cause a segfault below API 17 (4.2)
+                webView.destroy();
+            }
+        } catch (Exception e) {
+                e.printStackTrace();
+        }
+        // Null out the reference so that you don't end up re-using it.
+        webView = null;
     }
 
     @Override
