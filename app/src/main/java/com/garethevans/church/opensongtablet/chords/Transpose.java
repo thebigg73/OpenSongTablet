@@ -723,7 +723,10 @@ public class Transpose {
     }
 
     public String capoKeyTranspose() {
-        if (mainActivityInterface.getSong().getKey()!=null && mainActivityInterface.getSong().getCapo()!=null) {
+        if (mainActivityInterface.getSong().getKey()!=null &&
+                mainActivityInterface.getSong().getCapo()!=null &&
+                !mainActivityInterface.getSong().getKey().isEmpty() &&
+                !mainActivityInterface.getSong().getCapo().isEmpty()) {
             capoKey = numberToKey(transposeNumber(keyToNumber(mainActivityInterface.getSong().getKey()),
                     "-1", Integer.parseInt("0" + mainActivityInterface.getSong().getCapo())));
             return capoKey;

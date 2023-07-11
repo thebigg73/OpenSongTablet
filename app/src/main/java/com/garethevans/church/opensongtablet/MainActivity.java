@@ -1054,7 +1054,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     progressText = " " + progressView.getText().toString();
                 }
             }
-            showToast.doIt(indexing_string + progressText);
+            if (showToast!=null) {
+                showToast.doIt(indexing_string + progressText);
+            }
         } else {
             runOnUiThread(() -> {
                 try {

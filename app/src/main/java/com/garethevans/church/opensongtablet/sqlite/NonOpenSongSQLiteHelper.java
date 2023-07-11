@@ -72,7 +72,7 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
         OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(userDB);
         mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" copyNonOpenSongAppDB copyFile from "+appDB+" to "+userDB);
         boolean copied = mainActivityInterface.getStorageAccess().copyFile(inputStream,outputStream);
-        Log.d(TAG,"Shut down calls "+SQLite.NON_OS_DATABASE_NAME+" from "+appDB+" to "+userDB+" - success:"+copied);
+        Log.d(TAG,"Copy user database "+SQLite.NON_OS_DATABASE_NAME+" from "+appDB+" to "+userDB+" - success:"+copied);
         return copied;
     }
 

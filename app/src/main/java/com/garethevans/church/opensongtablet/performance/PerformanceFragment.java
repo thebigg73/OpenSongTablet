@@ -531,7 +531,10 @@ public class PerformanceFragment extends Fragment {
             // Set as not using pdfLandscape by default
             mainActivityInterface.getGestures().setPdfLandscapeView(false);
 
-            if (mainActivityInterface.getSong()!=null && mainActivityInterface.getSong().getFiletype()!=null) {
+            if (mainActivityInterface.getSong() != null &&
+                    mainActivityInterface.getSong().getFiletype() != null &&
+                    mainActivityInterface.getSong().getFolder() != null) {
+
                 if (mainActivityInterface.getSong().getFiletype().equals("PDF") &&
                         android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
                     preparePDFView();

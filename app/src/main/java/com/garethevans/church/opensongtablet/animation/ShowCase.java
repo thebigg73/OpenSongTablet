@@ -29,7 +29,11 @@ public class ShowCase {
     }
 
     public boolean singleShowCase(Activity c, View target, String dismiss, String info, boolean rect, String id) {
-        return singleShowCaseBuilder(c,target,dismiss,info,rect,id).setMaskColour(showcaseColor).setContentTextColor(white).build().show(c);
+        if (c!=null && target!=null) {
+            return singleShowCaseBuilder(c, target, dismiss, info, rect, id).setMaskColour(showcaseColor).setContentTextColor(white).build().show(c);
+        } else {
+            return false;
+        }
     }
 
     public MaterialShowcaseView.Builder getSingleShowCaseBuilderForListener(Activity c, View target,

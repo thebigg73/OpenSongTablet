@@ -2,7 +2,6 @@ package com.garethevans.church.opensongtablet.beatbuddy;
 
 import android.content.Context;
 import android.os.Build;
-import android.util.Log;
 
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
@@ -88,8 +87,6 @@ public class BeatBuddy {
         if (c!=null) {
             try (BBSQLite bbsqLite = new BBSQLite(c)) {
                 bbsqLite.checkDefaultDatabase();
-                Log.d(TAG, "myDrums:" + bbsqLite.getMyDrumsCount());
-                Log.d(TAG, "mySongs:" + bbsqLite.getMySongsCount());
             }
         }
     }

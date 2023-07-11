@@ -92,14 +92,16 @@ public class FontSetupPreviewFragment extends DialogFragment {
     }
 
     public void prepareAlphaList() {
-        myView.sideIndex.removeAllViews();
-        for (String ab:alphaList) {
-            TextView textView = new TextView(getContext());
-            textView.setTextSize(20.0f);
-            textView.setText(ab);
-            textView.setPadding(32,32,32,32);
-            textView.setOnClickListener(v -> setupWebView(ab));
-            myView.sideIndex.addView(textView);
+        if (myView!=null) {
+            myView.sideIndex.removeAllViews();
+            for (String ab : alphaList) {
+                TextView textView = new TextView(getContext());
+                textView.setTextSize(20.0f);
+                textView.setText(ab);
+                textView.setPadding(32, 32, 32, 32);
+                textView.setOnClickListener(v -> setupWebView(ab));
+                myView.sideIndex.addView(textView);
+            }
         }
     }
 

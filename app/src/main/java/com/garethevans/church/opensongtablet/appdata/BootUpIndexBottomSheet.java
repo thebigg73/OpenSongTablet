@@ -120,7 +120,9 @@ public class BootUpIndexBottomSheet extends BottomSheetDialogFragment {
 
                 if (countdownNumber==1) {
                     this.cancel();
-                    timer.purge();
+                    if (timer!=null) {
+                        timer.purge();
+                    }
                     timer = null;
                     if (myView!=null) {
                         myView.continueButton.post(() -> myView.continueButton.performClick());
