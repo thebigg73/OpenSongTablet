@@ -866,6 +866,7 @@
     <string name="visible">Sigbaar</string>
     <string name="visual_metronome">"Visueel"</string>
     <string name="volume">"Deel"</string>
+    <string name="volume_headphone">Koptelefoon volume</string>
     <string name="volume_value">"Huidige volume-waarde"</string>
     <string name="wait">"Wag ...."</string>
     <string name="website">Webwerf</string>

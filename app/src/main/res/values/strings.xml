@@ -1115,6 +1115,7 @@
     <string name="visible">Visible</string>
     <string name="visual_metronome">Visual</string>
     <string name="volume">Volume</string>
+    <string name="volume_headphone">Headphone volume</string>
     <string name="volume_value">Current volume value</string>
     <string name="wait">Wait....</string>
     <string name="website">Website</string>

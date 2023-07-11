@@ -866,6 +866,7 @@
     <string name="visible">Видно</string>
     <string name="visual_metronome">Візуальний метроном</string>
     <string name="volume">Гучність</string>
+    <string name="volume_headphone">Гучність навушників</string>
     <string name="volume_value">Поточне значення гучності</string>
     <string name="wait">Зачекайте ....</string>
     <string name="website">веб-сайт</string>

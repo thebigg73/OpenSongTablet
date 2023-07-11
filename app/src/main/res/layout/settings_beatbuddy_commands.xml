@@ -172,6 +172,27 @@
             <TableRow style="@style/DividerLine" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                android:id="@+id/includeHPVolume"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/midi_message_include"
+                android:text="@string/volume_headphone" />
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+                android:id="@+id/beatBuddyHPVolume"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@null"
+                android:value="100"
+                android:valueFrom="0"
+                android:valueTo="100"
+                android:visibility="gone"
+                app:adjustable="true"
+                app:stepSize="1" />
+
+            <TableRow style="@style/DividerLine" />
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
                 android:id="@+id/includeTempo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -866,6 +866,7 @@
     <string name="visible">Látható</string>
     <string name="visual_metronome">"Vizuális"</string>
     <string name="volume">"Hangerő"</string>
+    <string name="volume_headphone">Fejhallgató hangereje</string>
     <string name="volume_value">"Aktuális hangerő értéke"</string>
     <string name="wait">"Várni ...."</string>
     <string name="website">Weboldal</string>

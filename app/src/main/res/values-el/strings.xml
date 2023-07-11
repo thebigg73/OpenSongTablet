@@ -866,6 +866,7 @@
     <string name="visible">Ορατός</string>
     <string name="visual_metronome">"Visual"</string>
     <string name="volume">"Volume"</string>
+    <string name="volume_headphone">Ένταση ακουστικών</string>
     <string name="volume_value">"Current volume value"</string>
     <string name="wait">"Wait...."</string>
     <string name="website">Δικτυακός τόπος</string>

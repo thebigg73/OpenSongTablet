@@ -36,13 +36,13 @@ public class BBCommandsFragment extends Fragment {
     private final String TAG = "BeatBuddyFragment";
     private String not_set_string="", bpm_string="", folder_string="", song_string="", channel_string="",
         success_string="", tempo_string="", volume_string="", unknown_string="", drumkit_string="",
-            web_string="", playlist_string="", beat_buddy_string="";
+            headphone_volume_string="", web_string="", playlist_string="", beat_buddy_string="";
     private ArrayList<String> messageDescriptions;
     private ArrayList<String> messageBeatBuddy;
-    private String songCommand, tempoCommand, volumeCommand, drumKitCommand, beatBuddyCommands;
+    private String songCommand, tempoCommand, volumeCommand, volumeHPCommand, drumKitCommand, beatBuddyCommands;
     private int fromSongMessages_channel, fromSongMessages_folderMSB, fromSongMessages_folderLSB,
             fromSongMessages_songPC, fromSongMessages_tempoMSB, fromSongMessages_tempoLSB,
-            fromSongMessages_volumeCC, fromSongMessages_drumKitCC;
+            fromSongMessages_volumeCC, fromSongMessages_volumeHPCC, fromSongMessages_drumKitCC;
     private BBSQLite bbsqLite;
     private String searchAerosFolder, searchAerosSong, searchDrumKit;
     private String webAddress;
@@ -95,6 +95,7 @@ public class BBCommandsFragment extends Fragment {
             channel_string = getString(R.string.midi_channel);
             tempo_string = getString(R.string.tempo);
             volume_string = getString(R.string.volume);
+            headphone_volume_string = getString(R.string.volume_headphone);
             unknown_string = getString(R.string.unknown);
             drumkit_string = getString(R.string.drum_kit);
             playlist_string = getString(R.string.playlist);
@@ -118,6 +119,7 @@ public class BBCommandsFragment extends Fragment {
         fromSongMessages_tempoMSB = -1;
         fromSongMessages_tempoLSB = -1;
         fromSongMessages_volumeCC = -1;
+        fromSongMessages_volumeHPCC = -1;
         fromSongMessages_drumKitCC = -1;
 
         for (String item: songMessages) {
@@ -128,6 +130,7 @@ public class BBCommandsFragment extends Fragment {
                 String songPC = "";
                 String drumkitCC = "";
                 String volumeCC = "";
+                String volumeHPCC = "";
                 String tempoMSB = "";
                 String tempoLSB = "";
                 // Make message parts
@@ -155,6 +158,9 @@ public class BBCommandsFragment extends Fragment {
                     } else if (messageParts[1].equals("B") && messageParts[2].equals(""+mainActivityInterface.getBeatBuddy().getCC_Mix_vol())) {
                         channelLSB = messageParts[0];
                         volumeCC = messageParts[3];
+                    } else if (messageParts[1].equals("B") && messageParts[2].equals(""+mainActivityInterface.getBeatBuddy().getCC_HP_vol())) {
+                        channelLSB = messageParts[0];
+                        volumeHPCC = messageParts[3];
                     } else {
                         channelLSB = messageParts[0];
                     }
@@ -208,6 +214,12 @@ public class BBCommandsFragment extends Fragment {
                     volumeCCMessage = volume_string + " (CC):" + fromSongMessages_volumeCC;
                 }
 
+                String volumeHPCCMessage = "";
+                if (!volumeHPCC.isEmpty()) {
+                    fromSongMessages_volumeHPCC = Integer.parseInt(volumeHPCC);
+                    volumeHPCCMessage = headphone_volume_string + " (CC):" + fromSongMessages_volumeHPCC;
+                }
+
                 String drumKitCCMessage = "";
                 if (!drumkitCC.isEmpty()) {
                     fromSongMessages_drumKitCC = Integer.parseInt(drumkitCC);
@@ -215,7 +227,8 @@ public class BBCommandsFragment extends Fragment {
                 }
 
                 String known_message = folderMSBMessage + folderLSBMessage + songPCMessage +
-                        tempoMSBMessage + tempoLSBMessage + volumeCCMessage + drumKitCCMessage;
+                        tempoMSBMessage + tempoLSBMessage + volumeCCMessage + volumeHPCCMessage +
+                        drumKitCCMessage;
                 if (known_message.trim().isEmpty()) {
                     known_message = unknown_string;
                 }
@@ -249,8 +262,7 @@ public class BBCommandsFragment extends Fragment {
 
         // If we are including song details
         myView.includeSong.setChecked(mainActivityInterface.getBeatBuddy().getBeatBuddyIncludeSong());
-        myView.aerosMode.setChecked(mainActivityInterface.getBeatBuddy().getBeatBuddyIncludeSong() &&
-                mainActivityInterface.getBeatBuddy().getBeatBuddyAerosMode());
+        myView.aerosMode.setChecked(mainActivityInterface.getBeatBuddy().getBeatBuddyAerosMode());
         // When in normal mode, show the text input for Folder (1-128^2) and Song (1-128)
         myView.includeSongLayout.setVisibility(
                 mainActivityInterface.getBeatBuddy().getBeatBuddyIncludeSong() &&
@@ -302,6 +314,14 @@ public class BBCommandsFragment extends Fragment {
             myView.beatBuddyVolume.setVisibility(isChecked ? View.VISIBLE:View.GONE);
             updateVolumeCommand();
         });
+        myView.includeHPVolume.setChecked(mainActivityInterface.getBeatBuddy().getBeatBuddyIncludeHPVolume());
+        myView.beatBuddyHPVolume.setVisibility(
+                mainActivityInterface.getBeatBuddy().getBeatBuddyIncludeHPVolume() ? View.VISIBLE:View.GONE);
+        myView.includeHPVolume.setOnCheckedChangeListener((buttonView, isChecked) -> {
+           mainActivityInterface.getBeatBuddy().setBeatBuddyIncludeHPVolume(isChecked);
+           myView.beatBuddyHPVolume.setVisibility(isChecked ? View.VISIBLE:View.GONE);
+           updateVolumeHPCommand();
+        });
 
         // Include tempo change
         myView.includeTempo.setChecked(mainActivityInterface.getBeatBuddy().getBeatBuddyIncludeTempo());
@@ -324,8 +344,10 @@ public class BBCommandsFragment extends Fragment {
         // Initialise the sliders, values, hints and listeners
         initialiseSlider(myView.beatBuddyChannel,"beatBuddyChannel",
                 mainActivityInterface.getBeatBuddy().getBeatBuddyChannel(),"");
-        initialiseSlider(myView.beatBuddyVolume, "beatBuddyHeadphones",
+        initialiseSlider(myView.beatBuddyVolume, "beatBuddyVolume",
                 mainActivityInterface.getBeatBuddy().getBeatBuddyVolume(),"%");
+        initialiseSlider(myView.beatBuddyHPVolume, "beatBuddyHPVolume",
+                mainActivityInterface.getBeatBuddy().getBeatBuddyHPVolume(),"%");
         initialiseSlider(myView.songTempo, "songTempo",
                 getSongTempoForBeatBuddy(),bpm_string);
         initialiseSlider(myView.midiDelay, "midiDelay",
@@ -340,6 +362,7 @@ public class BBCommandsFragment extends Fragment {
         // Enable the + / - adjustment buttons for fine tuning
         myView.beatBuddyChannel.setAdjustableButtons(true);
         myView.beatBuddyVolume.setAdjustableButtons(true);
+        myView.beatBuddyHPVolume.setAdjustableButtons(true);
         myView.aerosFolder.setAdjustableButtons(true);
         myView.aerosSong.setAdjustableButtons(true);
         myView.beatBuddyChannel.setAdjustableButtons(true);
@@ -383,6 +406,10 @@ public class BBCommandsFragment extends Fragment {
         if (fromSongMessages_volumeCC>-1) {
             int vol = fromSongMessages_volumeCC;
             myView.beatBuddyVolume.setValue(vol);
+        }
+        if (fromSongMessages_volumeHPCC>-1) {
+            int hpvol = fromSongMessages_volumeHPCC;
+            myView.beatBuddyHPVolume.setValue(hpvol);
         }
 
         myView.testSongCode.setOnClickListener(view -> {
@@ -442,7 +469,7 @@ public class BBCommandsFragment extends Fragment {
             slider.setValue(value);
         } else if (prefName!=null && prefName.equals("beatBuddyDrumKit")) {
             setSliderHintText(myView.drumKit, drumkit_string, searchDrumKit, false,
-                    bbsqLite.COLUMN_KIT_NAME, (int)value, -1);
+                    bbsqLite.COLUMN_KIT_NAME, value, -1);
         } else {
             slider.setHint(value + labelEnd);
             slider.setValue(value);
@@ -485,6 +512,10 @@ public class BBCommandsFragment extends Fragment {
 
                     case "beatBuddyVolume":
                         mainActivityInterface.getBeatBuddy().setBeatBuddyVolume(value);
+                        break;
+
+                    case "beatBuddyHPVolume":
+                        mainActivityInterface.getBeatBuddy().setBeatBuddyHPVolume(value);
                         break;
 
                     case "songTempo":
@@ -587,12 +618,12 @@ public class BBCommandsFragment extends Fragment {
 
         if (slider==myView.aerosFolder) {
             if (value1 > 111) {
-                hint = playlist_string + " " + (int) (value - 111);
+                hint = playlist_string + " " + (value - 111);
             } else {
-                hint = folder_string + " " + (int) value;
+                hint = folder_string + " " + value;
             }
         } else {
-            hint = prefix + " " + (int) value;
+            hint = prefix + " " + value;
         }
 
         String lookedUpHint = bbsqLite.lookupValue(getColumn, querySearch, args);
@@ -620,6 +651,7 @@ public class BBCommandsFragment extends Fragment {
         updateSongCommand();
         updateTempoCommand();
         updateVolumeCommand();
+        updateVolumeHPCommand();
         updateDrumKitCommand();
         beatBuddyCommands = "";
         if (!songCommand.isEmpty()) {
@@ -627,6 +659,9 @@ public class BBCommandsFragment extends Fragment {
         }
         if (!volumeCommand.isEmpty()) {
             beatBuddyCommands += volumeCommand + "\n";
+        }
+        if (!volumeHPCommand.isEmpty()) {
+            beatBuddyCommands += volumeHPCommand + "\n";
         }
         if (!tempoCommand.isEmpty()) {
             beatBuddyCommands += tempoCommand + "\n";
@@ -705,6 +740,13 @@ public class BBCommandsFragment extends Fragment {
             volumeCommand = mainActivityInterface.getBeatBuddy().getVolumeCode();
         }
     }
+    private void updateVolumeHPCommand() {
+        volumeHPCommand = "";
+        if (myView.includeHPVolume.getChecked()) {
+            mainActivityInterface.getBeatBuddy().setBeatBuddyHPVolume((int)myView.beatBuddyHPVolume.getValue());
+            volumeHPCommand = mainActivityInterface.getBeatBuddy().getVolumeHPCode();
+        }
+    }
 
     private void updateDrumKitCommand() {
         drumKitCommand = "";
@@ -732,6 +774,12 @@ public class BBCommandsFragment extends Fragment {
         if (myView.includeVolume.getChecked() && !volumeCommand.isEmpty()) {
             // Add the volume
             currentMidiSongMessages += "\n" + volumeCommand;
+        }
+        currentMidiSongMessages = currentMidiSongMessages.trim();
+
+        if (myView.includeHPVolume.getChecked() && !volumeHPCommand.isEmpty()) {
+            // Add the headphone volume
+            currentMidiSongMessages += "\n" + volumeHPCommand;
         }
         currentMidiSongMessages = currentMidiSongMessages.trim();
 

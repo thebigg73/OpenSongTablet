@@ -866,6 +866,7 @@
     <string name="visible">Vidljivo</string>
     <string name="visual_metronome">Vidljiv</string>
     <string name="volume">Jačina</string>
+    <string name="volume_headphone">Jačina zvuka slušalica</string>
     <string name="volume_value">Trenutna jačina zvuka</string>
     <string name="wait">Sačekajte....</string>
     <string name="website">Veb sajt</string>

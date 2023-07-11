@@ -242,7 +242,11 @@ public class Midi {
     }
 
     String getNoteFromInt(int i) {
-        return notes.get(i);
+        if (i<notes.size()) {
+            return notes.get(i);
+        } else {
+            return "";
+        }
     }
 
     public String getReadableStringFromHex(String s) {
@@ -369,6 +373,7 @@ public class Midi {
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void sendMidi(int position) {
         // Send midi from the arrayList
+        Log.d(TAG,"sendMidi("+position+")");
         if (position >= 0 && position < songMidiMessages.size()) {
             sendMidi(returnBytesFromHexText(songMidiMessages.get(position)));
         }
@@ -391,6 +396,7 @@ public class Midi {
     public int sendMidiHexSequence(String sequence) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
                 sequence!=null && !sequence.isEmpty()) {
+            Log.d(TAG,"sequence:"+sequence);
             String[] messages = sequence.split("\n");
             for (int x=0; x<messages.length; x++) {
                 int finalX = x;

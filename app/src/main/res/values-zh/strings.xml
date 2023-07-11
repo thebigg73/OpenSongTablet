@@ -866,6 +866,7 @@
     <string name="visible">可见的</string>
     <string name="visual_metronome">"视觉"</string>
     <string name="volume">"音量"</string>
+    <string name="volume_headphone">Koptelefoon volume</string>
     <string name="volume_value">"当前音量值"</string>
     <string name="wait">"等待...."</string>
     <string name="website">网站</string>

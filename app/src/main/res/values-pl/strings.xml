@@ -866,6 +866,7 @@
     <string name="visible">Widoczny</string>
     <string name="visual_metronome">"Wizualny"</string>
     <string name="volume">"Głośność"</string>
+    <string name="volume_headphone">Głośność słuchawek</string>
     <string name="volume_value">"Wartość prądu objętość"</string>
     <string name="wait">"Czekać ...."</string>
     <string name="website">Stronie internetowej</string>

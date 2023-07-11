@@ -866,6 +866,7 @@
     <string name="visible">Отобразить</string>
     <string name="visual_metronome">Визуальный метроном</string>
     <string name="volume">Громкость</string>
+    <string name="volume_headphone">Громкость наушников</string>
     <string name="volume_value">Громкость</string>
     <string name="wait">Подождите....</string>
     <string name="website">Веб-сайт</string>

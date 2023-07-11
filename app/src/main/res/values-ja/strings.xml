@@ -866,6 +866,7 @@
     <string name="visible">見える</string>
     <string name="visual_metronome">"ビジュアル"</string>
     <string name="volume">"ボリューム"</string>
+    <string name="volume_headphone">ヘッドホンの音量</string>
     <string name="volume_value">"現在のボリューム値"</string>
     <string name="wait">"待って...."</string>
     <string name="website">Webサイト</string>

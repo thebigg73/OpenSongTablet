@@ -866,6 +866,7 @@
     <string name="visible">Viditelné</string>
     <string name="visual_metronome">"Vizuální"</string>
     <string name="volume">"Hlasitost"</string>
+    <string name="volume_headphone">Hlasitost sluchátek</string>
     <string name="volume_value">"Aktuální hodnota objemu"</string>
     <string name="wait">"Počkejte ...."</string>
     <string name="website">Webová stránka</string>

@@ -679,8 +679,10 @@ public class MidiFragment extends Fragment {
         // First split by spaces
         boolean success = false;
         try {
+            Log.d(TAG,"test:"+mm);
             byte[] b = mainActivityInterface.getMidi().returnBytesFromHexText(mm);
-            success = mainActivityInterface.getMidi().sendMidi(b);
+            success = mainActivityInterface.getMidi().sendMidiHexSequence(mm)>0;
+            //success = mainActivityInterface.getMidi().sendMidi(b);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -737,6 +739,7 @@ public class MidiFragment extends Fragment {
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void disconnectDevices() {
         mainActivityInterface.getMidi().disconnectDevice();
+        myView.progressBar.setVisibility(View.GONE);
         displayCurrentDevice();
     }
 

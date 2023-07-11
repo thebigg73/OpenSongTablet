@@ -866,6 +866,7 @@
     <string name="visible">Synlig</string>
     <string name="visual_metronome">"Visuell"</string>
     <string name="volume">"Volym"</string>
+    <string name="volume_headphone">Hörlursvolym</string>
     <string name="volume_value">"Aktuellt volymvärde"</string>
     <string name="wait">"Vänta...."</string>
     <string name="website">Hemsida</string>

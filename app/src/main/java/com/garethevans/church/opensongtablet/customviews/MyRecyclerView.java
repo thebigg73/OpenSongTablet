@@ -284,26 +284,28 @@ public class MyRecyclerView extends RecyclerView  implements RecyclerView.Smooth
 
         @Override
         public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-            super.onScrolled(recyclerView, dx, dy);
+            if (mainActivityInterface!=null) {
+                super.onScrolled(recyclerView, dx, dy);
 
-            if (isUserTouching) {
-                floatScrollXPos = floatScrollXPos + dx;
-                floatScrollYPos = floatScrollYPos + dy;
+                if (isUserTouching) {
+                    floatScrollXPos = floatScrollXPos + dx;
+                    floatScrollYPos = floatScrollYPos + dy;
+                }
+                scrolledToTop = recyclerView.computeVerticalScrollOffset() == 0;
+                scrolledToStart = recyclerView.computeHorizontalScrollExtent() == 0;
+                scrolledToBottom = (maxScrollY - recyclerView.computeVerticalScrollOffset() - (4f * mainActivityInterface.getDisplayDensity())) <= 1;
+                if (recyclerView.getLayoutManager() != null && recyclerView.getLayoutManager() instanceof RecyclerLayoutManager) {
+                    int firstVisiblePosition = ((RecyclerLayoutManager) recyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
+                    int lastVisiblePosition = ((RecyclerLayoutManager) recyclerView.getLayoutManager()).findLastCompletelyVisibleItemPosition();
+                    scrolledToStart = firstVisiblePosition == 0;
+                    scrolledToEnd = lastVisiblePosition == mainActivityInterface.getSong().getPdfPageCount() - 1;
+                } else {
+                    scrolledToEnd = false;
+                    scrolledToStart = false;
+                }
+                mainActivityInterface.getGestures().setPdfStart(scrolledToStart);
+                mainActivityInterface.getGestures().setPdfEnd(scrolledToEnd);
             }
-            scrolledToTop = recyclerView.computeVerticalScrollOffset() == 0;
-            scrolledToStart = recyclerView.computeHorizontalScrollExtent() == 0;
-            scrolledToBottom = (maxScrollY-recyclerView.computeVerticalScrollOffset()-(4f* mainActivityInterface.getDisplayDensity())) <= 1;
-            if (recyclerView.getLayoutManager()!=null && recyclerView.getLayoutManager() instanceof RecyclerLayoutManager) {
-                int firstVisiblePosition = ((RecyclerLayoutManager) recyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
-                int lastVisiblePosition = ((RecyclerLayoutManager) recyclerView.getLayoutManager()).findLastCompletelyVisibleItemPosition();
-                scrolledToStart = firstVisiblePosition == 0;
-                scrolledToEnd = lastVisiblePosition == mainActivityInterface.getSong().getPdfPageCount() - 1;
-            } else {
-                scrolledToEnd = false;
-                scrolledToStart = false;
-            }
-            mainActivityInterface.getGestures().setPdfStart(scrolledToStart);
-            mainActivityInterface.getGestures().setPdfEnd(scrolledToEnd);
         }
     }
     private void onTouchAction() {
@@ -400,7 +402,9 @@ public class MyRecyclerView extends RecyclerView  implements RecyclerView.Smooth
 
             }
 
-            mainActivityInterface.getHotZones().checkScrollButtonOn(null,MyRecyclerView.this);
+            if (mainActivityInterface!=null) {
+                mainActivityInterface.getHotZones().checkScrollButtonOn(null, MyRecyclerView.this);
+            }
 
             // Deal with performance mode gestures
             if (gestureDetector!=null) {

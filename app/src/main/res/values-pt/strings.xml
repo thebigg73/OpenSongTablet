@@ -866,6 +866,7 @@
     <string name="visible">Visível</string>
     <string name="visual_metronome">"Visual"</string>
     <string name="volume">"Volume"</string>
+    <string name="volume_headphone">Volume dos auscultadores</string>
     <string name="volume_value">"Valor corrente do volume"</string>
     <string name="wait">"Espere Ai ...."</string>
     <string name="website">Local na rede Internet</string>
