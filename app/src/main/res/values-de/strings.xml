@@ -151,7 +151,7 @@
     <string name="choose_video2">"Hintergrundvideo 2 wählen"</string>
     <string name="chord_capo_display">Wenn ein Song Capo-Akkorde hat, welche Akkorde sollen angezeigt werden?</string>
     <string name="chord_color">"Schrift Akkorde"</string>
-    <string name="chord_fingering">Akkordfingern</string>
+    <string name="chord_fingering">Griffbilder</string>
     <string name="chord_format">Akkordformat</string>
     <string name="chord_settings">Akkordeinstellungen</string>
     <string name="chordformat_1_name">Standard</string>
@@ -389,7 +389,7 @@
     <string name="import_osb">Songs aus der OpenSongApp-Sicherungsdatei (*.osb) wiederherstellen</string>
     <string name="imported_values">Importierte Werte</string>
     <string name="inc_autoscroll_speed">"Autoscroll-Geschwindigkeit erhöhen"</string>
-    <string name="indexing_info">Die Indizierung von Songs ist erforderlich, wenn Sie Songs außerhalb von OpenSongApp bearbeitet, erstellt oder gelöscht haben (einschließlich der Synchronisierung von Geräten) oder wenn es sich um eine Neuinstallation handelt.  Sie können dies überspringen, wenn sich nichts geändert hat, und den Bootvorgang beschleunigen.</string>
+    <string name="indexing_info">Die Indizierung von Liedern ist erforderlich, wenn Sie Lieder außerhalb von OpenSongApp bearbeitet, erstellt oder gelöscht haben (einschließlich der Synchronisierung von Geräten) oder wenn es sich um eine Neuinstallation handelt.  Sie können dies überspringen, wenn sich nichts geändert hat, und den Bootvorgang beschleunigen.</string>
     <string name="indexing_string">Lieder indizieren</string>
     <string name="info_text">Infotext</string>
     <string name="info_text_autohide">Informationsleiste automatisch ausblenden</string>
@@ -721,7 +721,7 @@
     <string name="simple_color_info">Ein einfarbiger Hintergrund</string>
     <string name="simple_note">"Einfache Notiz / Platzhalter"</string>
     <string name="size">"Größe"</string>
-    <string name="skip">Hüpfen</string>
+    <string name="skip">"Überspringen"</string>
     <string name="slide">"Folie"</string>
     <string name="slide_add_page">"Neue Seite in benutzerdefinierte Folie einfügen"</string>
     <string name="small_buttons">Kleine Knöpfe</string>
@@ -770,13 +770,13 @@
     <string name="start_stop_pad">"Hintergrundmusik start/stop"</string>
     <string name="stop">"Stop"</string>
     <string name="stopping">Anhalten …</string>
-    <string name="storage">"Speicher"</string>
+    <string name="storage">"Speicherort"</string>
     <string name="storage_change">"Den Speicherort ändern"</string>
     <string name="storage_ext">"Externer Speicher"</string>
     <string name="storage_graph_overview_info">Ihre aktuelle Verzeichnisstruktur des OpenSong/Songs-Ordners wird unten angezeigt. Klicken Sie auf den Ordner OpenSong (ROOT), um Ihren Speicherort zu ändern. Klicken Sie auf den Ordner Songs (MAIN), um ein Backup oder ein Unterverzeichnis zu erstellen. Wenn Sie bereits Unterverzeichnisse haben, erhalten Sie durch Anklicken weitere Optionen.</string>
     <string name="storage_help">Bitte wählen Sie den Speicherort für Ihren \'OpenSong\'-Ordner. Dies ist der Standardspeicherort für OpenSong-Dateien. Sie können dies jederzeit über das Menü Optionen ändern. Interner Speicher wird empfohlen.\n\nFür ein Update oder eine Neuinstallation:\nSie können die gelbe Schaltfläche unten verwenden, um einen früheren \'OpenSong\'-Ordner zu finden.</string>
     <string name="storage_main">Hier werden normalerweise Ihre Songs gespeichert (oft als MAIN-Ordner bezeichnet). Sie können optional Unterverzeichnisse einrichten, um Ihre Songbibliothek besser zu verwalten.</string>
-    <string name="storage_manage">"Speicher verwalten"</string>
+    <string name="storage_manage">"Speicherorte verwalten"</string>
     <string name="storage_notwritable">"Kann nicht verwendet werden"</string>
     <string name="storage_quicktip">Bei Auswahl eines Speicherorts:  Listen Sie den Speicher über das Menü auf (möglicherweise müssen Sie die Einstellungen ändern, um den gesamten Speicher anzuzeigen).  Wählen Sie nur den internen oder SD-Kartenspeicher.  Interner Speicher wird empfohlen. Dies kann als Gerätespeicher oder mit dem Namen Ihres Geräts aufgeführt werden.  Unter Android 10+ sollten Sie nicht den Ordner Downloads oder Root auswählen. Wählen Sie im Zweifelsfall den Ordner \"Dokumente\".</string>
     <string name="storage_reset">Klicken Sie hier, um Ihren Speicherort zu ändern (wo sich der Stammordner von OpenSong befindet).</string>
@@ -809,7 +809,7 @@
     <string name="theme_choose">"Design umschalten"</string>
     <string name="theme_custom1">"Benutzerdefiniert 1"</string>
     <string name="theme_custom2">"Benutzerdefiniert 2"</string>
-    <string name="theme_dark">"Dunkles Theme"</string>
+    <string name="theme_dark">"Dunkles Thema"</string>
     <string name="theme_edit">Bearbeiten oder ändern Sie das aktuelle Design</string>
     <string name="theme_exists">Dieses Thema existiert bereits.</string>
     <string name="theme_light">"Helles Theme"</string>
