@@ -89,6 +89,8 @@ public class ProcessSong {
     private boolean bracketsOpen = false;
     private int bracketsStyle = Typeface.NORMAL;
     private boolean curlyBrackets = true;
+    private boolean fileWriteLog = true;
+    private boolean fileViewLog = true;
 
 
     public static int getColorWithAlpha(int color, float ratio) {

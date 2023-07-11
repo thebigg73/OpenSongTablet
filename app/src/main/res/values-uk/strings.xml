@@ -312,7 +312,11 @@
     <string name="file_choose_info">Виберіть необхідний(і) файл(и) нижче.</string>
     <string name="file_chooser">Вибір файл</string>
     <string name="file_exists">Файл з таким ім\'ям існує. Будь ласка виберіть інше ім\'я</string>
+    <string name="file_log">Запис файлу журналу активності</string>
+    <string name="file_log_info">Ведіть журнал дій з файлами (створення, збереження, редагування тощо).  Може допомогти виявити проблеми, якщо щось піде не так.</string>
     <string name="file_type">Тип файлу</string>
+    <string name="file_view_log">Журнал перегляду пісень</string>
+    <string name="file_view_log_info">Ведення журналу останніх переглянутих пісень</string>
     <string name="filename">Ім\'я файлу</string>
     <string name="fill">Заповнити</string>
     <string name="filter_by_artist">Ця кнопка використовується для включення фільтра виконавців до вашого списку пісень</string>
@@ -437,6 +441,8 @@
     <string name="load_reusable">Завантажити слайд</string>
     <string name="location">Місцезнаходження</string>
     <string name="location_not_enabled">Щоб підключитися до пристроїв, увімкніть «Місцезнаходження». Якщо у вас є вибір режиму, виберіть режим, який використовує Wi-Fi.</string>
+    <string name="log">Журнали використання додатків</string>
+    <string name="log_info">Керування журналами файлів (може допомогти з налагодженням)</string>
     <string name="logo">Логотип</string>
     <string name="logo_info">Перемикання між логотипом і вмістом пісні</string>
     <string name="long_press">Довге натискання/утримання</string>

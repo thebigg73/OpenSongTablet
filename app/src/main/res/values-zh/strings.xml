@@ -312,7 +312,11 @@
     <string name="file_choose_info">在下面选择所需的文件。</string>
     <string name="file_chooser">文件选择器</string>
     <string name="file_exists">"文件已经存在。请重新命名。"</string>
+    <string name="file_log">文件写入活动日志</string>
+    <string name="file_log_info">保留文件活动（创建、保存、编辑等）的日志。 如果出现问题，可以帮助识别问题。</string>
     <string name="file_type">"文件类型"</string>
+    <string name="file_view_log">歌曲查看日志</string>
+    <string name="file_view_log_info">记录最近查看的歌曲</string>
     <string name="filename">文档名称</string>
     <string name="fill">填补</string>
     <string name="filter_by_artist">此按钮用于为您的歌曲列表添加艺术家过滤器</string>
@@ -437,6 +441,8 @@
     <string name="load_reusable">"装入可重复使用的幻灯片"</string>
     <string name="location">地点</string>
     <string name="location_not_enabled">要连接到设备，请打开“位置信息”。如果您可以选择模式，请选择使用 Wi-Fi 的模式。</string>
+    <string name="log">应用使用情况日志</string>
+    <string name="log_info">管理文件日志（可以帮助调试）</string>
     <string name="logo">"商标"</string>
     <string name="logo_info">在徽标和歌曲内容之间切换</string>
     <string name="long_press">"长按/按住"</string>

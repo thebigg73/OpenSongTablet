@@ -21,7 +21,8 @@ public class AboutAppFragment extends Fragment {
     private SettingsAboutBinding myView;
     private MainActivityInterface mainActivityInterface;
     private String about="", website="", user_guide="", website_address="", website_latest="",
-            website_forum="", website_rate="", packageName="", website_paypal="", website_github="";
+            website_forum="", website_rate="", packageName="", website_paypal="", website_github="",
+            deeplink_logs="";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -62,6 +63,7 @@ public class AboutAppFragment extends Fragment {
             website_rate = getString(R.string.website_rate);
             website_paypal = getString(R.string.website_paypal);
             website_github =  getString(R.string.website_github);
+            deeplink_logs = getString(R.string.deeplink_logs);
         }
         if (getActivity()!=null) {
             packageName = getActivity().getPackageName();
@@ -84,6 +86,7 @@ public class AboutAppFragment extends Fragment {
         myView.paypalButton.setOnClickListener(v -> mainActivityInterface.openDocument(website_paypal));
         myView.gitbubButton.setOnClickListener(v -> mainActivityInterface.openDocument(website_github));
         myView.languageButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.languageFragment));
+        myView.logsButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(deeplink_logs,0));
     }
 
     @Override

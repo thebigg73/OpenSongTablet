@@ -1,7 +1,5 @@
 package com.garethevans.church.opensongtablet.animation;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.os.Handler;
 import android.view.View;

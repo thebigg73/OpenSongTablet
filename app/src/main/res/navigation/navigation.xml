@@ -484,6 +484,9 @@
                 <action
                     android:id="@+id/action_aboutAppFragment_to_languageFragment"
                     app:destination="@id/languageFragment" />
+                <action
+                    android:id="@+id/action_aboutAppFragment_to_shareLogsFragment"
+                    app:destination="@id/shareLogsFragment" />
             </fragment>
 
             <!-- Language -->
@@ -492,6 +495,15 @@
                 android:name="com.garethevans.church.opensongtablet.appdata.LanguageFragment"
                 android:label="settings_language"
                 tools:layout="@layout/settings_language" />
+            <fragment
+                android:id="@+id/shareLogsFragment"
+                android:name="com.garethevans.church.opensongtablet.appdata.ShareLogsFragment"
+                android:label="ShareLogsFragment"
+                tools:layout="@layout/settings_share_logs">
+                <deepLink
+                    android:id="@+id/deepLinkShareLogs"
+                    app:uri="@string/deeplink_logs" />
+            </fragment>
 
         </navigation>
         <deepLink

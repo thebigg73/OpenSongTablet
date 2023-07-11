@@ -312,7 +312,11 @@
     <string name="file_choose_info">Wybierz wymagane pliki poniżej.</string>
     <string name="file_chooser">Wyboru pliku</string>
     <string name="file_exists">"Plik już istnieje. Proszę zmienić jego nazwę."</string>
+    <string name="file_log">Dziennik czynności zapisu plików</string>
+    <string name="file_log_info">Prowadź dziennik działań związanych z plikami (tworzenie, zapisywanie, edycja itp.).  Może pomóc w zidentyfikowaniu problemów, jeśli coś pójdzie nie tak.</string>
     <string name="file_type">"Typ pliku"</string>
+    <string name="file_view_log">Dziennik widoku utworu</string>
+    <string name="file_view_log_info">Prowadź dziennik ostatnio oglądanych utworów</string>
     <string name="filename">Nazwa pliku</string>
     <string name="fill">Wypełnić</string>
     <string name="filter_by_artist">Ten przycisk służy do włączenia filtra wykonawcy do listy utworów</string>
@@ -437,6 +441,8 @@
     <string name="load_reusable">"Załaduj wielokrotnego użytku slajd"</string>
     <string name="location">Lokalizacja</string>
     <string name="location_not_enabled">Aby połączyć się z urządzeniami, włącz „Lokalizacja”. Jeśli masz wybór trybu, wybierz tryb, który korzysta z Wi-Fi.</string>
+    <string name="log">Dzienniki użycia aplikacji</string>
+    <string name="log_info">Zarządzanie dziennikami plików (może pomóc w debugowaniu)</string>
     <string name="logo">"Logo"</string>
     <string name="logo_info">Przełączaj się między logo a treścią utworu</string>
     <string name="long_press">"Długie naciśnięcie / przytrzymanie"</string>

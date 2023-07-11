@@ -54,10 +54,13 @@ public class StorageAccess {
     public StorageAccess(Context c) {
         this.c = c;
         mainActivityInterface = (MainActivityInterface) c;
+        fileWriteLog = mainActivityInterface.getPreferences().getMyPreferenceBoolean("fileWriteLog",true);
+        fileViewLog  = mainActivityInterface.getPreferences().getMyPreferenceBoolean("fileViewLog",true);
     }
 
     private final Context c;
     private final MainActivityInterface mainActivityInterface;
+    private boolean fileWriteLog = true, fileViewLog = true;
     public final String appFolder = "OpenSong";
     private final String TAG = "StorageAccess";
     private final String[] rootFolders = {"Backgrounds", "Export", "Fonts", "Highlighter", "Images", "Media",
@@ -2099,9 +2102,9 @@ public class StorageAccess {
 
     private boolean creatingLogFile = false;
     public void updateFileActivityLog(String logText) {
-        logText = logText.trim();
-        if (!creatingLogFile) {
+        if (!creatingLogFile && fileWriteLog && logText!=null) {
             try {
+                logText = logText.trim();
                 Uri logUri = getUriForItem("Settings", "", "fileWriteActivity.txt");
                 if (logUri != null) {
                     if (!uriExists(logUri)) {
@@ -2127,7 +2130,7 @@ public class StorageAccess {
 
     public void updateFileUsageLog(Song thisSong) {
         // List the song being viewed
-        if (thisSong != null) {
+        if (fileViewLog && thisSong != null) {
             try {
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
                 String logText = "\"" + sdf.format(new Date()) + "\"," +
@@ -2198,4 +2201,20 @@ public class StorageAccess {
             return text;
         }
     }
+
+    public void setFileWriteLog(boolean fileWriteLog) {
+        this.fileWriteLog = fileWriteLog;
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean("fileWriteLog",fileWriteLog);
+    }
+    public boolean getFileWriteLog() {
+        return fileWriteLog;
+    }
+    public void setFileViewLog(boolean fileViewLog) {
+        this.fileViewLog = fileViewLog;
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean("fileViewLog",fileViewLog);
+    }
+    public boolean getFileViewLog() {
+        return fileViewLog;
+    }
+
 }

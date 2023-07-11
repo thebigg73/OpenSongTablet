@@ -312,7 +312,11 @@
     <string name="file_choose_info">Επιλέξτε τα απαιτούμενα αρχεία παρακάτω.</string>
     <string name="file_chooser">"Επιλογέας αρχείου"</string>
     <string name="file_exists">"Το αρχείο υπάρχει ήδη. Παρακαλώ μετονομάστε το."</string>
+    <string name="file_log">Αρχείο καταγραφής δραστηριότητας εγγραφής αρχείων</string>
+    <string name="file_log_info">Διατηρήστε ένα αρχείο καταγραφής των δραστηριοτήτων του αρχείου (δημιουργία, αποθήκευση, επεξεργασία κ.λπ.).  Μπορεί να βοηθήσει στον εντοπισμό προβλημάτων εάν κάτι πάει στραβά.</string>
     <string name="file_type">"Τύπος αρχείου"</string>
+    <string name="file_view_log">Αρχείο καταγραφής προβολής τραγουδιού</string>
+    <string name="file_view_log_info">Διατηρήστε ένα αρχείο καταγραφής των τραγουδιών που προβλήθηκαν πιο πρόσφατα</string>
     <string name="filename">Ονομα αρχείου</string>
     <string name="fill">Γεμίζω</string>
     <string name="filter_by_artist">Αυτό το κουμπί χρησιμοποιείται για να συμπεριλάβει ένα φίλτρο καλλιτέχνη για τη λίστα τραγουδιών σας</string>
@@ -437,6 +441,8 @@
     <string name="load_reusable">"Load a reusable slide"</string>
     <string name="location">Τοποθεσία</string>
     <string name="location_not_enabled">Για να συνδεθείτε σε συσκευές, ενεργοποιήστε την \"Τοποθεσία\". Εάν έχετε επιλογή λειτουργίας, επιλέξτε μια λειτουργία που χρησιμοποιεί Wi-Fi.</string>
+    <string name="log">Αρχεία καταγραφής χρήσης εφαρμογών</string>
+    <string name="log_info">Διαχείριση αρχείων καταγραφής (μπορεί να βοηθήσει με τον εντοπισμό σφαλμάτων)</string>
     <string name="logo">"Λογότυπο"</string>
     <string name="logo_info">Κάντε εναλλαγή μεταξύ του λογότυπου και του περιεχομένου του τραγουδιού</string>
     <string name="long_press">"Πατήστε παρατεταμένα"</string>

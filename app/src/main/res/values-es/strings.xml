@@ -312,7 +312,11 @@
     <string name="file_choose_info">Seleccione los archivos requeridos a continuación.</string>
     <string name="file_chooser">Selector de archivos</string>
     <string name="file_exists">"El archivo ya existe. Por favor, cambie su nombre."</string>
+    <string name="file_log">Registro de actividad de escritura de archivos</string>
+    <string name="file_log_info">Mantenga un registro de las actividades del archivo (creación, guardado, edición, etc.).  Puede ayudar a identificar problemas si algo sale mal.</string>
     <string name="file_type">"Tipo de archivo"</string>
+    <string name="file_view_log">Registro de vistas de canciones</string>
+    <string name="file_view_log_info">Mantenga un registro de las canciones vistas más recientemente</string>
     <string name="filename">Nombre del archivo</string>
     <string name="fill">Llenar</string>
     <string name="filter_by_artist">Este botón se usa para incluir un filtro de artista para su lista de canciones</string>
@@ -437,6 +441,8 @@
     <string name="load_reusable">"Cargar un portaobjetos reutilizable"</string>
     <string name="location">Ubicación</string>
     <string name="location_not_enabled">Para conectarse a dispositivos, active \'Ubicación\'. Si tiene una opción de modo, elija un modo que use Wi-Fi.</string>
+    <string name="log">Registros de uso de aplicaciones</string>
+    <string name="log_info">Administrar registros de archivos (puede ayudar con la depuración)</string>
     <string name="logo">"Logo"</string>
     <string name="logo_info">Alternar entre el logotipo y el contenido de la canción</string>
     <string name="long_press">"Mantenga presionado / mantenga presionado"</string>

@@ -312,7 +312,11 @@
     <string name="file_choose_info">Wählen Sie unten die gewünschte(n) Datei(en) aus.</string>
     <string name="file_chooser">Dateiauswahl</string>
     <string name="file_exists">"Datei existiert bereits. Bitte umbenennen."</string>
+    <string name="file_log">Aktivitätsprotokoll zum Schreiben von Dateien</string>
+    <string name="file_log_info">Führen Sie ein Protokoll über die Aktivitäten der Dateien (Erstellen, Speichern, Bearbeiten usw.).  Kann helfen, Probleme zu identifizieren, wenn etwas schief geht.</string>
     <string name="file_type">"Dateityp"</string>
+    <string name="file_view_log">Song-Ansichtsprotokoll</string>
+    <string name="file_view_log_info">Führen Sie ein Protokoll über die zuletzt angesehenen Songs</string>
     <string name="filename">Dateinamen</string>
     <string name="fill">Füllen</string>
     <string name="filter_by_artist">Diese Schaltfläche wird verwendet, um einen Künstlerfilter für Ihre Songliste einzufügen</string>
@@ -437,6 +441,8 @@
     <string name="load_reusable">"Wiederverwendbare Folie laden"</string>
     <string name="location">Ort</string>
     <string name="location_not_enabled">Um eine Verbindung zu Geräten herzustellen, schalten Sie bitte „Standort“ ein. Wenn Sie einen Modus auswählen können, wählen Sie einen Modus, der Wi-Fi verwendet.</string>
+    <string name="log">App-Nutzungsprotokolle</string>
+    <string name="log_info">Verwalten von Dateiprotokollen (kann beim Debuggen helfen)</string>
     <string name="logo">"Logo"</string>
     <string name="logo_info">Wechseln Sie zwischen dem Logo und dem Songinhalt</string>
     <string name="long_press">"Lang drücken/halten"</string>

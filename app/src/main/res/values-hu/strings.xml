@@ -312,7 +312,11 @@
     <string name="file_choose_info">Válassza ki a kívánt fájl(oka)t lent.</string>
     <string name="file_chooser">Fájlválasztó</string>
     <string name="file_exists">"A fájl már létezik. Kérjük, nevezze át."</string>
+    <string name="file_log">Fájlírási tevékenység naplója</string>
+    <string name="file_log_info">Vezessen naplót a fájltevékenységekről (létrehozás, mentés, szerkesztés stb.).  Segíthet azonosítani a problémákat, ha valami probléma merül fel.</string>
     <string name="file_type">"Fájltípus"</string>
+    <string name="file_view_log">Dalmegtekintési napló</string>
+    <string name="file_view_log_info">Naplózza a legutóbb megtekintett dalokat</string>
     <string name="filename">Fájl név</string>
     <string name="fill">Tölt</string>
     <string name="filter_by_artist">Ezzel a gombbal előadói szűrőt helyezhet el a dallistához</string>
@@ -437,6 +441,8 @@
     <string name="load_reusable">"Töltsön be egy újrafelhasználható slide"</string>
     <string name="location">Elhelyezkedés</string>
     <string name="location_not_enabled">Az eszközökhöz való csatlakozáshoz kapcsolja BE a „Tartózkodási hely” beállítást. Ha választhat módot, válasszon egy Wi-Fi-t használó módot.</string>
+    <string name="log">Alkalmazáshasználati naplók</string>
+    <string name="log_info">Fájlnaplók kezelése (segíthet a hibakeresésben)</string>
     <string name="logo">Logo</string>
     <string name="logo_info">Váltás a logó és a dal tartalma között</string>
     <string name="long_press">"Tartsa hosszan a gombot"</string>

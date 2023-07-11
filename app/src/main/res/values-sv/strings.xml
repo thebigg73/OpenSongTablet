@@ -312,7 +312,11 @@
     <string name="file_choose_info">Välj önskad fil(er) nedan.</string>
     <string name="file_chooser">"Filvalare"</string>
     <string name="file_exists">"Filen finns redan. Vänligen byt namn på den."</string>
+    <string name="file_log">Aktivitetslogg för filskrivning</string>
+    <string name="file_log_info">Håll en logg över filaktiviteter (skapa, spara, redigera, etc.).  Kan hjälpa till att identifiera problem om något går fel.</string>
     <string name="file_type">"Filtyp"</string>
+    <string name="file_view_log">Logg för låtvisning</string>
+    <string name="file_view_log_info">Håll en logg över de senast visade låtarna</string>
     <string name="filename">Filnamn</string>
     <string name="fill">Fylla</string>
     <string name="filter_by_artist">Den här knappen används för att inkludera ett artistfilter för din sånglista</string>
@@ -437,6 +441,8 @@
     <string name="load_reusable">"Ladda en återanvändbar bild"</string>
     <string name="location">Plats</string>
     <string name="location_not_enabled">Slå PÅ \'Plats\' för att ansluta till enheter. Om du har ett val av läge, välj ett läge som använder Wi-Fi.</string>
+    <string name="log">Loggar för appanvändning</string>
+    <string name="log_info">Hantera filloggar (kan hjälpa till med felsökning)</string>
     <string name="logo">"Logotyp"</string>
     <string name="logo_info">Växla mellan logotypen och låtens innehåll</string>
     <string name="long_press">"Långt tryck / håll intryckt"</string>

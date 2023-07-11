@@ -323,6 +323,7 @@
     <string name="deeplink_inlineset" translatable="false">https://www.opensongapp.com/?p=settings/set/inlineset</string>
     <string name="deeplink_kitkat_choose" translatable="false">https://www.opensongapp.com/?p=settings/storage/kitkatchoose</string>
     <string name="deeplink_links" translatable="false">https://www.opensongapp.com/?p=settings/actions/links</string>
+    <string name="deeplink_logs" translatable="false">https://www.opensongapp.com/?p=settings/actions/about/logs</string>
     <string name="deeplink_manage_storage" translatable="false">https://www.opensongapp.com/?p=settings/storage/manage</string>
     <string name="deeplink_margins" translatable="false">https://www.opensongapp.com/?p=settings/display/margins</string>
     <string name="deeplink_metronome" translatable="false">https://www.opensongapp.com/?p=settings/actions/metronome</string>
@@ -404,7 +405,11 @@
     <string name="file_choose_info">Select the required file(s) below.</string>
     <string name="file_chooser">File chooser</string>
     <string name="file_exists">File already exists.  Please rename it.</string>
+    <string name="file_log">File write activity log</string>
+    <string name="file_log_info">Keep a log of file activities (creation, saving, editing, etc.).  Can help identify issues if something goes wrong.</string>
     <string name="file_type">File type</string>
+    <string name="file_view_log">Song view log</string>
+    <string name="file_view_log_info">Keep a log of the most recently viewed songs</string>
     <string name="filename">Filename</string>
     <string name="fill">Fill</string>
     <string name="filter_by_artist">This button is used to include an artist filter for your song list</string>
@@ -586,6 +591,8 @@
     <string name="load_reusable">Load a reusable slide</string>
     <string name="location">Location</string>
     <string name="location_not_enabled">To connect to devices please turn \'Location\' ON.  If you have a choice of mode, choose a mode that uses Wi-Fi.</string>
+    <string name="log">App usage logs</string>
+    <string name="log_info">Manage file logs (can help with debugging)</string>
     <string name="logo">Logo</string>
     <string name="logo_info">Toggle between the logo and the song content</string>
     <string name="long_press">Long press/hold</string>
@@ -1149,6 +1156,7 @@
     <string name="website_inline_set" translatable="false">https://www.opensongapp.com/user-manual/display/inline-set</string>
     <string name="website_latest" translatable="false">https://www.opensongapp.com/updates/latest-updates</string>
     <string name="website_link" translatable="false">https://www.opensongapp.com/user-manual/songs/song-actions/link</string>
+    <string name="website_logs" translatable="false">https://www.opensongapp.com/user-manual/app-usage-logs</string>
     <string name="website_margins" translatable="false">https://www.opensongapp.com/user-manual/display/margins</string>
     <string name="website_menu_set" translatable="false">https://www.opensongapp.com/user-manual/sets/set-menu</string>
     <string name="website_menu_settings" translatable="false">https://www.opensongapp.com/user-manual/display/menu</string>

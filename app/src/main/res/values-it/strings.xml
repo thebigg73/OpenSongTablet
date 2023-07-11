@@ -312,7 +312,11 @@
     <string name="file_choose_info">Seleziona i file richiesti di seguito.</string>
     <string name="file_chooser">Chooser file</string>
     <string name="file_exists">"Il file esiste già. Si prega di rinominarlo."</string>
+    <string name="file_log">Registro delle attività di scrittura dei file</string>
+    <string name="file_log_info">Tenere un registro delle attività dei file (creazione, salvataggio, modifica, ecc.).  Può aiutare a identificare i problemi se qualcosa va storto.</string>
     <string name="file_type">"Tipo di file"</string>
+    <string name="file_view_log">Registro di visualizzazione dei brani</string>
+    <string name="file_view_log_info">Tieni un registro delle canzoni visualizzate più di recente</string>
     <string name="filename">Nome del file</string>
     <string name="fill">Riempire</string>
     <string name="filter_by_artist">Questo pulsante viene utilizzato per includere un filtro artista per l\'elenco dei brani</string>
@@ -437,6 +441,8 @@
     <string name="load_reusable">"Caricare un vetrino riutilizzabile"</string>
     <string name="location">Posizione</string>
     <string name="location_not_enabled">Per connetterti ai dispositivi, attiva \"Geolocalizzazione\". Se puoi scegliere la modalità, scegli una modalità che utilizza il Wi-Fi.</string>
+    <string name="log">Registri di utilizzo delle app</string>
+    <string name="log_info">Gestire i registri dei file (può aiutare con il debug)</string>
     <string name="logo">"Logo"</string>
     <string name="logo_info">Alterna tra il logo e il contenuto del brano</string>
     <string name="long_press">"Tenere premuto a lungo"</string>

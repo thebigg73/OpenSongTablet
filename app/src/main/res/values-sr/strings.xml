@@ -312,7 +312,11 @@
     <string name="file_choose_info">Izaberite potrebne datoteke u nastavku.</string>
     <string name="file_chooser">Odabir datoteke</string>
     <string name="file_exists">Datoteka već postoji. Molimo promenite ime.</string>
+    <string name="file_log">Evidencija aktivnosti upisisi u datoteku</string>
+    <string name="file_log_info">Vodi evidenciju aktivnosti datoteka (kreiranje, čuvanje, uređivanje itd.).  Može da pomogne u identifikovanju problema ako nešto krene naopako.</string>
     <string name="file_type">Tip datoteke</string>
+    <string name="file_view_log">Evidencija prikaza pesme</string>
+    <string name="file_view_log_info">Vodi evidenciju najskorije pregledanih pesama</string>
     <string name="filename">Naziv dokumenta</string>
     <string name="fill">Popune</string>
     <string name="filter_by_artist">Ovo dugme se koristi za uključivanje filtera izvođača za vašu listu pesama</string>
@@ -437,6 +441,8 @@
     <string name="load_reusable">Učitaj slajd za ponovno korišćenje</string>
     <string name="location">Lokacija</string>
     <string name="location_not_enabled">Da biste se povezali sa uređajima, uključite \'Lokacija\'. Ako imate izbor režima, izaberite režim koji koristi Vi-Fi.</string>
+    <string name="log">Evidencije korišćenja aplikacija</string>
+    <string name="log_info">Upravljanje evidencijama datoteka (može pomoći kod otklanjanja grešaka)</string>
     <string name="logo">Logo</string>
     <string name="logo_info">Prebacivanje između logotipa i sadržaja pesme</string>
     <string name="long_press">Dugi pritisak/Držanje</string>

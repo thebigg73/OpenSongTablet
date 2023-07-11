@@ -312,7 +312,11 @@
     <string name="file_choose_info">Sélectionnez le(s) fichier(s) requis ci-dessous.</string>
     <string name="file_chooser">Explorateur de fichier</string>
     <string name="file_exists">"Le fichier existe déjà. Merci de le renommer."</string>
+    <string name="file_log">Journal d’activité d’écriture de fichiers</string>
+    <string name="file_log_info">Tenir un journal des activités liées aux fichiers (création, sauvegarde, édition, etc.).  Peut aider à identifier les problèmes si quelque chose ne va pas.</string>
     <string name="file_type">"Type de fichier"</string>
+    <string name="file_view_log">Journal de vue des chansons</string>
+    <string name="file_view_log_info">Tenir un journal des chansons les plus consultées</string>
     <string name="filename">Nom de fichier</string>
     <string name="fill">Remplir</string>
     <string name="filter_by_artist">Ce bouton est utilisé pour inclure un filtre d\'artiste pour votre liste de chansons</string>
@@ -437,6 +441,8 @@
     <string name="load_reusable">"Charger une diapositive réutilisables"</string>
     <string name="location">Emplacement</string>
     <string name="location_not_enabled">Pour vous connecter à des appareils, veuillez activer la \"localisation\". Si vous avez le choix entre plusieurs modes, choisissez un mode qui utilise le Wi-Fi.</string>
+    <string name="log">Journaux d’utilisation de l’application</string>
+    <string name="log_info">Gérer les journaux de fichiers (peut aider au débogage)</string>
     <string name="logo">"Logo"</string>
     <string name="logo_info">Basculer entre le logo et le contenu de la chanson</string>
     <string name="long_press">"Appuyez longuement / maintenez"</string>

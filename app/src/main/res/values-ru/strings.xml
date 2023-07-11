@@ -312,7 +312,11 @@
     <string name="file_choose_info">Выберите нужный файл(ы) ниже.</string>
     <string name="file_chooser">Выбор файла</string>
     <string name="file_exists">Файл с таким именем существует. Выберите другое имя</string>
+    <string name="file_log">Журнал операций записи файлов</string>
+    <string name="file_log_info">Ведите журнал действий с файлами (создание, сохранение, редактирование и т. Д.).  Может помочь выявить проблемы, если что-то пойдет не так.</string>
     <string name="file_type">Тип файла</string>
+    <string name="file_view_log">Журнал просмотра песен</string>
+    <string name="file_view_log_info">Ведите журнал последних просмотренных песен</string>
     <string name="filename">Имя файла</string>
     <string name="fill">Заполнить</string>
     <string name="filter_by_artist">Эта кнопка включает фильтр по исполнителю</string>
@@ -437,6 +441,8 @@
     <string name="load_reusable">Загрузить слайд для повторного использования</string>
     <string name="location">Расположение</string>
     <string name="location_not_enabled">Чтобы подключиться к устройствам, включите в Android \'Местоположение\'. Если у вас есть возможность выбрать режим, выберите режим, использующий Wi-Fi.</string>
+    <string name="log">Журналы использования приложений</string>
+    <string name="log_info">Управление журналами файлов (может помочь с отладкой)</string>
     <string name="logo">Логотип</string>
     <string name="logo_info">Переключение между логотипом и содержимым песни</string>
     <string name="long_press">Долгое нажатие/удержание</string>

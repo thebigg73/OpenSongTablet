@@ -312,7 +312,11 @@
     <string name="file_choose_info">Kies die vereiste lêer(s) hieronder.</string>
     <string name="file_chooser">Lêer chooser</string>
     <string name="file_exists">"Lêer bestaan reeds. Asseblief hernoem nie."</string>
+    <string name="file_log">Lêer skryf aktiwiteitslogboek</string>
+    <string name="file_log_info">Hou \'n logboek van lêeraktiwiteite (skepping, stoor, redigering, ens.).  Kan help om probleme te identifiseer as iets verkeerd loop.</string>
     <string name="file_type">Lêer tipe</string>
+    <string name="file_view_log">Liedjie aansig log</string>
+    <string name="file_view_log_info">Hou \'n logboek van die liedjies wat die meeste onlangs gekyk is</string>
     <string name="filename">Lêernaam</string>
     <string name="fill">Vul</string>
     <string name="filter_by_artist">Hierdie knoppie word gebruik om \'n kunstenaarfilter vir u liedjieslys in te sluit</string>
@@ -437,6 +441,8 @@
     <string name="load_reusable">"Laai 'n herbruikbare slide"</string>
     <string name="location">Ligging</string>
     <string name="location_not_enabled">Skakel asseblief \'Ligging\' AAN om aan toestelle te koppel. As jy \'n keuse van modus het, kies \'n modus wat Wi-Fi gebruik.</string>
+    <string name="log">Programgebruik logboeke</string>
+    <string name="log_info">Bestuur lêerlogboeke (kan help met ontfouting)</string>
     <string name="logo">Logo</string>
     <string name="logo_info">Wissel tussen die logo en die liedjie-inhoud</string>
     <string name="long_press">"Lang druk / hou"</string>

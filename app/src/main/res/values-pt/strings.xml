@@ -312,7 +312,11 @@
     <string name="file_choose_info">Selecione o(s) arquivo(s) necessário(s) abaixo.</string>
     <string name="file_chooser">Seletor de arquivos</string>
     <string name="file_exists">"O arquivo já existe. Por favor, renomeá-lo."</string>
+    <string name="file_log">Registro de atividades de gravação de arquivo</string>
+    <string name="file_log_info">Mantenha um registo das atividades dos ficheiros (criação, guarda, edição, etc.).  Pode ajudar a identificar problemas se algo correr mal.</string>
     <string name="file_type">"Tipo de arquivo"</string>
+    <string name="file_view_log">Registo de visualização de música</string>
+    <string name="file_view_log_info">Mantenha um registo das músicas visualizadas mais recentemente</string>
     <string name="filename">Nome do arquivo</string>
     <string name="fill">Preenchimento</string>
     <string name="filter_by_artist">Este botão é usado para incluir um filtro de artista para sua lista de músicas</string>
@@ -437,6 +441,8 @@
     <string name="load_reusable">"Coloque um slide reutilizável"</string>
     <string name="location">Localização</string>
     <string name="location_not_enabled">Para se conectar a dispositivos, ative \'Localização\'. Se você tiver uma opção de modo, escolha um modo que use Wi-Fi.</string>
+    <string name="log">Registos de utilização da aplicação</string>
+    <string name="log_info">Gerenciar logs de arquivos (pode ajudar na depuração)</string>
     <string name="logo">"Logotipo"</string>
     <string name="logo_info">Alterne entre o logotipo e o conteúdo da música</string>
     <string name="long_press">"Pressione / mantenha pressionado prolongadamente"</string>

@@ -312,7 +312,11 @@
     <string name="file_choose_info">以下の必要なファイルを選択します。</string>
     <string name="file_chooser">ファイルチュー</string>
     <string name="file_exists">"ファイルが既に存在します。その名前を変更してください。"</string>
+    <string name="file_log">ファイル書き込みアクティビティー・ログ</string>
+    <string name="file_log_info">ファイルアクティビティ(作成、保存、編集など)のログを保持します。 問題が発生した場合に問題を特定するのに役立ちます。</string>
     <string name="file_type">"ファイルの種類"</string>
+    <string name="file_view_log">ソングビューログ</string>
+    <string name="file_view_log_info">最近視聴した曲のログを保持する</string>
     <string name="filename">ファイル名</string>
     <string name="fill">注ぐ</string>
     <string name="filter_by_artist">このボタンは、曲リストのアーティストフィルターを含めるために使用されます</string>
@@ -437,6 +441,8 @@
     <string name="load_reusable">"再利用可能なスライドをロードします"</string>
     <string name="location">位置</string>
     <string name="location_not_enabled">デバイスに接続するには、「位置情報」をオンにしてください。モードを選択できる場合は、Wi-Fi を使用するモードを選択します。</string>
+    <string name="log">アプリの使用状況ログ</string>
+    <string name="log_info">ファイルログの管理(デバッグに役立ちます)</string>
     <string name="logo">"ロゴ"</string>
     <string name="logo_info">ロゴと曲のコンテンツを切り替える</string>
     <string name="long_press">"長押し/長押し"</string>

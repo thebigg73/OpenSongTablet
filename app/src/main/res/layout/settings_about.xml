@@ -77,6 +77,16 @@
                 android:hint="@string/paypal_description"
                 app:size="large"/>
             <TableRow style="@style/DividerLine" />
+
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                android:id="@+id/logsButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/log"
+                android:hint="@string/log_info"
+                app:size="large"/>
+            <TableRow style="@style/DividerLine" />
+
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </LinearLayout>

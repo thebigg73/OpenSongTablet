@@ -312,7 +312,11 @@
     <string name="file_choose_info">Níže vyberte požadované soubory.</string>
     <string name="file_chooser">Soubor chooser</string>
     <string name="file_exists">"Soubor již existuje. Prosím přejmenovat."</string>
+    <string name="file_log">Protokol aktivit zápisu do souboru</string>
+    <string name="file_log_info">Uchovávejte záznamy o aktivitách se soubory (vytváření, ukládání, úpravy atd.).  Může pomoci identifikovat problémy, pokud se něco pokazí.</string>
     <string name="file_type">"Typ souboru"</string>
+    <string name="file_view_log">Záznam zobrazení skladby</string>
+    <string name="file_view_log_info">Uchovávejte si záznam naposledy zobrazených skladeb</string>
     <string name="filename">Název souboru</string>
     <string name="fill">Vyplnit</string>
     <string name="filter_by_artist">Toto tlačítko slouží k zahrnutí filtru umělce pro váš seznam skladeb</string>
@@ -437,6 +441,8 @@
     <string name="load_reusable">"Vložte opakovaně použitelný snímek"</string>
     <string name="location">Umístění</string>
     <string name="location_not_enabled">Chcete-li se připojit k zařízením, zapněte \'Poloha\'. Pokud máte na výběr režim, vyberte režim, který využívá Wi-Fi.</string>
+    <string name="log">Protokoly využití aplikací</string>
+    <string name="log_info">Správa protokolů souborů (může pomoci s laděním)</string>
     <string name="logo">"Logo"</string>
     <string name="logo_info">Přepínání mezi logem a obsahem skladby</string>
     <string name="long_press">"Dlouhým stisknutím / přidržením"</string>
