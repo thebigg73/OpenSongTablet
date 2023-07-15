@@ -484,6 +484,8 @@
     <string name="midi_add">"コマンドを追加"</string>
     <string name="midi_auto">"自動送信MIDI"</string>
     <string name="midi_bluetooth">"Bluetoothデバイスを接続する"</string>
+    <string name="midi_burst">バーストモード</string>
+    <string name="midi_burst_info">一部のデバイスは、複数のコントローラー メッセージをすばやく受信することに依存しています。 オンにすると、生成されたMIDIコマンドには、バーストコマンドとして*で注釈が付けられます(つまり、連続して数回送信されます)。</string>
     <string name="midi_channel">"チャネル"</string>
     <string name="midi_code_current">現在アクションに割り当てられているMIDIコード</string>
     <string name="midi_code_new">新しい MIDI コード</string>

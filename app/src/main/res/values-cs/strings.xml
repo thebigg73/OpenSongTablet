@@ -484,6 +484,8 @@
     <string name="midi_add">"Přidat příkaz"</string>
     <string name="midi_auto">"Automatické odesílání MIDI"</string>
     <string name="midi_bluetooth">"Připojte zařízení Bluetooth"</string>
+    <string name="midi_burst">Režim shlukování</string>
+    <string name="midi_burst_info">Některá zařízení spoléhají na rychlý příjem více zpráv ovladače.  Při zapnutí bude jakýkoliv vygenerovaný MIDI příkaz anotován * jako burst příkaz (tj. odeslán několikrát za sebou)</string>
     <string name="midi_channel">"Kanál"</string>
     <string name="midi_code_current">MIDI kód aktuálně přiřazený k akci</string>
     <string name="midi_code_new">Nový MIDI kód</string>

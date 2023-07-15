@@ -484,6 +484,8 @@
     <string name="midi_add">"Lägg till kommando"</string>
     <string name="midi_auto">"Auto skicka MIDI"</string>
     <string name="midi_bluetooth">"Anslut Bluetooth-enhet"</string>
+    <string name="midi_burst">Burst-läge</string>
+    <string name="midi_burst_info">Vissa enheter är beroende av att ta emot flera kontrollmeddelanden snabbt.  När den är påslagen kommer alla MIDI-kommandon som genereras att kommenteras av * som ett burst-kommando (dvs. skickas flera gånger i rad)</string>
     <string name="midi_channel">Kanalisera</string>
     <string name="midi_code_current">MIDI-kod som för närvarande är tilldelad till åtgärd</string>
     <string name="midi_code_new">Ny MIDI-kod</string>

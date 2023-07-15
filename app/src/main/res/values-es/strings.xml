@@ -484,6 +484,8 @@
     <string name="midi_add">"Agregar comando"</string>
     <string name="midi_auto">"Auto enviar MIDI"</string>
     <string name="midi_bluetooth">"Conecte el dispositivo Bluetooth"</string>
+    <string name="midi_burst">Modo ráfaga</string>
+    <string name="midi_burst_info">Algunos dispositivos dependen de recibir mensajes de múltiples controladores rápidamente.  Cuando se enciende, cualquier comando MIDI generado será anotado por * como un comando de ráfaga (es decir, enviado varias veces seguidas)</string>
     <string name="midi_channel">"Canal"</string>
     <string name="midi_code_current">Código MIDI actualmente asignado a la acción</string>
     <string name="midi_code_new">Nuevo código MIDI</string>

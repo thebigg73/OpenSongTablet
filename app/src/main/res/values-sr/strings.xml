@@ -484,6 +484,8 @@
     <string name="midi_add">Dodavanje MIDI komande</string>
     <string name="midi_auto">Automatsko slanje MIDI</string>
     <string name="midi_bluetooth">Povezivanje Bluetooth MIDI uređaja</string>
+    <string name="midi_burst">Režim pucanja</string>
+    <string name="midi_burst_info">Neki uređaji se brzo oslanjaju na brzo primanje više poruka kontrolera.  Kada se uključi, svaka generisana MIDI komanda će biti komentarisana od strane * kao komanda za pucanje (i.e. poslata nekoliko puta zaredom)</string>
     <string name="midi_channel">MIDI Kanal</string>
     <string name="midi_code_current">MIDI kôd koji je trenutno dodeljen radnji</string>
     <string name="midi_code_new">Novi MIDI kôd</string>

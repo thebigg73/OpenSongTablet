@@ -484,6 +484,8 @@
     <string name="midi_add">"Προσθήκη εντολής"</string>
     <string name="midi_auto">"Αυτόματη αποστολή MIDI"</string>
     <string name="midi_bluetooth">"Συνδέστε τη συσκευή Bluetooth"</string>
+    <string name="midi_burst">Λειτουργία ριπής</string>
+    <string name="midi_burst_info">Ορισμένες συσκευές βασίζονται στη γρήγορη λήψη πολλών μηνυμάτων ελεγκτή.  Όταν είναι ενεργοποιημένη, οποιαδήποτε εντολή MIDI δημιουργείται θα σχολιάζεται με * ως εντολή ριπής (δηλ. θα αποστέλλεται αρκετές φορές στη σειρά)</string>
     <string name="midi_channel">"Κανάλι"</string>
     <string name="midi_code_current">Κωδικός MIDI που έχει εκχωρηθεί αυτήν τη στιγμή στην ενέργεια</string>
     <string name="midi_code_new">Νέος κωδικός MIDI</string>

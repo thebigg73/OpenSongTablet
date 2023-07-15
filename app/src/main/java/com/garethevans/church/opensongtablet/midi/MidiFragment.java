@@ -287,13 +287,16 @@ public class MidiFragment extends Fragment {
     private void setVisibilites(boolean note, boolean controller, boolean value, boolean velocity) {
         if (note) {
             myView.midiNote.setVisibility(View.VISIBLE);
+            myView.burstMode.setVisibility(View.GONE);
         } else {
             myView.midiNote.setVisibility(View.GONE);
         }
         if (controller) {
             myView.midiController.setVisibility(View.VISIBLE);
+            myView.burstMode.setVisibility(View.VISIBLE);
         } else {
             myView.midiController.setVisibility(View.GONE);
+            myView.burstMode.setVisibility(View.GONE);
         }
         if (value) {
             myView.midiValue.setVisibility(View.VISIBLE);
@@ -365,6 +368,7 @@ public class MidiFragment extends Fragment {
             MidiActionBottomSheet midiActionBottomSheet = new MidiActionBottomSheet(myView.midiCode.getText().toString());
             midiActionBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"MidiActionBottomSheet");
         });
+        myView.burstMode.setOnCheckedChangeListener((compoundButton, b) -> getHexCodeFromDropDowns());
     }
 
     private class MyTextWatcher implements TextWatcher {
@@ -652,14 +656,14 @@ public class MidiFragment extends Fragment {
 
             // On and off notes get sent with midiDelay
             int midiDelay = mainActivityInterface.getMidi().getMidiDelay();
-            boolean sent = mainActivityInterface.getMidi().sendMidi(buffer1on);
-            new Handler().postDelayed(() -> mainActivityInterface.getMidi().sendMidi(buffer2on),midiDelay*2L);
-            new Handler().postDelayed(() -> mainActivityInterface.getMidi().sendMidi(buffer3on),midiDelay*3L);
-            new Handler().postDelayed(() -> mainActivityInterface.getMidi().sendMidi(buffer4on),midiDelay*4L);
-            new Handler().postDelayed(() -> mainActivityInterface.getMidi().sendMidi(buffer1off),500+(midiDelay*5L));
-            new Handler().postDelayed(() -> mainActivityInterface.getMidi().sendMidi(buffer2off),500+(midiDelay*6L));
-            new Handler().postDelayed(() -> mainActivityInterface.getMidi().sendMidi(buffer3off),500+(midiDelay*7L));
-            new Handler().postDelayed(() -> mainActivityInterface.getMidi().sendMidi(buffer4off),500+(midiDelay*8L));
+            boolean sent = mainActivityInterface.getMidi().sendMidi(buffer1on,false);
+            new Handler().postDelayed(() -> mainActivityInterface.getMidi().sendMidi(buffer2on,false),midiDelay*2L);
+            new Handler().postDelayed(() -> mainActivityInterface.getMidi().sendMidi(buffer3on,false),midiDelay*3L);
+            new Handler().postDelayed(() -> mainActivityInterface.getMidi().sendMidi(buffer4on,false),midiDelay*4L);
+            new Handler().postDelayed(() -> mainActivityInterface.getMidi().sendMidi(buffer1off,false),500+(midiDelay*5L));
+            new Handler().postDelayed(() -> mainActivityInterface.getMidi().sendMidi(buffer2off,false),500+(midiDelay*6L));
+            new Handler().postDelayed(() -> mainActivityInterface.getMidi().sendMidi(buffer3off,false),500+(midiDelay*7L));
+            new Handler().postDelayed(() -> mainActivityInterface.getMidi().sendMidi(buffer4off,false),500+(midiDelay*8L));
 
             if (sent) {
                 mainActivityInterface.getShowToast().doIt(okay_string);
@@ -680,8 +684,8 @@ public class MidiFragment extends Fragment {
         boolean success = false;
         try {
             Log.d(TAG,"test:"+mm);
-            byte[] b = mainActivityInterface.getMidi().returnBytesFromHexText(mm);
-            success = mainActivityInterface.getMidi().sendMidiHexSequence(mm)>0;
+            //byte[] b = mainActivityInterface.getMidi().returnBytesFromHexText(mm);
+            success = mainActivityInterface.getMidi().sendMidiHexSequence(mm) == mainActivityInterface.getMidi().getMidiDelay();
             //success = mainActivityInterface.getMidi().sendMidi(b);
         } catch (Exception e) {
             e.printStackTrace();
@@ -764,6 +768,14 @@ public class MidiFragment extends Fragment {
             midiString = mainActivityInterface.getMidi().buildMidiString(command,channel,noteorcontroller,valueorvelocity);
         } catch (Exception e) {
             midiString = "0x00 0x00 0x00";
+        }
+        if (!command.equals("NoteOn") && !command.equals("NoteOff")) {
+            myView.burstMode.setVisibility(View.VISIBLE);
+            if (myView.burstMode.getChecked()) {
+                midiString += "*";
+            }
+        } else {
+            myView.burstMode.setVisibility(View.GONE);
         }
         myView.midiCode.setText(midiString);
     }

@@ -484,6 +484,8 @@
     <string name="midi_add">"Adicionar comando"</string>
     <string name="midi_auto">"MIDI de envio automático"</string>
     <string name="midi_bluetooth">"Conecte o dispositivo Bluetooth"</string>
+    <string name="midi_burst">Modo de intermitência</string>
+    <string name="midi_burst_info">Alguns dispositivos dependem de receber várias mensagens do controlador rapidamente.  Quando ligado, qualquer comando MIDI gerado será anotado por * como um comando burst (ou seja, enviado várias vezes seguidas)</string>
     <string name="midi_channel">"Canal"</string>
     <string name="midi_code_current">Código MIDI atualmente atribuído à ação</string>
     <string name="midi_code_new">Novo código MIDI</string>

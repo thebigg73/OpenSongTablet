@@ -216,6 +216,13 @@
                             android:hint="@string/midi_velocity" />
                     </LinearLayout>
 
+                    <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                        android:id="@+id/burstMode"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/midi_burst"
+                        android:hint="@string/midi_burst_info"/>
+
                     <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                         android:id="@+id/midiCode"
                         android:layout_width="match_parent"

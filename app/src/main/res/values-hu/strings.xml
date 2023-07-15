@@ -484,6 +484,8 @@
     <string name="midi_add">"Parancs hozzáadása"</string>
     <string name="midi_auto">"Automatikus MIDI küldése"</string>
     <string name="midi_bluetooth">"Bluetooth-eszköz csatlakoztatása"</string>
+    <string name="midi_burst">Sorozatfelvétel mód</string>
+    <string name="midi_burst_info">Egyes eszközök több vezérlőüzenet gyors fogadására támaszkodnak.  Bekapcsoláskor minden létrehozott MIDI parancsot * jegyzetel burst parancsként (azaz többször egymás után elküldve)</string>
     <string name="midi_channel">"Csatorna"</string>
     <string name="midi_code_current">A művelethez jelenleg hozzárendelt MIDI-kód</string>
     <string name="midi_code_new">Új MIDI-kód</string>

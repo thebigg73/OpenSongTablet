@@ -175,127 +175,127 @@ public class BeatBuddy {
     public void beatBuddyStart() {
         // Send a MIDI command to start the BeatBuddy
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            mainActivityInterface.getMidi().sendMidi(commandStart);
+            mainActivityInterface.getMidi().sendMidi(commandStart,false);
         }
     }
     public void beatBuddyStop() {
         // Send a MIDI command to stop the BeatBuddy
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            mainActivityInterface.getMidi().sendMidi(commandStop);
+            mainActivityInterface.getMidi().sendMidi(commandStop,false);
         }
     }
     public void beatBuddyAccent() {
         // Send a MIDI command to play an accent on the BeatBuddy
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            mainActivityInterface.getMidi().sendMidi(commandAccent);
+            mainActivityInterface.getMidi().sendMidi(commandAccent,false);
         }
     }
     public void beatBuddyFill() {
         // Send a MIDI command to play an fill on the BeatBuddy
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            mainActivityInterface.getMidi().sendMidi(commandFill);
+            mainActivityInterface.getMidi().sendMidi(commandFill,false);
         }
     }
     public void beatBuddyPause() {
         // Send a MIDI command to toggle pause on the BeatBuddy
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            mainActivityInterface.getMidi().sendMidi(commandPauseToggle);
+            mainActivityInterface.getMidi().sendMidi(commandPauseToggle,false);
         }
     }
     public void beatBuddyTransition1() {
         // Send a MIDI command to start transition 1 on the BeatBuddy
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            mainActivityInterface.getMidi().sendMidi(commandTransition1);
+            mainActivityInterface.getMidi().sendMidi(commandTransition1,false);
         }
     }
     public void beatBuddyTransition2() {
         // Send a MIDI command to start transition 2 on the BeatBuddy
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            mainActivityInterface.getMidi().sendMidi(commandTransition2);
+            mainActivityInterface.getMidi().sendMidi(commandTransition2,false);
         }
     }
     public void beatBuddyTransition3() {
         // Send a MIDI command to start transition 3 on the BeatBuddy
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            mainActivityInterface.getMidi().sendMidi(commandTransition3);
+            mainActivityInterface.getMidi().sendMidi(commandTransition3,false);
         }
     }
     public void beatBuddyTransitionNext() {
         // Send a MIDI command to start the next transition on the BeatBuddy
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            mainActivityInterface.getMidi().sendMidi(commandTransitionNext);
+            mainActivityInterface.getMidi().sendMidi(commandTransitionNext,false);
         }
     }
     public void beatBuddyTransitionPrev() {
         // Send a MIDI command to start the next transition on the BeatBuddy
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            mainActivityInterface.getMidi().sendMidi(commandTransitionPrev);
+            mainActivityInterface.getMidi().sendMidi(commandTransitionPrev,false);
         }
     }
     public void beatBuddyTransitionExit() {
         // Send a MIDI command to stop the transition on the BeatBuddy
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            mainActivityInterface.getMidi().sendMidi(commandTransitionExit);
+            mainActivityInterface.getMidi().sendMidi(commandTransitionExit,false);
         }
     }
     public void beatBuddyExclusiveTransition1() {
         // Send a MIDI command to start transition 1 on the BeatBuddy
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            mainActivityInterface.getMidi().sendMidi(commandExclusiveTransition1);
+            mainActivityInterface.getMidi().sendMidi(commandExclusiveTransition1,false);
         }
     }
     public void beatBuddyExclusiveTransition2() {
         // Send a MIDI command to start transition 2 on the BeatBuddy
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            mainActivityInterface.getMidi().sendMidi(commandExclusiveTransition2);
+            mainActivityInterface.getMidi().sendMidi(commandExclusiveTransition2,false);
         }
     }
     public void beatBuddyExclusiveTransition3() {
         // Send a MIDI command to start transition 3 on the BeatBuddy
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            mainActivityInterface.getMidi().sendMidi(commandExclusiveTransition3);
+            mainActivityInterface.getMidi().sendMidi(commandExclusiveTransition3,false);
         }
     }
     public void beatBuddyExclusiveTransitionNext() {
         // Send a MIDI command to start the next transition on the BeatBuddy
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            mainActivityInterface.getMidi().sendMidi(commandExclusiveTransitionNext);
+            mainActivityInterface.getMidi().sendMidi(commandExclusiveTransitionNext,false);
         }
     }
     public void beatBuddyExclusiveTransitionPrev() {
         // Send a MIDI command to start the next transition on the BeatBuddy
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            mainActivityInterface.getMidi().sendMidi(commandExclusiveTransitionPrev);
+            mainActivityInterface.getMidi().sendMidi(commandExclusiveTransitionPrev,false);
         }
     }
     public void beatBuddyExclusiveTransitionExit() {
         // Send a MIDI command to stop the transition on the BeatBuddy
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            mainActivityInterface.getMidi().sendMidi(commandExclusiveTransitionExit);
+            mainActivityInterface.getMidi().sendMidi(commandExclusiveTransitionExit,false);
         }
     }
     public void beatBuddyHalfTime() {
         // Send a MIDI command to play half time on the BeatBuddy
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            mainActivityInterface.getMidi().sendMidi(commandHalfTime);
+            mainActivityInterface.getMidi().sendMidi(commandHalfTime,false);
         }
     }
     public void beatBuddyHalfTimeExit() {
         // Send a MIDI command to stop half time on the BeatBuddy
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            mainActivityInterface.getMidi().sendMidi(commandHalfTimeExit);
+            mainActivityInterface.getMidi().sendMidi(commandHalfTimeExit,false);
         }
     }
     public void beatBuddyDoubleTime() {
         // Send a MIDI command to play double time on the BeatBuddy
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            mainActivityInterface.getMidi().sendMidi(commandDoubleTime);
+            mainActivityInterface.getMidi().sendMidi(commandDoubleTime,false);
         }
     }
     public void beatBuddyDoubleTimeExit() {
         // Send a MIDI command to stop double time on the BeatBuddy
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            mainActivityInterface.getMidi().sendMidi(commandDoubleTimeExit);
+            mainActivityInterface.getMidi().sendMidi(commandDoubleTimeExit,false);
         }
     }
 
