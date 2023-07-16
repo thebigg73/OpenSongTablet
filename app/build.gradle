@@ -80,12 +80,9 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.activity:activity:1.8.0-alpha06'
-    // Required for permission requests
-    implementation 'androidx.fragment:fragment:1.6.0'
-    // Using fragments and navigation
-    implementation 'com.google.android.material:material:1.11.0-alpha01'
-    // Required for material design goodness
+    implementation 'androidx.activity:activity:1.8.0-alpha06'                           // Required for activity and permission requests
+    implementation 'androidx.fragment:fragment:1.6.0'                                   // Using fragments and navigation
+    implementation 'com.google.android.material:material:1.11.0-alpha01'                // Required for material design goodness
     //implementation "androidx.compose.material:material:1.4.3"                         // Can upgrade theme to Material3 once I remove support for KitKat
     implementation 'com.google.android.gms:play-services-cast:21.3.0'                   // For casting obviously!
     implementation 'com.google.android.gms:play-services-cast-framework:21.3.0'         // For casting obviously!
