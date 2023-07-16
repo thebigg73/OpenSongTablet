@@ -41,6 +41,7 @@ public class EditSongFragmentFeatures extends Fragment {
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "EditSongFeatures";
     private String[] key_choice_string={};
+    private boolean keyset = false;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -127,17 +128,7 @@ public class EditSongFragmentFeatures extends Fragment {
         myView.originalkey.setText(mainActivityInterface.getTempSong().getKeyOriginal());
 
         // The capo
-        ArrayList<String> capos = new ArrayList<>();
-        capos.add("");
-        for (int x = 1; x < 12; x++) {
-            capos.add(x + "");
-        }
-        if (getContext()!=null) {
-            ExposedDropDownArrayAdapter capoArrayAdapter = new ExposedDropDownArrayAdapter(getContext(),
-                    myView.capo, R.layout.view_exposed_dropdown_item, capos);
-            myView.capo.setAdapter(capoArrayAdapter);
-        }
-        myView.capo.setText(mainActivityInterface.getTempSong().getCapo());
+        setupCapo();
 
         // The pad file
         ArrayList<String> padfiles = new ArrayList<>();
@@ -236,6 +227,53 @@ public class EditSongFragmentFeatures extends Fragment {
         mainActivityInterface.getWindowFlags().adjustViewPadding(mainActivityInterface,myView.resizeForKeyboardLayout);
     }
 
+    private void setupCapo() {
+        ArrayList<String> capos = new ArrayList<>();
+        capos.add("");
+        String songkey = mainActivityInterface.getTempSong().getKey();
+        String origkey = mainActivityInterface.getTempSong().getKeyOriginal();
+        if ((songkey==null || songkey.isEmpty()) && origkey!=null && !origkey.isEmpty()) {
+            songkey = origkey;
+            mainActivityInterface.getTempSong().setKey(origkey);
+            myView.key.setText(origkey);
+        }
+        if ((origkey==null || origkey.isEmpty()) && songkey!=null && !songkey.isEmpty()) {
+            origkey = songkey;
+            mainActivityInterface.getTempSong().setKeyOriginal(songkey);
+            myView.originalkey.setText(songkey);
+        }
+
+        for (int x = 1; x < 12; x++) {
+            // If we have a ket set, work out the capo key
+            String capokey = "";
+            if (songkey!=null && !songkey.isEmpty()) {
+                capokey = " (" + mainActivityInterface.getTranspose().transposeChordForCapo(x,"."+songkey) + ")";
+            }
+            capos.add(x + capokey.replace(".",""));
+        }
+
+        if (getContext()!=null) {
+            ExposedDropDownArrayAdapter capoArrayAdapter = new ExposedDropDownArrayAdapter(getContext(),
+                    myView.capo, R.layout.view_exposed_dropdown_item, capos);
+            myView.capo.setAdapter(capoArrayAdapter);
+        }
+
+        String songcapo = mainActivityInterface.getTempSong().getCapo();
+        if (songcapo==null) {
+            songcapo = "";
+        }
+
+        Log.d(TAG,"songcapo:"+songcapo+"  songkey:"+songkey);
+        if (songkey!=null && !songkey.isEmpty() && !songcapo.isEmpty()) {
+            songcapo = songcapo.replaceAll("\\D","").trim();
+            if (!songcapo.isEmpty()) {
+                songcapo += " (" + mainActivityInterface.getTranspose().transposeChordForCapo(Integer.parseInt(songcapo),"."+songkey) + ")";
+            }
+        }
+
+        myView.capo.setText(songcapo.replace(".",""));
+    }
+
     private void setLink() {
         String linkvalue;
         switch (whichLink) {
@@ -286,6 +324,7 @@ public class EditSongFragmentFeatures extends Fragment {
         });
         // The simple text only fields
         myView.key.addTextChangedListener(new MyTextWatcher("key"));
+        myView.originalkey.addTextChangedListener(new MyTextWatcher("originalkey"));
         myView.capo.addTextChangedListener(new MyTextWatcher("capo"));
         myView.pad.addTextChangedListener(new MyTextWatcher("pad"));
         myView.loop.setOnCheckedChangeListener((compoundButton, b) -> {
@@ -342,9 +381,15 @@ public class EditSongFragmentFeatures extends Fragment {
             switch (what) {
                 case "key":
                     mainActivityInterface.getTempSong().setKey(editable.toString());
+                    setupCapo();
+                    break;
+                case "originalkey":
+                    mainActivityInterface.getTempSong().setKeyOriginal(editable.toString());
                     break;
                 case "capo":
-                    mainActivityInterface.getTempSong().setCapo(editable.toString());
+                    // Get rid of any new key text (e.g. convert '1 (D)' to '1')
+                    String fixedcapo = editable.toString().replaceAll("\\D","").trim();
+                    mainActivityInterface.getTempSong().setCapo(fixedcapo);
                     break;
                 case "pad":
                     // We need to save the English short text in the preferences
