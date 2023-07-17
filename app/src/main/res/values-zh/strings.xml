@@ -485,6 +485,7 @@
     <string name="midi_auto">"自动发送MIDI"</string>
     <string name="midi_bluetooth">"连接蓝牙设备"</string>
     <string name="midi_burst">突发模式</string>
+    <string name="midi_burst_count">发送 MIDI 消息的次数</string>
     <string name="midi_burst_info">某些设备依赖于快速接收多个控制器消息。 打开时，生成的任何 MIDI 命令都将由 * 注释为突发命令（即连续发送几次）</string>
     <string name="midi_channel">"渠道"</string>
     <string name="midi_code_current">当前分配给动作的 MIDI 代码</string>

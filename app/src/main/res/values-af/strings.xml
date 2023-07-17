@@ -485,6 +485,7 @@
     <string name="midi_auto">"Outomaties stuur MIDI"</string>
     <string name="midi_bluetooth">"Koppel Bluetooth-toestel"</string>
     <string name="midi_burst">Burst-modus</string>
+    <string name="midi_burst_count">Aantal kere om MIDI-boodskap te stuur</string>
     <string name="midi_burst_info">Sommige toestelle maak staat op die ontvangs van verskeie beheerderboodskappe vinnig.  As dit aangeskakel is, sal enige MIDI-opdrag wat gegenereer word, deur * as \'n barsopdrag geannoteer word (d.w.s. verskeie kere agtereenvolgens gestuur)</string>
     <string name="midi_channel">Kanaal</string>
     <string name="midi_code_current">MIDI-kode wat tans aan aksie toegewys is</string>

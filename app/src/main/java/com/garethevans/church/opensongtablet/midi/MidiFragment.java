@@ -243,6 +243,26 @@ public class MidiFragment extends Fragment {
             mainActivityInterface.getMidi().setMidiDelay((int)myView.midiDelay.getValue());
             myView.midiDelay.setHint((int)myView.midiDelay.getValue()+"ms");
         });
+        myView.midiBurstRepeat.setAdjustableButtons(true);
+        myView.midiBurstRepeat.setHint(mainActivityInterface.getMidi().getMidiBurstRepeat()+"");
+        myView.midiBurstRepeat.setValue(mainActivityInterface.getMidi().getMidiBurstRepeat());
+        myView.midiBurstRepeat.setLabelFormatter(value1 -> (int) value1 + "");
+        myView.midiBurstRepeat.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
+            @Override
+            public void onStartTrackingTouch(@NonNull Slider slider) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(@NonNull Slider slider) {
+                mainActivityInterface.getMidi().setMidiBurstRepeat((int) myView.midiBurstRepeat.getValue());
+                myView.midiBurstRepeat.setHint((int)myView.midiBurstRepeat.getValue()+"");
+            }
+        });
+        myView.midiBurstRepeat.addOnChangeListener((slider, value, fromUser) -> {
+            mainActivityInterface.getMidi().setMidiBurstRepeat((int)myView.midiBurstRepeat.getValue());
+            myView.midiBurstRepeat.setHint((int)myView.midiBurstRepeat.getValue()+"");
+        });
     }
 
     // Set the view visibilities
@@ -278,8 +298,9 @@ public class MidiFragment extends Fragment {
             setVisibilites(false, false, true, false);
 
             // Controller is value 3, LSB/MSB is the remaining (>3)
-        } else
-            setVisibilites(false, midiCommand.indexOf(myView.midiCommand.getText().toString()) == 3, true, false);
+        } else {
+            setVisibilites(false, midiCommand.indexOf(myView.midiCommand.getText().toString()) >= 3, true, false);
+        }
 
         getHexCodeFromDropDowns();
     }
@@ -288,15 +309,18 @@ public class MidiFragment extends Fragment {
         if (note) {
             myView.midiNote.setVisibility(View.VISIBLE);
             myView.burstMode.setVisibility(View.GONE);
+            myView.midiBurstRepeat.setVisibility(View.GONE);
         } else {
             myView.midiNote.setVisibility(View.GONE);
         }
         if (controller) {
             myView.midiController.setVisibility(View.VISIBLE);
             myView.burstMode.setVisibility(View.VISIBLE);
+            myView.midiBurstRepeat.setVisibility(myView.burstMode.getChecked() ? View.VISIBLE:View.GONE);
         } else {
             myView.midiController.setVisibility(View.GONE);
             myView.burstMode.setVisibility(View.GONE);
+            myView.midiBurstRepeat.setVisibility(View.GONE);
         }
         if (value) {
             myView.midiValue.setVisibility(View.VISIBLE);
@@ -368,7 +392,11 @@ public class MidiFragment extends Fragment {
             MidiActionBottomSheet midiActionBottomSheet = new MidiActionBottomSheet(myView.midiCode.getText().toString());
             midiActionBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"MidiActionBottomSheet");
         });
-        myView.burstMode.setOnCheckedChangeListener((compoundButton, b) -> getHexCodeFromDropDowns());
+        myView.burstMode.setOnCheckedChangeListener((compoundButton, b) -> {
+            getHexCodeFromDropDowns();
+            myView.midiBurstRepeat.setVisibility(b && myView.burstMode.getVisibility()==View.VISIBLE ? View.VISIBLE:View.GONE);
+        });
+
     }
 
     private class MyTextWatcher implements TextWatcher {
@@ -771,11 +799,13 @@ public class MidiFragment extends Fragment {
         }
         if (!command.equals("NoteOn") && !command.equals("NoteOff")) {
             myView.burstMode.setVisibility(View.VISIBLE);
+            myView.midiBurstRepeat.setVisibility(myView.burstMode.getChecked() ? View.VISIBLE:View.GONE);
             if (myView.burstMode.getChecked()) {
                 midiString += "*";
             }
         } else {
             myView.burstMode.setVisibility(View.GONE);
+            myView.midiBurstRepeat.setVisibility(View.GONE);
         }
         myView.midiCode.setText(midiString);
     }

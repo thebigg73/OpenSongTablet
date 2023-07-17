@@ -485,6 +485,7 @@
     <string name="midi_auto">"MIDI automatisch senden"</string>
     <string name="midi_bluetooth">"Bluetooth-Gerät verbinden"</string>
     <string name="midi_burst">Stoßbetrieb</string>
+    <string name="midi_burst_count">Häufigkeit, mit der MIDI-Nachrichten gesendet werden</string>
     <string name="midi_burst_info">Einige Geräte sind darauf angewiesen, schnell mehrere Controller-Nachrichten zu empfangen.  Beim Einschalten wird jeder erzeugte MIDI-Befehl mit * als Burst-Befehl annotiert (d.h. mehrmals hintereinander gesendet)</string>
     <string name="midi_channel">"Kanal"</string>
     <string name="midi_code_current">MIDI-Code, der derzeit der Aktion zugewiesen ist</string>

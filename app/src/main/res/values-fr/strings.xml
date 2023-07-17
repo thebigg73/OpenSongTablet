@@ -485,6 +485,7 @@
     <string name="midi_auto">"Envoi automatique MIDI"</string>
     <string name="midi_bluetooth">"Connectez l'appareil Bluetooth"</string>
     <string name="midi_burst">Mode rafale</string>
+    <string name="midi_burst_count">Nombre de fois où envoyer un message MIDI</string>
     <string name="midi_burst_info">Certains appareils s’appuient sur la réception rapide de plusieurs messages de contrôleur.  Lorsqu’elle est activée, toute commande MIDI générée sera annotée par * en tant que commande en rafale (c’est-à-dire envoyée plusieurs fois de suite)</string>
     <string name="midi_channel">"Canal"</string>
     <string name="midi_code_current">Code MIDI actuellement affecté à l’action</string>

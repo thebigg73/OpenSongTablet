@@ -53,6 +53,7 @@ public class Midi {
         midiAction7 = mainActivityInterface.getPreferences().getMyPreferenceString("midiAction7", "0x99 0x2B 0x64");
         midiAction8 = mainActivityInterface.getPreferences().getMyPreferenceString("midiAction8", "0x99 0x37 0x64");
         midiSendAuto = mainActivityInterface.getPreferences().getMyPreferenceBoolean("midiSendAuto",true);
+        midiBurstRepeat = mainActivityInterface.getPreferences().getMyPreferenceInt("midiBurstRepeat",10);
         shortHandMidi = new ShortHandMidi(c);
     }
 
@@ -126,6 +127,7 @@ public class Midi {
     //                                                                            80 = 128 ticks (hex)
     private final String midiFileTrackHeader = "4D 54 72 6B 00 00 00 "; // Need to add count of note data + track out of 4!
     private final String midiFileTrackOut = "00 FF 2F 00";
+    private int midiBurstRepeat = 1;
 
     private int midiDelay;
     private boolean includeBluetoothMidi;
@@ -364,7 +366,7 @@ public class Midi {
                 // Some CC messages need to be sent several times to avoid dropped/ignored data
                 // 100 seems to do the trick for Aeros
                 // If the MIDI message hex ends with '*' then it will be repeated.
-                for (int y=0; y<(repeatedSend ? 100:1); y++) {
+                for (int y=0; y<(repeatedSend ? midiBurstRepeat:1); y++) {
                     midiInputPort.send(b, 0, b.length);
                     Log.d(TAG,"bytes sent:"+ Arrays.toString(b));
                 }
@@ -908,5 +910,14 @@ public class Midi {
 
     public String checkForShortHandMIDI(String textToCheck) {
         return shortHandMidi.convertShorthandToMIDI(textToCheck);
+    }
+
+    public void setMidiBurstRepeat(int midiBurstRepeat) {
+        this.midiBurstRepeat = midiBurstRepeat;
+        mainActivityInterface.getPreferences().setMyPreferenceInt("midiBurstRepeat",midiBurstRepeat);
+    }
+
+    public int getMidiBurstRepeat() {
+        return midiBurstRepeat;
     }
 }

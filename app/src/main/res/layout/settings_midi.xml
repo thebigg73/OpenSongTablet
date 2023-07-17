@@ -220,8 +220,23 @@
                         android:id="@+id/burstMode"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
                         android:text="@string/midi_burst"
                         android:hint="@string/midi_burst_info"/>
+
+                    <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+                        android:id="@+id/midiBurstRepeat"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/midi_burst_count"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:valueFrom="1"
+                        android:valueTo="100"
+                        app:stepSize="1"
+                        android:value="10"
+                        app:adjustable="true"/>
 
                     <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                         android:id="@+id/midiCode"

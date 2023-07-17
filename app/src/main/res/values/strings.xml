@@ -637,6 +637,7 @@
     <string name="midi_auto">Auto send MIDI</string>
     <string name="midi_bluetooth">Connect Bluetooth device</string>
     <string name="midi_burst">Burst mode</string>
+    <string name="midi_burst_count">Number of times to send MIDI message</string>
     <string name="midi_burst_info">Some devices rely on receiving multiple controller messages quickly.  When switched on, any MIDI command generated will be annotated by * as a burst command (i.e. sent several times in a row)</string>
     <string name="midi_channel">Channel</string>
     <string name="midi_code_current">MIDI code currently assigned to action</string>

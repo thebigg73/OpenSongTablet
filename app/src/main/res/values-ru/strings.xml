@@ -485,6 +485,7 @@
     <string name="midi_auto">Автоматическая отправка MIDI</string>
     <string name="midi_bluetooth">Подключить устройство Bluetooth</string>
     <string name="midi_burst">Серийный режим</string>
+    <string name="midi_burst_count">Количество раз для отправки MIDI-сообщения</string>
     <string name="midi_burst_info">Некоторые устройства полагаются на быстрое получение сообщений нескольких контроллеров.  При включении любая сгенерированная MIDI-команда будет помечена * как пакетная команда (т.е. отправлена несколько раз подряд)</string>
     <string name="midi_channel">Kанал</string>
     <string name="midi_code_current">MIDI-код, назначенный в настоящее время действию</string>
