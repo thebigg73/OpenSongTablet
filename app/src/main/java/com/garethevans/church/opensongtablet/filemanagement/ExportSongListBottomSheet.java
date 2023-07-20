@@ -173,21 +173,28 @@ public class ExportSongListBottomSheet extends BottomSheetDialogFragment {
     }
 
     private void processing(boolean starting) {
-        if (starting) {
-            myView.scrim.setVisibility(View.VISIBLE);
-            myView.progress.setVisibility(View.VISIBLE);
-            myView.export.setEnabled(false);
-            myView.export.hide();
-            myView.print.setEnabled(false);
-            myView.print.hide();
-        } else {
-            myView.scrim.setVisibility(View.GONE);
-            myView.progress.setVisibility(View.GONE);
-            myView.export.setEnabled(true);
-            myView.export.show();
-            myView.print.setEnabled(true);
-            myView.print.show();
-        }
+        new Handler(Looper.getMainLooper()).post(() -> {
+            try {
+                if (starting && myView!=null) {
+                    myView.scrim.setVisibility(View.VISIBLE);
+                    myView.progress.setVisibility(View.VISIBLE);
+                    myView.export.setEnabled(false);
+                    myView.export.hide();
+                    myView.print.setEnabled(false);
+                    myView.print.hide();
+                } else if (myView!=null) {
+                    myView.scrim.setVisibility(View.GONE);
+                    myView.progress.setVisibility(View.GONE);
+                    myView.export.setEnabled(true);
+                    myView.export.show();
+                    myView.print.setEnabled(true);
+                    myView.print.show();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+
     }
 
     private void prepareExport() {

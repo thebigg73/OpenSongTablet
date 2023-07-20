@@ -53,7 +53,7 @@ public class Midi {
         midiAction7 = mainActivityInterface.getPreferences().getMyPreferenceString("midiAction7", "0x99 0x2B 0x64");
         midiAction8 = mainActivityInterface.getPreferences().getMyPreferenceString("midiAction8", "0x99 0x37 0x64");
         midiSendAuto = mainActivityInterface.getPreferences().getMyPreferenceBoolean("midiSendAuto",true);
-        midiBurstRepeat = mainActivityInterface.getPreferences().getMyPreferenceInt("midiBurstRepeat",10);
+        midiBurstRepeat = mainActivityInterface.getPreferences().getMyPreferenceInt("midiBurstRepeat",1);
         shortHandMidi = new ShortHandMidi(c);
     }
 

@@ -53,12 +53,12 @@ public class PedalMidiReceiver extends MidiReceiver {
 
             if (byte1>=144 && byte1<=159) {
                 if (byte3 > 0) {
-                    Log.d(TAG, "Note on channel=" + ((byte1 - 144) + 1));
+                    //Log.d(TAG, "Note on channel=" + ((byte1 - 144) + 1));
                     downByte = byte2;
                     actionDown = true;
                     downTime = System.currentTimeMillis();
                 } else if (byte2 == downByte) {
-                    Log.d(TAG, "Note off channel=" + ((byte1 - 144) + 1));
+                    //Log.d(TAG, "Note off channel=" + ((byte1 - 144) + 1));
                     // This is action up or long press
                     upTime = System.currentTimeMillis();
                     if (upTime - downTime > 1000 && upTime - downTime < 5000) {
@@ -70,27 +70,27 @@ public class PedalMidiReceiver extends MidiReceiver {
                 }
             } else if (byte1>=128 && byte1<=143) {
                 // This is a note off.  Don't need this
-                Log.d(TAG,"Note off channel="+((byte1-128)+1));
+                //Log.d(TAG,"Note off channel="+((byte1-128)+1));
                 //upTime = System.currentTimeMillis();
                 actionUp = true;
             }
 
             String note = midi.getNoteFromInt(byte2);
-            Log.d(TAG,"Note="+byte2);
-            Log.d(TAG,"Velocity="+byte3);
+            //Log.d(TAG,"Note="+byte2);
+            //Log.d(TAG,"Velocity="+byte3);
 
             String b0 = Integer.toString(msg[0],16);
             String b1 = Integer.toString(msg[1],16);
             String b2 = Integer.toString(msg[2],16);
-            Log.d(TAG,"b0="+b0+"  b1="+b1+"  b2="+b2);
-            Log.d(TAG, "actionDown="+actionDown+"  actionUp="+actionUp+" actionLong="+actionLong);
-            Log.d(TAG, "note="+note);
+            //Log.d(TAG,"b0="+b0+"  b1="+b1+"  b2="+b2);
+            //Log.d(TAG, "actionDown="+actionDown+"  actionUp="+actionUp+" actionLong="+actionLong);
+            //Log.d(TAG, "note="+note);
 
             mainActivityInterface.registerMidiAction(actionDown,actionUp,actionLong,note);
 
         } else if (msg.length >= 2) {
             // TODO consider implementing this
-            Log.d(TAG,"possible MIDI start/stop");
+            //Log.d(TAG,"possible MIDI start/stop");
             // Could be a MIDI start (0xFA) or stop (0xFC)
             /*int byte1 = msg[1] & 0xFF;
             String hexCode = "0x" + String.format("%02X", byte1);

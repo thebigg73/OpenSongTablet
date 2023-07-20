@@ -89,9 +89,6 @@ public class ProcessSong {
     private boolean bracketsOpen = false;
     private int bracketsStyle = Typeface.NORMAL;
     private boolean curlyBrackets = true;
-    private boolean fileWriteLog = true;
-    private boolean fileViewLog = true;
-
 
     public static int getColorWithAlpha(int color, float ratio) {
         int alpha = Math.round(Color.alpha(color) * ratio);
@@ -3218,7 +3215,8 @@ public class ProcessSong {
         String filename = song.getFolder().replace("/", "_") + "_" +
                 song.getFilename();
 
-        if (song.getFiletype().equals("PDF")) {
+        if ((song.getFiletype()!=null && song.getFiletype().equals("PDF")) ||
+                (song.getFilename()!=null && song.getFilename().toLowerCase().endsWith(".pdf"))) {
             filename += "_" + song.getPdfPageCurrent();
         } else {
             //if (portrait) {  // old v5 logic which only worked for full autoscale
