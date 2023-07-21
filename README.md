@@ -1,4 +1,4 @@
-# OpenSongApp
+# OpenSongApp - v6 (MaterialApp)
 ![splash_logo](https://user-images.githubusercontent.com/7831274/205077524-2b0f7c42-de5c-432f-aa59-8e73746b2f96.png)
 Android port of OpenSong (http://www.opensong.org).
 
