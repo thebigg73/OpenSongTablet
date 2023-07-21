@@ -1,4 +1,4 @@
-# OpenSongApp (OpenSong Tablet)
+# OpenSongApp (OpenSong Tablet - v.5.6.0)
 
 Android port of OpenSong (http://www.opensong.org).
 ![splash_logo](https://user-images.githubusercontent.com/7831274/206910467-a71b9950-06d0-4849-8455-dec5c12cc44d.png)
