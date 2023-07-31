@@ -485,7 +485,6 @@
     <string name="midi_auto">"自动发送MIDI"</string>
     <string name="midi_bluetooth">"连接蓝牙设备"</string>
     <string name="midi_burst">突发模式</string>
-    <string name="midi_burst_count">发送 MIDI 消息的次数</string>
     <string name="midi_burst_info">某些设备依赖于快速接收多个控制器消息。 打开时，生成的任何 MIDI 命令都将由 * 注释为突发命令（即连续发送几次）</string>
     <string name="midi_channel">"渠道"</string>
     <string name="midi_code_current">当前分配给动作的 MIDI 代码</string>
@@ -696,6 +695,8 @@
     <string name="set_inline">内联集</string>
     <string name="set_inline_info">在歌曲窗口旁边的屏幕上显示设置列表</string>
     <string name="set_item_info">您可以更改从集合加载的歌曲的文件夹/文件名，也可以更改歌曲显示的键（如果需要，这会在您的设备上临时转置歌曲）</string>
+    <string name="set_load_first">在第一项打开加载的集</string>
+    <string name="set_load_first_info">始终打开第一个设置项。 如果关闭，该集合将尝试在当前加载的歌曲（如果该歌曲在集合中）处打开。</string>
     <string name="set_load_info">加载以前保存的集合</string>
     <string name="set_load_merge">选择多个将按所选顺序合并它们。</string>
     <string name="set_manage">管理您的集</string>

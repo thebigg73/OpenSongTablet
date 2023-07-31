@@ -485,7 +485,6 @@
     <string name="midi_auto">"自動送信MIDI"</string>
     <string name="midi_bluetooth">"Bluetoothデバイスを接続する"</string>
     <string name="midi_burst">バーストモード</string>
-    <string name="midi_burst_count">MIDI メッセージの送信回数</string>
     <string name="midi_burst_info">一部のデバイスは、複数のコントローラー メッセージをすばやく受信することに依存しています。 オンにすると、生成されたMIDIコマンドには、バーストコマンドとして*で注釈が付けられます(つまり、連続して数回送信されます)。</string>
     <string name="midi_channel">"チャネル"</string>
     <string name="midi_code_current">現在アクションに割り当てられているMIDIコード</string>
@@ -696,6 +695,8 @@
     <string name="set_inline">インライン セット</string>
     <string name="set_inline_info">曲ウィンドウの横の画面にセットリストを表示します</string>
     <string name="set_item_info">セットからロードされた曲のフォルダ/ファイル名を変更したり、曲表示のキーを変更したりすることもできます(これにより、必要に応じてデバイス上の曲の一時的な移調が実行されます)</string>
+    <string name="set_load_first">ロードされたセットを最初のアイテムで開く</string>
+    <string name="set_load_first_info">常に最初のセット項目を開きます。 オフにすると、セットは現在ロードされている曲がセット内にある場合は、その曲で開こうとします。</string>
     <string name="set_load_info">以前に保存したセットをロードします</string>
     <string name="set_load_merge">複数を選択すると、選択した順序でそれらがマージされます。</string>
     <string name="set_manage">セットを管理する</string>

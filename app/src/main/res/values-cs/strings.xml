@@ -485,7 +485,6 @@
     <string name="midi_auto">"Automatické odesílání MIDI"</string>
     <string name="midi_bluetooth">"Připojte zařízení Bluetooth"</string>
     <string name="midi_burst">Režim shlukování</string>
-    <string name="midi_burst_count">Počet odeslání MIDI zprávy</string>
     <string name="midi_burst_info">Některá zařízení spoléhají na rychlý příjem více zpráv ovladače.  Při zapnutí bude jakýkoliv vygenerovaný MIDI příkaz anotován * jako burst příkaz (tj. odeslán několikrát za sebou)</string>
     <string name="midi_channel">"Kanál"</string>
     <string name="midi_code_current">MIDI kód aktuálně přiřazený k akci</string>
@@ -696,6 +695,8 @@
     <string name="set_inline">Inline sada</string>
     <string name="set_inline_info">Zobrazit setlist na obrazovce vedle okna skladby</string>
     <string name="set_item_info">Můžete změnit složku/název souboru skladby načtené ze sady a můžete také změnit klávesu pro zobrazení skladby (v případě potřeby provede dočasnou transpozici skladby do vašeho zařízení)</string>
+    <string name="set_load_first">Otevřete načtenou sadu u první položky</string>
+    <string name="set_load_first_info">Vždy otevřete první nastavenou položku.  Pokud je vypnutá, sada se pokusí otevřít na aktuálně načtené skladbě, pokud je v sadě.</string>
     <string name="set_load_info">Načtěte dříve uloženou sadu</string>
     <string name="set_load_merge">Výběrem více než jednoho je sloučíte ve zvoleném pořadí.</string>
     <string name="set_manage">Spravujte své sady</string>

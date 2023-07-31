@@ -485,7 +485,6 @@
     <string name="midi_auto">"Automatikus MIDI küldése"</string>
     <string name="midi_bluetooth">"Bluetooth-eszköz csatlakoztatása"</string>
     <string name="midi_burst">Sorozatfelvétel mód</string>
-    <string name="midi_burst_count">MIDI-üzenetek küldésének száma</string>
     <string name="midi_burst_info">Egyes eszközök több vezérlőüzenet gyors fogadására támaszkodnak.  Bekapcsoláskor minden létrehozott MIDI parancsot * jegyzetel burst parancsként (azaz többször egymás után elküldve)</string>
     <string name="midi_channel">"Csatorna"</string>
     <string name="midi_code_current">A művelethez jelenleg hozzárendelt MIDI-kód</string>
@@ -696,6 +695,8 @@
     <string name="set_inline">Inline készlet</string>
     <string name="set_inline_info">Jelenítse meg a setlist listát a dal ablaka melletti képernyőn</string>
     <string name="set_item_info">Megváltoztathatja a készletből betöltött dal mappáját/fájlnevét, és megváltoztathatja a dal megjelenítésének gombját is (ez szükség esetén elvégzi a dal ideiglenes átültetését az eszközön)</string>
+    <string name="set_load_first">Nyissa ki a betöltött készletet az első elemnél</string>
+    <string name="set_load_first_info">Mindig nyissa meg az első beállított elemet.  Ha ki van kapcsolva, a szett megpróbálja megnyitni az aktuálisan betöltött dalt, ha az a készletben van.</string>
     <string name="set_load_info">Töltsön be egy korábban mentett készletet</string>
     <string name="set_load_merge">Ha egynél többet választ, azok a kiválasztott sorrendben egyesülnek.</string>
     <string name="set_manage">Kezelje készleteit</string>

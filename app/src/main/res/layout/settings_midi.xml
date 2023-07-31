@@ -216,30 +216,6 @@
                             android:hint="@string/midi_velocity" />
                     </LinearLayout>
 
-                    <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
-                        android:id="@+id/burstMode"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginBottom="8dp"
-                        android:text="@string/midi_burst"
-                        android:hint="@string/midi_burst_info"
-                        android:visibility="gone"/>
-
-                    <com.garethevans.church.opensongtablet.customviews.MaterialSlider
-                        android:id="@+id/midiBurstRepeat"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/midi_burst_count"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginBottom="8dp"
-                        android:valueFrom="1"
-                        android:valueTo="100"
-                        app:stepSize="1"
-                        android:value="1"
-                        app:adjustable="true"
-                        android:visibility="gone"/>
-
                     <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                         android:id="@+id/midiCode"
                         android:layout_width="match_parent"

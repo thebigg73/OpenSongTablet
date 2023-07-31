@@ -33,7 +33,7 @@ public class Midi {
     private final Context c;
     private final MainActivityInterface mainActivityInterface;
     private PedalMidiReceiver pedalMidiReceiver;
-    private ShortHandMidi shortHandMidi;
+    private final ShortHandMidi shortHandMidi;
     @SuppressWarnings({"FieldCanBeLocal","unused"})
     private final String TAG = "Midi";
     private MediaPlayer midiMediaPlayer;
@@ -53,7 +53,6 @@ public class Midi {
         midiAction7 = mainActivityInterface.getPreferences().getMyPreferenceString("midiAction7", "0x99 0x2B 0x64");
         midiAction8 = mainActivityInterface.getPreferences().getMyPreferenceString("midiAction8", "0x99 0x37 0x64");
         midiSendAuto = mainActivityInterface.getPreferences().getMyPreferenceBoolean("midiSendAuto",true);
-        midiBurstRepeat = mainActivityInterface.getPreferences().getMyPreferenceInt("midiBurstRepeat",1);
         shortHandMidi = new ShortHandMidi(c);
     }
 
@@ -127,7 +126,6 @@ public class Midi {
     //                                                                            80 = 128 ticks (hex)
     private final String midiFileTrackHeader = "4D 54 72 6B 00 00 00 "; // Need to add count of note data + track out of 4!
     private final String midiFileTrackOut = "00 FF 2F 00";
-    private int midiBurstRepeat = 1;
 
     private int midiDelay;
     private boolean includeBluetoothMidi;
@@ -359,17 +357,12 @@ public class Midi {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    public boolean sendMidi(byte[] b, boolean repeatedSend) {
+    public boolean sendMidi(byte[] b) {
         boolean success = false;
         if (midiInputPort != null) {
             try {
-                // Some CC messages need to be sent several times to avoid dropped/ignored data
-                // 100 seems to do the trick for Aeros
-                // If the MIDI message hex ends with '*' then it will be repeated.
-                for (int y=0; y<(repeatedSend ? midiBurstRepeat:1); y++) {
-                    midiInputPort.send(b, 0, b.length);
-                    Log.d(TAG,"bytes sent:"+ Arrays.toString(b));
-                }
+                midiInputPort.send(b, 0, b.length);
+                Log.d(TAG,"bytes sent:"+ Arrays.toString(b));
                 success = true;
             } catch (IOException e) {
                 e.printStackTrace();
@@ -383,8 +376,7 @@ public class Midi {
         // Send midi from the arrayList
         Log.d(TAG,"sendMidi("+position+")");
         if (position >= 0 && position < songMidiMessages.size()) {
-            boolean repeatedSend = songMidiMessages.get(position).endsWith("*");
-            sendMidi(returnBytesFromHexText(songMidiMessages.get(position).replace("*","")),repeatedSend);
+            sendMidi(returnBytesFromHexText(songMidiMessages.get(position)));
         }
     }
 
@@ -410,9 +402,7 @@ public class Midi {
             for (int x=0; x<messages.length; x++) {
                 int finalX = x;
                 new Handler().postDelayed(() -> {
-                    boolean repeated = messages[finalX]!=null && messages[finalX].endsWith("*");
-                    Log.d(TAG,"sending:"+messages[finalX]+" repeated:"+repeated);
-                    sendMidi(returnBytesFromHexText(messages[finalX].replace("*","")),repeated);
+                    sendMidi(returnBytesFromHexText(messages[finalX]));
                 }, (long) midiDelay * x);
             }
             return midiDelay * messages.length;
@@ -912,12 +902,4 @@ public class Midi {
         return shortHandMidi.convertShorthandToMIDI(textToCheck);
     }
 
-    public void setMidiBurstRepeat(int midiBurstRepeat) {
-        this.midiBurstRepeat = midiBurstRepeat;
-        mainActivityInterface.getPreferences().setMyPreferenceInt("midiBurstRepeat",midiBurstRepeat);
-    }
-
-    public int getMidiBurstRepeat() {
-        return midiBurstRepeat;
-    }
 }

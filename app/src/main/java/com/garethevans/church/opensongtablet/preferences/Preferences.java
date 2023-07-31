@@ -410,7 +410,6 @@ public class Preferences extends Activity {
     // midiAction6                      String      Midi message allocated to midiAction6 assignable to action/pedal (def:0x99 0x2F 0x64) - tom 2
     // midiAction7                      String      Midi message allocated to midiAction7 assignable to action/pedal (def:0x99 0x2B 0x64) - tom 3
     // midiAction8                      String      Midi message allocated to midiAction8 assignable to action/pedal (def:0x99 0x37 0x64) - crash
-    // midiBurstRepeat                  int         How many times MIDI commands marked with an asterisk * (MIDI burst mode) get sent (def:10)
     // midiSendAuto                     boolean     Should the midi info in the song be sent on song load automatically (def:false)
     // multiLineVerseKeepCompact        boolean     Should multiline verses be kept compact (def:false)
     // navBarKeepSpace                  boolean     Should the app avoid writing in the bottom navbar space (def:false)

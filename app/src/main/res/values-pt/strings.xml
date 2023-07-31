@@ -485,7 +485,6 @@
     <string name="midi_auto">"MIDI de envio automático"</string>
     <string name="midi_bluetooth">"Conecte o dispositivo Bluetooth"</string>
     <string name="midi_burst">Modo de intermitência</string>
-    <string name="midi_burst_count">Número de vezes para enviar mensagem MIDI</string>
     <string name="midi_burst_info">Alguns dispositivos dependem de receber várias mensagens do controlador rapidamente.  Quando ligado, qualquer comando MIDI gerado será anotado por * como um comando burst (ou seja, enviado várias vezes seguidas)</string>
     <string name="midi_channel">"Canal"</string>
     <string name="midi_code_current">Código MIDI atualmente atribuído à ação</string>
@@ -696,6 +695,8 @@
     <string name="set_inline">Conjunto embutido</string>
     <string name="set_inline_info">Mostrar o setlist na tela ao lado da janela da música</string>
     <string name="set_item_info">Você pode alterar a pasta / nome do arquivo da música carregada a partir do conjunto e você também pode alterar a chave para exibição da música (isso executa uma transposição temporária da música no seu dispositivo, se necessário)</string>
+    <string name="set_load_first">Abra o conjunto carregado no primeiro item</string>
+    <string name="set_load_first_info">Abra sempre o primeiro item do conjunto.  Se desligado, o conjunto tentará abrir na música carregada no momento, se estiver no conjunto.</string>
     <string name="set_load_info">Carregar um conjunto salvo anteriormente</string>
     <string name="set_load_merge">Escolher mais de um irá mesclá-los na ordem selecionada.</string>
     <string name="set_manage">Gerencie seus conjuntos</string>

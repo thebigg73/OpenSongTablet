@@ -485,7 +485,6 @@
     <string name="midi_auto">Автоматическая отправка MIDI</string>
     <string name="midi_bluetooth">Подключить устройство Bluetooth</string>
     <string name="midi_burst">Серийный режим</string>
-    <string name="midi_burst_count">Количество раз для отправки MIDI-сообщения</string>
     <string name="midi_burst_info">Некоторые устройства полагаются на быстрое получение сообщений нескольких контроллеров.  При включении любая сгенерированная MIDI-команда будет помечена * как пакетная команда (т.е. отправлена несколько раз подряд)</string>
     <string name="midi_channel">Kанал</string>
     <string name="midi_code_current">MIDI-код, назначенный в настоящее время действию</string>
@@ -696,6 +695,8 @@
     <string name="set_inline">Встроенный сет</string>
     <string name="set_inline_info">Показать сет-лист на экране рядом с окном песни</string>
     <string name="set_item_info">Вы можете изменить имя папки/файла песни, загруженной из сета, а также изменить тональность песни ТОЛЬКО для текущего отображения в сете (транспозиция песни в самой базе при этом не меняется)</string>
+    <string name="set_load_first">Откройте загруженный набор на первом элементе</string>
+    <string name="set_load_first_info">Всегда открывайте первый элемент набора.  Если этот параметр выключен, набор попытается открыться на загруженной в данный момент песне, если она есть в наборе.</string>
     <string name="set_load_info">Загрузить ранее сохраненный сет</string>
     <string name="set_load_merge">Если выбрать более одного сета, они будут объединены в выбранном порядке</string>
     <string name="set_manage">Управление сетами</string>

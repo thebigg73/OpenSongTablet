@@ -243,26 +243,6 @@ public class MidiFragment extends Fragment {
             mainActivityInterface.getMidi().setMidiDelay((int)myView.midiDelay.getValue());
             myView.midiDelay.setHint((int)myView.midiDelay.getValue()+"ms");
         });
-        /*myView.midiBurstRepeat.setAdjustableButtons(true);
-        myView.midiBurstRepeat.setHint(mainActivityInterface.getMidi().getMidiBurstRepeat()+"");
-        myView.midiBurstRepeat.setValue(mainActivityInterface.getMidi().getMidiBurstRepeat());
-        myView.midiBurstRepeat.setLabelFormatter(value1 -> (int) value1 + "");
-        myView.midiBurstRepeat.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
-            @Override
-            public void onStartTrackingTouch(@NonNull Slider slider) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(@NonNull Slider slider) {
-                mainActivityInterface.getMidi().setMidiBurstRepeat((int) myView.midiBurstRepeat.getValue());
-                myView.midiBurstRepeat.setHint((int)myView.midiBurstRepeat.getValue()+"");
-            }
-        });
-        myView.midiBurstRepeat.addOnChangeListener((slider, value, fromUser) -> {
-            mainActivityInterface.getMidi().setMidiBurstRepeat((int)myView.midiBurstRepeat.getValue());
-            myView.midiBurstRepeat.setHint((int)myView.midiBurstRepeat.getValue()+"");
-        });*/
     }
 
     // Set the view visibilities
@@ -308,19 +288,13 @@ public class MidiFragment extends Fragment {
     private void setVisibilites(boolean note, boolean controller, boolean value, boolean velocity) {
         if (note) {
             myView.midiNote.setVisibility(View.VISIBLE);
-            //myView.burstMode.setVisibility(View.GONE);
-            //myView.midiBurstRepeat.setVisibility(View.GONE);
         } else {
             myView.midiNote.setVisibility(View.GONE);
         }
         if (controller) {
             myView.midiController.setVisibility(View.VISIBLE);
-            //myView.burstMode.setVisibility(View.VISIBLE);
-            //myView.midiBurstRepeat.setVisibility(myView.burstMode.getChecked() ? View.VISIBLE:View.GONE);
         } else {
             myView.midiController.setVisibility(View.GONE);
-            //myView.burstMode.setVisibility(View.GONE);
-            //myView.midiBurstRepeat.setVisibility(View.GONE);
         }
         if (value) {
             myView.midiValue.setVisibility(View.VISIBLE);
@@ -392,11 +366,6 @@ public class MidiFragment extends Fragment {
             MidiActionBottomSheet midiActionBottomSheet = new MidiActionBottomSheet(myView.midiCode.getText().toString());
             midiActionBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"MidiActionBottomSheet");
         });
-        /*myView.burstMode.setOnCheckedChangeListener((compoundButton, b) -> {
-            getHexCodeFromDropDowns();
-            myView.midiBurstRepeat.setVisibility(b && myView.burstMode.getVisibility()==View.VISIBLE ? View.VISIBLE:View.GONE);
-        });*/
-
     }
 
     private class MyTextWatcher implements TextWatcher {
@@ -684,14 +653,14 @@ public class MidiFragment extends Fragment {
 
             // On and off notes get sent with midiDelay
             int midiDelay = mainActivityInterface.getMidi().getMidiDelay();
-            boolean sent = mainActivityInterface.getMidi().sendMidi(buffer1on,false);
-            new Handler().postDelayed(() -> mainActivityInterface.getMidi().sendMidi(buffer2on,false),midiDelay*2L);
-            new Handler().postDelayed(() -> mainActivityInterface.getMidi().sendMidi(buffer3on,false),midiDelay*3L);
-            new Handler().postDelayed(() -> mainActivityInterface.getMidi().sendMidi(buffer4on,false),midiDelay*4L);
-            new Handler().postDelayed(() -> mainActivityInterface.getMidi().sendMidi(buffer1off,false),500+(midiDelay*5L));
-            new Handler().postDelayed(() -> mainActivityInterface.getMidi().sendMidi(buffer2off,false),500+(midiDelay*6L));
-            new Handler().postDelayed(() -> mainActivityInterface.getMidi().sendMidi(buffer3off,false),500+(midiDelay*7L));
-            new Handler().postDelayed(() -> mainActivityInterface.getMidi().sendMidi(buffer4off,false),500+(midiDelay*8L));
+            boolean sent = mainActivityInterface.getMidi().sendMidi(buffer1on);
+            new Handler().postDelayed(() -> mainActivityInterface.getMidi().sendMidi(buffer2on),midiDelay*2L);
+            new Handler().postDelayed(() -> mainActivityInterface.getMidi().sendMidi(buffer3on),midiDelay*3L);
+            new Handler().postDelayed(() -> mainActivityInterface.getMidi().sendMidi(buffer4on),midiDelay*4L);
+            new Handler().postDelayed(() -> mainActivityInterface.getMidi().sendMidi(buffer1off),500+(midiDelay*5L));
+            new Handler().postDelayed(() -> mainActivityInterface.getMidi().sendMidi(buffer2off),500+(midiDelay*6L));
+            new Handler().postDelayed(() -> mainActivityInterface.getMidi().sendMidi(buffer3off),500+(midiDelay*7L));
+            new Handler().postDelayed(() -> mainActivityInterface.getMidi().sendMidi(buffer4off),500+(midiDelay*8L));
 
             if (sent) {
                 mainActivityInterface.getShowToast().doIt(okay_string);
@@ -797,18 +766,6 @@ public class MidiFragment extends Fragment {
         } catch (Exception e) {
             midiString = "0x00 0x00 0x00";
         }
-        /*
-        if (!command.equals("NoteOn") && !command.equals("NoteOff")) {
-            myView.burstMode.setVisibility(View.VISIBLE);
-            myView.midiBurstRepeat.setVisibility(myView.burstMode.getChecked() ? View.VISIBLE:View.GONE);
-            if (myView.burstMode.getChecked()) {
-                midiString += "*";
-            }
-        } else {
-            myView.burstMode.setVisibility(View.GONE);
-            myView.midiBurstRepeat.setVisibility(View.GONE);
-        }
-        */
         myView.midiCode.setText(midiString);
     }
     @RequiresApi(api = Build.VERSION_CODES.M)

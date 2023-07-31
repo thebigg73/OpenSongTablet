@@ -485,7 +485,6 @@
     <string name="midi_auto">"Automatycznie wysyłaj MIDI"</string>
     <string name="midi_bluetooth">"Podłącz urządzenie Bluetooth"</string>
     <string name="midi_burst">Tryb zdjęć seryjnych</string>
-    <string name="midi_burst_count">Liczba razy wysłać wiadomość MIDI</string>
     <string name="midi_burst_info">Niektóre urządzenia polegają na szybkim odbieraniu wielu komunikatów kontrolera.  Po włączeniu każde wygenerowane polecenie MIDI będzie opatrzone adnotacją * jako polecenie burst (tj. wysłane kilka razy z rzędu)</string>
     <string name="midi_channel">"Kanał"</string>
     <string name="midi_code_current">Kod MIDI aktualnie przypisany do akcji</string>
@@ -696,6 +695,8 @@
     <string name="set_inline">Zestaw wbudowany</string>
     <string name="set_inline_info">Pokaż setlistę na ekranie obok okna utworu</string>
     <string name="set_item_info">Możesz zmienić folder / nazwę pliku utworu załadowanego z zestawu, a także zmienić wyświetlania utworu (w razie potrzeby wykonuje tymczasową transpozycję utworu na urządzeniu)</string>
+    <string name="set_load_first">Otwórz załadowany zestaw przy pierwszym elemencie</string>
+    <string name="set_load_first_info">Zawsze otwieraj pierwszy element zestawu.  Jeśli jest wyłączony, zestaw spróbuje otworzyć się przy aktualnie załadowanym utworze, jeśli znajduje się w zestawie.</string>
     <string name="set_load_info">Załaduj wcześniej zapisany zestaw</string>
     <string name="set_load_merge">Wybranie więcej niż jednego spowoduje scalenie ich w wybranej kolejności.</string>
     <string name="set_manage">Zarządzaj swoimi zestawami</string>
