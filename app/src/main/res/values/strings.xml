@@ -1209,4 +1209,6 @@
     <string name="youtube" translatable="false">YouTube</string>
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zoom_level">Zoom level</string>
+    <string name="set_load_first">Open the loaded set at the first item</string>
+    <string name="set_load_first_info">Always open the first set item.  If switched off, the set will attempt to open at the currently loaded song if it is in the set.</string>
 </resources>

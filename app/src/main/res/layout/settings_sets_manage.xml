@@ -74,6 +74,14 @@
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
                 android:text="@string/set_load_merge" />
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                android:id="@+id/setLoadFirst"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/set_load_first"
+                android:hint="@string/set_load_first_info"/>
+
             <TableRow style="@style/DividerLine" />
 
             <LinearLayout

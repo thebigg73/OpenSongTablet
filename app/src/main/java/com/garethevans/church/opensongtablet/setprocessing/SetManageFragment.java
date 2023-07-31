@@ -45,13 +45,28 @@ public class SetManageFragment extends Fragment {
     private String renameSetName;
     private String renameSetCategory;
     private Uri oldSetUri, newSetUri;
-    private String newSetFilename, mainfoldername_string="", set_current_string="", set_string="",
-            save_string="", website_set_save_string="", rename_string="", delete_string="",
-            website_set_rename_string="", website_set_delete_string="", export_string="",
-            website_export_set_string="", set_saved_not_current_string="", load_string="",
-            website_set_load_string="", new_category_string="", file_exists_string="",
-            success_string="", error_string="", deeplink_export_string="", manage_sets_string="",
-            search_index_wait_string="", toolBarTitle="";
+    private String newSetFilename;
+    private String mainfoldername_string="";
+    private String set_current_string="";
+    private String set_string="";
+    private String save_string="";
+    private String website_set_save_string="";
+    private String rename_string="";
+    private String delete_string="";
+    private String website_set_rename_string="";
+    private String website_set_delete_string="";
+    private String export_string="";
+    private String website_export_set_string="";
+    private String set_saved_not_current_string="";
+    private String load_string="";
+    private String website_set_load_string="";
+    private String new_category_string="";
+    private String file_exists_string="";
+    private String success_string="";
+    private String error_string="";
+    private String deeplink_export_string="";
+    private String search_index_wait_string="";
+    private String toolBarTitle="";
     private String webAddress;
 
     @Override
@@ -113,7 +128,6 @@ public class SetManageFragment extends Fragment {
             error_string = getString(R.string.error);
             deeplink_export_string = getString(R.string.deeplink_export);
             search_index_wait_string = getString(R.string.search_index_wait);
-            manage_sets_string = getString(R.string.set_manage);
         }
     }
     private void checkForLoadSpecific() {
@@ -158,6 +172,7 @@ public class SetManageFragment extends Fragment {
                 myView.overWrite.setVisibility(View.VISIBLE);
                 myView.setLoadInfo1.setVisibility(View.GONE);
                 myView.setLoadInfo2.setVisibility(View.GONE);
+                myView.setLoadFirst.setVisibility(View.GONE);
                 myView.setName.setText(setname);
                 myView.newCategory.setVisibility(View.VISIBLE);
                 myView.setCategory.setText(category);
@@ -175,6 +190,7 @@ public class SetManageFragment extends Fragment {
                 myView.overWrite.setVisibility(View.VISIBLE);
                 myView.setLoadInfo1.setVisibility(View.GONE);
                 myView.setLoadInfo2.setVisibility(View.GONE);
+                myView.setLoadFirst.setVisibility(View.GONE);
                 myView.setName.setText(setname);
                 myView.newCategory.setVisibility(View.VISIBLE);
                 myView.setCategory.setText(category);
@@ -192,6 +208,7 @@ public class SetManageFragment extends Fragment {
                 myView.overWrite.setVisibility(View.GONE);
                 myView.setLoadInfo1.setVisibility(View.VISIBLE);
                 myView.setLoadInfo2.setVisibility(View.GONE);
+                myView.setLoadFirst.setVisibility(View.GONE);
                 myView.newCategory.setVisibility(View.GONE);
                 myView.setCategory.setVisibility(View.VISIBLE);
                 myView.loadorsaveButton.setText(delete_string);
@@ -209,6 +226,7 @@ public class SetManageFragment extends Fragment {
                 myView.newCategory.setVisibility(View.GONE);
                 myView.setLoadInfo1.setVisibility(View.VISIBLE);
                 myView.setLoadInfo2.setVisibility(View.VISIBLE);
+                myView.setLoadFirst.setVisibility(View.GONE);
                 myView.setLoadInfo2.setText(set_saved_not_current_string);
                 myView.loadorsaveButton.setText(export_string);
                 if (getContext()!=null) {
@@ -226,6 +244,9 @@ public class SetManageFragment extends Fragment {
                 myView.newCategory.setVisibility(View.GONE);
                 myView.setLoadInfo1.setVisibility(View.VISIBLE);
                 myView.setLoadInfo2.setVisibility(View.VISIBLE);
+                myView.setLoadFirst.setVisibility(View.VISIBLE);
+                myView.setLoadFirst.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("setLoadFirst",true));
+                myView.setLoadFirst.setOnCheckedChangeListener((compoundButton, b) -> mainActivityInterface.getPreferences().setMyPreferenceBoolean("setLoadFirst",b));
                 myView.loadorsaveButton.setText(load_string);
                 if (getContext()!=null) {
                     myView.loadorsaveButton.setIcon(VectorDrawableCompat.create(getResources(), R.drawable.save, getContext().getTheme()));
@@ -564,10 +585,10 @@ public class SetManageFragment extends Fragment {
             // Import ended
             handler.post(() -> {
                 myView.progressBar.setVisibility(View.GONE);
+                mainActivityInterface.setWhattodo("pendingLoadSet");
                 mainActivityInterface.navHome();
                 mainActivityInterface.getCurrentSet().updateSetTitleView();
                 mainActivityInterface.chooseMenu(true);
-                mainActivityInterface.setWhattodo("pendingLoadSet");
             });
 
         });
