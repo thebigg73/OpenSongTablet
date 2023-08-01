@@ -257,13 +257,18 @@ public class SongSelect {
             pos2 = s.indexOf(endText,pos1);
         }
 
-        if (startText!=null && endText!=null && pos1>0 && pos2>pos1) {
-            return s.substring(pos1,pos2);
-        } else if (startText==null & endText!=null && pos2>0) {
-            return s.substring(0,pos2);
-        } else if (startText!=null && endText==null & pos1>0) {
-            return s.substring(pos1);
-        } else {
+        try {
+            if (startText != null && endText != null && pos1 > 0 && pos2 > pos1) {
+                return s.substring(pos1, pos2);
+            } else if (startText == null & endText != null && pos2 > 0) {
+                return s.substring(0, pos2);
+            } else if (startText != null && endText == null & pos1 > 0) {
+                return s.substring(pos1);
+            } else {
+                return "";
+            }
+        } catch (Exception e) {
+            // Just in case there is an issue with a null substring, or the start/end exceed the length - seen on PlayStore logs
             return "";
         }
     }
