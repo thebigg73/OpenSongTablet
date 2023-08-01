@@ -48,6 +48,7 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
 
     public TransposeBottomSheet() {
         // Null initialised for when we come here from performance/presentation/stage mode
+        dismiss();
     }
 
     @Override

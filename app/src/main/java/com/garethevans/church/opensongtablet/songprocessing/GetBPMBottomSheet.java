@@ -56,6 +56,14 @@ public class GetBPMBottomSheet extends BottomSheetDialogFragment {
     // Once details have been collected, display the options to put these values into the song
 
     private final EditSongFragmentFeatures openingFragment;
+
+    public GetBPMBottomSheet() {
+        // Default constructor required to avoid re-instantiation failures
+        // Just close the bottom sheet
+        openingFragment = null;
+        dismiss();
+    }
+
     GetBPMBottomSheet(EditSongFragmentFeatures openingFragment) {
         this.openingFragment = openingFragment;
     }
@@ -299,16 +307,22 @@ public class GetBPMBottomSheet extends BottomSheetDialogFragment {
 
     private void updateKey() {
         Log.d(TAG,"updateKey:"+key);
-        openingFragment.updateKey(key);
+        if (openingFragment!=null) {
+            openingFragment.updateKey(key);
+        }
     }
 
     private void updateTempo() {
         Log.d(TAG,"updateTempo:"+tempo);
-        openingFragment.updateTempo(tempo);
+        if (openingFragment!=null) {
+            openingFragment.updateTempo(tempo);
+        }
     }
 
     private void updateDuration() {
         Log.d(TAG,"updateDuration:"+durationMins+":"+durationSecs);
-        openingFragment.updateDuration(durationMins,durationSecs);
+        if (openingFragment!=null) {
+            openingFragment.updateDuration(durationMins, durationSecs);
+        }
     }
 }

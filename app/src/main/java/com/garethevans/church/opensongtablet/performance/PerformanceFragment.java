@@ -45,6 +45,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class PerformanceFragment extends Fragment {
+
     @SuppressWarnings({"FieldCanBeLocal","unused"})
     private final String TAG = "PerformanceFragment";
     private StickyPopUp stickyPopUp;

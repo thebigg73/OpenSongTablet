@@ -28,6 +28,13 @@ public class RandomSongBottomSheet extends BottomSheetDialogFragment {
     private final String whichMenu;
     private Song randomSong;
 
+    public RandomSongBottomSheet() {
+        // Default constructor required to avoid re-instantiation failures
+        // Just close the bottom sheet
+        whichMenu = "";
+        dismiss();
+    }
+
     public RandomSongBottomSheet(String whichMenu) {
         this.whichMenu = whichMenu;
     }
@@ -83,7 +90,7 @@ public class RandomSongBottomSheet extends BottomSheetDialogFragment {
         if (whichMenu.equals("song")) {
             randomNum = random.nextInt(mainActivityInterface.getSongsFound("song").size());
             randomSong = mainActivityInterface.getSongsFound("song").get(randomNum);
-        } else {
+        } else if (!whichMenu.isEmpty()){
             randomNum = random.nextInt(mainActivityInterface.getSongsFound("set").size());
             randomSong = mainActivityInterface.getSongsFound("set").get(randomNum);
         }

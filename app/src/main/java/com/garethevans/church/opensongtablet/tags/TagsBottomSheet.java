@@ -28,6 +28,14 @@ public class TagsBottomSheet extends BottomSheetDialogFragment {
     private TagsAdapter tagsAdapter;
     private String website_edit_song_tag_string="", theme_exists_string="";
 
+    public TagsBottomSheet() {
+        // Default constructor required to avoid re-instantiation failures
+        // Just close the bottom sheet
+        callingFragment = null;
+        fragName = "";
+        dismiss();
+    }
+
     public TagsBottomSheet(Fragment callingFragment, String fragName) {
         this.callingFragment = callingFragment;
         this.fragName = fragName;
@@ -79,7 +87,7 @@ public class TagsBottomSheet extends BottomSheetDialogFragment {
     }
     private void setCurrentTags() {
         // Update the recycler view
-        if (getActivity()!=null) {
+        if (getActivity()!=null && callingFragment!=null) {
             tagsAdapter = new TagsAdapter(getContext(), mainActivityInterface,
                     getActivity().getSupportFragmentManager(), callingFragment, fragName);
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());

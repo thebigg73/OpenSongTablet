@@ -43,6 +43,14 @@ public class BottomSheetBeatBuddySongs extends BottomSheetDialogFragment {
     private ExposedDropDownArrayAdapter foldersAdapter, timeSignaturesAdapter, drumKitsAdapter,
             myfoldersAdapter;
 
+    public BottomSheetBeatBuddySongs() {
+        // Default constructor required to avoid re-instantiation failures
+        // Just close the bottom sheet
+        callingFragment = null;
+        bbsqLite = null;
+        dismiss();
+    }
+
     BottomSheetBeatBuddySongs(BBCommandsFragment callingFragment, BBSQLite bbsqLite) {
         this.callingFragment = callingFragment;
         this.bbsqLite = bbsqLite;
@@ -96,7 +104,7 @@ public class BottomSheetBeatBuddySongs extends BottomSheetDialogFragment {
         myView.progressBarSongs.setVisibility(View.VISIBLE);
 
         // Set up the adapters
-        if (getContext() != null) {
+        if (getContext() != null && bbsqLite!=null) {
 
             ExecutorService executorService = Executors.newSingleThreadExecutor();
             executorService.execute(() -> {
@@ -147,21 +155,23 @@ public class BottomSheetBeatBuddySongs extends BottomSheetDialogFragment {
 
 
     private void getFoundSongs() {
-        myView.progressBarSongs.setVisibility(View.VISIBLE);
-        // This gets called onCreateView and when an ExposedDropdown changes
-        ArrayList<BBSong> foundSongs;
-        if (mainActivityInterface.getBeatBuddy().getBeatBuddyUseImported()) {
-            foundSongs = bbsqLite.getMySongsByFolder(myView.folder.getText().toString());
-        } else {
-            foundSongs = bbsqLite.getSongsByFilters(myView.folder.getText().toString(),
-                    myView.timeSignature.getText().toString(), myView.drumKit.getText().toString());
+        if (bbsqLite!=null) {
+            myView.progressBarSongs.setVisibility(View.VISIBLE);
+            // This gets called onCreateView and when an ExposedDropdown changes
+            ArrayList<BBSong> foundSongs;
+            if (mainActivityInterface.getBeatBuddy().getBeatBuddyUseImported()) {
+                foundSongs = bbsqLite.getMySongsByFolder(myView.folder.getText().toString());
+            } else {
+                foundSongs = bbsqLite.getSongsByFilters(myView.folder.getText().toString(),
+                        myView.timeSignature.getText().toString(), myView.drumKit.getText().toString());
+            }
+            if (getContext() != null) {
+                BBSongAdapter bbSongAdapter = new BBSongAdapter(getContext(), foundSongs, this);
+                myView.songsFound.setLayoutManager(new LinearLayoutManager(getContext()));
+                myView.songsFound.setAdapter(bbSongAdapter);
+            }
+            myView.progressBarSongs.setVisibility(View.GONE);
         }
-        if (getContext()!=null) {
-            BBSongAdapter bbSongAdapter = new BBSongAdapter(getContext(), foundSongs, this);
-            myView.songsFound.setLayoutManager(new LinearLayoutManager(getContext()));
-            myView.songsFound.setAdapter(bbSongAdapter);
-        }
-        myView.progressBarSongs.setVisibility(View.GONE);
     }
 
     private class MyTextWatcher implements TextWatcher {

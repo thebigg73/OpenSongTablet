@@ -34,6 +34,14 @@ public class PresentationOrderBottomSheet extends BottomSheetDialogFragment impl
     private PresentationOrderAdapter presentationOrderAdapter;
     private final String TAG = "PresOrderBottomSheet";
 
+    public PresentationOrderBottomSheet() {
+        // Default constructor required to avoid re-instantiation failures
+        // Just close the bottom sheet
+        callingFragment = null;
+        fragName = "";
+        dismiss();
+    }
+
     PresentationOrderBottomSheet(Fragment callingFragment, String fragName) {
         this.callingFragment = callingFragment;
         this.fragName = fragName;
@@ -69,36 +77,40 @@ public class PresentationOrderBottomSheet extends BottomSheetDialogFragment impl
 
     private void prepareViews() {
         // Update the recycler view
-        presentationOrderAdapter = new PresentationOrderAdapter(requireContext(), this, mainActivityInterface,
-                callingFragment, fragName, this);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireContext());
-        linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
-        myView.currentSections.setLayoutManager(new LinearLayoutManager(requireContext()));
-        myView.currentSections.setAdapter(presentationOrderAdapter);
-        ItemTouchHelper.Callback callback = new PresoOrderItemTouchHelper(presentationOrderAdapter);
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
-        itemTouchHelper.attachToRecyclerView(myView.currentSections);
+        if (callingFragment!=null) {
+            presentationOrderAdapter = new PresentationOrderAdapter(requireContext(), this, mainActivityInterface,
+                    callingFragment, fragName, this);
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireContext());
+            linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
+            myView.currentSections.setLayoutManager(new LinearLayoutManager(requireContext()));
+            myView.currentSections.setAdapter(presentationOrderAdapter);
+            ItemTouchHelper.Callback callback = new PresoOrderItemTouchHelper(presentationOrderAdapter);
+            ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
+            itemTouchHelper.attachToRecyclerView(myView.currentSections);
 
-        // The adapter above sorted the available headings.
-        // Now create buttons to add them
-        for (String heading : mainActivityInterface.getTempSong().getSongSectionHeadings()) {
-            MaterialButton button = new MaterialButton(requireContext());
-            button.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorSecondary)));
-            GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-            params.setMargins(12, 6, 6, 12);
-            params.setGravity(Gravity.CENTER_HORIZONTAL);
-            button.setLayoutParams(params);
-            button.setText(heading);
-            button.setOnClickListener(v -> addSection(heading));
-            myView.sectionButtons.addView(button);
-        }
-        myView.deletePresOrder.setOnClickListener(v -> {
-            presentationOrderAdapter.reset();
+            // The adapter above sorted the available headings.
+            // Now create buttons to add them
+            for (String heading : mainActivityInterface.getTempSong().getSongSectionHeadings()) {
+                MaterialButton button = new MaterialButton(requireContext());
+                button.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorSecondary)));
+                GridLayout.LayoutParams params = new GridLayout.LayoutParams();
+                params.setMargins(12, 6, 6, 12);
+                params.setGravity(Gravity.CENTER_HORIZONTAL);
+                button.setLayoutParams(params);
+                button.setText(heading);
+                button.setOnClickListener(v -> addSection(heading));
+                myView.sectionButtons.addView(button);
+            }
+            myView.deletePresOrder.setOnClickListener(v -> {
+                presentationOrderAdapter.reset();
+                checkViewsToShow();
+            });
+
+            // Check if we should show the recycler or the not set view
             checkViewsToShow();
-        });
-
-        // Check if we should show the recycler or the not set view
-        checkViewsToShow();
+        } else {
+            dismiss();
+        }
     }
 
     private void addSection(String sectionToAdd) {

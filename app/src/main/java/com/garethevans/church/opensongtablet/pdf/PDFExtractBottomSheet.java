@@ -30,6 +30,15 @@ public class PDFExtractBottomSheet extends BottomSheetDialogFragment {
     private final String filename;
     private String website_ocr_string="", create_new_song_string="",
             save_text_for_searching_string="", deeplink_edit_string="";
+
+    public PDFExtractBottomSheet() {
+        // Default constructor required to avoid re-instantiation failures
+        // Just close the bottom sheet
+        incomingPages = new ArrayList<>();
+        filename = "";
+        dismiss();
+    }
+
     public PDFExtractBottomSheet(ArrayList<String> incomingPages, String filename) {
         this.incomingPages = incomingPages;
         this.filename = filename;

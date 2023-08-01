@@ -43,6 +43,14 @@ public class LinksBottomSheet extends BottomSheetDialogFragment {
             link_search_web_string="", link_file_string="", success_string="", error_string="",
             nothing_selected_string="", link_error_string="";
 
+    public LinksBottomSheet() {
+        // Default constructor required to avoid re-instantiation failures
+        // Just close the bottom sheet
+        fragName = "";
+        callingFragment = null;
+        dismiss();
+    }
+
     LinksBottomSheet(String fragName, Fragment callingFragment) {
         this.fragName = fragName;
         this.callingFragment = callingFragment;
@@ -263,7 +271,9 @@ public class LinksBottomSheet extends BottomSheetDialogFragment {
         } else {
             mainActivityInterface.getShowToast().doItBottomSheet(error_string,myView.getRoot());
         }
-        mainActivityInterface.updateFragment(fragName, callingFragment, null);
+        if (callingFragment!=null) {
+            mainActivityInterface.updateFragment(fragName, callingFragment, null);
+        }
     }
 
     @Override

@@ -34,7 +34,6 @@ public class ABCPopup {
     private final Handler handler = new Handler();
     private final Runnable autoCloseScoreRunnable = this::closeScore;
 
-
     public ABCPopup(Context c) {
         this.c = c;
         mainActivityInterface = (MainActivityInterface) c;

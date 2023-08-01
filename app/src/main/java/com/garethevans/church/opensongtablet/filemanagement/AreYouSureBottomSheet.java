@@ -60,6 +60,18 @@ public class AreYouSureBottomSheet extends BottomSheetDialogFragment {
         this.song = song;
     }
 
+    public AreYouSureBottomSheet() {
+        // Default constructor required to avoid re-instantiation failures
+        // Just close the bottom sheet
+        what = "";
+        textToShow = "";
+        arguments = new ArrayList<>();
+        fragName = "";
+        callingFragment = null;
+        song = new Song();
+        dismiss();
+    }
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         BottomSheetAreYouSureBinding myView = BottomSheetAreYouSureBinding.inflate(inflater, container, false);

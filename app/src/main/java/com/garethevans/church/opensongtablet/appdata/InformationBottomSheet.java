@@ -30,6 +30,16 @@ public class InformationBottomSheet extends BottomSheetDialogFragment {
 
     private final String title, information, buttonText, deepLink;
 
+    public InformationBottomSheet() {
+        // Default constructor required to avoid re-instantiation failures
+        // Just close the bottom sheet
+        title = null;
+        information = null;
+        buttonText = null;
+        deepLink = null;
+        dismiss();
+    }
+
     public InformationBottomSheet(String title, String information, String buttonText,
                                   String deepLink) {
         this.title = title;

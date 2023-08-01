@@ -68,6 +68,12 @@ public class InlineMidiBottomSheet extends BottomSheetDialogFragment {
             range1_32, range40_300;
     private SparseArray<String> value1Hints, value2Hints, value1NumRange, value2NumRange;
 
+    public InlineMidiBottomSheet() {
+        // Default constructor required to avoid re-instantiation failures
+        // Just close the bottom sheet
+        editSongFragmentLyrics = null;
+        dismiss();
+    }
     public InlineMidiBottomSheet(EditSongFragmentLyrics editSongFragmentLyrics) {
         this.editSongFragmentLyrics = editSongFragmentLyrics;
     }
@@ -444,7 +450,9 @@ public class InlineMidiBottomSheet extends BottomSheetDialogFragment {
         });
 
         myView.addCommand.setOnClickListener(view -> {
-            editSongFragmentLyrics.insertSection(myView.messageCode.getText().toString(),0);
+            if (editSongFragmentLyrics!=null) {
+                editSongFragmentLyrics.insertSection(myView.messageCode.getText().toString(), 0);
+            }
             dismiss();
         });
     }

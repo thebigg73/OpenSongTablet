@@ -34,6 +34,16 @@ public class FolderManagementBottomSheet extends BottomSheetDialogFragment {
             folder_rename_string="", deeplink_move_string="";
     private final Fragment callingFragment;
 
+    public FolderManagementBottomSheet() {
+        // Default constructor required to avoid re-instantiation failures
+        // Just close the bottom sheet
+        callingFragment = null;
+        root = false;
+        songs = false;
+        subdir = "";
+        dismiss();
+    }
+
     FolderManagementBottomSheet(Fragment callingFragment, boolean root, boolean songs, String subdir) {
         this.callingFragment = callingFragment;
         this.root = root;
@@ -158,19 +168,23 @@ public class FolderManagementBottomSheet extends BottomSheetDialogFragment {
                     break;
 
                 case "deleteItem":
-                    String action = delete_string + ": " + "OpenSong/Songs/" + subdir + "\n" + delete_folder_warning_string;
-                    ArrayList<String> arguments = new ArrayList<>();
-                    arguments.add("Songs");
-                    arguments.add(subdir);
-                    arguments.add("");
-                    mainActivityInterface.displayAreYouSure(what, action, arguments, "StorageManagementFragment", callingFragment,null);
+                    if (callingFragment!=null) {
+                        String action = delete_string + ": " + "OpenSong/Songs/" + subdir + "\n" + delete_folder_warning_string;
+                        ArrayList<String> arguments = new ArrayList<>();
+                        arguments.add("Songs");
+                        arguments.add(subdir);
+                        arguments.add("");
+                        mainActivityInterface.displayAreYouSure(what, action, arguments, "StorageManagementFragment", callingFragment, null);
+                    }
                     break;
 
                 case "createItem":
                     // Current sub directory is passed as we will create inside this
-                    mainActivityInterface.setWhattodo("newfolder");
-                    TextInputBottomSheet textInputBottomSheet = new TextInputBottomSheet(callingFragment,"StorageManagementFragment",new_folder_string,new_folder_name_string,null,null,null,true);
-                    textInputBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"StorageManagementFragment");
+                    if (callingFragment!=null) {
+                        mainActivityInterface.setWhattodo("newfolder");
+                        TextInputBottomSheet textInputBottomSheet = new TextInputBottomSheet(callingFragment, "StorageManagementFragment", new_folder_string, new_folder_name_string, null, null, null, true);
+                        textInputBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "StorageManagementFragment");
+                    }
                     break;
 
                 case "renameFolder":
@@ -183,8 +197,10 @@ public class FolderManagementBottomSheet extends BottomSheetDialogFragment {
                     } else {
                         lastpart = subdir;
                     }
-                    TextInputBottomSheet textInputBottomSheet2 = new TextInputBottomSheet(callingFragment,"StorageManagementFragment",folder_rename_string,new_folder_name_string,lastpart,null,null,true);
-                    textInputBottomSheet2.show(mainActivityInterface.getMyFragmentManager(),"StorageManagementFragment");
+                    if (callingFragment!=null) {
+                        TextInputBottomSheet textInputBottomSheet2 = new TextInputBottomSheet(callingFragment, "StorageManagementFragment", folder_rename_string, new_folder_name_string, lastpart, null, null, true);
+                        textInputBottomSheet2.show(mainActivityInterface.getMyFragmentManager(), "StorageManagementFragment");
+                    }
                     break;
 
                 case "moveContents":

@@ -25,7 +25,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class LyricsChordCopyBottomSheet  extends BottomSheetDialogFragment {
+public class LyricsChordCopyBottomSheet extends BottomSheetDialogFragment {
 
     private BottomSheetEditLyricsCopychordsBinding myView;
     @SuppressWarnings({"unused","FieldCanBeLocal"})
@@ -33,6 +33,14 @@ public class LyricsChordCopyBottomSheet  extends BottomSheetDialogFragment {
     private final String[] sections;
     ArrayList<String> sectionsWithChords, previewsWithChords, previewsAll;
     private final EditSongFragmentLyrics openingFragment;
+
+    public LyricsChordCopyBottomSheet() {
+        // Default constructor required to avoid re-instantiation failures
+        // Just close the bottom sheet
+        openingFragment = null;
+        sections = new String[]{};
+        dismiss();
+    }
 
     // Initialise with a reference to the opening fragment
     LyricsChordCopyBottomSheet(EditSongFragmentLyrics openingFragment, String[] sections) {
@@ -243,7 +251,9 @@ public class LyricsChordCopyBottomSheet  extends BottomSheetDialogFragment {
         myView.applyChanges.setOnClickListener(v -> {
             String oldText = myView.copyIntoBefore.getHint().toString();
             String newText = myView.copyIntoAfter.getHint().toString();
-            openingFragment.doCopyChords(oldText, newText);
+            if (openingFragment!=null) {
+                openingFragment.doCopyChords(oldText, newText);
+            }
             dismiss();
         });
     }

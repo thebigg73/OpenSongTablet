@@ -47,6 +47,21 @@ public class TextInputBottomSheet extends BottomSheetDialogFragment {
     private BottomSheetTextInputBinding myView;
     private MainActivityInterface mainActivityInterface;
 
+    public TextInputBottomSheet() {
+        // Default constructor required to avoid re-instantiation failures
+        // Just close the bottom sheet
+        fragment = null;
+        fragname = "";
+        title = "";
+        hint = "";
+        extra = "";
+        prefName = "";
+        prefVal = "";
+        singleLine = true;
+        simpleEditText = true;
+        dismiss();
+    }
+
     public TextInputBottomSheet(Fragment fragment, String fragname, String title, String hint,
                                 String extra, String prefName, String prefVal, boolean singleLine) {
         this.fragment = fragment;
@@ -206,9 +221,11 @@ public class TextInputBottomSheet extends BottomSheetDialogFragment {
                 mainActivityInterface.getPreferences().setMyPreferenceString(prefName, prefVal);
             }
 
-            // Update the calling fragment
-            Log.d(TAG, "fragname: "+fragname);
-            dialogReturnInterface.updateValue(fragment,fragname,prefName,prefVal);
+            if (fragment!=null) {
+                // Update the calling fragment
+                Log.d(TAG, "fragname: " + fragname);
+                dialogReturnInterface.updateValue(fragment, fragname, prefName, prefVal);
+            }
             dismiss();
         });
 

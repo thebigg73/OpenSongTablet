@@ -42,6 +42,15 @@ public class ChooseColorBottomSheet extends BottomSheetDialogFragment {
     private boolean sliding = false, typing = false;
     private final Fragment callingFragment;
 
+    public ChooseColorBottomSheet() {
+        // Default constructor required to avoid re-instantiation failures
+        // Just close the bottom sheet
+        callingFragment = null;
+        fragName = "";
+        whichColor = "";
+        dismiss();
+    }
+
     public ChooseColorBottomSheet(Fragment callingFragment, String fragName, String whichColor) {
         this.callingFragment = callingFragment;
         this.fragName = fragName;
@@ -344,7 +353,9 @@ public class ChooseColorBottomSheet extends BottomSheetDialogFragment {
         }
 
         // Update the theme color on the fragment behind
-        mainActivityInterface.updateFragment(fragName,callingFragment,null);
+        if (callingFragment!=null) {
+            mainActivityInterface.updateFragment(fragName, callingFragment, null);
+        }
 
         // Navigate back
         dismiss();

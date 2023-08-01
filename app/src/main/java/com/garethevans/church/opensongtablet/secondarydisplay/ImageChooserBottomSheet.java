@@ -48,6 +48,14 @@ public class ImageChooserBottomSheet extends BottomSheetDialogFragment {
     private int colorSelected, colorUnselected;
 
 
+    public ImageChooserBottomSheet() {
+        // Default constructor required to avoid re-instantiation failures
+        // Just close the bottom sheet
+        callingFragment = null;
+        fragName = "";
+        dismiss();
+    }
+
     public ImageChooserBottomSheet(Fragment callingFragment, String fragName) {
         // Get a reference to the fragment that requested the image chooser so we can send update
         this.callingFragment = callingFragment;
@@ -144,8 +152,10 @@ public class ImageChooserBottomSheet extends BottomSheetDialogFragment {
         intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION|Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
         myView.singleColor.setOnLongClickListener(view -> {
-            ChooseColorBottomSheet chooseColorBottomSheet = new ChooseColorBottomSheet(callingFragment,fragName,"backgroundColor");
-            chooseColorBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"ChooseColorBottomSheet");
+            if (callingFragment!=null) {
+                ChooseColorBottomSheet chooseColorBottomSheet = new ChooseColorBottomSheet(callingFragment, fragName, "backgroundColor");
+                chooseColorBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "ChooseColorBottomSheet");
+            }
             dismiss();
             return true;
         });
@@ -210,7 +220,7 @@ public class ImageChooserBottomSheet extends BottomSheetDialogFragment {
 
         // Also, if we are in presenter mode, update the 'Settings' tab previews(
         if (mainActivityInterface.getMode().equals(mode_presenter_string) &&
-                fragName.equals("presenterFragmentSettings")) {
+                fragName.equals("presenterFragmentSettings") && callingFragment!=null) {
             mainActivityInterface.getPresenterSettings().getImagePreferences();
             mainActivityInterface.updateFragment(fragName,callingFragment,null);
         }

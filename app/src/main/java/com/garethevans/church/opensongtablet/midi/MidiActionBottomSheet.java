@@ -23,6 +23,13 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 public class MidiActionBottomSheet extends BottomSheetDialogFragment {
 
+    public MidiActionBottomSheet() {
+        // Default constructor required to avoid re-instantiation failures
+        // Just close the bottom sheet
+        midiCode = "";
+        dismiss();
+    }
+
     public MidiActionBottomSheet(String midiCode) {
         this.midiCode = midiCode;
     }

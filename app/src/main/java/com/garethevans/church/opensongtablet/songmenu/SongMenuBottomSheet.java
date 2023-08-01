@@ -31,6 +31,14 @@ public class SongMenuBottomSheet extends BottomSheetDialogFragment {
             added_to_set_string="", variation_string="";
 
     private final String songTitle;
+
+    public SongMenuBottomSheet() {
+        // Default constructor required to avoid re-instantiation failures
+        // Just close the bottom sheet
+        songTitle = "";
+        dismiss();
+    }
+
     SongMenuBottomSheet(String songTitle) {
         this.songTitle = songTitle;
     }

@@ -34,6 +34,13 @@ public class BootUpIndexBottomSheet extends BottomSheetDialogFragment {
     private int countdownNumber = 5;
     boolean actionChosen = false;
 
+    public BootUpIndexBottomSheet() {
+        // Default constructor required to avoid re-instantiation failures
+        // Just close the bottom sheet
+        bootUpFragment = null;
+        dismiss();
+    }
+
     public BootUpIndexBottomSheet(BootUpFragment bootUpFragment) {
         this.bootUpFragment = bootUpFragment;
     }
@@ -89,7 +96,9 @@ public class BootUpIndexBottomSheet extends BottomSheetDialogFragment {
     private void setupListeners() {
         myView.continueButton.setOnClickListener(view -> {
             actionChosen = true;
-            bootUpFragment.startBootProcess(true);
+            if (bootUpFragment!=null) {
+                bootUpFragment.startBootProcess(true);
+            }
             if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
                 try {
                     dismiss();
@@ -100,7 +109,9 @@ public class BootUpIndexBottomSheet extends BottomSheetDialogFragment {
         });
         myView.skipButton.setOnClickListener(view -> {
             actionChosen = true;
-            bootUpFragment.startBootProcess(false);
+            if (bootUpFragment!=null) {
+                bootUpFragment.startBootProcess(false);
+            }
             try {
                 dismiss();
             } catch (Exception e) {
@@ -139,7 +150,7 @@ public class BootUpIndexBottomSheet extends BottomSheetDialogFragment {
     @Override
     public void onDismiss(@NonNull DialogInterface dialog) {
         super.onDismiss(dialog);
-        if (!actionChosen) {
+        if (!actionChosen && bootUpFragment!=null) {
             bootUpFragment.startBootProcess(true);
         }
         // Try to end/cancel any timers

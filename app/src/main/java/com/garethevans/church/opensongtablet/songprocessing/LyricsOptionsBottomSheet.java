@@ -29,6 +29,13 @@ public class LyricsOptionsBottomSheet extends BottomSheetDialogFragment {
     private int colorOn, colorOff;
     private final EditSongFragmentLyrics openingFragment;
 
+    public LyricsOptionsBottomSheet() {
+        // Default constructor required to avoid re-instantiation failures
+        // Just close the bottom sheet
+        openingFragment = null;
+        dismiss();
+    }
+
     // Initialise with a reference to the opening fragment
     LyricsOptionsBottomSheet(EditSongFragmentLyrics openingFragment) {
         this.openingFragment = openingFragment;
@@ -81,7 +88,9 @@ public class LyricsOptionsBottomSheet extends BottomSheetDialogFragment {
                 ", [...]="+getString(R.string.custom)+", [*" + getString(R.string.text) + ":" +
                 getString(R.string.verse) + "]="+getString(R.string.filters));
         openSongOrChoProButtonColor();
-        myView.textSize.setHint(""+(int)openingFragment.getEditTextSize());
+        if (openingFragment!=null) {
+            myView.textSize.setHint("" + (int) openingFragment.getEditTextSize());
+        }
         setTransposeDetectedFormat();
     }
 
@@ -100,20 +109,28 @@ public class LyricsOptionsBottomSheet extends BottomSheetDialogFragment {
         myView.textSizeDown.setOnClickListener(v -> checkTextSize(-1));
         myView.textSizeUp.setOnClickListener(v -> checkTextSize(+1));
         myView.insertSection.setOnClickListener(v -> {
-            openingFragment.insertSection("[]",1);
+            if (openingFragment!=null) {
+                openingFragment.insertSection("[]", 1);
+            }
             this.dismiss();
         });
         myView.insertInlineMidi.setOnClickListener(view -> {
-            InlineMidiBottomSheet inlineMidiBottomSheet = new InlineMidiBottomSheet(openingFragment);
-            inlineMidiBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"InlineMIDIMessages");
+            if (openingFragment!=null) {
+                InlineMidiBottomSheet inlineMidiBottomSheet = new InlineMidiBottomSheet(openingFragment);
+                inlineMidiBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "InlineMIDIMessages");
+            }
             dismiss();
         });
         myView.insertColumnBreak.setOnClickListener(v -> {
-            openingFragment.insertSection("!--",4);
+            if (openingFragment!=null) {
+                openingFragment.insertSection("!--", 4);
+            }
             this.dismiss();
         });
         myView.copyChordSections.setOnClickListener(v -> {
-            openingFragment.copyChords();
+            if (openingFragment!=null) {
+                openingFragment.copyChords();
+            }
             this.dismiss();
         });
         myView.openSong.setOnClickListener(v -> {
@@ -122,7 +139,9 @@ public class LyricsOptionsBottomSheet extends BottomSheetDialogFragment {
                 mainActivityInterface.getTempSong().setEditingAsChoPro(false);
                 mainActivityInterface.getPreferences().setMyPreferenceBoolean("editAsChordPro",false);
                 openSongOrChoProButtonColor();
-                openingFragment.convertToOpenSong();
+                if (openingFragment!=null) {
+                    openingFragment.convertToOpenSong();
+                }
                 this.dismiss();
             }
         });
@@ -132,16 +151,28 @@ public class LyricsOptionsBottomSheet extends BottomSheetDialogFragment {
                 mainActivityInterface.getTempSong().setEditingAsChoPro(true);
                 mainActivityInterface.getPreferences().setMyPreferenceBoolean("editAsChordPro",true);
                 openSongOrChoProButtonColor();
-                openingFragment.convertToChoPro();
+                if (openingFragment!=null) {
+                    openingFragment.convertToChoPro();
+                }
                 this.dismiss();
             }
         });
 
-        myView.transposeDown.setOnClickListener(v -> openingFragment.transpose("-1"));
-        myView.transposeUp.setOnClickListener(v -> openingFragment.transpose("+1"));
+        myView.transposeDown.setOnClickListener(v -> {
+            if (openingFragment!=null) {
+                openingFragment.transpose("-1");
+            }
+        });
+        myView.transposeUp.setOnClickListener(v -> {
+            if (openingFragment!=null) {
+                openingFragment.transpose("+1");
+            }
+        });
 
         myView.autoFix.setOnClickListener(v -> {
-            openingFragment.autoFix();
+            if (openingFragment!=null) {
+                openingFragment.autoFix();
+            }
             this.dismiss();
         });
 
@@ -174,29 +205,31 @@ public class LyricsOptionsBottomSheet extends BottomSheetDialogFragment {
 
     private void checkTextSize(int change) {
         // Adjust it
-        float editTextSize = openingFragment.getEditTextSize();
-        editTextSize = editTextSize + change;
+        if (openingFragment!=null) {
+            float editTextSize = openingFragment.getEditTextSize();
+            editTextSize = editTextSize + change;
 
-        // Max is 24
-        if (editTextSize>=24) {
-            editTextSize = 24;
-            myView.textSizeUp.setEnabled(false);
-        } else {
-            myView.textSizeUp.setEnabled(true);
+            // Max is 24
+            if (editTextSize >= 24) {
+                editTextSize = 24;
+                myView.textSizeUp.setEnabled(false);
+            } else {
+                myView.textSizeUp.setEnabled(true);
+            }
+
+            // Min is 8
+            if (editTextSize <= 8) {
+                editTextSize = 8;
+                myView.textSizeDown.setEnabled(false);
+            } else {
+                myView.textSizeDown.setEnabled(true);
+            }
+
+            // Save this to the user preferences and update the fragment
+            myView.textSize.setHint("" + (int) editTextSize);
+            openingFragment.setEditTextSize(editTextSize);
+            mainActivityInterface.getPreferences().setMyPreferenceFloat("editTextSize", editTextSize);
         }
-
-        // Min is 8
-        if (editTextSize<=8) {
-            editTextSize = 8;
-            myView.textSizeDown.setEnabled(false);
-        } else {
-            myView.textSizeDown.setEnabled(true);
-        }
-
-        // Save this to the user preferences and update the fragment
-        myView.textSize.setHint(""+(int)editTextSize);
-        openingFragment.setEditTextSize(editTextSize);
-        mainActivityInterface.getPreferences().setMyPreferenceFloat("editTextSize",editTextSize);
     }
 
 

@@ -42,7 +42,7 @@ import be.tarsos.dsp.io.android.AudioDispatcherFactory;
 import be.tarsos.dsp.pitch.PitchDetectionHandler;
 import be.tarsos.dsp.pitch.PitchProcessor;
 
-public class TunerBottomSheet  extends BottomSheetDialogFragment {
+public class TunerBottomSheet extends BottomSheetDialogFragment {
 
     private MainActivityInterface mainActivityInterface;
     private BottomSheetTunerBinding myView;
