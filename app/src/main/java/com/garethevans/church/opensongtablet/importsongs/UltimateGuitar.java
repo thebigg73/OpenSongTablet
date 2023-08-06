@@ -47,12 +47,12 @@ public class UltimateGuitar {
 
         // Trim out everything around the lyrics/content
         String lyricsText = mainActivityInterface.getProcessSong().getSubstring(
-                "<div class=\"ugm-b-tab--content js-tab-content\">","<pre>","</pre>",s);
+                "<div class=\"ugm-b-tab--content js-tab-content\">","<pre","</pre>",s);
 
         // Alternative (newer method)
         if (lyricsText.isEmpty()) {
             lyricsText = mainActivityInterface.getProcessSong().getSubstring(
-                    "<div class=\"js-page js-global-wrapper\">","<span class=\"y68er\"> ","<div class=\"LJhrL\">",s);
+                    "<div class=\"js-page js-global-wrapper\">","<span class=\"y68er\">","<div class=\"LJhrL\">",s);
         }
 
         StringBuilder trimmedLyrics = new StringBuilder();

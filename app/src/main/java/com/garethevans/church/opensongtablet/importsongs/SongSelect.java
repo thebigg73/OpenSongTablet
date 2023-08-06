@@ -268,7 +268,8 @@ public class SongSelect {
                 return "";
             }
         } catch (Exception e) {
-            // Just in case there is an issue with a null substring, or the start/end exceed the length - seen on PlayStore logs
+            // Just in case there is an issue with a null substring, or the start/end exceed the length
+            // This has been seen on PlayStore logs -  I think changing the page rapidly while processing may cause this
             return "";
         }
     }

@@ -460,6 +460,7 @@ public class ImportOnlineFragment extends Fragment {
                 e.printStackTrace();
             }
             webString = webString.replace("\r","\n");
+            webString = webString.replace("</div></div>","</div>\n</div>");
             for (String line:webString.split("\n")) {
                 Log.d(TAG,"line:"+line);
             }
