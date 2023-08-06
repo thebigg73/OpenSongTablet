@@ -201,6 +201,8 @@ public class MultipagePrinterAdapter extends PrintDocumentAdapter {
         } else if (setItemLocations.size()>currentSetItem && !setItemLocations.get(currentSetItem).equals("ignore")) {
             // Initialse the song for processing
             Song currentSetSong;
+            Log.d(TAG,"setItemLocation:"+setItemLocations.get(currentSetItem));
+
             if (setItemLocations.get(currentSetItem).contains("../") ||
             setItemLocations.get(currentSetItem).contains("**")) {
                 String s = setItemLocations.get(currentSetItem);
@@ -215,8 +217,11 @@ public class MultipagePrinterAdapter extends PrintDocumentAdapter {
                 currentSetSong = mainActivityInterface.getLoadSong().doLoadSongFile(currentSetSong,false);
             } else {
                 if (setItemLocations.get(currentSetItem).contains("/")) {
-                    String[] location = setItemLocations.get(currentSetItem).split("/");
-                    currentSetSong = mainActivityInterface.getSQLiteHelper().getSpecificSong(location[0], location[1]);
+                    String folder = setItemLocations.get(currentSetItem).substring(0,setItemLocations.get(currentSetItem).lastIndexOf("/"));
+                    String filename = setItemLocations.get(currentSetItem).replace(folder+"/","");
+                    Log.d(TAG,"folder:"+folder);
+                    Log.d(TAG,"filename:"+filename);
+                    currentSetSong = mainActivityInterface.getSQLiteHelper().getSpecificSong(folder, filename);
                 } else {
                     currentSetSong = mainActivityInterface.getSQLiteHelper().getSpecificSong("", setItemLocations.get(currentSetItem));
                 }

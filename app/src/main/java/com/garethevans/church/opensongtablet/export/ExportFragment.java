@@ -428,6 +428,9 @@ public class ExportFragment extends Fragment {
                         // Deal with the currentFormat option first, or PDF for PDF songs
                         if (!id.equals("ignore") && (currentFormat && !useTransposed) || (pdf && likelyPDF)) {
                             // Just get a uri for the song
+                            if (song.getFolder()!=null && song.getFolder().equals("../Export")) {
+                                location[0] = "../Export";
+                            }
                             uris.add(mainActivityInterface.getStorageAccess().getUriForItem("Songs", fixSubfolder(location[0]), location[1]));
                             if (openSong && !mimeTypes.contains("text/xml")) {
                                 mimeTypes.add("text/xml");

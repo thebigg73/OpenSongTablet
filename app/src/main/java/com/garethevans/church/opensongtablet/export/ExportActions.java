@@ -3,6 +3,7 @@ package com.garethevans.church.opensongtablet.export;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
@@ -49,9 +50,11 @@ public class ExportActions {
         if (content!=null) {
             intent.putExtra(Intent.EXTRA_TEXT, content);
         }
-        /*if (uri!=null) {
-            intent.putExtra(Intent.EXTRA_STREAM, uri);
-        }*/
+
+        for (Uri tempUri:uris) {
+            Log.d(TAG,"uri:"+tempUri);
+        }
+
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
         if (type!=null) {
             intent.setType(type);
