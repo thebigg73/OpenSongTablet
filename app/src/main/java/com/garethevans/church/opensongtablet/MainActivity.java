@@ -1201,6 +1201,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     if (songMenuFragment != null) {
                         songMenuFragment.updateSongMenuSortTitles();
                     }
+                    if (performanceValid()) {
+                        performanceFragment.updateInlineSetSet();
+                    } else if (presenterValid()) {
+                        presenterFragment.updateInlineSetSet();
+                    }
                     break;
 
             }
@@ -1866,9 +1871,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             if (songMenuFragment != null) {
                 songMenuFragment.changeAlphabeticalLayout();
             }
-        } else if (rebooted && bootUpCompleted && songMenuFragment != null) {
-            // We have resumed from stale state, build the index but from the database
+        } else if ((rebooted && bootUpCompleted && songMenuFragment != null) || (bootUpCompleted && fragName!=null && fragName.equals("menuSettingsFrag"))) {
+            // We have resumed from stale state or changed between title/filename, build the index but from the database
             songMenuFragment.prepareSearch();
+            if (performanceValid()) {
+                performanceFragment.updateInlineSetSet();
+            } else if (presenterValid()) {
+                presenterFragment.updateInlineSetSet();
+            }
 
         } else if (songListBuildIndex != null && songMenuFragment != null) {
             // This is a full rebuild

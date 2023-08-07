@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/card_view"
+    style="@style/setItem"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    style="@style/setItem">
+    android:layout_gravity="center">
 
     <RelativeLayout
+        android:id="@+id/cardview_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/cardview_layout">
+        android:layout_height="match_parent">
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/cardview_item"
@@ -23,32 +22,52 @@
             android:text="@string/title"
             app:drawableStartCompat="@drawable/amplifier" />
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/cardview_songtitle"
+        <FrameLayout
+            android:id="@+id/fileOrTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_toEndOf="@id/cardview_item"
-            android:gravity="center_vertical"
-            android:text="@string/title"
-            android:paddingTop="4dp"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
-            android:paddingBottom="0dp"/>
+            android:layout_toEndOf="@id/cardview_item">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/cardview_songtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:paddingStart="8dp"
+                android:paddingTop="4dp"
+                android:paddingEnd="8dp"
+                android:paddingBottom="0dp"
+                android:text="@string/title"
+                android:visibility="visible"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/cardview_songfilename"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:paddingStart="8dp"
+                android:paddingTop="4dp"
+                android:paddingEnd="8dp"
+                android:paddingBottom="0dp"
+                android:text="@string/filename"
+                android:visibility="gone"/>
+
+        </FrameLayout>
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/cardview_folder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/fileOrTitle"
             android:layout_alignParentTop="false"
-            android:layout_below="@+id/cardview_songtitle"
             android:layout_toEndOf="@id/cardview_item"
             android:gravity="center_vertical"
-            android:text="@string/mainfoldername"
-            android:paddingTop="0dp"
-            android:paddingBottom="4dp"
             android:paddingStart="8dp"
-            android:paddingEnd="4dp"/>
+            android:paddingTop="0dp"
+            android:paddingEnd="4dp"
+            android:paddingBottom="4dp"
+            android:text="@string/mainfoldername" />
 
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

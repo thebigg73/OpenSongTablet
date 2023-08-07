@@ -141,6 +141,14 @@ public class CurrentSet {
     public String getFilename(int position) {
         return getValueAtPosition("filename",position);
     }
+    public String getTitle(int position) {
+        // If we have a valid database and item exists, look it up, otherwise, use the filename
+        String filename = getFilename(position);
+        String folder = getFolder(position);
+        Song tempSong = mainActivityInterface.getSQLiteHelper().getSpecificSong(folder,filename);
+        return (tempSong!=null && tempSong.getTitle()!=null) ? tempSong.getTitle() : filename;
+    }
+
     public String getKey(int position) {
         String thisKey = getValueAtPosition("key",position);
         if (thisKey==null) {

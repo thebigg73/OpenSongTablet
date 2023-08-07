@@ -2,11 +2,9 @@ package com.garethevans.church.opensongtablet.setmenu;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -161,7 +159,6 @@ public class SetMenuFragment extends Fragment {
     }
 
     public void scrollToItem() {
-        Log.d(TAG,"scrollToItem()");
         if (mainActivityInterface.getCurrentSet().getIndexSongInSet()>-1 &&
                 mainActivityInterface.getCurrentSet().getIndexSongInSet() < mainActivityInterface.getCurrentSet().getSetItems().size()) {
             myView.myRecyclerView.post(() -> {
@@ -230,10 +227,16 @@ public class SetMenuFragment extends Fragment {
             e.printStackTrace();
         }
 
+        // Try to update the items (may have title or filename changes)
+        if (setListAdapter!=null) {
+            for (int x = 0; x < setItemInfos.size(); x++) {
+                setListAdapter.notifyItemChanged(x);
+            }
+        }
+
     }
 
     public void updateItem(int position) {
-        Log.d(TAG,"updateItem("+position+")");
         if (position>=0) {
             try {
                 String folder = mainActivityInterface.getCurrentSet().getFolder(position);
@@ -259,7 +262,6 @@ public class SetMenuFragment extends Fragment {
     }
 
     public void clearOldHighlight(int position) {
-        Log.d(TAG,"clearOldHighlight:"+position);
         if (setListAdapter!=null) {
             setListAdapter.clearOldHighlight(position);
         }
@@ -296,7 +298,7 @@ public class SetMenuFragment extends Fragment {
             si.songfoldernice = mainActivityInterface.getCurrentSet().getSetFolders().get(i);
         }
         if (i<mainActivityInterface.getCurrentSet().getSetFilenames().size()) {
-            si.songtitle = Uri.decode(mainActivityInterface.getCurrentSet().getSetFilenames().get(i));
+            si.songtitle = mainActivityInterface.getCurrentSet().getTitle(i);
             si.songfilename = mainActivityInterface.getCurrentSet().getSetFilenames().get(i);
         }
         if (i<mainActivityInterface.getCurrentSet().getSetKeys().size()) {

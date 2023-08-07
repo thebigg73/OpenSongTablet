@@ -37,6 +37,7 @@ public class SetEditItemBottomSheet extends BottomSheetDialogFragment {
     private ArrayList<String> currentSetFolder;
     private int setPosition = 0;
     private View selectedCard;
+    private boolean useTitle=true;
     ExposedDropDownArrayAdapter keyAdapter, folderAdapter, filenameAdapter;
     private String edit_set_item_string="", note_string="", variation_string="", scripture_string="",
             slide_string="";
@@ -155,11 +156,12 @@ public class SetEditItemBottomSheet extends BottomSheetDialogFragment {
     private void buildSetItems(LayoutInflater inflater, ViewGroup container) {
         // Firstly show the progressBar (list is hidden already)
         myView.progressBar.setVisibility(View.VISIBLE);
+        useTitle = mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuSortTitles",true);
         for (int x=0; x<mainActivityInterface.getCurrentSet().getSetItems().size(); x++) {
             // Show all items, but disable the non-songs
             String displayNum = (x+1)+".";
             String folder = mainActivityInterface.getCurrentSet().getFolder(x);
-            String title = getTitleAndKey(x);
+            String title = getTitleAndKey(x,useTitle);
             View cardView = inflater.inflate(R.layout.view_set_item, container);
             if (x==0) {
                 selectedCard = cardView;
@@ -188,14 +190,17 @@ public class SetEditItemBottomSheet extends BottomSheetDialogFragment {
         myView.progressBar.setVisibility(View.GONE);
     }
 
-    private String getTitleAndKey(int position) {
+    private String getTitleAndKey(int position, boolean useTitle) {
         String key = mainActivityInterface.getCurrentSet().getKey(position);
         if (key!=null && !key.equals("null") && !key.isEmpty()) {
             key = " ("+key+")";
         } else {
             key = "";
         }
-        return mainActivityInterface.getCurrentSet().getFilename(position) + key;
+        String name = useTitle ?
+                mainActivityInterface.getCurrentSet().getTitle(position) :
+                mainActivityInterface.getCurrentSet().getFilename(position);
+        return name + key;
     }
 
     private void checkAllowEdit() {
@@ -290,7 +295,7 @@ public class SetEditItemBottomSheet extends BottomSheetDialogFragment {
                 }
 
                 // Update the cardview
-                ((TextView)selectedCard.findViewById(R.id.cardview_songtitle)).setText(getTitleAndKey(setPosition));
+                ((TextView)selectedCard.findViewById(R.id.cardview_songtitle)).setText(getTitleAndKey(setPosition,useTitle));
                 ((TextView)selectedCard.findViewById(R.id.cardview_folder)).setText(mainActivityInterface.getCurrentSet().getFolder(setPosition));
 
                 // Update the cardview in the setList behind.  Pass position as string in array

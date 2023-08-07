@@ -19,6 +19,7 @@ public class SetItemViewHolder extends RecyclerView.ViewHolder implements
 
     final MaterialTextView vItem;
     final MaterialTextView vSongTitle;
+    final MaterialTextView vSongFilename;
     final MaterialTextView vSongFolder;
     final RelativeLayout vCard;
     final CardView cardView;
@@ -33,6 +34,7 @@ public class SetItemViewHolder extends RecyclerView.ViewHolder implements
         vCard = v.findViewById(R.id.cardview_layout);
         vItem = v.findViewById(R.id.cardview_item);
         vSongTitle = v.findViewById(R.id.cardview_songtitle);
+        vSongFilename = v.findViewById(R.id.cardview_songfilename);
         vSongFolder = v.findViewById(R.id.cardview_folder);
         v.setOnTouchListener(this);
         gestureDetector = new GestureDetector(v.getContext(),this);

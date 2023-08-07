@@ -38,6 +38,7 @@ public class InlineSetList extends RecyclerView {
     private ArrayList<InlineSetItemInfo> setList;
     private final LinearLayoutManager llm;
     private float textSize = 12;
+    private boolean useTitle = true;
 
     public InlineSetList(@NonNull Context context) {
         super(context);
@@ -62,6 +63,7 @@ public class InlineSetList extends RecyclerView {
         setAdapter(inlineSetListAdapter);
         setVisibility(View.GONE);
         mode_presenter_string = c.getString(R.string.mode_presenter);
+        useTitle = mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuSortTitles",true);
     }
 
     public void orientationChanged(int orientation) {
@@ -137,32 +139,36 @@ public class InlineSetList extends RecyclerView {
     }
 
     public void prepareSet() {
-        inlineSetListAdapter.clearSetList();
-        selectedItem = -1;
+        if (inlineSetListAdapter!=null) {
+            inlineSetListAdapter.clearSetList();
+            selectedItem = -1;
 
-        if (setList == null) {
-            setList = new ArrayList<>();
-        } else {
-            setList.clear();
+            if (setList == null) {
+                setList = new ArrayList<>();
+            } else {
+                setList.clear();
+            }
+            for (int i = 0; i < mainActivityInterface.getCurrentSet().getSetItems().size(); i++) {
+                InlineSetItemInfo info = new InlineSetItemInfo();
+                info.item = i + 1;
+                info.songfolder = mainActivityInterface.getCurrentSet().getFolder(i);
+                info.songtitle = mainActivityInterface.getCurrentSet().getTitle(i);
+                info.songfilename = mainActivityInterface.getCurrentSet().getFilename(i);
+                info.songkey = mainActivityInterface.getCurrentSet().getKey(i);
+                setList.add(info);
+            }
+            inlineSetListAdapter.updateSetList();
+            // Look for current item
+            selectedItem = mainActivityInterface.getSetActions().getPositionInSet();
+            scrollToItem(selectedItem);
+            inlineSetListAdapter.initialiseInlineSetItem(selectedItem);
+            checkVisibility();
         }
-        for (int i = 0; i < mainActivityInterface.getCurrentSet().getSetItems().size(); i++) {
-            InlineSetItemInfo info = new InlineSetItemInfo();
-            info.item = i + 1;
-            info.songfolder = mainActivityInterface.getCurrentSet().getFolder(i);
-            info.songtitle = mainActivityInterface.getCurrentSet().getFilename(i);
-            info.songkey = mainActivityInterface.getCurrentSet().getKey(i);
-            setList.add(info);
-        }
-        inlineSetListAdapter.updateSetList();
-        // Look for current item
-        selectedItem = mainActivityInterface.getSetActions().getPositionInSet();
-        scrollToItem(selectedItem);
-        inlineSetListAdapter.initialiseInlineSetItem(selectedItem);
-        checkVisibility();
     }
 
     private static class InlineSetItemInfo {
         public String songtitle;
+        public String songfilename;
         public String songfolder;
         public String songkey;
         public int item;
@@ -191,6 +197,9 @@ public class InlineSetList extends RecyclerView {
         }
 
         public void updateSetList() {
+            if (mainActivityInterface!=null) {
+                useTitle = mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuSortTitles",true);
+            }
             for (int x = 0; x < setList.size(); x++) {
                 notifyItemInserted(x);
             }
@@ -235,17 +244,25 @@ public class InlineSetList extends RecyclerView {
         public void onBindViewHolder(@NonNull InlineSetItemViewHolder setitemViewHolder, int i) {
             InlineSetItemInfo si = setList.get(i);
             String titlesongname = si.songtitle;
+            String filename = si.songfilename;
             if (highlightedArray.get(i, false)) {
                 setColor(setitemViewHolder, onColor);
             } else {
                 setColor(setitemViewHolder, offColor);
             }
-            String text = si.item + ". " + titlesongname;
+            String textsn = si.item + ". " + titlesongname;
+            String textfn = si.item + ". " + filename;
+
             if (si.songkey != null && !si.songkey.isEmpty()) {
-                text = text + " (" + si.songkey + ")";
+                textsn = textsn + " (" + si.songkey + ")";
+                textfn = textfn + " (" + si.songkey + ")";
             }
             setitemViewHolder.vSongTitle.setTextSize(textSize);
-            setitemViewHolder.vSongTitle.setText(text);
+            setitemViewHolder.vSongTitle.setText(textsn);
+            setitemViewHolder.vSongFilename.setTextSize(textSize);
+            setitemViewHolder.vSongFilename.setText(textfn);
+            setitemViewHolder.vSongTitle.setVisibility(useTitle ? View.VISIBLE:View.GONE);
+            setitemViewHolder.vSongFilename.setVisibility(useTitle ? View.GONE:View.VISIBLE);
         }
 
         @NonNull
@@ -323,6 +340,7 @@ public class InlineSetList extends RecyclerView {
 
         final MaterialTextView vItem;
         final MaterialTextView vSongTitle;
+        final MaterialTextView vSongFilename;
         final MaterialTextView vSongFolder;
         final RelativeLayout vCard;
         final CardView cardView;
@@ -335,6 +353,8 @@ public class InlineSetList extends RecyclerView {
             vItem.setVisibility(View.GONE);
             vSongTitle = v.findViewById(R.id.cardview_songtitle);
             vSongTitle.setTextSize(textSize);
+            vSongFilename = v.findViewById(R.id.cardview_songfilename);
+            vSongFilename.setTextSize(textSize);
             vSongFolder = v.findViewById(R.id.cardview_folder);
             vSongFolder.setVisibility(View.GONE);
             v.setOnClickListener((view) -> {
@@ -393,4 +413,9 @@ public class InlineSetList extends RecyclerView {
         // Minimum size is 12, Maximum is 20
         textSize = mainActivityInterface.getPreferences().getMyPreferenceFloat("songMenuAlphaIndexSize",14f) - 2;
     }
+
+    public void setUseTitle(boolean useTitle) {
+        this.useTitle = useTitle;
+    }
+
 }

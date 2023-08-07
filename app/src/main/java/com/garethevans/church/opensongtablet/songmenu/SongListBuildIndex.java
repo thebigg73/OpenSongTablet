@@ -185,6 +185,8 @@ public class SongListBuildIndex {
         currentlyIndexing = false;
         // Any songs with rogue endings would've been logged, so fix if needed
         mainActivityInterface.getLoadSong().fixSongs();
+        // Update the set lists which might be using song titles (that need the index)
+        mainActivityInterface.updateSetList();
         return returnString.toString();
     }
 

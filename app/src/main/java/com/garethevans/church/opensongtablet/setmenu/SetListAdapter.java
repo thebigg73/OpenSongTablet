@@ -33,6 +33,7 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
     private final SparseBooleanArray highlightedArray = new SparseBooleanArray();
     private final float titleSize;
     private final float subtitleSizeFile;
+    private boolean useTitle = true;
 
     public void setTouchHelper(ItemTouchHelper itemTouchHelper) {
         this.itemTouchHelper = itemTouchHelper;
@@ -46,6 +47,7 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
         titleSize = mainActivityInterface.getPreferences().getMyPreferenceFloat("songMenuItemSize",14f);
         // subtitleSizeAuthor = mainActivityInterface.getPreferences().getMyPreferenceFloat("songMenuSubItemSizeAuthor",12f);
         subtitleSizeFile = mainActivityInterface.getPreferences().getMyPreferenceFloat("songMenuSubItemSizeFile",12f);
+        useTitle = mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuSortTitles",true);
     }
 
     public void updateSetList(ArrayList<SetItemInfo> setItemInfos) {
@@ -103,6 +105,7 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
         SetItemInfo si = setList.get(i);
         String key = si.songkey;
         String titlesongname = si.songtitle;
+        String filename = si.songfilename;
         if (key != null && !key.equals("null") && !key.isEmpty()) {
             titlesongname = titlesongname + " (" + key + ")";
         } else {
@@ -125,7 +128,11 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
         }
         setitemViewHolder.vSongTitle.setTextSize(titleSize);
         setitemViewHolder.vSongTitle.setText(titlesongname);
+        setitemViewHolder.vSongFilename.setTextSize(titleSize);
+        setitemViewHolder.vSongFilename.setText(filename);
         setitemViewHolder.vSongFolder.setTextSize(subtitleSizeFile);
+        setitemViewHolder.vSongFilename.setVisibility(useTitle ? View.GONE:View.VISIBLE);
+        setitemViewHolder.vSongTitle.setVisibility(useTitle ? View.VISIBLE:View.GONE);
         setitemViewHolder.vSongFolder.setText(newfoldername);
         int icon = mainActivityInterface.getSetActions().getItemIcon(si.songicon);
 

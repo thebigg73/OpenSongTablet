@@ -171,7 +171,8 @@ public class MenuSettingsFragment extends Fragment {
 
         myView.songMenuOrder.addOnChangeListener((slider, value, fromUser) -> {
             mainActivityInterface.getPreferences().setMyPreferenceBoolean("songMenuSortTitles",value==1);
-            mainActivityInterface.updateSongMenu("",null, null);
+            mainActivityInterface.updateSetList();
+            mainActivityInterface.updateSongMenu("menuSettingsFrag",null, null);
         });
         myView.largePopups.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getPreferences().setMyPreferenceBoolean("largePopups",isChecked));
     }
