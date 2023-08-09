@@ -440,7 +440,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void dealWithIntent(int navigationId) {
-        if (fileOpenIntent != null && fileOpenIntent.getData() != null) {
+        if (storageAccess == null) {
+            storageAccess = new StorageAccess(this);
+        }
+
+        if (!preferences.getMyPreferenceBoolean("intentAlreadyDealtWith",false) &&
+                fileOpenIntent != null && fileOpenIntent.getData() != null && storageAccess.getFileSizeFromUri(fileOpenIntent.getData())>0) {
+            preferences.setMyPreferenceBoolean("intentAlreadyDealtWith",true);
             importUri = fileOpenIntent.getData();
             navController.popBackStack(navigationId, false);
 
@@ -487,27 +493,54 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         Log.d(TAG, "Opening pdf, etc");
                         dealingWithIntent = deeplink_import_file;
                     } else {
-                        // Can't handle the file, so delete it
-                        if (showToast != null) {
-                            showToast.doIt(unknown);
+                        // Might be an opensong file (with no extension)
+                        // If the file size is small enough (<200kB), read it as text and look for </song> and </lyrics> or </set> and </slide_groups>
+                        boolean isOpenSong = false;
+                        boolean isOpenSongSet = false;
+                        String content = "";
+                        inputStream = getContentResolver().openInputStream(importUri);
+                        if (!importFilename.contains(".") && getStorageAccess().getFileSizeFromUri(importUri)<200) {
+                            content = getStorageAccess().readTextFileToString(inputStream);
                         }
-                        if (tempFile.delete()) {
-                            Log.d(TAG, tempFile + " has been deleted");
+                        if (content!=null && content.contains("</song>") && content.contains("</lyrics>")) {
+                            isOpenSong = true;
                         }
-                        dealingWithIntent = "";
+                        if (content!=null && content.contains("</set>") && content.contains("</slide_groups>")) {
+                            isOpenSongSet = true;
+                        }
+                        Log.d(TAG,"isOpenSong:"+isOpenSong);
+                        if (isOpenSong || isOpenSongSet) {
+                            setWhattodo("intentlaunch");
+                            dealingWithIntent = deeplink_import_file;
+                        } else {
+                            // Can't handle the file, so delete it
+                            if (showToast != null) {
+                                showToast.doIt(unknown);
+                            }
+                            if (tempFile.delete()) {
+                                Log.d(TAG, tempFile + " has been deleted");
+                            }
+                            setWhattodo("");
+                            dealingWithIntent = "";
+                        }
                     }
                     if (dealingWithIntent != null && !dealingWithIntent.isEmpty()) {
                         navigateToFragment(dealingWithIntent, 0);
+                        // Reset the flag to allow dealing with a new intent as we have handled this one
+                        preferences.setMyPreferenceBoolean("intentAlreadyDealtWith",false);
                     }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            if (storageAccess == null) {
-                storageAccess = new StorageAccess(this);
-            }
         }
+        // Try to clear the intent
         fileOpenIntent = null;
+        try {
+            getIntent().setData(null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void setupHelpers() {
@@ -1873,7 +1906,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             }
         } else if ((rebooted && bootUpCompleted && songMenuFragment != null) || (bootUpCompleted && fragName!=null && fragName.equals("menuSettingsFrag"))) {
             // We have resumed from stale state or changed between title/filename, build the index but from the database
-            songMenuFragment.prepareSearch();
+            if (songMenuFragment!=null) {
+                songMenuFragment.prepareSearch();
+            }
             if (performanceValid()) {
                 performanceFragment.updateInlineSetSet();
             } else if (presenterValid()) {
@@ -3677,6 +3712,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
         if (metronome!=null) {
             metronome.releaseSoundPool();
+        }
+
+        // Reset the dealt with intent
+        try {
+            preferences.setMyPreferenceBoolean("intentAlreadyDealtWith", false);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         // Keep a reference to connections if needed as bundle

@@ -104,7 +104,7 @@ public class PresenterFragment extends Fragment {
         if (getContext()!=null) {
             myView.inlineSetList.initialisePreferences(getContext(), mainActivityInterface);
         }
-        myView.inlineSetList.prepareSet();
+        myView.inlineSetList.post(() -> myView.inlineSetList.prepareSet());
 
         // Set up the the pager
         setupPager();
@@ -435,7 +435,7 @@ public class PresenterFragment extends Fragment {
     public void updateInlineSetSet() {
         if (myView!=null) {
             myView.inlineSetList.setUseTitle(mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuSortTitles",true));
-            myView.inlineSetList.prepareSet();
+            myView.inlineSetList.post(() -> myView.inlineSetList.prepareSet());
         }
     }
     public void updateInlineSetItem(int position) {

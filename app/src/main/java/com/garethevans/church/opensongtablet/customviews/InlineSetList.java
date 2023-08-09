@@ -157,7 +157,9 @@ public class InlineSetList extends RecyclerView {
                 info.songkey = mainActivityInterface.getCurrentSet().getKey(i);
                 setList.add(info);
             }
-            inlineSetListAdapter.updateSetList();
+            if (inlineSetListAdapter!=null) {
+                inlineSetListAdapter.updateSetList();
+            }
             // Look for current item
             selectedItem = mainActivityInterface.getSetActions().getPositionInSet();
             scrollToItem(selectedItem);
@@ -190,7 +192,11 @@ public class InlineSetList extends RecyclerView {
             if (setList != null) {
                 int size = getItemCount();
                 setList.clear();
-                notifyItemRangeRemoved(0, size);
+                try {
+                    notifyItemRangeRemoved(0, size);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             } else {
                 setList = new ArrayList<>();
             }
@@ -201,7 +207,11 @@ public class InlineSetList extends RecyclerView {
                 useTitle = mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuSortTitles",true);
             }
             for (int x = 0; x < setList.size(); x++) {
-                notifyItemInserted(x);
+                try {
+                    notifyItemInserted(x);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
 
