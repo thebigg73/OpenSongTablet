@@ -653,91 +653,95 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void showActionBar() {
-        myView.myToolbar.showActionBar(settingsOpen);
-        updateMargins();
+        if (myView!=null) {
+            myView.myToolbar.showActionBar(settingsOpen);
+            updateMargins();
+        }
     }
 
     @Override
     public void updateMargins() {
-        Handler handler = new Handler(Looper.getMainLooper());
-        handler.post(() -> {
-            if (settingsOpen || whichMode.equals(mode_presenter)) {
-                myView.fragmentView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-            } else {
-                myView.fragmentView.setBackgroundColor(themeColors.getLyricsBackgroundColor());
-            }
-
-            // Get the user margins (additional)
-            int[] margins = windowFlags.getMargins();
-
-            // Work out top padding for status bar if shown
-            int additionalTop = 0;
-            if (!windowFlags.getImmersiveMode()) {
-                additionalTop += Math.max(windowFlags.getCurrentTopCutoutHeight(), windowFlags.getStatusHeight());
-            } else if (windowFlags.getShowStatusInCutout() && !windowFlags.getIgnoreCutouts()) {
-                int topCutout = windowFlags.getCurrentTopCutoutHeight();
-                int status = windowFlags.getStatusHeight();
-                if (topCutout > 0) {
-                    topCutout = Math.max(topCutout, status);
-                }
-                additionalTop += topCutout;
-            } else if (windowFlags.getShowStatus()) {
-                additionalTop += windowFlags.getStatusHeight();
-            }
-
-            // Now work out any rounded corner inserts
-            if (windowFlags.getHasRoundedCorners() && !windowFlags.getIgnoreRoundedCorners()) {
-                additionalTop += windowFlags.getCurrentRoundedTop();
-            }
-
-            // Set the toolbar paddings
-            if (myView != null) {
-                myView.myToolbar.setAdditionalTopPadding(additionalTop);
-                myView.myToolbar.setPadding(margins[0] + windowFlags.getMarginToolbarLeft(),
-                        margins[1] + additionalTop,
-                        margins[2] + windowFlags.getMarginToolbarRight(),
-                        0);
-            }
-
-            // Now set the paddings to the content page, the song menu and the page button
-            // If we are showing the status in the cutout
-            int statusPadding = 0;
-            int topPadding = 0;
-            if (myView != null) {
-                if (settingsOpen) {
-                    topPadding = myView.myToolbar.getActionBarHeight(true);
+        if (myView!=null && windowFlags!=null) {
+            Handler handler = new Handler(Looper.getMainLooper());
+            handler.post(() -> {
+                if (settingsOpen || whichMode.equals(mode_presenter)) {
+                    myView.fragmentView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                 } else {
-                    topPadding = myView.myToolbar.getActionBarHeight(!myView.myToolbar.getHideActionBar());
+                    myView.fragmentView.setBackgroundColor(themeColors.getLyricsBackgroundColor());
                 }
-            }
-            if (windowFlags.getShowStatusInCutout() && !windowFlags.getIgnoreCutouts()) {
-                statusPadding += windowFlags.getCurrentTopCutoutHeight();
-            } else if (windowFlags.getShowStatus()) {
-                statusPadding += windowFlags.getStatusHeight();
-            }
 
-            if (topPadding == 0 && windowFlags.getShowStatusInCutout() && windowFlags.getCurrentTopCutoutHeight() > 0) {
-                // We need to add in the statusBar
-                topPadding += statusPadding + margins[1];
-            }
+                // Get the user margins (additional)
+                int[] margins = windowFlags.getMargins();
 
-            int bottomOfToolbar = myView.myAppBarLayout.getBottom() + 1;
-            if (myView.myToolbar.getHideActionBar()) {
-                if (windowFlags.getShowStatus()) {
-                    bottomOfToolbar = windowFlags.getStatusHeight();
-                } else if (windowFlags.getShowStatusInCutout()) {
-                    bottomOfToolbar = windowFlags.getCurrentTopCutoutHeight();
-                } else {
-                    bottomOfToolbar = 0;
+                // Work out top padding for status bar if shown
+                int additionalTop = 0;
+                if (!windowFlags.getImmersiveMode()) {
+                    additionalTop += Math.max(windowFlags.getCurrentTopCutoutHeight(), windowFlags.getStatusHeight());
+                } else if (windowFlags.getShowStatusInCutout() && !windowFlags.getIgnoreCutouts()) {
+                    int topCutout = windowFlags.getCurrentTopCutoutHeight();
+                    int status = windowFlags.getStatusHeight();
+                    if (topCutout > 0) {
+                        topCutout = Math.max(topCutout, status);
+                    }
+                    additionalTop += topCutout;
+                } else if (windowFlags.getShowStatus()) {
+                    additionalTop += windowFlags.getStatusHeight();
                 }
-            }
 
-            if (myView != null) {
-                myView.fragmentView.setPadding(margins[0], Math.max(margins[1] + additionalTop, Math.max(topPadding, bottomOfToolbar)), margins[2], margins[3]);
-                myView.songMenuLayout.setPadding(margins[0], margins[1] + additionalTop, 0, margins[3]);
-                myView.songMenuLayout.findViewById(R.id.menu_top).setPadding(windowFlags.getMarginToolbarLeft(), 0, 0, 0);
-            }
-        });
+                // Now work out any rounded corner inserts
+                if (windowFlags.getHasRoundedCorners() && !windowFlags.getIgnoreRoundedCorners()) {
+                    additionalTop += windowFlags.getCurrentRoundedTop();
+                }
+
+                // Set the toolbar paddings
+                if (myView != null) {
+                    myView.myToolbar.setAdditionalTopPadding(additionalTop);
+                    myView.myToolbar.setPadding(margins[0] + windowFlags.getMarginToolbarLeft(),
+                            margins[1] + additionalTop,
+                            margins[2] + windowFlags.getMarginToolbarRight(),
+                            0);
+                }
+
+                // Now set the paddings to the content page, the song menu and the page button
+                // If we are showing the status in the cutout
+                int statusPadding = 0;
+                int topPadding = 0;
+                if (myView != null) {
+                    if (settingsOpen) {
+                        topPadding = myView.myToolbar.getActionBarHeight(true);
+                    } else {
+                        topPadding = myView.myToolbar.getActionBarHeight(!myView.myToolbar.getHideActionBar());
+                    }
+                }
+                if (windowFlags.getShowStatusInCutout() && !windowFlags.getIgnoreCutouts()) {
+                    statusPadding += windowFlags.getCurrentTopCutoutHeight();
+                } else if (windowFlags.getShowStatus()) {
+                    statusPadding += windowFlags.getStatusHeight();
+                }
+
+                if (topPadding == 0 && windowFlags.getShowStatusInCutout() && windowFlags.getCurrentTopCutoutHeight() > 0) {
+                    // We need to add in the statusBar
+                    topPadding += statusPadding + margins[1];
+                }
+
+                int bottomOfToolbar = myView.myAppBarLayout.getBottom() + 1;
+                if (myView.myToolbar.getHideActionBar()) {
+                    if (windowFlags.getShowStatus()) {
+                        bottomOfToolbar = windowFlags.getStatusHeight();
+                    } else if (windowFlags.getShowStatusInCutout()) {
+                        bottomOfToolbar = windowFlags.getCurrentTopCutoutHeight();
+                    } else {
+                        bottomOfToolbar = 0;
+                    }
+                }
+
+                if (myView != null) {
+                    myView.fragmentView.setPadding(margins[0], Math.max(margins[1] + additionalTop, Math.max(topPadding, bottomOfToolbar)), margins[2], margins[3]);
+                    myView.songMenuLayout.setPadding(margins[0], margins[1] + additionalTop, 0, margins[3]);
+                    myView.songMenuLayout.findViewById(R.id.menu_top).setPadding(windowFlags.getMarginToolbarLeft(), 0, 0, 0);
+                }
+            });
+        }
     }
 
     public int[] getViewMargins() {
@@ -830,29 +834,31 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
 
     private void initialiseStartVariables() {
-        themeColors.setThemeName(preferences.getMyPreferenceString("appTheme", "dark"));
-        whichMode = preferences.getMyPreferenceString("whichMode", performance);
-        // Fix old mode from old profile
-        if (whichMode.equals("Presentation")) {
-            whichMode = presenter;
+        if (themeColors != null && preferences != null && setActions != null && fixLocale != null && setTypeFace != null) {
+            themeColors.setThemeName(preferences.getMyPreferenceString("appTheme", "dark"));
+            whichMode = preferences.getMyPreferenceString("whichMode", performance);
+            // Fix old mode from old profile
+            if (whichMode.equals("Presentation")) {
+                whichMode = presenter;
+            }
+
+            // Song location
+            song.setFilename(preferences.getMyPreferenceString("songFilename", "Welcome to OpenSongApp"));
+            song.setFolder(preferences.getMyPreferenceString("songFolder", mainfoldername));
+
+            // Set dealt with elsewhere
+            setActions.preferenceStringToArrays();
+
+            // Set the locale
+            fixLocale.setLocale(this, this);
+            locale = fixLocale.getLocale();
+
+            // ThemeColors
+            themeColors.getDefaultColors();
+
+            // Typefaces
+            setTypeFace.setUpAppFonts(new Handler(), new Handler(), new Handler(), new Handler(), new Handler());
         }
-
-        // Song location
-        song.setFilename(preferences.getMyPreferenceString("songFilename", "Welcome to OpenSongApp"));
-        song.setFolder(preferences.getMyPreferenceString("songFolder", mainfoldername));
-
-        // Set dealt with elsewhere
-        setActions.preferenceStringToArrays();
-
-        // Set the locale
-        fixLocale.setLocale(this, this);
-        locale = fixLocale.getLocale();
-
-        // ThemeColors
-        themeColors.getDefaultColors();
-
-        // Typefaces
-        setTypeFace.setUpAppFonts(new Handler(), new Handler(), new Handler(), new Handler(), new Handler());
     }
 
     private void setListeners() {
@@ -1252,16 +1258,18 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public void navHome() {
         lockDrawer(false);
-        whichMode = preferences.getMyPreferenceString("whichMode", performance);
-        if (navController.getCurrentDestination() != null) {
-            navController.popBackStack(Objects.requireNonNull(navController.getCurrentDestination()).getId(), true);
-        }
-        if (whichMode.equals(mode_presenter)) {
-            navigateToFragment(deeplink_presenter, 0);
-            myView.fragmentView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-        } else {
-            navigateToFragment(deeplink_performance, 0);
-            myView.fragmentView.setBackgroundColor(themeColors.getLyricsBackgroundColor());
+        if (navController!=null && myView!=null) {
+            whichMode = preferences.getMyPreferenceString("whichMode", performance);
+            if (navController.getCurrentDestination() != null) {
+                navController.popBackStack(Objects.requireNonNull(navController.getCurrentDestination()).getId(), true);
+            }
+            if (whichMode.equals(mode_presenter)) {
+                navigateToFragment(deeplink_presenter, 0);
+                myView.fragmentView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            } else {
+                navigateToFragment(deeplink_performance, 0);
+                myView.fragmentView.setBackgroundColor(themeColors.getLyricsBackgroundColor());
+            }
         }
     }
 
@@ -1300,10 +1308,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     // Nearby stuff
     private void setupNearby() {
         // Set up the Nearby connection service
-        nearbyConnections.getUserNickname();
+        if (nearbyConnections!=null) {
+            nearbyConnections.getUserNickname();
 
-        // Establish a known state for Nearby
-        nearbyConnections.turnOffNearby();
+            // Establish a known state for Nearby
+            nearbyConnections.turnOffNearby();
+        }
     }
 
     @Override
@@ -2045,14 +2055,16 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void updatePageButtonLayout() {
-        // We have changed something about the page buttons (or initialising them
-        if (myView.actionFAB.getRotation() != 0) {
-            pageButtons.animatePageButton(false);
-        }
-        pageButtons.updateColors();
-        pageButtons.setPageButton(myView.actionFAB, -1, false);
-        for (int x = 0; x < pageButtons.getPageButtonNum(); x++) {
-            pageButtons.setPageButton(pageButtons.getFAB(x), x, false);
+        if (myView!=null && pageButtons!=null) {
+            // We have changed something about the page buttons (or initialising them
+            if (myView.actionFAB.getRotation() != 0) {
+                pageButtons.animatePageButton(false);
+            }
+            pageButtons.updateColors();
+            pageButtons.setPageButton(myView.actionFAB, -1, false);
+            for (int x = 0; x < pageButtons.getPageButtonNum(); x++) {
+                pageButtons.setPageButton(pageButtons.getFAB(x), x, false);
+            }
         }
     }
 
@@ -2879,29 +2891,31 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void quickSongMenuBuild() {
-        fullIndexRequired = true;
-        ArrayList<String> songIds = new ArrayList<>();
-        try {
-            songIds = storageAccess.listSongs();
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (storageAccess!=null && sqLiteHelper!=null && nonOpenSongSQLiteHelper!=null) {
+            fullIndexRequired = true;
+            ArrayList<String> songIds = new ArrayList<>();
+            try {
+                songIds = storageAccess.listSongs();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            // Write a crude text file (line separated) with the song Ids (folder/file)
+            storageAccess.writeSongIDFile(songIds);
+
+            // Try to create the basic databases
+            // Non persistent, created from storage at boot (to keep updated) used to references ALL files
+            sqLiteHelper.resetDatabase();
+            // Persistent containing details of PDF/Image files only.  Pull in to main database at boot
+            // Updated each time a file is created, deleted, moved.
+            // Also updated when feature data (pad, autoscroll, metronome, etc.) is updated for these files
+            nonOpenSongSQLiteHelper.initialise();
+
+            // Add entries to the database that have songid, folder and filename fields
+            // This is the minimum that we need for the song menu.
+            // It can be upgraded asynchronously in StageMode/PresenterMode to include author/key
+            // Also will later include all the stuff for the search index as well
+            sqLiteHelper.insertFast();
         }
-        // Write a crude text file (line separated) with the song Ids (folder/file)
-        storageAccess.writeSongIDFile(songIds);
-
-        // Try to create the basic databases
-        // Non persistent, created from storage at boot (to keep updated) used to references ALL files
-        sqLiteHelper.resetDatabase();
-        // Persistent containing details of PDF/Image files only.  Pull in to main database at boot
-        // Updated each time a file is created, deleted, moved.
-        // Also updated when feature data (pad, autoscroll, metronome, etc.) is updated for these files
-        nonOpenSongSQLiteHelper.initialise();
-
-        // Add entries to the database that have songid, folder and filename fields
-        // This is the minimum that we need for the song menu.
-        // It can be upgraded asynchronously in StageMode/PresenterMode to include author/key
-        // Also will later include all the stuff for the search index as well
-        sqLiteHelper.insertFast();
     }
 
     @Override
@@ -3038,7 +3052,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public Locale getLocale() {
-        if (locale == null) {
+        if (locale == null && fixLocale!=null) {
             fixLocale.setLocale(this, this);
             locale = fixLocale.getLocale();
         }
@@ -3657,7 +3671,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     protected void onPause() {
         super.onPause();
         // Copy the persistent database from app storage to user storage
-        nonOpenSongSQLiteHelper.copyUserDatabase();
+        if (nonOpenSongSQLiteHelper!=null) {
+            nonOpenSongSQLiteHelper.copyUserDatabase();
+        }
         if (autoscroll != null) {
             autoscroll.stopTimers();
         }
@@ -3708,7 +3724,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         Log.d(TAG, "onDestroy");
 
         // Turn off nearby
-        nearbyConnections.turnOffNearby();
+        if (nearbyConnections!=null) {
+            nearbyConnections.turnOffNearby();
+        }
 
         if (metronome!=null) {
             metronome.releaseSoundPool();
@@ -3716,7 +3734,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
         // Reset the dealt with intent
         try {
-            preferences.setMyPreferenceBoolean("intentAlreadyDealtWith", false);
+            if (preferences!=null) {
+                preferences.setMyPreferenceBoolean("intentAlreadyDealtWith", false);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -3728,7 +3748,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
-        if (hasFocus) {
+        if (hasFocus && getWindowFlags()!=null) {
             getWindowFlags().hideKeyboard();
         }
         super.onWindowFocusChanged(hasFocus);
