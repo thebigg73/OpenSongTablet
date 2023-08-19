@@ -192,6 +192,9 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
     }
 
     private void doSaveChanges() {
+        // Make sure the soft keyboard is closed
+        mainActivityInterface.getWindowFlags().hideKeyboard();
+
         // Send this off for processing in a new Thread
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {

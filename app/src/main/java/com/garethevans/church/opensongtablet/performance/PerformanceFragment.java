@@ -23,6 +23,7 @@ import android.view.animation.AnimationUtils;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -389,13 +390,13 @@ public class PerformanceFragment extends Fragment {
                 // Remove capo
                 mainActivityInterface.updateOnScreenInfo("capoHide");
 
-                // IV - Deal with stop of metronome
+                // IV - Deal with stop of metronome if we have changed song
                 metronomeWasRunning = mainActivityInterface.getMetronome().getIsRunning();
                 if (songChange && metronomeWasRunning) {
                     mainActivityInterface.getMetronome().stopMetronome();
                 }
 
-                // Stop any autoscroll if required
+                // Stop any autoscroll if required, but not if it was activated
                 boolean autoScrollActivated = mainActivityInterface.getAutoscroll().getAutoscrollActivated();
                 mainActivityInterface.getAutoscroll().stopAutoscroll();
                 mainActivityInterface.getAutoscroll().setAutoscrollActivated(autoScrollActivated);
@@ -507,6 +508,19 @@ public class PerformanceFragment extends Fragment {
             // Reset the song views
             mainActivityInterface.setSectionViews(null);
             removeViews();
+
+            // Make sure we are scrolled to the top of the views
+            myView.recyclerView.scrollToTop();
+            myView.zoomLayout.stopFlingScroll();
+            myView.zoomLayout.doScrollTo(0,0);
+            if (myView.recyclerView.getLayoutManager()!=null) {
+                myView.recyclerView.getLayoutManager().scrollToPosition(0);
+                try {
+                    ((LinearLayoutManager) myView.recyclerView.getLayoutManager()).scrollToPositionWithOffset(0, 0);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
 
             // If we are in a set, send that info to the inline set custom view to see if it should draw
             myView.inlineSetList.checkVisibility();

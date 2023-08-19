@@ -6,6 +6,7 @@ import android.graphics.PointF;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
@@ -106,7 +107,12 @@ public class MyRecyclerView extends RecyclerView  implements RecyclerView.Smooth
         try {
             scrollToPosition(0);
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.d(TAG,"Can't scrollToPosition(0)");
+        }
+        try {
+            scrollTo(0,0);
+        } catch (Exception e) {
+            Log.d(TAG,"Not allowed to scrollTo(0,0)");
         }
         scrolledToTop = true;
         scrolledToBottom = false;
@@ -463,7 +469,6 @@ public class MyRecyclerView extends RecyclerView  implements RecyclerView.Smooth
             isUserTouching = false;
             gestureControl = true;
             scrollToTop();
-            //scrollTo(0,0);
             // Set a timer to enable it again
             postDelayed(() -> gestureControl = false,600);
             // This is called from a gesture or page button

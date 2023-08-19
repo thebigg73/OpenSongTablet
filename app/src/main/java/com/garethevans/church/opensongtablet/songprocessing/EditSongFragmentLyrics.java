@@ -2,9 +2,11 @@ package com.garethevans.church.opensongtablet.songprocessing;
 
 import android.content.Context;
 import android.content.res.Configuration;
+import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.Layout;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -125,7 +127,35 @@ public class EditSongFragmentLyrics extends Fragment {
     }
 
     private void setupListeners() {
-        //myView.lyrics.setOnFocusChangeListener((view, b) -> mainActivityInterface.enableSwipe("edit",!b));
+        myView.lyrics.setOnFocusChangeListener((view, b) -> {
+            if (b) {
+                // Get the text position and 50ms later set this again
+                // Hopefully deals with soft keyboard hiding cursor position
+                int cursorPos = myView.lyrics.getSelectionStart();
+                myView.lyrics.postDelayed(() -> {
+                    myView.lyrics.setSelection(cursorPos);
+                    Log.d(TAG,"cursor set to:"+cursorPos);
+
+                    Layout layout = myView.lyrics.getLayout();
+                    int line = layout.getLineForOffset(cursorPos);
+                    int baseline = layout.getLineBaseline(line);
+                    int ascent = layout.getLineAscent(line);
+
+                    Log.d(TAG,"line:"+line+"  baseline:"+baseline+"  ascent:"+ascent);
+
+                    int[] location = new int[2];
+                    myView.lyrics.getLocationOnScreen(location);
+
+                    Point point = new Point();
+                    point.x = (int) layout.getPrimaryHorizontal(cursorPos);
+                    point.y = baseline + ascent - location[1] - myView.nestedScrollView.getScrollY();
+
+                    myView.nestedScrollView.scrollTo(0,point.y);
+                },50);
+
+            }
+            //mainActivityInterface.enableSwipe("edit",!b);
+        });
 
         myView.lyrics.addTextChangedListener(new TextWatcher() {
             @Override

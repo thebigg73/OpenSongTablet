@@ -11,6 +11,7 @@ import android.os.Looper;
 import android.os.Parcelable;
 import android.text.Editable;
 import android.text.InputType;
+import android.text.Layout;
 import android.text.TextWatcher;
 import android.text.method.DigitsKeyListener;
 import android.util.AttributeSet;
@@ -383,5 +384,9 @@ public class MyMaterialEditText extends LinearLayout implements View.OnTouchList
                 return false;
             });
         }
+    }
+
+    public Layout getLayout() {
+        return editText.getLayout();
     }
 }
