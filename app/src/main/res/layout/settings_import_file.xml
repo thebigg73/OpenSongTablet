@@ -30,6 +30,14 @@
                 android:layout_marginBottom="16dp"
                 android:hint="@string/folder" />
 
+            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                android:id="@+id/setLoadFirst"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/set_load_first"
+                android:hint="@string/set_load_first_info"
+                android:visibility="gone"/>
+
             <LinearLayout
                 android:id="@+id/existing"
                 android:layout_width="match_parent"

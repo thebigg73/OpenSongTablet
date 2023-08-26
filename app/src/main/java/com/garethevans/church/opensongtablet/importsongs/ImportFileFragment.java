@@ -47,6 +47,7 @@ public class ImportFileFragment extends Fragment {
     private String originalFolder, originalFilename, import_from_file_string="", error_string="",
             mainfoldername_string="", overwrite_string="", filename_string="", file_exists_string="";
     private ExposedDropDownArrayAdapter exposedDropDownArrayAdapter;
+    private boolean isSetFile = false;
 
     @Override
     public void onResume() {
@@ -86,8 +87,22 @@ public class ImportFileFragment extends Fragment {
             // Get the available folders and base name
             basename = mainActivityInterface.getImportFilename().replaceAll("\\.[^.]*$", "");
             setcategory = mainfoldername_string;
-            if (mainActivityInterface.getImportFilename().endsWith(".osts")) {
+            // If this is a desktop OpenSong file, it wont have an extension
+            // Try to import the file as text (if no extension)
+            String content = null;
+            if (!mainActivityInterface.getImportFilename().contains(".")) {
+                InputStream readAsTextStream = mainActivityInterface.getStorageAccess().getInputStream(mainActivityInterface.getImportUri());
+                content = mainActivityInterface.getStorageAccess().readTextFileToString(readAsTextStream);
+                Log.d(TAG,"content:"+content);
+            }
+            if ((content!=null && content.contains("<set") && content.contains("</set>")) ||
+                    mainActivityInterface.getImportFilename().endsWith(".osts")) {
                 // This is actually a set
+                myView.setLoadFirst.setVisibility(View.VISIBLE);
+                myView.setLoadFirst.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("setLoadFirst",true));
+                myView.setLoadFirst.setOnCheckedChangeListener((compoundButton, b) -> mainActivityInterface.getPreferences().setMyPreferenceBoolean("setLoadFirst",b));
+
+                isSetFile = true;
                 folders = mainActivityInterface.getSetActions().getCategories(mainActivityInterface.getSetActions().getAllSets());
                 if (basename.contains("__")) {
                     // This set has a category already - get it!
@@ -99,6 +114,7 @@ public class ImportFileFragment extends Fragment {
                 }
             } else {
                 folders = mainActivityInterface.getSQLiteHelper().getFolders();
+                myView.setLoadFirst.setVisibility(View.GONE);
             }
             newSong.setFilename(mainActivityInterface.getImportFilename());
             isIMGorPDF = mainActivityInterface.getStorageAccess().isIMGorPDF(newSong);
@@ -118,7 +134,7 @@ public class ImportFileFragment extends Fragment {
                 myView.folder.setText(mainActivityInterface.getSong().getFolder());
             });
             // Try to read in the song using the import information.  This copies to the Variations/_cache folder
-            if (mainActivityInterface.getImportFilename().endsWith(".osts")) {
+            if (isSetFile) {
                 readInSetFile();
 
             } else {
@@ -288,7 +304,7 @@ public class ImportFileFragment extends Fragment {
     }
 
     private void doImport() {
-        if (mainActivityInterface.getImportFilename().toLowerCase(Locale.ROOT).endsWith(".osts")) {
+        if (isSetFile) {
             // Import the set if it doesn't already exist and filename isn't empty
             String folderprefix = "";
             if (!myView.folder.getText().toString().isEmpty() &&
@@ -398,6 +414,7 @@ public class ImportFileFragment extends Fragment {
                 Log.d(TAG, "copy: " + mainActivityInterface.getStorageAccess().copyFile(inputStream, outputStream));
                 ArrayList<Uri> thisSet = new ArrayList<>();
                 thisSet.add(copyTo);
+                mainActivityInterface.setWhattodo("pendingLoadSet");
                 mainActivityInterface.getSetActions().loadSets(thisSet, newSetName);
                 mainActivityInterface.navHome();
                 mainActivityInterface.chooseMenu(true);

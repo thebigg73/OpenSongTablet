@@ -9,7 +9,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true">
+        android:layout_alignParentTop="true"
+        android:clipToPadding="false"
+        android:clipChildren="false">
 
         <LinearLayout
             android:id="@+id/previewLayout"
@@ -17,22 +19,29 @@
             android:layout_height="wrap_content"
             android:background="@color/white"
             android:orientation="vertical"
-            android:visibility="invisible">
+            android:visibility="invisible"
+            android:clipToPadding="false"
+            android:clipChildren="false">
 
-            <LinearLayout
+        <LinearLayout
                 android:id="@+id/hiddenHeader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:visibility="visible" />
+                android:visibility="visible"
+            android:clipToPadding="false"
+            android:clipChildren="false" />
 
             <LinearLayout
                 android:id="@+id/hiddenSections"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:visibility="visible" />
-        </LinearLayout>
+                android:visibility="visible"
+                android:clipToPadding="false"
+                android:clipChildren="false" />
+
+            </LinearLayout>
     </ScrollView>
 
     <ScrollView
@@ -40,21 +49,29 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true">
+        android:layout_alignParentTop="true"
+        android:clipToPadding="false"
+        android:clipChildren="false">
         <RelativeLayout
             android:id="@+id/scaledPageHolder"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:clipChildren="false">
             <LinearLayout
                 android:id="@+id/scaledHeader"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"/>
+                android:orientation="vertical"
+                android:clipToPadding="false"
+                android:clipChildren="false"/>
         <com.garethevans.church.opensongtablet.customviews.SongContent
             android:id="@+id/scaledSongContent"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/scaledHeader"/>
+            android:layout_below="@id/scaledHeader"
+            android:clipToPadding="false"
+            android:clipChildren="false"/>
         </RelativeLayout>
     </ScrollView>
 

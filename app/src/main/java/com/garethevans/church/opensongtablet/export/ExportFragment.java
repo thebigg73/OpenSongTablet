@@ -951,9 +951,15 @@ public class ExportFragment extends Fragment {
                     myView.hiddenSections.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                     sectionsVTO.removeOnGlobalLayoutListener(this);
                     // Go through each item and measure them
+                    int totalHeight = 0;
+                    int requiredWidth = 0;
                     for (int x = 0; x < sectionViewsScreenshot.size(); x++) {
                         int width = sectionViewsScreenshot.get(x).getMeasuredWidth();
                         int height = sectionViewsScreenshot.get(x).getMeasuredHeight();
+                        totalHeight = totalHeight + height;
+                        if (width > requiredWidth) {
+                            requiredWidth = width;
+                        }
                         sectionViewWidthsScreenshot.add(width);
                         sectionViewHeightsScreenshot.add(height);
                     }
@@ -1035,6 +1041,48 @@ public class ExportFragment extends Fragment {
                         mimeTypes = new ArrayList<>();
                     }
 
+                    int thisWidth = 0;
+                    int thisHeight = 0;
+                    if (scaleInfo[0]==1) {
+                        /*float[] {1,           // Number of columns
+                    1    oneColumnScale,    // Overall best scale
+                    2    col1_1Width,       // Column 1 max width
+                    3    col1_1Height,      // Column 1 total height
+                    4    sectionSpace}      // Section space per view except last column */
+                        thisWidth = (int)(scaleInfo[2] * scaleInfo[1]);
+                        thisHeight = (int)(scaleInfo[3] * scaleInfo[1]);
+                    } else if (scaleInfo[0]==2) {
+                        /*float[]{2,             // Number of columns
+                    1    twoColumnScale,     // Overall best scale
+                    2    columnBreak2,       // Break point
+                    3    col1_2ScaleBest,    // Best col 1 scale
+                    4    col1_2Width,        // Column 1 max width
+                    5    col1_2Height,       // Column 1 total height
+                    6    col2_2ScaleBest,    // Best col 2 scale
+                    7    col2_2Width,        // Column 2 max width
+                    8    col2_2Height,       // Column 2 total height
+                    9    sectionSpace}       // Section space per view except last column */
+                        thisWidth = availableWidth;
+                        thisHeight = (int)Math.max(scaleInfo[3]*scaleInfo[5],scaleInfo[6]*scaleInfo[8]);
+                    } else if (scaleInfo[0]==3) {
+                        /*float[]{3,             // Number of columns
+                    1    threeColumnScale,   // Overall best scale
+                    2    columnBreak3_a,     // Break point 1
+                    3    columnBreak3_b,     // Break point 2
+                    4    col1_3ScaleBest,    // Best col 1 scale
+                    5    col1_3Width,        // Column 1 max width
+                    6    col1_3Height,       // Column 1 total height
+                    7    col2_3ScaleBest,    // Best col 2 scale
+                    8    col2_3Width,        // Column 2 max width
+                    9    col2_3Height,       // Column 2 total height
+                    10   col3_3ScaleBest,    // Best col 3 scale
+                    11   col3_3Width,        // Column 3 max width
+                    12   col3_3Height,       // Column 3 total height
+                    13   sectionSpace};      // Section space per view except last in column */
+                        thisWidth = availableWidth;
+                        thisHeight = (int)Math.max(scaleInfo[4]*scaleInfo[6],Math.max(scaleInfo[7]*scaleInfo[9],scaleInfo[10]*scaleInfo[12]));
+
+                    }
 
                     boolean takingScreenShot = (png && !isSetFile) || (screenShot && !isSetFile);
                     if (takingScreenShot) {
@@ -1046,7 +1094,7 @@ public class ExportFragment extends Fragment {
                         myView.hiddenSections.removeAllViews();
                         myView.scaledPageHolder.setVisibility(View.VISIBLE);
 
-                        setPNGContent = Bitmap.createBitmap(availableWidth, availableHeight, Bitmap.Config.ARGB_8888);
+                        setPNGContent = Bitmap.createBitmap(thisWidth, thisHeight, Bitmap.Config.ARGB_8888);
                         Canvas canvas = new Canvas(setPNGContent);
                         myView.scaledPageHolder.draw(canvas);
 
