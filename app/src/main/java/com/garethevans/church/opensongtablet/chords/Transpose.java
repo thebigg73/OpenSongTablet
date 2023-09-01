@@ -722,13 +722,13 @@ public class Transpose {
         }
     }
 
-    public String capoKeyTranspose() {
-        if (mainActivityInterface.getSong().getKey()!=null &&
-                mainActivityInterface.getSong().getCapo()!=null &&
-                !mainActivityInterface.getSong().getKey().isEmpty() &&
-                !mainActivityInterface.getSong().getCapo().isEmpty()) {
-            capoKey = numberToKey(transposeNumber(keyToNumber(mainActivityInterface.getSong().getKey()),
-                    "-1", Integer.parseInt("0" + mainActivityInterface.getSong().getCapo())));
+    public String capoKeyTranspose(Song thisSong) {
+        if (thisSong.getKey()!=null &&
+                thisSong.getCapo()!=null &&
+                !thisSong.getKey().isEmpty() &&
+                !thisSong.getCapo().isEmpty()) {
+            capoKey = numberToKey(transposeNumber(keyToNumber(thisSong.getKey()),
+                    "-1", Integer.parseInt("0" + thisSong.getCapo())));
             return capoKey;
         } else {
             return "";

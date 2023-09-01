@@ -878,4 +878,7 @@
     <string name="width">Šířka</string>
     <string name="words_and_music_by">Slova a hudba od</string>
     <string name="zoom_level">Úroveň přiblížení</string>
+    <string name="web_server">Webový server</string>
+    <string name="web_server_hint">Umožněte uživatelům bez OpenSongApp prohlížet vaše skladby pomocí webového prohlížeče</string>
+    <string name="web_server_info">Uživatelé bez OpenSongApp by měli být ve stejné síti jako toto zařízení (můžete také použít hotspot).  Poté by měli otevřít tuto webovou adresu a zobrazit skladbu.</string>
 </resources>

@@ -39,6 +39,7 @@ public class SetTypeFace {
     private Typeface stickyFont;
     private Typeface monoFont;
 
+    private String lyricFontName, chordFontName, monoFontName;
 
     public SetTypeFace(Context c) {
         this.c = c;
@@ -46,10 +47,12 @@ public class SetTypeFace {
     }
 
     // Set the fonts
-    public void setLyricFont(Typeface lyricFont) {
+    public void setLyricFont(String lyricFontName, Typeface lyricFont) {
+        this.lyricFontName = lyricFontName;
         this.lyricFont = lyricFont;
     }
-    public void setChordFont(Typeface chordFont) {
+    public void setChordFont(String chordFontName, Typeface chordFont) {
+        this.chordFontName = chordFontName;
         this.chordFont = chordFont;
     }
     public void setPresoFont(Typeface presoFont) {
@@ -91,23 +94,24 @@ public class SetTypeFace {
                               Handler presoFontHandler, Handler presoInfoFontHandler) {
 
         // Load up the user preferences
-        String fontLyric = mainActivityInterface.getPreferences().getMyPreferenceString("fontLyric", "Lato");
-        String fontChord = mainActivityInterface.getPreferences().getMyPreferenceString("fontChord", "Lato");
+        lyricFontName = mainActivityInterface.getPreferences().getMyPreferenceString("fontLyric", "Lato");
+        chordFontName = mainActivityInterface.getPreferences().getMyPreferenceString("fontChord", "Lato");
+        monoFontName = "RobotoMono";
         String fontSticky = mainActivityInterface.getPreferences().getMyPreferenceString("fontSticky", "Lato");
         String fontPreso = mainActivityInterface.getPreferences().getMyPreferenceString("fontPreso", "Lato");
         String fontPresoInfo = mainActivityInterface.getPreferences().getMyPreferenceString("fontPresoInfo", "Lato");
 
         // Set the values  (if Lato, use the bundled font)
         // The reason is that KiKat devices don't load the Google Font resource automatically (it requires manually selecting it).
-        if (fontLyric.equals("Lato")) {
+        if (lyricFontName.equals("Lato")) {
             lyricFont = Typeface.createFromAsset(c.getAssets(),"font/lato.ttf");
         } else {
-            getGoogleFont(fontLyric,"fontLyric",null,lyricFontHandler);
+            getGoogleFont(lyricFontName,"fontLyric",null,lyricFontHandler);
         }
-        if (fontChord.equals("Lato")) {
+        if (chordFontName.equals("Lato")) {
             chordFont = Typeface.createFromAsset(c.getAssets(),"font/lato.ttf");
         } else {
-            getGoogleFont(fontChord,"fontChord",null,chordFontHandler);
+            getGoogleFont(chordFontName,"fontChord",null,chordFontHandler);
         }
         if (fontSticky.equals("Lato")) {
             stickyFont = Typeface.createFromAsset(c.getAssets(), "font/lato.ttf");
@@ -191,10 +195,10 @@ public class SetTypeFace {
         // Set the desired font
         switch (which) {
             case "fontLyric":
-                setLyricFont(typeface);
+                setLyricFont(fontName,typeface);
                 break;
             case "fontChord":
-                setChordFont(typeface);
+                setChordFont(fontName,typeface);
                 break;
             case "fontSticky":
                 setStickyFont(typeface);
@@ -311,6 +315,16 @@ public class SetTypeFace {
             }
         }
         return fontNames;
+    }
+
+    public String getLyricFontName() {
+        return lyricFontName;
+    }
+    public String getChordFontName() {
+        return chordFontName;
+    }
+    public String getMonoFontName() {
+        return monoFontName;
     }
 
 }

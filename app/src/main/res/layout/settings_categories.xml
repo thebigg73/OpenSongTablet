@@ -80,6 +80,15 @@
                 style="@style/DividerLine" />
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                android:id="@+id/webServerButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/web_server"
+                android:hint="@string/web_server_hint"
+                app:size="large"/>
+            <TableRow style="@style/DividerLine" />
+
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:id="@+id/midiButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -57,8 +57,9 @@ public class ProcessSong {
     private final Context c;
     private final MainActivityInterface mainActivityInterface;
     @SuppressWarnings({"FieldCanBeLocal","unused"})
-    private final String TAG = "ProcessSong", groupline_string="____groupline____",
-        newline_string="___NEWLINE___", columnbreak_string="::CBr::";
+    private final String TAG = "ProcessSong",
+        newline_string="___NEWLINE___";
+    public final String columnbreak_string="::CBr::", groupline_string="____groupline____";
     private final float defFontSize = 8.0f;
     private boolean addSectionSpace;
     //private boolean addSectionBox;
@@ -75,20 +76,21 @@ public class ProcessSong {
     private boolean songAutoScaleOverrideFull;
     private boolean songAutoScaleOverrideWidth;
     private boolean trimLines;
-    private boolean trimSections;
+    public boolean trimSections;
     private boolean hideInlineMidi;
     private boolean multiLineVerseKeepCompact;
     private boolean multilineSong;
     private boolean forceColumns;
     private boolean makingScaledScreenShot;
-    private float fontSize, fontSizeMax, fontSizeMin, blockShadowAlpha,
-            lineSpacing, scaleHeadings, scaleChords, scaleComments;
+    private float fontSize, fontSizeMax, fontSizeMin, blockShadowAlpha, lineSpacing;
+    public float scaleChords, scaleHeadings, scaleComments;
     private String songAutoScale;
     // Stuff for resizing/scaling
     private int padding = 8, primaryScreenColumns=1;
     private boolean bracketsOpen = false;
     private int bracketsStyle = Typeface.NORMAL;
     private boolean curlyBrackets = true;
+    private StringBuilder htmlLyrics = new StringBuilder();
 
     public static int getColorWithAlpha(int color, float ratio) {
         int alpha = Math.round(Color.alpha(color) * ratio);
@@ -130,6 +132,10 @@ public class ProcessSong {
         curlyBrackets = mainActivityInterface.getPreferences().getMyPreferenceBoolean("curlyBrackets",true);
         forceColumns = mainActivityInterface.getPreferences().getMyPreferenceBoolean("forceColumns",true);
         hideInlineMidi = mainActivityInterface.getPreferences().getMyPreferenceBoolean("hideInlineMidi",false);
+    }
+
+    public boolean getDisplayChords() {
+        return displayChords;
     }
 
     public boolean showingCapo(String capo) {
@@ -641,8 +647,8 @@ public class ProcessSong {
                 .replace("&rdquor;", "'")
                 .replaceAll("\u0092", "'")
                 .replaceAll("\u0093", "'")
-                .replaceAll("\u2018", "'")
-                .replaceAll("\u2019", "'")
+                .replaceAll("‘", "'")
+                .replaceAll("’", "'")
                 // If UG has been bad, replace these bits:
                 .replace("pre class=\"\"", "")
                 // Make double tags into single ones
@@ -706,7 +712,7 @@ public class ProcessSong {
         return myLyrics;
     }
 
-    private String getLineType(String string) {
+    public String getLineType(String string) {
         if (string.startsWith(".")) {
             return "chord";
         } else if (string.startsWith("˄")) {
@@ -920,6 +926,8 @@ public class ProcessSong {
         TableLayout tableLayout = newTableLayout();
         tableLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT));
 
+        htmlLyrics.append("\n<table class=\"lyrictable\">\n");
+
         boolean performancePresentation = presentation && mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance));
         boolean showChords = (presentation && presoShowChords) ||
                 (!presentation && displayChords);
@@ -992,6 +1000,7 @@ public class ProcessSong {
         // Now we have the sizes, split into individual TextViews inside a TableRow for each line
         for (int t = 0; t < lines.length; t++) {
             TableRow tableRow = newTableRow();
+            htmlLyrics.append("<tr>");
             if (presentation && !performancePresentation) {
                 tableRow.setGravity(mainActivityInterface.getPresenterSettings().getPresoLyricsAlign());
             }
@@ -1038,6 +1047,7 @@ public class ProcessSong {
                                 } else {
                                     textView.setText(str);
                                 }
+                                htmlLyrics.append("<td class=\"chord\">").append(str).append("</td>");
                             } else {
                                 textView = null;
                             }
@@ -1051,6 +1061,7 @@ public class ProcessSong {
                                 } else {
                                     textView.setText(str);
                                 }
+                                htmlLyrics.append("<td class=\"capo\">").append(str).append("</td>");
                             } else {
                                 textView = null;
                             }
@@ -1073,6 +1084,7 @@ public class ProcessSong {
                                     textView.setTypeface(textView.getTypeface(),Typeface.BOLD);
                                 }
                                 textView.setText(spannableString);
+                                htmlLyrics.append("<td class=\"lyric\">").append(str).append("</td>");
                             } else {
                                 textView = null;
                             }
@@ -1084,6 +1096,7 @@ public class ProcessSong {
                             }
                             SpannableStringBuilder spannableString = getSpannableBracketString(str);
                             textView.setText(spannableString);
+                            htmlLyrics.append("<td class=\"lyric\">").append(str).append("</td>");
                             break;
                     }
                     if (textView!=null) {
@@ -1093,9 +1106,142 @@ public class ProcessSong {
                 }
             }
             tableLayout.addView(tableRow);
+            htmlLyrics.append("</tr>\n");
+
         }
+        htmlLyrics.append("</table>");
         return tableLayout;
     }
+
+    public String groupTableHTML(Song thisSong, String string) {
+        StringBuilder text = new StringBuilder();
+        text.append("\n<table class=\"lyrictable\">\n");
+
+        // If we have a capo and want to show capo chords, duplicate and transpose the chord line
+        String capoText = thisSong.getCapo();
+        boolean hasCapo = capoText!=null && !capoText.isEmpty();
+
+        if (hasCapo && (displayCapoChords || displayCapoAndNativeChords)) {
+            int capo = Integer.parseInt(capoText);
+            String chordbit = string.substring(0,string.indexOf(groupline_string));
+            chordbit = mainActivityInterface.getTranspose().transposeChordForCapo(capo,chordbit).replaceFirst(".","˄");
+            // Add it back in with a capo identifying this part
+            string = chordbit + groupline_string + string;
+        }
+
+        // Split the group into lines
+        String[] lines = string.split(groupline_string);
+
+        int minlength = 0;
+        for (String line : lines) {
+            minlength = Math.max(minlength, line.length());
+        }
+        // Make it 1 char bigger so the algorithm identifies end chords
+        minlength = minlength + 1;
+
+        for (int i = 0; i < lines.length; i++) {
+            int length = lines[i].length();
+            if (length < minlength) {
+                for (int z = 0; z < (minlength - length); z++) {
+                    lines[i] += " ";
+                }
+            }
+        }
+
+        // Get the positions of the chords.  Each will be the start of a new section
+        // IV - Use getChordPosition logic which improves the layout of chords
+        ArrayList<Integer> pos = new ArrayList<>();
+
+        // IV - If we are not displaying chords, handle the line as a whole
+        if (!displayChords) {
+            pos.add(0);
+        } else {
+            if (lines.length > 1) {
+                String[] chordPos;
+                if (lines[0].startsWith("˄") && lines.length>2) {
+                    // For capo chords.  lines[1] is the chords, lines[2] the lyrics
+                    chordPos = getChordPositions(lines[0], lines[2]);
+                } else if (lines[1].startsWith(".")) {
+                    // IV - A chord line follows so position this line referring only to itself
+                    chordPos = getChordPositions(lines[0], lines[0]);
+                } else {
+                    // Standard chord line followed by lyrics
+                    chordPos = getChordPositions(lines[0], lines[1]);
+                }
+                for (String p : chordPos) {
+                    // Convert to int arraylist
+                    pos.add(Integer.valueOf(p));
+                }
+            }
+        }
+        // IV - Add the end of line to positions
+        pos.add(minlength);
+
+        String linetype;
+
+        // Now we have the sizes, split into individual bits into <td>..</td>
+        for (int t = 0; t < lines.length; t++) {
+            text.append("<tr>");
+            linetype = getLineType(lines[t]);
+
+            // Headings with just a comment missed this out
+            // Also comments followed by headings
+            if (linetype.equals("heading") & lines[t].startsWith("[")) {
+                lines[t] = beautifyHeading(lines[t]);
+            }
+            if (linetype.equals("comment") & lines[t].startsWith(";")) {
+                lines[t] = trimOutLineIdentifiers(thisSong, linetype, lines[t]);
+            }
+
+            int startpos = 0;
+            for (int endpos : pos) {
+                if (endpos != 0 && endpos>startpos && endpos<lines[t].length() + 1) {
+                    String str = lines[t].substring(startpos, endpos);
+                    if (startpos == 0) {
+                        str = trimOutLineIdentifiers(thisSong, linetype, str);
+                    }
+                    str = str.replace(" ","&nbsp;");
+                    // If this is a chord line that either has highlighting, or needs to to include capo chords
+                    // We process separately, otherwise it is handled in the last default 'else'
+                    switch (linetype) {
+                        case "chord":
+                            // Only show this if we want chords and if there is a capo, we want both capo and native
+                            if (displayChords && (!hasCapo || displayCapoAndNativeChords || !displayCapoChords)) {
+                                text.append("<td class=\"chord\">").append(str).append("</td>");
+                            }
+                            break;
+                        case "capoline":
+                            // Only show this if we want chords and if there is a capo and showcapo
+                            if (displayChords && hasCapo && (displayCapoChords || displayCapoAndNativeChords)) {
+                                text.append("<td class=\"capo\">").append(str).append("</td>");
+                            }
+                            break;
+                        case "lyric":
+                            if (displayLyrics) {
+                                str = str.replace("_","");
+                                str = str.replaceAll("[|]"," ");
+                                if (!displayChords) {
+                                    // IV - Remove typical word splits, white space and beautify!
+                                    str = fixLyricsOnlySpace(str);
+                                }
+                                text.append("<td class=\"lyric\">").append(str).append("</td>");
+                            }
+                            break;
+                        default:
+                            // Just set the text
+                            text.append("<td class=\"lyric\">").append(str).append("</td>");
+                            break;
+                    }
+                    startpos = endpos;
+                }
+            }
+            text.append("</tr>\n");
+
+        }
+        text.append("</table>");
+        return text.toString();
+    }
+
 
     private SpannableStringBuilder getSpannableBracketString(String str) {
         SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(str);
@@ -1439,9 +1585,11 @@ public class ProcessSong {
             int y = str.length();
             span.setSpan(new BackgroundColorSpan(highlightHeadingColor), x, y, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             textView.setText(span);
+            htmlLyrics.append("<div class=\"heading\">").append(str).append("</div>\n");
         } else {
             if (linetype.equals("chord") && highlightChordColor != 0x00000000) {
                 textView.setText(highlightChords(str, highlightChordColor));
+                htmlLyrics.append("<div class=\"chord\">").append(str).append("</div>\n");
             } else if (linetype.equals("lyric")) {
                 // Just set the text
                 str = str.replaceAll("[|_]", " ");
@@ -1450,9 +1598,15 @@ public class ProcessSong {
                 }
                 SpannableStringBuilder spannableString = getSpannableBracketString(str);
                 textView.setText(spannableString);
+                htmlLyrics.append("<div class=\"lyric\">").append(str).append("</div>\n");
             } else {
                 SpannableStringBuilder spannableString = getSpannableBracketString(str);
                 textView.setText(spannableString);
+                if (linetype.equals("tab")) {
+                    htmlLyrics.append("<p>\n<div class=\"mono\">").append(str).append("</div>\n");
+                } else {
+                    htmlLyrics.append("<p>\n<div class=\"heading\">").append(str).append("</div>\n");
+                }
             }
         }
         if (boldText) {
@@ -1461,6 +1615,33 @@ public class ProcessSong {
         }
 
         return textView;
+    }
+
+    public String lineTextHTML(Song thisSong, String linetype,
+                               String string) {
+
+        StringBuilder text = new StringBuilder();
+
+        String str = trimOutLineIdentifiers(thisSong, linetype, string);
+        str = str.replace(" ","&nbsp;");
+        if (linetype.equals("heading")) {
+            text.append("<p>\n<div class=\"heading\">").append(str).append("</div>\n");
+        } else {
+            if (linetype.equals("chord")) {
+                text.append("<div class=\"chord\">").append(str).append("</div>\n");
+            } else if (linetype.equals("lyric")) {
+                // Just set the text
+                str = str.replaceAll("[|_]", "&nbsp;");
+                text.append("<div class=\"lyric\">").append(str).append("</div>\n");
+            } else {
+                if (linetype.equals("tab")) {
+                    text.append("<p>\n<div class=\"mono\">").append(str).append("</div>\n");
+                } else {
+                    text.append("<p>\n<div class=\"heading\">\n").append(str).append("</div>\n");
+                }
+            }
+        }
+        return text.toString();
     }
 
     public String fixExcessSpaces(String str) {
@@ -1748,6 +1929,7 @@ public class ProcessSong {
     public ArrayList<View> setSongInLayout(Song song, boolean asPDF, boolean presentation) {
         ArrayList<View> sectionViews = new ArrayList<>();
         ArrayList<Integer> sectionColors = new ArrayList<>();
+        htmlLyrics = new StringBuilder();
 
         boolean performancePresentation = presentation && mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance));
         // First we process the song (could be the loaded song, or a temp song - that's why we take a reference)
@@ -1757,7 +1939,7 @@ public class ProcessSong {
                 (!presentation && displayChords);
 
         // IV - Initialise transpose capo key  - might be needed
-        mainActivityInterface.getTranspose().capoKeyTranspose();
+        mainActivityInterface.getTranspose().capoKeyTranspose(song);
 
         if (asPDF && mainActivityInterface.getMakePDF().getIsSetListPrinting()) {
             // This is the set list PDF print.  Items are split by empty section headers []
@@ -2565,6 +2747,7 @@ public class ProcessSong {
                     presentation, songSheetTitleHeight);
 
         }
+
         return columnInfo;
     }
 
@@ -3532,4 +3715,74 @@ public class ProcessSong {
         }
         return imageViews;
     }
+
+    // Web server version of songs
+    public String songHTML () {
+        return  "" +
+                "<html>\n" +
+                "<head>\n" +
+                "<style>\n" +
+                ".page       {background-color:" + String.format("#%06X", (0xfff & mainActivityInterface.getMyThemeColors().getLyricsBackgroundColor())) + ";}\n" +
+                ".lyrictable {border-spacing:0; border-collapse: collapse; border:0px;}\n" +
+                getHTMLFontImports() +
+                "body        {width:100%;}\n" +
+                "</style>\n" +
+                "<script>\n" +
+                "  var contentWidth;\n" +
+                "  function measure() {\n" +
+                "      contentWidth = document.getElementById(\"content\").clientWidth;\n" +
+                "      resize();\n" +
+                "  }\n\n" +
+                "  function resize() {\n" +
+                "      var viewportWidth = document.body.clientWidth - 24;\n" +
+                "      var padding = document.body.style.padding;\n" +
+                "      var scaleSize = ((viewportWidth/contentWidth)*100) + \"%\";\n" +
+                "      document.body.style.zoom = scaleSize;\n" +
+                "  }\n" +
+                "</script>" +
+                "</head>\n" +
+                "<body class=\"page\" onload=\"javascript:measure()\" onresize=\"javascript:resize()\">\n" +
+                "<div id=\"content\" style=\"width:fit-content\">\n" +
+                mainActivityInterface.getSongSheetHeaders().getSongSheetTitleMainHTML(mainActivityInterface.getSong()) +
+                mainActivityInterface.getSongSheetHeaders().getSongSheetTitleExtrasHTML(mainActivityInterface.getSong()) +
+                htmlLyrics.toString().replace(" </td>","&nbsp;</td>") +
+                "</div>\n</body>\n" +
+                "</html>";
+    }
+
+    String getHTMLFontImports() {
+        // This prepares the import code for the top of the html file that locates the fonts from Google
+        // If they've been downloaded already, they are cached on the device, so no need to redownload.
+        String base1 = "@import url('https://fonts.googleapis.com/css?family=";
+        String base2 = "&swap=true');\n";
+        String importString = base1+mainActivityInterface.getMyFonts().getLyricFontName()+base2;
+        importString += base1+mainActivityInterface.getMyFonts().getChordFontName()+base2;
+        importString += ".lyric {font-family:"+mainActivityInterface.getMyFonts().getLyricFontName()+"; color:" +
+                String.format("#%06X", (0xFFFFFF & mainActivityInterface.getMyThemeColors().getLyricsTextColor())) + "; " +
+                "padding: 0px; font-size:14.0pt; white-space:nowrap; width: fit-content;}\n";
+        importString += ".chord {font-family:"+mainActivityInterface.getMyFonts().getChordFontName()+"; color:" +
+                String.format("#%06X", (0xFFFFFF & mainActivityInterface.getMyThemeColors().getLyricsChordsColor())) + "; " +
+                "padding: 0px; font-size:"+(14.0f*scaleChords)+"pt; white-space:nowrap;width: fit-content;}\n";
+        importString += ".capo {font-family:"+mainActivityInterface.getMyFonts().getChordFontName()+"; color:" +
+                String.format("#%06X", (0xFFFFFF & mainActivityInterface.getMyThemeColors().getLyricsCapoColor())) + "; " +
+                "padding: 0px; font-size:"+(14.0f*scaleChords)+"pt; white-space:nowrap;width: fit-content;}\n";
+        importString += ".titlemain {font-family:"+mainActivityInterface.getMyFonts().getLyricFontName()+"; color:" +
+                String.format("#%06X", (0xFFFFFF & mainActivityInterface.getMyThemeColors().getLyricsTextColor())) + "; " +
+                "padding: 0px; font-size:"+(14.0f*1.1f)+"pt; " +
+                "text-decoration:underline;}\n";
+        importString += ".titleextras {font-family:"+mainActivityInterface.getMyFonts().getLyricFontName()+"; color:" +
+                String.format("#%06X", (0xFFFFFF & mainActivityInterface.getMyThemeColors().getLyricsTextColor())) + "; " +
+                "padding: 0px; font-size:"+(14.0f*0.6f)+"pt; " +
+                "text-decoration:none;}\n";
+        importString += ".heading {font-family:"+mainActivityInterface.getMyFonts().getLyricFontName()+"; color:" +
+                String.format("#%06X", (0xFFFFFF & mainActivityInterface.getMyThemeColors().getLyricsTextColor())) + "; " +
+                "padding: 0px; font-size:"+(14.0f*scaleHeadings)+"pt; " +
+                "text-decoration:underline;}\n";
+        importString += ".mono {font-family:"+mainActivityInterface.getMyFonts().getMonoFontName()+"; color:" +
+                String.format("#%06X", (0xFFFFFF & mainActivityInterface.getMyThemeColors().getLyricsTextColor())) + "; " +
+                "padding: 0px; font-size:"+(14.0f*scaleComments)+"pt; " +
+                "text-decoration:underline;}\n";
+        return importString;
+    }
+
 }

@@ -878,4 +878,7 @@
     <string name="width">幅</string>
     <string name="words_and_music_by">言葉と音楽</string>
     <string name="zoom_level">ズームレベル</string>
+    <string name="web_server">ウェブサーバー</string>
+    <string name="web_server_hint">OpenSongApp を持たないユーザーがウェブブラウザを使用して曲を表示できるようにする</string>
+    <string name="web_server_info">OpenSongApp以外のユーザーは、このデバイスと同じネットワーク上にいる必要があります(ホットスポットを使用することもできます)。 次に、このWebアドレスを開いて曲を表示する必要があります。</string>
 </resources>

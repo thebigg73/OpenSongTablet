@@ -170,6 +170,7 @@ public class SettingsCategories extends Fragment {
             mainActivityInterface.getStorageAccess().updateFileActivityLog(mainActivityInterface.getAppPermissions().getPermissionsLog());
             mainActivityInterface.getAppPermissions().resetPermissionsLog();
         });
+        myView.webServerButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null, R.id.webServerFragment));
         myView.modeButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null, R.id.modeFragment));
         myView.midiButton.setOnClickListener(v -> {
             // This button is only available if we are running Marshmallow or later

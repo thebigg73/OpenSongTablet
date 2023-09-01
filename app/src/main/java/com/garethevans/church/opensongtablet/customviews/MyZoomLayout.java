@@ -3,7 +3,6 @@ package com.garethevans.church.opensongtablet.customviews;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
@@ -172,7 +171,6 @@ public class MyZoomLayout extends FrameLayout {
         x = Math.min(maxScrollX,x);
         y = Math.max(0,y);
         y = Math.min(maxScrollY,y);
-        Log.d(TAG,"scrollTo:"+x+","+y);
         scrollTo(x,y);
     }
     public void autoscrollTo(float newY) {

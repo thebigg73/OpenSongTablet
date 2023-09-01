@@ -241,7 +241,7 @@ public class MyToolbar extends MaterialToolbar {
             }
 
             if (!capoString.isEmpty() && !keyString.isEmpty()) {
-                capoString += (" (" + mainActivityInterface.getTranspose().capoKeyTranspose() + ")").replace(" ()","");
+                capoString += (" (" + mainActivityInterface.getTranspose().capoKeyTranspose(mainActivityInterface.getSong()) + ")").replace(" ()","");
             }
             String thisCapoString = "";
             if (!capoString.isEmpty()) {

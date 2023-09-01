@@ -878,4 +878,7 @@
     <string name="width">Szerokość</string>
     <string name="words_and_music_by">Słowa i muzyka wg</string>
     <string name="zoom_level">Stopień przybliżenia</string>
+    <string name="web_server">Serwer WWW</string>
+    <string name="web_server_hint">Zezwalaj użytkownikom bez OpenSongApp na wyświetlanie utworów za pomocą przeglądarki internetowej</string>
+    <string name="web_server_info">Użytkownicy spoza OpenSongApp powinni znajdować się w tej samej sieci co to urządzenie (można również użyć hotspotu).  Następnie powinni otworzyć ten adres internetowy, aby wyświetlić utwór.</string>
 </resources>

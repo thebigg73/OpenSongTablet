@@ -878,4 +878,7 @@
     <string name="width">Ширина</string>
     <string name="words_and_music_by">Слова и музыка</string>
     <string name="zoom_level">Уровень масштабирования</string>
+    <string name="web_server">Веб-сервер</string>
+    <string name="web_server_hint">Разрешить пользователям, не имеющим OpenSongApp, просматривать ваши песни с помощью веб-браузера</string>
+    <string name="web_server_info">Пользователи, не являющиеся пользователями OpenSongApp, должны находиться в той же сети, что и это устройство (вы также можете использовать точку доступа).  Затем они должны открыть этот веб-адрес, чтобы просмотреть песню.</string>
 </resources>

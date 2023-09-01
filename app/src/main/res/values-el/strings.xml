@@ -878,4 +878,7 @@
     <string name="width">Πλάτος</string>
     <string name="words_and_music_by">Λέξεις και μουσική από</string>
     <string name="zoom_level">Επίπεδο ζουμ</string>
+    <string name="web_server">Διακομιστής web</string>
+    <string name="web_server_hint">Να επιτρέπεται στους χρήστες χωρίς OpenSongApp να προβάλλουν τα τραγούδια σας χρησιμοποιώντας ένα πρόγραμμα περιήγησης ιστού</string>
+    <string name="web_server_info">Οι χρήστες που δεν είναι OpenSongApp θα πρέπει να βρίσκονται στο ίδιο δίκτυο με αυτήν τη συσκευή (μπορείτε επίσης να χρησιμοποιήσετε ένα hotspot).  Στη συνέχεια, θα πρέπει να ανοίξουν αυτήν τη διεύθυνση ιστού για να δουν το τραγούδι.</string>
 </resources>

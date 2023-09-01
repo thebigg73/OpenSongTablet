@@ -878,4 +878,7 @@
     <string name="width">Bredd</string>
     <string name="words_and_music_by">Ord och musik av</string>
     <string name="zoom_level">Zoomnivå</string>
+    <string name="web_server">Webbserver</string>
+    <string name="web_server_hint">Tillåt användare utan OpenSongApp att visa dina låtar med en webbläsare</string>
+    <string name="web_server_info">Användare som inte använder OpenSongApp bör vara i samma nätverk som den här enheten (du kan också använda en hotspot).  De bör sedan öppna den här webbadressen för att se låten.</string>
 </resources>

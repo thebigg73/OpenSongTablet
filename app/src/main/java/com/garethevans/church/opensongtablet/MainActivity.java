@@ -148,6 +148,7 @@ import com.garethevans.church.opensongtablet.sqlite.NonOpenSongSQLiteHelper;
 import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
 import com.garethevans.church.opensongtablet.tags.BulkTagAssignFragment;
 import com.garethevans.church.opensongtablet.utilities.TimeTools;
+import com.garethevans.church.opensongtablet.webserver.WebServer;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.material.button.MaterialButton;
@@ -234,6 +235,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private Transpose transpose;
     private VersionNumber versionNumber;
     private WebDownload webDownload;
+    private WebServer webServer;
 
     // The navigation controls
     private NavHostFragment navHostFragment;
@@ -627,6 +629,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         bible = getBible();
         customSlide = getCustomSlide();
         presenterSettings = getPresenterSettings();
+
+        // Webserver (for displaying song over html server)
+        webServer = getWebServer();
     }
 
 
@@ -3286,6 +3291,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         }
     }
 
+    @Override
+    public WebServer getWebServer() {
+        if (webServer==null) {
+            webServer = new WebServer();
+            webServer.initialiseVariables(this);
+        }
+        return webServer;
+    }
 
     @Override
     public void openDocument(String location) {
@@ -3718,10 +3731,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     protected void onDestroy() {
+        Log.d(TAG, "onDestroy");
+
+        if (webServer!=null) {
+            webServer.stop();
+        }
         if (showToast != null) {
             showToast.kill();
         }
-        Log.d(TAG, "onDestroy");
 
         // Turn off nearby
         if (nearbyConnections!=null) {

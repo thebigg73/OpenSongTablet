@@ -16,6 +16,7 @@ public class SongSheetHeaders {
     private final String TAG = "SongSheetHeaders";
     private final MainActivityInterface mainActivityInterface;
     private LinearLayout linearLayout;
+    private String songSheetHTML = "";
     private boolean forExport;
 
     public SongSheetHeaders(Context c) {
@@ -45,6 +46,8 @@ public class SongSheetHeaders {
             defFontSize = 12f;
         }
 
+        songSheetHTML = "";
+
         if (title!=null && !title.isEmpty()) {
             TextView textView = getSongSheetTexts(title,typeface,textColor,defFontSize);
             textView.setPaintFlags(textView.getPaintFlags() | Paint.FAKE_BOLD_TEXT_FLAG);
@@ -53,12 +56,14 @@ public class SongSheetHeaders {
         }
         if (author!=null && !author.isEmpty()) {
             linearLayout.addView(getSongSheetTexts(author,typeface,textColor,defFontSize*commentScaling));
+            songSheetHTML += author+ "<br>\n";
         }
         if (copyright!=null && !copyright.isEmpty()) {
             if (!copyright.contains("©") && !copyright.contains(c.getString(R.string.copyright))) {
                 copyright = "© "+copyright;
             }
             linearLayout.addView(getSongSheetTexts(copyright,typeface,textColor,defFontSize*commentScaling));
+            songSheetHTML += copyright + "<br>\n";
         }
 
         String keyCapoTempo = getKeyCapoTempo(thisSong);
@@ -68,6 +73,7 @@ public class SongSheetHeaders {
             textView.setPaintFlags(textView.getPaintFlags() | Paint.FAKE_BOLD_TEXT_FLAG);
             textView.setTypeface(textView.getTypeface(),Typeface.BOLD);
             linearLayout.addView(textView);
+            songSheetHTML += keyCapoTempo + "<br>\n";
         }
 
         // Add a section space to the bottom of the songSheet
@@ -101,7 +107,7 @@ public class SongSheetHeaders {
 
         if (capo!=null && !capo.isEmpty()) {
             keyCapoTempo += "| " + c.getString(R.string.capo) + " - " + capo + " ";
-            keyCapoTempo += ("(" + mainActivityInterface.getTranspose().capoKeyTranspose() + ") ").replace(" ()","");
+            keyCapoTempo += ("(" + mainActivityInterface.getTranspose().capoKeyTranspose(thisSong) + ") ").replace(" ()","");
         }
 
         if (key!=null && !key.isEmpty()) {
@@ -123,5 +129,34 @@ public class SongSheetHeaders {
 
     public void setForExport(boolean forExport) {
         this.forExport = forExport;
+    }
+
+    public String getSongSheetTitleMainHTML(Song thisSong) {
+        // This will generate a separate LinearLayout containing the songsheet info
+        String title = thisSong.getTitle();
+
+        if (title!=null && !title.isEmpty()) {
+            return "<div class=\"titlemain\">" + title + "</div>\n";
+        } else {
+            return "";
+        }
+    }
+    public String getSongSheetTitleExtrasHTML(Song thisSong) {
+        // This will generate a separate LinearLayout containing the songsheet info
+        String author = thisSong.getAuthor();
+        String copyright = thisSong.getCopyright();
+        String keyCapoTempo = getKeyCapoTempo(thisSong);
+        String extras = "";
+        if (author!=null && !author.isEmpty()) {
+            extras += "<div class=\"titleextras\">" + author + "</div>\n";
+        }
+        if (copyright!=null && !copyright.isEmpty()) {
+            extras += "<div class=\"titleextras\">" + copyright + "</div>\n";
+        }
+        if (!keyCapoTempo.isEmpty()) {
+            extras += "<div class=\"titleextras\">" + keyCapoTempo + "</div>\n";
+        }
+
+        return extras;
     }
 }

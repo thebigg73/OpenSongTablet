@@ -878,4 +878,7 @@
     <string name="width">宽度</string>
     <string name="words_and_music_by">文字和音乐</string>
     <string name="zoom_level">缩放级别</string>
+    <string name="web_server">网页服务器</string>
+    <string name="web_server_hint">允许没有OpenSongApp的用户使用网络浏览器查看您的歌曲</string>
+    <string name="web_server_info">非OpenSongApp用户应与此设备位于同一网络上（您也可以使用热点）。 然后，他们应该打开此网址以查看歌曲。</string>
 </resources>

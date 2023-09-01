@@ -1122,6 +1122,9 @@
     <string name="volume_headphone">Headphone volume</string>
     <string name="volume_value">Current volume value</string>
     <string name="wait">Wait....</string>
+    <string name="web_server">Web server</string>
+    <string name="web_server_hint">Allow users without OpenSongApp to view your songs using a web browser</string>
+    <string name="web_server_info">Non OpenSongApp users should be on the same network as this device (you can also use a hotspot).  They should then open this web address to view the song.</string>
     <string name="website">Website</string>
     <string name="website_actionbar" translatable="false">https://www.opensongapp.com/user-manual/display/actionbar</string>
     <string name="website_address" translatable="false">https://www.opensongapp.com</string>
@@ -1204,6 +1207,7 @@
     <string name="website_tags" translatable="false">https://www.opensongapp.com/user-manual/songs/song-actions/tags</string>
     <string name="website_themes" translatable="false">https://www.opensongapp.com/user-manual/display/themes</string>
     <string name="website_tuner" translatable="false">https://www.opensongapp.com/user-manual/utilities/tuner</string>
+    <string name="website_web_server" translatable="false">https://www.opensongapp.com/user-manual/web-server</string>
     <string name="welcome">Welcome to OpenSongApp</string>
     <string name="width">Width</string>
     <string name="words_and_music_by">Words and music by</string>

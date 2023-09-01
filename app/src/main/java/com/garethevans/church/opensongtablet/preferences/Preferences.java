@@ -504,6 +504,7 @@ public class Preferences extends Activity {
     // prevNextSongMenu                 boolean     Should previous and next songs be shown when not in a set from song menu (def:false)
     // profileName                      String      The last loaded or saved profile name (def:"")
     // refAHz                           int         The preferred frequency of A4 in Hz for the tuner (def:440).
+    // runWebServer                     boolean     Should a web server displaying the song be automatically started on boot (def:false)
     // runswithoutbackup                int         The number of times the app has opened without backup (prompt the user after 10) (def:0)
     // scaleChords                      float       The scale factor for chords relative to the lyrics (def:0.8f)
     // scaleComments                    float       The scale factor for comments relative to the lyrics (def:0.8f)

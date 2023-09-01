@@ -878,4 +878,7 @@
     <string name="width">Breedte</string>
     <string name="words_and_music_by">Woorde en musiek deur</string>
     <string name="zoom_level">Zoemvlak</string>
+    <string name="web_server">Webbediener</string>
+    <string name="web_server_hint">Laat gebruikers sonder OpenSongApp toe om u liedjies met behulp van \'n webblaaier te sien</string>
+    <string name="web_server_info">Nie-OpenSongApp-gebruikers moet op dieselfde netwerk as hierdie toestel wees (u kan ook \'n hotspot gebruik).  Hulle moet dan hierdie webadres oopmaak om die liedjie te sien.</string>
 </resources>

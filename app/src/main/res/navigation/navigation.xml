@@ -130,6 +130,9 @@
             <action
                 android:id="@+id/action_preferencesFragment_to_utilities_graph"
                 app:destination="@id/utilities_graph" />
+            <action
+                android:id="@+id/action_preferencesFragment_to_webServerFragment"
+                app:destination="@id/webServerFragment" />
 
         </fragment>
 
@@ -927,6 +930,15 @@
                 </fragment>
             </navigation>
         </navigation>
+        <fragment
+            android:id="@+id/webServerFragment"
+            android:name="com.garethevans.church.opensongtablet.webserver.WebServerFragment"
+            android:label="WebServerFragment"
+            tools:layout="@layout/settings_web_server">
+            <deepLink
+                android:id="@+id/deepLinkWebServer"
+                app:uri="@string/website_web_server"/>
+        </fragment>
 
     </navigation>
 

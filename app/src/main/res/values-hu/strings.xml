@@ -878,4 +878,7 @@
     <string name="width">Szélesség</string>
     <string name="words_and_music_by">Szavak és zene</string>
     <string name="zoom_level">Nagyítási szint</string>
+    <string name="web_server">Webkiszolgáló</string>
+    <string name="web_server_hint">Lehetővé teszi az OpenSongApp nélküli felhasználók számára, hogy webböngészővel tekintsék meg dalait</string>
+    <string name="web_server_info">A nem OpenSongApp felhasználóknak ugyanazon a hálózaton kell lenniük, mint ez az eszköz (hotspotot is használhat).  Ezután meg kell nyitniuk ezt a webcímet a dal megtekintéséhez.</string>
 </resources>

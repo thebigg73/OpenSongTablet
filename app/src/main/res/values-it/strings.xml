@@ -878,4 +878,7 @@
     <string name="width">Larghezza</string>
     <string name="words_and_music_by">Parole e musica di</string>
     <string name="zoom_level">Livello di zoom</string>
+    <string name="web_server">Server Web</string>
+    <string name="web_server_hint">Consenti agli utenti senza OpenSongApp di visualizzare le tue canzoni utilizzando un browser web</string>
+    <string name="web_server_info">Gli utenti non OpenSongApp devono trovarsi sulla stessa rete di questo dispositivo (è anche possibile utilizzare un hotspot).  Dovrebbero quindi aprire questo indirizzo web per visualizzare la canzone.</string>
 </resources>

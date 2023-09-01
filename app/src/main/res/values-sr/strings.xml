@@ -878,4 +878,7 @@
     <string name="width">Širina</string>
     <string name="words_and_music_by">Reči i muzika</string>
     <string name="zoom_level">Nivo zumiranja</string>
+    <string name="web_server">Web server</string>
+    <string name="web_server_hint">Dozvoljavanje korisnicima bez OpenSongApp-a da pregledaju vaše pesme pomoću veb pregledača</string>
+    <string name="web_server_info">Non OpenSongApp korisnici bi trebalo da budu na istoj mreži kao i ovaj uređaj (možete koristiti i hotspot).  Zatim bi trebalo da otvore ovu Web adresu da bi prikazali pesmu.</string>
 </resources>
