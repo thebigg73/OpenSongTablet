@@ -873,12 +873,15 @@
     <string name="volume_headphone">Hlasitost sluchátek</string>
     <string name="volume_value">"Aktuální hodnota objemu"</string>
     <string name="wait">"Počkejte ...."</string>
+    <string name="web_server">Webový server</string>
+    <string name="web_server_hint">Umožněte uživatelům bez OpenSongApp prohlížet vaše skladby pomocí webového prohlížeče</string>
+    <string name="web_server_host_song">Hostitelská píseň</string>
+    <string name="web_server_info">Uživatelé bez OpenSongApp by měli být ve stejné síti jako toto zařízení (můžete také použít hotspot).  Poté by měli otevřít tuto webovou adresu a zobrazit skladbu.</string>
+    <string name="web_server_navigation">Ruční navigace</string>
+    <string name="web_server_navigation_info">Po zapnutí mohou uživatelé ručně vybrat libovolnou skladbu zobrazenou v seznamu skladeb nebo v aktuální sadě.  Když je vypnutý, uživatelé mohou zobrazit pouze aktuálně načtenou skladbu</string>
     <string name="website">Webová stránka</string>
     <string name="welcome">Vítejte v OpenSongApp</string>
     <string name="width">Šířka</string>
     <string name="words_and_music_by">Slova a hudba od</string>
     <string name="zoom_level">Úroveň přiblížení</string>
-    <string name="web_server">Webový server</string>
-    <string name="web_server_hint">Umožněte uživatelům bez OpenSongApp prohlížet vaše skladby pomocí webového prohlížeče</string>
-    <string name="web_server_info">Uživatelé bez OpenSongApp by měli být ve stejné síti jako toto zařízení (můžete také použít hotspot).  Poté by měli otevřít tuto webovou adresu a zobrazit skladbu.</string>
 </resources>

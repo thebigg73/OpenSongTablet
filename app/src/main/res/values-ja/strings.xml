@@ -873,12 +873,15 @@
     <string name="volume_headphone">ヘッドホンの音量</string>
     <string name="volume_value">"現在のボリューム値"</string>
     <string name="wait">"待って...."</string>
+    <string name="web_server">ウェブサーバー</string>
+    <string name="web_server_hint">OpenSongApp を持たないユーザーがウェブブラウザを使用して曲を表示できるようにする</string>
+    <string name="web_server_host_song">ホストの歌</string>
+    <string name="web_server_info">OpenSongApp以外のユーザーは、このデバイスと同じネットワーク上にいる必要があります(ホットスポットを使用することもできます)。 次に、このWebアドレスを開いて曲を表示する必要があります。</string>
+    <string name="web_server_navigation">手動ナビゲーション</string>
+    <string name="web_server_navigation_info">オンにすると、ユーザーは曲リストまたは現在のセットに表示されている曲を手動で選択できます。 オフにすると、ユーザーは現在ロードされている曲のみを表示できます</string>
     <string name="website">Webサイト</string>
     <string name="welcome">OpenSongAppへようこそ</string>
     <string name="width">幅</string>
     <string name="words_and_music_by">言葉と音楽</string>
     <string name="zoom_level">ズームレベル</string>
-    <string name="web_server">ウェブサーバー</string>
-    <string name="web_server_hint">OpenSongApp を持たないユーザーがウェブブラウザを使用して曲を表示できるようにする</string>
-    <string name="web_server_info">OpenSongApp以外のユーザーは、このデバイスと同じネットワーク上にいる必要があります(ホットスポットを使用することもできます)。 次に、このWebアドレスを開いて曲を表示する必要があります。</string>
 </resources>

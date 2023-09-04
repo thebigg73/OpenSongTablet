@@ -873,12 +873,15 @@
     <string name="volume_headphone">Jačina zvuka slušalica</string>
     <string name="volume_value">Trenutna jačina zvuka</string>
     <string name="wait">Sačekajte....</string>
+    <string name="web_server">Web server</string>
+    <string name="web_server_hint">Dozvoljavanje korisnicima bez OpenSongApp-a da pregledaju vaše pesme pomoću veb pregledača</string>
+    <string name="web_server_host_song">Pesma domaćina</string>
+    <string name="web_server_info">Non OpenSongApp korisnici bi trebalo da budu na istoj mreži kao i ovaj uređaj (možete koristiti i hotspot).  Zatim bi trebalo da otvore ovu Web adresu da bi prikazali pesmu.</string>
+    <string name="web_server_navigation">Ručna navigacija</string>
+    <string name="web_server_navigation_info">Kada se uključi, korisnici mogu ručno da odaberu bilo koju pesmu prikazanu na vašoj listi pesama ili trenutnom skupu.  Kada su isključeni, korisnici mogu da vide samo vašu trenutno učitanu pesmu</string>
     <string name="website">Veb sajt</string>
     <string name="welcome">Dobrodošli u OpenSongApp</string>
     <string name="width">Širina</string>
     <string name="words_and_music_by">Reči i muzika</string>
     <string name="zoom_level">Nivo zumiranja</string>
-    <string name="web_server">Web server</string>
-    <string name="web_server_hint">Dozvoljavanje korisnicima bez OpenSongApp-a da pregledaju vaše pesme pomoću veb pregledača</string>
-    <string name="web_server_info">Non OpenSongApp korisnici bi trebalo da budu na istoj mreži kao i ovaj uređaj (možete koristiti i hotspot).  Zatim bi trebalo da otvore ovu Web adresu da bi prikazali pesmu.</string>
 </resources>

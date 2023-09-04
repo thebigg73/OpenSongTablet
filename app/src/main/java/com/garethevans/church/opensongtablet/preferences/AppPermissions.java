@@ -89,6 +89,32 @@ public class AppPermissions {
         return GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(context) == ConnectionResult.SUCCESS;
     }
 
+    public String[] getWebServerPermission() {
+        if (Build.VERSION.SDK_INT >= 33) { //
+            return new String[]{Manifest.permission.NEARBY_WIFI_DEVICES,
+                    Manifest.permission.ACCESS_WIFI_STATE,
+                    Manifest.permission.CHANGE_WIFI_STATE};
+        } else if (Build.VERSION.SDK_INT >= 31) { // Android S / 12
+            return new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.ACCESS_WIFI_STATE,
+                    Manifest.permission.CHANGE_WIFI_STATE};
+        } else if (Build.VERSION.SDK_INT >= 29) { // Android Q / 10
+            return new String[]{Manifest.permission.ACCESS_WIFI_STATE,
+                    Manifest.permission.CHANGE_WIFI_STATE,
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION};
+        } else { // Older versions!
+            return new String[]{Manifest.permission.ACCESS_WIFI_STATE,
+                    Manifest.permission.CHANGE_WIFI_STATE,
+                    Manifest.permission.ACCESS_COARSE_LOCATION};
+        }
+    }
+
+    public boolean hasWebServerPermission() {
+        return checkForPermissions(getWebServerPermission());
+    }
+
     public boolean hasNearbyPermissions() {
         return checkForPermissions(getNearbyPermissions());
     }

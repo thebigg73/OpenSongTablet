@@ -873,12 +873,15 @@
     <string name="volume_headphone">Koptelefoon volume</string>
     <string name="volume_value">"当前音量值"</string>
     <string name="wait">"等待...."</string>
+    <string name="web_server">网页服务器</string>
+    <string name="web_server_hint">允许没有OpenSongApp的用户使用网络浏览器查看您的歌曲</string>
+    <string name="web_server_host_song">主持人之歌</string>
+    <string name="web_server_info">非OpenSongApp用户应与此设备位于同一网络上（您也可以使用热点）。 然后，他们应该打开此网址以查看歌曲。</string>
+    <string name="web_server_navigation">手动导航</string>
+    <string name="web_server_navigation_info">打开后，用户可以手动选择歌曲列表或当前设置中显示的任何歌曲。 关闭后，用户只能查看您当前加载的歌曲</string>
     <string name="website">网站</string>
     <string name="welcome">欢迎来到 OpenSongApp</string>
     <string name="width">宽度</string>
     <string name="words_and_music_by">文字和音乐</string>
     <string name="zoom_level">缩放级别</string>
-    <string name="web_server">网页服务器</string>
-    <string name="web_server_hint">允许没有OpenSongApp的用户使用网络浏览器查看您的歌曲</string>
-    <string name="web_server_info">非OpenSongApp用户应与此设备位于同一网络上（您也可以使用热点）。 然后，他们应该打开此网址以查看歌曲。</string>
 </resources>

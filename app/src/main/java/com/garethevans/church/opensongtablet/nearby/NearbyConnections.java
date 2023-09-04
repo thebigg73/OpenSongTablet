@@ -291,7 +291,8 @@ public class NearbyConnections implements NearbyInterface {
                     .addOnFailureListener(
                             (Exception e) -> {
                                 // We were unable to start advertising.
-                                updateConnectionLog(c.getString(R.string.connections_failure) + " " + getUserNickname());
+                                updateConnectionLog(c.getString(R.string.connections_advertising) + " " + c.getString(R.string.error));
+                                Log.d(TAG, "startAdvertising() - failure: " + e);
                             });
         }
     }

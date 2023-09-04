@@ -873,12 +873,15 @@
     <string name="volume_headphone">Koptelefoon volume</string>
     <string name="volume_value">"Huidige volume-waarde"</string>
     <string name="wait">"Wag ...."</string>
+    <string name="web_server">Webbediener</string>
+    <string name="web_server_hint">Laat gebruikers sonder OpenSongApp toe om u liedjies met behulp van \'n webblaaier te sien</string>
+    <string name="web_server_host_song">Gasheer se liedjie</string>
+    <string name="web_server_info">Nie-OpenSongApp-gebruikers moet op dieselfde netwerk as hierdie toestel wees (u kan ook \'n hotspot gebruik).  Hulle moet dan hierdie webadres oopmaak om die liedjie te sien.</string>
+    <string name="web_server_navigation">Handmatige navigasie</string>
+    <string name="web_server_navigation_info">Wanneer dit aangeskakel is, kan gebruikers handmatig enige liedjie kies wat in jou liedjielys of huidige stel gewys word.  As dit afgeskakel is, kan gebruikers slegs u liedjie wat tans gelaai is, sien</string>
     <string name="website">Webwerf</string>
     <string name="welcome">Welkom by OpenSongApp</string>
     <string name="width">Breedte</string>
     <string name="words_and_music_by">Woorde en musiek deur</string>
     <string name="zoom_level">Zoemvlak</string>
-    <string name="web_server">Webbediener</string>
-    <string name="web_server_hint">Laat gebruikers sonder OpenSongApp toe om u liedjies met behulp van \'n webblaaier te sien</string>
-    <string name="web_server_info">Nie-OpenSongApp-gebruikers moet op dieselfde netwerk as hierdie toestel wees (u kan ook \'n hotspot gebruik).  Hulle moet dan hierdie webadres oopmaak om die liedjie te sien.</string>
 </resources>

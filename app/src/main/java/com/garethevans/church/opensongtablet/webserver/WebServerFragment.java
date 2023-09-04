@@ -61,6 +61,7 @@ public class WebServerFragment extends Fragment {
 
     private void updateViews() {
         // Set the webServer info
+        myView.allowWebNavigation.setChecked(mainActivityInterface.getWebServer().getAllowWebNavigation());
         Glide.with(this).load(mainActivityInterface.getWebServer().getIPQRCode()).into(myView.qrCode);
         myView.ipAddress.setText(mainActivityInterface.getWebServer().getIP());
         myView.webServer.setChecked(mainActivityInterface.getWebServer().getRunWebServer());
@@ -73,6 +74,7 @@ public class WebServerFragment extends Fragment {
             mainActivityInterface.getWebServer().setRunWebServer(b);
             myView.webServerInfo.setVisibility(b ? View.VISIBLE:View.GONE);
         });
+        myView.allowWebNavigation.setOnCheckedChangeListener((compoundButton, b) -> mainActivityInterface.getWebServer().setAllowWebNavigation(b));
         myView.webServerInfo.setOnClickListener(view -> mainActivityInterface.openDocument(mainActivityInterface.getWebServer().getIP()));
     }
 }

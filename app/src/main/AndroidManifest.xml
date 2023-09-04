@@ -40,21 +40,21 @@
         android:required="false" />
 
     <!-- Request legacy Bluetooth permissions on older devices. -->
-    <uses-permission android:name="android.permission.BLUETOOTH" android:maxSdkVersion="30"/>
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" android:maxSdkVersion="30"/>
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" android:maxSdkVersion="30"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" android:maxSdkVersion="32" />
 
     <!-- Preparing for Android 12 and above-->
     <!-- Specifying never for location stops many devices being discovered -->
     <!-- According to Google's documentation Android 12 shouldn't need location, but it does! -->
-    <uses-permission android:name="android.permission.BLUETOOTH_SCAN"
-        android:usesPermissionFlags="neverForLocation"
-        tools:targetApi="s" />
-    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
-    <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
     <uses-permission android:name="android.permission.NEARBY_WIFI_DEVICES"
         android:usesPermissionFlags="neverForLocation" tools:targetApi="s" />
+    <uses-permission android:minSdkVersion="31" android:name="android.permission.BLUETOOTH_ADVERTISE" />
+    <uses-permission android:minSdkVersion="31" android:name="android.permission.BLUETOOTH_CONNECT" />
+    <uses-permission android:minSdkVersion="31" android:name="android.permission.BLUETOOTH_SCAN"
+        android:usesPermissionFlags="neverForLocation"
+        tools:targetApi="s" />
 
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
@@ -69,6 +69,9 @@
     <uses-permission android:name="android.permission.NFC" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.CAMERA" />
+
+
+    <!-- Required for Nearby Connections -->
 
     <supports-screens android:anyDensity="true" />
 

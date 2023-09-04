@@ -324,7 +324,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             if (nearbyConnections.getUsingNearby() && nearbyConnections.getIsHost()) {
                 nearbyConnections.doTempAdvertise();
             } else if (nearbyConnections.getUsingNearby() && !nearbyConnections.getIsHost()) {
-                nearbyConnections.doTempDiscover();
+                        nearbyConnections.doTempDiscover();
             }
 
             // Make sure the song title is there
@@ -3832,10 +3832,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 Drawable drawable;
                 if (secondaryDisplays != null && connectedDisplays.length > 0) {
                     drawable = VectorDrawableCompat.create(getResources(), R.drawable.cast_connected, getTheme());
-                    //drawable = ContextCompat.getDrawable(this, R.drawable.cast_connected);
                 } else {
                     drawable = VectorDrawableCompat.create(getResources(), R.drawable.cast, getTheme());
-                    //drawable = ContextCompat.getDrawable(this, R.drawable.cast);
                 }
                 globalMenuItem.findItem(R.id.mirror_menu_item).setIcon(drawable);
                 globalMenuItem.findItem(R.id.mirror_menu_item).setVisible(true);

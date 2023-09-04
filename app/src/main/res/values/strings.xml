@@ -1124,7 +1124,10 @@
     <string name="wait">Wait....</string>
     <string name="web_server">Web server</string>
     <string name="web_server_hint">Allow users without OpenSongApp to view your songs using a web browser</string>
+    <string name="web_server_host_song">Host\'s song</string>
     <string name="web_server_info">Non OpenSongApp users should be on the same network as this device (you can also use a hotspot).  They should then open this web address to view the song.</string>
+    <string name="web_server_navigation">Manual navigation</string>
+    <string name="web_server_navigation_info">When switched on, users can manually choose any song shown in your song list or current set.  When switched off, users can only view your currently loaded song</string>
     <string name="website">Website</string>
     <string name="website_actionbar" translatable="false">https://www.opensongapp.com/user-manual/display/actionbar</string>
     <string name="website_address" translatable="false">https://www.opensongapp.com</string>

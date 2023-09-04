@@ -873,12 +873,15 @@
     <string name="volume_headphone">Volume dos auscultadores</string>
     <string name="volume_value">"Valor corrente do volume"</string>
     <string name="wait">"Espere Ai ...."</string>
+    <string name="web_server">Servidor Web</string>
+    <string name="web_server_hint">Permitir que usuários sem OpenSongApp visualizem suas músicas usando um navegador da Web</string>
+    <string name="web_server_host_song">Música do anfitrião</string>
+    <string name="web_server_info">Os usuários que não são do OpenSongApp devem estar na mesma rede que este dispositivo (você também pode usar um hotspot).  Eles devem então abrir este endereço web para ver a música.</string>
+    <string name="web_server_navigation">Navegação manual</string>
+    <string name="web_server_navigation_info">Quando ligados, os utilizadores podem escolher manualmente qualquer música apresentada na sua lista de músicas ou conjunto atual.  Quando desligado, os utilizadores só podem ver a música carregada no momento</string>
     <string name="website">Local na rede Internet</string>
     <string name="welcome">Bem-vindo ao OpenSongApp</string>
     <string name="width">Largura</string>
     <string name="words_and_music_by">Palavras e música de</string>
     <string name="zoom_level">Nível de zoom</string>
-    <string name="web_server">Servidor Web</string>
-    <string name="web_server_hint">Permitir que usuários sem OpenSongApp visualizem suas músicas usando um navegador da Web</string>
-    <string name="web_server_info">Os usuários que não são do OpenSongApp devem estar na mesma rede que este dispositivo (você também pode usar um hotspot).  Eles devem então abrir este endereço web para ver a música.</string>
 </resources>

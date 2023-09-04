@@ -27,6 +27,7 @@ public class SettingsCategories extends Fragment {
     private SettingsCategoriesBinding myView;
     private MainActivityInterface mainActivityInterface;
     ActivityResultLauncher<String[]> nearbyConnectionsPermission;
+    ActivityResultLauncher<String[]> webserverPermission;
     private String settings_string="", mode_presenter_string="", presenter_mode_string="",
             mode_stage_string="", stage_mode_string="", performance_mode_string="",
             play_services_error_string="", midi_description_string="", not_available_string="",
@@ -142,6 +143,11 @@ public class SettingsCategories extends Fragment {
                 informationBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "InformationBottomSheet");
             }
         });
+        webserverPermission = registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), isGranted -> {
+            if (mainActivityInterface.getAppPermissions().hasWebServerPermission()) {
+                mainActivityInterface.navigateToFragment(null, R.id.webServerFragment);
+            }
+        });
     }
 
     private void setListeners() {
@@ -170,7 +176,12 @@ public class SettingsCategories extends Fragment {
             mainActivityInterface.getStorageAccess().updateFileActivityLog(mainActivityInterface.getAppPermissions().getPermissionsLog());
             mainActivityInterface.getAppPermissions().resetPermissionsLog();
         });
-        myView.webServerButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null, R.id.webServerFragment));
+        myView.webServerButton.setOnClickListener(v -> {
+            // Check we have the required permission to get the IP address
+            mainActivityInterface.setWhattodo("webserver");
+            webserverPermission.launch(mainActivityInterface.getAppPermissions().getWebServerPermission());
+            mainActivityInterface.navigateToFragment(null, R.id.webServerFragment);
+        });
         myView.modeButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null, R.id.modeFragment));
         myView.midiButton.setOnClickListener(v -> {
             // This button is only available if we are running Marshmallow or later

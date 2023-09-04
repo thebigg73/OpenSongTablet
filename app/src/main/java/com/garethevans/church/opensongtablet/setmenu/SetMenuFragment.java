@@ -176,7 +176,7 @@ public class SetMenuFragment extends Fragment {
     public void updateKeys() {
         // If the key has changed on some items, update them
         if (mainActivityInterface.getSetActions().getMissingKeyPositions()!=null &&
-                setListAdapter!=null && setListAdapter.getSetList()!=null) {
+                setListAdapter!=null && setListAdapter.getSetList()!=null && setListAdapter.getSetList().size()>0) {
             for (int position:mainActivityInterface.getSetActions().getMissingKeyPositions()) {
                 try {
                     setListAdapter.getSetList().get(position).songkey = mainActivityInterface.getCurrentSet().getKey(position);

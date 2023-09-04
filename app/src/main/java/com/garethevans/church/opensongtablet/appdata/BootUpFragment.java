@@ -181,7 +181,9 @@ public class BootUpFragment extends Fragment {
                         } else {
                             message = "Success";
                         }
-                        updateMessage();
+                        if (myView!=null) {
+                            updateMessage();
+                        }
 
                         mainActivityInterface.setMode(mainActivityInterface.getPreferences().getMyPreferenceString("whichMode", mode_performance));
 

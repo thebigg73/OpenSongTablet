@@ -873,12 +873,15 @@
     <string name="volume_headphone">Volume delle cuffie</string>
     <string name="volume_value">"Valore di volume corrente"</string>
     <string name="wait">"Attendere ...."</string>
+    <string name="web_server">Server Web</string>
+    <string name="web_server_hint">Consenti agli utenti senza OpenSongApp di visualizzare le tue canzoni utilizzando un browser web</string>
+    <string name="web_server_host_song">Canzone dell\'ospite</string>
+    <string name="web_server_info">Gli utenti non OpenSongApp devono trovarsi sulla stessa rete di questo dispositivo (è anche possibile utilizzare un hotspot).  Dovrebbero quindi aprire questo indirizzo web per visualizzare la canzone.</string>
+    <string name="web_server_navigation">Navigazione manuale</string>
+    <string name="web_server_navigation_info">Quando è attivata, gli utenti possono scegliere manualmente qualsiasi brano visualizzato nell\'elenco dei brani o nel set corrente.  Quando è disattivato, gli utenti possono visualizzare solo il brano attualmente caricato</string>
     <string name="website">Sito web</string>
     <string name="welcome">Benvenuto in OpenSongApp</string>
     <string name="width">Larghezza</string>
     <string name="words_and_music_by">Parole e musica di</string>
     <string name="zoom_level">Livello di zoom</string>
-    <string name="web_server">Server Web</string>
-    <string name="web_server_hint">Consenti agli utenti senza OpenSongApp di visualizzare le tue canzoni utilizzando un browser web</string>
-    <string name="web_server_info">Gli utenti non OpenSongApp devono trovarsi sulla stessa rete di questo dispositivo (è anche possibile utilizzare un hotspot).  Dovrebbero quindi aprire questo indirizzo web per visualizzare la canzone.</string>
 </resources>

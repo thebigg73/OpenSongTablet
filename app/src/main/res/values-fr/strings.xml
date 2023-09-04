@@ -873,12 +873,15 @@
     <string name="volume_headphone">Volume du casque</string>
     <string name="volume_value">"Valeur du volume actuel"</string>
     <string name="wait">"Attendez ...."</string>
+    <string name="web_server">Serveur web</string>
+    <string name="web_server_hint">Autoriser les utilisateurs sans OpenSongApp à afficher vos chansons à l’aide d’un navigateur Web</string>
+    <string name="web_server_host_song">Chanson de l’hôte</string>
+    <string name="web_server_info">Les utilisateurs non OpenSongApp doivent être sur le même réseau que cet appareil (vous pouvez également utiliser un hotspot).  Ils doivent ensuite ouvrir cette adresse Web pour voir la chanson.</string>
+    <string name="web_server_navigation">Navigation manuelle</string>
+    <string name="web_server_navigation_info">Lorsqu’il est activé, les utilisateurs peuvent choisir manuellement n’importe quel morceau affiché dans votre liste de chansons ou votre ensemble actuel.  Lorsqu’il est désactivé, les utilisateurs ne peuvent afficher que votre morceau actuellement chargé</string>
     <string name="website">Site Internet</string>
     <string name="welcome">Bienvenue sur OpenSongApp</string>
     <string name="width">Largeur</string>
     <string name="words_and_music_by">Paroles et musique de</string>
     <string name="zoom_level">Le niveau de zoom</string>
-    <string name="web_server">Serveur web</string>
-    <string name="web_server_hint">Autoriser les utilisateurs sans OpenSongApp à afficher vos chansons à l’aide d’un navigateur Web</string>
-    <string name="web_server_info">Les utilisateurs non OpenSongApp doivent être sur le même réseau que cet appareil (vous pouvez également utiliser un hotspot).  Ils doivent ensuite ouvrir cette adresse Web pour voir la chanson.</string>
 </resources>

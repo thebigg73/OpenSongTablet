@@ -873,12 +873,15 @@
     <string name="volume_headphone">Fejhallgató hangereje</string>
     <string name="volume_value">"Aktuális hangerő értéke"</string>
     <string name="wait">"Várni ...."</string>
+    <string name="web_server">Webkiszolgáló</string>
+    <string name="web_server_hint">Lehetővé teszi az OpenSongApp nélküli felhasználók számára, hogy webböngészővel tekintsék meg dalait</string>
+    <string name="web_server_host_song">A házigazda dala</string>
+    <string name="web_server_info">A nem OpenSongApp felhasználóknak ugyanazon a hálózaton kell lenniük, mint ez az eszköz (hotspotot is használhat).  Ezután meg kell nyitniuk ezt a webcímet a dal megtekintéséhez.</string>
+    <string name="web_server_navigation">Kézi navigáció</string>
+    <string name="web_server_navigation_info">Ha be van kapcsolva, a felhasználók manuálisan kiválaszthatják a dallistában vagy az aktuális készletben megjelenő dalokat.  Ha ki van kapcsolva, a felhasználók csak az aktuálisan betöltött dalt tekinthetik meg</string>
     <string name="website">Weboldal</string>
     <string name="welcome">Üdvözli az OpenSongApp</string>
     <string name="width">Szélesség</string>
     <string name="words_and_music_by">Szavak és zene</string>
     <string name="zoom_level">Nagyítási szint</string>
-    <string name="web_server">Webkiszolgáló</string>
-    <string name="web_server_hint">Lehetővé teszi az OpenSongApp nélküli felhasználók számára, hogy webböngészővel tekintsék meg dalait</string>
-    <string name="web_server_info">A nem OpenSongApp felhasználóknak ugyanazon a hálózaton kell lenniük, mint ez az eszköz (hotspotot is használhat).  Ezután meg kell nyitniuk ezt a webcímet a dal megtekintéséhez.</string>
 </resources>
