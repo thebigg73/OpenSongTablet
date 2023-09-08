@@ -1399,8 +1399,10 @@ public class PerformanceFragment extends Fragment {
 
             // IV - Use a snap to top scroller if scrolling to the top of the screen
             if (mainActivityInterface.getPreferences().getMyPreferenceFloat("stageModeScale",0.8f) == 1.0f) {
+                Log.d(TAG,"Snap to top");
                 myView.recyclerView.smoothScrollTo(getContext(),recyclerLayoutManager, position);
             } else {
+                Log.d(TAG,"manual do smooth scroll to");
                 myView.recyclerView.doSmoothScrollTo(recyclerLayoutManager, position);
             }
         }

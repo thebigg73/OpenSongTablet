@@ -17,6 +17,7 @@ import com.garethevans.church.opensongtablet.filemanagement.AreYouSureBottomShee
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -55,7 +56,9 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.ViewHolder> {
             }
         }
         // Sort again
-        Collections.sort(tags);
+        Collator coll = Collator.getInstance(mainActivityInterface.getLocale());
+        coll.setStrength(Collator.SECONDARY);
+        Collections.sort(tags, coll);
 
         // Now get the songs which have these tags
         songsWithTags = new ArrayList<>();

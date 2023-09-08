@@ -1217,4 +1217,6 @@
     <string name="youtube" translatable="false">YouTube</string>
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zoom_level">Zoom level</string>
+    <string name="text_as_message">Text as message content</string>
+    <string name="text_as_message_info">When exporting multiple files to some apps (e.g. WhatsApp) the app sometimes stops after it receives a text message and the files aren\'t included.  You can switch this off and force the receiving app to deal with the files instead of just the message.</string>
 </resources>

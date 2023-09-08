@@ -28,8 +28,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.zip.ZipEntry;
@@ -111,7 +113,12 @@ public class ImportIOSFragment extends Fragment {
         ArrayList<String> folders = mainActivityInterface.getSQLiteHelper().getFolders();
         if (!folders.contains("OnSong")) {
             folders.add("OnSong");
-            Collections.sort(folders);
+            Comparator<String> comparator = (o1, o2) -> {
+                Collator collator = Collator.getInstance(mainActivityInterface.getLocale());
+                collator.setStrength(Collator.SECONDARY);
+                return collator.compare(o1,o2);
+            };
+            Collections.sort(folders, comparator);
         }
         if (getContext()!=null) {
             ExposedDropDownArrayAdapter exposedDropDownArrayAdapter = new ExposedDropDownArrayAdapter(getContext(),

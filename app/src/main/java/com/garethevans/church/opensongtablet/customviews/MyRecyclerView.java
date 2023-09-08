@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.PointF;
 import android.os.Build;
+import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -55,6 +56,10 @@ public class MyRecyclerView extends RecyclerView  implements RecyclerView.Smooth
     private final LinearInterpolator linearInterpolator = new LinearInterpolator();
     private final ScrollListener scrollListener;
     private final ItemTouchListener itemTouchListener;
+    private final Handler checkScrollPosIsRight = new Handler();
+    private Runnable checkPosRunnable;
+    @SuppressWarnings("FieldCanBeLocal")
+    private final int smoothScrollDuration = 100;
 
     public MyRecyclerView(@NonNull Context context) {
         super(context);
@@ -180,6 +185,11 @@ public class MyRecyclerView extends RecyclerView  implements RecyclerView.Smooth
     }
 
     public void doSmoothScrollTo(RecyclerLayoutManager recyclerLayoutManager, int position) {
+        // Cancel any post delayed check
+        if (checkPosRunnable!=null) {
+            checkScrollPosIsRight.removeCallbacks(checkPosRunnable);
+        }
+
         try {
             // Try to work out scrolling amount
             // If vertical, get the top of each view by taking running total of the heights
@@ -230,13 +240,24 @@ public class MyRecyclerView extends RecyclerView  implements RecyclerView.Smooth
 
                 // Do the scrolling, but not if small movement
                 if (Math.abs(scrollXAmount) > 25 || Math.abs(scrollYAmount) > 25) {
-                    smoothScrollBy(scrollXAmount, scrollYAmount);
+                    smoothScrollBy(scrollXAmount, scrollYAmount,linearInterpolator,smoothScrollDuration);
                 }
+
+                // Check the chosen view is actually visible
+                checkPosRunnable = () -> {
+                    if (recyclerLayoutManager.findFirstCompletelyVisibleItemPosition()>position) {
+                        // Snap to that position
+                        recyclerLayoutManager.scrollToPosition(position);
+                    }
+                };
+               checkScrollPosIsRight.postDelayed(checkPosRunnable,smoothScrollDuration+50);
 
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+
     }
 
     public void setMaxScrollY(int maxScrollY) {

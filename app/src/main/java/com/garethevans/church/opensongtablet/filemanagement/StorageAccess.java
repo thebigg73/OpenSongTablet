@@ -44,6 +44,7 @@ import java.text.Collator;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -1817,7 +1818,12 @@ public class StorageAccess {
                 }
             }
         }
-        Collections.sort(availableFolders,String.CASE_INSENSITIVE_ORDER);
+        Comparator<String> comparator = (o1, o2) -> {
+            Collator collator = Collator.getInstance(mainActivityInterface.getLocale());
+            collator.setStrength(Collator.SECONDARY);
+            return collator.compare(o1,o2);
+        };
+        Collections.sort(availableFolders,comparator);
         // Add the MAIN folder
         if (addMain) {
             availableFolders.add(0, c.getString(R.string.mainfoldername));
@@ -2055,7 +2061,12 @@ public class StorageAccess {
                 e.printStackTrace();
             }
         }
-        Collections.sort(al);
+        Comparator<String> comparator = (o1, o2) -> {
+            Collator collator = Collator.getInstance(mainActivityInterface.getLocale());
+            collator.setStrength(Collator.SECONDARY);
+            return collator.compare(o1,o2);
+        };
+        Collections.sort(al, comparator);
         return al;
     }
     private ArrayList<String> listFilesInFolder_File(String folder, String subfolder) {
@@ -2073,7 +2084,12 @@ public class StorageAccess {
                 }
             }
         }
-        Collections.sort(al);
+        Comparator<String> comparator = (o1, o2) -> {
+            Collator collator = Collator.getInstance(mainActivityInterface.getLocale());
+            collator.setStrength(Collator.SECONDARY);
+            return collator.compare(o1,o2);
+        };
+        Collections.sort(al, comparator);
         return al;
     }
     int songCountAtLocation(File f) {

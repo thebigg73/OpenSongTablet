@@ -30,6 +30,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.Collator;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -256,8 +257,10 @@ public class BackupRestoreSetsFragment extends Fragment {
                 folderSets.add(set);
             }
         }
-        Collections.sort(mainSets);
-        Collections.sort(folderSets);
+        Collator coll = Collator.getInstance(mainActivityInterface.getLocale());
+        coll.setStrength(Collator.SECONDARY);
+        Collections.sort(mainSets, coll);
+        Collections.sort(folderSets, coll);
 
         // Now we've sorted, Go through the list and add a new checkbox item for each one
         addSetCheckBoxes(mainSets);

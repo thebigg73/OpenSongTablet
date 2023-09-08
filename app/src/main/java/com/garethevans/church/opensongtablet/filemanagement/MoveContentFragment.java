@@ -24,6 +24,7 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -92,7 +93,9 @@ public class MoveContentFragment extends Fragment {
         new Thread(() -> {
             files = mainActivityInterface.getStorageAccess().listFilesInFolder("Songs", subfolder);
             if (files.size() != 0) {
-                Collections.sort(files);
+                Collator coll = Collator.getInstance(mainActivityInterface.getLocale());
+                coll.setStrength(Collator.SECONDARY);
+                Collections.sort(files, coll);
                 if (getActivity()!=null && getContext()!=null) {
                     getActivity().runOnUiThread(() -> {
                         for (String f : files) {

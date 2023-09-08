@@ -18,6 +18,7 @@ import com.garethevans.church.opensongtablet.databinding.StorageKitkatChooserBin
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 import java.io.File;
+import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -68,7 +69,9 @@ public class KitKatFolderChooseFragment extends Fragment {
                 }
             }
             // Sort them alphabetically
-            Collections.sort(foldersInDirectory);
+            Collator coll = Collator.getInstance(mainActivityInterface.getLocale());
+            coll.setStrength(Collator.SECONDARY);
+            Collections.sort(foldersInDirectory, coll);
 
             // Now we have them in order, create a short name array
             for (File folder:foldersInDirectory) {

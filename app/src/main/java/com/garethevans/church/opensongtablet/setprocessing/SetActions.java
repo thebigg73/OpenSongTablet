@@ -295,15 +295,18 @@ public class SetActions {
     }
 
     public void sortSet() {
-        // Shuffle the currentSet item array - all entries are like $$_folder/filename_**key**__$$
+        // Sort the currentSet item array - all entries are like $$_folder/filename_**key**__$$
+        // Comparator used to process the items and sort case insensitive and including accented chars
         Comparator<String> comparator = (o1, o2) -> {
+            Collator collator = Collator.getInstance(mainActivityInterface.getLocale());
+            collator.setStrength(Collator.SECONDARY);
             if (o1.contains("/") && o1.lastIndexOf("/") < o1.length() - 1) {
                 o1 = o1.substring(o1.indexOf("/") + 1);
             }
             if (o2.contains("/") && o2.lastIndexOf("/") < o2.length() - 1) {
                 o2 = o2.substring(o2.indexOf("/") + 1);
             }
-            return o1.compareTo(o2);
+            return collator.compare(o1,o2);
         };
         Collections.sort(mainActivityInterface.getCurrentSet().getSetItems(), comparator);
         finishChangingSet();
@@ -431,7 +434,9 @@ public class SetActions {
                 }
             }
         }
-        Collections.sort(categories);
+        Collator coll = Collator.getInstance(mainActivityInterface.getLocale());
+        coll.setStrength(Collator.SECONDARY);
+        Collections.sort(categories, coll);
         categories.add(0,c.getString(R.string.mainfoldername));
         return categories;
     }
@@ -448,7 +453,9 @@ public class SetActions {
                 availableSets.add(possibleSet);
             }
         }
-        Collections.sort(availableSets);
+        Collator coll = Collator.getInstance(mainActivityInterface.getLocale());
+        coll.setStrength(Collator.SECONDARY);
+        Collections.sort(availableSets, coll);
         return availableSets;
     }
     public ArrayList<String> listSetsWithCategories(ArrayList<String> allSets) {

@@ -102,6 +102,13 @@
                     android:layout_height="wrap_content"
                     android:text="@string/set" />
 
+                <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                    android:id="@+id/exportTextAsMessage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/text_as_message"
+                    android:hint="@string/text_as_message_info"/>
+
                 <com.google.android.material.checkbox.MaterialCheckBox
                     android:id="@+id/setPDF"
                     android:layout_width="match_parent"

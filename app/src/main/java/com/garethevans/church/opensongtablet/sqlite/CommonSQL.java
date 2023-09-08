@@ -11,8 +11,10 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 
+import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 
 public class CommonSQL {
     // This is used to perform common tasks for the SQL database and NonOpenSongSQL database.
@@ -339,6 +341,20 @@ public class CommonSQL {
         // close cursor connection
         closeCursor(cursor);
 
+        // Because the song sorting from SQL ignores accented characters (non-English),
+        // we need to set up a custom collator
+        Comparator<Song> comparator = (o1, o2) -> {
+            //Collator collator = Collator.getInstance(mainActivityInterface.getLocale());
+            Collator collator = Collator.getInstance();
+            collator.setStrength(Collator.SECONDARY);
+            if (songMenuSortTitles) {
+                return collator.compare(o1.getTitle(),o2.getTitle());
+            } else {
+                return collator.compare(o1.getFilename(),o2.getFilename());
+            }
+        };
+        Collections.sort(songs, comparator);
+
         //Return the songs
         return songs;
     }
@@ -468,6 +484,12 @@ public class CommonSQL {
         if (folders.size()==0) {
             folders.add(c.getString(R.string.mainfoldername));
         }
+        Comparator<String> comparator = (o1, o2) -> {
+            Collator collator = Collator.getInstance(mainActivityInterface.getLocale());
+            collator.setStrength(Collator.SECONDARY);
+            return collator.compare(o1,o2);
+        };
+        Collections.sort(folders, comparator);
         return folders;
     }
 
@@ -524,7 +546,12 @@ public class CommonSQL {
             }
         }
         closeCursor(cursor);
-        Collections.sort(themeTags);
+        Comparator<String> comparator = (o1, o2) -> {
+            Collator collator = Collator.getInstance(mainActivityInterface.getLocale());
+            collator.setStrength(Collator.SECONDARY);
+            return collator.compare(o1,o2);
+        };
+        Collections.sort(themeTags, comparator);
         return themeTags;
     }
     public ArrayList<String> renameThemeTags(SQLiteDatabase db, SQLiteDatabase db2, String oldTag, String newTag) {

@@ -27,6 +27,7 @@ import com.garethevans.church.opensongtablet.preferences.TextInputBottomSheet;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.io.OutputStream;
+import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.concurrent.ExecutorService;
@@ -603,7 +604,9 @@ public class SetManageFragment extends Fragment {
             categories.add(value);
             // Sort them (remove main, sort, then readd main to the top)
             categories.remove(mainfoldername_string);
-            Collections.sort(categories);
+            Collator coll = Collator.getInstance(mainActivityInterface.getLocale());
+            coll.setStrength(Collator.SECONDARY);
+            Collections.sort(categories, coll);
             categories.add(0, mainfoldername_string);
             categoriesAdapter.notifyDataSetChanged();
         }

@@ -3061,7 +3061,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             fixLocale.setLocale(this, this);
             locale = fixLocale.getLocale();
         }
-        return locale;
+        if (locale == null) {
+            return Locale.getDefault();
+        } else {
+            return locale;
+        }
     }
 
     @Override

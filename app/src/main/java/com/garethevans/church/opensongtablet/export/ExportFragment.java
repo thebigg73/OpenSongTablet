@@ -96,6 +96,7 @@ public class ExportFragment extends Fragment {
             setToExport = mainActivityInterface.getWhattodo().replace("exportset:", "").replace("%_%","");
             setNames = mainActivityInterface.getExportActions().getListOfSets(setToExport);
             setData = mainActivityInterface.getExportActions().parseSets(setNames);
+            myView.exportTextAsMessage.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("exportTextAsMessage",true));
             textContent = setData[1];
             setContent = setData[1];
             toolBarTitle = export_string+" ("+set_string+")";
@@ -133,6 +134,7 @@ public class ExportFragment extends Fragment {
             });
         });
 
+        myView.exportTextAsMessage.setOnCheckedChangeListener((compoundButton, b) -> mainActivityInterface.getPreferences().setMyPreferenceBoolean("exportTextAsMessage",b));
         myView.nestedScrollView.setExtendedFabToAnimate(myView.shareButton);
         myView.nestedScrollView.setExtendedFab2ToAnimate(myView.print);
 
@@ -691,13 +693,18 @@ public class ExportFragment extends Fragment {
     }
 
     private void initiateShare() {
-        Intent intent = mainActivityInterface.getExportActions().setShareIntent(textContent,"*/*",null,uris);
+        Intent intent;
+        if (setContent!=null && !myView.exportTextAsMessage.getChecked()) {
+            intent = mainActivityInterface.getExportActions().setShareIntent(null, "*/*", null, uris);
+        } else {
+            intent = mainActivityInterface.getExportActions().setShareIntent(textContent, "*/*", null, uris);
+        }
         intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
         intent.putExtra(Intent.EXTRA_SUBJECT, app_name_string + " " +
                 exportType + ": " + shareTitle);
-        if (setContent!=null) {
+        if (setContent!=null && myView.exportTextAsMessage.getChecked()) {
             intent.putExtra(Intent.EXTRA_TEXT, setContent);
-        } else {
+        } else if (setContent == null){
             intent.putExtra(Intent.EXTRA_TEXT, textContent);
         }
 

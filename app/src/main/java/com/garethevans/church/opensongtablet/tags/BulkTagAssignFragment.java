@@ -22,6 +22,7 @@ import com.garethevans.church.opensongtablet.databinding.SettingsTagManageBindin
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.preferences.TextInputBottomSheet;
 
+import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.concurrent.ExecutorService;
@@ -257,7 +258,9 @@ public class BulkTagAssignFragment extends Fragment {
                 values.add(newValue);
             }
         }
-        Collections.sort(values);
+        Collator coll = Collator.getInstance(mainActivityInterface.getLocale());
+        coll.setStrength(Collator.SECONDARY);
+        Collections.sort(values, coll);
 
         if (getContext()!=null) {
             ExposedDropDownArrayAdapter tagArrayAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.thisTag, R.layout.view_exposed_dropdown_item, values);

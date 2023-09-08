@@ -39,6 +39,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -344,7 +345,9 @@ public class CustomSlideFragment extends Fragment {
         // List the files in the current folder
         String folder = getFolderFromType();
         ArrayList<String> filesFound = mainActivityInterface.getStorageAccess().listFilesInFolder(folder,"");
-        Collections.sort(filesFound);
+        Collator coll = Collator.getInstance(mainActivityInterface.getLocale());
+        coll.setStrength(Collator.SECONDARY);
+        Collections.sort(filesFound, coll);
         TextInputBottomSheet textInputBottomSheet = new TextInputBottomSheet(this,"CustomSlideFragment",load_reusable_string,file_chooser_string,null,null,"",filesFound);
         textInputBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"textInputBottomSheet");
     }

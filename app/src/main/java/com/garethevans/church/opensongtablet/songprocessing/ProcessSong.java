@@ -42,6 +42,7 @@ import com.garethevans.church.opensongtablet.customviews.MyMaterialEditText;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 import java.io.InputStream;
+import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Locale;
@@ -3614,7 +3615,9 @@ public class ProcessSong {
             }
         }
         // Sort alphabetically
-        Collections.sort(newArray);
+        Collator coll = Collator.getInstance(mainActivityInterface.getLocale());
+        coll.setStrength(Collator.SECONDARY);
+        Collections.sort(newArray, coll);
 
         // Build back to a string
         for (String string : newArray) {
