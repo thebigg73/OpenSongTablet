@@ -56,10 +56,11 @@ public class MyRecyclerView extends RecyclerView  implements RecyclerView.Smooth
     private final LinearInterpolator linearInterpolator = new LinearInterpolator();
     private final ScrollListener scrollListener;
     private final ItemTouchListener itemTouchListener;
-    private final Handler checkScrollPosIsRight = new Handler();
+    private final Handler checkScrollPosIsRight1 = new Handler();
+    private final Handler checkScrollPosIsRight2 = new Handler();
     private Runnable checkPosRunnable;
     @SuppressWarnings("FieldCanBeLocal")
-    private final int smoothScrollDuration = 100;
+    private final int smoothScrollDuration = 120;
 
     public MyRecyclerView(@NonNull Context context) {
         super(context);
@@ -187,7 +188,8 @@ public class MyRecyclerView extends RecyclerView  implements RecyclerView.Smooth
     public void doSmoothScrollTo(RecyclerLayoutManager recyclerLayoutManager, int position) {
         // Cancel any post delayed check
         if (checkPosRunnable!=null) {
-            checkScrollPosIsRight.removeCallbacks(checkPosRunnable);
+            checkScrollPosIsRight1.removeCallbacks(checkPosRunnable);
+            checkScrollPosIsRight2.removeCallbacks(checkPosRunnable);
         }
 
         try {
@@ -245,12 +247,18 @@ public class MyRecyclerView extends RecyclerView  implements RecyclerView.Smooth
 
                 // Check the chosen view is actually visible
                 checkPosRunnable = () -> {
-                    if (recyclerLayoutManager.findFirstCompletelyVisibleItemPosition()>position) {
+                    int firstPosition = recyclerLayoutManager.findFirstCompletelyVisibleItemPosition();
+                    if (firstPosition>position || firstPosition==-1) {
                         // Snap to that position
+                        Log.d(TAG,"SNAP");
                         recyclerLayoutManager.scrollToPosition(position);
                     }
                 };
-               checkScrollPosIsRight.postDelayed(checkPosRunnable,smoothScrollDuration+50);
+
+                // Post delayed checks that the view is fully visible
+                // Run twice as a backup catch
+                checkScrollPosIsRight1.postDelayed(checkPosRunnable,(int)(1.5f * smoothScrollDuration));
+                checkScrollPosIsRight2.postDelayed(checkPosRunnable,(int)(2.5f * smoothScrollDuration));
 
             }
         } catch (Exception e) {
