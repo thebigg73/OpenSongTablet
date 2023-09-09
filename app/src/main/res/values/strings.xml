@@ -976,6 +976,8 @@
     <string name="tap_tempo">Tap to set tempo</string>
     <string name="tempo">Tempo</string>
     <string name="text">Text</string>
+    <string name="text_as_message">Text as message content</string>
+    <string name="text_as_message_info">When exporting multiple files to some apps (e.g. WhatsApp) the app sometimes stops after it receives a text message and the files aren\'t included.  You can switch this off and force the receiving app to deal with the files instead of just the message.</string>
     <string name="text_button">Include song details. Devices with smaller displays may not show the content properly</string>
     <string name="text_extract">Extract text from file (OCR)</string>
     <string name="text_extract_check">OpenSongApp will try to find song content automatically, however, you can manually check by clicking on this button.</string>
@@ -1217,6 +1219,4 @@
     <string name="youtube" translatable="false">YouTube</string>
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zoom_level">Zoom level</string>
-    <string name="text_as_message">Text as message content</string>
-    <string name="text_as_message_info">When exporting multiple files to some apps (e.g. WhatsApp) the app sometimes stops after it receives a text message and the files aren\'t included.  You can switch this off and force the receiving app to deal with the files instead of just the message.</string>
 </resources>

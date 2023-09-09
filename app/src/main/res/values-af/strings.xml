@@ -810,6 +810,8 @@
     <string name="tap_tempo">"Tik tempo stel"</string>
     <string name="tempo">"Tempo"</string>
     <string name="text">"Teks"</string>
+    <string name="text_as_message">Teks as boodskapinhoud</string>
+    <string name="text_as_message_info">Wanneer verskeie lêers na sommige programme (byvoorbeeld WhatsApp) uitgevoer word, stop die app soms nadat dit \'n sms ontvang het en die lêers nie ingesluit is nie.  U kan dit afskakel en die ontvangsprogram dwing om die lêers te hanteer in plaas van net die boodskap.</string>
     <string name="text_button">Sluit liedjiebesonderhede in. Toestelle met kleiner skerms sal dalk nie die inhoud behoorlik wys nie</string>
     <string name="text_extract">Onttrek teks uit lêer (OCR)</string>
     <string name="text_extract_check">OpenSongApp sal probeer om liedjie-inhoud outomaties te vind, maar jy kan handmatig kontroleer deur op hierdie knoppie te klik.</string>

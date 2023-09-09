@@ -810,6 +810,8 @@
     <string name="tap_tempo">"Tapez pour régler le tempo"</string>
     <string name="tempo">"Tempo"</string>
     <string name="text">"Texte"</string>
+    <string name="text_as_message">Texte en tant que contenu de message</string>
+    <string name="text_as_message_info">Lors de l’exportation de plusieurs fichiers vers certaines applications (par exemple, WhatsApp), l’application s’arrête parfois après avoir reçu un message texte et que les fichiers ne sont pas inclus.  Vous pouvez désactiver cette option et forcer l’application réceptrice à traiter les fichiers au lieu de simplement le message.</string>
     <string name="text_button">Inclure les détails de la chanson. Les appareils avec des écrans plus petits peuvent ne pas afficher correctement le contenu</string>
     <string name="text_extract">Extraire le texte du fichier (OCR)</string>
     <string name="text_extract_check">OpenSongApp essaiera de trouver automatiquement le contenu de la chanson, cependant, vous pouvez vérifier manuellement en cliquant sur ce bouton.</string>

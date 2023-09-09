@@ -810,6 +810,8 @@
     <string name="tap_tempo">"Toque para definir andamento"</string>
     <string name="tempo">"Tempo"</string>
     <string name="text">"Texto"</string>
+    <string name="text_as_message">Texto como conteúdo da mensagem</string>
+    <string name="text_as_message_info">Ao exportar vários arquivos para alguns aplicativos (por exemplo, WhatsApp), o aplicativo às vezes para depois que recebe uma mensagem de texto e os arquivos não são incluídos.  Você pode desativar isso e forçar o aplicativo recetor a lidar com os arquivos em vez de apenas a mensagem.</string>
     <string name="text_button">Inclua detalhes da música. Dispositivos com telas menores podem não mostrar o conteúdo corretamente</string>
     <string name="text_extract">Extrair texto do arquivo (OCR)</string>
     <string name="text_extract_check">O OpenSongApp tentará encontrar o conteúdo da música automaticamente, no entanto, você pode verificar manualmente clicando neste botão.</string>

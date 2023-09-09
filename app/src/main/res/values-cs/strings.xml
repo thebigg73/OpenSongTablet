@@ -810,6 +810,8 @@
     <string name="tap_tempo">"Klepnutím nastavte tempo"</string>
     <string name="tempo">"Tempo"</string>
     <string name="text">"Text"</string>
+    <string name="text_as_message">Text jako obsah zprávy</string>
+    <string name="text_as_message_info">Při exportu více souborů do některých aplikací (např. WhatsApp) se aplikace někdy zastaví poté, co obdrží textovou zprávu a soubory nejsou zahrnuty.  Můžete to vypnout a vynutit, aby se přijímající aplikace zabývala soubory namísto pouze zprávy.</string>
     <string name="text_button">Zahrnout podrobnosti o skladbě. Zařízení s menšími displeji nemusí zobrazovat obsah správně</string>
     <string name="text_extract">Extrahovat text ze souboru (OCR)</string>
     <string name="text_extract_check">OpenSongApp se pokusí najít obsah skladby automaticky, kliknutím na toto tlačítko to však můžete zkontrolovat ručně.</string>

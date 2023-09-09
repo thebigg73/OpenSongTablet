@@ -810,6 +810,8 @@
     <string name="tap_tempo">"テンポを設定するタップ"</string>
     <string name="tempo">"Tempo"</string>
     <string name="text">"テキスト"</string>
+    <string name="text_as_message">メッセージの内容としてのテキスト</string>
+    <string name="text_as_message_info">複数のファイルを一部のアプリ(WhatsAppなど)にエクスポートすると、テキストメッセージを受信した後にアプリが停止し、ファイルが含まれていないことがあります。 これをオフにして、受信アプリにメッセージだけでなくファイルを処理させることができます。</string>
     <string name="text_button">曲の詳細を含めます。ディスプレイが小さいデバイスでは、コンテンツが正しく表示されない場合があります</string>
     <string name="text_extract">ファイルからテキストを抽出する（OCR）</string>
     <string name="text_extract_check">OpenSongAppは曲のコンテンツを自動的に検索しようとしますが、このボタンをクリックして手動で確認できます。</string>

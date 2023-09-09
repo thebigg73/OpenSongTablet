@@ -810,6 +810,8 @@
     <string name="tap_tempo">"Érintse meg, hogy a tempó"</string>
     <string name="tempo">"Tempó"</string>
     <string name="text">"Szöveg"</string>
+    <string name="text_as_message">Szöveg mint üzenettartalom</string>
+    <string name="text_as_message_info">Ha több fájlt exportálsz bizonyos alkalmazásokba (pl. WhatsApp), az alkalmazás néha leáll, miután szöveges üzenetet kap, és a fájlok nem kerülnek bele.  Ezt kikapcsolhatja, és kényszerítheti a fogadó alkalmazást, hogy ne csak az üzenettel foglalkozzon.</string>
     <string name="text_button">Adja meg a dal részleteit. Előfordulhat, hogy a kisebb kijelzővel rendelkező eszközök nem jelenítik meg megfelelően a tartalmat</string>
     <string name="text_extract">Szöveg kibontása fájlból (OCR)</string>
     <string name="text_extract_check">Az OpenSongApp automatikusan megpróbálja megkeresni a dal tartalmát, azonban erre a gombra kattintva manuálisan is ellenőrizheti.</string>

@@ -810,6 +810,8 @@
     <string name="tap_tempo">"轻按以设定的速度"</string>
     <string name="tempo">"拍子"</string>
     <string name="text">"正文"</string>
+    <string name="text_as_message">文本作为消息内容</string>
+    <string name="text_as_message_info">将多个文件导出到某些应用程序（例如WhatsApp）时，应用程序有时会在收到短信后停止，并且不包含文件。 您可以关闭此功能并强制接收应用程序处理文件而不仅仅是消息。</string>
     <string name="text_button">包括歌曲详细信息。显示屏较小的设备可能无法正确显示内容</string>
     <string name="text_extract">从文件中提取文本 (OCR)</string>
     <string name="text_extract_check">OpenSongApp 将尝试自动查找歌曲内容，但是，您可以通过单击此按钮手动检查。</string>

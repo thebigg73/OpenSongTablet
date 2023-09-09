@@ -810,6 +810,8 @@
     <string name="tap_tempo">Tapnuti za određivanje tempa</string>
     <string name="tempo">Tempo</string>
     <string name="text">Tekst</string>
+    <string name="text_as_message">Tekst kao sadržaj poruke</string>
+    <string name="text_as_message_info">Prilikom izvoza više fajlova u neke aplikacije (npr. WhatsApp) aplikacija se ponekad zaustavi nakon što primi tekstualnu poruku, a datoteke nisu uključene.  Ovo možete da isključite i naterate aplikaciju za prijem da se bavi datotekama umesto samo porukom.</string>
     <string name="text_button">Uključite detalje pesme. Uređaji sa manjim ekranima možda neće pravilno prikazati sadržaj</string>
     <string name="text_extract">Izvucite tekst iz datoteke (OCR)</string>
     <string name="text_extract_check">OpenSongApp će pokušati da automatski pronađe sadržaj pesme, međutim, možete ručno da proverite klikom na ovo dugme.</string>
