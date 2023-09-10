@@ -41,8 +41,8 @@ public class PerformanceGestures {
     private MyZoomLayout myZoomLayout;
     private MyRecyclerView recyclerView;
     private RecyclerView presenterRecyclerView;
-    private Handler scrollPosCheckHandler = new Handler();
-    private Runnable scrollPosRunnable = new Runnable() {
+    private final Handler scrollPosCheckHandler = new Handler();
+    private final Runnable scrollPosRunnable = new Runnable() {
         @Override
         public void run() {
             Log.d(TAG,"canScroll:"+canScroll(true));

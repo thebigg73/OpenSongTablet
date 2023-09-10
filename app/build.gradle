@@ -53,7 +53,7 @@ android {
         }
         dependencies {
             classpath 'com.android.tools.build:gradle:4.2.2'
-            classpath 'androidx.navigation:navigation-safe-args-gradle-plugin:2.7.1'
+            classpath 'androidx.navigation:navigation-safe-args-gradle-plugin:2.7.2'
         }
     }
 
@@ -80,7 +80,7 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.activity:activity:1.8.0-alpha07'                           // Required for activity and permission requests
+    implementation 'androidx.activity:activity:1.8.0-beta01'                           // Required for activity and permission requests
     implementation 'androidx.fragment:fragment:1.6.1'                                   // Using fragments and navigation
     implementation 'com.google.android.material:material:1.11.0-alpha02'                // Required for material design goodness
     //implementation "androidx.compose.material:material:1.4.3"                         // Can upgrade theme to Material3 once I remove support for KitKat
@@ -96,13 +96,13 @@ dependencies {
     implementation 'androidx.cardview:cardview:1.0.0'                                   // Cardview for recycler list items
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'                   // Constraint layouts with FAB
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'                      // Lifecycle for fragment control
-    implementation 'androidx.navigation:navigation-fragment:2.7.1'                      // The navigation fragment control
-    implementation 'androidx.navigation:navigation-ui:2.7.1'                            // The navigation fragment control
-    implementation 'androidx.navigation:navigation-dynamic-features-fragment:2.7.1'     // The navigation fragment control
+    implementation 'androidx.navigation:navigation-fragment:2.7.2'                      // The navigation fragment control
+    implementation 'androidx.navigation:navigation-ui:2.7.2'                            // The navigation fragment control
+    implementation 'androidx.navigation:navigation-dynamic-features-fragment:2.7.2'     // The navigation fragment control
     implementation 'androidx.preference:preference:1.2.1'                               // The app preferences
     implementation 'androidx.multidex:multidex:2.0.1'                                   // Allow splitting of file for older devices
-    implementation 'androidx.annotation:annotation:1.6.0'                               // Allows annotations in code
-    annotationProcessor 'androidx.annotation:annotation:1.6.0'                          // Allows annotations in code
+    implementation 'androidx.annotation:annotation:1.7.0'                               // Allows annotations in code
+    annotationProcessor 'androidx.annotation:annotation:1.7.0'                          // Allows annotations in code
     implementation 'org.apache.commons:commons-compress:1.23.0'                         // For creating and editing compressed files (osb, backup)
     implementation files('libs/TarsosDSP-Android-2.4.jar')                              // For the pitch detection in the tuner
     implementation 'com.github.bumptech.glide:glide:4.16.0'                             // For better setting of images
