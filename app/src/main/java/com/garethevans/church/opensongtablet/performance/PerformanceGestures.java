@@ -5,6 +5,7 @@ package com.garethevans.church.opensongtablet.performance;
 import android.content.Context;
 import android.os.Build;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -40,6 +41,17 @@ public class PerformanceGestures {
     private MyZoomLayout myZoomLayout;
     private MyRecyclerView recyclerView;
     private RecyclerView presenterRecyclerView;
+    private Handler scrollPosCheckHandler = new Handler();
+    private Runnable scrollPosRunnable = new Runnable() {
+        @Override
+        public void run() {
+            Log.d(TAG,"canScroll:"+canScroll(true));
+
+            if (!canScroll(true)) {
+                mainActivityInterface.getDisplayPrevNext().showAndHide();
+            }
+        }
+    };
 
     // Initialise
     public PerformanceGestures(Context c) {
@@ -853,10 +865,15 @@ public class PerformanceGestures {
         } else if (myZoomLayout != null && myZoomLayout.getVisibility() == View.VISIBLE) {
             myZoomLayout.animateScrollBy(mainActivityInterface,
                     mainActivityInterface.getGestures().getScrollDistance(), scrollDown);
+
             // We will also send this to nearby devices if we are a host
             mainActivityInterface.getNearbyConnections().sendScrollByPayload(scrollDown,
                     mainActivityInterface.getGestures().getScrollDistance());
         }
+
+        scrollPosCheckHandler.removeCallbacks(scrollPosRunnable);
+        scrollPosCheckHandler.postDelayed(scrollPosRunnable,800);
+
     }
 
     // Find a random song
