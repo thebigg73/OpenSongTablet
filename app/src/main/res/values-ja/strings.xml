@@ -241,6 +241,7 @@
     <string name="crossfade_time">クロスフェード時間</string>
     <string name="curly_brackets_hide">中括弧非表示 {…}</string>
     <string name="curly_brackets_hide_info">中括弧内のテキストは、パフォーマンス ノートとしてのみ扱います。これらは、プレゼンテーション中は非表示になります。</string>
+    <string name="curly_brackets_hide_info_device">このデバイスで中括弧のテキストを非表示にする(パフォーマンスモードの場合は接続されたディスプレイ)</string>
     <string name="current_location">"現在位置"</string>
     <string name="custom">カスタマイズされた</string>
     <string name="custom_background">"カスタムタグの背景"</string>
@@ -261,6 +262,7 @@
     <string name="delete_folder_info">曲のサブディレクトリを削除する</string>
     <string name="delete_folder_warning">このサブディレクトリを削除すると、それに含まれるすべての曲またはフォルダも削除されます。 この変更を元に戻すことはできません！ 続行する前に、すべてのファイルのバックアップを作成して保存したことを確認してください!!!</string>
     <string name="delete_song_warning">このアクションを元に戻すことはできません。 万が一に備えて、バックアップを作成してください。</string>
+    <string name="device">デバイス</string>
     <string name="display">"ディスプレイ"</string>
     <string name="display_settings">表示設定（画面に表示されるもの）を変更します</string>
     <string name="divisions">部門</string>

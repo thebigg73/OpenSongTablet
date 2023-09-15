@@ -177,9 +177,9 @@ public class EditSongFragmentTags extends Fragment {
                         myView.beatBuddySong.setAdapter(songsAdapter);
                         myView.beatBuddyKit.setAdapter(kitsAdapter);
                         // If we don't have a value, look for one and auto add it
-                        if (songs.contains(mainActivityInterface.getTempSong().getFilename().replace(",",""))) {
+                        if (mainActivityInterface.getTempSong().getFilename()!=null && songs.contains(mainActivityInterface.getTempSong().getFilename().replace(",",""))) {
                             mainActivityInterface.getTempSong().setBeatbuddysong(mainActivityInterface.getTempSong().getFilename().replace(",",""));
-                        } else if (songs.contains(mainActivityInterface.getTempSong().getTitle().replace(",",""))) {
+                        } else if (mainActivityInterface.getTempSong().getTitle()!=null && songs.contains(mainActivityInterface.getTempSong().getTitle().replace(",",""))) {
                             mainActivityInterface.getTempSong().setBeatbuddysong(mainActivityInterface.getTempSong().getTitle().replace(",",""));
                         }
                         myView.beatBuddySong.setText(mainActivityInterface.getTempSong().getBeatbuddysong());

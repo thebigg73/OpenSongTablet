@@ -241,6 +241,7 @@
     <string name="crossfade_time">交叉淡入淡出的时间</string>
     <string name="curly_brackets_hide">大括号隐藏 {…}</string>
     <string name="curly_brackets_hide_info">将大括号内的文本仅视为性能注释。这些将在演示过程中隐藏。</string>
+    <string name="curly_brackets_hide_info_device">隐藏此设备上的大括号文本（在性能模式下隐藏连接的显示器）</string>
     <string name="current_location">"当前位置"</string>
     <string name="custom">自定义</string>
     <string name="custom_background">"自定义标签的背景"</string>
@@ -261,6 +262,7 @@
     <string name="delete_folder_info">删除歌曲子目录</string>
     <string name="delete_folder_warning">如果删除此子目录，这还将删除它包含的所有歌曲或文件夹。 您无法撤消此更改！</string>
     <string name="delete_song_warning">您无法撤消此操作。 请确保您已创建备份以防万一！</string>
+    <string name="device">装置</string>
     <string name="display">"显示"</string>
     <string name="display_settings">更改显示设置（您在屏幕上看到的内容）</string>
     <string name="divisions">部门</string>

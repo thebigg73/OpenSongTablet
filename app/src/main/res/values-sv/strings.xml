@@ -241,6 +241,7 @@
     <string name="crossfade_time">"Cross-blekna tid"</string>
     <string name="curly_brackets_hide">Lockigt fäste dölja {…}</string>
     <string name="curly_brackets_hide_info">Behandla text inom krulliga parenteser endast som prestationsanteckningar. Dessa kommer att döljas under presentationen.</string>
+    <string name="curly_brackets_hide_info_device">Dölj klammerparentestext på den här enheten (och anslutna skärmar i prestandaläge)</string>
     <string name="current_location">"Nuvarande position"</string>
     <string name="custom">"Beställnings"</string>
     <string name="custom_background">"Anpassad taggbakgrund"</string>
@@ -261,6 +262,7 @@
     <string name="delete_folder_info">Ta bort låtens underkatalog</string>
     <string name="delete_folder_warning">Om du tar bort den här underkatalogen raderas också alla låtar eller mappar som den innehåller. Du kan inte ångra den här ändringen!</string>
     <string name="delete_song_warning">Du kan inte ångra den här åtgärden. Se till att du har skapat en säkerhetskopia för säkerhets skull!</string>
+    <string name="device">Apparat</string>
     <string name="display">"Visa"</string>
     <string name="display_settings">Ändra visningsinställningar (vad du ser på skärmen)</string>
     <string name="divisions">Divisioner</string>

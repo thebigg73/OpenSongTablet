@@ -54,14 +54,14 @@ public class AppPermissions {
 
     // Nearby
     public String[] getNearbyPermissions() {
-        if (Build.VERSION.SDK_INT >= 33) { //
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) { // Android T / 13  SDK_INT=33
             return new String[]{Manifest.permission.NEARBY_WIFI_DEVICES,
                     Manifest.permission.BLUETOOTH_SCAN,
                     Manifest.permission.BLUETOOTH_ADVERTISE,
                     Manifest.permission.BLUETOOTH_CONNECT,
                     Manifest.permission.ACCESS_WIFI_STATE,
                     Manifest.permission.CHANGE_WIFI_STATE};
-        } else if (Build.VERSION.SDK_INT >= 31) { // Android S / 12
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) { // Android S / 12  SDK_INT=31
             return new String[]{Manifest.permission.BLUETOOTH_SCAN,
                     Manifest.permission.BLUETOOTH_ADVERTISE,
                     Manifest.permission.BLUETOOTH_CONNECT,
@@ -69,7 +69,7 @@ public class AppPermissions {
                     Manifest.permission.ACCESS_COARSE_LOCATION,
                     Manifest.permission.ACCESS_WIFI_STATE,
                     Manifest.permission.CHANGE_WIFI_STATE};
-        } else if (Build.VERSION.SDK_INT >= 29) { // Android Q / 10
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) { // Android Q / 10  SDK_INT=29
             return new String[]{Manifest.permission.BLUETOOTH,
                     Manifest.permission.BLUETOOTH_ADMIN,
                     Manifest.permission.ACCESS_WIFI_STATE,

@@ -241,6 +241,7 @@
     <string name="crossfade_time">Час плавного переходу</string>
     <string name="curly_brackets_hide">Сховати фігурну дужку {…}</string>
     <string name="curly_brackets_hide_info">Розглядайте текст у фігурних дужках лише як примітки щодо продуктивності. Вони будуть приховані під час презентації.</string>
+    <string name="curly_brackets_hide_info_device">Приховати фігурний текст дужок на цьому пристрої (і підключені дисплеї в режимі продуктивності)</string>
     <string name="current_location">Поточне місцезнаходження</string>
     <string name="custom">Подстройка</string>
     <string name="custom_background">Фон призначеного для користувача тега</string>
@@ -261,6 +262,7 @@
     <string name="delete_folder_info">Видалити підкаталог пісень</string>
     <string name="delete_folder_warning">Якщо ви видалите цей підкаталог, це також видалить усі пісні та папки, які він містить. Ви не можете скасувати цю зміну!  Будь ласка, переконайтеся, що ви зробили та зберегли резервні копії УСІХ ваших файлів, перш ніж продовжити!!!</string>
     <string name="delete_song_warning">Ви не можете скасувати цю дію. Будь ласка, переконайтеся, що ви створили резервну копію про всяк випадок!</string>
+    <string name="device">Пристрій</string>
     <string name="display">Дисплей</string>
     <string name="display_settings">Змінити налаштування дисплея (те, що ви бачите на екрані)</string>
     <string name="divisions">Дивізії</string>

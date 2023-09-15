@@ -241,6 +241,7 @@
     <string name="crossfade_time">Durée du fondu</string>
     <string name="curly_brackets_hide">Peau d\'accolade {…}</string>
     <string name="curly_brackets_hide_info">Traitez le texte entre accolades uniquement comme des notes de performance. Ceux-ci seront masqués lors de la présentation.</string>
+    <string name="curly_brackets_hide_info_device">Masquer le texte entre accolades sur cet appareil (et les écrans connectés en mode Performances)</string>
     <string name="current_location">"Localisation actuelle"</string>
     <string name="custom">Personnalisé</string>
     <string name="custom_background">"Fond des tags personnalisés"</string>
@@ -261,6 +262,7 @@
     <string name="delete_folder_info">Supprimer le sous-répertoire de chansons</string>
     <string name="delete_folder_warning">Si vous supprimez ce sous-répertoire, cela supprimera également tous les morceaux ou dossiers qu\'il contient. Vous ne pouvez pas annuler ce changement ! Assurez-vous d\'avoir effectué et enregistré des sauvegardes de TOUS vos fichiers avant de continuer !!!</string>
     <string name="delete_song_warning">Vous ne pouvez pas annuler cette action. Assurez-vous d\'avoir créé une sauvegarde au cas où !</string>
+    <string name="device">Appareil</string>
     <string name="display">"Ecran"</string>
     <string name="display_settings">Modifier les paramètres d\'affichage (ce que vous voyez à l\'écran)</string>
     <string name="divisions">Divisions</string>

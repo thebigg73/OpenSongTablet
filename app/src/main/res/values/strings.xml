@@ -280,6 +280,7 @@
     <string name="csv" translatable="false">CSV</string>
     <string name="curly_brackets_hide">Curly bracket hide {…}</string>
     <string name="curly_brackets_hide_info">Treat text inside curly brackets as performance notes only.  These will be hidden during presentation.</string>
+    <string name="curly_brackets_hide_info_device">Hide curly bracket text on this device (and connected displays when in Performance mode)</string>
     <string name="current_location">Selected location</string>
     <string name="custom">Custom</string>
     <string name="custom_background">Custom tag background</string>
@@ -354,6 +355,7 @@
     <string name="delete_folder_info">Delete song subdirectory</string>
     <string name="delete_folder_warning">If you delete this subdirectory, this will also delete any songs or folders that it contains.  You cannot undo this change!\n\nPlease make sure you have made and saved backups of ALL your files before proceeding!!!</string>
     <string name="delete_song_warning">You cannot undo this action.  Please make sure you have created a backup just in case!</string>
+    <string name="device">Device</string>
     <string name="display">Display</string>
     <string name="display_settings">Change display settings (what you see on screen)</string>
     <string name="divisions">Divisions</string>

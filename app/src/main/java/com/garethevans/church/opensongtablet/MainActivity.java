@@ -1884,13 +1884,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public void refreshSong() {
         // Only called after indexing is completed
-        // If this is an image or pdf, load the song again to get the extras from the database
-        if (storageAccess.isIMGorPDF(song) || song.getFiletype().equals("PDF") || song.getFiletype().equals("IMG")) {
-            if (performanceValid()) {
-                performanceFragment.doSongLoad(song.getFolder(), song.getFilename());
-            } else if (presenterValid()) {
-                presenterFragment.doSongLoad(song.getFolder(), song.getFilename());
-            }
+        if (performanceValid()) {
+            performanceFragment.doSongLoad(song.getFolder(), song.getFilename());
+        } else if (presenterValid()) {
+            presenterFragment.doSongLoad(song.getFolder(), song.getFilename());
         }
     }
 

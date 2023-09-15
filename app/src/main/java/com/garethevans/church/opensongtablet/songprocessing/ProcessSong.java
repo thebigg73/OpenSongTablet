@@ -91,6 +91,7 @@ public class ProcessSong {
     private boolean bracketsOpen = false;
     private int bracketsStyle = Typeface.NORMAL;
     private boolean curlyBrackets = true;
+    private boolean curlyBracketsDevice = false;
     private StringBuilder htmlLyrics = new StringBuilder();
 
     public static int getColorWithAlpha(int color, float ratio) {
@@ -131,6 +132,7 @@ public class ProcessSong {
         multiLineVerseKeepCompact = mainActivityInterface.getPreferences().getMyPreferenceBoolean("multiLineVerseKeepCompact", false);
         bracketsStyle = mainActivityInterface.getPreferences().getMyPreferenceInt("bracketsStyle",Typeface.NORMAL);
         curlyBrackets = mainActivityInterface.getPreferences().getMyPreferenceBoolean("curlyBrackets",true);
+        curlyBracketsDevice = mainActivityInterface.getPreferences().getMyPreferenceBoolean("curlyBracketsDevice",false);
         forceColumns = mainActivityInterface.getPreferences().getMyPreferenceBoolean("forceColumns",true);
         hideInlineMidi = mainActivityInterface.getPreferences().getMyPreferenceBoolean("hideInlineMidi",false);
     }
@@ -2023,14 +2025,24 @@ public class ProcessSong {
                             // Get the text stylings
                             String linetype = getLineType(line);
                             boolean notLyricOrChord = linetype.equals("heading") || linetype.equals("comment") || linetype.equals("tab");
+                            Log.d(TAG,"line:"+line+"  (notLyricOrChord:"+notLyricOrChord+"  curlyBrackets:"+curlyBrackets+")");
+                            boolean clearedCurlyText = false;
                             if (presentation && !performancePresentation) {
                                 if (notLyricOrChord) {
                                     // Do not use these lines with the second screen
                                     continue;
                                 } else if (curlyBrackets) {
-                                    // Android Studio gets confused over escapes here - suggesting removing escapes that break the regex!  Keep lots of escapes to be sure it works!
-                                    line = line.replaceAll("\\{.*?\\}", "");
+                                    if (line.contains("{") && line.contains("}")) {
+                                        // Android Studio gets confused over escapes here - suggesting removing escapes that break the regex!  Keep lots of escapes to be sure it works!
+                                        line = line.replaceAll("\\{.*?\\}", "");
+                                        clearedCurlyText = true;
+                                    }
                                 }
+                            }
+                            if (curlyBracketsDevice && line.contains("{") && line.contains("}")) {
+                                // Hide the curly brackets content on the user device
+                                line = line.replaceAll("\\{.*?\\}", "");
+                                clearedCurlyText = true;
                             }
                             backgroundColor = overallBackgroundColor;
                             if (!asPDF && (!presentation || performancePresentation) && notLyricOrChord) {
@@ -2049,7 +2061,7 @@ public class ProcessSong {
                                         mainActivityInterface.getMyThemeColors().getLyricsCapoColor());
                             }
 
-                            if (line.contains(groupline_string)) {
+                            if (line.contains(groupline_string) && !(clearedCurlyText && line.trim().isEmpty())) {
                                 // Has lyrics and chords
                                 if (asPDF) {
                                     linearLayout.addView(groupTable(song, line, Color.BLACK, Color.BLACK,
@@ -2071,7 +2083,7 @@ public class ProcessSong {
                                     tl.setBackgroundColor(backgroundColor);
                                     linearLayout.addView(tl);
                                 }
-                            } else {
+                            } else if (!(clearedCurlyText && line.trim().isEmpty())) {
                                 if ((!presentation || performancePresentation) && !asPDF && (!line.isEmpty() || mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)))) {
                                     // IV - Remove typical word splits, white space and trim - beautify!
                                     // IV - Similar logic is used in other places - if changed find and make changes to all

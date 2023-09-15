@@ -241,6 +241,7 @@
     <string name="crossfade_time">"Cross-fade time"</string>
     <string name="curly_brackets_hide">Απόκρυψη σγουρή αγκύλη {…}</string>
     <string name="curly_brackets_hide_info">Αντιμετωπίστε το κείμενο μέσα σε σγουρές αγκύλες μόνο ως σημειώσεις απόδοσης. Αυτά θα κρυφτούν κατά την παρουσίαση.</string>
+    <string name="curly_brackets_hide_info_device">Απόκρυψη κειμένου αγκύλης σε αυτήν τη συσκευή (και συνδεδεμένες οθόνες όταν βρίσκεστε σε λειτουργία απόδοσης)</string>
     <string name="current_location">"Τωρινή τοποθεσία"</string>
     <string name="custom">"Custom"</string>
     <string name="custom_background">"Custom tag background"</string>
@@ -261,6 +262,7 @@
     <string name="delete_folder_info">Διαγραφή υποκαταλόγου τραγουδιών</string>
     <string name="delete_folder_warning">Εάν διαγράψετε αυτόν τον υποκατάλογο, θα διαγραφούν επίσης και τυχόν τραγούδια ή φάκελοι που περιέχει. Δεν μπορείτε να αναιρέσετε αυτήν την αλλαγή! Βεβαιωθείτε ότι έχετε δημιουργήσει και αποθηκεύσει αντίγραφα ασφαλείας ΟΛΩΝ των αρχείων σας πριν συνεχίσετε!!!</string>
     <string name="delete_song_warning">Δεν μπορείτε να αναιρέσετε αυτήν την ενέργεια. Βεβαιωθείτε ότι έχετε δημιουργήσει ένα αντίγραφο ασφαλείας για παν ενδεχόμενο!</string>
+    <string name="device">Συσκευή</string>
     <string name="display">"Εμφάνιση"</string>
     <string name="display_settings">Αλλαγή ρυθμίσεων εμφάνισης (αυτό που βλέπετε στην οθόνη)</string>
     <string name="divisions">Τμήματα</string>

@@ -54,13 +54,20 @@ public class PedalActions {
     private int airTurnLongPressTime;
     private boolean airTurnMode, midiAsPedal, pedalScrollBeforeMove, pedalShowWarningBeforeMove,
             warningActive, warningGracePeriod, pedalIgnorePrevNext;
+    @SuppressWarnings("FieldCanBeLocal")
     private final Handler warningWaitHandler = new Handler(), warningGracePeriodHandler = new Handler();
-    private final Runnable warningWaitRunnable = () -> pedalIgnorePrevNext = false;
+    private final Runnable warningWaitRunnable = () -> {
+        Log.d(TAG,"warningWaitRunnable ended");
+        pedalIgnorePrevNext = false;
+    };
     private final Runnable warningGracePeriodRunnable = () -> {
+        Log.d(TAG,"warningGraceRunnable ended");
         warningGracePeriod = false;
         warningActive = false;
     };
     private boolean actionUpTriggered = false;
+    @SuppressWarnings("FieldCanBeLocal")
+    private final int warningWaitTime = 2000, warningGraceTime = 10000;
 
     public PedalActions(Context c) {
         this.c = c;
@@ -302,7 +309,6 @@ public class PedalActions {
         if (pedalShowWarningBeforeMove &&
                 ((desiredAction.equals("prev") && !mainActivityInterface.getPerformanceGestures().canScroll(false))
                 || (desiredAction.equals("next")) && !mainActivityInterface.getPerformanceGestures().canScroll(true))) {
-            int warningWaitTime = 2000;
             if (!warningActive && !warningGracePeriod) {
                 // Set the warning to active and display it
                 warningActive = true;
@@ -323,7 +329,7 @@ public class PedalActions {
                 // Set the gracePeriod of 10 seconds to allow moving without warnings
                 warningGracePeriod = true;
                 warningGracePeriodHandler.removeCallbacks(warningGracePeriodRunnable);
-                warningGracePeriodHandler.postDelayed(warningGracePeriodRunnable, 10000);
+                warningGracePeriodHandler.postDelayed(warningGracePeriodRunnable, warningGraceTime);
             }
         }
 

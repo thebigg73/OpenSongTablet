@@ -241,6 +241,7 @@
     <string name="crossfade_time">Tiempo crossfade</string>
     <string name="curly_brackets_hide">Corchetes ocultar {…}</string>
     <string name="curly_brackets_hide_info">Trate el texto dentro de corchetes como notas de desempeño solamente. Estos estarán ocultos durante la presentación.</string>
+    <string name="curly_brackets_hide_info_device">Ocultar el texto entre llaves en este dispositivo (y las pantallas conectadas cuando está en modo Rendimiento)</string>
     <string name="current_location">"Ubicación actual"</string>
     <string name="custom">Personalizado</string>
     <string name="custom_background">"Fondo de la etiqueta personalizada"</string>
@@ -261,6 +262,7 @@
     <string name="delete_folder_info">Eliminar subdirectorio de canciones</string>
     <string name="delete_folder_warning">Si elimina este subdirectorio, esto también eliminará las canciones o carpetas que contiene. ¡No puede deshacer este cambio!</string>
     <string name="delete_song_warning">No puede deshacer esta acción. ¡Asegúrate de haber creado una copia de seguridad por si acaso!</string>
+    <string name="device">Dispositivo</string>
     <string name="display">Visualización</string>
     <string name="display_settings">Cambiar la configuración de la pantalla (lo que ves en la pantalla)</string>
     <string name="divisions">Divisiones</string>

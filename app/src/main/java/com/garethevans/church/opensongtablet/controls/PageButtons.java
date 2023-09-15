@@ -255,6 +255,8 @@ public class PageButtons {
         prepareOption("showchords",c.getString(R.string.show_chords),c.getString(R.string.show) + " / " + c.getString(R.string.hide),"",R.drawable.guitar);
         prepareOption("showcapo",c.getString(R.string.show_capo),c.getString(R.string.show) + " / " + c.getString(R.string.hide),"",R.drawable.capo);
         prepareOption("showlyrics",c.getString(R.string.show_lyrics),c.getString(R.string.show) + " / " + c.getString(R.string.hide),"",R.drawable.voice);
+        prepareOption("curlybrackets",c.getString(R.string.curly_brackets_hide),c.getString(R.string.show) + " / " + c.getString(R.string.hide),"",R.drawable.curly_brackets);
+        prepareOption("curlybracketsdevice",c.getString(R.string.curly_brackets_hide)+" ("+c.getString(R.string.device)+")",c.getString(R.string.show) + " / " + c.getString(R.string.hide),"",R.drawable.curly_brackets_device);
         prepareOption("theme",c.getString(R.string.theme_choose),c.getString(R.string.select),"",R.drawable.theme);
         prepareOption("togglescale",c.getString(R.string.scale_auto),c.getString(R.string.scale_style),c.getString(R.string.scaling_info),R.drawable.stretch);
         prepareOption("pdfpage",c.getString(R.string.select_page),c.getString(R.string.select),"",R.drawable.book);

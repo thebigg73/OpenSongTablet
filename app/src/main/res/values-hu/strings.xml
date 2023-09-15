@@ -241,6 +241,7 @@
     <string name="crossfade_time">Crossfade idő</string>
     <string name="curly_brackets_hide">Göndör zárójel elrejtése {…}</string>
     <string name="curly_brackets_hide_info">A göndör zárójelben lévő szöveget csak teljesítményre vonatkozó megjegyzésként kezelje. Ezek elrejtve lesznek a bemutató során.</string>
+    <string name="curly_brackets_hide_info_device">Kapcsos zárójeles szöveg elrejtése ezen az eszközön (és a csatlakoztatott kijelzőkön Teljesítmény módban)</string>
     <string name="current_location">"Jelenlegi tartózkodási hely"</string>
     <string name="custom">Szabott</string>
     <string name="custom_background">"Egyéni tag háttér"</string>
@@ -261,6 +262,7 @@
     <string name="delete_folder_info">Törölje a dal alkönyvtárát</string>
     <string name="delete_folder_warning">Ha törli ezt az alkönyvtárat, akkor a benne lévő dalok és mappák is törlődnek. Ez a módosítás nem vonható vissza! Kérjük, győződjön meg róla, hogy az ÖSSZES fájlról biztonsági másolatot készített és mentett, mielőtt továbblép!!!</string>
     <string name="delete_song_warning">Ez a művelet nem vonható vissza. Kérjük, minden esetre készítsen biztonsági másolatot!</string>
+    <string name="device">Eszköz</string>
     <string name="display">Képernyő</string>
     <string name="display_settings">Megjelenítési beállítások módosítása (amit a képernyőn lát)</string>
     <string name="divisions">Osztályok</string>

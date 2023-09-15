@@ -241,6 +241,7 @@
     <string name="crossfade_time">Время плавного перехода</string>
     <string name="curly_brackets_hide">Фигурная скобка скрывает {…}</string>
     <string name="curly_brackets_hide_info">Считать текст внутри фигурных скобок пометками для исполнителей песни. Они будут скрыты во время презентации.</string>
+    <string name="curly_brackets_hide_info_device">Скрытие текста в фигурных скобках на этом устройстве (и подключенных дисплеев в режиме производительности)</string>
     <string name="current_location">Текущее хранилище</string>
     <string name="custom">Пользовательский</string>
     <string name="custom_background">Пользовательский фон тэга"</string>
@@ -261,6 +262,7 @@
     <string name="delete_folder_info">Удалить подкаталог песни</string>
     <string name="delete_folder_warning">Если вы удалите этот подкаталог, это также приведет к удалению всех песен или папок, которые в нем содержатся. Вы не можете отменить это изменение!</string>
     <string name="delete_song_warning">Вы не можете отменить это действие. Пожалуйста, убедитесь, что вы создали резервную копию на всякий случай!</string>
+    <string name="device">Устройство</string>
     <string name="display">Отображение</string>
     <string name="display_settings">Изменить настройки отображения (то, что вы видите на экране)</string>
     <string name="divisions">Разделения</string>

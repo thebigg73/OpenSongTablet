@@ -241,6 +241,7 @@
     <string name="crossfade_time">Crossfade čas</string>
     <string name="curly_brackets_hide">Skrýt složená závorka {…}</string>
     <string name="curly_brackets_hide_info">Text uvnitř složených závorek považujte pouze za poznámky k výkonu. Ty budou během prezentace skryty.</string>
+    <string name="curly_brackets_hide_info_device">Skrýt text složených závorek na tomto zařízení (a připojených displejích v režimu výkonu)</string>
     <string name="current_location">"Současná pozice"</string>
     <string name="custom">Přizpůsobené</string>
     <string name="custom_background">"Vlastní tag na pozadí"</string>
@@ -261,6 +262,7 @@
     <string name="delete_folder_info">Smazat podadresář skladby</string>
     <string name="delete_folder_warning">Pokud odstraníte tento podadresář, budou odstraněny také všechny skladby nebo složky, které obsahuje. Tuto změnu nelze vrátit zpět!</string>
     <string name="delete_song_warning">Tuto akci nelze vrátit zpět. Ujistěte se, že jste vytvořili zálohu pro každý případ!</string>
+    <string name="device">Zařízení</string>
     <string name="display">Zobrazit</string>
     <string name="display_settings">Změna nastavení zobrazení (to, co vidíte na obrazovce)</string>
     <string name="divisions">Divize</string>

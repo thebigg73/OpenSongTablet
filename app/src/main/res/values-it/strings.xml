@@ -241,6 +241,7 @@
     <string name="crossfade_time">Tempo crossfade</string>
     <string name="curly_brackets_hide">Nascondi la parentesi graffa {…}</string>
     <string name="curly_brackets_hide_info">Considera il testo all\'interno delle parentesi graffe solo come note sulla performance. Questi saranno nascosti durante la presentazione.</string>
+    <string name="curly_brackets_hide_info_device">Nascondere il testo tra parentesi graffe su questo dispositivo (e sui display collegati in modalità Prestazioni)</string>
     <string name="current_location">"Posizione attuale"</string>
     <string name="custom">Su misura</string>
     <string name="custom_background">"Personalizzato tag sfondo"</string>
@@ -261,6 +262,7 @@
     <string name="delete_folder_info">Elimina la sottodirectory del brano</string>
     <string name="delete_folder_warning">Se elimini questa sottodirectory, verranno eliminati anche i brani o le cartelle in essa contenuti. Non puoi annullare questa modifica! Assicurati di aver eseguito e salvato i backup di TUTTI i tuoi file prima di procedere!!!</string>
     <string name="delete_song_warning">Non puoi annullare questa azione. Assicurati di aver creato un backup per ogni evenienza!</string>
+    <string name="device">Dispositivo</string>
     <string name="display">Display</string>
     <string name="display_settings">Modifica le impostazioni di visualizzazione (cosa vedi sullo schermo)</string>
     <string name="divisions">Divisioni</string>

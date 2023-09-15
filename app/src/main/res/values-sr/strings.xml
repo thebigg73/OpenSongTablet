@@ -241,6 +241,7 @@
     <string name="crossfade_time">Vreme cross-fade</string>
     <string name="curly_brackets_hide">Vitičasta zagrada sakriti {…}</string>
     <string name="curly_brackets_hide_info">Tretirajte tekst unutar vitičastih zagrada samo kao beleške o performansama. Oni će biti skriveni tokom prezentacije.</string>
+    <string name="curly_brackets_hide_info_device">Sakrij kovrdžavi tekst zagrade na ovom uređaju (i povezane ekrane kada se radi u režimu performansi)</string>
     <string name="current_location">Trenutna lokacija</string>
     <string name="custom">Prilagođeno</string>
     <string name="custom_background">Pozadina prilagođene oznake</string>
@@ -261,6 +262,7 @@
     <string name="delete_folder_info">Izbrišite poddirektorijum pesme</string>
     <string name="delete_folder_warning">Ako izbrišete ovaj poddirektorijum, izbrisaće se i sve pesme ili fascikle koje sadrži. Ne možete da opozovete ovu promenu!</string>
     <string name="delete_song_warning">Ne možete poništiti ovu radnju. Uverite se da ste napravili rezervnu kopiju za svaki slučaj!</string>
+    <string name="device">Uređaj</string>
     <string name="display">Prikaz</string>
     <string name="display_settings">Promenite podešavanja prikaza (ono što vidite na ekranu)</string>
     <string name="divisions">Divizije</string>

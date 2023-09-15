@@ -128,6 +128,7 @@ public class DisplayExtraFragment extends Fragment {
         }
         myView.bracketsStyle.setText(getBracketStringFromValue(mainActivityInterface.getPreferences().getMyPreferenceInt("bracketsStyle",Typeface.NORMAL)));
         myView.curlyBrackets.setChecked(getChecked("curlyBrackets",true));
+        myView.curlyBracketsDevice.setChecked(getChecked("curlyBracketsDevice",false));
         myView.pdfHorizontal.setChecked(getChecked("pdfLandscapeView",true));
     }
 
@@ -259,6 +260,12 @@ public class DisplayExtraFragment extends Fragment {
         myView.curlyBrackets.setOnCheckedChangeListener(((buttonView, isChecked) -> {
             updateBooleanPreference("curlyBrackets",isChecked,null);
             mainActivityInterface.getProcessSong().updateProcessingPreferences();
+            displayInterface.updateDisplay("setSongContentPrefs");
+        }));
+        myView.curlyBracketsDevice.setOnCheckedChangeListener(((buttonView, isChecked) -> {
+            updateBooleanPreference("curlyBracketsDevice",isChecked,null);
+            mainActivityInterface.getProcessSong().updateProcessingPreferences();
+            displayInterface.updateDisplay("setSongContentPrefs");
         }));
         // TODO Maybe add later?
         /*myView.addSectionBox.setOnCheckedChangeListener((buttonView, isChecked) -> {

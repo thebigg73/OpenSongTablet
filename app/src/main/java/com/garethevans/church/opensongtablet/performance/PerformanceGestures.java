@@ -293,6 +293,12 @@ public class PerformanceGestures {
             case "showlyrics":
                 showLyrics();
                 break;
+            case "curlybrackets":
+                showCurlyBrackets();
+                break;
+            case "curlybracketsdevice":
+                showCurlyBracketsDevice();
+                break;
             case "theme":
                 editTheme();
                 break;
@@ -986,6 +992,20 @@ public class PerformanceGestures {
     // Sticky notes settings
     public void stickySettings() {
         actionInterface.navigateToFragment(c.getString(R.string.deeplink_sticky_notes),0);
+    }
+
+    // Curly brackets
+    public void showCurlyBrackets() {
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean("curlyBrackets",!mainActivityInterface.getPreferences().getMyPreferenceBoolean("curlyBrackets",true));
+        mainActivityInterface.getProcessSong().updateProcessingPreferences();
+        mainActivityInterface.refreshSong();
+        displayInterface.updateDisplay("setSongContentPrefs");
+    }
+    public void showCurlyBracketsDevice() {
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean("curlyBracketsDevice",!mainActivityInterface.getPreferences().getMyPreferenceBoolean("curlyBracketsDevice",false));
+        mainActivityInterface.getProcessSong().updateProcessingPreferences();
+        mainActivityInterface.refreshSong();
+        displayInterface.updateDisplay("setSongContentPrefs");
     }
 
     // Increase the autoscroll speed

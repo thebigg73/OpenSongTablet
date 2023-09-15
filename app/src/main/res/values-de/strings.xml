@@ -241,6 +241,7 @@
     <string name="crossfade_time">Überblendzeit</string>
     <string name="curly_brackets_hide">Geschweifte Klammer verbergen {…}</string>
     <string name="curly_brackets_hide_info">Behandeln Sie Text in geschweiften Klammern nur als Leistungshinweise. Diese werden während der Präsentation ausgeblendet.</string>
+    <string name="curly_brackets_hide_info_device">Text in geschweiften Klammern auf diesem Gerät ausblenden (und angeschlossene Displays, wenn es sich im Leistungsmodus befindet)</string>
     <string name="current_location">"Aktueller Speicherort"</string>
     <string name="custom">Benutzerdefiniert</string>
     <string name="custom_background">"Hintergrund Benutzerdefinierter Tag"</string>
@@ -261,6 +262,7 @@
     <string name="delete_folder_info">Song-Unterverzeichnis löschen</string>
     <string name="delete_folder_warning">Wenn Sie dieses Unterverzeichnis löschen, werden auch alle darin enthaltenen Songs oder Ordner gelöscht. Sie können diese Änderung nicht rückgängig machen! Bitte stellen Sie sicher, dass Sie Sicherungskopien ALLER Ihrer Dateien erstellt und gespeichert haben, bevor Sie fortfahren!!!</string>
     <string name="delete_song_warning">Sie können diese Aktion nicht rückgängig machen. Bitte stellen Sie sicher, dass Sie für alle Fälle ein Backup erstellt haben!</string>
+    <string name="device">Gerät</string>
     <string name="display">"Anzeige"</string>
     <string name="display_settings">Anzeigeeinstellungen ändern (was Sie auf dem Bildschirm sehen)</string>
     <string name="divisions">Abteilungen</string>
