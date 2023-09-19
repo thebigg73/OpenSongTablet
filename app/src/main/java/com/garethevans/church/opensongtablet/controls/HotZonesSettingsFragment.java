@@ -30,7 +30,8 @@ public class HotZonesSettingsFragment extends Fragment {
 
     private SettingsHotZonesBinding myView;
     private MainActivityInterface mainActivityInterface;
-    private String hot_zones_string="", website_hot_zones_string="";
+    private String hot_zones_string="", website_hot_zones_string="", inline_set_string="",
+        disable_left_string="", disable_center_string="";
     private String webAddress;
 
     @Override
@@ -62,6 +63,14 @@ public class HotZonesSettingsFragment extends Fragment {
             handler.post(this::setupDropDowns);
         });
 
+        // Fix the warnings to concatenate text;
+        String warning_left = "(" + inline_set_string + ") " + disable_left_string;
+        String warning_center = "(" +inline_set_string + ") " + disable_center_string;
+        myView.disableLeftHotZone.setText(warning_left);
+        myView.disableCenterHotZone.setText(warning_center);
+
+        checkHotZoneConflict();
+
         return myView.getRoot();
     }
 
@@ -69,6 +78,9 @@ public class HotZonesSettingsFragment extends Fragment {
         if (getContext()!=null) {
             hot_zones_string = getString(R.string.hot_zones);
             website_hot_zones_string = getString(R.string.website_hot_zones);
+            inline_set_string = getContext().getString(R.string.set_inline);
+            disable_left_string = getContext().getString(R.string.hot_zone_left_disabled);
+            disable_center_string = getContext().getString(R.string.hot_zone_center_disabled);
         }
     }
 
@@ -143,6 +155,15 @@ public class HotZonesSettingsFragment extends Fragment {
                     mainActivityInterface.getHotZones().setHotZoneBottomCenterLong(code);
                     break;
             }
+            checkHotZoneConflict();
         }
+    }
+
+    private void checkHotZoneConflict() {
+        boolean inlineSet = mainActivityInterface.getPreferences().getMyPreferenceBoolean("inlineSet",false);
+        float inlineSetWidth = mainActivityInterface.getPreferences().getMyPreferenceFloat("inlineSetWidth",0.3f);
+
+        myView.disableLeftHotZone.setVisibility(inlineSet ? View.VISIBLE:View.GONE);
+        myView.disableCenterHotZone.setVisibility((inlineSet && inlineSetWidth>0.45) ? View.VISIBLE:View.GONE);
     }
 }

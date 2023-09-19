@@ -3,6 +3,7 @@ package com.garethevans.church.opensongtablet.controls;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.View;
 
 import com.garethevans.church.opensongtablet.R;
@@ -73,22 +74,29 @@ public class HotZones {
     }
 
     private void checkIfRequired() {
+        // Check hotzone required
         if (!mainActivityInterface.getMode().equals(mode_performance)) {
             hotZoneTopLeftView.setVisibility(View.GONE);
             hotZoneTopCenterView.setVisibility(View.GONE);
             hotZoneBottomCenterView.setVisibility(View.GONE);
 
         } else {
+            // If the inline set is open the top left zone is disabled
+            // If the inline set size is greater than 40%, the center zones are also disabled
+            boolean inlineSet = mainActivityInterface.getPreferences().getMyPreferenceBoolean("inlineSet",false);
+            float inlineSetWidth = mainActivityInterface.getPreferences().getMyPreferenceFloat("inlineSetWidth",0.3f);
+
+            Log.d(TAG,"checkIfRequired()  inlineSet:"+inlineSet+"  width:"+inlineSetWidth);
             hotZoneTopLeftView.setVisibility(
-                    hotZoneTopLeftShort != null && hotZoneTopLeftLong != null &&
+                    hotZoneTopLeftShort != null && hotZoneTopLeftLong != null && !inlineSet &&
                             (!hotZoneTopLeftShort.isEmpty() || !hotZoneTopLeftLong.isEmpty()) ?
                             View.VISIBLE : View.GONE);
             hotZoneTopCenterView.setVisibility(
-                    hotZoneTopCenterShort != null && hotZoneTopCenterLong != null &&
+                    hotZoneTopCenterShort != null && hotZoneTopCenterLong != null && (!inlineSet || inlineSetWidth<0.5f) &&
                             (!hotZoneTopCenterShort.isEmpty() || !hotZoneTopCenterLong.isEmpty()) ?
                             View.VISIBLE : View.GONE);
             hotZoneBottomCenterView.setVisibility(
-                    hotZoneBottomCenterShort != null && hotZoneBottomCenterLong != null &&
+                    hotZoneBottomCenterShort != null && hotZoneBottomCenterLong != null && (!inlineSet || inlineSetWidth<0.4f) &&
                             (!hotZoneBottomCenterShort.isEmpty() || !hotZoneBottomCenterLong.isEmpty()) ?
                             View.VISIBLE : View.GONE);
             // Update the listeners
@@ -228,5 +236,16 @@ public class HotZones {
 
     private boolean isScrollOnlyZone(String zoneShort, String zoneLong, String direction) {
         return (zoneShort.equals(direction) && zoneLong.isEmpty()) || (zoneShort.isEmpty() && zoneLong.equals(direction));
+    }
+
+    // If the
+    public void enableTopLeft(boolean enabled) {
+        hotZoneTopLeftView.setVisibility(enabled ? View.VISIBLE:View.GONE);
+    }
+    public void enableTopCenter(boolean enabled) {
+        hotZoneTopCenterView.setVisibility(enabled ? View.VISIBLE:View.GONE);
+    }
+    public void enableBottomCenter(boolean enabled) {
+        hotZoneTopCenterView.setVisibility(enabled ? View.VISIBLE:View.GONE);
     }
 }

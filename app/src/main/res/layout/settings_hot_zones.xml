@@ -94,6 +94,18 @@
             android:layout_height="wrap_content"
             android:text="@string/hot_zone_rationale"/>
 
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/disableLeftHotZone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/hot_zone_left_disabled"
+                android:visibility="gone"/>
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/disableCenterHotZone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/hot_zone_center_disabled"
+                android:visibility="gone"/>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

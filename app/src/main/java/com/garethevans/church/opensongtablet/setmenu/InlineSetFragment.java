@@ -53,6 +53,9 @@ public class InlineSetFragment extends Fragment {
         // Set up listeners
         setupListeners();
 
+        // Check the hot zone warnings
+        checkHotZoneConflict();
+
         return myView.getRoot();
     }
 
@@ -109,6 +112,7 @@ public class InlineSetFragment extends Fragment {
         } else {
             linearLayout.setVisibility(View.GONE);
         }
+        checkHotZoneConflict();
     }
     private class MyChangeListener implements Slider.OnChangeListener {
         private final String which;
@@ -127,6 +131,7 @@ public class InlineSetFragment extends Fragment {
                     myView.widthSliderPresenter.setHint(hint);
                     break;
             }
+            checkHotZoneConflict();
         }
     }
     private class MySliderTouchListener implements Slider.OnSliderTouchListener {
@@ -148,6 +153,12 @@ public class InlineSetFragment extends Fragment {
                     mainActivityInterface.getPreferences().setMyPreferenceFloat("inlineSetWidthPresenter", myView.widthSliderPresenter.getValue() / 100f);
                     break;
             }
+            checkHotZoneConflict();
         }
+    }
+
+    private void checkHotZoneConflict() {
+        myView.disableLeftHotZone.setVisibility(myView.showInlineSet.getChecked() ? View.VISIBLE:View.GONE);
+        myView.disableCenterHotZone.setVisibility((myView.showInlineSet.getChecked() && myView.widthSlider.getValue()>45) ? View.VISIBLE:View.GONE);
     }
 }
