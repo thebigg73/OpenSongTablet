@@ -41,7 +41,7 @@ public class HotZonesSettingsFragment extends Fragment {
         mainActivityInterface.updateToolbarHelp(webAddress);
     }
 
-    @Override
+    @Overridepd
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mainActivityInterface = (MainActivityInterface) context;
