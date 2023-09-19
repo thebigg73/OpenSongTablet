@@ -28,7 +28,6 @@ import android.widget.RelativeLayout;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.GravityCompat;
@@ -95,14 +94,12 @@ import com.garethevans.church.opensongtablet.interfaces.DialogReturnInterface;
 import com.garethevans.church.opensongtablet.interfaces.DisplayInterface;
 import com.garethevans.church.opensongtablet.interfaces.EditSongFragmentInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.garethevans.church.opensongtablet.interfaces.MidiAdapterInterface;
 import com.garethevans.church.opensongtablet.interfaces.NearbyInterface;
 import com.garethevans.church.opensongtablet.interfaces.NearbyReturnActionsInterface;
 import com.garethevans.church.opensongtablet.interfaces.SwipeDrawingInterface;
 import com.garethevans.church.opensongtablet.links.LinksFragment;
 import com.garethevans.church.opensongtablet.metronome.Metronome;
 import com.garethevans.church.opensongtablet.midi.Midi;
-import com.garethevans.church.opensongtablet.midi.MidiFragment;
 import com.garethevans.church.opensongtablet.nearby.NearbyConnections;
 import com.garethevans.church.opensongtablet.nearby.NearbyConnectionsFragment;
 import com.garethevans.church.opensongtablet.pads.Pad;
@@ -169,7 +166,7 @@ import java.util.concurrent.Executors;
 
 public class MainActivity extends AppCompatActivity implements MainActivityInterface,
         ActionInterface, NearbyInterface, NearbyReturnActionsInterface, DialogReturnInterface,
-        MidiAdapterInterface, SwipeDrawingInterface, BatteryStatus.MyInterface,
+        SwipeDrawingInterface, BatteryStatus.MyInterface,
         DisplayInterface, EditSongFragmentInterface {
 
     private ActivityBinding myView;
@@ -2097,21 +2094,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
 
     // Song actions
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    @Override
-    public void sendMidiFromList(int item) {
-        if (isCurrentFragment(R.id.midiFragment)) {
-            ((MidiFragment) getCurrentFragment()).sendMidiFromList(item);
-        }
-    }
-
-    @Override
-    public void deleteMidiFromList(int item) {
-        if (isCurrentFragment(R.id.midiFragment)) {
-            ((MidiFragment) getCurrentFragment()).deleteMidiFromList(item);
-        }
-    }
-
     @Override
     public void registerMidiAction(boolean actionDown, boolean actionUp, boolean actionLong, String note) {
         // If pedalsFragment is open, send the midiNote and event there

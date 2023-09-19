@@ -318,6 +318,9 @@ public class EditSongFragmentLyrics extends Fragment {
         // Setting the position should open the keyboard
         myView.lyrics.requestFocus();
         myView.lyrics.setSelection(cursorPos+moveCursorBy);
+        // Also do this in 1 second time to allow for keyboard opening
+        myView.lyrics.postDelayed(() -> myView.lyrics.setSelection(cursorPos+moveCursorBy),1000);
+
         mainActivityInterface.getWindowFlags().showKeyboard();
         manualScrollTo();
     }

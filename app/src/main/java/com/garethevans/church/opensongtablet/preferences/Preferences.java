@@ -359,6 +359,7 @@ public class Preferences extends Activity {
     // inlineSet                        boolean     Should we show the inline setlist (def:false)
     // inlineSetPresenter               boolean     Should we show the inline setlist for Presenter mode (def:true)
     // inlineSetWidth                   float       The width (as a percentage of screen width) of the inline setlist (def:0.3f)
+    // inlineSetWidthPresenter          float       The width (as a percentage of screen width) of the inline setlist in Presenter Mode (def:0.3f)
     // intentAlreadyDealtWith           boolean     A note of if we have dealt with the intent to avoid multiple calls.  Reset to false on destroy (def: false)
     // language                         String      The locale set in the menu (def:en)
     // largePopups                      boolean     Should the drop down exposed popups be big (def:true)
@@ -412,6 +413,14 @@ public class Preferences extends Activity {
     // midiAction6                      String      Midi message allocated to midiAction6 assignable to action/pedal (def:0x99 0x2F 0x64) - tom 2
     // midiAction7                      String      Midi message allocated to midiAction7 assignable to action/pedal (def:0x99 0x2B 0x64) - tom 3
     // midiAction8                      String      Midi message allocated to midiAction8 assignable to action/pedal (def:0x99 0x37 0x64) - crash
+    // midiBoard                        int     Which MIDI board is selected (def:1)
+    // midiBoard{1-3}Title              String      The title of MIDI board 1-3 (def:"")
+    // midiBoard{1-3}Button{1-8}Name    String      The name of the MIDI buttons 1-8 on the boards 1-3 (def:"")
+    // midiBoard{1-3}Button{1-8}MIDI    String      The MIDI code of the MIDI buttons 1-8 on the boards 1-3 (def:"")
+    // midiBoard{1-3}Slider{1-2}Name    String      The name of the MIDI sliders 1-2 on the boards 1-3 (def:"")
+    // midiBoard{1-3}Slider{1-2}Channel int         The MIDI channel of the MIDI sliders 1-2 on the boards 1-3 (def:0)
+    // midiBoard{1-3}Slider{1-2}CC      int         The CC number of the MIDI sliders 1-2 on the boards 1-3 (def:0)
+    // midiBoard{1-3}Slider{1-2}Value   int         The value of the MIDI sliders 1-2 on the boards 1-3 (def:0)
     // midiSendAuto                     boolean     Should the midi info in the song be sent on song load automatically (def:false)
     // multiLineVerseKeepCompact        boolean     Should multiline verses be kept compact (def:false)
     // navBarKeepSpace                  boolean     Should the app avoid writing in the bottom navbar space (def:false)

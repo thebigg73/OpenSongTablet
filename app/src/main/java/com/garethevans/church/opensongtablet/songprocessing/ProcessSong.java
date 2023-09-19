@@ -2025,7 +2025,6 @@ public class ProcessSong {
                             // Get the text stylings
                             String linetype = getLineType(line);
                             boolean notLyricOrChord = linetype.equals("heading") || linetype.equals("comment") || linetype.equals("tab");
-                            Log.d(TAG,"line:"+line+"  (notLyricOrChord:"+notLyricOrChord+"  curlyBrackets:"+curlyBrackets+")");
                             boolean clearedCurlyText = false;
                             if (presentation && !performancePresentation) {
                                 if (notLyricOrChord) {

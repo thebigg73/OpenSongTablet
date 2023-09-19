@@ -237,7 +237,8 @@ public class SetMenuFragment extends Fragment {
     }
 
     public void updateItem(int position) {
-        if (position>=0) {
+        if (position>=0 && setListAdapter!=null && setListAdapter.getSetList()!=null &&
+                setListAdapter.getSetList().size()>position) {
             try {
                 String folder = mainActivityInterface.getCurrentSet().getFolder(position);
                 String filename = mainActivityInterface.getCurrentSet().getFilename(position);
