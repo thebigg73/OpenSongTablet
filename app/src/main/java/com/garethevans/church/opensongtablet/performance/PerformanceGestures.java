@@ -19,6 +19,7 @@ import com.garethevans.church.opensongtablet.customviews.MyZoomLayout;
 import com.garethevans.church.opensongtablet.interfaces.ActionInterface;
 import com.garethevans.church.opensongtablet.interfaces.DisplayInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.midi.MidiBoardBottomSheet;
 import com.garethevans.church.opensongtablet.midi.MidiSongBottomSheet;
 import com.garethevans.church.opensongtablet.pads.PadsBottomSheet;
 import com.garethevans.church.opensongtablet.pdf.PDFPageAdapter;
@@ -352,6 +353,9 @@ public class PerformanceGestures {
                 } else {
                     songMidi();
                 }
+                break;
+            case "midiboard":
+                openMidiBoard();
                 break;
             case "midisend":
                 toggleMidiSend();
@@ -1106,6 +1110,12 @@ public class PerformanceGestures {
     // Open the midi settings
     public void editMidi() {
         mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_midi),0);
+    }
+
+    // Open the MIDI board
+    public void openMidiBoard() {
+        MidiBoardBottomSheet midiBoardBottomSheet = new MidiBoardBottomSheet();
+        midiBoardBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"MidiBoardBottomSheet");
     }
 
     // Toggle auto MIDI send on/off

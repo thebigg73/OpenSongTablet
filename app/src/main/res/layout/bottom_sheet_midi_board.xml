@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/FullscreenBottomSheet"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <com.garethevans.church.opensongtablet.customviews.DialogHeader
+        android:id="@+id/dialogHeading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/midi_action" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/boardPage1"
+                    style="@style/LeftButton"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:padding="0dp"
+                    android:layout_weight="1"
+                    android:contentDescription="page 1"
+                    android:text="@string/number_1"
+                    tools:ignore="HardcodedText" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/boardPage2"
+                    style="@style/MiddleButton"
+                    app:backgroundTint="@color/colorAltPrimary"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:padding="0dp"
+                    android:contentDescription="page 2"
+                    android:layout_weight="1"
+                    android:text="@string/number_2"
+                    tools:ignore="HardcodedText" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/boardPage3"
+                    style="@style/RightButton"
+                    app:backgroundTint="@color/colorAltPrimary"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:padding="0dp"
+                    android:contentDescription="page 3"
+                    android:layout_weight="1"
+                    android:text="@string/number_3"
+                    tools:ignore="HardcodedText" />
+            </LinearLayout>
+            <TableRow style="@style/DividerLine" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/boardTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/largeText"
+                android:gravity="center"
+                android:text="@string/title"/>
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:baselineAligned="false">
+
+                <GridLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="460dp"
+                    android:rowCount="4"
+                    android:columnCount="2"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginStart="16dp">
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/boardButton1"
+                        app:layout_columnWeight="1"
+                        android:layout_width="92dp"
+                        android:layout_height="102dp"
+                        android:layout_margin="8dp"
+                        android:padding="0dp"
+                        android:ellipsize="end"
+                        android:maxLines="4"
+                        android:layout_gravity="center"
+                        android:textSize="@dimen/text_xsmall"
+                        android:contentDescription="1"
+                        tools:ignore="HardcodedText" />
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/boardButton2"
+                        app:layout_columnWeight="1"
+                        android:layout_width="92dp"
+                        android:layout_height="102dp"
+                        android:layout_margin="8dp"
+                        android:padding="0dp"
+                        android:ellipsize="end"
+                        android:maxLines="4"
+                        android:layout_gravity="center"
+                        android:textSize="@dimen/text_xsmall"
+                        android:contentDescription="2"
+                        tools:ignore="HardcodedText" />
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/boardButton3"
+                        app:layout_columnWeight="1"
+                        android:layout_width="92dp"
+                        android:layout_height="102dp"
+                        android:layout_margin="8dp"
+                        android:padding="0dp"
+                        android:ellipsize="end"
+                        android:maxLines="4"
+                        android:layout_gravity="center"
+                        android:textSize="@dimen/text_xsmall"
+                        android:contentDescription="3"
+                        tools:ignore="HardcodedText" />
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/boardButton4"
+                        app:layout_columnWeight="1"
+                        android:layout_width="92dp"
+                        android:layout_height="102dp"
+                        android:layout_margin="0dp"
+                        android:padding="0dp"
+                        android:ellipsize="end"
+                        android:maxLines="4"
+                        android:layout_gravity="center"
+                        android:textSize="@dimen/text_xsmall"
+                        android:contentDescription="4"
+                        tools:ignore="HardcodedText" />
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/boardButton5"
+                        app:layout_columnWeight="1"
+                        android:layout_width="92dp"
+                        android:layout_height="102dp"
+                        android:layout_margin="8dp"
+                        android:padding="0dp"
+                        android:ellipsize="end"
+                        android:maxLines="4"
+                        android:layout_gravity="center"
+                        android:textSize="@dimen/text_xsmall"
+                        android:contentDescription="5"
+                        tools:ignore="HardcodedText" />
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/boardButton6"
+                        app:layout_columnWeight="1"
+                        android:layout_width="92dp"
+                        android:layout_height="102dp"
+                        android:layout_margin="8dp"
+                        android:padding="0dp"
+                        android:ellipsize="end"
+                        android:maxLines="4"
+                        android:layout_gravity="center"
+                        android:textSize="@dimen/text_xsmall"
+                        android:contentDescription="6"
+                        tools:ignore="HardcodedText" />
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/boardButton7"
+                        app:layout_columnWeight="1"
+                        android:layout_width="92dp"
+                        android:layout_height="102dp"
+                        android:layout_margin="8dp"
+                        android:padding="0dp"
+                        android:ellipsize="end"
+                        android:maxLines="4"
+                        android:layout_gravity="center"
+                        android:textSize="@dimen/text_xsmall"
+                        android:contentDescription="7"
+                        tools:ignore="HardcodedText" />
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/boardButton8"
+                        app:layout_columnWeight="1"
+                        android:layout_width="92dp"
+                        android:layout_height="102dp"
+                        android:layout_margin="8dp"
+                        android:padding="0dp"
+                        android:ellipsize="end"
+                        android:maxLines="4"
+                        android:layout_gravity="center"
+                        android:textSize="@dimen/text_xsmall"
+                        android:contentDescription="8"
+                        tools:ignore="HardcodedText" />
+                </GridLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:gravity="end">
+                <com.garethevans.church.opensongtablet.customviews.MidiSlider
+                    android:id="@+id/boardSlider1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:gravity="center_horizontal"/>
+                <com.garethevans.church.opensongtablet.customviews.MidiSlider
+                    android:id="@+id/boardSlider2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:gravity="center_horizontal"/>
+                </LinearLayout>
+            </LinearLayout>
+            </HorizontalScrollView>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:text="@string/midi_board_click_or_long_click"/>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</LinearLayout>

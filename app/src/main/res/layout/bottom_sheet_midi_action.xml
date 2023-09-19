@@ -75,33 +75,29 @@
                     tools:ignore="HardcodedText" />
             </androidx.gridlayout.widget.GridLayout>
 
-            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
-                android:id="@+id/currentCode"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/midi_code_current"/>
             <TableRow style="@style/DividerLine"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-            <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
-                android:id="@+id/newCode"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start|top"
-                android:hint="@string/midi_code_new"/>
+                android:orientation="horizontal"
+                android:gravity="top">
 
-            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-                android:id="@+id/saveMidiCode"
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                    android:id="@+id/currentCode"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="@string/midi_code_current"/>
+
+                <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/editMidi"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end|center_vertical"
                 android:layout_marginStart="16dp"
-                android:text="@string/save"
-                app:icon="@drawable/save"/>
+                android:text="@string/edit"
+                app:icon="@drawable/pencil"/>
             </LinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

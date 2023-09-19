@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="460dp"
+    android:minWidth="64dp"
+    android:padding="0dp"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="64dp"
+        android:layout_height="380dp">
+
+        <com.google.android.material.slider.Slider
+            android:id="@+id/verticalSlider"
+            android:layout_width="380dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:contentDescription="@string/midi_value"
+            android:rotation="270"
+            android:value="60"
+            android:valueFrom="0"
+            android:valueTo="127" />
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/sliderValues"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minWidth="64dp"
+        android:padding="8dp"
+        android:orientation="vertical"
+        android:background="@color/colorSecondary">
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/sliderValue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/midi_value"
+        android:textSize="18sp" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/sliderName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/title" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/sliderMidi"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/midi"
+        android:textColor="@color/vlightgrey" />
+    </LinearLayout>
+
+</LinearLayout>

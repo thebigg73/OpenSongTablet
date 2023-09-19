@@ -24,6 +24,7 @@ public class MidiMessagesAdapter extends RecyclerView.Adapter<MidiAdapterViewHol
     private ItemTouchHelper itemTouchHelper;
     private ArrayList<MidiInfo> midiInfos;
     private final String TAG = "MidiMessagesAdapter";
+    private boolean fromSongMessages = true;
 
     // Provide a suitable constructor (depends on the kind of dataset)
     public MidiMessagesAdapter(Context c) {
@@ -62,9 +63,13 @@ public class MidiMessagesAdapter extends RecyclerView.Adapter<MidiAdapterViewHol
         String readableCommand = mi.readableCommand;
         String midiCommand = mi.midiCommand;
 
+        if (readableCommand==null || readableCommand.trim().isEmpty()) {
+            holder.vMidiReadable.setVisibility(View.GONE);
+        } else if (!readableCommand.trim().isEmpty()) {
+            holder.vMidiReadable.setVisibility(View.VISIBLE);
+        }
         holder.vMidiReadable.setText(readableCommand);
         holder.vMidiCommand.setText(midiCommand);
-
     }
 
     @NonNull
@@ -100,14 +105,17 @@ public class MidiMessagesAdapter extends RecyclerView.Adapter<MidiAdapterViewHol
 
         String thisCommand = midiInfos.get(fromPosition).midiCommand;
 
-        // Remove this item
-        mainActivityInterface.getMidi().removeFromSongMessages(fromPosition);
+        if (fromSongMessages) {
+            // Remove this item
+            mainActivityInterface.getMidi().removeFromSongMessages(fromPosition);
 
-        // Add to the new position
-        mainActivityInterface.getMidi().addToSongMessages(toPosition,thisCommand);
+            // Add to the new position
+            mainActivityInterface.getMidi().addToSongMessages(toPosition, thisCommand);
 
-        // Update the song midi messages and save to the song
-        mainActivityInterface.getMidi().updateSongMessages();
+            // Update the song midi messages and save to the song
+            mainActivityInterface.getMidi().updateSongMessages();
+
+        }
 
         // Notify the changes to this adapter
         MidiInfo midiInfo = midiInfos.get(fromPosition);
@@ -116,13 +124,19 @@ public class MidiMessagesAdapter extends RecyclerView.Adapter<MidiAdapterViewHol
         notifyItemMoved(fromPosition,toPosition);
     }
 
+    public void setFromSongMessages(boolean fromSongMessages) {
+        this.fromSongMessages = fromSongMessages;
+    }
+
     @Override
     public void onItemSwiped(int fromPosition) {
         Log.d(TAG,"onItemSwiped() from:"+fromPosition);
-        // Remove from the song messages
-        mainActivityInterface.getMidi().removeFromSongMessages(fromPosition);
-        // Update and ave the song messages
-        mainActivityInterface.getMidi().updateSongMessages();
+        if (fromSongMessages) {
+            // Remove from the song messages
+            mainActivityInterface.getMidi().removeFromSongMessages(fromPosition);
+            // Update and ave the song messages
+            mainActivityInterface.getMidi().updateSongMessages();
+        }
 
         // Remover from the adapter
         midiInfos.remove(fromPosition);
@@ -134,11 +148,14 @@ public class MidiMessagesAdapter extends RecyclerView.Adapter<MidiAdapterViewHol
     public void onItemClicked(int position) {
         Log.d(TAG,"onItemClicked() pos:"+position);
         // Send the midi message
-        mainActivityInterface.getMidi().sendMidi(position);
+        if (fromSongMessages) {
+            mainActivityInterface.getMidi().sendMidi(position);
+        }
     }
 
     @Override
     public void onContentChanged(int position) {
         Log.d(TAG,"onContentChaneges() pos:"+position);
     }
+
 }

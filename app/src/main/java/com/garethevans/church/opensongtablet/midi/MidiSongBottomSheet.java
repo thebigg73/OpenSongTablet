@@ -32,7 +32,7 @@ public class MidiSongBottomSheet extends BottomSheetDialogFragment {
     private LinearLayoutManager llm;
     private MidiMessagesAdapter midiMessagesAdapter;
     private final String TAG = "MidiSongBottomSheet";
-    private String website_midi_song_string="", nothing_selected_string="", deeplink_midi_string="";
+    private String website_midi_song_string="", nothing_selected_string="";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -83,7 +83,6 @@ public class MidiSongBottomSheet extends BottomSheetDialogFragment {
         if (getContext()!=null) {
             website_midi_song_string = getString(R.string.website_midi_song);
             nothing_selected_string = getString(R.string.nothing_selected);
-            deeplink_midi_string = getString(R.string.deeplink_midi);
         }
     }
     private void getMidiDeviceName() {
@@ -98,6 +97,7 @@ public class MidiSongBottomSheet extends BottomSheetDialogFragment {
     private void setupAdapter() {
         if (getContext()!=null) {
             midiMessagesAdapter = new MidiMessagesAdapter(getContext());
+            midiMessagesAdapter.setFromSongMessages(false);
             ItemTouchHelper.Callback callback = new MidiItemTouchHelper(midiMessagesAdapter);
             ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
             midiMessagesAdapter.setTouchHelper(itemTouchHelper);
@@ -109,6 +109,12 @@ public class MidiSongBottomSheet extends BottomSheetDialogFragment {
                 itemTouchHelper.attachToRecyclerView(myView.recyclerView);
             });
         }
+    }
+
+    public void updateSongMessages(String newMessages) {
+        mainActivityInterface.getSong().setMidi(newMessages.trim());
+        mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong(),false);
+        buildList();
     }
 
     private void buildList() {
@@ -139,9 +145,9 @@ public class MidiSongBottomSheet extends BottomSheetDialogFragment {
     }
 
     private void setupListeners() {
-        myView.midiSettings.setOnClickListener(v -> {
-            mainActivityInterface.navigateToFragment(deeplink_midi_string,0);
-            dismiss();
+       myView.songMidiEdit.setOnClickListener(v -> {
+            MidiShortHandBottomSheet midiShortHandBottomSheet = new MidiShortHandBottomSheet(null,MidiSongBottomSheet.this,"MidiSongBottomSheet",null,mainActivityInterface.getSong().getMidi());
+            midiShortHandBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"MidiShortHandBottomSheet");
         });
     }
 }

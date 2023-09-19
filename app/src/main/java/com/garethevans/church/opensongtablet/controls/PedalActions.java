@@ -182,6 +182,7 @@ public class PedalActions {
         addString("gestures",c.getString(R.string.custom_gestures));
         addString("pedals",c.getString(R.string.pedal)+settings);
         addString("midi",c.getString(R.string.midi_send));
+        addString("midiboard",c.getString(R.string.midi_board));
         addString("midisettings",c.getString(R.string.midi)+settings);
         addString("midisend",c.getString(R.string.midi_auto)+onoff);
         addString("beatbuddystart",c.getString(R.string.beat_buddy)+" "+c.getString(R.string.start));

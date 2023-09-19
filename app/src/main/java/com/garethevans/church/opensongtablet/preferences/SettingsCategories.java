@@ -185,7 +185,7 @@ public class SettingsCategories extends Fragment {
         myView.modeButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null, R.id.modeFragment));
         myView.midiButton.setOnClickListener(v -> {
             // This button is only available if we are running Marshmallow or later
-            mainActivityInterface.navigateToFragment(null, R.id.midiFragment);
+            mainActivityInterface.navigateToFragment(null, R.id.midi_graph);
         });
         myView.profilesButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null, R.id.profileFragment));
         myView.ccliButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null, R.id.settingsCCLI));

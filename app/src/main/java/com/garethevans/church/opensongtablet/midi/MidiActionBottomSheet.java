@@ -23,21 +23,11 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 public class MidiActionBottomSheet extends BottomSheetDialogFragment {
 
-    public MidiActionBottomSheet() {
-        // Default constructor required to avoid re-instantiation failures
-        // Just close the bottom sheet
-        midiCode = "";
-        dismiss();
-    }
-
-    public MidiActionBottomSheet(String midiCode) {
-        this.midiCode = midiCode;
-    }
     private MainActivityInterface mainActivityInterface;
     private BottomSheetMidiActionBinding myView;
     @SuppressWarnings({"unused","FieldCanBeLocal"})
-    private final String midiCode, TAG = "MidiActionBottomSheet";
-    private String website_midi_actions="", success_string="";
+    private final String TAG = "MidiActionBottomSheet";
+    private String website_midi_actions="", currentCode;
     private int on, off, which;
 
     @Override
@@ -62,7 +52,9 @@ public class MidiActionBottomSheet extends BottomSheetDialogFragment {
     @Nullable
     @org.jetbrains.annotations.Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable @org.jetbrains.annotations.Nullable ViewGroup container,
+                             @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         myView = BottomSheetMidiActionBinding.inflate(inflater,container,false);
 
         prepareStrings();
@@ -73,9 +65,6 @@ public class MidiActionBottomSheet extends BottomSheetDialogFragment {
         setWhich(1);
         changeHighlight();
 
-        myView.newCode.setText(midiCode);
-        mainActivityInterface.getProcessSong().editBoxToMultiline(myView.newCode);
-        mainActivityInterface.getProcessSong().stretchEditBoxToLines(myView.newCode,4);
         myView.currentCode.setHint(mainActivityInterface.getMidi().getMidiAction(1));
 
         setListeners();
@@ -86,7 +75,6 @@ public class MidiActionBottomSheet extends BottomSheetDialogFragment {
     private void prepareStrings() {
         if (getContext()!=null) {
             website_midi_actions = getString(R.string.website_midi_actions);
-            success_string = getString(R.string.success);
 
             // Also set the colours
             on = getResources().getColor(R.color.colorSecondary);
@@ -104,9 +92,9 @@ public class MidiActionBottomSheet extends BottomSheetDialogFragment {
         myView.action7.setOnClickListener(new MyOnClick(7));
         myView.action8.setOnClickListener(new MyOnClick(8));
 
-        myView.saveMidiCode.setOnClickListener(view -> {
-            mainActivityInterface.getMidi().setMidiAction(which,myView.newCode.getText().toString());
-            mainActivityInterface.getShowToast().doIt(success_string);
+        myView.editMidi.setOnClickListener(view -> {
+            MidiShortHandBottomSheet midiShortHandBottomSheet = new MidiShortHandBottomSheet(null,MidiActionBottomSheet.this,"MidiActionBottomSheet",null,currentCode);
+            midiShortHandBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"MidiShortHandBottomSheet");
         });
     }
 
@@ -137,9 +125,17 @@ public class MidiActionBottomSheet extends BottomSheetDialogFragment {
             Log.d(TAG,"whichButton:"+whichButton);
             setWhich(whichButton);
             view.post(MidiActionBottomSheet.this::changeHighlight);
-            String currentCode = mainActivityInterface.getMidi().getMidiAction(whichButton);
+            currentCode = mainActivityInterface.getMidi().getMidiAction(whichButton);
             myView.currentCode.setHint(currentCode);
         }
+    }
+
+    public void updateAction(String newCode) {
+        currentCode = newCode;
+        // Update the preference
+        mainActivityInterface.getMidi().setMidiAction(which,newCode);
+        // Update the views
+        myView.currentCode.setHint(mainActivityInterface.getMidi().getMidiAction(which));
     }
 
 }

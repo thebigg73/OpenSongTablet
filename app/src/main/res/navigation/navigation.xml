@@ -105,7 +105,7 @@
                 app:destination="@id/display_graph" />
             <action
                 android:id="@+id/action_preferencesFragment_to_midiFragment"
-                app:destination="@id/midiFragment" />
+                app:destination="@id/midi_graph" />
             <action
                 android:id="@+id/action_preferencesFragment_to_profileFragment"
                 app:destination="@id/profileFragment" />
@@ -372,15 +372,6 @@
         </navigation>
 
         <!-- Midi -->
-        <fragment
-            android:id="@+id/midiFragment"
-            android:name="com.garethevans.church.opensongtablet.midi.MidiFragment"
-            android:label="settings_midi"
-            tools:layout="@layout/settings_midi">
-            <deepLink
-                android:id="@+id/deepLinkMidi"
-                app:uri="@string/deeplink_midi" />
-        </fragment>
 
         <!-- Profiles -->
         <fragment
@@ -939,6 +930,51 @@
                 android:id="@+id/deepLinkWebServer"
                 app:uri="@string/website_web_server"/>
         </fragment>
+        <navigation android:id="@+id/midi_graph"
+            app:startDestination="@id/midiOptionsFragment">
+            <fragment
+                android:id="@+id/midiFragment"
+                android:name="com.garethevans.church.opensongtablet.midi.MidiFragment"
+                android:label="settings_midi"
+                tools:layout="@layout/settings_midi">
+                <deepLink
+                    android:id="@+id/deepLinkMidi"
+                    app:uri="@string/deeplink_midi" />
+            </fragment>
+            <fragment
+                android:id="@+id/midiOptionsFragment"
+                android:name="com.garethevans.church.opensongtablet.midi.MidiOptionsFragment"
+                android:label="options_midi"
+                tools:layout="@layout/settings_midi_options" >
+                <action
+                    android:id="@+id/action_midiOptionsFragment_to_midiFragment"
+                    app:destination="@id/midiFragment" />
+                <action
+                    android:id="@+id/action_midiOptionsFragment_to_midiSongActions"
+                    app:destination="@id/midiSongActionsBottomSheet" />
+                <action
+                    android:id="@+id/action_midiOptionsFragment_to_midiBoardBottomSheet"
+                    app:destination="@id/midiBoardBottomSheet" />
+                <action
+                    android:id="@+id/action_midiOptionsFragment_to_midiCustomActionsBottomSheet"
+                    app:destination="@id/midiCustomActionsBottomSheet" />
+            </fragment>
+            <dialog
+                android:id="@+id/midiSongActionsBottomSheet"
+                android:name="com.garethevans.church.opensongtablet.midi.MidiSongBottomSheet"
+                android:label="midi_song_actions"
+                tools:layout="@layout/bottom_sheet_song_midi"/>
+            <dialog
+                android:id="@+id/midiCustomActionsBottomSheet"
+                android:name="com.garethevans.church.opensongtablet.midi.MidiActionBottomSheet"
+                android:label="midi_custom_actions"
+                tools:layout="@layout/bottom_sheet_midi_action"/>
+            <dialog
+                android:id="@+id/midiBoardBottomSheet"
+                android:name="com.garethevans.church.opensongtablet.midi.MidiSongBottomSheet"
+                android:label="midi_song_actions"
+                tools:layout="@layout/bottom_sheet_midi_board"/>
+        </navigation>
 
     </navigation>
 

@@ -44,14 +44,14 @@ public class Midi {
         this.c = c;
         mainActivityInterface = (MainActivityInterface) c;
         midiDelay = mainActivityInterface.getPreferences().getMyPreferenceInt("midiDelay", 100);
-        midiAction1 = mainActivityInterface.getPreferences().getMyPreferenceString("midiAction1", "0x99 0x24 0x64");
-        midiAction2 = mainActivityInterface.getPreferences().getMyPreferenceString("midiAction2", "0x99 0x26 0x64");
-        midiAction3 = mainActivityInterface.getPreferences().getMyPreferenceString("midiAction3", "0x99 0x2A 0x64");
-        midiAction4 = mainActivityInterface.getPreferences().getMyPreferenceString("midiAction4", "0x99 0x2E 0x64");
-        midiAction5 = mainActivityInterface.getPreferences().getMyPreferenceString("midiAction5", "0x99 0x30 0x64");
-        midiAction6 = mainActivityInterface.getPreferences().getMyPreferenceString("midiAction6", "0x99 0x2F 0x64");
-        midiAction7 = mainActivityInterface.getPreferences().getMyPreferenceString("midiAction7", "0x99 0x2B 0x64");
-        midiAction8 = mainActivityInterface.getPreferences().getMyPreferenceString("midiAction8", "0x99 0x37 0x64");
+        midiAction1 = mainActivityInterface.getPreferences().getMyPreferenceString("midiAction1", "MIDI10:NO36:100");
+        midiAction2 = mainActivityInterface.getPreferences().getMyPreferenceString("midiAction2", "MIDI10:NO38:100");
+        midiAction3 = mainActivityInterface.getPreferences().getMyPreferenceString("midiAction3", "MIDI10:NO42:100");
+        midiAction4 = mainActivityInterface.getPreferences().getMyPreferenceString("midiAction4", "MIDI10:NO46:100");
+        midiAction5 = mainActivityInterface.getPreferences().getMyPreferenceString("midiAction5", "MIDI10:NO48:100");
+        midiAction6 = mainActivityInterface.getPreferences().getMyPreferenceString("midiAction6", "MIDI10:NO47:100");
+        midiAction7 = mainActivityInterface.getPreferences().getMyPreferenceString("midiAction7", "MIDI10:NO43:100");
+        midiAction8 = mainActivityInterface.getPreferences().getMyPreferenceString("midiAction8", "MIDI10:NO55:100");
         midiSendAuto = mainActivityInterface.getPreferences().getMyPreferenceBoolean("midiSendAuto",true);
         shortHandMidi = new ShortHandMidi(c);
     }
@@ -899,6 +899,7 @@ public class Midi {
     }
 
     public String checkForShortHandMIDI(String textToCheck) {
+        Log.d(TAG,"textToCheck:"+textToCheck);
         return shortHandMidi.convertShorthandToMIDI(textToCheck);
     }
 

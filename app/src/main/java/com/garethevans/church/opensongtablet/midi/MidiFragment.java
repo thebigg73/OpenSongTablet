@@ -19,8 +19,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.ParcelUuid;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,12 +32,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
 import com.garethevans.church.opensongtablet.databinding.SettingsMidiBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.slider.Slider;
@@ -61,15 +55,10 @@ public class MidiFragment extends Fragment {
     private BluetoothLeScanner bluetoothLeScanner;
     private MidiDeviceInfo[] usbMidiDevices;
     private ArrayList<BluetoothDevice> bluetoothDevices;
-    private ArrayList<String> usbNames, usbManufact, midiCommand, midiChannel,
-            midiNote, midiValue;
-    private ArrayList<MidiInfo> midiInfos;
-    private MidiMessagesAdapter midiMessagesAdapter;
-    private LinearLayoutManager llm;
+    private ArrayList<String> usbNames, usbManufact;
     ActivityResultLauncher<String[]> midiScanPermissions;
     private String midi_string="", website_midi_connections_string="", permissions_refused_string="",
-            note_string="", on_string="", off_string="", midi_program_string="", okay_string="",
-            midi_controller_string="", unknown_string="", error_string="", midi_error_string="";
+            okay_string="", unknown_string="", error_string="";
     private String webAddress;
 
     @Override
@@ -105,17 +94,8 @@ public class MidiFragment extends Fragment {
         executorService.execute(() -> {
             Handler handler = new Handler(Looper.getMainLooper());
             handler.post(() -> {
-                // Set up the drop downs
-                setUpMidiCommands();
-                setUpMidiChannels();
-                setUpMidiValues();
-                setUpMidiNotes();
-
                 // Set known values
                 setValues();
-                setupAdapter();
-                buildList();
-                //initialiseCurrentMessages();
 
                 // Hide the desired views
                 hideShowViews(true, false);
@@ -132,15 +112,9 @@ public class MidiFragment extends Fragment {
             midi_string = getString(R.string.midi);
             website_midi_connections_string = getString(R.string.website_midi_connections);
             permissions_refused_string = getString(R.string.permissions_refused);
-            note_string = getString(R.string.note);
-            on_string = getString(R.string.on);
-            off_string = getString(R.string.off);
-            midi_program_string = getString(R.string.midi_program);
-            midi_controller_string = getString(R.string.midi_controller);
             unknown_string = getString(R.string.unknown);
-            error_string = getString(R.string.error);
+            error_string = getString(R.string.midi_error);
             okay_string = getString(R.string.okay);
-            midi_error_string = getString(R.string.midi_error);
         }
     }
     private void setPermissions() {
@@ -153,78 +127,10 @@ public class MidiFragment extends Fragment {
         });
     }
 
-    // Set the values in the field
-    private void setUpMidiCommands() {
-        midiCommand = new ArrayList<>();
-        midiCommand.add(note_string + " " + on_string);
-        midiCommand.add(note_string + " " + off_string);
-        midiCommand.add(midi_program_string);
-        midiCommand.add(midi_controller_string);
-        midiCommand.add("MSB");
-        midiCommand.add("LSB");
-        if (getContext()!=null) {
-            ExposedDropDownArrayAdapter midiCommandAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.midiCommand, R.layout.view_exposed_dropdown_item, midiCommand);
-            myView.midiCommand.setAdapter(midiCommandAdapter);
-        }
-    }
-
-    private void setUpMidiChannels() {
-        // Remember that midi channel 1-16 are actually 0-15 in code
-        midiChannel = new ArrayList<>();
-        int i = 1;
-        while (i <= 16) {
-            midiChannel.add("" + i);
-            i++;
-        }
-        if (getContext()!=null) {
-            ExposedDropDownArrayAdapter midiChannelAdpter = new ExposedDropDownArrayAdapter(getContext(), myView.midiChannel, R.layout.view_exposed_dropdown_item, midiChannel);
-            myView.midiChannel.setAdapter(midiChannelAdpter);
-        }
-    }
-
-    private void setUpMidiValues() {
-        midiValue = new ArrayList<>();
-        int i = 0;
-        while (i <= 127) {
-            midiValue.add("" + i);
-            i++;
-        }
-        if (getContext()!=null) {
-            ExposedDropDownArrayAdapter midiValueAdapter = new ExposedDropDownArrayAdapter(getContext(), R.layout.view_exposed_dropdown_item, midiValue);
-            myView.midiController.setAdapter(midiValueAdapter);
-            myView.midiValue.setAdapter(midiValueAdapter);
-            myView.midiVelocity.setAdapter(midiValueAdapter);
-            myView.midiController.setArray(getContext(), midiValue);
-            myView.midiValue.setArray(getContext(), midiValue);
-            myView.midiVelocity.setArray(getContext(), midiValue);
-        }
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    private void setUpMidiNotes() {
-        // Return an array adapter with music note representation of values 0-127
-        midiNote = new ArrayList<>();
-        int i = 0;
-        while (i <= 127) {
-            midiNote.add(mainActivityInterface.getMidi().getNoteFromInt(i));
-            i++;
-        }
-        if (getContext()!=null) {
-            ExposedDropDownArrayAdapter midiNoteAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.midiNote, R.layout.view_exposed_dropdown_item, midiNote);
-            myView.midiNote.setAdapter(midiNoteAdapter);
-        }
-    }
-
     private void setValues() {
         displayCurrentDevice();
         myView.enableBluetooth.setChecked(allowBluetoothSearch(mainActivityInterface.getMidi().getIncludeBluetoothMidi()));
         myView.autoSendBluetooth.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("midiSendAuto",false));
-        myView.midiCommand.setText(midiCommand.get(2));     // Default to program change
-        myView.midiChannel.setText(midiChannel.get(0));     // Default to 0->1
-        myView.midiNote.setText(midiNote.get(60));          // Default to C5 (used instead of midiProgram)
-        myView.midiController.setText(midiValue.get(0));    // This is the program number (for midi controller only)
-        myView.midiValue.setText(midiValue.get(0));         // This is for the program number/value (alt to midiNote)
-        myView.midiVelocity.setText(midiValue.get(99));     // This is the velocity
         myView.midiDelay.setAdjustableButtons(true);
         myView.midiDelay.setHint(mainActivityInterface.getMidi().getMidiDelay() + "ms");
         myView.midiDelay.setValue(mainActivityInterface.getMidi().getMidiDelay());
@@ -266,46 +172,6 @@ public class MidiFragment extends Fragment {
 
         // Set the pedal preference
         myView.midiAsPedal.setChecked(mainActivityInterface.getPedalActions().getMidiAsPedal());
-
-        // Now deal with the note, controller, value, velocity drop downs
-        if (midiCommand.indexOf(myView.midiCommand.getText().toString()) < 2) {
-            // Note on or off
-            // Note on needs the velocity, note off doesn't
-            setVisibilites(true, false, false, !myView.midiCommand.getText().toString().contains(off_string));
-
-        } else if (initialise || midiCommand.indexOf(myView.midiCommand.getText().toString()) == 2) {
-            // Program change
-            setVisibilites(false, false, true, false);
-
-            // Controller is value 3, LSB/MSB is the remaining (>3)
-        } else {
-            setVisibilites(false, midiCommand.indexOf(myView.midiCommand.getText().toString()) >= 3, true, false);
-        }
-
-        getHexCodeFromDropDowns();
-    }
-
-    private void setVisibilites(boolean note, boolean controller, boolean value, boolean velocity) {
-        if (note) {
-            myView.midiNote.setVisibility(View.VISIBLE);
-        } else {
-            myView.midiNote.setVisibility(View.GONE);
-        }
-        if (controller) {
-            myView.midiController.setVisibility(View.VISIBLE);
-        } else {
-            myView.midiController.setVisibility(View.GONE);
-        }
-        if (value) {
-            myView.midiValue.setVisibility(View.VISIBLE);
-        } else {
-            myView.midiValue.setVisibility(View.GONE);
-        }
-        if (velocity) {
-            myView.midiVelocity.setVisibility(View.VISIBLE);
-        } else {
-            myView.midiVelocity.setVisibility(View.GONE);
-        }
     }
 
     // Set the view listeners
@@ -344,14 +210,6 @@ public class MidiFragment extends Fragment {
                 mainActivityInterface.getMidi().enableMidiListener();
             }
         }));
-        myView.midiCommand.addTextChangedListener(new MyTextWatcher());
-        myView.midiChannel.addTextChangedListener(new MyTextWatcher());
-        myView.midiNote.addTextChangedListener(new MyTextWatcher());
-        myView.midiController.addTextChangedListener(new MyTextWatcher());
-        myView.midiValue.addTextChangedListener(new MyTextWatcher());
-        myView.midiVelocity.addTextChangedListener(new MyTextWatcher());
-        myView.midiTest.setOnClickListener(v -> testTheMidiMessage(myView.midiCode.getText().toString()));
-        myView.midiAdd.setOnClickListener(v -> addMidiToList());
         myView.midiAsPedal.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked && mainActivityInterface.getMidi().getMidiDevice() != null &&
                     mainActivityInterface.getMidi().getMidiOutputPort() != null) {
@@ -361,29 +219,8 @@ public class MidiFragment extends Fragment {
                 mainActivityInterface.getMidi().disableMidiListener();
             }
         });
-
-        myView.midiAssign.setOnClickListener(view -> {
-            MidiActionBottomSheet midiActionBottomSheet = new MidiActionBottomSheet(myView.midiCode.getText().toString());
-            midiActionBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"MidiActionBottomSheet");
-        });
     }
 
-    private class MyTextWatcher implements TextWatcher {
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-        }
-
-        @RequiresApi(api = Build.VERSION_CODES.M)
-        @Override
-        public void afterTextChanged(Editable s) {
-            hideShowViews(false, false);
-            getHexCodeFromDropDowns();
-        }
-    }
 
     // Check permissions
     private boolean allowBluetoothSearch(boolean switchOn) {
@@ -518,7 +355,6 @@ public class MidiFragment extends Fragment {
             Log.d("d", "onScanFailed: " + errorCode);
         }
 
-
         @SuppressLint("MissingPermission")
         private void addBluetoothDevice(BluetoothDevice device) {
             Log.d("d", "device=" + device);
@@ -629,7 +465,7 @@ public class MidiFragment extends Fragment {
     }
 
 
-    // Send midi data
+    // Send midi data for testing
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void sendTestNote() {
         try {
@@ -674,32 +510,6 @@ public class MidiFragment extends Fragment {
 
         }
     }
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    private void testTheMidiMessage(String mm) {
-        // Test the midi message being sent
-        // First split by spaces
-        boolean success = false;
-        try {
-            Log.d(TAG,"test:"+mm);
-            //byte[] b = mainActivityInterface.getMidi().returnBytesFromHexText(mm);
-            success = mainActivityInterface.getMidi().sendMidiHexSequence(mm) == mainActivityInterface.getMidi().getMidiDelay();
-            //success = mainActivityInterface.getMidi().sendMidi(b);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        if (!success) {
-            mainActivityInterface.getShowToast().doIt(midi_error_string);
-        } else {
-            mainActivityInterface.getShowToast().doIt(okay_string);
-        }
-    }
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    // Called back from main activity
-    public void sendMidiFromList(int i) {
-        String s = midiMessagesAdapter.getMidiInfos().get(i).midiCommand;
-        testTheMidiMessage(s);
-    }
-
 
     // Connect or disconnect devices
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -728,7 +538,7 @@ public class MidiFragment extends Fragment {
                     if (!foundoutport) {
                         Log.d("d", "Output port found = " + pi.getPortNumber());
                         mainActivityInterface.getMidi().setMidiOutputPort(mainActivityInterface.getMidi().getMidiDevice().openOutputPort(pi.getPortNumber()));
-                        if (myView.midiAsPedal.isChecked()) {
+                        if (myView.midiAsPedal.getChecked()) {
                             mainActivityInterface.getMidi().enableMidiListener();
                         }
                         foundoutport = true;
@@ -742,98 +552,6 @@ public class MidiFragment extends Fragment {
         mainActivityInterface.getMidi().disconnectDevice();
         myView.progressBar.setVisibility(View.GONE);
         displayCurrentDevice();
-    }
-
-    // Deal with creating midi messages
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    private void getHexCodeFromDropDowns() {
-        int commandInt = midiCommand.indexOf(myView.midiCommand.getText().toString());
-        String command = mainActivityInterface.getMidi().getMidiCommand(commandInt);
-        int channel = midiChannel.indexOf(myView.midiChannel.getText().toString());
-        int noteorcontroller;
-        int valueorvelocity;
-        if (commandInt<2) {
-            // Using midi note
-            noteorcontroller = midiNote.indexOf(myView.midiNote.getText().toString());
-            valueorvelocity = midiValue.indexOf(myView.midiVelocity.getText().toString());
-        } else {
-            noteorcontroller = midiValue.indexOf(myView.midiController.getText().toString());
-            valueorvelocity = midiValue.indexOf(myView.midiValue.getText().toString());
-        }
-        String midiString;
-        try {
-            midiString = mainActivityInterface.getMidi().buildMidiString(command,channel,noteorcontroller,valueorvelocity);
-        } catch (Exception e) {
-            midiString = "0x00 0x00 0x00";
-        }
-        myView.midiCode.setText(midiString);
-    }
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    private void addMidiToList() {
-        try {
-            String command = myView.midiCode.getText().toString();
-            String readable = mainActivityInterface.getMidi().getReadableStringFromHex(command);
-            mainActivityInterface.getMidi().addToSongMessages(-1,command);
-
-            MidiInfo midiInfo = new MidiInfo();
-            midiInfo.midiCommand = command;
-            midiInfo.readableCommand = readable;
-            int position = midiMessagesAdapter.addToEnd(midiInfo);
-            midiMessagesAdapter.notifyItemInserted(position);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        // Save it to the song
-        mainActivityInterface.getMidi().updateSongMessages();
-    }
-    // Called back from MainActivity
-    public void deleteMidiFromList(int i) {
-        try {
-            midiMessagesAdapter.removeItem(i);
-            midiMessagesAdapter.notifyItemRemoved(i);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        // Save it to the song
-        mainActivityInterface.getMidi().updateSongMessages();
-    }
-
-    // Process song midi messages
-    private void setupAdapter() {
-        if (getContext()!=null) {
-            midiMessagesAdapter = new MidiMessagesAdapter(getContext());
-            ItemTouchHelper.Callback callback = new MidiItemTouchHelper(midiMessagesAdapter);
-            ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
-            midiMessagesAdapter.setTouchHelper(itemTouchHelper);
-            llm = new LinearLayoutManager(getContext());
-            llm.setOrientation(RecyclerView.VERTICAL);
-            myView.recyclerView.post(() -> {
-                myView.recyclerView.setLayoutManager(llm);
-                myView.recyclerView.setAdapter(midiMessagesAdapter);
-                itemTouchHelper.attachToRecyclerView(myView.recyclerView);
-            });
-        }
-    }
-    private void buildList() {
-        midiInfos = new ArrayList<>();
-        if (mainActivityInterface.getSong().getMidi()!=null) {
-            String[] bits = mainActivityInterface.getSong().getMidi().trim().split("\n");
-            for (String command : bits) {
-                if (command != null && !command.isEmpty() && getActivity() != null) {
-                    // Get a human readable version of the midi code
-                    String readable = mainActivityInterface.getMidi().getReadableStringFromHex(command);
-                    MidiInfo midiInfo = new MidiInfo();
-                    midiInfo.midiCommand = command;
-                    midiInfo.readableCommand = readable;
-                    midiInfos.add(midiInfo);
-                }
-            }
-
-            myView.recyclerView.post(() -> {
-                midiMessagesAdapter.updateMidiInfos(midiInfos);
-                myView.recyclerView.setVisibility(View.VISIBLE);
-            });
-        }
     }
 
     @Override

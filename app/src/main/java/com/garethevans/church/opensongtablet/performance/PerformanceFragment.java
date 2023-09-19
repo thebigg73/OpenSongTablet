@@ -1138,7 +1138,7 @@ public class PerformanceFragment extends Fragment {
             mainActivityInterface.getPad().autoStartPad();
 
             // Update any midi commands (if any)
-            if (mainActivityInterface.getMidi().getMidiSendAuto()) {
+            if (mainActivityInterface.getBeatBuddy().getBeatBuddyAutoLookup() || mainActivityInterface.getMidi().getMidiSendAuto()) {
 
                 int delay = 0;
                 // Send BeatBuddy autosong if required
@@ -1146,11 +1146,13 @@ public class PerformanceFragment extends Fragment {
                     delay = mainActivityInterface.getBeatBuddy().tryAutoSend(getContext(),mainActivityInterface,mainActivityInterface.getSong());
                 }
 
-                new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                    // These are addition to beatbuddy, so sent afterwards
-                    mainActivityInterface.getMidi().buildSongMidiMessages();
-                    mainActivityInterface.getMidi().sendSongMessages();
-                }, delay);
+                if (mainActivityInterface.getMidi().getMidiSendAuto()) {
+                    new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                        // These are addition to beatbuddy, so sent afterwards
+                        mainActivityInterface.getMidi().buildSongMidiMessages();
+                        mainActivityInterface.getMidi().sendSongMessages();
+                    }, delay);
+                }
             }
 
             // Update the view log usage
