@@ -429,6 +429,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                 displayIndex();
                 myView.progressBar.setVisibility(View.GONE);
                 buttonsEnabled(true);
+                updateSongCount();
                 // Update the filter row values
                 //setFolders();
             } catch (Exception e) {
@@ -686,6 +687,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                 e.printStackTrace();
             }
         }
+        updateSongCount();
         return songsFound;
     }
     public ArrayList<Song> getSongs() {
@@ -772,6 +774,16 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
 
     public void setHasShownMenuShowcase(boolean hasShownMenuShowcase) {
         this.hasShownMenuShowcase = hasShownMenuShowcase;
+    }
+
+    private void updateSongCount() {
+        Log.d(TAG,"updateSongCount()  songsfound="+songsFound.size());
+        myView.songTitleStuff.songCount.setVisibility(View.GONE);
+        if (songsFound!=null) {
+            myView.songTitleStuff.songCount.setVisibility(View.VISIBLE);
+            String count = ""+songsFound.size();
+            myView.songTitleStuff.songCount.setText(count);
+        }
     }
 
 }
