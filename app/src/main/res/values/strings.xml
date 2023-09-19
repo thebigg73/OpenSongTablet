@@ -467,6 +467,8 @@
     <string name="highlight">Highlighter</string>
     <string name="highlight_info">Edit highlighter notes / annotations</string>
     <string name="hot_zone_bottom_center">Bottom center</string>
+    <string name="hot_zone_center_disabled">Top and bottom center hot zones will be disabled</string>
+    <string name="hot_zone_left_disabled">Top left hot zone will be disabled</string>
     <string name="hot_zone_rationale">Other areas of the screen are reserved for page buttons, song information and are not available.  Hot zones will block other actions in these areas</string>
     <string name="hot_zone_top_center">Top center</string>
     <string name="hot_zone_top_left">Top left</string>
@@ -635,18 +637,25 @@
     <string name="midi_action">MIDI action</string>
     <string name="midi_action_assign">Assign to an MIDI action</string>
     <string name="midi_action_info">Choose which MIDI action should be assigned this code</string>
+    <string name="midi_actions">Custom MIDI commands</string>
+    <string name="midi_actions_info">Edit custom MIDI commands that can be assigned to actions (e.g. foot pedals, page buttons, hot zones)</string>
     <string name="midi_add">Add command</string>
     <string name="midi_auto">Auto send MIDI</string>
     <string name="midi_bluetooth">Connect Bluetooth device</string>
+    <string name="midi_board">MIDI board</string>
+    <string name="midi_board_click_or_long_click">Click on buttons to send MIDI.  Long press on buttons to edit them.</string>
+    <string name="midi_board_info">Use a collection of MIDI commands and sliders to control connected devices</string>
     <string name="midi_burst">Burst mode</string>
     <string name="midi_burst_info">Some devices rely on receiving multiple controller messages quickly.  When switched on, any MIDI command generated will be annotated by * as a burst command (i.e. sent several times in a row)</string>
     <string name="midi_channel">Channel</string>
     <string name="midi_code_current">MIDI code currently assigned to action</string>
     <string name="midi_code_new">New MIDI code</string>
     <string name="midi_commands">Edit song commands</string>
+    <string name="midi_commands_info">View and edit MIDI commands that are sent to connected devices when the song loads</string>
     <string name="midi_controller">Controller change</string>
     <string name="midi_delay">MIDI delay between messages</string>
     <string name="midi_description">Connect midi devices and change settings</string>
+    <string name="midi_device_settings">MIDI devices and settings</string>
     <string name="midi_devices">Available devices</string>
     <string name="midi_disconnect">Disconnect</string>
     <string name="midi_error">Please check MIDI connection</string>
@@ -657,6 +666,7 @@
     <string name="midi_pedal">Listen for incoming MIDI (e.g. footpedal)</string>
     <string name="midi_program">Program change</string>
     <string name="midi_send">Send MIDI</string>
+    <string name="midi_shorthand">MIDI shorthand</string>
     <string name="midi_test">Test</string>
     <string name="midi_value">Value</string>
     <string name="midi_velocity">Velocity</string>
@@ -692,6 +702,9 @@
     <string name="not_saved_folder">Please select a folder for your song</string>
     <string name="note">Note</string>
     <string name="nothing_selected">Nothing selected</string>
+    <string name="number_1" translatable="false">1</string>
+    <string name="number_2" translatable="false">2</string>
+    <string name="number_3" translatable="false">3</string>
     <string name="off">Off</string>
     <string name="okay">OK</string>
     <string name="on">On</string>
@@ -708,6 +721,7 @@
     <string name="optional">Optional</string>
     <string name="other">Other</string>
     <string name="other_options">Other options</string>
+    <string name="outro">Outro</string>
     <string name="override_fullautoscale">Override full autoscale to width only</string>
     <string name="override_scale_explanation">If the autoscale font size is less than the desired minimum font size, do you want the app to override to a different scaling method?  Using these options may force you to scroll horizontally and vertically in a song</string>
     <string name="override_widthautoscale">Override width only scaling to no autoscale</string>
@@ -1178,7 +1192,9 @@
     <string name="website_menu_song" translatable="false">https://www.opensongapp.com/user-manual/songs/song-menu</string>
     <string name="website_metronome" translatable="false">https://www.opensongapp.com/user-manual/songs/song-actions/metronome</string>
     <string name="website_midi_actions" translatable="false">https://www.opensongapp.com/user-manual/midi/midi-actions/</string>
+    <string name="website_midi_board" translatable="false">https://www.opensongapp.com/user-manual/midi/midi-board</string>
     <string name="website_midi_connections" translatable="false">https://www.opensongapp.com/user-manual/midi/midi-settings</string>
+    <string name="website_midi_shorthand" translatable="false">https://www.opensongapp.com/user-manual/midi/midi-shorthand</string>
     <string name="website_midi_song" translatable="false">https://www.opensongapp.com/user-manual/midi/song-midi-messages</string>
     <string name="website_music_score" translatable="false">https://www.opensongapp.com/user-manual/songs/song-actions/music-score</string>
     <string name="website_nearby" translatable="false">https://www.opensongapp.com/user-manual/connect-devices</string>
