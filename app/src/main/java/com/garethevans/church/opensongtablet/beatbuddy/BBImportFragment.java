@@ -369,6 +369,7 @@ public class BBImportFragment extends Fragment {
         boolean error = content==null || content.isEmpty();
         StringBuilder stringBuilder = new StringBuilder();
         StringBuilder newCSVText = new StringBuilder();
+        String cachedContent = content;
         if (!error) {
             content = content.replace("\n\"___DRUMKITS___\"\n","___SPLITHERE___");
             String[] bits = content.split("___SPLITHERE___");
@@ -468,6 +469,8 @@ public class BBImportFragment extends Fragment {
             myView.outcome.setHint(stringBuilder.toString());
             mainActivityInterface.getShowToast().doIt(success_string);
             mainActivityInterface.getBeatBuddy().setBeatBuddyUseImported(true);
+            // Make a copy in the OpenSong/Settings/ folder for future callback
+            mainActivityInterface.getStorageAccess().doStringWriteToFile("Settings","","MyBeatBuddyProject.csv",cachedContent);
         }
     }
 
