@@ -288,10 +288,19 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
             doTranspose();
         });
 
+        myView.convertToFlats.setOnClickListener(v -> {
+            mainActivityInterface.getTranspose().setConvertToFlats(true);
+            doTranspose();
+        });
+
+        myView.convertToSharps.setOnClickListener(v -> {
+            mainActivityInterface.getTranspose().setConvertToSharps(true);
+            doTranspose();
+        });
+
         myView.chordsFormat.setOnClickListener(view -> {
             mainActivityInterface.navigateToFragment(string_DeeplinkChordSettings,0);
             dismiss();
-
         });
 
         myView.transposeCapo.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -525,5 +534,6 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
             }
         });
     }
+
 
 }

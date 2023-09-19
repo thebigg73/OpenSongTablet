@@ -28,6 +28,7 @@ public class Transpose {
     private final Song miniTransposeSong = new Song();
     private final Context c;
     private final MainActivityInterface mainActivityInterface;
+    private boolean convertToFlats = false, convertToSharps = false;
 
     public Transpose(Context c) {
         this.c = c;
@@ -339,7 +340,12 @@ public class Transpose {
     public String transposeString(Song thisSong) {
 
         // Now we have the new key, we can decide if we use flats or not for any notes
-        boolean forceFlats = thisSong.getKey() != null && keyUsesFlats(thisSong.getKey());
+        boolean forceFlats = thisSong.getKey() != null && (keyUsesFlats(thisSong.getKey()) || convertToFlats);
+
+        // If we want to force sharps, overrule the forceFlats
+        if (convertToSharps) {
+            forceFlats = false;
+        }
 
         try {
             StringBuilder sb = new StringBuilder();
@@ -492,10 +498,19 @@ public class Transpose {
                 // Add it back up
                 sb.append(line);
             }
+
+            // Reset the convertToFlats/convertSharps
+            convertToFlats = false;
+            convertToSharps = false;
+
             // Return the string removing the added leading \n and trailing ¶
             return sb.substring(1).replace("¶", "");
 
         } catch (Exception e) {
+            // Reset the convertToFlats/convertSharps
+            convertToFlats = false;
+            convertToSharps = false;
+            // Just return the lyrics with no change as there was an issue
             return thisSong.getLyrics();
         }
     }
@@ -963,5 +978,13 @@ public class Transpose {
 
     public boolean originalKeyIsSet(Song thisSong) {
         return thisSong.getKeyOriginal()!=null && !thisSong.getKeyOriginal().isEmpty();
+    }
+
+    public void setConvertToFlats(boolean convertToFlats) {
+        this.convertToFlats = convertToFlats;
+    }
+
+    public void setConvertToSharps(boolean convertToSharps) {
+        this.convertToSharps = convertToSharps;
     }
 }
