@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:installLocation="auto">
 
-    <uses-sdk tools:overrideLibrary="com.google.oboe"/>
+    <uses-sdk tools:overrideLibrary="com.google.oboe|com.canhub.cropper"/>
 
     <uses-feature
         android:name="android.hardware.touchscreen"

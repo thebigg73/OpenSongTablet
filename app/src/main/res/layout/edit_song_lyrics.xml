@@ -28,11 +28,21 @@
                     app:icon="@drawable/ocr"
                     app:iconTint="@color/white" />
 
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/imageEdit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/ocr"
+                    android:text="@string/image_adjust"
+                    android:visibility="gone"
+                    app:icon="@drawable/crop_rotate"
+                    app:iconTint="@color/white" />
+
                 <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                     android:id="@+id/lyrics"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/ocr"
+                    android:layout_below="@+id/imageEdit"
                     android:layout_marginBottom="72dp"
                     android:hint="@string/lyrics"
                     android:inputType="text|textMultiLine"

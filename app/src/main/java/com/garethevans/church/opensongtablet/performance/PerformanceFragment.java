@@ -379,6 +379,7 @@ public class PerformanceFragment extends Fragment {
             doSongLoadStartTime = System.currentTimeMillis();
             mainActivityInterface.closeDrawer(true);
 
+            Log.d(TAG,"processingTestView:"+processingTestView);
             // Make sure we only do this once (reset at the end of 'dealwithstuffafterready')
             if (!processingTestView) {
                 processingTestView = true;
@@ -386,6 +387,8 @@ public class PerformanceFragment extends Fragment {
 
                 // IV - Set a boolean indicating song change
                 songChange = !mainActivityInterface.getSong().getFilename().equals(filename) || !mainActivityInterface.getSong().getFolder().equals(folder);
+
+                Log.d(TAG,"songChange:"+songChange);
 
                 // Remove capo
                 mainActivityInterface.updateOnScreenInfo("capoHide");
@@ -482,6 +485,7 @@ public class PerformanceFragment extends Fragment {
                             }
                 });
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -570,6 +574,8 @@ public class PerformanceFragment extends Fragment {
                         (mainActivityInterface.getSong().getFiletype().equals("PDF") &&
                                 android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP)) {
                     prepareXMLView();
+                } else {
+                    endProcessing();
                 }
             }
         }
@@ -688,8 +694,10 @@ public class PerformanceFragment extends Fragment {
 
         // Slide in
         myView.pageHolder.post(() -> {
-            myView.pageHolder.setVisibility(View.VISIBLE);
-            myView.pageHolder.startAnimation(animSlideIn);
+            if (myView!=null) {
+                myView.pageHolder.setVisibility(View.VISIBLE);
+                myView.pageHolder.startAnimation(animSlideIn);
+            }
         });
 
         // Deal with song actions to run after display (highlighter, notes, etc)
@@ -904,7 +912,6 @@ public class PerformanceFragment extends Fragment {
 
                         // Slide in
                         long QOSAdjustment = doSongLoadQOSTime - (System.currentTimeMillis() - doSongLoadStartTime);
-                        //Log.d(TAG, "Song QOS adjustment: " + Math.max(0, QOSAdjustment) + " (" + (doSongLoadQOSTime - QOSAdjustment) + ")");
 
                         myView.recyclerView.setVisibility(View.VISIBLE);
                         //IV - Reset zoom
@@ -1022,7 +1029,6 @@ public class PerformanceFragment extends Fragment {
 
                 // Slide in
                 long QOSAdjustment = doSongLoadQOSTime - (System.currentTimeMillis() - doSongLoadStartTime);
-                //Log.d(TAG, "Song QOS adjustment: " + Math.max(0, QOSAdjustment) + " (" + (doSongLoadQOSTime - QOSAdjustment) + ")");
 
                 myView.zoomLayout.postDelayed(() -> {
                     try {

@@ -105,13 +105,27 @@ public class EditSongFragmentLyrics extends Fragment {
         }
 
 
+        Log.d(TAG,"mainActivityInterface:"+mainActivityInterface);
+        Log.d(TAG,"mainActivityInterface.getSong():"+mainActivityInterface.getSong());
+        Log.d(TAG,"mainActivityInterface.getSong().getFiletype():"+mainActivityInterface.getSong().getFiletype());
+        if (mainActivityInterface.getSong().getFiletype()==null) {
+            mainActivityInterface.getStorageAccess().isIMGorPDF(mainActivityInterface.getSong());
+        }
+        Log.d(TAG,"mainActivityInterface:"+mainActivityInterface);
+        Log.d(TAG,"mainActivityInterface.getSong():"+mainActivityInterface.getSong());
+        Log.d(TAG,"mainActivityInterface.getSong().getFiletype():"+mainActivityInterface.getSong().getFiletype());
+
         if ((Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP &&
+                mainActivityInterface.getSong() != null &&
+                mainActivityInterface.getSong().getFiletype() != null &&
                 mainActivityInterface.getSong().getFiletype().equals("PDF")) ||
                 mainActivityInterface.getSong().getFiletype().equals("IMG")) {
             // Show the OCR button
             myView.ocr.setVisibility(View.VISIBLE);
+            myView.imageEdit.setVisibility(View.VISIBLE);
         } else {
             myView.ocr.setVisibility(View.GONE);
+            myView.imageEdit.setVisibility(View.GONE);
         }
 
         int lines = Math.max(20,mainActivityInterface.getTempSong().getLyrics().split("\n").length+1);
@@ -186,9 +200,6 @@ public class EditSongFragmentLyrics extends Fragment {
             }
         });
 
-        //myView.lyrics.setOnClickListener(view -> manualScrollTo());
-        //myView.lyrics.setOnFocusChangeListener((view, b) -> manualScrollTo());
-
         myView.ocr.setOnClickListener(v -> {
 
             if (mainActivityInterface.getSong().getFiletype().equals("PDF")) {
@@ -202,6 +213,10 @@ public class EditSongFragmentLyrics extends Fragment {
             Log.d(TAG,"filetype:"+mainActivityInterface.getSong().getFiletype());
             Log.d(TAG,"filename:"+mainActivityInterface.getSong().getFilename());
             mainActivityInterface.navHome();
+        });
+        myView.imageEdit.setOnClickListener(v -> {
+            ImageAdjustBottomSheet imageAdjustBottomSheet = new ImageAdjustBottomSheet(mainActivityInterface.getTempSong());
+            imageAdjustBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"ImageAdjustBottomSheet");
         });
 
         myView.settingsButton.setOnClickListener(v -> {
@@ -390,10 +405,6 @@ public class EditSongFragmentLyrics extends Fragment {
         }
 
         addUndoStep = true;
-
-        // Don't add this as an undo/redo as it breaks the key
-        //addUndoStep = false;
-        //myView.lyrics.setText(mainActivityInterface.getTempSong().getLyrics());
     }
 
     public void copyChords() {

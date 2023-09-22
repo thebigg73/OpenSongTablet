@@ -899,4 +899,5 @@
     <string name="width">宽度</string>
     <string name="words_and_music_by">文字和音乐</string>
     <string name="zoom_level">缩放级别</string>
+    <string name="image_adjust">调整图像（裁剪和旋转）</string>
 </resources>

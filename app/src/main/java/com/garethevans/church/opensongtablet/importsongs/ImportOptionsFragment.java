@@ -12,6 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -38,11 +40,13 @@ public class ImportOptionsFragment extends Fragment {
     private final String[] validBackups = new String[] {"application/zip","application/octet-stream","application/*"};
     private ActivityResultLauncher<Intent> activityResultLauncher;
     private ActivityResultLauncher<String> cameraPermission;
+    private ActivityResultLauncher<Intent> grabPhoto;
     private ActivityResultLauncher<Uri> takePhoto;
     private int whichFileType;
     private Uri uri;
     private String cameraFilename, import_main_string="", deeplink_edit_string="",
             deeplink_import_osb_string="", network_error_string="";
+    private String currentPhotoPath;
 
     @Override
     public void onResume() {
@@ -130,7 +134,8 @@ public class ImportOptionsFragment extends Fragment {
             } else {
                 // Get a date for the file name
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss",mainActivityInterface.getLocale());
-                cameraFilename = "Camera_"+sdf.format(new Date())+".png";
+                cameraFilename = "Camera_"+sdf.format(new Date())+".jpg";
+                Log.d(TAG,"cameraFilename:"+cameraFilename);
                 uri = mainActivityInterface.getStorageAccess().getUriForItem("Songs", mainActivityInterface.getSong().getFolder(),
                         cameraFilename);
                 mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" Create camerafile Songs/"+mainActivityInterface.getSong().getFolder()+"/"+cameraFilename+"  deleteOld=false");
@@ -138,23 +143,63 @@ public class ImportOptionsFragment extends Fragment {
                         mainActivityInterface.getSong().getFolder(),cameraFilename);
 
                 Log.d(TAG,"uri:" +uri);
+
                 takePhoto.launch(uri);
             }
         });
+
+        grabPhoto = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        Log.d(TAG,"result.getResultCode():"+result.getResultCode());
+                        if (result.getResultCode() == Activity.RESULT_OK || result.getResultCode()==0) {
+                            // There are no request codes
+                            Intent data = result.getData();
+                            Log.d(TAG,"data:"+data);
+                            Log.d(TAG,"data.getExtras().get(\"uri\"):"+data.getExtras().get("uri"));
+                            Log.d(TAG,"data.getData():"+data.getData());
+                        }
+                    }
+                });
+
+
         takePhoto = registerForActivityResult(new ActivityResultContracts.TakePicture(),
                 result -> {
                     if (result) {
                         Log.d(TAG,"success");
-                        mainActivityInterface.getSong().setFilename(cameraFilename);
-                        // Add to the database
-                        mainActivityInterface.getNonOpenSongSQLiteHelper().createSong(
-                                mainActivityInterface.getSong().getFolder(), cameraFilename);
-                        mainActivityInterface.getSQLiteHelper().createSong(
-                                mainActivityInterface.getSong().getFolder(), cameraFilename);
-                        mainActivityInterface.updateSongMenu(mainActivityInterface.getSong());
-                        mainActivityInterface.getPreferences().setMyPreferenceString(
-                                "songFilename",cameraFilename);
-                        mainActivityInterface.navHome();
+
+                        // Do this with a delay handler to give time for the file to finish
+                        myView.importCamera.postDelayed(() -> {
+                            // The file should now be created
+                            // Set the song name and folder as required
+                            Song newSong = new Song();
+                            newSong.setTitle(cameraFilename);
+                            newSong.setFilename(cameraFilename);
+                            newSong.setFolder(mainActivityInterface.getSong().getFolder());
+                            newSong.setFiletype("IMG");
+
+                            //mainActivityInterface.setSong(newSong);
+
+                            // Add to the database
+                            mainActivityInterface.getNonOpenSongSQLiteHelper().createSong(
+                                    newSong.getFolder(), newSong.getFilename());
+                            mainActivityInterface.getSQLiteHelper().createSong(
+                                    newSong.getFolder(), newSong.getFilename());
+                            // Update the created song to include the filetype as IMG
+                            mainActivityInterface.getSQLiteHelper().updateSong(newSong);
+
+                            // Update the song with the new filename in the song menu
+                            mainActivityInterface.updateSongMenu(newSong);
+
+                            // Now set the current songFilename
+                            mainActivityInterface.getPreferences().setMyPreferenceString(
+                                    "songFilename",newSong.getFilename());
+
+                            // Now open the song window
+                            mainActivityInterface.navHome();
+                        },100);
                     }
                 });
     }

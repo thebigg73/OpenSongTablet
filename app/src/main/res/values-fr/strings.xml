@@ -899,4 +899,5 @@
     <string name="width">Largeur</string>
     <string name="words_and_music_by">Paroles et musique de</string>
     <string name="zoom_level">Le niveau de zoom</string>
+    <string name="image_adjust">Ajuster l’image (recadrer et faire pivoter)</string>
 </resources>

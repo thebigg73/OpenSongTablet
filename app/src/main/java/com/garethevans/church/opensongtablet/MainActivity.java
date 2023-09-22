@@ -158,6 +158,7 @@ import com.google.android.material.textview.MaterialTextView;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Objects;
@@ -301,6 +302,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
         WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
 
+        Log.d(TAG,"onCreateCalled()   savedInstanceState:"+savedInstanceState);
         if (savedInstanceState != null) {
             bootUpCompleted = savedInstanceState.getBoolean("bootUpCompleted", false);
             rebooted = true;
@@ -334,11 +336,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             rebooted = false;
         }
 
+        Log.d(TAG,"rebooted:"+rebooted);
+
         // Did we receive an intent (user clicked on an openable file)?
         fileOpenIntent = getIntent();
         onNewIntent(fileOpenIntent);
 
-        //supportRequestWindowFeature(AppCompatDelegate.FEATURE_ACTION_MODE_OVERLAY);
+        Log.d(TAG,"myView:"+myView);
 
         if (myView == null) {
             myView = ActivityBinding.inflate(getLayoutInflater());
@@ -2619,6 +2623,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         if (agree) {
             boolean result = false;
             boolean allowToast = true;
+            Log.d(TAG,"what:"+what);
+
             switch (what) {
                 case "deleteSong":
                     getStorageAccess().updateFileActivityLog(TAG + " confirmedAction deleteFile Songs/" + song.getFolder() + "/" + song.getFilename());
@@ -2731,6 +2737,24 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         allowToast = false;
                         break;
                     }
+                    break;
+                case "cropImage":
+                    Uri tempUri = getStorageAccess().getUriForItem("Export","",song.getFilename());
+                    Uri songUri = getStorageAccess().getUriForItem("Songs",song.getFolder(),song.getFilename());
+                    Log.d(TAG,"cropImage tempUri:"+tempUri);
+                    Log.d(TAG,"cropImage songUri:"+songUri);
+                    InputStream inputStream = getStorageAccess().getInputStream(tempUri);
+                    OutputStream outputStream = getStorageAccess().getOutputStream(songUri);
+                    boolean copied = getStorageAccess().copyFile(inputStream,outputStream);
+                    Log.d(TAG,"copied:"+copied);
+                    // Copy the cropped image to the original one
+                    if (copied) {
+                        // Copy was successful, so delete the temp file
+                        getStorageAccess().deleteFile(tempUri);
+                        result = true;
+                        navHome();
+                    }
+                    break;
             }
             if (allowToast && result && showToast != null && getResources() != null) {
                 // Don't show toast for exit, but other successful actions
@@ -3464,6 +3488,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void loadSong() {
+        Log.d(TAG,"loadSong()");
         // If we are not in a settings window, load the song
         // Otherwise it will happen when the user closes the settings fragments
         if (!settingsOpen) {
@@ -3631,7 +3656,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     protected void onResume() {
+        Log.d(TAG,"onResume()");
         if (myView == null) {
+            Log.d(TAG,"restart app");
             // Something is wrong - restart the app
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -3660,6 +3687,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         if (metronome!=null) {
             metronome.initialiseMetronome();
         }
+
+        Log.d(TAG,"song.getFolder():"+song.getFolder()+"  song.getFilename():"+song.getFilename());
         super.onResume();
     }
 
