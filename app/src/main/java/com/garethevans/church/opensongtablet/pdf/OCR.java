@@ -35,7 +35,7 @@ public class OCR {
     public OCR(Context c) {
         mainActivityInterface = (MainActivityInterface) c;
     }
-    public void getTextFromPDF(String folder, String filename) {
+    public void getTextFromPDF(String folder, String filename, boolean useCropped) {
         // This uses most bits of the ProcessSong methods used to display the pdf as an image
         // However we will iterate through each page and send the bitmap off for ocr recognition
         // It also processes images (png, jpg, gif) and camera intents using the same logic with 1 page
@@ -73,7 +73,7 @@ public class OCR {
                 currentPage = mainActivityInterface.getProcessSong().getPDFPage(pdfRenderer,i);
 
                 // Get the currentPDF size
-                ArrayList<Integer> pdfSize = mainActivityInterface.getProcessSong().getPDFPageSize(currentPage);
+                ArrayList<Integer> pdfSize = mainActivityInterface.getProcessSong().getPDFPageSize(currentPage, useCropped);
 
                 // Get a scaled Bitmap size
                 ArrayList<Integer> bmpSize = mainActivityInterface.getProcessSong().getBitmapScaledSize(pdfSize,1200,1600,"Y");
@@ -82,7 +82,7 @@ public class OCR {
                 Log.d(TAG,"bmpHeight="+bmpSize.get(1));
 
                 // Get a scaled bitmap for these sizes
-                bmp = mainActivityInterface.getProcessSong().createBitmapFromPage(bmpSize,currentPage,false);
+                bmp = mainActivityInterface.getProcessSong().createBitmapFromPage(bmpSize,currentPage,false, useCropped);
 
                 // Send this page off for processing.  The onSuccessListener knows when it is done
                 extractTextFromBitmap(bmp, i);

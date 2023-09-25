@@ -5,6 +5,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -119,6 +120,7 @@ public class DisplayExtraFragment extends Fragment {
         myView.filterSave.setText(text);
         mainActivityInterface.getProcessSong().editBoxToMultiline(myView.filters);
         mainActivityInterface.getProcessSong().stretchEditBoxToLines(myView.filters,4);
+        myView.filters.setText(mainActivityInterface.getPreferences().getMyPreferenceString("filterText",""));
         bracketStyles_Names = new String[] {format_text_normal_string,format_text_italic_string,
                 format_text_bold_string,format_text_bolditalic_string};
         bracketStyles_Ints = new int[] {Typeface.NORMAL,Typeface.ITALIC,Typeface.BOLD,Typeface.BOLD_ITALIC};
@@ -299,6 +301,7 @@ public class DisplayExtraFragment extends Fragment {
         // The button
         myView.filterSave.setOnClickListener(v -> {
             // Get the text from the edittext
+            Log.d(TAG,"myView.filters.getText():"+myView.filters.getText());
             if (myView.filters.getText()!=null) {
                 String s = myView.filters.getText().toString();
                 // Split by line in order to trim

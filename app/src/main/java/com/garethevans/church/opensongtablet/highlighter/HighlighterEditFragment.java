@@ -209,7 +209,7 @@ public class HighlighterEditFragment extends Fragment {
         screenShotBitmap = mainActivityInterface.getProcessSong().getBitmapFromPDF(
                 mainActivityInterface.getSong().getFolder(),
                 mainActivityInterface.getSong().getFilename(),mainActivityInterface.getSong().getPdfPageCurrent(),
-                availableWidth,availableHeight,"Y");
+                availableWidth,availableHeight,"Y", true);
 
         int w = screenShotBitmap.getWidth();
         int h = screenShotBitmap.getHeight();

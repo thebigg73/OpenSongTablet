@@ -1044,7 +1044,7 @@ public class SecondaryDisplay extends Presentation {
                         if (pdf) {
                             bitmap = mainActivityInterface.getProcessSong().getBitmapFromPDF(mainActivityInterface.getSong().getFolder(),
                                     mainActivityInterface.getSong().getFilename(), position, availableScreenWidth,
-                                    availableScreenHeight - infoHeight - alertHeight, "Y");
+                                    availableScreenHeight - infoHeight - alertHeight, "Y", true);
                         } else if (image) {
                             bitmap = mainActivityInterface.getProcessSong().getBitmapFromUri(
                                     mainActivityInterface.getStorageAccess().getUriForItem("Songs",

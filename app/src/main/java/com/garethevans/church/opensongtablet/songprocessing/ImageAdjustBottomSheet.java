@@ -118,17 +118,21 @@ public class ImageAdjustBottomSheet extends BottomSheetDialogFragment {
                     originalWidth = options.outWidth;
                     originalHeight= options.outHeight;
                 } else if (mainActivityInterface.getSong().getFiletype().equals("PDF")) {
+                    // Hide the rotate buttons
+                    myView.rotateImageLeft.setVisibility(View.GONE);
+                    myView.rotateImageRight.setVisibility(View.GONE);
                     ParcelFileDescriptor pfd = mainActivityInterface.getProcessSong().getPDFParcelFileDescriptor(uri);
                     PdfRenderer pdfr = mainActivityInterface.getProcessSong().getPDFRenderer(pfd);
                     PdfRenderer.Page page = mainActivityInterface.getProcessSong().getPDFPage(pdfr,0);
                     Bitmap bmp = mainActivityInterface.getProcessSong().getBitmapFromPDF(thisSong.getFolder(),
-                            thisSong.getFilename(),0,page.getWidth(),page.getHeight(),"Y");
+                            thisSong.getFilename(),0,page.getWidth(),page.getHeight(),"Y", false);
                     myView.cropImageView.setImageBitmap(bmp);
+                    Log.d(TAG,"bmp.width:"+bmp.getWidth()+"  bmp.height:"+bmp.getHeight());
+                    Log.d(TAG,"page.getWidth:"+page.getWidth());
+                    Log.d(TAG,"page.getHeight:"+page.getHeight());
                     originalWidth = page.getWidth();
                     originalHeight = page.getHeight();
                 }
-
-
 
             } catch (Exception e) {
                 e.printStackTrace();

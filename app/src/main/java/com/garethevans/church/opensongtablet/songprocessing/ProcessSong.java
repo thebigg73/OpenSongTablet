@@ -46,7 +46,6 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import java.io.InputStream;
 import java.text.Collator;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Locale;
 
@@ -138,10 +137,6 @@ public class ProcessSong {
         curlyBracketsDevice = mainActivityInterface.getPreferences().getMyPreferenceBoolean("curlyBracketsDevice",false);
         forceColumns = mainActivityInterface.getPreferences().getMyPreferenceBoolean("forceColumns",true);
         hideInlineMidi = mainActivityInterface.getPreferences().getMyPreferenceBoolean("hideInlineMidi",false);
-    }
-
-    public boolean getDisplayChords() {
-        return displayChords;
     }
 
     public boolean showingCapo(String capo) {
@@ -1311,10 +1306,6 @@ public class ProcessSong {
         }
     }
 
-    private boolean lineIsChordForMultiline(String[] lines) {
-        return (lines[0].length() > 1 && lines.length > 1 && lines[1].matches("\\d.*$"));
-    }
-
     private String fixMultiLineFormat(String string, boolean presentation) {
         multilineSong = isMultiLineFormatSong(string);
         if (!mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) || presentation ||
@@ -2349,7 +2340,6 @@ public class ProcessSong {
                                          boolean forceColumns, int[] forceColumnInfo, boolean presentation) {
         // An updated algorithm to calculate the best way to split a song into columns
 
-        // TODO IV to check this value - v5 used a -12 weighting (based on number of lines)
         // v6 algorithm uses the actual section widths and heights.
         // This fudge factor is effectively a percentage of the running total subtracted from the best so far
         // This favours more in column 1.  It doesn't need much!!  1% is a little too high.
@@ -2741,7 +2731,7 @@ public class ProcessSong {
                 // Used by primary screen highlighter file naming
                 primaryScreenColumns = 1;
             }
-            createOneColumn(sectionViews, sectionWidths, sectionHeights, column1, column2, column3, currentWidth,
+            createOneColumn(sectionViews, column1, column2, column3, currentWidth,
                     currentHeight, columnInfo[1], presentation, songSheetTitleHeight, (int)columnInfo[4]);
 
         } else if (columnInfo[0]==2) {
@@ -2768,8 +2758,8 @@ public class ProcessSong {
 
 
     // 1 column stuff
-    private void createOneColumn(ArrayList<View> sectionViews, ArrayList<Integer> sectionWidths,
-                                 ArrayList<Integer> sectionHeights, LinearLayout column1,
+    private void createOneColumn(ArrayList<View> sectionViews,
+                                 LinearLayout column1,
                                  LinearLayout column2, LinearLayout column3, int maxWidth,
                                  int totalHeight, float scaleSize, boolean presentation,
                                  int songSheetTitleHeight, int sectionSpace) {
@@ -2797,7 +2787,6 @@ public class ProcessSong {
         // Now scale the column to the correct sizes
         scaleView(innerCol1, scaleSize);
 
-        // TODO Figure out why!!
         // GE Adding extra height here.
         // It seems to be linked to the display cutout height (on rotation so cutout isn't there it isn't an issue)
         // For testing, this happens on Abba Medley, American Pie (i.e. long songs!)
@@ -3074,7 +3063,7 @@ public class ProcessSong {
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public Bitmap getBitmapFromPDF(String folder, String filename, int page, int allowedWidth,
-                                   int allowedHeight, String scale) {
+                                   int allowedHeight, String scale, boolean useCropped) {
         Bitmap bmp = null;
 
         Uri uri;
@@ -3104,13 +3093,13 @@ public class ProcessSong {
             PdfRenderer.Page currentPage = getPDFPage(pdfRenderer, page);
 
             // Get the currentPDF size
-            ArrayList<Integer> pdfSize = getPDFPageSize(currentPage);
+            ArrayList<Integer> pdfSize = getPDFPageSize(currentPage, useCropped);
 
             // Get the scaled sizes for the bitmap
             ArrayList<Integer> bmpSize = getBitmapScaledSize(pdfSize, allowedWidth, allowedHeight, scale);
 
             // Get a scaled bitmap for these sizes
-            bmp = createBitmapFromPage(bmpSize, currentPage, true);
+            bmp = createBitmapFromPage(bmpSize, currentPage, true, useCropped);
 
             // Try to close the pdf stuff down to recover memory
             try {
@@ -3156,16 +3145,9 @@ public class ProcessSong {
         if (!mainActivityInterface.getSong().getShowstartofpdf()) {
             // This is to deal with swiping backwards through songs, show the last page first!
             page = mainActivityInterface.getSong().getPdfPageCount() - 1;
-            //mainActivityInterface.getSong().setShowstartofpdf(true);
-            //mainActivityInterface.getSong().setCurrentSection(mainActivityInterface.getSong().getPdfPageCount() - 1);
         }
         if (page >= mainActivityInterface.getSong().getPdfPageCount()) {
-            //mainActivityInterface.getSong().setPdfPageCurrent(0);
-            //mainActivityInterface.getSong().setCurrentSection(0);
             page = 0;
-        } else {
-            //mainActivityInterface.getSong().setPdfPageCurrent(page);
-            //mainActivityInterface.getSong().setCurrentSection(page);
         }
         return page;
     }
@@ -3176,7 +3158,7 @@ public class ProcessSong {
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public ArrayList<Integer> getPDFPageSize(PdfRenderer.Page currentPage) {
+    public ArrayList<Integer> getPDFPageSize(PdfRenderer.Page currentPage, boolean useCropped) {
         ArrayList<Integer> sizes = new ArrayList<>();
         // Get pdf size from page
         int pdfwidth;
@@ -3188,18 +3170,19 @@ public class ProcessSong {
             pdfwidth = 1;
             pdfheight = 1;
         }
-        int[] croppedSizes = getCroppedPDFSizes();
-        if (croppedSizes!=null) {
-            Log.d(TAG,"got cropped sizes:"+ Arrays.toString(croppedSizes));
-            pdfwidth = croppedSizes[2]-croppedSizes[0];
-            pdfheight = croppedSizes[3]-croppedSizes[1];
+        if (useCropped) {
+            int[] croppedSizes = getCroppedPDFSizes();
+            if (croppedSizes != null) {
+                pdfwidth = croppedSizes[2] - croppedSizes[0];
+                pdfheight = croppedSizes[3] - croppedSizes[1];
+            }
         }
         sizes.add(pdfwidth);
         sizes.add(pdfheight);
         return sizes;
     }
 
-    private int[] getCroppedPDFSizes() {
+    public int[] getCroppedPDFSizes() {
         if (mainActivityInterface.getSong() == null ||
                 mainActivityInterface.getSong().getUser3()==null ||
                 !mainActivityInterface.getSong().getUser3().contains("destClip:")) {
@@ -3305,59 +3288,25 @@ public class ProcessSong {
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public Bitmap createBitmapFromPage(ArrayList<Integer> bmpSize, PdfRenderer.Page currentPage, boolean forDisplayOnly) {
+    public Bitmap createBitmapFromPage(ArrayList<Integer> bmpSize, PdfRenderer.Page currentPage, boolean forDisplayOnly, boolean useCropped) {
         try {
             // Try to deal with soft clipping of PDF - trying to figure out for now!
             Matrix matrix = null;
             int[] croppedSizes = getCroppedPDFSizes();
             int width;
             int height;
-            if (croppedSizes!=null) {
-                Log.d(TAG,"got cropped sizes:"+ Arrays.toString(croppedSizes));
+            if (useCropped && croppedSizes!=null) {
                 width = croppedSizes[2]-croppedSizes[0];
                 height = croppedSizes[3]-croppedSizes[1];
                 matrix = new Matrix();
                 RectF rectF = new RectF(croppedSizes[0],croppedSizes[1],croppedSizes[2],croppedSizes[3]);
                 matrix.mapRect(rectF);
-                float scale = (float)currentPage.getWidth()/(float)bmpSize.get(0);
-                Log.d(TAG,"RectF:"+rectF);
-                Log.d(TAG,"width:"+width+"  currentPage.getWidth():"+currentPage.getWidth()+"  bmpSize.get(0):"+bmpSize.get(0));
-                Log.d(TAG,"height:"+height+"  currentPage.getHeight():"+currentPage.getHeight()+"  bmpSize.get(1):"+bmpSize.get(1));
-
-                matrix.setTranslate((width-currentPage.getWidth())/2f,-(height/scale));
+                matrix.setTranslate(-croppedSizes[0],-croppedSizes[1]);
 
             } else {
                 width = bmpSize.get(0);
                 height = bmpSize.get(1);
             }
-
-            /*
-
-            Rect rect = null;
-            if (matrix!=null) {
-                Log.d(TAG,"positions:"+ Arrays.toString(positions));
-                int rectWidth = positions[2] - positions[0];
-                int rectHeight = positions[3] - positions[1];
-                float scaleX = (float)currentPage.getWidth()/(float)rectWidth;
-                float scaleY = (float)currentPage.getHeight()/(float)rectHeight;
-
-                Log.d(TAG,"scaleX:"+scaleX+"  scaleY:"+scaleY);
-
-                RectF r1 = new RectF(positions[0],positions[1],positions[2],positions[3]);
-                RectF src = new RectF(0,0,currentPage.getWidth(),currentPage.getHeight());
-                matrix.postScale(scaleX, scaleX);
-                matrix.postTranslate(-(positions[0]*scaleX), -(positions[1]*scaleY));
-                matrix.mapRect(r1);
-                matrix.setRectToRect(src,r1, Matrix.ScaleToFit.START);
-                rect = new Rect(positions[0],positions[1],positions[2],positions[3]);
-                width = rectWidth;
-                height = rectHeight;
-
-            } else {
-
-            }*/
-            Log.d(TAG,"original sizes:"+bmpSize.get(0)+"x"+bmpSize.get(1));
-            Log.d(TAG,"new sizes:"+width+"x"+height);
 
             Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
             // Make a canvas with which we can draw to the bitmap to make it white
@@ -3374,7 +3323,6 @@ public class ProcessSong {
                 resolution = PdfRenderer.Page.RENDER_MODE_FOR_PRINT;
             }
             try {
-                Log.d(TAG,"currentPage sizes:"+currentPage.getWidth()+"x"+currentPage.getHeight());
                 currentPage.render(bitmap, null, matrix, resolution);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -3391,103 +3339,6 @@ public class ProcessSong {
             return null;
         }
     }
-
-    // Not working or implemented yet.  This will allow trimming images/pdfs by whitespace
-    @SuppressWarnings("unused")
-    public Bitmap trimBitmap(Bitmap bmp) {
-        boolean trimMargins = false;
-        if (trimMargins) {
-            int color = Color.WHITE | Color.TRANSPARENT;
-
-            long dtMili = System.currentTimeMillis();
-            int MTop = 0, MBot = 0, MLeft = 0, MRight = 0;
-            boolean found1 = false, found2 = false;
-
-            int[] bmpIn = new int[bmp.getWidth() * bmp.getHeight()];
-            int[][] bmpInt = new int[bmp.getWidth()][bmp.getHeight()];
-
-            bmp.getPixels(bmpIn, 0, bmp.getWidth(), 0, 0, bmp.getWidth(),
-                    bmp.getHeight());
-
-            for (int ii = 0, contX = 0, contY = 0; ii < bmpIn.length; ii++) {
-                bmpInt[contX][contY] = bmpIn[ii];
-                contX++;
-                if (contX >= bmp.getWidth()) {
-                    contX = 0;
-                    contY++;
-                    if (contY >= bmp.getHeight()) {
-                        break;
-                    }
-                }
-            }
-
-            for (int hP = 0; hP < bmpInt[0].length && !found2; hP++) {
-                // looking for MTop
-                for (int wP = 0; wP < bmpInt.length && !found2; wP++) {
-                    if (bmpInt[wP][hP] != color) {
-                        Log.e("MTop 2", "Pixel found @" + hP);
-                        MTop = hP;
-                        found2 = true;
-                        break;
-                    }
-                }
-            }
-            found2 = false;
-
-            for (int hP = bmpInt[0].length - 1; hP >= 0 && !found2; hP--) {
-                // looking for MBot
-                for (int wP = 0; wP < bmpInt.length && !found2; wP++) {
-                    if (bmpInt[wP][hP] != color) {
-                        Log.e("MBot 2", "Pixel found @" + hP);
-                        MBot = bmp.getHeight() - hP;
-                        found2 = true;
-                        break;
-                    }
-                }
-            }
-            found2 = false;
-
-            for (int wP = 0; wP < bmpInt.length && !found2; wP++) {
-                // looking for MLeft
-                for (int hP = 0; hP < bmpInt[0].length && !found2; hP++) {
-                    if (bmpInt[wP][hP] != color) {
-                        Log.e("MLeft 2", "Pixel found @" + wP);
-                        MLeft = wP;
-                        found2 = true;
-                        break;
-                    }
-                }
-            }
-            found2 = false;
-
-            for (int wP = bmpInt.length - 1; wP >= 0 && !found2; wP--) {
-                // looking for MRight
-                for (int hP = 0; hP < bmpInt[0].length && !found2; hP++) {
-                    if (bmpInt[wP][hP] != color) {
-                        Log.e("MRight 2", "Pixel found @" + wP);
-                        MRight = bmp.getWidth() - wP;
-                        found2 = true;
-                        break;
-                    }
-                }
-            }
-            found2 = false;
-
-            int sizeY = bmp.getHeight() - MBot - MTop, sizeX = bmp.getWidth()
-                    - MRight - MLeft;
-
-            Bitmap bmp2 = Bitmap.createBitmap(bmp, MLeft, MTop, sizeX, sizeY);
-            dtMili = (System.currentTimeMillis() - dtMili);
-            Log.e("Margin   2",
-                    "Time needed " + dtMili + "mSec\nh:" + bmp.getWidth() + "w:"
-                            + bmp.getHeight() + "\narray x:" + bmpInt.length + "y:"
-                            + bmpInt[0].length);
-            return bmp2;
-        } else {
-            return bmp;
-        }
-    }
-
 
     // This stuff deals with the highlighter notes
     public String getHighlighterFilename(Song song, boolean portrait, int fakeColumns) {
@@ -3708,7 +3559,6 @@ public class ProcessSong {
         stretchEditBoxToLines(editText, 4);
     }
 
-
     public String tidyThemeString(String themeString) {
         // This just tidies up the theme tags.
         // First split by ;
@@ -3826,75 +3676,6 @@ public class ProcessSong {
             }
         }
         return imageViews;
-    }
-
-    // Web server version of songs
-    public String songHTML () {
-        return  "" +
-                "<html>\n" +
-                "<head>\n" +
-                "<style>\n" +
-                ".page       {background-color:" + String.format("#%06X", (0xfff & mainActivityInterface.getMyThemeColors().getLyricsBackgroundColor())) + ";}\n" +
-                ".lyrictable {border-spacing:0; border-collapse: collapse; border:0px;}\n" +
-                getHTMLFontImports() +
-                "body        {width:100%;}\n" +
-                "</style>\n" +
-                "<script>\n" +
-                "  var contentWidth;\n" +
-                "  function measure() {\n" +
-                "      contentWidth = document.getElementById(\"content\").clientWidth;\n" +
-                "      resize();\n" +
-                "  }\n\n" +
-                "  function resize() {\n" +
-                "      var viewportWidth = document.body.clientWidth - 24;\n" +
-                "      var padding = document.body.style.padding;\n" +
-                "      var scaleSize = ((viewportWidth/contentWidth)*100) + \"%\";\n" +
-                "      document.body.style.zoom = scaleSize;\n" +
-                "  }\n" +
-                "</script>" +
-                "</head>\n" +
-                "<body class=\"page\" onload=\"javascript:measure()\" onresize=\"javascript:resize()\">\n" +
-                "<div id=\"content\" style=\"width:fit-content\">\n" +
-                mainActivityInterface.getSongSheetHeaders().getSongSheetTitleMainHTML(mainActivityInterface.getSong()) +
-                mainActivityInterface.getSongSheetHeaders().getSongSheetTitleExtrasHTML(mainActivityInterface.getSong()) +
-                htmlLyrics.toString().replace(" </td>","&nbsp;</td>") +
-                "</div>\n</body>\n" +
-                "</html>";
-    }
-
-    String getHTMLFontImports() {
-        // This prepares the import code for the top of the html file that locates the fonts from Google
-        // If they've been downloaded already, they are cached on the device, so no need to redownload.
-        String base1 = "@import url('https://fonts.googleapis.com/css?family=";
-        String base2 = "&swap=true');\n";
-        String importString = base1+mainActivityInterface.getMyFonts().getLyricFontName()+base2;
-        importString += base1+mainActivityInterface.getMyFonts().getChordFontName()+base2;
-        importString += ".lyric {font-family:"+mainActivityInterface.getMyFonts().getLyricFontName()+"; color:" +
-                String.format("#%06X", (0xFFFFFF & mainActivityInterface.getMyThemeColors().getLyricsTextColor())) + "; " +
-                "padding: 0px; font-size:14.0pt; white-space:nowrap; width: fit-content;}\n";
-        importString += ".chord {font-family:"+mainActivityInterface.getMyFonts().getChordFontName()+"; color:" +
-                String.format("#%06X", (0xFFFFFF & mainActivityInterface.getMyThemeColors().getLyricsChordsColor())) + "; " +
-                "padding: 0px; font-size:"+(14.0f*scaleChords)+"pt; white-space:nowrap;width: fit-content;}\n";
-        importString += ".capo {font-family:"+mainActivityInterface.getMyFonts().getChordFontName()+"; color:" +
-                String.format("#%06X", (0xFFFFFF & mainActivityInterface.getMyThemeColors().getLyricsCapoColor())) + "; " +
-                "padding: 0px; font-size:"+(14.0f*scaleChords)+"pt; white-space:nowrap;width: fit-content;}\n";
-        importString += ".titlemain {font-family:"+mainActivityInterface.getMyFonts().getLyricFontName()+"; color:" +
-                String.format("#%06X", (0xFFFFFF & mainActivityInterface.getMyThemeColors().getLyricsTextColor())) + "; " +
-                "padding: 0px; font-size:"+(14.0f*1.1f)+"pt; " +
-                "text-decoration:underline;}\n";
-        importString += ".titleextras {font-family:"+mainActivityInterface.getMyFonts().getLyricFontName()+"; color:" +
-                String.format("#%06X", (0xFFFFFF & mainActivityInterface.getMyThemeColors().getLyricsTextColor())) + "; " +
-                "padding: 0px; font-size:"+(14.0f*0.6f)+"pt; " +
-                "text-decoration:none;}\n";
-        importString += ".heading {font-family:"+mainActivityInterface.getMyFonts().getLyricFontName()+"; color:" +
-                String.format("#%06X", (0xFFFFFF & mainActivityInterface.getMyThemeColors().getLyricsTextColor())) + "; " +
-                "padding: 0px; font-size:"+(14.0f*scaleHeadings)+"pt; " +
-                "text-decoration:underline;}\n";
-        importString += ".mono {font-family:"+mainActivityInterface.getMyFonts().getMonoFontName()+"; color:" +
-                String.format("#%06X", (0xFFFFFF & mainActivityInterface.getMyThemeColors().getLyricsTextColor())) + "; " +
-                "padding: 0px; font-size:"+(14.0f*scaleComments)+"pt; " +
-                "text-decoration:underline;}\n";
-        return importString;
     }
 
 }

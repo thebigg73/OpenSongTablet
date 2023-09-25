@@ -7,6 +7,7 @@ import android.graphics.pdf.PdfRenderer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.ParcelFileDescriptor;
+import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +24,7 @@ import com.garethevans.church.opensongtablet.interfaces.DisplayInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 // This deals with previewing the PDF file.  Only available for Lollipop+
@@ -59,6 +61,7 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
                           DisplayInterface displayInterface, int viewWidth, int viewHeight, int inlineSetWidth) {
         this.c = c;
         this.mainActivityInterface = mainActivityInterface;
+        Log.d(TAG,"viewWidth:"+viewWidth+"  viewHeight:"+viewHeight);
         this.displayInterface = displayInterface;
         this.viewWidth = viewWidth;
         this.viewHeight = viewHeight;
@@ -97,6 +100,9 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
             }
             mainActivityInterface.getSong().setShowstartofpdf(true);
 
+            // Get any crop sizes
+            int[] croppedSizes = mainActivityInterface.getProcessSong().getCroppedPDFSizes();
+
             pageInfos = new ArrayList<>();
             if (pdfRenderer!=null) {
                 for (int x = 0; x < totalPages; x++) {
@@ -104,8 +110,19 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
                     PDFPageItemInfo pageInfo = new PDFPageItemInfo();
                     pageInfo.pageNum = x;
                     pageInfo.pageNumText = (x + 1) + "/" + totalPages;
-                    int width = page.getWidth();
-                    int height = page.getHeight();
+                    int width;
+                    int height;
+
+                    if (croppedSizes!=null) {
+                        Log.d(TAG,"got cropped sizes:"+ Arrays.toString(croppedSizes));
+
+                        width = croppedSizes[2]-croppedSizes[0];
+                        height = croppedSizes[3]-croppedSizes[1];
+                    } else {
+                        width = page.getWidth();
+                        height = page.getHeight();
+                    }
+
                     if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_stage))) {
                         float x_scale = (float)(viewWidth-inlineSetWidth)/(float)width;
                         float y_scale = (float)(viewHeight-mainActivityInterface.getToolbar().getActionBarHeight(mainActivityInterface.needActionBar()))/(float)height;
@@ -249,7 +266,7 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
         holder.v.getLayoutParams().width = (int)(width*pdfHorizontalScale);
 
         Bitmap pdfPageBitmap = mainActivityInterface.getProcessSong().getBitmapFromPDF(
-                pdfFolder,pdfFilename,pageNum,width,height,mainActivityInterface.getPreferences().getMyPreferenceString("songAutoScale","W"));
+                pdfFolder,pdfFilename,pageNum,width,height,mainActivityInterface.getPreferences().getMyPreferenceString("songAutoScale","W"), true);
         // If we want to enable PDF trimming of whitespace
         //Bitmap newPageBitmap= mainActivityInterface.getProcessSong().trimBitmap(pdfPageBitmap);
         holder.pdfPageImage.post(()-> {

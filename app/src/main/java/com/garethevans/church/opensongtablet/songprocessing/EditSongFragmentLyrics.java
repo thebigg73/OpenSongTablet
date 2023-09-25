@@ -204,7 +204,7 @@ public class EditSongFragmentLyrics extends Fragment {
 
             if (mainActivityInterface.getSong().getFiletype().equals("PDF")) {
                 mainActivityInterface.getOCR().getTextFromPDF(
-                        mainActivityInterface.getSong().getFolder(), mainActivityInterface.getSong().getFilename());
+                        mainActivityInterface.getSong().getFolder(), mainActivityInterface.getSong().getFilename(),false);
             } else if (mainActivityInterface.getSong().getFiletype().equals("IMG")) {
                 mainActivityInterface.getOCR().getTextFromImageFile(
                         mainActivityInterface.getSong().getFolder(),

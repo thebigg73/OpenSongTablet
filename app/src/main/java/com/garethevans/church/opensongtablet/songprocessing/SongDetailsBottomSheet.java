@@ -114,7 +114,7 @@ public class SongDetailsBottomSheet extends BottomSheetDialogFragment {
         String filename = mainActivityInterface.getSong().getFilename();
         if (filetype.equals("PDF")) {
             mainActivityInterface.getOCR().getTextFromPDF(mainActivityInterface.getSong().getFolder(),
-                    mainActivityInterface.getSong().getFilename());
+                    mainActivityInterface.getSong().getFilename(),false);
             dismiss();
         } else if (filetype.equals("IMG")) {
             Bitmap bitmap = mainActivityInterface.getProcessSong().getSongBitmap(folder,filename);

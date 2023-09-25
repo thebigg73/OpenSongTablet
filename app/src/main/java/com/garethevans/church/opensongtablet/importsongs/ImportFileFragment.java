@@ -213,7 +213,7 @@ public class ImportFileFragment extends Fragment {
         if (isIMGorPDF && getContext()!=null) {
             if (mainActivityInterface.getImportFilename().toLowerCase(Locale.ROOT).endsWith(".pdf")) {
                 // Load in a preview if the version of Android is high enough
-                Bitmap bmp = mainActivityInterface.getProcessSong().getBitmapFromPDF(null,null,1,200,200,"N");
+                Bitmap bmp = mainActivityInterface.getProcessSong().getBitmapFromPDF(null,null,1,200,200,"N", true);
                 myView.imageView.post(()-> Glide.with(getContext()).load(bmp).into(myView.imageView));
                 newSong.setFiletype("PDF");
             } else {
