@@ -67,6 +67,9 @@ public class MidiSongBottomSheet extends BottomSheetDialogFragment {
         // Get the midi device
         getMidiDeviceName();
 
+        // Get the preference
+        myView.autoSendMidi.setChecked(mainActivityInterface.getMidi().getMidiSendAuto());
+
         // Get the song midi commands
         setupAdapter();
         buildList();
@@ -149,5 +152,6 @@ public class MidiSongBottomSheet extends BottomSheetDialogFragment {
             MidiShortHandBottomSheet midiShortHandBottomSheet = new MidiShortHandBottomSheet(null,MidiSongBottomSheet.this,"MidiSongBottomSheet",null,mainActivityInterface.getSong().getMidi());
             midiShortHandBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"MidiShortHandBottomSheet");
         });
+       myView.autoSendMidi.setOnCheckedChangeListener((compoundButton, b) -> mainActivityInterface.getMidi().setMidiSendAuto(b));
     }
 }

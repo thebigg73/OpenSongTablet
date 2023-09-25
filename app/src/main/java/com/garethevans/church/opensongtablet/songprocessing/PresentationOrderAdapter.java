@@ -66,11 +66,13 @@ public class PresentationOrderAdapter extends RecyclerView.Adapter<PresentationO
         }
 
         // Now split the temp order by spaces (between tags or unknown tags)
-        String[] tags = tempPresOrder.split(" ");
-        for (String tag:tags) {
-            if (!tag.trim().isEmpty()) {
-                // Put the space back
-                currentOrder.add(tag.replace("^_^"," "));
+        if (tempPresOrder!=null) {
+            String[] tags = tempPresOrder.split(" ");
+            for (String tag : tags) {
+                if (!tag.trim().isEmpty()) {
+                    // Put the space back
+                    currentOrder.add(tag.replace("^_^", " "));
+                }
             }
         }
     }

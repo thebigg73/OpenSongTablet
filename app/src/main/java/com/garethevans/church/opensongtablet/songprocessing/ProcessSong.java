@@ -9,7 +9,9 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
+import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.graphics.pdf.PdfRenderer;
 import android.net.Uri;
@@ -44,6 +46,7 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import java.io.InputStream;
 import java.text.Collator;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Locale;
 
@@ -3185,9 +3188,48 @@ public class ProcessSong {
             pdfwidth = 1;
             pdfheight = 1;
         }
+        int[] croppedSizes = getCroppedPDFSizes();
+        if (croppedSizes!=null) {
+            Log.d(TAG,"got cropped sizes:"+ Arrays.toString(croppedSizes));
+            pdfwidth = croppedSizes[2]-croppedSizes[0];
+            pdfheight = croppedSizes[3]-croppedSizes[1];
+        }
         sizes.add(pdfwidth);
         sizes.add(pdfheight);
         return sizes;
+    }
+
+    private int[] getCroppedPDFSizes() {
+        if (mainActivityInterface.getSong() == null ||
+                mainActivityInterface.getSong().getUser3()==null ||
+                !mainActivityInterface.getSong().getUser3().contains("destClip:")) {
+            return null;
+        } else {
+            // Get the sizes out
+            int[] positions = new int[4];
+            for (String line:mainActivityInterface.getSong().getUser3().split("\n")) {
+                if (line.startsWith("destClip:") && line.contains(",") && line.endsWith(";")) {
+                    line = line.replace("destClip:","").replace(";","");
+                    // Split apart the left, top, right, bottom and proceed if 4 values
+                    String[] coords = line.split(",");
+                    if (coords.length==4) {
+                        boolean safePos = true;
+                        for (int x=0; x<coords.length; x++) {
+                            String coord = coords[x].replaceAll("\\D","");
+                            if (!coord.isEmpty()) {
+                                positions[x] = Integer.parseInt(coord);
+                            } else {
+                                safePos = false;
+                            }
+                        }
+                        if (safePos) {
+                            return positions;
+                        }
+                    }
+                }
+            }
+        }
+        return null;
     }
 
     public ArrayList<Integer> getBitmapScaledSize(ArrayList<Integer> pdfSize, int allowedWidth, int allowedHeight, String scale) {
@@ -3265,7 +3307,59 @@ public class ProcessSong {
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public Bitmap createBitmapFromPage(ArrayList<Integer> bmpSize, PdfRenderer.Page currentPage, boolean forDisplayOnly) {
         try {
-            Bitmap bitmap = Bitmap.createBitmap(bmpSize.get(0), bmpSize.get(1), Bitmap.Config.ARGB_8888);
+            // Try to deal with soft clipping of PDF - trying to figure out for now!
+            Matrix matrix = null;
+            int[] croppedSizes = getCroppedPDFSizes();
+            int width;
+            int height;
+            if (croppedSizes!=null) {
+                Log.d(TAG,"got cropped sizes:"+ Arrays.toString(croppedSizes));
+                width = croppedSizes[2]-croppedSizes[0];
+                height = croppedSizes[3]-croppedSizes[1];
+                matrix = new Matrix();
+                RectF rectF = new RectF(croppedSizes[0],croppedSizes[1],croppedSizes[2],croppedSizes[3]);
+                matrix.mapRect(rectF);
+                float scale = (float)currentPage.getWidth()/(float)bmpSize.get(0);
+                Log.d(TAG,"RectF:"+rectF);
+                Log.d(TAG,"width:"+width+"  currentPage.getWidth():"+currentPage.getWidth()+"  bmpSize.get(0):"+bmpSize.get(0));
+                Log.d(TAG,"height:"+height+"  currentPage.getHeight():"+currentPage.getHeight()+"  bmpSize.get(1):"+bmpSize.get(1));
+
+                matrix.setTranslate((width-currentPage.getWidth())/2f,-(height/scale));
+
+            } else {
+                width = bmpSize.get(0);
+                height = bmpSize.get(1);
+            }
+
+            /*
+
+            Rect rect = null;
+            if (matrix!=null) {
+                Log.d(TAG,"positions:"+ Arrays.toString(positions));
+                int rectWidth = positions[2] - positions[0];
+                int rectHeight = positions[3] - positions[1];
+                float scaleX = (float)currentPage.getWidth()/(float)rectWidth;
+                float scaleY = (float)currentPage.getHeight()/(float)rectHeight;
+
+                Log.d(TAG,"scaleX:"+scaleX+"  scaleY:"+scaleY);
+
+                RectF r1 = new RectF(positions[0],positions[1],positions[2],positions[3]);
+                RectF src = new RectF(0,0,currentPage.getWidth(),currentPage.getHeight());
+                matrix.postScale(scaleX, scaleX);
+                matrix.postTranslate(-(positions[0]*scaleX), -(positions[1]*scaleY));
+                matrix.mapRect(r1);
+                matrix.setRectToRect(src,r1, Matrix.ScaleToFit.START);
+                rect = new Rect(positions[0],positions[1],positions[2],positions[3]);
+                width = rectWidth;
+                height = rectHeight;
+
+            } else {
+
+            }*/
+            Log.d(TAG,"original sizes:"+bmpSize.get(0)+"x"+bmpSize.get(1));
+            Log.d(TAG,"new sizes:"+width+"x"+height);
+
+            Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
             // Make a canvas with which we can draw to the bitmap to make it white
             Canvas canvas = new Canvas(bitmap);
             // Fill with white
@@ -3280,7 +3374,8 @@ public class ProcessSong {
                 resolution = PdfRenderer.Page.RENDER_MODE_FOR_PRINT;
             }
             try {
-                currentPage.render(bitmap, null, null, resolution);
+                Log.d(TAG,"currentPage sizes:"+currentPage.getWidth()+"x"+currentPage.getHeight());
+                currentPage.render(bitmap, null, matrix, resolution);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -3698,12 +3793,15 @@ public class ProcessSong {
                 totalPages = 0;
             }
 
+
+
             if (pdfRenderer != null) {
                 for (int x = 0; x < totalPages; x++) {
                     ImageView imageView = new ImageView(c);
                     PdfRenderer.Page page = pdfRenderer.openPage(x);
                     int width = page.getWidth();
                     int height = page.getHeight();
+
                     imageView.setLayoutParams(new LinearLayout.LayoutParams(width,height));
 
                     Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);

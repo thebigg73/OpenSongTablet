@@ -5,8 +5,12 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Rect;
+import android.graphics.pdf.PdfRenderer;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.ParcelFileDescriptor;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +19,7 @@ import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.BottomSheetImageAdjustBinding;
@@ -65,6 +70,7 @@ public class ImageAdjustBottomSheet extends BottomSheetDialogFragment {
         return dialog;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Nullable
     @org.jetbrains.annotations.Nullable
     @Override
@@ -93,23 +99,36 @@ public class ImageAdjustBottomSheet extends BottomSheetDialogFragment {
             crop_website = c.getString(R.string.website_image_adjust);
         }
     }
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void prepareViews() {
         if (getContext()!=null) {
             try {
                 Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Songs",
                         thisSong.getFolder(), thisSong.getFilename());
 
-                myView.cropImageView.setImageUriAsync(uri);
+                if (mainActivityInterface.getSong().getFiletype().equals("IMG")) {
+                    myView.cropImageView.setImageUriAsync(uri);
+                    // Get the original sizes
+                    BitmapFactory.Options options = new BitmapFactory.Options();
+                    options.inJustDecodeBounds = true;
+                    BitmapFactory.decodeStream(
+                            getContext().getContentResolver().openInputStream(uri),
+                            null,
+                            options);
+                    originalWidth = options.outWidth;
+                    originalHeight= options.outHeight;
+                } else if (mainActivityInterface.getSong().getFiletype().equals("PDF")) {
+                    ParcelFileDescriptor pfd = mainActivityInterface.getProcessSong().getPDFParcelFileDescriptor(uri);
+                    PdfRenderer pdfr = mainActivityInterface.getProcessSong().getPDFRenderer(pfd);
+                    PdfRenderer.Page page = mainActivityInterface.getProcessSong().getPDFPage(pdfr,0);
+                    Bitmap bmp = mainActivityInterface.getProcessSong().getBitmapFromPDF(thisSong.getFolder(),
+                            thisSong.getFilename(),0,page.getWidth(),page.getHeight(),"Y");
+                    myView.cropImageView.setImageBitmap(bmp);
+                    originalWidth = page.getWidth();
+                    originalHeight = page.getHeight();
+                }
 
-                // Get the original sizes
-                BitmapFactory.Options options = new BitmapFactory.Options();
-                options.inJustDecodeBounds = true;
-                BitmapFactory.decodeStream(
-                        getContext().getContentResolver().openInputStream(uri),
-                        null,
-                        options);
-                originalWidth = options.outWidth;
-                originalHeight= options.outHeight;
+
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -127,7 +146,20 @@ public class ImageAdjustBottomSheet extends BottomSheetDialogFragment {
 
     private void doCrop() {
         Bitmap bmp = myView.cropImageView.getCroppedImage();
-        if (bmp!=null) {
+        Rect cropPoints = myView.cropImageView.getCropRect();
+        if (thisSong.getFiletype().equals("PDF") && cropPoints!=null) {
+            Log.d(TAG,"cropPoints:"+ cropPoints.flattenToString());
+            String destClip = "destClip:"+cropPoints.left + "," +
+                    cropPoints.top + "," +
+                    cropPoints.right + "," +
+                    cropPoints.bottom + ";";
+
+            Log.d(TAG,"destClip:"+destClip);
+            // Set the crop points to the user3 field - overwrite everything else!
+            thisSong.setUser3(destClip);
+            mainActivityInterface.getSaveSong().updateSong(thisSong,false);
+            dismiss();
+        } else if (thisSong.getFiletype().equals("IMG") && bmp!=null) {
             Log.d(TAG, "bmp:" + bmp.getWidth() + "x" + bmp.getHeight());
             // Write a temporary version of this image to the export folder.
             // After showing the are you sure prompt, we either cancel (delete the temp file)

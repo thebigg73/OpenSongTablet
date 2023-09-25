@@ -130,7 +130,7 @@ public class MidiFragment extends Fragment {
     private void setValues() {
         displayCurrentDevice();
         myView.enableBluetooth.setChecked(allowBluetoothSearch(mainActivityInterface.getMidi().getIncludeBluetoothMidi()));
-        myView.autoSendBluetooth.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("midiSendAuto",false));
+        myView.autoSendMidi.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("midiSendAuto",false));
         myView.midiDelay.setAdjustableButtons(true);
         myView.midiDelay.setHint(mainActivityInterface.getMidi().getMidiDelay() + "ms");
         myView.midiDelay.setValue(mainActivityInterface.getMidi().getMidiDelay());
@@ -202,7 +202,7 @@ public class MidiFragment extends Fragment {
         myView.searchDevices.setOnClickListener(v -> startScan());
         myView.testMidiDevice.setOnClickListener(v -> sendTestNote());
         myView.disconnectMidiDevice.setOnClickListener(v -> disconnectDevices());
-        myView.autoSendBluetooth.setOnCheckedChangeListener(((buttonView, isChecked) -> mainActivityInterface.getMidi().setMidiSendAuto(isChecked)));
+        myView.autoSendMidi.setOnCheckedChangeListener(((buttonView, isChecked) -> mainActivityInterface.getMidi().setMidiSendAuto(isChecked)));
         myView.midiAsPedal.setOnCheckedChangeListener(((buttonView, isChecked) -> {
             mainActivityInterface.getPreferences().setMyPreferenceBoolean("midiAsPedal", isChecked);
             mainActivityInterface.getPedalActions().setMidiAsPedal(isChecked);

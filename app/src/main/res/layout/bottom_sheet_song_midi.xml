@@ -27,6 +27,17 @@
             android:text="@string/midi_devices" />
         <TableRow style="@style/DividerLine"/>
 
+        <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+            android:id="@+id/autoSendMidi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:text="@string/midi_auto"
+            android:hint="@string/midi_messages"/>
+        <TableRow style="@style/DividerLine" />
+
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/songMidiEdit"
             android:layout_width="wrap_content"
