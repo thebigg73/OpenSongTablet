@@ -10,7 +10,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
@@ -250,6 +249,8 @@ public class Midi {
     }
 
     public String getReadableStringFromHex(String s) {
+        // Check for shorthand MIDI
+        s = checkForShortHandMIDI(s).trim();
         // This tries to get a readable version of a midi hex line
         // e.g. try to convert 0x90 0x02 0x64 into "Channel 1 Note on Note D0 Velocity 100
         // First then, we need to split the string into sections.
@@ -362,7 +363,6 @@ public class Midi {
         if (midiInputPort != null) {
             try {
                 midiInputPort.send(b, 0, b.length);
-                Log.d(TAG,"bytes sent:"+ Arrays.toString(b));
                 success = true;
             } catch (IOException e) {
                 e.printStackTrace();
@@ -374,7 +374,6 @@ public class Midi {
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void sendMidi(int position) {
         // Send midi from the arrayList
-        Log.d(TAG,"sendMidi("+position+")");
         if (position >= 0 && position < songMidiMessages.size()) {
             sendMidi(returnBytesFromHexText(songMidiMessages.get(position)));
         }
@@ -397,7 +396,6 @@ public class Midi {
     public int sendMidiHexSequence(String sequence) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
                 sequence!=null && !sequence.isEmpty()) {
-            Log.d(TAG,"sequence:"+sequence);
             String[] messages = sequence.split("\n");
             for (int x=0; x<messages.length; x++) {
                 int finalX = x;
@@ -580,6 +578,8 @@ public class Midi {
         Split the line into an array split by spaces
         Convert each section into an integer which is added to the bytes array
         */
+        // First check for shorhand
+        lineofhextext = checkForShortHandMIDI(lineofhextext).trim();
 
         String[] hexbits = lineofhextext.split(" ");
         byte[] bytes = new byte[hexbits.length];
@@ -601,6 +601,8 @@ public class Midi {
     private int getIntFromHexString(String s) {
         int i = 0;
         if (s != null && !s.isEmpty()) {
+            // Check for MIDI shorthand
+            s = checkForShortHandMIDI(s).trim();
             try {
                 i = Integer.parseInt(s, 16);
             } catch (Exception e) {
@@ -899,7 +901,6 @@ public class Midi {
     }
 
     public String checkForShortHandMIDI(String textToCheck) {
-        Log.d(TAG,"textToCheck:"+textToCheck);
         return shortHandMidi.convertShorthandToMIDI(textToCheck);
     }
 

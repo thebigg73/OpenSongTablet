@@ -3,7 +3,6 @@ package com.garethevans.church.opensongtablet.controls;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.View;
 
 import com.garethevans.church.opensongtablet.R;
@@ -86,7 +85,6 @@ public class HotZones {
             boolean inlineSet = mainActivityInterface.getPreferences().getMyPreferenceBoolean("inlineSet",false);
             float inlineSetWidth = mainActivityInterface.getPreferences().getMyPreferenceFloat("inlineSetWidth",0.3f);
 
-            Log.d(TAG,"checkIfRequired()  inlineSet:"+inlineSet+"  width:"+inlineSetWidth);
             hotZoneTopLeftView.setVisibility(
                     hotZoneTopLeftShort != null && hotZoneTopLeftLong != null && !inlineSet &&
                             (!hotZoneTopLeftShort.isEmpty() || !hotZoneTopLeftLong.isEmpty()) ?
@@ -238,14 +236,4 @@ public class HotZones {
         return (zoneShort.equals(direction) && zoneLong.isEmpty()) || (zoneShort.isEmpty() && zoneLong.equals(direction));
     }
 
-    // If the
-    public void enableTopLeft(boolean enabled) {
-        hotZoneTopLeftView.setVisibility(enabled ? View.VISIBLE:View.GONE);
-    }
-    public void enableTopCenter(boolean enabled) {
-        hotZoneTopCenterView.setVisibility(enabled ? View.VISIBLE:View.GONE);
-    }
-    public void enableBottomCenter(boolean enabled) {
-        hotZoneTopCenterView.setVisibility(enabled ? View.VISIBLE:View.GONE);
-    }
 }

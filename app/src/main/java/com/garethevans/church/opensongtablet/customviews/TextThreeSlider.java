@@ -13,13 +13,14 @@ import androidx.annotation.Nullable;
 
 import com.garethevans.church.opensongtablet.R;
 import com.google.android.material.slider.Slider;
+import com.google.android.material.textview.MaterialTextView;
 
 public class TextThreeSlider extends LinearLayout {
 
-    private final MyMaterialTextView label;
-    private final MyMaterialTextView textLeft;
-    private final MyMaterialTextView textRight;
-    private final MyMaterialTextView textCenter;
+    private final MaterialTextView label;
+    private final MaterialTextView textLeft;
+    private final MaterialTextView textRight;
+    private final MaterialTextView textCenter;
     private final ImageView imageLeft;
     private final ImageView imageRight;
     private final ImageView imageCenter;
@@ -134,7 +135,7 @@ public class TextThreeSlider extends LinearLayout {
     public void addOnChangeListener(Slider.OnChangeListener onChangeListener) {
         slider.addOnChangeListener(onChangeListener);
     }
-    private void textOrNull(MyMaterialTextView textView, CharSequence charSequence) {
+    private void textOrNull(MaterialTextView textView, CharSequence charSequence) {
         String text = null;
         if (charSequence!=null) {
             text = charSequence.toString();
@@ -203,7 +204,7 @@ public class TextThreeSlider extends LinearLayout {
             imageView.setAlpha(0.4f);
         }
     }
-    private void setTextSelected(MyMaterialTextView textView, boolean on) {
+    private void setTextSelected(MaterialTextView textView, boolean on) {
         if (on) {
             textView.setAlpha(1f);
         } else {

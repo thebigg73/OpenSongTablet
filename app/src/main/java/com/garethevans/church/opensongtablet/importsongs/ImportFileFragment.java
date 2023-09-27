@@ -210,7 +210,7 @@ public class ImportFileFragment extends Fragment {
 
         mainActivityInterface.getStorageAccess().copyFile(inputStream,outputStream);
 
-        if (isIMGorPDF && getContext()!=null) {
+        if (isIMGorPDF && getActivity()!=null && getContext()!=null) {
             if (mainActivityInterface.getImportFilename().toLowerCase(Locale.ROOT).endsWith(".pdf")) {
                 // Load in a preview if the version of Android is high enough
                 Bitmap bmp = mainActivityInterface.getProcessSong().getBitmapFromPDF(null,null,1,200,200,"N", true);

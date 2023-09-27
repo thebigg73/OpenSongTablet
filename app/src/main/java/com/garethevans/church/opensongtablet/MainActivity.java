@@ -1859,7 +1859,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     songListBuildIndex.fullIndex(songMenuFragment.getProgressText());
                 } else {
                     // Try again in a short while
-                    new Handler().postDelayed(() -> songListBuildIndex.fullIndex(songMenuFragment.getProgressText()), 1000);
+                    new Handler().postDelayed(() -> {
+                        if (songListBuildIndex!=null) {
+                            songListBuildIndex.fullIndex(songMenuFragment.getProgressText());
+                        }
+                    }, 1000);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -2631,7 +2635,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     result = storageAccess.doDeleteFile("Songs",
                             song.getFolder(), song.getFilename());
                     // Now remove from the SQL database
-                    if (song.getFiletype().equals("PDF") || song.getFiletype().equals("IMG")) {
+                    if (song.getFiletype()!=null && (song.getFiletype().equals("PDF") || song.getFiletype().equals("IMG"))) {
                         boolean deleted = nonOpenSongSQLiteHelper.deleteSong(song.getFolder(), song.getFilename());
                         Log.d(TAG, "deleted:" + deleted);
                     }
@@ -2651,7 +2655,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     // Folder and subfolder are passed in the arguments.  Blank arguments.get(2) /filenames mean folders
                     getStorageAccess().updateFileActivityLog(TAG + " confirmedAction deleteFile " + arguments.get(0) + "/" + arguments.get(1) + "/" + arguments.get(2));
                     result = storageAccess.doDeleteFile(arguments.get(0), arguments.get(1), arguments.get(2));
-                    if (arguments.get(2).isEmpty() && arguments.get(0).equals("Songs") && (arguments.get(1).isEmpty() || arguments.get(1) == null)) {
+                    if (arguments.get(2)!=null && arguments.get(2).isEmpty() && arguments.get(0)!=null && arguments.get(0).equals("Songs") &&
+                            (arguments.get(1)==null || arguments.get(1).isEmpty())) {
                         // Emptying the entire songs foler, so need to recreate it on finish.
                         storageAccess.createFolder("Songs", "", "", false);
                     }

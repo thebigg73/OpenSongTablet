@@ -331,19 +331,31 @@ public class PerformanceFragment extends Fragment {
     }
     public void updateInlineSetSet() {
         if (myView!=null) {
-            myView.inlineSetList.setUseTitle(mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuSortTitles",true));
-            myView.inlineSetList.post(() -> myView.inlineSetList.prepareSet());
+            try {
+                myView.inlineSetList.setUseTitle(mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuSortTitles", true));
+                myView.inlineSetList.post(() -> myView.inlineSetList.prepareSet());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
     public void updateInlineSetItem(int position) {
-        try {
-            myView.inlineSetList.updateSelected(position);
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (myView!=null) {
+            try {
+                myView.inlineSetList.updateSelected(position);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
     public void updateInlineSetMove(int from, int to) {
-        myView.inlineSetList.updateInlineSetMove(from,to);
+        if (myView!=null) {
+            try {
+                myView.inlineSetList.updateInlineSetMove(from, to);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
     public void updateInlineSetRemoved(int from) {
         if (myView!=null) {
@@ -379,7 +391,6 @@ public class PerformanceFragment extends Fragment {
             doSongLoadStartTime = System.currentTimeMillis();
             mainActivityInterface.closeDrawer(true);
 
-            Log.d(TAG,"processingTestView:"+processingTestView);
             // Make sure we only do this once (reset at the end of 'dealwithstuffafterready')
             if (!processingTestView) {
                 processingTestView = true;
@@ -387,8 +398,6 @@ public class PerformanceFragment extends Fragment {
 
                 // IV - Set a boolean indicating song change
                 songChange = !mainActivityInterface.getSong().getFilename().equals(filename) || !mainActivityInterface.getSong().getFolder().equals(folder);
-
-                Log.d(TAG,"songChange:"+songChange);
 
                 // Remove capo
                 mainActivityInterface.updateOnScreenInfo("capoHide");
@@ -865,117 +874,118 @@ public class PerformanceFragment extends Fragment {
     }
 
     private void songIsReadyToDisplay() {
-        try {
-            // Set the page holder to fullscreen for now
-            myView.pageHolder.getLayoutParams().width = availableWidth;
-            myView.pageHolder.getLayoutParams().height = availableHeight;
-            myView.songSheetTitle.setVisibility(View.VISIBLE);
-
-            // All views have now been drawn, so measure the arraylist views
-            for (int x = 0; x < mainActivityInterface.getSectionViews().size(); x++) {
-                int width = mainActivityInterface.getSectionViews().get(x).getWidth();
-                int height = mainActivityInterface.getSectionViews().get(x).getHeight();
-                mainActivityInterface.addSectionSize(x, width, height);
-            }
-
-            myView.testPane.removeAllViews();
-
-            // Decide which mode we are in to determine how the views are rendered
-            if (mainActivityInterface.getMode().equals(mode_stage)) {
-                // We are in Stage mode so use the recyclerView
-                myView.recyclerView.setVisibility(View.INVISIBLE);
-                myView.pageHolder.setVisibility(View.GONE);
-                myView.songView.setVisibility(View.GONE);
-                myView.zoomLayout.setVisibility(View.GONE);
-                myView.highlighterView.setVisibility(View.GONE);
-                if (getContext()!=null) {
-                    stageSectionAdapter = new StageSectionAdapter(getContext(), mainActivityInterface,
-                            displayInterface, myView.inlineSetList.getInlineSetWidth());
-                }
-
-                myView.recyclerView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                    @Override
-                    public void onGlobalLayout() {
-                        myView.recyclerView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-
-                        widthBeforeScale = stageSectionAdapter.getWidth();
-                        widthAfterScale = widthBeforeScale;
-                        heightBeforeScale = stageSectionAdapter.getHeight();
-                        heightAfterScale = heightBeforeScale;
-
-                        recyclerLayoutManager.setSizes(stageSectionAdapter.getWidths(), stageSectionAdapter.getHeights(), availableWidth, availableHeight);
-                        myView.recyclerView.setHasFixedSize(false);
-                        myView.recyclerView.setMaxScrollY(heightAfterScale - availableHeight);
-                        myView.recyclerView.setPadding(myView.inlineSetList.getInlineSetWidth(),0,0,0);
-
-                        endProcessing();
-
-                        // Slide in
-                        long QOSAdjustment = doSongLoadQOSTime - (System.currentTimeMillis() - doSongLoadStartTime);
-
-                        myView.recyclerView.setVisibility(View.VISIBLE);
-                        //IV - Reset zoom
-                        myView.recyclerView.toggleScale();
-
-                        new Handler().postDelayed(() -> {
-                            myView.recyclerView.startAnimation(animSlideIn);
-
-                            dealWithStuffAfterReady(false);
-
-                            // Get a null screenshot
-                            getScreenshot(0, 0, 0);
-                        }, Math.max(0, QOSAdjustment));
-                    }
-                });
-                myView.recyclerView.post(() -> {
-                    try {
-                        myView.recyclerView.setAdapter(stageSectionAdapter);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                });
-
-
-            } else {
-                // We are in Performance mode, so use the songView
-                myView.pageHolder.setVisibility(View.INVISIBLE);
-                myView.zoomLayout.setVisibility(View.VISIBLE);
-                myView.songView.setVisibility(View.VISIBLE);
-                myView.imageView.setVisibility(View.GONE);
-                myView.recyclerView.setVisibility(View.GONE);
-                myView.highlighterView.setVisibility(View.GONE);
-
-                myView.zoomLayout.setPageSize(availableWidth, availableHeight);
-                //IV - Reset zoom
-                myView.zoomLayout.resetLayout();
-                myView.zoomLayout.toggleScale();
-
+        if (myView!=null) {
+            try {
+                // Set the page holder to fullscreen for now
                 myView.pageHolder.getLayoutParams().width = availableWidth;
                 myView.pageHolder.getLayoutParams().height = availableHeight;
+                myView.songSheetTitle.setVisibility(View.VISIBLE);
 
-                float[] scaleInfo = mainActivityInterface.getProcessSong().addViewsToScreen(
-                        mainActivityInterface.getSong(),
-                        mainActivityInterface.getSectionViews(),
-                        mainActivityInterface.getSectionWidths(), mainActivityInterface.getSectionHeights(),
-                        myView.pageHolder, myView.songView, myView.songSheetTitle,
-                        availableWidth, availableHeight, myView.songView.getCol1(), myView.songView.getCol2(),
-                        myView.songView.getCol3(), false, getResources().getDisplayMetrics());
+                // All views have now been drawn, so measure the arraylist views
+                for (int x = 0; x < mainActivityInterface.getSectionViews().size(); x++) {
+                    int width = mainActivityInterface.getSectionViews().get(x).getWidth();
+                    int height = mainActivityInterface.getSectionViews().get(x).getHeight();
+                    mainActivityInterface.addSectionSize(x, width, height);
+                }
 
-                // Determine how many columns are scaled
-                heightAfterScale = 0;
-                if (scaleInfo[0]==1) {
+                myView.testPane.removeAllViews();
+
+                // Decide which mode we are in to determine how the views are rendered
+                if (mainActivityInterface.getMode().equals(mode_stage)) {
+                    // We are in Stage mode so use the recyclerView
+                    myView.recyclerView.setVisibility(View.INVISIBLE);
+                    myView.pageHolder.setVisibility(View.GONE);
+                    myView.songView.setVisibility(View.GONE);
+                    myView.zoomLayout.setVisibility(View.GONE);
+                    myView.highlighterView.setVisibility(View.GONE);
+                    if (getContext() != null) {
+                        stageSectionAdapter = new StageSectionAdapter(getContext(), mainActivityInterface,
+                                displayInterface, myView.inlineSetList.getInlineSetWidth());
+                    }
+
+                    myView.recyclerView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                        @Override
+                        public void onGlobalLayout() {
+                            myView.recyclerView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+
+                            widthBeforeScale = stageSectionAdapter.getWidth();
+                            widthAfterScale = widthBeforeScale;
+                            heightBeforeScale = stageSectionAdapter.getHeight();
+                            heightAfterScale = heightBeforeScale;
+
+                            recyclerLayoutManager.setSizes(stageSectionAdapter.getWidths(), stageSectionAdapter.getHeights(), availableWidth, availableHeight);
+                            myView.recyclerView.setHasFixedSize(false);
+                            myView.recyclerView.setMaxScrollY(heightAfterScale - availableHeight);
+                            myView.recyclerView.setPadding(myView.inlineSetList.getInlineSetWidth(), 0, 0, 0);
+
+                            endProcessing();
+
+                            // Slide in
+                            long QOSAdjustment = doSongLoadQOSTime - (System.currentTimeMillis() - doSongLoadStartTime);
+
+                            myView.recyclerView.setVisibility(View.VISIBLE);
+                            //IV - Reset zoom
+                            myView.recyclerView.toggleScale();
+
+                            new Handler().postDelayed(() -> {
+                                myView.recyclerView.startAnimation(animSlideIn);
+
+                                dealWithStuffAfterReady(false);
+
+                                // Get a null screenshot
+                                getScreenshot(0, 0, 0);
+                            }, Math.max(0, QOSAdjustment));
+                        }
+                    });
+                    myView.recyclerView.post(() -> {
+                        try {
+                            myView.recyclerView.setAdapter(stageSectionAdapter);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    });
+
+
+                } else {
+                    // We are in Performance mode, so use the songView
+                    myView.pageHolder.setVisibility(View.INVISIBLE);
+                    myView.zoomLayout.setVisibility(View.VISIBLE);
+                    myView.songView.setVisibility(View.VISIBLE);
+                    myView.imageView.setVisibility(View.GONE);
+                    myView.recyclerView.setVisibility(View.GONE);
+                    myView.highlighterView.setVisibility(View.GONE);
+
+                    myView.zoomLayout.setPageSize(availableWidth, availableHeight);
+                    //IV - Reset zoom
+                    myView.zoomLayout.resetLayout();
+                    myView.zoomLayout.toggleScale();
+
+                    myView.pageHolder.getLayoutParams().width = availableWidth;
+                    myView.pageHolder.getLayoutParams().height = availableHeight;
+
+                    float[] scaleInfo = mainActivityInterface.getProcessSong().addViewsToScreen(
+                            mainActivityInterface.getSong(),
+                            mainActivityInterface.getSectionViews(),
+                            mainActivityInterface.getSectionWidths(), mainActivityInterface.getSectionHeights(),
+                            myView.pageHolder, myView.songView, myView.songSheetTitle,
+                            availableWidth, availableHeight, myView.songView.getCol1(), myView.songView.getCol2(),
+                            myView.songView.getCol3(), false, getResources().getDisplayMetrics());
+
+                    // Determine how many columns are scaled
+                    heightAfterScale = 0;
+                    if (scaleInfo[0] == 1) {
                     /*float[] {1,           // Number of columns
                     1    oneColumnScale,    // Overall best scale
                     2    col1_1Width,       // Column 1 max width
                     3    col1_1Height,      // Column 1 total height
                     4    sectionSpace}      // Section space per view except last column */
-                    scaleFactor = scaleInfo[1];
-                    widthBeforeScale = (int)scaleInfo[2];
-                    heightBeforeScale = (int)scaleInfo[3];
-                    widthAfterScale = (int)(widthBeforeScale * scaleFactor);
-                    heightAfterScale = (int)(heightBeforeScale * scaleFactor);
-                    myView.pageHolder.getLayoutParams().width = widthAfterScale;
-                } else if (scaleInfo[0]==2) {
+                        scaleFactor = scaleInfo[1];
+                        widthBeforeScale = (int) scaleInfo[2];
+                        heightBeforeScale = (int) scaleInfo[3];
+                        widthAfterScale = (int) (widthBeforeScale * scaleFactor);
+                        heightAfterScale = (int) (heightBeforeScale * scaleFactor);
+                        myView.pageHolder.getLayoutParams().width = widthAfterScale;
+                    } else if (scaleInfo[0] == 2) {
                     /*float[]{2,             // Number of columns
                     1    twoColumnScale,     // Overall best scale
                     2    columnBreak2,       // Break point
@@ -986,14 +996,14 @@ public class PerformanceFragment extends Fragment {
                     7    col2_2Width,        // Column 2 max width
                     8    col2_2Height,       // Column 2 total height
                     9    sectionSpace}       // Section space per view except last column */
-                    scaleFactor = Math.max(scaleInfo[3],scaleInfo[6]);
-                    widthBeforeScale = availableWidth;
-                    heightBeforeScale = (int)Math.max(scaleInfo[5],scaleInfo[8]);
-                    widthAfterScale = availableWidth;
-                    heightAfterScale = (int)Math.max(scaleInfo[3]*scaleInfo[5],scaleInfo[6]*scaleInfo[8]);
-                    myView.pageHolder.getLayoutParams().width = availableWidth;
-                    myView.songView.getLayoutParams().width = availableWidth;
-                } else if (scaleInfo[0]==3) {
+                        scaleFactor = Math.max(scaleInfo[3], scaleInfo[6]);
+                        widthBeforeScale = availableWidth;
+                        heightBeforeScale = (int) Math.max(scaleInfo[5], scaleInfo[8]);
+                        widthAfterScale = availableWidth;
+                        heightAfterScale = (int) Math.max(scaleInfo[3] * scaleInfo[5], scaleInfo[6] * scaleInfo[8]);
+                        myView.pageHolder.getLayoutParams().width = availableWidth;
+                        myView.songView.getLayoutParams().width = availableWidth;
+                    } else if (scaleInfo[0] == 3) {
                     /*float[]{3,             // Number of columns
                     1    threeColumnScale,   // Overall best scale
                     2    columnBreak3_a,     // Break point 1
@@ -1008,52 +1018,53 @@ public class PerformanceFragment extends Fragment {
                     11   col3_3Width,        // Column 3 max width
                     12   col3_3Height,       // Column 3 total height
                     13   sectionSpace};      // Section space per view except last in column */
-                    widthBeforeScale = availableWidth;
-                    heightBeforeScale = (int)Math.max(scaleInfo[6],Math.max(scaleInfo[9],scaleInfo[12]));
-                    widthAfterScale = availableWidth;
-                    scaleFactor = Math.max(scaleInfo[4],Math.max(scaleInfo[7],scaleInfo[10]));
-                    heightAfterScale = (int)Math.max(scaleInfo[4]*scaleInfo[6],Math.max(scaleInfo[7]*scaleInfo[9],scaleInfo[10]*scaleInfo[12]));
-                    myView.pageHolder.getLayoutParams().width = availableWidth;
-                    myView.songView.getLayoutParams().width = availableWidth;
+                        widthBeforeScale = availableWidth;
+                        heightBeforeScale = (int) Math.max(scaleInfo[6], Math.max(scaleInfo[9], scaleInfo[12]));
+                        widthAfterScale = availableWidth;
+                        scaleFactor = Math.max(scaleInfo[4], Math.max(scaleInfo[7], scaleInfo[10]));
+                        heightAfterScale = (int) Math.max(scaleInfo[4] * scaleInfo[6], Math.max(scaleInfo[7] * scaleInfo[9], scaleInfo[10] * scaleInfo[12]));
+                        myView.pageHolder.getLayoutParams().width = availableWidth;
+                        myView.songView.getLayoutParams().width = availableWidth;
+                    }
+
+                    heightAfterScale = heightAfterScale + mainActivityInterface.getSongSheetTitleLayout().getHeight();
+                    myView.pageHolder.getLayoutParams().height = heightAfterScale;
+                    myView.songView.getLayoutParams().height = heightAfterScale;
+
+                    // Pass this scale factor to the zoom layout as the new minimum scale
+                    myView.zoomLayout.setCurrentScale(scaleFactor);
+                    myView.zoomLayout.setSongSize(widthAfterScale, heightAfterScale);
+
+                    endProcessing();
+
+                    // Slide in
+                    long QOSAdjustment = doSongLoadQOSTime - (System.currentTimeMillis() - doSongLoadStartTime);
+
+                    myView.zoomLayout.postDelayed(() -> {
+                        try {
+                            // The new song sizes were sent to the zoomLayout in ProcessSong
+                            int topPadding = 0;
+
+                            // IV - We need to request layout to get songsheet information added ahead of animate in. Odd!
+                            if (myView != null) {
+                                myView.pageHolder.requestLayout();
+                                myView.pageHolder.setVisibility(View.VISIBLE);
+                                myView.pageHolder.startAnimation(animSlideIn);
+
+                                dealWithStuffAfterReady(false);
+
+                                // Try to take a screenshot ready for any highlighter actions that may be called
+                                getScreenshot(myView.pageHolder.getWidth(), myView.pageHolder.getHeight() - myView.songSheetTitle.getHeight(), topPadding);
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }, Math.max(0, QOSAdjustment));
                 }
 
-                heightAfterScale = heightAfterScale + mainActivityInterface.getSongSheetTitleLayout().getHeight();
-                myView.pageHolder.getLayoutParams().height = heightAfterScale;
-                myView.songView.getLayoutParams().height = heightAfterScale;
-
-                // Pass this scale factor to the zoom layout as the new minimum scale
-                myView.zoomLayout.setCurrentScale(scaleFactor);
-                myView.zoomLayout.setSongSize(widthAfterScale,heightAfterScale);
-
-                endProcessing();
-
-                // Slide in
-                long QOSAdjustment = doSongLoadQOSTime - (System.currentTimeMillis() - doSongLoadStartTime);
-
-                myView.zoomLayout.postDelayed(() -> {
-                    try {
-                        // The new song sizes were sent to the zoomLayout in ProcessSong
-                        int topPadding = 0;
-
-                        // IV - We need to request layout to get songsheet information added ahead of animate in. Odd!
-                        if (myView!=null) {
-                            myView.pageHolder.requestLayout();
-                            myView.pageHolder.setVisibility(View.VISIBLE);
-                            myView.pageHolder.startAnimation(animSlideIn);
-
-                            dealWithStuffAfterReady(false);
-
-                            // Try to take a screenshot ready for any highlighter actions that may be called
-                            getScreenshot(myView.pageHolder.getWidth(), myView.pageHolder.getHeight() - myView.songSheetTitle.getHeight(), topPadding);
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }, Math.max(0, QOSAdjustment));
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
@@ -1407,10 +1418,8 @@ public class PerformanceFragment extends Fragment {
 
             // IV - Use a snap to top scroller if scrolling to the top of the screen
             if (mainActivityInterface.getPreferences().getMyPreferenceFloat("stageModeScale",0.8f) == 1.0f) {
-                Log.d(TAG,"Snap to top");
                 myView.recyclerView.smoothScrollTo(getContext(),recyclerLayoutManager, position);
             } else {
-                Log.d(TAG,"manual do smooth scroll to");
                 myView.recyclerView.doSmoothScrollTo(recyclerLayoutManager, position);
             }
         }

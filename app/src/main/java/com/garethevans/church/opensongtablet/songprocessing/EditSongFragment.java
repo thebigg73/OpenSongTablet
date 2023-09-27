@@ -20,6 +20,7 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.tabs.TabLayoutMediator;
 
+import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -86,23 +87,6 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
         // Set the save listener
         myView.saveChanges.setOnClickListener(v -> doSaveChanges());
 
-        // If we tried to edit a temporary variation or an actual variation - let the user know
-        InformationBottomSheet informationBottomSheet = null;
-        if (mainActivityInterface.getWhattodo()!=null &&
-                mainActivityInterface.getWhattodo().equals("editTempVariation")) {
-            informationBottomSheet = new InformationBottomSheet(information_string,
-                    edit_song_variation_temp_string,okay_string,null);
-        } else if (mainActivityInterface.getWhattodo()!=null &&
-                mainActivityInterface.getWhattodo().equals("editActualVariation")) {
-            informationBottomSheet = new InformationBottomSheet(information_string,
-                    edit_song_variation_string,okay_string,null);
-        }
-
-        if (informationBottomSheet!=null) {
-            mainActivityInterface.setWhattodo("");
-            informationBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"Information");
-        }
-
         // Clear the back stack to the root editSongFragment (otherwise it includes the tabs)
         try {
             mainActivityInterface.popTheBackStack(R.id.editSongFragment, false);
@@ -110,8 +94,31 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
             e.printStackTrace();
         }
 
-        return myView.getRoot();
+        showWarning();
 
+        return myView.getRoot();
+    }
+
+    private void showWarning() {
+        Executor executor = Executors.newSingleThreadExecutor();
+        executor.execute(() -> {
+            // If we tried to edit a temporary variation or an actual variation - let the user know
+            InformationBottomSheet informationBottomSheet = null;
+            if (mainActivityInterface.getWhattodo()!=null &&
+                    mainActivityInterface.getWhattodo().equals("editTempVariation")) {
+                informationBottomSheet = new InformationBottomSheet(information_string,
+                        edit_song_variation_temp_string,okay_string,null);
+            } else if (mainActivityInterface.getWhattodo()!=null &&
+                    mainActivityInterface.getWhattodo().equals("editActualVariation")) {
+                informationBottomSheet = new InformationBottomSheet(information_string,
+                        edit_song_variation_string,okay_string,null);
+            }
+
+            if (informationBottomSheet!=null) {
+                mainActivityInterface.setWhattodo("");
+                informationBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"Information");
+            }
+        });
     }
 
     private void prepareStrings() {
@@ -136,54 +143,66 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
     }
     private void setUpTabs() {
         if (getActivity()!=null) {
-            EditSongViewPagerAdapter adapter = new EditSongViewPagerAdapter(getActivity().getSupportFragmentManager(),
-                    getActivity().getLifecycle());
-            adapter.createFragment(0);
-
-            mainActivityInterface.enableSwipe("edit",false);
-
-            myView.viewpager.setAdapter(adapter);
-            myView.viewpager.setOffscreenPageLimit(1);
-            callback = new ViewPager2.OnPageChangeCallback() {
+            Executor executor = Executors.newSingleThreadExecutor();
+            executor.execute(new Runnable() {
                 @Override
-                public void onPageSelected(int position) {
-                    super.onPageSelected(position);
-                    switch (position) {
-                        case 0:
-                            webAddress = website_edit_song_string;
-                            break;
-                        case 1:
-                            webAddress = website_edit_song_main_string;
-                            break;
-                        case 2:
-                            webAddress = website_edit_song_features_string;
-                            break;
-                        case 3:
-                            webAddress = website_edit_song_tag_string;
-                            break;
+                public void run() {
+                    if (getActivity() != null) {
+                        EditSongViewPagerAdapter adapter = new EditSongViewPagerAdapter(getActivity().getSupportFragmentManager(),
+                                getActivity().getLifecycle());
+                        adapter.createFragment(0);
+
+                        mainActivityInterface.enableSwipe("edit", false);
+
+                        callback = new ViewPager2.OnPageChangeCallback() {
+                            @Override
+                            public void onPageSelected(int position) {
+                                super.onPageSelected(position);
+                                switch (position) {
+                                    case 0:
+                                        webAddress = website_edit_song_string;
+                                        break;
+                                    case 1:
+                                        webAddress = website_edit_song_main_string;
+                                        break;
+                                    case 2:
+                                        webAddress = website_edit_song_features_string;
+                                        break;
+                                    case 3:
+                                        webAddress = website_edit_song_tag_string;
+                                        break;
+                                }
+                                mainActivityInterface.updateToolbarHelp(webAddress);
+                                mainActivityInterface.getWindowFlags().hideKeyboard();
+                            }
+                        };
+
+                        myView.viewpager.post(() -> {
+                            myView.viewpager.setAdapter(adapter);
+                            myView.viewpager.setOffscreenPageLimit(1);
+                            myView.viewpager.registerOnPageChangeCallback(callback);
+
+                            new TabLayoutMediator(myView.tabButtons, myView.viewpager, (tab, position) -> {
+                                switch (position) {
+                                    case 0:
+                                    default:
+                                        tab.setText(lyrics_string);
+                                        break;
+                                    case 1:
+                                        tab.setText(mainfoldername_string);
+                                        break;
+                                    case 2:
+                                        tab.setText(song_features_string);
+                                        break;
+                                    case 3:
+                                        tab.setText(tag_string);
+                                        break;
+                                }
+                            }).attach();
+                        });
                     }
-                    mainActivityInterface.updateToolbarHelp(webAddress);
-                    mainActivityInterface.getWindowFlags().hideKeyboard();
                 }
-            };
-            myView.viewpager.registerOnPageChangeCallback(callback);
-            new TabLayoutMediator(myView.tabButtons, myView.viewpager, (tab, position) -> {
-                switch (position) {
-                    case 0:
-                    default:
-                        tab.setText(lyrics_string);
-                        break;
-                    case 1:
-                        tab.setText(mainfoldername_string);
-                        break;
-                    case 2:
-                        tab.setText(song_features_string);
-                        break;
-                    case 3:
-                        tab.setText(tag_string);
-                        break;
-                }
-            }).attach();
+            });
         }
     }
 

@@ -1,6 +1,7 @@
 package com.garethevans.church.opensongtablet.appdata;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,6 +16,7 @@ import androidx.lifecycle.Lifecycle;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.BottomSheetBootupIndexingBinding;
+import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -26,12 +28,15 @@ public class BootUpIndexBottomSheet extends BottomSheetDialogFragment {
 
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "BootUpIndexBottomSheet";
+    private MainActivityInterface mainActivityInterface;
     private BottomSheetBootupIndexingBinding myView;
     private final BootUpFragment bootUpFragment;
-    private String indexing_string="", continue_string="";
+    private String indexing_string="";
+    private String skip_string="";
+    private String indexing_web="";
     private Timer timer;
     private TimerTask timerTask;
-    private int countdownNumber = 5;
+    private int countdownNumber = 10;
     boolean actionChosen = false;
 
     public BootUpIndexBottomSheet() {
@@ -48,13 +53,15 @@ public class BootUpIndexBottomSheet extends BottomSheetDialogFragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (countdownNumber != 5) {
+        prepareStrings(getContext());
+        if (countdownNumber != 10) {
             // We were in progress of counting down, so resume
             Log.d(TAG,"Try to resume");
-            countdownNumber = 5;
+            countdownNumber = 10;
             setTimer();
         }
         myView.dialogHeading.setText(indexing_string);
+        myView.dialogHeading.setWebHelp(mainActivityInterface, indexing_web);
     }
 
     @NonNull
@@ -70,6 +77,13 @@ public class BootUpIndexBottomSheet extends BottomSheetDialogFragment {
         return dialog;
     }
 
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mainActivityInterface = (MainActivityInterface) context;
+        prepareStrings(context);
+    }
+
 
     @Nullable
     @org.jetbrains.annotations.Nullable
@@ -77,7 +91,7 @@ public class BootUpIndexBottomSheet extends BottomSheetDialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         myView = BottomSheetBootupIndexingBinding.inflate(inflater, container, false);
 
-        prepareStrings();
+        prepareStrings(getContext());
         setupListeners();
         myView.dialogHeading.setClose(this);
         setTimer();
@@ -85,11 +99,11 @@ public class BootUpIndexBottomSheet extends BottomSheetDialogFragment {
         return myView.getRoot();
     }
 
-    private void prepareStrings() {
-        if (getContext()!=null) {
-            indexing_string = getString(R.string.indexing_string);
-            continue_string = getString(R.string.continue_text);
-            myView.dialogHeading.setText(indexing_string);
+    private void prepareStrings(Context c) {
+        if (c!=null) {
+            indexing_string = c.getString(R.string.indexing_string);
+            skip_string = c.getString(R.string.skip);
+            indexing_web = c.getString(R.string.website_indexing_songs);
         }
     }
 
@@ -124,19 +138,19 @@ public class BootUpIndexBottomSheet extends BottomSheetDialogFragment {
         timerTask = new TimerTask() {
             @Override
             public void run() {
-                String message = continue_string + " ("+countdownNumber+")";
+                String message = skip_string + " ("+countdownNumber+")";
                 if (myView!=null) {
-                    myView.continueButton.post(() -> myView.continueButton.setText(message));
+                    myView.skipButton.post(() -> myView.skipButton.setText(message));
                 }
 
-                if (countdownNumber==1) {
+                if (countdownNumber==0) {
                     this.cancel();
                     if (timer!=null) {
                         timer.purge();
                     }
                     timer = null;
                     if (myView!=null) {
-                        myView.continueButton.post(() -> myView.continueButton.performClick());
+                        myView.skipButton.post(() -> myView.skipButton.performClick());
                     }
                 } else {
                     countdownNumber --;
@@ -150,8 +164,8 @@ public class BootUpIndexBottomSheet extends BottomSheetDialogFragment {
     @Override
     public void onDismiss(@NonNull DialogInterface dialog) {
         super.onDismiss(dialog);
-        if (!actionChosen && bootUpFragment!=null) {
-            bootUpFragment.startBootProcess(true);
+        if (bootUpFragment!=null) {
+            bootUpFragment.startBootProcess(false);
         }
         // Try to end/cancel any timers
         try {

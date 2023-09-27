@@ -186,7 +186,13 @@ public class CurrentSet {
 
     // Set or update items in the set
     public void setItem(int position, String value) {
-        setItems.set(position, value);
+        try {
+            if (setItems!=null && setItems.size()>position) {
+                setItems.set(position, value);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     public void setFolder(int position, String value) {
         setFolders.set(position, value);

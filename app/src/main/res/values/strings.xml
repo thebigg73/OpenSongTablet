@@ -1183,6 +1183,7 @@
     <string name="website_hot_zones" translatable="false">https://www.opensongapp.com/user-manual/controls/hot-zones</string>
     <string name="website_image_adjust" translatable="false">https://www.opensongapp.com/user-manual/songs/image-adjust</string>
     <string name="website_import_onsongbackup" translatable="false">https://www.opensongapp.com/user-manual/songs/ios-onsong</string>
+    <string name="website_indexing_songs" translatable="false">https://https://www.opensongapp.com/user-manual/songs/song-indexing</string>
     <string name="website_inline_midi" translatable="false">https://www.opensongapp.com/user-manual/midi/inline-midi-commands</string>
     <string name="website_inline_set" translatable="false">https://www.opensongapp.com/user-manual/display/inline-set</string>
     <string name="website_latest" translatable="false">https://www.opensongapp.com/updates/latest-updates</string>

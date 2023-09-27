@@ -182,6 +182,12 @@ public class EditSongFragmentTags extends Fragment {
                         } else if (mainActivityInterface.getTempSong().getTitle()!=null && songs.contains(mainActivityInterface.getTempSong().getTitle().replace(",",""))) {
                             mainActivityInterface.getTempSong().setBeatbuddysong(mainActivityInterface.getTempSong().getTitle().replace(",",""));
                         }
+                        if (mainActivityInterface.getTempSong().getBeatbuddysong()==null) {
+                            mainActivityInterface.getTempSong().setBeatbuddysong("");
+                        }
+                        if (mainActivityInterface.getTempSong().getBeatbuddykit()==null) {
+                            mainActivityInterface.getTempSong().setBeatbuddykit("");
+                        }
                         myView.beatBuddySong.setText(mainActivityInterface.getTempSong().getBeatbuddysong());
                         myView.beatBuddyKit.setText(mainActivityInterface.getTempSong().getBeatbuddykit());
                     });

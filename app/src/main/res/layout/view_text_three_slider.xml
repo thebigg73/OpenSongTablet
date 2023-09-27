@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/label"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -34,13 +34,13 @@
         android:layout_gravity="center_horizontal"
         android:paddingTop="0dp"
         android:paddingBottom="8dp"
-        android:baselineAligned="false">
+        android:baselineAligned="true">
 
         <FrameLayout
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content">
-        <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/textLeft"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -57,7 +57,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content">
-        <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/textCenter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -74,7 +74,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content">
-        <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/textRight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

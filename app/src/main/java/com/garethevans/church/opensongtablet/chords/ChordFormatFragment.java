@@ -30,7 +30,8 @@ public class ChordFormatFragment extends Fragment {
     private MainActivityInterface mainActivityInterface;
     private int formattouse;
     private boolean usepreferred;
-    private String chord_settings_string="", website_chords_settings_string="";
+    private String chord_settings_string="", website_chords_settings_string="",
+    chords_string="", capo_string="", both_string="";
     private String webAddress;
 
     @Override
@@ -66,6 +67,9 @@ public class ChordFormatFragment extends Fragment {
 
     private void prepareStrings() {
         if (getContext()!=null) {
+            chords_string = getString(R.string.chords);
+            capo_string = getString(R.string.capo);
+            both_string = getString(R.string.both);
             chord_settings_string = getString(R.string.chord_settings);
             website_chords_settings_string = getString(R.string.website_chords_settings);
         }
@@ -251,6 +255,9 @@ public class ChordFormatFragment extends Fragment {
     }
 
     private void setCapoChordSlider() {
+        myView.capoChords.setTextLeft(chords_string);
+        myView.capoChords.setTextCenter(capo_string);
+        myView.capoChords.setTextRight(both_string);
         if (mainActivityInterface.getPreferences().getMyPreferenceBoolean(
                 "displayCapoAndNativeChords",false)) {
             myView.capoChords.setSliderPos(2);
