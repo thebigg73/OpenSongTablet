@@ -20,6 +20,8 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.preferences.TextInputBottomSheet;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class EditSongFragmentMain extends Fragment  {
 
@@ -61,13 +63,16 @@ public class EditSongFragmentMain extends Fragment  {
 
         myView = EditSongMainBinding.inflate(inflater, container, false);
 
-        prepareStrings();
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            prepareStrings();
 
-        // Initialise the views
-        setupValues();
+            // Initialise the views
+            setupValues();
 
-        // Set listeners
-        setUpListeners();
+            // Set listeners
+            setUpListeners();
+        });
 
         return myView.getRoot();
     }
@@ -81,41 +86,44 @@ public class EditSongFragmentMain extends Fragment  {
     }
     // Initialise the views
     private void setupValues() {
-        myView.title.setText(mainActivityInterface.getTempSong().getTitle());
-        myView.author.setText(mainActivityInterface.getTempSong().getAuthor());
-        myView.copyright.setText(mainActivityInterface.getTempSong().getCopyright());
-        myView.songNotes.setText(mainActivityInterface.getTempSong().getNotes());
-        mainActivityInterface.getProcessSong().editBoxToMultiline(myView.songNotes);
-        mainActivityInterface.getProcessSong().stretchEditBoxToLines(myView.songNotes,5);
-        myView.filename.setText(mainActivityInterface.getTempSong().getFilename());
-        //folders = mainActivityInterface.getSQLiteHelper().getFolders();
+        myView.title.post(() -> myView.title.setText(mainActivityInterface.getTempSong().getTitle()));
+        myView.author.post(() -> myView.author.setText(mainActivityInterface.getTempSong().getAuthor()));
+        myView.copyright.post(() -> myView.copyright.setText(mainActivityInterface.getTempSong().getCopyright()));
+        myView.songNotes.post(() -> {
+            myView.songNotes.setText(mainActivityInterface.getTempSong().getNotes());
+            mainActivityInterface.getProcessSong().editBoxToMultiline(myView.songNotes);
+            mainActivityInterface.getProcessSong().stretchEditBoxToLines(myView.songNotes,5);
+        });
+        myView.filename.post(() -> myView.filename.setText(mainActivityInterface.getTempSong().getFilename()));
         getFoldersFromStorage();
         newFolder = "+ " + new_folder_add_string;
         folders.add(newFolder);
         if (getContext()!=null) {
-            arrayAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.folder, R.layout.view_exposed_dropdown_item, folders);
-            myView.folder.setAdapter(arrayAdapter);
+            myView.folder.post(() -> {
+                arrayAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.folder, R.layout.view_exposed_dropdown_item, folders);
+                myView.folder.setAdapter(arrayAdapter);
+                myView.folder.setText(mainActivityInterface.getTempSong().getFolder());
+            });
         }
-        myView.folder.setText(mainActivityInterface.getTempSong().getFolder());
         textInputBottomSheet = new TextInputBottomSheet(this,"EditSongFragmentMain",new_folder_string,new_folder_name_string,null,"","",true);
 
-        myView.getRoot().requestFocus();
+        myView.getRoot().post(() -> myView.getRoot().requestFocus());
 
         // Resize the bottom padding to the soft keyboard height or half the screen height for the soft keyboard (workaround)
-        mainActivityInterface.getWindowFlags().adjustViewPadding(mainActivityInterface,myView.resizeForKeyboardLayout);
+        myView.resizeForKeyboardLayout.post(() -> mainActivityInterface.getWindowFlags().adjustViewPadding(mainActivityInterface,myView.resizeForKeyboardLayout));
     }
 
     // Sor the view visibility, listeners, etc.
     private void setUpListeners() {
-        myView.title.addTextChangedListener(new MyTextWatcher("title"));
-        myView.folder.addTextChangedListener(new MyTextWatcher("folder"));
-        myView.filename.addTextChangedListener(new MyTextWatcher("filename"));
-        myView.author.addTextChangedListener(new MyTextWatcher("author"));
-        myView.copyright.addTextChangedListener(new MyTextWatcher("copyright"));
-        myView.songNotes.addTextChangedListener(new MyTextWatcher("notes"));
+        myView.title.post(() -> myView.title.addTextChangedListener(new MyTextWatcher("title")));
+        myView.folder.post(() -> myView.folder.addTextChangedListener(new MyTextWatcher("folder")));
+        myView.filename.post(() -> myView.filename.addTextChangedListener(new MyTextWatcher("filename")));
+        myView.author.post(() -> myView.author.addTextChangedListener(new MyTextWatcher("author")));
+        myView.copyright.post(() -> myView.copyright.addTextChangedListener(new MyTextWatcher("copyright")));
+        myView.songNotes.post(() -> myView.songNotes.addTextChangedListener(new MyTextWatcher("notes")));
 
         // Scroll listener
-        myView.nestedScrollView.setExtendedFabToAnimate(editSongFragmentInterface.getSaveButton());
+        myView.nestedScrollView.post(() -> myView.nestedScrollView.setExtendedFabToAnimate(editSongFragmentInterface.getSaveButton()));
     }
 
     private class MyTextWatcher implements TextWatcher {

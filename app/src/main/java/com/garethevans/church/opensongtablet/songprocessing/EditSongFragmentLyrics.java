@@ -5,6 +5,8 @@ import android.content.res.Configuration;
 import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.Editable;
 import android.text.Layout;
 import android.text.TextWatcher;
@@ -22,6 +24,9 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.EditSongLyricsBinding;
 import com.garethevans.church.opensongtablet.interfaces.EditSongFragmentInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 // This fragment purely deals with the lyrics/chords
 
@@ -59,15 +64,19 @@ public class EditSongFragmentLyrics extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = EditSongLyricsBinding.inflate(inflater, container, false);
 
-        prepareStrings();
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        executor.execute(() -> {
+            prepareStrings();
+            setupValues();
 
-        // Put the values in
-        setupValues();
+            // The stuff that needs to be on the UI
+            new Handler(Looper.getMainLooper()).post(() -> {
+                // Add listeners
+                setupListeners();
 
-        // Add listeners
-        setupListeners();
-
-        myView.lyrics.clearFocus();
+                myView.lyrics.clearFocus();
+            });
+        });
 
         return myView.getRoot();
     }
@@ -105,15 +114,9 @@ public class EditSongFragmentLyrics extends Fragment {
         }
 
 
-        Log.d(TAG,"mainActivityInterface:"+mainActivityInterface);
-        Log.d(TAG,"mainActivityInterface.getSong():"+mainActivityInterface.getSong());
-        Log.d(TAG,"mainActivityInterface.getSong().getFiletype():"+mainActivityInterface.getSong().getFiletype());
         if (mainActivityInterface.getSong().getFiletype()==null) {
             mainActivityInterface.getStorageAccess().isIMGorPDF(mainActivityInterface.getSong());
         }
-        Log.d(TAG,"mainActivityInterface:"+mainActivityInterface);
-        Log.d(TAG,"mainActivityInterface.getSong():"+mainActivityInterface.getSong());
-        Log.d(TAG,"mainActivityInterface.getSong().getFiletype():"+mainActivityInterface.getSong().getFiletype());
 
         if ((Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP &&
                 mainActivityInterface.getSong() != null &&
@@ -121,29 +124,30 @@ public class EditSongFragmentLyrics extends Fragment {
                 mainActivityInterface.getSong().getFiletype().equals("PDF")) ||
                 mainActivityInterface.getSong().getFiletype().equals("IMG")) {
             // Show the OCR button
-            myView.ocr.setVisibility(View.VISIBLE);
-            myView.imageEdit.setVisibility(View.VISIBLE);
+            myView.ocr.post(() -> myView.ocr.setVisibility(View.VISIBLE));
+            myView.imageEdit.post(() -> myView.imageEdit.setVisibility(View.VISIBLE));
         } else {
-            myView.ocr.setVisibility(View.GONE);
-            myView.imageEdit.setVisibility(View.GONE);
+            myView.ocr.post(() -> myView.ocr.setVisibility(View.GONE));
+            myView.imageEdit.post(() -> myView.imageEdit.setVisibility(View.GONE));
         }
 
         int lines = Math.max(20,mainActivityInterface.getTempSong().getLyrics().split("\n").length+1);
 
         mainActivityInterface.getProcessSong().editBoxToMultiline(myView.lyrics);
         editTextSize = mainActivityInterface.getPreferences().getMyPreferenceFloat("editTextSize",14);
-        myView.lyrics.setTextSize(editTextSize);
-        mainActivityInterface.getProcessSong().stretchEditBoxToLines(myView.lyrics,lines);
-        myView.lyrics.setText(mainActivityInterface.getTempSong().getLyrics());
+        myView.lyrics.post(() -> {
+            myView.lyrics.setTextSize(editTextSize);
+            mainActivityInterface.getProcessSong().stretchEditBoxToLines(myView.lyrics,lines);
+            myView.lyrics.setText(mainActivityInterface.getTempSong().getLyrics());
+        });
 
         validUndoRedo(mainActivityInterface.getTempSong().getLyricsUndosPos());
-
     }
 
     private void setupListeners() {
         myView.lyrics.setOnFocusChangeListener((view, b) -> {
             if (b) {
-                // Get the text position and 50ms later set this again
+                // Get the text position and 100ms later set this again
                 // Hopefully deals with soft keyboard hiding cursor position
                 int cursorPos = myView.lyrics.getSelectionStart();
                 myView.lyrics.postDelayed(() -> {
@@ -165,7 +169,7 @@ public class EditSongFragmentLyrics extends Fragment {
                     point.y = baseline + ascent - location[1] - myView.nestedScrollView.getScrollY();
 
                     myView.nestedScrollView.scrollTo(0,point.y);
-                },50);
+                },100);
 
             }
             //mainActivityInterface.enableSwipe("edit",!b);
@@ -297,20 +301,21 @@ public class EditSongFragmentLyrics extends Fragment {
     private void validUndoRedo(int currentPosition) {
         // Enable/disable the undo button
         boolean undoValid = currentPosition>0;
-        myView.undoButton.setEnabled(undoValid);
+        myView.undoButton.post(() -> myView.undoButton.setEnabled(undoValid));
+
         if (undoValid) {
-            myView.undoButton.setVisibility(View.VISIBLE);
+            myView.undoButton.post(() -> myView.undoButton.setVisibility(View.VISIBLE));
         } else {
-            myView.undoButton.setVisibility(View.INVISIBLE);
+            myView.undoButton.post(() -> myView.undoButton.setVisibility(View.INVISIBLE));
         }
 
         // Enable/disable the redo button
         boolean redoValid = currentPosition<mainActivityInterface.getTempSong().getLyricsUndos().size()-1;
-        myView.redoButton.setEnabled(redoValid);
+        myView.redoButton.post(() ->myView.redoButton.setEnabled(redoValid));
         if (redoValid) {
-            myView.redoButton.setVisibility(View.VISIBLE);
+            myView.redoButton.post(() -> myView.redoButton.setVisibility(View.VISIBLE));
         } else {
-            myView.redoButton.setVisibility(View.INVISIBLE);
+            myView.redoButton.post(() -> myView.redoButton.setVisibility(View.INVISIBLE));
         }
     }
 
