@@ -6,7 +6,6 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
-import android.util.Log;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
@@ -43,18 +42,11 @@ public class WebServer extends NanoHTTPD {
     }
     @SuppressLint("DefaultLocale")
     public void callRunWebServer() {
-        Log.d(TAG,"callRunWebServer()");
-        Log.d(TAG,"ip:"+ip);
-
-        Log.d(TAG,"ip:"+ip);
-
         try {
             if (runWebServer) {
                 this.start();
-                Log.d(TAG,"Web server started");
             } else {
                 this.stop();
-                Log.d(TAG,"Web server stopped");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -134,7 +126,6 @@ public class WebServer extends NanoHTTPD {
                 e.printStackTrace();
             }
         }
-        Log.d(TAG,"ip:"+ip);
         return "http://" + ip + ":8080";
     }
     public Bitmap getIPQRCode() {

@@ -35,7 +35,6 @@ public class AppPermissions {
 
         try {
             LocationManager lm = (LocationManager) c.getSystemService(Context.LOCATION_SERVICE);
-            Log.d(TAG,"lm:"+lm+"   providers:"+lm.getAllProviders());
             network_enabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
         } catch (Exception e) {
             Log.d(TAG, "Could not check NETWORK_PROVIDER is enabled");
@@ -177,7 +176,6 @@ public class AppPermissions {
                 boolean thisPermission = checkForPermission(permission);
                 stringBuilder.append("permission: ").append(permission).append("   granted:").append(thisPermission).append("\n");
                 returnVal = returnVal && thisPermission;
-                Log.d(TAG, "permission:" + permission + "  returnVal:" + returnVal);
             }
         } else {
             // No additional permissions required
