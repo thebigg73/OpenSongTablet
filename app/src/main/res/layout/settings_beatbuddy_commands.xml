@@ -49,6 +49,96 @@
                 android:hint="@string/beat_buddy_import_project_info"/>
             <TableRow style="@style/DividerLine" />
 
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/beat_buddy_dynamic_messages"
+                android:textSize="@dimen/text_xlarge"
+                android:layout_marginTop="16dp"/>
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                android:id="@+id/beatBuddyAutoLookup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/beat_buddy_auto"
+                android:hint="@string/beat_buddy_auto_info"
+                app:size="large" />
+            <TableRow style="@style/DividerLine" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                    android:id="@+id/beatBuddySong"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.5"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:hint="@string/song"/>
+
+                <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                    android:id="@+id/beatBuddyKit"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.5"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/drum_kit"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="4dp"
+                    android:layout_gravity="bottom"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                    android:id="@+id/tempoDropDown"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:hint="@string/tempo"
+                    android:inputType="number" />
+
+                <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                    android:id="@+id/timesigDropDown"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="0dp"
+                    android:layout_marginBottom="8dp"
+                    android:hint="@string/time_signature" />
+            </LinearLayout>
+            <TableRow style="@style/DividerLine" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/midi_messages_static"
+                android:textSize="@dimen/text_xlarge"
+                android:layout_marginTop="16dp"/>
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                android:id="@+id/autoSendMidi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/midi_auto"
+                android:hint="@string/midi_messages"/>
+            <TableRow style="@style/DividerLine" />
+
             <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
                 android:id="@+id/includeSong"
                 android:layout_width="match_parent"
@@ -233,6 +323,29 @@
                 app:stepSize="1" />
             <TableRow style="@style/DividerLine" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/testSongCode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:text="@string/midi_test"
+                    app:icon="@drawable/information" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/addMidiCommands"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:text="@string/midi_add"
+
+                    app:icon="@drawable/midi" />
+            </LinearLayout>
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -248,23 +361,4 @@
         </LinearLayout>
     </com.garethevans.church.opensongtablet.customviews.NestedScrollWithFAB>
 
-
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/testSongCode"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|start"
-        android:layout_marginBottom="16dp"
-        android:text="@string/midi_test"
-        app:icon="@drawable/information" />
-
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/addMidiCommands"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_marginBottom="16dp"
-        android:text="@string/midi_add"
-
-        app:icon="@drawable/midi" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

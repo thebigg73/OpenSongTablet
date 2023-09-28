@@ -37,7 +37,7 @@ public class ExposedDropDown extends TextInputLayout {
     private boolean largePopups, sizeSet=false, dealingWithAlready=false;
     private ArrayList<String> arrayList = null;
     private WindowInsetsCompat windowInsetsCompat;
-    private final WindowInsetsControllerCompat windowInsetsControllerCompat;
+    private WindowInsetsControllerCompat windowInsetsControllerCompat;
     private Window window;
 
     @SuppressLint("ClickableViewAccessibility")
@@ -56,8 +56,10 @@ public class ExposedDropDown extends TextInputLayout {
             windowInsetsCompat = insets;
             return insets;
                 });
-        windowInsetsControllerCompat = WindowCompat.getInsetsController(window, window.getDecorView());
 
+        if (window!=null && window.getDecorView()!=null) {
+            windowInsetsControllerCompat = WindowCompat.getInsetsController(window, window.getDecorView());
+        }
 
 
         identifyViews();

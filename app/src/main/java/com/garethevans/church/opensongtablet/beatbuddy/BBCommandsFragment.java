@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
 import com.garethevans.church.opensongtablet.customviews.MaterialSlider;
 import com.garethevans.church.opensongtablet.databinding.SettingsBeatbuddyCommandsBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
@@ -68,18 +69,23 @@ public class BBCommandsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         myView = SettingsBeatbuddyCommandsBinding.inflate(inflater,container,false);
 
-        if (getContext()!=null) {
-            bbsqLite = new BBSQLite(getContext());
-            myView.currentSongMessages.setLayoutManager(new LinearLayoutManager(getContext()));
-            midiMessagesAdapter = new MidiMessagesAdapter(getContext());
-        }
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            if (getContext()!=null) {
+                bbsqLite = new BBSQLite(getContext());
+                myView.currentSongMessages.post(() -> myView.currentSongMessages.setLayoutManager(new LinearLayoutManager(getContext())));
+                midiMessagesAdapter = new MidiMessagesAdapter(getContext());
+            }
 
-        prepareStrings();
+            prepareStrings();
 
-        webAddress = web_string;
+            webAddress = web_string;
 
-        checkExistingMessages();
-        setupViews();
+            checkExistingMessages();
+            setupViews();
+            checkBeatBuddyValues();
+            checkTempoTimeSig();
+        });
 
         return myView.getRoot();
     }
@@ -241,200 +247,263 @@ public class BBCommandsFragment extends Fragment {
     }
 
     private void setupViews() {
+        // All view setups are done as post (for UI)
         // Make the FABs hide/show with scroll
-        myView.beatBuddyNestedScroll.setExtendedFabToAnimate(myView.testSongCode);
-        myView.beatBuddyNestedScroll.setExtendedFab2ToAnimate(myView.addMidiCommands);
+        updateSongCommand();
+
+        // Auto send BB commands (dynamic)
+        myView.beatBuddyAutoLookup.post(() -> {
+            myView.beatBuddyAutoLookup.setChecked(mainActivityInterface.getBeatBuddy().getBeatBuddyAutoLookup());
+            myView.beatBuddyAutoLookup.setOnCheckedChangeListener((compoundButton, b) -> mainActivityInterface.getBeatBuddy().setBeatBuddyAutoLookup(b));
+        });
+
+        // Auto send song MIDI messages commands (static)
+        myView.autoSendMidi.post(() -> {
+            myView.autoSendMidi.setChecked(mainActivityInterface.getMidi().getMidiSendAuto());
+            myView.autoSendMidi.setOnCheckedChangeListener((compoundButton, b) -> mainActivityInterface.getMidi().setMidiSendAuto(b));
+        });
 
         // Set the input method to numbers only.  Not using sliders as the folder can be huge number!
-        myView.songFolder.setInputType(InputType.TYPE_CLASS_NUMBER);
-        myView.songNumber.setInputType(InputType.TYPE_CLASS_NUMBER);
-
-        myView.beatBuddyUseImported.setChecked(mainActivityInterface.getBeatBuddy().getBeatBuddyUseImported());
-        myView.beatBuddyUseImported.setOnCheckedChangeListener((compoundButton, b) -> {
-            mainActivityInterface.getBeatBuddy().setBeatBuddyUseImported(b);
-            setSliderHintText(myView.aerosFolder,null,searchAerosFolder,true,
-                    bbsqLite.COLUMN_FOLDER_NAME, (int)myView.aerosFolder.getValue(),-1);
-            setSliderHintText(myView.aerosSong,song_string,searchAerosSong,true,
-                    bbsqLite.COLUMN_SONG_NAME, (int)myView.aerosFolder.getValue(),(int)myView.aerosSong.getValue());
-            setSliderHintText(myView.drumKit, drumkit_string, searchDrumKit, false,
-                    bbsqLite.COLUMN_KIT_NAME, (int)myView.drumKit.getValue(),-1);
+        myView.songFolder.post(() -> {
+            myView.songFolder.setInputType(InputType.TYPE_CLASS_NUMBER);
+            myView.songFolder.addTextChangedListener(new SongCommandChange());
         });
+
+        myView.songNumber.post(() -> {
+            myView.songNumber.setInputType(InputType.TYPE_CLASS_NUMBER);
+            myView.songNumber.addTextChangedListener(new SongCommandChange());
+        });
+
+        myView.beatBuddyUseImported.post(() -> {
+                    myView.beatBuddyUseImported.setChecked(mainActivityInterface.getBeatBuddy().getBeatBuddyUseImported());
+                    myView.beatBuddyUseImported.setOnCheckedChangeListener((compoundButton, b) -> {
+                        mainActivityInterface.getBeatBuddy().setBeatBuddyUseImported(b);
+                        setSliderHintText(myView.aerosFolder, null, searchAerosFolder, true,
+                                bbsqLite.COLUMN_FOLDER_NAME, (int) myView.aerosFolder.getValue(), -1);
+                        setSliderHintText(myView.aerosSong, song_string, searchAerosSong, true,
+                                bbsqLite.COLUMN_SONG_NAME, (int) myView.aerosFolder.getValue(), (int) myView.aerosSong.getValue());
+                        setSliderHintText(myView.drumKit, drumkit_string, searchDrumKit, false,
+                                bbsqLite.COLUMN_KIT_NAME, (int) myView.drumKit.getValue(), -1);
+                        checkBeatBuddyValues();
+                    });
+                });
 
         // If we are including song details
-        myView.includeSong.setChecked(mainActivityInterface.getBeatBuddy().getBeatBuddyIncludeSong());
-        myView.aerosMode.setChecked(mainActivityInterface.getBeatBuddy().getBeatBuddyAerosMode());
-        // When in normal mode, show the text input for Folder (1-128^2) and Song (1-128)
-        myView.includeSongLayout.setVisibility(
-                mainActivityInterface.getBeatBuddy().getBeatBuddyIncludeSong() &&
+        myView.includeSong.post(() -> {
+            myView.includeSong.setChecked(mainActivityInterface.getBeatBuddy().getBeatBuddyIncludeSong());
+            myView.includeSong.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                mainActivityInterface.getBeatBuddy().setBeatBuddyIncludeSong(isChecked);
+                myView.includeSongLayout.setVisibility(isChecked &&
                         !mainActivityInterface.getBeatBuddy().getBeatBuddyAerosMode()? View.VISIBLE:View.GONE);
-        // When in Aeros mode, show the sliders for Folder/Playlist and Song
-        myView.aerosSliders.setVisibility(
-                mainActivityInterface.getBeatBuddy().getBeatBuddyIncludeSong() &&
+                myView.aerosSliders.setVisibility(isChecked &&
                         mainActivityInterface.getBeatBuddy().getBeatBuddyAerosMode()? View.VISIBLE:View.GONE);
-        myView.aerosMode.setVisibility(mainActivityInterface.getBeatBuddy().getBeatBuddyIncludeSong()?View.VISIBLE:View.GONE);
-        myView.songBrowser.setVisibility(mainActivityInterface.getBeatBuddy().getBeatBuddyIncludeSong()?View.VISIBLE:View.GONE);
+                myView.aerosMode.setVisibility(isChecked? View.VISIBLE:View.GONE);
+                myView.songBrowser.setVisibility(isChecked? View.VISIBLE:View.GONE);
+                updateSongCommand();
+                myView.includeSongErrors.setVisibility(isChecked &&
+                        !mainActivityInterface.getBeatBuddy().getBeatBuddyAerosMode() ? View.VISIBLE:View.GONE);
+            });
+        });
 
-        myView.includeSong.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            mainActivityInterface.getBeatBuddy().setBeatBuddyIncludeSong(isChecked);
-            myView.includeSongLayout.setVisibility(isChecked &&
-                    !mainActivityInterface.getBeatBuddy().getBeatBuddyAerosMode()? View.VISIBLE:View.GONE);
-            myView.aerosSliders.setVisibility(isChecked &&
-                    mainActivityInterface.getBeatBuddy().getBeatBuddyAerosMode()? View.VISIBLE:View.GONE);
-            myView.aerosMode.setVisibility(isChecked? View.VISIBLE:View.GONE);
-            myView.songBrowser.setVisibility(isChecked? View.VISIBLE:View.GONE);
-            updateSongCommand();
-            myView.includeSongErrors.setVisibility(isChecked &&
-                    !mainActivityInterface.getBeatBuddy().getBeatBuddyAerosMode() ? View.VISIBLE:View.GONE);
+        myView.aerosMode.post(() -> {
+            myView.aerosMode.setChecked(mainActivityInterface.getBeatBuddy().getBeatBuddyAerosMode());
+            myView.aerosMode.setVisibility(mainActivityInterface.getBeatBuddy().getBeatBuddyIncludeSong()?View.VISIBLE:View.GONE);
+            myView.aerosMode.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                mainActivityInterface.getBeatBuddy().setBeatBuddyAerosMode(isChecked);
+                // Update any existing song messages
+                checkExistingMessages();
+                updateRecyclerView();
+                myView.aerosSliders.setVisibility(isChecked &&
+                        mainActivityInterface.getBeatBuddy().getBeatBuddyIncludeSong() ? View.VISIBLE:View.GONE);
+                myView.includeSongLayout.setVisibility(!isChecked &&
+                        mainActivityInterface.getBeatBuddy().getBeatBuddyIncludeSong() ? View.VISIBLE:View.GONE);
+                myView.includeSongErrors.setVisibility(!isChecked &&
+                        mainActivityInterface.getBeatBuddy().getBeatBuddyIncludeSong() ? View.VISIBLE:View.GONE);
+            });
         });
-        myView.aerosMode.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            mainActivityInterface.getBeatBuddy().setBeatBuddyAerosMode(isChecked);
-            // Update any existing song messages
-            checkExistingMessages();
-            updateRecyclerView();
-            myView.aerosSliders.setVisibility(isChecked &&
-                    mainActivityInterface.getBeatBuddy().getBeatBuddyIncludeSong() ? View.VISIBLE:View.GONE);
-            myView.includeSongLayout.setVisibility(!isChecked &&
-                    mainActivityInterface.getBeatBuddy().getBeatBuddyIncludeSong() ? View.VISIBLE:View.GONE);
-            myView.includeSongErrors.setVisibility(!isChecked &&
-                    mainActivityInterface.getBeatBuddy().getBeatBuddyIncludeSong() ? View.VISIBLE:View.GONE);
+
+        // When in normal mode, show the text input for Folder (1-128^2) and Song (1-128)
+        myView.includeSongLayout.post(() -> myView.includeSongLayout.setVisibility(
+                mainActivityInterface.getBeatBuddy().getBeatBuddyIncludeSong() &&
+                        !mainActivityInterface.getBeatBuddy().getBeatBuddyAerosMode()? View.VISIBLE:View.GONE));
+        // When in Aeros mode, show the sliders for Folder/Playlist and Song
+        myView.aerosSliders.post(() -> myView.aerosSliders.setVisibility(
+                mainActivityInterface.getBeatBuddy().getBeatBuddyIncludeSong() &&
+                        mainActivityInterface.getBeatBuddy().getBeatBuddyAerosMode()? View.VISIBLE:View.GONE));
+        myView.songBrowser.post(() -> {
+            myView.songBrowser.setVisibility(mainActivityInterface.getBeatBuddy().getBeatBuddyIncludeSong()?View.VISIBLE:View.GONE);
+            myView.songBrowser.setOnClickListener(view -> buildBBDefaultSongs());
         });
-        myView.songFolder.addTextChangedListener(new SongCommandChange());
-        myView.songNumber.addTextChangedListener(new SongCommandChange());
-        updateSongCommand();
-        myView.includeSongErrors.setVisibility(mainActivityInterface.getBeatBuddy().getBeatBuddyIncludeSong() &&
-                !mainActivityInterface.getBeatBuddy().getBeatBuddyAerosMode() ? View.VISIBLE:View.GONE);
-        myView.songBrowser.setOnClickListener(view -> buildBBDefaultSongs());
+
+        myView.includeSongErrors.post(() -> myView.includeSongErrors.setVisibility(mainActivityInterface.getBeatBuddy().getBeatBuddyIncludeSong() &&
+                !mainActivityInterface.getBeatBuddy().getBeatBuddyAerosMode() ? View.VISIBLE:View.GONE));
 
         // Include volume
-        myView.includeVolume.setChecked(mainActivityInterface.getBeatBuddy().getBeatBuddyIncludeVolume());
-        myView.beatBuddyVolume.setVisibility(
-                mainActivityInterface.getBeatBuddy().getBeatBuddyIncludeVolume() ? View.VISIBLE:View.GONE);
-        myView.includeVolume.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            mainActivityInterface.getBeatBuddy().setBeatBuddyIncludeVolume(isChecked);
-            myView.beatBuddyVolume.setVisibility(isChecked ? View.VISIBLE:View.GONE);
-            updateVolumeCommand();
+        myView.includeVolume.post(() -> {
+            myView.includeVolume.setChecked(mainActivityInterface.getBeatBuddy().getBeatBuddyIncludeVolume());
+            myView.includeVolume.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                mainActivityInterface.getBeatBuddy().setBeatBuddyIncludeVolume(isChecked);
+                myView.beatBuddyVolume.setVisibility(isChecked ? View.VISIBLE:View.GONE);
+                updateVolumeCommand();
+            });
         });
-        myView.includeHPVolume.setChecked(mainActivityInterface.getBeatBuddy().getBeatBuddyIncludeHPVolume());
-        myView.beatBuddyHPVolume.setVisibility(
-                mainActivityInterface.getBeatBuddy().getBeatBuddyIncludeHPVolume() ? View.VISIBLE:View.GONE);
-        myView.includeHPVolume.setOnCheckedChangeListener((buttonView, isChecked) -> {
-           mainActivityInterface.getBeatBuddy().setBeatBuddyIncludeHPVolume(isChecked);
-           myView.beatBuddyHPVolume.setVisibility(isChecked ? View.VISIBLE:View.GONE);
-           updateVolumeHPCommand();
+        myView.beatBuddyVolume.post(() -> myView.beatBuddyVolume.setVisibility(
+                mainActivityInterface.getBeatBuddy().getBeatBuddyIncludeVolume() ? View.VISIBLE:View.GONE));
+
+        myView.includeHPVolume.post(() -> {
+            myView.includeHPVolume.setChecked(mainActivityInterface.getBeatBuddy().getBeatBuddyIncludeHPVolume());
+            myView.includeHPVolume.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                mainActivityInterface.getBeatBuddy().setBeatBuddyIncludeHPVolume(isChecked);
+                myView.beatBuddyHPVolume.setVisibility(isChecked ? View.VISIBLE:View.GONE);
+                updateVolumeHPCommand();
+            });
         });
+        myView.beatBuddyHPVolume.post(() -> myView.beatBuddyHPVolume.setVisibility(
+                mainActivityInterface.getBeatBuddy().getBeatBuddyIncludeHPVolume() ? View.VISIBLE:View.GONE));
+
 
         // Include tempo change
-        myView.includeTempo.setChecked(mainActivityInterface.getBeatBuddy().getBeatBuddyIncludeTempo());
-        myView.songTempo.setVisibility(
-                mainActivityInterface.getBeatBuddy().getBeatBuddyIncludeTempo() ? View.VISIBLE:View.GONE);
-        myView.includeTempo.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            mainActivityInterface.getBeatBuddy().setBeatBuddyIncludeTempo(isChecked);
-            myView.songTempo.setVisibility(isChecked ? View.VISIBLE:View.GONE);
+        myView.includeTempo.post(() -> {
+            myView.includeTempo.setChecked(mainActivityInterface.getBeatBuddy().getBeatBuddyIncludeTempo());
+            myView.includeTempo.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                mainActivityInterface.getBeatBuddy().setBeatBuddyIncludeTempo(isChecked);
+                myView.songTempo.setVisibility(isChecked ? View.VISIBLE:View.GONE);
+            });
         });
+        myView.songTempo.post(() -> myView.songTempo.setVisibility(
+                mainActivityInterface.getBeatBuddy().getBeatBuddyIncludeTempo() ? View.VISIBLE:View.GONE));
+
 
         // Include drum kit
-        myView.includeDrumKit.setChecked(mainActivityInterface.getBeatBuddy().getBeatBuddyIncludeDrumKit());
-        myView.drumKit.setVisibility(
-                mainActivityInterface.getBeatBuddy().getBeatBuddyIncludeDrumKit() ? View.VISIBLE:View.GONE);
-        myView.includeDrumKit.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            mainActivityInterface.getBeatBuddy().setBeatBuddyIncludeDrumKit(isChecked);
-            myView.drumKit.setVisibility(isChecked ? View.VISIBLE:View.GONE);
+        myView.includeDrumKit.post(() -> {
+            myView.includeDrumKit.setChecked(mainActivityInterface.getBeatBuddy().getBeatBuddyIncludeDrumKit());
+            myView.includeDrumKit.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                mainActivityInterface.getBeatBuddy().setBeatBuddyIncludeDrumKit(isChecked);
+                myView.drumKit.setVisibility(isChecked ? View.VISIBLE:View.GONE);
+            });
         });
+        myView.drumKit.post(() -> myView.drumKit.setVisibility(
+                mainActivityInterface.getBeatBuddy().getBeatBuddyIncludeDrumKit() ? View.VISIBLE:View.GONE));
+
 
         // Initialise the sliders, values, hints and listeners
-        initialiseSlider(myView.beatBuddyChannel,"beatBuddyChannel",
-                mainActivityInterface.getBeatBuddy().getBeatBuddyChannel(),"");
-        initialiseSlider(myView.beatBuddyVolume, "beatBuddyVolume",
-                mainActivityInterface.getBeatBuddy().getBeatBuddyVolume(),"%");
-        initialiseSlider(myView.beatBuddyHPVolume, "beatBuddyHPVolume",
-                mainActivityInterface.getBeatBuddy().getBeatBuddyHPVolume(),"%");
-        initialiseSlider(myView.songTempo, "songTempo",
-                getSongTempoForBeatBuddy(),bpm_string);
-        initialiseSlider(myView.midiDelay, "midiDelay",
-                mainActivityInterface.getMidi().getMidiDelay(),"ms");
-        initialiseSlider(myView.drumKit, "beatBuddyDrumKit",
-                mainActivityInterface.getBeatBuddy().getBeatBuddyDrumKit(),"");
-        initialiseSlider(myView.aerosFolder, "aerosFolder",
-                1,"");
-        initialiseSlider(myView.aerosSong, "aerosSong",
-                1,"");
-
         // Enable the + / - adjustment buttons for fine tuning
-        myView.beatBuddyChannel.setAdjustableButtons(true);
-        myView.beatBuddyVolume.setAdjustableButtons(true);
-        myView.beatBuddyHPVolume.setAdjustableButtons(true);
-        myView.aerosFolder.setAdjustableButtons(true);
-        myView.aerosSong.setAdjustableButtons(true);
-        myView.beatBuddyChannel.setAdjustableButtons(true);
-        myView.songTempo.setAdjustableButtons(true);
-        myView.midiDelay.setAdjustableButtons(true);
-        myView.drumKit.setAdjustableButtons(true);
-
         // Update values with existing BeatBuddy MIDI commands (last identified)
-        if (fromSongMessages_channel>-1) {
-            myView.beatBuddyChannel.setValue(fromSongMessages_channel);
-            mainActivityInterface.getBeatBuddy().setBeatBuddyChannel(fromSongMessages_channel);
-        }
-        if (fromSongMessages_tempoMSB>-1 && fromSongMessages_tempoLSB>-1) {
-            int bpm = (fromSongMessages_tempoMSB*128) + fromSongMessages_tempoLSB;
-            // Set this tempo
-            myView.songTempo.setValue(bpm);
-        }
-        if (!mainActivityInterface.getBeatBuddy().getBeatBuddyAerosMode() &&
-                fromSongMessages_folderMSB>-1 && fromSongMessages_folderLSB>-1) {
-            int folder = (fromSongMessages_folderMSB*128) + fromSongMessages_folderLSB + 1;
-            myView.songFolder.setText(""+folder);
-        } else if (mainActivityInterface.getBeatBuddy().getBeatBuddyAerosMode() &&
-                fromSongMessages_folderLSB>-1) {
-            int folder = fromSongMessages_folderLSB + 1;
-            if (folder<=128) {
-                myView.aerosFolder.setValue(folder);
+        myView.beatBuddyChannel.post(() -> {
+            initialiseSlider(myView.beatBuddyChannel,"beatBuddyChannel",
+                    mainActivityInterface.getBeatBuddy().getBeatBuddyChannel(),"");
+            myView.beatBuddyChannel.setAdjustableButtons(true);
+            if (fromSongMessages_channel>-1) {
+                myView.beatBuddyChannel.setValue(fromSongMessages_channel);
+                mainActivityInterface.getBeatBuddy().setBeatBuddyChannel(fromSongMessages_channel);
             }
-        }
-        if (fromSongMessages_songPC>-1) {
-            int song = fromSongMessages_songPC+1;
-            if (!mainActivityInterface.getBeatBuddy().getBeatBuddyAerosMode()) {
-                myView.songNumber.setText("" + song);
-            } else {
-                myView.aerosSong.setValue(song);
-            }
-        }
-        if (fromSongMessages_drumKitCC>-1) {
-            int kit = fromSongMessages_drumKitCC+1;
-            myView.drumKit.setValue(kit);
-        }
-        if (fromSongMessages_volumeCC>-1) {
-            int vol = fromSongMessages_volumeCC;
-            myView.beatBuddyVolume.setValue(vol);
-        }
-        if (fromSongMessages_volumeHPCC>-1) {
-            int hpvol = fromSongMessages_volumeHPCC;
-            myView.beatBuddyHPVolume.setValue(hpvol);
-        }
+        });
 
-        myView.testSongCode.setOnClickListener(view -> {
+        myView.beatBuddyVolume.post(() -> {
+            initialiseSlider(myView.beatBuddyVolume, "beatBuddyVolume",
+                    mainActivityInterface.getBeatBuddy().getBeatBuddyVolume(),"%");
+            myView.beatBuddyVolume.setAdjustableButtons(true);
+            if (fromSongMessages_volumeCC>-1) {
+                int vol = fromSongMessages_volumeCC;
+                myView.beatBuddyVolume.setValue(vol);
+            }
+        });
+
+        myView.beatBuddyHPVolume.post(() -> {
+            initialiseSlider(myView.beatBuddyHPVolume, "beatBuddyHPVolume",
+                    mainActivityInterface.getBeatBuddy().getBeatBuddyHPVolume(),"%");
+            myView.beatBuddyHPVolume.setAdjustableButtons(true);
+            if (fromSongMessages_volumeHPCC>-1) {
+                int hpvol = fromSongMessages_volumeHPCC;
+                myView.beatBuddyHPVolume.setValue(hpvol);
+            }
+        });
+
+        myView.songTempo.post(() -> {
+            initialiseSlider(myView.songTempo, "songTempo",
+                    getSongTempoForBeatBuddy(),bpm_string);
+            myView.songTempo.setAdjustableButtons(true);
+            if (fromSongMessages_tempoMSB>-1 && fromSongMessages_tempoLSB>-1) {
+                int bpm = (fromSongMessages_tempoMSB*128) + fromSongMessages_tempoLSB;
+                // Set this tempo
+                myView.songTempo.setValue(bpm);
+            }
+        });
+
+        myView.midiDelay.post(() -> {
+            initialiseSlider(myView.midiDelay, "midiDelay",
+                    mainActivityInterface.getMidi().getMidiDelay(),"ms");
+            myView.midiDelay.setAdjustableButtons(true);
+        });
+
+        myView.drumKit.post(() -> {
+            initialiseSlider(myView.drumKit, "beatBuddyDrumKit",
+                    mainActivityInterface.getBeatBuddy().getBeatBuddyDrumKit(),"");
+            myView.drumKit.setAdjustableButtons(true);
+            if (fromSongMessages_drumKitCC>-1) {
+                int kit = fromSongMessages_drumKitCC+1;
+                myView.drumKit.setValue(kit);
+            }
+        });
+
+        myView.aerosFolder.post(() -> {
+            initialiseSlider(myView.aerosFolder, "aerosFolder",
+                    1,"");
+            myView.aerosFolder.setAdjustableButtons(true);
+            if (!mainActivityInterface.getBeatBuddy().getBeatBuddyAerosMode() &&
+                    fromSongMessages_folderMSB>-1 && fromSongMessages_folderLSB>-1) {
+                int folder = (fromSongMessages_folderMSB*128) + fromSongMessages_folderLSB + 1;
+                myView.songFolder.setText(""+folder);
+            } else if (mainActivityInterface.getBeatBuddy().getBeatBuddyAerosMode() &&
+                    fromSongMessages_folderLSB>-1) {
+                int folder = fromSongMessages_folderLSB + 1;
+                if (folder<=128) {
+                    myView.aerosFolder.setValue(folder);
+                }
+            }
+        });
+
+        myView.aerosSong.post(() -> {
+            initialiseSlider(myView.aerosSong, "aerosSong",
+                    1,"");
+            myView.aerosSong.setAdjustableButtons(true);
+            if (fromSongMessages_songPC>-1) {
+                int song = fromSongMessages_songPC+1;
+                if (!mainActivityInterface.getBeatBuddy().getBeatBuddyAerosMode()) {
+                    myView.songNumber.setText("" + song);
+                } else {
+                    myView.aerosSong.setValue(song);
+                }
+            }
+        });
+
+
+        myView.testSongCode.post(() -> myView.testSongCode.setOnClickListener(view -> {
             updateMidiCommands();
             if (!beatBuddyCommands.isEmpty()) {
                 mainActivityInterface.getMidi().sendMidiHexSequence(beatBuddyCommands);
             }
-        });
+        }));
 
-        myView.addMidiCommands.setOnClickListener(view -> {
+        myView.addMidiCommands.post(() -> myView.addMidiCommands.setOnClickListener(view -> {
             updateMidiCommands();
             // Now save to the song
             saveMessagesToSong();
             updateRecyclerView();
+        }));
+
+        myView.currentSongMessages.post(() -> {
+            if (midiMessagesAdapter!=null && myView!=null) {
+                myView.currentSongMessages.setLayoutManager(new LinearLayoutManager(getContext()));
+                ItemTouchHelper.Callback callback = new MidiItemTouchHelper(midiMessagesAdapter);
+                ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
+                midiMessagesAdapter.setTouchHelper(itemTouchHelper);
+                myView.currentSongMessages.setAdapter(midiMessagesAdapter);
+                itemTouchHelper.attachToRecyclerView(myView.currentSongMessages);
+                updateRecyclerView();
+            }
         });
 
-        if (midiMessagesAdapter!=null && myView!=null) {
-            myView.currentSongMessages.setLayoutManager(new LinearLayoutManager(getContext()));
-            ItemTouchHelper.Callback callback = new MidiItemTouchHelper(midiMessagesAdapter);
-            ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
-            midiMessagesAdapter.setTouchHelper(itemTouchHelper);
-            myView.currentSongMessages.setAdapter(midiMessagesAdapter);
-            itemTouchHelper.attachToRecyclerView(myView.currentSongMessages);
-            updateRecyclerView();
-        }
     }
 
     private int getSongTempoForBeatBuddy() {
@@ -835,6 +904,140 @@ public class BBCommandsFragment extends Fragment {
         } else {
             myView.songFolder.setText(folder+"");
             myView.songNumber.setText(song+"");
+        }
+    }
+
+    private void checkBeatBuddyValues() {
+        // Decide which songs and kits to use
+        if (getContext()!=null) {
+            try (BBSQLite bbsqLite = new BBSQLite(getContext())) {
+                String tableSongs = bbsqLite.TABLE_NAME_DEFAULT_SONGS;
+                String tableKits = bbsqLite.TABLE_NAME_DEFAULT_DRUMS;
+                if (mainActivityInterface.getBeatBuddy().getBeatBuddyUseImported()) {
+                    tableSongs = bbsqLite.TABLE_NAME_MY_SONGS;
+                    tableKits = bbsqLite.TABLE_NAME_MY_DRUMS;
+                }
+                ArrayList<String> songs = bbsqLite.getUnique(bbsqLite.COLUMN_SONG_NAME, tableSongs);
+                ArrayList<String> kits = bbsqLite.getUnique(bbsqLite.COLUMN_KIT_NAME, tableKits);
+
+                myView.beatBuddySong.post(() -> {
+                    ExposedDropDownArrayAdapter songsAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.beatBuddySong, R.layout.view_exposed_dropdown_item, songs);
+                    myView.beatBuddySong.setAdapter(songsAdapter);
+                    // If we don't have a value, look for one and auto add it
+                    if (mainActivityInterface.getSong().getFilename() != null && songs.contains(mainActivityInterface.getSong().getFilename().replace(",", ""))) {
+                        mainActivityInterface.getSong().setBeatbuddysong(mainActivityInterface.getSong().getFilename().replace(",", ""));
+                    } else if (mainActivityInterface.getSong().getTitle() != null && songs.contains(mainActivityInterface.getSong().getTitle().replace(",", ""))) {
+                        mainActivityInterface.getSong().setBeatbuddysong(mainActivityInterface.getSong().getTitle().replace(",", ""));
+                    }
+                    if (mainActivityInterface.getSong().getBeatbuddysong() == null) {
+                        mainActivityInterface.getSong().setBeatbuddysong("");
+                    }
+                    if (mainActivityInterface.getSong().getBeatbuddykit() == null) {
+                        mainActivityInterface.getSong().setBeatbuddykit("");
+                    }
+                    myView.beatBuddySong.setText(mainActivityInterface.getSong().getBeatbuddysong());
+                    myView.beatBuddySong.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                        }
+
+                        @Override
+                        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                            // Update the song
+                            mainActivityInterface.getSong().setBeatbuddysong(myView.beatBuddySong.getText().toString());
+                            mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong(), false);
+                        }
+
+                        @Override
+                        public void afterTextChanged(Editable editable) {
+                        }
+                    });
+                });
+
+                myView.beatBuddyKit.post(() -> {
+                    ExposedDropDownArrayAdapter kitsAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.beatBuddyKit, R.layout.view_exposed_dropdown_item, kits);
+                    myView.beatBuddyKit.setAdapter(kitsAdapter);
+                    myView.beatBuddyKit.setText(mainActivityInterface.getSong().getBeatbuddykit());
+                    myView.beatBuddyKit.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                        }
+
+                        @Override
+                        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                            // Update the song
+                            mainActivityInterface.getSong().setBeatbuddykit(myView.beatBuddyKit.getText().toString());
+                            mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong(), false);
+                        }
+
+                        @Override
+                        public void afterTextChanged(Editable editable) {
+                        }
+                    });
+                });
+            }
+        }
+    }
+
+    private void checkTempoTimeSig() {
+        // The tempo
+        ArrayList<String> tempos = new ArrayList<>();
+        tempos.add("");
+        for (int x = 40; x < 300; x++) {
+            tempos.add(x + "");
+        }
+
+        // The timesig
+        ArrayList<String> timesigs = new ArrayList<>();
+        for (int divisions = 1; divisions <= 16; divisions++) {
+            if (divisions == 1 || divisions == 2 || divisions == 4 || divisions == 8 || divisions == 16) {
+                for (int beats = 1; beats <= 16; beats++) {
+                    timesigs.add(beats + "/" + divisions);
+                }
+            }
+        }
+
+        if (getContext()!=null) {
+            myView.tempoDropDown.post(() -> {
+                ExposedDropDownArrayAdapter tempoArrayAdapter = new ExposedDropDownArrayAdapter(getContext(),
+                        myView.tempoDropDown, R.layout.view_exposed_dropdown_item, tempos);
+                myView.tempoDropDown.setAdapter(tempoArrayAdapter);
+                myView.tempoDropDown.setHint(tempo_string + " ("+bpm_string+")");
+                myView.tempoDropDown.setText(mainActivityInterface.getSong().getTempo());
+                myView.tempoDropDown.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                        mainActivityInterface.getSong().setTempo(myView.tempoDropDown.getText().toString());
+                        mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong(),false);
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable editable) {}
+                });
+            });
+
+            myView.timesigDropDown.post(() -> {
+                ExposedDropDownArrayAdapter timesigArrayAdapter = new ExposedDropDownArrayAdapter(getContext(),
+                        myView.timesigDropDown, R.layout.view_exposed_dropdown_item, timesigs);
+                myView.timesigDropDown.setAdapter(timesigArrayAdapter);
+                myView.timesigDropDown.setText(mainActivityInterface.getSong().getTimesig());
+                myView.timesigDropDown.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                        mainActivityInterface.getSong().setTimesig(myView.timesigDropDown.getText().toString());
+                        mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong(),false);
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable editable) {}
+                });
+            });
         }
     }
 }

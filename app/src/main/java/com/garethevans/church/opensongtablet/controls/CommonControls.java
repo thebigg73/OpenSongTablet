@@ -121,6 +121,7 @@ public class CommonControls {
         addString("midiboard",c.getString(R.string.midi_board));
         addString("midisettings",c.getString(R.string.midi)+settings);
         addString("midisend",c.getString(R.string.midi_auto)+onoff);
+        addString("beatbuddy",c.getString(R.string.beat_buddy)+settings);
         addString("beatbuddystart",c.getString(R.string.beat_buddy)+" "+c.getString(R.string.start));
         addString("beatbuddystop",c.getString(R.string.beat_buddy)+" "+c.getString(R.string.stop));
         addString("beatbuddypause",c.getString(R.string.beat_buddy)+" "+c.getString(R.string.pause));
