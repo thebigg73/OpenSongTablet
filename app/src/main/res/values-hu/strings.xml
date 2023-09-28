@@ -75,6 +75,7 @@
     <string name="beat_buddy_auto_info">Összehasonlítja a dalodat Fájlnév, cím és más néven mezők a BeatBuddy adatbázisoddal.  Ha talál egyező dalt, a mappa és a dal kódja automatikusan MIDI-n keresztül kerül elküldésre</string>
     <string name="beat_buddy_browse_info">Böngésszen a BeatBuddy dalai között (az alapértelmezett projekt vagy az importált projekt használatával)</string>
     <string name="beat_buddy_database_reset">Törölje a BeatBuddy adatbázist az alkalmazásban.  Ez csak a pedál alapértelmezett beállításait állítja vissza.</string>
+    <string name="beat_buddy_dynamic_messages">Dinamikus MIDI-üzenetek (az alkalmazás kezeli a kódot)</string>
     <string name="beat_buddy_folder_info">A mappának 1 és 16384 közötti számnak kell lennie</string>
     <string name="beat_buddy_import_error">Hiba történt a BeatBuddy projekt importálásakor.  További információkért olvassa el a felhasználói kézikönyvet.</string>
     <string name="beat_buddy_import_options">Két lehetősége van a projektinformációk importálására a BeatBuddy-ból:</string>
@@ -387,6 +388,7 @@
     <string name="ignore_rounded_corners_info">A lekerekített képernyősarok a szöveg levágását okozhatja. A lekerekített sarkok figyelmen kívül hagyása megkéri az alkalmazást, hogy a teljes képernyős szélességet/magasságot használja (ajánlott).  Az alábbi margókat mindig módosíthatja.</string>
     <string name="ignore_warning">Figyelmeztetés figyelmen kívül hagyása</string>
     <string name="image">"Kép"</string>
+    <string name="image_adjust">Kép beállítása (körülvágás és forgatás)</string>
     <string name="image_change">Kattints a képre a változtatáshoz</string>
     <string name="image_slide">Kép slideshow</string>
     <string name="immersive_mode">Magával ragadó mód</string>
@@ -510,6 +512,7 @@
     <string name="midi_list_item">Kattintson ide a teszteléshez, pöccintéssel törölje vagy rendezze át</string>
     <string name="midi_message_include">Ezt szerepeltesse a dal üzeneteiben</string>
     <string name="midi_messages">Dal MIDI-üzenetek (sorrendben elküldve)</string>
+    <string name="midi_messages_static">Statikus MIDI-üzenetek (a dallal együtt mentett üzenetek)</string>
     <string name="midi_note">Jegyzet</string>
     <string name="midi_pedal">Hallgassa meg a bejövő MIDI-t (pl. lábpedál)</string>
     <string name="midi_program">"Programváltás"</string>
@@ -899,5 +902,4 @@
     <string name="width">Szélesség</string>
     <string name="words_and_music_by">Szavak és zene</string>
     <string name="zoom_level">Nagyítási szint</string>
-    <string name="image_adjust">Kép beállítása (körülvágás és forgatás)</string>
 </resources>

@@ -75,6 +75,7 @@
     <string name="beat_buddy_auto_info">Compara los campos Nombre de archivo, Título y También conocido como de tu canción con tu base de datos de BeatBuddy.  Si se encuentra una canción coincidente, la carpeta y el código de la canción se envían automáticamente a través de MIDI</string>
     <string name="beat_buddy_browse_info">Explorar las canciones en el BeatBuddy (usando el proyecto predeterminado o el proyecto importado)</string>
     <string name="beat_buddy_database_reset">Borre la base de datos de BeatBuddy en la aplicación.  Esto restaurará solo los valores predeterminados del pedal.</string>
+    <string name="beat_buddy_dynamic_messages">Mensajes MIDI dinámicos (la aplicación se ocupa del código)</string>
     <string name="beat_buddy_folder_info">La carpeta debe tener un número entre 1 y 16384</string>
     <string name="beat_buddy_import_error">Hubo un problema al importar el proyecto BeatBuddy.  Consulte el manual del usuario para obtener más información.</string>
     <string name="beat_buddy_import_options">Tienes dos opciones para importar información del proyecto desde tu BeatBuddy:</string>
@@ -387,6 +388,7 @@
     <string name="ignore_rounded_corners_info">La esquina redondeada de la pantalla puede hacer que se recorte el texto. Al ignorar las esquinas redondeadas, la aplicación usará el ancho/alto de pantalla completa (recomendado).  Siempre puede ajustar los márgenes a continuación.</string>
     <string name="ignore_warning">Ignorar advertencia</string>
     <string name="image">Imagen</string>
+    <string name="image_adjust">Ajustar imagen (recortar y rotar)</string>
     <string name="image_change">Click en la imagen para cambiar</string>
     <string name="image_slide">Imagen slideshow</string>
     <string name="immersive_mode">Modo inmersivo</string>
@@ -510,6 +512,7 @@
     <string name="midi_list_item">Haga clic para probar, deslizar para eliminar o reorganizar</string>
     <string name="midi_message_include">Incluye esto en los mensajes de la canción</string>
     <string name="midi_messages">Mensajes MIDI de canciones (enviados en orden)</string>
+    <string name="midi_messages_static">Mensajes MIDI estáticos (mensajes guardados con la canción)</string>
     <string name="midi_note">"Nota"</string>
     <string name="midi_pedal">Escuche el MIDI entrante (por ejemplo, pedal)</string>
     <string name="midi_program">"Cambio de programa"</string>
@@ -899,5 +902,4 @@
     <string name="width">Ancho</string>
     <string name="words_and_music_by">Palabras y música de</string>
     <string name="zoom_level">Nivel de zoom</string>
-    <string name="image_adjust">Ajustar imagen (recortar y rotar)</string>
 </resources>

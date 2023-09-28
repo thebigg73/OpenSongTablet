@@ -75,6 +75,7 @@
     <string name="beat_buddy_auto_info">Vergleicht deine Song-Felder Dateiname, Titel und auch bekannt als Felder mit deiner BeatBuddy-Datenbank.  Wenn ein passender Song gefunden wird, werden der Ordner und der Songcode automatisch über MIDI gesendet</string>
     <string name="beat_buddy_browse_info">Durchsuchen Sie die Songs auf dem BeatBuddy (mit dem Standardprojekt oder dem importierten Projekt)</string>
     <string name="beat_buddy_database_reset">Löschen Sie die BeatBuddy-Datenbank in der App.  Dadurch werden nur die Standardeinstellungen des Pedals wiederhergestellt.</string>
+    <string name="beat_buddy_dynamic_messages">Dynamische MIDI-Befehle (die App kümmert sich um den Code)</string>
     <string name="beat_buddy_folder_info">Der Ordner muss eine Zahl zwischen 1 und 16384 haben</string>
     <string name="beat_buddy_import_error">Beim Importieren des BeatBuddy-Projekts ist ein Problem aufgetreten.  Weitere Informationen finden Sie in der Bedienungsanleitung.</string>
     <string name="beat_buddy_import_options">Sie haben zwei Möglichkeiten, Projektinformationen aus Ihrem BeatBuddy zu importieren:</string>
@@ -387,6 +388,7 @@
     <string name="ignore_rounded_corners_info">Eine abgerundete Bildschirmecke kann dazu führen, dass Text abgeschnitten wird. Wenn Sie abgerundete Ecken ignorieren, wird die App aufgefordert, die volle Bildschirmbreite/-höhe zu verwenden (empfohlen).  Sie können die Ränder unten jederzeit anpassen.</string>
     <string name="ignore_warning">Warnung ignorieren</string>
     <string name="image">"Bild"</string>
+    <string name="image_adjust">Bild anpassen (zuschneiden und drehen)</string>
     <string name="image_change">Klicken Sie auf das Bild, um es zu ändern</string>
     <string name="image_slide">"Bilder-Folie"</string>
     <string name="immersive_mode">Immersiver Modus</string>
@@ -510,6 +512,7 @@
     <string name="midi_list_item">Klicken Sie zum Testen, wischen Sie, um zu löschen, oder ordnen Sie sie neu an</string>
     <string name="midi_message_include">Fügen Sie dies in die Songbotschaften ein</string>
     <string name="midi_messages">Song-MIDI-Nachrichten (in der richtigen Reihenfolge gesendet)</string>
+    <string name="midi_messages_static">Statische MIDI-Befehle (Befehle, die mit dem Song gespeichert werden)</string>
     <string name="midi_note">"Note"</string>
     <string name="midi_pedal">Hören Sie auf eingehendes MIDI (z. B. Fußpedal)</string>
     <string name="midi_program">"Programmwechsel"</string>
@@ -899,5 +902,4 @@
     <string name="width">Breite</string>
     <string name="words_and_music_by">Worte und Musik von</string>
     <string name="zoom_level">Zoomstufe</string>
-    <string name="image_adjust">Bild anpassen (zuschneiden und drehen)</string>
 </resources>

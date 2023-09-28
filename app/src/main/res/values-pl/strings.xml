@@ -75,6 +75,7 @@
     <string name="beat_buddy_auto_info">Porównuje nazwę pliku, tytuł utworu i pola znane również jako z bazą danych BeatBuddy.  Jeśli zostanie znaleziony pasujący utwór, folder i kod utworu są automatycznie wysyłane przez MIDI</string>
     <string name="beat_buddy_browse_info">Przeglądaj utwory na BeatBuddy (używając domyślnego projektu lub zaimportowanego projektu)</string>
     <string name="beat_buddy_database_reset">Wyczyść bazę danych BeatBuddy w aplikacji.  Spowoduje to przywrócenie tylko domyślnych ustawień pedału.</string>
+    <string name="beat_buddy_dynamic_messages">Dynamiczne komunikaty MIDI (aplikacja zajmuje się kodem)</string>
     <string name="beat_buddy_folder_info">Folder musi mieć numer z zakresu od 1 do 16384</string>
     <string name="beat_buddy_import_error">Wystąpił problem podczas importowania projektu BeatBuddy.  Więcej informacji można znaleźć w instrukcji obsługi.</string>
     <string name="beat_buddy_import_options">Dostępne są dwie opcje importowania informacji o projekcie z BeatBuddy:</string>
@@ -387,6 +388,7 @@
     <string name="ignore_rounded_corners_info">Zaokrąglony róg ekranu może spowodować przycięcie tekstu. Ignorowanie zaokrąglonych rogów spowoduje wyświetlenie prośby aplikacji o użycie szerokości/wysokości pełnego ekranu (zalecane).  Zawsze możesz dostosować marginesy poniżej.</string>
     <string name="ignore_warning">Zignoruj ostrzeżenie</string>
     <string name="image">Obraz</string>
+    <string name="image_adjust">Dopasowywanie obrazu (kadrowanie i obracanie)</string>
     <string name="image_change">Kliknij na obrazek, aby zmienić</string>
     <string name="image_slide">Pokaz obrazu</string>
     <string name="immersive_mode">Tryb wciągający</string>
@@ -510,6 +512,7 @@
     <string name="midi_list_item">Kliknij, aby przetestować, szybko przesuń palcem, aby usunąć lub zmienić kolejność</string>
     <string name="midi_message_include">Dołącz to do wiadomości o utworach</string>
     <string name="midi_messages">Wiadomości MIDI utworu (wysyłane w kolejności)</string>
+    <string name="midi_messages_static">Statyczne komunikaty MIDI (wiadomości zapisane razem z utworem)</string>
     <string name="midi_note">"Uwaga"</string>
     <string name="midi_pedal">Słuchaj przychodzącego MIDI (np. pedału)</string>
     <string name="midi_program">"Zmiana programu"</string>
@@ -899,5 +902,4 @@
     <string name="width">Szerokość</string>
     <string name="words_and_music_by">Słowa i muzyka wg</string>
     <string name="zoom_level">Stopień przybliżenia</string>
-    <string name="image_adjust">Dopasowywanie obrazu (kadrowanie i obracanie)</string>
 </resources>

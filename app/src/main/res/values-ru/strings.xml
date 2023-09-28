@@ -75,6 +75,7 @@
     <string name="beat_buddy_auto_info">Сравнивает имя файла вашей песни, название и поля, также известные как поля, с вашей базой данных BeatBuddy.  Если найдена подходящая песня, папка и код песни автоматически отправляются через MIDI</string>
     <string name="beat_buddy_browse_info">Просмотр песен на BeatBuddy (используя проект по умолчанию или импортированный проект)</string>
     <string name="beat_buddy_database_reset">Очистите базу данных BeatBuddy в приложении.  Это восстановит только настройки педали по умолчанию.</string>
+    <string name="beat_buddy_dynamic_messages">Динамические MIDI-сообщения (приложение имеет дело с кодом)</string>
     <string name="beat_buddy_folder_info">Папка должна иметь номер от 1 до 16384</string>
     <string name="beat_buddy_import_error">Возникла проблема с импортом проекта BeatBuddy.  Пожалуйста, обратитесь к руководству пользователя для получения дополнительной информации.</string>
     <string name="beat_buddy_import_options">У вас есть два варианта импорта информации о проекте из вашего BeatBuddy:</string>
@@ -387,6 +388,7 @@
     <string name="ignore_rounded_corners_info">Закругленный угол экрана может обрезать текст. Игнорирование скругленных углов заставит приложение использовать ширину/высоту всего экрана (рекомендуется). Вы всегда можете настроить поля для отступов</string>
     <string name="ignore_warning">Игнорировать предупреждение</string>
     <string name="image">Изображение</string>
+    <string name="image_adjust">Настройка изображения (обрезка и поворот)</string>
     <string name="image_change">Нажмите на изображение, чтобы изменить</string>
     <string name="image_slide">Слайдшоу изображений</string>
     <string name="immersive_mode">Иммерсивный режим</string>
@@ -510,6 +512,7 @@
     <string name="midi_list_item">Нажмите, чтобы проверить, проведите пальцем, чтобы удалить или изменить порядок</string>
     <string name="midi_message_include">Добавить этот текст в сообщения к песням</string>
     <string name="midi_messages">MIDI сообщения в песнях (отправляются по порядку)</string>
+    <string name="midi_messages_static">Статические MIDI-сообщения (сообщения, сохраненные вместе с песней)</string>
     <string name="midi_note">Заметка</string>
     <string name="midi_pedal">Ожидание входящих MIDI сигналов (например, педали)</string>
     <string name="midi_program">"Изменение программы"</string>
@@ -899,5 +902,4 @@
     <string name="width">Ширина</string>
     <string name="words_and_music_by">Слова и музыка</string>
     <string name="zoom_level">Уровень масштабирования</string>
-    <string name="image_adjust">Настройка изображения (обрезка и поворот)</string>
 </resources>

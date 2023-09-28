@@ -75,6 +75,7 @@
     <string name="beat_buddy_auto_info">Compara o nome do ficheiro da sua música, o título e também conhecidos como campos com a sua base de dados BeatBuddy.  Se uma música correspondente for encontrada, a pasta e o código da música são enviados automaticamente através do MIDI</string>
     <string name="beat_buddy_browse_info">Navegue pelas músicas no BeatBuddy (usando o projeto padrão ou o projeto importado)</string>
     <string name="beat_buddy_database_reset">Limpe o banco de dados BeatBuddy no aplicativo.  Isso restaurará apenas os padrões do pedal.</string>
+    <string name="beat_buddy_dynamic_messages">Mensagens MIDI dinâmicas (o aplicativo lida com o código))</string>
     <string name="beat_buddy_folder_info">A pasta deve ter um número entre 1 e 16384</string>
     <string name="beat_buddy_import_error">Houve um problema ao importar o projeto BeatBuddy.  Consulte o manual do utilizador para obter mais informações.</string>
     <string name="beat_buddy_import_options">Você tem duas opções de importação de informações do projeto do seu BeatBuddy:</string>
@@ -387,6 +388,7 @@
     <string name="ignore_rounded_corners_info">O canto arredondado do ecrã pode fazer com que o texto seja cortado. Ignorando os cantos arredondados, pedirá à aplicação que utilize a largura/altura do ecrã completo (recomendado).  Pode sempre ajustar as margens abaixo.</string>
     <string name="ignore_warning">Ignorar aviso</string>
     <string name="image">Imagem</string>
+    <string name="image_adjust">Ajustar imagem (cortar e girar)</string>
     <string name="image_change">Clique na imagem para alterar</string>
     <string name="image_slide">Slideshow imagem</string>
     <string name="immersive_mode">Modo imersivo</string>
@@ -510,6 +512,7 @@
     <string name="midi_list_item">Clique para testar, passar o dedo para excluir ou reorganizar</string>
     <string name="midi_message_include">Inclua isso nas mensagens da música</string>
     <string name="midi_messages">Mensagens MIDI de música (enviadas em ordem)</string>
+    <string name="midi_messages_static">Mensagens MIDI estáticas (mensagens salvas com a música)</string>
     <string name="midi_note">"Nota"</string>
     <string name="midi_pedal">Ouça o MIDI de entrada (por exemplo, pedal)</string>
     <string name="midi_program">"Mudança de programa"</string>
@@ -899,5 +902,4 @@
     <string name="width">Largura</string>
     <string name="words_and_music_by">Palavras e música de</string>
     <string name="zoom_level">Nível de zoom</string>
-    <string name="image_adjust">Ajustar imagem (cortar e girar)</string>
 </resources>

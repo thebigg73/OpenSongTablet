@@ -75,6 +75,7 @@
     <string name="beat_buddy_auto_info">Jämför din låt Filnamn, Titel och Även känd som fält med din BeatBuddy-databas.  Om en matchande låt hittas skickas mappen och låtkoden automatiskt över MIDI</string>
     <string name="beat_buddy_browse_info">Bläddra bland låtarna på BeatBuddy (med standardprojektet eller det importerade projektet)</string>
     <string name="beat_buddy_database_reset">Rensa BeatBuddy-databasen i appen.  Detta återställer endast pedalstandardinställningarna.</string>
+    <string name="beat_buddy_dynamic_messages">Dynamiska MIDI-meddelanden (appen hanterar koden)</string>
     <string name="beat_buddy_folder_info">Mappen måste vara ett nummer mellan 1 och 16384</string>
     <string name="beat_buddy_import_error">Det gick inte att importera BeatBuddy-projektet.  Se användarhandboken för mer information.</string>
     <string name="beat_buddy_import_options">Du har två alternativ för att importera projektinformation från din BeatBuddy:</string>
@@ -387,6 +388,7 @@
     <string name="ignore_rounded_corners_info">Rundat skärmhörn kan göra att text klipps bort. Om du ignorerar rundade hörn kommer appen att be om att använda helskärmsbredden / höjden (rekommenderas).  Du kan alltid justera marginalerna nedan.</string>
     <string name="ignore_warning">Ignorera varning</string>
     <string name="image">"Bild"</string>
+    <string name="image_adjust">Justera bilden (beskära och rotera)</string>
     <string name="image_change">Klicka på bilden för att ändra</string>
     <string name="image_slide">"Bildspel"</string>
     <string name="immersive_mode">Uppslukande läge</string>
@@ -510,6 +512,7 @@
     <string name="midi_list_item">Klicka för att testa, svepa för att radera eller ordna om</string>
     <string name="midi_message_include">Inkludera detta i låtmeddelandena</string>
     <string name="midi_messages">Sång MIDI-meddelanden (skickas i ordning)</string>
+    <string name="midi_messages_static">Statiska MIDI-meddelanden (meddelanden som sparats med låten)</string>
     <string name="midi_note">"Notera"</string>
     <string name="midi_pedal">Lyssna efter inkommande MIDI (t.ex. fotpedal)</string>
     <string name="midi_program">"Programändring"</string>
@@ -899,5 +902,4 @@
     <string name="width">Bredd</string>
     <string name="words_and_music_by">Ord och musik av</string>
     <string name="zoom_level">Zoomnivå</string>
-    <string name="image_adjust">Justera bilden (beskära och rotera)</string>
 </resources>

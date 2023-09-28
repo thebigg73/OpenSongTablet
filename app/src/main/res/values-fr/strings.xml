@@ -75,6 +75,7 @@
     <string name="beat_buddy_auto_info">Compare le nom de votre chanson, le titre et les champs également connus sous le nom de chanson avec votre base de données BeatBuddy.  Si une chanson correspondante est trouvée, le dossier et le code de la chanson sont envoyés automatiquement via MIDI</string>
     <string name="beat_buddy_browse_info">Parcourez les chansons sur le BeatBuddy (en utilisant le projet par défaut ou le projet importé)</string>
     <string name="beat_buddy_database_reset">Effacez la base de données BeatBuddy dans l’application.  Cela restaurera uniquement les valeurs par défaut de la pédale.</string>
+    <string name="beat_buddy_dynamic_messages">Messages MIDI dynamiques (l’application traite le code)</string>
     <string name="beat_buddy_folder_info">Le dossier doit être un nombre compris entre 1 et 16384</string>
     <string name="beat_buddy_import_error">Un problème est survenu lors de l’importation du projet BeatBuddy.  Veuillez vous référer au manuel d’utilisation pour plus d’informations.</string>
     <string name="beat_buddy_import_options">Vous avez deux options pour importer des informations de projet depuis votre BeatBuddy :</string>
@@ -387,6 +388,7 @@
     <string name="ignore_rounded_corners_info">Un coin d’écran arrondi peut entraîner un découpage du texte. Si vous ignorez les coins arrondis, l’application demandera d’utiliser la largeur / hauteur du plein écran (recommandé).  Vous pouvez toujours ajuster les marges ci-dessous.</string>
     <string name="ignore_warning">Ignorer l\'avertissement</string>
     <string name="image">Image</string>
+    <string name="image_adjust">Ajuster l’image (recadrer et faire pivoter)</string>
     <string name="image_change">Cliquez sur l\'image pour changer</string>
     <string name="image_slide">Image diaporama</string>
     <string name="immersive_mode">Mode immersif</string>
@@ -510,6 +512,7 @@
     <string name="midi_list_item">Cliquez pour tester, balayez pour supprimer ou réorganisez</string>
     <string name="midi_message_include">Incluez ceci dans les messages de la chanson</string>
     <string name="midi_messages">Messages MIDI de chanson (envoyés dans l’ordre)</string>
+    <string name="midi_messages_static">Messages MIDI statiques (messages enregistrés avec la chanson)</string>
     <string name="midi_note">"Remarque"</string>
     <string name="midi_pedal">Écoutez le MIDI entrant (par exemple, pédale)</string>
     <string name="midi_program">"Changement de programme"</string>
@@ -899,5 +902,4 @@
     <string name="width">Largeur</string>
     <string name="words_and_music_by">Paroles et musique de</string>
     <string name="zoom_level">Le niveau de zoom</string>
-    <string name="image_adjust">Ajuster l’image (recadrer et faire pivoter)</string>
 </resources>

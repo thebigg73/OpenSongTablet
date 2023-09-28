@@ -75,6 +75,7 @@
     <string name="beat_buddy_auto_info">Poredi vaše pesmu Filename, Title i Also known as fields with your BeatBuddy database.  Ako se uporedi pesma, fascikla i kôd pesme se automatski šalju preko MIDI-ja</string>
     <string name="beat_buddy_browse_info">Pregledajte pesme na BeatBuddy (koristeći podrazumevani projekat ili uvezeni projekat)</string>
     <string name="beat_buddy_database_reset">Obriši BeatBuddy bazu podataka u aplikaciji.  Ovo će vratiti samo podrazumevane vrednosti pedala.</string>
+    <string name="beat_buddy_dynamic_messages">Dinamičke MIDI poruke (aplikacija se bavi kodom)</string>
     <string name="beat_buddy_folder_info">Fascikla mora biti broj između 1 i 16384</string>
     <string name="beat_buddy_import_error">Došlo je do problema pri uvozu BeatBuddy projekta.  Za više informacija pogledajte korisničko uputstvo.</string>
     <string name="beat_buddy_import_options">Imate dve opcije uvoza informacija o projektu iz beatBuddy-ja:</string>
@@ -387,6 +388,7 @@
     <string name="ignore_rounded_corners_info">Ugao zaobljenog ekrana može dovesti do isečevanja teksta. Ignorisanje zaobljenih uglova će zatražiti od aplikacije da koristi širinu/visinu celog ekrana (preporučuje se).  Margine uvek možete podesiti ispod.</string>
     <string name="ignore_warning">Ignorirajte upozorenje</string>
     <string name="image">Slika</string>
+    <string name="image_adjust">Podesi sliku (izrezivanje i rotiranje)</string>
     <string name="image_change">Kliknite na sliku da biste je promenili</string>
     <string name="image_slide">Slajd-šou slika</string>
     <string name="immersive_mode">Imerzivni režim</string>
@@ -510,6 +512,7 @@
     <string name="midi_list_item">Kliknite da biste testirali, brzo prevucite prstom da biste izbrisali ili prerasporedili</string>
     <string name="midi_message_include">Uključi ovo u poruke pesama</string>
     <string name="midi_messages">Pesme MIDI poruke (poslate redom)</string>
+    <string name="midi_messages_static">Statične MIDI poruke (poruke sačuvane uz pesmu)</string>
     <string name="midi_note">MIDI beleška</string>
     <string name="midi_pedal">Slušajte dolazni MIDI (npr. nožna pedala)</string>
     <string name="midi_program">MIDI promena programa</string>
@@ -899,5 +902,4 @@
     <string name="width">Širina</string>
     <string name="words_and_music_by">Reči i muzika</string>
     <string name="zoom_level">Nivo zumiranja</string>
-    <string name="image_adjust">Podesi sliku (izrezivanje i rotiranje)</string>
 </resources>

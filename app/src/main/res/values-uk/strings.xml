@@ -75,6 +75,7 @@
     <string name="beat_buddy_auto_info">Порівнює вашу пісню Filename, Title і Також відомі як поля з вашою базою даних BeatBuddy.  Якщо знайдено відповідну пісню, папка та код пісні автоматично надсилаються через MIDI</string>
     <string name="beat_buddy_browse_info">Перегляньте пісні на BeatBuddy (використовуючи проект за замовчуванням або імпортований проект)</string>
     <string name="beat_buddy_database_reset">Очистіть базу даних BeatBuddy в додатку.  Це відновить лише стандартні педалі.</string>
+    <string name="beat_buddy_dynamic_messages">Динамічні MIDI-повідомлення (додаток працює з кодом)</string>
     <string name="beat_buddy_folder_info">Папка має містити номер від 1 до 16384</string>
     <string name="beat_buddy_import_error">Виникла проблема з імпортом проекту BeatBuddy.  Будь ласка, зверніться до посібника користувача для отримання додаткової інформації.</string>
     <string name="beat_buddy_import_options">У вас є два варіанти імпорту інформації про проект з вашого BeatBuddy:</string>
@@ -387,6 +388,7 @@
     <string name="ignore_rounded_corners_info">Закруглений кут екрана може призвести до відсікання тексту. Ігнорування закруглених кутів попросить додаток використовувати ширину/висоту повного екрана (рекомендовано).  Ви завжди можете налаштувати поля нижче.</string>
     <string name="ignore_warning">Ігнорувати попередження</string>
     <string name="image">Зображення</string>
+    <string name="image_adjust">Налаштування зображення (обрізання та поворот)</string>
     <string name="image_change">Натисніть на зображення, щоб змінити</string>
     <string name="image_slide">Зображення слайд</string>
     <string name="immersive_mode">Імерсивний режим</string>
@@ -510,6 +512,7 @@
     <string name="midi_list_item">Натисніть, щоб перевірити, проведіть пальцем, щоб видалити або перевпорядкувати</string>
     <string name="midi_message_include">Включити це в повідомлення пісні</string>
     <string name="midi_messages">Пісня MIDI повідомлення (відправляється по замовленню)</string>
+    <string name="midi_messages_static">Статичні MIDI-повідомлення (повідомлення, збережені разом з піснею)</string>
     <string name="midi_note">Зберегти</string>
     <string name="midi_pedal">Слухайте вхідний MIDI (наприклад, педаль)</string>
     <string name="midi_program">Зміна програми</string>
@@ -899,5 +902,4 @@
     <string name="width">Ширина</string>
     <string name="words_and_music_by">Слова і музика</string>
     <string name="zoom_level">Рівень масштабування</string>
-    <string name="image_adjust">Налаштування зображення (обрізання та поворот)</string>
 </resources>

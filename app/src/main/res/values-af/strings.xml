@@ -75,6 +75,7 @@
     <string name="beat_buddy_auto_info">Vergelyk u liedjie Lêernaam, titel en ook bekend as velde met u BeatBuddy-databasis.  As \'n bypassende liedjie gevind word, word die lêergids en liedjiekode outomaties via MIDI gestuur</string>
     <string name="beat_buddy_browse_info">Blaai deur die liedjies op die BeatBuddy (met behulp van die standaardprojek of ingevoerde projek)</string>
     <string name="beat_buddy_database_reset">Maak die BeatBuddy-databasis in die app skoon. Dit sal slegs die standaard van die pedaal herstel.</string>
+    <string name="beat_buddy_dynamic_messages">Dinamiese MIDI-boodskappe (die app handel oor die kode)</string>
     <string name="beat_buddy_folder_info">Vouer moet \'n nommer tussen 1 en 16384 wees</string>
     <string name="beat_buddy_import_error">Daar was \'n probleem met die invoer van die BeatBuddy-projek.  Raadpleeg die gebruikershandleiding vir meer inligting.</string>
     <string name="beat_buddy_import_options">U het twee opsies om projekinligting vanaf u BeatBuddy in te voer:</string>
@@ -387,6 +388,7 @@
     <string name="ignore_rounded_corners_info">Afgeronde skermhoek kan veroorsaak dat teks geknip word. As u afgeronde hoeke ignoreer, sal die app gevra word om die volle breedte / hoogte van die skerm te gebruik (aanbeveel).  U kan altyd die marges hieronder aanpas.</string>
     <string name="ignore_warning">Ignoreer waarskuwing</string>
     <string name="image">"Image"</string>
+    <string name="image_adjust">Verstel beeld (sny en draai)</string>
     <string name="image_change">Klik op die prent om te verander</string>
     <string name="image_slide">"Image skyfievertoning"</string>
     <string name="immersive_mode">Immersiewe modus</string>
@@ -510,6 +512,7 @@
     <string name="midi_list_item">Klik om te toets, vee om uit te vee of herrangskik</string>
     <string name="midi_message_include">Sluit dit in die liedboodskappe in</string>
     <string name="midi_messages">Song MIDI-boodskappe (in volgorde gestuur)</string>
+    <string name="midi_messages_static">Statiese MIDI-boodskappe (boodskappe wat saam met die liedjie gestoor is)</string>
     <string name="midi_note">Nota</string>
     <string name="midi_pedal">Luister vir inkomende MIDI (bv. voetpedaal)</string>
     <string name="midi_program">"Program verandering"</string>
@@ -899,5 +902,4 @@
     <string name="width">Breedte</string>
     <string name="words_and_music_by">Woorde en musiek deur</string>
     <string name="zoom_level">Zoemvlak</string>
-    <string name="image_adjust">Verstel beeld (sny en draai)</string>
 </resources>

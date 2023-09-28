@@ -82,6 +82,7 @@
     <string name="beat_buddy_auto_info">Compares your song \'Filename\', \'Title\' and \'Also known as\' fields with your BeatBuddy database.  If a matching song is found, the folder and song code are sent over MIDI automatically</string>
     <string name="beat_buddy_browse_info">Browse the songs on the BeatBuddy (using the default project or imported project)</string>
     <string name="beat_buddy_database_reset">Clear the BeatBuddy database in the app.  This will restore the pedal defaults only.</string>
+    <string name="beat_buddy_dynamic_messages">Dynamic MIDI messages (the app deals with the code)</string>
     <string name="beat_buddy_folder_info">Folder must be a number between 1 and 16384</string>
     <string name="beat_buddy_import_error">There was a problem importing the BeatBuddy project.  Please refer to the user manual for more information.</string>
     <string name="beat_buddy_import_options">You have two options of importing project information from your BeatBuddy:</string>
@@ -663,6 +664,7 @@
     <string name="midi_list_item">Click to test, swipe to delete, or rearrange</string>
     <string name="midi_message_include">Include this in the song messages</string>
     <string name="midi_messages">Song MIDI messages (sent in order)</string>
+    <string name="midi_messages_static">Static MIDI messages (messages saved with the song)</string>
     <string name="midi_note">Note</string>
     <string name="midi_pedal">Listen for incoming MIDI (e.g. footpedal)</string>
     <string name="midi_program">Program change</string>

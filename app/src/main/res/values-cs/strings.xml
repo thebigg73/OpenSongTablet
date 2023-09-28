@@ -75,6 +75,7 @@
     <string name="beat_buddy_auto_info">Porovná vaše skladba Název souboru, Název a Také známé jako pole s databází BeatBuddy.  Pokud je nalezena odpovídající skladba, složka a kód skladby jsou automaticky odeslány přes MIDI</string>
     <string name="beat_buddy_browse_info">Procházení skladeb na BeatBuddy (pomocí výchozího projektu nebo importovaného projektu)</string>
     <string name="beat_buddy_database_reset">Vymažte databázi BeatBuddy v aplikaci.  Tím se obnoví pouze výchozí nastavení pedálu.</string>
+    <string name="beat_buddy_dynamic_messages">Dynamické MIDI zprávy (aplikace se zabývá kódem)</string>
     <string name="beat_buddy_folder_info">Složka musí mít číslo mezi 1 a 16384</string>
     <string name="beat_buddy_import_error">Při importu projektu BeatBuddy došlo k potížím.  Další informace naleznete v uživatelské příručce.</string>
     <string name="beat_buddy_import_options">Máte dvě možnosti, jak importovat informace o projektu z vašeho BeatBuddy:</string>
@@ -387,6 +388,7 @@
     <string name="ignore_rounded_corners_info">Zaoblený roh obrazovky může způsobit oříznutí textu. Ignorováním zaoblených rohů požádáte aplikaci, aby použila šířku/výšku celé obrazovky (doporučeno).  Níže uvedené okraje můžete kdykoli upravit.</string>
     <string name="ignore_warning">Ignorovat varování</string>
     <string name="image">"Obraz"</string>
+    <string name="image_adjust">Úprava obrazu (oříznutí a otočení)</string>
     <string name="image_change">Pro změnu klikněte na obrázek</string>
     <string name="image_slide">"Image slideshow"</string>
     <string name="immersive_mode">Imerzivní režim</string>
@@ -510,6 +512,7 @@
     <string name="midi_list_item">Kliknutím otestujte, přejetím prstem odstraníte nebo změníte uspořádání</string>
     <string name="midi_message_include">Zahrňte to do zpráv skladby</string>
     <string name="midi_messages">MIDI zprávy ve skladbě (odeslané v pořadí)</string>
+    <string name="midi_messages_static">Statické MIDI zprávy (zprávy uložené se skladbou)</string>
     <string name="midi_note">"Poznámka"</string>
     <string name="midi_pedal">Poslouchat příchozí MIDI (např. pedál)</string>
     <string name="midi_program">"Změna programu"</string>
@@ -899,5 +902,4 @@
     <string name="width">Šířka</string>
     <string name="words_and_music_by">Slova a hudba od</string>
     <string name="zoom_level">Úroveň přiblížení</string>
-    <string name="image_adjust">Úprava obrazu (oříznutí a otočení)</string>
 </resources>

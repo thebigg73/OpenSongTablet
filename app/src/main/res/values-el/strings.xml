@@ -75,6 +75,7 @@
     <string name="beat_buddy_auto_info">Συγκρίνει το τραγούδι σας Όνομα αρχείου, Τίτλος και Επίσης γνωστά ως πεδία με τη βάση δεδομένων BeatBuddy.  Εάν βρεθεί ένα αντίστοιχο τραγούδι, ο φάκελος και ο κωδικός τραγουδιού αποστέλλονται αυτόματα μέσω MIDI</string>
     <string name="beat_buddy_browse_info">Περιηγηθείτε στα τραγούδια στο BeatBuddy (χρησιμοποιώντας το προεπιλεγμένο έργο ή το εισαγόμενο έργο)</string>
     <string name="beat_buddy_database_reset">Διαγράψτε τη βάση δεδομένων BeatBuddy στην εφαρμογή.  Αυτό θα επαναφέρει μόνο τις προεπιλογές πεντάλ.</string>
+    <string name="beat_buddy_dynamic_messages">Δυναμικά μηνύματα MIDI (η εφαρμογή ασχολείται με τον κώδικα)</string>
     <string name="beat_buddy_folder_info">Ο φάκελος πρέπει να είναι ένας αριθμός μεταξύ 1 και 16384</string>
     <string name="beat_buddy_import_error">Παρουσιάστηκε πρόβλημα κατά την εισαγωγή του έργου BeatBuddy.  Ανατρέξτε στο εγχειρίδιο χρήσης για περισσότερες πληροφορίες.</string>
     <string name="beat_buddy_import_options">Έχετε δύο επιλογές εισαγωγής πληροφοριών έργου από το BeatBuddy σας:</string>
@@ -387,6 +388,7 @@
     <string name="ignore_rounded_corners_info">Η στρογγυλεμένη γωνία οθόνης μπορεί να προκαλέσει την αποκοπή κειμένου. Η παράβλεψη των στρογγυλεμένων γωνιών θα ζητήσει από την εφαρμογή να χρησιμοποιήσει το πλήρες πλάτος / ύψος της οθόνης (συνιστάται).  Μπορείτε πάντα να προσαρμόσετε τα παρακάτω περιθώρια.</string>
     <string name="ignore_warning">Αγνοήστε την προειδοποίηση</string>
     <string name="image">"Εικόνα"</string>
+    <string name="image_adjust">Προσαρμογή εικόνας (περικοπή και περιστροφή)</string>
     <string name="image_change">Κάντε κλικ στην εικόνα για αλλαγή</string>
     <string name="image_slide">"Image slideshow"</string>
     <string name="immersive_mode">Καθηλωτική λειτουργία</string>
@@ -510,6 +512,7 @@
     <string name="midi_list_item">Κάντε κλικ για δοκιμή, σάρωση για διαγραφή ή αναδιάταξη</string>
     <string name="midi_message_include">Συμπεριλάβετε αυτό στα μηνύματα τραγουδιού</string>
     <string name="midi_messages">Μηνύματα MIDI τραγουδιού (αποστέλλονται με τη σειρά)</string>
+    <string name="midi_messages_static">Στατικά μηνύματα MIDI (μηνύματα που αποθηκεύονται με το τραγούδι)</string>
     <string name="midi_note">"Σημείωση"</string>
     <string name="midi_pedal">Ακρόαση για εισερχόμενα MIDI (π.χ. ποδόπληκτρο)</string>
     <string name="midi_program">"Αλλαγή προγράμματος"</string>
@@ -899,5 +902,4 @@
     <string name="width">Πλάτος</string>
     <string name="words_and_music_by">Λέξεις και μουσική από</string>
     <string name="zoom_level">Επίπεδο ζουμ</string>
-    <string name="image_adjust">Προσαρμογή εικόνας (περικοπή και περιστροφή)</string>
 </resources>

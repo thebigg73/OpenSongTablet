@@ -75,6 +75,7 @@
     <string name="beat_buddy_auto_info">将您的歌曲文件名、标题和也称为字段与您的 BeatBuddy 数据库进行比较。 如果找到匹配的歌曲，文件夹和歌曲代码将自动通过 MIDI 发送</string>
     <string name="beat_buddy_browse_info">浏览 BeatBuddy 上的歌曲（使用默认项目或导入的项目）</string>
     <string name="beat_buddy_database_reset">清除应用程序中的 BeatBuddy 数据库。 这将仅恢复踏板默认值。</string>
+    <string name="beat_buddy_dynamic_messages">动态 MIDI 消息（应用程序处理代码）</string>
     <string name="beat_buddy_folder_info">文件夹必须是介于 1 和 16384 之间的数字</string>
     <string name="beat_buddy_import_error">导入 BeatBuddy 项目时出现问题。 有关详细信息，请参阅用户手册。</string>
     <string name="beat_buddy_import_options">您有两种选择可以从 BeatBuddy 导入项目信息：</string>
@@ -387,6 +388,7 @@
     <string name="ignore_rounded_corners_info">圆角屏幕角可能会导致文本被剪裁。忽略圆角将要求应用使用全屏宽度/高度（推荐）。 您可以随时调整下面的边距。</string>
     <string name="ignore_warning">忽略警告</string>
     <string name="image">"像"</string>
+    <string name="image_adjust">调整图像（裁剪和旋转）</string>
     <string name="image_change">点击图片进行更改</string>
     <string name="image_slide">"图像幻灯片"</string>
     <string name="immersive_mode">沉浸式模式</string>
@@ -510,6 +512,7 @@
     <string name="midi_list_item">单击以测试、滑动以删除或重新排列</string>
     <string name="midi_message_include">将其包含在歌曲消息中</string>
     <string name="midi_messages">歌曲 MIDI 消息（按顺序发送）</string>
+    <string name="midi_messages_static">静态 MIDI 信息（与歌曲一起保存的消息）</string>
     <string name="midi_note">"注意"</string>
     <string name="midi_pedal">监听传入的 MIDI（例如脚踏板）</string>
     <string name="midi_program">"程序更改"</string>
@@ -899,5 +902,4 @@
     <string name="width">宽度</string>
     <string name="words_and_music_by">文字和音乐</string>
     <string name="zoom_level">缩放级别</string>
-    <string name="image_adjust">调整图像（裁剪和旋转）</string>
 </resources>

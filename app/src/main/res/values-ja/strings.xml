@@ -75,6 +75,7 @@
     <string name="beat_buddy_auto_info">曲のファイル名、タイトル、フィールドとも呼ばれますBeatBuddyデータベースを比較します。 一致する曲が見つかった場合、フォルダと曲コードは自動的にMIDI経由で送信されます</string>
     <string name="beat_buddy_browse_info">BeatBuddyで曲をブラウズする(デフォルトのプロジェクトまたは読み込んだプロジェクトを使用)</string>
     <string name="beat_buddy_database_reset">アプリ内の BeatBuddy データベースをクリアします。 これにより、ペダルのデフォルトのみが復元されます。</string>
+    <string name="beat_buddy_dynamic_messages">ダイナミックMIDIメッセージ(アプリがコードを処理します)</string>
     <string name="beat_buddy_folder_info">フォルダーは 1 から 16384 までの数値である必要があります</string>
     <string name="beat_buddy_import_error">BeatBuddy プロジェクトのインポート中に問題が発生しました。 詳細については、ユーザーマニュアルを参照してください。</string>
     <string name="beat_buddy_import_options">BeatBuddy からプロジェクト情報をインポートするには、次の 2 つのオプションがあります。</string>
@@ -387,6 +388,7 @@
     <string name="ignore_rounded_corners_info">画面の角が丸くなると、テキストが切り取られることがあります。丸みを帯びた角を無視すると、アプリは全画面の幅/高さを使用するように求められます(推奨)。 以下の余白はいつでも調整できます。</string>
     <string name="ignore_warning">警告を無視</string>
     <string name="image">"像"</string>
+    <string name="image_adjust">画像を調整する(切り抜きと回転)</string>
     <string name="image_change">変更するには画像をクリックしてください</string>
     <string name="image_slide">"画像スライドショー"</string>
     <string name="immersive_mode">没入型モード</string>
@@ -510,6 +512,7 @@
     <string name="midi_list_item">クリックしてテスト、スワイプして削除、または並べ替え</string>
     <string name="midi_message_include">これを曲のメッセージに含めます</string>
     <string name="midi_messages">曲のMIDIメッセージ(順番に送信)</string>
+    <string name="midi_messages_static">静的MIDIメッセージ(曲と一緒に保存されるメッセージ)</string>
     <string name="midi_note">"注意"</string>
     <string name="midi_pedal">着信MIDI（フットペダルなど）をリッスンする</string>
     <string name="midi_program">"プログラムの変更"</string>
@@ -899,5 +902,4 @@
     <string name="width">幅</string>
     <string name="words_and_music_by">言葉と音楽</string>
     <string name="zoom_level">ズームレベル</string>
-    <string name="image_adjust">画像を調整する(切り抜きと回転)</string>
 </resources>
