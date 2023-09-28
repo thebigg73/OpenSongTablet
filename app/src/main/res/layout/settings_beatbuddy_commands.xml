@@ -332,7 +332,7 @@
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/testSongCode"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_margin="8dp"
                     android:text="@string/midi_test"
                     app:icon="@drawable/information" />
@@ -340,7 +340,7 @@
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/addMidiCommands"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_margin="8dp"
                     android:text="@string/midi_add"
 

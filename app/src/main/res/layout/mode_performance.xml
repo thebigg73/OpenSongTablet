@@ -33,13 +33,19 @@
         android:clipChildren="false"
         android:clipToPadding="false"
         android:visibility="invisible" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:visibility="invisible">
     <RelativeLayout
         android:id="@+id/testPane"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clipChildren="false"
-        android:clipToPadding="false"
-        android:visibility="invisible" />
+        android:clipToPadding="false" />
+    </ScrollView>
 
     <!-- This is used for the pdf pages, images and stage mode -->
     <com.garethevans.church.opensongtablet.customviews.MyRecyclerView
