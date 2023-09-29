@@ -777,12 +777,14 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     }
 
     private void updateSongCount() {
-        myView.songTitleStuff.songCount.setVisibility(View.GONE);
-        if (songsFound!=null) {
-            myView.songTitleStuff.songCount.setVisibility(View.VISIBLE);
-            String count = ""+songsFound.size();
-            myView.songTitleStuff.songCount.setText(count);
-        }
+        myView.songTitleStuff.songCount.post(()-> {
+            myView.songTitleStuff.songCount.setVisibility(View.GONE);
+            if (songsFound!=null) {
+                myView.songTitleStuff.songCount.setVisibility(View.VISIBLE);
+                String count = ""+songsFound.size();
+                myView.songTitleStuff.songCount.setText(count);
+            }
+        });
     }
 
 }
