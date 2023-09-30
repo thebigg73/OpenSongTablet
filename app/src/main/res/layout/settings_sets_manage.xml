@@ -113,6 +113,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
+        android:layout_marginBottom="16dp"
         android:padding="16dp"
         android:text="@string/load"
         app:icon="@drawable/save" />

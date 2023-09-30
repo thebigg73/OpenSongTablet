@@ -2,6 +2,8 @@ package com.garethevans.church.opensongtablet.setprocessing;
 
 import android.content.Context;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Base64;
 import android.util.Log;
 
@@ -370,6 +372,11 @@ public class SetActions {
         mainActivityInterface.getCurrentSet().setSetCurrentBeforeEdits(setString);
         mainActivityInterface.updateSetList();
         mainActivityInterface.updateSongList();
+        new Handler(Looper.getMainLooper()).post(() -> {
+            mainActivityInterface.getSetListAdapter().buildSetList();
+            Log.d(TAG,"currentSet.size():"+mainActivityInterface.getCurrentSet().getSetItems().size()+"  adapter.size():"+mainActivityInterface.getSetListAdapter().getItemCount());
+        });
+
         // TODO Check references for set name that gets saved.  Especially if we have merged sets.
     }
 

@@ -57,6 +57,7 @@ import com.garethevans.church.opensongtablet.screensetup.ShowToast;
 import com.garethevans.church.opensongtablet.screensetup.ThemeColors;
 import com.garethevans.church.opensongtablet.screensetup.WindowFlags;
 import com.garethevans.church.opensongtablet.setmenu.SetItemInfo;
+import com.garethevans.church.opensongtablet.setmenu.SetListAdapter;
 import com.garethevans.church.opensongtablet.setprocessing.CurrentSet;
 import com.garethevans.church.opensongtablet.setprocessing.SetActions;
 import com.garethevans.church.opensongtablet.songmenu.SongListBuildIndex;
@@ -126,6 +127,8 @@ public interface MainActivityInterface {
     void toggleAutoscroll();
 
     // Set stuff
+    void newSetListAdapter();
+    SetListAdapter getSetListAdapter();
     CurrentSet getCurrentSet();
     SetActions getSetActions();
     void updateSetTitle();

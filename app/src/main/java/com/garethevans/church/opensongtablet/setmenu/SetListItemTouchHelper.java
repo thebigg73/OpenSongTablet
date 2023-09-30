@@ -1,5 +1,6 @@
 package com.garethevans.church.opensongtablet.setmenu;
 
+import android.content.Context;
 import android.content.res.ColorStateList;
 import android.os.Build;
 import android.util.Log;
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.interfaces.SetItemTouchInterface;
 
 public class SetListItemTouchHelper extends ItemTouchHelper.Callback {
@@ -19,18 +21,20 @@ public class SetListItemTouchHelper extends ItemTouchHelper.Callback {
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "SetListItemTouchHelper";
 
-    public SetListItemTouchHelper(SetListAdapter setListAdapter) {
-        this.setItemTouchInterface = setListAdapter;
+    public SetListItemTouchHelper(Context c) {
+        MainActivityInterface mainActivityInterface = (MainActivityInterface) c;
+        this.setItemTouchInterface = mainActivityInterface.getSetListAdapter();
     }
 
     @Override
     public boolean isLongPressDragEnabled() {
         // Dragging will be handled manually, so disable here
-        return true;
+        return false;
     }
 
     @Override
     public void clearView(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
+        Log.d(TAG,"clearView called");
         // Called when dragged item is released
         super.clearView(recyclerView, viewHolder);
         // Change the color back to normal if lollipop+

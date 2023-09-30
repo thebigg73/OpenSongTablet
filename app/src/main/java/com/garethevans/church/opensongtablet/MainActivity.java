@@ -123,6 +123,7 @@ import com.garethevans.church.opensongtablet.screensetup.WindowFlags;
 import com.garethevans.church.opensongtablet.secondarydisplay.SecondaryDisplay;
 import com.garethevans.church.opensongtablet.secondarydisplay.SecondaryDisplaySettingsFragment;
 import com.garethevans.church.opensongtablet.setmenu.SetItemInfo;
+import com.garethevans.church.opensongtablet.setmenu.SetListAdapter;
 import com.garethevans.church.opensongtablet.setmenu.SetMenuFragment;
 import com.garethevans.church.opensongtablet.setprocessing.CurrentSet;
 import com.garethevans.church.opensongtablet.setprocessing.SetActions;
@@ -173,6 +174,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private ActivityBinding myView;
     private boolean bootUpCompleted = false;
     private boolean rebooted = false, alreadyBackPressed = false;
+
+    private SetListAdapter setListAdapter;
 
     // The helpers sorted alphabetically
     private ABCNotation abcNotation;
@@ -1905,6 +1908,16 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public SetListAdapter getSetListAdapter() {
+        return setListAdapter;
+    }
+
+    @Override
+    public void newSetListAdapter() {
+        setListAdapter = new SetListAdapter(this);
     }
 
     @Override

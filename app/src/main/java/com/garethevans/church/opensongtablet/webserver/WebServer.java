@@ -437,13 +437,13 @@ public class WebServer extends NanoHTTPD {
         if (allowWebNavigation) {
             return  "ul {list-style-type:none; margin:0; padding: 0; overflow:hidden; color:white; " +
                     "font-family:"+mainActivityInterface.getMyFonts().getLyricFontName()+"; " +
-                    "font-size:36pt;}\n" +
-                    "li {float:left;background-color:#294959; margin-right:8px; font-size:36pt;}\n" +
-                    "a {display:block; padding:8px; color:white;background-color:#294959; font-size:36pt;}\n" +
-                    "a:link {color:white; text-decoration:none; font-size:36pt;}\n" +
-                    "a:visited {color:white; text-decoration:none; font-size:36pt;}\n" +
-                    "a:hover {color:white; text-decoration:none; font-size:36pt;}\n" +
-                    "a:active {color:white; text-decoration:none; font-size:36pt;}\n";
+                    "font-size:24pt;}\n" +
+                    "li {float:left;background-color:#294959; margin-right:8px; font-size:24pt;}\n" +
+                    "a {display:block; padding:8px; color:white;background-color:#294959; font-size:24pt;}\n" +
+                    "a:link {color:white; text-decoration:none; font-size:24pt;}\n" +
+                    "a:visited {color:white; text-decoration:none; font-size:24pt;}\n" +
+                    "a:hover {color:white; text-decoration:none; font-size:24pt;}\n" +
+                    "a:active {color:white; text-decoration:none; font-size:24pt;}\n";
         } else {
             return "";
         }

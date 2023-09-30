@@ -3,6 +3,7 @@ package com.garethevans.church.opensongtablet.setmenu;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.os.Build;
+import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,7 @@ import com.garethevans.church.opensongtablet.songprocessing.Song;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> implements SetItemTouchInterface {
 
@@ -33,13 +35,15 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
     private final SparseBooleanArray highlightedArray = new SparseBooleanArray();
     private final float titleSize;
     private final float subtitleSizeFile;
-    private boolean useTitle = true;
+    private final boolean useTitle;
+    private final String slide_string, note_string, scripture_string, image_string,
+            variation_string, pdf_string;
 
     public void setTouchHelper(ItemTouchHelper itemTouchHelper) {
         this.itemTouchHelper = itemTouchHelper;
     }
 
-    SetListAdapter(Context context) {
+    public SetListAdapter(Context context) {
         this.mainActivityInterface = (MainActivityInterface) context;
         onColor = context.getResources().getColor(R.color.colorSecondary);
         offColor = context.getResources().getColor(R.color.colorAltPrimary);
@@ -48,22 +52,66 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
         // subtitleSizeAuthor = mainActivityInterface.getPreferences().getMyPreferenceFloat("songMenuSubItemSizeAuthor",12f);
         subtitleSizeFile = mainActivityInterface.getPreferences().getMyPreferenceFloat("songMenuSubItemSizeFile",12f);
         useTitle = mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuSortTitles",true);
+        slide_string = context.getString(R.string.slide);
+        note_string = context.getString(R.string.note);
+        scripture_string = context.getString(R.string.scripture);
+        image_string = context.getString(R.string.image);
+        variation_string = context.getString(R.string.variation);
+        pdf_string = context.getString(R.string.pdf);
     }
 
-    public void updateSetList(ArrayList<SetItemInfo> setItemInfos) {
-        if (setList != null) {
-            int size = getItemCount();
-            setList.clear();
-            notifyItemRangeRemoved(0, size);
+    public void buildSetList() {
+        setList = new ArrayList<>();
+        for (int i=0; i<mainActivityInterface.getCurrentSet().getSetItems().size(); i++) {
+            setList.add(makeSetItem(i));
+        }
+        notifyItemRangeInserted(0,mainActivityInterface.getCurrentSet().getSetItems().size()-1);
+    }
+
+    private SetItemInfo makeSetItem(int i) {
+        SetItemInfo si = new SetItemInfo();
+        si.songitem = (i+1) + ".";
+        if (i<mainActivityInterface.getCurrentSet().getSetFolders().size()) {
+            si.songfolder = mainActivityInterface.getCurrentSet().getSetFolders().get(i);
+            si.songfoldernice = mainActivityInterface.getCurrentSet().getSetFolders().get(i);
+        }
+        if (i<mainActivityInterface.getCurrentSet().getSetFilenames().size()) {
+            si.songtitle = mainActivityInterface.getCurrentSet().getTitle(i);
+            si.songfilename = mainActivityInterface.getCurrentSet().getSetFilenames().get(i);
+        }
+        if (i<mainActivityInterface.getCurrentSet().getSetKeys().size()) {
+            si.songkey = mainActivityInterface.getCurrentSet().getSetKeys().get(i);
+        }
+
+        // Decide on the icon to use for the set item
+        if (si.songfolder!=null) {
+            if (si.songfolder.equals("**Slides")) {
+                si.songicon = "Slides";
+                si.songfoldernice = slide_string;
+            } else if (si.songfolder.equals("**Notes")) {
+                si.songicon = "Notes";
+                si.songfoldernice = note_string;
+            } else if (si.songfolder.equals("**Scripture")) {
+                si.songicon = "Scripture";
+                si.songfoldernice = scripture_string;
+            } else if (si.songfolder.equals("**Images")) {
+                si.songicon = "Images";
+                si.songfoldernice = image_string;
+            } else if (si.songfolder.equals("**Variations")) {
+                si.songicon = "Variations";
+                si.songfoldernice = variation_string;
+            } else if (si.songtitle.toLowerCase(Locale.ROOT).contains(".pdf")) {
+                si.songicon = ".pdf";
+                si.songfoldernice = pdf_string;
+            } else {
+                si.songicon = "Songs";
+            }
         } else {
-            setList = new ArrayList<>();
+            si.songicon = "Songs";
         }
-
-        for (int x = 0; x < setItemInfos.size(); x++) {
-            setList.add(x, setItemInfos.get(x));
-            notifyItemInserted(x);
-        }
+        return si;
     }
+
 
     @Override
     public int getItemCount() {
@@ -120,6 +168,7 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
             setColor(setitemViewHolder, offColor);
         }
 
+        Log.d(TAG,"setting item: "+si.songitem+": "+si.songfilename);
         setitemViewHolder.vItem.setTextSize(titleSize);
         setitemViewHolder.vItem.setText(si.songitem);
         String newfoldername = si.songfoldernice;
@@ -156,30 +205,33 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
                 mainActivityInterface.getCurrentSet().getSetItems()!=null &&
                 mainActivityInterface.getCurrentSet().getSetItems().size()>fromPosition) {
             dragPosition = toPosition;
-            String thisFolder = setList.get(fromPosition).songfolder;
-            String thisFilename = setList.get(fromPosition).songfilename;
-            String thisKey = setList.get(fromPosition).songkey;
-            String thisSetItem = mainActivityInterface.getCurrentSet().getItem(fromPosition);
 
-            // Remove from this position
-            mainActivityInterface.getCurrentSet().removeFromCurrentSet(fromPosition, null);
-
-            // Add to the new position
-            mainActivityInterface.getCurrentSet().addToCurrentSet(toPosition, thisSetItem, thisFolder, thisFilename, thisKey);
+            // Swap positions in the current set
+            mainActivityInterface.getCurrentSet().swapPositions(fromPosition,toPosition);
 
             // Update the set string and save it
             mainActivityInterface.getCurrentSet().setSetCurrent(mainActivityInterface.getSetActions().getSetAsPreferenceString());
 
-            setList.get(fromPosition).songitem = (toPosition + 1) + ".";
-            setList.get(toPosition).songitem = (fromPosition + 1) + ".";
-            SetItemInfo thisItem = setList.get(fromPosition);
-            setList.remove(fromPosition);
-            setList.add(toPosition, thisItem);
+            Log.d(TAG,"try to move from:"+fromPosition+" to:"+toPosition +"  (setList.size():"+setList.size()+"  currentSet.size():"+mainActivityInterface.getCurrentSet().getSetItems().size()+")");
 
+            SetItemInfo fromSong = setList.get(fromPosition);
+            SetItemInfo toSong = setList.get(toPosition);
+
+            // Update the numbers
+            fromSong.songitem = (toPosition + 1) + ".";
+            toSong.songitem = (fromPosition + 1) + ".";
+
+            // Now put back
+            setList.set(fromPosition,toSong);
+            setList.set(toPosition,fromSong);
+
+            // Switch the highlighted array values
             boolean from_highlighted = highlightedArray.get(fromPosition, false);
             boolean to_highlighted = highlightedArray.get(toPosition, false);
             highlightedArray.put(fromPosition, to_highlighted);
             highlightedArray.put(toPosition, from_highlighted);
+
+            // Notify the changes
             notifyItemChanged(fromPosition);
             notifyItemChanged(toPosition);
             notifyItemMoved(fromPosition, toPosition);
@@ -190,17 +242,22 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
             mainActivityInterface.updateSetTitle();
             updateSetPrevNext();
         }
+
+        //showSetList();
     }
 
     @Override
     public void onItemSwiped(int fromPosition) {
         // Check the setList matches the current set!
+        Log.d(TAG,"swipe called:"+fromPosition);
         try {
             // Remove the item from the current set
             mainActivityInterface.getCurrentSet().removeFromCurrentSet(fromPosition, null);
 
             Song songRemoved = mainActivityInterface.getSQLiteHelper().getSpecificSong(
                     setList.get(fromPosition).songfolder, setList.get(fromPosition).songfilename);
+
+            Log.d(TAG,"removed:"+fromPosition+"  - "+songRemoved.getFolder()+"/"+songRemoved.getFilename());
 
             // Update the set string and save it
             mainActivityInterface.getCurrentSet().setSetCurrent(mainActivityInterface.getSetActions().getSetAsPreferenceString());
@@ -271,8 +328,11 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
     }
 
     public void itemRemoved(int position) {
+        Log.d(TAG,"setListSize before:"+setList.size());
         setList.remove(position);
+        Log.d(TAG,"setListSize after:"+setList.size());
         notifyItemRemoved(position);
+        Log.d(TAG,"itemRemoved called");
         int currentSetPosition = mainActivityInterface.getCurrentSet().getIndexSongInSet();
         // If item is removed before the current item, we need to adjust that down too
         if (position<currentSetPosition && position>-1) {
@@ -285,21 +345,51 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
             mainActivityInterface.getCurrentSet().setIndexSongInSet(-1);
         }
 
-            // Go through the setList from this position and sort the numbers
+        Log.d(TAG,"position:"+position);
+
+        // Go through the setList from this position and sort the numbers
         for (int x = position; x < setList.size(); x++) {
-            setList.get(x).songitem = (x + 1) + ".";
+            setList.get(x).songitem = (x+1) + ".";
+            Log.d(TAG,"Updated to: "+setList.get(x).songitem+" "+setList.get(x).songfilename);
             notifyItemChanged(x);
         }
         // Update the inline set too
         mainActivityInterface.updateInlineSetRemoved(position);
     }
 
-    public void itemAdded(SetItemInfo setItemInfo) {
-        setList.add(setItemInfo);
+    public void addNewItem(int currentSetPosition) {
+        setList.add(makeSetItem(currentSetPosition));
         notifyItemInserted(setList.size()-1);
 
         // Update the inline set too
-        mainActivityInterface.updateInlineSetAdded(setItemInfo);
+        mainActivityInterface.updateInlineSetAdded(setList.get(currentSetPosition));
+        showSetList();
+    }
+
+    public void updateItem(int position) {
+        if (position>=0 && setList!=null && setList.size()>position) {
+            try {
+                String folder = mainActivityInterface.getCurrentSet().getFolder(position);
+                String filename = mainActivityInterface.getCurrentSet().getFilename(position);
+                String title = mainActivityInterface.getCurrentSet().getTitle(position);
+                String key = mainActivityInterface.getCurrentSet().getKey(position);
+                setList.get(position).songfolder = folder.replace("**", "../");
+                setList.get(position).songfoldernice = folder;
+                setList.get(position).songfilename = filename;
+                setList.get(position).songtitle = title;
+                setList.get(position).songkey = key;
+
+                // Check for icon
+                setList.get(position).songicon = mainActivityInterface.getSetActions().
+                        getIconIdentifier(folder, filename);
+
+                mainActivityInterface.getCurrentSet().updateSetTitleView();
+                updateHighlightedItem(position);
+                notifyItemChanged(position);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public int getSelectedPosition() {
@@ -315,5 +405,28 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
         highlightedArray.put(position,false);
         notifyItemChanged(position,"highlightItem");
         currentPosition = position;
+    }
+
+    private void showSetList() {
+        for (SetItemInfo setItemInfo:setList) {
+            Log.d(TAG,"setItemInfo:  "+setItemInfo.songitem+": "+setItemInfo.songfilename);
+        }
+    }
+
+    public void updateKeys() {
+        for (int position:mainActivityInterface.getSetActions().getMissingKeyPositions()) {
+            try {
+                setList.get(position).songkey = mainActivityInterface.getCurrentSet().getKey(position);
+                notifyItemChanged(position);
+            } catch (Exception e) {
+                    e.printStackTrace();
+            }
+        }
+        mainActivityInterface.getSetActions().nullMissingKeyPositions();
+    }
+
+    public void resetSetList() {
+        setList = new ArrayList<>();
+        notifyDataSetChanged();
     }
 }

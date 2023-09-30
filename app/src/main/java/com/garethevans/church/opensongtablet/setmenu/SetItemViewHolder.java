@@ -54,7 +54,7 @@ public class SetItemViewHolder extends RecyclerView.ViewHolder implements
     @Override
     public boolean onSingleTapUp(MotionEvent e) {
         setItemTouchInterface.onItemClicked(mainActivityInterface,getAbsoluteAdapterPosition());
-        return false;
+        return true;
     }
 
     @Override

@@ -549,6 +549,8 @@ public class SetManageFragment extends Fragment {
     }
 
     private void loadSet() {
+        // Clear the setListAdapter
+        mainActivityInterface.getSetListAdapter().resetSetList();
         // Show the progressBar
         myView.progressBar.setVisibility(View.VISIBLE);
         // Initialise the current set

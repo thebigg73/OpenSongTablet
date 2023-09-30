@@ -234,14 +234,37 @@ public class CurrentSet {
         return setKeys;
     }
 
+    public void swapPositions(int fromPosition, int toPosition) {
+        // Get the values
+        String from_item = setItems.get(fromPosition);
+        String from_filename = setFilenames.get(fromPosition);
+        String from_folder = setFolders.get(fromPosition);
+        String from_key = setKeys.get(fromPosition);
+        String to_item = setItems.get(toPosition);
+        String to_filename = setFilenames.get(toPosition);
+        String to_folder = setFolders.get(toPosition);
+        String to_key = setKeys.get(toPosition);
+
+        // Update the values to their new locations
+        setItems.set(fromPosition,to_item);
+        setItems.set(toPosition,from_item);
+        setFilenames.set(fromPosition,to_filename);
+        setFilenames.set(toPosition,from_filename);
+        setFolders.set(fromPosition,to_folder);
+        setFolders.set(toPosition,from_folder);
+        setKeys.set(fromPosition,to_key);
+        setKeys.set(toPosition,from_key);
+    }
     public void addToCurrentSetString(String item) {
         setCurrent = setCurrent + item;
     }
     public void addToCurrentSet(int position, String item, String folder, String filename, String key) {
-        setItems.add(position,item);
-        setFolders.add(position,folder);
-        setFilenames.add(position,filename);
-        setKeys.add(position,key);
+        if (setItems.size()<position) {
+            setItems.add(position, item);
+            setFolders.add(position, folder);
+            setFilenames.add(position, filename);
+            setKeys.add(position, key);
+        }
     }
     public void removeFromCurrentSet(int pos, String item) {
         if (pos==-1) {
@@ -322,4 +345,5 @@ public class CurrentSet {
             }
         }
     }
+
 }
