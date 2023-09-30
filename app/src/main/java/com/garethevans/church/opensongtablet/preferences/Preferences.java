@@ -360,6 +360,8 @@ public class Preferences extends Activity {
     // inlineSetPresenter               boolean     Should we show the inline setlist for Presenter mode (def:true)
     // inlineSetWidth                   float       The width (as a percentage of screen width) of the inline setlist (def:0.3f)
     // inlineSetWidthPresenter          float       The width (as a percentage of screen width) of the inline setlist in Presenter Mode (def:0.3f)
+    // inlineSetTextSize                float       The text size for the inline set (def:14f)
+    // inlineSetTextSizePresenter       float       The text size for the inline set for Presenter mode (def:14f)
     // intentAlreadyDealtWith           boolean     A note of if we have dealt with the intent to avoid multiple calls.  Reset to false on destroy (def: false)
     // language                         String      The locale set in the menu (def:en)
     // largePopups                      boolean     Should the drop down exposed popups be big (def:true)

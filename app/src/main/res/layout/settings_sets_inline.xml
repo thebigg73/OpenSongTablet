@@ -37,6 +37,16 @@
                 android:value="30"
                 app:stepSize="5" />
 
+                <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+                    android:id="@+id/textSizeSlider"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/text_size"
+                    android:valueFrom="8"
+                    android:valueTo="24"
+                    android:value="14"
+                    app:stepSize="1" />
+
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/disableLeftHotZone"
                     android:layout_width="match_parent"
@@ -73,6 +83,16 @@
                     android:valueTo="95"
                     android:value="30"
                     app:stepSize="5" />
+                <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+                    android:id="@+id/textSizeSliderPresenter"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/text_size"
+                    android:valueFrom="8"
+                    android:valueTo="24"
+                    android:value="14"
+                    app:stepSize="1" />
+
                 <TableRow style="@style/DividerLine"/>
             </LinearLayout>
 

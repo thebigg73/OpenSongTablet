@@ -421,7 +421,12 @@ public class InlineSetList extends RecyclerView {
     private void adjustTextSize() {
         // Base the text size on the width of the inline set
         // Minimum size is 12, Maximum is 20
-        textSize = mainActivityInterface.getPreferences().getMyPreferenceFloat("songMenuAlphaIndexSize",14f) - 2;
+        if (mainActivityInterface.getMode().equals(mode_presenter_string)) {
+            textSize = mainActivityInterface.getPreferences().getMyPreferenceFloat("inlineSetTextSizePresenter",12f);
+        } else {
+            textSize = mainActivityInterface.getPreferences().getMyPreferenceFloat("inlineSetTextSize",12f);
+        }
+    //    textSize = mainActivityInterface.getPreferences().getMyPreferenceFloat("songMenuAlphaIndexSize",14f) - 2;
     }
 
     public void setUseTitle(boolean useTitle) {
