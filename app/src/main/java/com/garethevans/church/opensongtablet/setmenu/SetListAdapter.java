@@ -212,7 +212,7 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
             // Update the set string and save it
             mainActivityInterface.getCurrentSet().setSetCurrent(mainActivityInterface.getSetActions().getSetAsPreferenceString());
 
-            Log.d(TAG,"try to move from:"+fromPosition+" to:"+toPosition +"  (setList.size():"+setList.size()+"  currentSet.size():"+mainActivityInterface.getCurrentSet().getSetItems().size()+")");
+            //Log.d(TAG,"try to move from:"+fromPosition+" to:"+toPosition +"  (setList.size():"+setList.size()+"  currentSet.size():"+mainActivityInterface.getCurrentSet().getSetItems().size()+")");
 
             SetItemInfo fromSong = setList.get(fromPosition);
             SetItemInfo toSong = setList.get(toPosition);
@@ -248,8 +248,10 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
 
     @Override
     public void onItemSwiped(int fromPosition) {
+
         // Check the setList matches the current set!
-        Log.d(TAG,"swipe called:"+fromPosition);
+        //Log.d(TAG,"swipe called:"+fromPosition);
+        Log.d(TAG,"setList.size():"+setList.size()+"  currentSet.size():"+mainActivityInterface.getCurrentSet().getSetItems().size());
         try {
             // Remove the item from the current set
             mainActivityInterface.getCurrentSet().removeFromCurrentSet(fromPosition, null);
@@ -257,7 +259,7 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
             Song songRemoved = mainActivityInterface.getSQLiteHelper().getSpecificSong(
                     setList.get(fromPosition).songfolder, setList.get(fromPosition).songfilename);
 
-            Log.d(TAG,"removed:"+fromPosition+"  - "+songRemoved.getFolder()+"/"+songRemoved.getFilename());
+            //Log.d(TAG,"removed:"+fromPosition+"  - "+songRemoved.getFolder()+"/"+songRemoved.getFilename());
 
             // Update the set string and save it
             mainActivityInterface.getCurrentSet().setSetCurrent(mainActivityInterface.getSetActions().getSetAsPreferenceString());
@@ -328,11 +330,11 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
     }
 
     public void itemRemoved(int position) {
-        Log.d(TAG,"setListSize before:"+setList.size());
+        //Log.d(TAG,"setListSize before:"+setList.size());
         setList.remove(position);
-        Log.d(TAG,"setListSize after:"+setList.size());
+        //Log.d(TAG,"setListSize after:"+setList.size());
         notifyItemRemoved(position);
-        Log.d(TAG,"itemRemoved called");
+        //Log.d(TAG,"itemRemoved called");
         int currentSetPosition = mainActivityInterface.getCurrentSet().getIndexSongInSet();
         // If item is removed before the current item, we need to adjust that down too
         if (position<currentSetPosition && position>-1) {
@@ -345,12 +347,12 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
             mainActivityInterface.getCurrentSet().setIndexSongInSet(-1);
         }
 
-        Log.d(TAG,"position:"+position);
+        //Log.d(TAG,"position:"+position);
 
         // Go through the setList from this position and sort the numbers
         for (int x = position; x < setList.size(); x++) {
             setList.get(x).songitem = (x+1) + ".";
-            Log.d(TAG,"Updated to: "+setList.get(x).songitem+" "+setList.get(x).songfilename);
+            //Log.d(TAG,"Updated to: "+setList.get(x).songitem+" "+setList.get(x).songfilename);
             notifyItemChanged(x);
         }
         // Update the inline set too
@@ -363,7 +365,7 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
 
         // Update the inline set too
         mainActivityInterface.updateInlineSetAdded(setList.get(currentSetPosition));
-        showSetList();
+        //showSetList();
     }
 
     public void updateItem(int position) {

@@ -272,7 +272,7 @@ public class CurrentSet {
             pos = setItems.indexOf(item);
         }
 
-        if (pos!=-1) {
+        if (pos!=-1 && setItems.size()>pos) {
             setItems.remove(pos);
             setFilenames.remove(pos);
             setFolders.remove(pos);

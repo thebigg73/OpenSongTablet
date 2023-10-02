@@ -73,7 +73,7 @@ public class SetItemViewHolder extends RecyclerView.ViewHolder implements
 
     @Override
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-        return false;
+        return true;
     }
 
     @Override

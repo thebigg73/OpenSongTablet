@@ -9,7 +9,8 @@
         android:orientation="vertical"
         android:layout_above="@+id/setItemEditLayout"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="16dp">
 
         <com.garethevans.church.opensongtablet.customviews.DialogHeader
             android:id="@+id/dialogHeading"
@@ -72,7 +73,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
-            android:layout_gravity="center_vertical">
+            android:layout_gravity="center_vertical"
+            android:layout_marginBottom="16dp">
 
             <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
                 android:id="@+id/editFilename"

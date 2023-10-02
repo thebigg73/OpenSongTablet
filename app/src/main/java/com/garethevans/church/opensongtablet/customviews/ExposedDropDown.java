@@ -218,6 +218,10 @@ public class ExposedDropDown extends TextInputLayout {
                     int maxHeight = mainActivityInterface.getDisplayMetrics()[1];
                     int y = location[1];
                     int heightLeft = maxHeight - y;
+                    // Check we have a minimum height too
+                    if (heightLeft<getContext().getResources().getDimension(R.dimen.exposed_dropdown_height)) {
+                        heightLeft = (int) getContext().getResources().getDimension(R.dimen.exposed_dropdown_height);
+                    }
                     autoCompleteTextView.setDropDownHeight(heightLeft);
                     sizeSet = true;
                 } catch (Exception e) {
