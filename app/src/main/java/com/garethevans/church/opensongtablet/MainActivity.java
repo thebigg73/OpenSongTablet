@@ -1,6 +1,7 @@
 package com.garethevans.church.opensongtablet;
 
 import android.annotation.SuppressLint;
+import android.app.SearchManager;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -3333,7 +3334,16 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             try {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 if (location.startsWith("http")) {
-                    intent.setData(Uri.parse(location));
+                    if (!location.contains("https://www.google.com/search?q=")) {
+                        // Not searching, so just display the webpage in the default browser
+                        intent.setData(Uri.parse(location));
+                    } else {
+                        // Searching.  May not be using Google/Chrome, so use default search engine
+                        // Replace the location with the search phrase (strip out the google.com/search?q= bit)
+                        Log.d(TAG,"Opening default web search");
+                        intent = new Intent(Intent.ACTION_WEB_SEARCH);
+                        intent.putExtra(SearchManager.QUERY, location.replace("https://www.google.com/search?q=",""));
+                    }
                 } else {
                     String mimeType = null;
                     if (location.contains(".")) {

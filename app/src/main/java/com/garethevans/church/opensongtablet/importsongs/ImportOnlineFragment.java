@@ -55,12 +55,14 @@ public class ImportOnlineFragment extends Fragment {
     private final String TAG = "ImportOnline";
     private String clipboardText = "";
     private final String[] sources = new String[]{"UltimateGuitar", "Chordie", "SongSelect",
-            "WorshipTogether", "UkuTabs", "HolyChords", "La Boîte à chansons", "eChords", "Google"};
+            "WorshipTogether", "UkuTabs", "HolyChords", "La Boîte à chansons", "eChords", "Google",
+            "DuckDuckGo"};
     private final String[] address = new String[]{"https://www.ultimate-guitar.com/search.php?search_type=title&value=",
             "https://www.chordie.com/results.php?q=", "https://songselect.ccli.com/search/results?search=",
             "https://www.worshiptogether.com/search-results/#?cludoquery=", "https://ukutabs.com/?s=",
             "https://holychords.pro/search?name=", "https://www.boiteachansons.net/recherche/",
-            "https://www.e-chords.com/search-all/","https://www.google.com/search?q="};
+            "https://www.e-chords.com/search-all/","https://www.google.com/search?q=",
+            "https://duckduckgo.com/?va=n&t=hv&q="};
     private String webSearchFull, webAddressFinal, source, webString, userAgentDefault,
             import_basic_string="", online_string="", website_song_online_string="", unknown_string="",
             text_extract_check_string="", text_extract_website_string="", mainfoldername_string="",
@@ -80,6 +82,7 @@ public class ImportOnlineFragment extends Fragment {
     private String songSelectAutoDownload;
     private Uri downloadUri;
     private String downloadFilename;
+    private boolean useGoogle;
 
     @Override
     public void onResume() {
@@ -117,6 +120,7 @@ public class ImportOnlineFragment extends Fragment {
 
     private void prepareStrings() {
         if (getContext()!=null) {
+            useGoogle = mainActivityInterface.getPreferences().getMyPreferenceBoolean("useGoogle",true);
             import_basic_string = getString(R.string.import_basic);
             online_string = getString(R.string.online);
             website_song_online_string = getString(R.string.website_song_online);
@@ -173,7 +177,9 @@ public class ImportOnlineFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable editable) {
                 myView.googleInfo.setVisibility(
-                        myView.onlineSource.getText().toString().equals("Google") ? View.VISIBLE:View.GONE);
+                        myView.onlineSource.getText().toString().equals("Google") ||
+                                myView.onlineSource.getText().toString().equals("DuckDuckGo")
+                                ? View.VISIBLE:View.GONE);
                 mainActivityInterface.getCheckInternet().setSearchSite(myView.onlineSource.getText().toString());
             }
         });
@@ -368,6 +374,7 @@ public class ImportOnlineFragment extends Fragment {
                         webView.post(() -> webView.getSettings().setUserAgentString(newUA));
                         break;
                     case "Google":
+                    case "DuckDuckGo":
                         extra = " chords lyrics";
                         break;
                 }
@@ -534,7 +541,9 @@ public class ImportOnlineFragment extends Fragment {
                 }
                 break;
             case "Google":
-                if (!webView.getUrl().contains("google") && !webView.getUrl().contains("songselect")) {
+            case "DuckDuckGo":
+                if ((!webView.getUrl().contains("google") || (!webView.getUrl().contains("duckduckgo"))) &&
+                        !webView.getUrl().contains("songselect")) {
                     chordinator.setTitle(myView.searchPhrase.getText().toString());
                     chordinator.setArtist(unknown_string);
                     chordinator.processHTML(this,mainActivityInterface,webString);
@@ -571,6 +580,7 @@ public class ImportOnlineFragment extends Fragment {
         showDownloadProgress(true);
         switch (source) {
             case "Google":
+            case "DuckDuckGo":
                 if (chordinator.getTitle()!=null && !chordinator.getTitle().isEmpty()) {
                     newSong.setTitle(chordinator.getTitle());
                 } else {
