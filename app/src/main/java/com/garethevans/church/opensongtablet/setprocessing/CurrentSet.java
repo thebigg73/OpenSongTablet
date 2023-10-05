@@ -258,14 +258,16 @@ public class CurrentSet {
     public void addToCurrentSetString(String item) {
         setCurrent = setCurrent + item;
     }
-    public void addToCurrentSet(int position, String item, String folder, String filename, String key) {
-        if (setItems.size()<position) {
+
+    public void insertIntoCurrentSet(int position, String item, String folder, String filename, String key) {
+        if (setItems.size()>position) {
             setItems.add(position, item);
             setFolders.add(position, folder);
             setFilenames.add(position, filename);
             setKeys.add(position, key);
         }
     }
+
     public void removeFromCurrentSet(int pos, String item) {
         if (pos==-1) {
             // Don't know, so look for it

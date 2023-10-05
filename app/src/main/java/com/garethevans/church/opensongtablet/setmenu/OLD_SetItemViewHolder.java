@@ -1,3 +1,4 @@
+/*
 package com.garethevans.church.opensongtablet.setmenu;
 
 import android.view.GestureDetector;
@@ -65,7 +66,7 @@ public class SetItemViewHolder extends RecyclerView.ViewHolder implements
     @Override
     public void onLongPress(MotionEvent event) {
         try {
-            itemTouchHelper.startDrag(this);
+            //itemTouchHelper.startDrag(this);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -83,4 +84,4 @@ public class SetItemViewHolder extends RecyclerView.ViewHolder implements
         return true;
     }
 
-}
+}*/

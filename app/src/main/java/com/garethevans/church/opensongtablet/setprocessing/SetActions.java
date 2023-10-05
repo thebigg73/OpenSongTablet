@@ -2,8 +2,6 @@ package com.garethevans.church.opensongtablet.setprocessing;
 
 import android.content.Context;
 import android.net.Uri;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Base64;
 import android.util.Log;
 
@@ -111,45 +109,47 @@ public class SetActions {
             mainActivityInterface.getCurrentSet().initialiseTheSet();
         }
 
-        for (int x=0; x<mainActivityInterface.getCurrentSet().getSetItems().size(); x++) {
-            String setItem = mainActivityInterface.getCurrentSet().getItem(x);
-            String key, folder, item;
-            setItem = setItem.replace(itemStart,"");
-            setItem = setItem.replace(itemEnd,"");
-            // Check for embedded key
-            if (setItem.contains(keyStart) && setItem.contains(keyEnd)) {
-                // A key has been included (so auto transpose is allowed)
-                key = fixNull(setItem.substring(setItem.indexOf(keyStart) + 4, setItem.indexOf(keyEnd)));
-                setItem = setItem.replace(keyStart+key+keyEnd, "");
-            } else {
-                // No key was specified, so keep it empty (i.e. just use song default)
-                key = "";
+        if (mainActivityInterface.getCurrentSet().getSetItems()!=null) {
+            for (int x = 0; x < mainActivityInterface.getCurrentSet().getSetItems().size(); x++) {
+                String setItem = mainActivityInterface.getCurrentSet().getItem(x);
+                String key, folder, item;
+                setItem = setItem.replace(itemStart, "");
+                setItem = setItem.replace(itemEnd, "");
+                // Check for embedded key
+                if (setItem.contains(keyStart) && setItem.contains(keyEnd)) {
+                    // A key has been included (so auto transpose is allowed)
+                    key = fixNull(setItem.substring(setItem.indexOf(keyStart) + 4, setItem.indexOf(keyEnd)));
+                    setItem = setItem.replace(keyStart + key + keyEnd, "");
+                } else {
+                    // No key was specified, so keep it empty (i.e. just use song default)
+                    key = "";
+                }
+
+                // Get the folder
+                if (setItem.startsWith("/")) {
+                    setItem = setItem.replaceFirst("/", "");
+                }
+                if (setItem.contains("/")) {
+                    folder = setItem.substring(0, setItem.lastIndexOf("/"));
+                    setItem = setItem.substring(setItem.lastIndexOf("/"));
+                    setItem = setItem.replace("/", "");
+                } else {
+                    folder = c.getString(R.string.mainfoldername);
+                }
+
+                // Now we have the folder and filename, we can update default keys from the database
+                // We only do this is the key isn't empty and it isn't a custom item (e.g. notes, slides)
+                // Of course if the indexing isn't complete it will still be null - don't check the file yet
+                key = fixNull(getKeyFromDatabaseOrFile(key, folder, setItem));
+
+                // Build the set item.  Useful for shuffling and rebuilding and searching
+
+                item = itemStart + folder + "/" + setItem + keyStart + key + keyEnd + itemEnd;
+                mainActivityInterface.getCurrentSet().setItem(x, item);
+
+                // Put the values into the set arrays (the filename is what is left)
+                mainActivityInterface.getCurrentSet().addSetValues(folder, setItem, key);
             }
-
-            // Get the folder
-            if (setItem.startsWith("/")) {
-                setItem = setItem.replaceFirst("/", "");
-            }
-            if (setItem.contains("/")) {
-                folder = setItem.substring(0, setItem.lastIndexOf("/"));
-                setItem = setItem.substring(setItem.lastIndexOf("/"));
-                setItem = setItem.replace("/", "");
-            } else {
-                folder = c.getString(R.string.mainfoldername);
-            }
-
-            // Now we have the folder and filename, we can update default keys from the database
-            // We only do this is the key isn't empty and it isn't a custom item (e.g. notes, slides)
-            // Of course if the indexing isn't complete it will still be null - don't check the file yet
-            key = fixNull(getKeyFromDatabaseOrFile(key,folder,setItem));
-
-            // Build the set item.  Useful for shuffling and rebuilding and searching
-
-            item = itemStart + folder + "/" + setItem + keyStart + key + keyEnd + itemEnd;
-            mainActivityInterface.getCurrentSet().setItem(x,item);
-
-            // Put the values into the set arrays (the filename is what is left)
-            mainActivityInterface.getCurrentSet().addSetValues(folder, setItem, key);
         }
     }
     private String getKeyFromDatabaseOrFile(String key, String folder, String filename) {
@@ -372,10 +372,6 @@ public class SetActions {
         mainActivityInterface.getCurrentSet().setSetCurrentBeforeEdits(setString);
         mainActivityInterface.updateSetList();
         mainActivityInterface.updateSongList();
-        new Handler(Looper.getMainLooper()).post(() -> {
-            mainActivityInterface.getSetListAdapter().buildSetList();
-            Log.d(TAG,"currentSet.size():"+mainActivityInterface.getCurrentSet().getSetItems().size()+"  adapter.size():"+mainActivityInterface.getSetListAdapter().getItemCount());
-        });
 
         // TODO Check references for set name that gets saved.  Especially if we have merged sets.
     }

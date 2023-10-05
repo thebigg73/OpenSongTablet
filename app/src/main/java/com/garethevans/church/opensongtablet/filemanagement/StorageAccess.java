@@ -1174,7 +1174,7 @@ public class StorageAccess {
         BufferedOutputStream bufferedOutputStream = null;
         try {
             bufferedOutputStream = new BufferedOutputStream(outputStream);
-            if (outputStream!=null) {
+            if (outputStream!=null && s!=null) {
                 bufferedOutputStream.write(s.getBytes(StandardCharsets.UTF_8));
                 bufferedOutputStream.flush();
                 bufferedOutputStream.close();

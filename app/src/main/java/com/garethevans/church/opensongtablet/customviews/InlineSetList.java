@@ -323,6 +323,11 @@ public class InlineSetList extends RecyclerView {
             }
         }
 
+        public void updateInlineSetChanged(int position, InlineSetItemInfo inlineSetItemInfo) {
+            setList.set(position,inlineSetItemInfo);
+            notifyItemChanged(position);
+        }
+
         public void updateInlineSetAdded(InlineSetItemInfo inlineSetItemInfo) {
             setList.add(inlineSetItemInfo);
             notifyItemInserted(setList.size() - 1);
@@ -330,6 +335,11 @@ public class InlineSetList extends RecyclerView {
                 // This is the first item, we need to check visibility
                 checkVisibility();
             }
+        }
+
+        public void updateInlineSetInserted(int position, InlineSetItemInfo inlineSetItemInfo) {
+            setList.add(position,inlineSetItemInfo);
+            notifyItemInserted(position);
         }
 
         public void initialiseInlineSetItem(int position) {
@@ -395,10 +405,32 @@ public class InlineSetList extends RecyclerView {
         InlineSetItemInfo info = new InlineSetItemInfo();
         info.item = setList.size() + 1;
         info.songtitle = setItemInfo.songtitle;
+        info.songfilename = setItemInfo.songfilename;
         info.songfolder = setItemInfo.songfolder;
         info.songkey = setItemInfo.songkey;
         inlineSetListAdapter.updateInlineSetAdded(info);
     }
+
+    public void updateInlineSetChanged(int position, SetItemInfo setItemInfo) {
+        InlineSetItemInfo info = new InlineSetItemInfo();
+        info.item = position + 1;
+        info.songtitle = setItemInfo.songtitle;
+        info.songfilename = setItemInfo.songfilename;
+        info.songfolder = setItemInfo.songfolder;
+        info.songkey = setItemInfo.songkey;
+        inlineSetListAdapter.updateInlineSetChanged(position,info);
+    }
+
+    public void updateInlineSetInserted(int position, SetItemInfo setItemInfo) {
+        InlineSetItemInfo info = new InlineSetItemInfo();
+        info.item = position + 1;
+        info.songtitle = setItemInfo.songtitle;
+        info.songfilename = setItemInfo.songfilename;
+        info.songfolder = setItemInfo.songfolder;
+        info.songkey = setItemInfo.songkey;
+        inlineSetListAdapter.updateInlineSetInserted(position,info);
+    }
+
 
     public void initialiseInlineSetItem(int position) {
         inlineSetListAdapter.initialiseInlineSetItem(position);

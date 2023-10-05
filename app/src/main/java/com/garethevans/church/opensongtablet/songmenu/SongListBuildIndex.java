@@ -166,6 +166,7 @@ public class SongListBuildIndex {
             cursor.close();
             indexRequired = false;
             indexComplete = true;
+            Log.d(TAG,"About to check missing keys");
             mainActivityInterface.getSetActions().checkMissingKeys();
             mainActivityInterface.getPreferences().setMyPreferenceBoolean("indexSkipAllowed",true);
             returnString.append(c.getString(R.string.search_index_end)).append("\n");
@@ -184,8 +185,10 @@ public class SongListBuildIndex {
         }
         currentlyIndexing = false;
         // Any songs with rogue endings would've been logged, so fix if needed
+        Log.d(TAG,"About to fix songs");
         mainActivityInterface.getLoadSong().fixSongs();
         // Update the set lists which might be using song titles (that need the index)
+        Log.d(TAG,"About to update set list");
         mainActivityInterface.updateSetList();
         return returnString.toString();
     }

@@ -1,6 +1,7 @@
 package com.garethevans.church.opensongtablet.setmenu;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -21,6 +23,7 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.MenuSetsBinding;
 import com.garethevans.church.opensongtablet.filemanagement.AreYouSureBottomSheet;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -32,8 +35,11 @@ public class SetMenuFragment extends Fragment {
     private MenuSetsBinding myView;
     private LinearLayoutManager llm;
     private String deeplink_sets_manage_string="", save_changes_string="", overwrite_string="",
-            set_manage_click_string="", set_help_string="", set_manage_swipe_string="";
+            set_manage_click_string="", set_help_string="", set_manage_swipe_string="",
+            set_item_removed_string="", undo_string="";
     private MainActivityInterface mainActivityInterface;
+    //private SetListAdapter setListAdapter;
+    private SetAdapter setAdapter;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -71,7 +77,8 @@ public class SetMenuFragment extends Fragment {
             mainActivityInterface.getSetActions().buildSetArraysFromItems();
             handler.post(() -> {
                 setupAdapter();
-                buildList();
+                prepareCurrentSet();
+                //buildList();
                 setListeners();
                 mainActivityInterface.getCurrentSet().updateSetTitleView();
                 scrollToItem();
@@ -89,6 +96,8 @@ public class SetMenuFragment extends Fragment {
             set_manage_click_string = getString(R.string.set_manage_click);
             set_help_string = getString(R.string.set_help);
             set_manage_swipe_string = getString(R.string.set_manage_swipe);
+            set_item_removed_string = getString(R.string.set_item_removed);
+            undo_string = getString(R.string.undo);
         }
     }
     @Override
@@ -99,18 +108,58 @@ public class SetMenuFragment extends Fragment {
 
     private void setupAdapter() {
         if (getContext()!=null) {
-            mainActivityInterface.newSetListAdapter();
-            ItemTouchHelper.Callback callback = new SetListItemTouchHelper(getContext());
-            ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
-            mainActivityInterface.getSetListAdapter().setTouchHelper(itemTouchHelper);
-            llm = new LinearLayoutManager(getContext());
-            llm.setOrientation(RecyclerView.VERTICAL);
+            setAdapter = new SetAdapter(getContext(), myView.myRecyclerView);
+            //ItemTouchHelper.Callback callback = new SetListItemCallback(getContext(), setAdapter);
+            //ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+            //setAdapter.setTouchHelper(touchHelper);
             myView.myRecyclerView.post(() -> {
+                llm = new LinearLayoutManager(getContext());
+                llm.setOrientation(RecyclerView.VERTICAL);
                 myView.myRecyclerView.setLayoutManager(llm);
-                myView.myRecyclerView.setAdapter(mainActivityInterface.getSetListAdapter());
-                itemTouchHelper.attachToRecyclerView(myView.myRecyclerView);
+                enableSwipeToDeleteAndUndo();
+                //touchHelper.attachToRecyclerView(myView.myRecyclerView);
+                myView.myRecyclerView.setAdapter(setAdapter);
+                myView.myRecyclerView.setItemAnimator(null);
             });
+
         }
+    }
+
+
+    private void enableSwipeToDeleteAndUndo() {
+        SetListItemCallback setListItemCallback = new SetListItemCallback(getContext(),setAdapter) {
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+
+                final int position = viewHolder.getAbsoluteAdapterPosition();
+                final SetItemInfo item = setAdapter.setList.get(position);
+
+                setAdapter.removeItem(position);
+
+                Snackbar snackbar = Snackbar.make(myView.coordinatorLayout, set_item_removed_string, Snackbar.LENGTH_LONG);
+                snackbar.setAction(undo_string, view -> {
+                    setAdapter.restoreItem(item, position);
+                    myView.myRecyclerView.scrollToPosition(position);
+                });
+
+                if (getContext()!=null) {
+                    snackbar.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(),R.color.colorSecondary)));
+                    snackbar.setActionTextColor(Color.WHITE);
+                    snackbar.setTextColor(Color.WHITE);
+                }
+                //snackbar.setBackgroundTint(ContextCompat.getColor(getContext(),R.color.colorSecondary));
+                snackbar.show();
+
+            }
+        };
+
+        //ItemTouchHelper.Callback callback = new SetListItemCallback(getContext(), setAdapter);
+        //ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+        //touchHelper.attachToRecyclerView(myView.myRecyclerView);
+
+        ItemTouchHelper itemTouchhelper = new ItemTouchHelper(setListItemCallback);
+        setAdapter.setTouchHelper(itemTouchhelper);
+        itemTouchhelper.attachToRecyclerView(myView.myRecyclerView);
     }
 
     private void setListeners() {
@@ -148,16 +197,17 @@ public class SetMenuFragment extends Fragment {
     }
 
     public void scrollToItem() {
-        if (mainActivityInterface.getCurrentSet().getIndexSongInSet()>-1 &&
+        /*if (mainActivityInterface.getCurrentSet().getIndexSongInSet()>-1 &&
                 mainActivityInterface.getCurrentSet().getIndexSongInSet() < mainActivityInterface.getCurrentSet().getSetItems().size()) {
             myView.myRecyclerView.post(() -> {
                 if (llm!=null) {
                     llm.scrollToPositionWithOffset(mainActivityInterface.getCurrentSet().getIndexSongInSet(), 0);
                 }
             });
-        }
+        }*/
     }
 
+    // Called after rebuilding the set list
     public void updateSet() {
         prepareCurrentSet();
     }
@@ -165,28 +215,31 @@ public class SetMenuFragment extends Fragment {
     public void updateKeys() {
         // If the key has changed on some items, update them
         if (mainActivityInterface.getSetActions().getMissingKeyPositions()!=null &&
-                mainActivityInterface.getSetListAdapter()!=null &&
-                mainActivityInterface.getSetListAdapter().getSetList()!=null &&
-                mainActivityInterface.getSetListAdapter().getSetList().size()>0) {
-            mainActivityInterface.getSetListAdapter().updateKeys();
+                setAdapter!=null &&
+                setAdapter.getSetList()!=null &&
+                setAdapter.getSetList().size()>0) {
+            setAdapter.updateKeys();
         }
     }
 
     public void prepareCurrentSet() {
         // We have received a call to redraw the set list either on first load or after song indexing
-        myView.myRecyclerView.post(() -> {
-            // Clear the original setlist by passing in a new blank arraylist
-            // This also deals with notifying changes
-            mainActivityInterface.getSetListAdapter().buildSetList();
-            mainActivityInterface.getCurrentSet().updateSetTitleView();
-        });
+        myView.myRecyclerView.post(() -> myView.myRecyclerView.setVisibility(View.INVISIBLE));
+        myView.progressBar.post(() -> myView.progressBar.setVisibility(View.VISIBLE));
+
+        setAdapter.buildSetList();
+        mainActivityInterface.getCurrentSet().updateSetTitleView();
+
+        myView.myRecyclerView.post(() -> myView.myRecyclerView.setVisibility(View.VISIBLE));
+        myView.progressBar.post(() -> myView.progressBar.setVisibility(View.INVISIBLE));
+
     }
 
     private void buildList() {
-        Log.d(TAG,"buildList() called");
+        /*Log.d(TAG,"buildList() called");
         try {
-            if (mainActivityInterface.getSetListAdapter()!=null) {
-                mainActivityInterface.getSetListAdapter().buildSetList();
+            if (setListAdapter!=null) {
+                setListAdapter.buildSetList();
                 myView.myRecyclerView.post(() -> {
                     try {
                         myView.myRecyclerView.setVisibility(View.VISIBLE);
@@ -205,25 +258,25 @@ public class SetMenuFragment extends Fragment {
             });
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     public void updateItem(int position) {
         Log.d(TAG,"updateItem called: "+position);
-        if (mainActivityInterface.getSetListAdapter()!=null) {
-            mainActivityInterface.getSetListAdapter().updateItem(position);
+        if (setAdapter!=null) {
+            setAdapter.updateItem(position);
         }
     }
 
     public void clearOldHighlight(int position) {
-        if (mainActivityInterface.getSetListAdapter()!=null) {
-            mainActivityInterface.getSetListAdapter().clearOldHighlight(position);
+        if (setAdapter!=null) {
+            setAdapter.clearOldHighlight(position);
         }
     }
 
     public void addSetItem(int currentSetPosition) {
-        if (mainActivityInterface.getSetListAdapter()!=null) {
-            mainActivityInterface.getSetListAdapter().addNewItem(currentSetPosition);
+        if (setAdapter!=null) {
+            setAdapter.addNewItem(currentSetPosition);
         }
         mainActivityInterface.getCurrentSet().updateSetTitleView();
     }
@@ -243,24 +296,23 @@ public class SetMenuFragment extends Fragment {
 
     // Called from clicking on checkboxes in song menu (via MainActivity)
     public void removeSetItem(int currentSetPosition) {
-        if (mainActivityInterface.getSetListAdapter()!=null) {
-            mainActivityInterface.getSetListAdapter().itemRemoved(currentSetPosition);
+        if (setAdapter!=null) {
+            setAdapter.removeItem(currentSetPosition);
         }
-        mainActivityInterface.getCurrentSet().updateSetTitleView();
     }
 
     public void scrollMenu(int height) {
-        try {
+        /*try {
             myView.myRecyclerView.smoothScrollBy(0, height);
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
         //getFocus();
     }
 
     public void initialiseSetItem(int setPosition) {
         // Only do this if we actually needed to highlight an item
-        if (mainActivityInterface.getSetListAdapter()!=null && mainActivityInterface.getSetListAdapter().initialiseSetItem(setPosition)) {
+        if (setAdapter!=null && setAdapter.initialiseSetItem(setPosition)) {
             myView.myRecyclerView.post(() -> llm.scrollToPositionWithOffset(mainActivityInterface.getCurrentSet().getIndexSongInSet() , 0));
         }
     }

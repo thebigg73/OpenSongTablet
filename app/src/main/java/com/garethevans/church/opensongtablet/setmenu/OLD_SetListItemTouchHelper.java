@@ -1,6 +1,6 @@
+/*
 package com.garethevans.church.opensongtablet.setmenu;
 
-import android.content.Context;
 import android.content.res.ColorStateList;
 import android.os.Build;
 import android.util.Log;
@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.interfaces.SetItemTouchInterface;
 
 public class SetListItemTouchHelper extends ItemTouchHelper.Callback {
@@ -21,9 +20,8 @@ public class SetListItemTouchHelper extends ItemTouchHelper.Callback {
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "SetListItemTouchHelper";
 
-    public SetListItemTouchHelper(Context c) {
-        MainActivityInterface mainActivityInterface = (MainActivityInterface) c;
-        this.setItemTouchInterface = mainActivityInterface.getSetListAdapter();
+    public SetListItemTouchHelper(SetListAdapter setListAdapter) {
+        this.setItemTouchInterface = setListAdapter;
     }
 
     @Override
@@ -88,7 +86,7 @@ public class SetListItemTouchHelper extends ItemTouchHelper.Callback {
     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
         //Remove item
         int fromPosition = viewHolder.getAbsoluteAdapterPosition();
-        setItemTouchInterface.onItemSwiped(fromPosition);
+        //setItemTouchInterface.onItemSwiped(fromPosition);
     }
 
-}
+}*/

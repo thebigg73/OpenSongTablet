@@ -1242,4 +1242,6 @@
     <string name="youtube" translatable="false">YouTube</string>
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zoom_level">Zoom level</string>
+    <string name="set_item_removed">Item removed from set</string>
+    <string name="undo">UNDO</string>
 </resources>

@@ -180,6 +180,7 @@ public class LoadSong {
                     }
                 } else if (thisSong.getFiletype().equals("TXT")) {
                     // 5.  Run the text convert script
+                    Log.d(TAG,"thisSong.getLyrics():"+thisSong.getLyrics());
                     thisSong.setLyrics(mainActivityInterface.getConvertTextSong().convertText(thisSong.getLyrics()));
                     // Save the new song
                     String oldname = thisSong.getFilename();
@@ -187,6 +188,7 @@ public class LoadSong {
                     thisSong.setTitle(newname);
                     thisSong.setFilename(newname);
                     Uri olduri = uri;
+                    Log.d(TAG,"thisSong.getLyrics():"+thisSong.getLyrics());
                     uri = mainActivityInterface.getStorageAccess().getUriForItem(where,thisSong.getFolder(),newname);
                     mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(false,uri,null,where,thisSong.getFolder(),newname);
                     //String newSongContent = mainActivityInterface.getProcessSong().getXML(thisSong);
@@ -576,6 +578,7 @@ public class LoadSong {
                         String xml = mainActivityInterface.getProcessSong().getXML(thisSong);
                         success = mainActivityInterface.getStorageAccess().doStringWriteToFile(
                                 "Songs", thisSong.getFolder(), newname, xml);
+                        Log.d(TAG,"oldname:"+oldname+"  newname:"+newname+"  success:"+success);
                         if (success && !newname.equals(oldname)) {
                             // Remove the obsolete file
                             mainActivityInterface.getStorageAccess().deleteFile(oldUri);

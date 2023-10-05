@@ -451,6 +451,24 @@ public class PresenterFragment extends Fragment {
     public void updateInlineSetAdded(SetItemInfo setItemInfo) {
         myView.inlineSetList.updateInlineSetAdded(setItemInfo);
     }
+    public void updateInlineSetChanged(int position, SetItemInfo setItemInfo) {
+        if (myView!=null) {
+            try {
+                myView.inlineSetList.updateInlineSetChanged(position, setItemInfo);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    public void updateInlineSetInserted(int position, SetItemInfo setItemInfo) {
+        if (myView!=null) {
+            try {
+                myView.inlineSetList.updateInlineSetInserted(position, setItemInfo);
+            } catch (Exception e) {
+                Log.d(TAG, "Couldn't update inline set - might just not be shown currently");
+            }
+        }
+    }
     public void initialiseInlineSetItem(int position) {
         myView.inlineSetList.initialiseInlineSetItem(position);
     }

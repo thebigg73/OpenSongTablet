@@ -124,7 +124,6 @@ import com.garethevans.church.opensongtablet.screensetup.WindowFlags;
 import com.garethevans.church.opensongtablet.secondarydisplay.SecondaryDisplay;
 import com.garethevans.church.opensongtablet.secondarydisplay.SecondaryDisplaySettingsFragment;
 import com.garethevans.church.opensongtablet.setmenu.SetItemInfo;
-import com.garethevans.church.opensongtablet.setmenu.SetListAdapter;
 import com.garethevans.church.opensongtablet.setmenu.SetMenuFragment;
 import com.garethevans.church.opensongtablet.setprocessing.CurrentSet;
 import com.garethevans.church.opensongtablet.setprocessing.SetActions;
@@ -175,8 +174,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private ActivityBinding myView;
     private boolean bootUpCompleted = false;
     private boolean rebooted = false, alreadyBackPressed = false;
-
-    private SetListAdapter setListAdapter;
 
     // The helpers sorted alphabetically
     private ABCNotation abcNotation;
@@ -1912,16 +1909,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
 
     @Override
-    public SetListAdapter getSetListAdapter() {
-        return setListAdapter;
-    }
-
-    @Override
-    public void newSetListAdapter() {
-        setListAdapter = new SetListAdapter(this);
-    }
-
-    @Override
     public void refreshSetList() {
         if (setMenuFragment != null) {
             setMenuFragment.prepareCurrentSet();
@@ -2056,6 +2043,23 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             performanceFragment.updateInlineSetAdded(setItemInfo);
         } else if (presenterValid()) {
             presenterFragment.updateInlineSetAdded(setItemInfo);
+        }
+    }
+    @Override
+    public void updateInlineSetInserted(int position, SetItemInfo setItemInfo) {
+        if (performanceValid()) {
+            performanceFragment.updateInlineSetInserted(position, setItemInfo);
+        } else if (presenterValid()) {
+            presenterFragment.updateInlineSetInserted(position, setItemInfo);
+        }
+    }
+
+    @Override
+    public void updateInlineSetChanged(int position, SetItemInfo setItemInfo) {
+        if (performanceValid()) {
+            performanceFragment.updateInlineSetChanged(position, setItemInfo);
+        } else if (presenterValid()) {
+            presenterFragment.updateInlineSetChanged(position, setItemInfo);
         }
     }
 

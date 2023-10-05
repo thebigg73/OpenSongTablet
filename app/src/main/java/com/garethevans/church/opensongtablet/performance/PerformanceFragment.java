@@ -375,6 +375,24 @@ public class PerformanceFragment extends Fragment {
             }
         }
     }
+    public void updateInlineSetInserted(int position, SetItemInfo setItemInfo) {
+        if (myView!=null) {
+            try {
+                myView.inlineSetList.updateInlineSetInserted(position, setItemInfo);
+            } catch (Exception e) {
+                Log.d(TAG, "Couldn't update inline set - might just not be shown currently");
+            }
+        }
+    }
+    public void updateInlineSetChanged(int position, SetItemInfo setItemInfo) {
+        if (myView!=null) {
+            try {
+                myView.inlineSetList.updateInlineSetChanged(position, setItemInfo);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
     public void initialiseInlineSetItem(int position) {
         if (myView!=null) {
             try {
