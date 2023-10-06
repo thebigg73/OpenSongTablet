@@ -711,6 +711,7 @@
     <string name="set_inline">Inlyn stel</string>
     <string name="set_inline_info">Wys die stellys op die skerm langs die liedjievenster</string>
     <string name="set_item_info">U kan die vouer/lêernaam van die liedjie wat uit die stel gelaai is, verander, en u kan ook die sleutel vir die vertoon van die liedjie verander (dit voer \'n tydelike transponeer van die liedjie op u toestel uit indien nodig)</string>
+    <string name="set_item_removed">Item verwyder van stel</string>
     <string name="set_load_first">Maak die gelaaide stel by die eerste item oop</string>
     <string name="set_load_first_info">Maak altyd die eerste stelitem oop.  As dit afgeskakel is, sal die stel probeer om by die tans gelaaide liedjie oop te maak as dit in die stel is.</string>
     <string name="set_load_info">Laai \'n voorheen gestoorde stel</string>
@@ -868,6 +869,7 @@
     <string name="tuner">Tuner</string>
     <string name="tuner_info">Help om jou instrument te stem</string>
     <string name="ukulele">Ukulele</string>
+    <string name="undo">ONTDOEN</string>
     <string name="unknown">Onbekend</string>
     <string name="use_default">Gebruik verstek</string>
     <string name="used_by_permision">Gebruik met toestemming</string>

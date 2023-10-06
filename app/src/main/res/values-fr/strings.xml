@@ -711,6 +711,7 @@
     <string name="set_inline">Ensemble en ligne</string>
     <string name="set_inline_info">Afficher la setlist sur l\'écran à côté de la fenêtre de la chanson</string>
     <string name="set_item_info">Vous pouvez changer le dossier / nom de fichier de la chanson chargée à partir de l’ensemble et vous pouvez également changer la touche d’affichage de la chanson (cela effectue une transposition temporaire de la chanson sur votre appareil si nécessaire)</string>
+    <string name="set_item_removed">Élément supprimé de l’ensemble</string>
     <string name="set_load_first">Ouvrez le jeu chargé au premier élément</string>
     <string name="set_load_first_info">Ouvrez toujours le premier élément défini.  S’il est désactivé, l’ensemble tentera de s’ouvrir sur la chanson actuellement chargée si elle se trouve dans l’ensemble.</string>
     <string name="set_load_info">Charger un ensemble précédemment enregistré</string>
@@ -868,6 +869,7 @@
     <string name="tuner">Tuner</string>
     <string name="tuner_info">Aide pour accorder votre instrument</string>
     <string name="ukulele">Ukulele</string>
+    <string name="undo">DÉFAIRE</string>
     <string name="unknown">Inconnu</string>
     <string name="use_default">"Par défaut"</string>
     <string name="used_by_permision">Utilisé avec permission</string>

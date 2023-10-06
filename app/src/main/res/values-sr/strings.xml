@@ -711,6 +711,7 @@
     <string name="set_inline">Inline set</string>
     <string name="set_inline_info">Prikažite set listu na ekranu pored prozora sa pesmom</string>
     <string name="set_item_info">Možete da promenite ime fascikle/datoteke pesme učitane iz skupa, a možete i da promenite ključ za prikaz pesme (ovo izvršava privremeni transpon pesme na uređaju ako je to potrebno)</string>
+    <string name="set_item_removed">Stavka uklonjena iz skupa</string>
     <string name="set_load_first">Otvaranje učitanog skupa na prvoj stavci</string>
     <string name="set_load_first_info">Uvek otvaraj stavku prvog skupa.  Ako je isključen, set će pokušati da se otvori za trenutno učitanu pesmu ako je u setu.</string>
     <string name="set_load_info">Učitajte prethodno sačuvani set</string>
@@ -868,6 +869,7 @@
     <string name="tuner">Tjuner</string>
     <string name="tuner_info">Pomoć pri štimoc vašeg instrumenta</string>
     <string name="ukulele">Ukulele</string>
+    <string name="undo">OPOZOVETE</string>
     <string name="unknown">Nepoznato</string>
     <string name="use_default">Koristi unapred postavljeno vreme</string>
     <string name="used_by_permision">Koristi se uz dozvolu</string>

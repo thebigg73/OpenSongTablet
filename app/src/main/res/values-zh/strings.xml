@@ -711,6 +711,7 @@
     <string name="set_inline">内联集</string>
     <string name="set_inline_info">在歌曲窗口旁边的屏幕上显示设置列表</string>
     <string name="set_item_info">您可以更改从集合加载的歌曲的文件夹/文件名，也可以更改歌曲显示的键（如果需要，这会在您的设备上临时转置歌曲）</string>
+    <string name="set_item_removed">从集合中删除的项目</string>
     <string name="set_load_first">在第一项打开加载的集</string>
     <string name="set_load_first_info">始终打开第一个设置项。 如果关闭，该集合将尝试在当前加载的歌曲（如果该歌曲在集合中）处打开。</string>
     <string name="set_load_info">加载以前保存的集合</string>
@@ -868,6 +869,7 @@
     <string name="tuner">调谐器</string>
     <string name="tuner_info">帮助调音你的乐器</string>
     <string name="ukulele">四弦琴</string>
+    <string name="undo">撤消</string>
     <string name="unknown">"未知"</string>
     <string name="use_default">"默认情况下使用"</string>
     <string name="used_by_permision">经许可使用</string>

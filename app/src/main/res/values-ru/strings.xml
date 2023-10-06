@@ -711,6 +711,7 @@
     <string name="set_inline">Встроенный сет</string>
     <string name="set_inline_info">Показать сет-лист на экране рядом с окном песни</string>
     <string name="set_item_info">Вы можете изменить имя папки/файла песни, загруженной из сета, а также изменить тональность песни ТОЛЬКО для текущего отображения в сете (транспозиция песни в самой базе при этом не меняется)</string>
+    <string name="set_item_removed">Предмет удален из набора</string>
     <string name="set_load_first">Откройте загруженный набор на первом элементе</string>
     <string name="set_load_first_info">Всегда открывайте первый элемент набора.  Если этот параметр выключен, набор попытается открыться на загруженной в данный момент песне, если она есть в наборе.</string>
     <string name="set_load_info">Загрузить ранее сохраненный сет</string>
@@ -868,6 +869,7 @@
     <string name="tuner">Тюнер</string>
     <string name="tuner_info">Для подстройки музыкального инструмента</string>
     <string name="ukulele">Укулеле</string>
+    <string name="undo">ОТМЕНИТЬ</string>
     <string name="unknown">Hеизвестно</string>
     <string name="use_default">Использовать значение по умолчанию</string>
     <string name="used_by_permision">Используется с разрешения</string>

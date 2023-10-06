@@ -711,6 +711,7 @@
     <string name="set_inline">Zestaw wbudowany</string>
     <string name="set_inline_info">Pokaż setlistę na ekranie obok okna utworu</string>
     <string name="set_item_info">Możesz zmienić folder / nazwę pliku utworu załadowanego z zestawu, a także zmienić wyświetlania utworu (w razie potrzeby wykonuje tymczasową transpozycję utworu na urządzeniu)</string>
+    <string name="set_item_removed">Przedmiot usunięty z zestawu</string>
     <string name="set_load_first">Otwórz załadowany zestaw przy pierwszym elemencie</string>
     <string name="set_load_first_info">Zawsze otwieraj pierwszy element zestawu.  Jeśli jest wyłączony, zestaw spróbuje otworzyć się przy aktualnie załadowanym utworze, jeśli znajduje się w zestawie.</string>
     <string name="set_load_info">Załaduj wcześniej zapisany zestaw</string>
@@ -868,6 +869,7 @@
     <string name="tuner">Tuner</string>
     <string name="tuner_info">Pomóż nastroić swój instrument</string>
     <string name="ukulele">Ukulele</string>
+    <string name="undo">COFNĄĆ</string>
     <string name="unknown">Nieznany</string>
     <string name="use_default">"Zastosowanie domyślne"</string>
     <string name="used_by_permision">Wykorzystane za zgodą</string>

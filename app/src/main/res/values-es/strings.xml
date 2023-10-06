@@ -711,6 +711,7 @@
     <string name="set_inline">Conjunto en línea</string>
     <string name="set_inline_info">Mostrar la lista de canciones en la pantalla al lado de la ventana de la canción</string>
     <string name="set_item_info">Puede cambiar la carpeta / nombre de archivo de la canción cargada desde el conjunto y también puede cambiar la tecla para la visualización de la canción (esto realiza una transposición temporal de la canción en su dispositivo si es necesario)</string>
+    <string name="set_item_removed">Objeto eliminado del conjunto</string>
     <string name="set_load_first">Abra el conjunto cargado en el primer elemento</string>
     <string name="set_load_first_info">Abra siempre el primer elemento establecido.  Si está apagado, el conjunto intentará abrirse en la canción cargada actualmente si está en el conjunto.</string>
     <string name="set_load_info">Cargar un conjunto previamente guardado</string>
@@ -868,6 +869,7 @@
     <string name="tuner">Afinador</string>
     <string name="tuner_info">Ayuda a afinar tu instrumento</string>
     <string name="ukulele">Ukulele</string>
+    <string name="undo">DESHACER</string>
     <string name="unknown">Desconocido</string>
     <string name="use_default">"Uso por defecto"</string>
     <string name="used_by_permision">Usado con permiso</string>

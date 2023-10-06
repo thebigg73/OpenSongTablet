@@ -711,6 +711,7 @@
     <string name="set_inline">Inline-Set</string>
     <string name="set_inline_info">Zeigen Sie die Setlist auf dem Bildschirm neben dem Song-Fenster an</string>
     <string name="set_item_info">Sie können den Ordner/Dateinamen des aus dem Set geladenen Songs ändern und Sie können auch die Taste für die Songanzeige ändern (dies führt bei Bedarf eine temporäre Transponierung des Songs auf Ihrem Gerät durch)</string>
+    <string name="set_item_removed">Artikel aus dem Set entfernt</string>
     <string name="set_load_first">Öffnen Sie das geladene Set beim ersten Element</string>
     <string name="set_load_first_info">Öffnen Sie immer das erste Set-Element.  Wenn diese Option ausgeschaltet ist, versucht das Set, den aktuell geladenen Song zu öffnen, wenn er sich im Set befindet.</string>
     <string name="set_load_info">Laden Sie einen zuvor gespeicherten Satz</string>
@@ -868,6 +869,7 @@
     <string name="tuner">Tuner</string>
     <string name="tuner_info">Helfen Sie mit, Ihr Instrument zu stimmen</string>
     <string name="ukulele">Ukulele</string>
+    <string name="undo">AUFMACHEN</string>
     <string name="unknown">Unbekannt</string>
     <string name="use_default">"Standardwerte verwenden"</string>
     <string name="used_by_permision">Mit Genehmigung verwendet</string>

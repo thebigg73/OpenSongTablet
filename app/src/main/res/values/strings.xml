@@ -879,6 +879,7 @@
     <string name="set_inline">Inline set</string>
     <string name="set_inline_info">Show the setlist on the screen beside the song window</string>
     <string name="set_item_info">You can change the folder/filename of the song loaded from the set and you can also change the key for song display (this performs a temporary transpose of the song on your device if required)</string>
+    <string name="set_item_removed">Item removed from set</string>
     <string name="set_load_first">Open the loaded set at the first item</string>
     <string name="set_load_first_info">Always open the first set item.  If switched off, the set will attempt to open at the currently loaded song if it is in the set.</string>
     <string name="set_load_info">Load a previously saved set</string>
@@ -1037,6 +1038,7 @@
     <string name="tuner">Tuner</string>
     <string name="tuner_info">Help to tune your instrument</string>
     <string name="ukulele">Ukulele</string>
+    <string name="undo">UNDO</string>
     <string name="unknown">Unknown</string>
     <string name="use_default">Use default</string>
     <string name="used_by_permision">Used by permission</string>
@@ -1242,6 +1244,4 @@
     <string name="youtube" translatable="false">YouTube</string>
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zoom_level">Zoom level</string>
-    <string name="set_item_removed">Item removed from set</string>
-    <string name="undo">UNDO</string>
 </resources>

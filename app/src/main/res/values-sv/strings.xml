@@ -711,6 +711,7 @@
     <string name="set_inline">Inline set</string>
     <string name="set_inline_info">Visa setlistan på skärmen bredvid låtfönstret</string>
     <string name="set_item_info">Du kan ändra mappen / filnamnet på låten som laddas från uppsättningen och du kan också ändra tangenten för låtvisning (detta utför en tillfällig transponering av låten på din enhet om det behövs)</string>
+    <string name="set_item_removed">Objekt borttaget från uppsättningen</string>
     <string name="set_load_first">Öppna den inlästa uppsättningen vid det första objektet</string>
     <string name="set_load_first_info">Öppna alltid det första setobjektet.  Om den är avstängd försöker uppsättningen öppnas vid den laddade låten om den finns i uppsättningen.</string>
     <string name="set_load_info">Ladda en tidigare sparad uppsättning</string>
@@ -868,6 +869,7 @@
     <string name="tuner">Stämmare</string>
     <string name="tuner_info">Hjälp till att ställa in ditt instrument</string>
     <string name="ukulele">Ukulele</string>
+    <string name="undo">ÅNGRA</string>
     <string name="unknown">"Okänd"</string>
     <string name="use_default">"Använd standard"</string>
     <string name="used_by_permision">Används med tillstånd</string>
