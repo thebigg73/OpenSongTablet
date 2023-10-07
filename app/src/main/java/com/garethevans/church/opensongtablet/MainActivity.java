@@ -1102,6 +1102,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             }
             if (showToast!=null) {
                 showToast.doIt(indexing_string + progressText);
+                hideActionButton(false);
             }
         } else {
             runOnUiThread(() -> {
@@ -1846,11 +1847,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void indexSongs() {
+        Log.d(TAG,"indexSongs()");
+
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             Handler handler = new Handler(Looper.getMainLooper());
             try {
                 handler.post(() -> {
+
                     if (showToast != null && search_index_start != null) {
                         showToast.doIt(search_index_start);
                     }
@@ -1864,7 +1868,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         if (songListBuildIndex!=null) {
                             songListBuildIndex.fullIndex(songMenuFragment.getProgressText());
                         }
-                    }, 1000);
+                    }, 2000);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -1917,6 +1921,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void updateSongMenu(String fragName, Fragment callingFragment, ArrayList<String> arguments) {
+        Log.d(TAG,"updateSongMenu");
         // If the fragName is menuSettingsFragment, we just want to change the alpha index view
         if (fragName != null && fragName.equals("menuSettingsFragment")) {
             if (songMenuFragment != null) {
@@ -2063,6 +2068,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         }
     }
 
+    @Override
+    public void updateInlineSetAll() {
+        if (performanceValid()) {
+            performanceFragment.updateInlineSetAll();
+        } else if (presenterValid()) {
+            presenterFragment.updateInlineSetAll();
+        }
+    }
     @Override
     public void initialiseInlineSetItem(int position) {
         if (performanceValid()) {

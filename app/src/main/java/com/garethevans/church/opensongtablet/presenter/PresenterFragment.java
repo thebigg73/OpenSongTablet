@@ -469,6 +469,15 @@ public class PresenterFragment extends Fragment {
             }
         }
     }
+    public void updateInlineSetAll() {
+        if (myView!=null) {
+            try {
+                myView.inlineSetList.updateInlineSetAll();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
     public void initialiseInlineSetItem(int position) {
         myView.inlineSetList.initialiseInlineSetItem(position);
     }

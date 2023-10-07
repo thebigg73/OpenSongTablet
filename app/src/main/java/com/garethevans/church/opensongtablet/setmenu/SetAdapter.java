@@ -3,6 +3,8 @@ package com.garethevans.church.opensongtablet.setmenu;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +35,7 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
     private final RecyclerView recyclerView;
     private final String highlightItem="highlightItem", updateNumber="updateNumber";
     private int currentHighlightPosition = -1;
+    private final Handler uiHandler = new Handler(Looper.getMainLooper());
 
     // The songs in the set are held in and array of SetItemInfos
     ArrayList<SetItemInfo> setList = new ArrayList<>();
@@ -370,6 +373,11 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
                 mainActivityInterface.getCurrentSet().updateSetTitleView();
                 notifyItemChanged(position);
 
+                // Update the highlight on the previous item to off
+                if (currentHighlightPosition>=0 && currentHighlightPosition<setList.size()) {
+                    notifyItemChanged(currentHighlightPosition,highlightItem);
+                }
+
                 // Update the prev/next
                 updateSetPrevNext();
 
@@ -380,6 +388,10 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
     }
 
     public void clearOldHighlight(int position) {
+        // Update the highlight on the previous item to off
+        if (currentHighlightPosition>=0 && currentHighlightPosition<setList.size()) {
+            notifyItemChanged(currentHighlightPosition,highlightItem);
+        }
         notifyItemChanged(position,highlightItem);
     }
 
@@ -412,6 +424,17 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
     private void updateSetPrevNext() {
         mainActivityInterface.getSetActions().indexSongInSet(mainActivityInterface.getSong());
         mainActivityInterface.getDisplayPrevNext().setPrevNext();
+    }
+
+    public void notifyAllChanged() {
+        if (setList!=null && setList.size()>0) {
+            uiHandler.post(()-> notifyItemRangeChanged(0,getItemCount()));
+
+            // Update the inline set
+            mainActivityInterface.updateInlineSetAll();
+
+            updateSetPrevNext();
+        }
     }
 
 }

@@ -136,6 +136,7 @@ public class BootUpFragment extends Fragment {
     }
 
     public void startBootProcess(boolean needIndex) {
+        mainActivityInterface.getSongListBuildIndex().setIndexRequired(needIndex);
         // Start the boot process
         if (getContext() != null) {
             ExecutorService executorService = Executors.newSingleThreadExecutor();
@@ -158,7 +159,7 @@ public class BootUpFragment extends Fragment {
                             createOrCheckRootFolders(uriTree);
                     boolean foldersok = !progress.contains("Error");
 
-                    if (foldersok) {
+                if (foldersok) {
                         // Build the basic song index by scanning the songs and creating a songIDs file
                         if (getContext()!=null) {
                             message = processing + "\n" + wait;
@@ -167,7 +168,8 @@ public class BootUpFragment extends Fragment {
                         }
                         updateMessage();
 
-                        if (needIndex) {
+                    if (needIndex) {
+                            mainActivityInterface.getSongListBuildIndex().setIndexComplete(false);
                             mainActivityInterface.getPreferences().setMyPreferenceBoolean("indexSkipAllowed",false);
                             mainActivityInterface.quickSongMenuBuild();
                         } else {

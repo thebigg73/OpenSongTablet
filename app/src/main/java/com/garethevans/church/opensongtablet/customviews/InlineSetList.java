@@ -5,7 +5,6 @@ import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,6 +38,7 @@ public class InlineSetList extends RecyclerView {
     private final LinearLayoutManager llm;
     private float textSize = 12;
     private boolean useTitle = true;
+    private final String highlightItem = "highlightItem";
 
     public InlineSetList(@NonNull Context context) {
         super(context);
@@ -180,7 +180,6 @@ public class InlineSetList extends RecyclerView {
 
         // All the helpers we need to access are in the MainActivity
         private final int onColor, offColor;
-        private final SparseBooleanArray highlightedArray = new SparseBooleanArray();
 
         InlineSetListAdapter(Context context) {
             //this.mainActivityInterface = (MainActivityInterface) context;
@@ -225,14 +224,15 @@ public class InlineSetList extends RecyclerView {
 
         @Override
         public void onBindViewHolder(@NonNull InlineSetItemViewHolder holder, int position, @NonNull List<Object> payloads) {
+            position = holder.getAbsoluteAdapterPosition();
             if (payloads.isEmpty()) {
                 super.onBindViewHolder(holder, position, payloads);
             } else {
                 // Compare each Object in the payloads to the PAYLOAD you provided to notifyItemChanged
                 for (Object payload : payloads) {
-                    if (payload.equals("highlightItem")) {
+                    if (payload.equals(highlightItem)) {
                         // We want to update the highlight colour to on/off
-                        if (highlightedArray.get(position, false)) {
+                        if (position == mainActivityInterface.getCurrentSet().getIndexSongInSet()) {
                             setColor(holder, onColor);
                         } else {
                             setColor(holder, offColor);
@@ -252,10 +252,11 @@ public class InlineSetList extends RecyclerView {
 
         @Override
         public void onBindViewHolder(@NonNull InlineSetItemViewHolder setitemViewHolder, int i) {
+            i = setitemViewHolder.getAbsoluteAdapterPosition();
             InlineSetItemInfo si = setList.get(i);
             String titlesongname = si.songtitle;
             String filename = si.songfilename;
-            if (highlightedArray.get(i, false)) {
+            if (i == mainActivityInterface.getCurrentSet().getIndexSongInSet()) {
                 setColor(setitemViewHolder, onColor);
             } else {
                 setColor(setitemViewHolder, offColor);
@@ -288,12 +289,13 @@ public class InlineSetList extends RecyclerView {
         public void updateHighlightedItem(int position) {
             int oldPosition = selectedItem;
             selectedItem = position;
+
+            // Unhighlight the previously selected item
             if (oldPosition != -1) {
-                highlightedArray.put(oldPosition, false);
-                notifyItemChanged(oldPosition, "highlightItem");
+                notifyItemChanged(oldPosition, highlightItem);
             }
-            highlightedArray.put(selectedItem, true);
-            notifyItemChanged(selectedItem, "highlightItem");
+            // Highlight the new item
+            notifyItemChanged(selectedItem, highlightItem);
         }
 
         public void updateInlineSetMove(int from, int to) {
@@ -312,6 +314,10 @@ public class InlineSetList extends RecyclerView {
         public void updateInlineSetRemoved(int from) {
             setList.remove(from);
             notifyItemRemoved(from);
+            if (selectedItem == from) {
+                // reset the selected item
+                selectedItem = -1;
+            }
             // Go through the setList from this position and sort the numbers
             for (int x = from; x < setList.size(); x++) {
                 setList.get(x).item = (x + 1);
@@ -345,13 +351,15 @@ public class InlineSetList extends RecyclerView {
         public void initialiseInlineSetItem(int position) {
             // If we already had a currentPosition, clear it
             if (selectedItem != -1) {
-                highlightedArray.put(selectedItem, false);
-                notifyItemChanged(selectedItem, "highlightItem");
+                notifyItemChanged(selectedItem, highlightItem);
             }
             // Now highlight the loaded position
             selectedItem = position;
-            highlightedArray.put(selectedItem, true);
-            notifyItemChanged(selectedItem, "highlightItem");
+            notifyItemChanged(selectedItem, highlightItem);
+        }
+
+        public void updateInlineSetAll() {
+            notifyItemRangeRemoved(0,getItemCount());
         }
 
     }
@@ -389,8 +397,9 @@ public class InlineSetList extends RecyclerView {
     }
 
     public void updateSelected(int selectedItem) {
+        mainActivityInterface.getCurrentSet().setIndexSongInSet(selectedItem);
         inlineSetListAdapter.updateHighlightedItem(selectedItem);
-        scrollToItem(selectedItem);
+        postDelayed(() -> scrollToItem(selectedItem),200);
     }
 
     public void updateInlineSetMove(int from, int to) {
@@ -429,6 +438,10 @@ public class InlineSetList extends RecyclerView {
         info.songfolder = setItemInfo.songfolder;
         info.songkey = setItemInfo.songkey;
         inlineSetListAdapter.updateInlineSetInserted(position,info);
+    }
+
+    public void updateInlineSetAll() {
+        inlineSetListAdapter.updateInlineSetAll();
     }
 
 

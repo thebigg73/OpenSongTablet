@@ -38,6 +38,7 @@ public class BootUpIndexBottomSheet extends BottomSheetDialogFragment {
     private TimerTask timerTask;
     private int countdownNumber = 10;
     boolean actionChosen = false;
+    boolean needIndex = false;
 
     public BootUpIndexBottomSheet() {
         // Default constructor required to avoid re-instantiation failures
@@ -110,9 +111,10 @@ public class BootUpIndexBottomSheet extends BottomSheetDialogFragment {
     private void setupListeners() {
         myView.continueButton.setOnClickListener(view -> {
             actionChosen = true;
-            if (bootUpFragment!=null) {
+            needIndex = true;
+            /*if (bootUpFragment!=null) {
                 bootUpFragment.startBootProcess(true);
-            }
+            }*/
             if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
                 try {
                     dismiss();
@@ -123,9 +125,10 @@ public class BootUpIndexBottomSheet extends BottomSheetDialogFragment {
         });
         myView.skipButton.setOnClickListener(view -> {
             actionChosen = true;
-            if (bootUpFragment!=null) {
+            needIndex = false;
+            /*if (bootUpFragment!=null) {
                 bootUpFragment.startBootProcess(false);
-            }
+            }*/
             try {
                 dismiss();
             } catch (Exception e) {
@@ -165,7 +168,7 @@ public class BootUpIndexBottomSheet extends BottomSheetDialogFragment {
     public void onDismiss(@NonNull DialogInterface dialog) {
         super.onDismiss(dialog);
         if (bootUpFragment!=null) {
-            bootUpFragment.startBootProcess(false);
+            bootUpFragment.startBootProcess(needIndex);
         }
         // Try to end/cancel any timers
         try {

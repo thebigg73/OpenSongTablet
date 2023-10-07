@@ -326,6 +326,13 @@ public class SetActions {
         String setCurrent = getSetAsPreferenceString();
         mainActivityInterface.getCurrentSet().setSetCurrent(setCurrent);
         indexSongInSet(mainActivityInterface.getSong());
+
+        for (String setItem:mainActivityInterface.getCurrentSet().getSetItems()) {
+            Log.d(TAG,"setItem:"+setItem);
+        }
+
+        mainActivityInterface.updateSetList();
+        mainActivityInterface.updateInlineSetAll();
         mainActivityInterface.getDisplayPrevNext().setPrevNext();
     }
 

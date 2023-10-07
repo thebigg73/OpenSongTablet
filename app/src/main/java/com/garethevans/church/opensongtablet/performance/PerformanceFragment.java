@@ -393,6 +393,15 @@ public class PerformanceFragment extends Fragment {
             }
         }
     }
+    public void updateInlineSetAll() {
+        if (myView!=null) {
+            try {
+                myView.inlineSetList.updateInlineSetAll();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
     public void initialiseInlineSetItem(int position) {
         if (myView!=null) {
             try {
@@ -820,7 +829,9 @@ public class PerformanceFragment extends Fragment {
                 if (mainActivityInterface.getSongSheetTitleLayout().getParent()!=null) {
                     ((ViewGroup) mainActivityInterface.getSongSheetTitleLayout().getParent()).removeAllViews();
                 }
-                myView.testPaneHeader.removeAllViews();
+                if (myView!=null) {
+                    myView.testPaneHeader.removeAllViews();
+                }
 
                 mainActivityInterface.getSongSheetTitleLayout().post(() -> {
                     if (myView!=null) {

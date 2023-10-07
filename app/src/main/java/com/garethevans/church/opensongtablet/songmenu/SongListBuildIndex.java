@@ -57,6 +57,7 @@ public class SongListBuildIndex {
     }
 
     public void buildBasicFromFiles() {
+        Log.d(TAG,"buildBasicFromFiles()");
         // This creates a basic database from the song files
         ArrayList<String> songIds = mainActivityInterface.getStorageAccess().listSongs();
         mainActivityInterface.getStorageAccess().writeSongIDFile(songIds);

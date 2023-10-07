@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,7 +37,6 @@ public class SetMenuFragment extends Fragment {
             set_manage_click_string="", set_help_string="", set_manage_swipe_string="",
             set_item_removed_string="", undo_string="";
     private MainActivityInterface mainActivityInterface;
-    //private SetListAdapter setListAdapter;
     private SetAdapter setAdapter;
 
     @Override
@@ -78,7 +76,6 @@ public class SetMenuFragment extends Fragment {
             handler.post(() -> {
                 setupAdapter();
                 prepareCurrentSet();
-                //buildList();
                 setListeners();
                 mainActivityInterface.getCurrentSet().updateSetTitleView();
                 scrollToItem();
@@ -109,19 +106,14 @@ public class SetMenuFragment extends Fragment {
     private void setupAdapter() {
         if (getContext()!=null) {
             setAdapter = new SetAdapter(getContext(), myView.myRecyclerView);
-            //ItemTouchHelper.Callback callback = new SetListItemCallback(getContext(), setAdapter);
-            //ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
-            //setAdapter.setTouchHelper(touchHelper);
             myView.myRecyclerView.post(() -> {
                 llm = new LinearLayoutManager(getContext());
                 llm.setOrientation(RecyclerView.VERTICAL);
                 myView.myRecyclerView.setLayoutManager(llm);
                 enableSwipeToDeleteAndUndo();
-                //touchHelper.attachToRecyclerView(myView.myRecyclerView);
                 myView.myRecyclerView.setAdapter(setAdapter);
                 myView.myRecyclerView.setItemAnimator(null);
             });
-
         }
     }
 
@@ -147,15 +139,9 @@ public class SetMenuFragment extends Fragment {
                     snackbar.setActionTextColor(Color.WHITE);
                     snackbar.setTextColor(Color.WHITE);
                 }
-                //snackbar.setBackgroundTint(ContextCompat.getColor(getContext(),R.color.colorSecondary));
                 snackbar.show();
-
             }
         };
-
-        //ItemTouchHelper.Callback callback = new SetListItemCallback(getContext(), setAdapter);
-        //ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
-        //touchHelper.attachToRecyclerView(myView.myRecyclerView);
 
         ItemTouchHelper itemTouchhelper = new ItemTouchHelper(setListItemCallback);
         setAdapter.setTouchHelper(itemTouchhelper);
@@ -197,14 +183,14 @@ public class SetMenuFragment extends Fragment {
     }
 
     public void scrollToItem() {
-        /*if (mainActivityInterface.getCurrentSet().getIndexSongInSet()>-1 &&
+        if (mainActivityInterface.getCurrentSet().getIndexSongInSet()>-1 &&
                 mainActivityInterface.getCurrentSet().getIndexSongInSet() < mainActivityInterface.getCurrentSet().getSetItems().size()) {
             myView.myRecyclerView.post(() -> {
                 if (llm!=null) {
                     llm.scrollToPositionWithOffset(mainActivityInterface.getCurrentSet().getIndexSongInSet(), 0);
                 }
             });
-        }*/
+        }
     }
 
     // Called after rebuilding the set list
@@ -228,6 +214,7 @@ public class SetMenuFragment extends Fragment {
         myView.progressBar.post(() -> myView.progressBar.setVisibility(View.VISIBLE));
 
         setAdapter.buildSetList();
+        setAdapter.notifyAllChanged();
         mainActivityInterface.getCurrentSet().updateSetTitleView();
 
         myView.myRecyclerView.post(() -> myView.myRecyclerView.setVisibility(View.VISIBLE));
@@ -235,34 +222,7 @@ public class SetMenuFragment extends Fragment {
 
     }
 
-    private void buildList() {
-        /*Log.d(TAG,"buildList() called");
-        try {
-            if (setListAdapter!=null) {
-                setListAdapter.buildSetList();
-                myView.myRecyclerView.post(() -> {
-                    try {
-                        myView.myRecyclerView.setVisibility(View.VISIBLE);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                });
-            }
-
-            myView.progressBar.post(() -> {
-                try {
-                    myView.progressBar.setVisibility(View.GONE);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-        }*/
-    }
-
     public void updateItem(int position) {
-        Log.d(TAG,"updateItem called: "+position);
         if (setAdapter!=null) {
             setAdapter.updateItem(position);
         }
@@ -302,12 +262,11 @@ public class SetMenuFragment extends Fragment {
     }
 
     public void scrollMenu(int height) {
-        /*try {
+        try {
             myView.myRecyclerView.smoothScrollBy(0, height);
         } catch (Exception e) {
             e.printStackTrace();
-        }*/
-        //getFocus();
+        }
     }
 
     public void initialiseSetItem(int setPosition) {

@@ -141,6 +141,7 @@ public interface MainActivityInterface {
     void initialiseInlineSetItem(int position);
     void updateInlineSetChanged(int position, SetItemInfo setItemInfo);
     void updateInlineSetInserted(int position, SetItemInfo setItemInfo);
+    void updateInlineSetAll();
 
     // Menus
     void lockDrawer(boolean lock);
