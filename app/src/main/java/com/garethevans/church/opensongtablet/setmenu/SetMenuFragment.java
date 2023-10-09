@@ -214,6 +214,7 @@ public class SetMenuFragment extends Fragment {
         myView.progressBar.post(() -> myView.progressBar.setVisibility(View.VISIBLE));
 
         setAdapter.buildSetList();
+        // Notify the adapter (this is run on UI thread)
         setAdapter.notifyAllChanged();
         mainActivityInterface.getCurrentSet().updateSetTitleView();
 

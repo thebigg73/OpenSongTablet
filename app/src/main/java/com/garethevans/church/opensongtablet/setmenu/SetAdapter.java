@@ -5,7 +5,6 @@ import android.content.res.ColorStateList;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +29,7 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
     private final int onColor, offColor;
     private final float titleSize, subtitleSizeFile;
     private final boolean useTitle;
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "SetAdapter";
     private ItemTouchHelper itemTouchHelper;
     private final RecyclerView recyclerView;
@@ -70,11 +70,19 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
     // We build the setList array from the currentSet
     public void buildSetList() {
         // Clear the set
+        int size = getItemCount();
         setList.clear();
+        notifyItemRangeRemoved(0,size);
+
 
         // Go through each item in the set and add it into the setList array
         for (int x=0; x<mainActivityInterface.getCurrentSet().getSetItems().size(); x++) {
             setList.add(makeSetItem(x));
+        }
+
+        // Initialise the first item in the set
+        if (setList.size()>0) {
+            currentHighlightPosition = 0;
         }
     }
     private SetItemInfo makeSetItem(int position) {
@@ -239,6 +247,13 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
             mainActivityInterface.getCurrentSet().swapPositions(fromPosition, toPosition);
             mainActivityInterface.getCurrentSet().setSetCurrent(mainActivityInterface.getSetActions().getSetAsPreferenceString());
 
+            // Check for the current item position being changed
+            if (fromPosition == mainActivityInterface.getCurrentSet().getIndexSongInSet()) {
+                mainActivityInterface.getCurrentSet().setIndexSongInSet(toPosition);
+            } else if (toPosition == mainActivityInterface.getCurrentSet().getIndexSongInSet()) {
+                mainActivityInterface.getCurrentSet().setIndexSongInSet(fromPosition);
+            }
+
             // Update the inline set to mirror these changes
             mainActivityInterface.updateInlineSetMove(fromPosition, toPosition);
 
@@ -252,6 +267,7 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
 
     // This method is called when an item is swiped away.
     public void removeItem(int fromPosition) {
+
         if (setList.size()>fromPosition &&
                 mainActivityInterface.getCurrentSet().getSetItems().size()>fromPosition) {
 
@@ -261,6 +277,11 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
             // Remove the item from the current set and save the set
             mainActivityInterface.getCurrentSet().removeFromCurrentSet(fromPosition, null);
             mainActivityInterface.getCurrentSet().setSetCurrent(mainActivityInterface.getSetActions().getSetAsPreferenceString());
+
+            // If the currently selected set item is after this position, we need to drop it by 1
+            if (fromPosition<mainActivityInterface.getCurrentSet().getIndexSongInSet()) {
+                mainActivityInterface.getCurrentSet().setIndexSongInSet(mainActivityInterface.getCurrentSet().getIndexSongInSet()-1);
+            }
 
             // Remove the item from the setList and notify the adapter of changes
             setList.remove(fromPosition);
@@ -282,8 +303,6 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
 
     // This method is used to undo a swiped away item
     public void restoreItem(SetItemInfo setItemInfo, int position) {
-        Log.d(TAG,"restore item:"+ position);
-
         // Add item back to the setList
         setList.add(position,setItemInfo);
         notifyItemInserted(position);
@@ -310,13 +329,11 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
     // Change the numbers below the changed item (either +1 or -1)
     private void updateNumbersBelowPosition(int fromPosition) {
         for (int i=fromPosition; i<setList.size(); i++) {
-            Log.d(TAG,"Updating "+setList.get(i).songfilename+" to item "+(i+1)+".");
             setList.get(i).songitem = (i+1) + ".";
         }
 
         // Notify the changes from this position and beyond
         int count = setList.size()-fromPosition;
-        Log.d(TAG,"notifying change from "+fromPosition+"to count:"+count);
 
         // Notify the changes
         notifyItemRangeChanged(fromPosition,count);
@@ -405,14 +422,14 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
 
     @Override
     public void onItemClicked(MainActivityInterface mainActivityInterface, int position) {
-        Log.d(TAG,"onItemClicked("+position+")");
+        mainActivityInterface.getCurrentSet().setIndexSongInSet(position);
         mainActivityInterface.initialiseInlineSetItem(position);
         mainActivityInterface.loadSongFromSet(position);
+        currentHighlightPosition = position;
     }
 
     @Override
     public void onRowSelected(SetListItemViewHolder myViewHolder) {
-        Log.d(TAG,"onRowSelected()");
         myViewHolder.itemView.setSelected(false);
     }
 
