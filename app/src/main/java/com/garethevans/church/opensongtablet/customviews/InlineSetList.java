@@ -5,6 +5,7 @@ import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,7 +39,7 @@ public class InlineSetList extends RecyclerView {
     private final LinearLayoutManager llm;
     private float textSize = 12;
     private boolean useTitle = true;
-    private final String highlightItem = "highlightItem";
+    private final String highlightItem = "highlightItem", updateNumber = "updateNumber";
 
     public InlineSetList(@NonNull Context context) {
         super(context);
@@ -161,7 +162,7 @@ public class InlineSetList extends RecyclerView {
                 inlineSetListAdapter.updateSetList();
             }
             // Look for current item
-            selectedItem = mainActivityInterface.getSetActions().getPositionInSet();
+            selectedItem = mainActivityInterface.getCurrentSet().getIndexSongInSet();
             scrollToItem(selectedItem);
             inlineSetListAdapter.initialiseInlineSetItem(selectedItem);
             checkVisibility();
@@ -199,6 +200,7 @@ public class InlineSetList extends RecyclerView {
             } else {
                 setList = new ArrayList<>();
             }
+            selectedItem = -1;
         }
 
         public void updateSetList() {
@@ -230,10 +232,28 @@ public class InlineSetList extends RecyclerView {
             } else {
                 // Compare each Object in the payloads to the PAYLOAD you provided to notifyItemChanged
                 for (Object payload : payloads) {
-                    if (payload.equals(highlightItem)) {
+                    if (payload.equals(updateNumber)) {
+                        InlineSetItemInfo si = setList.get(position);
+                        if (si.item!=position+1) {
+                            si.item = position+1;
+                            setList.set(position,si);
+                        }
+                        String textsn = si.item + ". " + si.songtitle;
+                        String textfn = si.item + ". " + si.songfilename;
+
+                        if (si.songkey != null && !si.songkey.isEmpty()) {
+                            textsn = textsn + " (" + si.songkey + ")";
+                            textfn = textfn + " (" + si.songkey + ")";
+                        }
+                        holder.vSongTitle.setText(textsn);
+                        holder.vSongFilename.setText(textfn);
+                    }
+
+                    if (payload.equals(highlightItem) || payload.equals(updateNumber)) {
                         // We want to update the highlight colour to on/off
                         if (position == mainActivityInterface.getCurrentSet().getIndexSongInSet()) {
                             setColor(holder, onColor);
+                            selectedItem = position;
                         } else {
                             setColor(holder, offColor);
                         }
@@ -258,9 +278,16 @@ public class InlineSetList extends RecyclerView {
             String filename = si.songfilename;
             if (i == mainActivityInterface.getCurrentSet().getIndexSongInSet()) {
                 setColor(setitemViewHolder, onColor);
+                selectedItem = i;
             } else {
                 setColor(setitemViewHolder, offColor);
             }
+
+            if (si.item!=i+1) {
+                si.item = i+1;
+                setList.set(i,si);
+            }
+
             String textsn = si.item + ". " + titlesongname;
             String textfn = si.item + ". " + filename;
 
@@ -287,15 +314,14 @@ public class InlineSetList extends RecyclerView {
         }
 
         public void updateHighlightedItem(int position) {
-            int oldPosition = selectedItem;
-            selectedItem = position;
-
             // Unhighlight the previously selected item
-            if (oldPosition != -1) {
-                notifyItemChanged(oldPosition, highlightItem);
+            if (selectedItem != -1) {
+                notifyItemChanged(selectedItem, highlightItem);
             }
+
             // Highlight the new item
-            notifyItemChanged(selectedItem, highlightItem);
+            selectedItem = position;
+            notifyItemChanged(position, highlightItem);
         }
 
         public void updateInlineSetMove(int from, int to) {
@@ -305,24 +331,31 @@ public class InlineSetList extends RecyclerView {
                 InlineSetItemInfo thisItem = setList.get(from);
                 setList.remove(from);
                 setList.add(to, thisItem);
-                notifyItemChanged(from);
-                notifyItemChanged(to);
                 notifyItemMoved(from, to);
+                notifyItemChanged(from,updateNumber);
+                notifyItemChanged(to,updateNumber);
+
+                // If we have changed the position of the selected item...
+                if (from == selectedItem) {
+                    selectedItem = to;
+                } else if (to == selectedItem) {
+                    selectedItem = from;
+                }
             }
         }
 
         public void updateInlineSetRemoved(int from) {
             setList.remove(from);
             notifyItemRemoved(from);
+
             if (selectedItem == from) {
                 // reset the selected item
                 selectedItem = -1;
             }
+
             // Go through the setList from this position and sort the numbers
-            for (int x = from; x < setList.size(); x++) {
-                setList.get(x).item = (x + 1);
-                notifyItemChanged(x);
-            }
+            notifyItemRangeChanged(from,setList.size(),updateNumber);
+
             if (setList.size()==0) {
                 // This was the last item removed, we need to check visibility
                 checkVisibility();
@@ -330,8 +363,10 @@ public class InlineSetList extends RecyclerView {
         }
 
         public void updateInlineSetChanged(int position, InlineSetItemInfo inlineSetItemInfo) {
-            setList.set(position,inlineSetItemInfo);
-            notifyItemChanged(position);
+            if (setList!=null) {
+                setList.set(position, inlineSetItemInfo);
+                notifyItemChanged(position,updateNumber);
+            }
         }
 
         public void updateInlineSetAdded(InlineSetItemInfo inlineSetItemInfo) {
@@ -346,6 +381,9 @@ public class InlineSetList extends RecyclerView {
         public void updateInlineSetInserted(int position, InlineSetItemInfo inlineSetItemInfo) {
             setList.add(position,inlineSetItemInfo);
             notifyItemInserted(position);
+
+            // Need to fix the items afterwards too
+            notifyItemRangeChanged(position,setList.size(),updateNumber);
         }
 
         public void initialiseInlineSetItem(int position) {
@@ -359,7 +397,7 @@ public class InlineSetList extends RecyclerView {
         }
 
         public void updateInlineSetAll() {
-            notifyItemRangeRemoved(0,getItemCount());
+            notifyItemRangeChanged(0,getItemCount());
         }
 
     }
