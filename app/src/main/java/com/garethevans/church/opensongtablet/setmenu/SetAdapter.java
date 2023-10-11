@@ -72,7 +72,7 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
         // Clear the set
         int size = getItemCount();
         setList.clear();
-        notifyItemRangeRemoved(0,size);
+        uiHandler.post(() -> notifyItemRangeRemoved(0,size));
 
 
         // Go through each item in the set and add it into the setList array
@@ -237,11 +237,11 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
             setList.add(toPosition,setList.remove(fromPosition));
 
             // Notify the adapter that we have moved items
-            notifyItemMoved(fromPosition,toPosition);
+            notifyItemMoved(fromPosition, toPosition);
 
             // Notify the adapter that we have updated the item numbers
-            notifyItemChanged(toPosition,updateNumber);
-            notifyItemChanged(fromPosition,updateNumber);
+            notifyItemChanged(toPosition, updateNumber);
+            notifyItemChanged(fromPosition, updateNumber);
 
             // Update the currentSet and save the set string
             mainActivityInterface.getCurrentSet().swapPositions(fromPosition, toPosition);
@@ -342,7 +342,7 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
     // New item has been added to the bottom of the set
     public void addNewItem(int currentSetPosition) {
         setList.add(makeSetItem(currentSetPosition));
-        notifyItemInserted(setList.size()-1);
+        uiHandler.post(() -> notifyItemInserted(setList.size()-1));
 
         // Update the inline set too
         mainActivityInterface.updateInlineSetAdded(setList.get(currentSetPosition));
@@ -359,11 +359,11 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
         for (int position:mainActivityInterface.getSetActions().getMissingKeyPositions()) {
             try {
                 setList.get(position).songkey = mainActivityInterface.getCurrentSet().getKey(position);
-                notifyItemChanged(position);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
+        uiHandler.post(() -> notifyItemRangeChanged(0,setList.size()));
         mainActivityInterface.getSetActions().nullMissingKeyPositions();
     }
     public void updateItem(int position) {
@@ -415,8 +415,10 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
     public boolean initialiseSetItem(int setPosition) {
         // Only used when app boots and we are already viewing a set item
         // This comes via the MyToolbar where we add a tick for a set item
-        notifyItemChanged(currentHighlightPosition,highlightItem);
-        notifyItemChanged(setPosition,highlightItem);
+        uiHandler.post(() -> {
+            notifyItemChanged(currentHighlightPosition, highlightItem);
+            notifyItemChanged(setPosition, highlightItem);
+        });
         return true;
     }
 
@@ -435,7 +437,7 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
 
     public void recoverCurrentSetPosition() {
         // Get the set position as we might have moved things around
-        notifyItemChanged(mainActivityInterface.getCurrentSet().getIndexSongInSet(),highlightItem);
+        uiHandler.post(() -> notifyItemChanged(mainActivityInterface.getCurrentSet().getIndexSongInSet(),highlightItem));
     }
 
     private void updateSetPrevNext() {
