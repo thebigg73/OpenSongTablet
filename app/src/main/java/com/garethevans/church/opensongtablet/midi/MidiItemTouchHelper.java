@@ -18,14 +18,17 @@ public class MidiItemTouchHelper extends ItemTouchHelper.Callback {
     private final MidiItemTouchInterface midiItemTouchInterface;
 
     private final String TAG = "SetListItemTouchHelper";
+    private boolean canSwipe, canDrag;
 
-    public MidiItemTouchHelper(MidiMessagesAdapter midiMessagesAdapter) {
+    public MidiItemTouchHelper(MidiMessagesAdapter midiMessagesAdapter, boolean canEdit) {
+        canDrag = canEdit;
+        canSwipe = canEdit;
         this.midiItemTouchInterface = midiMessagesAdapter;
     }
 
     @Override
     public boolean isLongPressDragEnabled() {
-        return true;
+        return canDrag;
     }
 
     @Override
@@ -53,7 +56,7 @@ public class MidiItemTouchHelper extends ItemTouchHelper.Callback {
     @Override
     public boolean isItemViewSwipeEnabled() {
         // To allow swiping to delete
-        return true;
+        return canSwipe;
     }
 
     @Override
@@ -83,4 +86,8 @@ public class MidiItemTouchHelper extends ItemTouchHelper.Callback {
         Log.d(TAG,"Drag v="+v);
     }
 
+    public void canEdit(boolean editable) {
+        canSwipe = editable;
+        canDrag = editable;
+    }
 }

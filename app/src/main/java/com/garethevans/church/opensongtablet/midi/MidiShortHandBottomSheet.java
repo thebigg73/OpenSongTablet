@@ -279,7 +279,7 @@ public class MidiShortHandBottomSheet extends BottomSheetDialogFragment {
         if (getContext()!=null) {
             midiMessagesAdapter = new MidiMessagesAdapter(getContext());
             midiMessagesAdapter.setFromSongMessages(false);
-            ItemTouchHelper.Callback callback = new MidiItemTouchHelper(midiMessagesAdapter);
+            ItemTouchHelper.Callback callback = new MidiItemTouchHelper(midiMessagesAdapter,true);
             ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
             midiMessagesAdapter.setTouchHelper(itemTouchHelper);
             llm = new LinearLayoutManager(getContext());

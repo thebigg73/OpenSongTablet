@@ -11,7 +11,6 @@ import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -101,15 +100,11 @@ public class MidiSongBottomSheet extends BottomSheetDialogFragment {
         if (getContext()!=null) {
             midiMessagesAdapter = new MidiMessagesAdapter(getContext());
             midiMessagesAdapter.setFromSongMessages(false);
-            ItemTouchHelper.Callback callback = new MidiItemTouchHelper(midiMessagesAdapter);
-            ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
-            midiMessagesAdapter.setTouchHelper(itemTouchHelper);
-            llm = new LinearLayoutManager(getContext());
+             llm = new LinearLayoutManager(getContext());
             llm.setOrientation(RecyclerView.VERTICAL);
             myView.recyclerView.post(() -> {
                 myView.recyclerView.setLayoutManager(llm);
                 myView.recyclerView.setAdapter(midiMessagesAdapter);
-                itemTouchHelper.attachToRecyclerView(myView.recyclerView);
             });
         }
     }
