@@ -36,8 +36,8 @@ android {
         targetSdkVersion 34
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
-        versionCode 359
-        versionName '6.0.0_beta34'
+        versionCode 360
+        versionName '6.0.0_beta35'
         /*externalNativeBuild {
             cmake {
                 arguments "-DANDROID_STL=c++_shared"
@@ -111,6 +111,7 @@ dependencies {
     implementation 'org.nanohttpd:nanohttpd:2.3.1'                                      // For a webserver to display songs for non OpenSongApp users
     implementation("com.vanniktech:android-image-cropper:4.5.0")                        // For image cropping/rotation
     implementation 'com.google.zxing:core:3.5.2'                                        // To generate QR code
+    implementation 'com.gu.android:toolargetool:0.3.0'
     //implementation 'com.google.oboe:oboe:1.7.0'                                         // Low latency audio
 
     // To include jar libraries

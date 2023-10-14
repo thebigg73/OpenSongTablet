@@ -4,8 +4,9 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +38,7 @@ public class InlineSetList extends RecyclerView {
     private MainActivityInterface mainActivityInterface;
     private ArrayList<InlineSetItemInfo> setList;
     private final LinearLayoutManager llm;
+    private final Handler uiHandler = new Handler(Looper.getMainLooper());
     private float textSize = 12;
     private boolean useTitle = true;
     private final String highlightItem = "highlightItem", updateNumber = "updateNumber";
@@ -397,7 +399,7 @@ public class InlineSetList extends RecyclerView {
         }
 
         public void updateInlineSetAll() {
-            notifyItemRangeChanged(0,getItemCount());
+            uiHandler.post(() -> notifyItemRangeChanged(0,getItemCount()));
         }
 
     }

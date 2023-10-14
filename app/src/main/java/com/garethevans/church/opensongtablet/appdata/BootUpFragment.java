@@ -191,7 +191,9 @@ public class BootUpFragment extends Fragment {
 
                         // Increase the boot times for prompting a user to backup their songs
                         int runssincebackup = mainActivityInterface.getPreferences().getMyPreferenceInt("runssincebackup",0);
+                        int runssincebackupdismissed = mainActivityInterface.getPreferences().getMyPreferenceInt("runssincebackupdismissed",0);
                         mainActivityInterface.getPreferences().setMyPreferenceInt("runssincebackup", runssincebackup+1);
+                        mainActivityInterface.getPreferences().setMyPreferenceInt("runssincebackupdismissed",runssincebackupdismissed+1);
 
                         // Set up the rest of the main activity
                         handler.post(() -> {

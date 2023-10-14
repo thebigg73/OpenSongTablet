@@ -70,6 +70,7 @@ public class SongListBuildIndex {
         // Now comes the time consuming bit that fully indexes the songs into the database
         Log.d(TAG,"starting full index");
         currentlyIndexing = true;
+
         progressText.post(() -> {
             progressText.setText("0%");
             progressText.setVisibility(View.VISIBLE);
@@ -112,21 +113,26 @@ public class SongListBuildIndex {
                                     mainActivityInterface.getIndexingSong().getFilename());
                             String utf = mainActivityInterface.getStorageAccess().getUTFEncoding(uri);
 
+                            // Check if we need to index
+                            boolean needToUpdate = mainActivityInterface.getStorageAccess().checkModifiedDate(uri);
+
                             // Now try to get the file as an xml.  If it encounters an error, it is treated in the catch statements
-                            if (filenameIsOk(mainActivityInterface.getIndexingSong().getFilename())) {
+                            if (filenameIsOk(mainActivityInterface.getIndexingSong().getFilename()) && needToUpdate) {
                                 try {
                                     // All going well all the other details for sqLite are now set!
+
                                     // Assume XML for now!
                                     mainActivityInterface.getIndexingSong().setFiletype("XML");
 
                                     mainActivityInterface.getLoadSong().readFileAsXML(mainActivityInterface.getIndexingSong(), "Songs",
                                             uri, utf);
 
+
                                 } catch (Exception e) {
                                     // OK, so this wasn't an XML file.  Try to extract as something else
                                     mainActivityInterface.setIndexingSong(tryToFixSong(mainActivityInterface.getIndexingSong(), uri));
                                 }
-                            } else {
+                            } else if (needToUpdate) {
                                 // Look for data in the nonopensong persistent database import
                                 mainActivityInterface.setIndexingSong(mainActivityInterface.getNonOpenSongSQLiteHelper().getSpecificSong(mainActivityInterface.getIndexingSong().getFolder(), mainActivityInterface.getIndexingSong().getFilename()));
                                 if (mainActivityInterface.getStorageAccess().isSpecificFileExtension("pdf", mainActivityInterface.getIndexingSong().getFilename())) {
@@ -142,16 +148,18 @@ public class SongListBuildIndex {
 
                             }
 
-                            // Update the database entry
-                            mainActivityInterface.getIndexingSong().setSongid(mainActivityInterface.getCommonSQL().getAnySongId(
-                                    mainActivityInterface.getIndexingSong().getFolder(), mainActivityInterface.getIndexingSong().getFilename()));
-                            mainActivityInterface.getCommonSQL().updateSong(db, mainActivityInterface.getIndexingSong());
+                            if (needToUpdate) {
+                                // Update the database entry
+                                mainActivityInterface.getIndexingSong().setSongid(mainActivityInterface.getCommonSQL().getAnySongId(
+                                        mainActivityInterface.getIndexingSong().getFolder(), mainActivityInterface.getIndexingSong().getFilename()));
+                                mainActivityInterface.getCommonSQL().updateSong(db, mainActivityInterface.getIndexingSong());
 
-                            // If the file is a PDF or IMG file, then we need to check it is in the persistent DB
-                            // If not, add it.  Call update, if it fails (no match), the method catches it and creates the entry
-                            if (mainActivityInterface.getIndexingSong().getFiletype().equals("PDF") ||
-                                    mainActivityInterface.getIndexingSong().getFiletype().equals("IMG")) {
-                                mainActivityInterface.getNonOpenSongSQLiteHelper().updateSong(mainActivityInterface.getIndexingSong());
+                                // If the file is a PDF or IMG file, then we need to check it is in the persistent DB
+                                // If not, add it.  Call update, if it fails (no match), the method catches it and creates the entry
+                                if (mainActivityInterface.getIndexingSong().getFiletype().equals("PDF") ||
+                                        mainActivityInterface.getIndexingSong().getFiletype().equals("IMG")) {
+                                    mainActivityInterface.getNonOpenSongSQLiteHelper().updateSong(mainActivityInterface.getIndexingSong());
+                                }
                             }
                         }
                     }
@@ -191,6 +199,10 @@ public class SongListBuildIndex {
         // Update the set lists which might be using song titles (that need the index)
         Log.d(TAG,"About to update set list");
         mainActivityInterface.updateSetList();
+
+        // Get a timestamp of this update into preferences
+        mainActivityInterface.getPreferences().setMyPreferenceLong("databaseLastUpdate",System.currentTimeMillis());
+
         return returnString.toString();
     }
 

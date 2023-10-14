@@ -442,7 +442,7 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
 
     private void updateSetPrevNext() {
         mainActivityInterface.getSetActions().indexSongInSet(mainActivityInterface.getSong());
-        mainActivityInterface.getDisplayPrevNext().setPrevNext();
+        uiHandler.post(() -> mainActivityInterface.getDisplayPrevNext().setPrevNext());
     }
 
     public void notifyAllChanged() {

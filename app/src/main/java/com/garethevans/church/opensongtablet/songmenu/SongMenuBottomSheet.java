@@ -131,6 +131,10 @@ public class SongMenuBottomSheet extends BottomSheetDialogFragment {
         });
         myView.rebuildIndex.setOnClickListener(v -> {
             if (mainActivityInterface.getSongListBuildIndex().getIndexComplete()) {
+                // Make this a complete rebuild of the database, rather than an update scan
+                mainActivityInterface.getStorageAccess().setDatabaseLastUpdate(0);
+                mainActivityInterface.getSQLiteHelper().resetDatabase();
+                mainActivityInterface.getPreferences().setMyPreferenceBoolean("indexSkipAllowed",false);
                 mainActivityInterface.getSongListBuildIndex().buildBasicFromFiles();
                 mainActivityInterface.indexSongs();
                 dismiss();

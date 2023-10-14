@@ -112,9 +112,7 @@ public class BootUpIndexBottomSheet extends BottomSheetDialogFragment {
         myView.continueButton.setOnClickListener(view -> {
             actionChosen = true;
             needIndex = true;
-            /*if (bootUpFragment!=null) {
-                bootUpFragment.startBootProcess(true);
-            }*/
+            // The boot process is called in the onDismiss() method
             if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
                 try {
                     dismiss();
@@ -126,9 +124,7 @@ public class BootUpIndexBottomSheet extends BottomSheetDialogFragment {
         myView.skipButton.setOnClickListener(view -> {
             actionChosen = true;
             needIndex = false;
-            /*if (bootUpFragment!=null) {
-                bootUpFragment.startBootProcess(false);
-            }*/
+            // The boot process is called in the onDismiss() method
             try {
                 dismiss();
             } catch (Exception e) {

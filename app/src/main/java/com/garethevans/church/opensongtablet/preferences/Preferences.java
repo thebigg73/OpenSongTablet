@@ -47,6 +47,18 @@ public class Preferences extends Activity {
             return fallback;
         }
     }
+    public long getMyPreferenceLong(String prefname, long fallback) {
+        if (c!=null && prefname!=null) {
+            sharedPref = c.getSharedPreferences("CurrentPreferences", Context.MODE_PRIVATE);
+            try {
+                return sharedPref.getLong(prefname, fallback);
+            } catch (Exception e) {
+                return fallback;
+            }
+        } else {
+            return fallback;
+        }
+    }
     public float getMyPreferenceFloat(String prefname, float fallback) {
         // Return a float from saved preferences
         if (c!=null && prefname!=null) {
@@ -87,6 +99,13 @@ public class Preferences extends Activity {
         if (c!=null && prefname!=null) {
             sharedPref = c.getSharedPreferences("CurrentPreferences", Context.MODE_PRIVATE);
             sharedPref.edit().putInt(prefname, value).apply();
+        }
+    }
+    public void setMyPreferenceLong(String prefname, long value) {
+        // Identify the preferences
+        if (c!=null && prefname!=null) {
+            sharedPref = c.getSharedPreferences("CurrentPreferences", Context.MODE_PRIVATE);
+            sharedPref.edit().putLong(prefname, value).apply();
         }
     }
     public void setMyPreferenceFloat(String prefname, float value) {
@@ -294,6 +313,7 @@ public class Preferences extends Activity {
     // dark_extraInfoBgColor            int         The color for the extra info background in the dark theme
     // dark_highlightChordColor         int         The color to highlight chords (i.e. background). (def:tranparent/0x00000000)
     // dark_highlightHeadingColor       int         The color to highlight headings (i.e. background). (def:tranparent/0x00000000)
+    // databaseLastUpdate               long        The timestamp the song folder was last indexed (def:-1)
     // defaultPresentationText          boolean     Should the 'Words and music by' and 'Used by permission' be included (def:true)
     // deviceId                         String      The device name for Nearby Connections (def:Bluetooth name/device manufacturer+model)
     // displayCapoChords                boolean     Should capo chords be shown (def:true)
@@ -301,7 +321,7 @@ public class Preferences extends Activity {
     // displayChords                    boolean     Decides if chords should be shown (def:true)
     // displayLyrics                    boolean     Decides if lyrics should be shown (def:true)
     // displayBoldChordsHeadings        boolean     Should the chords and headings be shown in a bold font (def:false)
-    // displayBoldChorus                boolean     Should the chorus be displayed as bold (def:false)
+    // displayBoldChorus    x            boolean     Should the chorus be displayed as bold (def:false)
     // download_wifi_only               boolean     Only allow download over WiFi (no mobile data) (def:true)
     // drawingAutoDisplay               boolean     Should the highlighter drawings be shown on page load (def:true)
     // drawingEraserSize                int         The default size of the eraser (def:20)
@@ -517,7 +537,7 @@ public class Preferences extends Activity {
     // profileName                      String      The last loaded or saved profile name (def:"")
     // refAHz                           int         The preferred frequency of A4 in Hz for the tuner (def:440).
     // runWebServer                     boolean     Should a web server displaying the song be automatically started on boot (def:false)
-    // runswithoutbackup                int         The number of times the app has opened without backup (prompt the user after 10) (def:0)
+    // runssincebackup                  int         The number of times the app has opened without backup (prompt the user after 10) (def:0)
     // scaleChords                      float       The scale factor for chords relative to the lyrics (def:0.8f)
     // scaleComments                    float       The scale factor for comments relative to the lyrics (def:0.8f)
     // scaleHeadings                    float       The scale factor for headings relative to the lyrics (def:0.6f)

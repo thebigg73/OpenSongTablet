@@ -45,7 +45,8 @@ public class AlertChecks {
         // Check for the number of times the app has run without the user backing up their songs
         // If this is 10 (or more) show the backup prompt window.
         int runssincebackup = mainActivityInterface.getPreferences().getMyPreferenceInt("runssincebackup",0);
-        return !alreadySeen && runssincebackup >=10;
+        int runssincebackupdismissed = mainActivityInterface.getPreferences().getMyPreferenceInt("runssincebackupdismissed",0);
+        return !alreadySeen && runssincebackup >= 10 && runssincebackupdismissed >= 10;
     }
 
     public void setAlreadySeen(boolean alreadySeen) {

@@ -155,6 +155,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.android.material.textview.MaterialTextView;
+import com.gu.toolargetool.TooLargeTool;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -300,6 +301,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         this.getOnBackPressedDispatcher().addCallback(this, onBackPressedCallback);
 
         prepareStrings();
+
+        // TODO can remove once we track down TransactionTooLarge crash
+        TooLargeTool.startLogging(this.getApplication());
 
         WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
 
@@ -2946,9 +2950,15 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             // Write a crude text file (line separated) with the song Ids (folder/file)
             storageAccess.writeSongIDFile(songIds);
 
+            // Remove existing items that don't match the new songIds
+            sqLiteHelper.removeOldSongs(songIds);
+
             // Try to create the basic databases
             // Non persistent, created from storage at boot (to keep updated) used to references ALL files
-            sqLiteHelper.resetDatabase();
+
+            // TODO reinstate if not working
+            //sqLiteHelper.resetDatabase();
+
             // Persistent containing details of PDF/Image files only.  Pull in to main database at boot
             // Updated each time a file is created, deleted, moved.
             // Also updated when feature data (pad, autoscroll, metronome, etc.) is updated for these files

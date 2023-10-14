@@ -100,6 +100,7 @@ public class AlertInfoBottomSheet extends BottomSheetDialogFragment {
         // Check for backup status
         if (mainActivityInterface.getAlertChecks().showBackup()) {
             myView.timeToBackup.setVisibility(View.VISIBLE);
+            mainActivityInterface.getPreferences().setMyPreferenceInt("runssincebackupdismissed",0);
             String s = promptbackup.
                     replace("10","" +
                             mainActivityInterface.getPreferences().getMyPreferenceInt("runssincebackup", 0));
@@ -142,6 +143,7 @@ public class AlertInfoBottomSheet extends BottomSheetDialogFragment {
         super.onDismiss(dialog);
         mainActivityInterface.refreshMenuItems();
         mainActivityInterface.getAlertChecks().setAlreadySeen(true);
+
         // Check if we need to see the showcase for first use
         mainActivityInterface.showTutorial("performanceView",null);
     }

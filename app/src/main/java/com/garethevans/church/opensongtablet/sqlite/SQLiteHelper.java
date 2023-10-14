@@ -77,6 +77,15 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     }
 
     // Create, delete and update entries
+    public void removeOldSongs(ArrayList<String> songIds) {
+        try (SQLiteDatabase db = getDB()) {
+            mainActivityInterface.getCommonSQL().removeOldSongs(db, songIds);
+            //db.setTransactionSuccessful();
+            //db.endTransaction();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     public void insertFast() {
         SQLiteDatabase db = getDB();
         try {

@@ -180,6 +180,23 @@ public class CommonSQL {
         }
     }
 
+    public void removeOldSongs(SQLiteDatabase db, ArrayList<String> songIds) {
+        // Remove entries in the database that aren't in the songIds
+        StringBuilder inQuery = new StringBuilder();
+        inQuery.append("(");
+        boolean first = true;
+        for (String item : songIds) {
+            if (first) {
+                first = false;
+                inQuery.append("'").append(escape(item)).append("'");
+            } else {
+                inQuery.append(", '").append(escape(item)).append("'");
+            }
+        }
+        inQuery.append(")");
+        db.delete(SQLite.TABLE_NAME, SQLite.COLUMN_SONGID + " NOT IN " + inQuery.toString(), null);
+    }
+
     void insertFast(SQLiteDatabase db) {
         // Insert new values or ignore rows that exist already
         String sql = "INSERT OR IGNORE INTO " + SQLite.TABLE_NAME + " ( songid, filename, folder, title ) VALUES ( ?, ?, ?, ?)";

@@ -57,6 +57,7 @@ public class StorageAccess {
         mainActivityInterface = (MainActivityInterface) c;
         fileWriteLog = mainActivityInterface.getPreferences().getMyPreferenceBoolean("fileWriteLog",true);
         fileViewLog  = mainActivityInterface.getPreferences().getMyPreferenceBoolean("fileViewLog",true);
+        databaseLastUpdate = mainActivityInterface.getPreferences().getMyPreferenceLong("databaseLastUpdate",0);
     }
 
     private final Context c;
@@ -72,6 +73,7 @@ public class StorageAccess {
     private Uri uriTree = null, uriTreeHome = null; // This is the home folder.  Set as required from preferences.
 
     private DocumentFile uriTreeDF, songsDF;
+    private long databaseLastUpdate;
 
     // These are used primarily on start up to initialise stuff
     private String getStoragePreference() {
@@ -758,6 +760,28 @@ public class StorageAccess {
             return 0;
         }
     }
+
+    public boolean checkModifiedDate(Uri uri) {
+        if (lollipopOrLater()) {
+            return checkModifiedDate_SAF(uri);
+        } else {
+            // Default true meaning update is required
+            return true;
+        }
+    }
+
+    public boolean checkModifiedDate_SAF(Uri uri) {
+        if (uri!=null && uri.getPath()!=null) {
+            try {
+                return DocumentFile.fromSingleUri(c,uri).lastModified() > databaseLastUpdate;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        // Default true meaning update is required
+        return true;
+    }
+
     private float getFileSizeFromUri_File(Uri uri) {
         File df = null;
         if (uri != null && uri.getPath() != null) {
@@ -2231,6 +2255,10 @@ public class StorageAccess {
     }
     public boolean getFileViewLog() {
         return fileViewLog;
+    }
+    public void setDatabaseLastUpdate(long databaseLastUpdate) {
+        this.databaseLastUpdate = databaseLastUpdate;
+        mainActivityInterface.getPreferences().setMyPreferenceLong("databaseLastUpdate",databaseLastUpdate);
     }
 
 }
