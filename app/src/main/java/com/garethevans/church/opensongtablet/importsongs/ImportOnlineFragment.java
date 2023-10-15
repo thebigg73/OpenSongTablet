@@ -488,9 +488,10 @@ public class ImportOnlineFragment extends Fragment {
 
         switch (source) {
             case "UltimateGuitar":
-                if (webString.contains("<div class=\"ugm-b-tab--content js-tab-content\">") ||
-                        (webString.contains("<div class=\"js-page js-global-wrapper\">") &&
-                                webString.contains("<span class=\"y68er\">"))) {
+                if ((webString.contains("<div class=\"ugm-b-tab--content js-tab-content\">") ||
+                        (webString.contains("<div class=\"js-page js-global-wrapper ug-page") ||
+                                webString.contains("<pre class=\"tK8GG")) &&
+                                webString.contains("<span class=\"y68er"))) {
                     show = true;
                 }
                 break;

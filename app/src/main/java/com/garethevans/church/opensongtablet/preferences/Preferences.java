@@ -538,6 +538,7 @@ public class Preferences extends Activity {
     // refAHz                           int         The preferred frequency of A4 in Hz for the tuner (def:440).
     // runWebServer                     boolean     Should a web server displaying the song be automatically started on boot (def:false)
     // runssincebackup                  int         The number of times the app has opened without backup (prompt the user after 10) (def:0)
+    // runssincebackupdismissed         int         A rolling counter 0-10 on how many boots since dismissing the alert (def:0)
     // scaleChords                      float       The scale factor for chords relative to the lyrics (def:0.8f)
     // scaleComments                    float       The scale factor for comments relative to the lyrics (def:0.8f)
     // scaleHeadings                    float       The scale factor for headings relative to the lyrics (def:0.6f)

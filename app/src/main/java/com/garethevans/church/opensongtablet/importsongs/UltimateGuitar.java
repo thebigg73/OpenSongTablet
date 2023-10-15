@@ -52,7 +52,7 @@ public class UltimateGuitar {
         // Alternative (newer method)
         if (lyricsText.isEmpty()) {
             lyricsText = mainActivityInterface.getProcessSong().getSubstring(
-                    "<div class=\"js-page js-global-wrapper\">","<span class=\"y68er\">","<div class=\"LJhrL\">",s);
+                    "<div class=\"js-page js-global-wrapper","<span class=\"y68er\">","<div class=\"LJhrL\">",s);
         }
 
         StringBuilder trimmedLyrics = new StringBuilder();
@@ -155,7 +155,37 @@ public class UltimateGuitar {
         return s;
     }
     private String getKey(String s) {
-        return getMetaData(s, "<div class=\"label\">Key</div>");
+        String key = getMetaData(s, "<div class=\"label\">Key</div>");
+        // Try new method looking for line: "musicalKey": "XX"
+        String bit = "\"musicalKey\":";
+        if (key.isEmpty() && s.contains(bit)) {
+            int startpos = s.indexOf(bit);
+            int endpos = s.indexOf("\n",startpos);
+            if (endpos>startpos && endpos-startpos<8) {
+                key = s.substring(startpos,endpos);
+                key = key.replace(bit,"").replace("\"","").trim();
+            }
+        }
+        // Try final methods
+        String bit2 = "Key:";
+        if (key.isEmpty() && s.contains(bit2)) {
+            int startpos = s.indexOf(bit2);
+            int endpos = s.indexOf("\n",startpos);
+            if (endpos>startpos && endpos-startpos<5) {
+                key = s.substring(startpos,endpos);
+                key = key.replace(bit2,"").replace(":","").trim();
+            }
+        }
+        String bit3 = "Key :";
+        if (key.isEmpty() && s.contains(bit3)) {
+            int startpos = s.indexOf(bit3);
+            int endpos = s.indexOf("\n",startpos);
+            if (endpos>startpos && endpos-startpos<5) {
+                key = s.substring(startpos,endpos);
+                key = key.replace(bit3,"").replace(":","").trim();
+            }
+        }
+        return key;
     }
     private String getCapo(String s) {
         return getMetaData(s,"<div class=\"label\">Capo</div>");
