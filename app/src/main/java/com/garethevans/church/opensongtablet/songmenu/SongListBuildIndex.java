@@ -24,9 +24,6 @@ public class SongListBuildIndex {
     // It updates the entries in the user sqlite database
     // It loads contents into a temp song on the mainactivity called indexingSong;
 
-    private boolean indexRequired;
-    private boolean indexComplete;
-    private boolean currentlyIndexing = false;
     private final Context c;
     private final MainActivityInterface mainActivityInterface;
     @SuppressWarnings({"unused","FieldCanBeLocal"})
@@ -37,18 +34,32 @@ public class SongListBuildIndex {
         mainActivityInterface = (MainActivityInterface) c;
     }
 
+
+
+    // This is true if we need to scan the song folder (quick or full)
+    private boolean indexRequired;
     public void setIndexRequired(boolean indexRequired) {
         this.indexRequired = indexRequired;
     }
     public boolean getIndexRequired() {
         return indexRequired;
     }
-    public void setCurrentlyIndexing(boolean currentlyIndexing) {
-        this.currentlyIndexing = currentlyIndexing;
+
+
+
+    // This is true if we need to run the full scan (rather than quick)
+    private boolean fullIndexRequired;
+    public void setFullIndexRequired(boolean fullIndexRequired) {
+        this.fullIndexRequired = fullIndexRequired;
     }
-    public boolean getCurrentlyIndexing() {
-        return currentlyIndexing;
+    public boolean getFullIndexRequired() {
+        return fullIndexRequired;
     }
+
+
+
+    // Once the song indexing has completed, keep a note here (so we don't run again while active)
+    private boolean indexComplete;
     public void setIndexComplete(boolean indexComplete) {
         this.indexComplete = indexComplete;
     }
@@ -56,20 +67,42 @@ public class SongListBuildIndex {
         return indexComplete;
     }
 
-    public void buildBasicFromFiles() {
-        Log.d(TAG,"buildBasicFromFiles()");
-        // This creates a basic database from the song files
-        ArrayList<String> songIds = mainActivityInterface.getStorageAccess().listSongs();
-        mainActivityInterface.getStorageAccess().writeSongIDFile(songIds);
-        mainActivityInterface.getSQLiteHelper().resetDatabase();
-        mainActivityInterface.getSQLiteHelper().insertFast();
+
+
+    // Are we still indexing?
+    private boolean currentlyIndexing = false;
+    public void setCurrentlyIndexing(boolean currentlyIndexing) {
+        this.currentlyIndexing = currentlyIndexing;
+    }
+    public boolean getCurrentlyIndexing() {
+        return currentlyIndexing;
     }
 
+
+
+
+
+    // This creates a basic database from the song files.
+    // This is only called when we are full indexing
+    public void buildBasicFromFiles() {
+        if (fullIndexRequired) {
+            Log.d(TAG, "buildBasicFromFiles()");
+            ArrayList<String> songIds = mainActivityInterface.getStorageAccess().listSongs();
+            mainActivityInterface.getStorageAccess().writeSongIDFile(songIds);
+            mainActivityInterface.getSQLiteHelper().resetDatabase();
+            mainActivityInterface.getSQLiteHelper().insertFast();
+        }
+    }
+
+
+    // This scans the files (quick and full).
+    // Quick scan only updates newer files than the database
     public String fullIndex(MaterialTextView progressText) {
         // The basic database was created on boot.
         // Now comes the time consuming bit that fully indexes the songs into the database
-        Log.d(TAG,"starting full index");
+        Log.d(TAG,"starting full index   indexRequired:"+indexRequired+"  fullIndexRequired:"+fullIndexRequired);
         currentlyIndexing = true;
+        indexComplete = false;
 
         progressText.post(() -> {
             progressText.setText("0%");
@@ -114,10 +147,11 @@ public class SongListBuildIndex {
                             String utf = mainActivityInterface.getStorageAccess().getUTFEncoding(uri);
 
                             // Check if we need to index
-                            boolean needToUpdate = mainActivityInterface.getStorageAccess().checkModifiedDate(uri);
+                            boolean needToUpdate = fullIndexRequired || mainActivityInterface.getStorageAccess().checkModifiedDate(uri);
 
                             // Now try to get the file as an xml.  If it encounters an error, it is treated in the catch statements
-                            if (filenameIsOk(mainActivityInterface.getIndexingSong().getFilename()) && needToUpdate) {
+                            // We only do this if we either need to update (newer than last database), or fullIndexing
+                            if (filenameIsOk(mainActivityInterface.getIndexingSong().getFilename()) && (needToUpdate || fullIndexRequired)) {
                                 try {
                                     // All going well all the other details for sqLite are now set!
 
@@ -132,7 +166,7 @@ public class SongListBuildIndex {
                                     // OK, so this wasn't an XML file.  Try to extract as something else
                                     mainActivityInterface.setIndexingSong(tryToFixSong(mainActivityInterface.getIndexingSong(), uri));
                                 }
-                            } else if (needToUpdate) {
+                            } else if (needToUpdate || fullIndexRequired) {
                                 // Look for data in the nonopensong persistent database import
                                 mainActivityInterface.setIndexingSong(mainActivityInterface.getNonOpenSongSQLiteHelper().getSpecificSong(mainActivityInterface.getIndexingSong().getFolder(), mainActivityInterface.getIndexingSong().getFilename()));
                                 if (mainActivityInterface.getStorageAccess().isSpecificFileExtension("pdf", mainActivityInterface.getIndexingSong().getFilename())) {
@@ -148,7 +182,7 @@ public class SongListBuildIndex {
 
                             }
 
-                            if (needToUpdate) {
+                            if (needToUpdate || fullIndexRequired) {
                                 // Update the database entry
                                 mainActivityInterface.getIndexingSong().setSongid(mainActivityInterface.getCommonSQL().getAnySongId(
                                         mainActivityInterface.getIndexingSong().getFolder(), mainActivityInterface.getIndexingSong().getFilename()));
@@ -175,24 +209,27 @@ public class SongListBuildIndex {
             cursor.close();
             indexRequired = false;
             indexComplete = true;
+            fullIndexRequired = false;
+
             Log.d(TAG,"About to check missing keys");
             mainActivityInterface.getSetActions().checkMissingKeys();
             mainActivityInterface.getPreferences().setMyPreferenceBoolean("indexSkipAllowed",true);
-            returnString.append(c.getString(R.string.search_index_end)).append("\n");
+            returnString.append(c.getString(R.string.index_songs_end)).append("\n");
             mainActivityInterface.refreshSong();
 
         } catch (Exception e) {
             e.printStackTrace();
-            returnString.append(c.getString(R.string.search_index_error)).append("\n");
+            returnString.append(c.getString(R.string.index_songs_error)).append("\n");
         } catch (OutOfMemoryError oom) {
             mainActivityInterface.getShowToast().doIt("Out of memory: " +
                     mainActivityInterface.getIndexingSong().getFolder() + "/" +
                     mainActivityInterface.getIndexingSong().getFilename());
-            returnString.append(c.getString(R.string.search_index_error)).append(": ").
+            returnString.append(c.getString(R.string.index_songs_error)).append(": ").
                     append(mainActivityInterface.getIndexingSong().getFolder()).append("/").
                     append(mainActivityInterface.getIndexingSong().getFilename()).append("\n");
         }
         currentlyIndexing = false;
+
         // Any songs with rogue endings would've been logged, so fix if needed
         Log.d(TAG,"About to fix songs");
         mainActivityInterface.getLoadSong().fixSongs();
@@ -296,4 +333,6 @@ public class SongListBuildIndex {
 
         return thisSong;
     }
+
+
 }

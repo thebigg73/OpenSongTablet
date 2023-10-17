@@ -31,14 +31,14 @@ public class BootUpIndexBottomSheet extends BottomSheetDialogFragment {
     private MainActivityInterface mainActivityInterface;
     private BottomSheetBootupIndexingBinding myView;
     private final BootUpFragment bootUpFragment;
-    private String indexing_string="";
+    private String indexing_string="", quick_string="", full_string="";
     private String skip_string="";
     private String indexing_web="";
     private Timer timer;
     private TimerTask timerTask;
     private int countdownNumber = 10;
     boolean actionChosen = false;
-    boolean needIndex = false;
+    boolean needIndex = false, fullIndex = false;
 
     public BootUpIndexBottomSheet() {
         // Default constructor required to avoid re-instantiation failures
@@ -95,6 +95,12 @@ public class BootUpIndexBottomSheet extends BottomSheetDialogFragment {
         prepareStrings(getContext());
         setupListeners();
         myView.dialogHeading.setClose(this);
+
+        String text = indexing_string + " (" + quick_string + ")";
+        myView.quickIndexButton.setText(text);
+        text = indexing_string + " (" + full_string + ")";
+        myView.fullIndexButton.setText(text);
+
         setTimer();
 
         return myView.getRoot();
@@ -102,16 +108,32 @@ public class BootUpIndexBottomSheet extends BottomSheetDialogFragment {
 
     private void prepareStrings(Context c) {
         if (c!=null) {
-            indexing_string = c.getString(R.string.indexing_string);
+            indexing_string = c.getString(R.string.index_songs);
             skip_string = c.getString(R.string.skip);
             indexing_web = c.getString(R.string.website_indexing_songs);
+            quick_string = getString(R.string.index_songs_quick);
+            full_string = getString(R.string.index_songs_full);
         }
     }
 
     private void setupListeners() {
-        myView.continueButton.setOnClickListener(view -> {
+        myView.quickIndexButton.setOnClickListener(view -> {
             actionChosen = true;
             needIndex = true;
+            fullIndex = false;
+            // The boot process is called in the onDismiss() method
+            if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
+                try {
+                    dismiss();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        myView.fullIndexButton.setOnClickListener(view -> {
+            actionChosen = true;
+            needIndex = true;
+            fullIndex = true;
             // The boot process is called in the onDismiss() method
             if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
                 try {
@@ -124,6 +146,7 @@ public class BootUpIndexBottomSheet extends BottomSheetDialogFragment {
         myView.skipButton.setOnClickListener(view -> {
             actionChosen = true;
             needIndex = false;
+            fullIndex = false;
             // The boot process is called in the onDismiss() method
             try {
                 dismiss();
@@ -164,7 +187,7 @@ public class BootUpIndexBottomSheet extends BottomSheetDialogFragment {
     public void onDismiss(@NonNull DialogInterface dialog) {
         super.onDismiss(dialog);
         if (bootUpFragment!=null) {
-            bootUpFragment.startBootProcess(needIndex);
+            bootUpFragment.startBootProcess(needIndex,fullIndex);
         }
         // Try to end/cancel any timers
         try {

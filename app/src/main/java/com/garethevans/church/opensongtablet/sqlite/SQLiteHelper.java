@@ -56,10 +56,12 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             File f = new File(c.getExternalFilesDir("Database"), SQLite.DATABASE_NAME);
             return SQLiteDatabase.openOrCreateDatabase(f, null);
         } catch (OutOfMemoryError | Exception e) {
+            e.printStackTrace();
             return null;
         }
     }
     void emptyTable(SQLiteDatabase db) {
+        Log.d(TAG,"db:"+db);
         // This drops the table if it exists (wipes it ready to start again)
         if (db!=null) {
             try {

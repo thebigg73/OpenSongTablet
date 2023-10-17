@@ -99,12 +99,11 @@ public class BootUpFragment extends Fragment {
     // Checks made before starting the app
     public void startOrSetUp() {
         if (storageIsCorrectlySet()) {
-            //startBootProcess();
             if (mainActivityInterface.getPreferences().getMyPreferenceBoolean("indexSkipAllowed",false)) {
                 BootUpIndexBottomSheet bootUpIndexBottomSheet = new BootUpIndexBottomSheet(this);
                 bootUpIndexBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "BootUpIndexing");
             } else {
-                startBootProcess(true);
+                startBootProcess(true,true);
             }
         } else {
             requireStorageCheck();
@@ -135,80 +134,85 @@ public class BootUpFragment extends Fragment {
         }
     }
 
-    public void startBootProcess(boolean needIndex) {
+    public void startBootProcess(boolean needIndex, boolean fullIndexRequired) {
+        Log.d(TAG,"needIndex:"+needIndex+"  fullIndexRequired:"+fullIndexRequired);
         mainActivityInterface.getSongListBuildIndex().setIndexRequired(needIndex);
+        mainActivityInterface.getSongListBuildIndex().setFullIndexRequired(fullIndexRequired);
+        mainActivityInterface.getSongListBuildIndex().setCurrentlyIndexing(false);
+
         // Start the boot process
         if (getContext() != null) {
             ExecutorService executorService = Executors.newSingleThreadExecutor();
             executorService.execute(() -> {
                 Handler handler = new Handler(Looper.getMainLooper());
-                    // Tell the user we're initialising the storage
-                    if (getContext()!=null) {
-                        message = processing + ": " + storage;
-                    } else {
-                        message = "Processing: Storage";
-                    }
-                    mainActivityInterface.getSongListBuildIndex().setIndexRequired(needIndex);
-                    updateMessage();
+                // Tell the user we're initialising the storage
+                if (getContext() != null) {
+                    message = processing + ": " + storage;
+                } else {
+                    message = "Processing: Storage";
+                }
+                updateMessage();
 
-                    // Get the last used song and folder.  If the song failed to load, reset to default
-                    setFolderAndSong();
+                // Get the last used song and folder.  If the song failed to load, reset to default
+                setFolderAndSong();
 
-                    // Check for saved storage locations
-                    final String progress = mainActivityInterface.getStorageAccess().
-                            createOrCheckRootFolders(uriTree);
-                    boolean foldersok = !progress.contains("Error");
+                // Check for saved storage locations
+                final String progress = mainActivityInterface.getStorageAccess().
+                        createOrCheckRootFolders(uriTree);
+                boolean foldersok = !progress.contains("Error");
 
                 if (foldersok) {
-                        // Build the basic song index by scanning the songs and creating a songIDs file
-                        if (getContext()!=null) {
-                            message = processing + "\n" + wait;
-                        } else {
-                            message = "Processing\nWait....";
-                        }
-                        updateMessage();
+                    // Build the basic song index by scanning the songs and creating a songIDs file
+                    if (getContext() != null) {
+                        message = processing + "\n" + wait;
+                    } else {
+                        message = "Processing\nWait....";
+                    }
+                    updateMessage();
+
+                    Log.d(TAG,"needIndex:"+needIndex);
 
                     if (needIndex) {
-                            mainActivityInterface.getSongListBuildIndex().setIndexComplete(false);
-                            mainActivityInterface.getPreferences().setMyPreferenceBoolean("indexSkipAllowed",false);
-                            mainActivityInterface.quickSongMenuBuild();
-                        } else {
-                            mainActivityInterface.getSongListBuildIndex().setCurrentlyIndexing(false);
-                            mainActivityInterface.getSongListBuildIndex().setIndexComplete(true);
-                        }
-
-                        // Finished indexing
-                        if (getContext()!=null) {
-                            message = success;
-                        } else {
-                            message = "Success";
-                        }
-                        if (myView!=null) {
-                            updateMessage();
-                        }
-
-                        mainActivityInterface.setMode(mainActivityInterface.getPreferences().getMyPreferenceString("whichMode", mode_performance));
-
-                        // Increase the boot times for prompting a user to backup their songs
-                        int runssincebackup = mainActivityInterface.getPreferences().getMyPreferenceInt("runssincebackup",0);
-                        int runssincebackupdismissed = mainActivityInterface.getPreferences().getMyPreferenceInt("runssincebackupdismissed",0);
-                        mainActivityInterface.getPreferences().setMyPreferenceInt("runssincebackup", runssincebackup+1);
-                        mainActivityInterface.getPreferences().setMyPreferenceInt("runssincebackupdismissed",runssincebackupdismissed+1);
-
-                        // Set up the rest of the main activity
-                        handler.post(() -> {
-                            mainActivityInterface.initialiseActivity();
-                            mainActivityInterface.navHome();
-                            mainActivityInterface.showActionBar();
-                            mainActivityInterface.updateMargins();
-                        });
+                        mainActivityInterface.getSongListBuildIndex().setIndexComplete(false);
+                        mainActivityInterface.getPreferences().setMyPreferenceBoolean("indexSkipAllowed", false);
+                        mainActivityInterface.quickSongMenuBuild();
 
                     } else {
-                        // There was a problem with the folders, so restart the app!
-                        Log.d(TAG, "Problem with app folders - restarting");
-                        requireActivity().recreate();
+                        mainActivityInterface.getSongListBuildIndex().setIndexComplete(true);
                     }
-                });
+
+                    // Finished indexing
+                    if (getContext() != null) {
+                        message = success;
+                    } else {
+                        message = "Success";
+                    }
+                    if (myView != null) {
+                        updateMessage();
+                    }
+
+                    mainActivityInterface.setMode(mainActivityInterface.getPreferences().getMyPreferenceString("whichMode", mode_performance));
+
+                    // Increase the boot times for prompting a user to backup their songs
+                    int runssincebackup = mainActivityInterface.getPreferences().getMyPreferenceInt("runssincebackup", 0);
+                    int runssincebackupdismissed = mainActivityInterface.getPreferences().getMyPreferenceInt("runssincebackupdismissed", 0);
+                    mainActivityInterface.getPreferences().setMyPreferenceInt("runssincebackup", runssincebackup + 1);
+                    mainActivityInterface.getPreferences().setMyPreferenceInt("runssincebackupdismissed", runssincebackupdismissed + 1);
+
+                    // Set up the rest of the main activity
+                    handler.post(() -> {
+                        mainActivityInterface.initialiseActivity();
+                        mainActivityInterface.navHome();
+                        mainActivityInterface.showActionBar();
+                        mainActivityInterface.updateMargins();
+                    });
+
+                } else {
+                    // There was a problem with the folders, so restart the app!
+                    Log.d(TAG, "Problem with app folders - restarting");
+                    requireActivity().recreate();
+                }
+            });
         }
     }
 

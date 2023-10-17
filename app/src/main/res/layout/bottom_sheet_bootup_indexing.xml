@@ -24,32 +24,34 @@
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/indexing_info"
+                android:text="@string/index_songs_info"
                 android:layout_margin="16dp"
                 app:size="large"/>
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/skipButton"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_margin="4dp"
+                android:text="@string/skip"
+                android:layout_gravity="center_horizontal"/>
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/skipButton"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
+                    android:id="@+id/quickIndexButton"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    android:text="@string/skip"/>
+                    android:layout_margin="4dp"
+                    android:text="@string/index_songs_quick"
+                    android:layout_gravity="center_horizontal"/>
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/continueButton"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    android:text="@string/continue_text"/>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/fullIndexButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:text="@string/index_songs_full"
+                android:layout_gravity="center_horizontal"/>
 
-            </LinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </LinearLayout>

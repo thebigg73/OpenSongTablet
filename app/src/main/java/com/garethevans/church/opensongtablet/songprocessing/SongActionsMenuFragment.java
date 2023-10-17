@@ -60,7 +60,7 @@ public class SongActionsMenuFragment extends Fragment {
     private void prepareStrings() {
         if (getContext()!=null) {
             song_actions_string = getString(R.string.song_actions);
-            search_index_wait_string = getString(R.string.search_index_wait);
+            search_index_wait_string = getString(R.string.index_songs_wait);
         }
     }
     private void addCurrentSong() {

@@ -82,7 +82,7 @@ public class SettingsCategories extends Fragment {
             not_available_string = getString(R.string.not_available);
             location_string = getString(R.string.location);
             permissions_refused_string = getString(R.string.permissions_refused);
-            wait_string = getString(R.string.search_index_wait);
+            wait_string = getString(R.string.index_songs_wait);
         }
     }
     private void hideUnavailable() {

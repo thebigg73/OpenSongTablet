@@ -91,7 +91,7 @@ public class EditSongFragmentTags extends Fragment {
 
     private void prepareStrings() {
         if (getContext()!=null) {
-            search_index_wait_string = getString(R.string.search_index_wait);
+            search_index_wait_string = getString(R.string.index_songs_wait);
         }
     }
     private void setupValues() {

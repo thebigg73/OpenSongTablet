@@ -588,8 +588,9 @@ public class ImportOSBFragment extends Fragment {
                             mainActivityInterface.getNonOpenSongSQLiteHelper().copyUserDatabase();
                         }
                         mainActivityInterface.getSQLiteHelper().insertFast();
-                        mainActivityInterface.setFullIndexRequired(true);
-                        mainActivityInterface.fullIndex();
+                        mainActivityInterface.getSongListBuildIndex().setIndexRequired(true);
+                        mainActivityInterface.getSongListBuildIndex().setFullIndexRequired(false);
+                        // The index will be rebuilt on returning to the Performance/Presenter fragment
 
                         // Navigate back to the home
                         mainActivityInterface.navHome();

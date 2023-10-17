@@ -128,7 +128,7 @@ public class SetManageFragment extends Fragment {
             success_string = getString(R.string.success);
             error_string = getString(R.string.error);
             deeplink_export_string = getString(R.string.deeplink_export);
-            search_index_wait_string = getString(R.string.search_index_wait);
+            search_index_wait_string = getString(R.string.index_songs_wait);
         }
     }
     private void checkForLoadSpecific() {

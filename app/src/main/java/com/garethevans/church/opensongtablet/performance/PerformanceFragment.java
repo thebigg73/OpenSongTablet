@@ -185,6 +185,8 @@ public class PerformanceFragment extends Fragment {
         // Load in preferences
         loadPreferences();
 
+        Log.d(TAG,"mainActivityInterface.getSongListBuildIndex().getIndexRequired():"+mainActivityInterface.getSongListBuildIndex().getIndexRequired());
+        Log.d(TAG,"mainActivityInterface.getSongListBuildIndex().getCurrentlyIndexing():"+mainActivityInterface.getSongListBuildIndex().getCurrentlyIndexing());
         // Prepare the song menu (will be called again after indexing from the main activity index songs)
         if (mainActivityInterface.getSongListBuildIndex().getIndexRequired() &&
                 !mainActivityInterface.getSongListBuildIndex().getCurrentlyIndexing()) {

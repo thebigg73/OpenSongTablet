@@ -150,7 +150,6 @@ public interface MainActivityInterface {
     int getPositionOfSongInMenu();
     void updateSongList();
     void quickSongMenuBuild();
-    void setFullIndexRequired(boolean fullIndexRequired);
     void fullIndex();
     void indexSongs();
     void updateSongMenu(String fragName, Fragment callingFragment, ArrayList<String> arguments);

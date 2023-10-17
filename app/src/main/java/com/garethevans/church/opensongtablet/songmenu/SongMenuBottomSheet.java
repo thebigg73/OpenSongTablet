@@ -28,7 +28,7 @@ public class SongMenuBottomSheet extends BottomSheetDialogFragment {
     private MainActivityInterface mainActivityInterface;
     private String file_string="", deeplink_export_string="", deeplink_edit_string="",
             deeplink_song_actions_string="", deeplink_import_string="", search_index_wait_string="",
-            added_to_set_string="", variation_string="";
+            added_to_set_string="", variation_string="", index_rebuild_string="", quick_string="", full_string="";
 
     private final String songTitle;
 
@@ -86,9 +86,12 @@ public class SongMenuBottomSheet extends BottomSheetDialogFragment {
             deeplink_edit_string = getString(R.string.deeplink_edit);
             deeplink_song_actions_string = getString(R.string.deeplink_song_actions);
             deeplink_import_string = getString(R.string.deeplink_import);
-            search_index_wait_string = getString(R.string.search_index_wait);
+            search_index_wait_string = getString(R.string.index_songs_wait);
             added_to_set_string = getString(R.string.added_to_set);
             variation_string = getString(R.string.variation);
+            index_rebuild_string = getString(R.string.index_songs_rebuild);
+            quick_string = getString(R.string.index_songs_quick);
+            full_string = getString(R.string.index_songs_full);
         }
     }
     private void setupViews() {
@@ -107,6 +110,10 @@ public class SongMenuBottomSheet extends BottomSheetDialogFragment {
         } else {
             myView.randomSong.setVisibility(View.GONE);
         }
+        String text = index_rebuild_string + " (" + quick_string + ")";
+        myView.rebuildIndexQuick.setText(text);
+        text = index_rebuild_string + " (" + full_string + ")";
+        myView.rebuildIndexFull.setText(text);
     }
 
     private void setListeners() {
@@ -129,13 +136,34 @@ public class SongMenuBottomSheet extends BottomSheetDialogFragment {
                 dismiss();
             }
         });
-        myView.rebuildIndex.setOnClickListener(v -> {
+        myView.rebuildIndexFull.setOnClickListener(v -> {
             if (mainActivityInterface.getSongListBuildIndex().getIndexComplete()) {
                 // Make this a complete rebuild of the database, rather than an update scan
                 mainActivityInterface.getStorageAccess().setDatabaseLastUpdate(0);
                 mainActivityInterface.getSQLiteHelper().resetDatabase();
+                mainActivityInterface.getSongListBuildIndex().setFullIndexRequired(true);
+                mainActivityInterface.getSongListBuildIndex().setIndexRequired(true);
                 mainActivityInterface.getPreferences().setMyPreferenceBoolean("indexSkipAllowed",false);
                 mainActivityInterface.getSongListBuildIndex().buildBasicFromFiles();
+                mainActivityInterface.indexSongs();
+                dismiss();
+            } else {
+                dismiss();
+                String progressText = "";
+                if (mainActivityInterface.getSongMenuFragment()!=null) {
+                    MaterialTextView progressView = mainActivityInterface.getSongMenuFragment().getProgressText();
+                    if (progressView!=null && progressView.getText()!=null) {
+                        progressText = " " + progressView.getText().toString();
+                    }
+                }
+                mainActivityInterface.getShowToast().doItBottomSheet(search_index_wait_string+progressText,myView.getRoot());
+            }
+        });
+        myView.rebuildIndexQuick.setOnClickListener(v -> {
+            if (mainActivityInterface.getSongListBuildIndex().getIndexComplete()) {
+                // Make this a complete rebuild of the database, rather than an update scan
+                mainActivityInterface.getSongListBuildIndex().setFullIndexRequired(false);
+                mainActivityInterface.getSongListBuildIndex().setIndexRequired(true);
                 mainActivityInterface.indexSongs();
                 dismiss();
             } else {

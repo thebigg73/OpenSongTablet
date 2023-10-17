@@ -139,13 +139,23 @@
                 app:mydrawable="@drawable/database_import" />
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
-                android:id="@+id/rebuildIndex"
+                android:id="@+id/rebuildIndexFull"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/search_rebuild"
+                android:hint="@string/index_songs_full_info"
                 android:padding="16dp"
-                android:text="@string/search_rebuild"
+                android:text="@string/index_songs_rebuild"
                 app:mydrawable="@drawable/menu" />
+
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                android:id="@+id/rebuildIndexQuick"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/index_songs_quick_info"
+                android:padding="16dp"
+                android:text="@string/index_songs_rebuild"
+                app:mydrawable="@drawable/menu" />
+
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </LinearLayout>

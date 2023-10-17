@@ -348,7 +348,7 @@ public class MoveContentFragment extends Fragment {
         if (mainActivityInterface.getSongListBuildIndex().getIndexComplete()) {
             return true;
         } else {
-            Snackbar.make(myView.getRoot(), R.string.search_index_wait, Snackbar.LENGTH_LONG).show();
+            Snackbar.make(myView.getRoot(), R.string.index_songs_wait, Snackbar.LENGTH_LONG).show();
             return false;
         }
     }

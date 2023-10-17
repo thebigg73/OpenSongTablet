@@ -270,7 +270,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private final String presenter = "Presenter", performance = "Performance";
     private Uri importUri;
     private boolean settingsOpen = false, showSetMenu, actionButtonWasExpanded = false,
-            pageButtonActive = true, fullIndexRequired, menuOpen, firstRun = true;
+            pageButtonActive = true, menuOpen, firstRun = true;
     private final String TAG = "MainActivity";
     private Menu globalMenuItem;
     private Locale locale;
@@ -279,6 +279,18 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     private Intent fileOpenIntent;
     private int availableWidth=-1, availableHeight=-1;
+
+    private String deeplink_import_osb = "", deeplink_sets_backup_restore = "", deeplink_onsong = "",
+            deeplink_import_file = "", unknown = "", mainfoldername = "MAIN", deeplink_page_buttons = "",
+            website_menu_set = "", website_menu_song = "", exit_confirm = "",
+            error = "", deeplink_presenter = "", deeplink_performance = "", extra_settings = "",
+            action_button_info = "", song_sections = "", logo_info = "", blank_screen_info = "",
+            black_screen_info = "", project_panic = "", song_title = "", long_press = "", edit_song = "",
+            song_sections_project = "", menu_song_info = "", menu_set_info = "", add_songs = "",
+            song_actions = "", settings = "", deeplink_preferences = "", song_string = "", set_string = "",
+            search_index_start = "", search_index_end = "", deeplink_metronome = "", variation = "",
+            mode_presenter = "", mode_performance = "", mode_stage = "", success = "", okay = "", pad_playback_info = "",
+            no_suitable_application = "", indexing_string = "", deeplink_edit = "", cast_info_string = "";
 
     // Used if implementing Oboe using C++ injection
     /* static {System.loadLibrary("lowlatencyaudio");} */
@@ -311,11 +323,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             rebooted = true;
             if (songListBuildIndex == null) {
                 songListBuildIndex = new SongListBuildIndex(this);
-                fullIndexRequired = true;
             }
 
             songListBuildIndex.setIndexComplete(savedInstanceState.getBoolean("indexComplete", false));
-            fullIndexRequired = !songListBuildIndex.getIndexComplete();
+            songListBuildIndex.setFullIndexRequired(!songListBuildIndex.getIndexComplete());
 
             nearbyConnections = getNearbyConnections();
             nearbyConnections.setIsHost(savedInstanceState.getBoolean("isHost", false));
@@ -368,18 +379,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         initialiseActivity();
     }
 
-    private String deeplink_import_osb = "", deeplink_sets_backup_restore = "", deeplink_onsong = "",
-            deeplink_import_file = "", unknown = "", mainfoldername = "MAIN", deeplink_page_buttons = "",
-            website_menu_set = "", website_menu_song = "", exit_confirm = "",
-            error = "", deeplink_presenter = "", deeplink_performance = "", extra_settings = "",
-            action_button_info = "", song_sections = "", logo_info = "", blank_screen_info = "",
-            black_screen_info = "", project_panic = "", song_title = "", long_press = "", edit_song = "",
-            song_sections_project = "", menu_song_info = "", menu_set_info = "", add_songs = "",
-            song_actions = "", settings = "", deeplink_preferences = "", song_string = "", set_string = "",
-            search_index_start = "", search_index_end = "", deeplink_metronome = "", variation = "",
-            mode_presenter = "", mode_performance = "", mode_stage = "", success = "", okay = "", pad_playback_info = "",
-            no_suitable_application = "", indexing_string = "", deeplink_edit = "", cast_info_string = "";
-
     private void prepareStrings() {
         // To avoid null context for long tasks throwing error when getting strings
         if (getApplicationContext() != null) {
@@ -416,8 +415,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             deeplink_preferences = getString(R.string.deeplink_preferences);
             song_string = getString(R.string.song);
             set_string = getString(R.string.set);
-            search_index_start = getString(R.string.search_index_start);
-            search_index_end = getString(R.string.search_index_end);
+            search_index_start = getString(R.string.index_songs_start);
+            search_index_end = getString(R.string.index_songs_end);
             deeplink_metronome = getString(R.string.deeplink_metronome);
             variation = getString(R.string.variation);
             mode_presenter = getString(R.string.mode_presenter);
@@ -427,7 +426,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             okay = getString(R.string.okay);
             pad_playback_info = getString(R.string.pad_playback_info);
             no_suitable_application = getString(R.string.no_suitable_application);
-            indexing_string = getString(R.string.search_index_wait);
+            indexing_string = getString(R.string.index_songs_wait);
             cast_info_string = getString(R.string.cast_info_string);
         }
     }
@@ -1859,27 +1858,32 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             Handler handler = new Handler(Looper.getMainLooper());
             try {
                 handler.post(() -> {
+                    Log.d(TAG,"startIndexing");
 
                     if (showToast != null && search_index_start != null) {
                         showToast.doIt(search_index_start);
                     }
                 });
                 if (songListBuildIndex != null && songMenuFragment != null && songMenuFragment.getProgressText() != null) {
+                    Log.d(TAG,"begin full index");
                     songListBuildIndex.setIndexComplete(false);
                     songListBuildIndex.fullIndex(songMenuFragment.getProgressText());
                 } else {
                     // Try again in a short while
                     new Handler().postDelayed(() -> {
-                        if (songListBuildIndex!=null) {
+                        if (songListBuildIndex!=null && songMenuFragment != null && songMenuFragment.getProgressText() != null) {
+                            Log.d(TAG,"begin full index delayed");
+                            songListBuildIndex.setIndexComplete(false);
                             songListBuildIndex.fullIndex(songMenuFragment.getProgressText());
                         }
-                    }, 2000);
+                    }, 1000);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
             handler.post(() -> {
                 try {
+                    Log.d(TAG,"end full index");
                     if (songListBuildIndex != null) {
                         songListBuildIndex.setIndexRequired(false);
                         songListBuildIndex.setIndexComplete(true);
@@ -1944,6 +1948,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             }
 
         } else if (songListBuildIndex != null && songMenuFragment != null) {
+            Log.d(TAG,"1952 full rebuild");
             // This is a full rebuild
             // If sent called from another fragment the fragName and callingFragment are used to run an update listener
             songListBuildIndex.setIndexComplete(false);
@@ -2913,7 +2918,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void fullIndex() {
-        if (fullIndexRequired) {
+        if (songListBuildIndex.getIndexRequired()) {
             if (showToast == null) {
                 showToast = new ShowToast(this, myView.getRoot());
             }
@@ -2942,7 +2947,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public void quickSongMenuBuild() {
         if (storageAccess!=null && sqLiteHelper!=null && nonOpenSongSQLiteHelper!=null) {
-            fullIndexRequired = true;
             ArrayList<String> songIds = new ArrayList<>();
             try {
                 songIds = storageAccess.listSongs();
@@ -2952,13 +2956,19 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             // Write a crude text file (line separated) with the song Ids (folder/file)
             storageAccess.writeSongIDFile(songIds);
 
-            // Non persistent, created from storage at boot (to keep updated) used to references ALL files
-            // Remove existing items that don't match the new songIds
-            // If this throws an error, the database is reset
-            // TODO reinstate if not working
-            //sqLiteHelper.resetDatabase();
+            Log.d(TAG,"songIds:"+songIds);
 
-            sqLiteHelper.removeOldSongs(songIds);
+            // Non persistent, created from storage at boot (to keep updated) used to references ALL files
+            if (songListBuildIndex.getFullIndexRequired()) {
+                Log.d(TAG,"full index");
+                sqLiteHelper.resetDatabase();
+                sqLiteHelper.insertFast();
+            } else {
+                Log.d(TAG,"quick index");
+                // Remove existing items that don't match the new songIds
+                // If this throws an error, the database is reset
+                sqLiteHelper.removeOldSongs(songIds);
+            }
 
             // Persistent containing details of PDF/Image files only.  Pull in to main database at boot
             // Updated each time a file is created, deleted, moved.
@@ -2969,13 +2979,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             // This is the minimum that we need for the song menu.
             // It can be upgraded asynchronously in StageMode/PresenterMode to include author/key
             // Also will later include all the stuff for the search index as well
-            sqLiteHelper.insertFast();
-        }
-    }
 
-    @Override
-    public void setFullIndexRequired(boolean fullIndexRequired) {
-        this.fullIndexRequired = fullIndexRequired;
+        }
     }
 
 

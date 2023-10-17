@@ -467,6 +467,7 @@
     <string name="hide">Hide</string>
     <string name="highlight">Highlighter</string>
     <string name="highlight_info">Edit highlighter notes / annotations</string>
+    <string name="highlighter_low_memory">Your device was unable to create a screenshot of the song for previewing with the highlighter as it was too large.  Please try changing the autoscaling of the song to full or reducing the maximum font scaling size.</string>
     <string name="hot_zone_bottom_center">Bottom center</string>
     <string name="hot_zone_center_disabled">Top and bottom center hot zones will be disabled</string>
     <string name="hot_zone_left_disabled">Top left hot zone will be disabled</string>
@@ -494,8 +495,17 @@
     <string name="import_other" translatable="false">OpenSong, OnSong, PDF, txt, ChoPro</string>
     <string name="imported_values">Imported values</string>
     <string name="inc_autoscroll_speed">Increase Autoscroll Speed</string>
-    <string name="indexing_info">Indexing songs is required if you have edited, created or deleted songs outwith OpenSongApp (including synchronising devices) or if this is a new installation.  You can skip this if nothing has changed and speed up the boot process.</string>
-    <string name="indexing_string">Index songs</string>
+    <string name="index_songs">Index songs</string>
+    <string name="index_songs_end">Song index completed</string>
+    <string name="index_songs_error">There was an error building the song index</string>
+    <string name="index_songs_full">Full</string>
+    <string name="index_songs_full_info">Index every song in your OpenSong/Songs folder</string>
+    <string name="index_songs_info">Indexing songs is required if you have edited, created or deleted songs outwith OpenSongApp (including synchronising devices) or if this is a new installation.  You can skip this if nothing has changed and speed up the boot process.</string>
+    <string name="index_songs_quick">Quick</string>
+    <string name="index_songs_quick_info">Only index songs that have changed since the index was last built</string>
+    <string name="index_songs_rebuild">Rebuild song index</string>
+    <string name="index_songs_start">Building the song index</string>
+    <string name="index_songs_wait">Please wait until song indexing is completed</string>
     <string name="info_text">Info text</string>
     <string name="info_text_autohide">Automatically hide information bar</string>
     <string name="info_text_autohide_info">Hide once the information has been displayed and a minimum time has elapsed</string>
@@ -855,11 +865,6 @@
     <string name="scroll_up">"Scroll up</string>
     <string name="search">Search</string>
     <string name="search_biblegateway">Search BibleGateway.com</string>
-    <string name="search_index_end">Song index completed</string>
-    <string name="search_index_error">There was an error building the song index</string>
-    <string name="search_index_start">Building the song index</string>
-    <string name="search_index_wait">Please wait until song indexing is completed</string>
-    <string name="search_rebuild">Rebuild song index</string>
     <string name="section_box">Draw section box</string>
     <string name="section_box_info">Show each section of a song with a box around it (as in stage mode)</string>
     <string name="section_highlighting">Section highlighting</string>
@@ -1244,5 +1249,4 @@
     <string name="youtube" translatable="false">YouTube</string>
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zoom_level">Zoom level</string>
-    <string name="highlighter_low_memory">Your device was unable to create a screenshot of the song for previewing with the highlighter as it was too large.  Please try changing the autoscaling of the song to full or reducing the maximum font scaling size.</string>
 </resources>
