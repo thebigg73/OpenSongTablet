@@ -51,6 +51,7 @@ public class PerformanceFragment extends Fragment {
     private final String TAG = "PerformanceFragment";
     private StickyPopUp stickyPopUp;
     private ABCPopup abcPopup;
+    private Bitmap.Config bmpFormat = Bitmap.Config.ARGB_8888;
     private MainActivityInterface mainActivityInterface;
     private ActionInterface actionInterface;
     private DisplayInterface displayInterface;
@@ -414,10 +415,12 @@ public class PerformanceFragment extends Fragment {
 
     // This stuff loads the song and prepares the views
     public void doSongLoad(String folder, String filename) {
+        processingTestView = false;
         try {
             doSongLoadStartTime = System.currentTimeMillis();
             mainActivityInterface.closeDrawer(true);
 
+            Log.d(TAG,"processingTestView:"+processingTestView);
             // Make sure we only do this once (reset at the end of 'dealwithstuffafterready')
             if (!processingTestView) {
                 processingTestView = true;
@@ -1318,17 +1321,22 @@ public class PerformanceFragment extends Fragment {
                 getMyPreferenceString("songAutoScale","W").equals("N")
                 && w!=0 && h!=0) {
             try {
-                Bitmap bitmap = Bitmap.createBitmap(w, h+topPadding, Bitmap.Config.ARGB_8888);
+                Bitmap bitmap = Bitmap.createBitmap(w, h + topPadding, bmpFormat);
                 Canvas canvas = new Canvas(bitmap);
                 if (myView != null) {
-                    myView.songView.layout(0, topPadding, w, h+topPadding);
+                    myView.songView.layout(0, topPadding, w, h + topPadding);
                     myView.songView.draw(canvas);
                     Bitmap croppedBitmap = Bitmap.createBitmap(bitmap, 0, topPadding, w, h);
                     bitmap.recycle();
                     mainActivityInterface.setScreenshot(croppedBitmap);
                 }
-            } catch (Exception | OutOfMemoryError e) {
+            } catch (OutOfMemoryError e) {
+                // Change the resolution of the bitmap to a lower option
+                bmpFormat = Bitmap.Config.RGB_565;
+                mainActivityInterface.setScreenshot(null);
+            } catch (Exception e) {
                 e.printStackTrace();
+                mainActivityInterface.setScreenshot(null);
             }
         }
     }

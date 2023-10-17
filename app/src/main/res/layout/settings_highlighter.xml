@@ -34,6 +34,13 @@
                 android:value="0"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/warning"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/highlighter_low_memory"/>
+
         </LinearLayout>
     </com.garethevans.church.opensongtablet.customviews.NestedScrollWithFAB>
 

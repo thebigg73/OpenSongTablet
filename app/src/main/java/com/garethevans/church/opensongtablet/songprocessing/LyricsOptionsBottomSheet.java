@@ -109,10 +109,14 @@ public class LyricsOptionsBottomSheet extends BottomSheetDialogFragment {
         myView.textSizeDown.setOnClickListener(v -> checkTextSize(-1));
         myView.textSizeUp.setOnClickListener(v -> checkTextSize(+1));
         myView.insertSection.setOnClickListener(v -> {
-            if (openingFragment!=null) {
-                openingFragment.insertSection("[]", 1);
+            try {
+                if (openingFragment != null) {
+                    openingFragment.insertSection("[]", 1);
+                }
+                this.dismiss();
+            } catch (Exception e) {
+                mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+": \n"+e);
             }
-            this.dismiss();
         });
         myView.insertInlineMidi.setOnClickListener(view -> {
             if (openingFragment!=null) {

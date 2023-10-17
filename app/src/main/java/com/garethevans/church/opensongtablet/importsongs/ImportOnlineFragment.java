@@ -454,7 +454,6 @@ public class ImportOnlineFragment extends Fragment {
     private final ValueCallback<String> webContent = new ValueCallback<String>() {
         @Override
         public void onReceiveValue(String value) {
-            //Log.d(TAG,"value:"+value);
             JsonReader reader = new JsonReader(new StringReader(value));
             reader.setLenient(true);
 
@@ -468,9 +467,7 @@ public class ImportOnlineFragment extends Fragment {
             }
             webString = webString.replace("\r","\n");
             webString = webString.replace("</div></div>","</div>\n</div>");
-            for (String line:webString.split("\n")) {
-                Log.d(TAG,"line:"+line);
-            }
+
             showSaveButton();
         }
     };
@@ -621,9 +618,15 @@ public class ImportOnlineFragment extends Fragment {
                 newSong = boiteachansons.processContent(mainActivityInterface,newSong,webString);
                 break;
             case "eChords":
-                newSong = eChords.processContent(newSong,webString);
+                newSong = eChords.processContent(mainActivityInterface,newSong,webString);
                 break;
         }
+
+        Log.d(TAG,"title:"+newSong.getTitle());
+        Log.d(TAG,"author:"+newSong.getAuthor());
+        Log.d(TAG,"key:"+newSong.getKey());
+        Log.d(TAG,"lyrics:"+newSong.getLyrics());
+
         if (songSelectAutoDownload.equals("")) {
             setupSaveLayout();
         } else {
@@ -650,6 +653,7 @@ public class ImportOnlineFragment extends Fragment {
 
     private void setupSaveLayout() {
         showDownloadProgress(false);
+
         // Set up the save layout
         myView.saveFilename.post(() -> myView.saveFilename.setText(newSong.getFilename()));
         // Get the folders available

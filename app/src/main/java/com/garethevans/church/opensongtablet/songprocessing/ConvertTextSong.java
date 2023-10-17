@@ -127,7 +127,7 @@ public class ConvertTextSong {
 
     private String fixChordLines(String l) {
         // Look for chord lines
-        if (!l.startsWith(".") && !l.startsWith("[") && !l.startsWith(";") && !l.startsWith("-")) {
+        if (!l.trim().startsWith(".") && !l.trim().startsWith("[") && !l.trim().startsWith(";") && !l.trim().startsWith("-")) {
             // Do this by splitting the line into sections split by space
             String[] possiblechordline = l.split(" ");
             // Go through each split bit and get the length of the non empty ones.  We'll then average the lengths

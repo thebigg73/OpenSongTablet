@@ -39,12 +39,6 @@ public class UltimateGuitar {
         newSong.setKey(getKey(s));
         newSong.setCapo(getCapo(s));
 
-        Log.d(TAG,"title: "+newSong.getTitle());
-        Log.d(TAG,"author: "+newSong.getAuthor());
-        Log.d(TAG,"filname: "+newSong.getFilename());
-        Log.d(TAG,"key: "+newSong.getKey());
-        Log.d(TAG,"capo: "+newSong.getCapo());
-
         // Trim out everything around the lyrics/content
         String lyricsText = mainActivityInterface.getProcessSong().getSubstring(
                 "<div class=\"ugm-b-tab--content js-tab-content\">","<pre","</pre>",s);
@@ -88,7 +82,6 @@ public class UltimateGuitar {
                 line = " " + line;
             }
             line = mainActivityInterface.getProcessSong().removeHTMLTags(line);
-            Log.d(TAG,"processed line:"+line);
             //line = stripOutTags(line);
             line = fixHTMLStuff(line);
             lyrics.append(line).append("\n");
@@ -156,39 +149,70 @@ public class UltimateGuitar {
     }
     private String getKey(String s) {
         String key = getMetaData(s, "<div class=\"label\">Key</div>");
+        String key2 = "";
+        String key3 = "";
+        Log.d(TAG,"key:"+key);
         // Try new method looking for line: "musicalKey": "XX"
         String bit = "\"musicalKey\":";
         if (key.isEmpty() && s.contains(bit)) {
+            Log.d(TAG,"key is empty and contains musicalKey:");
             int startpos = s.indexOf(bit);
             int endpos = s.indexOf("\n",startpos);
+            Log.d(TAG,"startpos:"+startpos+"  endpos:"+endpos);
+
             if (endpos>startpos && endpos-startpos<8) {
-                key = s.substring(startpos,endpos);
-                key = key.replace(bit,"").replace("\"","").trim();
+                key2 = s.substring(startpos,endpos);
+                key2 = key2.replace(bit,"").replace("\"","").trim();
             }
+            if (!key2.isEmpty()) {
+                key = key2;
+            }
+            Log.d(TAG,"key2:"+key2);
         }
-        // Try final methods
-        String bit2 = "Key:";
+
+        // Try final method
+        String bit2 = "Key: </th><td class=\"";
         if (key.isEmpty() && s.contains(bit2)) {
+            Log.d(TAG,"key is empty and contains Key: </th><td class=\"");
+
             int startpos = s.indexOf(bit2);
-            int endpos = s.indexOf("\n",startpos);
-            if (endpos>startpos && endpos-startpos<5) {
-                key = s.substring(startpos,endpos);
-                key = key.replace(bit2,"").replace(":","").trim();
-            }
-        }
-        String bit3 = "Key :";
-        if (key.isEmpty() && s.contains(bit3)) {
-            int startpos = s.indexOf(bit3);
-            int endpos = s.indexOf("\n",startpos);
-            if (endpos>startpos && endpos-startpos<5) {
-                key = s.substring(startpos,endpos);
-                key = key.replace(bit3,"").replace(":","").trim();
+            startpos = s.indexOf("<span>",startpos);
+            if (startpos>-1) {
+                int endpos = s.indexOf("</span>", startpos);
+                Log.d(TAG,"startpos:"+startpos+"  endpos:"+endpos);
+
+                if (endpos > startpos && endpos - startpos < 15) {
+                    key3 = s.substring(startpos, endpos);
+                    key3 = stripOutTags(key3).trim();
+                }
+                if (!key3.isEmpty()) {
+                    key = key3;
+                }
+                Log.d(TAG,"key3:"+key3);
             }
         }
         return key;
     }
     private String getCapo(String s) {
-        return getMetaData(s,"<div class=\"label\">Capo</div>");
+        String capo = getMetaData(s,"<div class=\"label\">Capo</div>");
+        String capo2 = "";
+        String bit = "Capo: </th><td class=\"";
+        if (capo.isEmpty() && s.contains(bit)) {
+            int startpos = s.indexOf(bit);
+            startpos = s.indexOf("<span>", startpos);
+            if (startpos > -1) {
+                int endpos = s.indexOf("</span>", startpos);
+                if (endpos > startpos && endpos - startpos < 60) {
+                    capo2 = s.substring(startpos, endpos);
+                    capo2 = stripOutTags(capo2).trim();
+                    capo2 = capo2.replaceAll("\\D","").trim();
+                }
+                if (!capo2.isEmpty()) {
+                    capo = capo2;
+                }
+            }
+        }
+        return capo;
     }
     private Song fixChordsForCapo(Song newSong) {
         // If there is a capo, we have to transpose the song to match

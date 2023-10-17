@@ -62,6 +62,7 @@ public class HighlighterFragment extends Fragment {
             on_string = getString(R.string.on);
         }
     }
+
     private void setupViews() {
         boolean drawingAutoDisplay = mainActivityInterface.getPreferences().getMyPreferenceBoolean("drawingAutoDisplay",true);
         myView.autoShowHighlight.setChecked(drawingAutoDisplay);
@@ -71,6 +72,12 @@ public class HighlighterFragment extends Fragment {
         myView.timeToDisplayHighlighter.setLabelFormatter(value -> ((int)value)+"s");
         setHintTime(timeToDisplayHighlighter);
         hideView(myView.edit,mainActivityInterface.getMode().equals(mode_performance_string));
+        if (mainActivityInterface.getScreenshot()==null) {
+            myView.edit.hide();
+        } else {
+            myView.edit.show();
+        }
+        myView.warning.setVisibility(mainActivityInterface.getScreenshot()==null ? View.VISIBLE:View.GONE);
     }
 
     private void hideView(View view, boolean drawingAutoDisplay) {
@@ -108,7 +115,11 @@ public class HighlighterFragment extends Fragment {
 
         myView.nestedScrollView.setFabToAnimate(myView.edit);
         
-        myView.edit.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.highlighterEditFragment));
+        myView.edit.setOnClickListener(v -> {
+            if (mainActivityInterface.getScreenshot()!=null) {
+                mainActivityInterface.navigateToFragment(null, R.id.highlighterEditFragment);
+            }
+        });
     }
 
     @Override

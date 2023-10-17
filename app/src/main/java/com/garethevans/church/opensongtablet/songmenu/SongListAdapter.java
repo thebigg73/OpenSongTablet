@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet.songmenu;
 
 import android.content.Context;
 import android.os.Build;
+import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -194,6 +195,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> {
                 final String setentry = mainActivityInterface.getSetActions().getSongForSetWork(itemFolder, itemFilename, itemKey).replace("***null***","******");
 
                 songItemViewHolder.itemCard.setOnClickListener(v -> {
+                    Log.d(TAG,"item clicked:"+itemFolder+"/"+itemFilename+" ("+itemKey+")");
                     song.setFilename(itemFilename);
                     song.setFolder(itemFolder);
                     song.setKey(itemKey);

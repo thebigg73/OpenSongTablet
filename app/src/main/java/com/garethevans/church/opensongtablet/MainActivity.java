@@ -281,9 +281,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private int availableWidth=-1, availableHeight=-1;
 
     // Used if implementing Oboe using C++ injection
-    /*static {
-        System.loadLibrary("lowlatencyaudio");
-    }*/
+    /* static {System.loadLibrary("lowlatencyaudio");} */
 
     // Set up the activity
     @Override
@@ -1003,6 +1001,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         this.alreadyBackPressed = alreadyBackPressed;
     }
 
+    @SuppressWarnings("deprecation")
     public void interceptBackPressed() {
         Log.d(TAG, "interceptBackPressed");
         if (alreadyBackPressed && !settingsOpen) {
@@ -1021,6 +1020,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+                // This is deprecated, but a last ditch effort!
                 super.onBackPressed();
             }
         }
@@ -1707,22 +1707,23 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     public void lockDrawer(boolean lock) {
         // This is done whenever we have a settings window open
         if (myView != null) {
-            if (lock) {
-                myView.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-            } else {
-                myView.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-            }
-
+            myView.drawerLayout.post(()-> {
+                if (lock) {
+                    myView.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+                } else {
+                    myView.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+                }
+            });
         }
     }
 
     @Override
     public void closeDrawer(boolean close) {
         if (close) {
-            myView.drawerLayout.closeDrawer(GravityCompat.START);
+            myView.drawerLayout.post(() -> myView.drawerLayout.closeDrawer(GravityCompat.START));
             menuOpen = false;
         } else {
-            myView.drawerLayout.openDrawer(GravityCompat.START);
+            myView.drawerLayout.post(() -> myView.drawerLayout.openDrawer(GravityCompat.START));
             menuOpen = true;
         }
         // Hide the keyboard
@@ -2495,6 +2496,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 }
             } else {
                 if (performanceValid()) {
+                    Log.d(TAG,"calling performanceFragment.doSongLoad("+folder+","+filename+")");
                     performanceFragment.doSongLoad(folder, filename);
                 } else {
                     navigateToFragment(null, R.id.performanceFragment);
@@ -2950,14 +2952,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             // Write a crude text file (line separated) with the song Ids (folder/file)
             storageAccess.writeSongIDFile(songIds);
 
-            // Remove existing items that don't match the new songIds
-            sqLiteHelper.removeOldSongs(songIds);
-
-            // Try to create the basic databases
             // Non persistent, created from storage at boot (to keep updated) used to references ALL files
-
+            // Remove existing items that don't match the new songIds
+            // If this throws an error, the database is reset
             // TODO reinstate if not working
             //sqLiteHelper.resetDatabase();
+
+            sqLiteHelper.removeOldSongs(songIds);
 
             // Persistent containing details of PDF/Image files only.  Pull in to main database at boot
             // Updated each time a file is created, deleted, moved.
@@ -3264,8 +3265,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void setScreenshot(Bitmap bitmap) {
-        screenShot = Bitmap.createBitmap(bitmap);
-        bitmap.recycle();
+        if (bitmap!=null) {
+            screenShot = Bitmap.createBitmap(bitmap);
+            bitmap.recycle();
+        } else {
+            screenShot = null;
+        }
     }
 
     @Override

@@ -351,7 +351,7 @@
         <item name="paddingBottomSystemWindowInsets">true</item>
     </style>
 
-    <style name="popupWindow">
+    <style name="popupWindow" parent="">
         <item name="contentPadding">24dp</item>
         <item name="cardCornerRadius">16dp</item>
         <item name="android:layout_margin">16dp</item>
@@ -404,7 +404,7 @@
         <item name="shapeAppearanceOverlay">@style/ButtonOverlay</item>
         <item name="materialThemeOverlay">@style/ButtonThemeOverlay</item>
     </style>
-    <style name="ButtonOverlay">
+    <style name="ButtonOverlay" parent="">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSizeTopRight">8dp</item>
         <item name="cornerSizeBottomRight">8dp</item>
@@ -421,7 +421,7 @@
     <style name="LeftButton" parent="TextBackgroundButton">
         <item name="shapeAppearanceOverlay">@style/LeftButtonOverlay</item>
     </style>
-    <style name="LeftButtonOverlay">
+    <style name="LeftButtonOverlay" parent="">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSizeTopRight">0dp</item>
         <item name="cornerSizeBottomRight">0dp</item>
@@ -431,7 +431,7 @@
     <style name="RightButton" parent="TextBackgroundButton">
         <item name="shapeAppearanceOverlay">@style/RightButtonOverlay</item>
     </style>
-    <style name="RightButtonOverlay">
+    <style name="RightButtonOverlay" parent="">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSizeTopRight">8dp</item>
         <item name="cornerSizeBottomRight">8dp</item>
@@ -441,7 +441,7 @@
     <style name="MiddleButton" parent="TextBackgroundButton">
         <item name="shapeAppearanceOverlay">@style/MiddleButtonOverlay</item>
     </style>
-    <style name="MiddleButtonOverlay">
+    <style name="MiddleButtonOverlay" parent="">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSizeTopRight">0dp</item>
         <item name="cornerSizeBottomRight">0dp</item>
@@ -453,12 +453,12 @@
         <item name="android:textSize">@dimen/text_xlarge</item>
     </style>
 
-    <style name="helperText">
+    <style name="helperText" parent="">
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/vlightgrey</item>
     </style>
 
-    <style name="progressBarOnPrimary">
+    <style name="progressBarOnPrimary" parent="">
         <item name="android:background">@color/colorPrimary</item>
         <item name="android:alpha">0.8</item>
     </style>

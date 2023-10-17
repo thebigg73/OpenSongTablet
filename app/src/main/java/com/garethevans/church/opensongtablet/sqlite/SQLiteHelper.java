@@ -178,6 +178,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
                     folderVal, artistVal, keyVal, tagVal, filterVal, titleVal, songMenuSortTitles);
         } catch (OutOfMemoryError | Exception e) {
             Log.d(TAG,"Table doesn't exist");
+            resetDatabase();
             return new ArrayList<>();
         }
     }

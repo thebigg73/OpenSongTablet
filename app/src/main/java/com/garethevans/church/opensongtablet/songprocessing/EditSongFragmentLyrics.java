@@ -118,11 +118,11 @@ public class EditSongFragmentLyrics extends Fragment {
             mainActivityInterface.getStorageAccess().isIMGorPDF(mainActivityInterface.getSong());
         }
 
-        if ((Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP &&
+        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP &&
                 mainActivityInterface.getSong() != null &&
                 mainActivityInterface.getSong().getFiletype() != null &&
-                mainActivityInterface.getSong().getFiletype().equals("PDF")) ||
-                mainActivityInterface.getSong().getFiletype().equals("IMG")) {
+                (mainActivityInterface.getSong().getFiletype().equals("PDF") ||
+                mainActivityInterface.getSong().getFiletype().equals("IMG"))) {
             // Show the OCR button
             myView.ocr.post(() -> myView.ocr.setVisibility(View.VISIBLE));
             myView.imageEdit.post(() -> myView.imageEdit.setVisibility(View.VISIBLE));
@@ -328,21 +328,25 @@ public class EditSongFragmentLyrics extends Fragment {
         myView.lyrics.setTextSize(editTextSize);
     }
     public void insertSection(String bitToAdd, int moveCursorBy) {
-        // This comes from the bottom sheet
-        // Try to get the current text position
-        String text = myView.lyrics.getText().toString();
-        if (text.length()>cursorPos && cursorPos!=-1) {
-            text = text.substring(0, cursorPos) + bitToAdd + "\n" + text.substring(cursorPos);
-            myView.lyrics.setText(text);
-        }
-        // Setting the position should open the keyboard
-        myView.lyrics.requestFocus();
-        myView.lyrics.setSelection(cursorPos+moveCursorBy);
-        // Also do this in 1 second time to allow for keyboard opening
-        myView.lyrics.postDelayed(() -> myView.lyrics.setSelection(cursorPos+moveCursorBy),1000);
+        try {
+            // This comes from the bottom sheet
+            // Try to get the current text position
+            String text = myView.lyrics.getText().toString();
+            if (text.length() > cursorPos && cursorPos != -1) {
+                text = text.substring(0, cursorPos) + bitToAdd + "\n" + text.substring(cursorPos);
+                myView.lyrics.setText(text);
+            }
+            // Setting the position should open the keyboard
+            myView.lyrics.requestFocus();
+            myView.lyrics.setSelection(cursorPos + moveCursorBy);
+            // Also do this in 1 second time to allow for keyboard opening
+            myView.lyrics.postDelayed(() -> myView.lyrics.setSelection(cursorPos + moveCursorBy), 1000);
 
-        mainActivityInterface.getWindowFlags().showKeyboard();
-        manualScrollTo();
+            mainActivityInterface.getWindowFlags().showKeyboard();
+            manualScrollTo();
+        } catch (Exception e) {
+            mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+": \n"+e);
+        }
     }
 
     public void transpose(String direction) {
