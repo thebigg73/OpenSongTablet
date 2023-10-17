@@ -185,8 +185,6 @@ public class PerformanceFragment extends Fragment {
         // Load in preferences
         loadPreferences();
 
-        Log.d(TAG,"mainActivityInterface.getSongListBuildIndex().getIndexRequired():"+mainActivityInterface.getSongListBuildIndex().getIndexRequired());
-        Log.d(TAG,"mainActivityInterface.getSongListBuildIndex().getCurrentlyIndexing():"+mainActivityInterface.getSongListBuildIndex().getCurrentlyIndexing());
         // Prepare the song menu (will be called again after indexing from the main activity index songs)
         if (mainActivityInterface.getSongListBuildIndex().getIndexRequired() &&
                 !mainActivityInterface.getSongListBuildIndex().getCurrentlyIndexing()) {
@@ -422,7 +420,6 @@ public class PerformanceFragment extends Fragment {
             doSongLoadStartTime = System.currentTimeMillis();
             mainActivityInterface.closeDrawer(true);
 
-            Log.d(TAG,"processingTestView:"+processingTestView);
             // Make sure we only do this once (reset at the end of 'dealwithstuffafterready')
             if (!processingTestView) {
                 processingTestView = true;

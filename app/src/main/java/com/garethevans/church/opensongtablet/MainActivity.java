@@ -356,8 +356,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         fileOpenIntent = getIntent();
         onNewIntent(fileOpenIntent);
 
-        Log.d(TAG,"myView:"+myView);
-
         if (myView == null) {
             myView = ActivityBinding.inflate(getLayoutInflater());
         }
@@ -1851,28 +1849,22 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void indexSongs() {
-        Log.d(TAG,"indexSongs()");
-
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             Handler handler = new Handler(Looper.getMainLooper());
             try {
                 handler.post(() -> {
-                    Log.d(TAG,"startIndexing");
-
                     if (showToast != null && search_index_start != null) {
                         showToast.doIt(search_index_start);
                     }
                 });
                 if (songListBuildIndex != null && songMenuFragment != null && songMenuFragment.getProgressText() != null) {
-                    Log.d(TAG,"begin full index");
                     songListBuildIndex.setIndexComplete(false);
                     songListBuildIndex.fullIndex(songMenuFragment.getProgressText());
                 } else {
                     // Try again in a short while
                     new Handler().postDelayed(() -> {
                         if (songListBuildIndex!=null && songMenuFragment != null && songMenuFragment.getProgressText() != null) {
-                            Log.d(TAG,"begin full index delayed");
                             songListBuildIndex.setIndexComplete(false);
                             songListBuildIndex.fullIndex(songMenuFragment.getProgressText());
                         }
@@ -1883,7 +1875,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             }
             handler.post(() -> {
                 try {
-                    Log.d(TAG,"end full index");
                     if (songListBuildIndex != null) {
                         songListBuildIndex.setIndexRequired(false);
                         songListBuildIndex.setIndexComplete(true);
@@ -1930,7 +1921,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void updateSongMenu(String fragName, Fragment callingFragment, ArrayList<String> arguments) {
-        Log.d(TAG,"updateSongMenu");
         // If the fragName is menuSettingsFragment, we just want to change the alpha index view
         if (fragName != null && fragName.equals("menuSettingsFragment")) {
             if (songMenuFragment != null) {
@@ -1948,7 +1938,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             }
 
         } else if (songListBuildIndex != null && songMenuFragment != null) {
-            Log.d(TAG,"1952 full rebuild");
             // This is a full rebuild
             // If sent called from another fragment the fragName and callingFragment are used to run an update listener
             songListBuildIndex.setIndexComplete(false);
@@ -2501,7 +2490,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 }
             } else {
                 if (performanceValid()) {
-                    Log.d(TAG,"calling performanceFragment.doSongLoad("+folder+","+filename+")");
                     performanceFragment.doSongLoad(folder, filename);
                 } else {
                     navigateToFragment(null, R.id.performanceFragment);
@@ -2669,7 +2657,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         if (agree) {
             boolean result = false;
             boolean allowToast = true;
-            Log.d(TAG,"what:"+what);
 
             switch (what) {
                 case "deleteSong":
@@ -2788,12 +2775,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 case "cropImage":
                     Uri tempUri = getStorageAccess().getUriForItem("Export","",song.getFilename());
                     Uri songUri = getStorageAccess().getUriForItem("Songs",song.getFolder(),song.getFilename());
-                    Log.d(TAG,"cropImage tempUri:"+tempUri);
-                    Log.d(TAG,"cropImage songUri:"+songUri);
                     InputStream inputStream = getStorageAccess().getInputStream(tempUri);
                     OutputStream outputStream = getStorageAccess().getOutputStream(songUri);
                     boolean copied = getStorageAccess().copyFile(inputStream,outputStream);
-                    Log.d(TAG,"copied:"+copied);
                     // Copy the cropped image to the original one
                     if (copied) {
                         // Copy was successful, so delete the temp file
@@ -2956,15 +2940,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             // Write a crude text file (line separated) with the song Ids (folder/file)
             storageAccess.writeSongIDFile(songIds);
 
-            Log.d(TAG,"songIds:"+songIds);
-
             // Non persistent, created from storage at boot (to keep updated) used to references ALL files
             if (songListBuildIndex.getFullIndexRequired()) {
-                Log.d(TAG,"full index");
                 sqLiteHelper.resetDatabase();
                 sqLiteHelper.insertFast();
             } else {
-                Log.d(TAG,"quick index");
                 // Remove existing items that don't match the new songIds
                 // If this throws an error, the database is reset
                 sqLiteHelper.removeOldSongs(songIds);
@@ -3377,7 +3357,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     } else {
                         // Searching.  May not be using Google/Chrome, so use default search engine
                         // Replace the location with the search phrase (strip out the google.com/search?q= bit)
-                        Log.d(TAG,"Opening default web search");
                         intent = new Intent(Intent.ACTION_WEB_SEARCH);
                         intent.putExtra(SearchManager.QUERY, location.replace("https://www.google.com/search?q=",""));
                     }
@@ -3553,7 +3532,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void loadSong() {
-        Log.d(TAG,"loadSong()");
         // If we are not in a settings window, load the song
         // Otherwise it will happen when the user closes the settings fragments
         if (!settingsOpen) {
@@ -3715,8 +3693,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             outState.putStringArrayList("connectedEndpoints", nearbyConnections.getConnectedEndpoints());
         }
         super.onSaveInstanceState(outState);
-        Log.d(TAG, "bootupcompleted:" + bootUpCompleted);
-        Log.d(TAG, "indexComplete:" + songListBuildIndex.getIndexComplete());
     }
 
     @Override
@@ -3753,7 +3729,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             metronome.initialiseMetronome();
         }
 
-        Log.d(TAG,"song.getFolder():"+song.getFolder()+"  song.getFilename():"+song.getFilename());
         super.onResume();
     }
 

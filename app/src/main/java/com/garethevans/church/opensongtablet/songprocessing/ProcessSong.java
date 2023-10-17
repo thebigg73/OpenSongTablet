@@ -1470,9 +1470,9 @@ public class ProcessSong {
         ArrayList<String> newSections = new ArrayList<>();
         ArrayList<String> newHeaders = new ArrayList<>();
 
-        if (mainActivityInterface.getPresenterSettings().getUsePresentationOrder() &&
+        if ((mainActivityInterface.getPresenterSettings().getUsePresentationOrder() &&
                 song.getPresentationorder() != null && !song.getPresentationorder().isEmpty() &&
-            !(multiLineVerseKeepCompact && isMultiLineFormatSong(song.getLyrics()))) {
+            !(multiLineVerseKeepCompact && isMultiLineFormatSong(song.getLyrics())))) {
             try {
                 // Update to match the presentation order
                 StringBuilder tempPresentationOrder = new StringBuilder(song.getPresentationorder() + " ");
@@ -1546,6 +1546,7 @@ public class ProcessSong {
                 e.printStackTrace();
             }
         }
+
         // If a non empty presentation order then set, otherwise return normal order
         if (newSections.size() > 0) {
             song.setPresoOrderSongSections(newSections);
@@ -1553,6 +1554,48 @@ public class ProcessSong {
         } else {
             song.setPresoOrderSongSections(song.getGroupedSections());
             song.setPresoOrderSongHeadings(song.getSongSectionHeadings());
+        }
+    }
+
+    private void checkFilteringForSections(Song song) {
+        boolean filterSections = mainActivityInterface.getPreferences().getMyPreferenceBoolean("filterSections",false);
+        if (filterSections) {
+            boolean hasFilters = song.getLyrics().contains("[*");
+            boolean filterShow = mainActivityInterface.getPreferences().getMyPreferenceBoolean("filterShow", false);
+            String filterText = mainActivityInterface.getPreferences().getMyPreferenceString("filterText","");
+            if (hasFilters && !filterText.isEmpty()) {
+                StringBuilder stringBuilder = new StringBuilder();
+                for (String filter:filterText.split("\n")) {
+                    stringBuilder.append("*").append(filter).append(": ");
+                }
+                filterText = stringBuilder.toString();
+                // Go through each section and remove if required
+                ArrayList<String> newHeaders = new ArrayList<>();
+                ArrayList<String> newSections = new ArrayList<>();
+
+                for (int a = 0; a < song.getPresoOrderSongSections().size(); a++) {
+                    // Check we aren't filtering this out!
+                    String header = song.getPresoOrderSongHeadings().get(a);
+                    boolean keepSection = true;
+                    if (header!=null && header.startsWith("*") && header.contains(":")) {
+                        header = header.substring(0,header.indexOf(":"))+":";
+                        if (filterText.contains(header)) {
+                            keepSection = filterShow;
+                        } else {
+                            keepSection = !filterShow;
+                        }
+                    }
+
+                    // Add the section under the following conditions:
+                    if (keepSection) {
+                        newSections.add(song.getPresoOrderSongSections().get(a));
+                        newHeaders.add(header);
+                    }
+                }
+
+                song.setPresoOrderSongHeadings(newHeaders);
+                song.setPresoOrderSongSections(newSections);
+            }
         }
     }
 
@@ -1847,9 +1890,7 @@ public class ProcessSong {
                 mainActivityInterface.getMode().equals(c.getString(R.string.mode_presenter));
         boolean performance = mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance));
         if (stageOrPresenter || (performance && trimSections)) {
-        /*if (!mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance))  ||
-                (!presentation && trimSections)) {
-        */
+
                 lyrics = lyrics
                     // We protect the leading space of lyric lines
                     // --- Simplify empty lyric lines... the replace is needed twice
@@ -1903,6 +1944,9 @@ public class ProcessSong {
 
         // 15. Put into presentation order when required
         matchPresentationOrder(song);
+
+        // 16. Check for filtered sections
+        checkFilteringForSections(song);
 
         // Reset the spannable brackets here as we are just starting processing
         bracketsOpen = false;
