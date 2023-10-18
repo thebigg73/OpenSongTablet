@@ -151,7 +151,8 @@ public class SongListBuildIndex {
 
                             // Now try to get the file as an xml.  If it encounters an error, it is treated in the catch statements
                             // We only do this if we either need to update (newer than last database), or fullIndexing
-                            if (filenameIsOk(mainActivityInterface.getIndexingSong().getFilename()) && (needToUpdate || fullIndexRequired)) {
+                            // Both are caught now by the needToUpdate boolean
+                            if (filenameIsOk(mainActivityInterface.getIndexingSong().getFilename()) && needToUpdate) {
                                 try {
                                     // All going well all the other details for sqLite are now set!
 
@@ -179,7 +180,6 @@ public class SongListBuildIndex {
                                     // Unknown
                                     mainActivityInterface.getIndexingSong().setFiletype("?");
                                 }
-
                             }
 
                             if (needToUpdate || fullIndexRequired) {
@@ -333,6 +333,5 @@ public class SongListBuildIndex {
 
         return thisSong;
     }
-
 
 }

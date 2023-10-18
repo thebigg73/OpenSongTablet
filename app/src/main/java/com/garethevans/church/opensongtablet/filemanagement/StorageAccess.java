@@ -773,7 +773,7 @@ public class StorageAccess {
     public boolean checkModifiedDate_SAF(Uri uri) {
         if (uri!=null && uri.getPath()!=null) {
             try {
-                return DocumentFile.fromSingleUri(c,uri).lastModified() > databaseLastUpdate;
+                return (DocumentFile.fromSingleUri(c, uri).lastModified() > databaseLastUpdate);
             } catch (Exception e) {
                 e.printStackTrace();
             }

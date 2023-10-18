@@ -235,25 +235,27 @@ public class CurrentSet {
     }
 
     public void swapPositions(int fromPosition, int toPosition) {
-        // Get the values
-        String from_item = setItems.get(fromPosition);
-        String from_filename = setFilenames.get(fromPosition);
-        String from_folder = setFolders.get(fromPosition);
-        String from_key = setKeys.get(fromPosition);
-        String to_item = setItems.get(toPosition);
-        String to_filename = setFilenames.get(toPosition);
-        String to_folder = setFolders.get(toPosition);
-        String to_key = setKeys.get(toPosition);
+        if (setItems!=null && setItems.size()>fromPosition && setItems.size()>toPosition) {
+            // Get the values
+            String from_item = setItems.get(fromPosition);
+            String from_filename = setFilenames.get(fromPosition);
+            String from_folder = setFolders.get(fromPosition);
+            String from_key = setKeys.get(fromPosition);
+            String to_item = setItems.get(toPosition);
+            String to_filename = setFilenames.get(toPosition);
+            String to_folder = setFolders.get(toPosition);
+            String to_key = setKeys.get(toPosition);
 
-        // Update the values to their new locations
-        setItems.set(fromPosition,to_item);
-        setItems.set(toPosition,from_item);
-        setFilenames.set(fromPosition,to_filename);
-        setFilenames.set(toPosition,from_filename);
-        setFolders.set(fromPosition,to_folder);
-        setFolders.set(toPosition,from_folder);
-        setKeys.set(fromPosition,to_key);
-        setKeys.set(toPosition,from_key);
+            // Update the values to their new locations
+            setItems.set(fromPosition, to_item);
+            setItems.set(toPosition, from_item);
+            setFilenames.set(fromPosition, to_filename);
+            setFilenames.set(toPosition, from_filename);
+            setFolders.set(fromPosition, to_folder);
+            setFolders.set(toPosition, from_folder);
+            setKeys.set(fromPosition, to_key);
+            setKeys.set(toPosition, from_key);
+        }
     }
     public void addToCurrentSetString(String item) {
         setCurrent = setCurrent + item;

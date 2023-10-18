@@ -256,6 +256,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                 songButtonActive = false;
                 Handler h = new Handler();
                 h.postDelayed(() -> songButtonActive = true, 600);
+                longClickFilename = mainActivityInterface.getSong().getFilename();
                 showActionDialog();
             }
         });
