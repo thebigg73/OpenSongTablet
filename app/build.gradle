@@ -82,7 +82,7 @@ android {
 dependencies {
     implementation 'androidx.activity:activity:1.8.0'                              // Required for activity and permission requests
     implementation 'androidx.fragment:fragment:1.6.1'                                   // Using fragments and navigation
-    implementation 'com.google.android.material:material:1.11.0-alpha03'                // Required for material design goodness
+    implementation 'com.google.android.material:material:1.11.0-beta01'                // Required for material design goodness
     //implementation "androidx.compose.material:material:1.4.3"                         // Can upgrade theme to Material3 once I remove support for KitKat
     implementation 'com.google.android.gms:play-services-cast:21.3.0'                   // For casting obviously!
     implementation 'com.google.android.gms:play-services-cast-framework:21.3.0'         // For casting obviously!
@@ -90,7 +90,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-nearby:19.0.0'                 // For Google Nearby Connect devices
     implementation 'com.google.android.gms:play-services-mlkit-text-recognition:19.0.0' // For OCR text recognition (PDF/Camera)
     implementation 'androidx.recyclerview:recyclerview-selection:1.1.0'                 // RecyclerView (obviously)
-    implementation 'androidx.recyclerview:recyclerview:1.3.1'                           // RecyclerView (obviously)
+    implementation 'androidx.recyclerview:recyclerview:1.3.2'                           // RecyclerView (obviously)
     implementation 'androidx.gridlayout:gridlayout:1.0.0'                               // GridLayout (obviously)
     implementation 'androidx.appcompat:appcompat:1.6.1'                                 // Allows access to app: features for older devices
     implementation 'androidx.cardview:cardview:1.0.0'                                   // Cardview for recycler list items
