@@ -77,10 +77,6 @@ public class Song implements Serializable {
     private int pdfPageCount = 0;
     private boolean showstartofpdf = true;
     private String songXML;
-    private int halfSplit;
-    private int thirdSplit;
-    private int twoThirdSplit;
-    private boolean scalingFiguredOut = false;
     private boolean currentlyLoading = false; // true when song starts loading, false once displayed
     private boolean editingAsChoPro = false;
 
@@ -176,13 +172,7 @@ public class Song implements Serializable {
             return new ArrayList<>();
         }
     }
-    public ArrayList<String> getSongSectionTypes() {
-        if (songSectionTypes!=null) {
-            return songSectionTypes;
-        } else {
-            return new ArrayList<>();
-        }
-    }
+
     public ArrayList<String> getSongSectionHeadings() {
         if (songSectionHeadings!=null) {
             return songSectionHeadings;
@@ -216,7 +206,7 @@ public class Song implements Serializable {
     public SparseIntArray getLyricsUndoCursorPos() {
         return lyricsUndoCursorPos;
     }
-    public boolean getIsImageSlide() {return isImageSlide;}
+
     public int getPdfPageCurrent() {return pdfPageCurrent;}
     public int getPdfPageCount() {
         return pdfPageCount;
@@ -240,21 +230,7 @@ public class Song implements Serializable {
     public boolean getHasExtraStuff() {
         return hasExtraStuff;
     }
-    public int getHalfSplit() {
-        return halfSplit;
-    }
-    public int getThirdSplit() {
-        return thirdSplit;
-    }
-    public int getTwoThirdSplit() {
-        return twoThirdSplit;
-    }
-    public boolean getScalingFiguredOut() {
-        return scalingFiguredOut;
-    }
-    public boolean getCurrentlyLoading() {
-        return currentlyLoading;
-    }
+
     public boolean getEditingAsChoPro() {
         return editingAsChoPro;
     }
@@ -353,9 +329,7 @@ public class Song implements Serializable {
     public void setSongSections(ArrayList<String> songSections) {
         this.songSections = songSections;
     }
-    public void setSongSectionTypes(ArrayList<String> songSectionTypes) {
-        this.songSectionTypes = songSectionTypes;
-    }
+
     public void setSongSectionHeadings(ArrayList<String> songSectionHeadings) {
         this.songSectionHeadings = songSectionHeadings;
     }
@@ -384,7 +358,7 @@ public class Song implements Serializable {
     public void setLyricsUndosPos(int lyricsUndosPos) {
         this.lyricsUndosPos = lyricsUndosPos;
     }
-    public void setIsImageSlide(boolean isImageSlide) {this.isImageSlide = isImageSlide;}
+
     public void setPdfPageCurrent(int pdfPageCurrent) {
         this.pdfPageCurrent = pdfPageCurrent;
     }
@@ -408,18 +382,7 @@ public class Song implements Serializable {
     public void setSongXML(String songXML) {
         this.songXML = songXML;
     }
-    public void setHalfSplit(int halfSplit) {
-        this.halfSplit = halfSplit;
-    }
-    public void setThirdSplit(int thirdSplit) {
-        this.thirdSplit = thirdSplit;
-    }
-    public void setTwoThirdSplit(int twoThirdSplit) {
-        this.twoThirdSplit = twoThirdSplit;
-    }
-    public void setScalingFiguredOut(boolean scalingFiguredOut) {
-        this.scalingFiguredOut = scalingFiguredOut;
-    }
+
     public void setCurrentlyLoading(boolean currentlyLoading) {
         this.currentlyLoading = currentlyLoading;
     }
@@ -494,14 +457,12 @@ public class Song implements Serializable {
         this.showstartofpdf = toCopy.showstartofpdf;
         this.presentationorder = toCopy.presentationorder;
         this.songXML = toCopy.songXML;
-        this.halfSplit = toCopy.halfSplit;
-        this.thirdSplit = toCopy.thirdSplit;
-        this.twoThirdSplit = toCopy.twoThirdSplit;
-        this.scalingFiguredOut = toCopy.scalingFiguredOut;
         this.currentlyLoading = toCopy.currentlyLoading;
         this.lyricsUndos = toCopy.lyricsUndos;
         this.lyricsUndosPos = toCopy.lyricsUndosPos;
         this.editingAsChoPro = toCopy.editingAsChoPro;
+        this.inlineMidiMessages = toCopy.inlineMidiMessages;
+        this.lyricsUndoCursorPos = toCopy.lyricsUndoCursorPos;
     }
 
     // The welcome song if there is a problem

@@ -266,7 +266,7 @@ public class SetTypeFace {
             // Split the returned JSON into lines
             String[] lines = response.split("\n");
 
-            if (lines.length > 0 ) {
+            if (lines.length > 0) {
                 for (String line : lines) {
                     if (line.contains("\"family\":")) {
                         line = line.replace("\"family\"", "");

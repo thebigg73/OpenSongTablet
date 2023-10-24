@@ -179,7 +179,6 @@ public class MyMaterialEditText extends LinearLayout implements View.OnTouchList
         //setLongClickKeyboard();
     }
 
-
     public void setEndIconMode(int endIconMode) {
         this.endIconMode = endIconMode;
         textInputLayout.setEndIconMode(endIconMode);

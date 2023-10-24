@@ -65,16 +65,24 @@ public class EditSongFragmentTags extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        updateViews();
     }
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         myView = EditSongTagsBinding.inflate(inflater, container, false);
 
+        updateViews();
+        return myView.getRoot();
+    }
+
+    private void updateViews() {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             prepareStrings();
 
+            Log.d(TAG,"song.getTheme:"+mainActivityInterface.getSong().getTheme());
+            Log.d(TAG,"tempSong.getTheme:"+mainActivityInterface.getTempSong().getTheme());
             // Set up the current values
             setupValues();
 
@@ -85,23 +93,21 @@ public class EditSongFragmentTags extends Fragment {
                 myView.getRoot().requestFocus();
             });
         });
-
-        return myView.getRoot();
     }
-
     private void prepareStrings() {
         if (getContext()!=null) {
             search_index_wait_string = getString(R.string.index_songs_wait);
         }
     }
+
     private void setupValues() {
         tagsBottomSheet = new TagsBottomSheet(this,"EditSongFragmentTags");
         presentationOrderBottomSheet = new PresentationOrderBottomSheet(this, "EditSongFragmentTags");
         myView.tags.post(() -> {
-            myView.tags.setFocusable(false);
             mainActivityInterface.getProcessSong().editBoxToMultiline(myView.tags);
-            myView.tags.setText(themesSplitByLine());
             mainActivityInterface.getProcessSong().stretchEditBoxToLines(myView.tags,2);
+            myView.tags.setText(themesSplitByLine());
+            myView.tags.setFocusable(false);
         });
 
         myView.aka.post(() -> myView.aka.setText(mainActivityInterface.getTempSong().getAka()));
@@ -222,11 +228,11 @@ public class EditSongFragmentTags extends Fragment {
         public void afterTextChanged(Editable editable) {
             switch (what) {
                 case "tags":
-                    mainActivityInterface.getTempSong().setTheme(getThemesFromLines(editable.toString()));
+                    mainActivityInterface.getProcessSong().editBoxToMultiline(myView.tags);
                     mainActivityInterface.getProcessSong().stretchEditBoxToLines(myView.tags,2);
+                    mainActivityInterface.getTempSong().setTheme(getThemesFromLines(editable.toString()));
                     break;
                 case "aka":
-                    Log.d(TAG,"Setting aka:"+editable.toString());
                     mainActivityInterface.getTempSong().setAka(editable.toString());
                     break;
                 case "user1":
@@ -256,6 +262,7 @@ public class EditSongFragmentTags extends Fragment {
 
     private String themesSplitByLine() {
         String themes = mainActivityInterface.getTempSong().getTheme();
+        Log.d(TAG,"themes:"+themes);
         if (themes==null) {
             themes = "";
         }
@@ -265,6 +272,7 @@ public class EditSongFragmentTags extends Fragment {
     }
 
     private String getThemesFromLines(String lines) {
+        Log.d(TAG,"getThemesFromLines(\""+lines+"\")");
         String[] newLines = lines.split("\n");
         StringBuilder newTheme = new StringBuilder();
         for (String newLine:newLines) {
