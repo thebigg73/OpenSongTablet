@@ -36,8 +36,8 @@ android {
         targetSdkVersion 34
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
-        versionCode 361
-        versionName '6.0.0_beta36'
+        versionCode 362
+        versionName '6.0.0_beta37'
         /*externalNativeBuild {
             cmake {
                 arguments "-DANDROID_STL=c++_shared"
@@ -80,9 +80,9 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.activity:activity:1.8.0'                              // Required for activity and permission requests
+    implementation 'androidx.activity:activity:1.8.0'                                   // Required for activity and permission requests
     implementation 'androidx.fragment:fragment:1.6.1'                                   // Using fragments and navigation
-    implementation 'com.google.android.material:material:1.11.0-beta01'                // Required for material design goodness
+    implementation 'com.google.android.material:material:1.11.0-beta01'                 // Required for material design goodness
     //implementation "androidx.compose.material:material:1.4.3"                         // Can upgrade theme to Material3 once I remove support for KitKat
     implementation 'com.google.android.gms:play-services-cast:21.3.0'                   // For casting obviously!
     implementation 'com.google.android.gms:play-services-cast-framework:21.3.0'         // For casting obviously!
@@ -111,8 +111,8 @@ dependencies {
     implementation 'org.nanohttpd:nanohttpd:2.3.1'                                      // For a webserver to display songs for non OpenSongApp users
     implementation("com.vanniktech:android-image-cropper:4.5.0")                        // For image cropping/rotation
     implementation 'com.google.zxing:core:3.5.2'                                        // To generate QR code
-    implementation 'com.gu.android:toolargetool:0.3.0'
-    //implementation 'com.google.oboe:oboe:1.7.0'                                         // Low latency audio
+    implementation 'com.gu.android:toolargetool:0.3.0'                                  // To attempt to log transaction too large crashes
+    //implementation 'com.google.oboe:oboe:1.7.0'                                       // Low latency audio
 
     // To include jar libraries
     implementation fileTree(dir: 'libs', include: ['*.jar'])

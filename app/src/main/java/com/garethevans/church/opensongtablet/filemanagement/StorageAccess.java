@@ -62,7 +62,7 @@ public class StorageAccess {
 
     private final Context c;
     private final MainActivityInterface mainActivityInterface;
-    private boolean fileWriteLog = true, fileViewLog = true;
+    private boolean fileWriteLog, fileViewLog;
     public final String appFolder = "OpenSong";
     private final String TAG = "StorageAccess";
     private final String[] rootFolders = {"Backgrounds", "Export", "Fonts", "Highlighter", "Images", "Media",
@@ -70,7 +70,7 @@ public class StorageAccess {
             "Sets", "Settings", "Slides", "Songs", "Variations", "Backups"};
     private final String[] cacheFolders = {"Backgrounds/_cache", "Images/_cache", "Notes/_cache",
             "OpenSong Scripture/_cache", "Scripture/_cache", "Slides/_cache", "Variations/_cache"};
-    private Uri uriTree = null, uriTreeHome = null; // This is the home folder.  Set as required from preferences.
+    private Uri uriTreeHome = null; // This is the home folder.  Set as required from preferences.
 
     private DocumentFile uriTreeDF, songsDF;
     private long databaseLastUpdate;
@@ -149,7 +149,7 @@ public class StorageAccess {
                 uri = null;
             } else {
                 uri = df.getUri();
-                uriTree = uri;
+                //uriTree = uri;
             }
 
             // If uri doesn't end with /OpenSong/, fix that
@@ -182,9 +182,6 @@ public class StorageAccess {
         return Uri.fromFile(f);
     }
 
-    public void setUriTree(Uri uriTree) {
-        this.uriTree = uriTree;
-    }
     public void setUriTreeHome(Uri uriTreeHome) {
         this.uriTreeHome = uriTreeHome;
     }
@@ -511,7 +508,7 @@ public class StorageAccess {
             // IV: Exclude raw storage
             if (text.startsWith("/tree/raw:") || text.startsWith("/tree/msd:")) {
                 uri = null;
-                uriTree = null;
+                //uriTree = null;
                 uriTreeHome = null;
             }
         }
@@ -2101,7 +2098,7 @@ public class StorageAccess {
             f = new File(f, subfolder);
         }
         File[] fs = f.listFiles();
-        if (fs != null && fs.length > 0) {
+        if (fs != null) {
             for (File fi : fs) {
                 if (fi.isFile()) {
                     al.add(fi.getName());

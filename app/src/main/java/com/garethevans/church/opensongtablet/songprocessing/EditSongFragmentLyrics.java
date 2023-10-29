@@ -66,16 +66,20 @@ public class EditSongFragmentLyrics extends Fragment {
 
         ExecutorService executor = Executors.newSingleThreadExecutor();
         executor.execute(() -> {
-            prepareStrings();
-            setupValues();
+            try {
+                prepareStrings();
+                setupValues();
 
-            // The stuff that needs to be on the UI
-            new Handler(Looper.getMainLooper()).post(() -> {
-                // Add listeners
-                setupListeners();
+                // The stuff that needs to be on the UI
+                new Handler(Looper.getMainLooper()).post(() -> {
+                    // Add listeners
+                    setupListeners();
 
-                myView.lyrics.clearFocus();
-            });
+                    myView.lyrics.clearFocus();
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         });
 
         return myView.getRoot();

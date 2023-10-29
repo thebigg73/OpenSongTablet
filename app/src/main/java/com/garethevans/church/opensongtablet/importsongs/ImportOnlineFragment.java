@@ -82,7 +82,6 @@ public class ImportOnlineFragment extends Fragment {
     private String songSelectAutoDownload;
     private Uri downloadUri;
     private String downloadFilename;
-    private boolean useGoogle;
 
     @Override
     public void onResume() {
@@ -120,7 +119,6 @@ public class ImportOnlineFragment extends Fragment {
 
     private void prepareStrings() {
         if (getContext()!=null) {
-            useGoogle = mainActivityInterface.getPreferences().getMyPreferenceBoolean("useGoogle",true);
             import_basic_string = getString(R.string.import_basic);
             online_string = getString(R.string.online);
             website_song_online_string = getString(R.string.website_song_online);
@@ -428,7 +426,7 @@ public class ImportOnlineFragment extends Fragment {
 
             webView.post(() -> {
                 try {
-                    String script = "";
+                    String script;
                     if (source.equals("SongSelect")) {
                         MyJSInterface.resetFlattenedWebString();
                         // IV - SongSelect viewers use shadow DOM content, allow time to fully populate and then extract
@@ -587,7 +585,9 @@ public class ImportOnlineFragment extends Fragment {
                 if (chordinator.getArtist()!=null && !chordinator.getArtist().isEmpty()) {
                     newSong.setAuthor(chordinator.getArtist());
                 }
-                newSong.setLyrics(clipboardText);
+                if (clipboardText!=null) {
+                    newSong.setLyrics(clipboardText);
+                }
                 break;
             case "UltimateGuitar":
                 newSong = ultimateGuitar.processContent(newSong,webString);
@@ -622,6 +622,30 @@ public class ImportOnlineFragment extends Fragment {
                 break;
         }
 
+        // Trim whitespace
+        newSong.setTitle(newSong.getTitle().trim());
+        newSong.setAuthor(newSong.getAuthor().trim());
+        newSong.setCopyright(newSong.getCopyright().trim());
+        newSong.setFilename(newSong.getFilename().trim());
+        newSong.setKey(newSong.getKey().trim());
+        newSong.setKeyOriginal(newSong.getKeyOriginal().trim());
+        newSong.setCapo(newSong.getCapo().trim());
+        newSong.setLyrics(newSong.getLyrics().trim());
+        newSong.setTheme(newSong.getTheme().trim());
+        newSong.setAlttheme(newSong.getAlttheme().trim());
+        newSong.setAka(newSong.getAka().trim());
+        // Make sure the tempo is a whole number!
+        if (!newSong.getTempo().isEmpty() && !newSong.getTempo().replaceAll("\\D","").isEmpty()) {
+            try {
+                newSong.setTempo(Math.round(Float.parseFloat(newSong.getTempo()))+"");
+            } catch (Exception e) {
+                e.printStackTrace();
+                newSong.setTempo("");
+            }
+        }
+        newSong.setTempo(newSong.getTempo().trim());
+        newSong.setTimesig(newSong.getTimesig().trim());
+        newSong.setCcli(newSong.getCcli().trim());
         Log.d(TAG,"title:"+newSong.getTitle());
         Log.d(TAG,"author:"+newSong.getAuthor());
         Log.d(TAG,"key:"+newSong.getKey());
@@ -652,25 +676,27 @@ public class ImportOnlineFragment extends Fragment {
     }
 
     private void setupSaveLayout() {
-        showDownloadProgress(false);
+        if (myView!=null) {
+            showDownloadProgress(false);
 
-        // Set up the save layout
-        myView.saveFilename.post(() -> myView.saveFilename.setText(newSong.getFilename()));
-        // Get the folders available
-        ArrayList<String> availableFolders = mainActivityInterface.getStorageAccess().getSongFolders(
-                mainActivityInterface.getStorageAccess().listSongs(), true, null);
-        if (getContext()!=null) {
-            ExposedDropDownArrayAdapter exposedDropDownArrayAdapter = new ExposedDropDownArrayAdapter(getContext(),
-                    myView.folderChoice, R.layout.view_exposed_dropdown_item, availableFolders);
-            myView.folderChoice.setAdapter(exposedDropDownArrayAdapter);
+            // Set up the save layout
+            myView.saveFilename.post(() -> myView.saveFilename.setText(newSong.getFilename()));
+            // Get the folders available
+            ArrayList<String> availableFolders = mainActivityInterface.getStorageAccess().getSongFolders(
+                    mainActivityInterface.getStorageAccess().listSongs(), true, null);
+            if (getContext() != null) {
+                ExposedDropDownArrayAdapter exposedDropDownArrayAdapter = new ExposedDropDownArrayAdapter(getContext(),
+                        myView.folderChoice, R.layout.view_exposed_dropdown_item, availableFolders);
+                myView.folderChoice.setAdapter(exposedDropDownArrayAdapter);
+            }
+            String folder = mainActivityInterface.getPreferences().getMyPreferenceString("songFolder", mainfoldername_string);
+            if (folder.isEmpty()) {
+                folder = mainfoldername_string;
+            }
+            myView.folderChoice.setText(folder);
+            changeLayouts(false, false, true);
+            myView.saveSong.setOnClickListener(v -> saveTheSong());
         }
-        String folder = mainActivityInterface.getPreferences().getMyPreferenceString("songFolder",mainfoldername_string);
-        if (folder.isEmpty()) {
-            folder = mainfoldername_string;
-        }
-        myView.folderChoice.setText(folder);
-        changeLayouts(false,false,true);
-        myView.saveSong.setOnClickListener(v -> saveTheSong());
     }
 
     // This is the save function for downloaded PDF files
@@ -742,10 +768,10 @@ public class ImportOnlineFragment extends Fragment {
         if (myView.folderChoice.getText()!=null) {
             getFolder = myView.folderChoice.getText().toString();
         }
-        newSong.setTitle(getName);
-        newSong.setFilename(getName);
-        newSong.setFolder(getFolder);
-        newSong.setSongid(mainActivityInterface.getCommonSQL().getAnySongId(getFolder,getName));
+        newSong.setTitle(getName.trim());
+        newSong.setFilename(getName.trim());
+        newSong.setFolder(getFolder.trim());
+        newSong.setSongid(mainActivityInterface.getCommonSQL().getAnySongId(getFolder.trim(),getName.trim()));
 
         // Check if this song already exists
         boolean exists = mainActivityInterface.getStorageAccess().uriExists(

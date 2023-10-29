@@ -163,44 +163,44 @@ public class ProcessSong {
         }
         String myNEWXML = "<?xml version=\"1.0\" encoding=\"" + thisSong.getEncoding() + "\"?>\n";
         myNEWXML += "<song>\n";
-        myNEWXML += "  <title>" + parseToHTMLEntities(thisSong.getTitle()) + "</title>\n";
-        myNEWXML += "  <author>" + parseToHTMLEntities(thisSong.getAuthor()) + "</author>\n";
-        myNEWXML += "  <copyright>" + parseToHTMLEntities(thisSong.getCopyright()) + "</copyright>\n";
-        myNEWXML += "  <presentation>" + parseToHTMLEntities(thisSong.getPresentationorder()) + "</presentation>\n";
-        myNEWXML += "  <hymn_number>" + parseToHTMLEntities(thisSong.getHymnnum()) + "</hymn_number>\n";
-        myNEWXML += "  <capo print=\"" + parseToHTMLEntities(thisSong.getCapoprint()) + "\">" +
-                parseToHTMLEntities(thisSong.getCapo()) + "</capo>\n";
-        myNEWXML += "  <tempo>" + parseToHTMLEntities(thisSong.getTempo()) + "</tempo>\n";
-        myNEWXML += "  <time_sig>" + parseToHTMLEntities(thisSong.getTimesig()) + "</time_sig>\n";
-        myNEWXML += "  <duration>" + parseToHTMLEntities(thisSong.getAutoscrolllength()) + "</duration>\n";
-        myNEWXML += "  <predelay>" + parseToHTMLEntities(thisSong.getAutoscrolldelay()) + "</predelay>\n";
-        myNEWXML += "  <ccli>" + parseToHTMLEntities(thisSong.getCcli()) + "</ccli>\n";
-        myNEWXML += "  <theme>" + parseToHTMLEntities(thisSong.getTheme()) + "</theme>\n";
-        myNEWXML += "  <alttheme>" + parseToHTMLEntities(thisSong.getAlttheme()) + "</alttheme>\n";
-        myNEWXML += "  <user1>" + parseToHTMLEntities(thisSong.getUser1()) + "</user1>\n";
-        myNEWXML += "  <user2>" + parseToHTMLEntities(thisSong.getUser2()) + "</user2>\n";
-        myNEWXML += "  <user3>" + parseToHTMLEntities(thisSong.getUser3()) + "</user3>\n";
-        myNEWXML += "  <beatbuddysong>" + parseToHTMLEntities(thisSong.getBeatbuddysong()) + "</beatbuddysong>\n";
-        myNEWXML += "  <beatbuddykit>" + parseToHTMLEntities(thisSong.getBeatbuddykit()) + "</beatbuddykit>\n";
-        myNEWXML += "  <key>" + parseToHTMLEntities(thisSong.getKey()) + "</key>\n";
-        myNEWXML += "  <keyoriginal>" + parseToHTMLEntities(thisSong.getKeyOriginal()) + "</keyoriginal>\n";
-        myNEWXML += "  <aka>" + parseToHTMLEntities(thisSong.getAka()) + "</aka>\n";
-        myNEWXML += "  <midi>" + parseToHTMLEntities(thisSong.getMidi()) + "</midi>\n";
-        myNEWXML += "  <midi_index>" + parseToHTMLEntities(thisSong.getMidiindex()) + "</midi_index>\n";
-        myNEWXML += "  <notes>" + parseToHTMLEntities(thisSong.getNotes()) + "</notes>\n";
-        myNEWXML += "  <lyrics>" + parseToHTMLEntities(thisSong.getLyrics()) + "</lyrics>\n";
-        myNEWXML += "  <pad_file>" + parseToHTMLEntities(thisSong.getPadfile()) + "</pad_file>\n";
-        myNEWXML += "  <custom_chords>" + parseToHTMLEntities(thisSong.getCustomchords()) + "</custom_chords>\n";
-        myNEWXML += "  <link_youtube>" + parseToHTMLEntities(thisSong.getLinkyoutube()) + "</link_youtube>\n";
-        myNEWXML += "  <link_web>" + parseToHTMLEntities(thisSong.getLinkweb()) + "</link_web>\n";
-        myNEWXML += "  <link_audio>" + parseToHTMLEntities(thisSong.getLinkaudio()) + "</link_audio>\n";
-        myNEWXML += "  <loop_audio>" + parseToHTMLEntities(thisSong.getPadloop()) + "</loop_audio>\n";
-        myNEWXML += "  <link_other>" + parseToHTMLEntities(thisSong.getLinkother()) + "</link_other>\n";
-        myNEWXML += "  <abcnotation>" + parseToHTMLEntities(thisSong.getAbc()) + "</abcnotation>\n";
-        myNEWXML += "  <abctranspose>" + parseToHTMLEntities(thisSong.getAbcTranspose()) + "</abctranspose>\n";
+        myNEWXML += "  <title>" + parseToHTMLEntities(thisSong.getTitle()).trim() + "</title>\n";
+        myNEWXML += "  <author>" + parseToHTMLEntities(thisSong.getAuthor()).trim() + "</author>\n";
+        myNEWXML += "  <copyright>" + parseToHTMLEntities(thisSong.getCopyright()).trim() + "</copyright>\n";
+        myNEWXML += "  <presentation>" + parseToHTMLEntities(thisSong.getPresentationorder()).trim() + "</presentation>\n";
+        myNEWXML += "  <hymn_number>" + parseToHTMLEntities(thisSong.getHymnnum()).trim() + "</hymn_number>\n";
+        myNEWXML += "  <capo print=\"" + parseToHTMLEntities(thisSong.getCapoprint()).trim() + "\">" +
+                parseToHTMLEntities(thisSong.getCapo()).trim() + "</capo>\n";
+        myNEWXML += "  <tempo>" + parseToHTMLEntities(thisSong.getTempo()).trim() + "</tempo>\n";
+        myNEWXML += "  <time_sig>" + parseToHTMLEntities(thisSong.getTimesig()).trim() + "</time_sig>\n";
+        myNEWXML += "  <duration>" + parseToHTMLEntities(thisSong.getAutoscrolllength()).trim() + "</duration>\n";
+        myNEWXML += "  <predelay>" + parseToHTMLEntities(thisSong.getAutoscrolldelay()).trim() + "</predelay>\n";
+        myNEWXML += "  <ccli>" + parseToHTMLEntities(thisSong.getCcli()).trim() + "</ccli>\n";
+        myNEWXML += "  <theme>" + parseToHTMLEntities(thisSong.getTheme()).trim() + "</theme>\n";
+        myNEWXML += "  <alttheme>" + parseToHTMLEntities(thisSong.getAlttheme()).trim() + "</alttheme>\n";
+        myNEWXML += "  <user1>" + parseToHTMLEntities(thisSong.getUser1()).trim() + "</user1>\n";
+        myNEWXML += "  <user2>" + parseToHTMLEntities(thisSong.getUser2()).trim() + "</user2>\n";
+        myNEWXML += "  <user3>" + parseToHTMLEntities(thisSong.getUser3()).trim() + "</user3>\n";
+        myNEWXML += "  <beatbuddysong>" + parseToHTMLEntities(thisSong.getBeatbuddysong()).trim() + "</beatbuddysong>\n";
+        myNEWXML += "  <beatbuddykit>" + parseToHTMLEntities(thisSong.getBeatbuddykit()).trim() + "</beatbuddykit>\n";
+        myNEWXML += "  <key>" + parseToHTMLEntities(thisSong.getKey()).trim() + "</key>\n";
+        myNEWXML += "  <keyoriginal>" + parseToHTMLEntities(thisSong.getKeyOriginal()).trim() + "</keyoriginal>\n";
+        myNEWXML += "  <aka>" + parseToHTMLEntities(thisSong.getAka()).trim() + "</aka>\n";
+        myNEWXML += "  <midi>" + parseToHTMLEntities(thisSong.getMidi()).trim() + "</midi>\n";
+        myNEWXML += "  <midi_index>" + parseToHTMLEntities(thisSong.getMidiindex()).trim() + "</midi_index>\n";
+        myNEWXML += "  <notes>" + parseToHTMLEntities(thisSong.getNotes()).trim() + "</notes>\n";
+        myNEWXML += "  <lyrics>" + parseToHTMLEntities(thisSong.getLyrics()).trim() + "</lyrics>\n";
+        myNEWXML += "  <pad_file>" + parseToHTMLEntities(thisSong.getPadfile()).trim() + "</pad_file>\n";
+        myNEWXML += "  <custom_chords>" + parseToHTMLEntities(thisSong.getCustomchords()).trim() + "</custom_chords>\n";
+        myNEWXML += "  <link_youtube>" + parseToHTMLEntities(thisSong.getLinkyoutube()).trim() + "</link_youtube>\n";
+        myNEWXML += "  <link_web>" + parseToHTMLEntities(thisSong.getLinkweb()).trim() + "</link_web>\n";
+        myNEWXML += "  <link_audio>" + parseToHTMLEntities(thisSong.getLinkaudio()).trim() + "</link_audio>\n";
+        myNEWXML += "  <loop_audio>" + parseToHTMLEntities(thisSong.getPadloop()).trim() + "</loop_audio>\n";
+        myNEWXML += "  <link_other>" + parseToHTMLEntities(thisSong.getLinkother()).trim() + "</link_other>\n";
+        myNEWXML += "  <abcnotation>" + parseToHTMLEntities(thisSong.getAbc()).trim() + "</abcnotation>\n";
+        myNEWXML += "  <abctranspose>" + parseToHTMLEntities(thisSong.getAbcTranspose()).trim() + "</abctranspose>\n";
 
         if (thisSong.getHasExtraStuff()) {
-            String extraStuff = mainActivityInterface.getLoadSong().getExtraStuff(thisSong);
+            String extraStuff = mainActivityInterface.getLoadSong().getExtraStuff(thisSong).trim();
             myNEWXML += "  " + extraStuff + "\n";
         }
         myNEWXML += "</song>";
@@ -737,9 +737,11 @@ public class ProcessSong {
         switch (linetype) {
             case "heading":
                 string = beautifyHeading(string);
-                if (!thisSong.getSongSectionHeadings().contains(string)) {
+                thisSong.getSongSectionHeadings().add(string);
+                // This was causing a drift in numbers of headings/sections
+                /* if (!thisSong.getSongSectionHeadings().contains(string)) {
                     thisSong.getSongSectionHeadings().add(string);
-                }
+                } */
                 break;
             case "chord":
             case "capoline":
@@ -1575,21 +1577,25 @@ public class ProcessSong {
 
                 for (int a = 0; a < song.getPresoOrderSongSections().size(); a++) {
                     // Check we aren't filtering this out!
-                    String header = song.getPresoOrderSongHeadings().get(a);
                     boolean keepSection = true;
-                    if (header!=null && header.startsWith("*") && header.contains(":")) {
-                        header = header.substring(0,header.indexOf(":"))+":";
-                        if (filterText.contains(header)) {
-                            keepSection = filterShow;
-                        } else {
-                            keepSection = !filterShow;
+                    try {
+                        String header = song.getPresoOrderSongHeadings().get(a);
+                        if (header != null && header.startsWith("*") && header.contains(":")) {
+                            header = header.substring(0, header.indexOf(":")) + ":";
+                            if (filterText.contains(header)) {
+                                keepSection = filterShow;
+                            } else {
+                                keepSection = !filterShow;
+                            }
                         }
-                    }
 
-                    // Add the section under the following conditions:
-                    if (keepSection) {
-                        newSections.add(song.getPresoOrderSongSections().get(a));
-                        newHeaders.add(header);
+                        // Add the section under the following conditions:
+                        if (keepSection) {
+                            newSections.add(song.getPresoOrderSongSections().get(a));
+                            newHeaders.add(header);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
 
@@ -1890,7 +1896,6 @@ public class ProcessSong {
                 mainActivityInterface.getMode().equals(c.getString(R.string.mode_presenter));
         boolean performance = mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance));
         if (stageOrPresenter || (performance && trimSections)) {
-
                 lyrics = lyrics
                     // We protect the leading space of lyric lines
                     // --- Simplify empty lyric lines... the replace is needed twice
@@ -2135,7 +2140,7 @@ public class ProcessSong {
                                     tv.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                                     tv.setBackgroundColor(backgroundColor);
                                     linearLayout.addView(tv);
-                                } else if (!line.isEmpty()) {
+                                } else if (!line.isEmpty() || (asPDF && !trimSections)) {
                                     // PDF or presentation
                                     // IV - Remove typical word splits, white space and trim - beautify!
                                     // IV - Similar logic is used in other places - if changed find and make changes to all
@@ -3641,7 +3646,7 @@ public class ProcessSong {
         String[] bits = lyrics.split("\\[");
         ArrayList<String> sections = new ArrayList<>();
         for (String bit : bits) {
-            if (bit.contains("]") && bit.indexOf("]") < 20) {
+            if (bit.contains("]") && bit.indexOf("]") < 30) {
                 String section = bit.substring(0, bit.indexOf("]"));
                 boolean multiverse = false;
                 // Check for multiverse/chorus

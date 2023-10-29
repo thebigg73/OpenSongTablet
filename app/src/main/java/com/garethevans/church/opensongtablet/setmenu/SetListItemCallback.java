@@ -3,6 +3,7 @@ package com.garethevans.church.opensongtablet.setmenu;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
@@ -26,7 +27,7 @@ public class SetListItemCallback extends ItemTouchHelper.Callback {
 
     private final Paint mClearPaint;
     private final ColorDrawable mBackground;
-    private final int backgroundColor;
+    private int backgroundColor;
     private final Drawable deleteDrawable;
     private final int intrinsicWidth;
     private final int intrinsicHeight;
@@ -38,9 +39,17 @@ public class SetListItemCallback extends ItemTouchHelper.Callback {
 
     SetListItemCallback(Context c, SetAdapter setAdapter) {
         mainActivityInterface = (MainActivityInterface) c;
-        setItemTouchInterface = (SetItemTouchInterface) setAdapter;
+        setItemTouchInterface = setAdapter;
         mBackground = new ColorDrawable();
-        backgroundColor = ContextCompat.getColor(c,R.color.vdarkred);
+        try {
+            backgroundColor = ContextCompat.getColor(c, R.color.vdarkred);
+        } catch (Exception e) {
+            if (c!=null) {
+                backgroundColor = c.getResources().getColor(R.color.vdarkred);
+            } else {
+                backgroundColor = Color.parseColor("#660000");
+            }
+        }
         mClearPaint = new Paint();
         mClearPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
         deleteDrawable = ContextCompat.getDrawable(c, R.drawable.delete);

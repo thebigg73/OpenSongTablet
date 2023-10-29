@@ -46,7 +46,6 @@ public class SongListBuildIndex {
     }
 
 
-
     // This is true if we need to run the full scan (rather than quick)
     private boolean fullIndexRequired;
     public void setFullIndexRequired(boolean fullIndexRequired) {
@@ -55,7 +54,6 @@ public class SongListBuildIndex {
     public boolean getFullIndexRequired() {
         return fullIndexRequired;
     }
-
 
 
     // Once the song indexing has completed, keep a note here (so we don't run again while active)
@@ -68,7 +66,6 @@ public class SongListBuildIndex {
     }
 
 
-
     // Are we still indexing?
     private boolean currentlyIndexing = false;
     public void setCurrentlyIndexing(boolean currentlyIndexing) {
@@ -77,9 +74,6 @@ public class SongListBuildIndex {
     public boolean getCurrentlyIndexing() {
         return currentlyIndexing;
     }
-
-
-
 
 
     // This creates a basic database from the song files.

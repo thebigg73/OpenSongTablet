@@ -266,6 +266,7 @@ public class EditSongFragmentTags extends Fragment {
         if (themes==null) {
             themes = "";
         }
+        themes = themes.replace("&amp;","&");
         themes = themes.replace("; ", "\n");
         themes = themes.replace(";", "\n");
         return themes;

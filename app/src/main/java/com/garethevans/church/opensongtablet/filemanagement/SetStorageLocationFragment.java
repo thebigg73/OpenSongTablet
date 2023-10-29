@@ -295,7 +295,6 @@ public class SetStorageLocationFragment extends Fragment {
             uriTreeHome_String = uriTreeHome_String.replace("file://","");
             mainActivityInterface.getPreferences().setMyPreferenceString("uriTree", uriTree_String);
             mainActivityInterface.getPreferences().setMyPreferenceString("uriTreeHome", uriTreeHome_String);
-            mainActivityInterface.getStorageAccess().setUriTree(uriTree);
             mainActivityInterface.getStorageAccess().setUriTreeHome(uriTreeHome);
         } else {
             mainActivityInterface.getPreferences().setMyPreferenceString("uriTree", "");

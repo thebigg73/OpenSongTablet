@@ -207,7 +207,13 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
     }
 
     public void enableSwipe(boolean canSwipe) {
-        myView.viewpager.setUserInputEnabled(canSwipe);
+        if (myView!=null) {
+            try {
+                myView.viewpager.setUserInputEnabled(canSwipe);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void doSaveChanges() {

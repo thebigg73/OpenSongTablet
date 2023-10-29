@@ -69,7 +69,11 @@ public class AreYouSureBottomSheet extends BottomSheetDialogFragment {
         fragName = "";
         callingFragment = null;
         song = new Song();
-        dismiss();
+        try {
+            dismiss();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

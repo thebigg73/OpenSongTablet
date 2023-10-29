@@ -115,11 +115,6 @@ public class MyRecyclerView extends RecyclerView  implements RecyclerView.Smooth
         } catch (Exception e) {
             Log.d(TAG,"Can't scrollToPosition(0)");
         }
-        try {
-            scrollTo(0,0);
-        } catch (Exception e) {
-            Log.d(TAG,"Not allowed to scrollTo(0,0)");
-        }
         scrolledToTop = true;
         scrolledToBottom = false;
         floatScrollXPos = 0;
@@ -553,5 +548,11 @@ public class MyRecyclerView extends RecyclerView  implements RecyclerView.Smooth
         }
     }
 
+
+    @Override
+    public void scrollTo(int x, int y) {
+        Log.d(TAG, "MyRecyclerView does not support scrolling to an absolute position.");
+        // Either don't call super here or call just for some phones, or try catch it. From default implementation we have removed the Runtime Exception trown
+    }
 
 }
