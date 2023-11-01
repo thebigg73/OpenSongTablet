@@ -119,7 +119,7 @@ public class ABCNotation {
             songAbc += "L:1/8\n";
 
             // Add the song key
-            if (songKey.isEmpty()) {
+            if (songKey==null || songKey.isEmpty()) {
                 songAbc += "K:C treble %treble or bass clef\n";
             } else {
                 songAbc += "K: " + songKey + " %treble or bass clef\n";
@@ -200,7 +200,7 @@ public class ABCNotation {
 
 
 
-            if (!songKey.isEmpty() && !songKey.equals(abcKey)) {
+            if (songKey!=null && !songKey.isEmpty() && !songKey.equals(abcKey)) {
                 songAbcTranspose = mainActivityInterface.getTranspose().getTransposeTimes(
                         abcKey, songKey);
 

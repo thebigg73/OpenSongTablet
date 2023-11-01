@@ -110,14 +110,16 @@ public class ChordFingeringBottomSheet extends BottomSheetDialogFragment {
     }
 
     private void nativeOrCapo() {
-        if (!mainActivityInterface.getSong().getCapo().isEmpty() &&
+        if (mainActivityInterface!=null && mainActivityInterface.getSong()!=null &&
+                mainActivityInterface.getSong().getCapo()!=null && !mainActivityInterface.getSong().getCapo().isEmpty() &&
         !myView.instrument.getText().toString().equals(mainActivityInterface.getChordDisplayProcessing().getInstruments().get(6))) {
             // Only for stringed instruments!
             myView.capoChords.setVisibility(View.VISIBLE);
             String capoText = capo_chords_string + " (" + capo_fret_string + " " +
                     mainActivityInterface.getChordDisplayProcessing().getCapoPosition() + ")";
             myView.capoChords.setText(capoText);
-        } else if (!mainActivityInterface.getSong().getCapo().isEmpty() &&
+        } else if (mainActivityInterface!=null && mainActivityInterface.getSong()!=null &&
+                mainActivityInterface.getSong().getCapo()!=null && !mainActivityInterface.getSong().getCapo().isEmpty() &&
                 myView.instrument.getText().toString().equals(mainActivityInterface.getChordDisplayProcessing().getInstruments().get(6))) {
             // Piano shows the transpose text instead
             myView.capoChords.setVisibility(View.VISIBLE);
@@ -152,7 +154,8 @@ public class ChordFingeringBottomSheet extends BottomSheetDialogFragment {
         mainActivityInterface.getChordDisplayProcessing().findChordsInSong();
 
         // If we have a capo set and want to see capo chords, transpose
-        if (!mainActivityInterface.getSong().getCapo().isEmpty() && myView.capoChords.isChecked()) {
+        if (mainActivityInterface!=null && mainActivityInterface.getSong()!=null &&
+                mainActivityInterface.getSong().getCapo()!=null && !mainActivityInterface.getSong().getCapo().isEmpty() && myView.capoChords.isChecked()) {
             mainActivityInterface.getChordDisplayProcessing().transposeChordsInSong();
         }
 
@@ -198,24 +201,28 @@ public class ChordFingeringBottomSheet extends BottomSheetDialogFragment {
         }
 
         // Add the custom chords
-        String[] customChords = mainActivityInterface.getSong().getCustomchords().split(" ");
-        for (String chordCode:customChords) {
-            String customChordName = custom_string;
-            if (chordCode.contains("_")) {
-                customChordName = chordCode.substring(chordCode.lastIndexOf("_"));
-                customChordName = customChordName.replace("_","");
-            }
-            LinearLayout customChordLayout = null;
-            if (mainActivityInterface.getChordDisplayProcessing().codeMatchesInstrument(chordCode,myView.instrument.getText().toString()) &&
-                    myView.instrument.getText().toString().equals(mainActivityInterface.getChordDisplayProcessing().getInstruments().get(6))) {
-                customChordLayout = mainActivityInterface.getChordDisplayProcessing().getChordDiagramPiano(getLayoutInflater(),
-                        customChordName, chordCode);
-            } else if (mainActivityInterface.getChordDisplayProcessing().codeMatchesInstrument(chordCode,myView.instrument.getText().toString())) {
-                customChordLayout = mainActivityInterface.getChordDisplayProcessing().getChordDiagram(getLayoutInflater(),
-                        customChordName, chordCode);
-            }
-            if (customChordLayout!=null) {
-                myView.chordsGridLayout.addView(customChordLayout);
+        if (mainActivityInterface!=null && mainActivityInterface.getSong()!=null &&
+                mainActivityInterface.getSong().getCustomchords()!=null && !mainActivityInterface.getSong().getCustomchords().isEmpty()) {
+            String[] customChords = mainActivityInterface.getSong().getCustomchords().split(" ");
+
+            for (String chordCode : customChords) {
+                String customChordName = custom_string;
+                if (chordCode.contains("_")) {
+                    customChordName = chordCode.substring(chordCode.lastIndexOf("_"));
+                    customChordName = customChordName.replace("_", "");
+                }
+                LinearLayout customChordLayout = null;
+                if (mainActivityInterface.getChordDisplayProcessing().codeMatchesInstrument(chordCode, myView.instrument.getText().toString()) &&
+                        myView.instrument.getText().toString().equals(mainActivityInterface.getChordDisplayProcessing().getInstruments().get(6))) {
+                    customChordLayout = mainActivityInterface.getChordDisplayProcessing().getChordDiagramPiano(getLayoutInflater(),
+                            customChordName, chordCode);
+                } else if (mainActivityInterface.getChordDisplayProcessing().codeMatchesInstrument(chordCode, myView.instrument.getText().toString())) {
+                    customChordLayout = mainActivityInterface.getChordDisplayProcessing().getChordDiagram(getLayoutInflater(),
+                            customChordName, chordCode);
+                }
+                if (customChordLayout != null) {
+                    myView.chordsGridLayout.addView(customChordLayout);
+                }
             }
         }
     }
