@@ -12,7 +12,7 @@ public class GestureListener extends GestureDetector.SimpleOnGestureListener {
 
     private final int swipeMinimumDistance, swipeMaxDistanceYError, swipeMinimumVelocity;
     private final MainActivityInterface mainActivityInterface;
-    private boolean doubleTapping;
+    private boolean doubleTapping, longPressing;
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "GestureListener";
 
@@ -22,17 +22,21 @@ public class GestureListener extends GestureDetector.SimpleOnGestureListener {
         this.swipeMinimumDistance = swipeMinimumDistance;
         this.swipeMaxDistanceYError = swipeMaxDistanceYError;
         this.swipeMinimumVelocity = swipeMinimumVelocity;
+        doubleTapping = false;
+        longPressing = false;
     }
 
     @Override
-    public boolean onDoubleTapEvent(MotionEvent e) {
+    public boolean onDoubleTap(MotionEvent e) {
         // Make sure this isn't sent while we are already dealing with it
-        if (!doubleTapping) {
+        Log.d(TAG,"onDoubleTap");
+        if (!doubleTapping && !longPressing) {
             doubleTapping = true;
             // Turn off record of double tapping in 200ms
-            new Handler(Looper.getMainLooper()).postDelayed(() -> doubleTapping = false,200);
+            new Handler(Looper.getMainLooper()).postDelayed(() -> doubleTapping = false,800);
             return performAction(mainActivityInterface.getGestures().getDoubleTap());
         } else {
+            doubleTapping = false;
             return true;
         }
     }
@@ -41,9 +45,12 @@ public class GestureListener extends GestureDetector.SimpleOnGestureListener {
     public void onLongPress(MotionEvent e) {
         super.onLongPress(e);
         if (doubleTapping) {
-            doubleTapping = false;
-        } else {
+            longPressing = false;
+        } else if (!longPressing) {
+            longPressing = true;
             Log.d(TAG,"onLongPress");
+            // Turn off record of long pressing in 200ms
+            new Handler(Looper.getMainLooper()).postDelayed(() -> longPressing = false,800);
             performAction(mainActivityInterface.getGestures().getLongPress());
         }
     }

@@ -154,7 +154,7 @@ public class ChordFingeringBottomSheet extends BottomSheetDialogFragment {
         mainActivityInterface.getChordDisplayProcessing().findChordsInSong();
 
         // If we have a capo set and want to see capo chords, transpose
-        if (mainActivityInterface!=null && mainActivityInterface.getSong()!=null &&
+        if (mainActivityInterface.getSong()!=null &&
                 mainActivityInterface.getSong().getCapo()!=null && !mainActivityInterface.getSong().getCapo().isEmpty() && myView.capoChords.isChecked()) {
             mainActivityInterface.getChordDisplayProcessing().transposeChordsInSong();
         }

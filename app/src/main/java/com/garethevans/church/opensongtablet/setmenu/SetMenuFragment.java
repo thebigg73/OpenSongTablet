@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,7 +66,11 @@ public class SetMenuFragment extends Fragment {
         myView.myRecyclerView.setVisibility(View.GONE);
         myView.progressBar.setVisibility(View.VISIBLE);
         if (getContext()!=null) {
-            myView.setTitle.setImageView(VectorDrawableCompat.create(getResources(), R.drawable.asterisk, getContext().getTheme()), Color.WHITE);
+            try {
+                myView.setTitle.setImageView(VectorDrawableCompat.create(getResources(), R.drawable.asterisk, getContext().getTheme()), Color.WHITE);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             myView.setTitle.getImageView().setVisibility(View.GONE);
         }
         ExecutorService executorService = Executors.newSingleThreadExecutor();
@@ -136,7 +139,11 @@ public class SetMenuFragment extends Fragment {
                 });
 
                 if (getContext()!=null) {
-                    snackbar.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(),R.color.colorSecondary)));
+                    try {
+                        snackbar.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.colorSecondary)));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     snackbar.setActionTextColor(Color.WHITE);
                     snackbar.setTextColor(Color.WHITE);
                 }
