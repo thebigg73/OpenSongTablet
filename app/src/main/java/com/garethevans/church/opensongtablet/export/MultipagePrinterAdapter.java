@@ -1,7 +1,6 @@
 package com.garethevans.church.opensongtablet.export;
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.graphics.pdf.PdfDocument;
 import android.net.Uri;
 import android.os.Bundle;
@@ -30,7 +29,7 @@ import java.util.Collections;
 public class MultipagePrinterAdapter extends PrintDocumentAdapter {
 
     private final MutableLiveData<Boolean> listen = new MutableLiveData<>();
-    @SuppressWarnings({"unused","variablecanbelocal"})
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "MutliPagePrint";
     private final MainActivityInterface mainActivityInterface;
     private String setName;
@@ -114,7 +113,7 @@ public class MultipagePrinterAdapter extends PrintDocumentAdapter {
 
         // Now draw it here for measuring via the VTO
         exportFragment.setHeaderLayoutPDF(mainActivityInterface.getSongSheetHeaders().getSongSheet(thisSong,
-                scaleComments, Color.BLACK));
+                scaleComments, mainActivityInterface.getMyThemeColors().getPdfTextColor()));
         if (exportFragment.getHeaderLayout()==null) {
             exportFragment.setHeaderLayoutPDF(new LinearLayout(exportFragment.getHiddenHeader().getContext()));
         }

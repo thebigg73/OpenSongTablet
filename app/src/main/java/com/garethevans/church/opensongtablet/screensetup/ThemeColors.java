@@ -11,7 +11,7 @@ public class ThemeColors {
     private final MainActivityInterface mainActivityInterface;
 
     // This object holds the user theme colours
-    private String themeName;
+    private String themeName, pdfTheme;
 
     // Set the colours from preferences
     private boolean invertPDF;
@@ -46,6 +46,10 @@ public class ThemeColors {
     private int extraInfoTextColor;
     private int highlightChordColor;
     private int highlightHeadingColor;
+    private int pdfTextColor, pdfCapoColor, pdfBackgroundColor, pdfVerseColor, pdfChorusColor,
+            pdfBridgeColor, pdfCommentColor, pdfPreChorusColor, pdfTagColor, pdfChordsColor,
+            pdfCustomColor, pdfHighlightChordColor, pdfHighlightHeadingColor;
+
 
     public ThemeColors(Context c) {
         mainActivityInterface = (MainActivityInterface) c;
@@ -254,7 +258,35 @@ public class ThemeColors {
                 setThemeCustom2();
                 break;
         }
+        // Update the theme colours for the PDF/Print outputs when exporting
+        updatePDFTheme(mainActivityInterface.getPreferences().getMyPreferenceString("pdfTheme","default"),false);
+
         splitColorAndAlpha();
+    }
+
+    public void updatePDFTheme(String pdfTheme, boolean savePref) {
+        this.pdfTheme = pdfTheme;
+        if (savePref) {
+            mainActivityInterface.getPreferences().setMyPreferenceString("pdfTheme",pdfTheme);
+        }
+        switch (pdfTheme) {
+            case "default":
+            default:
+                setPDFThemeDefault();
+                break;
+            case "dark":
+                setPDFThemeDark();
+                break;
+            case "light":
+                setPDFThemeLight();
+                break;
+            case "custom1":
+                setPDFThemeCustom1();
+                break;
+            case "custom2":
+                setPDFThemeCustom2();
+                break;
+        }
     }
 
     public void resetTheme() {
@@ -456,6 +488,167 @@ public class ThemeColors {
         setHighlightHeadingColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_highlightHeadingColor",transparent));
     }
 
+
+    public String getPdfTheme() {
+        return pdfTheme;
+    }
+    public int getPdfTextColor() {
+        return pdfTextColor;
+    }
+    public int getPdfCapoColor() {
+        return pdfCapoColor;
+    }
+    public int getPdfBackgroundColor() {
+        return pdfBackgroundColor;
+    }
+    public int getPdfVerseColor() {
+        return pdfVerseColor;
+    }
+    public int getPdfChorusColor() {
+        return pdfChorusColor;
+    }
+    public int getPdfBridgeColor() {
+        return pdfBridgeColor;
+    }
+    public int getPdfCommentColor() {
+        return pdfCommentColor;
+    }
+    public int getPdfPreChorusColor() {
+        return pdfPreChorusColor;
+    }
+    public int getPdfTagColor() {
+        return pdfTagColor;
+    }
+    public int getPdfChordsColor() {
+        return pdfChordsColor;
+    }
+    public int getPdfCustomColor() {
+        return pdfCustomColor;
+    }
+    public int getPdfHighlightChordColor() {
+        return pdfHighlightChordColor;
+    }
+    public int getPdfHighlightHeadingColor() {
+        return pdfHighlightHeadingColor;
+    }
+    public void setPDFTextColor(int i) {
+        this.pdfTextColor = i;
+    }
+    public void setPDFCapoColor(int i) {
+        this.pdfCapoColor = i;
+    }
+    public void setPDFBackgroundColor(int i) {
+        this.pdfBackgroundColor = i;
+    }
+    public void setPDFVerseColor(int i) {
+        this.pdfVerseColor = i;
+    }
+    public void setPDFChorusColor(int i) {
+        this.pdfChorusColor = i;
+    }
+    public void setPDFBridgeColor(int i) {
+        this.pdfBridgeColor = i;
+    }
+    public void setPDFCommentColor(int i) {
+        this.pdfCommentColor = i;
+    }
+    public void setPDFPreChorusColor(int i) {
+        this.pdfPreChorusColor = i;
+    }
+    public void setPDFTagColor(int i) {
+        this.pdfTagColor = i;
+    }
+    public void setPDFChordsColor(int i) {
+        this.pdfChordsColor = i;
+    }
+    public void setPDFCustomColor(int i) {
+        this.pdfCustomColor = i;
+    }
+    public void setPDFHighlightChordColor(int i) {
+        this.pdfHighlightChordColor = i;
+    }
+    public void setPDFHighlightHeadingColor(int i) {
+        this.pdfHighlightHeadingColor = i;
+    }
+
+
+
+    private void setPDFThemeDefault() {
+        setPDFTextColor(black);
+        setPDFCapoColor(grey);
+        setPDFBackgroundColor(white);
+        setPDFVerseColor(white);
+        setPDFChorusColor(white);
+        setPDFBridgeColor(white);
+        setPDFCommentColor(white);
+        setPDFPreChorusColor(white);
+        setPDFTagColor(white);
+        setPDFChordsColor(black);
+        setPDFCustomColor(white);
+        setPDFHighlightChordColor(transparent);
+        setPDFHighlightHeadingColor(transparent);
+    }
+    private void setPDFThemeDark() {
+        setPDFTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt("dark_lyricsTextColor",             white));
+        setPDFCapoColor(mainActivityInterface.getPreferences().getMyPreferenceInt("dark_lyricsCapoColor",             red));
+        setPDFBackgroundColor(mainActivityInterface.getPreferences().getMyPreferenceInt("dark_lyricsBackgroundColor", black));
+        setPDFVerseColor(mainActivityInterface.getPreferences().getMyPreferenceInt("dark_lyricsVerseColor",           black));
+        setPDFChorusColor(mainActivityInterface.getPreferences().getMyPreferenceInt("dark_lyricsChorusColor",         vdarkblue));
+        setPDFBridgeColor(mainActivityInterface.getPreferences().getMyPreferenceInt("dark_lyricsBridgeColor",         vdarkred));
+        setPDFCommentColor(mainActivityInterface.getPreferences().getMyPreferenceInt("dark_lyricsCommentColor",       vdarkgreen));
+        setPDFPreChorusColor(mainActivityInterface.getPreferences().getMyPreferenceInt("dark_lyricsPreChorusColor",   darkishgreen));
+        setPDFTagColor(mainActivityInterface.getPreferences().getMyPreferenceInt("dark_lyricsTagColor",               darkpurple));
+        setPDFChordsColor(mainActivityInterface.getPreferences().getMyPreferenceInt("dark_lyricsChordsColor",         yellow));
+        setPDFCustomColor(mainActivityInterface.getPreferences().getMyPreferenceInt("dark_lyricsCustomColor",         vdarkyellow));
+        setPDFHighlightChordColor(mainActivityInterface.getPreferences().getMyPreferenceInt("dark_highlightChordColor",     transparent));
+        setPDFHighlightHeadingColor(mainActivityInterface.getPreferences().getMyPreferenceInt("dark_highlightHeadingColor", transparent));
+    }
+    private void setPDFThemeLight() {
+        setPDFTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt("light_lyricsTextColor",             black));
+        setPDFCapoColor(mainActivityInterface.getPreferences().getMyPreferenceInt("light_lyricsCapoColor",             red));
+        setPDFBackgroundColor(mainActivityInterface.getPreferences().getMyPreferenceInt("light_lyricsBackgroundColor", white));
+        setPDFVerseColor(mainActivityInterface.getPreferences().getMyPreferenceInt("light_lyricsVerseColor",           white));
+        setPDFChorusColor(mainActivityInterface.getPreferences().getMyPreferenceInt("light_lyricsChorusColor",         vlightpurple));
+        setPDFBridgeColor(mainActivityInterface.getPreferences().getMyPreferenceInt("light_lyricsBridgeColor",         vlightcyan));
+        setPDFCommentColor(mainActivityInterface.getPreferences().getMyPreferenceInt("light_lyricsCommentColor",       vlightblue));
+        setPDFPreChorusColor(mainActivityInterface.getPreferences().getMyPreferenceInt("light_lyricsPreChorusColor",   lightgreen));
+        setPDFTagColor(mainActivityInterface.getPreferences().getMyPreferenceInt("light_lyricsTagColor",               vlightgreen));
+        setPDFChordsColor(mainActivityInterface.getPreferences().getMyPreferenceInt("light_lyricsChordsColor",         darkblue));
+        setPDFCustomColor(mainActivityInterface.getPreferences().getMyPreferenceInt("light_lyricsCustomColor",         lightishcyan));
+        setPDFHighlightChordColor(mainActivityInterface.getPreferences().getMyPreferenceInt("light_highlightChordColor",     transparent));
+        setPDFHighlightHeadingColor(mainActivityInterface.getPreferences().getMyPreferenceInt("light_highlightHeadingColor", transparent));
+    }
+    private void setPDFThemeCustom1() {
+        setPDFTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom1_lyricsTextColor",             white));
+        setPDFCapoColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom1_lyricsCapoColor",             red));
+        setPDFBackgroundColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom1_lyricsBackgroundColor", black));
+        setPDFVerseColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom1_lyricsVerseColor",           black));
+        setPDFChorusColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom1_lyricsChorusColor",         black));
+        setPDFBridgeColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom1_lyricsBridgeColor",         black));
+        setPDFCommentColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom1_lyricsCommentColor",       black));
+        setPDFPreChorusColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom1_lyricsPreChorusColor",   black));
+        setPDFTagColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom1_lyricsTagColor",               black));
+        setPDFChordsColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom1_lyricsChordsColor",         yellow));
+        setPDFCustomColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom1_lyricsCustomColor",         black));
+        setPDFHighlightChordColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom1_highlightChordColor",     transparent));
+        setPDFHighlightHeadingColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom1_highlightHeadingColor", transparent));
+    }
+    private void setPDFThemeCustom2() {
+        setPDFTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_lyricsTextColor",             black));
+        setPDFCapoColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_lyricsCapoColor",             red));
+        setPDFBackgroundColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_lyricsBackgroundColor", white));
+        setPDFVerseColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_lyricsVerseColor",           white));
+        setPDFChorusColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_lyricsChorusColor",         white));
+        setPDFBridgeColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_lyricsBridgeColor",         white));
+        setPDFCommentColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_lyricsCommentColor",       white));
+        setPDFPreChorusColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_lyricsPreChorusColor",   white));
+        setPDFTagColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_lyricsTagColor",               white));
+        setPDFChordsColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_lyricsChordsColor",         darkblue));
+        setPDFCustomColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_lyricsCustomColor",         white));
+        setPDFHighlightChordColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_highlightChordColor",     transparent));
+        setPDFHighlightHeadingColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_highlightHeadingColor", transparent));
+    }
+
     public int getValue(String what) {
         switch(what) {
             case "lyricsTextColor":
@@ -520,24 +713,22 @@ public class ThemeColors {
     }
 
     // Default colours
-    private final int secondary = R.color.colorSecondary;
     private final int pageButtonColor = 0xdd294959;  // Lower opacity secondary
     private final int darkblue = 0xff0000dd;
     private final int vdarkblue = 0xff000022;
-    private final int purplyblue = 0xff452277;
     private final int vlightcyan = 0xffeeffff;
     private final int vlightblue = 0xffeeeeff;
-    private final int blue = 0xff0000ff;
     private final int black = 0xff000000;
     private final int white = 0xffffffff;
     private final int grey = 0xff666666;
     private final int translucentDark = 0x66000000;
     private final int translucentLight = 0x66ffffff;
-    private final int lightgrey = 0xff222222;
+    @SuppressWarnings("FieldCanBeLocal")
     private final int vlightgrey = R.color.vlightgrey;
+    @SuppressWarnings("FieldCanBeLocal")
     private final int lightyellow = 0xffddaa00;
     private final int yellow = 0xffffff00;
-    private final int darkyellow = 0xffaaaa00;;
+    ;
     private final int stickybg = 0xddddaa00;
     private final int vdarkyellow = 0xff111100;
     private final int red = 0xffff0000;
@@ -548,13 +739,12 @@ public class ThemeColors {
     private final int darkishgreen = 0xff112211;
     private final int lightgreen = 0xffeeddee;
     private final int vlightgreen = 0xffeeffee;
-    private final int green = 0xff00ff00;
     private final int darkpurple = 0xff220022;
     private final int vlightpurple = 0xffffeeff;
     private final int lightishcyan = 0xffddeeff;
 
     public int getColorInt(String which) {
-        int color = white;
+        int color;
         switch (which) {
             case "black":
                 color = black;
@@ -599,6 +789,7 @@ public class ThemeColors {
                 color = vlightpurple;
                 break;
             case "white":
+            default:
                 color = white;
                 break;
             case "yellow":
@@ -660,4 +851,6 @@ public class ThemeColors {
         pageButtonsSplitColor = Color.argb(255,red,green,blue);
         return pageButtonsColor;
     }
+
+
 }

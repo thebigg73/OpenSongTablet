@@ -2007,8 +2007,8 @@ public class ProcessSong {
             backgroundColor = Color.TRANSPARENT;
             textColor = mainActivityInterface.getMyThemeColors().getPresoFontColor();
         } else if (asPDF) {
-            backgroundColor = Color.WHITE;
-            textColor = Color.BLACK;
+            backgroundColor = mainActivityInterface.getMyThemeColors().getPdfBackgroundColor();
+            textColor = mainActivityInterface.getMyThemeColors().getPdfTextColor();
         } else {
             backgroundColor = mainActivityInterface.getMyThemeColors().getLyricsBackgroundColor();
             textColor = mainActivityInterface.getMyThemeColors().getLyricsTextColor();
@@ -2094,6 +2094,13 @@ public class ProcessSong {
                                     isChorusBold = colors[1]==1 && displayBoldChorus;
                                     overallBackgroundColor = backgroundColor;
                                 }
+                            } else if (asPDF) {
+                                int[] colors = getPdfBGColor(line);
+                                backgroundColor = colors[0];
+                                if (l==0) {
+                                    isChorusBold = colors[1]==1 && displayBoldChorus;
+                                    overallBackgroundColor = backgroundColor;
+                                }
                             }
                             Typeface typeface = getTypeface(presentation && !performancePresentation, linetype);
                             float size = getFontSize(linetype);
@@ -2101,13 +2108,21 @@ public class ProcessSong {
                                 textColor = getFontColor(linetype, mainActivityInterface.getMyThemeColors().
                                         getLyricsTextColor(), mainActivityInterface.getMyThemeColors().getLyricsChordsColor(),
                                         mainActivityInterface.getMyThemeColors().getLyricsCapoColor());
+                            } else if (asPDF) {
+                                textColor = getFontColor(linetype, mainActivityInterface.getMyThemeColors().
+                                        getPdfTextColor(), mainActivityInterface.getMyThemeColors().getPdfChordsColor(),
+                                        mainActivityInterface.getMyThemeColors().getPdfCapoColor());
                             }
 
                             if (line.contains(groupline_string) && !(clearedCurlyText && line.trim().isEmpty())) {
                                 // Has lyrics and chords
                                 if (asPDF) {
-                                    linearLayout.addView(groupTable(song, line, Color.BLACK, Color.BLACK,
-                                            Color.BLACK, Color.TRANSPARENT, false, isChorusBold));
+                                    linearLayout.addView(groupTable(song, line,
+                                            mainActivityInterface.getMyThemeColors().getPdfTextColor(),
+                                            mainActivityInterface.getMyThemeColors().getPdfChordsColor(),
+                                            mainActivityInterface.getMyThemeColors().getPdfChordsColor(),
+                                            mainActivityInterface.getMyThemeColors().getPdfHighlightChordColor(),
+                                            false, isChorusBold));
                                 } else if (presentation && !performancePresentation) {
                                     linearLayout.addView(groupTable(song, line,
                                             mainActivityInterface.getMyThemeColors().getPresoFontColor(),
@@ -2148,9 +2163,17 @@ public class ProcessSong {
                                         // IV - Remove typical word splits, white space and trim - beautify!
                                         line = fixLyricsOnlySpace(line);
                                     }
-                                    linearLayout.addView(lineText(song, linetype, line, typeface,
-                                            size, textColor, Color.TRANSPARENT, Color.TRANSPARENT,
-                                            presentation, isChorusBold));
+                                    if (asPDF) {
+                                        linearLayout.addView(lineText(song, linetype, line, typeface,
+                                                size, textColor,
+                                                mainActivityInterface.getMyThemeColors().getPdfHighlightHeadingColor(),
+                                                mainActivityInterface.getMyThemeColors().getPdfHighlightChordColor(),
+                                                presentation, isChorusBold));
+                                    } else {
+                                        linearLayout.addView(lineText(song, linetype, line, typeface,
+                                                size, textColor, Color.TRANSPARENT, Color.TRANSPARENT,
+                                                presentation, isChorusBold));
+                                    }
                                 }
                             }
                         }
@@ -2259,6 +2282,28 @@ public class ProcessSong {
             return new int[]{mainActivityInterface.getMyThemeColors().getLyricsCustomColor(),0};
         } else {
             return new int[]{mainActivityInterface.getMyThemeColors().getLyricsVerseColor(),0};
+        }
+    }
+
+    private int[] getPdfBGColor(String line) {
+        if (line.startsWith(";")) {
+            return new int[]{mainActivityInterface.getMyThemeColors().getPdfCommentColor(), 0};
+        } else if (beautifyHeading(line).contains(c.getString(R.string.verse))) {
+            return new int[]{mainActivityInterface.getMyThemeColors().getPdfVerseColor(),0};
+        } else if (beautifyHeading(line).contains(c.getString(R.string.prechorus))) {
+            return new int[]{mainActivityInterface.getMyThemeColors().getPdfPreChorusColor(),0};
+        } else if (beautifyHeading(line).contains(c.getString(R.string.chorus))) {
+            return new int[]{mainActivityInterface.getMyThemeColors().getPdfChorusColor(),1};
+        } else if (beautifyHeading(line).contains(c.getString(R.string.bridge))) {
+            return new int[]{mainActivityInterface.getMyThemeColors().getPdfBridgeColor(),0};
+        } else if (beautifyHeading(line).contains(c.getString(R.string.tag))) {
+            return new int[]{mainActivityInterface.getMyThemeColors().getPdfTagColor(),0};
+        } else if (beautifyHeading(line).contains(c.getString(R.string.custom))) {
+            return new int[]{mainActivityInterface.getMyThemeColors().getPdfCustomColor(),0};
+        } else if (line.contains("[") && line.contains("]")) {
+            return new int[]{mainActivityInterface.getMyThemeColors().getPdfCustomColor(),0};
+        } else {
+            return new int[]{mainActivityInterface.getMyThemeColors().getPdfVerseColor(),0};
         }
     }
 

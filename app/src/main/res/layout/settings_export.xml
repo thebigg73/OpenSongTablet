@@ -223,6 +223,14 @@
                     android:text="@string/export_text" />
 
             </LinearLayout>
+
+            <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                android:id="@+id/pdfTheme"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/theme"
+                android:text="@string/use_default"
+                android:layout_marginTop="16dp"/>
         </LinearLayout>
     </com.garethevans.church.opensongtablet.customviews.NestedScrollWithFAB>
 
@@ -245,7 +253,7 @@
         android:layout_alignParentBottom="true"
         android:layout_margin="8dp"
         android:layout_toStartOf="@id/shareButton"
-        android:contentDescription="@string/export"
+        android:contentDescription="@string/print"
         android:text="@string/print"
         app:icon="@drawable/print"
         app:useCompatPadding="true" />

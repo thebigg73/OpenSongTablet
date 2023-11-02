@@ -2,7 +2,6 @@ package com.garethevans.church.opensongtablet.pdf;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.pdf.PdfDocument;
@@ -36,6 +35,7 @@ public class MakePDF {
     private boolean isSetListPrinting = false;
     private boolean showTotalPage = true;
     private String exportFilename;
+
 
     public MakePDF(Context c) {
         mainActivityInterface = (MainActivityInterface) c;
@@ -104,13 +104,18 @@ public class MakePDF {
     private void setPaintDefaults() {
         // For drawing the horizontal lines
         linePaint = new Paint();
-        linePaint.setColor(Color.LTGRAY);
-        linePaint.setStrokeWidth(2);
+        int textColor = mainActivityInterface.getMyThemeColors().getPdfTextColor();
+        linePaint.setColor(textColor);
+        linePaint.setAlpha(120);
+        //linePaint.setColor(Color.LTGRAY);
+        linePaint.setStrokeWidth(1);
         linePaint.setAntiAlias(true);
 
         // For writing the footer
         footerPaint = new Paint();
-        footerPaint.setColor(Color.DKGRAY);
+        footerPaint.setColor(textColor);
+        footerPaint.setAlpha(200);
+        //footerPaint.setColor(Color.DKGRAY);
         footerPaint.setTypeface(mainActivityInterface.getMyFonts().getLyricFont());
         footerPaint.setTextSize(10);
         footerPaint.setAntiAlias(true);
@@ -157,6 +162,9 @@ public class MakePDF {
 
         // Set the canvas density to 72dpi.  This way pixels match points!
         pageCanvas.setDensity(72);
+
+        // Set the background color
+        pageCanvas.drawColor(mainActivityInterface.getMyThemeColors().getPdfBackgroundColor());
     }
 
     // Headers and footers
@@ -334,7 +342,8 @@ public class MakePDF {
             view.setPivotY(0.0f);
             view.setScaleX(scaleValue);
             view.setScaleY(scaleValue);
-            view.layout(0, 0, width, height);
+            Log.d(TAG,"original width:"+width);
+            view.layout(0, 0, (int)((docWidth - (cmToPx(margin_cm) * 2))/scaleValue), (int)(height/scaleValue));
 
         } else {
             Log.d(TAG,"View was null for scaling");
@@ -379,6 +388,7 @@ public class MakePDF {
         // Convert cm to inches by dividing by 2.54, the to dpi by multiplying by 72 (resolution)
         return Math.round((cm/2.54f)*72);
     }
+
     public void setIsSetListPrinting(boolean isSetListPrinting) {
         this.isSetListPrinting = isSetListPrinting;
         showTotalPage = !isSetListPrinting;

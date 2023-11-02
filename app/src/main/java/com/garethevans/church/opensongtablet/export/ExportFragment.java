@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.print.PrintManager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +24,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
 import com.garethevans.church.opensongtablet.databinding.SettingsExportBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
@@ -58,6 +61,8 @@ public class ExportFragment extends Fragment {
     private float scaleComments;
     private Bitmap setPNGContent;
     private String webAddress;
+    private String default_string="", dark_string="", light_string="",
+            custom1_string="", custom2_string="", pdf_print_string="";
 
     @Override
     public void onResume() {
@@ -151,6 +156,20 @@ public class ExportFragment extends Fragment {
             app_name_string = getString(R.string.app_name);
             screenshot_string = getString(R.string.screenshot).toLowerCase();
             mode_performance_string = getString(R.string.mode_performance);
+            ArrayList<String> pdfThemes = new ArrayList<>();
+            default_string = getString(R.string.use_default);
+            dark_string = getString(R.string.theme_dark);
+            light_string = getString(R.string.theme_light);
+            custom1_string = getString(R.string.theme_custom1);
+            custom2_string = getString(R.string.theme_custom2);
+            pdfThemes.add(default_string);
+            pdfThemes.add(dark_string);
+            pdfThemes.add(light_string);
+            pdfThemes.add(custom1_string);
+            pdfThemes.add(custom2_string);
+            ExposedDropDownArrayAdapter exposedDropDownArrayAdapter = new ExposedDropDownArrayAdapter(getContext(),myView.pdfTheme,R.layout.view_exposed_dropdown_item, pdfThemes);
+            myView.pdfTheme.setAdapter(exposedDropDownArrayAdapter);
+            pdf_print_string = getString(R.string.theme)+ ": " + getString(R.string.pdf) + "/" + getString(R.string.print);
         }
     }
 
@@ -174,6 +193,22 @@ public class ExportFragment extends Fragment {
         myView.chordPro.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("exportChordPro",false));
         myView.text.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("exportText",false));
         myView.screenShot.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("exportScreenshot",false));
+
+        // Set the pdf/print theme
+        myView.pdfTheme.setHint(pdf_print_string);
+        myView.pdfTheme.setText(getPDFThemeText());
+        myView.pdfTheme.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                setPDFTheme();
+            }
+        });
 
         // Set the listeners for preferences
         myView.setPDF.setOnCheckedChangeListener(new MyCheckChanged("exportSetPDF"));
@@ -266,6 +301,50 @@ public class ExportFragment extends Fragment {
             }
         }
     }
+
+    private String getPDFThemeText() {
+        String theme;
+        switch (mainActivityInterface.getMyThemeColors().getPdfTheme()) {
+            case "default":
+            default:
+                theme = default_string;
+                break;
+            case "dark":
+                theme = dark_string;
+                break;
+            case "light":
+                theme = light_string;
+                break;
+            case "custom1":
+                theme = custom1_string;
+                break;
+            case "custom2":
+                theme = custom2_string;
+                break;
+        }
+        return theme;
+    }
+
+    private void setPDFTheme() {
+        if (myView!=null && myView.pdfTheme.getText()!=null) {
+            String pref;
+            String theme = myView.pdfTheme.getText().toString();
+            if (theme.equals(dark_string)) {
+                pref = "dark";
+            } else if (theme.equals(light_string)) {
+                pref = "light";
+            } else if (theme.equals(custom1_string)) {
+                pref = "custom1";
+            } else if (theme.equals(custom2_string)) {
+                pref = "custom2";
+            } else {
+                pref = "default";
+            }
+            // Save the preference and build the theme
+            mainActivityInterface.getMyThemeColors().updatePDFTheme(pref,true);
+        }
+    }
+
 
     private void showHideSongOptions(boolean show) {
         if (show) {
@@ -768,7 +847,7 @@ public class ExportFragment extends Fragment {
         });
         // Now draw it here for measuring via the VTO
         headerLayoutPDF = mainActivityInterface.getSongSheetHeaders().getSongSheet(thisSong,
-                scaleComments, Color.BLACK);
+                scaleComments, mainActivityInterface.getMyThemeColors().getPdfTextColor());
         if (headerLayoutPDF!=null) {
             myView.hiddenHeader.addView(headerLayoutPDF);
         } else {
