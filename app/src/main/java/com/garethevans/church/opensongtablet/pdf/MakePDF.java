@@ -220,7 +220,7 @@ public class MakePDF {
         int maxHeight = mainActivityInterface.getProcessSong().getMaxValue(sectionHeights,0,sectionHeights.size());
 
         // If we are adding section spaces, add this on to the heights for each section except the last
-        int sectionSpace = 0;
+        sectionSpace = 0;
         Log.d(TAG,"addSectionSpace:"+mainActivityInterface.getPreferences().getMyPreferenceBoolean("addSectionSpace",true));
         if (mainActivityInterface.getPreferences().getMyPreferenceBoolean("addSectionSpace",true) &&
                 sectionHeights.size()>1) {
@@ -302,12 +302,6 @@ public class MakePDF {
         // Set our starting positions and sizes
         float ypos = headerHeight + cmToPx(margin_cm);
         int spaceStillAvailable = availableHeight;
-
-        if (mainActivityInterface.getPreferences().getMyPreferenceBoolean("addSectionSpace",true) &&
-                sectionHeights.size()>1) {
-            sectionSpace = (int) (0.75 * TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP,
-                    mainActivityInterface.getProcessSong().getDefFontSize(), c.getResources().getDisplayMetrics()));
-        }
 
         // Go through views one at a time
         for (int x=0; x<sectionViews.size(); x++) {
