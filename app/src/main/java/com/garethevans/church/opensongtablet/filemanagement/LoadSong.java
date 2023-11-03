@@ -648,7 +648,19 @@ public class LoadSong {
         boolean isvalid = false;
         // Get length of file in Kb
         float filesize = mainActivityInterface.getStorageAccess().getFileSizeFromUri(uri);
-        if (filename.toLowerCase(Locale.ROOT).endsWith(".txt") ||
+        /* Rather than check for each bad extension as users add random stuff,
+           Just look for a . and not pdf/image */
+        if (!filename.contains(".") || filename.toLowerCase().endsWith(".xml") ||
+                mainActivityInterface.getStorageAccess().isIMGorPDF(filename)) {
+            isvalid = true;
+        } else if (filesize < 2000) {
+            // Less than 2Mb
+            isvalid = true;
+        }
+
+        if (!filename.contains(".") ||
+                filename.toLowerCase(Locale.ROOT).endsWith(".xml") ||
+                filename.toLowerCase(Locale.ROOT).endsWith(".txt") ||
                 filename.toLowerCase(Locale.ROOT).endsWith(".onsong") ||
                 filename.toLowerCase(Locale.ROOT).endsWith(".crd") ||
                 filename.toLowerCase(Locale.ROOT).endsWith(".chopro") ||
@@ -656,10 +668,13 @@ public class LoadSong {
                 filename.toLowerCase(Locale.ROOT).endsWith(".usr") ||
                 filename.toLowerCase(Locale.ROOT).endsWith(".pro")) {
             isvalid = true;
-        } else if (filesize < 2000) {
-            // Less than 2Mb
-            isvalid = true;
         }
+        // Removed this stuff as small invalid files break the indexing
+        // } else if (filesize < 2000) {
+            // Less than 2Mb
+        //    isvalid = true;
+        //}
+
         return isvalid;
     }
 

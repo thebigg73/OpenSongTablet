@@ -8,83 +8,88 @@
         android:id="@+id/testScrollLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
-        android:clipToPadding="false"
-        android:clipChildren="false">
-    <ScrollView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:clipToPadding="false"
-        android:clipChildren="false">
+        android:layout_alignParentTop="true"
+        android:clipChildren="false"
+        android:clipToPadding="false">
 
-        <LinearLayout
-            android:id="@+id/previewLayout"
+        <ScrollView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:orientation="vertical"
-            android:visibility="invisible"
-            android:clipToPadding="false"
-            android:clipChildren="false">
-
-        <LinearLayout
-                android:id="@+id/hiddenHeader"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:visibility="visible"
-            android:clipToPadding="false"
-            android:clipChildren="false" />
+            android:clipChildren="false"
+            android:clipToPadding="false">
 
             <LinearLayout
-                android:id="@+id/hiddenSections"
+                android:id="@+id/previewLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:visibility="visible"
+                android:background="@color/white"
+                android:clipChildren="false"
                 android:clipToPadding="false"
-                android:clipChildren="false" />
+                android:orientation="vertical"
+                android:visibility="invisible">
+
+                <LinearLayout
+                    android:id="@+id/hiddenHeader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clipChildren="false"
+                    android:clipToPadding="false"
+                    android:orientation="vertical"
+                    android:visibility="visible" />
+
+                <LinearLayout
+                    android:id="@+id/hiddenSections"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clipChildren="false"
+                    android:clipToPadding="false"
+                    android:orientation="vertical"
+                    android:visibility="visible" />
 
             </LinearLayout>
-    </ScrollView>
+        </ScrollView>
     </HorizontalScrollView>
 
     <HorizontalScrollView
         android:id="@+id/scaledScrollView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
-        android:clipToPadding="false"
-        android:clipChildren="false">
-    <ScrollView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:clipToPadding="false"
-        android:clipChildren="false">
-        <RelativeLayout
-            android:id="@+id/scaledPageHolder"
-            android:layout_width="match_parent"
+        android:layout_alignParentTop="true"
+        android:clipChildren="false"
+        android:clipToPadding="false">
+
+        <ScrollView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:clipToPadding="false"
-            android:clipChildren="false">
-            <LinearLayout
-                android:id="@+id/scaledHeader"
+            android:clipChildren="false"
+            android:clipToPadding="false">
+
+            <RelativeLayout
+                android:id="@+id/scaledPageHolder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:clipToPadding="false"
-                android:clipChildren="false"/>
-        <com.garethevans.church.opensongtablet.customviews.SongContent
-            android:id="@+id/scaledSongContent"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/scaledHeader"
-            android:clipToPadding="false"
-            android:clipChildren="false"/>
-        </RelativeLayout>
-    </ScrollView>
+                android:clipChildren="false"
+                android:clipToPadding="false">
+
+                <LinearLayout
+                    android:id="@+id/scaledHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clipChildren="false"
+                    android:clipToPadding="false"
+                    android:orientation="vertical" />
+
+                <com.garethevans.church.opensongtablet.customviews.SongContent
+                    android:id="@+id/scaledSongContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@id/scaledHeader"
+                    android:clipChildren="false"
+                    android:clipToPadding="false" />
+            </RelativeLayout>
+        </ScrollView>
     </HorizontalScrollView>
 
     <com.garethevans.church.opensongtablet.customviews.NestedScrollWithFAB
@@ -118,8 +123,8 @@
                     android:id="@+id/exportTextAsMessage"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/text_as_message"
-                    android:hint="@string/text_as_message_info"/>
+                    android:hint="@string/text_as_message_info"
+                    android:text="@string/text_as_message" />
 
                 <com.google.android.material.checkbox.MaterialCheckBox
                     android:id="@+id/setPDF"
@@ -240,9 +245,9 @@
                 android:id="@+id/pdfTheme"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 android:hint="@string/theme"
-                android:text="@string/use_default"
-                android:layout_marginTop="16dp"/>
+                android:text="@string/use_default" />
         </LinearLayout>
     </com.garethevans.church.opensongtablet.customviews.NestedScrollWithFAB>
 

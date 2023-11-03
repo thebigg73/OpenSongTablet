@@ -892,6 +892,46 @@ public class StorageAccess {
         }
         return isImgOrPDF;
     }
+    public boolean isIMGorPDF(String filename) {
+        // Just check the filename as img or pdf
+        boolean isImgOrPDF = false;
+
+        if (filename != null) {
+            filename = filename.toLowerCase(Locale.ROOT);
+        } else {
+            filename = "";
+        }
+        if (filename.endsWith(".pdf")) {
+            isImgOrPDF = true;
+        } else if (filenameIsImage("addingextracharsfortest"+filename)) {
+            isImgOrPDF = true;
+        }
+        return isImgOrPDF;
+    }
+    public boolean validDatabaseFile(Uri uri, String filename) {
+        boolean isvalid = false;
+        // Get length of file in Kb
+        float filesize = 0;
+        if (uri!=null) {
+            filesize = mainActivityInterface.getStorageAccess().getFileSizeFromUri(uri);
+        }
+
+        // Simplify the filename to only look for the last part after any /
+        if (filename.contains("/") && !filename.endsWith("/")) {
+            filename = filename.substring(filename.lastIndexOf("/")).replace("/","");
+        }
+
+        // Rather than check for each bad extension as users add random stuff,
+        // Just accept songs that don't have extensions, or end with .xml or image extensions
+        if (!filename.contains(".") || filename.toLowerCase().endsWith(".xml") || isIMGorPDF(filename)) {
+            isvalid = true;
+        } else if (filesize < 2000) {
+            // Less than 2Mb
+            isvalid = true;
+        }
+        return isvalid;
+    }
+
     public boolean isSpecificFileExtension(String whichType, String filename) {
         String toCheck = "";
         switch (whichType) {
@@ -1990,6 +2030,14 @@ public class StorageAccess {
         // This creates a file in the app storage with a list of song folders/filenames
         StringBuilder stringBuilder = new StringBuilder();
 
+        // Remove songs that aren't valid filetypes for the song database
+        ArrayList<String> newSongIds = new ArrayList<>();
+        for (int x=0; x<songIds.size(); x++) {
+            if (validDatabaseFile(null,songIds.get(x))) {
+                newSongIds.add(songIds.get(x));
+            }
+        }
+
         // Sort the array
         Collator collator;
         if (mainActivityInterface.getLocale() == null) {
@@ -1998,8 +2046,8 @@ public class StorageAccess {
             collator = Collator.getInstance(mainActivityInterface.getLocale());
         }
         collator.setStrength(Collator.SECONDARY);
-        Collections.sort(songIds, collator);
-        for (String songId : songIds) {
+        Collections.sort(newSongIds, collator);
+        for (String songId : newSongIds) {
             stringBuilder.append(songId).append("\n");
         }
         // Get the file reference
