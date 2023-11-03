@@ -156,7 +156,7 @@ public class Preferences extends Activity {
     // abcTranspose                     int         The visual transposing of abc notation
     // abcZoom                          int         How much the staff width is reduced thus zooming in.  Calculated by width/zoom (def:2)
     // addSectionBox                    boolean     Draw a box around sections when in Performance mode (def:false)
-    // *NOTYET addSectionSpace          boolean     Should a spacing line be added between sections to improve readability (def:true)
+    // addSectionSpace                  boolean     Should a spacing line be added between sections to improve readability (def:true)
     // airTurnLongPressTime             int         If using airTurnMode, how long should an action_down be held for to simulate longPress (def:1000)
     // airTurnMode                      boolean     Should autorepeat onKeyUp (multiple from keyRepeatCount variable) be converted to longKeyPress actions for AirTurn pedals (def:false)
     // allowPinchToZoom                 boolean     Can the song be pinch zoomed in Performance mode? (def:true)

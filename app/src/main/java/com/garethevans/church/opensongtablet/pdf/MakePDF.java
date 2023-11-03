@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.print.PrintAttributes;
 import android.text.Html;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -35,9 +36,11 @@ public class MakePDF {
     private boolean isSetListPrinting = false;
     private boolean showTotalPage = true;
     private String exportFilename;
-
+    private final Context c;
+    private int sectionSpace;
 
     public MakePDF(Context c) {
+        this.c = c;
         mainActivityInterface = (MainActivityInterface) c;
     }
 
@@ -216,6 +219,16 @@ public class MakePDF {
         int maxWidth = mainActivityInterface.getProcessSong().getMaxValue(sectionWidths,0,sectionWidths.size());
         int maxHeight = mainActivityInterface.getProcessSong().getMaxValue(sectionHeights,0,sectionHeights.size());
 
+        // If we are adding section spaces, add this on to the heights for each section except the last
+        int sectionSpace = 0;
+        Log.d(TAG,"addSectionSpace:"+mainActivityInterface.getPreferences().getMyPreferenceBoolean("addSectionSpace",true));
+        if (mainActivityInterface.getPreferences().getMyPreferenceBoolean("addSectionSpace",true) &&
+                sectionHeights.size()>1) {
+            sectionSpace = (int) (0.75 * TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP,
+                    mainActivityInterface.getProcessSong().getDefFontSize(), c.getResources().getDisplayMetrics()));
+            maxHeight += sectionSpace*(sectionWidths.size()-1);
+        }
+
         // Determine the size we have available based on the document sizes
         // The width is the document width minus 2x margin (left and right)
         // The height is the document height minus 2x margin (top and bottom) and header and footer
@@ -290,6 +303,12 @@ public class MakePDF {
         float ypos = headerHeight + cmToPx(margin_cm);
         int spaceStillAvailable = availableHeight;
 
+        if (mainActivityInterface.getPreferences().getMyPreferenceBoolean("addSectionSpace",true) &&
+                sectionHeights.size()>1) {
+            sectionSpace = (int) (0.75 * TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP,
+                    mainActivityInterface.getProcessSong().getDefFontSize(), c.getResources().getDisplayMetrics()));
+        }
+
         // Go through views one at a time
         for (int x=0; x<sectionViews.size(); x++) {
             View view = sectionViews.get(x);
@@ -298,7 +317,7 @@ public class MakePDF {
 
             // Check we have available height remaining for this view.  If not, create a new page
 
-            if (newHeight > spaceStillAvailable) {
+            if (newHeight + sectionSpace > spaceStillAvailable) {
                 // Add the footer and finish the page
                 createFooter();
                 pdfDocument.finishPage(page);
@@ -309,7 +328,7 @@ public class MakePDF {
                 spaceStillAvailable = availableHeight + headerHeight - newHeight;
                 ypos = cmToPx(margin_cm);
             } else {
-                spaceStillAvailable = spaceStillAvailable - newHeight;
+                spaceStillAvailable = spaceStillAvailable - newHeight - sectionSpace;
             }
 
             // Scale the view
@@ -323,7 +342,8 @@ public class MakePDF {
             pageCanvas.restore();
 
             // Set the position to draw the next view
-            ypos = ypos + newHeight;
+            Log.d(TAG,"sectionSpace:"+sectionSpace);
+            ypos = ypos + newHeight + sectionSpace;
         }
 
         // Add the footer to the last page and finish it
