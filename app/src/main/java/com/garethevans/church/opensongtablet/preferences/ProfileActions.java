@@ -140,6 +140,7 @@ public class ProfileActions {
             inputStream.close();
         } catch (Exception e) {
             e.printStackTrace();
+            mainActivityInterface.getStorageAccess().updateFileActivityLog(e.toString());
         }
 
         return true;
