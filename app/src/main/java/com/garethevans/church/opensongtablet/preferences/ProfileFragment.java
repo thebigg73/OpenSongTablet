@@ -81,8 +81,14 @@ public class ProfileFragment extends Fragment {
 
     private void doLoadSave(ActivityResult result, String which) {
         boolean success = false;
+        String extrainfo = "";
         if (result.getResultCode()==Activity.RESULT_OK) {
             Intent intent = result.getData();
+            if (intent==null) {
+                extrainfo += " (intent null) ";
+            } else if (intent.getData()==null) {
+                extrainfo += " (intent.getData() null) ";
+            }
             if (intent!=null && intent.getData()!=null) {
                 if (which.equals("load")) {
                     success = mainActivityInterface.getProfileActions().loadProfile(intent.getData());
@@ -90,11 +96,13 @@ public class ProfileFragment extends Fragment {
                     success = mainActivityInterface.getProfileActions().saveProfile(intent.getData());
                 }
             }
+        } else {
+            extrainfo += " (Wrong result code:"+result.getResultCode()+") ";
         }
         if (success && getContext()!=null) {
             mainActivityInterface.getShowToast().doIt(getString(R.string.success));
         } else if (getContext()!=null){
-            mainActivityInterface.getShowToast().doIt(getString(R.string.error));
+            mainActivityInterface.getShowToast().doIt(getString(R.string.error)+extrainfo);
         }
     }
 
