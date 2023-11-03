@@ -155,7 +155,7 @@ public class Preferences extends Activity {
     // abcPopupWidth                    float       The percentage of the screen width for the abc score popup (def:0.95f)
     // abcTranspose                     int         The visual transposing of abc notation
     // abcZoom                          int         How much the staff width is reduced thus zooming in.  Calculated by width/zoom (def:2)
-    // addSectionBox                    boolean     Draw a box around sections when in Performance mode (def:false)
+    // addSectionBox   *NOTYET*         boolean     Draw a box around sections when in Performance mode (def:false)
     // addSectionSpace                  boolean     Should a spacing line be added between sections to improve readability (def:true)
     // airTurnLongPressTime             int         If using airTurnMode, how long should an action_down be held for to simulate longPress (def:1000)
     // airTurnMode                      boolean     Should autorepeat onKeyUp (multiple from keyRepeatCount variable) be converted to longKeyPress actions for AirTurn pedals (def:false)
@@ -462,6 +462,7 @@ public class Preferences extends Activity {
     // pageButtonShow1...               boolean     Should the button be visible. User can temporarily hide (or change the num)
     // pageButtonMini                   boolean     Should the page buttons be mini (def:false)
     // pdfSize                          String      The size for printing PDF (def:A4)
+    // pdfTheme                         String      The theme to use when exporting PDF files or printing (def:default)
     // pedal1Code                       int         The keyboard int code assigned to pedal 1 (default is 21 - left arrow)
     // pedal1Midi                       String      The midi note assigned to pedal 1 (default:C3)
     // pedal1LongPressAction            String      The action called when pedal 1 is long pressed (default is songmenu)

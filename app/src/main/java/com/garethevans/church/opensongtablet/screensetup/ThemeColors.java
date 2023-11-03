@@ -728,7 +728,6 @@ public class ThemeColors {
     @SuppressWarnings("FieldCanBeLocal")
     private final int lightyellow = 0xffddaa00;
     private final int yellow = 0xffffff00;
-    ;
     private final int stickybg = 0xddddaa00;
     private final int vdarkyellow = 0xff111100;
     private final int red = 0xffff0000;
