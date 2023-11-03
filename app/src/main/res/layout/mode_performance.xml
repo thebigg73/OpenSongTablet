@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mypage"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black"
     android:clipChildren="false"
     android:clipToPadding="false"
+    android:descendantFocusability="blocksDescendants"
     android:focusable="false"
     android:focusableInTouchMode="false"
-    android:descendantFocusability="blocksDescendants"
     tools:context=".performance.PerformanceFragment">
 
     <!-- The logo watermark -->
@@ -33,19 +33,29 @@
         android:clipChildren="false"
         android:clipToPadding="false"
         android:visibility="invisible" />
-    <ScrollView
-        android:layout_width="match_parent"
+
+    <HorizontalScrollView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clipChildren="false"
         android:clipToPadding="false"
         android:visibility="invisible">
-    <RelativeLayout
-        android:id="@+id/testPane"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:clipChildren="false"
-        android:clipToPadding="false" />
-    </ScrollView>
+
+        <ScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:visibility="invisible">
+
+            <RelativeLayout
+                android:id="@+id/testPane"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clipChildren="false"
+                android:clipToPadding="false" />
+        </ScrollView>
+    </HorizontalScrollView>
 
     <!-- This is used for the pdf pages, images and stage mode -->
     <com.garethevans.church.opensongtablet.customviews.MyRecyclerView
@@ -56,7 +66,7 @@
         android:layout_toEndOf="@id/inlineSetList"
         android:clipChildren="false"
         android:clipToPadding="false"
-        android:visibility="invisible"/>
+        android:visibility="invisible" />
 
     <!-- The main content inside a zoom layout -->
     <com.garethevans.church.opensongtablet.customviews.MyZoomLayout
@@ -125,10 +135,10 @@
         android:id="@+id/inlineSetList"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:background="@color/colorPrimary"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        app:elevation="8dp"/>
+        android:background="@color/colorPrimary"
+        app:elevation="8dp" />
 
     <View
         android:id="@+id/hotZoneTopLeft"
@@ -136,17 +146,19 @@
         android:layout_height="@dimen/hot_zone_height"
         android:layout_alignParentStart="true"
         android:layout_toEndOf="@id/inlineSetList" />
+
     <View
         android:id="@+id/hotZoneTopCenter"
         android:layout_width="@dimen/hot_zone_width"
         android:layout_height="@dimen/hot_zone_height"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"/>
+        android:layout_centerHorizontal="true" />
+
     <View
         android:id="@+id/hotZoneBottomCenter"
         android:layout_width="@dimen/hot_zone_width"
         android:layout_height="@dimen/hot_zone_height"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"/>
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

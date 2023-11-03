@@ -20,13 +20,28 @@
         android:clipToPadding="false"
         android:padding="0dp">
 
-        <RelativeLayout
-            android:id="@+id/testLayout"
+        <HorizontalScrollView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:visibility="invisible" />
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:visibility="invisible">
+            <ScrollView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:clipChildren="false">
+                <RelativeLayout
+                    android:id="@+id/testLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clipChildren="false"
+                    android:clipToPadding="false"/>
+            </ScrollView>
+        </HorizontalScrollView>
+
 
         <com.garethevans.church.opensongtablet.customviews.SongProjectionInfo
             android:id="@+id/testSongInfo"

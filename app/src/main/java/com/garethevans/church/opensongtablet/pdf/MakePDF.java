@@ -310,8 +310,7 @@ public class MakePDF {
             int newHeight = (int) ((float)sectionHeights.get(x)*sectionScaling);
 
             // Check we have available height remaining for this view.  If not, create a new page
-
-            if (newHeight + sectionSpace > spaceStillAvailable) {
+            if (newHeight > spaceStillAvailable) {
                 // Add the footer and finish the page
                 createFooter();
                 pdfDocument.finishPage(page);
