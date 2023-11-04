@@ -47,11 +47,12 @@ public class MidiShortHandBottomSheet extends BottomSheetDialogFragment {
             string_beatbuddy_double_time_exit, string_beatbuddy_tempo, string_beatbuddy_volume,
             string_beatbuddy_volume_headphones, string_beatbuddy_song, string_beatbuddy_intro,
             string_beatbuddy_outro, string_beatbuddy_pause, string_beatbuddy_accent, string_velocity,
-            string_beatbuddy_fill, string_volume, string_note, string_value, command, midiCode;
+            string_beatbuddy_fill, string_volume, string_note, string_value, command, midiCode,
+            string_sysex_start, string_sysex_stop;
     @SuppressWarnings("FieldCanBeLocal")
     private ArrayList<String> midiChannel, midiCommand, midiCommandDescription, midiValue0_100,
             midiValue0_127, midiValue1_127, midiValue1_128, midiValue40_300, midiNotes;
-    private boolean usingVal1=false, usingVal2=false;
+    private boolean usingVal1=false, usingVal2=false, usingSysEx=false;
     // Calling fragment/dialogfragment
     private final BottomSheetDialogFragment bottomSheetDialogFragment;
     private final Fragment fragment;
@@ -95,7 +96,11 @@ public class MidiShortHandBottomSheet extends BottomSheetDialogFragment {
         this.fragment = null;
         this.bottomSheetDialogFragment = null;
         this.fragTag = null;
-        dismiss();
+        try {
+            dismiss();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     MidiShortHandBottomSheet(Fragment fragment, BottomSheetDialogFragment bottomSheetDialogFragment, String fragTag, String midiName, String midiCurrent) {
@@ -181,6 +186,8 @@ public class MidiShortHandBottomSheet extends BottomSheetDialogFragment {
             string_beatbuddy_pause = beatBuddy + " " + c.getString(R.string.pause);
             string_beatbuddy_fill = beatBuddy + " " + c.getString(R.string.fill);
             string_beatbuddy_accent = beatBuddy + " " + c.getString(R.string.accent);
+            string_sysex_start = getString(R.string.midi_sysex) + " " + getString(R.string.start);
+            string_sysex_stop = getString(R.string.midi_sysex) + " " + getString(R.string.stop);
         }
     }
 
@@ -259,6 +266,8 @@ public class MidiShortHandBottomSheet extends BottomSheetDialogFragment {
         setMidiCommand(string_beatbuddy_pause,"BBP");
         setMidiCommand(string_beatbuddy_accent,"BBA");
         setMidiCommand(string_beatbuddy_fill,"BBF");
+        setMidiCommand(string_sysex_start,"START");
+        setMidiCommand(string_sysex_stop,"STOP");
 
         if (getContext()!=null) {
             ExposedDropDownArrayAdapter commandAdapter = new ExposedDropDownArrayAdapter(getContext(),
@@ -298,11 +307,9 @@ public class MidiShortHandBottomSheet extends BottomSheetDialogFragment {
             midiCurrent = "";
         }
         String[] bits = midiCurrent.split("\n");
-        Log.d(TAG,"bits.length: "+bits.length);
         for (String command : bits) {
             if (command != null && !command.isEmpty() && getActivity() != null) {
                 // Get a human readable version of the midi code
-                Log.d(TAG,"command: "+command);
                 String hexCode = mainActivityInterface.getMidi().checkForShortHandMIDI(command);
                 String readable = mainActivityInterface.getMidi().getReadableStringFromHex(hexCode);
                 MidiInfo midiInfo = new MidiInfo();
@@ -313,7 +320,6 @@ public class MidiShortHandBottomSheet extends BottomSheetDialogFragment {
         }
 
         myView.recyclerView.post(() -> {
-            Log.d(TAG, "Sending update size:"+midiInfos.size());
             midiMessagesAdapter.updateMidiInfos(midiInfos);
             myView.recyclerView.setAdapter(midiMessagesAdapter);
             myView.recyclerView.setVisibility(View.VISIBLE);
@@ -392,6 +398,7 @@ public class MidiShortHandBottomSheet extends BottomSheetDialogFragment {
     private void whichValues() {
         String commandDesc = myView.midiCommand.getText().toString();
         int index = midiCommandDescription.indexOf(commandDesc);
+        usingSysEx = false;
         if (index>=0) {
             command = midiCommand.get(index);
             switch (command) {
@@ -432,6 +439,11 @@ public class MidiShortHandBottomSheet extends BottomSheetDialogFragment {
                     usingVal1 = false;
                     usingVal2 = false;
                     break;
+                case "START":
+                case "STOP":
+                    usingVal1 = false;
+                    usingVal2 = false;
+                    usingSysEx = true;
             }
 
             // Set up the dropdowns
@@ -485,6 +497,7 @@ public class MidiShortHandBottomSheet extends BottomSheetDialogFragment {
             myView.midiValue1.setHint(value1Hint);
             myView.midiValue2.setHint(value2Hint);
 
+            myView.midiChannel.setVisibility(usingSysEx ? View.GONE : View.VISIBLE);
             myView.midiValue1.setVisibility(usingVal1 ? View.VISIBLE : View.GONE);
             myView.midiValue2.setVisibility(usingVal2 ? View.VISIBLE : View.GONE);
 
@@ -503,7 +516,11 @@ public class MidiShortHandBottomSheet extends BottomSheetDialogFragment {
         // Build the MIDI code using the dropdowns if we are ready
         midiCode = "";
         if (midiCommandDescription!=null && midiCommandDescription.size()>0) {
-            midiCode = "MIDI" + myView.midiChannel.getText().toString() + ":";
+            if (usingSysEx) {
+                midiCode = "MIDI:";
+            } else {
+                midiCode = "MIDI" + myView.midiChannel.getText().toString() + ":";
+            }
             String midiCommandDesc = myView.midiCommand.getText().toString();
             int index = midiCommandDescription.indexOf(midiCommandDesc);
             String midiCommandShorthand = midiCommand.get(index);
@@ -534,8 +551,6 @@ public class MidiShortHandBottomSheet extends BottomSheetDialogFragment {
         StringBuilder fullMidiCode = new StringBuilder();
         midiInfos = midiMessagesAdapter.getMidiInfos();
         for (MidiInfo midiInfo:midiInfos) {
-            Log.d(TAG,"command:"+midiInfo.midiCommand);
-            Log.d(TAG,"readableCommand:"+midiInfo.readableCommand);
             fullMidiCode.append(midiInfo.midiCommand).append("\n");
         }
 

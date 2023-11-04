@@ -681,6 +681,7 @@
     <string name="midi_program">Program change</string>
     <string name="midi_send">Send MIDI</string>
     <string name="midi_shorthand">MIDI shorthand</string>
+    <string name="midi_sysex" translatable="false">Sysex</string>
     <string name="midi_test">Test</string>
     <string name="midi_value">Value</string>
     <string name="midi_velocity">Velocity</string>

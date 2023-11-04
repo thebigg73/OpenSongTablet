@@ -30,6 +30,8 @@ public class ShortHandMidi {
     // BBS{1-127}/{1-127} = BeatBuddy folder/song
     // BBI = BeatBuddy intro, BBO = BeatBuddy outro, BBP = BeatBuddy pause
     // BBF = BeatBuddy fill, BBA = BeatBuddy accent
+    // START = Sysex start (MIDI channel is ignored)
+    // STOP = Sysex stop (MIDI channel is ignored)
 
     // Examples
     // MIDI9:CC106:100      MIDI channel 9, controller change 106, value 100
@@ -225,12 +227,23 @@ public class ShortHandMidi {
                             commandPart2 = valueToHex(mainActivityInterface.getBeatBuddy().getCC_Accent_hit());
                             commandPart3 = valueToHex(Math.round((mainActivityInterface.getBeatBuddy().getBeatBuddyVolume() / 100f) * 127f));
 
+                        } else if (bit.contains("START")) {
+                            commandPart1 = "";
+                            commandPart2 = mainActivityInterface.getMidi().getSysexStartCode();
+                            commandPart3 = "";
+
+                        } else if (bit.contains("STOP")) {
+                            commandPart1 = "";
+                            commandPart2 = mainActivityInterface.getMidi().getSysexStopCode();
+                            commandPart3 = "";
 
                         } else if (!bit.isEmpty() && !bit.replaceAll("\\D", "").isEmpty()) {
                             // This is the value part - the other bits were gathered already (hopefully!)
                             commandPart3 = valueToHex(valueFromString(bit, ""));
                         }
                     }
+
+                    boolean sysex = commandPart2.startsWith("0xF0") && commandPart2.endsWith("0xF7");
 
                     // Now build the message back up (if ok)
                     StringBuilder newCommand = new StringBuilder();
@@ -256,6 +269,9 @@ public class ShortHandMidi {
                         }
 
                         fixedLines.append(newCommand).append("\n");
+
+                    } else if (sysex) {
+                        fixedLines.append(commandPart2).append("\n");
 
                     } else {
                         Log.d(TAG,"there was an issue");

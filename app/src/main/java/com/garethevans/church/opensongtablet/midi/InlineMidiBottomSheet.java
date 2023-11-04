@@ -63,6 +63,8 @@ public class InlineMidiBottomSheet extends BottomSheetDialogFragment {
     private String velocity_string="";
     private String inline_midi_string="";
     private String part_string="";
+    private String sysex_start_string="";
+    private String sysex_stop_string="";
 
     private ArrayList<String> midiActions, midiChannels, range0_127, range1_127, range0_100,
             range1_32, range40_300;
@@ -156,6 +158,8 @@ public class InlineMidiBottomSheet extends BottomSheetDialogFragment {
             accent_string = beat_buddy_string + getString(R.string.accent);
             value_string = getString(R.string.midi_value);
             part_string = getString(R.string.part);
+            sysex_start_string = getString(R.string.midi_sysex) + " " + getString(R.string.start);
+            sysex_stop_string = getString(R.string.midi_sysex) + " " + getString(R.string.stop);
         }
     }
 
@@ -301,6 +305,12 @@ public class InlineMidiBottomSheet extends BottomSheetDialogFragment {
 
         // 25
         midiActions.add(accent_string);
+
+        // 26
+        midiActions.add(sysex_start_string);
+
+        //27
+        midiActions.add(sysex_stop_string);
     }
     private void prepareDropdowns() {
         if (getContext()!=null) {
@@ -606,6 +616,18 @@ public class InlineMidiBottomSheet extends BottomSheetDialogFragment {
             case 25:
                 // Accent
                 part2 = "BBA";
+                break;
+
+            case 26:
+                // Sysex start
+                part1 = ";MIDI";
+                part2 = "START";
+                break;
+
+            case 27:
+                // Sysex stop
+                part1 = ";MIDI";
+                part2 = "STOP";
                 break;
 
         }

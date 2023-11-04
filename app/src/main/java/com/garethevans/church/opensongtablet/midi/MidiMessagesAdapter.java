@@ -89,10 +89,10 @@ public class MidiMessagesAdapter extends RecyclerView.Adapter<MidiAdapterViewHol
         return midiInfos;
     }
 
-    public int addToEnd(MidiInfo midiInfo) {
+    public void addToEnd(MidiInfo midiInfo) {
         midiInfos.add(midiInfo);
         notifyItemInserted(midiInfos.size()-1);
-        return midiInfos.size()-1;
+        midiInfos.size();
     }
     public void removeItem(int position) {
         midiInfos.remove(position);
@@ -101,8 +101,6 @@ public class MidiMessagesAdapter extends RecyclerView.Adapter<MidiAdapterViewHol
 
     @Override
     public void onItemMoved(int fromPosition, int toPosition) {
-        Log.d(TAG,"onItemMoved() from:"+fromPosition+"  to:"+toPosition);
-
         String thisCommand = midiInfos.get(fromPosition).midiCommand;
 
         if (fromSongMessages) {
@@ -130,7 +128,6 @@ public class MidiMessagesAdapter extends RecyclerView.Adapter<MidiAdapterViewHol
 
     @Override
     public void onItemSwiped(int fromPosition) {
-        Log.d(TAG,"onItemSwiped() from:"+fromPosition);
         if (fromSongMessages) {
             // Remove from the song messages
             mainActivityInterface.getMidi().removeFromSongMessages(fromPosition);
@@ -146,7 +143,6 @@ public class MidiMessagesAdapter extends RecyclerView.Adapter<MidiAdapterViewHol
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onItemClicked(int position) {
-        Log.d(TAG,"onItemClicked() pos:"+position);
         // Send the midi message
         if (fromSongMessages) {
             mainActivityInterface.getMidi().sendMidi(position);

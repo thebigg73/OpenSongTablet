@@ -68,7 +68,11 @@ public class MidiControllerBottomSheet extends BottomSheetDialogFragment {
     @SuppressWarnings("unused")
     MidiControllerBottomSheet() {
         this.bottomSheetDialogFragment = null;
-        dismiss();
+        try {
+            dismiss();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     MidiControllerBottomSheet(BottomSheetDialogFragment bottomSheetDialogFragment, String title, int channel, int controller) {

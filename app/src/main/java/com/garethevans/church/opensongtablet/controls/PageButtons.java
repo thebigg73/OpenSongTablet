@@ -300,6 +300,8 @@ public class PageButtons {
         prepareOption("midiaction6",c.getString(R.string.midi_action)+" "+6,c.getString(R.string.select),"",R.drawable.midi6);
         prepareOption("midiaction7",c.getString(R.string.midi_action)+" "+7,c.getString(R.string.select),"",R.drawable.midi7);
         prepareOption("midiaction8",c.getString(R.string.midi_action)+" "+8,c.getString(R.string.select),"",R.drawable.midi8);
+        prepareOption("sysexstart",c.getString(R.string.midi_sysex)+" "+c.getString(R.string.start), c.getString(R.string.select),"",R.drawable.midi_start);
+        prepareOption("sysexstop",c.getString(R.string.midi_sysex)+" "+c.getString(R.string.stop), c.getString(R.string.select),"",R.drawable.midi_stop);
 
         prepareOption("","","","",R.drawable.help);
 

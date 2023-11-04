@@ -37,6 +37,8 @@ public class Midi {
     private final String TAG = "Midi";
     private MediaPlayer midiMediaPlayer;
     private String[] messageParts;
+    private final String sysexStartCode = "0xF0 0xFA 0xF7";
+    private final String sysexStopCode = "0xF0 0xFB 0xF7";
 
     // Initialise
     public Midi(Context c) {
@@ -263,93 +265,102 @@ public class Midi {
         String contchange = c.getString(R.string.midi_controller);
         String velocity = c.getString(R.string.midi_velocity);
         String value = c.getString(R.string.midi_value);
+        String sysexstart = c.getString(R.string.midi_sysex) + " " + c.getString(R.string.start);
+        String sysexstop = c.getString(R.string.midi_sysex) + " " + c.getString(R.string.stop);
         String msb = "MSB";
         String lsb = "LSB";
         messageParts = new String[4];
 
-        String[] sections = s.trim().split(" ");
-        messageParts[0] = "";
-        messageParts[1] = "";
-        if (sections.length >= 1 && sections[0] != null && !sections[0].isEmpty()) {
-            String s0_0;
-            String s0_1;
-            try {
-                s0_0 = sections[0].replace("0x", "").substring(0, 1);
-                s0_1 = sections[0].replace("0x", "").substring(1);
+        if (s.equals(sysexStartCode)) {
+            message = sysexstart;
+        } else if (s.equals(sysexStopCode)) {
+            message = sysexstop;
+        } else {
+            String[] sections = s.trim().split(" ");
+            messageParts[0] = "";
+            messageParts[1] = "";
+            if (sections.length >= 1 && sections[0] != null && !sections[0].isEmpty()) {
+                String s0_0;
+                String s0_1;
+                try {
+                    s0_0 = sections[0].replace("0x", "").substring(0, 1);
+                    s0_1 = sections[0].replace("0x", "").substring(1);
 
-                // The channel is the second digit (in hex) of the first byte
-                messageParts[0] = ""+(getIntFromHexString(s0_1) + 1);
-                messageParts[1] = s0_0;
-                channel = channel + " " + messageParts[0];
-                switch (s0_0) {
-                    case "9":
-                        action = noteon;
-                        break;
-                    case "8":
-                        action = noteoff;
-                        break;
-                    case "C":
-                        action = progchange;
-                        break;
-                    case "B":
-                        action = contchange;
-                        break;
-                    default:
-                        action = "?";
-                        break;
+                    // The channel is the second digit (in hex) of the first byte
+                    messageParts[0] = "" + (getIntFromHexString(s0_1) + 1);
+                    messageParts[1] = s0_0;
+                    channel = channel + " " + messageParts[0];
+                    switch (s0_0) {
+                        case "9":
+                            action = noteon;
+                            break;
+                        case "8":
+                            action = noteoff;
+                            break;
+                        case "C":
+                            action = progchange;
+                            break;
+                        case "B":
+                            action = contchange;
+                            break;
+                        default:
+                            action = "?";
+                            break;
+                    }
+
+                } catch (Exception e) {
+                    action = "?";
+                    messageParts[0] = "";
+                    messageParts[1] = "";
                 }
-
-            } catch (Exception e) {
-                action = "?";
-                messageParts[0] = "";
-                messageParts[1] = "";
             }
+
+            // Now deal with the middle byte (note or program number)
+            messageParts[2] = "";
+            if (sections.length >= 2 && sections[1] != null && !sections[1].isEmpty()) {
+                try {
+                    String s1 = sections[1].replace("0x", "").trim();
+                    int v1 = getIntFromHexString(s1);
+                    if (action.equals(contchange) && v1 == 32) {
+                        // This is a LSB message
+                        action = lsb;
+                        messageParts[2] = "LSB";
+                    } else if (action.equals(contchange) && v1 == 0) {
+                        // This is a MSB message
+                        action = msb;
+                        messageParts[2] = "MSB";
+                    } else if (action.equals(noteon) || action.equals(noteoff)) {
+                        action = action + " " + notes.get(v1);
+                        messageParts[2] = notes.get(v1);
+                    } else {
+                        action = action + " " + v1;
+                        messageParts[2] = "" + v1;
+                    }
+                } catch (Exception e) {
+                    action = "?";
+                }
+            }
+            // Now deal with the last byte (velocity or value) - not present for program change
+            messageParts[3] = "";
+            if (sections.length >= 3 && sections[2] != null && !sections[2].isEmpty()) {
+                try {
+                    String s2 = sections[2].replace("0x", "").trim();
+                    int v2 = getIntFromHexString(s2);
+                    messageParts[3] = "" + v2;
+                    if (action.startsWith(noteon) || action.startsWith(noteoff)) {
+                        action = action + "\n" + velocity + " " + v2;
+                    } else {
+                        action = action + "\n" + value + " " + v2;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            channel = channel.trim();
+            action = action.replace("\n\n", "\n");
+            message = channel + "\n" + action;
         }
 
-        // Now deal with the middle byte (note or program number)
-        messageParts[2]="";
-        if (sections.length >= 2 && sections[1] != null && !sections[1].isEmpty()) {
-            try {
-                String s1 = sections[1].replace("0x", "").trim();
-                int v1 = getIntFromHexString(s1);
-                if (action.equals(contchange) && v1 == 32) {
-                    // This is a LSB message
-                    action = lsb;
-                    messageParts[2] = "LSB";
-                } else if (action.equals(contchange) && v1 == 0) {
-                    // This is a MSB message
-                    action = msb;
-                    messageParts[2] = "MSB";
-                } else if (action.equals(noteon) || action.equals(noteoff)) {
-                    action = action + " " + notes.get(v1);
-                    messageParts[2] = notes.get(v1);
-                } else {
-                    action = action + " " + v1;
-                    messageParts[2] = ""+v1;
-                }
-            } catch (Exception e) {
-                action = "?";
-            }
-        }
-        // Now deal with the last byte (velocity or value) - not present for program change
-        messageParts[3]="";
-        if (sections.length >= 3 && sections[2] != null && !sections[2].isEmpty()) {
-            try {
-                String s2 = sections[2].replace("0x", "").trim();
-                int v2 = getIntFromHexString(s2);
-                messageParts[3]=""+v2;
-                if (action.startsWith(noteon) || action.startsWith(noteoff)) {
-                    action = action + "\n" + velocity + " " + v2;
-                } else {
-                    action = action + "\n" + value + " " + v2;
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        channel = channel.trim();
-        action = action.replace("\n\n", "\n");
-        message = channel + "\n" + action;
         return message;
     }
 
@@ -902,6 +913,14 @@ public class Midi {
 
     public String checkForShortHandMIDI(String textToCheck) {
         return shortHandMidi.convertShorthandToMIDI(textToCheck);
+    }
+
+    public String getSysexStartCode() {
+        return sysexStartCode;
+    }
+
+    public String getSysexStopCode() {
+        return sysexStopCode;
     }
 
 }

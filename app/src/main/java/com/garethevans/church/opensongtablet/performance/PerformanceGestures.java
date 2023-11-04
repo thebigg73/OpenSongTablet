@@ -5,7 +5,6 @@ package com.garethevans.church.opensongtablet.performance;
 import android.content.Context;
 import android.os.Build;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -46,8 +45,6 @@ public class PerformanceGestures {
     private final Runnable scrollPosRunnable = new Runnable() {
         @Override
         public void run() {
-            Log.d(TAG,"canScroll:"+canScroll(true));
-
             if (!canScroll(true)) {
                 mainActivityInterface.getDisplayPrevNext().showAndHide();
             }
@@ -512,6 +509,12 @@ public class PerformanceGestures {
                 break;
             case "midiaction8":
                 midiAction(8);
+                break;
+            case "sysexstart":
+                sysexStart();
+                break;
+            case "sysexstop":
+                sysexStop();
                 break;
 
             // Utilities
@@ -1237,6 +1240,13 @@ public class PerformanceGestures {
     public void midiAction(int which) {
         mainActivityInterface.getMidi().sendMidiHexSequence(mainActivityInterface.getMidi().getMidiAction(which));
     }
+    public void sysexStart() {
+        mainActivityInterface.getMidi().sendMidiHexSequence(mainActivityInterface.getMidi().getSysexStartCode());
+    }
+    public void sysexStop() {
+        mainActivityInterface.getMidi().sendMidiHexSequence(mainActivityInterface.getMidi().getSysexStopCode());
+    }
+
 
     // The checks
     private boolean ifPDFAndAllowed() {
