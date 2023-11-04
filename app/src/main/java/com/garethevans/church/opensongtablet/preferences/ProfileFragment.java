@@ -119,6 +119,7 @@ public class ProfileFragment extends Fragment {
                 getUriForItem("Profiles","",null);
         loadIntent.setDataAndType(uri,"application/xml");
         String [] mimeTypes = {"application/*", "application/xml", "text/xml"};
+        loadIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         loadIntent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
         loadIntent.putExtra("android.provider.extra.INITIAL_URI", uri);
         loadIntent.putExtra("android.content.extra.SHOW_ADVANCED", true);

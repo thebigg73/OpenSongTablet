@@ -37,7 +37,8 @@ public class CheckInternet {
                     return capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) |
                             capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR);
                 } else {
-                    return false;
+                    // Default to true
+                    return true;
                 }
             } else {
                 NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
@@ -55,16 +56,21 @@ public class CheckInternet {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             boolean connected;
-            try {
-                Socket sock = new Socket();
-                sock.connect(new InetSocketAddress("8.8.8.8", 53), 1500);  //Google
-                sock.close();
-                connected = true;
-            } catch (IOException e) {
-                connected = false;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                try {
+                    Socket sock = new Socket();
+                    sock.connect(new InetSocketAddress("8.8.8.8", 53), 1500);  //Google
+                    sock.close();
+                    connected = true;
+                } catch (IOException e) {
+                    connected = false;
+                }
+                Log.d(TAG, "connected=" + connected);
+                mainActivityInterface.isWebConnected(fragment, fragId, connected);
+            } else {
+                // Return true for older devices
+                mainActivityInterface.isWebConnected(fragment, fragId, true);
             }
-            Log.d(TAG,"connected="+connected);
-            mainActivityInterface.isWebConnected(fragment,fragId,connected);
         });
     }
 

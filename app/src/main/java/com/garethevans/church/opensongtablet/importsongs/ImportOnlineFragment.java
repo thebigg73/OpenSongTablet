@@ -6,6 +6,7 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
@@ -66,7 +67,8 @@ public class ImportOnlineFragment extends Fragment {
     private String webSearchFull, webAddressFinal, source, webString, userAgentDefault,
             import_basic_string="", online_string="", website_song_online_string="", unknown_string="",
             text_extract_check_string="", text_extract_website_string="", mainfoldername_string="",
-            success_string="", error_string="", overwrite_string="", song_name_already_taken_string="";
+            success_string="", error_string="", overwrite_string="", song_name_already_taken_string="",
+            not_connected_string="";
     private Song newSong;
     private UltimateGuitar ultimateGuitar;
     private Chordie chordie;
@@ -130,6 +132,7 @@ public class ImportOnlineFragment extends Fragment {
             overwrite_string = getString(R.string.overwrite);
             song_name_already_taken_string = getString(R.string.song_name_already_taken);
             unknown_string = getString(R.string.unknown);
+            not_connected_string = getString(R.string.requires_internet);
         }
     }
 
@@ -269,12 +272,12 @@ public class ImportOnlineFragment extends Fragment {
                 }
             });
             // Set fake user agent
-            userAgentDefault = "Mozilla/5.0 (Linux; Android 13) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.5735.196 Mobile Safari/537.36";
-            userAgentDefault = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 Edg/114.0.1823.67";
-            if (userAgentDefault == null) {
-                userAgentDefault = webView.getSettings().getUserAgentString();
-                Log.d(TAG, "userAgentString=" + userAgentDefault);
+            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) {
+                userAgentDefault = "Mozilla/5.0 (Linux Android 7.0 ) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.105 Mobile Safari/537.36";
+            } else {
+                userAgentDefault = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 Edg/114.0.1823.67";
             }
+
             webView.getSettings().getJavaScriptEnabled();
             webView.getSettings().setJavaScriptEnabled(true);
             webView.getSettings().setDomStorageEnabled(true);
@@ -407,6 +410,8 @@ public class ImportOnlineFragment extends Fragment {
                     }
                 });
             }
+        } else {
+            mainActivityInterface.getShowToast().doIt(not_connected_string);
         }
     }
 

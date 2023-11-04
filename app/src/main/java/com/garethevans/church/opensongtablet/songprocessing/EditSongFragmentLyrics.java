@@ -79,6 +79,7 @@ public class EditSongFragmentLyrics extends Fragment {
                 });
             } catch (Exception e) {
                 e.printStackTrace();
+                mainActivityInterface.getStorageAccess().updateFileActivityLog(e.toString());
             }
         });
 
@@ -141,7 +142,12 @@ public class EditSongFragmentLyrics extends Fragment {
         editTextSize = mainActivityInterface.getPreferences().getMyPreferenceFloat("editTextSize",14);
         myView.lyrics.post(() -> {
             myView.lyrics.setTextSize(editTextSize);
-            mainActivityInterface.getProcessSong().stretchEditBoxToLines(myView.lyrics,lines);
+            try {
+                mainActivityInterface.getProcessSong().stretchEditBoxToLines(myView.lyrics, lines);
+            } catch (Exception e) {
+                mainActivityInterface.getStorageAccess().updateFileActivityLog(e.toString());
+                e.printStackTrace();
+            }
             myView.lyrics.setText(mainActivityInterface.getTempSong().getLyrics());
         });
 
