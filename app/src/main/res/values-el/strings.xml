@@ -88,6 +88,7 @@
     <string name="beat_buddy_match">Αγώνας τραγουδιού</string>
     <string name="beat_buddy_match_info">Αυτόματη αντιστοίχιση των τραγουδιών OpenSongApp με αυτά στο πεντάλ BeatBuddy</string>
     <string name="beat_buddy_project_csv">Εισαγωγή αρχείου .csv έργου</string>
+    <string name="beat_buddy_project_csv_previous">Χρησιμοποιήστε το υπάρχον αρχείο MyBeatBuddyProject.csv (βρίσκεται στο OpenSong/Settings)</string>
     <string name="beat_buddy_song_info">Το τραγούδι πρέπει να είναι ένας αριθμός μεταξύ 1 και 128</string>
     <string name="beat_buddy_song_list_info">Πατήστε ένα στοιχείο για να προετοιμάσετε και να στείλετε τον κωδικό MIDI. Εναλλακτικά, πατήστε παρατεταμένα για να αποθηκεύσετε το όνομα αυτού του στοιχείου BeatBuddy στο τραγούδι σας (χρησιμοποιείται κατά την αυτόματη αποστολή τραγουδιού BeatBuddy). Αυτή η μέθοδος ταιριάζει πάντα με το όνομα του τραγουδιού, ανεξάρτητα από το φάκελο ή τον αριθμό τραγουδιού που είναι</string>
     <string name="beat_tick">Beat 1 (τικ)</string>

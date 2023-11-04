@@ -88,6 +88,7 @@
     <string name="beat_buddy_match">ソングマッチ</string>
     <string name="beat_buddy_match_info">OpenSongApp の曲と BeatBuddy ペダルの曲を自動的に一致させる</string>
     <string name="beat_buddy_project_csv">プロジェクト.csvファイルのインポート</string>
+    <string name="beat_buddy_project_csv_previous">既存のMyBeatBuddyProject.csvファイル(OpenSong/設定にあります)を使用します</string>
     <string name="beat_buddy_song_info">曲は1から128までの数字でなければなりません</string>
     <string name="beat_buddy_song_list_info">アイテムをタップしてMIDIコードを準備して送信します。または、長押しして、このBeatBuddyアイテムの名前を曲に保存します(BeatBuddy曲を自動的に送信するときに使用されます)。このメソッドは、フォルダや曲番号に関係なく、常に曲名と一致します</string>
     <string name="beat_tick">ビート1（ティック）</string>

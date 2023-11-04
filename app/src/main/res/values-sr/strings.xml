@@ -88,6 +88,7 @@
     <string name="beat_buddy_match">Podudaranje pesama</string>
     <string name="beat_buddy_match_info">Automatski uskladite svoje OpenSongApp pesme sa onima na vašoj BeatBuddy pedali</string>
     <string name="beat_buddy_project_csv">Uvoz datoteke .csv projekta</string>
+    <string name="beat_buddy_project_csv_previous">Koristi postojeću MyBeatBuddyProject.csv datoteku (nalazi se u openSong/Settings)</string>
     <string name="beat_buddy_song_info">Pesma mora biti broj između 1 i 128</string>
     <string name="beat_buddy_song_list_info">Dodirnite artikal da biste pripremili i poslali MIDI kôd. Druga mogućnost je da dugačka štampa za čuvanje imena ove BeatBuddy stavke u vašoj pesmi (koristi se prilikom automatskog slanja BeatBuddy pesme). Ovaj metod se uvek podudara sa imenom pesme bez obzira na to o kojoj fascikli ili numeri pesme se radi</string>
     <string name="beat_tick">Otkucaj 1 (štikl)</string>

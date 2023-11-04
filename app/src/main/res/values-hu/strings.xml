@@ -88,6 +88,7 @@
     <string name="beat_buddy_match">Dal egyezés</string>
     <string name="beat_buddy_match_info">Az OpenSongApp dalok automatikus egyeztetése a BeatBuddy pedálon lévőkkel</string>
     <string name="beat_buddy_project_csv">Projekt.csv fájl importálása</string>
+    <string name="beat_buddy_project_csv_previous">Meglévő MyBeatBuddyProject.csv fájl használata (megtalálható az OpenSong/Settings mappában)</string>
     <string name="beat_buddy_song_info">A dalnak 1 és 128 közötti számnak kell lennie</string>
     <string name="beat_buddy_song_list_info">Koppintson egy elemre a MIDI-kód előkészítéséhez és elküldéséhez. Alternatív megoldásként nyomja meg hosszan a BeatBuddy elem nevének mentéséhez a dalba (a BeatBuddy dal automatikus küldésekor használatos). Ez a módszer mindig megegyezik a dal nevével, függetlenül attól, hogy melyik mappa vagy dalszám</string>
     <string name="beat_tick">Beat 1 (pipa)</string>

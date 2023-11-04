@@ -42,6 +42,7 @@ public class BBImportFragment extends Fragment {
     private ActivityResultLauncher<Intent> importCSVLauncher;
     private ActivityResultLauncher<Intent> folderChooser;
     private String webAddress;
+    private Uri previousCSV;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -65,6 +66,9 @@ public class BBImportFragment extends Fragment {
 
         prepareStrings();
 
+        // Check if previous file exists
+        checkPrevious();
+
         webAddress = website_beatbuddy_import;
 
         // Set up launcher
@@ -74,6 +78,16 @@ public class BBImportFragment extends Fragment {
         setupListeners();
 
         return myView.getRoot();
+    }
+
+    private void checkPrevious() {
+        previousCSV = mainActivityInterface.getStorageAccess().getUriForItem("Settings","","MyBeatBuddyProject.csv");
+        if (mainActivityInterface.getStorageAccess().uriExists(previousCSV)) {
+            myView.importPrev.setVisibility(View.VISIBLE);
+        } else {
+            myView.importPrev.setVisibility(View.GONE);
+            previousCSV = null;
+        }
     }
 
     private void prepareStrings() {
@@ -95,18 +109,7 @@ public class BBImportFragment extends Fragment {
                 try {
                     Intent data = result.getData();
                     if (data != null) {
-                        myView.importBBProgress.post(() -> myView.importBBProgress.setVisibility(View.VISIBLE));
-
-                        // Do this on a new thread
-                        ExecutorService executorService = Executors.newSingleThreadExecutor();
-                        executorService.execute(() -> {
-                            InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(result.getData().getData());
-                            String content = mainActivityInterface.getStorageAccess().readTextFileToString(inputStream);
-                            mainActivityInterface.setImportUri(data.getData());
-
-                            processMyBeatBuddyProject(content);
-                            myView.importBBProgress.post(() -> myView.importBBProgress.setVisibility(View.GONE));
-                        });
+                        doImport(data.getData());
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -150,6 +153,26 @@ public class BBImportFragment extends Fragment {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             myView.browseSD.setOnClickListener(view -> selectDirectory());
         }
+        myView.importPrev.setOnClickListener(view -> {
+            if (previousCSV!=null) {
+                doImport(previousCSV);
+            }
+        });
+    }
+
+    private void doImport(Uri uri) {
+        myView.importBBProgress.post(() -> myView.importBBProgress.setVisibility(View.VISIBLE));
+
+        // Do this on a new thread
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(uri);
+            String content = mainActivityInterface.getStorageAccess().readTextFileToString(inputStream);
+            mainActivityInterface.setImportUri(uri);
+
+            processMyBeatBuddyProject(content);
+            myView.importBBProgress.post(() -> myView.importBBProgress.setVisibility(View.GONE));
+        });
     }
 
     private void selectFile() {

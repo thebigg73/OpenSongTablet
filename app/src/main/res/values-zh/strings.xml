@@ -88,6 +88,7 @@
     <string name="beat_buddy_match">歌曲匹配</string>
     <string name="beat_buddy_match_info">自动将您的OpenSongApp歌曲与BeatBuddy踏板上的歌曲相匹配</string>
     <string name="beat_buddy_project_csv">导入项目.csv文件</string>
+    <string name="beat_buddy_project_csv_previous">使用现有的MyBeatBuddyProject.csv文件（可在OpenSong/Settings中找到）</string>
     <string name="beat_buddy_song_info">歌曲必须是 1 到 128 之间的数字</string>
     <string name="beat_buddy_song_list_info">轻点一个项目以准备并发送 MIDI 代码。或者，长按将此 BeatBuddy 项目的名称保存到您的歌曲中（在自动发送 BeatBuddy 歌曲时使用）。此方法始终与歌曲名称匹配，无论它是哪个文件夹或歌曲编号</string>
     <string name="beat_tick">击败 1（滴答声）</string>

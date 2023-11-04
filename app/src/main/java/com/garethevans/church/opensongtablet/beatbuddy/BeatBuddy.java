@@ -14,6 +14,7 @@ public class BeatBuddy {
     final private MainActivityInterface mainActivityInterface;
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     final private String TAG = "BeatBuddy";
+    private boolean defaultDB = false;
 
     // Control options are:
     private int beatBuddyChannel = 1, beatBuddyVolume = 100, beatBuddyHPVolume = 100, beatBuddyDrumKit = 1;

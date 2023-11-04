@@ -88,6 +88,7 @@
     <string name="beat_buddy_match">Partita di canzoni</string>
     <string name="beat_buddy_match_info">Abbina automaticamente i tuoi brani OpenSongApp a quelli sul pedale BeatBuddy</string>
     <string name="beat_buddy_project_csv">Importare il file .csv del progetto</string>
+    <string name="beat_buddy_project_csv_previous">Usa il file MyBeatBuddyProject.csv esistente (trovato in OpenSong / Settings)</string>
     <string name="beat_buddy_song_info">La canzone deve essere un numero compreso tra 1 e 128</string>
     <string name="beat_buddy_song_list_info">Tocca un elemento per preparare e inviare il codice MIDI. In alternativa, premi a lungo per salvare il nome di questo elemento BeatBuddy nel tuo brano (utilizzato quando invii automaticamente il brano BeatBuddy). Questo metodo corrisponde sempre al nome del brano indipendentemente dalla cartella o dal numero di brano</string>
     <string name="beat_tick">Batti 1 (segno di spunta)</string>

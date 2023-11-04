@@ -72,6 +72,16 @@
 
                 </LinearLayout>
 
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/importPrev"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/beat_buddy_project_csv_previous" />
+
                 <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                     android:id="@+id/outcome"
                     android:layout_width="match_parent"

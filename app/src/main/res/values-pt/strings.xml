@@ -88,6 +88,7 @@
     <string name="beat_buddy_match">Correspondência de música</string>
     <string name="beat_buddy_match_info">Combine automaticamente as suas músicas OpenSongApp com as do seu pedal BeatBuddy</string>
     <string name="beat_buddy_project_csv">Importar arquivo de .csv do projeto</string>
+    <string name="beat_buddy_project_csv_previous">Use o arquivo MyBeatBuddyProject.csv existente (encontrado em OpenSong/Settings)</string>
     <string name="beat_buddy_song_info">A canção deve ter um número entre 1 e 128</string>
     <string name="beat_buddy_song_list_info">Toque em um item para preparar e enviar o código MIDI. Como alternativa, pressione muito para salvar o nome deste item do BeatBuddy na sua música (usado ao enviar automaticamente a música do BeatBuddy). Este método corresponde sempre ao nome da música, independentemente da pasta ou do número da música</string>
     <string name="beat_tick">Batida 1 (tick)</string>

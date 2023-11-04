@@ -88,6 +88,7 @@
     <string name="beat_buddy_match">Песенный матч</string>
     <string name="beat_buddy_match_info">Автоматически сопоставляйте свои песни OpenSongApp с песнями на педали BeatBuddy</string>
     <string name="beat_buddy_project_csv">Импорт файла .csv проекта</string>
+    <string name="beat_buddy_project_csv_previous">Используйте существующий файл MyBeatBuddyProject.csv (находится в OpenSong/Settings)</string>
     <string name="beat_buddy_song_info">Песня должна иметь номер от 1 до 128</string>
     <string name="beat_buddy_song_list_info">Коснитесь элемента, чтобы подготовить и отправить MIDI-код. Кроме того, нажмите и удерживайте, чтобы сохранить имя этого элемента BeatBuddy в вашей песне (используется при автоматической отправке песни BeatBuddy). Этот метод всегда совпадает с названием песни, независимо от того, какая это папка или номер песни</string>
     <string name="beat_tick">Такт 1 (тик)</string>
