@@ -410,9 +410,7 @@ public class Midi {
             String[] messages = sequence.split("\n");
             for (int x=0; x<messages.length; x++) {
                 int finalX = x;
-                new Handler().postDelayed(() -> {
-                    sendMidi(returnBytesFromHexText(messages[finalX]));
-                }, (long) midiDelay * x);
+                new Handler().postDelayed(() -> sendMidi(returnBytesFromHexText(messages[finalX])), (long) midiDelay * x);
             }
             return midiDelay * messages.length;
         } else {
