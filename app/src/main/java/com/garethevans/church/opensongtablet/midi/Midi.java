@@ -37,8 +37,8 @@ public class Midi {
     private final String TAG = "Midi";
     private MediaPlayer midiMediaPlayer;
     private String[] messageParts;
-    private final String sysexStartCode = "0xF0 0xFA 0xF7";
-    private final String sysexStopCode = "0xF0 0xFB 0xF7";
+    private final String sysexStartCode = "0xF0 0x7F 0xFA 0xF7";
+    private final String sysexStopCode = "0xF0 0x7F 0xFC 0xF7";
 
     // Initialise
     public Midi(Context c) {
