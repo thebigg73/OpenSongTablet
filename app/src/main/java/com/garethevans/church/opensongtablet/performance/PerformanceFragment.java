@@ -415,7 +415,11 @@ public class PerformanceFragment extends Fragment {
 
     // This stuff loads the song and prepares the views
     public void doSongLoad(String folder, String filename) {
-        processingTestView = false;
+        if (processingTestView) {
+            // Switch this off in 1 sec as there might have been a problem
+            new Handler().postDelayed(() -> processingTestView=false,1000);
+        }
+
         try {
             doSongLoadStartTime = System.currentTimeMillis();
             mainActivityInterface.closeDrawer(true);
