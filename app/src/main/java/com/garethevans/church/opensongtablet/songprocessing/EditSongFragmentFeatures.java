@@ -45,7 +45,6 @@ public class EditSongFragmentFeatures extends Fragment {
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "EditSongFeatures";
     private String[] key_choice_string={};
-    private boolean keyset = false;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -57,32 +56,6 @@ public class EditSongFragmentFeatures extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        try {
-            Log.d(TAG, "clearing focus");
-            myView.key.clearFocus();
-            myView.originalkey.clearFocus();
-            myView.capo.clearFocus();
-            myView.pad.clearFocus();
-            myView.loop.clearFocus();
-            myView.tempo.clearFocus();
-            myView.timesig.clearFocus();
-            myView.tapTempo.clearFocus();
-            myView.durationMins.clearFocus();
-            myView.durationSecs.clearFocus();
-            myView.delay.clearFocus();
-            myView.midi.clearFocus();
-            myView.abc.clearFocus();
-            myView.customChords.clearFocus();
-            myView.linkType.clearFocus();
-            myView.linkValue.clearFocus();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        myView = EditSongFeaturesBinding.inflate(inflater, container, false);
 
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
@@ -94,8 +67,12 @@ public class EditSongFragmentFeatures extends Fragment {
             // Set up the listeners
             setupListeners();
 
-            myView.helperText.post(() -> myView.helperText.requestFocus());
         });
+    }
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        myView = EditSongFeaturesBinding.inflate(inflater, container, false);
 
         return myView.getRoot();
     }

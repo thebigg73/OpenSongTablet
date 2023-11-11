@@ -2,6 +2,8 @@ package com.garethevans.church.opensongtablet.songprocessing;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -34,7 +36,8 @@ public class EditSongFragmentMain extends Fragment  {
     private String newFolder, new_folder_add_string="", new_folder_string="", new_folder_name_string="";
     private TextInputBottomSheet textInputBottomSheet;
     private ArrayList<String> folders;
-    ExposedDropDownArrayAdapter arrayAdapter;
+    private ExposedDropDownArrayAdapter arrayAdapter;
+    private Handler handler;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -46,22 +49,7 @@ public class EditSongFragmentMain extends Fragment  {
     @Override
     public void onResume() {
         super.onResume();
-        try {
-            Log.d(TAG, "clearing focus");
-            myView.title.clearFocus();
-            myView.author.clearFocus();
-            myView.copyright.clearFocus();
-            myView.folder.clearFocus();
-            myView.filename.clearFocus();
-            myView.songNotes.clearFocus();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-
-        myView = EditSongMainBinding.inflate(inflater, container, false);
+        handler = new Handler(Looper.getMainLooper());
 
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
@@ -73,6 +61,11 @@ public class EditSongFragmentMain extends Fragment  {
             // Set listeners
             setUpListeners();
         });
+    }
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             ViewGroup container, Bundle savedInstanceState) {
+
+        myView = EditSongMainBinding.inflate(inflater, container, false);
 
         return myView.getRoot();
     }
@@ -86,15 +79,16 @@ public class EditSongFragmentMain extends Fragment  {
     }
     // Initialise the views
     private void setupValues() {
-        myView.title.post(() -> myView.title.setText(mainActivityInterface.getTempSong().getTitle()));
-        myView.author.post(() -> myView.author.setText(mainActivityInterface.getTempSong().getAuthor()));
-        myView.copyright.post(() -> myView.copyright.setText(mainActivityInterface.getTempSong().getCopyright()));
-        myView.songNotes.post(() -> {
+        handler.post(() -> {
+            myView.title.setText(mainActivityInterface.getTempSong().getTitle());
+            myView.author.setText(mainActivityInterface.getTempSong().getAuthor());
+            myView.copyright.setText(mainActivityInterface.getTempSong().getCopyright());
             myView.songNotes.setText(mainActivityInterface.getTempSong().getNotes());
             mainActivityInterface.getProcessSong().editBoxToMultiline(myView.songNotes);
             mainActivityInterface.getProcessSong().stretchEditBoxToLines(myView.songNotes,5);
+            myView.filename.setText(mainActivityInterface.getTempSong().getFilename());
         });
-        myView.filename.post(() -> myView.filename.setText(mainActivityInterface.getTempSong().getFilename()));
+
         getFoldersFromStorage();
         newFolder = "+ " + new_folder_add_string;
         folders.add(newFolder);
@@ -107,10 +101,8 @@ public class EditSongFragmentMain extends Fragment  {
         }
         textInputBottomSheet = new TextInputBottomSheet(this,"EditSongFragmentMain",new_folder_string,new_folder_name_string,null,"","",true);
 
-        myView.getRoot().post(() -> myView.getRoot().requestFocus());
-
         // Resize the bottom padding to the soft keyboard height or half the screen height for the soft keyboard (workaround)
-        myView.resizeForKeyboardLayout.post(() -> mainActivityInterface.getWindowFlags().adjustViewPadding(mainActivityInterface,myView.resizeForKeyboardLayout));
+        handler.post(() -> mainActivityInterface.getWindowFlags().adjustViewPadding(mainActivityInterface,myView.resizeForKeyboardLayout));
     }
 
     // Sor the view visibility, listeners, etc.

@@ -52,18 +52,6 @@ public class EditSongFragmentLyrics extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        try {
-            myView.lyrics.clearFocus();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        myView = EditSongLyricsBinding.inflate(inflater, container, false);
-
         ExecutorService executor = Executors.newSingleThreadExecutor();
         executor.execute(() -> {
             try {
@@ -82,6 +70,18 @@ public class EditSongFragmentLyrics extends Fragment {
                 mainActivityInterface.getStorageAccess().updateFileActivityLog(e.toString());
             }
         });
+
+        try {
+            myView.lyrics.clearFocus();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        myView = EditSongLyricsBinding.inflate(inflater, container, false);
 
         return myView.getRoot();
     }

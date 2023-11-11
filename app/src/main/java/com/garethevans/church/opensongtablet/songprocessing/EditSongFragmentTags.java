@@ -52,27 +52,14 @@ public class EditSongFragmentTags extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        try {
-            Log.d(TAG, "clearing focus");
-            myView.tags.clearFocus();
-            myView.aka.clearFocus();
-            myView.ccli.clearFocus();
-            myView.user1.clearFocus();
-            myView.user2.clearFocus();
-            myView.user3.clearFocus();
-            myView.hymnnum.clearFocus();
-            myView.presorder.clearFocus();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         updateViews();
     }
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         myView = EditSongTagsBinding.inflate(inflater, container, false);
 
-        updateViews();
         return myView.getRoot();
     }
 
@@ -86,12 +73,8 @@ public class EditSongFragmentTags extends Fragment {
             // Set up the current values
             setupValues();
 
-            new Handler(Looper.getMainLooper()).post(() -> {
-                // Set up the listeners
-                setupListeners();
-
-                myView.getRoot().requestFocus();
-            });
+            // Set up the listeners
+            new Handler(Looper.getMainLooper()).post(this::setupListeners);
         });
     }
     private void prepareStrings() {
