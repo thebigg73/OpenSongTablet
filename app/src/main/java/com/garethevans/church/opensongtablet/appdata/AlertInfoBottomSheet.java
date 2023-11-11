@@ -81,6 +81,18 @@ public class AlertInfoBottomSheet extends BottomSheetDialogFragment {
         }
     }
 
+    private void alertsRequired() {
+        boolean required = mainActivityInterface.getAlertChecks().showBackup() &&
+                mainActivityInterface.getAlertChecks().showPlayServicesAlert() &&
+                mainActivityInterface.getAlertChecks().showUpdateInfo();
+        if (!required) {
+            try {
+                dismiss();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
     private void whatAlerts() {
         // This decides which alerts are appropriate
         // Check for app updates
@@ -121,6 +133,7 @@ public class AlertInfoBottomSheet extends BottomSheetDialogFragment {
             myView.ignorePlayServices.setOnClickListener(b -> {
                 mainActivityInterface.getAlertChecks().setIgnorePlayServicesWarning(true);
                 myView.playServices.setVisibility(View.GONE);
+                alertsRequired();
             });
         } else {
             myView.playServices.setVisibility(View.GONE);
