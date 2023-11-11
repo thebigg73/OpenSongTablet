@@ -1663,40 +1663,44 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @SuppressLint("PrivateResource")
     @Override
     public boolean onCreateOptionsMenu(@NonNull Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.mainactivitymenu, menu);
-        ImageView screenMirror = (ImageView) menu.findItem(R.id.mirror_menu_item).getActionView();
-        screenMirror.setImageDrawable(VectorDrawableCompat.create(getResources(), R.drawable.cast, getTheme()));
-        screenMirror.setOnClickListener(view -> {
-            if (!getShowCase().singleShowCase(this,screenMirror,null,cast_info_string,true,"castInfo")) {
-                try {
-                    startActivity(new Intent("android.settings.WIFI_DISPLAY_SETTINGS"));
-                } catch (ActivityNotFoundException e) {
-                    Log.d(TAG, "android.settings.WIFI_DISPLAY_SETTINGS not an option");
+        try {
+            // Inflate the menu; this adds items to the action bar if it is present.
+            getMenuInflater().inflate(R.menu.mainactivitymenu, menu);
+            ImageView screenMirror = (ImageView) menu.findItem(R.id.mirror_menu_item).getActionView();
+            screenMirror.setImageDrawable(VectorDrawableCompat.create(getResources(), R.drawable.cast, getTheme()));
+            screenMirror.setOnClickListener(view -> {
+                if (!getShowCase().singleShowCase(this, screenMirror, null, cast_info_string, true, "castInfo")) {
                     try {
-                        startActivity(new Intent("com.samsung.wfd.LAUNCH_WFD_PICKER_DLG"));
-                    } catch (Exception e2) {
-                        Log.d(TAG, "com.samsung.wfd.LAUNCH_WFD_PICKER_DLG not an option");
+                        startActivity(new Intent("android.settings.WIFI_DISPLAY_SETTINGS"));
+                    } catch (ActivityNotFoundException e) {
+                        Log.d(TAG, "android.settings.WIFI_DISPLAY_SETTINGS not an option");
                         try {
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                startActivity(new Intent(Settings.ACTION_CAST_SETTINGS));
-                            } else {
-                                startActivity(new Intent("android.settings.CAST_SETTINGS"));
+                            startActivity(new Intent("com.samsung.wfd.LAUNCH_WFD_PICKER_DLG"));
+                        } catch (Exception e2) {
+                            Log.d(TAG, "com.samsung.wfd.LAUNCH_WFD_PICKER_DLG not an option");
+                            try {
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                    startActivity(new Intent(Settings.ACTION_CAST_SETTINGS));
+                                } else {
+                                    startActivity(new Intent("android.settings.CAST_SETTINGS"));
+                                }
+                            } catch (Exception e3) {
+                                showToast.doIt(error);
                             }
-                        } catch (Exception e3) {
-                            showToast.doIt(error);
                         }
                     }
                 }
-            }
-        });
-        screenHelp = (ImageView) menu.findItem(R.id.help_menu_item).getActionView();
-        screenHelp.setImageDrawable(VectorDrawableCompat.create(getResources(), R.drawable.help_outline, getTheme()));
-        globalMenuItem = menu;
-        // IV - Set 'settings'/'close' icon is set depending on settingOpen
-        globalMenuItem.findItem(R.id.settings_menu_item).setIcon(settingsOpen ? R.drawable.close : R.drawable.settings_outline);
-        updateCastIcon();
-        return true;
+            });
+            screenHelp = (ImageView) menu.findItem(R.id.help_menu_item).getActionView();
+            screenHelp.setImageDrawable(VectorDrawableCompat.create(getResources(), R.drawable.help_outline, getTheme()));
+            globalMenuItem = menu;
+            // IV - Set 'settings'/'close' icon is set depending on settingOpen
+            globalMenuItem.findItem(R.id.settings_menu_item).setIcon(settingsOpen ? R.drawable.close : R.drawable.settings_outline);
+            updateCastIcon();
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     // The drawers and actionbars

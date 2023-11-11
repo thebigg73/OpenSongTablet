@@ -773,10 +773,12 @@ public class StorageAccess {
                 return (DocumentFile.fromSingleUri(c, uri).lastModified() > databaseLastUpdate);
             } catch (Exception e) {
                 e.printStackTrace();
+                return true;
             }
+        } else {
+            // Default true meaning update is required
+            return true;
         }
-        // Default true meaning update is required
-        return true;
     }
 
     private float getFileSizeFromUri_File(Uri uri) {
@@ -1042,7 +1044,7 @@ public class StorageAccess {
         return null;
     }
     private DocumentFile documentFileFromRootUri(Uri uri, String path) {
-        if (uri != null && lollipopOrLater()) {
+        if (uri != null) {
             return DocumentFile.fromTreeUri(c, uri);
         } else if (path != null && !lollipopOrLater()) {
             File f = new File(path);
@@ -1154,7 +1156,6 @@ public class StorageAccess {
             }
             // Create the new file
             if (!uriExists(uri)) {
-                //Log.d(TAG,"uri "+uri+" doesn't exist, so create it");
                 createFile(mimeType, folder, subfolder, filename);
             }
 
@@ -1167,7 +1168,7 @@ public class StorageAccess {
                 if (uri != null && uri.getPath() != null) {
                     File f = new File(uri.getPath());
                     if (!f.exists()) {
-                        if (mimeType.equals(DocumentsContract.Document.MIME_TYPE_DIR)) {
+                        if (mimeType!=null && mimeType.equals(DocumentsContract.Document.MIME_TYPE_DIR)) {
                             if (!f.mkdirs()) {
                                 Log.d(TAG, "Unable to create file " + f);
                             }

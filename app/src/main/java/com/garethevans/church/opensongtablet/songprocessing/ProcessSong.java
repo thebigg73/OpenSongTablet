@@ -3577,24 +3577,30 @@ public class ProcessSong {
 
     // This bit is for the edit song fragments
     public void editBoxToMultiline(MyMaterialEditText editText) {
-        editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
-        editText.setImeOptions(EditorInfo.IME_ACTION_NONE);
-        editText.setHorizontallyScrolling(true);
-        editText.setVerticalScrollBarEnabled(false);
-        editText.setAutoSizeTextTypeUniformWithConfiguration(8, 18, 1);
+        editText.post(()-> {
+            editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+            editText.setImeOptions(EditorInfo.IME_ACTION_NONE);
+            editText.setHorizontallyScrolling(true);
+            editText.setVerticalScrollBarEnabled(false);
+            editText.setAutoSizeTextTypeUniformWithConfiguration(8, 18, 1);
+        });
     }
 
     public void stretchEditBoxToLines(MyMaterialEditText editText, int minLines) {
         String[] lines = editText.getText().toString().split("\n");
         int num = lines.length+1;
         if (num > minLines) {
-            editText.setLines(num);
-            editText.setMinLines(num);
-            editText.setLines(num);
+            editText.post(() -> {
+                editText.setLines(num);
+                editText.setMinLines(num);
+                editText.setLines(num);
+            });
         } else {
-            editText.setLines(minLines);
-            editText.setMinLines(minLines);
-            editText.setLines(minLines);
+            editText.post(() -> {
+                editText.setLines(minLines);
+                editText.setMinLines(minLines);
+                editText.setLines(minLines);
+            });
         }
     }
 

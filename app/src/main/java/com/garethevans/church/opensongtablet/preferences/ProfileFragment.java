@@ -82,7 +82,7 @@ public class ProfileFragment extends Fragment {
     private void doLoadSave(ActivityResult result, String which) {
         boolean success = false;
         String extrainfo = "";
-        if (result.getResultCode()==Activity.RESULT_OK) {
+        if (result.getResultCode()==Activity.RESULT_OK || result.getResultCode()==Activity.RESULT_CANCELED) {
             Intent intent = result.getData();
             if (intent==null) {
                 extrainfo += " (intent null) ";
