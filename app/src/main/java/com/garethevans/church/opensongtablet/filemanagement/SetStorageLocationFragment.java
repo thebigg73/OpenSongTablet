@@ -290,6 +290,9 @@ public class SetStorageLocationFragment extends Fragment {
             // Save the preferences
             // If we are using KitKat, we have to parse the storage
             String uriTree_String = uriTree.toString();
+            if (uriTreeHome==null) {
+                uriTreeHome = mainActivityInterface.getStorageAccess().homeFolder(uriTree);
+            }
             String uriTreeHome_String = uriTreeHome.toString();
             uriTree_String = uriTree_String.replace("file://","");
             uriTreeHome_String = uriTreeHome_String.replace("file://","");
