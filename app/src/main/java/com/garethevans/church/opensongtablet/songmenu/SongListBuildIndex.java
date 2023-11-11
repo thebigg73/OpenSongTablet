@@ -112,7 +112,6 @@ public class SongListBuildIndex {
 
             Cursor cursor = db.rawQuery(altquery, null);
 
-            Log.d(TAG,"cursor.getCount():"+cursor.getCount());
             if (cursor.getCount()>0) {
                 // Get the total song number
                 int totalSongs = cursor.getCount();
@@ -146,7 +145,7 @@ public class SongListBuildIndex {
                             // Now try to get the file as an xml.  If it encounters an error, it is treated in the catch statements
                             // We only do this if we either need to update (newer than last database), or fullIndexing
                             // Both are caught now by the needToUpdate boolean
-                            if (filenameIsOk(mainActivityInterface.getIndexingSong().getFilename()) && needToUpdate) {
+                            if (needToUpdate && filenameIsOk(mainActivityInterface.getIndexingSong().getFilename())) {
                                 try {
                                     // All going well all the other details for sqLite are now set!
 
@@ -204,6 +203,8 @@ public class SongListBuildIndex {
             indexRequired = false;
             indexComplete = true;
             fullIndexRequired = false;
+            mainActivityInterface.getStorageAccess().setDatabaseLastUpdate(0);
+
 
             Log.d(TAG,"About to check missing keys");
             mainActivityInterface.getSetActions().checkMissingKeys();
@@ -225,14 +226,12 @@ public class SongListBuildIndex {
         currentlyIndexing = false;
 
         // Any songs with rogue endings would've been logged, so fix if needed
-        Log.d(TAG,"About to fix songs");
         mainActivityInterface.getLoadSong().fixSongs();
         // Update the set lists which might be using song titles (that need the index)
-        Log.d(TAG,"About to update set list");
         mainActivityInterface.updateSetList();
 
         // Get a timestamp of this update into preferences
-        mainActivityInterface.getPreferences().setMyPreferenceLong("databaseLastUpdate",System.currentTimeMillis());
+        mainActivityInterface.getStorageAccess().setDatabaseLastUpdate(System.currentTimeMillis());
 
         return returnString.toString();
     }
