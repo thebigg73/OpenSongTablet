@@ -107,6 +107,7 @@
         android:layout_gravity="bottom|end"
         app:icon="@drawable/database_import"
         android:text="@string/import_basic"
+        android:layout_marginBottom="16dp"
         app:useCompatPadding="true" />
 
     <ProgressBar
