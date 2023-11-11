@@ -221,9 +221,11 @@ public class SetMenuFragment extends Fragment {
         myView.myRecyclerView.post(() -> myView.myRecyclerView.setVisibility(View.INVISIBLE));
         myView.progressBar.post(() -> myView.progressBar.setVisibility(View.VISIBLE));
 
-        setAdapter.buildSetList();
-        // Notify the adapter (this is run on UI thread)
-        setAdapter.notifyAllChanged();
+        if (setAdapter!=null) {
+            setAdapter.buildSetList();
+            // Notify the adapter (this is run on UI thread)
+            setAdapter.notifyAllChanged();
+        }
         mainActivityInterface.getCurrentSet().updateSetTitleView();
 
         myView.myRecyclerView.post(() -> myView.myRecyclerView.setVisibility(View.VISIBLE));
