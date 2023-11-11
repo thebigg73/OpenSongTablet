@@ -21,6 +21,7 @@ import java.io.File;
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 
 public class KitKatFolderChooseFragment extends Fragment {
     // I had used external libraries, but wanted to break free!!!
@@ -69,9 +70,10 @@ public class KitKatFolderChooseFragment extends Fragment {
                 }
             }
             // Sort them alphabetically
+
             Collator coll = Collator.getInstance(mainActivityInterface.getLocale());
             coll.setStrength(Collator.SECONDARY);
-            Collections.sort(foldersInDirectory, coll);
+            Collections.sort(foldersInDirectory, new ItemFileNameComparator());
 
             // Now we have them in order, create a short name array
             for (File folder:foldersInDirectory) {
@@ -122,5 +124,23 @@ public class KitKatFolderChooseFragment extends Fragment {
                 mainActivityInterface.navigateToFragment(getString(R.string.deeplink_set_storage), 0);
             }
         });
+    }
+
+    private class ItemFileNameComparator implements Comparator<File> {
+        @Override
+        public int compare(File file, File t1) {
+            File lhs = new File(file.toString().toLowerCase(mainActivityInterface.getLocale()));
+            File rhs= new File(t1.toString().toLowerCase(mainActivityInterface.getLocale()));
+            if (lhs.isDirectory() && !rhs.isDirectory()){
+                // Directory before File
+                return -1;
+            } else if (!lhs.isDirectory() && rhs.isDirectory()){
+                // File after directory
+                return 1;
+            } else {
+                // Otherwise in Alphabetic order...
+                return lhs.getName().compareTo(rhs.getName());
+            }
+        }
     }
 }
