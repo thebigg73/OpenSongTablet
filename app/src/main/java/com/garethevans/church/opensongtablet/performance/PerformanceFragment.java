@@ -417,7 +417,7 @@ public class PerformanceFragment extends Fragment {
     public void doSongLoad(String folder, String filename) {
         if (processingTestView) {
             // Switch this off in 1 sec as there might have been a problem
-            new Handler().postDelayed(() -> processingTestView=false,1000);
+            new Handler(Looper.getMainLooper()).postDelayed(() -> processingTestView=false,1000);
         }
 
         try {
