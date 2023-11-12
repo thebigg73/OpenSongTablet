@@ -473,13 +473,15 @@ public class WebServer extends NanoHTTPD {
                 "    document.getElementById('content').style.height = (document.getElementById('content').clientHeight * scaleratio)+\"px\";\n" +
                 "    document.getElementById('content').style.transform = \"translate(0,\" + (document.getElementById('menu').clientHeight * menuscaleratio) + \"px) scale(\"+scaleSize+\")\";\n" +
                 "    var newHeight = document.getElementById('content').clientHeight;\n" +
+                "    var newWidth = viewportWidth;\n" +
                 "    if (scaleratio>1) {\n" +
                 "      newHeight = Math.round(newHeight / scaleratio);\n" +
+                "      newWidth = Math.round(newWidth / scaleratio);\n" +
                 "    }\n" +
                 "    document.getElementById('content').style.height = \"\" + (newHeight) + \"px\";\n" +
-                "    document.getElementById('content').style.width = \"\" + viewportWidth + \"px\";\n" +
+                "    document.getElementById('content').style.width = \"\" + newWidth + \"px\";\n" +
                 "    document.body.style.height = \"\" + (newHeight + document.getElementById('menu').clientHeight) + \"px\";\n" +
-                "    document.body.style.width = \"\" + (viewportWidth) + \"px\";\n" +
+                "    document.body.style.width = \"\" + (newWidth) + \"px\";\n" +
                 "  }\n" +
                 "  function offsetAnchor() {\n" +
                 "    if (location.hash.length !== 0) {\n" +
