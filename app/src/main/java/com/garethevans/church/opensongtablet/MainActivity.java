@@ -2921,7 +2921,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     }
                 }
                 handler.post(() -> {
-                    if (showToast != null && !outcome.isEmpty()) {
+                    if (showToast != null && outcome!=null && !outcome.isEmpty()) {
                         showToast.doIt(outcome.trim());
                     }
                     updateFragment("set_updateKeys", null, null);
