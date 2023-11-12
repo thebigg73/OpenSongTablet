@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.util.Log;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
@@ -61,7 +62,25 @@ public class WebServer extends NanoHTTPD {
         String pagerequest = session.getUri();
         String webpage = "";
         if (allowWebNavigation) {
-            if (pagerequest.contains("/setitem/")) {
+        if (pagerequest.contains("/setmenu/")) {
+            // Get the current browsed song
+            String currSong = getCurrSong("songitem/",pagerequest);
+            if (currSong.isEmpty()) {
+                currSong = getCurrSong("setitem/",pagerequest);
+            }
+            Log.d(TAG,"currSong:"+currSong);
+            webpage = createSetSongListHTML(true, currSong);
+
+        } else if (pagerequest.contains("/songmenu/")) {
+            // Get the current browsed song
+            String currSong = getCurrSong("songitem/", pagerequest);
+            if (currSong.isEmpty()) {
+                currSong = getCurrSong("setitem/", pagerequest);
+            }
+            Log.d(TAG, "currSong:" + currSong);
+            webpage = createSetSongListHTML(false, currSong);
+
+        } else if (pagerequest.contains("/setitem/")) {
                 // We want to load a song in the set at the position afterwards
                 pagerequest = pagerequest.replace("/setitem/", "");
                 pagerequest = pagerequest.replaceAll("\\D", "");
@@ -74,7 +93,7 @@ public class WebServer extends NanoHTTPD {
                     songForHTML.setFolder(folder);
                     songForHTML.setFilename(filename);
                     songForHTML = mainActivityInterface.getLoadSong().doLoadSong(songForHTML, false);
-                    webpage = getProcessedSongHTML(songForHTML, true, setItemNum, mainActivityInterface.getCurrentSet().getSetItems().size() - 1);
+                    webpage = getProcessedSongHTML(songForHTML, true, setItemNum, mainActivityInterface.getCurrentSet().getSetItems().size() - 1, "setitem/"+setItemNum);
                 }
 
             } else if (pagerequest.contains("/songitem/")) {
@@ -90,28 +109,54 @@ public class WebServer extends NanoHTTPD {
                     songForHTML.setFolder(folder);
                     songForHTML.setFilename(filename);
                     songForHTML = mainActivityInterface.getLoadSong().doLoadSong(songForHTML, false);
-                    webpage = getProcessedSongHTML(songForHTML, false, songItemNum, mainActivityInterface.getSongsInMenu().size());
+                    webpage = getProcessedSongHTML(songForHTML, false, songItemNum, mainActivityInterface.getSongsInMenu().size(), "songitem/"+songItemNum);
                 }
-            } else if (pagerequest.contains("/setmenu/")) {
-                webpage = createSetSongListHTML(true);
-
-            } else if (pagerequest.contains("/songmenu/")) {
-                webpage = createSetSongListHTML(false);
 
             } else {
                 // This is for /hostsong/ or the default splash screen for navigation mode
                 int songItemNumber = mainActivityInterface.getPositionOfSongInMenu();
-                webpage = getProcessedSongHTML(mainActivityInterface.getSong(), false, songItemNumber, mainActivityInterface.getSongsInMenu().size());
+                webpage = getProcessedSongHTML(mainActivityInterface.getSong(), false, songItemNumber, mainActivityInterface.getSongsInMenu().size(),"songitem/"+songItemNumber);
 
             }
         } else {
             // Just show the current song with no menu
-            webpage = getProcessedSongHTML(mainActivityInterface.getSong(), false, 0, 0);
+            webpage = getProcessedSongHTML(mainActivityInterface.getSong(), false, 0, 0, "songitem/0");
         }
 
         return newFixedLengthResponse(webpage);
     }
 
+    private String getCurrSong(String identifier, String from) {
+        String text;
+        if (from!=null && identifier!=null) {
+            if (from.contains(identifier)) {
+                text = from.substring(from.indexOf(identifier));
+            } else {
+                text = "";
+            }
+        } else {
+            text = "";
+        }
+        if (!text.isEmpty() && !text.startsWith("/")) {
+            text = "/" + text;
+        }
+        Log.d(TAG,"getCurrSong()="+text);
+        return text;
+    }
+
+    private int getCurrSongIndex(String from) {
+        int index = 0;
+        if (from.contains("/")) {
+            String text = from.substring(from.lastIndexOf("/"));
+            if (!text.isEmpty()) {
+                text = text.replaceAll("\\D","");
+                if (!text.isEmpty()) {
+                    index = Integer.parseInt(text);
+                }
+            }
+        }
+        return index;
+    }
 
     // Get IP address and QR code to match
     @SuppressLint("DefaultLocale")
@@ -171,12 +216,23 @@ public class WebServer extends NanoHTTPD {
 
 
     // The web page creation
-    private String createSetSongListHTML(boolean setlist) {
+    private String createSetSongListHTML(boolean setlist, String currSong) {
+        // Get the name of the current song
+        int currSongIndex = getCurrSongIndex(currSong);
+        int songMenuIndex = 0;
+        int setMenuIndex = 0;
+        if (!setlist && currSong.contains("songitem/")) {
+            songMenuIndex = currSongIndex;
+        } else if (setlist && currSong.contains("setitem/")) {
+            setMenuIndex = currSongIndex;
+        }
+
         // This uses the current set list to create a web page
         StringBuilder setSongListHTML = new StringBuilder();
         // Strings for webpage content building
         String base1 = "@import url('https://fonts.googleapis.com/css?family=";
         String base2 = "&swap=true');\n";
+        Log.d(TAG,"getCurrSongIndex("+currSong+"):"+getCurrSongIndex(currSong));
         setSongListHTML.append("<!DOCTYPE html>\n<html>\n")
                 .append("<head>\n")
                 .append("<style>\n")
@@ -190,11 +246,13 @@ public class WebServer extends NanoHTTPD {
                 .append(mainActivityInterface.getMyFonts().getLyricFontName())
                 .append("; color:")
                 .append(String.format("#%06X", (0xFFFFFF & mainActivityInterface.getMyThemeColors().getLyricsTextColor())))
-                .append("; padding:12px; font-size:16.0pt;}\n")
+                .append("; padding:6px; font-size:10.0pt;}\n")
                 .append(getMenuBarCSS())
                 .append("body {width:100%;}\n")
                 .append("</style>\n")
                 .append("<script>\n")
+                .append("var index=").append(currSongIndex).append(";\n")
+                .append("var currSong=\"").append(currSong).append("\";\n")
                 .append("var minSize=true;\n")
                 .append("var maxSize=true;\n")
                 .append("var splash=false;\n")
@@ -212,7 +270,8 @@ public class WebServer extends NanoHTTPD {
                 .append(getNavigateJS())
                 .append("</script>\n")
                 .append("</head>\n")
-                .append(getMenuBarHTML(true))
+                .append("<meta name=\"viewport\" content=\"width=device-width\" id=\"viewport-meta\">\n")
+                .append(getMenuBarHTML(true, !setlist, setlist))
                 .append("<body class=\"page\" onload=\"javascript:measure()\">\n")
                 .append("<div id=\"content\" style=\"width:fit-content; transform-origin: top left;\">\n");
 
@@ -221,15 +280,23 @@ public class WebServer extends NanoHTTPD {
             // Now cycle through our set list and add a new div element for each one
             for (int x=0; x < mainActivityInterface.getCurrentSet().getSetItems().size(); x++) {
                 String title = mainActivityInterface.getCurrentSet().getTitle(x);
-                setSongListHTML.append("<div class=\"item\" onclick=\"javascript:getSong('set','")
-                        .append(x).append("')\">").append(title).append("</div>\n");
+                String curritemId = "";
+                if (x == setMenuIndex) {
+                    curritemId = " id =\"currentItem\"";
+                }
+                setSongListHTML.append("<div").append(curritemId).append(" class=\"item\" onclick=\"javascript:getSong('set','")
+                        .append(x).append("')\">").append(x+1).append(". ").append(title).append("</div>\n");
                 setSongListHTML.append("<hr width=\"100%\"/>\n");
             }
         } else {
             // Now cycle through the song list and add a new div element for each one
             for (int x=0; x<mainActivityInterface.getSongsInMenu().size(); x++) {
                 String title = mainActivityInterface.getSongsInMenu().get(x).getTitle();
-                setSongListHTML.append("<div class=\"item\" onclick=\"javascript:getSong('song','")
+                String curritemId = "";
+                if (x == songMenuIndex) {
+                    curritemId = " id =\"currentItem\"";
+                }
+                setSongListHTML.append("<div").append(curritemId).append(" class=\"item\" onclick=\"javascript:getSong('song','")
                         .append(x).append("')\">").append(title).append("</div>\n");
                 setSongListHTML.append("<hr width=\"100%\"/>\n");
             }
@@ -239,7 +306,7 @@ public class WebServer extends NanoHTTPD {
 
         return setSongListHTML.toString();
     }
-    private String getProcessedSongHTML(Song songForHTML, boolean inset, int index, int max) {
+    private String getProcessedSongHTML(Song songForHTML, boolean inset, int index, int max, String currSong) {
         mainActivityInterface.getProcessSong().processSongIntoSections(songForHTML,false);
         // IV - Initialise transpose capo key  - might be needed
         mainActivityInterface.getTranspose().capoKeyTranspose(songForHTML);
@@ -297,21 +364,23 @@ public class WebServer extends NanoHTTPD {
                 "<script>\n" +
                 "  var allowWebNavigation="+allowWebNavigation+";\n" +
                 "  var minSize=false;\n" +
-                "  var maxSize=false;\n" +
-                "var splash=false;\n" +
+                "  var maxSize=true;\n" +
+                "  var splash=false;\n" +
                 getResizeJS() +
                 "  var serverAddress = \"" +
                 getIP() +
                 "\";\n" +
-                "var index="+index+";\n" +
-                "var inset="+inset+";\n" +
-                "var maxitems="+max+";\n" +
+                "  var index="+index+";\n" +
+                "  var inset="+inset+";\n" +
+                "  var maxitems="+max+";\n" +
+                "  var currSong=\"" + currSong + "\";\n" +
                 getGoToSongJS() +
                 getNavigateJS() +
-                "</script>" +
+                "</script>\n" +
+                "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" id=\"viewport-meta\">\n" +
                 "</head>\n" +
                 "<body class=\"page\" onload=\"javascript:measure()\">\n" +
-                getMenuBarHTML(false) +
+                getMenuBarHTML(false, false, false) +
                 "<div id=\"content\" style=\"width:fit-content; transform-origin: top left;\">\n" +
                 mainActivityInterface.getSongSheetHeaders().getSongSheetTitleMainHTML(songForHTML) +
                 mainActivityInterface.getSongSheetHeaders().getSongSheetTitleExtrasHTML(songForHTML) +
@@ -361,11 +430,15 @@ public class WebServer extends NanoHTTPD {
     private String getResizeJS() {
         return "" +
                 "  var contentWidth;\n" +
+                "  var menuWidth;\n" +
+                "  var menuscaleratio = 1;\n" +
                 "  function measure() {\n" +
                 "    if (splash) {\n" +
                 "      contentWidth = 512;\n" +
+                "      menuWidth = 512;\n" +
                 "    } else {\n" +
                 "      contentWidth = document.getElementById(\"content\").clientWidth;\n" +
+                "      menuWidth = document.getElementById(\"menu\").clientWidth;\n" +
                 "    }\n" +
                 "    if (allowWebNavigation && splash==false) {\n" +
                 "      if (inset==true) {\n" +
@@ -377,11 +450,16 @@ public class WebServer extends NanoHTTPD {
                 "      }\n" +
                 "    }\n" +
                 "    resize();\n" +
+                "    location.href=\"#currentItem\";\n" +
                 "  }\n" +
                 "  function resize() {\n" +
                 "    var viewportWidth = document.body.clientWidth - 24;\n" +
                 "    var padding = document.body.style.padding;\n" +
                 "    var scaleratio = viewportWidth/contentWidth;\n" +
+                "    menuscaleratio = viewportWidth/menuWidth;\n" +
+                "    if (menuscaleratio>2) {\n" +
+                "        menuscaleratio = 2;\n" +
+                "    }\n" +
                 "    if (minSize && scaleratio<1) {\n" +
                 "      scaleratio = 1;\n" +
                 "    }\n" +
@@ -389,14 +467,36 @@ public class WebServer extends NanoHTTPD {
                 "      scaleratio = 2;\n" +
                 "    }\n" +
                 "    var scaleSize = (scaleratio*100) + \"%\";\n" +
-                //"    document.body.style.zoom = scaleSize;\n" +
-                "    document.getElementById('content').style.transform = \"scale(\"+scaleSize+\")\";\n" +
-                "  }\n";
+                "    var menuScale = (menuscaleratio*100) + \"%\";\n" +
+                "    document.getElementById('menu').width = viewportWidth;\n" +
+                "    document.getElementById('menu').style.transform = \"scale(\"+menuScale+\")\";\n" +
+                "    document.getElementById('content').style.height = (document.getElementById('content').clientHeight * scaleratio)+\"px\";\n" +
+                "    document.getElementById('content').style.transform = \"translate(0,\" + (document.getElementById('menu').clientHeight * menuscaleratio) + \"px) scale(\"+scaleSize+\")\";\n" +
+                "    var newHeight = document.getElementById('content').clientHeight;\n" +
+                "    if (scaleratio>1) {\n" +
+                "      newHeight = Math.round(newHeight / scaleratio);\n" +
+                "    }\n" +
+                "    console.log(\"\" + newHeight + \"px\");\n" +
+                "    document.getElementById('content').style.height = \"\" + (newHeight) + \"px\";\n" +
+                "    document.getElementById('content').style.width = \"\" + viewportWidth + \"px\";\n" +
+                "    document.body.style.height = \"\" + (newHeight + document.getElementById('menu').clientHeight) + \"px\";\n" +
+                "    document.body.style.width = \"\" + (viewportWidth) + \"px\";\n" +
+                "  }\n" +
+                "  function offsetAnchor() {\n" +
+                "    if (location.hash.length !== 0) {\n" +
+                "       window.scrollTo(window.scrollX, window.scrollY - (document.getElementById('menu').clientHeight) * menuscaleratio);\n" +
+                "    }\n" +
+                "  }\n" +
+                "  window.addEventListener(\"hashchange\", offsetAnchor);\n" +
+                "  window.setTimeout(offsetAnchor, 1); // The delay of 1 is arbitrary and may not always work right (although it did in my testing).\n\n";
     }
+
     private String getGoToSongJS() {
         return "" +
                 "  function getSong(how,index) {\n" +
-                "      if (how==\"set\") {\n" +
+                "      if (how==\"currSong\") {\n " +
+                "        window.location.href = serverAddress + currSong;\n" +
+                "      } else if (how==\"set\") {\n" +
                 "        window.location.href = serverAddress + \"/setitem/\" + index;\n" +
                 "      } else {\n" +
                 "        window.location.href = serverAddress + \"/songitem/\" + index;\n" +
@@ -406,10 +506,18 @@ public class WebServer extends NanoHTTPD {
     private String getNavigateJS() {
         return "" +
                 "  function songMenu() {\n" +
-                "    window.location.href = serverAddress + \"/songmenu/\";\n" +
+                "    if (inset) {\n" +
+                "      window.location.href = serverAddress + \"/songmenu/\" + currSong;\n" +
+                "    } else {\n" +
+                "      window.location.href = serverAddress + \"/songmenu/\" + currSong;\n" +
+                "    }\n" +
                 "  }\n" +
                 "  function setMenu() {\n" +
-                "    window.location.href = serverAddress + \"/setmenu/\";\n" +
+                "    if (inset) {\n" +
+                "      window.location.href = serverAddress + \"/setmenu/\" + currSong;\n" +
+                "    } else {\n" +
+                "      window.location.href = serverAddress + \"/setmenu/\" + currSong;\n" +
+                "    }\n" +
                 "  }\n" +
                 "  function back() {\n" +
                 "    if (index>0) {\n" +
@@ -435,32 +543,45 @@ public class WebServer extends NanoHTTPD {
     }
     private String getMenuBarCSS() {
         if (allowWebNavigation) {
-            return  "ul {list-style-type:none; margin:0; padding: 0; overflow:hidden; color:white; " +
-                    "font-family:"+mainActivityInterface.getMyFonts().getLyricFontName()+"; " +
-                    "font-size:24pt;}\n" +
-                    "li {float:left;background-color:#294959; margin-right:8px; font-size:24pt;}\n" +
-                    "a {display:block; padding:8px; color:white;background-color:#294959; font-size:24pt;}\n" +
-                    "a:link {color:white; text-decoration:none; font-size:24pt;}\n" +
-                    "a:visited {color:white; text-decoration:none; font-size:24pt;}\n" +
-                    "a:hover {color:white; text-decoration:none; font-size:24pt;}\n" +
-                    "a:active {color:white; text-decoration:none; font-size:24pt;}\n";
+            return "#menu {position:fixed; padding: 0; top:0; overflow-x: scroll; white-space: nowrap; display:inline-block; transform-origin: top left; " +
+                    "color:white; position:fixed; z-index:1; " +
+                    "background-color:" + String.format("#%06X", (0xFFFFFF & mainActivityInterface.getMyThemeColors().getLyricsBackgroundColor())) + "; " +
+                    "font-family:" + mainActivityInterface.getMyFonts().getLyricFontName() + "; " +
+                    "font-size:8pt;}\n" +
+                    "a {margin-right:8px; padding:8px; float:left; display:inline-block; padding:8px; color:white; background-color:#294959; font-size:16pt;}\n" +
+                    "a:link {color:white; text-decoration:none; font-size:8pt;}\n" +
+                    "a:visited {color:white; text-decoration:none; font-size:8pt;}\n" +
+                    "a:hover {color:white; text-decoration:none; font-size:8pt;}\n" +
+                    "a:active {color:white; text-decoration:none; font-size:8pt;}\n";
         } else {
             return "";
         }
     }
-    private String getMenuBarHTML(boolean hidearrows) {
+    private String getMenuBarHTML(boolean hidearrows, boolean songmenu, boolean setmenu) {
         String text = "";
+        Log.d(TAG,"songmenu:"+songmenu);
+        Log.d(TAG,"setmenu:"+songmenu);
         if (allowWebNavigation) {
-            text = "<ul class=\"menu\">\n<li><a id=\"songs\" href=\"javascript:songMenu()\">&nbsp; " + c.getString(R.string.songs) + "&nbsp; </a></li>\n" +
-                    "<li><a id=\"set\" href=\"javascript:setMenu()\">&nbsp; " + c.getString(R.string.set) + "&nbsp; </a></li>\n";
+            String songmenuJS = "songMenu()";
+            String setmenuJS = "setMenu()";
+            if (songmenu) {
+                songmenuJS = "javascript:getSong('currSong',0)";
+            }
+            if (setmenu) {
+                setmenuJS = "javascript:getSong('currSong',0)";
+            }
+            text = "<span id=\"menu\">\n<a id=\"songs\" href=\"javascript:" + songmenuJS + "\">&nbsp; " + c.getString(R.string.songs) + "&nbsp; </a>\n" +
+                    "<a id=\"set\" href=\"javascript:" + setmenuJS + "\">&nbsp; " + c.getString(R.string.set) + "&nbsp; </a>\n";
             if (hidearrows) {
-                text += "</ul>\n";
+                text += "</span>\n";
             } else {
-                text += "<li><a href=\"javascript:hostSong()\">&nbsp; " + c.getString(R.string.web_server_host_song) + "&nbsp; </a></li>\n" +
-                        "<li><a href=\"javascript:back()\">&nbsp; &nbsp; &lt;&nbsp; &nbsp; </a></li>\n" +
-                        "<li><a href=\"javascript:forward()\">&nbsp; &nbsp; &gt;&nbsp; &nbsp; </a></li>\n</ul>\n";
+                text += "<a href=\"javascript:hostSong()\">&nbsp; " + c.getString(R.string.web_server_host_song) + "&nbsp; </a>\n" +
+                        "<a href=\"javascript:back()\">&nbsp; &nbsp; &lt;&nbsp; &nbsp; </a>\n" +
+                        "<a href=\"javascript:forward()\">&nbsp; &nbsp; &gt;&nbsp; &nbsp; </a>\n</span>\n";
             }
         }
         return text;
     }
+
+
 }
