@@ -476,7 +476,6 @@ public class WebServer extends NanoHTTPD {
                 "    if (scaleratio>1) {\n" +
                 "      newHeight = Math.round(newHeight / scaleratio);\n" +
                 "    }\n" +
-                "    console.log(\"\" + newHeight + \"px\");\n" +
                 "    document.getElementById('content').style.height = \"\" + (newHeight) + \"px\";\n" +
                 "    document.getElementById('content').style.width = \"\" + viewportWidth + \"px\";\n" +
                 "    document.body.style.height = \"\" + (newHeight + document.getElementById('menu').clientHeight) + \"px\";\n" +
