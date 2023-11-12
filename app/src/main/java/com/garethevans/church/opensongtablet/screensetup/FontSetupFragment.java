@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +37,8 @@ public class FontSetupFragment extends Fragment {
     private DisplayInterface displayInterface;
     private String font_choose_string="", website_fonts_string="";
     private String webAddress;
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
+    private final String TAG = "FontSetupFragment";
 
     @Override
     public void onResume() {
@@ -155,6 +158,12 @@ public class FontSetupFragment extends Fragment {
     }
 
     private void initialisePreviews() {
+        myView.lyricWebPreview.setVisibility(mainActivityInterface.getAlertChecks().getHasPlayServices() ? View.VISIBLE:View.GONE);
+        myView.chordWebPreview.setVisibility(mainActivityInterface.getAlertChecks().getHasPlayServices() ? View.VISIBLE:View.GONE);
+        myView.presoWebPreview.setVisibility(mainActivityInterface.getAlertChecks().getHasPlayServices() ? View.VISIBLE:View.GONE);
+        myView.presoInfoWebPreview.setVisibility(mainActivityInterface.getAlertChecks().getHasPlayServices() ? View.VISIBLE:View.GONE);
+        myView.stickyWebPreview.setVisibility(mainActivityInterface.getAlertChecks().getHasPlayServices() ? View.VISIBLE:View.GONE);
+
         try {
             myView.songPreview.setBackgroundColor(mainActivityInterface.getMyThemeColors().getLyricsBackgroundColor());
             myView.lyricPreview.setTextColor(mainActivityInterface.getMyThemeColors().getLyricsTextColor());
@@ -191,7 +200,7 @@ public class FontSetupFragment extends Fragment {
 
     private void updatePreviews() {
 
-
+        Log.d(TAG,"isAdded():"+isAdded());
         // Run this now and again in about 500ms and 3 seconds (to check loading of the font has happened)
         try {
             if (getActivity()!=null && isAdded()) {
@@ -264,6 +273,7 @@ public class FontSetupFragment extends Fragment {
         @Override
         public void afterTextChanged(Editable s) {
             // The preview method in setTypeFace deals with saving
+            Log.d(TAG,"which:"+which+"  to:"+s);
             mainActivityInterface.getMyFonts().changeFont(which,s.toString(),new Handler());
             updatePreviews();
         }

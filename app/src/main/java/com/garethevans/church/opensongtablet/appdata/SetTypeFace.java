@@ -101,33 +101,13 @@ public class SetTypeFace {
         String fontPreso = mainActivityInterface.getPreferences().getMyPreferenceString("fontPreso", "Lato");
         String fontPresoInfo = mainActivityInterface.getPreferences().getMyPreferenceString("fontPresoInfo", "Lato");
 
-        // Set the values  (if Lato, use the bundled font)
+        // Set the values  (if we don't have play services, use the bundled fonts)
         // The reason is that KiKat devices don't load the Google Font resource automatically (it requires manually selecting it).
-        if (lyricFontName.equals("Lato")) {
-            lyricFont = Typeface.createFromAsset(c.getAssets(),"font/lato.ttf");
-        } else {
-            getGoogleFont(lyricFontName,"fontLyric",null,lyricFontHandler);
-        }
-        if (chordFontName.equals("Lato")) {
-            chordFont = Typeface.createFromAsset(c.getAssets(),"font/lato.ttf");
-        } else {
-            getGoogleFont(chordFontName,"fontChord",null,chordFontHandler);
-        }
-        if (fontSticky.equals("Lato")) {
-            stickyFont = Typeface.createFromAsset(c.getAssets(), "font/lato.ttf");
-        } else {
-            getGoogleFont(fontSticky,"fontSticky",null,stickyFontHandler);
-        }
-        if (fontPreso.equals("Lato")) {
-            presoFont = Typeface.createFromAsset(c.getAssets(),"font/lato.ttf");
-        } else {
-            getGoogleFont(fontPreso,"fontPreso",null,presoFontHandler);
-        }
-        if (fontPresoInfo.equals("Lato")) {
-            presoInfoFont = Typeface.createFromAsset(c.getAssets(),"font/lato.ttf");
-        } else {
-            getGoogleFont(fontPresoInfo,"fontPresoInfo",null,presoInfoFontHandler);
-        }
+        changeFont("fontLyric",lyricFontName,lyricFontHandler);
+        changeFont("fontChord",chordFontName,chordFontHandler);
+        changeFont("fontPreso",fontPreso,presoFontHandler);
+        changeFont("fontPresoInfo",fontPresoInfo,presoInfoFontHandler);
+        changeFont("fontSticky",fontSticky,stickyFontHandler);
         setMonoFont(Typeface.createFromAsset(c.getAssets(),"font/robotomono.ttf"));
     }
 
@@ -137,20 +117,25 @@ public class SetTypeFace {
         // Update the font
         if (fontName.startsWith("Fonts/")) {
             try {
-            String actualName = fontName.replace("Fonts/","");
-            // We need the font to be in a file readable location - the app storage
-            // Copy the chosen file here
-            File dir = c.getExternalFilesDir("files");
-            File fontFile = new File(dir,actualName);
-            Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Fonts","",actualName);
-            InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(uri);
-            FileOutputStream outputStream = new FileOutputStream(fontFile);
-            mainActivityInterface.getStorageAccess().copyFile(inputStream,outputStream);
-            Typeface typeface = Typeface.createFromFile(fontFile.getPath());
-            doSetDesiredFont(which,typeface,fontName,null);
+                String actualName = fontName.replace("Fonts/", "");
+                // We need the font to be in a file readable location - the app storage
+                // Copy the chosen file here
+                File dir = c.getExternalFilesDir("files");
+                File fontFile = new File(dir, actualName);
+                Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Fonts", "", actualName);
+                InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(uri);
+                FileOutputStream outputStream = new FileOutputStream(fontFile);
+                mainActivityInterface.getStorageAccess().copyFile(inputStream, outputStream);
+                Typeface typeface = Typeface.createFromFile(fontFile.getPath());
+                doSetDesiredFont(which, typeface, fontName, null);
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        } else if (!mainActivityInterface.getAlertChecks().getHasPlayServices()) {
+            // Use the bundled lato font
+            Typeface typeface = Typeface.createFromAsset(c.getAssets(),"font/lato.ttf");
+            doSetDesiredFont(which, typeface, fontName, null);
+
         } else {
             getGoogleFont(fontName, which, null, handler);
         }
@@ -220,15 +205,15 @@ public class SetTypeFace {
     public ArrayList<String> bundledFonts() {
         ArrayList<String> f = new ArrayList<>();
         f.add("Lato");
-        f.add("OpenSans");
-        f.add("Oxygen");
-        f.add("Roboto");
-        f.add("Ubuntu");
         return f;
     }
 
     private boolean hasPlayServices() {
-        return GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(c) == ConnectionResult.SUCCESS;
+        if (mainActivityInterface.getAlertChecks().getIgnorePlayServicesWarning()) {
+            return false;
+        } else {
+            return GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(c) == ConnectionResult.SUCCESS;
+        }
     }
 
     public Typeface getAppDefault() {
