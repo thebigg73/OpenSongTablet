@@ -147,8 +147,6 @@ import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
 import com.garethevans.church.opensongtablet.tags.BulkTagAssignFragment;
 import com.garethevans.church.opensongtablet.utilities.TimeTools;
 import com.garethevans.church.opensongtablet.webserver.WebServer;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -3882,7 +3880,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     private void updateCastIcon() {
         if (globalMenuItem != null) {
-            if (settingsOpen || GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this) != ConnectionResult.SUCCESS) {
+            if (settingsOpen || !getAlertChecks().getHasPlayServices()) {
                 globalMenuItem.findItem(R.id.mirror_menu_item).setVisible(false);
             } else {
                 Drawable drawable;
