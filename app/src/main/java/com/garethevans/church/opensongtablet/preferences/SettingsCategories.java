@@ -18,8 +18,6 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.appdata.InformationBottomSheet;
 import com.garethevans.church.opensongtablet.databinding.SettingsCategoriesBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.material.textview.MaterialTextView;
 
 public class SettingsCategories extends Fragment {
@@ -88,7 +86,8 @@ public class SettingsCategories extends Fragment {
     private void hideUnavailable() {
         // If the user doesn't have Google API availability, they can't use the connect feature
         if (getContext()!=null) {
-            setPlayEnabled(GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(getContext()) == ConnectionResult.SUCCESS);
+            setPlayEnabled(mainActivityInterface.getAlertChecks().getHasPlayServices());
+
             // If they don't have midi functionality, remove this
             setMidiEnabled(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && getContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_MIDI));
         } else {
