@@ -604,6 +604,7 @@
     <string name="paypal_description">アプリが便利だと思ったら寄付を送ってください</string>
     <string name="pdf_horizontal">PDF ページを水平方向に表示</string>
     <string name="pdf_horizontal_info">自動スケーリングが full に設定され、デバイスが横向きの場合、PDF ページは並べて表示されます (高さでスケーリングされます)。</string>
+    <string name="pdf_preview_not_allowed">PDF ファイルの直接プレビューは、多くのモバイル Web ブラウザーではサポートされていませんが、下のボタンを使用してファイルを開くことができます。</string>
     <string name="pedal">"ペダル"</string>
     <string name="pedal_avoid_repeat">次の曲に移動する前に警告を表示します</string>
     <string name="pedal_avoid_repeat_info">誤って押すのを避けるために便利です</string>

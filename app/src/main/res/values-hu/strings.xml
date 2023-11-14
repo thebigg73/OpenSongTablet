@@ -604,6 +604,7 @@
     <string name="paypal_description">Ha hasznosnak találja az alkalmazást, küldjön adományt</string>
     <string name="pdf_horizontal">PDF-oldalak vízszintes megjelenítése</string>
     <string name="pdf_horizontal_info">Ha az automatikus méretezés teljes értékre van állítva, és az eszköz fekvő tájolású, a PDF-oldalak egymás mellett jelennek meg (magasság szerint méretezve)</string>
+    <string name="pdf_preview_not_allowed">A PDF-fájlok közvetlen előnézetének megtekintését számos mobil webböngésző nem támogatja, de az alábbi gombbal megnyithatja a fájlt.</string>
     <string name="pedal">"Pedál"</string>
     <string name="pedal_avoid_repeat">Figyelmeztetés megjelenítése, mielőtt a következő dalra lépne</string>
     <string name="pedal_avoid_repeat_info">Hasznos a véletlen megnyomások elkerülése érdekében</string>

@@ -604,6 +604,7 @@
     <string name="paypal_description">Stuur vir my \'n skenking as jy die toepassing nuttig vind</string>
     <string name="pdf_horizontal">Vertoon PDF-bladsye horisontaal</string>
     <string name="pdf_horizontal_info">Wanneer outoskaal op volle gestel is en die toestel in landskaporiëntasie is, sal PDF-bladsye langs mekaar gewys word (afgeskaal volgens hoogte)</string>
+    <string name="pdf_preview_not_allowed">Die voorskou van PDF-lêers word nie op baie mobiele webblaaiers ondersteun nie, maar u kan die lêer oopmaak met die onderstaande knoppie.</string>
     <string name="pedal">"Pedal"</string>
     <string name="pedal_avoid_repeat">Wys \'n waarskuwing voordat jy na die volgende liedjie beweeg</string>
     <string name="pedal_avoid_repeat_info">Nuttig om toevallige druk te vermy</string>

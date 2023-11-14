@@ -604,6 +604,7 @@
     <string name="paypal_description">Skicka mig en donation om du tycker att appen är användbar</string>
     <string name="pdf_horizontal">Visa PDF-sidor horisontellt</string>
     <string name="pdf_horizontal_info">När autoskalning är inställd på fullständig och enheten är i liggande orientering visas PDF-sidor sida vid sida (skalad efter höjd)</string>
+    <string name="pdf_preview_not_allowed">Förhandsgranskning av PDF-filer direkt stöds inte i många mobila webbläsare, men du kan öppna filen med knappen nedan.</string>
     <string name="pedal">"Trampa"</string>
     <string name="pedal_avoid_repeat">Visa en varning innan du går till nästa låt</string>
     <string name="pedal_avoid_repeat_info">Användbart för att undvika oavsiktliga tryckningar</string>

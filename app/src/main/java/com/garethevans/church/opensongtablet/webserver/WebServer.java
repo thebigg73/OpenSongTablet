@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.net.Uri;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.util.Log;
@@ -15,6 +16,8 @@ import com.google.zxing.BarcodeFormat;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 
+import java.io.InputStream;
+
 import fi.iki.elonen.NanoHTTPD;
 
 public class WebServer extends NanoHTTPD {
@@ -25,6 +28,8 @@ public class WebServer extends NanoHTTPD {
     private final String TAG = "WebServer";
     private String ip;
     private boolean runWebServer, allowWebNavigation;
+    private final String localFileSplit = ":____:";
+
 
 
     // Web server instantiation and closure
@@ -60,27 +65,53 @@ public class WebServer extends NanoHTTPD {
     @Override
     public Response serve(IHTTPSession session) {
         String pagerequest = session.getUri();
+        Log.d(TAG,"pagerequest:"+pagerequest);
+        String mimeType = MIME_HTML;
+        String localFile = null;
         String webpage = "";
-        if (allowWebNavigation) {
-        if (pagerequest.contains("/setmenu/")) {
-            // Get the current browsed song
-            String currSong = getCurrSong("songitem/",pagerequest);
-            if (currSong.isEmpty()) {
-                currSong = getCurrSong("setitem/",pagerequest);
-            }
-            Log.d(TAG,"currSong:"+currSong);
-            webpage = createSetSongListHTML(true, currSong);
+        if (pagerequest.contains("_PDF/")) {
+            // Serve a pdf image
+            localFile = pagerequest.substring(pagerequest.indexOf("_PDF/")).replace("_PDF/","");
+            mimeType = "application/pdf";
+        } else if (pagerequest.contains("_JPG/")) {
+            // Serve a jpeg image
+            localFile = pagerequest.substring(pagerequest.indexOf("_JPG/")).replace("_JPG/","");
+            mimeType = "image/jpeg";
+        } else if (pagerequest.contains("_PNG/")) {
+            // Serve a png image
+            localFile = pagerequest.substring(pagerequest.indexOf("_PNG/")).replace("_PNG/", "");
+            mimeType = "image/png";
+        } else if (pagerequest.contains("_GIF/")) {
+            // Serve a gif image
+            localFile = pagerequest.substring(pagerequest.indexOf("_GIF/")).replace("_GIF/", "");
+            mimeType = "image/gif";
+        } else if (pagerequest.contains("_BMP/")) {
+            // Serve a bmp image
+            localFile = pagerequest.substring(pagerequest.indexOf("_BMP/")).replace("_BMP/", "");
+            mimeType = "image/bmp";
+        }
 
-        } else if (pagerequest.contains("/songmenu/")) {
-            // Get the current browsed song
-            String currSong = getCurrSong("songitem/", pagerequest);
-            if (currSong.isEmpty()) {
-                currSong = getCurrSong("setitem/", pagerequest);
-            }
-            Log.d(TAG, "currSong:" + currSong);
-            webpage = createSetSongListHTML(false, currSong);
 
-        } else if (pagerequest.contains("/setitem/")) {
+            if (localFile==null && allowWebNavigation) {
+             if (pagerequest.contains("/setmenu/")) {
+                // Get the current browsed song
+                String currSong = getCurrSong("songitem/", pagerequest);
+                if (currSong.isEmpty()) {
+                    currSong = getCurrSong("setitem/", pagerequest);
+                }
+                Log.d(TAG, "currSong:" + currSong);
+                webpage = createSetSongListHTML(true, currSong);
+
+            } else if (pagerequest.contains("/songmenu/")) {
+                // Get the current browsed song
+                String currSong = getCurrSong("songitem/", pagerequest);
+                if (currSong.isEmpty()) {
+                    currSong = getCurrSong("setitem/", pagerequest);
+                }
+                Log.d(TAG, "currSong:" + currSong);
+                webpage = createSetSongListHTML(false, currSong);
+
+            } else if (pagerequest.contains("/setitem/")) {
                 // We want to load a song in the set at the position afterwards
                 pagerequest = pagerequest.replace("/setitem/", "");
                 pagerequest = pagerequest.replaceAll("\\D", "");
@@ -93,7 +124,7 @@ public class WebServer extends NanoHTTPD {
                     songForHTML.setFolder(folder);
                     songForHTML.setFilename(filename);
                     songForHTML = mainActivityInterface.getLoadSong().doLoadSong(songForHTML, false);
-                    webpage = getProcessedSongHTML(songForHTML, true, setItemNum, mainActivityInterface.getCurrentSet().getSetItems().size() - 1, "setitem/"+setItemNum);
+                    webpage = getProcessedSongHTML(songForHTML, true, setItemNum, mainActivityInterface.getCurrentSet().getSetItems().size() - 1, "setitem/" + setItemNum);
                 }
 
             } else if (pagerequest.contains("/songitem/")) {
@@ -109,21 +140,46 @@ public class WebServer extends NanoHTTPD {
                     songForHTML.setFolder(folder);
                     songForHTML.setFilename(filename);
                     songForHTML = mainActivityInterface.getLoadSong().doLoadSong(songForHTML, false);
-                    webpage = getProcessedSongHTML(songForHTML, false, songItemNum, mainActivityInterface.getSongsInMenu().size(), "songitem/"+songItemNum);
+                    webpage = getProcessedSongHTML(songForHTML, false, songItemNum, mainActivityInterface.getSongsInMenu().size(), "songitem/" + songItemNum);
                 }
 
             } else {
                 // This is for /hostsong/ or the default splash screen for navigation mode
                 int songItemNumber = mainActivityInterface.getPositionOfSongInMenu();
-                webpage = getProcessedSongHTML(mainActivityInterface.getSong(), false, songItemNumber, mainActivityInterface.getSongsInMenu().size(),"songitem/"+songItemNumber);
+                webpage = getProcessedSongHTML(mainActivityInterface.getSong(), false, songItemNumber, mainActivityInterface.getSongsInMenu().size(), "songitem/" + songItemNumber);
 
             }
-        } else {
+        } else if (localFile == null) {
             // Just show the current song with no menu
             webpage = getProcessedSongHTML(mainActivityInterface.getSong(), false, 0, 0, "songitem/0");
         }
 
-        return newFixedLengthResponse(webpage);
+        if (localFile==null) {
+            return newFixedLengthResponse(webpage);
+        } else {
+            Log.d(TAG,"mimeType:"+mimeType);
+            Log.d(TAG,"localFile:"+localFile);
+            String[] bits = localFile.split(localFileSplit);
+            Uri localUri = mainActivityInterface.getStorageAccess().getUriForItem("Songs",bits[0],bits[1]);
+            try {
+                InputStream buffer = null;
+                long fileSize = 0;
+                try {
+                    buffer = mainActivityInterface.getStorageAccess().getInputStream(localUri);
+                    Log.d(TAG,"fileSize:"+fileSize);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                return newFixedLengthResponse(Response.Status.OK, mimeType, buffer, -1 );
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                return newFixedLengthResponse(webpage);
+            }
+            //return newFixedLengthResponse(Response.Status.OK, mimeType, inputStream, -1);
+        }
     }
 
     private String getCurrSong(String identifier, String from) {
@@ -239,8 +295,10 @@ public class WebServer extends NanoHTTPD {
                 .append(base1)
                 .append(mainActivityInterface.getMyFonts().getLyricFontName())
                 .append(base2)
-                .append(".page {background-color:")
-                .append(String.format("#%06X", (0xfff & mainActivityInterface.getMyThemeColors().getLyricsBackgroundColor())))
+                .append(".page {color:")
+                .append(String.format("#%06X", (0xFFFFFF & mainActivityInterface.getMyThemeColors().getLyricsTextColor())))
+                .append("; background-color:")
+                .append(String.format("#%06X", (0xFFFFFF & mainActivityInterface.getMyThemeColors().getLyricsBackgroundColor())))
                 .append(";}\n")
                 .append(".item {font-family:")
                 .append(mainActivityInterface.getMyFonts().getLyricFontName())
@@ -311,6 +369,25 @@ public class WebServer extends NanoHTTPD {
         // IV - Initialise transpose capo key  - might be needed
         mainActivityInterface.getTranspose().capoKeyTranspose(songForHTML);
 
+        String imgPDFSong = "";
+        String fileExtension = songForHTML.getFilename().toLowerCase();
+        if (fileExtension.contains(".")) {
+            fileExtension = fileExtension.substring(fileExtension.lastIndexOf(".")).replace(".","");
+        } else {
+            fileExtension = "";
+        }
+        if (songForHTML.getFiletype().equals("IMG")) {
+            if (fileExtension.equals("jpg") || fileExtension.equals("jpeg")) {
+                imgPDFSong = "<img src=\"_JPG/" + songForHTML.getFolder() + localFileSplit + songForHTML.getFilename() + "\" width=\"600\">";
+            } else if (fileExtension.equals("png")) {
+                imgPDFSong = "<img src=\"_PNG/" + songForHTML.getFolder() + localFileSplit + songForHTML.getFilename() + "\" width=\"600\">";
+            }
+        } else if (songForHTML.getFiletype().equals("PDF")) {
+            imgPDFSong = "<object type=\"application/pdf\" data=\"_PDF/" + songForHTML.getFolder() + localFileSplit + songForHTML.getFilename() + "\" width=\"600px\" height=\"600px\">" +
+                    "<p>" + c.getString(R.string.pdf_preview_not_allowed) + "</p>\n" +
+                     "<a href=\"_PDF/" + songForHTML.getFolder() + localFileSplit + songForHTML.getFilename() + "\"/>" + c.getString(R.string.download) + " " + songForHTML.getFilename() + "</a></object>";
+        }
+
         // Check to see if the song is in the users set even if clicked on from web song menu
         if (!inset) {
             int findindex = mainActivityInterface.getSetActions().indexSongInSet(songForHTML);
@@ -320,35 +397,40 @@ public class WebServer extends NanoHTTPD {
                 max = mainActivityInterface.getCurrentSet().getSetItems().size() - 1;
             }
         }
-
+        String songContent = "";
         StringBuilder stringBuilder = new StringBuilder();
-        for (int sect = 0; sect < songForHTML.getPresoOrderSongSections().size(); sect++) {
-            String section = songForHTML.getPresoOrderSongSections().get(sect);
-            if (!section.isEmpty()) {
-                section = section.replace(mainActivityInterface.getProcessSong().columnbreak_string,"");
-                if (mainActivityInterface.getProcessSong().trimSections) {
-                    // IV - End trim only as a section may start with a lyric line and have no header
-                    section = ("¬" + section).trim().replace("¬","");
-                }
-                // Add this section to the array (so it can be called later for presentation)
-                if (!section.trim().isEmpty()) {
-                    // Now split by line, but keeping empty ones
-                    String[] lines = section.split("\n",-1);
-                    for (String line : lines) {
-                        // IV - Do not process an empty group line or empty header line
-                        if (!line.equals(mainActivityInterface.getProcessSong().groupline_string) && !line.equals("[]")) {
-                            // Get the text stylings
-                            String linetype = mainActivityInterface.getProcessSong().getLineType(line);
-                            if (line.contains(mainActivityInterface.getProcessSong().groupline_string)) {
-                                // Has lyrics and chords
-                                stringBuilder.append(mainActivityInterface.getProcessSong().groupTableHTML(songForHTML, line));
-                            } else {
-                                stringBuilder.append(mainActivityInterface.getProcessSong().lineTextHTML(songForHTML, linetype, line));
+        if (imgPDFSong.isEmpty()) {
+            for (int sect = 0; sect < songForHTML.getPresoOrderSongSections().size(); sect++) {
+                String section = songForHTML.getPresoOrderSongSections().get(sect);
+                if (!section.isEmpty()) {
+                    section = section.replace(mainActivityInterface.getProcessSong().columnbreak_string, "");
+                    if (mainActivityInterface.getProcessSong().trimSections) {
+                        // IV - End trim only as a section may start with a lyric line and have no header
+                        section = ("¬" + section).trim().replace("¬", "");
+                    }
+                    // Add this section to the array (so it can be called later for presentation)
+                    if (!section.trim().isEmpty()) {
+                        // Now split by line, but keeping empty ones
+                        String[] lines = section.split("\n", -1);
+                        for (String line : lines) {
+                            // IV - Do not process an empty group line or empty header line
+                            if (!line.equals(mainActivityInterface.getProcessSong().groupline_string) && !line.equals("[]")) {
+                                // Get the text stylings
+                                String linetype = mainActivityInterface.getProcessSong().getLineType(line);
+                                if (line.contains(mainActivityInterface.getProcessSong().groupline_string)) {
+                                    // Has lyrics and chords
+                                    stringBuilder.append(mainActivityInterface.getProcessSong().groupTableHTML(songForHTML, line));
+                                } else {
+                                    stringBuilder.append(mainActivityInterface.getProcessSong().lineTextHTML(songForHTML, linetype, line));
+                                }
                             }
                         }
                     }
                 }
             }
+        songContent = mainActivityInterface.getSongSheetHeaders().getSongSheetTitleMainHTML(songForHTML) +
+                mainActivityInterface.getSongSheetHeaders().getSongSheetTitleExtrasHTML(songForHTML) +
+                stringBuilder;
         }
 
         return  "<!DOCTYPE html>\n" +
@@ -356,7 +438,8 @@ public class WebServer extends NanoHTTPD {
                 "<head>\n" +
                 "<style>\n" +
                 getHTMLFontImports() +
-                ".page       {background-color:" + String.format("#%06X", (0xfff & mainActivityInterface.getMyThemeColors().getLyricsBackgroundColor())) + ";}\n" +
+                ".page       {color:" + String.format("#%06X", (0xFFFFFF & mainActivityInterface.getMyThemeColors().getLyricsTextColor())) +
+                "; background-color:" + String.format("#%06X", (0xFFFFFF & mainActivityInterface.getMyThemeColors().getLyricsBackgroundColor())) + ";}\n" +
                 ".lyrictable {border-spacing:0; border-collapse: collapse; border:0px;}\n" +
                 getMenuBarCSS() +
                 "body        {width:100%;}\n" +
@@ -382,9 +465,10 @@ public class WebServer extends NanoHTTPD {
                 "<body class=\"page\" onload=\"javascript:measure()\">\n" +
                 getMenuBarHTML(false, false, false) +
                 "<div id=\"content\" style=\"width:fit-content; transform-origin: top left;\">\n" +
-                mainActivityInterface.getSongSheetHeaders().getSongSheetTitleMainHTML(songForHTML) +
-                mainActivityInterface.getSongSheetHeaders().getSongSheetTitleExtrasHTML(songForHTML) +
-                stringBuilder +
+                imgPDFSong +
+                songContent +
+                //"<img src=\"_JPEG/Alex" + localFileSplit + "set.jpg\" width=\"100%\">\n" +
+                //"<object type=\"application/pdf\" data=\"_PDF/Drums" + localFileSplit + "35-flam.pdf\" width=\"250\" height=\"200\"></object>" +
                 "</div>\n</body>\n" +
                 "</html>";
     }

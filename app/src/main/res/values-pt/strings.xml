@@ -604,6 +604,7 @@
     <string name="paypal_description">Envie-me uma doação se você achar o aplicativo útil</string>
     <string name="pdf_horizontal">Exibir páginas PDF horizontalmente</string>
     <string name="pdf_horizontal_info">Quando a escala automática estiver definida como completa e o dispositivo estiver na orientação paisagem, as páginas PDF serão mostradas lado a lado (dimensionadas por altura)</string>
+    <string name="pdf_preview_not_allowed">A visualização direta de arquivos PDF não é suportada em muitos navegadores da Web móveis, mas você pode abrir o arquivo usando o botão abaixo.</string>
     <string name="pedal">"Pedal"</string>
     <string name="pedal_avoid_repeat">Mostrar um aviso antes de passar para a próxima música</string>
     <string name="pedal_avoid_repeat_info">Útil para evitar pressionamentos acidentais</string>
