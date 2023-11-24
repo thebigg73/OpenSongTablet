@@ -2108,10 +2108,12 @@ public class StorageAccess {
             stringBuilder.append(songId).append("\n");
         }
         // Get the file reference
-        File songIDFile = new File(c.getExternalFilesDir("Database"), "SongIds.txt");
+        File songIDFile = getAppSpecificFile("Database","","SongsIds.txt");
+        //File songIDFile = new File(c.getExternalFilesDir("Database"), "SongIds.txt");
         // Let's delete this file and then create a new blank one
         Log.d(TAG,"Deleting old songIDFile success="+songIDFile.delete());
-        songIDFile = new File(c.getExternalFilesDir("Database"), "SongIds.txt");
+        songIDFile = mainActivityInterface.getStorageAccess().getAppSpecificFile("Database","","SongIds.txt");
+        //songIDFile = new File(c.getExternalFilesDir("Database"), "SongIds.txt");
         try {
             Log.d(TAG,"Creating new songIDFile success="+songIDFile.createNewFile());
             OutputStream outputStream = getOutputStream(Uri.fromFile(songIDFile));
@@ -2123,7 +2125,8 @@ public class StorageAccess {
         }
     }
     public ArrayList<String> getSongIDsFromFile() {
-        File songIDFile = new File(c.getExternalFilesDir("Database"), "SongIds.txt");
+        File songIDFile = getAppSpecificFile("Database","","SongIds.txt");
+        //File songIDFile = new File(c.getExternalFilesDir("Database"), "SongIds.txt");
         Uri uri = Uri.fromFile(songIDFile);
         InputStream is = getInputStream(uri);
         String text = readTextFileToString(is);
@@ -2361,6 +2364,48 @@ public class StorageAccess {
     public void setDatabaseLastUpdate(long databaseLastUpdate) {
         this.databaseLastUpdate = databaseLastUpdate;
         mainActivityInterface.getPreferences().setMyPreferenceLong("databaseLastUpdate",databaseLastUpdate);
+    }
+
+    public File getAppSpecificFile(String folder, String subfolder, String filename) {
+        // Get the hidden app folder
+
+        File fd = c.getFilesDir();
+        File fdf;
+        File fdsf;
+
+        // If the folder isn't null or empty, get that reference, creating if need be
+        if (folder!=null && !folder.isEmpty()) {
+            fdf = new File(fd,folder);
+            if (!fdf.exists()) {
+                Log.d(TAG,"Create folder:" + fdf.mkdir());
+            }
+        } else {
+            fdf = fd;
+        }
+
+        // If the subfolder isn't null or empty, get that reference, creating if need be
+        if (subfolder!=null && !subfolder.isEmpty()) {
+            fdsf = new File(fd,subfolder);
+            if (!fdsf.exists()) {
+                Log.d(TAG,"Create subfolder:" + fdsf.mkdir());
+            }
+        } else {
+            fdsf = fdf;
+        }
+
+        // If the filename isn't null or empty, get that reference.  Don't create as the receiver will
+        if (fdsf!=null && filename!=null && !filename.isEmpty()) {
+            return new File(fdf, filename);
+        } else if (fdsf != null) {
+            return fdsf;
+        } else if (folder!=null && subfolder!=null && filename!=null && !filename.isEmpty()) {
+            return new File(new File(c.getExternalFilesDir(folder),subfolder), filename);
+        } else if (folder!=null && subfolder!=null) {
+            return new File(c.getExternalFilesDir(folder),subfolder);
+        } else if (folder!=null) {
+            return c.getExternalFilesDir("folder");
+        }
+        return null;
     }
 
 }

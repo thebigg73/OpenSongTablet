@@ -179,7 +179,8 @@ public class ImportIOSFragment extends Fragment {
                 if (ze.getName().equals("OnSong.sqlite3") || ze.getName().equals("OnSong.Backup.sqlite3")) {
                     File loc;
                     if (getContext()!=null) {
-                        loc = new File(getContext().getExternalFilesDir("OnSong"), "Database");
+                        loc = mainActivityInterface.getStorageAccess().getAppSpecificFile("OnSong","Database","");
+                        //loc = new File(getContext().getExternalFilesDir("OnSong"), "Database");
 
                         if (!loc.mkdirs()) {
                             Log.d(TAG, "Database file already exists - ok");

@@ -752,7 +752,8 @@ public class Midi {
 
     public void createMidiFile() {
         // Create a temporary midi file
-        File midiFile = new File(c.getExternalFilesDir("Midi"),"midiFile.mid");
+        File midiFile = mainActivityInterface.getStorageAccess().getAppSpecificFile("Midi","","midiFile.mid");
+        //File midiFile = new File(c.getExternalFilesDir("Midi"),"midiFile.mid");
         try (FileOutputStream fileOutputStream = new FileOutputStream(midiFile,false)){
             // Build the hex pair code
             String hexPairCode = "";

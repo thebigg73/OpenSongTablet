@@ -107,7 +107,8 @@ public class Drummer {
         setTimeSig();
 
         String drums = simple_1_4_4();
-        File drumFile = new File(c.getExternalFilesDir("Midi"),"simple_1_4_4.mid");
+        File drumFile = mainActivityInterface.getStorageAccess().getAppSpecificFile("Midi","","simple_1_4_4.mid");
+        //File drumFile = new File(c.getExternalFilesDir("Midi"),"simple_1_4_4.mid");
         try (FileOutputStream fileOutputStream = new FileOutputStream(drumFile,false)) {
             fileOutputStream.write(mainActivityInterface.getMidi().returnBytesFromHexText(drums));
         } catch (Exception e) {

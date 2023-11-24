@@ -18,6 +18,7 @@ public class BBSQLite extends SQLiteOpenHelper {
 
     // This holds the default song list searchable from the app
     public final String DATABASE_NAME = "BeatBuddy.db";
+    private final MainActivityInterface mainActivityInterface;
     public final String TABLE_NAME_DEFAULT_SONGS = "defsongs";
     public final String TABLE_NAME_DEFAULT_DRUMS = "defdrums";
     public final String TABLE_NAME_MY_SONGS = "mysongs";
@@ -128,6 +129,7 @@ public class BBSQLite extends SQLiteOpenHelper {
     public BBSQLite(Context c) {
         // Don't create the database here as we don't want to recreate on each call.
         super(c,  "BeatBuddy.db", null, DATABASE_VERSION);
+        mainActivityInterface = (MainActivityInterface) c;
         this.c = c;
     }
 
@@ -200,7 +202,8 @@ public class BBSQLite extends SQLiteOpenHelper {
     // Create and reset the database
     public SQLiteDatabase getDB() {
         try {
-            File f = new File(c.getExternalFilesDir("Database"), DATABASE_NAME);
+            File f = mainActivityInterface.getStorageAccess().getAppSpecificFile("Database","",DATABASE_NAME);
+            //File f = new File(c.getExternalFilesDir("Database"), DATABASE_NAME);
             SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(f, null);
             // Check if the table exists
             createTables(db);

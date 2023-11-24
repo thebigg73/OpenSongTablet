@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -211,9 +210,10 @@ public class BackupRestoreSetsFragment extends Fragment {
 
                 } else {
                     if (getActivity()!=null) {
-                        File folder = new File(getActivity().getExternalCacheDir(), "Import");
-                        Log.d(TAG, "created: " + folder.mkdirs());
-                        File file = new File(folder, mainActivityInterface.getImportFilename());
+                        File file = mainActivityInterface.getStorageAccess().getAppSpecificFile("Import","",mainActivityInterface.getImportFilename());
+                        //File folder = new File(getActivity().getExternalCacheDir(), "Import");
+                        //Log.d(TAG, "created: " + folder.mkdirs());
+                        //File file = new File(folder, mainActivityInterface.getImportFilename());
                         try {
                             inputStream = new FileInputStream(file);
                         } catch (Exception e) {

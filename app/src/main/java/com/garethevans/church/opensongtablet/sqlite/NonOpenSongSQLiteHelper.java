@@ -24,7 +24,8 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
     public NonOpenSongSQLiteHelper(Context c) {
         super(c, SQLite.NON_OS_DATABASE_NAME, null, DATABASE_VERSION);
         mainActivityInterface = (MainActivityInterface) c;
-        appDBFile = new File(c.getExternalFilesDir("Database"), SQLite.NON_OS_DATABASE_NAME);
+        appDBFile = mainActivityInterface.getStorageAccess().getAppSpecificFile("Database","",SQLite.NON_OS_DATABASE_NAME);
+        //appDBFile = new File(c.getExternalFilesDir("Database"), SQLite.NON_OS_DATABASE_NAME);
         appDB = Uri.fromFile(appDBFile);
         userDB = mainActivityInterface.getStorageAccess().getUriForItem(
                 "Settings", "", SQLite.NON_OS_DATABASE_NAME);

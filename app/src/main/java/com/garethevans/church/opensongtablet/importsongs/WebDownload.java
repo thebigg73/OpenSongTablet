@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -43,7 +44,8 @@ public class WebDownload {
 
                 if (input != null) {
                     // Put the file into our chosen OpenSong folder
-                    File tempfile = new File(c.getExternalFilesDir("Files"),filename);
+                    File tempfile = ((MainActivityInterface)c).getStorageAccess().getAppSpecificFile("Files","",filename);
+                    //File tempfile = new File(c.getExternalFilesDir("Files"),filename);
 
                     Uri uri = Uri.fromFile(tempfile);
 

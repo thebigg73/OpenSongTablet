@@ -450,7 +450,8 @@ public class ImportOSBFragment extends Fragment {
                                 file_uri = mainActivityInterface.getStorageAccess().getUriForItem("Highlighter", "", ze.getName().replace("_Highlighter/",""));
                             } else if (ze.getName().equals(SQLite.NON_OS_DATABASE_NAME)) {
                                 // Put the database into our app folder
-                                tempDBFile = new File(requireContext().getExternalFilesDir("Database"), "importedDB.db");
+                                tempDBFile = mainActivityInterface.getStorageAccess().getAppSpecificFile("Database","","importedDB.db");
+                                //tempDBFile = new File(requireContext().getExternalFilesDir("Database"), "importedDB.db");
                                 file_uri = Uri.fromFile(tempDBFile);
                                 isDB = true;
                             } else {

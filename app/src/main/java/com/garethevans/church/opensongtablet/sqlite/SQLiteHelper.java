@@ -53,7 +53,8 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     // Create and reset the database
     public SQLiteDatabase getDB() {
         try {
-            File f = new File(c.getExternalFilesDir("Database"), SQLite.DATABASE_NAME);
+            File f = mainActivityInterface.getStorageAccess().getAppSpecificFile("Database","",SQLite.DATABASE_NAME);
+            //File f = new File(c.getExternalFilesDir("Database"), SQLite.DATABASE_NAME);
             return SQLiteDatabase.openOrCreateDatabase(f, null);
         } catch (OutOfMemoryError | Exception e) {
             e.printStackTrace();

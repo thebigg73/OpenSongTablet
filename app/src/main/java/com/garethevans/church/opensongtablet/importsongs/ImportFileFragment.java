@@ -403,9 +403,10 @@ public class ImportFileFragment extends Fragment {
         if (getActivity()!=null) {
             try {
                 // Copy the file
-                File tempLoc = new File(getActivity().getExternalFilesDir("Import"), "");
-                Log.d(TAG, "Create folder:" + tempLoc.mkdirs());
-                File tempFile = new File(tempLoc, mainActivityInterface.getImportFilename());
+                File tempFile = mainActivityInterface.getStorageAccess().getAppSpecificFile("Import","",mainActivityInterface.getImportFilename());
+                //File tempLoc = new File(getActivity().getExternalFilesDir("Import"), "");
+                //Log.d(TAG, "Create folder:" + tempLoc.mkdirs());
+                //File tempFile = new File(tempLoc, mainActivityInterface.getImportFilename());
                 InputStream inputStream = new FileInputStream(tempFile);
                 mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG + " Finish import  Sets/" + newSetName + "  deleteOld=true");
                 mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, copyTo, null, "Sets", "", newSetName);
