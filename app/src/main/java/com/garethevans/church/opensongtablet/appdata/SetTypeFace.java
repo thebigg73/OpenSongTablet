@@ -120,8 +120,9 @@ public class SetTypeFace {
                 String actualName = fontName.replace("Fonts/", "");
                 // We need the font to be in a file readable location - the app storage
                 // Copy the chosen file here
-                File dir = c.getExternalFilesDir("files");
-                File fontFile = new File(dir, actualName);
+                File fontFile = mainActivityInterface.getStorageAccess().getAppSpecificFile("Files","",actualName);
+                //File dir = c.getExternalFilesDir("files");
+                //File fontFile = new File(dir, actualName);
                 Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Fonts", "", actualName);
                 InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(uri);
                 FileOutputStream outputStream = new FileOutputStream(fontFile);
