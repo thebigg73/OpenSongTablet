@@ -557,7 +557,7 @@ public class ImportOnlineFragment extends Fragment {
     }
 
     public void doShowSaveButton(boolean show) {
-        if (show) {
+        if (show && myView!=null) {
             myView.saveButton.post(() -> {
                 if (getContext() != null) {
                     myView.grabText.hide();
@@ -568,7 +568,7 @@ public class ImportOnlineFragment extends Fragment {
                 }
             });
 
-        } else {
+        } else if (myView!=null){
             myView.saveButton.post(() -> {
                 myView.saveButton.hide();
                 myView.saveButton.clearAnimation();

@@ -55,6 +55,9 @@ public class MyMaterialEditText extends LinearLayout implements View.OnTouchList
         textInputLayout = new TextInputLayout(context);
         restoreState = true;
 
+        editText.setId(View.generateViewId());
+        textInputLayout.setId(View.generateViewId());
+
         try {
             window = ((Activity) context).getWindow();
         } catch (Exception e) {

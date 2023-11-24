@@ -30,6 +30,7 @@ public class DialogHeader extends LinearLayout implements View.OnClickListener {
 
         textView.setId(generateViewId());
         webHelp.setId(generateViewId());
+        floatingActionButton.setId(generateViewId());
 
         floatingActionButton.setClickable(true);
         floatingActionButton.setOnClickListener(this);

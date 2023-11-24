@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
@@ -24,6 +25,7 @@ public class BottomSheetHandle extends FrameLayout {
         super(context, attrs);
         inflate(context, R.layout.view_bottom_sheet_handle, this);
         handle = findViewById(R.id.handle);
+        handle.setId(View.generateViewId());
         handle.setFocusable(true);
         handle.setFocusableInTouchMode(true);
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.BottomSheetHandle);
