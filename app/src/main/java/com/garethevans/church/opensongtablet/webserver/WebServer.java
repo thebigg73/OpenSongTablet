@@ -259,6 +259,11 @@ public class WebServer extends NanoHTTPD {
     public void setRunWebServer(boolean runWebServer) {
         this.runWebServer = runWebServer;
         mainActivityInterface.getPreferences().setMyPreferenceBoolean("runWebServer",runWebServer);
+        if (!runWebServer) {
+            ip = null;
+        } else {
+            getIP();
+        }
         callRunWebServer();
     }
     public boolean getAllowWebNavigation() {
