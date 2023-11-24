@@ -537,6 +537,9 @@ public class Preferences extends Activity {
     // prevNextSongMenu                 boolean     Should previous and next songs be shown when not in a set from song menu (def:false)
     // profileName                      String      The last loaded or saved profile name (def:"")
     // refAHz                           int         The preferred frequency of A4 in Hz for the tuner (def:440).
+    // repeatMode                       boolean     Should the pedal long press use repeat mode (multiple key up commands) (def:false)
+    // repeatModeCount                  int         How many key up commands need to have happened in 500ms (def:5)
+    // repeatModeTime                   int         The time to listen for the count of key up commands (def:200)
     // runWebServer                     boolean     Should a web server displaying the song be automatically started on boot (def:false)
     // runssincebackup                  int         The number of times the app has opened without backup (prompt the user after 10) (def:0)
     // runssincebackupdismissed         int         A rolling counter 0-10 on how many boots since dismissing the alert (def:0)
