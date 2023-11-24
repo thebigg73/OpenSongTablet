@@ -457,7 +457,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 inputStream = getContentResolver().openInputStream(importUri);
                 importFilename = storageAccess.getFileNameFromUri(importUri);
                 if (inputStream != null) {
-                    File tempFile = new File(getExternalFilesDir("Import"), importFilename);
+                    File tempFile = getStorageAccess().getAppSpecificFile("Import","",importFilename);
+                    //File tempFile = new File(getExternalFilesDir("Import"), importFilename);
                     FileOutputStream outputStream = new FileOutputStream(tempFile);
                     storageAccess.updateFileActivityLog(TAG + " dealWithIntent CopyFile " + importUri + " to " + tempFile);
                     storageAccess.copyFile(inputStream, outputStream);
@@ -958,6 +959,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         if (pedalsFragment != null && pedalsFragment.isListening()) {
             pedalsFragment.keyDownListener(keyCode);
             return true;
+        } else if (pedalsFragment !=null) {
+            pedalsFragment.backgroundKeyDown(keyCode, keyEvent);
+            return true;
         } else {
             pedalActions.commonEventDown(keyCode, null);
             if (pedalActions.getButtonNumber(keyCode, null) > 0) {
@@ -973,6 +977,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         // If pedalsFragment is open, send the keyCode and event there
         if (pedalsFragment != null && pedalsFragment.isListening()) {
             pedalsFragment.commonEventUp();
+        } else if (pedalsFragment!=null) {
+            pedalsFragment.backgroundKeyUp(keyCode, keyEvent);
         } else if (!settingsOpen) {
             pedalActions.commonEventUp(keyCode, null);
         }
@@ -984,6 +990,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         // If pedalsFragment is open, send the keyCode and event there
         if (pedalsFragment != null && pedalsFragment.isListening()) {
             pedalsFragment.commonEventLong();
+            return true;
+        } else if (pedalsFragment !=null) {
+            pedalsFragment.backgroundKeyLongPress(keyCode, keyEvent);
             return true;
         } else if (!settingsOpen) {
             pedalActions.commonEventLong(keyCode, null);
@@ -3767,7 +3776,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         }
 
         // Clear out any temporarily copied intent files
-        File tempLoc = new File(getExternalFilesDir("Import"), "Intent");
+        File tempLoc = getStorageAccess().getAppSpecificFile("Import","","");
+        //File tempLoc = new File(getExternalFilesDir("Import"), "Intent");
         File[] files = tempLoc.listFiles();
         if (files != null) {
             for (File file : files) {
