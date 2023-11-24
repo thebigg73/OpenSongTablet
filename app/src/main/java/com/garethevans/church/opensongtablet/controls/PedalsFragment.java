@@ -41,9 +41,12 @@ public class PedalsFragment extends Fragment {
     private long downTime, upTime;
     private String currentMidiCode, pedal_string="", website_foot_pedal_string="", midi_pedal_string="",
             pedal_midi_warning_string="", is_not_set_string="", pedal_waiting_string="",
-            pedal_up_string="", pedal_down_string="", short_press_string="", long_press_string="";
-    private int currentListening;
-    private int currentPedalCode;
+            pedal_up_string="", pedal_down_string="", short_press_string="", long_press_string="",
+            pedal_waiting_ended_string="", pedal_detected_string="", unknown_string="",
+            default_string="", airturn_string="", repeat_string="", up_string="", down_string="";
+
+    private StringBuilder keyEvents = new StringBuilder();
+    private int currentListening, currentPedalCode, keyUpCount=0;
     private int[] defKeyCodes;
     private TextView[] buttonCodes, buttonMidis;
     private RelativeLayout[] buttonHeaders;
@@ -58,6 +61,7 @@ public class PedalsFragment extends Fragment {
         super.onResume();
         mainActivityInterface.updateToolbar(pedal_string);
         mainActivityInterface.updateToolbarHelp(webAddress);
+        mainActivityInterface.getPedalActions().setTesting(this,true);
     }
 
     @Override
@@ -106,6 +110,9 @@ public class PedalsFragment extends Fragment {
         // Set AirTurnMode actions
         airTurnModeActions();
 
+        // TODO get this working
+        // Set RepeatMode actions
+        // repeatModeActions();
 
         // Stop anything from getting focus (otherwise arrows trigger movements
         return myView.getRoot();
@@ -123,6 +130,14 @@ public class PedalsFragment extends Fragment {
             long_press_string = getString(R.string.long_press);
             pedal_down_string = getString(R.string.pedal_down);
             pedal_up_string = getString(R.string.pedal_up);
+            pedal_waiting_ended_string = getString(R.string.pedal_waiting_ended);
+            pedal_detected_string = getString(R.string.pedal_detected);
+            unknown_string = getString(R.string.unknown);
+            default_string = getString(R.string.use_default);
+            airturn_string = getString(R.string.air_turn_long_press);
+            repeat_string = getString(R.string.repeat_mode);
+            down_string = getString(R.string.pedal_down);
+            up_string = getString(R.string.pedal_up);
         }
     }
     @Override
@@ -130,6 +145,7 @@ public class PedalsFragment extends Fragment {
         super.onDestroyView();
         // Unregister this fragment
         mainActivityInterface.registerFragment(null,"PedalsFragment");
+        mainActivityInterface.getPedalActions().setTesting(null,false);
     }
 
     private void midiPedalAllowed() {
@@ -298,10 +314,20 @@ public class PedalsFragment extends Fragment {
     }
 
     private void setupButtons() {
+        myView.pedalTest.setChecked(false);
+        myView.pedalTestLayout.setVisibility(View.GONE);
+        myView.pedalTest.setOnCheckedChangeListener((compoundButton, b) -> {
+            myView.pedalTestLayout.setVisibility(b ? View.VISIBLE:View.GONE);
+            resetTestViews();
+        });
+        myView.resetButton.setOnClickListener(view -> {
+            resetTestViews();
+        });
         for (int w = 1; w <= 8; w++) {
             doButtons(w);
         }
     }
+
 
     private void doButtons(int which) {
         buttonCodes[which].setText(charFromInt(mainActivityInterface.getPedalActions().getPedalCode(which)));
@@ -315,13 +341,11 @@ public class PedalsFragment extends Fragment {
         currentMidiCode = mainActivityInterface.getPedalActions().getMidiCode(which);
         buttonCodes[which].setText(pedal_waiting_string);
         buttonMidis[which].setText(pedal_waiting_string);
-        //buttonCodes[which].setFocusable(true);
-        //buttonCodes[which].setFocusableInTouchMode(true);
-        //buttonCodes[which].requestFocus();
         pageButtonWaiting = new Handler();
         stopListening = () -> {
             buttonCodes[which].setText(charFromInt(currentPedalCode));
             buttonMidis[which].setText(currentMidiCode);
+            mainActivityInterface.getShowToast().doIt(pedal_waiting_ended_string);
         };
         pageButtonWaiting.postDelayed(stopListening, 8000);
     }
@@ -338,6 +362,7 @@ public class PedalsFragment extends Fragment {
         myView.airTurnMode.setOnCheckedChangeListener((buttonView, isChecked) -> {
             mainActivityInterface.getPedalActions().setPreferences("airTurnMode",isChecked);
             if (isChecked) {
+                myView.repeatMode.setChecked(false);
                 myView.airTurnOptions.setVisibility(View.VISIBLE);
             } else {
                 myView.airTurnOptions.setVisibility(View.GONE);
@@ -352,17 +377,44 @@ public class PedalsFragment extends Fragment {
         myView.airTurnLongPressTime.addOnSliderTouchListener(new MySliderTouchListener("airTurnLongPressTime"));
     }
 
+    private void repeatModeActions() {
+        boolean repeatMode = mainActivityInterface.getPedalActions().getRepeatMode();
+        myView.repeatMode.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            mainActivityInterface.getPedalActions().setPreferences("repeatMode", isChecked);
+            if (isChecked) {
+                myView.airTurnMode.setChecked(false);
+                myView.repeatModeOptions.setVisibility(View.VISIBLE);
+            } else {
+                myView.repeatModeOptions.setVisibility(View.GONE);
+            }
+        });
+        myView.repeatMode.setChecked(repeatMode);
 
+        int repeatModeTime = mainActivityInterface.getPedalActions().getRepeatModeTime();
+        myView.repeatModeTime.setValue(repeatModeTime);
+        myView.repeatModeTime.setHint(repeatModeTime + " ms");
+        myView.repeatModeTime.addOnChangeListener((slider, value, fromUser) -> myView.repeatModeTime.setHint((int)value + " ms"));
+        myView.repeatModeTime.addOnSliderTouchListener(new MySliderTouchListener("repeatModeTime"));
+        int repeatModeCount = mainActivityInterface.getPedalActions().getRepeatModeCount();
+        myView.repeatModeCount.setValue(repeatModeCount);
+        myView.repeatModeCount.setHint(repeatModeCount + "");
+        myView.repeatModeCount.addOnChangeListener((slider, value, fromUser) -> myView.repeatModeCount.setHint((int)value + ""));
+        myView.repeatModeCount.addOnSliderTouchListener(new MySliderTouchListener("repeatModeCount"));
+
+    }
 
     // Key listeners called from MainActivity
     // Key down to register button in this fragment.
     // Key up and long press to detect if this is possible for test
     public void keyDownListener(int keyCode) {
         Log.d(TAG,"keyCode:"+keyCode+"  currentListening:"+currentListening);
+        downTime = System.currentTimeMillis();
+        Log.d(TAG,"downTime:"+downTime);
+        upTime = downTime;
+
         if (currentListening > 0) {
             // Get a text version of the keyCode
             String pedalText = charFromInt(keyCode);
-
 
             // Run the common actions for midi and key registrations
             commonEventDown(currentListening, keyCode, pedalText, null);
@@ -373,6 +425,9 @@ public class PedalsFragment extends Fragment {
             // Reset the listening pedal
             currentListening = 0;
             pageButtonWaiting.removeCallbacks(stopListening);
+
+            // Alert the user a pedal press was detected
+            mainActivityInterface.getShowToast().doIt(pedal_detected_string + ": " + pedalText + " ("+keyCode+")");
         }
     }
 
@@ -388,6 +443,7 @@ public class PedalsFragment extends Fragment {
     private void commonEventDown(int which, int pedalCode, String pedalText, String pedalMidi) {
         // Reset the keyDown and keyUpTimes
         downTime = System.currentTimeMillis();
+        Log.d(TAG,"downTime:"+downTime);
         upTime = downTime;
 
         // Update the on screen value
@@ -395,23 +451,55 @@ public class PedalsFragment extends Fragment {
 
         // Set the preference
         setPedalPreference(which, pedalCode, pedalMidi);
-
     }
 
     public void commonEventUp() {
         // Set the keyUpTime
         upTime = System.currentTimeMillis();
+        Log.d(TAG,"upTime:"+upTime);
 
         // Decide if longPressCapable
         longPressCapable = ((upTime - downTime) > 300 && (upTime - downTime) < 1000) || longPressCapable;
+        Log.d(TAG,"longPressCapable:"+ longPressCapable);
+        Log.d(TAG,"upTime-dowTime:"+(int)(upTime-downTime));
     }
 
     public void commonEventLong() {
         longPressCapable = true;
     }
 
+    public void backgroundKeyDown(int keyCode, KeyEvent keyEvent) {
+        // Register a keyDown
+        downTime = System.currentTimeMillis();
+        Log.d(TAG,"backgroundKeyDown - keyCode:"+keyCode+"  keyEvent:"+keyEvent+"  downtime:"+downTime);
+        if (myView.pedalTest.getChecked()) {
+            updateKeyEvents(keyCode, downTime, down_string);
+        }
+    }
+    public void backgroundKeyUp(int keyCode, KeyEvent keyEvent) {
+        // Register a keyUp
+        upTime = System.currentTimeMillis();
+        Log.d(TAG,"backgroundKeyUp - keyCode:"+keyCode+"  keyEvent:"+keyEvent+"  upTime:"+upTime);
+        if (myView.pedalTest.getChecked()) {
+            updateKeyEvents(keyCode, upTime, up_string);
+        }
+        // Check the longpress mode for repeat
+        mainActivityInterface.getPedalActions().commonEventUp(keyCode,"");
+        // If the keyup happened
+    }
+    public void backgroundKeyLongPress(int keyCode, KeyEvent keyEvent) {
+        // Register a keyLongPress
+        upTime = System.currentTimeMillis();
+        Log.d(TAG,"backgroundKeyLongPress - keyCode:"+keyCode+"  keyEvent:"+keyEvent+"  upTime:"+upTime);
+        if (myView.pedalTest.getChecked()) {
+            updateKeyEvents(keyCode, upTime, long_press_string);
+        }
+        // Because we have an actual long press, update the test view
+        myView.longPressInfo.setHint(default_string);
+    }
+
     public boolean isListening() {
-        return currentListening > -1;
+        return currentListening > 0;
     }
 
     private void updateButtonText(String keyText, String midiText) {
@@ -556,7 +644,8 @@ public class PedalsFragment extends Fragment {
                 // Save the value via the gestures fragment
                 mainActivityInterface.getPreferences().setMyPreferenceFloat("scrollDistance", slider.getValue()/100f);
                 mainActivityInterface.getGestures().setScrollDistance(slider.getValue()/100f);
-            } else if (prefName.equals("airTurnLongPressTime")) {
+            } else if (prefName.equals("airTurnLongPressTime") || prefName.equals("repeatModeTime") ||
+                    prefName.equals("repeatModeCount")) {
                 // Save the value via the pedal fragment
                 mainActivityInterface.getPedalActions().setPreferences(prefName, (int)slider.getValue());
             }
@@ -564,5 +653,34 @@ public class PedalsFragment extends Fragment {
 
     }
 
+    private void updateKeyEvents(int keyCode, long millis, String which) {
+        String timeCode = mainActivityInterface.getTimeTools().getTimeStampFromMills(
+                mainActivityInterface.getLocale(), millis);
+        String eventString = "";
+        if (keyCode == -1 || KeyEvent.keyCodeToString(keyCode) == null) {
+            eventString = unknown_string;
+        } else {
+            eventString = KeyEvent.keyCodeToString(keyCode);
+        }
+        keyEvents.append(timeCode).append(" ").append(eventString).append("(").append(keyCode).append(") : ").append(which).append("\n");
+        myView.eventLog.setHint(keyEvents.toString());
+    }
+
+    private void resetTestViews() {
+        keyEvents = new StringBuilder();
+        if (myView!=null) {
+            myView.longPressInfo.setHint(unknown_string);
+            myView.eventLog.setHint(keyEvents.toString());
+        }
+    }
+
+    public void setLongPressMode(String detectedMode) {
+        if (detectedMode.equals("repeat")) {
+            // TODO change to repeat_string if I get it working
+            myView.longPressInfo.setHint(unknown_string);
+        } else if (detectedMode.equals("airturn")) {
+            myView.longPressInfo.setHint(airturn_string);
+        }
+    }
 
 }

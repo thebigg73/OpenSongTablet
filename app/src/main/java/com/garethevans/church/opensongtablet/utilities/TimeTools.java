@@ -3,6 +3,8 @@ package com.garethevans.church.opensongtablet.utilities;
 import android.view.View;
 import android.widget.TextClock;
 
+import java.util.Locale;
+
 public class TimeTools {
 
     @SuppressWarnings({"FieldCanBeLocal","unused"})
@@ -64,5 +66,13 @@ public class TimeTools {
             textClock.setFormat12Hour(charSequence);
             textClock.setFormat24Hour(charSequence);
         });
+    }
+
+    public String getTimeStampFromMills(Locale locale, long millis) {
+        long seconds = Math.round(millis/1000);
+        long s = seconds % 60;
+        long m = (seconds / 60) % 60;
+        long h = (seconds / (60 * 60)) % 24;
+        return String.format(locale,"%02d:%02d:%02d", h,m,s);
     }
 }
