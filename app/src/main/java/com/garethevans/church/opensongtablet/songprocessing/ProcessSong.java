@@ -1418,6 +1418,19 @@ public class ProcessSong {
                 }
                 fixedLines.append(line).append("\n");
             }
+
+            // If a section isn't multiline then we need to trim extra spaces in front of the chord line
+            lines = fixedLines.toString().split("\n");
+            fixedLines = new StringBuilder();
+            boolean trimBadChordSpacing = false;
+            for (int x=0; x<lines.length-1; x++) {
+                if (lines[x].startsWith(".   ") && lines[x+1].startsWith(" ")) {
+                    lines[x] = lines[x].replace(".   ",".");
+                }
+                fixedLines.append(lines[x]).append("\n");
+            }
+            fixedLines.append(lines[lines.length-1]).append("\n");
+
             return fixedLines.toString();
         } else {
             // Not multiline format, or not wanting to expand it
