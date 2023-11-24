@@ -54,6 +54,50 @@
             <TableRow style="@style/DividerLine" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                android:id="@+id/pedalTest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/pedal_test"
+                android:hint="@string/pedal_test_info"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="16dp"/>
+
+            <LinearLayout
+                android:id="@+id/pedalTestLayout"
+                android:background="@color/colorAltPrimary"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                    android:id="@+id/longPressInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/long_press"
+                    android:hint="@string/unknown"
+                    android:layout_marginBottom="16dp"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/resetButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/reset"
+                    android:layout_marginBottom="16dp"/>
+
+
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                    android:id="@+id/eventLog"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/pedal_detected"
+                    android:hint="@string/unknown"
+                    android:layout_marginBottom="16dp"/>
+
+            </LinearLayout>
+            <TableRow style="@style/DividerLine" />
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
                 android:id="@+id/airTurnMode"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -76,6 +120,43 @@
                     android:valueFrom="500"
                     android:valueTo="2000"
                     app:stepSize="100"/>
+            </LinearLayout>
+            <TableRow style="@style/DividerLine" />
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                android:id="@+id/repeatMode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/repeat_mode"
+                android:hint="@string/repeat_mode_info"
+                android:visibility="gone"/>
+
+            <LinearLayout
+                android:id="@+id/repeatModeOptions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+                    android:id="@+id/repeatModeTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/repeat_mode_time"
+                    android:valueFrom="400"
+                    android:valueTo="2000"
+                    app:stepSize="100"/>
+
+                <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+                    android:id="@+id/repeatModeCount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/repeat_mode_count"
+                    android:valueFrom="2"
+                    android:valueTo="8"
+                    app:stepSize="1"/>
             </LinearLayout>
             <TableRow style="@style/DividerLine" />
 
