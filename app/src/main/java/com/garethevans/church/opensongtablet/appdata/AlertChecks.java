@@ -19,6 +19,11 @@ public class AlertChecks {
         this.c = c;
         mainActivityInterface = (MainActivityInterface) c;
         ignorePlayServicesWarning = mainActivityInterface.getPreferences().getMyPreferenceBoolean("ignorePlayServicesWarning",false);
+        // Run the checks so other helpers can directly call results stored here
+        showPlayServicesAlert();
+        showUpdateInfo();
+        showBackup();
+        setAlreadySeen(false);
     }
 
     public boolean showPlayServicesAlert() {
