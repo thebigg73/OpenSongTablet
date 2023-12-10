@@ -609,6 +609,7 @@
     <string name="pedal_avoid_repeat">Εμφάνιση προειδοποίησης πριν μεταβείτε στο επόμενο τραγούδι</string>
     <string name="pedal_avoid_repeat_info">Χρήσιμο για την αποφυγή τυχαίων πατημάτων</string>
     <string name="pedal_controls">Ρυθμίστε τα κουμπιά και τις ενέργειες του πεντάλ ποδιού</string>
+    <string name="pedal_detected">Εντοπίστηκε πρέσα πεντάλ</string>
     <string name="pedal_down">Πεντάλ κάτω (πρέσα)</string>
     <string name="pedal_instructions">Κάντε κλικ σε ένα κουμπί πεντάλ παρακάτω για να το αντιστοιχίσετε σε ένα κουμπί πληκτρολογίου ή μια νότα midi και να αντιστοιχίσετε ενέργειες σε αυτό. Τα περισσότερα πεντάλ Bluetooth στέλνουν εντολές πληκτρολογίου (π.χ. βέλος πάνω/κάτω).</string>
     <string name="pedal_midi_warning">Για να χρησιμοποιήσετε ένα πεντάλ midi, βεβαιωθείτε ότι το έχετε συνδέσει χρησιμοποιώντας τις ρυθμίσεις midi στην εφαρμογή πρώτα.</string>
@@ -616,6 +617,7 @@
     <string name="pedal_scroll_before_move_info">Επιτρέπει στο επόμενο και το προηγούμενο πεντάλ να λειτουργούν και ως πεντάλ κύλισης</string>
     <string name="pedal_up">Πετάλι επάνω (απελευθέρωση)</string>
     <string name="pedal_waiting">"Waiting for button…."</string>
+    <string name="pedal_waiting_ended">Δεν εντοπίστηκε πάτημα πεντάλ</string>
     <string name="pedal_warning">Επιβεβαιώστε την αλλαγή τραγουδιού πατώντας ξανά το πεντάλ αφού κλείσει αυτή η προειδοποίηση</string>
     <string name="performance_mode">"Λειτουργία απόδοσης"</string>
     <string name="performance_mode_info">Χρησιμοποιήστε τη συσκευή σας ως βιβλίο τραγουδιών</string>
@@ -911,4 +913,11 @@
     <string name="width">Πλάτος</string>
     <string name="words_and_music_by">Λέξεις και μουσική από</string>
     <string name="zoom_level">Επίπεδο ζουμ</string>
+    <string name="repeat_mode">Λειτουργία επανάληψης</string>
+    <string name="pedal_test">Δοκιμή συνδεδεμένου πεντάλ</string>
+    <string name="pedal_test_info">Δοκιμάστε ένα συνδεδεμένο πεντάλ πατώντας το κουμπί στο πεντάλ σας.  Θα εμφανιστεί ο κωδικός που αποστέλλεται.  Πατήστε παρατεταμένα ένα κουμπί στα πεντάλ για να επιτρέψετε στην εφαρμογή να προσπαθήσει να προσδιορίσει τη συνιστώμενη λειτουργία παρατεταμένου πατήματος που θα χρησιμοποιηθεί (εάν υπάρχει).</string>
+    <string name="repeat_mode_info">Για πεντάλ που στέλνουν επαναλαμβανόμενες εντολές πλήκτρων προς τα κάτω και προς τα πάνω, αυτό μπορεί να προσομοιώσει μια ενέργεια παρατεταμένου πατήματος</string>
+    <string name="repeat_mode_time">Ώρα να ακούσετε επαναλαμβανόμενες εντολές πατήματος πλήκτρου και πλήκτρου επάνω</string>
+    <string name="repeat_mode_count">Αριθμός εντολών key up για να χαρακτηριστείτε ως παρατεταμένο πάτημα (στο χρόνο που αναφέρεται παραπάνω)</string>
+    <string name="set_inline_showcase">Αυτό είναι το ενσωματωμένο σύνολο που επιτρέπει την προβολή του setlist ενώ παίζετε.  Μπορείτε να αλλάξετε τις ρυθμίσεις στις Ρυθμίσεις / Οθόνη / Ενσωματωμένο σύνολο.</string>
 </resources>

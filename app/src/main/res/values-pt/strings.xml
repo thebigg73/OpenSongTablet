@@ -911,4 +911,13 @@
     <string name="width">Largura</string>
     <string name="words_and_music_by">Palavras e música de</string>
     <string name="zoom_level">Nível de zoom</string>
+    <string name="repeat_mode">Modo de repetição</string>
+    <string name="pedal_detected">Pressão do pedal detetada</string>
+    <string name="pedal_waiting_ended">Nenhuma pressão de pedal detetada</string>
+    <string name="pedal_test">Teste o pedal conectado</string>
+    <string name="pedal_test_info">Teste um pedal conectado pressionando o botão do pedal.  O código que está sendo enviado será exibido.  Pressione longamente um botão nos pedais para permitir que o aplicativo tente identificar o modo de pressão longa recomendado para usar (se disponível).</string>
+    <string name="repeat_mode_info">Para pedais que enviam comandos repetidos para baixo e para cima, isso pode simular uma longa ação de pressionar</string>
+    <string name="repeat_mode_time">Hora de ouvir os comandos repetidos de teclas para baixo e para cima</string>
+    <string name="repeat_mode_count">Número de comandos de tecla para cima para se qualificar como uma pressão longa (no tempo indicado acima)</string>
+    <string name="set_inline_showcase">Este é o conjunto embutido que permite uma visualização do setlist enquanto você está executando.  Você pode alterar as configurações em Configurações / Display / Inline set.</string>
 </resources>

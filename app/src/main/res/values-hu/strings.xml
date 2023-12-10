@@ -911,4 +911,13 @@
     <string name="width">Szélesség</string>
     <string name="words_and_music_by">Szavak és zene</string>
     <string name="zoom_level">Nagyítási szint</string>
+    <string name="repeat_mode">Ismétlési mód</string>
+    <string name="pedal_detected">Pedálprés észlelve</string>
+    <string name="pedal_waiting_ended">Nem észlelhető pedálprés</string>
+    <string name="pedal_test">Csatlakoztatott pedál tesztelése</string>
+    <string name="pedal_test_info">Tesztelje a csatlakoztatott pedált a pedál gombjának megnyomásával.  Megjelenik az elküldött kód.  Hosszan nyomjon meg egy gombot a pedálokon, hogy az alkalmazás megpróbálja azonosítani az ajánlott hosszan megnyomási módot (ha elérhető).</string>
+    <string name="repeat_mode_info">Azoknál a pedáloknál, amelyek ismételt billentyűle- és felgombolási parancsokat küldenek, ez hosszú lenyomási műveletet szimulálhat</string>
+    <string name="repeat_mode_time">Ideje figyelni az ismétlődő billentyű le és billentyű fel parancsokat</string>
+    <string name="repeat_mode_count">A hosszú lenyomásnak minősülő billentyűkombinációs parancsok száma (a fent megadott idő alatt)</string>
+    <string name="set_inline_showcase">Ez az inline készlet, amely lehetővé teszi a setlist megtekintését előadás közben.  A beállításokat a Beállítások / Kijelző / Inline készlet menüpontban módosíthatja.</string>
 </resources>

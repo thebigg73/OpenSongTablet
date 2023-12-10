@@ -911,4 +911,13 @@
     <string name="width">Szerokość</string>
     <string name="words_and_music_by">Słowa i muzyka wg</string>
     <string name="zoom_level">Stopień przybliżenia</string>
+    <string name="repeat_mode">Tryb powtarzania</string>
+    <string name="pedal_detected">Wykryto naciśnięcie pedału</string>
+    <string name="pedal_waiting_ended">Nie wykryto naciśnięcia pedału</string>
+    <string name="pedal_test">Przetestuj podłączony pedał</string>
+    <string name="pedal_test_info">Przetestuj podłączony pedał, naciskając przycisk na pedale.  Zostanie wyświetlony wysyłany kod.  Naciśnij i przytrzymaj przycisk na pedałach, aby aplikacja spróbowała zidentyfikować zalecany tryb długiego naciśnięcia (jeśli jest dostępny).</string>
+    <string name="repeat_mode_info">W przypadku pedałów, które wysyłają powtarzające się polecenia w dół i w górę, może to symulować długie naciśnięcie</string>
+    <string name="repeat_mode_time">Czas na nasłuchiwanie powtarzających się poleceń \"wciśnięcie\" i \"wciśnięcie\"</string>
+    <string name="repeat_mode_count">Liczba komend Up, aby zakwalifikować się jako długie naciśnięcie (w czasie podanym powyżej)</string>
+    <string name="set_inline_showcase">Jest to zestaw wbudowany, który umożliwia podgląd setlisty podczas występu.  Ustawienia można zmienić w Ustawienia / Wyświetlacz / Zestaw wbudowany.</string>
 </resources>

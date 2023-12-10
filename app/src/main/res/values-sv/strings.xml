@@ -911,4 +911,13 @@
     <string name="width">Bredd</string>
     <string name="words_and_music_by">Ord och musik av</string>
     <string name="zoom_level">Zoomnivå</string>
+    <string name="repeat_mode">Upprepat läge</string>
+    <string name="pedal_detected">Pedaltryck upptäckt</string>
+    <string name="pedal_waiting_ended">Ingen pedaltryckning upptäcktes</string>
+    <string name="pedal_test">Testa ansluten pedal</string>
+    <string name="pedal_test_info">Testa en ansluten pedal genom att trycka på knappen på din pedal.  Koden som skickas kommer att visas.  Tryck länge på en knapp på pedalerna så att appen kan försöka identifiera det rekommenderade långtrycksläget att använda (om tillgängligt).</string>
+    <string name="repeat_mode_info">För pedaler som skickar upprepade kommandon för tangent ner och upp kan detta simulera en lång tryckning</string>
+    <string name="repeat_mode_time">Dags att lyssna efter upprepade kommandon för att stänga och höja tangenten</string>
+    <string name="repeat_mode_count">Antal tangentkommandon för att kvalificera sig som ett långt tryck (under den tid som anges ovan)</string>
+    <string name="set_inline_showcase">Detta är den infogade uppsättningen som gör det möjligt att se setlistan medan du uppträder.  Du kan ändra inställningarna i Inställningar / Display / Inline-uppsättning.</string>
 </resources>

@@ -911,4 +911,13 @@
     <string name="width">Ancho</string>
     <string name="words_and_music_by">Palabras y música de</string>
     <string name="zoom_level">Nivel de zoom</string>
+    <string name="repeat_mode">Modo de repetición</string>
+    <string name="pedal_detected">Se ha detectado la pulsación del pedal</string>
+    <string name="pedal_waiting_ended">No se ha detectado ninguna presión de pedal</string>
+    <string name="pedal_test">Pedal conectado de prueba</string>
+    <string name="pedal_test_info">Pruebe un pedal conectado presionando el botón de su pedal.  Se mostrará el código que se está enviando.  Mantenga presionado un botón en los pedales para permitir que la aplicación intente identificar el modo de pulsación prolongada recomendado para usar (si está disponible).</string>
+    <string name="repeat_mode_info">En el caso de los pedales que envían comandos repetidos de tecla hacia abajo y hacia arriba, esto puede simular una acción de pulsación larga</string>
+    <string name="repeat_mode_time">Es hora de escuchar los comandos repetidos de tecla pulsada y subida de tecla</string>
+    <string name="repeat_mode_count">Número de comandos de tecla hacia arriba para calificar como una pulsación larga (en el tiempo indicado anteriormente)</string>
+    <string name="set_inline_showcase">Este es el set en línea que permite ver la lista de canciones mientras actúas.  Puede cambiar la configuración en Configuración / Pantalla / Conjunto en línea.</string>
 </resources>

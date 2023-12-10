@@ -609,6 +609,7 @@
     <string name="pedal_avoid_repeat">Eine Warnung anzeigen, bevor zum nächsten Song übergegangen wird</string>
     <string name="pedal_avoid_repeat_info">Nützlich, um versehentliches Drücken zu vermeiden</string>
     <string name="pedal_controls">Richten Sie Fußpedaltasten und -aktionen ein</string>
+    <string name="pedal_detected">Pedaldruck erkannt</string>
     <string name="pedal_down">Treten Sie in die Pedale (drücken)</string>
     <string name="pedal_instructions">Klicken Sie unten auf eine Pedaltaste, um sie einer Tastaturtaste oder Midi-Note zuzuweisen und ihr Aktionen zuzuweisen. Die meisten Bluetooth-Pedale senden Tastaturbefehle (z. B. Pfeil nach oben/unten).</string>
     <string name="pedal_midi_warning">Um ein Midi-Pedal zu verwenden, stellen Sie sicher, dass Sie es zuerst mit den Midi-Einstellungen in der App verbunden haben.</string>
@@ -616,6 +617,7 @@
     <string name="pedal_scroll_before_move_info">Ermöglicht, dass das nächste und das vorherige Pedal auch als Scroll-Pedale fungieren</string>
     <string name="pedal_up">Treten Sie in die Pedale (loslassen)</string>
     <string name="pedal_waiting">"Warten auf Taste …."</string>
+    <string name="pedal_waiting_ended">Kein Pedaldruck erkannt</string>
     <string name="pedal_warning">Bestätigen Sie den Songwechsel, indem Sie das Pedal erneut drücken, nachdem diese Warnung geschlossen wurde</string>
     <string name="performance_mode">"Vortragsmodus"</string>
     <string name="performance_mode_info">Verwenden Sie Ihr Gerät als Liederbuch</string>
@@ -911,4 +913,11 @@
     <string name="width">Breite</string>
     <string name="words_and_music_by">Worte und Musik von</string>
     <string name="zoom_level">Zoomstufe</string>
+    <string name="set_inline_showcase">Dies ist das Inline-Set, das einen Blick auf die Setlist ermöglicht, während Sie spielen.  Sie können die Einstellungen unter Einstellungen / Anzeige / Inline-Set ändern.</string>
+    <string name="repeat_mode_count">Anzahl der Tastenbefehle, die als langes Drücken gelten (in der oben angegebenen Zeit)</string>
+    <string name="repeat_mode_time">Es ist an der Zeit, auf wiederholte Tasten- und Hochtastenbefehle zu achten</string>
+    <string name="repeat_mode_info">Bei Pedalen, die wiederholte Tastenbefehle nach unten und oben senden, kann dies eine lange Druckaktion simulieren</string>
+    <string name="pedal_test_info">Testen Sie ein angeschlossenes Pedal, indem Sie die Taste auf Ihrem Pedal drücken.  Der gesendete Code wird angezeigt.  Halten Sie eine Taste auf den Pedalen gedrückt, damit die App versuchen kann, den empfohlenen Modus für langes Drücken zu identifizieren (falls verfügbar).</string>
+    <string name="pedal_test">Angeschlossenes Pedal testen</string>
+    <string name="repeat_mode">Wiederholungsmodus</string>
 </resources>

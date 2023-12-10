@@ -911,4 +911,13 @@
     <string name="width">Širina</string>
     <string name="words_and_music_by">Reči i muzika</string>
     <string name="zoom_level">Nivo zumiranja</string>
+    <string name="repeat_mode">Režim ponavljanja</string>
+    <string name="pedal_detected">Otkrivena presa za pedale</string>
+    <string name="pedal_waiting_ended">Nije otkrivena presa za pedale</string>
+    <string name="pedal_test">Testiraj povezanu pedalu</string>
+    <string name="pedal_test_info">Testirajte povezanu pedalu pritiskom na dugme na pedali.  Kôd koji se šalje će biti prikazan.  Dugo pritisnite dugme na pedalama da biste dozvolili aplikaciji da pokuša da identifikuje preporučeni režim dugog pritiskanja koji će koristiti (ako je dostupno).</string>
+    <string name="repeat_mode_info">Za pedale koje šalju ponovljen taster nadole i na gore komande ovo može da simulira dugu radnju štampe</string>
+    <string name="repeat_mode_time">Vreme je da oslušnete ponovljeni taster nadole i tastere na gore</string>
+    <string name="repeat_mode_count">Broj komandi tastera naviše za kvalifikovanje kao dugačka štampa (u gore navedenom vremenu)</string>
+    <string name="set_inline_showcase">Ovo je umetnuti skup koji omogućava prikaz liste za postavljanje tokom izvođenja.  Postavke možete da promenite u podešavanjima / Ekran / Umetnuti skup.</string>
 </resources>

@@ -911,4 +911,13 @@
     <string name="width">幅</string>
     <string name="words_and_music_by">言葉と音楽</string>
     <string name="zoom_level">ズームレベル</string>
+    <string name="repeat_mode">リピートモード</string>
+    <string name="pedal_detected">ペダルの踏み込みが検出されました</string>
+    <string name="pedal_waiting_ended">ペダルの踏み込みが検出されない</string>
+    <string name="pedal_test">接続ペダルをテストする</string>
+    <string name="pedal_test_info">ペダルのボタンを押して、接続されているペダルをテストします。 送信中のコードが表示されます。 ペダルのボタンを長押しすると、アプリは使用する推奨長押しモードを試行して識別できます(利用可能な場合)。</string>
+    <string name="repeat_mode_info">キーを押し下げたり上ったりするコマンドを繰り返すペダルの場合、これは長押しアクションをシミュレートできます</string>
+    <string name="repeat_mode_time">キー・ダウン・コマンドとキー・アップ・コマンドの繰り返しをリッスンする時間</string>
+    <string name="repeat_mode_count">長押しと見なされるキーアップコマンドの数(上記の時間内)</string>
+    <string name="set_inline_showcase">これは、演奏中にセットリストを表示できるインラインセットです。 設定/表示/インラインセットで設定を変更できます。</string>
 </resources>

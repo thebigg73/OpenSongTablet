@@ -609,6 +609,7 @@
     <string name="pedal_avoid_repeat">在移至下一首歌曲之前显示警告</string>
     <string name="pedal_avoid_repeat_info">有助于避免意外按下</string>
     <string name="pedal_controls">设置脚踏板按钮和动作</string>
+    <string name="pedal_detected">检测到踩踏板</string>
     <string name="pedal_down">踩下踏板（按）</string>
     <string name="pedal_instructions">单击下面的踏板按钮将其分配给键盘按钮或 MIDI 音符并为其分配动作。 大多数蓝牙踏板发送键盘命令（例如向上/向下箭头）。</string>
     <string name="pedal_midi_warning">要使用 MIDI 踏板，请确保您首先使用应用程序中的 MIDI 设置连接它。</string>
@@ -616,6 +617,7 @@
     <string name="pedal_scroll_before_move_info">允许下一个和上一个踏板也可以用作滚动踏板</string>
     <string name="pedal_up">踩踏板（释放）</string>
     <string name="pedal_waiting">"等待按钮…."</string>
+    <string name="pedal_waiting_ended">No pedal press detected</string>
     <string name="pedal_warning">在此警告关闭后再次踩下踏板以确认歌曲更改</string>
     <string name="performance_mode">"演出模式"</string>
     <string name="performance_mode_info">将您的设备用作歌本</string>
@@ -911,4 +913,11 @@
     <string name="width">宽度</string>
     <string name="words_and_music_by">文字和音乐</string>
     <string name="zoom_level">缩放级别</string>
+    <string name="repeat_mode">重复模式</string>
+    <string name="pedal_test">测试连接踏板</string>
+    <string name="pedal_test_info">按下踏板上的按钮测试连接的踏板。 将显示正在发送的代码。 长按踏板上的按钮，让应用程序尝试识别推荐使用的长按模式（如果可用）。</string>
+    <string name="repeat_mode_info">对于发送重复按下和向上键命令的踏板，这可以模拟长按动作</string>
+    <string name="repeat_mode_time">是时候侦听重复的按键和按键了</string>
+    <string name="repeat_mode_count">符合长按条件的按键命令数（在上述时间内）</string>
+    <string name="set_inline_showcase">这是内嵌式设置，允许您在表演时查看歌单。 您可以在设置/显示/内联设置中更改设置。</string>
 </resources>

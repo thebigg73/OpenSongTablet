@@ -609,6 +609,7 @@
     <string name="pedal_avoid_repeat">Zobrazit varování před přechodem na další skladbu</string>
     <string name="pedal_avoid_repeat_info">Užitečné, aby se zabránilo náhodnému stisknutí</string>
     <string name="pedal_controls">Nastavte tlačítka a akce nožního pedálu</string>
+    <string name="pedal_detected">Detekováno sešlápnutí pedálu</string>
     <string name="pedal_down">Šlapání dolů (stisknutí)</string>
     <string name="pedal_instructions">Kliknutím na tlačítko pedálu níže jej přiřadíte tlačítku klávesnice nebo notě midi a přiřadíte jim akce. Většina pedálů Bluetooth vysílá příkazy z klávesnice (např. šipka nahoru/dolů).</string>
     <string name="pedal_midi_warning">Chcete-li použít midi pedál, ujistěte se, že jste jej nejprve připojili pomocí nastavení midi v aplikaci.</string>
@@ -616,6 +617,7 @@
     <string name="pedal_scroll_before_move_info">Umožňuje, aby další a předchozí pedály fungovaly také jako rolovací pedály</string>
     <string name="pedal_up">Šlapání nahoru (uvolnění)</string>
     <string name="pedal_waiting">"Čekání na tlačítko ...."</string>
+    <string name="pedal_waiting_ended">Nebylo zjištěno žádné sešlápnutí pedálu</string>
     <string name="pedal_warning">Po zavření tohoto varování potvrďte změnu skladby opětovným stisknutím pedálu</string>
     <string name="performance_mode">"Režim výkonu"</string>
     <string name="performance_mode_info">Použijte své zařízení jako zpěvník</string>
@@ -911,4 +913,11 @@
     <string name="width">Šířka</string>
     <string name="words_and_music_by">Slova a hudba od</string>
     <string name="zoom_level">Úroveň přiblížení</string>
+    <string name="set_inline_showcase">Toto je vložená sada, která umožňuje view setlist během hraní.  Nastavení můžete změnit v Nastavení / Zobrazení / Inline sada.</string>
+    <string name="repeat_mode_count">Počet příkazů pro stisknutí klávesy, které se kvalifikují jako dlouhé stisknutí (ve výše uvedeném čase)</string>
+    <string name="repeat_mode_time">Je čas poslouchat opakované příkazy pro stisknutí a stisknutí kláves</string>
+    <string name="repeat_mode_info">U pedálů, které vysílají opakované příkazy kláves dolů a nahoru, to může simulovat dlouhý stisk</string>
+    <string name="pedal_test_info">Otestujte připojený pedál stisknutím tlačítka na pedálu.  Zobrazí se odesílaný kód.  Dlouhým stisknutím tlačítka na pedálech umožníte aplikaci, aby se pokusila identifikovat doporučený režim dlouhého stisknutí (pokud je k dispozici).</string>
+    <string name="pedal_test">Otestujte připojený pedál</string>
+    <string name="repeat_mode">Režim opakování</string>
 </resources>

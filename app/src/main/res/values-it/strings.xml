@@ -911,4 +911,13 @@
     <string name="width">Larghezza</string>
     <string name="words_and_music_by">Parole e musica di</string>
     <string name="zoom_level">Livello di zoom</string>
+    <string name="repeat_mode">Modalità di ripetizione</string>
+    <string name="pedal_detected">Rilevata pressione del pedale</string>
+    <string name="pedal_waiting_ended">Non è stata rilevata alcuna pressione del pedale</string>
+    <string name="pedal_test">Testare il pedale collegato</string>
+    <string name="pedal_test_info">Testare un pedale collegato premendo il pulsante sul pedale.  Verrà visualizzato il codice inviato.  Premere a lungo un pulsante sui pedali per consentire all\'app di provare a identificare la modalità di pressione prolungata consigliata da utilizzare (se disponibile).</string>
+    <string name="repeat_mode_info">Per i pedali che inviano ripetuti comandi di tasti giù e su, questo può simulare un\'azione di pressione prolungata</string>
+    <string name="repeat_mode_time">È ora di ascoltare i comandi ripetuti di premere e alzare</string>
+    <string name="repeat_mode_count">Numero di comandi da tastiera per qualificarsi come pressione prolungata (nel tempo sopra indicato)</string>
+    <string name="set_inline_showcase">Questo è il set in linea che consente di visualizzare la scaletta durante l\'esecuzione.  È possibile modificare le impostazioni in Impostazioni / Display / Set in linea.</string>
 </resources>
