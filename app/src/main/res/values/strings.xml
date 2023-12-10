@@ -1260,5 +1260,5 @@
     <string name="repeat_mode_info">For pedals that send repeated key down and up commands this can simulate a long press action</string>
     <string name="repeat_mode_time">Time to listen for repeated key down and key up commands</string>
     <string name="repeat_mode_count">Number of key up commands to qualify as a long press (in the time stated above)</string>
-    <string name="set_inline_showcase"><![CDATA[This is the inline set which allows a view of the setlist while you are performing.  You can change the settings in Settings > Display > Inline set.]]></string>
+    <string name="set_inline_showcase">This is the inline set which allows a view of the setlist while you are performing.  You can change the settings in Settings / Display / Inline set.</string>
 </resources>

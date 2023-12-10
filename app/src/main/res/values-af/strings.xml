@@ -609,6 +609,7 @@
     <string name="pedal_avoid_repeat">Wys \'n waarskuwing voordat jy na die volgende liedjie beweeg</string>
     <string name="pedal_avoid_repeat_info">Nuttig om toevallige druk te vermy</string>
     <string name="pedal_controls">Stel voetpedaalknoppies en -aksies op</string>
+    <string name="pedal_detected">Pedaalpers opgespoor</string>
     <string name="pedal_down">Trap af (druk)</string>
     <string name="pedal_instructions">Klik op \'n pedaalknoppie hieronder om dit aan \'n sleutelbordknoppie of midi-noot toe te wys en handelinge daaraan toe te wys. Die meeste Bluetooth-pedale stuur sleutelbordopdragte (bv. pyl op/af).</string>
     <string name="pedal_midi_warning">Om \'n midi-pedaal te gebruik, maak seker dat jy dit eers met die midi-instellings in die toepassing gekoppel het.</string>
@@ -616,6 +617,7 @@
     <string name="pedal_scroll_before_move_info">Laat volgende en vorige pedale ook as blaaipedale funksioneer</string>
     <string name="pedal_up">Trap op (los)</string>
     <string name="pedal_waiting">"Wag vir knoppie ...."</string>
+    <string name="pedal_waiting_ended">No pedal press detected</string>
     <string name="pedal_warning">Bevestig liedjieverandering deur die pedaal weer te druk nadat hierdie waarskuwing gesluit het</string>
     <string name="performance_mode">"Prestasie af"</string>
     <string name="performance_mode_info">Gebruik jou toestel as \'n liedboek</string>
@@ -911,4 +913,11 @@
     <string name="width">Breedte</string>
     <string name="words_and_music_by">Woorde en musiek deur</string>
     <string name="zoom_level">Zoemvlak</string>
+    <string name="repeat_mode">Herhaal modus</string>
+    <string name="pedal_test">Toets gekoppelde pedaal</string>
+    <string name="pedal_test_info">Toets \'n gekoppelde pedaal deur op die knoppie op u pedaal te druk.  Die kode wat gestuur word, sal vertoon word.  Druk lank op \'n knoppie op die pedale sodat die app die aanbevole lang drukmodus kan probeer identifiseer (indien beskikbaar).</string>
+    <string name="repeat_mode_info">Vir pedale wat herhaalde sleutel-af- en op-opdragte stuur, kan dit \'n lang drukaksie simuleer</string>
+    <string name="repeat_mode_time">Tyd om te luister vir herhaalde sleutel af en sleutel opdragte in</string>
+    <string name="repeat_mode_count">Aantal sleutelopdragte om as \'n lang druk te kwalifiseer (in die tyd hierbo genoem)</string>
+    <string name="set_inline_showcase">This is the inline set which allows a view of the setlist while you are performing.  You can change the settings in Settings / Display / Inline set.</string>
 </resources>
