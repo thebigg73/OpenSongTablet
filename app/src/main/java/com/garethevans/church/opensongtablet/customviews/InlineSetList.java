@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.os.Build;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,7 +36,6 @@ public class InlineSetList extends RecyclerView {
     private MainActivityInterface mainActivityInterface;
     private ArrayList<InlineSetItemInfo> setList;
     private final LinearLayoutManager llm;
-    private final Handler uiHandler = new Handler(Looper.getMainLooper());
     private float textSize = 12;
     private boolean useTitle = true;
     private final String highlightItem = "highlightItem", updateNumber = "updateNumber";
@@ -47,17 +44,20 @@ public class InlineSetList extends RecyclerView {
         super(context);
         llm = new LinearLayoutManager(context);
         setLayoutManager(llm);
+        setItemAnimator(null);
     }
 
     public InlineSetList(@NonNull Context context, @Nullable @org.jetbrains.annotations.Nullable AttributeSet attrs) {
         super(context, attrs);
         llm = new LinearLayoutManager(context);
         setLayoutManager(llm);
+        setItemAnimator(null);
     }
+
 
     public void initialisePreferences(Context c, MainActivityInterface mainActivityInterface) {
         this.mainActivityInterface = mainActivityInterface;
-        showInline = mainActivityInterface.getPreferences().getMyPreferenceBoolean("inlineSet", false);
+        showInline = mainActivityInterface.getPreferences().getMyPreferenceBoolean("inlineSet", true);
         int screenWidth = mainActivityInterface.getDisplayMetrics()[0];
         width = (int) (mainActivityInterface.getPreferences().getMyPreferenceFloat("inlineSetWidth", 0.3f) * screenWidth);
         adjustTextSize();
@@ -399,7 +399,7 @@ public class InlineSetList extends RecyclerView {
         }
 
         public void updateInlineSetAll() {
-            uiHandler.post(() -> notifyItemRangeChanged(0,getItemCount()));
+            mainActivityInterface.getMainHandler().post(() -> notifyItemRangeChanged(0,getItemCount()));
         }
 
     }

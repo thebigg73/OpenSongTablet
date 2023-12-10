@@ -160,7 +160,7 @@ public class HotZonesSettingsFragment extends Fragment {
     }
 
     private void checkHotZoneConflict() {
-        boolean inlineSet = mainActivityInterface.getPreferences().getMyPreferenceBoolean("inlineSet",false);
+        boolean inlineSet = mainActivityInterface.getPreferences().getMyPreferenceBoolean("inlineSet",true);
         float inlineSetWidth = mainActivityInterface.getPreferences().getMyPreferenceFloat("inlineSetWidth",0.3f);
 
         myView.disableLeftHotZone.setVisibility(inlineSet ? View.VISIBLE:View.GONE);

@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
@@ -644,6 +645,9 @@ public class Midi {
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void enableMidiListener() {
+        Log.d(TAG,"enableMidiListener()");
+        Log.d(TAG,"midiDevice:"+midiDevice+"  midiOutputPort:"+midiOutputPort);
+
         if (midiDevice != null && midiOutputPort != null) {
             pedalMidiReceiver = new PedalMidiReceiver(this, mainActivityInterface);
             try {

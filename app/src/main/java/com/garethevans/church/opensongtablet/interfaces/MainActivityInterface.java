@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet.interfaces;
 
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Handler;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -83,7 +84,7 @@ public interface MainActivityInterface {
     void updateSizes(int width, int height);
     int[] getDisplayMetrics();
     float getDisplayDensity();
-
+    Handler getMainHandler();
     Locale getLocale();
     VersionNumber getVersionNumber();
     String getMode();

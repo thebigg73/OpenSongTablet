@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet.controls;
 
 import android.content.Context;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
 import com.garethevans.church.opensongtablet.R;
@@ -50,9 +51,9 @@ public class PedalActions {
     }
     private long testPedalDownTime = 0;
     private String testPedalMidi = "", testDesiredAction = "";
-    private final Handler repeatHandlerCheck= new Handler(), blockLongPressHandler = new Handler(),
-            warningWaitHandler = new Handler(), warningGracePeriodHandler = new Handler(),
-            checkRepeatShortPressUpHandler = new Handler();
+    private final Handler repeatHandlerCheck= new Handler(Looper.getMainLooper()), blockLongPressHandler = new Handler(Looper.getMainLooper()),
+            warningWaitHandler = new Handler(Looper.getMainLooper()), warningGracePeriodHandler = new Handler(Looper.getMainLooper()),
+            checkRepeatShortPressUpHandler = new Handler(Looper.getMainLooper());
     private final Runnable repeatRunnableCheck = () -> {
         if (!testing && currentRepeatCount >= repeatModeCount) {
             handlerChecking = true;
@@ -279,8 +280,8 @@ public class PedalActions {
     }
 
     public void commonEventUp(int keyCode, String keyMidi) {
-        Log.d(TAG,"commonEventUp:"+keyCode);
-        Log.d(TAG,"keyMidi:"+keyMidi+"  repeatMode:"+repeatMode);
+        //Log.d(TAG,"commonEventUp:"+keyCode);
+        //Log.d(TAG,"keyMidi:"+keyMidi+"  repeatMode:"+repeatMode);
         // If we already triggered the action with key down, skip
         if (actionUpTriggered) {
             actionUpTriggered = false;
@@ -296,7 +297,7 @@ public class PedalActions {
 
             Log.d(TAG,"testing:"+testing);
             Log.d(TAG,"desiredAction:"+desiredAction);
-            if (testing) {
+            if (testing && keyCode!=0) {
                 // We don't want to action anything other than test for repeatMode for long press
                 doRepeatDetectionUp(keyCode,"","");
 
@@ -309,7 +310,7 @@ public class PedalActions {
             } else if (airTurnMode && (keyMidi == null || keyMidi.isEmpty())) {
                 doAirTurnDetectionUp(keyCode);
             } else if (repeatMode && (keyMidi == null || keyMidi.isEmpty())) {
-                Log.d(TAG,"doRepeatDetectionUp reaptMode:"+repeatMode);
+                Log.d(TAG, "doRepeatDetectionUp repeatMode:"+ true);
                 doRepeatDetectionUp(keyCode, keyMidi, desiredAction);
             } else {
                 whichEventTriggered(true, keyCode, keyMidi);
@@ -330,6 +331,7 @@ public class PedalActions {
             desiredAction = "";
         }
 
+        Log.d(TAG,"whichEventTriggered()");
         // IV - code supporting intentional page turns when using pedal for next/previous.
         // IV - 'Are you sure?' is displayed and the user must stop, wait and can repeat the action to continue after 2 seconds (an intentional action)
         // IV - After continue there is a 10s grace period where further pedal use is not tested.  Any pedal 'page' or 'scroll' use extends a further 10s grace period.
@@ -359,8 +361,12 @@ public class PedalActions {
                 // The warning time is over and we can allow moving to prev/next
                 // Set the gracePeriod of 10 seconds to allow moving without warnings
                 warningGracePeriod = true;
-                warningGracePeriodHandler.removeCallbacks(warningGracePeriodRunnable);
-                warningGracePeriodHandler.postDelayed(warningGracePeriodRunnable, warningGraceTime);
+                try {
+                    warningGracePeriodHandler.removeCallbacks(warningGracePeriodRunnable);
+                    warningGracePeriodHandler.postDelayed(warningGracePeriodRunnable, warningGraceTime);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
 
@@ -368,7 +374,11 @@ public class PedalActions {
         if (pedalShowWarningBeforeMove && (desiredAction.equals("up") || desiredAction.equals("down"))) {
             warningActive = false;
             pedalIgnorePrevNext = false;
-            warningWaitHandler.removeCallbacks(warningWaitRunnable);
+            try {
+                warningWaitHandler.removeCallbacks(warningWaitRunnable);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
 
@@ -651,7 +661,7 @@ public class PedalActions {
         int keyPedalNum = getPedalFromKeyCode(keyCode);
         testPedalKeycode = keyPedalNum;
 
-        Log.d(TAG,"doRepeatDetectionUp");
+        //Log.d(TAG,"doRepeatDetectionUp");
         // Remove callbacks to any checks scheduled
         repeatHandlerCheck.removeCallbacks(repeatRunnableCheck);
 
@@ -698,14 +708,14 @@ public class PedalActions {
                 notAlreadyLongPressed = pedalWasLongPressed[keyPedalNum] == null || !pedalWasLongPressed[keyPedalNum];
             }
 
-            Log.d(TAG,"pedalIsDown:"+pedalIsDown+"  longTimeHasPassed:"+longTimeHasPassed+"  notAlreadyLongPressed:"+notAlreadyLongPressed+"  currentCount:"+currentRepeatCount);
+            //Log.d(TAG,"pedalIsDown:"+pedalIsDown+"  longTimeHasPassed:"+longTimeHasPassed+"  notAlreadyLongPressed:"+notAlreadyLongPressed+"  currentCount:"+currentRepeatCount);
             // Check if the pedal is down and longPress time has elapsed and isn't already registered
             if (pedalIsDown && longTimeHasPassed && notAlreadyLongPressed && currentRepeatCount >= repeatModeCount) {
                 // The time has elapsed and we have enough keyups to trigger the long press
                 // Reset the counter and clear any delayed handler checks
                 currentRepeatCount = 0;
 
-                Log.d(TAG,"blockLongPress:"+blockLongPress);
+                //Log.d(TAG,"blockLongPress:"+blockLongPress);
                 if (testing && pedalsFragment!=null) {
                     // Testing, so update the long press mode
                     testPedalWasLongPressed = false;
@@ -744,7 +754,7 @@ public class PedalActions {
                 }
 
             } else if (pedalIsDown && !longTimeHasPassed && (desiredAction==null || !desiredAction.startsWith("midiaction"))) {
-                Log.d(TAG,"checkRepeatShortPressUp:"+checkRepeatShortPressUp);
+                //Log.d(TAG,"checkRepeatShortPressUp:"+checkRepeatShortPressUp);
                 if (checkRepeatShortPressUp) {
                     checkRepeatShortPressUpHandler.postDelayed(checkRepeatShortPressUpRunnable,500);
 

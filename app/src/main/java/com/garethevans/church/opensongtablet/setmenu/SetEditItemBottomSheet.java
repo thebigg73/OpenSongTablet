@@ -18,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.customviews.ExposedDropDown;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
 import com.garethevans.church.opensongtablet.databinding.BottomSheetSetitemeditBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
@@ -106,7 +107,9 @@ public class SetEditItemBottomSheet extends BottomSheetDialogFragment {
             keyAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.editKey, R.layout.view_exposed_dropdown_item, key_choice_string);
         }
         myView.editKey.setAdapter(keyAdapter);
+        myView.editKey.setUserEditing(false);
         myView.editKey.setText(mainActivityInterface.getCurrentSet().getKey(0));
+        myView.editKey.setUserEditing(true);
 
         ArrayList<String> folders = mainActivityInterface.getSQLiteHelper().getFolders();
         folders.add("**"+note_string);
@@ -117,7 +120,9 @@ public class SetEditItemBottomSheet extends BottomSheetDialogFragment {
             folderAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.editFolder, R.layout.view_exposed_dropdown_item, folders);
         }
         myView.editFolder.setAdapter(folderAdapter);
+        myView.editFolder.setUserEditing(false);
         myView.editFolder.setText(mainActivityInterface.getCurrentSet().getFolder(0));
+        myView.editFolder.setUserEditing(true);
 
         filenames = new ArrayList<>();
         if (getContext()!=null) {
@@ -130,9 +135,9 @@ public class SetEditItemBottomSheet extends BottomSheetDialogFragment {
     }
 
     private void setupListeners() {
-        myView.editFolder.addTextChangedListener(new MyTextWatcher("folder"));
-        myView.editFilename.addTextChangedListener(new MyTextWatcher("filename"));
-        myView.editKey.addTextChangedListener(new MyTextWatcher("key"));
+        myView.editFolder.addTextChangedListener(new MyTextWatcher(myView.editFolder,"folder"));
+        myView.editFilename.addTextChangedListener(new MyTextWatcher(myView.editFilename,"filename"));
+        myView.editKey.addTextChangedListener(new MyTextWatcher(myView.editKey,"key"));
         myView.editVariation.setOnCheckedChangeListener((compoundButton, b) -> {
             // Change the folder to Variation and create the variation
             // Or change back to the original folder and delete the variation
@@ -150,7 +155,9 @@ public class SetEditItemBottomSheet extends BottomSheetDialogFragment {
             filenameAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.editFilename, R.layout.view_exposed_dropdown_item, filenames);
         }
         myView.editFilename.setAdapter(filenameAdapter);
+        myView.editFilename.setUserEditing(false);
         myView.editFilename.setText(mainActivityInterface.getCurrentSet().getFilename(setPosition));
+        myView.editFilename.setUserEditing(true);
     }
 
     private void buildSetItems(LayoutInflater inflater, ViewGroup container) {
@@ -210,10 +217,16 @@ public class SetEditItemBottomSheet extends BottomSheetDialogFragment {
     }
 
     private void updateEditView() {
+        myView.editFolder.setUserEditing(false);
+        myView.editFilename.setUserEditing(false);
+        myView.editKey.setUserEditing(false);
         myView.editFolder.setText(mainActivityInterface.getCurrentSet().getFolder(setPosition));
         myView.editFilename.setText(mainActivityInterface.getCurrentSet().getFilename(setPosition));
         myView.editKey.setText(mainActivityInterface.getCurrentSet().getKey(setPosition));
         myView.editVariation.setChecked(mainActivityInterface.getCurrentSet().getFolder(setPosition).contains("**Variation"));
+        myView.editFolder.setUserEditing(true);
+        myView.editFilename.setUserEditing(true);
+        myView.editKey.setUserEditing(true);
     }
 
     private void setAsVariation(boolean createVariation) {
@@ -245,7 +258,9 @@ public class SetEditItemBottomSheet extends BottomSheetDialogFragment {
         }
 
         // Change the dropdown to match.  This also triggers a change in the card here
+        myView.editFolder.setUserEditing(false);
         myView.editFolder.setText(newFolder);
+        myView.editFolder.setUserEditing(true);
 
         // Update the cardview in the setList behind.  Pass position as string in array
         updateCurrentSetView();
@@ -253,9 +268,13 @@ public class SetEditItemBottomSheet extends BottomSheetDialogFragment {
 
     private void updateCurrentSetView() {
         String currentSetString = mainActivityInterface.getSetActions().getSetAsPreferenceString();
-        mainActivityInterface.getPreferences().setMyPreferenceString("setCurrent",currentSetString);
+        //mainActivityInterface.getPreferences().setMyPreferenceString("setCurrent",currentSetString);
 
-        Log.d(TAG,"set: "+currentSetString);
+        // TODO remove after fixing weird set behaviour
+        //String[] setbits = currentSetString.replace("_**$","SPLIT").split("SPLIT");
+        //for (int x=0; x<setbits.length; x++) {
+        //    Log.d(TAG,x+". "+setbits[x].replace("$**_",""));
+        //}
 
         ArrayList<String> val = new ArrayList<>();
         val.add(""+setPosition);
@@ -265,10 +284,15 @@ public class SetEditItemBottomSheet extends BottomSheetDialogFragment {
     private class MyTextWatcher implements TextWatcher {
 
         private final String which;
-
-        private MyTextWatcher(String which) {
+        private final ExposedDropDown exposedDropDown;
+        private MyTextWatcher(ExposedDropDown exposedDropDown, String which) {
+            this.exposedDropDown = exposedDropDown;
             this.which = which;
         }
+
+        //private MyTextWatcher(String which) {
+        //    this.which = which;
+        //}
         @Override
         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
 
@@ -277,7 +301,7 @@ public class SetEditItemBottomSheet extends BottomSheetDialogFragment {
 
         @Override
         public void afterTextChanged(Editable editable) {
-            if (editable!=null) {
+            if (editable!=null && exposedDropDown!=null && exposedDropDown.getUserEditing()) {
                 switch (which) {
                     case "folder":
                         mainActivityInterface.getCurrentSet().setFolder(setPosition, editable.toString());

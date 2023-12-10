@@ -1,6 +1,7 @@
 package com.garethevans.church.opensongtablet.performance;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
@@ -9,7 +10,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
@@ -81,7 +81,7 @@ public class PerformanceFragment extends Fragment {
     private final Runnable dealWithExtraStuffOnceSettledRunnable = this::dealWithExtraStuffOnceSettled;
 
     private String mainfoldername="", mode_performance="", mode_presenter="", mode_stage="",
-            not_allowed="", image_string="", nearby_large_file_string="";
+            not_allowed="", image_string="", nearby_large_file_string="", inline_set_string="";
     private int sendSongDelay = 0;
     @SuppressWarnings("FieldCanBeLocal")
     // GE - hidden this option, but reserving the right to reinstate even just for me
@@ -239,9 +239,8 @@ public class PerformanceFragment extends Fragment {
         } else {
             // Check for the showcase for new users
             // Set tutorials
-            Handler h = new Handler();
             Runnable r = () -> mainActivityInterface.showTutorial("performanceView",null);
-            h.postDelayed(r,1000);
+            mainActivityInterface.getMainHandler().postDelayed(r,1000);
         }
 
         // Pass a reference of the zoom layout to the next/prev so we can stop fling scrolls
@@ -259,6 +258,7 @@ public class PerformanceFragment extends Fragment {
             not_allowed = getString(R.string.not_allowed);
             image_string= getString(R.string.image);
             nearby_large_file_string = getString(R.string.nearby_large_file);
+            inline_set_string = getString(R.string.set_inline_showcase);
         }
     }
 
@@ -296,8 +296,6 @@ public class PerformanceFragment extends Fragment {
         if (getContext()!=null) {
             myView.inlineSetList.initialisePreferences(getContext(), mainActivityInterface);
         }
-        myView.inlineSetList.post(() -> myView.inlineSetList.prepareSet());
-
         boolean allowPinchToZoom = mainActivityInterface.getPreferences().getMyPreferenceBoolean("allowPinchToZoom",true);
         myView.zoomLayout.setAllowPinchToZoom(allowPinchToZoom);
         myView.recyclerView.setAllowPinchToZoom(allowPinchToZoom);
@@ -417,7 +415,7 @@ public class PerformanceFragment extends Fragment {
     public void doSongLoad(String folder, String filename) {
         if (processingTestView) {
             // Switch this off in 1 sec as there might have been a problem
-            new Handler(Looper.getMainLooper()).postDelayed(() -> processingTestView=false,1000);
+            mainActivityInterface.getMainHandler().postDelayed(() -> processingTestView=false,1000);
         }
 
         try {
@@ -456,8 +454,6 @@ public class PerformanceFragment extends Fragment {
 
                 ExecutorService executorService = Executors.newSingleThreadExecutor();
                 executorService.execute(() -> {
-                            Handler handler = new Handler(Looper.getMainLooper());
-
                             // Prepare the slide out and in animations based on swipe direction
                             setupSlideOut();
                             setupSlideIn();
@@ -469,7 +465,7 @@ public class PerformanceFragment extends Fragment {
                             mainActivityInterface.setSong(mainActivityInterface.getLoadSong().doLoadSong(
                                     mainActivityInterface.getSong(), false));
 
-                            handler.post(() -> {
+                            mainActivityInterface.getMainHandler().post(() -> {
                                 if (myView != null) {
                                     // Set the default color
                                     myView.pageHolder.setBackgroundColor(mainActivityInterface.getMyThemeColors().getLyricsBackgroundColor());
@@ -523,7 +519,7 @@ public class PerformanceFragment extends Fragment {
                                 });
                             }
                             if (getContext()!=null) {
-                                handler.postDelayed(this::prepareSongViews, 50 + getContext().getResources().getInteger(R.integer.slide_out_time));
+                                mainActivityInterface.getMainHandler().postDelayed(this::prepareSongViews, 50 + getContext().getResources().getInteger(R.integer.slide_out_time));
                             }
                 });
             }
@@ -570,6 +566,28 @@ public class PerformanceFragment extends Fragment {
 
             // If we are in a set, send that info to the inline set custom view to see if it should draw
             myView.inlineSetList.checkVisibility();
+            myView.inlineSetList.post(() -> {
+                if (myView!=null && myView.inlineSetList!=null) {
+                    myView.inlineSetList.prepareSet();
+                    // Showcase what this is
+                    if (myView.inlineSetList.getVisibility() == View.VISIBLE) {
+                        // Just in case it is empty!
+                        try {
+                            mainActivityInterface.getMainHandler().postDelayed(() -> {
+                                if (myView != null && myView.inlineSetList != null) {
+                                    mainActivityInterface.getShowCase().singleShowCase(
+                                            (Activity) mainActivityInterface,
+                                            myView.inlineSetList.getChildAt(0), null,
+                                            inline_set_string, true, "inline_set");
+                                }
+                            }, 500);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+                    }
+            );
 
             int[] screenSizes = mainActivityInterface.getDisplayMetrics();
             int screenWidth = screenSizes[0];
@@ -962,7 +980,7 @@ public class PerformanceFragment extends Fragment {
                             //IV - Reset zoom
                             myView.recyclerView.toggleScale();
 
-                            new Handler().postDelayed(() -> {
+                            mainActivityInterface.getMainHandler().postDelayed(() -> {
                                 myView.recyclerView.startAnimation(animSlideIn);
 
                                 dealWithStuffAfterReady(false);
@@ -1199,7 +1217,7 @@ public class PerformanceFragment extends Fragment {
                 }
 
                 if (mainActivityInterface.getMidi().getMidiSendAuto()) {
-                    new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                    mainActivityInterface.getMainHandler().postDelayed(() -> {
                         // These are addition to beatbuddy, so sent afterwards
                         mainActivityInterface.getMidi().buildSongMidiMessages();
                         mainActivityInterface.getMidi().sendSongMessages();
@@ -1474,7 +1492,7 @@ public class PerformanceFragment extends Fragment {
                 Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 pdfPageAdapter.sectionSelected(position);
         } else if (mainActivityInterface.getMode().equals(mode_stage)) {
-            new Handler().postDelayed(()-> {
+            mainActivityInterface.getMainHandler().postDelayed(()-> {
                 stageSectionAdapter.clickOnSection(position);
                 performanceShowSection(position);
             },50);

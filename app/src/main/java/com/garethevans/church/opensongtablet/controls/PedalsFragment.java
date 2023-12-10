@@ -511,9 +511,11 @@ public class PedalsFragment extends Fragment {
         }
         if (buttonCodes[currentListening] != null) {
             buttonCodes[currentListening].setText(keyText);
+            pageButtonWaiting.removeCallbacks(stopListening);
         }
         if (buttonMidis[currentListening] != null) {
             buttonMidis[currentListening].setText(midiText);
+            pageButtonWaiting.removeCallbacks(stopListening);
         }
     }
 

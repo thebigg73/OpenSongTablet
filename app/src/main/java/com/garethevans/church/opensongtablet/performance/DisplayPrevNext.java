@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 
@@ -282,16 +283,28 @@ public class DisplayPrevNext {
     }
 
     private void doMove(int position) {
-        prev.removeCallbacks(hidePrevRunnable);
-        prevFAB.removeCallbacks(hidePrevFABRunnable);
-        next.removeCallbacks(hideNextRunnable);
-        nextFAB.removeCallbacks(hideNextFABRunnable);
-        prev.hide();
-        prevFAB.hide();
-        next.hide();
-        nextFAB.hide();
-        nextVisible = false;
-        prevVisible = false;
+        Log.d(TAG,"doMove():"+position);
+        try {
+            prev.removeCallbacks(hidePrevRunnable);
+            prevFAB.removeCallbacks(hidePrevFABRunnable);
+            next.removeCallbacks(hideNextRunnable);
+            nextFAB.removeCallbacks(hideNextFABRunnable);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
+            prev.post(prev::hide);
+            prevFAB.post(prevFAB::hide);
+            next.post(next::hide);
+            nextFAB.post(nextFAB::hide);
+
+            nextVisible = false;
+            prevVisible = false;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Log.d(TAG,"finished hiding and callback removal");
+
         if (isSetMove(position)) {
             mainActivityInterface.loadSongFromSet(position);
         } else if (isMenuMove(position)){

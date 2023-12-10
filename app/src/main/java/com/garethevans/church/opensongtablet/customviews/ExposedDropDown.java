@@ -39,6 +39,7 @@ public class ExposedDropDown extends TextInputLayout {
     private WindowInsetsCompat windowInsetsCompat;
     private WindowInsetsControllerCompat windowInsetsControllerCompat;
     private Window window;
+    private boolean userEditing = true;
 
     @SuppressLint("ClickableViewAccessibility")
     public ExposedDropDown(@NonNull Context context, @Nullable AttributeSet attrs) {
@@ -240,5 +241,11 @@ public class ExposedDropDown extends TextInputLayout {
                 sizeSet = false;
             }
         }
+    }
+    public void setUserEditing(boolean userEditing) {
+        this.userEditing = userEditing;
+    }
+    public boolean getUserEditing() {
+        return userEditing;
     }
 }

@@ -774,6 +774,7 @@
     <string name="pedal_avoid_repeat">Show a warning before moving to the next song</string>
     <string name="pedal_avoid_repeat_info">Useful to avoid accidental presses</string>
     <string name="pedal_controls">Set up foot pedal buttons and actions</string>
+    <string name="pedal_detected">Pedal press detected</string>
     <string name="pedal_down">Pedal down (press)</string>
     <string name="pedal_instructions">Click on a pedal button below to assign it to a keyboard button or midi note and assign actions to it. Most Bluetooth pedals send keyboard commands (e.g. arrow up/down).</string>
     <string name="pedal_midi_warning">To use a midi pedal, make sure you have connected it using the midi settings in the app first.</string>
@@ -781,6 +782,7 @@
     <string name="pedal_scroll_before_move_info">Allows next/previous pedals to also function as scroll pedals</string>
     <string name="pedal_up">Pedal up (release)</string>
     <string name="pedal_waiting">Waiting for button…</string>
+    <string name="pedal_waiting_ended">No pedal press detected</string>
     <string name="pedal_warning">Confirm song change by pressing the pedal again after this warning closes</string>
     <string name="performance_mode">Performance mode</string>
     <string name="performance_mode_info">Use your device as a songbook</string>
@@ -1252,4 +1254,11 @@
     <string name="youtube" translatable="false">YouTube</string>
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zoom_level">Zoom level</string>
+    <string name="repeat_mode">Repeat mode</string>
+    <string name="pedal_test">Test connected pedal</string>
+    <string name="pedal_test_info">Test a connected pedal by pressing the button on your pedal.  The code being sent will be displayed.  Long press a button on the pedals to allow the app to try and identify the recommended long press mode to use (if available).</string>
+    <string name="repeat_mode_info">For pedals that send repeated key down and up commands this can simulate a long press action</string>
+    <string name="repeat_mode_time">Time to listen for repeated key down and key up commands</string>
+    <string name="repeat_mode_count">Number of key up commands to qualify as a long press (in the time stated above)</string>
+    <string name="set_inline_showcase"><![CDATA[This is the inline set which allows a view of the setlist while you are performing.  You can change the settings in Settings > Display > Inline set.]]></string>
 </resources>

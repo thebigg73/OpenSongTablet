@@ -352,25 +352,25 @@ public class MidiFragment extends Fragment {
         @Override
         public void onScanFailed(int errorCode) {
             super.onScanFailed(errorCode);
-            Log.d("d", "onScanFailed: " + errorCode);
+            Log.d(TAG, "onScanFailed: " + errorCode);
         }
 
         @SuppressLint("MissingPermission")
         private void addBluetoothDevice(BluetoothDevice device) {
-            Log.d("d", "device=" + device);
             if (device != null && !bluetoothDevices.contains(device)) {
+                Log.d(TAG, "device=" + device);
                 bluetoothDevices.add(device);
                 if (!mainActivityInterface.getAppPermissions().hasMidiScanPermissions()) {
                     midiScanPermissions.launch(mainActivityInterface.getAppPermissions().getMidiScanPermissions());
                 } else {
-                    Log.d("d", "name=" + device.getName());
+                    Log.d(TAG, "name=" + device.getName());
                 }
             }
         }
     };
 
     private void displayCurrentDevice() {
-        Log.d("d", "displayCurrentDevice()");
+        Log.d(TAG, "displayCurrentDevice()");
         if (mainActivityInterface.getMidi().getMidiDevice() != null && mainActivityInterface.getMidi().getMidiDeviceName() != null &&
                 mainActivityInterface.getMidi().getMidiDeviceAddress() != null) {
             myView.searchProgressLayout.setVisibility(View.GONE);
@@ -490,13 +490,13 @@ public class MidiFragment extends Fragment {
             // On and off notes get sent with midiDelay
             int midiDelay = mainActivityInterface.getMidi().getMidiDelay();
             boolean sent = mainActivityInterface.getMidi().sendMidi(buffer1on);
-            new Handler().postDelayed(() -> mainActivityInterface.getMidi().sendMidi(buffer2on),midiDelay*2L);
-            new Handler().postDelayed(() -> mainActivityInterface.getMidi().sendMidi(buffer3on),midiDelay*3L);
-            new Handler().postDelayed(() -> mainActivityInterface.getMidi().sendMidi(buffer4on),midiDelay*4L);
-            new Handler().postDelayed(() -> mainActivityInterface.getMidi().sendMidi(buffer1off),500+(midiDelay*5L));
-            new Handler().postDelayed(() -> mainActivityInterface.getMidi().sendMidi(buffer2off),500+(midiDelay*6L));
-            new Handler().postDelayed(() -> mainActivityInterface.getMidi().sendMidi(buffer3off),500+(midiDelay*7L));
-            new Handler().postDelayed(() -> mainActivityInterface.getMidi().sendMidi(buffer4off),500+(midiDelay*8L));
+            new Handler(Looper.getMainLooper()).postDelayed(() -> mainActivityInterface.getMidi().sendMidi(buffer2on),midiDelay*2L);
+            new Handler(Looper.getMainLooper()).postDelayed(() -> mainActivityInterface.getMidi().sendMidi(buffer3on),midiDelay*3L);
+            new Handler(Looper.getMainLooper()).postDelayed(() -> mainActivityInterface.getMidi().sendMidi(buffer4on),midiDelay*4L);
+            new Handler(Looper.getMainLooper()).postDelayed(() -> mainActivityInterface.getMidi().sendMidi(buffer1off),500+(midiDelay*5L));
+            new Handler(Looper.getMainLooper()).postDelayed(() -> mainActivityInterface.getMidi().sendMidi(buffer2off),500+(midiDelay*6L));
+            new Handler(Looper.getMainLooper()).postDelayed(() -> mainActivityInterface.getMidi().sendMidi(buffer3off),500+(midiDelay*7L));
+            new Handler(Looper.getMainLooper()).postDelayed(() -> mainActivityInterface.getMidi().sendMidi(buffer4off),500+(midiDelay*8L));
 
             if (sent) {
                 mainActivityInterface.getShowToast().doIt(okay_string);
@@ -515,11 +515,11 @@ public class MidiFragment extends Fragment {
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void setupDevice(MidiDevice device) {
         mainActivityInterface.getMidi().setMidiDevice(device);
-        Log.d("d", "Device opened = " + device);
+        Log.d(TAG, "Device opened = " + device);
         MidiDeviceInfo midiDeviceInfo = mainActivityInterface.getMidi().getMidiDevice().getInfo();
         int numInputs = midiDeviceInfo.getInputPortCount();
         int numOutputs = midiDeviceInfo.getOutputPortCount();
-        Log.d("d", "Input ports = " + numInputs + ", Output ports = " + numOutputs);
+        Log.d(TAG, "Input ports = " + numInputs + ", Output ports = " + numOutputs);
 
         boolean foundinport = false;  // We will only grab the first one
         boolean foundoutport = false; // We will only grab the first one
@@ -529,14 +529,14 @@ public class MidiFragment extends Fragment {
             switch (pi.getType()) {
                 case MidiDeviceInfo.PortInfo.TYPE_INPUT:
                     if (!foundinport) {
-                        Log.d("d", "Input port found = " + pi.getPortNumber());
+                        Log.d(TAG, "Input port found = " + pi.getPortNumber());
                         mainActivityInterface.getMidi().setMidiInputPort(mainActivityInterface.getMidi().getMidiDevice().openInputPort(pi.getPortNumber()));
                         foundinport = true;
                     }
                     break;
                 case MidiDeviceInfo.PortInfo.TYPE_OUTPUT:
                     if (!foundoutport) {
-                        Log.d("d", "Output port found = " + pi.getPortNumber());
+                        Log.d(TAG, "Output port found = " + pi.getPortNumber());
                         mainActivityInterface.getMidi().setMidiOutputPort(mainActivityInterface.getMidi().getMidiDevice().openOutputPort(pi.getPortNumber()));
                         if (myView.midiAsPedal.getChecked()) {
                             mainActivityInterface.getMidi().enableMidiListener();

@@ -5,6 +5,8 @@ package com.garethevans.church.opensongtablet.performance;
 import android.content.Context;
 import android.os.Build;
 import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
 import android.view.View;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -41,7 +43,7 @@ public class PerformanceGestures {
     private MyZoomLayout myZoomLayout;
     private MyRecyclerView recyclerView;
     private RecyclerView presenterRecyclerView;
-    private final Handler scrollPosCheckHandler = new Handler();
+    private final Handler scrollPosCheckHandler = new Handler(Looper.getMainLooper());
     private final Runnable scrollPosRunnable = new Runnable() {
         @Override
         public void run() {
@@ -73,6 +75,7 @@ public class PerformanceGestures {
 
 
     public void doAction(String action, boolean isLongPress) {
+        Log.d(TAG,"doAction():"+action);
         // Get the action we are trying to run
         switch(action) {
             case "pageButtons":
@@ -593,6 +596,12 @@ public class PerformanceGestures {
         String val = mainActivityInterface.getPreferences().getMyPreferenceString("setCurrent","") + itemForSet;
         mainActivityInterface.getPreferences().setMyPreferenceString("setCurrent",val);
 
+        // TODO remove after fixing weird set behaviour
+        String[] setbits = val.replace("_**$","SPLIT").split("SPLIT");
+        for (int x=0; x<setbits.length; x++) {
+            Log.d(TAG,x+". "+setbits[x].replace("$**_",""));
+        }
+
         // Tell the user that the song has been added.
         mainActivityInterface.getShowToast().doIt("\"" + mainActivityInterface.getSong().getFilename() + "\" " +
                 c.getString(R.string.added_to_set));
@@ -615,6 +624,12 @@ public class PerformanceGestures {
         // Allow the song to be added, even if it is already there
         String val = mainActivityInterface.getPreferences().getMyPreferenceString("setCurrent","") + itemForSet;
         mainActivityInterface.getPreferences().setMyPreferenceString("setCurrent",val);
+
+        // TODO remove after fixing weird set behaviour
+        String[] setbits = val.replace("_**$","SPLIT").split("SPLIT");
+        for (int x=0; x<setbits.length; x++) {
+            Log.d(TAG,x+". "+setbits[x].replace("$**_",""));
+        }
 
         // Tell the user that the song has been added.
         mainActivityInterface.getShowToast().doIt("\"" + mainActivityInterface.getSong().getFilename() + "\" " +
@@ -1055,7 +1070,7 @@ public class PerformanceGestures {
         mainActivityInterface.getNearbyConnections().initialiseCountdown();
 
         // After a short delay, discover
-        new Handler().postDelayed(() -> {
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
             try {
                 mainActivityInterface.getNearbyConnections().startDiscovery();
                 mainActivityInterface.getNearbyConnections().setTimer(false, new MaterialButton(c));

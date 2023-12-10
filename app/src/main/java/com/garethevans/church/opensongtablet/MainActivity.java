@@ -256,6 +256,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private Display[] connectedDisplays;
     private int prevNumConnectedDisplays = 0;
     private ImageView screenHelp;
+    private final Handler mainLooper = new Handler(Looper.getMainLooper());
 
     // Variables used
     private ArrayList<View> targets;
@@ -373,6 +374,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         setupNavigation();
 
         initialiseActivity();
+    }
+
+    @Override
+    public Handler getMainHandler() {
+        return mainLooper;
     }
 
     private void prepareStrings() {
@@ -667,8 +673,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public void updateMargins() {
         if (myView!=null && windowFlags!=null) {
-            Handler handler = new Handler(Looper.getMainLooper());
-            handler.post(() -> {
+            mainLooper.post(() -> {
                 if (settingsOpen || whichMode.equals(mode_presenter)) {
                     myView.fragmentView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                 } else {
@@ -786,7 +791,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             // If the keyboard isn't visible, hide the other flags after a short delay
             // This makes the mode immersive/sticky
             if (!imeVisible) {
-                new Handler().postDelayed(() -> windowFlags.hideOrShowSystemBars(), 1000);
+                mainLooper.postDelayed(() -> windowFlags.hideOrShowSystemBars(), 1000);
             }
             return insets;
         });
@@ -875,8 +880,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             if (pageButtonActive) {
                 pageButtonActive = false;
                 // Reenable the page button after the animation time
-                Handler h = new Handler();
-                h.postDelayed(() -> pageButtonActive = true, pageButtons.getAnimationTime());
+                mainLooper.postDelayed(() -> pageButtonActive = true, pageButtons.getAnimationTime());
                 animatePageButtons();
             }
             if (!pageButtonActive && pageButtons.getPageButtonHide() && !whichMode.equals(mode_stage)) {
@@ -1292,8 +1296,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public void allowNavigationUp(boolean allow) {
         if (getSupportActionBar() != null) {
-            Handler handler = new Handler(Looper.getMainLooper());
-            handler.post(() -> {
+            mainLooper.post(() -> {
                 getSupportActionBar().setDisplayHomeAsUpEnabled(allow);
                 getSupportActionBar().setHomeButtonEnabled(allow);
             });
@@ -1508,7 +1511,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             if (!(webAddress == null || webAddress.isEmpty())) {
                 // IV - Post the icon and click action after a short delay - testing shows the delay is needed to ensure stability
                 globalMenuItem.findItem(R.id.help_menu_item).setVisible(true);
-                new Handler().postDelayed(() -> {
+                mainLooper.postDelayed(() -> {
                     if (globalMenuItem != null) {
                         screenHelp = (ImageView) globalMenuItem.findItem(R.id.help_menu_item).getActionView();
                         screenHelp.setOnClickListener(v -> openDocument(webAddress));
@@ -1862,9 +1865,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     public void indexSongs() {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
-            Handler handler = new Handler(Looper.getMainLooper());
             try {
-                handler.post(() -> {
+                mainLooper.post(() -> {
                     if (showToast != null && search_index_start != null) {
                         showToast.doIt(search_index_start);
                     }
@@ -1874,7 +1876,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     songListBuildIndex.fullIndex(songMenuFragment.getProgressText());
                 } else {
                     // Try again in a short while
-                    new Handler().postDelayed(() -> {
+                    mainLooper.postDelayed(() -> {
                         if (songListBuildIndex!=null && songMenuFragment != null && songMenuFragment.getProgressText() != null) {
                             songListBuildIndex.setIndexComplete(false);
                             songListBuildIndex.fullIndex(songMenuFragment.getProgressText());
@@ -1884,7 +1886,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            handler.post(() -> {
+            mainLooper.post(() -> {
                 try {
                     if (songListBuildIndex != null) {
                         songListBuildIndex.setIndexRequired(false);
@@ -2488,11 +2490,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     public void doSongLoad(String folder, String filename, boolean closeDrawer) {
         // IV - Close an open drawer and start song load after animate out
         int delay = 0;
-        if (getMenuOpen()) {
+        if (getMenuOpen() && closeDrawer) {
             closeDrawer(true);
             delay = 200;
         }
-        new Handler().postDelayed(() -> {
+        mainLooper.postDelayed(() -> {
             if (whichMode.equals(presenter)) {
                 if (presenterValid()) {
                     presenterFragment.doSongLoad(folder, filename);
@@ -2920,7 +2922,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             showToast.doIt(search_index_start);
             ExecutorService executorService = Executors.newSingleThreadExecutor();
             executorService.execute(() -> {
-                Handler handler = new Handler(Looper.getMainLooper());
                 String outcome = songListBuildIndex.fullIndex(songMenuFragment.getProgressText());
                 if (songMenuFragment != null && !songMenuFragment.isDetached()) {
                     try {
@@ -2929,7 +2930,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         e.printStackTrace();
                     }
                 }
-                handler.post(() -> {
+                mainLooper.post(() -> {
                     if (showToast != null && outcome!=null && !outcome.isEmpty()) {
                         showToast.doIt(outcome.trim());
                     }
@@ -3655,7 +3656,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     pad.setCurrentOrientation(newConfig.orientation);
                     pageButtons.requestLayout();
                     // IV - After a short delay - to allow screen layout to stabilise
-                    new Handler().postDelayed(() -> {
+                    mainLooper.postDelayed(() -> {
                         // IV - Following testing - Margins update requires 2 calls on orientation change!
                         updateMargins();
                         doSongLoad(song.getFolder(), song.getFilename(), true);

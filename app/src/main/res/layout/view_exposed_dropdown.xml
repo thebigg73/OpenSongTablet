@@ -5,6 +5,7 @@
     style="@style/ExposedDropDown"
     tools:hint="Hint"
     android:labelFor="@+id/textView"
+    android:saveEnabled="false"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -20,5 +21,6 @@
         android:ellipsize="end"
         android:maxLines="1"
         android:singleLine="true"
+        android:saveEnabled="false"
         tools:text="Text"/>
 </com.google.android.material.textfield.TextInputLayout>

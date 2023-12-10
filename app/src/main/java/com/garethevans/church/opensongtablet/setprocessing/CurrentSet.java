@@ -4,6 +4,7 @@ package com.garethevans.church.opensongtablet.setprocessing;
 // All actions related to building/processing are in the SetActions class
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -82,6 +83,12 @@ public class CurrentSet {
     public void setSetCurrent(String setCurrent) {
         // Keep a reference
         this.setCurrent = setCurrent;
+        // TODO remove after fixing weird set behaviour
+        String[] setbits = setCurrent.replace("_**$","SPLIT").split("SPLIT");
+        for (int x=0; x<setbits.length; x++) {
+            Log.d(TAG,x+". "+setbits[x].replace("$**_",""));
+        }
+
         // Save the user preference
         mainActivityInterface.getPreferences().setMyPreferenceString("setCurrent", setCurrent);
         // Check if we need to update the set menu title
