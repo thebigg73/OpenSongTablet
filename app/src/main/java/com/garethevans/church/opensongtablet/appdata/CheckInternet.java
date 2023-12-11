@@ -5,15 +5,11 @@ import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
 import android.os.Build;
-import android.util.Log;
 
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
-import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -45,18 +41,29 @@ public class CheckInternet {
                 if (activeNetwork!=null && activeNetwork.isRoaming() && onlyUseWiFi) {
                     return false;
                 } else {
-                    return activeNetwork != null && activeNetwork.isConnected();
+                    return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
                 }
             }
         }
         return false;
     }
 
-    public void checkConnection(Fragment fragment, int fragId, MainActivityInterface mainActivityInterface) {
+    public void checkConnection(Context c, Fragment fragment, int fragId, MainActivityInterface mainActivityInterface) {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
-            boolean connected;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            boolean connected = false;
+            if (c!=null) {
+                ConnectivityManager connectivityManager =
+                        (ConnectivityManager) c.getSystemService(Context.CONNECTIVITY_SERVICE);
+                if (connectivityManager != null) {
+                    NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+                    connected = (networkInfo != null && networkInfo.isConnectedOrConnecting());
+                }
+            }
+            mainActivityInterface.isWebConnected(fragment, fragId, connected);
+
+
+            /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 try {
                     Socket sock = new Socket();
                     sock.connect(new InetSocketAddress("8.8.8.8", 53), 1500);  //Google
@@ -70,7 +77,7 @@ public class CheckInternet {
             } else {
                 // Return true for older devices
                 mainActivityInterface.isWebConnected(fragment, fragId, true);
-            }
+            }*/
         });
     }
 
