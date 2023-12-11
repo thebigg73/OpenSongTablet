@@ -84,31 +84,33 @@ public class EditSongFragmentTags extends Fragment {
     }
 
     private void setupValues() {
-        tagsBottomSheet = new TagsBottomSheet(this,"EditSongFragmentTags");
-        presentationOrderBottomSheet = new PresentationOrderBottomSheet(this, "EditSongFragmentTags");
-        myView.tags.post(() -> {
-            mainActivityInterface.getProcessSong().editBoxToMultiline(myView.tags);
-            mainActivityInterface.getProcessSong().stretchEditBoxToLines(myView.tags,2);
-            myView.tags.setText(themesSplitByLine());
-            myView.tags.setFocusable(false);
-        });
+        if (mainActivityInterface.getTempSong()!=null) {
+            tagsBottomSheet = new TagsBottomSheet(this, "EditSongFragmentTags");
+            presentationOrderBottomSheet = new PresentationOrderBottomSheet(this, "EditSongFragmentTags");
+            myView.tags.post(() -> {
+                mainActivityInterface.getProcessSong().editBoxToMultiline(myView.tags);
+                mainActivityInterface.getProcessSong().stretchEditBoxToLines(myView.tags, 2);
+                myView.tags.setText(themesSplitByLine());
+                myView.tags.setFocusable(false);
+            });
 
-        myView.aka.post(() -> myView.aka.setText(mainActivityInterface.getTempSong().getAka()));
-        myView.ccli.post(() -> myView.ccli.setText(mainActivityInterface.getTempSong().getCcli()));
-        myView.user1.post(() -> myView.user1.setText(mainActivityInterface.getTempSong().getUser1()));
-        myView.user2.post(() -> myView.user2.setText(mainActivityInterface.getTempSong().getUser2()));
-        myView.user3.post(() -> myView.user3.setText(mainActivityInterface.getTempSong().getUser3()));
-        myView.hymnnum.post(() -> myView.hymnnum.setText(mainActivityInterface.getTempSong().getHymnnum()));
-        myView.presorder.post(() -> {
-            myView.presorder.setFocusable(false);
-            myView.presorder.setText(mainActivityInterface.getTempSong().getPresentationorder());
-        });
-        myView.useImported.post(() -> myView.useImported.setChecked(mainActivityInterface.getBeatBuddy().getBeatBuddyUseImported()));
-        myView.beatBuddySong.post(() -> myView.beatBuddySong.setText(mainActivityInterface.getTempSong().getBeatbuddysong()));
-        myView.beatBuddyKit.post(() -> myView.beatBuddyKit.setText(mainActivityInterface.getTempSong().getBeatbuddykit()));
-        // Resize the bottom padding to the soft keyboard height or half the screen height for the soft keyboard (workaround)
-        myView.resizeForKeyboardLayout.post(() -> mainActivityInterface.getWindowFlags().adjustViewPadding(mainActivityInterface,myView.resizeForKeyboardLayout));
-        checkBeatBuddyValues();
+            myView.aka.post(() -> myView.aka.setText(mainActivityInterface.getTempSong().getAka()));
+            myView.ccli.post(() -> myView.ccli.setText(mainActivityInterface.getTempSong().getCcli()));
+            myView.user1.post(() -> myView.user1.setText(mainActivityInterface.getTempSong().getUser1()));
+            myView.user2.post(() -> myView.user2.setText(mainActivityInterface.getTempSong().getUser2()));
+            myView.user3.post(() -> myView.user3.setText(mainActivityInterface.getTempSong().getUser3()));
+            myView.hymnnum.post(() -> myView.hymnnum.setText(mainActivityInterface.getTempSong().getHymnnum()));
+            myView.presorder.post(() -> {
+                myView.presorder.setFocusable(false);
+                myView.presorder.setText(mainActivityInterface.getTempSong().getPresentationorder());
+            });
+            myView.useImported.post(() -> myView.useImported.setChecked(mainActivityInterface.getBeatBuddy().getBeatBuddyUseImported()));
+            myView.beatBuddySong.post(() -> myView.beatBuddySong.setText(mainActivityInterface.getTempSong().getBeatbuddysong()));
+            myView.beatBuddyKit.post(() -> myView.beatBuddyKit.setText(mainActivityInterface.getTempSong().getBeatbuddykit()));
+            // Resize the bottom padding to the soft keyboard height or half the screen height for the soft keyboard (workaround)
+            myView.resizeForKeyboardLayout.post(() -> mainActivityInterface.getWindowFlags().adjustViewPadding(mainActivityInterface, myView.resizeForKeyboardLayout));
+            checkBeatBuddyValues();
+        }
     }
 
     private void setupListeners() {

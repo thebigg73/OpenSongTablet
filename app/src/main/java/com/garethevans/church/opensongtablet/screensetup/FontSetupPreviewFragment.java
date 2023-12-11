@@ -88,7 +88,9 @@ public class FontSetupPreviewFragment extends DialogFragment {
     }
 
     public void prepareWebView(String content) {
-        myView.webView.loadDataWithBaseURL("",content,"text/html","utf-8",null);
+        if (myView != null && content != null) {
+            myView.webView.loadDataWithBaseURL("", content, "text/html", "utf-8", null);
+        }
     }
 
     public void prepareAlphaList() {

@@ -977,7 +977,7 @@ public class Transpose {
     }
 
     public boolean originalKeyIsSet(Song thisSong) {
-        return thisSong.getKeyOriginal()!=null && !thisSong.getKeyOriginal().isEmpty();
+        return thisSong!=null && thisSong.getKeyOriginal()!=null && !thisSong.getKeyOriginal().isEmpty();
     }
 
     public void setConvertToFlats(boolean convertToFlats) {

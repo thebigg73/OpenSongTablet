@@ -85,7 +85,11 @@ public class ImportFileFragment extends Fragment {
         executorService.execute(() -> {
             Handler handler = new Handler(Looper.getMainLooper());
             // Get the available folders and base name
-            basename = mainActivityInterface.getImportFilename().replaceAll("\\.[^.]*$", "");
+            if (mainActivityInterface.getImportFilename()!=null) {
+                basename = mainActivityInterface.getImportFilename().replaceAll("\\.[^.]*$", "");
+            } else {
+                basename = "unknown";
+            }
             setcategory = mainfoldername_string;
             // If this is a desktop OpenSong file, it wont have an extension
             // Try to import the file as text (if no extension)

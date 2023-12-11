@@ -196,7 +196,7 @@ public class ProcessSong {
         myNEWXML += "  <link_audio>" + parseToHTMLEntities(thisSong.getLinkaudio()).trim() + "</link_audio>\n";
         myNEWXML += "  <loop_audio>" + parseToHTMLEntities(thisSong.getPadloop()).trim() + "</loop_audio>\n";
         myNEWXML += "  <link_other>" + parseToHTMLEntities(thisSong.getLinkother()).trim() + "</link_other>\n";
-        myNEWXML += "  <abcnotation>" + parseToHTMLEntities(thisSong.getAbc()).trim() + "</abcnotation>\n";
+        myNEWXML += "  <abcnotation>" + unencodeQuotes(parseToHTMLEntities(thisSong.getAbc()).trim()) + "</abcnotation>\n";
         myNEWXML += "  <abctranspose>" + parseToHTMLEntities(thisSong.getAbcTranspose()).trim() + "</abctranspose>\n";
 
         if (thisSong.getHasExtraStuff()) {
@@ -332,6 +332,12 @@ public class ProcessSong {
             s = "";
         }
         return s;
+    }
+
+    private String unencodeQuotes(String textToUnencodeQuotes) {
+        textToUnencodeQuotes = textToUnencodeQuotes.replace("&quot;","\"");
+        textToUnencodeQuotes = textToUnencodeQuotes.replace("&apos;","'");
+        return textToUnencodeQuotes;
     }
 
     public String getSubstring(String startText, String laterStartText, String endText, String searchText) {

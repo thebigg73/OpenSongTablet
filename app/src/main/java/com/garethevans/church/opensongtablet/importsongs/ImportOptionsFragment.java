@@ -217,11 +217,11 @@ public class ImportOptionsFragment extends Fragment {
         myView.importChurch.setOnClickListener(v -> {
             // Check connection
             mainActivityInterface.setWhattodo("importChurchSample");
-            mainActivityInterface.getCheckInternet().checkConnection(this, R.id.importOSBFragment, mainActivityInterface);
+            mainActivityInterface.getCheckInternet().checkConnection(getContext(),this, R.id.importOSBFragment, mainActivityInterface);
         });
         myView.importBand.setOnClickListener(v -> {
             mainActivityInterface.setWhattodo("importBandSample");
-            mainActivityInterface.getCheckInternet().checkConnection(this, R.id.importOSBFragment, mainActivityInterface);
+            mainActivityInterface.getCheckInternet().checkConnection(getContext(),this, R.id.importOSBFragment, mainActivityInterface);
         });
     }
 

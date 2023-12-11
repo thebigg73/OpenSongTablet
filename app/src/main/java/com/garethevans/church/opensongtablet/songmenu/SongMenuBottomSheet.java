@@ -36,7 +36,11 @@ public class SongMenuBottomSheet extends BottomSheetDialogFragment {
         // Default constructor required to avoid re-instantiation failures
         // Just close the bottom sheet
         songTitle = "";
-        dismiss();
+        try {
+            dismiss();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     SongMenuBottomSheet(String songTitle) {

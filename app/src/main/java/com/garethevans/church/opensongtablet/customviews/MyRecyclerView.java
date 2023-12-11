@@ -357,8 +357,11 @@ public class MyRecyclerView extends RecyclerView  implements RecyclerView.Smooth
         public boolean onInterceptTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
 
             final int action = e.getAction();
-            if (allowPinchToZoom &&
-                    !(mainActivityInterface.getMode().equals(getContext().getString(R.string.mode_stage)) && mainActivityInterface.getSong().getFiletype().equals("XML"))) {
+            if (allowPinchToZoom && mainActivityInterface.getMode()!=null &&
+                    mainActivityInterface.getSong()!=null &&
+                    !(mainActivityInterface.getMode().equals(getContext().getString(R.string.mode_stage)) &&
+                            mainActivityInterface.getSong().getFiletype()!=null &&
+                            mainActivityInterface.getSong().getFiletype().equals("XML"))) {
                 mScaleDetector.onTouchEvent(e);
             }
             float x;

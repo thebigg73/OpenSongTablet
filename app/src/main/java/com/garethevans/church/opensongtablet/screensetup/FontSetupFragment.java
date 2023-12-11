@@ -239,7 +239,7 @@ public class FontSetupFragment extends Fragment {
         // Only allow if an internet connection is detected
         // This then sends the result to isConnected
         CheckInternet checkInternet = new CheckInternet();
-        checkInternet.checkConnection(this,R.id.fontSetupFragment,mainActivityInterface);
+        checkInternet.checkConnection(getContext(),this,R.id.fontSetupFragment,mainActivityInterface);
     }
 
     public void isConnected(boolean connected) {

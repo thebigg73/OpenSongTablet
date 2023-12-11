@@ -322,7 +322,7 @@ public class ImportOnlineFragment extends Fragment {
     private void checkConnection() {
         mainActivityInterface.getWindowFlags().hideKeyboard();
         // Check we have an internet connection
-        mainActivityInterface.getCheckInternet().checkConnection(this, R.id.importOnlineFragment, mainActivityInterface);
+        mainActivityInterface.getCheckInternet().checkConnection(getContext(), this, R.id.importOnlineFragment, mainActivityInterface);
     }
 
     public void isConnected(boolean connected) {
