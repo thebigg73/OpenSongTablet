@@ -609,13 +609,17 @@
     <string name="pedal_avoid_repeat">Показувати попередження перед переходом до наступної пісні</string>
     <string name="pedal_avoid_repeat_info">Корисно, щоб уникнути випадкових натискань</string>
     <string name="pedal_controls">Налаштуйте кнопки та дії ножної педалі</string>
+    <string name="pedal_detected">Виявлено натискання педалі</string>
     <string name="pedal_down">Педаль вниз (натисніть)</string>
     <string name="pedal_instructions">Натисніть кнопку педалі нижче, щоб призначити її кнопці клавіатури або міді-ноті та призначити їй дії. Більшість педалей Bluetooth надсилають команди з клавіатури (наприклад, стрілку вгору/вниз).</string>
     <string name="pedal_midi_warning">Щоб використовувати міді-педаль, спочатку переконайтеся, що ви підключили її за допомогою налаштувань midi в додатку.</string>
     <string name="pedal_scroll_before_move">Спробуйте прокрутити, перш ніж змінювати пісні</string>
     <string name="pedal_scroll_before_move_info">Дозволяє наступній і попередній педалі також функціонувати як педалі прокручування</string>
+    <string name="pedal_test">Перевірте підключену педаль</string>
+    <string name="pedal_test_info">Перевірте підключену педаль, натиснувши кнопку на педалі.  На екрані з\'явиться код, який надсилається.  Натисніть і утримуйте кнопку на педалях, щоб програма спробувала визначити рекомендований режим тривалого натискання для використання (якщо доступно).</string>
     <string name="pedal_up">Педаль вгору (випуск)</string>
     <string name="pedal_waiting">Очікуємо натискання ....</string>
+    <string name="pedal_waiting_ended">Натискання педалі не виявлено</string>
     <string name="pedal_warning">Підтвердьте зміну пісні, натиснувши педаль ще раз після того, як це попередження закриється</string>
     <string name="performance_mode">Режим Виступи</string>
     <string name="performance_mode_info">Використовуйте свій пристрій як збірник пісень</string>
@@ -670,6 +674,10 @@
     <string name="refresh_song">Виправлення пісні</string>
     <string name="rename">Перейменування</string>
     <string name="rename_info">Перейменуйте або змініть категорію збереженого набору</string>
+    <string name="repeat_mode">Режим повторення</string>
+    <string name="repeat_mode_count">Кількість команд підняття клавіші, які кваліфікуються як довге натискання (за вказаний вище час)</string>
+    <string name="repeat_mode_info">Для педалей, які надсилають повторювані команди клавіші вниз і вгору, це може імітувати довге натискання</string>
+    <string name="repeat_mode_time">Час прислухатися до повторюваних команд натискання клавіш і натискання клавіш</string>
     <string name="reprise">реприз</string>
     <string name="requires_internet">Для цієї функції потрібен доступ до Інтернету</string>
     <string name="reset">Скидання</string>
@@ -717,6 +725,7 @@
     <string name="set_help">Перемістити пісні, щоб змінити порядок у списку</string>
     <string name="set_inline">Вбудований набір</string>
     <string name="set_inline_info">Показати сет-лист на екрані біля вікна пісні</string>
+    <string name="set_inline_showcase">Це вбудований набір, який дозволяє переглядати сет-лист під час виконання.  Ви можете змінити налаштування в Налаштування / Дисплей / Вбудований набір.</string>
     <string name="set_item_info">Ви можете змінити папку/ім\'я файлу пісні, завантаженої з набору, а також змінити клавішу відображення пісні (це виконує тимчасову транспозицію пісні на вашому пристрої, якщо потрібно)</string>
     <string name="set_item_removed">Предмет вилучено з набору</string>
     <string name="set_load_first">Відкрийте завантажений набір при першому пункті</string>
@@ -911,13 +920,4 @@
     <string name="width">Ширина</string>
     <string name="words_and_music_by">Слова і музика</string>
     <string name="zoom_level">Рівень масштабування</string>
-    <string name="repeat_mode">Режим повторення</string>
-    <string name="pedal_detected">Виявлено натискання педалі</string>
-    <string name="pedal_waiting_ended">Натискання педалі не виявлено</string>
-    <string name="pedal_test">Перевірте підключену педаль</string>
-    <string name="pedal_test_info">Перевірте підключену педаль, натиснувши кнопку на педалі.  На екрані з\'явиться код, який надсилається.  Натисніть і утримуйте кнопку на педалях, щоб програма спробувала визначити рекомендований режим тривалого натискання для використання (якщо доступно).</string>
-    <string name="repeat_mode_info">Для педалей, які надсилають повторювані команди клавіші вниз і вгору, це може імітувати довге натискання</string>
-    <string name="repeat_mode_time">Час прислухатися до повторюваних команд натискання клавіш і натискання клавіш</string>
-    <string name="repeat_mode_count">Кількість команд підняття клавіші, які кваліфікуються як довге натискання (за вказаний вище час)</string>
-    <string name="set_inline_showcase">Це вбудований набір, який дозволяє переглядати сет-лист під час виконання.  Ви можете змінити налаштування в Налаштування / Дисплей / Вбудований набір.</string>
 </resources>

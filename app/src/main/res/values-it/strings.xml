@@ -609,13 +609,17 @@
     <string name="pedal_avoid_repeat">Mostra un avviso prima di passare al brano successivo</string>
     <string name="pedal_avoid_repeat_info">Utile per evitare pressioni accidentali</string>
     <string name="pedal_controls">Imposta i pulsanti e le azioni del pedale</string>
+    <string name="pedal_detected">Rilevata pressione del pedale</string>
     <string name="pedal_down">Pedale verso il basso (pressare)</string>
     <string name="pedal_instructions">Fai clic sul pulsante di un pedale in basso per assegnarlo a un pulsante della tastiera o a una nota midi e assegnargli delle azioni. La maggior parte dei pedali Bluetooth invia comandi da tastiera (ad es. freccia su/giù).</string>
     <string name="pedal_midi_warning">Per utilizzare un pedale midi, assicurati di averlo collegato utilizzando prima le impostazioni midi nell\'app.</string>
     <string name="pedal_scroll_before_move">"Scroll ginocchiera prima canzone successiva / precedente"</string>
     <string name="pedal_scroll_before_move_info">Consente ai pedali successivo e precedente di funzionare anche come pedali di scorrimento</string>
+    <string name="pedal_test">Testare il pedale collegato</string>
+    <string name="pedal_test_info">Testare un pedale collegato premendo il pulsante sul pedale.  Verrà visualizzato il codice inviato.  Premere a lungo un pulsante sui pedali per consentire all\'app di provare a identificare la modalità di pressione prolungata consigliata da utilizzare (se disponibile).</string>
     <string name="pedal_up">Pedal up (rilascio)</string>
     <string name="pedal_waiting">"Aspettando il pulsante …."</string>
+    <string name="pedal_waiting_ended">Non è stata rilevata alcuna pressione del pedale</string>
     <string name="pedal_warning">Confermare la modifica del brano premendo nuovamente il pedale dopo la chiusura di questo avviso</string>
     <string name="performance_mode">"Modalità prestazione"</string>
     <string name="performance_mode_info">Usa il tuo dispositivo come un libro di canzoni</string>
@@ -670,6 +674,10 @@
     <string name="refresh_song">Aggiorna brano corrente</string>
     <string name="rename">"Rinominare"</string>
     <string name="rename_info">Rinominare o modificare la categoria di un set salvato</string>
+    <string name="repeat_mode">Modalità di ripetizione</string>
+    <string name="repeat_mode_count">Numero di comandi da tastiera per qualificarsi come pressione prolungata (nel tempo sopra indicato)</string>
+    <string name="repeat_mode_info">Per i pedali che inviano ripetuti comandi di tasti giù e su, questo può simulare un\'azione di pressione prolungata</string>
+    <string name="repeat_mode_time">È ora di ascoltare i comandi ripetuti di premere e alzare</string>
     <string name="reprise">"Reprise"</string>
     <string name="requires_internet">Questa funzione richiede l\'accesso a Internet</string>
     <string name="reset">"Reset"</string>
@@ -717,6 +725,7 @@
     <string name="set_help">"Trascinare brani intorno per cambiare l' ordine del set"</string>
     <string name="set_inline">Insieme in linea</string>
     <string name="set_inline_info">Mostra la scaletta sullo schermo accanto alla finestra del brano</string>
+    <string name="set_inline_showcase">Questo è il set in linea che consente di visualizzare la scaletta durante l\'esecuzione.  È possibile modificare le impostazioni in Impostazioni / Display / Set in linea.</string>
     <string name="set_item_info">È possibile modificare la cartella / nome del file del brano caricato dal set e si può anche cambiare la chiave per la visualizzazione del brano (questo esegue una trasposizione temporanea del brano sul dispositivo, se necessario)</string>
     <string name="set_item_removed">Elemento rimosso dal set</string>
     <string name="set_load_first">Aprire il set caricato al primo elemento</string>
@@ -911,13 +920,4 @@
     <string name="width">Larghezza</string>
     <string name="words_and_music_by">Parole e musica di</string>
     <string name="zoom_level">Livello di zoom</string>
-    <string name="repeat_mode">Modalità di ripetizione</string>
-    <string name="pedal_detected">Rilevata pressione del pedale</string>
-    <string name="pedal_waiting_ended">Non è stata rilevata alcuna pressione del pedale</string>
-    <string name="pedal_test">Testare il pedale collegato</string>
-    <string name="pedal_test_info">Testare un pedale collegato premendo il pulsante sul pedale.  Verrà visualizzato il codice inviato.  Premere a lungo un pulsante sui pedali per consentire all\'app di provare a identificare la modalità di pressione prolungata consigliata da utilizzare (se disponibile).</string>
-    <string name="repeat_mode_info">Per i pedali che inviano ripetuti comandi di tasti giù e su, questo può simulare un\'azione di pressione prolungata</string>
-    <string name="repeat_mode_time">È ora di ascoltare i comandi ripetuti di premere e alzare</string>
-    <string name="repeat_mode_count">Numero di comandi da tastiera per qualificarsi come pressione prolungata (nel tempo sopra indicato)</string>
-    <string name="set_inline_showcase">Questo è il set in linea che consente di visualizzare la scaletta durante l\'esecuzione.  È possibile modificare le impostazioni in Impostazioni / Display / Set in linea.</string>
 </resources>

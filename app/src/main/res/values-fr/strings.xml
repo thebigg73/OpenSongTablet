@@ -615,6 +615,8 @@
     <string name="pedal_midi_warning">Pour utiliser une pédale midi, assurez-vous d\'abord de l\'avoir connectée à l\'aide des paramètres midi de l\'application.</string>
     <string name="pedal_scroll_before_move">"Défilement entre la chanson précédente/suivante par balayage"</string>
     <string name="pedal_scroll_before_move_info">Permet aux pédales suivantes et précédentes de fonctionner également comme pédales de défilement</string>
+    <string name="pedal_test">Tester la pédale connectée</string>
+    <string name="pedal_test_info">Testez une pédale connectée en appuyant sur le bouton de votre pédale.  Le code envoyé s’affiche.  Appuyez longuement sur un bouton des pédales pour permettre à l’application d’essayer d’identifier le mode d’appui long recommandé à utiliser (le cas échéant).</string>
     <string name="pedal_up">Pédalez (relâchement)</string>
     <string name="pedal_waiting">"En attente de touche …."</string>
     <string name="pedal_waiting_ended">Pas d’appui sur la pédale détecté</string>
@@ -672,6 +674,10 @@
     <string name="refresh_song">Actualiser la chanson en cours</string>
     <string name="rename">"Renomer"</string>
     <string name="rename_info">Renommer ou modifier la catégorie d\'un ensemble enregistré</string>
+    <string name="repeat_mode">Mode de répétition</string>
+    <string name="repeat_mode_count">Nombre de touches vers le haut pour être considéré comme un appui long (dans le temps indiqué ci-dessus)</string>
+    <string name="repeat_mode_info">Pour les pédales qui envoient des commandes répétées de touches vers le bas et vers le haut, cela peut simuler une action d’appui long</string>
+    <string name="repeat_mode_time">Il est temps d’écouter les commandes répétées de touches enfoncées et augmentées</string>
     <string name="reprise">"Reprise"</string>
     <string name="requires_internet">Cette fonctionnalité nécessite un accès Internet</string>
     <string name="reset">"Réinitialiser"</string>
@@ -719,6 +725,7 @@
     <string name="set_help">"Deplacez les chansons dans l\'ordre choisis"</string>
     <string name="set_inline">Ensemble en ligne</string>
     <string name="set_inline_info">Afficher la setlist sur l\'écran à côté de la fenêtre de la chanson</string>
+    <string name="set_inline_showcase">Il s’agit de l’ensemble en ligne qui permet de visualiser la setlist pendant que vous jouez.  Vous pouvez modifier les paramètres dans Paramètres / Affichage / Ensemble en ligne.</string>
     <string name="set_item_info">Vous pouvez changer le dossier / nom de fichier de la chanson chargée à partir de l’ensemble et vous pouvez également changer la touche d’affichage de la chanson (cela effectue une transposition temporaire de la chanson sur votre appareil si nécessaire)</string>
     <string name="set_item_removed">Élément supprimé de l’ensemble</string>
     <string name="set_load_first">Ouvrez le jeu chargé au premier élément</string>
@@ -913,11 +920,4 @@
     <string name="width">Largeur</string>
     <string name="words_and_music_by">Paroles et musique de</string>
     <string name="zoom_level">Le niveau de zoom</string>
-    <string name="repeat_mode">Mode de répétition</string>
-    <string name="pedal_test">Tester la pédale connectée</string>
-    <string name="pedal_test_info">Testez une pédale connectée en appuyant sur le bouton de votre pédale.  Le code envoyé s’affiche.  Appuyez longuement sur un bouton des pédales pour permettre à l’application d’essayer d’identifier le mode d’appui long recommandé à utiliser (le cas échéant).</string>
-    <string name="repeat_mode_info">Pour les pédales qui envoient des commandes répétées de touches vers le bas et vers le haut, cela peut simuler une action d’appui long</string>
-    <string name="repeat_mode_time">Il est temps d’écouter les commandes répétées de touches enfoncées et augmentées</string>
-    <string name="repeat_mode_count">Nombre de touches vers le haut pour être considéré comme un appui long (dans le temps indiqué ci-dessus)</string>
-    <string name="set_inline_showcase">Il s’agit de l’ensemble en ligne qui permet de visualiser la setlist pendant que vous jouez.  Vous pouvez modifier les paramètres dans Paramètres / Affichage / Ensemble en ligne.</string>
 </resources>

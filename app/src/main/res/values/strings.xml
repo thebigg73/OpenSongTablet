@@ -780,6 +780,8 @@
     <string name="pedal_midi_warning">To use a midi pedal, make sure you have connected it using the midi settings in the app first.</string>
     <string name="pedal_scroll_before_move">Try to scroll before changing songs</string>
     <string name="pedal_scroll_before_move_info">Allows next/previous pedals to also function as scroll pedals</string>
+    <string name="pedal_test">Test connected pedal</string>
+    <string name="pedal_test_info">Test a connected pedal by pressing the button on your pedal.  The code being sent will be displayed.  Long press a button on the pedals to allow the app to try and identify the recommended long press mode to use (if available).</string>
     <string name="pedal_up">Pedal up (release)</string>
     <string name="pedal_waiting">Waiting for button…</string>
     <string name="pedal_waiting_ended">No pedal press detected</string>
@@ -840,6 +842,10 @@
     <string name="refresh_song">Refresh current song</string>
     <string name="rename">Rename</string>
     <string name="rename_info">Rename or change the category of a saved set</string>
+    <string name="repeat_mode">Repeat mode</string>
+    <string name="repeat_mode_count">Number of key up commands to qualify as a long press (in the time stated above)</string>
+    <string name="repeat_mode_info">For pedals that send repeated key down and up commands this can simulate a long press action</string>
+    <string name="repeat_mode_time">Time to listen for repeated key down and key up commands</string>
     <string name="reprise">Reprise</string>
     <string name="requires_internet">This feature requires internet access</string>
     <string name="reset">Reset</string>
@@ -888,6 +894,7 @@
     <string name="set_help">Drag songs around to change the order of your set</string>
     <string name="set_inline">Inline set</string>
     <string name="set_inline_info">Show the setlist on the screen beside the song window</string>
+    <string name="set_inline_showcase">This is the inline set which allows a view of the setlist while you are performing.  You can change the settings in Settings / Display / Inline set.</string>
     <string name="set_item_info">You can change the folder/filename of the song loaded from the set and you can also change the key for song display (this performs a temporary transpose of the song on your device if required)</string>
     <string name="set_item_removed">Item removed from set</string>
     <string name="set_load_first">Open the loaded set at the first item</string>
@@ -1254,11 +1261,4 @@
     <string name="youtube" translatable="false">YouTube</string>
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zoom_level">Zoom level</string>
-    <string name="repeat_mode">Repeat mode</string>
-    <string name="pedal_test">Test connected pedal</string>
-    <string name="pedal_test_info">Test a connected pedal by pressing the button on your pedal.  The code being sent will be displayed.  Long press a button on the pedals to allow the app to try and identify the recommended long press mode to use (if available).</string>
-    <string name="repeat_mode_info">For pedals that send repeated key down and up commands this can simulate a long press action</string>
-    <string name="repeat_mode_time">Time to listen for repeated key down and key up commands</string>
-    <string name="repeat_mode_count">Number of key up commands to qualify as a long press (in the time stated above)</string>
-    <string name="set_inline_showcase">This is the inline set which allows a view of the setlist while you are performing.  You can change the settings in Settings / Display / Inline set.</string>
 </resources>

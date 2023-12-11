@@ -609,13 +609,17 @@
     <string name="pedal_avoid_repeat">Prikaži upozorenje pre prelaska na sledeću pesmu</string>
     <string name="pedal_avoid_repeat_info">Korisno da se izbegne slučajna pritiskanja</string>
     <string name="pedal_controls">Podesite dugmad i radnje nožne pedale</string>
+    <string name="pedal_detected">Otkrivena presa za pedale</string>
     <string name="pedal_down">Pedala nadole (pritisnite)</string>
     <string name="pedal_instructions">Kliknite na dugme pedale ispod da biste ga dodelili dugmetu na tastaturi ili midi noti i dodelili mu akcije. Većina Bluetooth pedala šalje komande sa tastature (npr. strelica gore/dole).</string>
     <string name="pedal_midi_warning">Da biste koristili midi pedalu, prvo proverite da li ste je povezali koristeći midi podešavanja u aplikaciji.</string>
     <string name="pedal_scroll_before_move">Uklj/Isklj skrolovanje pre sledeće/prethodne pesme</string>
     <string name="pedal_scroll_before_move_info">Omogućava da sledeća i prethodna pedale takođe funkcionišu kao pedale za pomeranje</string>
+    <string name="pedal_test">Testiraj povezanu pedalu</string>
+    <string name="pedal_test_info">Testirajte povezanu pedalu pritiskom na dugme na pedali.  Kôd koji se šalje će biti prikazan.  Dugo pritisnite dugme na pedalama da biste dozvolili aplikaciji da pokuša da identifikuje preporučeni režim dugog pritiskanja koji će koristiti (ako je dostupno).</string>
     <string name="pedal_up">Pedala gore (puštanje)</string>
     <string name="pedal_waiting">Čekanje na dugme….</string>
+    <string name="pedal_waiting_ended">Nije otkrivena presa za pedale</string>
     <string name="pedal_warning">Potvrdite promenu pesme ponovnim pritiskom na pedalu nakon što se ovo upozorenje zatvori</string>
     <string name="performance_mode">Mod nastupa</string>
     <string name="performance_mode_info">Koristite svoj uređaj kao pesmaru</string>
@@ -670,6 +674,10 @@
     <string name="refresh_song">Osvežiti trenutnu pesmu</string>
     <string name="rename">Promeniti ime</string>
     <string name="rename_info">Preimenujte ili promenite kategoriju sačuvanog skupa</string>
+    <string name="repeat_mode">Režim ponavljanja</string>
+    <string name="repeat_mode_count">Broj komandi tastera naviše za kvalifikovanje kao dugačka štampa (u gore navedenom vremenu)</string>
+    <string name="repeat_mode_info">Za pedale koje šalju ponovljen taster nadole i na gore komande ovo može da simulira dugu radnju štampe</string>
+    <string name="repeat_mode_time">Vreme je da oslušnete ponovljeni taster nadole i tastere na gore</string>
     <string name="reprise">Repriza</string>
     <string name="requires_internet">Ova funkcija zahteva pristup internetu</string>
     <string name="reset">Reset</string>
@@ -717,6 +725,7 @@
     <string name="set_help">Prevlačite pesme da bi promenili redosled na set listi</string>
     <string name="set_inline">Inline set</string>
     <string name="set_inline_info">Prikažite set listu na ekranu pored prozora sa pesmom</string>
+    <string name="set_inline_showcase">Ovo je umetnuti skup koji omogućava prikaz liste za postavljanje tokom izvođenja.  Postavke možete da promenite u podešavanjima / Ekran / Umetnuti skup.</string>
     <string name="set_item_info">Možete da promenite ime fascikle/datoteke pesme učitane iz skupa, a možete i da promenite ključ za prikaz pesme (ovo izvršava privremeni transpon pesme na uređaju ako je to potrebno)</string>
     <string name="set_item_removed">Stavka uklonjena iz skupa</string>
     <string name="set_load_first">Otvaranje učitanog skupa na prvoj stavci</string>
@@ -911,13 +920,4 @@
     <string name="width">Širina</string>
     <string name="words_and_music_by">Reči i muzika</string>
     <string name="zoom_level">Nivo zumiranja</string>
-    <string name="repeat_mode">Režim ponavljanja</string>
-    <string name="pedal_detected">Otkrivena presa za pedale</string>
-    <string name="pedal_waiting_ended">Nije otkrivena presa za pedale</string>
-    <string name="pedal_test">Testiraj povezanu pedalu</string>
-    <string name="pedal_test_info">Testirajte povezanu pedalu pritiskom na dugme na pedali.  Kôd koji se šalje će biti prikazan.  Dugo pritisnite dugme na pedalama da biste dozvolili aplikaciji da pokuša da identifikuje preporučeni režim dugog pritiskanja koji će koristiti (ako je dostupno).</string>
-    <string name="repeat_mode_info">Za pedale koje šalju ponovljen taster nadole i na gore komande ovo može da simulira dugu radnju štampe</string>
-    <string name="repeat_mode_time">Vreme je da oslušnete ponovljeni taster nadole i tastere na gore</string>
-    <string name="repeat_mode_count">Broj komandi tastera naviše za kvalifikovanje kao dugačka štampa (u gore navedenom vremenu)</string>
-    <string name="set_inline_showcase">Ovo je umetnuti skup koji omogućava prikaz liste za postavljanje tokom izvođenja.  Postavke možete da promenite u podešavanjima / Ekran / Umetnuti skup.</string>
 </resources>

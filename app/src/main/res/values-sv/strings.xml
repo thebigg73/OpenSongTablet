@@ -609,13 +609,17 @@
     <string name="pedal_avoid_repeat">Visa en varning innan du går till nästa låt</string>
     <string name="pedal_avoid_repeat_info">Användbart för att undvika oavsiktliga tryckningar</string>
     <string name="pedal_controls">Ställ in fotpedalknappar och åtgärder</string>
+    <string name="pedal_detected">Pedaltryck upptäckt</string>
     <string name="pedal_down">Pedal ner (tryck)</string>
     <string name="pedal_instructions">Klicka på en pedalknapp nedan för att tilldela den till en tangentbordsknapp eller midi not och tilldela åtgärder till den. De flesta Bluetooth-pedaler skickar tangentbordskommandon (t.ex. pil upp/ned).</string>
     <string name="pedal_midi_warning">För att använda en midi-pedal, se till att du har anslutit den med midi-inställningarna i appen först.</string>
     <string name="pedal_scroll_before_move">"Växla bläddra före nästa / föregående låt"</string>
     <string name="pedal_scroll_before_move_info">Tillåter att nästa och föregående pedaler även fungerar som rullpedaler</string>
+    <string name="pedal_test">Testa ansluten pedal</string>
+    <string name="pedal_test_info">Testa en ansluten pedal genom att trycka på knappen på din pedal.  Koden som skickas kommer att visas.  Tryck länge på en knapp på pedalerna så att appen kan försöka identifiera det rekommenderade långtrycksläget att använda (om tillgängligt).</string>
     <string name="pedal_up">Pedal upp (släpp)</string>
     <string name="pedal_waiting">"Väntar på knappen ...."</string>
+    <string name="pedal_waiting_ended">Ingen pedaltryckning upptäcktes</string>
     <string name="pedal_warning">Bekräfta låtbyte genom att trycka på pedalen igen efter att denna varning stängts</string>
     <string name="performance_mode">"Prestanda läge"</string>
     <string name="performance_mode_info">Använd din enhet som en sångbok</string>
@@ -670,6 +674,10 @@
     <string name="refresh_song">"Uppdatera aktuell sång"</string>
     <string name="rename">"Döpa om"</string>
     <string name="rename_info">Byt namn på eller ändra kategorin för en sparad uppsättning</string>
+    <string name="repeat_mode">Upprepat läge</string>
+    <string name="repeat_mode_count">Antal tangentkommandon för att kvalificera sig som ett långt tryck (under den tid som anges ovan)</string>
+    <string name="repeat_mode_info">För pedaler som skickar upprepade kommandon för tangent ner och upp kan detta simulera en lång tryckning</string>
+    <string name="repeat_mode_time">Dags att lyssna efter upprepade kommandon för att stänga och höja tangenten</string>
     <string name="reprise">"Reprise"</string>
     <string name="requires_internet">Den här funktionen kräver internetåtkomst</string>
     <string name="reset">"Återställa"</string>
@@ -717,6 +725,7 @@
     <string name="set_help">"Dra sånger runt för att ändra ordning på din uppsättning"</string>
     <string name="set_inline">Inline set</string>
     <string name="set_inline_info">Visa setlistan på skärmen bredvid låtfönstret</string>
+    <string name="set_inline_showcase">Detta är den infogade uppsättningen som gör det möjligt att se setlistan medan du uppträder.  Du kan ändra inställningarna i Inställningar / Display / Inline-uppsättning.</string>
     <string name="set_item_info">Du kan ändra mappen / filnamnet på låten som laddas från uppsättningen och du kan också ändra tangenten för låtvisning (detta utför en tillfällig transponering av låten på din enhet om det behövs)</string>
     <string name="set_item_removed">Objekt borttaget från uppsättningen</string>
     <string name="set_load_first">Öppna den inlästa uppsättningen vid det första objektet</string>
@@ -911,13 +920,4 @@
     <string name="width">Bredd</string>
     <string name="words_and_music_by">Ord och musik av</string>
     <string name="zoom_level">Zoomnivå</string>
-    <string name="repeat_mode">Upprepat läge</string>
-    <string name="pedal_detected">Pedaltryck upptäckt</string>
-    <string name="pedal_waiting_ended">Ingen pedaltryckning upptäcktes</string>
-    <string name="pedal_test">Testa ansluten pedal</string>
-    <string name="pedal_test_info">Testa en ansluten pedal genom att trycka på knappen på din pedal.  Koden som skickas kommer att visas.  Tryck länge på en knapp på pedalerna så att appen kan försöka identifiera det rekommenderade långtrycksläget att använda (om tillgängligt).</string>
-    <string name="repeat_mode_info">För pedaler som skickar upprepade kommandon för tangent ner och upp kan detta simulera en lång tryckning</string>
-    <string name="repeat_mode_time">Dags att lyssna efter upprepade kommandon för att stänga och höja tangenten</string>
-    <string name="repeat_mode_count">Antal tangentkommandon för att kvalificera sig som ett långt tryck (under den tid som anges ovan)</string>
-    <string name="set_inline_showcase">Detta är den infogade uppsättningen som gör det möjligt att se setlistan medan du uppträder.  Du kan ändra inställningarna i Inställningar / Display / Inline-uppsättning.</string>
 </resources>

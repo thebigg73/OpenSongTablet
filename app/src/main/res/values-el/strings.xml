@@ -615,6 +615,8 @@
     <string name="pedal_midi_warning">Για να χρησιμοποιήσετε ένα πεντάλ midi, βεβαιωθείτε ότι το έχετε συνδέσει χρησιμοποιώντας τις ρυθμίσεις midi στην εφαρμογή πρώτα.</string>
     <string name="pedal_scroll_before_move">"Toggle scroll before Next/Previous song"</string>
     <string name="pedal_scroll_before_move_info">Επιτρέπει στο επόμενο και το προηγούμενο πεντάλ να λειτουργούν και ως πεντάλ κύλισης</string>
+    <string name="pedal_test">Δοκιμή συνδεδεμένου πεντάλ</string>
+    <string name="pedal_test_info">Δοκιμάστε ένα συνδεδεμένο πεντάλ πατώντας το κουμπί στο πεντάλ σας.  Θα εμφανιστεί ο κωδικός που αποστέλλεται.  Πατήστε παρατεταμένα ένα κουμπί στα πεντάλ για να επιτρέψετε στην εφαρμογή να προσπαθήσει να προσδιορίσει τη συνιστώμενη λειτουργία παρατεταμένου πατήματος που θα χρησιμοποιηθεί (εάν υπάρχει).</string>
     <string name="pedal_up">Πετάλι επάνω (απελευθέρωση)</string>
     <string name="pedal_waiting">"Waiting for button…."</string>
     <string name="pedal_waiting_ended">Δεν εντοπίστηκε πάτημα πεντάλ</string>
@@ -672,6 +674,10 @@
     <string name="refresh_song">"Refresh current song"</string>
     <string name="rename">"Μετονομασία"</string>
     <string name="rename_info">Μετονομάστε ή αλλάξτε την κατηγορία ενός αποθηκευμένου συνόλου</string>
+    <string name="repeat_mode">Λειτουργία επανάληψης</string>
+    <string name="repeat_mode_count">Αριθμός εντολών key up για να χαρακτηριστείτε ως παρατεταμένο πάτημα (στο χρόνο που αναφέρεται παραπάνω)</string>
+    <string name="repeat_mode_info">Για πεντάλ που στέλνουν επαναλαμβανόμενες εντολές πλήκτρων προς τα κάτω και προς τα πάνω, αυτό μπορεί να προσομοιώσει μια ενέργεια παρατεταμένου πατήματος</string>
+    <string name="repeat_mode_time">Ώρα να ακούσετε επαναλαμβανόμενες εντολές πατήματος πλήκτρου και πλήκτρου επάνω</string>
     <string name="reprise">"Επαναλάβετε"</string>
     <string name="requires_internet">Αυτή η δυνατότητα απαιτεί πρόσβαση στο Διαδίκτυο</string>
     <string name="reset">"Επανακαθορισμός"</string>
@@ -719,6 +725,7 @@
     <string name="set_help">"Drag songs around to change the order of your set"</string>
     <string name="set_inline">Ενσωματωμένο σετ</string>
     <string name="set_inline_info">Εμφάνιση του setlist στην οθόνη δίπλα στο παράθυρο τραγουδιών</string>
+    <string name="set_inline_showcase">Αυτό είναι το ενσωματωμένο σύνολο που επιτρέπει την προβολή του setlist ενώ παίζετε.  Μπορείτε να αλλάξετε τις ρυθμίσεις στις Ρυθμίσεις / Οθόνη / Ενσωματωμένο σύνολο.</string>
     <string name="set_item_info">Μπορείτε να αλλάξετε το όνομα φακέλου/αρχείου του τραγουδιού που φορτώθηκε από το σετ και μπορείτε επίσης να αλλάξετε το πλήκτρο για την εμφάνιση του τραγουδιού (αυτό εκτελεί προσωρινή αντιμετάθεση του τραγουδιού στη συσκευή σας, εάν απαιτείται)</string>
     <string name="set_item_removed">Στοιχείο που αφαιρέθηκε από το σετ</string>
     <string name="set_load_first">Ανοίξτε το φορτωμένο σύνολο στο πρώτο στοιχείο</string>
@@ -913,11 +920,4 @@
     <string name="width">Πλάτος</string>
     <string name="words_and_music_by">Λέξεις και μουσική από</string>
     <string name="zoom_level">Επίπεδο ζουμ</string>
-    <string name="repeat_mode">Λειτουργία επανάληψης</string>
-    <string name="pedal_test">Δοκιμή συνδεδεμένου πεντάλ</string>
-    <string name="pedal_test_info">Δοκιμάστε ένα συνδεδεμένο πεντάλ πατώντας το κουμπί στο πεντάλ σας.  Θα εμφανιστεί ο κωδικός που αποστέλλεται.  Πατήστε παρατεταμένα ένα κουμπί στα πεντάλ για να επιτρέψετε στην εφαρμογή να προσπαθήσει να προσδιορίσει τη συνιστώμενη λειτουργία παρατεταμένου πατήματος που θα χρησιμοποιηθεί (εάν υπάρχει).</string>
-    <string name="repeat_mode_info">Για πεντάλ που στέλνουν επαναλαμβανόμενες εντολές πλήκτρων προς τα κάτω και προς τα πάνω, αυτό μπορεί να προσομοιώσει μια ενέργεια παρατεταμένου πατήματος</string>
-    <string name="repeat_mode_time">Ώρα να ακούσετε επαναλαμβανόμενες εντολές πατήματος πλήκτρου και πλήκτρου επάνω</string>
-    <string name="repeat_mode_count">Αριθμός εντολών key up για να χαρακτηριστείτε ως παρατεταμένο πάτημα (στο χρόνο που αναφέρεται παραπάνω)</string>
-    <string name="set_inline_showcase">Αυτό είναι το ενσωματωμένο σύνολο που επιτρέπει την προβολή του setlist ενώ παίζετε.  Μπορείτε να αλλάξετε τις ρυθμίσεις στις Ρυθμίσεις / Οθόνη / Ενσωματωμένο σύνολο.</string>
 </resources>

@@ -615,6 +615,8 @@
     <string name="pedal_midi_warning">Chcete-li použít midi pedál, ujistěte se, že jste jej nejprve připojili pomocí nastavení midi v aplikaci.</string>
     <string name="pedal_scroll_before_move">"Přepnout scroll před další / předchozí skladbu"</string>
     <string name="pedal_scroll_before_move_info">Umožňuje, aby další a předchozí pedály fungovaly také jako rolovací pedály</string>
+    <string name="pedal_test">Otestujte připojený pedál</string>
+    <string name="pedal_test_info">Otestujte připojený pedál stisknutím tlačítka na pedálu.  Zobrazí se odesílaný kód.  Dlouhým stisknutím tlačítka na pedálech umožníte aplikaci, aby se pokusila identifikovat doporučený režim dlouhého stisknutí (pokud je k dispozici).</string>
     <string name="pedal_up">Šlapání nahoru (uvolnění)</string>
     <string name="pedal_waiting">"Čekání na tlačítko ...."</string>
     <string name="pedal_waiting_ended">Nebylo zjištěno žádné sešlápnutí pedálu</string>
@@ -672,6 +674,10 @@
     <string name="refresh_song">Obnovit aktuální skladbu</string>
     <string name="rename">"Přejmenovat"</string>
     <string name="rename_info">Přejmenujte nebo změňte kategorii uložené sady</string>
+    <string name="repeat_mode">Režim opakování</string>
+    <string name="repeat_mode_count">Počet příkazů pro stisknutí klávesy, které se kvalifikují jako dlouhé stisknutí (ve výše uvedeném čase)</string>
+    <string name="repeat_mode_info">U pedálů, které vysílají opakované příkazy kláves dolů a nahoru, to může simulovat dlouhý stisk</string>
+    <string name="repeat_mode_time">Je čas poslouchat opakované příkazy pro stisknutí a stisknutí kláves</string>
     <string name="reprise">"Reprise"</string>
     <string name="requires_internet">Tato funkce vyžaduje přístup k internetu</string>
     <string name="reset">"Obnovit"</string>
@@ -719,6 +725,7 @@
     <string name="set_help">"Přetažením písně , a tak změnit pořadí vašeho přístroje"</string>
     <string name="set_inline">Inline sada</string>
     <string name="set_inline_info">Zobrazit setlist na obrazovce vedle okna skladby</string>
+    <string name="set_inline_showcase">Toto je vložená sada, která umožňuje view setlist během hraní.  Nastavení můžete změnit v Nastavení / Zobrazení / Inline sada.</string>
     <string name="set_item_info">Můžete změnit složku/název souboru skladby načtené ze sady a můžete také změnit klávesu pro zobrazení skladby (v případě potřeby provede dočasnou transpozici skladby do vašeho zařízení)</string>
     <string name="set_item_removed">Položka odstraněna ze sady</string>
     <string name="set_load_first">Otevřete načtenou sadu u první položky</string>
@@ -913,11 +920,4 @@
     <string name="width">Šířka</string>
     <string name="words_and_music_by">Slova a hudba od</string>
     <string name="zoom_level">Úroveň přiblížení</string>
-    <string name="set_inline_showcase">Toto je vložená sada, která umožňuje view setlist během hraní.  Nastavení můžete změnit v Nastavení / Zobrazení / Inline sada.</string>
-    <string name="repeat_mode_count">Počet příkazů pro stisknutí klávesy, které se kvalifikují jako dlouhé stisknutí (ve výše uvedeném čase)</string>
-    <string name="repeat_mode_time">Je čas poslouchat opakované příkazy pro stisknutí a stisknutí kláves</string>
-    <string name="repeat_mode_info">U pedálů, které vysílají opakované příkazy kláves dolů a nahoru, to může simulovat dlouhý stisk</string>
-    <string name="pedal_test_info">Otestujte připojený pedál stisknutím tlačítka na pedálu.  Zobrazí se odesílaný kód.  Dlouhým stisknutím tlačítka na pedálech umožníte aplikaci, aby se pokusila identifikovat doporučený režim dlouhého stisknutí (pokud je k dispozici).</string>
-    <string name="pedal_test">Otestujte připojený pedál</string>
-    <string name="repeat_mode">Režim opakování</string>
 </resources>

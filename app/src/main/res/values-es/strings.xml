@@ -609,13 +609,17 @@
     <string name="pedal_avoid_repeat">Mostrar una advertencia antes de pasar a la siguiente canción</string>
     <string name="pedal_avoid_repeat_info">Útil para evitar pulsaciones accidentales</string>
     <string name="pedal_controls">Configurar botones y acciones del pedal</string>
+    <string name="pedal_detected">Se ha detectado la pulsación del pedal</string>
     <string name="pedal_down">Pedal down (presionar)</string>
     <string name="pedal_instructions">Haga clic en un botón de pedal a continuación para asignarlo a un botón de teclado o nota midi y asignarle acciones. La mayoría de los pedales Bluetooth envían comandos de teclado (por ejemplo, flecha arriba/abajo).</string>
     <string name="pedal_midi_warning">Para usar un pedal midi, primero asegúrese de haberlo conectado usando la configuración midi en la aplicación.</string>
     <string name="pedal_scroll_before_move">"Desplazamiento de palanca antes de la siguiente / anterior canción"</string>
     <string name="pedal_scroll_before_move_info">Permite que los pedales siguiente y anterior también funcionen como pedales de desplazamiento</string>
+    <string name="pedal_test">Pedal conectado de prueba</string>
+    <string name="pedal_test_info">Pruebe un pedal conectado presionando el botón de su pedal.  Se mostrará el código que se está enviando.  Mantenga presionado un botón en los pedales para permitir que la aplicación intente identificar el modo de pulsación prolongada recomendado para usar (si está disponible).</string>
     <string name="pedal_up">Pedal up (liberación)</string>
     <string name="pedal_waiting">"Esperando botón …."</string>
+    <string name="pedal_waiting_ended">No se ha detectado ninguna presión de pedal</string>
     <string name="pedal_warning">Confirme el cambio de canción presionando el pedal nuevamente después de que se cierre esta advertencia</string>
     <string name="performance_mode">"Modo de desempeño"</string>
     <string name="performance_mode_info">Usa tu dispositivo como un cancionero</string>
@@ -670,6 +674,10 @@
     <string name="refresh_song">Actualizar canción actual</string>
     <string name="rename">"Cambiar el nombre de"</string>
     <string name="rename_info">Cambiar el nombre o cambiar la categoría de un conjunto guardado</string>
+    <string name="repeat_mode">Modo de repetición</string>
+    <string name="repeat_mode_count">Número de comandos de tecla hacia arriba para calificar como una pulsación larga (en el tiempo indicado anteriormente)</string>
+    <string name="repeat_mode_info">En el caso de los pedales que envían comandos repetidos de tecla hacia abajo y hacia arriba, esto puede simular una acción de pulsación larga</string>
+    <string name="repeat_mode_time">Es hora de escuchar los comandos repetidos de tecla pulsada y subida de tecla</string>
     <string name="reprise">"Vuelta"</string>
     <string name="requires_internet">Esta función requiere acceso a Internet</string>
     <string name="reset">"Reiniciar"</string>
@@ -717,6 +725,7 @@
     <string name="set_help">"Canciones Arrastre alrededor para cambiar el orden de su aparato"</string>
     <string name="set_inline">Conjunto en línea</string>
     <string name="set_inline_info">Mostrar la lista de canciones en la pantalla al lado de la ventana de la canción</string>
+    <string name="set_inline_showcase">Este es el set en línea que permite ver la lista de canciones mientras actúas.  Puede cambiar la configuración en Configuración / Pantalla / Conjunto en línea.</string>
     <string name="set_item_info">Puede cambiar la carpeta / nombre de archivo de la canción cargada desde el conjunto y también puede cambiar la tecla para la visualización de la canción (esto realiza una transposición temporal de la canción en su dispositivo si es necesario)</string>
     <string name="set_item_removed">Objeto eliminado del conjunto</string>
     <string name="set_load_first">Abra el conjunto cargado en el primer elemento</string>
@@ -911,13 +920,4 @@
     <string name="width">Ancho</string>
     <string name="words_and_music_by">Palabras y música de</string>
     <string name="zoom_level">Nivel de zoom</string>
-    <string name="repeat_mode">Modo de repetición</string>
-    <string name="pedal_detected">Se ha detectado la pulsación del pedal</string>
-    <string name="pedal_waiting_ended">No se ha detectado ninguna presión de pedal</string>
-    <string name="pedal_test">Pedal conectado de prueba</string>
-    <string name="pedal_test_info">Pruebe un pedal conectado presionando el botón de su pedal.  Se mostrará el código que se está enviando.  Mantenga presionado un botón en los pedales para permitir que la aplicación intente identificar el modo de pulsación prolongada recomendado para usar (si está disponible).</string>
-    <string name="repeat_mode_info">En el caso de los pedales que envían comandos repetidos de tecla hacia abajo y hacia arriba, esto puede simular una acción de pulsación larga</string>
-    <string name="repeat_mode_time">Es hora de escuchar los comandos repetidos de tecla pulsada y subida de tecla</string>
-    <string name="repeat_mode_count">Número de comandos de tecla hacia arriba para calificar como una pulsación larga (en el tiempo indicado anteriormente)</string>
-    <string name="set_inline_showcase">Este es el set en línea que permite ver la lista de canciones mientras actúas.  Puede cambiar la configuración en Configuración / Pantalla / Conjunto en línea.</string>
 </resources>

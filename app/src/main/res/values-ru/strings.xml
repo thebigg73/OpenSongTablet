@@ -411,7 +411,7 @@
     <string name="index_songs_quick_info">Только песни индекса, которые были изменены с момента последнего создания индекса.</string>
     <string name="index_songs_rebuild">Перестроить базу перечня песен</string>
     <string name="index_songs_start">Построение базы перечня песен</string>
-    <string name="index_songs_wait">Подождите, пока индексация песен не будет завершена...</string>
+    <string name="index_songs_wait">Подождите, пока индексация песен не будет завершена…</string>
     <string name="info_text">Информационный текст</string>
     <string name="info_text_autohide">Автоматически скрывать информационную панель</string>
     <string name="info_text_autohide_info">Скрыть после отображения информации и истечения минимального времени</string>
@@ -609,13 +609,17 @@
     <string name="pedal_avoid_repeat">Показывать предупреждение перед переходом к следующей песне</string>
     <string name="pedal_avoid_repeat_info">Позволяет избежать случайных нажатий</string>
     <string name="pedal_controls">Настройка кнопок и действий педали</string>
+    <string name="pedal_detected">Обнаружено нажатие на педаль</string>
     <string name="pedal_down">Педаль вниз (нажатие)</string>
     <string name="pedal_instructions">Нажмите кнопку педали ниже, чтобы назначить ее кнопке клавиатуры или ноте MIDI и назначить ей действия. Большинство педалей Bluetooth отправляют команды с клавиатуры (например, стрелки вверх/вниз)</string>
     <string name="pedal_midi_warning">Чтобы использовать MIDI педаль, убедитесь, что вы подключили ее в настройках MIDI в приложении</string>
     <string name="pedal_scroll_before_move">Прокрутка перед переключением песни</string>
     <string name="pedal_scroll_before_move_info">Позволяет использовать педали с командами "следующий" и "предыдущий" в качестве прокрутки</string>
+    <string name="pedal_test">Проверка подключенной педали</string>
+    <string name="pedal_test_info">Проверьте подключенную педаль, нажав кнопку на педали.  Отобразится отправляемый код.  Нажмите и удерживайте кнопку на педалях, чтобы приложение попыталось определить рекомендуемый режим длительного нажатия (если доступен).</string>
     <string name="pedal_up">Педаль вверх (отпустите)</string>
     <string name="pedal_waiting">Ожидание нажатия…</string>
+    <string name="pedal_waiting_ended">Нажатие педали не обнаружено</string>
     <string name="pedal_warning">Подтвердить смену песни, снова нажав на педаль после того, как это предупреждение исчезнет</string>
     <string name="performance_mode">Режим выступления</string>
     <string name="performance_mode_info">Использовать устройство в качестве песенника в режиме выступления</string>
@@ -670,6 +674,10 @@
     <string name="refresh_song">Обновить текущую песню</string>
     <string name="rename">Переименование</string>
     <string name="rename_info">Переименовать или изменить категорию сохраненного сета</string>
+    <string name="repeat_mode">Режим повтора</string>
+    <string name="repeat_mode_count">Количество нажатий клавиш для длительного нажатия клавиши (за время, указанное выше)</string>
+    <string name="repeat_mode_info">Для педалей, которые посылают повторяющиеся команды клавиш вниз и вверх, это может имитировать длительное нажатие</string>
+    <string name="repeat_mode_time">Время прослушивания повторяющихся команд нажатия и нажатия клавиши вверх</string>
     <string name="reprise">Реприза</string>
     <string name="requires_internet">Для этой функции требуется доступ в Интернет</string>
     <string name="reset">Сброс</string>
@@ -717,6 +725,7 @@
     <string name="set_help">Чтобы изменить порядок песен в сете, перемещайте их, удерживая пальцем</string>
     <string name="set_inline">Встроенный сет</string>
     <string name="set_inline_info">Показать сет-лист на экране рядом с окном песни</string>
+    <string name="set_inline_showcase">Это встроенный набор, который позволяет просматривать сет-лист во время выступления.  Вы можете изменить настройки в разделе Настройки / Дисплей / Встроенная настройка.</string>
     <string name="set_item_info">Вы можете изменить имя папки/файла песни, загруженной из сета, а также изменить тональность песни ТОЛЬКО для текущего отображения в сете (транспозиция песни в самой базе при этом не меняется)</string>
     <string name="set_item_removed">Предмет удален из набора</string>
     <string name="set_load_first">Откройте загруженный набор на первом элементе</string>
@@ -911,13 +920,4 @@
     <string name="width">Ширина</string>
     <string name="words_and_music_by">Слова и музыка</string>
     <string name="zoom_level">Уровень масштабирования</string>
-    <string name="repeat_mode">Режим повтора</string>
-    <string name="pedal_detected">Обнаружено нажатие на педаль</string>
-    <string name="pedal_waiting_ended">Нажатие педали не обнаружено</string>
-    <string name="pedal_test">Проверка подключенной педали</string>
-    <string name="pedal_test_info">Проверьте подключенную педаль, нажав кнопку на педали.  Отобразится отправляемый код.  Нажмите и удерживайте кнопку на педалях, чтобы приложение попыталось определить рекомендуемый режим длительного нажатия (если доступен).</string>
-    <string name="repeat_mode_info">Для педалей, которые посылают повторяющиеся команды клавиш вниз и вверх, это может имитировать длительное нажатие</string>
-    <string name="repeat_mode_time">Время прослушивания повторяющихся команд нажатия и нажатия клавиши вверх</string>
-    <string name="repeat_mode_count">Количество нажатий клавиш для длительного нажатия клавиши (за время, указанное выше)</string>
-    <string name="set_inline_showcase">Это встроенный набор, который позволяет просматривать сет-лист во время выступления.  Вы можете изменить настройки в разделе Настройки / Дисплей / Встроенная настройка.</string>
 </resources>

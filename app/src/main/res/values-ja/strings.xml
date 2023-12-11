@@ -120,7 +120,7 @@
     <string name="bottom">下</string>
     <string name="bridge">ブリッジ</string>
     <string name="bridge_background">"ブリッジの背景"</string>
-    <string name="browse_sd_card">以下のオプションを選択して、インポートプロセスを開始します。...</string>
+    <string name="browse_sd_card">以下のオプションを選択して、インポートプロセスを開始します。…</string>
     <string name="button">ボタン</string>
     <string name="camera">"カメラ"</string>
     <string name="camera_info">ソングシートの写真を撮る</string>
@@ -609,13 +609,17 @@
     <string name="pedal_avoid_repeat">次の曲に移動する前に警告を表示します</string>
     <string name="pedal_avoid_repeat_info">誤って押すのを避けるために便利です</string>
     <string name="pedal_controls">フットペダルのボタンとアクションを設定する</string>
+    <string name="pedal_detected">ペダルの踏み込みが検出されました</string>
     <string name="pedal_down">ペダルダウン(押す)</string>
     <string name="pedal_instructions">下のペダルボタンをクリックして、キーボードボタンまたはMIDIノートに割り当て、アクションを割り当てます。 ほとんどのBluetoothペダルは、キーボードコマンドを送信します（例：上/下矢印）。</string>
     <string name="pedal_midi_warning">MIDIペダルを使用するには、最初にアプリのMIDI設定を使用して接続していることを確認してください。</string>
     <string name="pedal_scroll_before_move">"次/前の曲の前にトグルスクロール"</string>
     <string name="pedal_scroll_before_move_info">次のペダルと前のペダルをスクロール ペダルとしても機能させることができます。</string>
+    <string name="pedal_test">接続ペダルをテストする</string>
+    <string name="pedal_test_info">ペダルのボタンを押して、接続されているペダルをテストします。 送信中のコードが表示されます。 ペダルのボタンを長押しすると、アプリは使用する推奨長押しモードを試行して識別できます(利用可能な場合)。</string>
     <string name="pedal_up">ペダルアップ(リリース)</string>
     <string name="pedal_waiting">"ボタンを待っている…."</string>
+    <string name="pedal_waiting_ended">ペダルの踏み込みが検出されない</string>
     <string name="pedal_warning">この警告が消えたら、もう一度ペダルを踏んで曲の変更を確認してください</string>
     <string name="performance_mode">"パフォーマンスモード"</string>
     <string name="performance_mode_info">デバイスを歌集として使用する</string>
@@ -670,6 +674,10 @@
     <string name="refresh_song">現在の曲をリフレッシュ</string>
     <string name="rename">"リネーム"</string>
     <string name="rename_info">保存したセットのカテゴリの名前を変更または変更する</string>
+    <string name="repeat_mode">リピートモード</string>
+    <string name="repeat_mode_count">長押しと見なされるキーアップコマンドの数(上記の時間内)</string>
+    <string name="repeat_mode_info">キーを押し下げたり上ったりするコマンドを繰り返すペダルの場合、これは長押しアクションをシミュレートできます</string>
+    <string name="repeat_mode_time">キー・ダウン・コマンドとキー・アップ・コマンドの繰り返しをリッスンする時間</string>
     <string name="reprise">"Reprise"</string>
     <string name="requires_internet">この機能にはインターネットアクセスが必要です</string>
     <string name="reset">"リセット"</string>
@@ -717,6 +725,7 @@
     <string name="set_help">"ドラッグ曲は周りのあなたのセットの順序を変更するには"</string>
     <string name="set_inline">インライン セット</string>
     <string name="set_inline_info">曲ウィンドウの横の画面にセットリストを表示します</string>
+    <string name="set_inline_showcase">これは、演奏中にセットリストを表示できるインラインセットです。 設定/表示/インラインセットで設定を変更できます。</string>
     <string name="set_item_info">セットからロードされた曲のフォルダ/ファイル名を変更したり、曲表示のキーを変更したりすることもできます(これにより、必要に応じてデバイス上の曲の一時的な移調が実行されます)</string>
     <string name="set_item_removed">セットから削除されたアイテム</string>
     <string name="set_load_first">ロードされたセットを最初のアイテムで開く</string>
@@ -911,13 +920,4 @@
     <string name="width">幅</string>
     <string name="words_and_music_by">言葉と音楽</string>
     <string name="zoom_level">ズームレベル</string>
-    <string name="repeat_mode">リピートモード</string>
-    <string name="pedal_detected">ペダルの踏み込みが検出されました</string>
-    <string name="pedal_waiting_ended">ペダルの踏み込みが検出されない</string>
-    <string name="pedal_test">接続ペダルをテストする</string>
-    <string name="pedal_test_info">ペダルのボタンを押して、接続されているペダルをテストします。 送信中のコードが表示されます。 ペダルのボタンを長押しすると、アプリは使用する推奨長押しモードを試行して識別できます(利用可能な場合)。</string>
-    <string name="repeat_mode_info">キーを押し下げたり上ったりするコマンドを繰り返すペダルの場合、これは長押しアクションをシミュレートできます</string>
-    <string name="repeat_mode_time">キー・ダウン・コマンドとキー・アップ・コマンドの繰り返しをリッスンする時間</string>
-    <string name="repeat_mode_count">長押しと見なされるキーアップコマンドの数(上記の時間内)</string>
-    <string name="set_inline_showcase">これは、演奏中にセットリストを表示できるインラインセットです。 設定/表示/インラインセットで設定を変更できます。</string>
 </resources>

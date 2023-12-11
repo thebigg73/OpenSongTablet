@@ -615,6 +615,8 @@
     <string name="pedal_midi_warning">Um ein Midi-Pedal zu verwenden, stellen Sie sicher, dass Sie es zuerst mit den Midi-Einstellungen in der App verbunden haben.</string>
     <string name="pedal_scroll_before_move">"Bildlauf vor nächstem/vorigen Song umschalten"</string>
     <string name="pedal_scroll_before_move_info">Ermöglicht, dass das nächste und das vorherige Pedal auch als Scroll-Pedale fungieren</string>
+    <string name="pedal_test">Angeschlossenes Pedal testen</string>
+    <string name="pedal_test_info">Testen Sie ein angeschlossenes Pedal, indem Sie die Taste auf Ihrem Pedal drücken.  Der gesendete Code wird angezeigt.  Halten Sie eine Taste auf den Pedalen gedrückt, damit die App versuchen kann, den empfohlenen Modus für langes Drücken zu identifizieren (falls verfügbar).</string>
     <string name="pedal_up">Treten Sie in die Pedale (loslassen)</string>
     <string name="pedal_waiting">"Warten auf Taste …."</string>
     <string name="pedal_waiting_ended">Kein Pedaldruck erkannt</string>
@@ -672,6 +674,10 @@
     <string name="refresh_song">Aktuellen Song aktualisieren</string>
     <string name="rename">"Umbenennen"</string>
     <string name="rename_info">Benennen Sie die Kategorie eines gespeicherten Satzes um oder ändern Sie die Kategorie</string>
+    <string name="repeat_mode">Wiederholungsmodus</string>
+    <string name="repeat_mode_count">Anzahl der Tastenbefehle, die als langes Drücken gelten (in der oben angegebenen Zeit)</string>
+    <string name="repeat_mode_info">Bei Pedalen, die wiederholte Tastenbefehle nach unten und oben senden, kann dies eine lange Druckaktion simulieren</string>
+    <string name="repeat_mode_time">Es ist an der Zeit, auf wiederholte Tasten- und Hochtastenbefehle zu achten</string>
     <string name="reprise">"Reprise"</string>
     <string name="requires_internet">Diese Funktion erfordert einen Internetzugang</string>
     <string name="reset">"Zurücksetzen"</string>
@@ -719,6 +725,7 @@
     <string name="set_help">"Elemente verschieben um die Reihenfolge im aktuellen Set zu ändern"</string>
     <string name="set_inline">Inline-Set</string>
     <string name="set_inline_info">Zeigen Sie die Setlist auf dem Bildschirm neben dem Song-Fenster an</string>
+    <string name="set_inline_showcase">Dies ist das Inline-Set, das einen Blick auf die Setlist ermöglicht, während Sie spielen.  Sie können die Einstellungen unter Einstellungen / Anzeige / Inline-Set ändern.</string>
     <string name="set_item_info">Sie können den Ordner/Dateinamen des aus dem Set geladenen Songs ändern und Sie können auch die Taste für die Songanzeige ändern (dies führt bei Bedarf eine temporäre Transponierung des Songs auf Ihrem Gerät durch)</string>
     <string name="set_item_removed">Artikel aus dem Set entfernt</string>
     <string name="set_load_first">Öffnen Sie das geladene Set beim ersten Element</string>
@@ -913,11 +920,4 @@
     <string name="width">Breite</string>
     <string name="words_and_music_by">Worte und Musik von</string>
     <string name="zoom_level">Zoomstufe</string>
-    <string name="set_inline_showcase">Dies ist das Inline-Set, das einen Blick auf die Setlist ermöglicht, während Sie spielen.  Sie können die Einstellungen unter Einstellungen / Anzeige / Inline-Set ändern.</string>
-    <string name="repeat_mode_count">Anzahl der Tastenbefehle, die als langes Drücken gelten (in der oben angegebenen Zeit)</string>
-    <string name="repeat_mode_time">Es ist an der Zeit, auf wiederholte Tasten- und Hochtastenbefehle zu achten</string>
-    <string name="repeat_mode_info">Bei Pedalen, die wiederholte Tastenbefehle nach unten und oben senden, kann dies eine lange Druckaktion simulieren</string>
-    <string name="pedal_test_info">Testen Sie ein angeschlossenes Pedal, indem Sie die Taste auf Ihrem Pedal drücken.  Der gesendete Code wird angezeigt.  Halten Sie eine Taste auf den Pedalen gedrückt, damit die App versuchen kann, den empfohlenen Modus für langes Drücken zu identifizieren (falls verfügbar).</string>
-    <string name="pedal_test">Angeschlossenes Pedal testen</string>
-    <string name="repeat_mode">Wiederholungsmodus</string>
 </resources>

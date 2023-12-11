@@ -609,13 +609,17 @@
     <string name="pedal_avoid_repeat">Pokaż ostrzeżenie przed przejściem do następnej piosenki</string>
     <string name="pedal_avoid_repeat_info">Przydatne, aby uniknąć przypadkowych naciśnięć</string>
     <string name="pedal_controls">Skonfiguruj przyciski i akcje pedału nożnego</string>
+    <string name="pedal_detected">Wykryto naciśnięcie pedału</string>
     <string name="pedal_down">Pedał w dół (naciśnij)</string>
     <string name="pedal_instructions">Kliknij przycisk pedału poniżej, aby przypisać go do przycisku klawiatury lub nuty midi i przypisać do niego akcje. Większość pedałów Bluetooth wysyła polecenia klawiatury (np. strzałka w górę/w dół).</string>
     <string name="pedal_midi_warning">Aby użyć pedału midi, upewnij się, że najpierw został podłączony przy użyciu ustawień midi w aplikacji.</string>
     <string name="pedal_scroll_before_move">Próbuj przewijać przed zmianą piosenki</string>
     <string name="pedal_scroll_before_move_info">Umożliwia, aby następny i poprzedni pedał działały również jako pedał przewijania</string>
+    <string name="pedal_test">Przetestuj podłączony pedał</string>
+    <string name="pedal_test_info">Przetestuj podłączony pedał, naciskając przycisk na pedale.  Zostanie wyświetlony wysyłany kod.  Naciśnij i przytrzymaj przycisk na pedałach, aby aplikacja spróbowała zidentyfikować zalecany tryb długiego naciśnięcia (jeśli jest dostępny).</string>
     <string name="pedal_up">Pedał w górę (zwolnij)</string>
     <string name="pedal_waiting">Czekam na przycisk…</string>
+    <string name="pedal_waiting_ended">Nie wykryto naciśnięcia pedału</string>
     <string name="pedal_warning">Potwierdź zmianę piosenki, naciskając pedał ponownie po zamknięciu tego ostrzeżenia</string>
     <string name="performance_mode">Tryb Wykonania</string>
     <string name="performance_mode_info">Użyj swojego urządzenia jako śpiewnika</string>
@@ -670,6 +674,10 @@
     <string name="refresh_song">Odśwież bieżącą piosenkę</string>
     <string name="rename">Zmień nazwę</string>
     <string name="rename_info">Zmień nazwę lub kategorię zapisanego zestawu</string>
+    <string name="repeat_mode">Tryb powtarzania</string>
+    <string name="repeat_mode_count">Liczba komend Up, aby zakwalifikować się jako długie naciśnięcie (w czasie podanym powyżej)</string>
+    <string name="repeat_mode_info">W przypadku pedałów, które wysyłają powtarzające się polecenia w dół i w górę, może to symulować długie naciśnięcie</string>
+    <string name="repeat_mode_time">Czas na nasłuchiwanie powtarzających się poleceń \"wciśnięcie\" i \"wciśnięcie\"</string>
     <string name="reprise">Repryza</string>
     <string name="requires_internet">Ta funkcja wymaga dostępu do Internetu</string>
     <string name="reset">Resetuj</string>
@@ -717,6 +725,7 @@
     <string name="set_help">Przeciągnij piosenki, aby zmienić ich kolejność w zestawie</string>
     <string name="set_inline">Zestaw wbudowany</string>
     <string name="set_inline_info">Pokaż setlistę na ekranie obok okna piosenki</string>
+    <string name="set_inline_showcase">Jest to zestaw wbudowany, który umożliwia podgląd setlisty podczas występu.  Ustawienia można zmienić w Ustawienia / Wyświetlacz / Zestaw wbudowany.</string>
     <string name="set_item_info">Możesz zmienić katalog/nazwę pliku piosenki załadowanego z zestawu, a także zmienić tonację do wyświetlania (w razie potrzeby wykonuje tymczasową transpozycję piosenki na urządzeniu)</string>
     <string name="set_item_removed">Element usunięty z zestawu</string>
     <string name="set_load_first">Otwórz załadowany zestaw na pierwszym elemencie</string>
@@ -911,13 +920,4 @@
     <string name="width">Szerokość</string>
     <string name="words_and_music_by">Słowa i muzyka wg</string>
     <string name="zoom_level">Stopień przybliżenia</string>
-    <string name="repeat_mode">Tryb powtarzania</string>
-    <string name="pedal_detected">Wykryto naciśnięcie pedału</string>
-    <string name="pedal_waiting_ended">Nie wykryto naciśnięcia pedału</string>
-    <string name="pedal_test">Przetestuj podłączony pedał</string>
-    <string name="pedal_test_info">Przetestuj podłączony pedał, naciskając przycisk na pedale.  Zostanie wyświetlony wysyłany kod.  Naciśnij i przytrzymaj przycisk na pedałach, aby aplikacja spróbowała zidentyfikować zalecany tryb długiego naciśnięcia (jeśli jest dostępny).</string>
-    <string name="repeat_mode_info">W przypadku pedałów, które wysyłają powtarzające się polecenia w dół i w górę, może to symulować długie naciśnięcie</string>
-    <string name="repeat_mode_time">Czas na nasłuchiwanie powtarzających się poleceń \"wciśnięcie\" i \"wciśnięcie\"</string>
-    <string name="repeat_mode_count">Liczba komend Up, aby zakwalifikować się jako długie naciśnięcie (w czasie podanym powyżej)</string>
-    <string name="set_inline_showcase">Jest to zestaw wbudowany, który umożliwia podgląd setlisty podczas występu.  Ustawienia można zmienić w Ustawienia / Wyświetlacz / Zestaw wbudowany.</string>
 </resources>

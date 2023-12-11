@@ -615,6 +615,8 @@
     <string name="pedal_midi_warning">要使用 MIDI 踏板，请确保您首先使用应用程序中的 MIDI 设置连接它。</string>
     <string name="pedal_scroll_before_move">"下一个/上一首歌曲之前切换滚动"</string>
     <string name="pedal_scroll_before_move_info">允许下一个和上一个踏板也可以用作滚动踏板</string>
+    <string name="pedal_test">测试连接踏板</string>
+    <string name="pedal_test_info">按下踏板上的按钮测试连接的踏板。 将显示正在发送的代码。 长按踏板上的按钮，让应用程序尝试识别推荐使用的长按模式（如果可用）。</string>
     <string name="pedal_up">踩踏板（释放）</string>
     <string name="pedal_waiting">"等待按钮…."</string>
     <string name="pedal_waiting_ended">No pedal press detected</string>
@@ -672,6 +674,10 @@
     <string name="refresh_song">刷新当前歌曲</string>
     <string name="rename">"重命名"</string>
     <string name="rename_info">重命名或更改已保存集的类别</string>
+    <string name="repeat_mode">重复模式</string>
+    <string name="repeat_mode_count">符合长按条件的按键命令数（在上述时间内）</string>
+    <string name="repeat_mode_info">对于发送重复按下和向上键命令的踏板，这可以模拟长按动作</string>
+    <string name="repeat_mode_time">是时候侦听重复的按键和按键了</string>
     <string name="reprise">"重奏"</string>
     <string name="requires_internet">此功能需要互联网访问</string>
     <string name="reset">"重置"</string>
@@ -719,6 +725,7 @@
     <string name="set_help">"拖动歌曲各地更改设置的顺序"</string>
     <string name="set_inline">内联集</string>
     <string name="set_inline_info">在歌曲窗口旁边的屏幕上显示设置列表</string>
+    <string name="set_inline_showcase">这是内嵌式设置，允许您在表演时查看歌单。 您可以在设置/显示/内联设置中更改设置。</string>
     <string name="set_item_info">您可以更改从集合加载的歌曲的文件夹/文件名，也可以更改歌曲显示的键（如果需要，这会在您的设备上临时转置歌曲）</string>
     <string name="set_item_removed">从集合中删除的项目</string>
     <string name="set_load_first">在第一项打开加载的集</string>
@@ -913,11 +920,4 @@
     <string name="width">宽度</string>
     <string name="words_and_music_by">文字和音乐</string>
     <string name="zoom_level">缩放级别</string>
-    <string name="repeat_mode">重复模式</string>
-    <string name="pedal_test">测试连接踏板</string>
-    <string name="pedal_test_info">按下踏板上的按钮测试连接的踏板。 将显示正在发送的代码。 长按踏板上的按钮，让应用程序尝试识别推荐使用的长按模式（如果可用）。</string>
-    <string name="repeat_mode_info">对于发送重复按下和向上键命令的踏板，这可以模拟长按动作</string>
-    <string name="repeat_mode_time">是时候侦听重复的按键和按键了</string>
-    <string name="repeat_mode_count">符合长按条件的按键命令数（在上述时间内）</string>
-    <string name="set_inline_showcase">这是内嵌式设置，允许您在表演时查看歌单。 您可以在设置/显示/内联设置中更改设置。</string>
 </resources>

@@ -609,13 +609,17 @@
     <string name="pedal_avoid_repeat">Figyelmeztetés megjelenítése, mielőtt a következő dalra lépne</string>
     <string name="pedal_avoid_repeat_info">Hasznos a véletlen megnyomások elkerülése érdekében</string>
     <string name="pedal_controls">Állítsa be a lábpedál gombjait és műveleteit</string>
+    <string name="pedal_detected">Pedálprés észlelve</string>
     <string name="pedal_down">Pedál le (sajtó)</string>
     <string name="pedal_instructions">Kattintson az alábbi pedálgombra, hogy hozzárendelje egy billentyűzetgombhoz vagy midi hangjegyhez, és rendeljen hozzá műveleteket. A legtöbb Bluetooth-pedál billentyűzetparancsokat küld (pl. fel/le nyíl).</string>
     <string name="pedal_midi_warning">Midi-pedál használatához először győződjön meg arról, hogy csatlakoztatta az alkalmazás midi-beállításaival.</string>
     <string name="pedal_scroll_before_move">"Váltás scroll, mielőtt a következő / előző szám"</string>
     <string name="pedal_scroll_before_move_info">Lehetővé teszi, hogy a következő és az előző pedálok görgetőpedálként is működjenek</string>
+    <string name="pedal_test">Csatlakoztatott pedál tesztelése</string>
+    <string name="pedal_test_info">Tesztelje a csatlakoztatott pedált a pedál gombjának megnyomásával.  Megjelenik az elküldött kód.  Hosszan nyomjon meg egy gombot a pedálokon, hogy az alkalmazás megpróbálja azonosítani az ajánlott hosszan megnyomási módot (ha elérhető).</string>
     <string name="pedal_up">Pedál felfelé (elengedés)</string>
     <string name="pedal_waiting">"Várakozás a gomb …."</string>
+    <string name="pedal_waiting_ended">Nem észlelhető pedálprés</string>
     <string name="pedal_warning">Erősítse meg a dalváltást a pedál ismételt megnyomásával, miután ez a figyelmeztetés bezárult</string>
     <string name="performance_mode">"Performance módban"</string>
     <string name="performance_mode_info">Használja készülékét énekeskönyvként</string>
@@ -670,6 +674,10 @@
     <string name="refresh_song">Frissítés aktuális zeneszám</string>
     <string name="rename">"Átnevezése"</string>
     <string name="rename_info">A mentett készlet kategóriájának átnevezése vagy módosítása</string>
+    <string name="repeat_mode">Ismétlési mód</string>
+    <string name="repeat_mode_count">A hosszú lenyomásnak minősülő billentyűkombinációs parancsok száma (a fent megadott idő alatt)</string>
+    <string name="repeat_mode_info">Azoknál a pedáloknál, amelyek ismételt billentyűle- és felgombolási parancsokat küldenek, ez hosszú lenyomási műveletet szimulálhat</string>
+    <string name="repeat_mode_time">Ideje figyelni az ismétlődő billentyű le és billentyű fel parancsokat</string>
     <string name="reprise">"Ismétlés"</string>
     <string name="requires_internet">Ez a funkció internet-hozzáférést igényel</string>
     <string name="reset">Visszaállítása</string>
@@ -717,6 +725,7 @@
     <string name="set_help">"Drag dalok körül, hogy a sorrend megváltoztatása a beállított"</string>
     <string name="set_inline">Inline készlet</string>
     <string name="set_inline_info">Jelenítse meg a setlist listát a dal ablaka melletti képernyőn</string>
+    <string name="set_inline_showcase">Ez az inline készlet, amely lehetővé teszi a setlist megtekintését előadás közben.  A beállításokat a Beállítások / Kijelző / Inline készlet menüpontban módosíthatja.</string>
     <string name="set_item_info">Megváltoztathatja a készletből betöltött dal mappáját/fájlnevét, és megváltoztathatja a dal megjelenítésének gombját is (ez szükség esetén elvégzi a dal ideiglenes átültetését az eszközön)</string>
     <string name="set_item_removed">A készletből eltávolított elem</string>
     <string name="set_load_first">Nyissa ki a betöltött készletet az első elemnél</string>
@@ -911,13 +920,4 @@
     <string name="width">Szélesség</string>
     <string name="words_and_music_by">Szavak és zene</string>
     <string name="zoom_level">Nagyítási szint</string>
-    <string name="repeat_mode">Ismétlési mód</string>
-    <string name="pedal_detected">Pedálprés észlelve</string>
-    <string name="pedal_waiting_ended">Nem észlelhető pedálprés</string>
-    <string name="pedal_test">Csatlakoztatott pedál tesztelése</string>
-    <string name="pedal_test_info">Tesztelje a csatlakoztatott pedált a pedál gombjának megnyomásával.  Megjelenik az elküldött kód.  Hosszan nyomjon meg egy gombot a pedálokon, hogy az alkalmazás megpróbálja azonosítani az ajánlott hosszan megnyomási módot (ha elérhető).</string>
-    <string name="repeat_mode_info">Azoknál a pedáloknál, amelyek ismételt billentyűle- és felgombolási parancsokat küldenek, ez hosszú lenyomási műveletet szimulálhat</string>
-    <string name="repeat_mode_time">Ideje figyelni az ismétlődő billentyű le és billentyű fel parancsokat</string>
-    <string name="repeat_mode_count">A hosszú lenyomásnak minősülő billentyűkombinációs parancsok száma (a fent megadott idő alatt)</string>
-    <string name="set_inline_showcase">Ez az inline készlet, amely lehetővé teszi a setlist megtekintését előadás közben.  A beállításokat a Beállítások / Kijelző / Inline készlet menüpontban módosíthatja.</string>
 </resources>
