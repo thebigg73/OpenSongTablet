@@ -59,6 +59,14 @@ public class WebServer extends NanoHTTPD {
         }
     }
 
+    public void stopWebServer() {
+        try {
+            this.stop();
+            ip = null;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 
     // Deal with the server request for a webpage
@@ -672,6 +680,5 @@ public class WebServer extends NanoHTTPD {
         }
         return text;
     }
-
 
 }
