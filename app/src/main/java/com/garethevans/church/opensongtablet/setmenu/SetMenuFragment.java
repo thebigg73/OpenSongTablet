@@ -158,6 +158,7 @@ public class SetMenuFragment extends Fragment {
 
     private void setListeners() {
         myView.saveSetButton.post(() -> myView.saveSetButton.setOnClickListener(v -> {
+            prepareCurrentSet();
             String currentSetName = mainActivityInterface.getCurrentSet().getSetCurrentLastName();
             if (currentSetName==null || currentSetName.isEmpty()) {
                 // We need the user to give the set a name

@@ -74,7 +74,6 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
         setList.clear();
         uiHandler.post(() -> notifyItemRangeRemoved(0,size));
 
-
         // Go through each item in the set and add it into the setList array
         for (int x=0; x<mainActivityInterface.getCurrentSet().getSetItems().size(); x++) {
             setList.add(makeSetItem(x));
@@ -298,6 +297,7 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
 
             // Update the prev/next
             updateSetPrevNext();
+
         }
     }
 

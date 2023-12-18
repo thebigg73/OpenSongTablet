@@ -19,36 +19,36 @@
                 android:id="@+id/setName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:endIconMode="clear_text"
                 android:hint="@string/set_name"
-                android:text="@string/set_name" />
+                android:text="@string/set_name"
+                app:endIconMode="clear_text" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
                 android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp">
+                android:layout_marginBottom="8dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
                 <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
                     android:id="@+id/setCategory"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:layout_gravity="center_vertical"
                     android:layout_marginEnd="8dp"
                     android:layout_marginBottom="2dp"
+                    android:layout_weight="1"
                     android:hint="@string/category" />
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/newCategory"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="8dp"
                     android:contentDescription="@string/new_category"
                     app:srcCompat="@drawable/plus"
-                    android:layout_marginStart="8dp"
-                    android:layout_gravity="center_vertical"
                     app:useCompatPadding="false" />
             </LinearLayout>
 
@@ -78,8 +78,54 @@
                 android:id="@+id/setLoadFirst"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/set_load_first"
-                android:hint="@string/set_load_first_info"/>
+                android:hint="@string/set_load_first_info"
+                android:text="@string/set_load_first" />
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/sortAZ"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="16dp"
+                        android:contentDescription="@string/alphabetical_sort"
+                        android:src="@drawable/sort_az" />
+
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/sortZA"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="16dp"
+                        android:contentDescription="@string/alphabetical_sort"
+                        android:src="@drawable/sort_za" />
+
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/sortOldest"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="16dp"
+                        android:contentDescription="@string/set_sort"
+                        android:src="@drawable/sort_oldest" />
+
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/sortNewest"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="16dp"
+                        android:contentDescription="@string/set_sort"
+                        android:src="@drawable/sort_newest" />
+
+                </LinearLayout>
+            </HorizontalScrollView>
 
             <TableRow style="@style/DividerLine" />
 
@@ -87,10 +133,10 @@
                 android:id="@+id/setLists"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
+                android:layout_marginBottom="96dp"
                 android:layout_weight="1"
                 android:isScrollContainer="true"
-                android:orientation="vertical"
-                android:layout_marginBottom="96dp"/>
+                android:orientation="vertical" />
         </LinearLayout>
     </com.garethevans.church.opensongtablet.customviews.NestedScrollWithFAB>
 

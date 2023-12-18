@@ -566,6 +566,7 @@ public class Preferences extends Activity {
     // setCurrentBeforeEdits            String      The current set before edits.  Used as a comparison to decide save action(def:"")
     // setCurrentLastName               String      The last name used when saving or loading a set (def:"")
     // setLoadFirst                     boolean     Should the first item in a set be called when loading (def:true)
+    // setsSortOrder                    String      Which order to sort the set list (def:az - other options za, newest, oldest);
     // songAuthorSize                   float       The size of the song author text in the action bar (def:11.0f)
     // songAutoScale                    String      Choice of autoscale mode (Y)es, (W)idth only or (N)one (def:W)
     // songAutoScaleColumnMaximise      boolean     When autoscale is on full and columns are used, should each column scale independently to maximise font size (def:true)

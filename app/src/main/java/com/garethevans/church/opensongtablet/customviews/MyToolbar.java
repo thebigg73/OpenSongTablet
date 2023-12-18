@@ -198,8 +198,11 @@ public class MyToolbar extends MaterialToolbar {
                     text = "*" + text;
                 }
                 title.setText(text);
+                int positionInSet = mainActivityInterface.getCurrentSet().getIndexSongInSet();
                 // If we are in a set, show the icon
-                int positionInSet = mainActivityInterface.getSetActions().indexSongInSet(mainActivityInterface.getSong());
+                if (positionInSet<0) {
+                    positionInSet = mainActivityInterface.getSetActions().indexSongInSet(mainActivityInterface.getSong());
+                }
                 if (positionInSet>-1) {
                     // Check the set menu fragment to see if we need to highlight
                     // This happens if we just loaded a song (not clicking on the set item in the menu)

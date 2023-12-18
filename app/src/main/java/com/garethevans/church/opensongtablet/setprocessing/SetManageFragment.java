@@ -2,16 +2,19 @@ package com.garethevans.church.opensongtablet.setprocessing;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -69,6 +72,7 @@ public class SetManageFragment extends Fragment {
     private String search_index_wait_string="";
     private String toolBarTitle="";
     private String webAddress;
+    private int activeColor, inactiveColor;
 
     @Override
     public void onResume() {
@@ -129,6 +133,8 @@ public class SetManageFragment extends Fragment {
             error_string = getString(R.string.error);
             deeplink_export_string = getString(R.string.deeplink_export);
             search_index_wait_string = getString(R.string.index_songs_wait);
+            activeColor = getContext().getResources().getColor(R.color.colorSecondary);
+            inactiveColor = getContext().getResources().getColor(R.color.colorAltPrimary);
         }
     }
     private void checkForLoadSpecific() {
@@ -288,6 +294,22 @@ public class SetManageFragment extends Fragment {
         });
 
         myView.nestedScrollView.setExtendedFabToAnimate(myView.loadorsaveButton);
+        myView.sortAZ.setOnClickListener(view -> {
+            mainActivityInterface.getPreferences().setMyPreferenceString("setsSortOrder","az");
+            listAvailableSets();
+        });
+        myView.sortZA.setOnClickListener(view -> {
+            mainActivityInterface.getPreferences().setMyPreferenceString("setsSortOrder","za");
+            listAvailableSets();
+        });
+        myView.sortOldest.setOnClickListener(view -> {
+            mainActivityInterface.getPreferences().setMyPreferenceString("setsSortOrder","oldest");
+            listAvailableSets();
+        });
+        myView.sortNewest.setOnClickListener(view -> {
+            mainActivityInterface.getPreferences().setMyPreferenceString("setsSortOrder","newest");
+            listAvailableSets();
+        });
     }
 
     // Deal with getting the sets in the folder and showing what we want
@@ -332,6 +354,7 @@ public class SetManageFragment extends Fragment {
     private void listAvailableSets() {
         myView.setLists.removeAllViews();
         ArrayList<String> availableSets;
+
         if (whattodo.equals("renameset")) {
             availableSets = mainActivityInterface.getSetActions().listSetsWithCategories(allSets);
         } else {
@@ -341,29 +364,73 @@ public class SetManageFragment extends Fragment {
         // It will also get MAIN, but it won't matter as it just replaces it
         String bitToRemove = myView.setCategory.getText().toString() + "__";
 
+        // Get a better array of the sets which includes last modified dates
+        ArrayList<FoundSet> foundSets = new ArrayList<>();
+        for (int x=0; x<availableSets.size(); x++) {
+            String filename = availableSets.get(x);
+            FoundSet foundSet = new FoundSet();
+            foundSet.setFilename(filename);
+            Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Sets","",filename);
+            foundSet.setUri(uri);
+            foundSet.setTitle(filename.replace(bitToRemove, ""));
+            foundSet.setTag(filename.replace("__", "/"));
+            long lastModifiedLong = mainActivityInterface.getStorageAccess().getLastModifiedDate(uri);
+            String lastModifiedString = mainActivityInterface.getTimeTools().getDateFromMillis(mainActivityInterface.getLocale(),lastModifiedLong);
+            foundSet.setLastModifiedLong(lastModifiedLong);
+            foundSet.setLastModifiedString(lastModifiedString);
+            foundSets.add(foundSet);
+            Log.d(TAG,"filename:"+foundSet.getFilename());
+            Log.d(TAG,"title:"+foundSet.getTitle());
+            Log.d(TAG,"tag:"+foundSet.getTag());
+            Log.d(TAG,"uri:"+foundSet.getUri());
+            Log.d(TAG,"lastModifiedString:"+foundSet.getLastModifiedString());
+            Log.d(TAG,"lastModifiedLong:"+foundSet.getLastModifiedLong());
+        }
+
+        String setsSortOrder = mainActivityInterface.getPreferences().getMyPreferenceString("setsSortOrder","oldest");
+        // Now do the sorting based on the user preference
+        switch (setsSortOrder) {
+            case "az":
+                Collections.sort(foundSets, (FoundSet a, FoundSet z) -> a.getTitle().compareTo(z.getTitle()));
+                break;
+            case "za":
+                Collections.sort(foundSets, (FoundSet a, FoundSet z) -> z.getTitle().compareTo(a.getTitle()));
+                break;
+            case "newest":
+                Collections.sort(foundSets, (o1, o2) -> Long.compare(o2.getLastModifiedLong(), o1.getLastModifiedLong()));
+                break;
+            case "oldest":
+                Collections.sort(foundSets, (o1, o2) -> Long.compare(o1.getLastModifiedLong(), o2.getLastModifiedLong()));
+                break;
+        }
+        ColorStateList active = ColorStateList.valueOf(activeColor);
+        ColorStateList inactive = ColorStateList.valueOf(inactiveColor);
+        myView.sortAZ.setSupportBackgroundTintList(setsSortOrder.equals("az") ? active:inactive);
+        myView.sortZA.setSupportBackgroundTintList(setsSortOrder.equals("za") ? active:inactive);
+        myView.sortOldest.setSupportBackgroundTintList(setsSortOrder.equals("oldest") ? active:inactive);
+        myView.sortNewest.setSupportBackgroundTintList(setsSortOrder.equals("newest") ? active:inactive);
+
         if (getContext()!=null) {
-            for (String setName : availableSets) {
-                @SuppressLint("InflateParams") CheckBox checkBox = (CheckBox) LayoutInflater.from(getContext()).inflate(R.layout.view_checkbox_list_item, null);
-                checkBox.setTag(setName.replace("__", "/"));
-                setName = setName.replace(bitToRemove, "");
-                checkBox.setText(setName);
+            for (int x=0; x<foundSets.size(); x++) {
+                @SuppressLint("InflateParams") LinearLayout linearLayout = (LinearLayout) LayoutInflater.from(getContext()).inflate(R.layout.view_checkbox_list_item, null);
+                CheckBox checkBoxItem = linearLayout.findViewById(R.id.checkBoxItem);
+                MaterialTextView modifiedDate = linearLayout.findViewById(R.id.modifiedDate);
+                checkBoxItem.setTag(foundSets.get(x).getTag());
+                checkBoxItem.setText(foundSets.get(x).getTitle());
+
+                modifiedDate.setText(foundSets.get(x).getLastModifiedString());
+
                 if (whattodo.equals("saveset") || whattodo.equals("renameset")) {
-                    checkBox.setButtonDrawable(null);
-                    checkBox.setAlpha(0.6f);
+                    checkBoxItem.setButtonDrawable(null);
+                    linearLayout.setAlpha(0.6f);
                 } else {
-                    String toFind = bitToRemove + setName;
+                    String toFind = bitToRemove + foundSets.get(x).getFilename();
                     toFind = toFind.replace(mainfoldername_string + "__", "");
-                    checkBox.setChecked(chosenSets.contains("%_%" + toFind + "%_%"));
+                    checkBoxItem.setChecked(chosenSets.contains("%_%" + toFind + "%_%"));
                 }
-                String setCategory = myView.setCategory.getText().toString();
-                String finalSetName;
-                if (setCategory.equals(mainfoldername_string)) {
-                    finalSetName = setName;
-                } else {
-                    finalSetName = setCategory + "__" + setName;
-                }
+                String finalSetName = foundSets.get(x).getFilename();
                 if (!whattodo.equals("renameset") && !whattodo.equals("saveset")) {
-                    checkBox.setOnCheckedChangeListener((compoundButton, b) -> {
+                    checkBoxItem.setOnCheckedChangeListener((compoundButton, b) -> {
                         if (!whattodo.equals("renameset")) {
                             if (b && !chosenSets.contains("%_%" + finalSetName + "%_%")) {
                                 chosenSets = chosenSets + "%_%" + finalSetName + "%_%";
@@ -374,8 +441,8 @@ public class SetManageFragment extends Fragment {
                     });
                 }
                 if (whattodo.equals("renameset") || whattodo.equals("saveset")) {
-                    checkBox.setAlpha(0.6f);
-                    checkBox.setOnClickListener(view -> {
+                    linearLayout.setAlpha(0.6f);
+                    checkBoxItem.setOnClickListener(view -> {
                         String text = view.getTag().toString();
                         if (text.contains("/")) {
                             String[] bits = text.split("/");
@@ -394,7 +461,7 @@ public class SetManageFragment extends Fragment {
                         updateCheckList(text);
                     });
                 }
-                myView.setLists.addView(checkBox);
+                myView.setLists.addView(linearLayout);
             }
         }
     }
@@ -402,11 +469,15 @@ public class SetManageFragment extends Fragment {
     private void updateCheckList(String tag) {
         // Go through the checkbox list and if the tag matches, set full alpha, otherwise dim it
         for (int x=0; x<myView.setLists.getChildCount(); x++) {
-            CheckBox cb = ((CheckBox)myView.setLists.getChildAt(x));
-            if (cb.getTag().equals(tag)) {
-                cb.setAlpha(1f);
-            } else {
-                cb.setAlpha(0.6f);
+            try {
+                CheckBox cb = myView.setLists.getChildAt(x).findViewById(R.id.checkBoxItem);
+                if (cb.getTag().equals(tag)) {
+                    cb.setAlpha(1f);
+                } else {
+                    cb.setAlpha(0.6f);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }

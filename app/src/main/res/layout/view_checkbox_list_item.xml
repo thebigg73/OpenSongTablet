@@ -1,5 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<CheckBox xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="16dp" />
+    android:orientation="horizontal">
+<CheckBox
+    android:id="@+id/checkBoxItem"
+    android:layout_width="0dp"
+    android:layout_weight="1"
+    android:layout_height="wrap_content"
+    android:padding="16dp"
+    android:layout_gravity="start"/>
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/modifiedDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/date"
+        android:textSize="@dimen/text_small"
+        android:textColor="@color/lightgrey"
+        android:layout_gravity="center_vertical"/>
+</LinearLayout>

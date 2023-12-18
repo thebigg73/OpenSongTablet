@@ -3,6 +3,9 @@ package com.garethevans.church.opensongtablet.utilities;
 import android.view.View;
 import android.widget.TextClock;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
 
 public class TimeTools {
@@ -69,10 +72,15 @@ public class TimeTools {
     }
 
     public String getTimeStampFromMills(Locale locale, long millis) {
-        long seconds = Math.round(millis/1000);
+        long seconds = Math.round((float)millis/1000f);
         long s = seconds % 60;
         long m = (seconds / 60) % 60;
         long h = (seconds / (60 * 60)) % 24;
         return String.format(locale,"%02d:%02d:%02d", h,m,s);
+    }
+
+    public String getDateFromMillis(Locale locale, long millis) {
+        DateFormat formatter = SimpleDateFormat.getDateTimeInstance(SimpleDateFormat.DEFAULT, SimpleDateFormat.SHORT, locale);
+        return formatter.format(new Date(millis));
     }
 }

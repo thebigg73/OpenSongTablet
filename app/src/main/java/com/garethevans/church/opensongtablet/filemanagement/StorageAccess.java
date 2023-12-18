@@ -802,6 +802,15 @@ public class StorageAccess {
         }
     }
 
+    public long getLastModifiedDate(Uri uri) {
+        if (uri!=null && uriExists(uri)) {
+            if (lollipopOrLater()) {
+                return DocumentFile.fromSingleUri(c, uri).lastModified();
+            }
+        }
+        return 0;
+    }
+
     private float getFileSizeFromUri_File(Uri uri) {
         File df = null;
         if (uri != null && uri.getPath() != null) {

@@ -173,8 +173,11 @@ public class DisplayPrevNext {
     }
 
     public void getPositions() {
-        int setPosition = mainActivityInterface.getSetActions().indexSongInSet(mainActivityInterface.getSong());
-        mainActivityInterface.getCurrentSet().setIndexSongInSet(setPosition);
+        int setPosition = mainActivityInterface.getCurrentSet().getIndexSongInSet();
+        if (setPosition<0) {
+            setPosition = mainActivityInterface.getSetActions().indexSongInSet(mainActivityInterface.getSong());
+            mainActivityInterface.getCurrentSet().setIndexSongInSet(setPosition);
+        }
         int songPosition = mainActivityInterface.getPositionOfSongInMenu();
 
         // Set the local variables for prevIndex, nextIndex and if we are using the set or song menu
@@ -283,7 +286,6 @@ public class DisplayPrevNext {
     }
 
     private void doMove(int position) {
-        Log.d(TAG,"doMove():"+position);
         try {
             prev.removeCallbacks(hidePrevRunnable);
             prevFAB.removeCallbacks(hidePrevFABRunnable);
