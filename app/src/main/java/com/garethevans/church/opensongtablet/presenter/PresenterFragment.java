@@ -433,7 +433,7 @@ public class PresenterFragment extends Fragment {
         myView.inlineSetList.orientationChanged(orientation);
     }
     public void updateInlineSetSet() {
-        if (myView!=null) {
+        if (myView!=null && myView.inlineSetList!=null && myView.inlineSetList.getChildCount()<=0) {
             myView.inlineSetList.setUseTitle(mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuSortTitles",true));
             myView.inlineSetList.post(() -> myView.inlineSetList.prepareSet());
         }
