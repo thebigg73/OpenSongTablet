@@ -329,7 +329,7 @@ public class PerformanceFragment extends Fragment {
         myView.inlineSetList.orientationChanged(orientation);
     }
     public void updateInlineSetSet() {
-        if (myView!=null) {
+        if (myView!=null && myView.inlineSetList!=null && myView.inlineSetList.getChildCount()<=0) {
             try {
                 myView.inlineSetList.setUseTitle(mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuSortTitles", true));
                 myView.inlineSetList.post(() -> myView.inlineSetList.prepareSet());
@@ -567,7 +567,7 @@ public class PerformanceFragment extends Fragment {
             // If we are in a set, send that info to the inline set custom view to see if it should draw
             myView.inlineSetList.checkVisibility();
             myView.inlineSetList.post(() -> {
-                if (myView!=null && myView.inlineSetList!=null) {
+                if (myView!=null && myView.inlineSetList!=null && myView.inlineSetList.getChildCount()<=0) {
                     myView.inlineSetList.prepareSet();
                     // Showcase what this is
                     if (myView.inlineSetList.getVisibility() == View.VISIBLE) {
