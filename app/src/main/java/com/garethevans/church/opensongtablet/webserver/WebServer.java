@@ -495,29 +495,30 @@ public class WebServer extends NanoHTTPD {
         String base2 = "&swap=true');\n";
         String importString = base1+mainActivityInterface.getMyFonts().getLyricFontName()+base2;
         importString += base1+mainActivityInterface.getMyFonts().getChordFontName()+base2;
-        importString += ".menu {font-family:"+mainActivityInterface.getMyFonts().getLyricFontName()+"; color:white; " +
+        importString += ".menu {font-family:"+mainActivityInterface.getMyFonts().getLyricFontName()+", Tahoma, Verdana, sans-serif; color:white; " +
                 "font-size:14.0pt;}\n";
         importString += ".lyric {font-family:"+mainActivityInterface.getMyFonts().getLyricFontName()+"; color:" +
                 String.format("#%06X", (0xFFFFFF & mainActivityInterface.getMyThemeColors().getLyricsTextColor())) + "; " +
                 "padding: 0px; font-size:14.0pt; white-space:nowrap; width: fit-content;}\n";
-        importString += ".chord {font-family:"+mainActivityInterface.getMyFonts().getChordFontName()+"; color:" +
+        importString += ".chord {font-family:"+mainActivityInterface.getMyFonts().getChordFontName()+", Tahoma, Verdana, sans-serif; color:" +
                 String.format("#%06X", (0xFFFFFF & mainActivityInterface.getMyThemeColors().getLyricsChordsColor())) + "; " +
                 "padding: 0px; font-size:"+(14.0f*mainActivityInterface.getProcessSong().scaleChords)+"pt; white-space:nowrap;width: fit-content;}\n";
-        importString += ".capo {font-family:"+mainActivityInterface.getMyFonts().getChordFontName()+"; color:" +
+        importString += ".capo {font-family:"+mainActivityInterface.getMyFonts().getChordFontName()+", Tahoma, Verdana, sans-serif; color:" +
                 String.format("#%06X", (0xFFFFFF & mainActivityInterface.getMyThemeColors().getLyricsCapoColor())) + "; " +
                 "padding: 0px; font-size:"+(14.0f*mainActivityInterface.getProcessSong().scaleChords)+"pt; white-space:nowrap;width: fit-content;}\n";
-        importString += ".titlemain {font-family:"+mainActivityInterface.getMyFonts().getLyricFontName()+"; color:" +
+        importString += ".titlemain {font-family:"+mainActivityInterface.getMyFonts().getLyricFontName()+", Tahoma, Verdana, sans-serif; color:" +
                 String.format("#%06X", (0xFFFFFF & mainActivityInterface.getMyThemeColors().getLyricsTextColor())) + "; " +
                 "padding: 0px; font-size:"+(14.0f*1.1f)+"pt; " +
                 "text-decoration:underline;}\n";
-        importString += ".titleextras {font-family:"+mainActivityInterface.getMyFonts().getLyricFontName()+"; color:" +
+        importString += ".titleextras {font-family:"+mainActivityInterface.getMyFonts().getLyricFontName()+", Tahoma, Verdana, sans-serif; color:" +
                 String.format("#%06X", (0xFFFFFF & mainActivityInterface.getMyThemeColors().getLyricsTextColor())) + "; " +
                 "padding: 0px; font-size:"+(14.0f*0.6f)+"pt; " +
                 "text-decoration:none;}\n";
-        importString += ".heading {font-family:"+mainActivityInterface.getMyFonts().getLyricFontName()+"; color:" +
+        importString += ".heading {font-family:"+mainActivityInterface.getMyFonts().getLyricFontName()+", Tahoma, Verdana, sans-serif; color:" +
                 String.format("#%06X", (0xFFFFFF & mainActivityInterface.getMyThemeColors().getLyricsTextColor())) + "; " +
                 "padding: 0px; font-size:"+(14.0f*mainActivityInterface.getProcessSong().scaleHeadings)+"pt; " +
                 "text-decoration:underline;}\n";
+        //importString += ".mono {font-family:"+mainActivityInterface.getMyFonts().getMonoFontName()+", 'Courier New', Courier, monospace; color:" +
         importString += ".mono {font-family:"+mainActivityInterface.getMyFonts().getMonoFontName()+"; color:" +
                 String.format("#%06X", (0xFFFFFF & mainActivityInterface.getMyThemeColors().getLyricsTextColor())) + "; " +
                 "padding: 0px; font-size:"+(14.0f*mainActivityInterface.getProcessSong().scaleComments)+"pt; " +
@@ -644,7 +645,7 @@ public class WebServer extends NanoHTTPD {
             return "#menu {position:fixed; padding: 0; top:0; overflow-x: scroll; white-space: nowrap; display:inline-block; transform-origin: top left; " +
                     "color:white; position:fixed; z-index:1; " +
                     "background-color:" + String.format("#%06X", (0xFFFFFF & mainActivityInterface.getMyThemeColors().getLyricsBackgroundColor())) + "; " +
-                    "font-family:" + mainActivityInterface.getMyFonts().getLyricFontName() + "; " +
+                    "font-family:" + mainActivityInterface.getMyFonts().getLyricFontName() + ", Tahoma, Verdana, sans-serif; " +
                     "font-size:8pt;}\n" +
                     "a {margin-right:8px; padding:8px; float:left; display:inline-block; padding:8px; color:white; background-color:#294959; font-size:16pt;}\n" +
                     "a:link {color:white; text-decoration:none; font-size:8pt;}\n" +
