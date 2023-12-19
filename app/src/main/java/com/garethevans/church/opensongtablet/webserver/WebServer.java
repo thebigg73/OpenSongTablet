@@ -50,7 +50,7 @@ public class WebServer extends NanoHTTPD {
     public void callRunWebServer() {
         try {
             if (runWebServer) {
-                this.start();
+                this.start(NanoHTTPD.SOCKET_READ_TIMEOUT, false);
             } else {
                 this.stop();
             }
