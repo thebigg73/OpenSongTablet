@@ -251,7 +251,7 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
                 if (value>0) {
                     thisNewKey = "+" + (int)value;
                 } else {
-                    thisNewKey = "" + (int) value;
+                    thisNewKey = String.valueOf((int) value);
                 }
                 myView.keyChangeTextView.setText(thisNewKey);
                 newKey = "";

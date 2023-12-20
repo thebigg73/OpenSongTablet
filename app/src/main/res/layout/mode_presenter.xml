@@ -14,7 +14,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorAltPrimary"
-        android:soundEffectsEnabled="false" />
+        android:soundEffectsEnabled="false"
+        android:contentDescription="@string/presenter_mode"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -82,7 +83,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
                     android:layout_margin="8dp"
-                    android:contentDescription="@string/project"
+                    android:contentDescription="@string/panic"
                     android:gravity="center"
                     android:padding="16dp"
                     android:soundEffectsEnabled="false"

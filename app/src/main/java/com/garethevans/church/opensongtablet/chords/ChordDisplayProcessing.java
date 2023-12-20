@@ -26,6 +26,7 @@ public class ChordDisplayProcessing {
 
     private ArrayList<String> instruments, chordsInSong, fingerings, pianoNotesArray;
     private ArrayList<Integer> pianoKeysArray;
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "ChordDisplayProcessing";
     private final Context c;
     private final MainActivityInterface mainActivityInterface;

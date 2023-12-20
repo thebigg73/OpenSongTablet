@@ -415,7 +415,7 @@ public class BackupRestoreSetsFragment extends Fragment {
         chosenSets = new ArrayList<>();
         for (int x=0; x<myView.foundSetsListView.getChildCount(); x++) {
             if (((CheckBox) myView.foundSetsListView.getChildAt(x)).isChecked()) {
-                chosenSets.add(((CheckBox) myView.foundSetsListView.getChildAt(x)).getTag().toString());
+                chosenSets.add(myView.foundSetsListView.getChildAt(x).getTag().toString());
             }
         }
     }

@@ -224,9 +224,9 @@ public class SoundLevelBottomSheet extends BottomSheetDialogFragment {
             counts ++;
             avvol = (float) totalvols/(float) counts;
             avvol = Math.round(avvol);
-            String text = vol + "";
+            String text = String.valueOf(vol);
             myView.dBTextView.setText(text);
-            String text2 = (int)avvol+"";
+            String text2 = String.valueOf((int)avvol);
             myView.averagevol.setText(text2);
 
             // Turn the appropriate level lights on or off

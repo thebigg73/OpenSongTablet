@@ -128,7 +128,7 @@ public class MetronomeFragment extends Fragment {
         ArrayList<String> signatureBeats = new ArrayList<>();
         signatureBeats.add("");
         for (int x=1; x<17; x++) {
-            signatureBeats.add(""+x);
+            signatureBeats.add(String.valueOf(x));
         }
         ArrayList<String> signatureDivisions = new ArrayList<>();
         signatureDivisions.add("");
@@ -141,7 +141,7 @@ public class MetronomeFragment extends Fragment {
         ArrayList<String> tempos = new ArrayList<>();
         tempos.add("");
         for (int x=40; x<300; x++) {
-            tempos.add(""+x);
+            tempos.add(String.valueOf(x));
         }
         String tempoBpm = tempo_string + " (" + bpm_string + ")";
         myView.songTempo.setText(tempoBpm);
@@ -236,7 +236,7 @@ public class MetronomeFragment extends Fragment {
         if (bars==0) {
             return on_string;
         } else {
-            return ""+bars;
+            return String.valueOf(bars);
         }
     }
 
@@ -419,8 +419,8 @@ public class MetronomeFragment extends Fragment {
         int av_bpm = Math.round(((float) total_calc_bpm / (float) total_counts) / meterTimeFactor);
 
         if (av_bpm < 300 && av_bpm >= 40) {
-            myView.songTempo.setText(""+av_bpm);
-            mainActivityInterface.getSong().setTempo(""+av_bpm);
+            myView.songTempo.setText(String.valueOf(av_bpm));
+            mainActivityInterface.getSong().setTempo(String.valueOf(av_bpm));
 
         } else if (av_bpm <40) {
             myView.songTempo.setText("40");

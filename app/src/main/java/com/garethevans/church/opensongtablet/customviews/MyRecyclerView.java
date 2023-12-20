@@ -509,7 +509,7 @@ public class MyRecyclerView extends RecyclerView  implements RecyclerView.Smooth
 
     public int getScrollPos() {
         float scale = 1f;
-        if (getAdapter()!=null && getAdapter() instanceof PDFPageAdapter && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && getAdapter()!=null && getAdapter() instanceof PDFPageAdapter) {
             scale = ((PDFPageAdapter) getAdapter()).getPdfHorizontalScale();
         }
         int pos;

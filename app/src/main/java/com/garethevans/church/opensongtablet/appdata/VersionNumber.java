@@ -56,7 +56,7 @@ public class VersionNumber {
             if (showVersion != null) {
                 showVersion.setVisibility(View.VISIBLE);
                 showVersion.setText(getFullVersionInfo());
-                showVersion.setHint(""+getVersionCode());
+                showVersion.setHint(String.valueOf(getVersionCode()));
             }
         } else {
             if (showVersion != null) {

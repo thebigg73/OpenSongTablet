@@ -21,7 +21,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/colorPrimary"
-            android:paddingBottom="4dp">
+            android:paddingBottom="4dp"
+            android:contentDescription="@string/edit_set_item">
 
             <LinearLayout
                 android:id="@+id/setList"

@@ -114,8 +114,8 @@ public class AlertInfoBottomSheet extends BottomSheetDialogFragment {
             myView.timeToBackup.setVisibility(View.VISIBLE);
             mainActivityInterface.getPreferences().setMyPreferenceInt("runssincebackupdismissed",0);
             String s = promptbackup.
-                    replace("10","" +
-                            mainActivityInterface.getPreferences().getMyPreferenceInt("runssincebackup", 0));
+                    replace("10",
+                            String.valueOf(mainActivityInterface.getPreferences().getMyPreferenceInt("runssincebackup", 0)));
             myView.backupDescription.setText(s);
             myView.backupNowButton.setOnClickListener(v -> {
                 mainActivityInterface.navigateToFragment(deeplink_backup,0);

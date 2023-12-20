@@ -166,32 +166,32 @@ public class InlineMidiBottomSheet extends BottomSheetDialogFragment {
     private void prepareArrays() {
         midiChannels = new ArrayList<>();
         for (int i = 1; i <= 16; i++) {
-            midiChannels.add("" + i);
+            midiChannels.add(String.valueOf(i));
         }
 
         range0_100 = new ArrayList<>();
         for (int i = 0; i <= 100; i++) {
-            range0_100.add("" + i);
+            range0_100.add(String.valueOf(i));
         }
 
         range0_127 = new ArrayList<>();
         for (int i = 0; i <= 127; i++) {
-            range0_127.add("" + i);
+            range0_127.add(String.valueOf(i));
         }
 
         range1_127 = new ArrayList<>();
         for (int i = 1; i <= 127; i++) {
-            range1_127.add("" + i);
+            range1_127.add(String.valueOf(i));
         }
 
         range1_32 = new ArrayList<>();
         for (int i = 1; i <= 32; i++) {
-            range1_32.add("" + i);
+            range1_32.add(String.valueOf(i));
         }
 
         range40_300 = new ArrayList<>();
         for (int i = 40; i <= 300; i++) {
-            range40_300.add("" + i);
+            range40_300.add(String.valueOf(i));
         }
 
         midiActions = new ArrayList<>();

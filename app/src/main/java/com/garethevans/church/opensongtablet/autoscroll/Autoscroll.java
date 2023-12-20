@@ -178,8 +178,8 @@ public class Autoscroll {
                         delayText.setText("0");
                     }
                     int[] time = mainActivityInterface.getTimeTools().getMinsSecsFromSecs(duration);
-                    minText.setText(""+time[0]);
-                    secText.setText(""+time[1]);
+                    minText.setText(String.valueOf(time[0]));
+                    secText.setText(String.valueOf(time[1]));
                 }));
             } else {
                 fromLinkButton.setVisibility(View.GONE);

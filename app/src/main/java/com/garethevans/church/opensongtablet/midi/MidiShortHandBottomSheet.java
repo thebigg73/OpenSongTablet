@@ -5,7 +5,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -206,27 +205,27 @@ public class MidiShortHandBottomSheet extends BottomSheetDialogFragment {
         for (int x=0; x<=300; x++) {
             if (x>=1 && x<=16) {
                 // MIDI channels 1-6
-                midiChannel.add("" + x);
+                midiChannel.add(String.valueOf(x));
             }
             if (x<=127) {
                 // Values between 0-127
-                midiValue0_127.add("" + x);
+                midiValue0_127.add(String.valueOf(x));
                 if (x>=1) {
                     // Values between 1-127
-                    midiValue1_127.add("" + x);
+                    midiValue1_127.add(String.valueOf(x));
                 }
             }
             if (x>=1 && x<=128) {
                 // Values between 1-128
-                midiValue1_128.add("" + x);
+                midiValue1_128.add(String.valueOf(x));
             }
             if (x<=100) {
                 // Values between 0-100
-                midiValue0_100.add("" + x);
+                midiValue0_100.add(String.valueOf(x));
             }
             if (x>=40) {
                 // Values between 40-300
-                midiValue40_300.add("" + x);
+                midiValue40_300.add(String.valueOf(x));
             }
         }
         if (getContext()!=null) {
@@ -531,7 +530,7 @@ public class MidiShortHandBottomSheet extends BottomSheetDialogFragment {
                 if (command.equals("NO") || command.equals("NX")) {
                     // Convert the notes to the position in the array
                     int pos = midiNotes.indexOf(val1);
-                    val1 = pos + "";
+                    val1 = String.valueOf(pos);
                 }
                 midiCode += val1;
             }

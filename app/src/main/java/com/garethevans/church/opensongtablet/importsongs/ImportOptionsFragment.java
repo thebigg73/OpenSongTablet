@@ -157,9 +157,15 @@ public class ImportOptionsFragment extends Fragment {
                         if (result.getResultCode() == Activity.RESULT_OK || result.getResultCode()==0) {
                             // There are no request codes
                             Intent data = result.getData();
-                            Log.d(TAG,"data:"+data);
-                            Log.d(TAG,"data.getExtras().get(\"uri\"):"+data.getExtras().get("uri"));
-                            Log.d(TAG,"data.getData():"+data.getData());
+                            if (data!=null) {
+                                try {
+                                    Log.d(TAG, "data:" + data);
+                                    Log.d(TAG, "data.getExtras().get(\"uri\"):" + data.getExtras().get("uri"));
+                                    Log.d(TAG, "data.getData():" + data.getData());
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
                         }
                     }
                 });

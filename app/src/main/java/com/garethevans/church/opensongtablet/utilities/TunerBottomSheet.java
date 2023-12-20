@@ -152,7 +152,7 @@ public class TunerBottomSheet extends BottomSheetDialogFragment {
             myView.aHz.setAdapter(exposedDropDownArrayAdapter2);
         }
         concertPitch = (float) mainActivityInterface.getPreferences().getMyPreferenceInt("refAHz",440);
-        myView.aHz.setText((int)concertPitch+"");
+        myView.aHz.setText(String.valueOf((int)concertPitch));
         checkMidiButtons();
         myView.aHz.addTextChangedListener(new TextWatcher() {
             @Override

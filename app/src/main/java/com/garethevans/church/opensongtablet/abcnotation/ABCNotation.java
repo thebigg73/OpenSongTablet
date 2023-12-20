@@ -134,7 +134,7 @@ public class ABCNotation {
     // Save the edits to the song XML file (and in the database)
     public void saveAbcContent(MainActivityInterface mainActivityInterface, Song thisSong) {
         thisSong.setAbc(songAbc);
-        thisSong.setAbcTranspose(songAbcTranspose+"");
+        thisSong.setAbcTranspose(String.valueOf(songAbcTranspose));
         mainActivityInterface.getSaveSong().updateSong(thisSong, false);
     }
 

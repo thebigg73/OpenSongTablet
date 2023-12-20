@@ -88,7 +88,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="top|start"
                     android:layout_margin="8dp"
-                    android:contentDescription="@string/close"
+                    android:contentDescription="@string/back"
                     app:srcCompat="@drawable/arrow_left"
                     app:fabSize="mini"
                     app:useCompatPadding="false" />

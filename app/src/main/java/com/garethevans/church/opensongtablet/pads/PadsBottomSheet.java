@@ -214,7 +214,7 @@ public class PadsBottomSheet extends BottomSheetDialogFragment {
         myView.padType.addTextChangedListener(new MyTextWatcher("padType"));
         myView.padLinkAudio.addTextChangedListener(new MyTextWatcher("padLink"));
         myView.padLoop.setOnCheckedChangeListener((compoundButton, b) -> {
-            mainActivityInterface.getSong().setPadloop(""+b);
+            mainActivityInterface.getSong().setPadloop(String.valueOf(b));
             mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong(),false);
         });
         myView.padSettings.setOnClickListener(view -> {

@@ -147,7 +147,7 @@ public class EditSongFragmentFeatures extends Fragment {
         ArrayList<String> tempos = new ArrayList<>();
         tempos.add("");
         for (int x = 40; x < 300; x++) {
-            tempos.add(x + "");
+            tempos.add(String.valueOf(x));
         }
         if (getContext()!=null) {
             myView.tempo.post(() -> {
@@ -188,12 +188,12 @@ public class EditSongFragmentFeatures extends Fragment {
         myView.durationMins.post(() -> {
             myView.durationMins.setInputType(InputType.TYPE_CLASS_NUMBER);
             myView.durationMins.setDigits("0123456789");
-            myView.durationMins.setText(timeVals[0]+"");
+            myView.durationMins.setText(String.valueOf(timeVals[0]));
         });
         myView.durationSecs.post(() -> {
             myView.durationSecs.setInputType(InputType.TYPE_CLASS_NUMBER);
             myView.durationSecs.setDigits("0123456789");
-            myView.durationSecs.setText(timeVals[1]+"");
+            myView.durationSecs.setText(String.valueOf(timeVals[1]));
         });
         myView.delay.post(() -> {
             myView.delay.setInputType(InputType.TYPE_CLASS_NUMBER);
@@ -471,7 +471,7 @@ public class EditSongFragmentFeatures extends Fragment {
         int mins = Integer.parseInt(minsText);
         int secs = Integer.parseInt(secsText);
         int total = mainActivityInterface.getTimeTools().totalSecs(mins,secs);
-        mainActivityInterface.getTempSong().setAutoscrolllength(total+"");
+        mainActivityInterface.getTempSong().setAutoscrolllength(String.valueOf(total));
     }
     private String shortText(String niceText) {
         if (niceText.equals(off_string)) {
@@ -491,12 +491,12 @@ public class EditSongFragmentFeatures extends Fragment {
         myView.key.setText(foundKey);
     }
     public void updateTempo(int tempo) {
-        myView.tempo.setText(""+tempo);
+        myView.tempo.setText(String.valueOf(tempo));
     }
 
     public void updateDuration(int mins, int secs) {
-        myView.durationMins.setText(mins+"");
-        myView.durationSecs.setText(secs+"");
+        myView.durationMins.setText(String.valueOf(mins));
+        myView.durationSecs.setText(String.valueOf(secs));
     }
 
     @Override

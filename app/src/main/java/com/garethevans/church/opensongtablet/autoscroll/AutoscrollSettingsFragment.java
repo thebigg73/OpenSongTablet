@@ -67,10 +67,10 @@ public class AutoscrollSettingsFragment extends Fragment {
         // Get the defaults from the autoscroll class which controls the preferences
         int[] defTimes = mainActivityInterface.getTimeTools().getMinsSecsFromSecs(
                 mainActivityInterface.getAutoscroll().getAutoscrollDefaultSongLength());
-        myView.defaultMins.setText(defTimes[0]+"");
-        myView.defaultSecs.setText(defTimes[1]+"");
-        myView.defaultDelay.setText(mainActivityInterface.getAutoscroll().
-                getAutoscrollDefaultSongPreDelay()+"");
+        myView.defaultMins.setText(String.valueOf(defTimes[0]));
+        myView.defaultSecs.setText(String.valueOf(defTimes[1]));
+        myView.defaultDelay.setText(String.valueOf(mainActivityInterface.getAutoscroll().
+                getAutoscrollDefaultSongPreDelay()));
 
         if (mainActivityInterface.getAutoscroll().getAutoscrollUseDefaultTime()) {
             myView.defaultOrAsk.setSliderPos(0);
@@ -80,14 +80,14 @@ public class AutoscrollSettingsFragment extends Fragment {
 
         myView.autostartAutoscroll.setChecked(mainActivityInterface.
                 getAutoscroll().getAutoscrollAutoStart());
-        myView.delay.setText(getStringToInt(mainActivityInterface.getSong().
-                getAutoscrolldelay())+"");
+        myView.delay.setText(String.valueOf(getStringToInt(mainActivityInterface.getSong().
+                getAutoscrolldelay())));
 
         // Get song values
         int[] songTimes = mainActivityInterface.getTimeTools().getMinsSecsFromSecs(
                 getStringToInt(mainActivityInterface.getSong().getAutoscrolllength()));
-        myView.durationMins.setText(songTimes[0]+"");
-        myView.durationSecs.setText(songTimes[1]+"");
+        myView.durationMins.setText(String.valueOf(songTimes[0]));
+        myView.durationSecs.setText(String.valueOf(songTimes[1]));
 
         // Check audio link file
         mainActivityInterface.getAutoscroll().checkLinkAudio(myView.linkAudio, myView.durationMins,
@@ -196,8 +196,8 @@ public class AutoscrollSettingsFragment extends Fragment {
             if (delay >= total) {
                 delay = 0;
             }
-            mainActivityInterface.getSong().setAutoscrolldelay(delay+"");
-            mainActivityInterface.getSong().setAutoscrolllength(total+"");
+            mainActivityInterface.getSong().setAutoscrolldelay(String.valueOf(delay));
+            mainActivityInterface.getSong().setAutoscrolllength(String.valueOf(total));
             mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong(),false);
         }
     }

@@ -87,9 +87,9 @@ public class AutoscrollBottomSheet extends BottomSheetDialogFragment {
     }
     private void setupViews() {
         int[] songTimes = mainActivityInterface.getTimeTools().getMinsSecsFromSecs(getStringToInt(mainActivityInterface.getSong().getAutoscrolllength()));
-        myView.durationMins.setText(""+songTimes[0]);
-        myView.durationSecs.setText(""+songTimes[1]);
-        myView.delay.setText(getStringToInt(mainActivityInterface.getSong().getAutoscrolldelay())+"");
+        myView.durationMins.setText(String.valueOf(songTimes[0]));
+        myView.durationSecs.setText(String.valueOf(songTimes[1]));
+        myView.delay.setText(String.valueOf(getStringToInt(mainActivityInterface.getSong().getAutoscrolldelay())));
 
         myView.durationMins.setInputType(InputType.TYPE_CLASS_NUMBER);
         myView.durationSecs.setInputType(InputType.TYPE_CLASS_NUMBER);
@@ -184,8 +184,8 @@ public class AutoscrollBottomSheet extends BottomSheetDialogFragment {
                 delay = 0;
             }
 
-            mainActivityInterface.getSong().setAutoscrolldelay(delay + "");
-            mainActivityInterface.getSong().setAutoscrolllength(total + "");
+            mainActivityInterface.getSong().setAutoscrolldelay(String.valueOf(delay));
+            mainActivityInterface.getSong().setAutoscrolllength(String.valueOf(total));
             mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong(),false);
         }
     }

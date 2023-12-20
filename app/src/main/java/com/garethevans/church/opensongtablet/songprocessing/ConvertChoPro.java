@@ -237,7 +237,7 @@ public class ConvertChoPro {
                     secs = Integer.parseInt(duration.replaceAll("\\D",""));
                 }
                 if (secs!=0) {
-                    duration = "" + secs;
+                    duration = String.valueOf(secs);
                 }
                 line = "";
 

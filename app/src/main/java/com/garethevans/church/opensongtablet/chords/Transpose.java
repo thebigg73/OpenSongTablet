@@ -327,7 +327,7 @@ public class Transpose {
     public String transposeChordForCapo(int capo, String string) {
         // Use the miniTransposeSong
         miniTransposeSong.setLyrics(string);
-        miniTransposeSong.setCapo(""+capo);
+        miniTransposeSong.setCapo(String.valueOf(capo));
         miniTransposeSong.setDetectedChordFormat(mainActivityInterface.getSong().getDetectedChordFormat());
         miniTransposeSong.setDesiredChordFormat(mainActivityInterface.getSong().getDesiredChordFormat());
         transposeTimes = capo;
@@ -759,7 +759,7 @@ public class Transpose {
             }
         } else {
             for (int i=1; i<=11; i++) {
-                al.add(i + "");
+                al.add(String.valueOf(i));
             }
         }
         return al;

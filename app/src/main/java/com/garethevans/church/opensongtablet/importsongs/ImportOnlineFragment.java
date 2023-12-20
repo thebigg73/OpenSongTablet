@@ -642,7 +642,7 @@ public class ImportOnlineFragment extends Fragment {
         // Make sure the tempo is a whole number!
         if (!newSong.getTempo().isEmpty() && !newSong.getTempo().replaceAll("\\D","").isEmpty()) {
             try {
-                newSong.setTempo(Math.round(Float.parseFloat(newSong.getTempo()))+"");
+                newSong.setTempo(String.valueOf(Math.round(Float.parseFloat(newSong.getTempo()))));
             } catch (Exception e) {
                 e.printStackTrace();
                 newSong.setTempo("");

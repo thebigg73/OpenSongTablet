@@ -407,7 +407,7 @@ public class HighlighterEditFragment extends Fragment {
         myView.dimBackground.setOnClickListener(v -> bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED));
         myView.bottomSheet.sizeSlider.addOnChangeListener((slider, value, fromUser) -> {
             // Update the hint text
-            myView.bottomSheet.sizeSlider.setHint(value + "");
+            myView.bottomSheet.sizeSlider.setHint(String.valueOf(value));
         });
         myView.bottomSheet.sizeSlider.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
             @Override

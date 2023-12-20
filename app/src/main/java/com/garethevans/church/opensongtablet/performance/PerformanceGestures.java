@@ -894,7 +894,7 @@ public class PerformanceGestures {
 
 
         } else if (myZoomLayout != null && myZoomLayout.getVisibility() == View.VISIBLE) {
-            myZoomLayout.animateScrollBy(mainActivityInterface,
+            myZoomLayout.animateScrollBy(
                     mainActivityInterface.getGestures().getScrollDistance(), scrollDown);
 
             // We will also send this to nearby devices if we are a host

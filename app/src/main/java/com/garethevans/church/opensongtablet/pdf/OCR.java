@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.graphics.pdf.PdfRenderer;
 import android.net.Uri;
+import android.os.Build;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
 import android.util.SparseArray;
@@ -87,10 +88,14 @@ public class OCR {
                 // Send this page off for processing.  The onSuccessListener knows when it is done
                 extractTextFromBitmap(bmp, i);
 
-                currentPage.close();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    currentPage.close();
+                }
             }
             try {
-                pdfRenderer.close();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    pdfRenderer.close();
+                }
                 parcelFileDescriptor.close();
             } catch (Exception e) {
                 e.printStackTrace();

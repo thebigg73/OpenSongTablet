@@ -22,7 +22,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="top"
         android:layout_weight="1"
-        android:background="@color/colorAltPrimary" />
+        android:background="@color/colorAltPrimary"
+        android:contentDescription="@string/menu_settings"/>
 
     <ImageView
         android:id="@+id/menuHelp"

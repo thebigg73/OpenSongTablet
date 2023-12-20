@@ -75,8 +75,7 @@ public class BBSQLite extends SQLiteOpenHelper {
 
     // CSV file created will give 23SA2FS.BBS,1,10000 Reasons,37611B1D,1,BB Worship
     // Format is SONG_CODE,SONG_NUM,SONG_NAME,FOLDER_CODE,FOLDER_NUM,FOLDER_NAME
-    
-    private final Context c;
+
     private static final int DATABASE_VERSION = 2;
     @SuppressWarnings("FieldCanBeLocal")
     private final String TAG = "BBLite";
@@ -130,7 +129,6 @@ public class BBSQLite extends SQLiteOpenHelper {
         // Don't create the database here as we don't want to recreate on each call.
         super(c,  "BeatBuddy.db", null, DATABASE_VERSION);
         mainActivityInterface = (MainActivityInterface) c;
-        this.c = c;
     }
 
     // Database Version
@@ -714,7 +712,7 @@ public class BBSQLite extends SQLiteOpenHelper {
             ArrayList<String> args = new ArrayList<>();
             String selectQuery = "SELECT * FROM " + TABLE_NAME_MY_SONGS + " WHERE " +
                     COLUMN_FOLDER_NUM + "= ? AND " + COLUMN_FOLDER_NAME + "= ? ORDER BY " + COLUMN_SONG_NUM + " COLLATE NOCASE ASC";
-            args.add(""+folderNum);
+            args.add(String.valueOf(folderNum));
             args.add(folderName);
             String[] selectionArgs = new String[args.size()];
             selectionArgs = args.toArray(selectionArgs);
@@ -911,7 +909,7 @@ public class BBSQLite extends SQLiteOpenHelper {
             String sqlMatch = "";
             if (folderVal != null && !folderVal.isEmpty()) {
                 sqlMatch += COLUMN_FOLDER_NUM + "= ? AND " + COLUMN_FOLDER_NAME + "= ? AND ";
-                args.add(""+folderNum);
+                args.add(String.valueOf(folderNum));
                 args.add(folderName);
             }
             if (timeSigVal != null && !timeSigVal.isEmpty()) {
@@ -924,7 +922,7 @@ public class BBSQLite extends SQLiteOpenHelper {
                     // Was a number already (default)
                     args.add(kitVal);
                 } else {
-                    args.add("" + getNumberFromKit(kitVal));
+                    args.add(String.valueOf(getNumberFromKit(kitVal)));
                 }
             }
 
@@ -1044,7 +1042,7 @@ public class BBSQLite extends SQLiteOpenHelper {
     }
     public String getFolderNameForNumber(int number) {
         for (String[] folder:defaultFolders) {
-            if (folder[0].equals(""+number)) {
+            if (folder[0].equals(String.valueOf(number))) {
                 return folder[1];
             }
         }
@@ -1063,7 +1061,7 @@ public class BBSQLite extends SQLiteOpenHelper {
 
     public String getDrumKitForNumber(int number) {
         for (String[] kit:defaultKits) {
-            if (kit[0].equals(""+number)) {
+            if (kit[0].equals(String.valueOf(number))) {
                 return kit[1];
             }
         }

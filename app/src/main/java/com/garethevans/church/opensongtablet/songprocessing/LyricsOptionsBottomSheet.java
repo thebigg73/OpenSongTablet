@@ -89,7 +89,7 @@ public class LyricsOptionsBottomSheet extends BottomSheetDialogFragment {
                 getString(R.string.verse) + "]="+getString(R.string.filters));
         openSongOrChoProButtonColor();
         if (openingFragment!=null) {
-            myView.textSize.setHint("" + (int) openingFragment.getEditTextSize());
+            myView.textSize.setHint(String.valueOf((int) openingFragment.getEditTextSize()));
         }
         setTransposeDetectedFormat();
     }
@@ -230,7 +230,7 @@ public class LyricsOptionsBottomSheet extends BottomSheetDialogFragment {
             }
 
             // Save this to the user preferences and update the fragment
-            myView.textSize.setHint("" + (int) editTextSize);
+            myView.textSize.setHint(String.valueOf((int) editTextSize));
             openingFragment.setEditTextSize(editTextSize);
             mainActivityInterface.getPreferences().setMyPreferenceFloat("editTextSize", editTextSize);
         }

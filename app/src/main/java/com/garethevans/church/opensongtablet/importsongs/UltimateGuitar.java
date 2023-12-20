@@ -228,7 +228,7 @@ public class UltimateGuitar {
                 String lyrics = newSong.getLyrics();
                 try {
                     int transpnum = Integer.parseInt(capo);
-                    newSong.setCapo(""+transpnum);
+                    newSong.setCapo(String.valueOf(transpnum));
                     // So far so good.  Transpose the song
                     // Keep the original key ref
 

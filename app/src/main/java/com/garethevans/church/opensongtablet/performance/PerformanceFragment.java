@@ -785,7 +785,7 @@ public class PerformanceFragment extends Fragment {
             } catch (Exception e) {
                 time = 0;
             }
-            mainActivityInterface.getSong().setAutoscrolllength(""+(time*imageSlideAdapter.getItemCount()));
+            mainActivityInterface.getSong().setAutoscrolllength(String.valueOf((time*imageSlideAdapter.getItemCount())));
             mainActivityInterface.getSong().setAutoscrolldelay("0");
         }
 
@@ -1447,7 +1447,7 @@ public class PerformanceFragment extends Fragment {
         // We received from nearby host, so attempt to scroll by this proportion in the zoomLayout
         if (myView.zoomLayout.getVisibility()==View.VISIBLE &&
                 !mainActivityInterface.getPreferences().getMyPreferenceString("songAutoScale","W").equals("Y")) {
-            myView.zoomLayout.animateScrollBy(mainActivityInterface,
+            myView.zoomLayout.animateScrollBy(
                     Math.abs(proportionScroll),proportionScroll>0);
         } else if (myView.recyclerView.getVisibility()==View.VISIBLE) {
             int height = (int)(proportionScroll*myView.recyclerView.getHeight());

@@ -253,7 +253,7 @@ public class Bible {
             if (num < defaultBibleBooks.size()) {
                 return defaultBibleBooks.get(num);
             } else {
-                return ""+num;
+                return String.valueOf(num);
             }
         } catch (Exception e) {
             return n;
@@ -264,7 +264,7 @@ public class Bible {
             if (n.equals(bibleBooks.get(x))) {
                 // This is it.  Add one on to convert array to number 1-66 (not 0-65)
                 //return ""+(x+1);
-                return ""+x;
+                return String.valueOf(x);
             }
         }
         return "1";

@@ -106,13 +106,13 @@ public class BibleDownloadFragment extends Fragment {
         bibles_EN.add("The Message");
 
         bibles_EN_URL = new ArrayList<>();
-        bibles_EN_URL.add("http://www.opensong.org/bible-modules/CEV.zip");
-        bibles_EN_URL.add("http://www.opensong.org/bible-modules/KJV.zip");
-        bibles_EN_URL.add("https://www.emp1.net/opensong/NASB.zip");
-        bibles_EN_URL.add("http://www.opensong.org/bible-modules/NIV.zip");
-        bibles_EN_URL.add("http://www.opensong.org/bible-modules/NKJV.zip");
-        bibles_EN_URL.add("http://www.opensong.org/bible-modules/AMP.zip");
-        bibles_EN_URL.add("http://www.opensong.org/bible-modules/MSG.zip");
+        bibles_EN_URL.add("https://opensong.org/downloads/scripture/CEV.zip");
+        bibles_EN_URL.add("https://opensong.org/downloads/scripture/KJV.zip");
+        bibles_EN_URL.add("https://opensong.org/downloads/scripture/NASB.zip");
+        bibles_EN_URL.add("https://opensong.org/downloads/scripture/NIV.zip");
+        bibles_EN_URL.add("https://opensong.org/downloads/scripture/NKJV.zip");
+        bibles_EN_URL.add("https://opensong.org/downloads/scripture/AMP.zip");
+        bibles_EN_URL.add("https://opensong.org/downloads/scripture/MSG.zip");
 
         if (getContext()!=null) {
             ExposedDropDownArrayAdapter exposedDropDownArrayAdapter = new ExposedDropDownArrayAdapter(

@@ -43,11 +43,13 @@ public class PresoOrderItemTouchHelper extends ItemTouchHelper.Callback {
 
     @Override
     public boolean isLongPressDragEnabled() {
+        // Same as default, but keep it
         return true;
     }
 
     @Override
     public boolean isItemViewSwipeEnabled() {
+        // Same as default, but keep it
         return true;
     }
 

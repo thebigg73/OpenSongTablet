@@ -289,7 +289,7 @@ public class GetBPMBottomSheet extends BottomSheetDialogFragment {
                 if (myView!=null) {
                     myView.keyInfo.setHint(keyFound ? key : not_found_string);
                     myView.durationInfo.setHint(durationFound ? duration : not_found_string);
-                    myView.tempoInfo.setHint(keyFound ? "" + tempo : not_found_string);
+                    myView.tempoInfo.setHint(keyFound ? String.valueOf(tempo) : not_found_string);
                     myView.keyButton.setVisibility(keyFound ? View.VISIBLE : View.GONE);
                     myView.durationButton.setVisibility(durationFound ? View.VISIBLE : View.GONE);
                     myView.tempoButton.setVisibility(tempoFound ? View.VISIBLE : View.GONE);

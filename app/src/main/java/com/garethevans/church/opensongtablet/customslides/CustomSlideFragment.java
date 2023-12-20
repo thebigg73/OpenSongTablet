@@ -228,7 +228,7 @@ public class CustomSlideFragment extends Fragment {
             case "slide":
             case "image":
                 newSlide.add(mainActivityInterface.getCustomSlide().getCreateTime());
-                newSlide.add(mainActivityInterface.getCustomSlide().getCreateLoop()+"");
+                newSlide.add(String.valueOf(mainActivityInterface.getCustomSlide().getCreateLoop()));
                 newSlide.add(mainActivityInterface.getCustomSlide().getCreateImages());
                 break;
         }

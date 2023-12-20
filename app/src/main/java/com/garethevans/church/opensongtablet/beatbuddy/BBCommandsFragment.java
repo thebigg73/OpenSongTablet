@@ -152,19 +152,19 @@ public class BBCommandsFragment extends Fragment {
                     } else if (messageParts[1].equals("C")) {
                         channelLSB = messageParts[0];
                         songPC = messageParts[2];
-                    } else if (messageParts[1].equals("B") && messageParts[2].equals(""+mainActivityInterface.getBeatBuddy().getCC_Tempo_MSB())) {
+                    } else if (messageParts[1].equals("B") && messageParts[2].equals(String.valueOf(mainActivityInterface.getBeatBuddy().getCC_Tempo_MSB()))) {
                         channelLSB = messageParts[0];
                         tempoMSB = messageParts[3];
-                    } else if (messageParts[1].equals("B") && messageParts[2].equals(""+mainActivityInterface.getBeatBuddy().getCC_Tempo_LSB())) {
+                    } else if (messageParts[1].equals("B") && messageParts[2].equals(String.valueOf(mainActivityInterface.getBeatBuddy().getCC_Tempo_LSB()))) {
                         channelLSB = messageParts[0];
                         tempoLSB = messageParts[3];
-                    } else if (messageParts[1].equals("B") && messageParts[2].equals(""+mainActivityInterface.getBeatBuddy().getCC_Drum_kit())) {
+                    } else if (messageParts[1].equals("B") && messageParts[2].equals(String.valueOf(mainActivityInterface.getBeatBuddy().getCC_Drum_kit()))) {
                         channelLSB = messageParts[0];
                         drumkitCC = messageParts[3];
-                    } else if (messageParts[1].equals("B") && messageParts[2].equals(""+mainActivityInterface.getBeatBuddy().getCC_Mix_vol())) {
+                    } else if (messageParts[1].equals("B") && messageParts[2].equals(String.valueOf(mainActivityInterface.getBeatBuddy().getCC_Mix_vol()))) {
                         channelLSB = messageParts[0];
                         volumeCC = messageParts[3];
-                    } else if (messageParts[1].equals("B") && messageParts[2].equals(""+mainActivityInterface.getBeatBuddy().getCC_HP_vol())) {
+                    } else if (messageParts[1].equals("B") && messageParts[2].equals(String.valueOf(mainActivityInterface.getBeatBuddy().getCC_HP_vol()))) {
                         channelLSB = messageParts[0];
                         volumeHPCC = messageParts[3];
                     } else {
@@ -453,7 +453,7 @@ public class BBCommandsFragment extends Fragment {
             if (!mainActivityInterface.getBeatBuddy().getBeatBuddyAerosMode() &&
                     fromSongMessages_folderMSB>-1 && fromSongMessages_folderLSB>-1) {
                 int folder = (fromSongMessages_folderMSB*128) + fromSongMessages_folderLSB + 1;
-                myView.songFolder.setText(""+folder);
+                myView.songFolder.setText(String.valueOf(folder));
             } else if (mainActivityInterface.getBeatBuddy().getBeatBuddyAerosMode() &&
                     fromSongMessages_folderLSB>-1) {
                 int folder = fromSongMessages_folderLSB + 1;
@@ -470,7 +470,7 @@ public class BBCommandsFragment extends Fragment {
             if (fromSongMessages_songPC>-1) {
                 int song = fromSongMessages_songPC+1;
                 if (!mainActivityInterface.getBeatBuddy().getBeatBuddyAerosMode()) {
-                    myView.songNumber.setText("" + song);
+                    myView.songNumber.setText(String.valueOf(song));
                 } else {
                     myView.aerosSong.setValue(song);
                 }
@@ -591,7 +591,7 @@ public class BBCommandsFragment extends Fragment {
                         if (value == 39) {
                             mainActivityInterface.getSong().setTempo("");
                         } else {
-                            mainActivityInterface.getSong().setTempo("" + value);
+                            mainActivityInterface.getSong().setTempo(String.valueOf(value));
                         }
                         mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong(), false);
                         break;
@@ -633,7 +633,7 @@ public class BBCommandsFragment extends Fragment {
                 }
             } else if (prefName!=null && prefName.equals("songTempo") && !fromUser) {
                 materialSlider.setHint(((int) value) + labelEnd);
-                mainActivityInterface.getSong().setTempo(value+"");
+                mainActivityInterface.getSong().setTempo(String.valueOf(value));
                 mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong(),false);
             } else if (prefName!=null && prefName.equals("aerosFolder")) {
                 setSliderHintText(myView.aerosFolder, null, searchAerosFolder, true,
@@ -679,10 +679,10 @@ public class BBCommandsFragment extends Fragment {
         String[] args;
         int value = value1;
         if (value2!=-1) {
-            args = new String[]{""+value1,""+value2};
+            args = new String[]{String.valueOf(value1), String.valueOf(+value2)};
             value = value2;
         } else {
-            args = new String[]{""+value1};
+            args = new String[]{String.valueOf(value1)};
         }
 
         if (slider==myView.aerosFolder) {
@@ -902,8 +902,8 @@ public class BBCommandsFragment extends Fragment {
                 myView.aerosSong.setValue(song);
             }
         } else {
-            myView.songFolder.setText(folder+"");
-            myView.songNumber.setText(song+"");
+            myView.songFolder.setText(String.valueOf(folder));
+            myView.songNumber.setText(String.valueOf(song));
         }
     }
 
@@ -984,7 +984,7 @@ public class BBCommandsFragment extends Fragment {
         ArrayList<String> tempos = new ArrayList<>();
         tempos.add("");
         for (int x = 40; x < 300; x++) {
-            tempos.add(x + "");
+            tempos.add(String.valueOf(x));
         }
 
         // The timesig

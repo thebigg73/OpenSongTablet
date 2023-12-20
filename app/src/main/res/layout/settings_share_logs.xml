@@ -37,6 +37,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
                     android:text="@string/reset"
+                    android:contentDescription="@string/reset"
                     app:icon="@drawable/delete" />
 
                 <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
@@ -45,6 +46,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:text="@string/share"
+                    android:contentDescription="@string/share"
                     app:icon="@drawable/share" />
             </LinearLayout>
 

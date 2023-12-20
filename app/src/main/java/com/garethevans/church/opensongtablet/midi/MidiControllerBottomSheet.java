@@ -110,8 +110,8 @@ public class MidiControllerBottomSheet extends BottomSheetDialogFragment {
 
         // Set up the title, channel and controller (if they exists)
         myView.midiName.setText(title);
-        myView.midiChannel.setText(channel + "");
-        myView.midiController.setText(controller + "");
+        myView.midiChannel.setText(String.valueOf(channel));
+        myView.midiController.setText(String.valueOf(controller));
 
         // The save button
         myView.doSave.setOnClickListener(view -> doSave());
@@ -136,10 +136,10 @@ public class MidiControllerBottomSheet extends BottomSheetDialogFragment {
         ArrayList<String> midiChannels = new ArrayList<>();
         ArrayList<String> midiControllers = new ArrayList<>();
         for (int x=1; x<=16; x++) {
-            midiChannels.add(x + "");
+            midiChannels.add(String.valueOf(x));
         }
         for (int x=0; x<=127; x++) {
-            midiControllers.add(x + "");
+            midiControllers.add(String.valueOf(x));
         }
         if (getContext()!=null) {
             ExposedDropDownArrayAdapter channelAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.midiChannel, R.layout.view_exposed_dropdown_item, midiChannels);

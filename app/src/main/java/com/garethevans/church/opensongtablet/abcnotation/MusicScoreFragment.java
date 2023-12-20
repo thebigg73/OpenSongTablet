@@ -82,8 +82,8 @@ public class MusicScoreFragment extends Fragment {
         myView.sizeSlider.setHint((int)myView.sizeSlider.getValue()+"%");
 
         myView.zoomSlider.setValue(mainActivityInterface.getAbcNotation().getAbcZoom());
-        myView.zoomSlider.setHint((int)myView.zoomSlider.getValue()+"");
-        myView.zoomSlider.setLabelFormatter(value -> (int)value+"");
+        myView.zoomSlider.setHint(String.valueOf((int)myView.zoomSlider.getValue()));
+        myView.zoomSlider.setLabelFormatter(value -> String.valueOf((int)value));
 
         myView.autoTranspose.setChecked(mainActivityInterface.getAbcNotation().getAbcAutoTranspose());
 
@@ -124,13 +124,13 @@ public class MusicScoreFragment extends Fragment {
             if (isChecked) {
                 mainActivityInterface.getAbcNotation().getABCTransposeFromSongKey();
                 myView.transposeSlider.setValue(mainActivityInterface.getAbcNotation().getSongAbcTranspose());
-                myView.transposeSlider.setHint(mainActivityInterface.getAbcNotation().getSongAbcTranspose()+"");
+                myView.transposeSlider.setHint(String.valueOf(mainActivityInterface.getAbcNotation().getSongAbcTranspose()));
             }
             myView.transposeSlider.setEnabled(!isChecked);
         }));
 
         myView.sizeSlider.addOnChangeListener((slider, value, fromUser) -> myView.sizeSlider.setHint((int)value+"%"));
-        myView.zoomSlider.addOnChangeListener((slider, value, fromUser) -> myView.zoomSlider.setHint((int)value+""));
+        myView.zoomSlider.addOnChangeListener((slider, value, fromUser) -> myView.zoomSlider.setHint(String.valueOf((int)value)));
 
         myView.transposeSlider.addOnChangeListener((slider, value, fromUser) -> myView.transposeSlider.setHint(showPositiveValue((int)value)));
         myView.sizeSlider.addOnSliderTouchListener(new MySliderTouchListener("abcPopupWidth"));
@@ -183,7 +183,7 @@ public class MusicScoreFragment extends Fragment {
         if (value>0) {
             return "+" + value;
         }
-        return "" + value;
+        return String.valueOf(value);
     }
 
     private void doSave() {

@@ -582,7 +582,7 @@ public class CustomChordsFragment extends Fragment {
         } else {
             fret++;
         }
-        String newFret = ""+fret;
+        String newFret = String.valueOf(fret);
         getFretMarker().setText(newFret);
         getGuitarCode();
     }

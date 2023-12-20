@@ -288,7 +288,7 @@ public class Midi {
                     s0_1 = sections[0].replace("0x", "").substring(1);
 
                     // The channel is the second digit (in hex) of the first byte
-                    messageParts[0] = "" + (getIntFromHexString(s0_1) + 1);
+                    messageParts[0] = String.valueOf((getIntFromHexString(s0_1) + 1));
                     messageParts[1] = s0_0;
                     channel = channel + " " + messageParts[0];
                     switch (s0_0) {
@@ -335,7 +335,7 @@ public class Midi {
                         messageParts[2] = notes.get(v1);
                     } else {
                         action = action + " " + v1;
-                        messageParts[2] = "" + v1;
+                        messageParts[2] = String.valueOf(v1);
                     }
                 } catch (Exception e) {
                     action = "?";
@@ -347,7 +347,7 @@ public class Midi {
                 try {
                     String s2 = sections[2].replace("0x", "").trim();
                     int v2 = getIntFromHexString(s2);
-                    messageParts[3] = "" + v2;
+                    messageParts[3] = String.valueOf(v2);
                     if (action.startsWith(noteon) || action.startsWith(noteoff)) {
                         action = action + "\n" + velocity + " " + v2;
                     } else {

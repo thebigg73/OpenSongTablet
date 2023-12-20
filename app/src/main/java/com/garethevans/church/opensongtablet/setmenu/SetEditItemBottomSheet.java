@@ -267,17 +267,8 @@ public class SetEditItemBottomSheet extends BottomSheetDialogFragment {
     }
 
     private void updateCurrentSetView() {
-        String currentSetString = mainActivityInterface.getSetActions().getSetAsPreferenceString();
-        //mainActivityInterface.getPreferences().setMyPreferenceString("setCurrent",currentSetString);
-
-        // TODO remove after fixing weird set behaviour
-        //String[] setbits = currentSetString.replace("_**$","SPLIT").split("SPLIT");
-        //for (int x=0; x<setbits.length; x++) {
-        //    Log.d(TAG,x+". "+setbits[x].replace("$**_",""));
-        //}
-
         ArrayList<String> val = new ArrayList<>();
-        val.add(""+setPosition);
+        val.add(String.valueOf(setPosition));
         mainActivityInterface.updateFragment("set_updateItem",this,val);
     }
 
@@ -290,9 +281,6 @@ public class SetEditItemBottomSheet extends BottomSheetDialogFragment {
             this.which = which;
         }
 
-        //private MyTextWatcher(String which) {
-        //    this.which = which;
-        //}
         @Override
         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
 

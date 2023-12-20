@@ -72,7 +72,7 @@ public class MidiSlider extends LinearLayout {
         String text = "(" + sliderChannel + ") CC "+sliderCC+" "+sliderVal;
         sliderMidi.setText(text);
         if (sliderValue!=null) {
-            String sliderText = "" + sliderVal;
+            String sliderText = String.valueOf(sliderVal);
             sliderValue.setText(sliderText);
         }
     }

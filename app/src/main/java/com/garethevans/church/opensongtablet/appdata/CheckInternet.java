@@ -18,6 +18,7 @@ public class CheckInternet {
     private String searchPhrase;
     // IV - Match with first entry in ImportOnlineFragment sources list
     private String searchSite = "UltimateGuitar";
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "CheckInternet";
 
     public boolean isNetworkConnected(Context c, MainActivityInterface mainActivityInterface) {

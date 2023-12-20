@@ -44,7 +44,7 @@
                         android:layout_weight="1"
                         android:padding="0dp"
                         android:layout_margin="4dp"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/note1"

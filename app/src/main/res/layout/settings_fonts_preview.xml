@@ -23,7 +23,8 @@
 
             <ScrollView
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:contentDescription="@string/font_browse">
 
                 <LinearLayout
                     android:id="@+id/sideIndex"

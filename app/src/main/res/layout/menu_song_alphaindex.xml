@@ -5,7 +5,8 @@
     android:layout_height="match_parent"
     android:minWidth="8dp"
     android:layout_marginTop="40dp"
-    android:scrollbars="none">
+    android:scrollbars="none"
+    android:contentDescription="@string/alphabetical">
 
     <LinearLayout
         android:id="@+id/side_index"

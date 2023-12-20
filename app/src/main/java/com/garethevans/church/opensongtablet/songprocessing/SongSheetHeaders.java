@@ -12,12 +12,14 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 public class SongSheetHeaders {
 
     private final Context c;
-    @SuppressWarnings("canbelocal")
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "SongSheetHeaders";
     private final MainActivityInterface mainActivityInterface;
-    private LinearLayout linearLayout;
-    private String songSheetHTML = "";
     private boolean forExport;
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
+    private String songSheetHTML= "";
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
+    private LinearLayout linearLayout;
 
     public SongSheetHeaders(Context c) {
         this.c = c;
@@ -81,7 +83,7 @@ public class SongSheetHeaders {
             linearLayout.addView(getSongSheetTexts("",typeface,textColor,defFontSize*commentScaling*0.5f));
         }
 
-        if (linearLayout!=null && linearLayout.getChildCount()==0) {
+        if (linearLayout !=null && linearLayout.getChildCount()==0) {
             linearLayout = null;
         }
 

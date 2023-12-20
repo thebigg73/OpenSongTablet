@@ -116,14 +116,14 @@ public class MidiBoardBottomSheet extends BottomSheetDialogFragment {
         boardButtonView.add(myView.boardButton7);
         boardButtonView.add(myView.boardButton8);
         for (int x=1; x<=8; x++) {
-            boardButtonName.add(mainActivityInterface.getPreferences().getMyPreferenceString("midiBoard"+boardNum+"Button"+x+"Name",""+x));
+            boardButtonName.add(mainActivityInterface.getPreferences().getMyPreferenceString("midiBoard"+boardNum+"Button"+x+"Name",String.valueOf(x)));
             boardButtonMIDI.add(mainActivityInterface.getPreferences().getMyPreferenceString("midiBoard"+boardNum+"Button"+x+"MIDI",""));
             setUpButton(x);
         }
 
         // Now get the sliders
-        myView.boardSlider1.setLabelFormatter(value -> "" + (int)value);
-        myView.boardSlider2.setLabelFormatter(value -> "" + (int)value);
+        myView.boardSlider1.setLabelFormatter(value -> String.valueOf((int)value));
+        myView.boardSlider2.setLabelFormatter(value -> String.valueOf((int)value));
         boardSliderName = new ArrayList<>();
         boardSliderChannel = new ArrayList<>();
         boardSliderCC = new ArrayList<>();

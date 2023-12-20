@@ -20,7 +20,8 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         app:icon="@drawable/title"
-        app:iconSize="24dp" />
+        app:iconSize="24dp"
+        android:contentDescription="@string/filter_by_title"/>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/filterButton"
@@ -29,7 +30,8 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         app:icon="@drawable/search"
-        app:iconSize="24dp" />
+        app:iconSize="24dp"
+        android:contentDescription="@string/filter_by_this_value"/>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/keyButton"
@@ -38,7 +40,8 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         app:icon="@drawable/clef"
-        app:iconSize="24dp" />
+        app:iconSize="24dp"
+        android:contentDescription="@string/filter_by_key"/>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/artistButton"

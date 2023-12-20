@@ -68,8 +68,6 @@ public class BibleOfflineBottomSheet extends BottomSheetDialogFragment {
         myView.dialogHeader.setClose(this);
         myView.dialogHeader.setWebHelp(mainActivityInterface,website_bible_offline_string);
 
-        myView.nestedScrollView.setExtendedFabToAnimate(myView.addToSet);
-
         // Set up helpers()
         setupHelpers();
 
@@ -102,9 +100,9 @@ public class BibleOfflineBottomSheet extends BottomSheetDialogFragment {
     private void setupViews() {
         mainActivityInterface.getProcessSong().editBoxToMultiline(myView.content);
         myView.lineLength.setValue(bible.getLineLength());
-        myView.lineLength.setHint(bible.getLineLength() +"");
+        myView.lineLength.setHint(String.valueOf(bible.getLineLength()));
         myView.linesPerSlide.setValue(bible.getLinesPerSlide());
-        myView.linesPerSlide.setHint(bible.getLinesPerSlide() + "");
+        myView.linesPerSlide.setHint(String.valueOf(bible.getLinesPerSlide()));
         myView.verseNumbers.setChecked(bible.getShowVerseNumbers());
     }
 
@@ -125,12 +123,12 @@ public class BibleOfflineBottomSheet extends BottomSheetDialogFragment {
         });
         myView.lineLength.addOnChangeListener((slider, value, fromUser) -> {
             bible.setLineLength((int)value);
-            myView.lineLength.setHint((int)value+"");
+            myView.lineLength.setHint(String.valueOf((int)value));
             stretchText();
         });
         myView.linesPerSlide.addOnChangeListener((slider, value, fromUser) -> {
             bible.setLinesPerSlide((int)value);
-            myView.linesPerSlide.setHint((int)value+"");
+            myView.linesPerSlide.setHint(String.valueOf((int)value));
             stretchText();
         });
         myView.addToSet.setOnClickListener(v -> {

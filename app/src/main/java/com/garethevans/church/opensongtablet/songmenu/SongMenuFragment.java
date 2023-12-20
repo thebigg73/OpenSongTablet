@@ -782,7 +782,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
             myView.songTitleStuff.songCount.setVisibility(View.GONE);
             if (songsFound!=null) {
                 myView.songTitleStuff.songCount.setVisibility(View.VISIBLE);
-                String count = ""+songsFound.size();
+                String count = String.valueOf(songsFound.size());
                 myView.songTitleStuff.songCount.setText(count);
             }
         });

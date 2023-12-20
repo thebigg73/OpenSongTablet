@@ -398,7 +398,7 @@ public class PedalsFragment extends Fragment {
         int repeatModeCount = mainActivityInterface.getPedalActions().getRepeatModeCount();
         myView.repeatModeCount.setValue(repeatModeCount);
         myView.repeatModeCount.setHint(repeatModeCount + "");
-        myView.repeatModeCount.addOnChangeListener((slider, value, fromUser) -> myView.repeatModeCount.setHint((int)value + ""));
+        myView.repeatModeCount.addOnChangeListener((slider, value, fromUser) -> myView.repeatModeCount.setHint(String.valueOf((int)value)));
         myView.repeatModeCount.addOnSliderTouchListener(new MySliderTouchListener("repeatModeCount"));
 
     }

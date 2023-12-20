@@ -52,7 +52,7 @@ public class PDFPageBottomSheet extends BottomSheetDialogFragment {
             }
             myView.pageSlider.setValueTo(mainActivityInterface.getSong().getPdfPageCount());
             myView.pageSlider.setValue(mainActivityInterface.getSong().getPdfPageCurrent()+1);
-            String text = (mainActivityInterface.getSong().getPdfPageCurrent()+1) + "";
+            String text = String.valueOf((mainActivityInterface.getSong().getPdfPageCurrent()+1));
             myView.pageNumber.setText(text);
         } else {
             isPDFVisible = View.GONE;
@@ -103,7 +103,7 @@ public class PDFPageBottomSheet extends BottomSheetDialogFragment {
         myView.nextPage.setEnabled(mainActivityInterface.getSong().getPdfPageCurrent() < mainActivityInterface.getSong().getPdfPageCount()-1);
         if (hasChanged) {
             // Update the page number text
-            String text = (mainActivityInterface.getSong().getPdfPageCurrent()+1) + "";
+            String text = String.valueOf((mainActivityInterface.getSong().getPdfPageCurrent()+1));
             myView.pageNumber.setText(text);
             mainActivityInterface.pdfScrollToPage(mainActivityInterface.getSong().getPdfPageCurrent());
         }
