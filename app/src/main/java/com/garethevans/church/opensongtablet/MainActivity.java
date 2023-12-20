@@ -3237,7 +3237,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public VersionNumber getVersionNumber() {
         if (versionNumber == null) {
-            versionNumber = new VersionNumber();
+            versionNumber = new VersionNumber(this);
         }
         return versionNumber;
     }

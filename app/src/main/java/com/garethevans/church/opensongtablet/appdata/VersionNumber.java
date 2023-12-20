@@ -14,6 +14,10 @@ public class VersionNumber {
     private String versionName;
     private int versionCode;
 
+    public VersionNumber(Context c) {
+        setupPackage(c);
+    }
+
     // Setup the version stuff if it is null
     private void setupPackage(Context c) {
         setPackageInfo(c);

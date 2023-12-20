@@ -99,7 +99,8 @@ public class BootUpFragment extends Fragment {
     // Checks made before starting the app
     public void startOrSetUp() {
         if (storageIsCorrectlySet()) {
-            if (mainActivityInterface.getPreferences().getMyPreferenceBoolean("indexSkipAllowed",false)) {
+            if (!mainActivityInterface.getAlertChecks().showUpdateInfo() &&
+                    mainActivityInterface.getPreferences().getMyPreferenceBoolean("indexSkipAllowed",false)) {
                 BootUpIndexBottomSheet bootUpIndexBottomSheet = new BootUpIndexBottomSheet(this);
                 bootUpIndexBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "BootUpIndexing");
             } else {
