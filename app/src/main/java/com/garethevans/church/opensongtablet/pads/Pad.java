@@ -65,7 +65,6 @@ public class Pad {
     }
 
     public void startPad() {
-        Log.d("TAG","managePads StartPad");
         // IV - Reset paused pads
         if (pad1Pause) {
             stopAndReset(1);
@@ -81,7 +80,6 @@ public class Pad {
     }
 
     public void stopPad() {
-        Log.d(TAG,"managePads StopPad");
         padsActivated = false;
         // IV - managePads fades all running pads
         managePads();
@@ -299,19 +297,12 @@ public class Pad {
         }
     }
     private void managePads() {
-        Log.d(TAG, "managePads ------");
-        Log.d(TAG, "managePads PadActivated " + padsActivated);
-        Log.d(TAG, "managePads Pad1 is fading '" + (pad1FadeTimerTask != null) + "'.");
-        Log.d(TAG, "managePads Pad2 is fading '" + (pad2FadeTimerTask != null) + "'.");
-
         // IV - If pad is free, not playing or fading, use it . If not free, fade it.
         if (!pad1.isPlaying() && pad1FadeTimerTask == null) {
             if (padsActivated) {
-                Log.d(TAG, "managePads Pad1 Start requested as free for use.");
                 loadAndStart(1);
             }
         } else if (pad1FadeTimerTask == null) {
-            Log.d(TAG, "managePads Pad1 Fading");
             // IV - Reset the pad volumes from preferences - pad1VolL and pad1VolR are set
             setVolume(1, -1, -1);
 
@@ -328,7 +319,6 @@ public class Pad {
                         // IV - Fading
                         // IV - If quick fade has been requested
                         if (padInQuickFade == 1) {
-                            Log.d(TAG, "managePads Pad1 Quick fade started");
                             pad1VolDrop = pad1VolDrop * 3;
                             padInQuickFade = -1;
                         }
@@ -341,14 +331,11 @@ public class Pad {
                     } else {
                         // IV - Faded
                         stopAndReset(1);
-                        Log.d(TAG, "managePads Pad1 stopped");
                         // If both pads are fading this is the first to finish, start the new pad if needed
                         if (pad2FadeTimerTask !=null && padsActivated) {
-                            Log.d(TAG, "managePads Pad1 start requested after quick fade");
                             loadAndStart(1);
                         }
                         padInQuickFade = 0;
-                        Log.d(TAG, "managePads Pad1 endFadeTimer");
                         new Handler().post(() -> endFadeTimer(1));
                     }
                 });
@@ -367,11 +354,9 @@ public class Pad {
         if (!pad2.isPlaying() && pad2FadeTimerTask == null) {
             // IV - If pad1 is fading then consider starting pad2
             if (pad1FadeTimerTask !=null && padsActivated) {
-                Log.d(TAG, "managePads Pad2 Start requested as free for use");
                 loadAndStart(2);
             }
         } else if (pad2FadeTimerTask == null) {
-            Log.d(TAG, "managePads Pad2 Fading");
             // IV - Reset the pad volumes from preferences - pad2VolL and pad2VolR are set
             setVolume(2, -1, -1);
 
@@ -388,7 +373,6 @@ public class Pad {
                             // IV - Fading
                             // IV - If quick fade has been requested
                             if (padInQuickFade == 2) {
-                                Log.d(TAG, "managePads Pad2 Quick fade started");
                                 pad2VolDrop = pad2VolDrop * 3;
                                 padInQuickFade = -2;
                             }
@@ -401,14 +385,11 @@ public class Pad {
                         } else {
                             // IV - Faded
                             stopAndReset(2);
-                            Log.d(TAG, "managePads Pad2 Stopped");
                             // If both pads are fading this is the first to finish, start the new pad if needed
                             if (pad1FadeTimerTask !=null  && padsActivated) {
-                                Log.d(TAG, "managePads Pad2 start requested after quick fade");
                                 loadAndStart(2);
                             }
                             padInQuickFade = 0;
-                            Log.d(TAG, "managePads Pad2 endFadeTimer");
                             new Handler().post(() -> endFadeTimer(2));
                         }
                     });
@@ -423,7 +404,6 @@ public class Pad {
             mainActivityInterface.getPreferences().getMyPreferenceInt("padCrossFadeTime", 8000) / 20);
         }
 
-        Log.d(TAG, ("managePads Pad" + padInQuickFade + " Quick fading").replace("Pad0 Quick f","No Quick f").replace("-",""));
     }
 
     private AssetFileDescriptor getAssetPad(String key) {
@@ -505,7 +485,6 @@ public class Pad {
         }
     }
     private void doPlay(int padNum) {
-        Log.d(TAG,"managePads doPlay Pad" + padNum);
         switch (padNum) {
             case 1:
                 pad1Pause = false;

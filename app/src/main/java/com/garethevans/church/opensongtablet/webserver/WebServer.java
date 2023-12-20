@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
-import android.util.Log;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
@@ -73,7 +72,6 @@ public class WebServer extends NanoHTTPD {
     @Override
     public Response serve(IHTTPSession session) {
         String pagerequest = session.getUri();
-        Log.d(TAG,"pagerequest:"+pagerequest);
         String mimeType = MIME_HTML;
         String localFile = null;
         String webpage = "";
@@ -107,7 +105,6 @@ public class WebServer extends NanoHTTPD {
                 if (currSong.isEmpty()) {
                     currSong = getCurrSong("setitem/", pagerequest);
                 }
-                Log.d(TAG, "currSong:" + currSong);
                 webpage = createSetSongListHTML(true, currSong);
 
             } else if (pagerequest.contains("/songmenu/")) {
@@ -116,7 +113,6 @@ public class WebServer extends NanoHTTPD {
                 if (currSong.isEmpty()) {
                     currSong = getCurrSong("setitem/", pagerequest);
                 }
-                Log.d(TAG, "currSong:" + currSong);
                 webpage = createSetSongListHTML(false, currSong);
 
             } else if (pagerequest.contains("/setitem/")) {
@@ -165,17 +161,12 @@ public class WebServer extends NanoHTTPD {
         if (localFile==null) {
             return newFixedLengthResponse(webpage);
         } else {
-            Log.d(TAG,"mimeType:"+mimeType);
-            Log.d(TAG,"localFile:"+localFile);
             String[] bits = localFile.split(localFileSplit);
             Uri localUri = mainActivityInterface.getStorageAccess().getUriForItem("Songs",bits[0],bits[1]);
             try {
                 InputStream buffer = null;
-                long fileSize = 0;
                 try {
                     buffer = mainActivityInterface.getStorageAccess().getInputStream(localUri);
-                    Log.d(TAG,"fileSize:"+fileSize);
-
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -204,7 +195,6 @@ public class WebServer extends NanoHTTPD {
         if (!text.isEmpty() && !text.startsWith("/")) {
             text = "/" + text;
         }
-        Log.d(TAG,"getCurrSong()="+text);
         return text;
     }
 
@@ -301,7 +291,6 @@ public class WebServer extends NanoHTTPD {
         // Strings for webpage content building
         String base1 = "@import url('https://fonts.googleapis.com/css?family=";
         String base2 = "&swap=true');\n";
-        Log.d(TAG,"getCurrSongIndex("+currSong+"):"+getCurrSongIndex(currSong));
         setSongListHTML.append("<!DOCTYPE html>\n<html>\n")
                 .append("<head>\n")
                 .append("<style>\n")
@@ -526,8 +515,7 @@ public class WebServer extends NanoHTTPD {
         return importString;
     }
     private String getResizeJS() {
-        return "" +
-                "  var contentWidth;\n" +
+        return  "  var contentWidth;\n" +
                 "  var menuWidth;\n" +
                 "  var menuscaleratio = 1;\n" +
                 "  function measure() {\n" +
@@ -591,8 +579,7 @@ public class WebServer extends NanoHTTPD {
     }
 
     private String getGoToSongJS() {
-        return "" +
-                "  function getSong(how,index) {\n" +
+        return  "  function getSong(how,index) {\n" +
                 "      if (how==\"currSong\") {\n " +
                 "        window.location.href = serverAddress + currSong;\n" +
                 "      } else if (how==\"set\") {\n" +
@@ -603,8 +590,7 @@ public class WebServer extends NanoHTTPD {
                 "  }\n";
     }
     private String getNavigateJS() {
-        return "" +
-                "  function songMenu() {\n" +
+        return  "  function songMenu() {\n" +
                 "    if (inset) {\n" +
                 "      window.location.href = serverAddress + \"/songmenu/\" + currSong;\n" +
                 "    } else {\n" +
@@ -658,8 +644,6 @@ public class WebServer extends NanoHTTPD {
     }
     private String getMenuBarHTML(boolean hidearrows, boolean songmenu, boolean setmenu) {
         String text = "";
-        Log.d(TAG,"songmenu:"+songmenu);
-        Log.d(TAG,"setmenu:"+songmenu);
         if (allowWebNavigation) {
             String songmenuJS = "songMenu()";
             String setmenuJS = "setMenu()";

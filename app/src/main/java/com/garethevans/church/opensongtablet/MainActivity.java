@@ -301,15 +301,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
         super.onCreate(savedInstanceState);
 
-        // TODO try to identify resource not calling close
-        try {
-            Class.forName("dalvik.system.CloseGuard")
-                    .getMethod("setEnabled", boolean.class)
-                    .invoke(null, true);
-        } catch (ReflectiveOperationException e) {
-            throw new RuntimeException(e);
-        }
-
         // Set up the onBackPressed intercepter as onBackPressed is deprecated
         OnBackPressedCallback onBackPressedCallback = new OnBackPressedCallback(true) {
             @Override
