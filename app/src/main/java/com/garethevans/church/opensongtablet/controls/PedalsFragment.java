@@ -407,9 +407,7 @@ public class PedalsFragment extends Fragment {
     // Key down to register button in this fragment.
     // Key up and long press to detect if this is possible for test
     public void keyDownListener(int keyCode) {
-        Log.d(TAG,"keyCode:"+keyCode+"  currentListening:"+currentListening);
         downTime = System.currentTimeMillis();
-        Log.d(TAG,"downTime:"+downTime);
         upTime = downTime;
 
         if (currentListening > 0) {
@@ -443,7 +441,6 @@ public class PedalsFragment extends Fragment {
     private void commonEventDown(int which, int pedalCode, String pedalText, String pedalMidi) {
         // Reset the keyDown and keyUpTimes
         downTime = System.currentTimeMillis();
-        Log.d(TAG,"downTime:"+downTime);
         upTime = downTime;
 
         // Update the on screen value
@@ -456,12 +453,9 @@ public class PedalsFragment extends Fragment {
     public void commonEventUp() {
         // Set the keyUpTime
         upTime = System.currentTimeMillis();
-        Log.d(TAG,"upTime:"+upTime);
 
         // Decide if longPressCapable
         longPressCapable = ((upTime - downTime) > 300 && (upTime - downTime) < 1000) || longPressCapable;
-        Log.d(TAG,"longPressCapable:"+ longPressCapable);
-        Log.d(TAG,"upTime-dowTime:"+(int)(upTime-downTime));
     }
 
     public void commonEventLong() {
@@ -471,7 +465,6 @@ public class PedalsFragment extends Fragment {
     public void backgroundKeyDown(int keyCode, KeyEvent keyEvent) {
         // Register a keyDown
         downTime = System.currentTimeMillis();
-        Log.d(TAG,"backgroundKeyDown - keyCode:"+keyCode+"  keyEvent:"+keyEvent+"  downtime:"+downTime);
         if (myView.pedalTest.getChecked()) {
             updateKeyEvents(keyCode, downTime, down_string);
         }
@@ -479,7 +472,6 @@ public class PedalsFragment extends Fragment {
     public void backgroundKeyUp(int keyCode, KeyEvent keyEvent) {
         // Register a keyUp
         upTime = System.currentTimeMillis();
-        Log.d(TAG,"backgroundKeyUp - keyCode:"+keyCode+"  keyEvent:"+keyEvent+"  upTime:"+upTime);
         if (myView.pedalTest.getChecked()) {
             updateKeyEvents(keyCode, upTime, up_string);
         }
@@ -490,7 +482,6 @@ public class PedalsFragment extends Fragment {
     public void backgroundKeyLongPress(int keyCode, KeyEvent keyEvent) {
         // Register a keyLongPress
         upTime = System.currentTimeMillis();
-        Log.d(TAG,"backgroundKeyLongPress - keyCode:"+keyCode+"  keyEvent:"+keyEvent+"  upTime:"+upTime);
         if (myView.pedalTest.getChecked()) {
             updateKeyEvents(keyCode, upTime, long_press_string);
         }
@@ -606,11 +597,9 @@ public class PedalsFragment extends Fragment {
         }
 
         shortPressDropdown.post(() -> {
-            Log.d(TAG, "Setting the short hint as: " + shortHint);
             shortPressDropdown.setHint(shortHint);
         });
         longPressDropdown.post(() -> {
-            Log.d(TAG, "Setting the long hint as: " + longHint);
             longPressDropdown.setHint(longHint);
             if (longTextOverride != null) {
                 longPressDropdown.setText(longTextOverride);
