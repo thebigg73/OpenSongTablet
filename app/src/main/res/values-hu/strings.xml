@@ -484,6 +484,7 @@
     <string name="maximise_columns_info">Ha egy dal több oszlopban jelenik meg (például fekvő helyzetbe forgatva), ez lehetővé teszi az egyes oszlopok nagyítását, hogy kitöltsék a képernyő rájuk eső részét.</string>
     <string name="media">Média</string>
     <string name="media_selected">Media betöltött</string>
+    <string name="menu_showcase_info">Nyissa meg a menüt a dalok és készletek megtekintéséhez és kezeléséhez</string>
     <string name="menu_set_info">Ezzel a gombbal megtekintheti és kezelheti készleteit</string>
     <string name="menu_settings">"A menü beállításai"</string>
     <string name="menu_settings_description">Módosítsa a dal/készlet menü beállításait</string>

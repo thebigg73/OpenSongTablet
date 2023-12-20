@@ -484,6 +484,7 @@
     <string name="maximise_columns_info">Si une chanson est affichée dans plusieurs colonnes (par exemple lorsqu\'elle est tournée en paysage), cela permet à chaque colonne de zoomer pour remplir la partie de l\'écran qui lui est attribuée.</string>
     <string name="media">Médias</string>
     <string name="media_selected">Médias chargés</string>
+    <string name="menu_showcase_info">Ouvrez le menu pour afficher et gérer vos morceaux et vos sets</string>
     <string name="menu_set_info">Utilisez ce bouton pour afficher et gérer vos ensembles</string>
     <string name="menu_settings">"Paramètres du menu"</string>
     <string name="menu_settings_description">Modifier les paramètres du menu morceau/set</string>

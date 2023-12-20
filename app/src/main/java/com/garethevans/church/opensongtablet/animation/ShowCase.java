@@ -74,7 +74,7 @@ public class ShowCase {
     public void sequenceShowCase (Activity c, ArrayList<View> targets, ArrayList<String> dismisstexts_ornulls,
                                   ArrayList<String> information, ArrayList<Boolean> rects, String showcaseid) {
         ShowcaseConfig config = new ShowcaseConfig();
-        config.setDelay(500); // half second between each showcase view
+        config.setDelay(800); // 800ms between each showcase view
         config.setRenderOverNavigationBar(true);
         final int COLOR_MASK = showcaseColor;
         final int COLOR_TEXT = white;
@@ -110,6 +110,14 @@ public class ShowCase {
             sequence.start();
         } catch (Exception e) {
             Log.d("ShowCase","Error:"+e);
+        }
+    }
+
+    public void resetShowcase(Context c, String what) {
+        if (what==null) {
+            MaterialShowcaseView.resetAll(c);
+        } else {
+            MaterialShowcaseView.resetSingleUse(c, what);
         }
     }
 }

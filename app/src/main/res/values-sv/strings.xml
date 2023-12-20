@@ -484,6 +484,7 @@
     <string name="maximise_columns_info">Om en låt visas i flera kolumner (t.ex. när den roteras till liggande), tillåter detta att varje kolumn zoomar för att fylla den del av skärmen som den är tilldelad.</string>
     <string name="media">Media</string>
     <string name="media_selected">"Media laddad"</string>
+    <string name="menu_showcase_info">Öppna menyn för att visa och hantera dina låtar och set</string>
     <string name="menu_set_info">Använd den här knappen för att visa och hantera dina uppsättningar</string>
     <string name="menu_settings">"Menyinställningar"</string>
     <string name="menu_settings_description">Ändra inställningar för låt/set-menyn</string>

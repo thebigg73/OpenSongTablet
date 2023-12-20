@@ -484,6 +484,7 @@
     <string name="maximise_columns_info">Εάν ένα τραγούδι εμφανίζεται σε πολλές στήλες (π.χ. όταν περιστρέφεται σε οριζόντιο προσανατολισμό), αυτό επιτρέπει σε κάθε στήλη να μεγεθύνει για να γεμίσει το τμήμα της οθόνης που της έχει εκχωρηθεί.</string>
     <string name="media">Μεσο ΜΑΖΙΚΗΣ ΕΝΗΜΕΡΩΣΗΣ</string>
     <string name="media_selected">"Media loaded"</string>
+    <string name="menu_showcase_info">Ανοίξτε το μενού για να προβάλετε και να διαχειριστείτε τα τραγούδια και τα σύνολα σας</string>
     <string name="menu_set_info">Χρησιμοποιήστε αυτό το κουμπί για να δείτε και να διαχειριστείτε τα σύνολά σας</string>
     <string name="menu_settings">"Ρυθμίσεις μενού"</string>
     <string name="menu_settings_description">Αλλάξτε τις ρυθμίσεις για το μενού τραγουδιών/σετ</string>

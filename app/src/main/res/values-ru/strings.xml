@@ -484,6 +484,7 @@
     <string name="maximise_columns_info">Если песня отображается в нескольких столбцах (например, при повороте в альбомную ориентацию), эта настройка масштабирует каждый столбец, чтобы заполнить выделенную ему часть экрана.</string>
     <string name="media">Медиа</string>
     <string name="media_selected">Медиафайл загружен</string>
+    <string name="menu_showcase_info">Откройте меню для просмотра песен и сетов и управления ими</string>
     <string name="menu_set_info">Нажмите эту кнопку для просмотра и управления сетами</string>
     <string name="menu_settings">Настройка меню</string>
     <string name="menu_settings_description">Изменение настроек меню песни/сета</string>

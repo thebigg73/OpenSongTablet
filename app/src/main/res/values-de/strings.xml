@@ -484,6 +484,7 @@
     <string name="maximise_columns_info">Wenn ein Lied in mehreren Spalten angezeigt wird (z. B. wenn es ins Querformat gedreht wird), ermöglicht dies, dass jede Spalte gezoomt wird, um den Teil des Bildschirms auszufüllen, der ihr zugewiesen ist.</string>
     <string name="media">Medien</string>
     <string name="media_selected">Medien geladen</string>
+    <string name="menu_showcase_info">Öffne das Menü, um deine Songs und Sets anzuzeigen und zu verwalten</string>
     <string name="menu_set_info">Verwenden Sie diese Schaltfläche, um Ihre Sets anzuzeigen und zu verwalten</string>
     <string name="menu_settings">"Menüeinstellungen"</string>
     <string name="menu_settings_description">Ändern Sie die Einstellungen für das Song-/Set-Menü</string>

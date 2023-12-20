@@ -484,6 +484,7 @@
     <string name="maximise_columns_info">Pokud je skladba zobrazena ve více sloupcích (např. při otočení na šířku), umožňuje to každému sloupci přiblížit tak, aby vyplnil část obrazovky, které je přidělen.</string>
     <string name="media">Média</string>
     <string name="media_selected">Media naloženo</string>
+    <string name="menu_showcase_info">Otevřete nabídku view a spravujte své skladby a sady</string>
     <string name="menu_set_info">Pomocí tohoto tlačítka můžete zobrazit a spravovat své sady</string>
     <string name="menu_settings">"Nastavení nabídky"</string>
     <string name="menu_settings_description">Změňte nastavení pro nabídku skladby/nastavení</string>

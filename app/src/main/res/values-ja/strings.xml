@@ -484,6 +484,7 @@
     <string name="maximise_columns_info">曲が複数の列に表示されている場合（たとえば、横向きに回転した場合）、これにより、各列をズームして、割り当てられた画面の一部を埋めることができます。</string>
     <string name="media">メディア</string>
     <string name="media_selected">メディアがロードされました</string>
+    <string name="menu_showcase_info">メニューを開いて、曲とセットを表示および管理します</string>
     <string name="menu_set_info">このボタンを使用して、セットを表示および管理します</string>
     <string name="menu_settings">"メニュー設定"</string>
     <string name="menu_settings_description">ソング/セットメニューの設定を変更する</string>

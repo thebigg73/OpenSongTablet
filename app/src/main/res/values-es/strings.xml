@@ -484,6 +484,7 @@
     <string name="maximise_columns_info">Si una canción se muestra en varias columnas (por ejemplo, cuando se gira a la posición horizontal), esto permite que cada columna se amplíe para llenar la parte de la pantalla que se le asigna.</string>
     <string name="media">Medios de comunicación</string>
     <string name="media_selected">Cargados de medios</string>
+    <string name="menu_showcase_info">Abra el menú para ver y administrar sus canciones y conjuntos</string>
     <string name="menu_set_info">Use este botón para ver y administrar sus conjuntos</string>
     <string name="menu_settings">"Configuración del menú"</string>
     <string name="menu_settings_description">Cambiar la configuración de la canción/menú fijo</string>

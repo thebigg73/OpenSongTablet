@@ -484,6 +484,7 @@
     <string name="maximise_columns_info">Jeśli piosenka jest wyświetlany w wielu kolumnach (np. gdy urządzenie jest ustawione poziomo), umożliwia to powiększenie każdej kolumny w celu wypełnienia przydzielonej części ekranu.</string>
     <string name="media">Multimedia</string>
     <string name="media_selected">Załadowane multimedia</string>
+    <string name="menu_showcase_info">Otwórz menu, aby przeglądać i zarządzać utworami i setami</string>
     <string name="menu_set_info">Użyj tego przycisku, aby przeglądać i zarządzać swoimi zestawami</string>
     <string name="menu_settings">Ustawienia menu</string>
     <string name="menu_settings_description">Zmień ustawienia dla menu piosenki/zestawu</string>

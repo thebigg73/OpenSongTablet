@@ -484,6 +484,7 @@
     <string name="maximise_columns_info">Se uma música for mostrada em várias colunas (por exemplo, quando girada para paisagem), isso permite que cada coluna aumente o zoom para preencher a parte da tela que está alocada.</string>
     <string name="media">Meios de comunicação</string>
     <string name="media_selected">Mídia carregada</string>
+    <string name="menu_showcase_info">Abra o menu para ver e gerir as suas músicas e conjuntos</string>
     <string name="menu_set_info">Use este botão para visualizar e gerenciar seus conjuntos</string>
     <string name="menu_settings">"Definições do menu"</string>
     <string name="menu_settings_description">Alterar as configurações do menu de músicas/conjuntos</string>

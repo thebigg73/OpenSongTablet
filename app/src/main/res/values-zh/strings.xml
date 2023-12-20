@@ -484,6 +484,7 @@
     <string name="maximise_columns_info">如果一首歌曲显示在多列中（例如，当旋转到横向时），这允许每列缩放以填充它分配的屏幕部分。</string>
     <string name="media">媒体</string>
     <string name="media_selected">媒体装</string>
+    <string name="menu_showcase_info">打开菜单以查看和管理您的歌曲和曲目</string>
     <string name="menu_set_info">使用此按钮查看和管理您的学习集</string>
     <string name="menu_settings">"菜单设置"</string>
     <string name="menu_settings_description">更改歌曲/设置菜单的设置</string>

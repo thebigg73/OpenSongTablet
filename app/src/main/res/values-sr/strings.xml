@@ -484,6 +484,7 @@
     <string name="maximise_columns_info">Ako je pesma prikazana u više kolona (npr. kada je rotirana u pejzaž), to omogućava svakoj koloni da zumira kako bi ispunila deo ekrana koji joj je dodeljen.</string>
     <string name="media">Mediji</string>
     <string name="media_selected">Učitavanje medija</string>
+    <string name="menu_showcase_info">Otvaranje menija za prikazivanje i upravljanje pesmama i skupovima</string>
     <string name="menu_set_info">Koristite ovo dugme za pregled i upravljanje vašim setovima</string>
     <string name="menu_settings">Postavke menija</string>
     <string name="menu_settings_description">Promenite podešavanja za pesmu/set meni</string>

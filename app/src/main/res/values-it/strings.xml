@@ -484,6 +484,7 @@
     <string name="maximise_columns_info">Se un brano viene mostrato in più colonne (ad esempio quando viene ruotato in orizzontale), ciò consente a ciascuna colonna di eseguire lo zoom per riempire la parte dello schermo a cui è assegnata.</string>
     <string name="media">Media</string>
     <string name="media_selected">Media caricati</string>
+    <string name="menu_showcase_info">Apri il menu per visualizzare e gestire i tuoi brani e set</string>
     <string name="menu_set_info">Usa questo pulsante per visualizzare e gestire i tuoi set</string>
     <string name="menu_settings">"Impostazioni del menu"</string>
     <string name="menu_settings_description">Modifica le impostazioni per il menu del brano/set</string>

@@ -484,6 +484,7 @@
     <string name="maximise_columns_info">Якщо пісня відображається в кількох стовпцях (наприклад, при повороті в альбомну орієнтацію), це дає змогу кожному стовпцю збільшити масштаб, щоб заповнити виділену йому частину екрана.</string>
     <string name="media">Медіафайл</string>
     <string name="media_selected">Медіафайл завантажений</string>
+    <string name="menu_showcase_info">Відкрийте меню, щоб переглядати та керувати своїми піснями та сетами</string>
     <string name="menu_set_info">Використовуйте цю кнопку, щоб переглядати набори та керувати ними</string>
     <string name="menu_settings">Параметри меню</string>
     <string name="menu_settings_description">Змініть налаштування для пісні/меню налаштувань</string>

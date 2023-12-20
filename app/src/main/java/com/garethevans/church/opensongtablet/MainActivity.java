@@ -289,7 +289,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             song_actions = "", settings = "", deeplink_preferences = "", song_string = "", set_string = "",
             search_index_start = "", search_index_end = "", deeplink_metronome = "", variation = "",
             mode_presenter = "", mode_performance = "", mode_stage = "", success = "", okay = "", pad_playback_info = "",
-            no_suitable_application = "", indexing_string = "", deeplink_edit = "", cast_info_string = "";
+            no_suitable_application = "", indexing_string = "", deeplink_edit = "", cast_info_string = "",
+            menu_showcase_info ="";
 
     // Used if implementing Oboe using C++ injection
     /* static {System.loadLibrary("lowlatencyaudio");} */
@@ -430,6 +431,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             no_suitable_application = getString(R.string.no_suitable_application);
             indexing_string = getString(R.string.index_songs_wait);
             cast_info_string = getString(R.string.cast_info_string);
+            menu_showcase_info = getString(R.string.menu_showcase_info);
         }
     }
 
@@ -1547,25 +1549,25 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             case "performanceView":
             default:
                 whichShowcase = "performanceMode";
-                // The hamburger (song/set menu)
-                if (myView.myToolbar.getChildCount() > 2) {
+                // Get the hamburger icon if shown
+                if (myView.myToolbar.getChildCount() > 2 &&
+                        myView.myToolbar.getChildAt(2).getClass().toString().contains("ImageButton")) {
                     final View view = myView.myToolbar.getChildAt(2);
                     targets.add(view);
-                    infos.add("Open the menu to view and manage your songs and sets");
-                } else {
-                    for (int i = 0; i < myView.myToolbar.getChildCount(); ++i) {
-                        final View child = myView.myToolbar.getChildAt(i);
-                        if (child != null && child.getClass().toString().contains("ImageView")) {
-                            targets.add(child);
-                            infos.add("Open the menu to view and manage your songs and sets");
-                        }
-                    }
+                    infos.add(menu_showcase_info);
+                    rects.add(false);
                 }
 
-                targets.add(findViewById(R.id.menuSettings));
-                infos.add(extra_settings);
-                rects.add(false);
-                rects.add(false);
+                // Get the action buttons
+                if (myView.myToolbar.getChildCount() > 3 &&
+                        myView.myToolbar.getChildAt(3).getClass().toString().contains("ActionMenu")) {
+                    final View view = myView.myToolbar.getChildAt(3);
+                    targets.add(view);
+                    infos.add(extra_settings);
+                    rects.add(false);
+                }
+
+                // The page button
                 targets.add(myView.actionFAB);
                 infos.add(action_button_info);
                 rects.add(false);

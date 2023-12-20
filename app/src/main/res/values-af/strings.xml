@@ -484,6 +484,7 @@
     <string name="maximise_columns_info">As \'n liedjie in veelvuldige kolomme gewys word (bv. wanneer dit na landskap gedraai word), laat dit elke kolom toe om in te zoem om die gedeelte van die skerm wat dit toegeken is, te vul.</string>
     <string name="media">Media</string>
     <string name="media_selected">Media gelaai</string>
+    <string name="menu_showcase_info">Maak die spyskaart oop om u liedjies en stelle te sien en te bestuur</string>
     <string name="menu_set_info">Gebruik hierdie knoppie om jou stelle te bekyk en te bestuur</string>
     <string name="menu_settings">"Kieslys instellings"</string>
     <string name="menu_settings_description">Verander instellings vir die liedjie/stel-kieslys</string>
