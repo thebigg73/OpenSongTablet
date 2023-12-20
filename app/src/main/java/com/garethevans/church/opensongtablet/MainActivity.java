@@ -301,6 +301,15 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
         super.onCreate(savedInstanceState);
 
+        // TODO try to identify resource not calling close
+        try {
+            Class.forName("dalvik.system.CloseGuard")
+                    .getMethod("setEnabled", boolean.class)
+                    .invoke(null, true);
+        } catch (ReflectiveOperationException e) {
+            throw new RuntimeException(e);
+        }
+
         // Set up the onBackPressed intercepter as onBackPressed is deprecated
         OnBackPressedCallback onBackPressedCallback = new OnBackPressedCallback(true) {
             @Override
@@ -317,7 +326,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
         WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
 
-        Log.d(TAG,"onCreateCalled()   savedInstanceState:"+savedInstanceState);
         if (savedInstanceState != null) {
             bootUpCompleted = savedInstanceState.getBoolean("bootUpCompleted", false);
             rebooted = true;
@@ -349,8 +357,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         } else {
             rebooted = false;
         }
-
-        Log.d(TAG,"rebooted:"+rebooted);
 
         // Did we receive an intent (user clicked on an openable file)?
         fileOpenIntent = getIntent();
@@ -1013,7 +1019,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @SuppressWarnings("deprecation")
     public void interceptBackPressed() {
-        Log.d(TAG, "interceptBackPressed");
         if (alreadyBackPressed && !settingsOpen) {
             // Close the app
             confirmedAction(true, "exit", null, null, null, null);
@@ -3714,9 +3719,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     protected void onResume() {
-        Log.d(TAG,"onResume()");
         if (myView == null) {
-            Log.d(TAG,"restart app");
             // Something is wrong - restart the app
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -3766,8 +3769,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     protected void onStop() {
-        Log.d(TAG, "onStop()");
-
         // Stop pad timers
         if (pad != null) {
             pad.stopPad();
@@ -3801,8 +3802,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     protected void onDestroy() {
-        Log.d(TAG, "onDestroy");
-
         if (webServer!=null) {
             webServer.stop();
         }

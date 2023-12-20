@@ -68,7 +68,6 @@ public class LoadSong {
             // or this is a custom slide/note as identified by the folder (which aren't indexed)
             return doLoadSongFile(thisSong, indexing);
         } else {
-            Log.d(TAG, "Loading from the database");
             if (thisSong.getFilename().equals("Welcome to OpenSongApp") || thisSong.getFilename().endsWith(c.getString(R.string.welcome))) {
                 return mainActivityInterface.getSong().showWelcomeSong(c, thisSong);
             } else {
@@ -189,7 +188,6 @@ public class LoadSong {
                     thisSong.setTitle(newname);
                     thisSong.setFilename(newname);
                     Uri olduri = uri;
-                    Log.d(TAG,"thisSong.getLyrics():"+thisSong.getLyrics());
                     uri = mainActivityInterface.getStorageAccess().getUriForItem(where,thisSong.getFolder(),newname);
                     mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(false,uri,null,where,thisSong.getFolder(),newname);
                     //String newSongContent = mainActivityInterface.getProcessSong().getXML(thisSong);

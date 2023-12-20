@@ -143,7 +143,6 @@ public class InlineSetList extends RecyclerView {
     }
 
     public void prepareSet() {
-        Log.d(TAG,"prepareSet()");
         if (inlineSetListAdapter!=null) {
             inlineSetListAdapter.clearSetList();
             selectedItem = -1;
@@ -492,7 +491,6 @@ public class InlineSetList extends RecyclerView {
     }
 
     private void scrollToItem(int position) {
-        Log.d(TAG,"position:"+position);
         this.post(() -> {
             if (position > -1 &&
                     position < mainActivityInterface.getCurrentSet().getSetItems().size()) {
@@ -501,7 +499,6 @@ public class InlineSetList extends RecyclerView {
             } else if (position == -1 &&
                     mainActivityInterface.getCurrentSet().getSetItems().size() > 0) {
                 // Scroll to the top
-                Log.d(TAG,"scroll to top");
                 llm.scrollToPositionWithOffset(0, 0);
             }
         });

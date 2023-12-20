@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 
@@ -305,7 +304,6 @@ public class DisplayPrevNext {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        Log.d(TAG,"finished hiding and callback removal");
 
         if (isSetMove(position)) {
             mainActivityInterface.loadSongFromSet(position);

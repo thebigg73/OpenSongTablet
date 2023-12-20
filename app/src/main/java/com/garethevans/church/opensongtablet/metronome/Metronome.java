@@ -182,10 +182,12 @@ public class Metronome {
             if (tickSound!=null && !tickSound.isEmpty()) {
                 AssetFileDescriptor tickFile = c.getAssets().openFd("metronome/" + tickSound + sampleRateAsset + ".wav");
                 tickClip = soundPool.load(tickFile,0);
+                tickFile.close();
             }
             if (tockSound!=null && !tockSound.isEmpty()) {
                 AssetFileDescriptor tockFile = c.getAssets().openFd("metronome/" + tockSound + sampleRateAsset + ".wav");
                 tockClip = soundPool.load(tockFile,0);
+                tockFile.close();
             }
             soundPool.setOnLoadCompleteListener((soundPool, i, i1) -> {
                 if (i == tickClip) {
@@ -330,8 +332,8 @@ public class Metronome {
             beats = 0;
             divisions = 1;  // So we don't divide by 0 accidentally!
         }
-        timeSignature.add(""+beats);
-        timeSignature.add(""+divisions);
+        timeSignature.add(String.valueOf(beats));
+        timeSignature.add(String.valueOf(divisions));
         return timeSignature;  // Used when editing
     }
 
@@ -643,8 +645,8 @@ public class Metronome {
         int av_bpm = Math.round(((float) total_calc_bpm / (float) total_counts) / meterTimeFactor);
 
         if (av_bpm < 300 && av_bpm >= 40) {
-            tempoView.setText(""+av_bpm);
-            mainActivityInterface.getSong().setTempo(""+av_bpm);
+            tempoView.setText(String.valueOf(av_bpm));
+            mainActivityInterface.getSong().setTempo(String.valueOf(av_bpm));
 
         } else if (av_bpm <40) {
             tempoView.setText("40");

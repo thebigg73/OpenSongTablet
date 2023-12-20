@@ -136,7 +136,6 @@ public class BootUpFragment extends Fragment {
     }
 
     public void startBootProcess(boolean needIndex, boolean fullIndexRequired) {
-        Log.d(TAG,"needIndex:"+needIndex+"  fullIndexRequired:"+fullIndexRequired);
         mainActivityInterface.getSongListBuildIndex().setIndexRequired(needIndex);
         mainActivityInterface.getSongListBuildIndex().setFullIndexRequired(fullIndexRequired);
         mainActivityInterface.getSongListBuildIndex().setCurrentlyIndexing(false);
@@ -170,8 +169,6 @@ public class BootUpFragment extends Fragment {
                         message = "Processing\nWait....";
                     }
                     updateMessage();
-
-                    Log.d(TAG,"needIndex:"+needIndex);
 
                     if (needIndex) {
                         mainActivityInterface.getSongListBuildIndex().setIndexComplete(false);

@@ -113,6 +113,7 @@ public class ShowCase {
         }
     }
 
+    @SuppressWarnings("unused")
     public void resetShowcase(Context c, String what) {
         if (what==null) {
             MaterialShowcaseView.resetAll(c);
