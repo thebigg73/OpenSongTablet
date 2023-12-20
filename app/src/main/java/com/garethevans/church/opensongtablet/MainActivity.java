@@ -1934,10 +1934,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void updateSongMenu(String fragName, Fragment callingFragment, ArrayList<String> arguments) {
-        // If the fragName is menuSettingsFragment, we just want to change the alpha index view
+        // If the fragName is menuSettingsFragment, we just want to change the alpha index view or sizes
         if (fragName != null && fragName.equals("menuSettingsFragment")) {
             if (songMenuFragment != null) {
                 songMenuFragment.changeAlphabeticalLayout();
+            }
+            if (setMenuFragment !=null) {
+                setMenuFragment.refreshLayout();
             }
         } else if ((rebooted && bootUpCompleted && songMenuFragment != null) || (bootUpCompleted && fragName!=null && fragName.equals("menuSettingsFrag"))) {
             // We have resumed from stale state or changed between title/filename, build the index but from the database

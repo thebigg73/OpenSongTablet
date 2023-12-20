@@ -73,18 +73,7 @@ public class SetMenuFragment extends Fragment {
             }
             myView.setTitle.getImageView().setVisibility(View.GONE);
         }
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        executorService.execute(() -> {
-            Handler handler = new Handler(Looper.getMainLooper());
-            mainActivityInterface.getSetActions().buildSetArraysFromItems();
-            handler.post(() -> {
-                setupAdapter();
-                prepareCurrentSet();
-                setListeners();
-                mainActivityInterface.getCurrentSet().updateSetTitleView();
-                scrollToItem();
-            });
-        });
+        refreshLayout();
 
         return myView.getRoot();
     }
@@ -288,4 +277,19 @@ public class SetMenuFragment extends Fragment {
         }
     }
 
+    public void refreshLayout() {
+        // First run or we have adjusted the font sizes from MenuSettingsFragment
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            Handler handler = new Handler(Looper.getMainLooper());
+            mainActivityInterface.getSetActions().buildSetArraysFromItems();
+            handler.post(() -> {
+                setupAdapter();
+                prepareCurrentSet();
+                setListeners();
+                mainActivityInterface.getCurrentSet().updateSetTitleView();
+                scrollToItem();
+            });
+        });
+    }
 }
