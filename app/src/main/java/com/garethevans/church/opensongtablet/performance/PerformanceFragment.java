@@ -123,6 +123,8 @@ public class PerformanceFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        prepareStrings();
+        updateInlineSetSet();
         displayInterface.checkDisplays();
         /* GE - hidden this option, but reserving the right to reinstate even just for me
         if (getContext()!=null && mainActivityInterface!=null) {
