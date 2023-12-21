@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:text="@string/songs" />
 
-    <androidx.core.widget.NestedScrollView
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -75,7 +75,7 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
         </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+    </ScrollView>
 </LinearLayout>
     <ProgressBar
         android:id="@+id/progressBarSongs"

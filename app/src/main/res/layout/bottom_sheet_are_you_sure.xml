@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:text="@string/are_you_sure" />
 
-    <androidx.core.widget.NestedScrollView
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -36,5 +36,5 @@
                 android:layout_gravity="end"
                 android:text="@string/confirm" />
         </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+    </ScrollView>
 </LinearLayout>

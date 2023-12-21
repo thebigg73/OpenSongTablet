@@ -13,7 +13,7 @@
         android:layout_height="match_parent"
         android:text="@string/autoscroll" />
 
-    <androidx.core.widget.NestedScrollView
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -110,5 +110,5 @@
                 android:text="@string/timer_learn"
                 android:visibility="gone"/>
         </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+    </ScrollView>
 </LinearLayout>

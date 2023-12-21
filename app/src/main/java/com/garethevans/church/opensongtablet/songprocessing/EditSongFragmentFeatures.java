@@ -362,7 +362,7 @@ public class EditSongFragmentFeatures extends Fragment {
 
             myView.tapTempo.setOnClickListener(button -> mainActivityInterface.getMetronome().tapTempo());
             // Scroll listener
-            myView.nestedScrollView.setExtendedFabToAnimate(editSongFragmentInterface.getSaveButton());
+            myView.featuresScrollView.setExtendedFabToAnimate(editSongFragmentInterface.getSaveButton());
         });
     }
 

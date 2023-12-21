@@ -115,7 +115,7 @@ public class EditSongFragmentMain extends Fragment  {
         myView.songNotes.post(() -> myView.songNotes.addTextChangedListener(new MyTextWatcher("notes")));
 
         // Scroll listener
-        myView.nestedScrollView.post(() -> myView.nestedScrollView.setExtendedFabToAnimate(editSongFragmentInterface.getSaveButton()));
+        myView.mainScrollView.post(() -> myView.mainScrollView.setExtendedFabToAnimate(editSongFragmentInterface.getSaveButton()));
     }
 
     private class MyTextWatcher implements TextWatcher {

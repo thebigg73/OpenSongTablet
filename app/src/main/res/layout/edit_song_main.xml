@@ -4,8 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.garethevans.church.opensongtablet.customviews.NestedScrollWithFAB
-        android:id="@+id/nestedScrollView"
+    <com.garethevans.church.opensongtablet.customviews.ScrollViewWithFAB
+        android:id="@+id/mainScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginStart="8dp"
@@ -22,8 +22,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
-                app:endIconMode="clear_text"
-                android:hint="@string/title" />
+                android:hint="@string/title"
+                app:endIconMode="clear_text" />
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                 android:id="@+id/author"
@@ -31,8 +31,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                app:endIconMode="clear_text"
-                android:hint="@string/artist" />
+                android:hint="@string/artist"
+                app:endIconMode="clear_text" />
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                 android:id="@+id/copyright"
@@ -40,8 +40,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                app:endIconMode="clear_text"
-                android:hint="@string/copyright" />
+                android:hint="@string/copyright"
+                app:endIconMode="clear_text" />
+
             <TableRow style="@style/DividerLine" />
 
             <LinearLayout
@@ -68,8 +69,8 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
                     android:layout_weight="0.6"
-                    app:endIconMode="clear_text"
-                    android:hint="@string/filename" />
+                    android:hint="@string/filename"
+                    app:endIconMode="clear_text" />
             </LinearLayout>
 
             <TableRow style="@style/DividerLine" />
@@ -84,11 +85,11 @@
                 android:lines="5"
                 android:maxLines="5"
                 android:minLines="5"
-                app:endIconMode="clear_text"
                 app:autoSizeMaxTextSize="24sp"
                 app:autoSizeMinTextSize="8sp"
                 app:autoSizeStepGranularity="1sp"
-                app:autoSizeTextType="uniform" />
+                app:autoSizeTextType="uniform"
+                app:endIconMode="clear_text" />
         </LinearLayout>
-    </com.garethevans.church.opensongtablet.customviews.NestedScrollWithFAB>
+    </com.garethevans.church.opensongtablet.customviews.ScrollViewWithFAB>
 </LinearLayout>

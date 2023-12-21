@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     style="@style/DefaultView">
 
-    <androidx.core.widget.NestedScrollView
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -260,5 +260,5 @@
                 android:inputType="none"
                 tools:ignore="HardcodedText" />
         </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+    </ScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

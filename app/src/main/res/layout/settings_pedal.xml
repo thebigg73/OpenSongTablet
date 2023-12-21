@@ -11,7 +11,7 @@
     android:focusable="false"
     android:descendantFocusability="blocksDescendants">
 
-    <androidx.core.widget.NestedScrollView
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -607,5 +607,5 @@
                 tools:ignore="TooManyViews" />
             <TableRow style="@style/DividerLine" />
         </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+    </ScrollView>
 </LinearLayout>

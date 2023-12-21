@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     style="@style/DefaultView">
 
-    <com.garethevans.church.opensongtablet.customviews.NestedScrollWithFAB
+    <com.garethevans.church.opensongtablet.customviews.ScrollViewWithFAB
         android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -122,7 +122,7 @@
                     android:layout_marginRight="8dp"
                     android:layout_marginTop="8dp" />
         </LinearLayout>
-    </com.garethevans.church.opensongtablet.customviews.NestedScrollWithFAB>
+    </com.garethevans.church.opensongtablet.customviews.ScrollViewWithFAB>
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/addToSet"

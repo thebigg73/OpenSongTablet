@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:text="@string/information" />
 
-    <androidx.core.widget.NestedScrollView
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -34,5 +34,5 @@
                 android:padding="16dp"
                 android:text="@string/storage_quicktip" />
         </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+    </ScrollView>
 </LinearLayout>

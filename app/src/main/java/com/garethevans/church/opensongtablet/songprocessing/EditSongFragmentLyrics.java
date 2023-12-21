@@ -176,9 +176,9 @@ public class EditSongFragmentLyrics extends Fragment {
 
                     Point point = new Point();
                     point.x = (int) layout.getPrimaryHorizontal(cursorPos);
-                    point.y = baseline + ascent - location[1] - myView.nestedScrollView.getScrollY();
+                    point.y = baseline + ascent - location[1] - myView.lyricsScrollView.getScrollY();
 
-                    myView.nestedScrollView.scrollTo(0,point.y);
+                    myView.lyrics.scrollTo(0,point.y);
                 },100);
 
             }
@@ -244,10 +244,10 @@ public class EditSongFragmentLyrics extends Fragment {
         myView.redoButton.setOnClickListener(v -> redoLyrics());
 
         // Scroll listener
-        myView.nestedScrollView.setExtendedFabToAnimate(editSongFragmentInterface.getSaveButton());
-        myView.nestedScrollView.setFabToAnimate(myView.undoButton);
-        myView.nestedScrollView.setFab2ToAnimate(myView.redoButton);
-        myView.nestedScrollView.setFab3ToAnimate(myView.settingsButton);
+        myView.lyricsScrollView.setExtendedFabToAnimate(editSongFragmentInterface.getSaveButton());
+        myView.lyricsScrollView.setFabToAnimate(myView.undoButton);
+        myView.lyricsScrollView.setFab2ToAnimate(myView.redoButton);
+        myView.lyricsScrollView.setFab3ToAnimate(myView.settingsButton);
 
         // Resize the bottom padding to the soft keyboard height or half the screen height for the soft keyboard (workaround)
         mainActivityInterface.getWindowFlags().adjustViewPadding(mainActivityInterface,myView.resizeForKeyboardLayout);
@@ -272,7 +272,7 @@ public class EditSongFragmentLyrics extends Fragment {
                     screenHeight = Math.min(400,screenHeight/4);
                     // Because selection is >0, the keyboard is open.
                     // Make sure the view has scroll up by this proportion
-                    myView.nestedScrollView.scrollTo(0, scrollYneeded - screenHeight);
+                    myView.lyricsScrollView.scrollTo(0, scrollYneeded - screenHeight);
                 }
             }
         }, 50);

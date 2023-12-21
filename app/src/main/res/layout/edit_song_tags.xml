@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-    <com.garethevans.church.opensongtablet.customviews.NestedScrollWithFAB
-        android:id="@+id/nestedScrollView"
-        android:contentDescription="@string/tag_song"
+    <com.garethevans.church.opensongtablet.customviews.ScrollViewWithFAB
+        android:id="@+id/tagsScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp">
+        android:layout_marginEnd="8dp"
+        android:contentDescription="@string/tag_song">
 
         <LinearLayout
             android:id="@+id/resizeForKeyboardLayout"
@@ -24,13 +24,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="8dp"
+                android:hint="@string/tag_song"
                 android:inputType="text|textMultiLine"
-                android:minLines="2"
-                android:hint="@string/tag_song" />
+                android:minLines="2" />
 
-            <TableRow android:id="@+id/focusLine"
-                android:focusable="true"
-                style="@style/DividerLine"/>
+            <TableRow
+                android:id="@+id/focusLine"
+                style="@style/DividerLine"
+                android:focusable="true" />
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                 android:id="@+id/aka"
@@ -38,9 +39,10 @@
                 android:layout_height="match_parent"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                app:endIconMode="clear_text"
-                android:hint="@string/edit_song_aka" />
-            <TableRow style="@style/DividerLine"/>
+                android:hint="@string/edit_song_aka"
+                app:endIconMode="clear_text" />
+
+            <TableRow style="@style/DividerLine" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -50,25 +52,25 @@
                 <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                     android:id="@+id/ccli"
                     android:layout_width="0dp"
-                    android:layout_weight="0.5"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
                     android:layout_marginEnd="4dp"
-                    app:endIconMode="clear_text"
-                    android:hint="@string/ccli"/>
+                    android:layout_marginBottom="8dp"
+                    android:layout_weight="0.5"
+                    android:hint="@string/ccli"
+                    app:endIconMode="clear_text" />
 
                 <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                     android:id="@+id/user1"
                     android:layout_width="0dp"
-                    android:layout_weight="0.5"
                     android:layout_height="wrap_content"
-                    android:hint="@string/user_1"
+                    android:layout_gravity="bottom"
                     android:layout_marginStart="4dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
-                    app:endIconMode="clear_text"
-                    android:layout_gravity="bottom"/>
+                    android:layout_weight="0.5"
+                    android:hint="@string/user_1"
+                    app:endIconMode="clear_text" />
             </LinearLayout>
 
             <LinearLayout
@@ -79,25 +81,25 @@
                 <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                     android:id="@+id/user2"
                     android:layout_width="0dp"
-                    android:layout_weight="0.5"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="4dp"
                     android:layout_marginTop="8dp"
+                    android:layout_marginEnd="4dp"
                     android:layout_marginBottom="8dp"
-                    app:endIconMode="clear_text"
-                    android:hint="@string/user_2"/>
+                    android:layout_weight="0.5"
+                    android:hint="@string/user_2"
+                    app:endIconMode="clear_text" />
 
                 <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                     android:id="@+id/user3"
                     android:layout_width="0dp"
-                    android:layout_weight="0.5"
                     android:layout_height="wrap_content"
-                    android:hint="@string/user_3"
+                    android:layout_gravity="bottom"
                     android:layout_marginStart="4dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
-                    app:endIconMode="clear_text"
-                    android:layout_gravity="bottom"/>
+                    android:layout_weight="0.5"
+                    android:hint="@string/user_3"
+                    app:endIconMode="clear_text" />
             </LinearLayout>
 
             <LinearLayout
@@ -108,37 +110,40 @@
                 <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                     android:id="@+id/hymnnum"
                     android:layout_width="0dp"
-                    android:layout_weight="0.5"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
                     android:layout_marginEnd="4dp"
-                    app:endIconMode="clear_text"
-                    android:hint="@string/hymn_number"/>
+                    android:layout_marginBottom="8dp"
+                    android:layout_weight="0.5"
+                    android:hint="@string/hymn_number"
+                    app:endIconMode="clear_text" />
 
                 <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                     android:id="@+id/presorder"
                     android:layout_width="0dp"
-                    android:layout_weight="0.5"
                     android:layout_height="wrap_content"
-                    android:hint="@string/presentation_order"
+                    android:layout_gravity="bottom"
                     android:layout_marginStart="4dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
-                    android:layout_gravity="bottom"/>
+                    android:layout_weight="0.5"
+                    android:hint="@string/presentation_order" />
             </LinearLayout>
 
-            <TableRow style="@style/DividerLine"/>
+            <TableRow style="@style/DividerLine" />
+
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/beat_buddy"/>
+                android:text="@string/beat_buddy" />
+
             <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
                 android:id="@+id/useImported"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/imported_values"
-                android:hint="@string/beat_buddy_import_project_info"/>
+                android:hint="@string/beat_buddy_import_project_info"
+                android:text="@string/imported_values" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -147,24 +152,24 @@
                 <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
                     android:id="@+id/beatBuddySong"
                     android:layout_width="0dp"
-                    android:layout_weight="0.5"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
                     android:layout_marginEnd="4dp"
-                    android:hint="@string/song"/>
+                    android:layout_marginBottom="8dp"
+                    android:layout_weight="0.5"
+                    android:hint="@string/song" />
 
                 <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
                     android:id="@+id/beatBuddyKit"
                     android:layout_width="0dp"
-                    android:layout_weight="0.5"
                     android:layout_height="wrap_content"
-                    android:hint="@string/drum_kit"
+                    android:layout_gravity="bottom"
                     android:layout_marginStart="4dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
-                    android:layout_gravity="bottom"/>
+                    android:layout_weight="0.5"
+                    android:hint="@string/drum_kit" />
             </LinearLayout>
         </LinearLayout>
-    </com.garethevans.church.opensongtablet.customviews.NestedScrollWithFAB>
+    </com.garethevans.church.opensongtablet.customviews.ScrollViewWithFAB>
 </LinearLayout>

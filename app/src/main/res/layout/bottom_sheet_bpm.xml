@@ -24,7 +24,7 @@
         android:layout_height="10dp"
         android:visibility="gone"/>
 
-    <androidx.core.widget.NestedScrollView
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone">
@@ -88,5 +88,5 @@
                 android:text="@string/copy_of"/>
 
         </androidx.gridlayout.widget.GridLayout>
-    </androidx.core.widget.NestedScrollView>
+    </ScrollView>
 </LinearLayout>

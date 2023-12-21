@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:text="@string/storage_change" />
 
-    <androidx.core.widget.NestedScrollView
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -84,5 +84,5 @@
                 android:text="@string/export_song_directory"
                 custom:mydrawable="@drawable/list_bullet" />
         </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+    </ScrollView>
 </LinearLayout>

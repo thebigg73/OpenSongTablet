@@ -65,7 +65,7 @@
         android:layout_below="@+id/webControls"
         android:padding="16dp">
 
-        <androidx.core.widget.NestedScrollView
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -187,7 +187,7 @@
                         app:useMonospace="true" />
                 </LinearLayout>
             </LinearLayout>
-        </androidx.core.widget.NestedScrollView>
+        </ScrollView>
     </RelativeLayout>
 
     <ProgressBar

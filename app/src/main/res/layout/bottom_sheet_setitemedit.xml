@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <androidx.core.widget.NestedScrollView
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/colorPrimary"
@@ -32,7 +32,7 @@
                 android:orientation="vertical"
                 android:paddingStart="0dp"
                 android:paddingEnd="0dp"/>
-        </androidx.core.widget.NestedScrollView>
+        </ScrollView>
     </LinearLayout>
 
     <ProgressBar

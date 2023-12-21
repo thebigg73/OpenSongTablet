@@ -19,7 +19,7 @@
         app:isDraggableX="true"
         app:layout_dodgeInsetEdges="bottom" />
 
-    <androidx.core.widget.NestedScrollView
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -251,5 +251,5 @@
             android:text="@string/save" />
     </LinearLayout>
 
-    </androidx.core.widget.NestedScrollView>
+    </ScrollView>
 </LinearLayout>

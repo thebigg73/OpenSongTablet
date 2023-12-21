@@ -5,63 +5,63 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-        <com.garethevans.church.opensongtablet.customviews.NestedScrollWithFAB
-            android:id="@+id/nestedScrollView"
+    <com.garethevans.church.opensongtablet.customviews.ScrollViewWithFAB
+        android:id="@+id/lyricsScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp">
+
+        <RelativeLayout
+            android:id="@+id/resizeForKeyboardLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp">
+            android:layout_height="wrap_content">
 
-            <RelativeLayout
-                android:id="@+id/resizeForKeyboardLayout"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/ocr"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:text="@string/text_extract"
+                android:visibility="gone"
+                app:icon="@drawable/ocr"
+                app:iconTint="@color/white" />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/ocr"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_centerHorizontal="true"
-                    android:text="@string/text_extract"
-                    android:visibility="gone"
-                    app:icon="@drawable/ocr"
-                    app:iconTint="@color/white" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/imageEdit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ocr"
+                android:text="@string/image_adjust"
+                android:visibility="gone"
+                app:icon="@drawable/crop_rotate"
+                app:iconTint="@color/white" />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/imageEdit"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/ocr"
-                    android:text="@string/image_adjust"
-                    android:visibility="gone"
-                    app:icon="@drawable/crop_rotate"
-                    app:iconTint="@color/white" />
-
-                <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
-                    android:id="@+id/lyrics"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/imageEdit"
-                    android:layout_marginBottom="72dp"
-                    android:hint="@string/lyrics"
-                    android:inputType="text|textMultiLine"
-                    android:minLines="25"
-                    app:autoSizeMaxTextSize="18sp"
-                    app:autoSizeMinTextSize="8sp"
-                    app:autoSizeStepGranularity="2sp"
-                    app:autoSizeTextType="uniform"
-                    app:useMonospace="true" />
-            </RelativeLayout>
-        </com.garethevans.church.opensongtablet.customviews.NestedScrollWithFAB>
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
+                android:id="@+id/lyrics"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/imageEdit"
+                android:layout_marginBottom="72dp"
+                android:hint="@string/lyrics"
+                android:inputType="text|textMultiLine"
+                android:minLines="25"
+                app:autoSizeMaxTextSize="18sp"
+                app:autoSizeMinTextSize="8sp"
+                app:autoSizeStepGranularity="2sp"
+                app:autoSizeTextType="uniform"
+                app:useMonospace="true" />
+        </RelativeLayout>
+    </com.garethevans.church.opensongtablet.customviews.ScrollViewWithFAB>
 
     <LinearLayout
         android:id="@+id/undoRedo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_anchorGravity="bottom"
         android:layout_gravity="bottom|start"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        app:layout_anchorGravity="bottom">
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/undoButton"
@@ -95,7 +95,7 @@
         android:layout_marginEnd="12dp"
         android:layout_marginBottom="12dp"
         android:contentDescription="@string/extra_settings"
-        app:srcCompat="@drawable/menu"
-        app:layout_anchorGravity="bottom"/>
+        app:layout_anchorGravity="bottom"
+        app:srcCompat="@drawable/menu" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -8,11 +9,13 @@
     android:focusableInTouchMode="false"
     android:descendantFocusability="blocksDescendants">
 
-    <androidx.core.widget.NestedScrollView
+    <ScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
-        android:focusable="false">
+        android:focusable="false"
+        android:descendantFocusability="blocksDescendants"
+        tools:ignore="UselessParent">
 
         <LinearLayout
             android:id="@+id/bottomButtons"
@@ -91,5 +94,5 @@
                 android:contentDescription="@string/quicklaunch_button8"
                 app:srcCompat="@drawable/help" />
         </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+    </ScrollView>
 </LinearLayout>

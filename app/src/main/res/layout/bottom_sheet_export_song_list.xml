@@ -49,7 +49,7 @@
                     android:paddingEnd="16dp"
                     android:text="@string/choose_folders" />
 
-                <androidx.core.widget.NestedScrollView
+                <ScrollView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:paddingStart="16dp"
@@ -62,7 +62,7 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical" />
 
-                </androidx.core.widget.NestedScrollView>
+                </ScrollView>
             </LinearLayout>
 
             <LinearLayout

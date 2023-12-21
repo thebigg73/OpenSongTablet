@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.garethevans.church.opensongtablet.customviews.NestedScrollWithFAB
+    <com.garethevans.church.opensongtablet.customviews.ScrollViewWithFAB
         android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -138,7 +138,7 @@
                 android:isScrollContainer="true"
                 android:orientation="vertical" />
         </LinearLayout>
-    </com.garethevans.church.opensongtablet.customviews.NestedScrollWithFAB>
+    </com.garethevans.church.opensongtablet.customviews.ScrollViewWithFAB>
 
     <FrameLayout
         android:id="@+id/progressBar"

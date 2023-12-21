@@ -16,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <com.garethevans.church.opensongtablet.customviews.NestedScrollWithFAB
+        <com.garethevans.church.opensongtablet.customviews.ScrollViewWithFAB
             android:id="@+id/nestedScrollView"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -83,7 +83,7 @@
                     android:text="@string/delete"
                     app:mydrawable="@drawable/delete" />
             </LinearLayout>
-        </com.garethevans.church.opensongtablet.customviews.NestedScrollWithFAB>
+        </com.garethevans.church.opensongtablet.customviews.ScrollViewWithFAB>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/openLink"

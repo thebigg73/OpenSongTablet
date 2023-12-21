@@ -154,7 +154,7 @@ public class EditSongFragmentTags extends Fragment {
         myView.beatBuddyKit.addTextChangedListener(new MyTextWatcher("beatbuddykit"));
 
         // Scroll listener
-        myView.nestedScrollView.setExtendedFabToAnimate(editSongFragmentInterface.getSaveButton());
+        myView.tagsScrollView.setExtendedFabToAnimate(editSongFragmentInterface.getSaveButton());
     }
 
     private void checkBeatBuddyValues() {

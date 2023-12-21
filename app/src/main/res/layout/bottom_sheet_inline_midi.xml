@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:text="@string/information" />
 
-    <androidx.core.widget.NestedScrollView
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -67,7 +67,7 @@
                 app:size="xlarge"/>
 
         </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+    </ScrollView>
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/addCommand"
         android:layout_width="wrap_content"

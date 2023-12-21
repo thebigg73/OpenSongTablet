@@ -18,7 +18,7 @@
             android:text="@string/text_extract" />
 
 
-        <com.garethevans.church.opensongtablet.customviews.NestedScrollWithFAB
+        <com.garethevans.church.opensongtablet.customviews.ScrollViewWithFAB
             android:id="@+id/nestedScrollView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -74,7 +74,7 @@
                     android:inputType="textMultiLine"
                     android:minLines="20" />
             </LinearLayout>
-        </com.garethevans.church.opensongtablet.customviews.NestedScrollWithFAB>
+        </com.garethevans.church.opensongtablet.customviews.ScrollViewWithFAB>
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton

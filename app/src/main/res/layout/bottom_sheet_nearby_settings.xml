@@ -20,7 +20,7 @@
         android:padding="4dp"
         app:srcCompat="@drawable/menu" />
 
-    <androidx.core.widget.NestedScrollView
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/rounded_dialog"
@@ -153,5 +153,5 @@
                 android:hint=""
                 android:text="@string/connections_log" />
         </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+    </ScrollView>
 </LinearLayout>
